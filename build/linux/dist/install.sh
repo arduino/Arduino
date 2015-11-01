@@ -9,9 +9,12 @@
 RESOURCE_NAME=arduino-arduinoide
 
 # Get absolute path from which this script file was executed
-# Use "pwd -P" to resolve symlinks to their target
+# (Could be changed to "pwd -P" to resolve symlinks to their target)
 SCRIPT_PATH=$( cd $(dirname $0) ; pwd )
 cd "$SCRIPT_PATH"
+
+# Default mode is to install.
+UNINSTALL=false
 
 # Install using xdg-utils
 xdg_install_f() {
@@ -172,24 +175,63 @@ xdg_exists_f() {
 
 }
 
+# Shows a description of the available options
+display_help_f() {
+  echo "\n"
+  echo "This script will add a Arduino IDE desktop shortcut, menu item,"
+  echo "icons and file associations for the current user."
+  if ! xdg_exists_f; then
+    echo "\n"
+    echo "xdg-utils are recommended to be installed, so this script can use them."
+  fi
+  echo "\n"
+  echo "Optional arguments are:"
+  echo "\n"
+  echo "\t-u, --uninstall\t\tRemoves shortcut, menu item and icons."
+  echo "\n"
+  echo "\t-h, --help\t\tShows this help again."
+  echo "\n"
+}
+
+# Check for provided arguments
+while [ $# -gt 0 ] ; do
+  ARG="$1"
+  case $ARG in
+      -u|--uninstall)
+        UNINSTALL=true
+        shift
+      ;;
+      -h|--help)
+        display_help_f
+        exit 0
+      ;;
+      *)
+        echo "\n"
+        echo "Invalid option -- '$ARG'"
+        display_help_f
+        exit 1
+      ;;
+  esac
+done
+
 # If possible, use xdg-utils, if not, use a more basic approach
 if xdg_exists_f; then
-  if [ "$1" = "-u" ]; then
-    echo "Removing menu item, icons and file association for Arduino IDE..."
+  if [ "$UNINSTALL" = true ]; then
+    echo "Removing desktop shortcut and menu item for Arduino IDE..."
     xdg_uninstall_f
     simple_uninstall_f
   else
-    echo "Adding menu item, icons and file association for Arduino IDE..."
+    echo "Adding desktop shortcut, menu item and file associations for Arduino IDE..."
     xdg_uninstall_f
     simple_uninstall_f
     xdg_install_f
   fi
 else
-  if [ "$1" = "-u" ]; then
-    echo "Removing menu item for Arduino IDE..."
+  if [ "$UNINSTALL" = true ]; then
+    echo "Removing desktop shortcut and menu item for Arduino IDE..."
     simple_uninstall_f
   else
-    echo "Adding menu item for Arduino IDE..."
+    echo "Adding desktop shortcut and menu item for Arduino IDE..."
     simple_uninstall_f
     simple_install_f
   fi
