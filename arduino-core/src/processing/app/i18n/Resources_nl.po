@@ -8,6 +8,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # MrWhammy <brecht@yperman.eu>, 2013,2015
 # MrWhammy <brecht@yperman.eu>, 2012
 # devMaeb <devmaeb@gmail.com>, 2014
@@ -19,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-02 12:05+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Dutch (http://www.transifex.com/mbanzi/arduino-ide-15/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -42,13 +43,16 @@ msgstr "Niet gebruikt: {0}"
 msgid " Used: {0}"
 msgstr "Gebruikt: {0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Keyboard' kan alleen met de Arduino Leonardo worden gebruikt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Mouse' kan alleen met de Arduino Leonardo worden gebruikt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -878,6 +882,11 @@ msgstr "Fout bij het laden van code {0}"
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Fout bij het afdrukken."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -2308,11 +2317,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "De schets kan niet hernoemd worden naar \"{0}\",\nomdat de schets al een .ccp-bestand met deze naam bevat."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "De schets kan niet worden opgeslagen als \"{0}\"\nomdat de schets al een .ccp-bestand met deze naam bevat."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""

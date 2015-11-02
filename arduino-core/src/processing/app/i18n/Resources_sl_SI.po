@@ -8,6 +8,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2013
 # Črt Gorup <crt.gorup@gmail.com>, 2013
 # Miha Feus <miha_feus@hotmail.com>, 2012
@@ -17,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-02 12:05+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Slovenian (Slovenia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/sl_SI/)\n"
 "MIME-Version: 1.0\n"
@@ -40,13 +41,16 @@ msgstr ""
 msgid " Used: {0}"
 msgstr ""
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "Tipkovnica je podprta samo na Arduinu Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "Miška je podprta samo na Arduinu Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -876,6 +880,11 @@ msgstr "Napaka pri nalaganju kode {0}"
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Napaka pri tiskanju."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -2306,11 +2315,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "Skice ne moreš preimenovati v \"{0}\",⏎ saj že ima .cpp datoteko s tem imenom."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Skice ne moreš shraniti kot \"{0}\",⏎ saj že ima .cpp datoteko s tem imenom."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""
