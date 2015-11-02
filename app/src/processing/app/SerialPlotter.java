@@ -225,7 +225,7 @@ public class SerialPlotter extends AbstractMonitor {
       messageBuffer.delete(0, linebreak + 1);
 
       line = line.trim();
-      String[] parts = line.split("[, ]+");
+      String[] parts = line.split("[, \t]+");
       if(parts.length == 0) {
         continue;
       }
