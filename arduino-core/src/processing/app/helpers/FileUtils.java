@@ -58,12 +58,12 @@ public class FileUtils {
   public static void copy(File sourceFolder, File destFolder) throws IOException {
     for (File file : sourceFolder.listFiles()) {
       File destFile = new File(destFolder, file.getName());
-      if (file.isDirectory()) {
-        if (!destFile.mkdir()) {
+      if (file.isDirectory() && !SOURCE_CONTROL_FOLDERS.contains(file.getName())) {
+        if (!destFile.exists() && !destFile.mkdir()) {
           throw new IOException("Unable to create folder: " + destFile);
         }
         copy(file, destFile);
-      } else {
+      } else if (!file.isDirectory()) {
         copyFile(file, destFile);
       }
     }
