@@ -152,7 +152,7 @@ public class Compiler implements MessageConsumer {
 
     size(prefs);
 
-    return sketch.getName() + ".ino";
+    return sketch.getPrimaryFile().getName();
   }
 
   private String VIDPID() {
