@@ -53,6 +53,11 @@ public class NotificationPopup extends JDialog {
       public void componentMoved(ComponentEvent e) {
         updateLocation(parent);
       }
+
+      @Override
+      public void componentResized(ComponentEvent e) {
+        updateLocation(parent);
+      }
     };
     parent.addComponentListener(parentMovedListener);
 
