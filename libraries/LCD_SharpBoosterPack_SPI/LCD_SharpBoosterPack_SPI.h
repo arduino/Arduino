@@ -62,6 +62,7 @@ public:
     /// @param	pinVCC VCC pin
     ///
     LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_t pinDISP, uint8_t pinVCC);
+    LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_t pinDISP, uint8_t pinVCC, bool autoVCOM);
 
     ///
     /// @brief	Initialise the screen
