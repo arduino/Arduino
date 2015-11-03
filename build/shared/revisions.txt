@@ -1,4 +1,4 @@
-ARDUINO 1.6.6
+ARDUINO 1.6.6 - 2015.11.03
 
 [ide]
 * Switched to Java 8, which is now both bundled and needed for compiling the IDE
