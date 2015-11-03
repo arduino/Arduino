@@ -415,7 +415,7 @@ public class Compiler implements MessageConsumer {
         baseCommandLinker.add("--diag_wrap=off");//compile for unified memory model
         baseCommandLinker.add("--entry_point=code_start");//compile for unified memory model
         baseCommandLinker.add("--rom_model");//compile for unified memory model
-        baseCommandLinker.add("-o" + buildPath + File.separator + primaryClassName + ".out");
+        baseCommandLinker.add("-o" + buildPath + File.separator + primaryClassName + ".elf");
 //        "-o",
 //        buildPath + File.separator + primaryClassName + ".elf"
         
@@ -503,13 +503,15 @@ public class Compiler implements MessageConsumer {
         basePath + "arm-none-eabi-objcopy",
         "-O",
       }));
-    }else if (arch == "c2000") { 
-	//TODO: Figure out object copy
-    baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {basePath + "hex2000"}));
-    baseCommandObjcopy.add("-boot");
-    baseCommandObjcopy.add("-sci8");
-    baseCommandObjcopy.add("-a");
-    } else {
+    }
+//    else if (arch == "c2000") { 
+//	//TODO: Figure out object copy
+//    baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {basePath + "hex2000"}));
+//    baseCommandObjcopy.add("-boot");
+//    baseCommandObjcopy.add("-sci8");
+//    baseCommandObjcopy.add("-a");
+//    } 
+    else {
       baseCommandObjcopy = new ArrayList(Arrays.asList(new String[] {
         basePath + "avr-objcopy",
         "-O",
@@ -542,11 +544,13 @@ public class Compiler implements MessageConsumer {
 	  	commandObjcopy.add(2, "binary");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
     	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".bin");
-    }else if (arch == "c2000"){
-    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".out");
-    	commandObjcopy.add("-o");
-    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".txt");
-    }else {
+    }
+//    else if (arch == "c2000"){
+//    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".out");
+//    	commandObjcopy.add("-o");
+//    	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".txt");
+//    }
+    else {
 	    commandObjcopy.add(2, "ihex");
 	    commandObjcopy.add(".eeprom"); // remove eeprom data
 	  	commandObjcopy.add(buildPath + File.separator + primaryClassName + ".elf");
@@ -554,7 +558,7 @@ public class Compiler implements MessageConsumer {
     }
     if(arch == "c2000")
     {
-    	execAsynchronouslyShell(commandObjcopy);
+//    	execAsynchronouslyShell(commandObjcopy);
     }
     else
     {

@@ -48,14 +48,9 @@ public class DSLiteUploader extends Uploader{
 			}
 			return dslite(params);
 		} else {
-			if(Base.getArch() == "c2000")
-			{
-				params.add(buildPath + File.separator + className + ".out");
-			}
-			else
-			{
+
 			params.add(buildPath + File.separator + className + ".elf");
-			}
+			
 			return dslite(params);
 		}
 	}
