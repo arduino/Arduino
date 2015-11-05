@@ -72,12 +72,12 @@ private:
   static SoftwareSerial *active_object;
 
   // private methods
-  void recv() __attribute__((__always_inline__));
+  inline void recv() __attribute__((__always_inline__));
   uint8_t rx_pin_read();
   void tx_pin_write(uint8_t pin_state) __attribute__((__always_inline__));
   void setTX(uint8_t transmitPin);
   void setRX(uint8_t receivePin);
-  void setRxIntMsk(bool enable) __attribute__((__always_inline__));
+  inline void setRxIntMsk(bool enable) __attribute__((__always_inline__));
 
   // Return num - sub, or 1 if the result would be < 1
   static uint16_t subtract_cap(uint16_t num, uint16_t sub);
