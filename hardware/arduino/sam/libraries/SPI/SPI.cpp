@@ -203,10 +203,10 @@ uint16_t SPIClass::transfer16(byte _pin, uint16_t _data, SPITransferMode _mode) 
 	t.val = _data;
 
 	if (bitOrder[ch] == LSBFIRST) {
-		t.lsb = transfer(_pin, t.lsb, _mode);
+		t.lsb = transfer(_pin, t.lsb, SPI_CONTINUE);
 		t.msb = transfer(_pin, t.msb, _mode);
 	} else {
-		t.msb = transfer(_pin, t.msb, _mode);
+		t.msb = transfer(_pin, t.msb, SPI_CONTINUE);
 		t.lsb = transfer(_pin, t.lsb, _mode);
 	}
 
