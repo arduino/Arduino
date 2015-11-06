@@ -246,7 +246,7 @@ ISR(PCINT3_vect, ISR_ALIASOF(PCINT0_vect));
 //
 // Constructor
 //
-SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic /* = false */) : 
+SoftwareSerial::SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic /* = false */) : 
   _receivePin(receivePin),
   _transmitPin(transmitPin),
   _rx_delay_centering(0),

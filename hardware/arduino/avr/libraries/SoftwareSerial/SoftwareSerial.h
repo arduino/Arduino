@@ -48,8 +48,8 @@ class SoftwareSerial : public Stream
 {
 private:
   // per object data
-  uint8_t _receivePin;
-  uint8_t _transmitPin;
+  int _receivePin;
+  int _transmitPin;
   uint8_t _receiveBitMask;
   volatile uint8_t *_receivePortRegister;
   uint8_t _transmitBitMask;
@@ -87,7 +87,7 @@ private:
 
 public:
   // public methods
-  SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic = false);
+  SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic = false);
   ~SoftwareSerial();
   void begin(long speed);
   bool listen();
