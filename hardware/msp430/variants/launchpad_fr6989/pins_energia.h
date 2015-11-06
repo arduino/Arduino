@@ -390,18 +390,18 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /*  5 - P3.2 */
 	NOT_ON_TIMER, /*  6 - P9.3 */
 	T1A0,         /*  7 - P1.4 */
-	T0B6,         /*  8 - P2.0 */
+	T0B6_SEL1,    /*  8 - P2.0 */
 	NOT_ON_TIMER, /*  9 - P4.1 */
 	NOT_ON_TIMER, /* 10 - P4.0 */
-	T1A2,         /* 11 - P4.7 */
+	T1A2_SEL01,   /* 11 - P4.7 */
 	T0B3,         /* 12 - P2.4 */
 	T0B4,         /* 13 - P2.5 */
-	T0A2,         /* 14 - P1.7 */
-	T0A1,         /* 15 - P1.6 */
+	T0A2_SEL01,   /* 14 - P1.7 */
+	T0A1_SEL01,   /* 15 - P1.6 */
 	NOT_ON_TIMER, /* 16 - RST  */
 	NOT_ON_TIMER, /* 17 - P9.4 */
 	T0A0,         /* 18 - P1.5 */
-	T0B5,         /* 19 - P2.1 */
+	T0B5_SEL1,    /* 19 - P2.1 */
 	NOT_ON_TIMER, /* 20 - GND  */
 	NOT_ON_TIMER, /* 21 - 5.0v */
 	NOT_ON_TIMER, /* 22 - GND  */
@@ -417,14 +417,14 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /* 32 - P3.1 */
 	NOT_ON_TIMER, /* 33 - P3.0 */
 	T1A2,         /* 34 - P1.3 */
-	T0B4,         /* 35 - P2.2 */
-	T0B3,         /* 36 - P3.7 */
-	T0B2,         /* 37 - P3.6 */
-	T1A1,         /* 38 - P3.3 */
+	T0B4_SEL1,    /* 35 - P2.2 */
+	T0B3_SEL1,    /* 36 - P3.7 */
+	T0B2_SEL1,    /* 37 - P3.6 */
+	T1A1_SEL1,    /* 38 - P3.3 */
 	T0B5,         /* 39 - P2.6 */
 	T0B6,         /* 40 - P2.7 */
-	T0B0,         /* 41 - P3.4 */
-	T0B1,         /* 42 - P3.5 */
+	T0B0_SEL1,    /* 41 - P3.4 */
+	T0B1_SEL1,    /* 42 - P3.5 */
 	T0A1,         /* 43 - P1.0 */
 	NOT_ON_TIMER, /* 44 - P9.7 */
 	T0A2,         /* 45 - P1.1 */

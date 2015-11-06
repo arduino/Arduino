@@ -309,7 +309,7 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER,  /* 17 - TEST */
 	NOT_ON_TIMER,  /* 18 - P3.0 */
 	T1A1,          /* 19 - P1.2 */
-	T0B0,          /* 20 - GND */
+	NOT_ON_TIMER,  /* 20 - GND */
 	
 	T0B6,          /* 21 - P2.0 */
 	T0B0,          /* 22 - P2.1 */
