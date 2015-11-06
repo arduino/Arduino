@@ -1,0 +1,15 @@
+APPLICATION_PATH = `build.app.root`
+MAINSKETCH      ?= `build.mainsketch`
+BOARD           ?= `build.variant`
+PLATFORM        ?= `target`
+BUILD_DRVLIB    ?= `build.drvlib`
+EXTRA_SOURCES    = `build.extra.sources`
+USER_LIB_PATH    = `sketchbook.path`/libraries
+
+CLOSURE ?= $(APPLICATION_PATH)/hardware/common
+CCROOT  ?= $(APPLICATION_PATH)/hardware/tools/lm4f
+
+# if BOARD is not defined, default to some variant (often there is just one)
+ifeq (,$(BOARD))
+    BOARD = $(firstword $(notdir $(wildcard $(APPLICATION_PATH)/hardware/$(PLATFORM)/variants/*)))
+endif

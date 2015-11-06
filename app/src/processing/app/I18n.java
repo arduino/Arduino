@@ -16,10 +16,13 @@ import java.util.*;
 import java.text.MessageFormat;
 
 public class I18n {
-  private static ResourceBundle i18n = ResourceBundle.getBundle("processing.app.Resources");
+    private static ResourceBundle i18n = null;
 
   public static String _(String s) {
     try {
+        if (i18n == null) {
+            i18n = ResourceBundle.getBundle("processing.app.Resources");
+        }
       return i18n.getString(s);
     }
     catch (MissingResourceException e) {

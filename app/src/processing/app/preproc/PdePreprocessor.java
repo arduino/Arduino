@@ -39,9 +39,91 @@ import java.util.regex.*;
 
 
 /**
- * Class that orchestrates preprocessing p5 syntax into straight Java.
+ * Class that orchestrates Wiring syntax into straight C/C++.
  */
 public class PdePreprocessor {
+  /*
+   *  ======== InoCode ========
+   *  Simple nested class to simplify the conversion of
+   *  source files into strings for parsing
+   */
+  static public class InoCode implements Comparable<InoCode> {
+      private String source;
+      private File file;
+      private int lineCount;
+      private int offset;
+      private int priority;
+      
+      public InoCode(File file)
+      {
+          this(file, null, 0);
+      }
+
+      public InoCode(File file, String content, int lineCount)
+      {
+          this.file = file;
+          this.source = content;
+          this.lineCount = lineCount;
+          this.offset = 0;
+          this.priority = 1;
+      }
+
+      public int compareTo(InoCode n)
+      {
+          int cmp = this.priority - n.priority;
+          if (cmp == 0) {
+              return (this.file.getName().compareTo(n.file.getName()));
+          }
+          return (cmp);
+      }
+
+      public String getProgram() throws Exception
+      {
+          if (source == null) {
+              BufferedReader reader = new BufferedReader(
+                  new FileReader (file.getAbsolutePath()));
+              String         line = null;
+              StringBuilder  stringBuilder = new StringBuilder();
+              String         nl = System.getProperty("line.separator");
+
+              while ((line = reader.readLine()) != null) {
+                  stringBuilder.append(line);
+                  stringBuilder.append(nl);
+                  lineCount++;
+              }
+              reader.close();
+          
+              source = stringBuilder.toString();
+          }
+          return (source);
+      }
+
+      public String getFileName()
+      {
+          return (file.getName());
+      }
+
+      public int getLineCount()
+      {
+          return (lineCount);
+      }
+
+      public int getOffset()
+      {
+          return (offset);
+      }
+
+      public void setPri(int pri)
+      {
+          priority = pri;
+      }
+      
+      public void setOffset(int offset)
+      {
+          this.offset = offset;
+      }
+  }
+
   // stores number of built user-defined function prototypes
   public int prototypeCount = 0;
 
@@ -113,7 +195,7 @@ public class PdePreprocessor {
     String importRegexp = "^\\s*#include\\s*[<\"](\\S+)[\">]";
     programImports = new ArrayList<String>();
 
-    String[][] pieces = PApplet.matchAll(program, importRegexp);
+    String[][] pieces = matchAll(program, importRegexp);
 
     if (pieces != null)
       for (int i = 0; i < pieces.length; i++)
@@ -126,9 +208,6 @@ public class PdePreprocessor {
 //      }
 //    }
 
-    if(Base.getArch() == "cc3200emt" || Base.getArch() == "msp432" || Base.getArch() == "cc2600emt")
-    	writemain(program);
-    
     prototypes = prototypes(program);
     
     // store # of prototypes so that line number reporting can be adjusted
@@ -136,6 +215,15 @@ public class PdePreprocessor {
   
     // do this after the program gets re-combobulated
     this.program = program;
+    
+    // generate main.cpp (it depends on what's in the .ino files)
+    if (Base.getArch() == "cc3200emt"
+        || Base.getArch() == "msp432"
+        || Base.getArch() == "cc2600emt") {
+
+        String template = Preferences.get("preproc.main.template");
+    	writemain(buildPath, template);
+    }
     
     // output the code
     File streamFile = new File(buildPath, name + ".cpp");
@@ -190,10 +278,15 @@ public class PdePreprocessor {
   //public String write(String program, String buildPath, String name,
   //                  String extraImports[]) throws java.lang.Exception {
   public String write() throws java.lang.Exception {
-    writeProgram(stream, program, prototypes);
-    writeFooter(stream);
-    stream.close();
-    
+    try {
+      writeProgram(stream, program, prototypes);
+      writeFooter(stream);
+    }
+    finally { /* make sure stream is closed */
+      if (stream != null) {
+        stream.close();
+      }
+    }
     return name;
   }
 
@@ -228,8 +321,135 @@ public class PdePreprocessor {
     return programImports;
   }
 
+  /*
+   *  ======== sortInoCode ========
+   */
+  private static void sortInoCode(ArrayList<InoCode> code, String sketchName)
+  {
+      /* set code element priorities */
+      for (InoCode ic : code) {
+          /* the .ino that matches the sketch name, must come first */
+          if (ic.getFileName().equals(sketchName)) {
+              ic.setPri(0);  
+          }
+      }
 
+      /* sort by priority then alphabetically */
+      Collections.sort(code);
+  }
+  
+  /*
+   *  ======== generate ========
+   *  buildPath  - the output directory for the preprocessor's generated
+   *               files
+   *  code       - an array of all input .ino source code
+   *  sketchName - the name of the sketch project
+   *  isEMT      - generate code to support multiple setup/loop pairs
+   */
+  public String generate(String buildPath, ArrayList<InoCode> code,
+                         String sketchName, boolean isEMT)
+      throws Exception
+  {
+      // 0. sort code into canonical order
+      sortInoCode(code, sketchName + ".ino");
+      
+      // 1. concatenate all .ino files to the 'main' .cpp
+      //    store line number for starting point of each code bit
+      StringBuffer bigCode = new StringBuffer();
+      int curOffset = 0;
+      for (InoCode isc : code) {
+          String in = isc.getProgram();
+          isc.setOffset(curOffset);
+          
+          /* if EMT we need to handle multiple *Loop and *Setup functions */
+          if (isEMT) {
+	
+              // Find all loop functions and generate prototypes for them
+              ArrayList<String> loopMatches = new ArrayList<String>();
+		    	    
+              Pattern functionPattern  = Pattern.compile("\\s*void\\s+(loop)\\s*\\(\\s*(void)?\\s*\\)");
+              Matcher functionMatcher = functionPattern.matcher(in);
+              while (functionMatcher.find()) {
+                  loopMatches.add(functionMatcher.group(1));
+              }
+	
+              // Find all setup functions and generate prototypes for them
+              ArrayList<String> setupMatches = new ArrayList<String>();
 
+              functionPattern = Pattern.compile("\\s*void\\s+(setup)\\s*\\(\\s*(void)?\\s*\\)");
+              functionMatcher = functionPattern.matcher(in);
+              while (functionMatcher.find()) {
+                  setupMatches.add(functionMatcher.group(1));
+              }
+	        
+              // Add #line directives to help the compiler report errors with
+              // correct the filename and line number (issue 281 & 907)
+              if (setupMatches.size() > 0 && loopMatches.size() > 0) {
+                  /* map setup and loop to an .ino qualified name to allow
+                   * blind copy existing .ino files, each with a setup/loop 
+                   * pair, into a project
+                   */
+                  String inoName = isc.getFileName().substring(0, isc.getFileName().length()-4);
+                  bigCode.append("#undef setup\n#undef loop\n");
+                  bigCode.append("#define setup setup" +  inoName + "\n");
+                  bigCode.append("#define loop loop" +  inoName + "\n");
+              }
+              bigCode.append("#line 1 \"" + isc.getFileName() + "\"\n");
+          }
+      
+          bigCode.append(in);
+          bigCode.append('\n');
+          curOffset += isc.getLineCount();
+      }
+
+      // 2. generate main.cpp and the first part of the sketch.cpp;
+      //    i.e., up to the concatenated *.ino content
+      int prefixLen = 0;
+      try {
+          prefixLen = writePrefix(bigCode.toString(),
+                                   buildPath,
+                                   sketchName,
+                                   null);
+      }
+      catch (FileNotFoundException fnfe) {
+          fnfe.printStackTrace();
+          String msg = "Build folder disappeared or could not be written";
+          throw new Exception(msg);
+      }
+
+      for (InoCode isc : code) {
+          /* update offsets based on initial prefix */
+          isc.setOffset(isc.getOffset() + prefixLen);
+      }
+
+      // 3. run preproc on that code using the suggested class name
+      //    to create a single .cpp file and write to buildPath
+      String primaryClassName = null;
+      try {
+          // if (i != 0) preproc will fail if a pde file is not
+          // java mode, since that's required
+          String className = write();
+          if (className == null) {
+              throw new Exception("Could not find main class");
+          }
+
+          // store this for the compiler and the runtime
+          primaryClassName = className + ".cpp";
+
+      }
+      catch (FileNotFoundException fnfe) {
+          fnfe.printStackTrace();
+          String msg = "Build folder disappeared or could not be written";
+          throw new Exception(msg);
+      }
+      catch (Exception ex) {
+          // TODO better method for handling this?
+          ex.printStackTrace();
+          throw new Exception(ex.toString());
+      }
+
+      return primaryClassName;
+  }
 
 
   /**
@@ -317,6 +537,31 @@ public class PdePreprocessor {
     return buffer.toString();
   }
   
+  /**
+   * Find all matches of a regexp in the specified string
+   */
+  static private String[][] matchAll(String what, String regexp) {
+    Pattern p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
+    Matcher m = p.matcher(what);
+    ArrayList<String[]> results = new ArrayList<String[]>();
+    int count = m.groupCount() + 1;
+    while (m.find()) {
+      String[] groups = new String[count];
+      for (int i = 0; i < count; i++) {
+        groups[i] = m.group(i);
+      }
+      results.add(groups);
+    }
+    if (results.isEmpty()) {
+      return null;
+    }
+    String[][] matches = new String[results.size()][count];
+    for (int i = 0; i < matches.length; i++) {
+      matches[i] = (String[]) results.get(i);
+    }
+    return matches;
+  }
+
   public ArrayList<String> prototypes(String in) {
     in = collapseBraces(strip(in));
     
@@ -350,132 +595,139 @@ public class PdePreprocessor {
     return functionMatches;
   }
   
-  public void writemain(String in) {
-	    String _in = in;
-	    in = collapseBraces(strip(in));
-	    
-	    String content = "";
-		try {
-			content = new Scanner(new File(Base.getHardwarePath() + File.separator + Base.getArch() + 
-				File.separator + "cores" + File.separator + Base.getArch() + File.separator + "main.template")).useDelimiter("\\Z").next();
-		    //System.out.println(content);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+  /**
+   * Generate main.cpp from optionally specified template file and 
+   * write result into outDir
+   */
+  private void writemain(String outDir, String template) {
+      String _in = program;
+      String in = collapseBraces(strip(program));
+      
+      String content = "";
+      try {
+          if (template == null) {
+              template = Base.getHardwarePath() + File.separator + Base.getArch()
+                  + File.separator + "cores" + File.separator + Base.getArch()
+                  + File.separator + "main.template";
+          }
+          content = new Scanner(new File(template)).useDelimiter("\\Z").next();
+          //System.out.println(content);
+      } catch (FileNotFoundException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+      }
 
-		StringBuilder mainFile = new StringBuilder(content);
-		
-		int insertionPoint = content.indexOf("769d20fcd7a0eedaf64270f591438b01");
-		insertionPoint = content.indexOf("\n", insertionPoint) + 1;
+      StringBuilder mainFile = new StringBuilder(content);
+  	
+      int insertionPoint = content.indexOf("769d20fcd7a0eedaf64270f591438b01");
+      insertionPoint = content.indexOf("\n", insertionPoint) + 1;
 
-	    //Pattern functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ll]oop(?=\\s*\\()");
-	    Pattern functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[lL]oop\\w*)\\s*\\(\\s*(void)?\\s*\\)");
+      //Pattern functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ll]oop(?=\\s*\\()");
+      Pattern functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[lL]oop\\w*)\\s*\\(\\s*(void)?\\s*\\)");
 
-	    // Find all functions and generate prototypes for them
-	    ArrayList<String> loopMatches = new ArrayList<String>();
-	    ArrayList<String> setupMatches = new ArrayList<String>();
-	    	    
-	    Matcher functionMatcher = functionPattern.matcher(in);
+      // Find all functions and generate prototypes for them
+      ArrayList<String> loopMatches = new ArrayList<String>();
+      ArrayList<String> setupMatches = new ArrayList<String>();
+      	    
+      Matcher functionMatcher = functionPattern.matcher(in);
 
-	    // Leave setup alone since it is special
-	    // It will be processed using the next regex
-	    // See Sketch.java for the generation of the #define setupxxx
-	    while (functionMatcher.find()) {
-	    	String func = functionMatcher.group(1);
-	    	if(func.equals("loop")) continue;
-	    	loopMatches.add(functionMatcher.group(1));
-	    }
+      // Leave setup alone since it is special
+      // It will be processed using the next regex
+      // See Sketch.java for the generation of the #define setupxxx
+      while (functionMatcher.find()) {
+      	String func = functionMatcher.group(1);
+      	if(func.equals("loop")) continue;
+      	loopMatches.add(functionMatcher.group(1));
+      }
+      
+      //functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ss]etup(?=\\s*\\()");
+      functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[sS]etup\\w*)\\s*\\(\\s*(void)?\\s*\\)");
 
-	    
-	    //functionPattern  = Pattern.compile("(?=([\\w\\[\\]\\*]+\\s+[&\\[\\]\\*\\w\\s])*)\\w*[Ss]etup(?=\\s*\\()");
-	    functionPattern  = Pattern.compile("\\s*void\\s+([a-zA-Z_]*[sS]etup\\w*)\\s*\\(\\s*(void)?\\s*\\)");
+      // Find all functions and generate prototypes for them
+      functionMatcher = functionPattern.matcher(in);
+      
+      // Leave setup alone since it is special
+      // It will be processed using the next regex
+      // See Sketch.java for the generation of the #define setupxxx
+      while (functionMatcher.find()) {
+      	String func = functionMatcher.group(1);
+      	if(func.equals("setup")) continue;
+      	setupMatches.add(functionMatcher.group(1));
+      }
 
-	    // Find all functions and generate prototypes for them
-	    functionMatcher = functionPattern.matcher(in);
-	    
-	    // Leave setup alone since it is special
-	    // It will be processed using the next regex
-	    // See Sketch.java for the generation of the #define setupxxx
-	    while (functionMatcher.find()) {
-	    	String func = functionMatcher.group(1);
-	    	if(func.equals("setup")) continue;
-	    	setupMatches.add(functionMatcher.group(1));
-	    }
+      functionPattern  = Pattern.compile("(#define setup\\s)([a-zA-Z_*]\\w*)");
 
-	    functionPattern  = Pattern.compile("(#define setup\\s)([a-zA-Z_*]\\w*)");
+      // Find all functions and generate prototypes for them
+      functionMatcher = functionPattern.matcher(_in);
+      
+      while (functionMatcher.find()) {
+      	String func = functionMatcher.group(2);
+      	setupMatches.add(func);
+      }
 
-	    // Find all functions and generate prototypes for them
-	    functionMatcher = functionPattern.matcher(_in);
-	    
-	    while (functionMatcher.find()) {
-	    	String func = functionMatcher.group(2);
-	    	setupMatches.add(func);
-	    }
+      functionPattern  = Pattern.compile("(#define loop\\s)([a-zA-Z_*]\\w*)");
 
-	    functionPattern  = Pattern.compile("(#define loop\\s)([a-zA-Z_*]\\w*)");
+      // Find all functions and generate prototypes for them
+      functionMatcher = functionPattern.matcher(_in);
+      
+      while (functionMatcher.find()) {
+      	String func = functionMatcher.group(2);
+      	loopMatches.add(func);
+      }
+      
+      if(setupMatches.size() != loopMatches.size()) {
+      	System.out.println("The number of loop functions does not match the number of setup functions\n" +
+      			"Missing a loop or a setup in your Sketches?");
+      	return;
+      }
 
-	    // Find all functions and generate prototypes for them
-	    functionMatcher = functionPattern.matcher(_in);
-	    
-	    while (functionMatcher.find()) {
-	    	String func = functionMatcher.group(2);
-	    	loopMatches.add(func);
-	    }
+      String protos = "";
+      String funcArray = "";
+      String taskNameArray = "";
+      
+      for (int functionIndex = 0; functionIndex < loopMatches.size(); functionIndex++) {
+      	protos += "extern void " + setupMatches.get(functionIndex) + "();\n";
+      	protos += "extern void " + loopMatches.get(functionIndex) + "();\n";
+      	funcArray += "\t{" + setupMatches.get(functionIndex) + ", " + loopMatches.get(functionIndex) + "}";
+      	taskNameArray += "\t\"" + loopMatches.get(functionIndex) + "\"";
+      	if(functionIndex < loopMatches.size() -1) {
+      		funcArray += ",\n";
+      		taskNameArray += ",\n";
+      	}
+      }
 
-	    
-	    if(setupMatches.size() != loopMatches.size()) {
-	    	System.out.print("The number of loop functions does not match the number of setup functions\n" +
-	    			"Missing a loop or a setup in your Sketches?");
-	    	return;
-	    }
+      String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";
+      String prolog = "void (*func_ptr[NUM_SKETCHES][2])(void) = {\n";
+      String epilog = "\n};\n";
+      mainFile.insert(insertionPoint, protos);
+      insertionPoint += protos.length();
+      mainFile.insert(insertionPoint, numSketches);
+      insertionPoint += numSketches.length();
+      mainFile.insert(insertionPoint, prolog);
+      insertionPoint += prolog.length();	    
+      mainFile.insert(insertionPoint, funcArray);
+      insertionPoint += funcArray.length();
+      mainFile.insert(insertionPoint, epilog);
+      insertionPoint += epilog.length();
 
-	    String protos = "";
-	    String funcArray = "";
-	    String taskNameArray = "";
-	    
-	    for (int functionIndex = 0; functionIndex < loopMatches.size(); functionIndex++) {
-	    	protos += "extern void " + setupMatches.get(functionIndex) + "();\n";
-	    	protos += "extern void " + loopMatches.get(functionIndex) + "();\n";
-	    	funcArray += "\t{" + setupMatches.get(functionIndex) + ", " + loopMatches.get(functionIndex) + "}";
-	    	taskNameArray += "\t\"" + loopMatches.get(functionIndex) + "\"";
-	    	if(functionIndex < loopMatches.size() -1) {
-	    		funcArray += ",\n";
-	    		taskNameArray += ",\n";
-	    	}
-	    }
+      prolog = "const char *taskNames[] = {\n";
+      mainFile.insert(insertionPoint, prolog);
+      insertionPoint += prolog.length();	    
+      mainFile.insert(insertionPoint, taskNameArray);
+      insertionPoint += taskNameArray.length();
+      mainFile.insert(insertionPoint, epilog);
+      
+      try {
+            String dirName = (outDir == null) ? Base.getBuildFolder().toString() : outDir;
+            PrintWriter out = new PrintWriter(dirName + File.separator + "main.cpp");
+  		out.print(mainFile.toString());
+  		out.close();
+  	} catch (FileNotFoundException e) {
+  		// TODO Auto-generated catch block
+  		e.printStackTrace();
+  	}
 
-	    String numSketches = "\n#define NUM_SKETCHES " + loopMatches.size() + "\n";
-	    String prolog = "void (*func_ptr[NUM_SKETCHES][2])(void) = {\n";
-	    String epilog = "\n};\n";
-	    mainFile.insert(insertionPoint, protos);
-	    insertionPoint += protos.length();
-	    mainFile.insert(insertionPoint, numSketches);
-	    insertionPoint += numSketches.length();
-	    mainFile.insert(insertionPoint, prolog);
-	    insertionPoint += prolog.length();	    
-	    mainFile.insert(insertionPoint, funcArray);
-	    insertionPoint += funcArray.length();
-	    mainFile.insert(insertionPoint, epilog);
-	    insertionPoint += epilog.length();
-
-	    prolog = "const char *taskNames[] = {\n";
-	    mainFile.insert(insertionPoint, prolog);
-	    insertionPoint += prolog.length();	    
-	    mainFile.insert(insertionPoint, taskNameArray);
-	    insertionPoint += taskNameArray.length();
-	    mainFile.insert(insertionPoint, epilog);
-	    
-	    try {
-			PrintWriter out = new PrintWriter(Base.getBuildFolder() + File.separator + "main.cpp");
-			out.print(mainFile.toString());
-			out.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	    // Remove generated prototypes that exactly match ones found in the source file
+      // Remove generated prototypes that exactly match ones found in the source file
 //	    for (int functionIndex=functionMatches.size() - 1; functionIndex >= 0; functionIndex--) {
 //	      for (int prototypeIndex=0; prototypeIndex < prototypeMatches.size(); prototypeIndex++) {
 //	        if ((functionMatches.get(functionIndex)).equals(prototypeMatches.get(prototypeIndex))) {
@@ -484,7 +736,7 @@ public class PdePreprocessor {
 //	        }
 //	      }
 //	    }
-	    
-	    //return functionMatches;
-	  }
+      
+      //return functionMatches;
+    }
 }
