@@ -19,6 +19,7 @@
 
 #include <Esplora.h>
 #include <TFT.h>            // Arduino LCD library
+#include <SPI.h>
 
 // variables for the position of the ball and paddle
 int paddleX = 0;

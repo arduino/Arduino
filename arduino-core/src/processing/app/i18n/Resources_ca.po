@@ -8,6 +8,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Francesc <kiski97@gmail.com>, 2015
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
 # Sergi  Pérez Labernia <rndrnd@gmail.com>, 2014
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-02 12:05+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Catalan (http://www.transifex.com/mbanzi/arduino-ide-15/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -41,19 +42,22 @@ msgstr "No fet servir:{0}"
 msgid " Used: {0}"
 msgstr "fet servir:{0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Keyboard' només ho suporta l'Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Mouse' només ho suporta l'Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "La carpeta 'arch' ja no és suporta! Mira http://goo.gl/gfFJzU per saber més informació."
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -61,11 +65,11 @@ msgstr "(només editar quan l'Arduino no estigui funcionant)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(llegat)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir  ja no es suporta."
 
 #: ../../../processing/app/Base.java:468
 msgid ""
@@ -125,11 +129,11 @@ msgstr "Una nova versió del software d'Arduino es troba disponible,\nvols visit
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "Un paquet {0} nou esta disponible."
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "Una sub-carpeta del teu bloc de programaris no és una llibreria vàlida."
 
 #: Editor.java:1116
 msgid "About Arduino"
@@ -163,7 +167,7 @@ msgstr "Albanès"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "Tot"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -877,6 +881,11 @@ msgstr "Error durant la carrega de codi {0}"
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Error durant la impressió."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -2307,11 +2316,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "No pot reanomenar el sketch a \"{0}\"\nper què el sketch ja té un fitxer .cpp amb el mateix nom."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "No pot reanomenar el sketch a \"{0}\"\nper què el sketch ja té un fitxer .cpp amb el mateix nom."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""

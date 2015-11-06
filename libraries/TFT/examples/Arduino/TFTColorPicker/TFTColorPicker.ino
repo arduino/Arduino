@@ -25,6 +25,7 @@
 // #define rst  1
 
 #include <TFT.h>  // Arduino LCD library
+#include <SPI.h>
 
 TFT TFTscreen = TFT(cs, dc, rst);
 

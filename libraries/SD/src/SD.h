@@ -76,19 +76,19 @@ public:
   File open(const String &filename, uint8_t mode = FILE_READ) { return open( filename.c_str(), mode ); }
 
   // Methods to determine if the requested file path exists.
-  boolean exists(char *filepath);
+  boolean exists(const char *filepath);
   boolean exists(const String &filepath) { return exists(filepath.c_str()); }
 
   // Create the requested directory heirarchy--if intermediate directories
   // do not exist they will be created.
-  boolean mkdir(char *filepath);
+  boolean mkdir(const char *filepath);
   boolean mkdir(const String &filepath) { return mkdir(filepath.c_str()); }
   
   // Delete the file.
-  boolean remove(char *filepath);
+  boolean remove(const char *filepath);
   boolean remove(const String &filepath) { return remove(filepath.c_str()); }
   
-  boolean rmdir(char *filepath);
+  boolean rmdir(const char *filepath);
   boolean rmdir(const String &filepath) { return rmdir(filepath.c_str()); }
 
 private:
@@ -101,7 +101,7 @@ private:
   int fileOpenMode;
   
   friend class File;
-  friend boolean callback_openPath(SdFile&, char *, boolean, void *); 
+  friend boolean callback_openPath(SdFile&, const char *, boolean, void *); 
 };
 
 extern SDClass SD;

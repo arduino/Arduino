@@ -37,6 +37,11 @@ import java.util.Map;
 
 public class SplashScreenHelper {
 
+  private static final int X_OFFSET = 0;
+  private static final int Y_OFFSET = 300;
+  private static final int TEXTAREA_HEIGHT = 30;
+  private static final int TEXTAREA_WIDTH = 475;
+
   private final Map desktopHints;
   private final SplashScreen splash;
   private Rectangle2D.Double splashTextArea;
@@ -48,41 +53,53 @@ public class SplashScreenHelper {
     desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
   }
 
-  public void splashText(String str) {
+  public void splashText(String text) {
     if (splash == null) {
-      printText(str);
+      printText(text);
       return;
     }
+
     if (!splash.isVisible()) {
       return;
     }
 
     if (splashTextArea == null) {
-      // stake out some area for our status information
-      splashTextArea = new Rectangle2D.Double(0, 300, 520, 30);
-
-      // create the Graphics environment for drawing status info
-      splashGraphics = splash.createGraphics();
-
-      if (desktopHints != null) {
-        splashGraphics.addRenderingHints(desktopHints);
-      }
+      prepareTextAreaAndGraphics();
     }
 
-    // erase the last status text
-    splashGraphics.setPaint(new Color(245, 245, 245));
-    splashGraphics.fill(splashTextArea);
+    eraseLastStatusText();
 
-    // draw the text
-    splashGraphics.setPaint(Color.BLACK);
-    FontMetrics metrics = splashGraphics.getFontMetrics();
-    splashGraphics.drawString(str, (int) splashTextArea.getX() + 10, (int) splashTextArea.getY() + (30 - metrics.getHeight()) + 4);
+    drawText(text);
 
-    // make sure it's displayed
+    ensureTextIsDiplayed();
+  }
+
+  private void ensureTextIsDiplayed() {
     synchronized (SplashScreen.class) {
       if (splash.isVisible()) {
         splash.update();
       }
+    }
+  }
+
+  private void drawText(String str) {
+    splashGraphics.setPaint(Color.BLACK);
+    FontMetrics metrics = splashGraphics.getFontMetrics();
+    splashGraphics.drawString(str, (int) splashTextArea.getX() + 10, (int) splashTextArea.getY() + (TEXTAREA_HEIGHT - metrics.getHeight()) + 5);
+  }
+
+  private void eraseLastStatusText() {
+    splashGraphics.setPaint(new Color(229, 229, 229));
+    splashGraphics.fill(splashTextArea);
+  }
+
+  private void prepareTextAreaAndGraphics() {
+    splashTextArea = new Rectangle2D.Double(X_OFFSET, Y_OFFSET, TEXTAREA_WIDTH, TEXTAREA_HEIGHT);
+
+    splashGraphics = splash.createGraphics();
+
+    if (desktopHints != null) {
+      splashGraphics.addRenderingHints(desktopHints);
     }
   }
 

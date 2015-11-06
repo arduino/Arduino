@@ -39,9 +39,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10606;
+  public static final int REVISION = 10607;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.6.6";
+  public static final String VERSION_NAME = "1.6.7";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -618,8 +618,8 @@ public class BaseNoGui {
   }
 
   private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
-    if (!librariesIndexFile.isFile()) {
-      File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
+    if (!librariesIndexFile.isFile() || (defaultLibraryJsonFile.isFile() && defaultLibraryJsonFile.lastModified() > librariesIndexFile.lastModified())) {
       if (defaultLibraryJsonFile.isFile()) {
         FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
       } else {

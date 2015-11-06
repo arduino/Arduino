@@ -57,9 +57,9 @@ volatile uint8_t SoftwareSerial::_receive_buffer_head = 0;
 //
 // This function generates a brief pulse
 // for debugging or measuring on an oscilloscope.
+#if _DEBUG
 inline void DebugPulse(uint8_t pin, uint8_t count)
 {
-#if _DEBUG
   volatile uint8_t *pport = portOutputRegister(digitalPinToPort(pin));
 
   uint8_t val = *pport;
@@ -68,8 +68,10 @@ inline void DebugPulse(uint8_t pin, uint8_t count)
     *pport = val | digitalPinToBitMask(pin);
     *pport = val;
   }
-#endif
 }
+#else
+inline void DebugPulse(uint8_t, uint8_t) {}
+#endif
 
 //
 // Private methods

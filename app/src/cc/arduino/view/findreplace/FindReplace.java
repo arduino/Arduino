@@ -66,8 +66,6 @@ public class FindReplace extends javax.swing.JFrame {
       buttonsContainer.add(findButton);
     }
 
-    getRootPane().setDefaultButton(findButton);
-
     Base.registerWindowCloseKeys(getRootPane(), e -> {
       setVisible(false);
       Base.FIND_DIALOG_STATE = findDialogState();
@@ -83,6 +81,13 @@ public class FindReplace extends javax.swing.JFrame {
     });
 
     restoreFindDialogState(state);
+  }
+
+  @Override
+  public void setVisible(boolean b) {
+    getRootPane().setDefaultButton(findButton);
+
+    super.setVisible(b);
   }
 
   private Map<String, Object> findDialogState() {
@@ -138,6 +143,7 @@ public class FindReplace extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     setTitle(tr("Find"));
+    setResizable(false);
 
     findLabel.setText(tr("Find:"));
 

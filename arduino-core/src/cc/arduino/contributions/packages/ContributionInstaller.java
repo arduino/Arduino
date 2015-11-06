@@ -282,7 +282,11 @@ public class ContributionInstaller {
     }
 
     for (String packageIndexURL : packageIndexURLs) {
-      downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
+      try {
+        downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
+      } catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
     }
 
     progress.stepDone();

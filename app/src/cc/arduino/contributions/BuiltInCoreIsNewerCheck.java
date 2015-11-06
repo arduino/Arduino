@@ -33,14 +33,12 @@ import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.view.Event;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;

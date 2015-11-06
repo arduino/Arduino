@@ -20,6 +20,7 @@
 
  */
 
+#include <SPI.h>
 #include <SD.h>
 
 const int chipSelect = 4;

@@ -8,6 +8,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Shankar C <c.shankar7@hotmail.com>, 2015
 # Nadar Solomon Sunder <solomonsunder@gmail.com>, 2014
 msgid ""
@@ -15,7 +16,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-02 12:05+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Tamil (http://www.transifex.com/mbanzi/arduino-ide-15/language/ta/)\n"
 "MIME-Version: 1.0\n"
@@ -38,12 +39,15 @@ msgstr ""
 msgid " Used: {0}"
 msgstr ""
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
 msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
@@ -874,6 +878,11 @@ msgstr "குறியீடு {0}ஐ மேலேற்றும்போத�
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "அச்சிடும்போது பிழை ஏற்பட்டுவிட்டது."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -2304,11 +2313,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "நீங்கள்  \"{0}\" என்று வரைவை பெயர்மாற்றம் செய்ய முடியாது\nஏனென்றால் அந்த வரைவு ஏற்கனவே அதே பெயரில் ஒரு .cpp கோப்பை கொண்டுள்ளது."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "\"{0}\" என வரைவை நீங்கள் சேமிக்க முடியாது\nஏனென்றால், ஏற்கனவே அந்தப்பெயரில் .cpp கோப்பு உள்ளது."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""

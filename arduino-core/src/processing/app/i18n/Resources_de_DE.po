@@ -8,6 +8,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2015
 # Lukas Bestle <lukas@lu-x.me>, 2013,2015
 # Dr. Mathias Wilhelm <mathias.wilhelm@freenet.de>, 2012
@@ -16,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-02 12:05+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -39,13 +40,16 @@ msgstr " Nicht benutzt: {0}"
 msgid " Used: {0}"
 msgstr " Benutzt: {0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Keyboard' wird nur vom Arduino Leonardo unterstützt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Mouse' wird nur vom Arduino Leonardo unterstützt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -876,6 +880,11 @@ msgstr "Fehler beim Laden des Quellcodes {0}"
 msgid "Error while printing."
 msgstr "Fehler beim Drucken."
 
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
 msgstr "Fehler beim Hochladen"
@@ -1030,11 +1039,11 @@ msgstr "Globale Variablen verwenden {0} Bytes des dynamischen Speichers."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Springe zu Zeile"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Springe zu Zeile..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1195,7 +1204,7 @@ msgstr "Bibliothek ist bereits installiert: {0} Version {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Zeilennummer:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -2305,11 +2314,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "Sie können den Sketch nicht in \"{0}\" umbenennen,\nda der Sketch bereits eine .cpp-Datei mit diesem Namen hat."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Sie können den Sketch nicht unter dem Namen \"{0}\" speichern,\nda der Sketch bereits eine .cpp-Datei mit diesem Namen hat."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""

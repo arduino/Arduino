@@ -48,7 +48,13 @@ import static processing.app.I18n.tr;
 public class Preferences extends javax.swing.JDialog {
 
   private final Language[] languages;
+
+  // Languages that are not translated at least to 65% are
+  // kept in the "missingLanguages" array until they have enough
+  // translated strings.
+  @SuppressWarnings("unused")
   private final Language[] missingLanguages;
+
   private final WarningItem[] warningItems;
   private final Base base;
 

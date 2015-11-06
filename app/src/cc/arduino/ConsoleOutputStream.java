@@ -40,7 +40,6 @@ import processing.app.EditorConsole;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -57,8 +56,7 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
   private final PrintStream printStream;
   private final StringBuilder buffer;
   private final Timer timer;
-  private JScrollPane scrollPane;
-  private Document document;
+  private volatile EditorConsole editorConsole;
 
   public ConsoleOutputStream(SimpleAttributeSet attributes, PrintStream printStream) {
     this.attributes = attributes;
@@ -66,19 +64,15 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
     this.buffer = new StringBuilder();
 
     this.timer = new Timer(100, (e) -> {
-      if (scrollPane != null) {
-        synchronized (scrollPane) {
-          scrollPane.getHorizontalScrollBar().setValue(0);
-          scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-        }
+      if (editorConsole != null) {
+        editorConsole.scrollDown();
       }
     });
     timer.setRepeats(false);
   }
 
-  public synchronized void setCurrentEditorConsole(EditorConsole console) {
-    this.scrollPane = console;
-    this.document = console.getDocument();
+  public void setCurrentEditorConsole(EditorConsole console) {
+    this.editorConsole = console;
   }
 
   public synchronized void flush() {
@@ -102,7 +96,7 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
   }
 
   private void resetBufferIfDocumentEmpty() {
-    if (document != null && document.getLength() == 0) {
+    if (editorConsole != null && editorConsole.isEmpty()) {
       buffer.setLength(0);
     }
   }
@@ -113,12 +107,10 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
 
     printStream.print(line);
 
-    if (document != null) {
+    if (editorConsole != null) {
       SwingUtilities.invokeLater(() -> {
         try {
-          String lineWithoutCR = line.replace("\r\n", "\n").replace("\r", "\n");
-          int offset = document.getLength();
-          document.insertString(offset, lineWithoutCR, attributes);
+          editorConsole.insertString(line, attributes);
         } catch (BadLocationException ble) {
           //ignore
         }

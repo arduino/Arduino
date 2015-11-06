@@ -23,9 +23,6 @@
 
 #include "RingBuffer.h"
 #include "Stream.h"
-#include <cstddef>
-
-#define min(a, b)   Min(a, b)
 
 //================================================================================
 //================================================================================
@@ -131,7 +128,7 @@ bool	CDC_Setup(USBSetup& setup);
 void USBD_InitControl(int end);
 int USBD_SendControl(uint8_t flags, const void* d, uint32_t len);
 int USBD_RecvControl(void* d, uint32_t len);
-int USBD_SendInterfaces(void);
+uint8_t USBD_SendInterfaces(void);
 bool USBD_ClassInterfaceRequest(USBSetup& setup);
 
 

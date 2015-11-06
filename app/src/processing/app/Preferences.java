@@ -21,11 +21,7 @@
 
 package processing.app;
 
-import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
-
-import java.awt.*;
-import java.io.File;
 
 
 /**

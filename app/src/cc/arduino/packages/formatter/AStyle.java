@@ -91,10 +91,11 @@ public class AStyle implements Tool {
     int line = getLineOfOffset(textArea);
     int lineOffset = getLineOffset(textArea, line);
 
-    editor.getTextArea().getUndoManager().beginInternalAtomicEdit();
+    textArea.getUndoManager().beginInternalAtomicEdit();
+    editor.removeAllLineHighlights();
     editor.setText(formattedText);
     editor.getSketch().setModified(true);
-    editor.getTextArea().getUndoManager().endInternalAtomicEdit();
+    textArea.getUndoManager().endInternalAtomicEdit();
 
     if (line != -1 && lineOffset != -1) {
       try {
