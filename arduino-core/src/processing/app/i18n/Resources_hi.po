@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Federico Fissore <f.fissore@arduino.cc>, 2015
 # Gaurav Waghmare <gauravwaghmare30@gmail.com>, 2015
 # Nishant Sood <nishant@winacro.com>, 2012
 # Parimal Naigaonkar <parimal.86@gmail.com>, 2012
@@ -17,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-06 15:57+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Hindi (http://www.transifex.com/mbanzi/arduino-ide-15/language/hi/)\n"
 "MIME-Version: 1.0\n"
@@ -615,7 +616,7 @@ msgstr "स्केच संग्रह नहीं किया जा स�
 
 #: Sketch.java:1647
 msgid "Couldn't determine program size: {0}"
-msgstr "कार्य क्रम का आकार नहीं जान पाया गया {}0"
+msgstr "कार्य क्रम का आकार नहीं जान पाया गया {0}"
 
 #: Sketch.java:616
 msgid "Couldn't do it"

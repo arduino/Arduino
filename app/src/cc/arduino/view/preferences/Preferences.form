@@ -244,7 +244,7 @@
                 </Component>
                 <Component class="javax.swing.JComboBox" name="comboLanguage">
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JComboBox(languages)"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JComboBox(Languages.languages)"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="requiresRestartLabel">
