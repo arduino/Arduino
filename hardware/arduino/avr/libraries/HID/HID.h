@@ -54,6 +54,11 @@
 #define HID_BOOT_PROTOCOL	0
 #define HID_REPORT_PROTOCOL	1
 
+// HID Request Type HID1.11 Page 51 7.2.1 Get_Report Request
+#define HID_REPORT_TYPE_INPUT   1
+#define HID_REPORT_TYPE_OUTPUT  2
+#define HID_REPORT_TYPE_FEATURE 3
+
 typedef struct
 {
   uint8_t len;      // 9
