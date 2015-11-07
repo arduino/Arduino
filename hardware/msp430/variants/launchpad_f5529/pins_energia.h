@@ -324,7 +324,7 @@ const uint8_t digital_pin_to_timer[] = {
     NOT_ON_TIMER, /*  9 - P4.2 */
     NOT_ON_TIMER, /* 10 - P4.1 */
     NOT_ON_TIMER, /* 11 - P8.1 */
-    T2A0,         /* 12 - P2.3 */
+    T2A0,         /* 12 - P2.3  - note: CCR0 output cannot be used with analogWrite */
     NOT_ON_TIMER, /* 13 - P2.6 */
     NOT_ON_TIMER, /* 14 - P3.2 */
     NOT_ON_TIMER, /* 15 - P3.0 */
