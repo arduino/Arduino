@@ -204,7 +204,7 @@ public:
 	LockEP(u8 ep) : _sreg(SREG)
 	{
 		cli();
-		SetEP(ep & 7);
+		SetEP(ep & USB_ENDPOINTS_MASK);
 	}
 	~LockEP()
 	{

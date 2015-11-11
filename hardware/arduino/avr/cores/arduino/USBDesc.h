@@ -23,6 +23,7 @@
 #else
 #define USB_ENDPOINTS 5 // AtMegaxxU2
 #endif
+#define USB_ENDPOINTS_MASK 7
 
 #define ISERIAL_MAX_LEN     20
 
