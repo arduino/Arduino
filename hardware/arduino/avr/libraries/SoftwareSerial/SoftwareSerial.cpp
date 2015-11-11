@@ -469,13 +469,7 @@ size_t SoftwareSerial::write(uint8_t b)
 
 void SoftwareSerial::flush()
 {
-  if (!isListening())
-    return;
-
-  uint8_t oldSREG = SREG;
-  cli();
-  _receive_buffer_head = _receive_buffer_tail = 0;
-  SREG = oldSREG;
+  // There is no tx buffering, simply return
 }
 
 int SoftwareSerial::peek()
