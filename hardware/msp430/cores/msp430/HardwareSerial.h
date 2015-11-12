@@ -33,6 +33,20 @@
 #include <inttypes.h>
 #include <Stream.h>
 
+#define SERIAL_PAR_MASK (1<<7 | 1 << 6 | 1<<4 | 1 << 3) 
+#define SERIAL_7N1 (1<<4)
+#define SERIAL_8N1 (0)
+#define SERIAL_7N2 (1<<4                     | 1 << 3)
+#define SERIAL_8N2 (0                        | 1 << 3)
+#define SERIAL_7E1 (1 << 4 | 1 << 7 | 1 << 6) 
+#define SERIAL_8E1 (0      | 1 << 7 | 1 << 6 )
+#define SERIAL_7E2 (1 << 4 | 1 << 7 | 1 << 6 | 1 << 3)
+#define SERIAL_8E2 (0      | 1 << 7 | 1 << 6 | 1 << 3)
+#define SERIAL_7O1 (1 << 4 | 1 << 7 )
+#define SERIAL_8O1 (0      | 1 << 7 )
+#define SERIAL_7O2 (1 << 4 | 1 << 7 | 1 << 3)
+#define SERIAL_8O2 (0      | 1 << 7 | 1 << 3)
+
 struct ring_buffer;
 
 class HardwareSerial : public Stream
@@ -55,7 +69,7 @@ class HardwareSerial : public Stream
 		, txPinMode(txPinMode)
 		, rxPin(rxPin)
 		, txPin(txPin) {}
-		void begin(unsigned long);
+		void begin(unsigned long, uint8_t config=SERIAL_8N1);
 		void end();
 		virtual int available(void);
 		virtual int peek(void);
