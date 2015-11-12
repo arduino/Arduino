@@ -37,6 +37,7 @@ package cc.arduino.packages.uploaders;
 import cc.arduino.LoadVIDPIDSpecificPreferences;
 import cc.arduino.packages.Uploader;
 import processing.app.*;
+import cc.arduino.packages.BoardPort;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.OSUtils;
@@ -150,6 +151,11 @@ public class SerialUploader extends Uploader {
       } else {
         prefs.put("serial.port.file", actualUploadPort);
       }
+    }
+
+    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+    if (boardPort.getPrefs().get("iserial") != null) {
+      prefs.put("serial.port.iserial", boardPort.getPrefs().get("iserial"));
     }
 
     prefs.put("build.path", buildPath);

@@ -12,9 +12,13 @@ public class UDevAdmParser {
 
     Object vid = properties.get("ID_VENDOR_ID");
     Object pid = properties.get("ID_MODEL_ID");
+    Object serial = properties.get("ID_SERIAL_SHORT");
     if (vid == null || pid == null)
       return null;
-    return ("0x" + vid + "_0x" + pid).toUpperCase();
+    if (serial == null) {
+        serial = "";
+    }
+    return ("0x" + vid + "_0x" + pid).toUpperCase() + "_" + serial;
   }
 
 }

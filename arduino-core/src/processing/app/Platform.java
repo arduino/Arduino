@@ -161,11 +161,12 @@ public class Platform {
             List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid", 1).values());
             for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
-              if (vidPid.toUpperCase().equals(readVIDPID)) {
+              if (readVIDPID.contains(vidPid.toUpperCase())) {
                 Map<String, Object> boardData = new HashMap<String, Object>();
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
+                boardData.put("iserial", readVIDPID.substring(vidPid.length()+1));
                 return boardData;
               }
             }

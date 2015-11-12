@@ -86,6 +86,7 @@ public class SerialBoardsLister extends TimerTask {
       if (boardData != null) {
         boardPort.getPrefs().put("vid", boardData.get("vid").toString());
         boardPort.getPrefs().put("pid", boardData.get("pid").toString());
+        boardPort.getPrefs().put("iserial", boardData.get("iserial").toString());
 
         TargetBoard board = (TargetBoard) boardData.get("board");
         if (board != null) {
