@@ -214,6 +214,10 @@ uint32_t USBD_Send(uint32_t ep, const void* d, uint32_t len)
 		UDD_Send(ep & 0xF, data, n);
 		data += n;
     }
+
+	if ((r != 0) && (r % epSize) == 0)
+		UDD_Send(ep & 0xF, NULL, 0);
+
 	//TXLED1;					// light the TX LED
 	//TxLEDPulse = TX_RX_LED_PULSE_MS;
 	return r;
