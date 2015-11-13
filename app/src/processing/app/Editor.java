@@ -84,7 +84,7 @@ import static processing.app.I18n.tr;
 @SuppressWarnings("serial")
 public class Editor extends JFrame implements RunnerListener {
 
-  public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 5000;
+  public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
 
   private final Platform platform;
   private JMenu recentSketchesMenu;
