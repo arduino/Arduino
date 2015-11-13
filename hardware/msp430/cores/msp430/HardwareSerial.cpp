@@ -153,7 +153,7 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
 		divider >>=4;
 	} else {
-		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) INT(N/16)] × 16)
+		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) - INT(N/16)] * 16)
 		divider>>=8;
 	}
 	*(&(UCAxBR0) + uartOffset) = divider;
@@ -162,6 +162,7 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 	uint16_t reg = (oversampling ? UCOS16:0) | mod;
 	*(&(UCAxMCTLW_L) + uartOffset) = reg;
 	*(&(UCAxMCTLW_H) + uartOffset)= reg>>8;
+    *(&(UCAxCTL0) + uartOffset) = (*(&(UCAxCTL0) + uartOffset) & ~SERIAL_PAR_MASK) | config;
 #else
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
