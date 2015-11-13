@@ -38,7 +38,6 @@ public class Languages {
   // Languages that are not translated at least to 65% are
   // kept in the "missingLanguages" array until they have enough
   // translated strings.
-  @SuppressWarnings("unused")
   public static final Language[] missingLanguages;
 
   static {
