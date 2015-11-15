@@ -1,13 +1,15 @@
 /*
  * Stepper.h - Stepper library for Wiring/Arduino - Version 1.1.0
  *
- * Original library        (0.1)   by Tom Igoe.
- * Two-wire modifications  (0.2)   by Sebastian Gassner
- * Combination version     (0.3)   by Tom Igoe and David Mellis
- * Bug fix for four-wire   (0.4)   by Tom Igoe, bug fix from Noah Shibley
- * High-speed stepping mod         by Eugene Kozlenko
- * Timer rollover fix              by Eugene Kozlenko
- * Five phase five wire    (1.1.0) by Ryan Orendorff
+ * Original library                    (0.1)   by Tom Igoe.
+ * Two-wire modifications              (0.2)   by Sebastian Gassner
+ * Combination version                 (0.3)   by Tom Igoe and David Mellis
+ * Bug fix for four-wire               (0.4)   by Tom Igoe, bug fix
+ *                                                from Noah Shibley
+ * High-speed stepping mod                     by Eugene Kozlenko
+ * Timer rollover fix                          by Eugene Kozlenko
+ * Five phase five wire                (1.1.0) by Ryan Orendorff
+ * Counter clockwise fix for four wire (1.1.1) by Younes Serraj
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,10 +58,10 @@
  * The sequence of control signals for 4 control wires is as follows:
  *
  * Step C0 C1 C2 C3
- *    1  1  0  1  0
- *    2  0  1  1  0
- *    3  0  1  0  1
- *    4  1  0  0  1
+ *    1  1  0  0  0
+ *    2  0  1  0  0
+ *    3  0  0  1  0
+ *    4  0  0  0  1
  *
  * The sequence of controls signals for 2 control wires is as follows
  * (columns C1 and C2 from above):
@@ -85,10 +87,10 @@ class Stepper {
     // constructors:
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4);
+				 int motor_pin_3, int motor_pin_4);
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4,
-                                 int motor_pin_5);
+				 int motor_pin_3, int motor_pin_4,
+				 int motor_pin_5);
 
     // speed setter method:
     void setSpeed(long whatSpeed);
@@ -118,4 +120,3 @@ class Stepper {
 };
 
 #endif
-
