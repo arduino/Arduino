@@ -36,6 +36,7 @@ import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +53,6 @@ import static processing.app.I18n.tr;
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   private final JComboBox typeChooser;
-  private final LibrariesIndexer indexer;
   private final LibraryInstaller installer;
   private Predicate<ContributedLibrary> typeFilter;
 
@@ -89,9 +89,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent, LibrariesIndexer indexer, LibraryInstaller installer) {
+  public LibraryManagerUI(Frame parent, LibraryInstaller installer) {
     super(parent, tr("Library Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.indexer = indexer;
     this.installer = installer;
 
     filtersContainer.add(new JLabel(tr("Topic")), 1);
@@ -139,6 +138,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
     // TODO: Remove setIndexer and make getContribModel 
     // return a FilteredAbstractTableModel
+    LibrariesIndexer indexer = BaseNoGui.librariesIndexer;
     getContribModel().setIndexer(indexer);
 
     categoryFilter = null;
@@ -236,7 +236,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public void onRemovePressed(final ContributedLibrary lib) {
-    boolean managedByIndex = indexer.getIndex().getLibraries().contains(lib);
+    boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib);
 
     if (!managedByIndex) {
       int chosenOption = JOptionPane.showConfirmDialog(this, tr("This library is not listed on Library Manager. You won't be able to reinstall it from here.\nAre you sure you want to delete it?"), tr("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

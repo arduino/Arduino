@@ -84,7 +84,7 @@ public class BaseNoGui {
   static final String portableSketchbookFolder = "sketchbook";
 
   public static ContributionsIndexer indexer;
-  static LibrariesIndexer librariesIndexer;
+  public static LibrariesIndexer librariesIndexer;
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current

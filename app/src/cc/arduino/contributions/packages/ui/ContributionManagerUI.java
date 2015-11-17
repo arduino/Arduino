@@ -35,6 +35,7 @@ import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.ui.*;
 import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 
 import javax.swing.*;
@@ -48,7 +49,6 @@ import static processing.app.I18n.tr;
 @SuppressWarnings("serial")
 public class ContributionManagerUI extends InstallerJDialog {
 
-  private final ContributionsIndexer indexer;
   private final ContributionInstaller installer;
 
   @Override
@@ -84,9 +84,8 @@ public class ContributionManagerUI extends InstallerJDialog {
     };
   }
 
-  public ContributionManagerUI(Frame parent, ContributionsIndexer indexer, ContributionInstaller installer) {
+  public ContributionManagerUI(Frame parent, ContributionInstaller installer) {
     super(parent, tr("Boards Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.indexer = indexer;
     this.installer = installer;
   }
 
@@ -95,6 +94,7 @@ public class ContributionManagerUI extends InstallerJDialog {
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
 
+    ContributionsIndexer indexer = BaseNoGui.indexer;
     getContribModel().setIndexer(indexer);
 
     categoryFilter = null;
