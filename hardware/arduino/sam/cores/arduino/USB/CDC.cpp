@@ -141,6 +141,11 @@ bool WEAK CDC_Setup(USBSetup& setup)
 			}
 			return true;
 		}
+
+		if (CDC_SEND_BREAK == r)
+		{
+			return true;
+		}
 	}
 	return false;
 }
