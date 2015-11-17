@@ -302,9 +302,15 @@ int USB_Send(u8 ep, const void* d, int len)
 				while (n--)
 					Send8(*data++);
 			}
-			_sendZlp[ep & USB_ENDPOINTS_MASK] = !ReadWriteAllowed() && (len == 0);
-			if (!ReadWriteAllowed() || ((len == 0) && (ep & TRANSFER_RELEASE)))	// Release full buffer
+			_sendZlp[ep & USB_ENDPOINTS_MASK] = !ReadWriteAllowed() && (len == 0) && !(ep & TRANSFER_RELEASE);
+
+			if (!ReadWriteAllowed())	// Release full buffer
 				ReleaseTX();
+
+			if ((len == 0) && (ep & TRANSFER_RELEASE)) {
+				while(!ReadWriteAllowed());
+				ReleaseTX();
+			}
 		}
 	}
 	TXLED1;					// light the TX LED
