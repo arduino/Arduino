@@ -35,27 +35,30 @@ public class Languages {
 
   public static final Language[] languages;
 
-  // Languages that are not translated at least to 65% are
-  // kept in the "missingLanguages" array until they have enough
-  // translated strings.
-  public static final Language[] missingLanguages;
-
   static {
     languages = new Language[]{
       new Language(tr("System Default"), "", ""),
+      new Language(tr("Afrikaans"), "Afrikaans", "af"),
       new Language(tr("Albanian"), "shqip", "sq"),
       new Language(tr("Arabic"), "العربية", "ar"),
       new Language(tr("Aragonese"), "Aragonés", "an"),
+      new Language(tr("Armenian"), "Հայերեն", "hy"),
+      new Language(tr("Asturian"), "Asturianu", "ast"),
       new Language(tr("Basque"), "Euskara", "eu"),
       new Language(tr("Belarusian"), "Беларуская мова", "be"),
+      new Language(tr("Bosnian"), "Bosanski", "bs"),
       new Language(tr("Bulgarian"), "български", "bg"),
+      new Language(tr("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
       new Language(tr("Canadian French"), "Canadienne-français", "fr_CA"),
       new Language(tr("Catalan"), "Català", "ca"),
       new Language(tr("Chinese (China)"), "简体中文", "zh_CN"),
+      new Language(tr("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
       new Language(tr("Chinese (Taiwan)"), "", "zh_TW"),
       new Language(tr("Croatian"), "Hrvatski", "hr_HR"),
       new Language(tr("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
+      new Language(tr("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
       new Language(tr("Dutch"), "Nederlands", "nl"),
+      new Language(tr("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
       new Language(tr("English"), "English", "en"),
       new Language(tr("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
       new Language(tr("Estonian"), "Eesti", "et"),
@@ -67,14 +70,20 @@ public class Languages {
       new Language(tr("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
       new Language(tr("Georgian"), "საქართველოს", "ka_GE"),
       new Language(tr("German"), "Deutsch", "de_DE"),
+      new Language(tr("Greek"), "ελληνικά", "el_GR"),
       new Language(tr("Hebrew"), "עברית", "he"),
       new Language(tr("Hindi"), "हिंदी", "hi"),
+      new Language(tr("Hungarian"), "Magyar", "hu"),
       new Language(tr("Indonesian"), "Bahasa Indonesia", "id"),
       new Language(tr("Italian"), "Italiano", "it_IT"),
       new Language(tr("Japanese"), "日本語", "ja_JP"),
       new Language(tr("Korean"), "한국어", "ko_KR"),
       new Language(tr("Latvian"), "Latviešu", "lv_LV"),
+      new Language(tr("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
+      new Language(tr("Marathi"), "मराठी", "mr"),
+      new Language(tr("Nepali"), "नेपाली", "ne"),
       new Language(tr("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
+      new Language(tr("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
       new Language(tr("Persian"), "فارسی", "fa"),
       new Language(tr("Polish"), "Język Polski", "pl"),
       new Language(tr("Portugese"), "Português", "pt"),
@@ -86,28 +95,11 @@ public class Languages {
       new Language(tr("Slovenian"), "Slovenščina", "sl_SI"),
       new Language(tr("Spanish"), "Español", "es"),
       new Language(tr("Swedish"), "Svenska", "sv"),
+      new Language(tr("Talossan"), "Talossan", "tzl"),
       new Language(tr("Tamil"), "தமிழ்", "ta"),
       new Language(tr("Turkish"), "Türk", "tr"),
       new Language(tr("Ukrainian"), "Український", "uk"),
       new Language(tr("Vietnamese"), "Tiếng Việt", "vi"),
-    };
-
-    missingLanguages = new Language[]{
-      new Language(tr("Afrikaans"), "Afrikaans", "af"),
-      new Language(tr("Armenian"), "Հայերեն", "hy"),
-      new Language(tr("Asturian"), "Asturianu", "ast"),
-      new Language(tr("Bosnian"), "Bosanski", "bs"),
-      new Language(tr("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
-      new Language(tr("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
-      new Language(tr("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
-      new Language(tr("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
-      new Language(tr("Greek"), "ελληνικά", "el_GR"),
-      new Language(tr("Hungarian"), "Magyar", "hu"),
-      new Language(tr("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
-      new Language(tr("Marathi"), "मराठी", "mr"),
-      new Language(tr("Nepali"), "नेपाली", "ne"),
-      new Language(tr("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
-      new Language(tr("Talossan"), "Talossan", "tzl"),
       new Language(tr("Western Frisian"), "Western Frisian", "fy")
     };
 

@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # corneliu.e <corneliueva@yahoo.com>, 2013-2014
 # kobalt <kobalt_mstr@yahoo.it>, 2012
 # Liviu Roman, 2015
@@ -21,8 +22,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-05 19:41+0000\n"
-"Last-Translator: Pop Gheorghe <office@roroid.ro>\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
+"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -227,6 +228,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Arhivarea schiţei a fost anulată deoarece\nschiţa nu a putut fi salvată."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -479,6 +484,10 @@ msgstr "Închide"
 msgid "Comment/Uncomment"
 msgstr "Pune comentariu/Elimină comentariu"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Atenționări la compilare:"
@@ -486,6 +495,10 @@ msgstr "Atenționări la compilare:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Compilez schiţa..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -648,6 +661,14 @@ msgstr "Cehă (Republica Cehă)"
 msgid "Danish (Denmark)"
 msgstr "Daneză (Danemarca)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Redu spaţiere"
@@ -660,6 +681,10 @@ msgstr "Implicit"
 msgid "Delete"
 msgstr "Ştergere"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -669,6 +694,10 @@ msgstr "Dispozitivul nu răspunde, verifică dacă ai selectat portul serial cor
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Anulează toate modificările şi reiniţializează schiţa?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1197,9 +1226,9 @@ msgstr "Manager Librari"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Fișier adăugat în bibliotecă. Verifică meniul \"Include biblioteca\""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "Librăria nu poate folosi concomitent directoarele 'src' şi 'utility'."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1427,9 +1456,17 @@ msgstr "Deschideți o schiță Arduino..."
 msgid "Open..."
 msgstr "Deschide..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Iniţializare pagină"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1580,6 +1617,10 @@ msgstr "Ieşire"
 msgid "RETIRED"
 msgstr "RETRAS"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Refă"
@@ -1720,6 +1761,10 @@ msgstr "Biblioteca selectată nu este disponibilă"
 msgid "Send"
 msgstr "Trimite"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Terminal serial"
@@ -1770,6 +1815,10 @@ msgstr "Detaliază informaţiile de ieşire a compilatorului:"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Detaliază informaţiile de ieşire a compilatorului:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2003,6 +2052,10 @@ msgstr "Acest raport ar avea mai multe informații cu"
 msgid "Time for a Break"
 msgstr "E timpul pentru o pauză"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2071,6 +2124,10 @@ msgstr "Serial plotter nu poate fi deschis"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Nu se poate accesa Arduino.cc din cauza unei posibile probleme de rețea"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2266,13 +2323,6 @@ msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
 msgstr "Atenție: platform.txt din nucleul '{0}' lipsă proprietate {1}, se folosește valoarea implicită {2}. Luați în considerare modernizarea acestui nucleu."
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "Atenție: platform.txt din nucleul '{0}' lipsă proprietate {1}, setat automat la {2}. Luați în considerare modernizarea acestui nucleu."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"

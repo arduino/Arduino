@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # arminjavan <armin_javan@yahoo.com>, 2014
 # Ebrahim Byagowi <ebrahim@byagowi.com>, 2012
 msgid ""
@@ -16,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Persian (http://www.transifex.com/mbanzi/arduino-ide-15/language/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -222,6 +223,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "بایگانی‌کردن طرح فسخ‌گردید به این دلیل که\nنمی‌توان طرح را به درستی ذخیره نمود."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -474,6 +479,10 @@ msgstr "یستن"
 msgid "Comment/Uncomment"
 msgstr "توضیح‌کردن/از توضیح در آوردن"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr ""
@@ -481,6 +490,10 @@ msgstr ""
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "کامپایل‌کردن طرح..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -643,6 +656,14 @@ msgstr ""
 msgid "Danish (Denmark)"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "کاهش تورفتگی"
@@ -655,6 +676,10 @@ msgstr ""
 msgid "Delete"
 msgstr "حذف"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -664,6 +689,10 @@ msgstr "دستگاه پاسخ‌گو نیست، درگاه سریال انتخا
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "دورانداختن همهٔ تغییرات و بارگیری مجدد طرح؟"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1192,8 +1221,8 @@ msgstr ""
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr ""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
@@ -1422,9 +1451,17 @@ msgstr "یک طرح آردئینو را باز کن..."
 msgid "Open..."
 msgstr "باز کردن...."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "تنظیم صفحه"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1575,6 +1612,10 @@ msgstr "خروج"
 msgid "RETIRED"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "انجام دوباره"
@@ -1715,6 +1756,10 @@ msgstr ""
 msgid "Send"
 msgstr "ارسال"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "نمایشگر سریال"
@@ -1765,6 +1810,10 @@ msgstr ""
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "نمایش خروجی پرگو به هنگام:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1998,6 +2047,10 @@ msgstr "این گزارش می تواند شامل اطلاعات بیشتری �
 msgid "Time for a Break"
 msgstr "وقت برای استراحت"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2065,6 +2118,10 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
 msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
@@ -2260,13 +2317,6 @@ msgstr ""
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:190

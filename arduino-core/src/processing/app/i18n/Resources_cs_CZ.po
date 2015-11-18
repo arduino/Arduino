@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # horcicaa <horcicaa@gmail.com>, 2012
 # fatalwir <fatalwir@seznam.cz>, 2014
 # Michal Kočer <mcha@4makers.cz>, 2012
@@ -21,7 +22,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/mbanzi/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -227,6 +228,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Archivování projektu bylo ukončeno, protože\nprojekt nešlo uložit."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -479,6 +484,10 @@ msgstr "Zavřít"
 msgid "Comment/Uncomment"
 msgstr "Zakomentovat/Odkomentovat"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Varování překladače:"
@@ -486,6 +495,10 @@ msgstr "Varování překladače:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Kompiluji projekt..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -648,6 +661,14 @@ msgstr "Česky (Česká Republika)"
 msgid "Danish (Denmark)"
 msgstr "Dánština (Dánsko)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Zmenšit odsazení"
@@ -660,6 +681,10 @@ msgstr "Default"
 msgid "Delete"
 msgstr "Smazat"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -669,6 +694,10 @@ msgstr "Zařízení neodpovídá, zkontrolujte zda je připojen seriový port a 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Zapomenout všechny změny a projekt znovu nahrát?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1197,8 +1226,8 @@ msgstr "Manažér Knihoven"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Knihovna přidána do tvých knihoven. Zkontroluj menu \"Zahrnuté knihovny\""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
@@ -1427,9 +1456,17 @@ msgstr "Otevři Arduino projekt..."
 msgid "Open..."
 msgstr "Otevřít..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Nastavení stránky"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1580,6 +1617,10 @@ msgstr "Ukončit"
 msgid "RETIRED"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Znovu"
@@ -1720,6 +1761,10 @@ msgstr "Vybraná knihovna není dostupná"
 msgid "Send"
 msgstr "Pošli"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Seriový monitor"
@@ -1770,6 +1815,10 @@ msgstr "Zobrazit více informací během kompilace"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Zobrazit více informací výstupu během: "
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2003,6 +2052,10 @@ msgstr "Tento výpis by měl více informací s"
 msgid "Time for a Break"
 msgstr "Čas na přestávku (Break)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2071,6 +2124,10 @@ msgstr "Nemohu otevřít sériový ploter"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Nemůžu nalézt Arduino.cc pravdepodobne problém se sítí."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2266,13 +2323,6 @@ msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
 msgstr ""
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "Varování: platform.txt z jádra '{0}' špatná vlastnost {1}, automaticky nastavená na {2}. Zvažte upgrade tohoto jádra."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"

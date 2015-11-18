@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # andre graes <andregraes@gmail.com>, 2012
 # Erick Simões <erick.simoes@yahoo.com.br>, 2014-2015
 # Everton Leite <etcholeite@gmail.com>, 2015
@@ -22,7 +23,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/mbanzi/arduino-ide-15/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -228,6 +229,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "O arquivo do sketch foi cancelado porque\no sketch não pôde ser salvo corretamente."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -480,6 +485,10 @@ msgstr "Fechar"
 msgid "Comment/Uncomment"
 msgstr "Comentar/descomentar"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Avisos do compilador:"
@@ -487,6 +496,10 @@ msgstr "Avisos do compilador:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Compilando sketch..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -649,6 +662,14 @@ msgstr "Czech (República Tcheca)"
 msgid "Danish (Denmark)"
 msgstr "Dinamarquês (Dinamarca)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Diminuir identação"
@@ -661,6 +682,10 @@ msgstr "Padrão"
 msgid "Delete"
 msgstr "Apagar"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -670,6 +695,10 @@ msgstr "O dispositivo não está respondendo.  Confira se a porta serial é a co
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Descartar todas as alterações e recarregar o sketch?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1198,9 +1227,9 @@ msgstr "Gerenciador de Biblioteca"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Biblioteca adicionada às suas bibliotecas. Veja o menu \"Incluir biblioteca\""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "Biblioteca não pode usar tanto a pasta 'src' quanto a pasta 'utility'."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1428,9 +1457,17 @@ msgstr "Abrir um sketch Arduino..."
 msgid "Open..."
 msgstr "Abrir..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Configuração da página"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1581,6 +1618,10 @@ msgstr "Sair"
 msgid "RETIRED"
 msgstr "RETIRADO"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Refazer"
@@ -1721,6 +1762,10 @@ msgstr "A biblioteca selecionada não está disponível"
 msgid "Send"
 msgstr "Enviar"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Monitor serial"
@@ -1771,6 +1816,10 @@ msgstr "Mostrar saída verbosa durante a compilação"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Mostrar mensagens de saída durante:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2004,6 +2053,10 @@ msgstr "Este relatório deveria ter mais informações"
 msgid "Time for a Break"
 msgstr "Pausa para descanso"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2072,6 +2125,10 @@ msgstr "Não foi possível abrir o plotter serial"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Não foi possível alcançar Arduino.cc devido a possíveis problemas de rede."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2267,13 +2324,6 @@ msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
 msgstr "Aviso: platform.txt do núcleo '{0}' não possui a propriedade '{1}', assumindo o valor padrão '{2}'. Considere atualizar este núcleo."
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "Aviso: platform.txt do núcleo '{0}' não possui a propriedade {1}, definida automaticamente para {2}. Considere atualizar este núcleo."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"

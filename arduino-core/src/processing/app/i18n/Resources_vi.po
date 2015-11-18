@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
@@ -17,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/mbanzi/arduino-ide-15/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -223,6 +224,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Việc lưu trữ sketch đã bị hủy bỏ vì\nsketch không thể được lưu hoàn toàn."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -475,6 +480,10 @@ msgstr "Đóng lại"
 msgid "Comment/Uncomment"
 msgstr "Bình luận/Không bình luận"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr ""
@@ -482,6 +491,10 @@ msgstr ""
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Đang biên dịch sketch..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -644,6 +657,14 @@ msgstr ""
 msgid "Danish (Denmark)"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Giảm khoảng cách"
@@ -656,6 +677,10 @@ msgstr ""
 msgid "Delete"
 msgstr "Xóa"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -665,6 +690,10 @@ msgstr "Thiết bị không phản hồi tín hiệu, kiểm tra cổng tín hi�
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Hủy bỏ tất cả các thay đổi và tải lại sketch?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1193,8 +1222,8 @@ msgstr ""
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr ""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
@@ -1423,9 +1452,17 @@ msgstr "Mở một Arduino sketch..."
 msgid "Open..."
 msgstr "Mở..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Cài đặt trang"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1576,6 +1613,10 @@ msgstr "Thoát"
 msgid "RETIRED"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Làm lại thao tác"
@@ -1716,6 +1757,10 @@ msgstr ""
 msgid "Send"
 msgstr "Gửi"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Serial Monitor"
@@ -1766,6 +1811,10 @@ msgstr "Hiển thị phần xuất dữ liệu verbose trong suốt quá trình 
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Hiển thị verbose trong suốt quá trình nhập dữ liệu:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1999,6 +2048,10 @@ msgstr "Báo cáo này sẽ có thêm nhiều thông tin với"
 msgid "Time for a Break"
 msgstr "Nghỉ ngơi một chút đi nào"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2066,6 +2119,10 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
 msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
@@ -2261,13 +2318,6 @@ msgstr ""
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
