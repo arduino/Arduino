@@ -42,6 +42,7 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 
 public class Platform extends processing.app.Platform {
@@ -57,14 +58,27 @@ public class Platform extends processing.app.Platform {
     recoverDefaultSketchbookFolder();
   }
 
-  private void recoverSettingsFolderPath() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
+  private void recoverSettingsFolderPath() {
+    String path = readRegistryEntry(new String[]{"User Shell Folders", "Shell Folders"}, "Local AppData");
     this.settingsFolder = new File(path, "Arduino15");
   }
 
-  private void recoverDefaultSketchbookFolder() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
+  private void recoverDefaultSketchbookFolder() {
+    String path = readRegistryEntry(new String[]{"User Shell Folders", "Shell Folders"}, "Personal");
     this.defaultSketchbookFolder = new File(path, "Arduino");
+  }
+
+  private String readRegistryEntry(String[] lastPathElements, String key) {
+    for (String lastPathElement : lastPathElements) {
+      try {
+        String value = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\" + lastPathElement, key);
+        value = value.replaceAll("%[uU][sS][eE][rR][pP][rR][oO][fF][iI][lL][eE]%", Matcher.quoteReplacement(System.getenv("USERPROFILE")));
+        return value;
+      } catch (Exception e) {
+        //ignore
+      }
+    }
+    throw new IllegalStateException("Unable to find " + key + " key in Windows registry");
   }
 
   /**
