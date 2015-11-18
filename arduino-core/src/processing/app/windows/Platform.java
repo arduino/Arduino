@@ -59,12 +59,12 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() {
-    String path = readRegistryEntry(new String[]{"User Shell Folders", "Shell Folders"}, "Local AppData");
+    String path = readRegistryEntry(new String[]{"Shell Folders", "User Shell Folders"}, "Local AppData");
     this.settingsFolder = new File(path, "Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() {
-    String path = readRegistryEntry(new String[]{"User Shell Folders", "Shell Folders"}, "Personal");
+    String path = readRegistryEntry(new String[]{"Shell Folders", "User Shell Folders"}, "Personal");
     this.defaultSketchbookFolder = new File(path, "Arduino");
   }
 
