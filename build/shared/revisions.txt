@@ -2,6 +2,9 @@ ARDUINO 1.6.7
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
+* Ethernet, WiFi, SoftwareSerial: Fixed flush() behaviour:
+  the flush function is no more dropping the receive buffer, as per
+  1.0 API specification. Thanks @drmpf
 
 [core]
 * Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
