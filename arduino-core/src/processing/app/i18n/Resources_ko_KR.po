@@ -19,8 +19,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-11-19 03:13+0000\n"
+"Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -228,7 +228,7 @@ msgstr "스케치가 제대로 저장되지 않아서 스케치를 보관하는 
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "아두이노"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -483,7 +483,7 @@ msgstr "주석추가/주석삭제"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "통신"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -495,7 +495,7 @@ msgstr "스케치를 컴파일 중…"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Contributed"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -660,11 +660,11 @@ msgstr "Danish (덴마크)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "데이터 처리"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "데이터 저장"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -680,7 +680,7 @@ msgstr "삭제"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "디바이스 컨트롤"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -694,7 +694,7 @@ msgstr "모든 변경을 취소하고 스케치를 다시 로드하나요?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "디스플레이"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1115,11 +1115,11 @@ msgstr "대소문자 무시"
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr "잘못된 라이브러리 이름을 무시"
+msgstr "잘못된 라이브러리 이름을 무시함"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr "잘못된 이름의 스케치를 무시"
+msgstr "잘못된 이름의 스케치를 무시함"
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1225,7 +1225,7 @@ msgstr "라이브러리가 추가되었습니다. \"라이브러리 포함하기
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "라이브러리는 'src' 와 'utility' 폴더에 동시에 사용될 수 없습니다. 확인 {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1418,7 +1418,7 @@ msgstr "노르웨이 브크몰어"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 참고 http://www.arduino.cc/en/Guide/Troubleshooting#size"
+msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 다음 링크를 참고하세요http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1455,7 +1455,7 @@ msgstr "열기…"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Other"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1463,7 +1463,7 @@ msgstr "페이지 설정"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "파트너"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1616,7 +1616,7 @@ msgstr "RETIRED"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "추천"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1760,7 +1760,7 @@ msgstr "전송"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "센서"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1815,7 +1815,7 @@ msgstr "다음 동작중 자세한  출력 보이기: "
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "시그널 입력/출력"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2051,7 +2051,7 @@ msgstr "휴식 시간"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "타이밍"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2124,7 +2124,7 @@ msgstr "네트워트 문제때문에 Arduino.cc에 접속 할 수 없습니다."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "분류되지않은"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
