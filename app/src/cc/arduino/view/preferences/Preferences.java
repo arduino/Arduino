@@ -556,12 +556,6 @@ public class Preferences extends javax.swing.JDialog {
     File file = Base.selectFolder(tr("Select new sketchbook location"), dflt, this);
     if (file != null) {
       String path = file.getAbsolutePath();
-      if (BaseNoGui.getPortableFolder() != null) {
-        path = FileUtils.relativePath(BaseNoGui.getPortableFolder().toString(), path);
-        if (path == null) {
-          path = BaseNoGui.getPortableSketchbookFolder();
-        }
-      }
       sketchbookLocationField.setText(path);
     }
   }//GEN-LAST:event_browseButtonActionPerformed

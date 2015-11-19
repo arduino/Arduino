@@ -5,6 +5,7 @@ ARDUINO 1.6.7
 * Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
 * New translations
 * Added support to file:// protocol for boards manager URLs
+* Portable sketchbook folder can now be any arbitrary location
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.

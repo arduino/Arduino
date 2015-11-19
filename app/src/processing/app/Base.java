@@ -523,7 +523,7 @@ public class Base {
       if (path == null) {
         continue;
       }
-      if (BaseNoGui.getPortableFolder() != null) {
+      if (BaseNoGui.getPortableFolder() != null && !new File(path).isAbsolute()) {
         File absolute = new File(BaseNoGui.getPortableFolder(), path);
         try {
           path = absolute.getCanonicalPath();
@@ -569,12 +569,6 @@ public class Base {
       // (Added this for release 0158, may not be a good idea.)
       if (path.startsWith(untitledPath) && !editor.getSketch().isModified()) {
         continue;
-      }
-      if (BaseNoGui.getPortableFolder() != null) {
-        path = FileUtils.relativePath(BaseNoGui.getPortableFolder().toString(), path);
-        if (path == null) {
-          continue;
-        }
       }
       PreferencesData.set("last.sketch" + index + ".path", path);
 
