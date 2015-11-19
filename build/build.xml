@@ -71,7 +71,7 @@
     </or>
   </condition>
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.2.3" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.2.4" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -186,7 +186,7 @@
     </copy>
 
     <download-library name="Firmata" version="2.5.0" tag="2.5.0"/>
-    <download-library name="Bridge" version="1.1.0"/>
+    <download-library name="Bridge" version="1.6.0"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
