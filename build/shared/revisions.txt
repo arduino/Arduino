@@ -1,9 +1,10 @@
 ARDUINO 1.6.7
 
 [ide]
-* new arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...master
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...master
 * Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
-* new translations
+* New translations
+* Added support to file:// protocol for boards manager URLs
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
