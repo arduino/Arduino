@@ -38,7 +38,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Observable;
 
 public class FileDownloader extends Observable {
@@ -112,6 +117,24 @@ public class FileDownloader extends Observable {
   }
 
   public void download() throws InterruptedException {
+    if ("file".equals(downloadUrl.getProtocol())) {
+      saveLocalFile();
+    } else {
+      downloadFile();
+    }
+  }
+
+  private void saveLocalFile() {
+    try {
+      Files.write(outputFile.toPath(), Files.readAllBytes(Paths.get(downloadUrl.getPath())));
+      setStatus(Status.COMPLETE);
+    } catch (Exception e) {
+      setStatus(Status.ERROR);
+      setError(e);
+    }
+  }
+
+  private void downloadFile() throws InterruptedException {
     RandomAccessFile file = null;
 
     try {
