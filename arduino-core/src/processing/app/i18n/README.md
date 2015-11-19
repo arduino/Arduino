@@ -12,7 +12,7 @@ This will extract the up-to-date set of strings from the source code, set the tr
 
     % git commit
     % ./update.sh xx
-    % git diff Resrouces_xx.po
+    % git diff Resources_xx.po
     % git add Resources_xx.po Resources_xx.properties
     % git commit
 
