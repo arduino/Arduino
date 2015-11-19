@@ -10,7 +10,7 @@
 # Translators:
 # Translators:
 # Translators:
-#   Alexis Morin <mail@alexismorin.com>, 2012
+# Alexis Morin <mail@alexismorin.com>, 2012
 # AntoineM <antoine.meillet+transifex@gmail.com>, 2012
 # BlueskyFR <hugo.cartigny@gmail.com>, 2015
 # dbarbier <bouzim@gmail.com>, 2013-2014
@@ -19,10 +19,11 @@
 # Simon <eskimon@outlook.com>, 2012
 # Lucas Mascaro <mascaro.lucas@yahoo.fr>, 2015
 # matime <max.duron@free.fr>, 2014
-#   Philippe Rivet <philipe.rivet at gmail.com>, 2012
+# Philippe Rivet <philipe.rivet at gmail.com>, 2012
 # R D <rdoume@gmail.com>, 2012
 # Simon <eskimon@outlook.com>, 2015
 # Vincent Moulin <contact@nilux.org>, 2015
+# Armel Fauveau <armel.fauveau@globalis-ms.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
@@ -1143,7 +1144,7 @@ msgstr "Dans Arduino 1.0, l'extension par défaut des fichiers est\npassée de .
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr "Inculre une bibliothèque"
+msgstr "Inclure une bibliothèque"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
