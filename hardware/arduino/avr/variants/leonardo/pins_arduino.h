@@ -356,4 +356,7 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 #define SERIAL_PORT_HARDWARE       Serial1
 #define SERIAL_PORT_HARDWARE_OPEN  Serial1
 
+// Alias SerialUSB to Serial
+#define SerialUSB SERIAL_PORT_USBVIRTUAL
+
 #endif /* Pins_Arduino_h */

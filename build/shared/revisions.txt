@@ -15,6 +15,7 @@ ARDUINO 1.6.7
 
 [core]
 * Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
+* Leonardo/Micro (and other atmega32u4 based boards) now have SerialUSB alias for Serial
 
 ARDUINO 1.6.6 - 2015.11.03
 
