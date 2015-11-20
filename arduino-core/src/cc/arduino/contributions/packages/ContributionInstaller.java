@@ -52,6 +52,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -122,26 +124,31 @@ public class ContributionInstaller {
     // once everything is successfully unpacked. If the operation fails remove
     // all the temporary folders and abort installation.
 
-    // Unzip tools on the correct location
-    File toolsFolder = new File(packageFolder, "tools");
+    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform.getResolvedToolReferences().entrySet()
+      .stream()
+      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled())
+      .collect(Collectors.toList());
+
+
     int i = 1;
-    for (ContributedTool tool : tools) {
-      progress.setStatus(format(tr("Installing tools ({0}/{1})..."), i, tools.size()));
+    for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {
+      progress.setStatus(format(tr("Installing tools ({0}/{1})..."), i, resolvedToolReferences.size()));
       progressListener.onProgress(progress);
       i++;
+      ContributedTool tool = entry.getValue();
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
-      File destFolder = new File(toolsFolder, tool.getName() + File.separator + tool.getVersion());
+      Path destFolder = Paths.get(indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
 
-      Files.createDirectories(destFolder.toPath());
+      Files.createDirectories(destFolder);
       assert toolContrib.getDownloadedFile() != null;
-      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder, 1);
+      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
-        findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+        findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
       } catch (IOException e) {
         errors.add(tr("Error running post install script"));
       }
       toolContrib.setInstalled(true);
-      toolContrib.setInstalledFolder(destFolder);
+      toolContrib.setInstalledFolder(destFolder.toFile());
       progress.stepDone();
     }
 

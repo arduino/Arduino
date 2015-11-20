@@ -30,11 +30,9 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class ContributedPlatform extends DownloadableContribution {
 
@@ -54,18 +52,21 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract ContributedHelp getHelp();
 
-  private List<ContributedTool> resolvedTools;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+
   private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
-    if (resolvedTools == null) {
-      return null;
-    }
-    return new LinkedList<>(resolvedTools);
+    return new LinkedList<>(resolvedToolReferences.values());
+  }
+
+  @JsonIgnore
+  public Map<ContributedToolReference, ContributedTool> getResolvedToolReferences() {
+    return resolvedToolReferences;
   }
 
   public void resolveToolsDependencies(Collection<ContributedPackage> packages) {
-    resolvedTools = new ArrayList<>();
+    resolvedToolReferences = new HashMap<>();
 
     // If there are no dependencies return empty list
     if (getToolsDependencies() == null) {
@@ -79,7 +80,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
       } else {
-        resolvedTools.add(tool);
+        resolvedToolReferences.put(dep, tool);
       }
     }
   }

@@ -12,10 +12,10 @@
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-3.3.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-annotations-2.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-2.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-databind-2.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.2.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.6.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.6.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jmdns-3.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
