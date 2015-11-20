@@ -6,6 +6,7 @@ ARDUINO 1.6.7
 * New translations
 * Added support to file:// protocol for boards manager URLs
 * Portable sketchbook folder can now be any arbitrary location
+* Fixed a bug that caused Boards Manager to install the same tool twice or more, thus wasting disk space, if other cores where using tools delivered by arduino
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
