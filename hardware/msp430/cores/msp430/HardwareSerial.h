@@ -33,6 +33,36 @@
 #include <inttypes.h>
 #include <Stream.h>
 
+#if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
+#define SERIAL_PAR_MASK ((UCPEN | UCPAR | UC7BIT | UCSPB) >> 8 )
+#define SERIAL_7N1      ((UC7BIT)                         >> 8 )
+#define SERIAL_8N1      ((0)                              >> 8 )
+#define SERIAL_7N2      ((UC7BIT                 | UCSPB) >> 8 )
+#define SERIAL_8N2      ((0                      | UCSPB) >> 8 )
+#define SERIAL_7E1      ((UC7BIT | UCPEN | UCPAR)         >> 8 )
+#define SERIAL_8E1      ((0      | UCPEN | UCPAR)         >> 8 )
+#define SERIAL_7E2      ((UC7BIT | UCPEN | UCPAR | UCSPB) >> 8 )
+#define SERIAL_8E2      ((0      | UCPEN | UCPAR | UCSPB) >> 8 )
+#define SERIAL_7O1      ((UC7BIT | UCPEN)                 >> 8 )
+#define SERIAL_8O1      ((0      | UCPEN)                 >> 8 )
+#define SERIAL_7O2      ((UC7BIT | UCPEN         | UCSPB) >> 8 )
+#define SERIAL_8O2      ((0      | UCPEN         | UCSPB) >> 8 )
+#else
+#define SERIAL_PAR_MASK (UCPEN | UCPAR | UC7BIT | UCSPB) 
+#define SERIAL_7N1      (UC7BIT)
+#define SERIAL_8N1      (0)
+#define SERIAL_7N2      (UC7BIT                 | UCSPB)
+#define SERIAL_8N2      (0                      | UCSPB)
+#define SERIAL_7E1      (UC7BIT | UCPEN | UCPAR) 
+#define SERIAL_8E1      (0      | UCPEN | UCPAR)
+#define SERIAL_7E2      (UC7BIT | UCPEN | UCPAR | UCSPB)
+#define SERIAL_8E2      (0      | UCPEN | UCPAR | UCSPB)
+#define SERIAL_7O1      (UC7BIT | UCPEN)
+#define SERIAL_8O1      (0      | UCPEN)
+#define SERIAL_7O2      (UC7BIT | UCPEN         | UCSPB)
+#define SERIAL_8O2      (0      | UCPEN         | UCSPB)
+#endif
+
 struct ring_buffer;
 
 class HardwareSerial : public Stream
@@ -55,7 +85,7 @@ class HardwareSerial : public Stream
 		, txPinMode(txPinMode)
 		, rxPin(rxPin)
 		, txPin(txPin) {}
-		void begin(unsigned long);
+		void begin(unsigned long, uint8_t config=SERIAL_8N1);
 		void end();
 		virtual int available(void);
 		virtual int peek(void);
