@@ -12,14 +12,15 @@
 # Translators:
 # Masanori Ohgita <mp@ohgita.info>, 2013,2015
 # Shigeru Kanemoto <sgk@switch-science.com>, 2015
+# Shigeru Kobayashi <kotobuki@gmail.com>, 2015
 # Shinichi Ohki <auxin.one@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-11-20 06:29+0000\n"
+"Last-Translator: Shigeru Kobayashi <kotobuki@gmail.com>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -140,7 +141,7 @@ msgstr "Arduinoについて..."
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr ".ZIP形式のライブラリをインストール..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -1068,11 +1069,11 @@ msgstr "グローバル変数は{0}バイトのRAMを使用しています。"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "指定の行番号へ"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "指定の行番号へ..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1133,7 +1134,7 @@ msgstr "Arduino 1.0では、スケッチのファイルの拡張子を.pdeから
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr ""
+msgstr "ライブラリをインクルード"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
@@ -1254,7 +1255,7 @@ msgstr "スケッチが使用できるメモリが少なくなっています。
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
-msgstr ""
+msgstr "ライブラリを管理..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
@@ -1438,7 +1439,7 @@ msgstr "開く"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr ""
+msgstr "最近使った項目を開く"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1767,7 +1768,7 @@ msgstr "シリアルモニタ"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "シリアルプロッタ"
 
 #: Serial.java:194
 #, java-format
@@ -2225,7 +2226,7 @@ msgstr "書き込みを検証する"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "検証・コンパイル"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."

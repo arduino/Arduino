@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-19 12:33+0000\n"
+"PO-Revision-Date: 2015-11-20 03:49+0000\n"
 "Last-Translator: Armel FAUVEAU <armel.fauveau@globalis-ms.com>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -56,12 +56,12 @@ msgstr "Utilisé : {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' introuvable. Est-ce que votre croquis inclut la ligne '#include <Keyboard.h>' ?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' introuvable. Est-ce que votre croquis inclut la ligne '#include <Mouse.h>' ?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -159,11 +159,11 @@ msgstr "Ajouter un fichier..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr "URL des gestionnaire de carte supplémentaire"
+msgstr "URL de gestionnaire de cartes supplémentaires"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr "URL des gestionnaire de carte supplémentaire:"
+msgstr "URL de gestionnaire de cartes supplémentaires"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -493,7 +493,7 @@ msgstr "Commenter/Décommenter"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Communication"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -674,7 +674,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Stockage de données"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1265,7 +1265,7 @@ msgstr "La mémoire disponible faible, des problèmes de stabilité pourraient s
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
-msgstr "Gérer les bibliothèque"
+msgstr "Gérer les bibliothèques"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
@@ -1465,7 +1465,7 @@ msgstr "Ouvrir..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Autre"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1473,7 +1473,7 @@ msgstr "Mise en page"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Partenaire"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1770,7 +1770,7 @@ msgstr "Envoyer"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Capteurs"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1825,7 +1825,7 @@ msgstr "Afficher les résultats détaillés pendant : "
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Signal Entrée/Sortie"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2134,7 +2134,7 @@ msgstr "Impossible de se connecter à Arduino.cc a cause d'un possible problème
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Non classé"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
