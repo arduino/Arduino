@@ -261,6 +261,9 @@ public class ContributionsIndexer {
   private void syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
     ContributedTool tool = pack.findTool(toolName, version);
     if (tool == null) {
+      tool = pack.findResolvedTool(toolName, version);
+    }
+    if (tool == null) {
       return;
     }
     DownloadableContribution contrib = tool.getDownloadableContribution(platform);

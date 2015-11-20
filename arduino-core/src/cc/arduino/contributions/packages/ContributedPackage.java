@@ -71,6 +71,17 @@ public abstract class ContributedPackage {
     return null;
   }
 
+  public ContributedTool findResolvedTool(String toolName, String version) {
+    for (ContributedPlatform platform : getPlatforms()) {
+      for (ContributedTool tool : platform.getResolvedTools()) {
+        if (toolName.equals(tool.getName()) && version.equals(tool.getVersion())) {
+          return tool;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean isTrusted() {
     return trusted;
   }
