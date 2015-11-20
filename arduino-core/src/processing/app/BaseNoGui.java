@@ -39,9 +39,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10606;
+  public static final int REVISION = 10607;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.6.6";
+  public static final String VERSION_NAME = "1.6.7";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -84,7 +84,7 @@ public class BaseNoGui {
   static final String portableSketchbookFolder = "sketchbook";
 
   public static ContributionsIndexer indexer;
-  static LibrariesIndexer librariesIndexer;
+  public static LibrariesIndexer librariesIndexer;
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
@@ -267,9 +267,11 @@ public class BaseNoGui {
   }
 
   static public File getSketchbookFolder() {
-    if (portableFolder != null)
-      return new File(portableFolder, PreferencesData.get("sketchbook.path"));
-    return absoluteFile(PreferencesData.get("sketchbook.path"));
+    String sketchBookPath = PreferencesData.get("sketchbook.path");
+    if (getPortableFolder() != null && !new File(sketchBookPath).isAbsolute()) {
+      return new File(getPortableFolder(), sketchBookPath);
+    }
+    return absoluteFile(sketchBookPath);
   }
 
   static public File getSketchbookHardwareFolder() {
@@ -301,10 +303,11 @@ public class BaseNoGui {
     // If it doesn't, warn the user that the sketchbook folder is being reset.
     if (sketchbookPath != null) {
       File sketchbookFolder;
-      if (getPortableFolder() != null)
+      if (getPortableFolder() != null && !new File(sketchbookPath).isAbsolute()) {
         sketchbookFolder = new File(getPortableFolder(), sketchbookPath);
-      else
+      } else {
         sketchbookFolder = absoluteFile(sketchbookPath);
+      }
       if (!sketchbookFolder.exists()) {
         showWarning(tr("Sketchbook folder disappeared"),
                     tr("The sketchbook folder no longer exists.\n" +
@@ -658,8 +661,9 @@ public class BaseNoGui {
   static public void initPortableFolder() {
     // Portable folder
     portableFolder = getContentFile("portable");
-    if (!portableFolder.exists())
+    if (!portableFolder.exists()) {
       portableFolder = null;
+    }
   }
 
   static public void initVersion() {

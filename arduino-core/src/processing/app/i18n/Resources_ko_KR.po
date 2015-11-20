@@ -8,6 +8,8 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
@@ -17,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-10-03 12:39+0000\n"
+"PO-Revision-Date: 2015-11-19 03:13+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -40,13 +42,16 @@ msgstr "사용되지 않음: {0}"
 msgid " Used: {0}"
 msgstr " 사용됨: {0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'키보드' 는 Arduino Leonardo에서만 사용가능합니다."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr "'Keyboard' 가 없습니다. 스케치에서 '#include <Keyboard.h>' 를 포함했나요?"
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'마우스' 는 Arduino Leonardo에서만 사용가능합니다."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr "'Mouse' 가 없습니다. 스케치에서 '#include < Mouse.h>' 를 포함했나요?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -220,6 +225,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "스케치가 제대로 저장되지 않아서 스케치를 보관하는 것이\n취소되었습니다."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr "아두이노"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -472,6 +481,10 @@ msgstr "닫기"
 msgid "Comment/Uncomment"
 msgstr "주석추가/주석삭제"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr "통신"
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "컴파일러 경고:"
@@ -479,6 +492,10 @@ msgstr "컴파일러 경고:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "스케치를 컴파일 중…"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr "Contributed"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -641,6 +658,14 @@ msgstr "Czech (체코)"
 msgid "Danish (Denmark)"
 msgstr "Danish (덴마크)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr "데이터 처리"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr "데이터 저장"
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "들여쓰기 줄이기"
@@ -653,6 +678,10 @@ msgstr "디폴트"
 msgid "Delete"
 msgstr "삭제"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr "디바이스 컨트롤"
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -662,6 +691,10 @@ msgstr "디바이스가 응답하지 않습니다. 올바른 시리얼 포트가
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "모든 변경을 취소하고 스케치를 다시 로드하나요?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr "디스플레이"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -877,6 +910,11 @@ msgstr "코드 {0}를 로딩하는 중 에러"
 msgid "Error while printing."
 msgstr "인홰하는 중에 오류 발생했습니다."
 
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr "시리얼 포트 파라미터 설정중 에러: {0} {1} {2} {3}"
+
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
 msgstr "업로드 오류"
@@ -1077,11 +1115,11 @@ msgstr "대소문자 무시"
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr "잘못된 라이브러리 이름을 무시"
+msgstr "잘못된 라이브러리 이름을 무시함"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr "잘못된 이름의 스케치를 무시"
+msgstr "잘못된 이름의 스케치를 무시함"
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1185,9 +1223,9 @@ msgstr "라이브러리 매니저"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "라이브러리가 추가되었습니다. \"라이브러리 포함하기\" 메뉴를 확인하세요"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "라이브러리는 'src' 나 'utility' 폴더를 사용할 수 없습니다."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr "라이브러리는 'src' 와 'utility' 폴더에 동시에 사용될 수 없습니다. 확인 {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1380,7 +1418,7 @@ msgstr "노르웨이 브크몰어"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 참고 http://www.arduino.cc/en/Guide/Troubleshooting#size"
+msgstr "메모리가 충분하지 않음; 메모리를 줄이기 위한 팁을 위해 다음 링크를 참고하세요http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1415,9 +1453,17 @@ msgstr "아두이노 스케치를 여세요…"
 msgid "Open..."
 msgstr "열기…"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr "Other"
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "페이지 설정"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr "파트너"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1568,6 +1614,10 @@ msgstr "종료"
 msgid "RETIRED"
 msgstr "RETIRED"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr "추천"
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "다시 실행"
@@ -1708,6 +1758,10 @@ msgstr "선택된 라이브러리는 사용할 수 없습니다"
 msgid "Send"
 msgstr "전송"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr "센서"
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "시리얼 모니터"
@@ -1758,6 +1812,10 @@ msgstr "컴파일하는 동안 상세 출력 보이기"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "다음 동작중 자세한  출력 보이기: "
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr "시그널 입력/출력"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1991,6 +2049,10 @@ msgstr "이 리포트는 많은 정보를 포함합니다"
 msgid "Time for a Break"
 msgstr "휴식 시간"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr "타이밍"
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2059,6 +2121,10 @@ msgstr "시리얼 플로터를 열 수 없습니다"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "네트워트 문제때문에 Arduino.cc에 접속 할 수 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr "분류되지않은"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2255,13 +2321,6 @@ msgid ""
 "value '{2}'. Consider upgrading this core."
 msgstr "경고 : 코어 '{0}'의 platform.txt는 프로퍼티 '{1}'이 없어서, 기본값 '{2}' 를 사용합니다. 이 코어를 업그레이드하는 것이 좋습니다."
 
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "경고: 코어 '{0}'의 platform.txt에 프로퍼티 {1}이 없어서 자동으로 {2}로 설정되었습니다. 이 코어를 업그레이드 하는 것이 좋습니다."
-
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
 msgstr "서 프리지아어"
@@ -2306,11 +2365,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "스케치가 이미 같은 이름의 .cpp 파일을 가지고 있기 때문에\n스케치의 이름을 \"{0}\"로 바꿀 수 없습니다."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "스케치가 이미 같은 이름의 .cpp파일을 가지고 있기 때문에\n스케치의 이름을 \"{0}\"로 저장할 수 없습니다."
+"because the sketch already has a file with that name."
+msgstr "스케치를 \"{0}\"로 저장할 수 없습니다\n왜냐면 같은 이름을 가진 파일이 있습니다."
 
 #: Sketch.java:883
 msgid ""

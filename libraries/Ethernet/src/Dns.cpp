@@ -179,7 +179,8 @@ uint16_t DNSClient::BuildRequest(const char* aName)
 
     // FIXME We should also check that there's enough space available to write to, rather
     // FIXME than assume there's enough space (as the code does at present)
-    iUdp.write((uint8_t*)&iRequestId, sizeof(iRequestId));
+    uint16_t _id = htons(iRequestId);
+    iUdp.write((uint8_t*)&_id, sizeof(_id));
 
     twoByteBuffer = htons(QUERY_FLAG | OPCODE_STANDARD_QUERY | RECURSION_DESIRED_FLAG);
     iUdp.write((uint8_t*)&twoByteBuffer, sizeof(twoByteBuffer));
@@ -264,9 +265,9 @@ uint16_t DNSClient::ProcessResponse(uint16_t aTimeout, IPAddress& aAddress)
     }
     iUdp.read(header, DNS_HEADER_SIZE);
 
-    uint16_t header_flags = htons(*((uint16_t*)&header[2]));
+    uint16_t header_flags = word(header[2], header[3]);
     // Check that it's a response to this request
-    if ( ( iRequestId != (*((uint16_t*)&header[0])) ) ||
+    if ( (iRequestId != word(header[0], header[1])) ||
         ((header_flags & QUERY_RESPONSE_MASK) != (uint16_t)RESPONSE_FLAG) )
     {
         // Mark the entire packet as read
@@ -283,7 +284,7 @@ uint16_t DNSClient::ProcessResponse(uint16_t aTimeout, IPAddress& aAddress)
     }
 
     // And make sure we've got (at least) one answer
-    uint16_t answerCount = htons(*((uint16_t*)&header[6]));
+    uint16_t answerCount = word(header[6], header[7]);
     if (answerCount == 0 )
     {
         // Mark the entire packet as read
@@ -292,7 +293,7 @@ uint16_t DNSClient::ProcessResponse(uint16_t aTimeout, IPAddress& aAddress)
     }
 
     // Skip over any questions
-    for (uint16_t i =0; i < htons(*((uint16_t*)&header[4])); i++)
+    for (uint16_t i =0; i < word(header[4], header[5]); i++)
     {
         // Skip over the name
         uint8_t len;

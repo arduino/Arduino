@@ -60,7 +60,7 @@ public class Platform extends processing.app.Platform {
     Toolkit.getDefaultToolkit();
   }
 
-  public void init() throws IOException {
+  public void init() throws Exception {
     super.init();
 
     System.setProperty("apple.laf.useScreenMenuBar", "true");

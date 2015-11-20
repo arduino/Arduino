@@ -70,7 +70,7 @@ public class Compiler implements MessageConsumer {
     tr("Multiple libraries were found for \"{0}\"");
     tr(" Not used: {0}");
     tr(" Used: {0}");
-    tr("Library can't use both 'src' and 'utility' folders.");
+    tr("Library can't use both 'src' and 'utility' folders. Double check {0}");
     tr("WARNING: library {0} claims to run on {1} architecture(s) and may be incompatible with your current board which runs on {2} architecture(s).");
     tr("Looking for recipes like {0}*{1}");
     tr("Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to: {3}");
@@ -152,7 +152,7 @@ public class Compiler implements MessageConsumer {
 
     size(prefs);
 
-    return sketch.getName() + ".ino";
+    return sketch.getPrimaryFile().getName();
   }
 
   private String VIDPID() {

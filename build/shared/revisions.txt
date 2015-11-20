@@ -1,4 +1,22 @@
-ARDUINO 1.6.6
+ARDUINO 1.6.7
+
+[ide]
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...master
+* Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
+* New translations
+* Added support to file:// protocol for boards manager URLs
+* Portable sketchbook folder can now be any arbitrary location
+
+[libraries]
+* SPI: Added SPI.transfer16(...) function to SAM core.
+* Ethernet, WiFi, SoftwareSerial: Fixed flush() behaviour:
+  the flush function is no more dropping the receive buffer, as per
+  1.0 API specification. Thanks @drmpf
+
+[core]
+* Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
+
+ARDUINO 1.6.6 - 2015.11.03
 
 [ide]
 * Switched to Java 8, which is now both bundled and needed for compiling the IDE

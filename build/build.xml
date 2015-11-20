@@ -71,7 +71,7 @@
     </or>
   </condition>
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.0.4" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.2.4" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -185,8 +185,8 @@
       <fileset dir="../libraries"/>
     </copy>
 
-    <download-library name="Firmata" version="2.4.4" tag="v2.4.4"/>
-    <download-library name="Bridge" version="1.1.0"/>
+    <download-library name="Firmata" version="2.5.0" tag="2.5.0"/>
+    <download-library name="Bridge" version="1.6.0"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
@@ -844,7 +844,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino2/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino4/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>

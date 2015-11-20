@@ -126,6 +126,7 @@ public class EditorConsole extends JScrollPane {
   }
 
   public void insertString(String line, SimpleAttributeSet attributes) throws BadLocationException {
+    line = line.replace("\r\n", "\n").replace("\r", "\n");
     int offset = document.getLength();
     document.insertString(offset, line, attributes);
   }

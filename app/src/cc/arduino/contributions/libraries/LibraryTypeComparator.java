@@ -38,7 +38,7 @@ public class LibraryTypeComparator implements Comparator<String> {
   private final List<String> types;
 
   public LibraryTypeComparator() {
-    this("Arduino", "Recommended", "Contributed");
+    this("Arduino", "Partner", "Recommended", "Contributed");
   }
 
   public LibraryTypeComparator(String... types) {

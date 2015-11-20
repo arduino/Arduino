@@ -138,7 +138,7 @@ void UARTClass::flush( void )
 {
   while (_tx_buffer->_iHead != _tx_buffer->_iTail); //wait for transmit data to be sent
   // Wait for transmission to complete
-  while ((_pUart->UART_SR & UART_SR_TXRDY) != UART_SR_TXRDY)
+  while ((_pUart->UART_SR & UART_SR_TXEMPTY) != UART_SR_TXEMPTY)
    ;
 }
 

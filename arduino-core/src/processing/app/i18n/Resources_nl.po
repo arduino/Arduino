@@ -8,6 +8,8 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # MrWhammy <brecht@yperman.eu>, 2013,2015
 # MrWhammy <brecht@yperman.eu>, 2012
 # devMaeb <devmaeb@gmail.com>, 2014
@@ -19,7 +21,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-09-30 07:37+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Dutch (http://www.transifex.com/mbanzi/arduino-ide-15/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -42,13 +44,16 @@ msgstr "Niet gebruikt: {0}"
 msgid " Used: {0}"
 msgstr "Gebruikt: {0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Keyboard' kan alleen met de Arduino Leonardo worden gebruikt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr ""
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Mouse' kan alleen met de Arduino Leonardo worden gebruikt"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -222,6 +227,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Het archiveren van de schets is geannuleerd, omdat\nde schets niet goed kon worden opgeslagen."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -474,6 +483,10 @@ msgstr "Sluiten"
 msgid "Comment/Uncomment"
 msgstr "Opmerking maken/opmerking wissen"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Compiler waarschuwingen:"
@@ -481,6 +494,10 @@ msgstr "Compiler waarschuwingen:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Bezig met het compileren van de schets..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -643,6 +660,14 @@ msgstr "Tsjechisch (Tsjechië)"
 msgid "Danish (Denmark)"
 msgstr "Deens (Denemarken)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Insprong verkleinen"
@@ -655,6 +680,10 @@ msgstr "Standaard"
 msgid "Delete"
 msgstr "Verwijderen"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -664,6 +693,10 @@ msgstr "Het apparaat antwoordt niet. Controleer of de correcte seriële poort is
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Alle wijzigingen annuleren en schets opnieuw laden?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -878,6 +911,11 @@ msgstr "Fout bij het laden van code {0}"
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Fout bij het afdrukken."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1187,9 +1225,9 @@ msgstr "Bibliotheekbeheerder"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Bibliotheek toegevoegd aan uw bibliotheken. Controleer het menu 'Bibliotheek gebruiken'"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "De bibliotheek kan niet zowel de 'src' als 'utility' mappen gebruiken."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1417,9 +1455,17 @@ msgstr "Een Arduino-schets openen"
 msgid "Open..."
 msgstr "Openen..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Pagina-instelling"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1570,6 +1616,10 @@ msgstr "Afsluiten"
 msgid "RETIRED"
 msgstr "AFGESCHREVEN"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Opnieuw doen"
@@ -1710,6 +1760,10 @@ msgstr "De geselecteerde bibliotheek is niet beschikbaar"
 msgid "Send"
 msgstr "Verzenden"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Seriële monitor"
@@ -1760,6 +1814,10 @@ msgstr "Tijdens de compilatie uitgebreide uitvoer weergeven"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Uitgebreide uitvoer weergeven tijdens:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1993,6 +2051,10 @@ msgstr "Dit rapport zou meer informatie hebben met"
 msgid "Time for a Break"
 msgstr "Tijd voor een pauze"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2061,6 +2123,10 @@ msgstr "Kan seriële plotter niet openen"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Kan Arduino.cc niet bereiken, mogelijk door problemen met het netwerk."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2257,13 +2323,6 @@ msgid ""
 "value '{2}'. Consider upgrading this core."
 msgstr ""
 
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
 msgstr "Fries"
@@ -2308,11 +2367,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "De schets kan niet hernoemd worden naar \"{0}\",\nomdat de schets al een .ccp-bestand met deze naam bevat."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "De schets kan niet worden opgeslagen als \"{0}\"\nomdat de schets al een .ccp-bestand met deze naam bevat."
+"because the sketch already has a file with that name."
+msgstr ""
 
 #: Sketch.java:883
 msgid ""

@@ -74,7 +74,7 @@ public class Platform {
   }
 
 
-  public void init() throws IOException {
+  public void init() throws Exception {
   }
 
 

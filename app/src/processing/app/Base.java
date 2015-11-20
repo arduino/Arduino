@@ -81,7 +81,7 @@ public class Base {
   public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
   public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
 
-  private static final int RECENT_SKETCHES_MAX_SIZE = 5;
+  private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
   private static boolean commandLine;
   public static volatile Base INSTANCE;
@@ -523,7 +523,7 @@ public class Base {
       if (path == null) {
         continue;
       }
-      if (BaseNoGui.getPortableFolder() != null) {
+      if (BaseNoGui.getPortableFolder() != null && !new File(path).isAbsolute()) {
         File absolute = new File(BaseNoGui.getPortableFolder(), path);
         try {
           path = absolute.getCanonicalPath();
@@ -570,12 +570,6 @@ public class Base {
       if (path.startsWith(untitledPath) && !editor.getSketch().isModified()) {
         continue;
       }
-      if (BaseNoGui.getPortableFolder() != null) {
-        path = FileUtils.relativePath(BaseNoGui.getPortableFolder().toString(), path);
-        if (path == null) {
-          continue;
-        }
-      }
       PreferencesData.set("last.sketch" + index + ".path", path);
 
       int[] location = editor.getPlacement();
@@ -613,7 +607,11 @@ public class Base {
     activeEditor.rebuildRecentSketchesMenu();
     if (PreferencesData.getBoolean("editor.external")) {
       try {
+        int previousCaretPosition = activeEditor.getTextArea().getCaretPosition();
         activeEditor.getSketch().load(true);
+        if (previousCaretPosition < activeEditor.getText().length()) {
+          activeEditor.getTextArea().setCaretPosition(previousCaretPosition);
+        }
       } catch (IOException e) {
         // noop
       }
@@ -1280,7 +1278,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.librariesIndexer, libraryInstaller) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, libraryInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
@@ -1309,7 +1307,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.indexer, contributionInstaller) {
+    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, contributionInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();

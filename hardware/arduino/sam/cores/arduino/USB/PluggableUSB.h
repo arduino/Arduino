@@ -21,7 +21,6 @@
 #define PUSB_h
 
 #include "USBAPI.h"
-#include <cstddef>
 
 #if defined(USBCON)
 

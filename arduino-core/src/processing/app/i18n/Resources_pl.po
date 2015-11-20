@@ -8,10 +8,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Jan Bielak <sharkie103@gmail.com>, 2013-2014
 # Krzysztof Zbudniewek <krzysztof.zbudniewek@gmail.com>, 2015
 # thedead4fun <matizochol@gmail.com>, 2015
 # Szymon Borecki <szymex73@gmail.com>, 2015
+# Tomasz Pudło <wptom@wp.pl>, 2015
 # Tomasz Pudło <wptom@wp.pl>, 2015
 # Voltinus <voltinusmail@gmail.com>, 2015
 msgid ""
@@ -19,8 +22,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-10-01 08:47+0000\n"
-"Last-Translator: Tomasz Pudło <wptom@wp.pl>\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
+"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,13 +45,16 @@ msgstr "Nie wykorzystane: {0}"
 msgid " Used: {0}"
 msgstr "Wykorzystane: {0}"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'Klawiatura' wspierana tylko na Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr "Nie znalezione 'Keyboard'. Czy twój szkic zawiera linię '#include <Keyboard.h>' ?"
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'Myszka\" wspierana tylko na Arduino Leonardo"
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr "Nie znalezione 'Mouse'. Czy twój szkic zawiera linię '#include <Mouse.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -222,6 +228,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Archiwizacja szkicu została anulowana ponieważ\nszkic nie zapisał się prawidłowo."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -474,6 +484,10 @@ msgstr "Zamknij"
 msgid "Comment/Uncomment"
 msgstr "Komentuj/Odkomentuj "
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Ostrzeżenia kompilatora:"
@@ -481,6 +495,10 @@ msgstr "Ostrzeżenia kompilatora:"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Kompilowanie szkicu..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -643,6 +661,14 @@ msgstr "Czeski (Republika Czeska)"
 msgid "Danish (Denmark)"
 msgstr "Duński (Dania)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Zmniejsz wcięcie"
@@ -655,6 +681,10 @@ msgstr "Domyślne"
 msgid "Delete"
 msgstr "Usuń"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -664,6 +694,10 @@ msgstr "Urządzenie nie odpowiada, sprawdź czy prawy szeregowy port jest wybran
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Porzucić zmiany i przeładować szkic?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -878,6 +912,11 @@ msgstr "Błąd przy odczycie kodu {0}"
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Błąd wydruku."
+
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr "Błąd podczas ustawiania parametrów portu szeregowego: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1187,9 +1226,9 @@ msgstr "Zarządca biblioteki"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Biblioteka została dodana do bibliotek. Sprawdź menu \"Załącz biblioteki\""
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "Biblioteka nie może używać jednocześnie folderów 'src' i 'utility'."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1417,9 +1456,17 @@ msgstr "Otwórz szkic Arduino..."
 msgid "Open..."
 msgstr "Otwórz..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Ustawienia strony"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1570,6 +1617,10 @@ msgstr "Wyjdź"
 msgid "RETIRED"
 msgstr "WYCOFANE"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Ponów"
@@ -1710,6 +1761,10 @@ msgstr "Wybrana biblioteka nie jest dostępna"
 msgid "Send"
 msgstr "Wyślij"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Szeregowy monitor"
@@ -1760,6 +1815,10 @@ msgstr "Pokaż szczegółowe informacje podczas kompilacji"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Pokaż szczegółowe informacje podczas:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1993,6 +2052,10 @@ msgstr "Raport ten będzie miał więcej informacji z"
 msgid "Time for a Break"
 msgstr "Czas na przerwę"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2061,6 +2124,10 @@ msgstr "Nie można otworzyć szeregowego monitora"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Brak dostępu do Arduino.cc prawdopodobnie z powodu problemu z siecią."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2257,13 +2324,6 @@ msgid ""
 "value '{2}'. Consider upgrading this core."
 msgstr "Uwaga: platform.txt z rdzenia '{0}' ma brakującą własność '{1}', użyto domyślnej wartości '{2}'. Rozważ aktualizację tego rdzenia."
 
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "Uwaga: w platform.txt z rdzenia '{0}' brakuje właściwości {1}, zostanie automatycznie ustawione na {2}. Rozważ aktualizację tego rdzenia."
-
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
 msgstr "Wschodni fryzyjski"
@@ -2308,11 +2368,11 @@ msgid ""
 "because the sketch already has a .cpp file with that name."
 msgstr "Nie można zmienić nazwy szkicu na \"{0}\"\nponieważ szkic już ma plik .cpp z taką nazwą."
 
-#: Sketch.java:861
+#: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Nie można zapisać szkicu jako \"{0}\"\nponieważ szkic już ma plik .cpp z taką nazwą."
+"because the sketch already has a file with that name."
+msgstr "Nie możesz zapisać szkicu jako \"{0}\"\nponieważ szkic ma już plik z taką nazwą."
 
 #: Sketch.java:883
 msgid ""

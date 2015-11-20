@@ -61,9 +61,23 @@ public abstract class ContributedPackage {
   }
 
   public ContributedTool findTool(String name, String version) {
+    if (getTools() == null) {
+      return null;
+    }
     for (ContributedTool tool : getTools()) {
       if (tool.getName().equals(name) && tool.getVersion().equals(version))
         return tool;
+    }
+    return null;
+  }
+
+  public ContributedTool findResolvedTool(String toolName, String version) {
+    for (ContributedPlatform platform : getPlatforms()) {
+      for (ContributedTool tool : platform.getResolvedTools()) {
+        if (toolName.equals(tool.getName()) && version.equals(tool.getVersion())) {
+          return tool;
+        }
+      }
     }
     return null;
   }
