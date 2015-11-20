@@ -11,10 +11,16 @@ RESOURCE_NAME=arduino-arduinoide
 # Get absolute path from which this script file was executed
 # (Could be changed to "pwd -P" to resolve symlinks to their target)
 SCRIPT_PATH=$( cd $(dirname $0) ; pwd )
-cd "$SCRIPT_PATH"
+cd "${SCRIPT_PATH}"
 
 # Default mode is to install.
 UNINSTALL=false
+
+# If possible, get location of the desktop folder. Default to ~/Desktop
+XDG_DESKTOP_DIR="${HOME}/Desktop"
+if [ -f "${XDG_CONFIG_HOME:-${HOME}/.config}/user-dirs.dirs" ]; then
+  . "${XDG_CONFIG_HOME:-${HOME}/.config}/user-dirs.dirs"
+fi
 
 # Install using xdg-utils
 xdg_install_f() {
@@ -76,17 +82,19 @@ simple_install_f() {
   sed -e "s,<BINARY_LOCATION>,${SCRIPT_PATH}/arduino,g" \
       -e "s,<ICON_NAME>,${SCRIPT_PATH}/lib/arduino.png,g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
-  mkdir -p ~/.local/share/applications
-  cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" ~/.local/share/applications/
+  mkdir -p "${HOME}/.local/share/applications"
+  cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${HOME}/.local/share/applications/"
 
-  # Create desktop icon if dir exists
-  if [ -d ~/Desktop ]; then
-   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" ~/Desktop/
+  # Copy desktop icon if desktop dir exists (was found)
+  if [ -d "${XDG_DESKTOP_DIR}" ]; then
+   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${XDG_DESKTOP_DIR}/"
+   # Altering file permissions to avoid "Untrusted Application Launcher" error on Ubuntu
+   chmod u+x "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
   fi
 
-  # Clean up
+  # Clean up temp dir
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
-  rmdir "$TMP_DIR"
+  rmdir "${TMP_DIR}"
 
 }
 
@@ -100,15 +108,15 @@ xdg_uninstall_f() {
   xdg-desktop-icon uninstall ${RESOURCE_NAME}.desktop
 
   # Remove icons
-  xdg-icon-resource uninstall --size 16 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 24 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 32 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 48 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 64 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 72 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 96 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 128 $RESOURCE_NAME
-  xdg-icon-resource uninstall --size 256 $RESOURCE_NAME
+  xdg-icon-resource uninstall --size 16 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 24 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 32 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 48 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 64 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 72 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 96 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 128 ${RESOURCE_NAME}
+  xdg-icon-resource uninstall --size 256 ${RESOURCE_NAME}
 
   # Remove MIME type icons
   xdg-icon-resource uninstall --size 16  text-x-arduino
@@ -129,20 +137,20 @@ xdg_uninstall_f() {
 # Uninstall by simply removing desktop files (fallback), incl. old one
 simple_uninstall_f() {
 
-  if [ -f ~/.local/share/applications/arduino.desktop ]; then
-    rm ~/.local/share/applications/arduino.desktop
+  if [ -f "${HOME}/.local/share/applications/arduino.desktop" ]; then
+    rm "${HOME}/.local/share/applications/arduino.desktop"
   fi
 
-  if [ -f ~/.local/share/applications/${RESOURCE_NAME}.desktop ]; then
-    rm ~/.local/share/applications/${RESOURCE_NAME}.desktop
+  if [ -f "${HOME}/.local/share/applications/${RESOURCE_NAME}.desktop" ]; then
+    rm "${HOME}/.local/share/applications/${RESOURCE_NAME}.desktop"
   fi
 
-  if [ -f ~/Desktop/arduino.desktop ]; then
-    rm ~/Desktop/arduino.desktop
+  if [ -f "${XDG_DESKTOP_DIR}/arduino.desktop" ]; then
+    rm "${XDG_DESKTOP_DIR}/arduino.desktop"
   fi
 
-  if [ -f ~/Desktop/${RESOURCE_NAME}.desktop ]; then
-    rm ~/Desktop/${RESOURCE_NAME}.desktop
+  if [ -f "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop" ]; then
+    rm "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
   fi
 
 }
@@ -150,15 +158,15 @@ simple_uninstall_f() {
 # Update desktop file and mime databases (if possible)
 updatedbs_f() {
 
-  if [ -d ~/.local/share/applications ]; then
+  if [ -d "${HOME}/.local/share/applications" ]; then
     if command -v update-desktop-database > /dev/null; then
-      update-desktop-database ~/.local/share/applications
+      update-desktop-database "${HOME}/.local/share/applications"
     fi
   fi
 
-  if [ -d ~/.local/share/mime ]; then
+  if [ -d "${HOME}/.local/share/mime" ]; then
     if command -v update-mime-database > /dev/null; then
-      update-mime-database ~/.local/share/mime
+      update-mime-database "${HOME}/.local/share/mime"
     fi
   fi
 
@@ -177,25 +185,19 @@ xdg_exists_f() {
 
 # Shows a description of the available options
 display_help_f() {
-  echo "\n"
-  echo "This script will add a Arduino IDE desktop shortcut, menu item,"
-  echo "icons and file associations for the current user."
+  printf "\nThis script will add a Arduino IDE desktop shortcut, menu item,\n"
+  printf "icons and file associations for the current user.\n"
   if ! xdg_exists_f; then
-    echo "\n"
-    echo "xdg-utils are recommended to be installed, so this script can use them."
+    printf "\nxdg-utils are recommended to be installed, so this script can use them.\n"
   fi
-  echo "\n"
-  echo "Optional arguments are:"
-  echo "\n"
-  echo "\t-u, --uninstall\t\tRemoves shortcut, menu item and icons."
-  echo "\n"
-  echo "\t-h, --help\t\tShows this help again."
-  echo "\n"
+  printf "\nOptional arguments are:\n\n"
+  printf "\t-u, --uninstall\t\tRemoves shortcut, menu item and icons.\n\n"
+  printf "\t-h, --help\t\tShows this help again.\n\n"
 }
 
 # Check for provided arguments
 while [ $# -gt 0 ] ; do
-  ARG="$1"
+  ARG="${1}"
   case $ARG in
       -u|--uninstall)
         UNINSTALL=true
@@ -206,8 +208,7 @@ while [ $# -gt 0 ] ; do
         exit 0
       ;;
       *)
-        echo "\n"
-        echo "Invalid option -- '$ARG'"
+        printf "\nInvalid option -- '${ARG}'\n"
         display_help_f
         exit 1
       ;;
@@ -216,27 +217,27 @@ done
 
 # If possible, use xdg-utils, if not, use a more basic approach
 if xdg_exists_f; then
-  if [ "$UNINSTALL" = true ]; then
-    echo "Removing desktop shortcut and menu item for Arduino IDE..."
+  if [ ${UNINSTALL} = true ]; then
+    printf "Removing desktop shortcut and menu item for Arduino IDE..."
     xdg_uninstall_f
     simple_uninstall_f
   else
-    echo "Adding desktop shortcut, menu item and file associations for Arduino IDE..."
+    printf "Adding desktop shortcut, menu item and file associations for Arduino IDE..."
     xdg_uninstall_f
     simple_uninstall_f
     xdg_install_f
   fi
 else
-  if [ "$UNINSTALL" = true ]; then
-    echo "Removing desktop shortcut and menu item for Arduino IDE..."
+  if [ ${UNINSTALL} = true ]; then
+    printf "Removing desktop shortcut and menu item for Arduino IDE..."
     simple_uninstall_f
   else
-    echo "Adding desktop shortcut and menu item for Arduino IDE..."
+    printf "Adding desktop shortcut and menu item for Arduino IDE..."
     simple_uninstall_f
     simple_install_f
   fi
 fi
 updatedbs_f
-echo "...done!"
+printf " done!\n"
 
 exit 0
