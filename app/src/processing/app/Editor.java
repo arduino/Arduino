@@ -2171,72 +2171,56 @@ public class Editor extends JFrame implements RunnerListener {
 
     File file = SketchData.checkSketchFile(sketchFile);
 
-    if (file == null)
-    {
+    if (file == null) {
       if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
 
-        Base.showWarning(tr("Bad file selected"),
-                         tr("Arduino can only open its own sketches\n" +
-                           "and other files ending in .ino or .pde"), null);
+        Base.showWarning(tr("Bad file selected"), tr("Arduino can only open its own sketches\n" +
+          "and other files ending in .ino or .pde"), null);
         return false;
 
       } else {
-        String properParent =
-          fileName.substring(0, fileName.length() - 4);
+        String properParent = fileName.substring(0, fileName.length() - 4);
 
-        Object[] options = { tr("OK"), tr("Cancel") };
+        Object[] options = {tr("OK"), tr("Cancel")};
         String prompt = I18n.format(tr("The file \"{0}\" needs to be inside\n" +
-	                                "a sketch folder named \"{1}\".\n" +
-	                                "Create this folder, move the file, and continue?"),
-	                              fileName,
-	                              properParent);
+            "a sketch folder named \"{1}\".\n" +
+            "Create this folder, move the file, and continue?"),
+          fileName,
+          properParent);
 
-        int result = JOptionPane.showOptionDialog(this,
-                                                  prompt,
-                                                  tr("Moving"),
-                                                  JOptionPane.YES_NO_OPTION,
-                                                  JOptionPane.QUESTION_MESSAGE,
-                                                  null,
-                                                  options,
-                                                  options[0]);
+        int result = JOptionPane.showOptionDialog(this, prompt, tr("Moving"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-        if (result == JOptionPane.YES_OPTION) {
-          // create properly named folder
-          File properFolder = new File(sketchFile.getParent(), properParent);
-          if (properFolder.exists()) {
-            Base.showWarning(tr("Error"),
-                             I18n.format(
-                               tr("A folder named \"{0}\" already exists. " +
-                                 "Can't open sketch."),
-                               properParent
-                             ),
-			   null);
-            return false;
-          }
-          if (!properFolder.mkdirs()) {
-            //throw new IOException("Couldn't create sketch folder");
-            Base.showWarning(tr("Error"),
-                             tr("Could not create the sketch folder."), null);
-            return false;
-          }
-          // copy the sketch inside
-          File properPdeFile = new File(properFolder, sketchFile.getName());
-          try {
-            Base.copyFile(sketchFile, properPdeFile);
-          } catch (IOException e) {
-            Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
-            return false;
-          }
-
-          // remove the original file, so user doesn't get confused
-          sketchFile.delete();
-
-          // update with the new path
-          file = properPdeFile;
-
-        } else if (result == JOptionPane.NO_OPTION) {
+        if (result != JOptionPane.YES_OPTION) {
           return false;
         }
+
+        // create properly named folder
+        File properFolder = new File(sketchFile.getParent(), properParent);
+        if (properFolder.exists()) {
+          Base.showWarning(tr("Error"), I18n.format(tr("A folder named \"{0}\" already exists. " +
+            "Can't open sketch."), properParent), null);
+          return false;
+        }
+        if (!properFolder.mkdirs()) {
+          //throw new IOException("Couldn't create sketch folder");
+          Base.showWarning(tr("Error"), tr("Could not create the sketch folder."), null);
+          return false;
+        }
+        // copy the sketch inside
+        File properPdeFile = new File(properFolder, sketchFile.getName());
+        try {
+          Base.copyFile(sketchFile, properPdeFile);
+        } catch (IOException e) {
+          Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
+          return false;
+        }
+
+        // remove the original file, so user doesn't get confused
+        sketchFile.delete();
+
+        // update with the new path
+        file = properPdeFile;
+
       }
     }
 
@@ -2253,12 +2237,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     // opening was successful
     return true;
-
-//    } catch (Exception e) {
-//      e.printStackTrace();
-//      statusError(e);
-//      return false;
-//    }
   }
 
   private void updateTitle() {
