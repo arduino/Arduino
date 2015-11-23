@@ -27,32 +27,15 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.ui;
+package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.VersionComparator;
+import java.util.Comparator;
 
-import javax.swing.table.AbstractTableModel;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+public class ContributedLibraryReleasesComparator implements Comparator<ContributedLibraryReleases> {
 
-public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
-
-  abstract public void updateIndexFilter(String[] filters, Stream<Predicate<T>> additionalFilters);
-
-  public static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
-    contribs = new LinkedList<>(contribs);
-    final VersionComparator versionComparator = new VersionComparator();
-    Collections.sort(contribs, (contrib1, contrib2) -> versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion()));
-
-    if (contribs.isEmpty()) {
-      return null;
-    }
-
-    return contribs.get(contribs.size() - 1);
+  @Override
+  public int compare(ContributedLibraryReleases o1, ContributedLibraryReleases o2) {
+    return o1.getLibrary().getName().compareToIgnoreCase(o2.getLibrary().getName());
   }
 
 }

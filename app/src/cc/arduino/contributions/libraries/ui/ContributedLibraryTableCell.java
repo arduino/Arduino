@@ -204,7 +204,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     return component;
   }
 
-  private LibrariesIndexTableModel.ContributedLibraryReleases editorValue;
+  private ContributedLibraryReleases editorValue;
   private JTable parentTable;
 
   @Override
@@ -217,12 +217,12 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
                                                boolean isSelected, int row,
                                                int column) {
     parentTable = table;
-    editorValue = (LibrariesIndexTableModel.ContributedLibraryReleases) value;
+    editorValue = (ContributedLibraryReleases) value;
     setEnabled(true);
 
     final ContributedLibrary installed = editorValue.getInstalled();
 
-    List<ContributedLibrary> releases = editorValue.releases.stream().filter(new OnlyUpstreamReleasePredicate()).collect(Collectors.toList());
+    List<ContributedLibrary> releases = editorValue.getReleases().stream().filter(new OnlyUpstreamReleasePredicate()).collect(Collectors.toList());
     List<ContributedLibrary> uninstalledReleases = releases.stream().filter(new InstalledPredicate().negate()).collect(Collectors.toList());
 
     List<ContributedLibrary> installedBuiltIn = releases.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
@@ -263,7 +263,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
   }
 
   private Component getUpdatedCellComponent(Object value, boolean isSelected, int row, boolean hasBuiltInRelease) {
-    LibrariesIndexTableModel.ContributedLibraryReleases releases = (LibrariesIndexTableModel.ContributedLibraryReleases) value;
+    ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
 
     JTextPane description = makeNewDescription(panel);
 
