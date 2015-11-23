@@ -61,8 +61,8 @@ int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal)
 
     if( c < 0 ||
         c == '-' ||
-        c >= '0' && c <= '9' ||
-        detectDecimal && c == '.') return c;
+        (c >= '0' && c <= '9') ||
+        (detectDecimal && c == '.')) return c;
 
     switch( lookahead ){
         case SKIP_NONE: return -1; // Fail code.
@@ -74,6 +74,8 @@ int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal)
                 case '\n': break;
                 default: return -1; // Fail code.
             }
+        case SKIP_ALL:
+            break;
     }
     read();  // discard non-numeric
   }
@@ -138,7 +140,7 @@ long Stream::parseInt(LookaheadMode lookahead, char ignore)
 
   do{
     if(c == ignore)
-      ; // ignore this charactor
+      ; // ignore this character
     else if(c == '-')
       isNegative = true;
     else if(c >= '0' && c <= '9')        // is c a digit?
@@ -159,7 +161,7 @@ float Stream::parseFloat(LookaheadMode lookahead, char ignore)
   bool isNegative = false;
   bool isFraction = false;
   long value = 0;
-  char c;
+  int c;
   float fraction = 1.0;
 
   c = peekNextDigit(lookahead, true);
@@ -182,7 +184,7 @@ float Stream::parseFloat(LookaheadMode lookahead, char ignore)
     read();  // consume the character we got with peek
     c = timedPeek();
   }
-  while( (c >= '0' && c <= '9')  || c == '.' && !isFraction || c == ignore );
+  while( (c >= '0' && c <= '9')  || (c == '.' && !isFraction) || c == ignore );
 
   if(isNegative)
     value = -value;
