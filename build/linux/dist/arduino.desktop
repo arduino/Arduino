@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Name=Arduino IDE
-GenericName=Integrated Development Environment
-Comment=An IDE for Arduino-compatible electronics prototyping platforms
+GenericName=Arduino IDE
+Comment=Open-source electronics prototyping platform
 Exec=FULL_PATH/arduino
 Icon=FULL_PATH/lib/arduino.png
 Terminal=false
