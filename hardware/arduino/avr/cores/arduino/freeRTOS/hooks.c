@@ -69,27 +69,10 @@
 #include <util/delay.h>
 
 /* FreeRTOS includes. */
-#include "freeRTOS/FreeRTOS.h"
-#include "freeRTOS/task.h"
-#include "freeRTOS/timers.h"
-#include "freeRTOS/StackMacros.h"
-
-#include "Arduino.h"
-
-/*-----------------------------------------------------------*/
-
-/**
- * Empty serialEventRun hook.
- *
- *
- * Its defined as a weak symbol and it can be redefined to implement a
- * real serial event handler.
- */
-
-void serialEventRun(void) __attribute__((weak));
-void serialEventRun(void)
-{
-}
+#include "FreeRTOS.h"
+#include "task.h"
+#include "timers.h"
+#include "StackMacros.h"
 
 /*-----------------------------------------------------------*/
 
@@ -102,56 +85,97 @@ void serialEventRun(void)
  * Its defined as a weak symbol and it can be redefined to implement a
  * real cooperative scheduler.
  */
-static void __empty() __attribute__((unused));
 static void __empty() {
-	;// Empty
+	// Empty
 }
-void yield(void) __attribute__ ((weak, unused, alias("__empty")));
+void yield(void) __attribute__ ((weak, alias("__empty")));
 
 /*-----------------------------------------------------------*/
 
-#if defined( configUSE_IDLE_HOOK )
+//#if( configUSE_IDLE_HOOK == 1 )
+#if 0
 
-/*
- * Call the user defined loop() function from within the idle task.
- * This allows the application designer to add background functionality
- * without the overhead of a separate task.
- *
- * NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES,	CALL A FUNCTION THAT MIGHT BLOCK.
- *
- */
-void vApplicationIdleHook( void ) __attribute__((weak));
 void vApplicationIdleHook( void )
 {
-	loop();
-	if (serialEventRun) serialEventRun();
+
+	// There are several macros provided in this header file to actually put the device into sleep mode.
+	// The simplest way is to optionally set the desired sleep mode using set_sleep_mode()
+	// (it usually defaults to idle mode where the CPU is put on sleep but all peripheral clocks are still running),
+	// and then call sleep_mode(). This macro automatically sets the sleep enable bit,
+	// goes to sleep, and clears the sleep enable bit.
+
+	// SLEEP_MODE_IDLE         (0)
+	// SLEEP_MODE_ADC          _BV(SM0)
+	// SLEEP_MODE_PWR_DOWN     _BV(SM1)
+	// SLEEP_MODE_PWR_SAVE     (_BV(SM0) | _BV(SM1))
+	// SLEEP_MODE_STANDBY      (_BV(SM1) | _BV(SM2))
+	// SLEEP_MODE_EXT_STANDBY  (_BV(SM0) | _BV(SM1) | _BV(SM2))
+
+	set_sleep_mode( SLEEP_MODE_IDLE );
+
+	// Analogue Comparator Disable
+	// When the ACD bit is written logic one, the power to the Analogue Comparator is switched off.
+	// This bit can be set at any time to turn off the Analogue Comparator.
+	// This will reduce power consumption in Active and Idle mode.
+	// When changing the ACD bit, the Analogue Comparator Interrupt must be disabled by clearing the ACIE bit in ACSR.
+	// Otherwise an interrupt can occur when the ACD bit is changed.
+	ACSR &= ~_BV(ACIE);
+	ACSR |=  _BV(ACD);
+
+	// Digital Input Disable on Analogue Pins
+	// When this bit is written logic one, the digital input buffer on the corresponding ADC pin is disabled.
+	// The corresponding PIN Register bit will always read as zero when this bit is set. When an
+	// analogue signal is applied to the ADC7..0 pin and the digital input from this pin is not needed, this
+	// bit should be written logic one to reduce power consumption in the digital input buffer.
+
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__) // Mega with 2560
+	DIDR0 = 0xFF;
+
+#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega1284PA__) // Goldilocks with 1284p
+	DIDR0 = 0xFF;
+
+#elif defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) // assume we're using an Arduino with 328p
+	DIDR0 = 0x3F;
+
+#endif
+
+	portENTER_CRITICAL();
+	sleep_enable();
+
+#if defined(BODS) && defined(BODSE) // only if there is support to disable the BOD.
+	sleep_bod_disable();
+#endif
+
+	portEXIT_CRITICAL();
+	sleep_cpu();		// good night.
+
+	// Uhh. I was woken up, so now disable sleep_mode.
+	sleep_disable();
 }
 
 #endif /* configUSE_IDLE_HOOK == 1 */
 
-/*--------------------------------------------------*/
 
-#if defined( configUSE_MALLOC_FAILED_HOOK )
+#if defined( configUSE_MALLOC_FAILED_HOOK)
 
-/*---------------------------------------------------------------------------*\
-Usage:
-   called by task system when a malloc failure is noticed
-Description:
-   Malloc failure handler -- Shut down all interrupts, send serious complaint
-    to command port. FAST Blink.
-Arguments:
-   pxTask - pointer to task handle
-   pcTaskName - pointer to task name
-Results:
-   <none>
-Notes:
-   This routine will never return.
-   This routine is referenced in the task.c file of FreeRTOS as an extern.
-\*---------------------------------------------------------------------------*/
-
-void vApplicationMallocFailedHook( void ) __attribute__((weak));
 void vApplicationMallocFailedHook( void )
 {
+	/*---------------------------------------------------------------------------*\
+	Usage:
+	   called by task system when a malloc failure is noticed
+	Description:
+	   Malloc failure handler -- Shut down all interrupts, send serious complaint
+	    to command port. FAST Blink.
+	Arguments:
+	   pxTask - pointer to task handle
+	   pcTaskName - pointer to task name
+	Results:
+	   <none>
+	Notes:
+	   This routine will never return.
+	   This routine is referenced in the task.c file of FreeRTOS as an extern.
+	\*---------------------------------------------------------------------------*/
+
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__) // Mega with 2560
 	DDRB  |= _BV(DDB7);
 	PORTB |= _BV(PORTB7);       // Main (red PB7) LED on. Main LED on.
@@ -169,7 +193,7 @@ void vApplicationMallocFailedHook( void )
 	for(;;)
 	{
 		_delay_ms(50);
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)  // Mega with 2560
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)
 		PINB  |= _BV(PINB7);       // Main (red PB7) LED toggle. Main LED fast blink.
 
 #elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega1284PA__) // Goldilocks with 1284p
@@ -189,25 +213,24 @@ void vApplicationMallocFailedHook( void )
 
 #if defined( configCHECK_FOR_STACK_OVERFLOW )
 
-/*---------------------------------------------------------------------------*\
-Usage:
-   called by task system when a stack overflow is noticed
-Description:
-   Stack overflow handler -- Shut down all interrupts, send serious complaint
-    to command port. SLOW Blink.
-Arguments:
-   pxTask - pointer to task handle
-   pcTaskName - pointer to task name
-Results:
-   <none>
-Notes:
-   This routine will never return.
-   This routine is referenced in the task.c file of FreeRTOS as an extern.
-\*---------------------------------------------------------------------------*/
-
-void vApplicationStackOverflowHook( TaskHandle_t xTask, portCHAR *pcTaskName ) __attribute__((weak));
 void vApplicationStackOverflowHook( TaskHandle_t xTask, portCHAR *pcTaskName )
 {
+	/*---------------------------------------------------------------------------*\
+	Usage:
+	   called by task system when a stack overflow is noticed
+	Description:
+	   Stack overflow handler -- Shut down all interrupts, send serious complaint
+	    to command port. SLOW Blink.
+	Arguments:
+	   pxTask - pointer to task handle
+	   pcTaskName - pointer to task name
+	Results:
+	   <none>
+	Notes:
+	   This routine will never return.
+	   This routine is referenced in the task.c file of FreeRTOS as an extern.
+	\*---------------------------------------------------------------------------*/
+
 #if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)  // Mega with 2560
 	DDRB  |= _BV(DDB7);
 	PORTB |= _BV(PORTB7);       // Main (red PB7) LED on. Main LED on.
@@ -225,7 +248,7 @@ void vApplicationStackOverflowHook( TaskHandle_t xTask, portCHAR *pcTaskName )
 	for(;;)
 	{
 		_delay_ms(2000);
-#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)  // Mega with 2560
+#if defined(__AVR_ATmega640__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega1281__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega2561__)
 		PINB  |= _BV(PINB7);       // Main (red PB7) LED toggle. Main LED slow blink.
 
 #elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega1284PA__) // Goldilocks with 1284p
