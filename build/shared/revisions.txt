@@ -16,6 +16,9 @@ ARDUINO 1.6.7
 
 [core]
 * Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
+* Stream: Optional lookahead and skipChar options added to parseInt and parseFloat, 
+  parseFloat also support parsing floats without a leading 0,
+  Stream::find(char) added to SAM. Thanks @Chris--A.
 
 ARDUINO 1.6.6 - 2015.11.03
 
