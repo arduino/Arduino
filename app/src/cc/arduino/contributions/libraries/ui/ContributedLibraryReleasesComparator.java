@@ -29,13 +29,40 @@
 
 package cc.arduino.contributions.libraries.ui;
 
+import cc.arduino.contributions.libraries.ContributedLibrary;
+
 import java.util.Comparator;
 
 public class ContributedLibraryReleasesComparator implements Comparator<ContributedLibraryReleases> {
 
+  private final String firstType;
+
+  public ContributedLibraryReleasesComparator(String firstType) {
+    this.firstType = firstType;
+  }
+
   @Override
   public int compare(ContributedLibraryReleases o1, ContributedLibraryReleases o2) {
-    return o1.getLibrary().getName().compareToIgnoreCase(o2.getLibrary().getName());
+    ContributedLibrary lib1 = o1.getLibrary();
+    ContributedLibrary lib2 = o2.getLibrary();
+
+    if (lib1.getTypes() == null || lib2.getTypes() == null) {
+      return compareName(lib1, lib2);
+    }
+    if (lib1.getTypes().contains(firstType) && lib2.getTypes().contains(firstType)) {
+      return compareName(lib1, lib2);
+    }
+    if (lib1.getTypes().contains(firstType)) {
+      return -1;
+    }
+    if (lib2.getTypes().contains(firstType)) {
+      return 1;
+    }
+    return compareName(lib1, lib2);
+  }
+
+  private int compareName(ContributedLibrary lib1, ContributedLibrary lib2) {
+    return lib1.getName().compareToIgnoreCase(lib2.getName());
   }
 
 }

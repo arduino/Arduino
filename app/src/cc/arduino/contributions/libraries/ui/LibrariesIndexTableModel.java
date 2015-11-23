@@ -204,7 +204,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
     contributions.clear();
     indexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
     indexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
-    Collections.sort(contributions, new ContributedLibraryReleasesComparator());
+    Collections.sort(contributions, new ContributedLibraryReleasesComparator("Arduino"));
   }
 
 }
