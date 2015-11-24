@@ -117,7 +117,7 @@ void yield(void) __attribute__ ((weak, unused, alias("__empty")));
  * This allows the application designer to add background functionality
  * without the overhead of a separate task.
  *
- * NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES,	CALL A FUNCTION THAT MIGHT BLOCK.
+ * NOTE: vApplicationIdleHook() MUST NOT, UNDER ANY CIRCUMSTANCES, CALL A FUNCTION THAT MIGHT BLOCK.
  *
  */
 void vApplicationIdleHook( void ) __attribute__((weak));
