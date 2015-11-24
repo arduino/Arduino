@@ -66,6 +66,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
@@ -1913,22 +1914,20 @@ public class Base {
 
 
   /**
-   * Give this Frame a Processing icon.
+   * Give this Frame an icon.
    */
   static public void setIcon(Frame frame) {
-    // don't use the low-res icon on Mac OS X; the window should
-    // already have the right icon from the .app file.
-    if (OSUtils.isMacOS()) return;
-    
-    // don't use the low-res icon on Linux
-    if (OSUtils.isLinux()){
-      Image image = Toolkit.getDefaultToolkit().createImage(BaseNoGui.getContentFile("/lib/arduino.png").getAbsolutePath());
-      frame.setIconImage(image);
+    if (OSUtils.isMacOS()) {
       return;
     }
 
-    Image image = Toolkit.getDefaultToolkit().createImage(PApplet.ICON_IMAGE);
-    frame.setIconImage(image);
+    List<Image> icons = Stream
+      .of("16", "24", "32", "48", "64", "72", "96", "128", "256")
+      .map(res -> "/lib/icons/" + res + "x" + res + "/apps/arduino.png")
+      .map(path -> BaseNoGui.getContentFile(path).getAbsolutePath())
+      .map(absPath -> Toolkit.getDefaultToolkit().createImage(absPath))
+      .collect(Collectors.toList());
+    frame.setIconImages(icons);
   }
 
 

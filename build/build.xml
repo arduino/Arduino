@@ -791,6 +791,10 @@
     <mkdir dir="windows/work" />
     <mkdir dir="windows/work/${staging_hardware_folder}" />
 
+    <copy todir="windows/work/lib">
+      <fileset dir="shared" includes="icons/**/*.png"/>
+    </copy>
+
     <!-- assemble the pde -->
     <mkdir dir="windows/work/lib" />
     <copy todir="windows/work/lib" flatten="true">
