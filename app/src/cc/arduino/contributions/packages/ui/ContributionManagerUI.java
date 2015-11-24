@@ -161,10 +161,10 @@ public class ContributionManagerUI extends InstallerJDialog {
       List<String> errors = new LinkedList<>();
       try {
         setProgressVisible(true, tr("Installing..."));
-        errors.addAll(installer.install(platformToInstall, this::setProgress));
         if (platformToRemove != null && !platformToRemove.isReadOnly()) {
           errors.addAll(installer.remove(platformToRemove));
         }
+        errors.addAll(installer.install(platformToInstall, this::setProgress));
         onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
