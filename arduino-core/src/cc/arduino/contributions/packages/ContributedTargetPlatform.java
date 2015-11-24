@@ -37,10 +37,7 @@ import java.io.File;
 
 public class ContributedTargetPlatform extends LegacyTargetPlatform {
 
-  public ContributedTargetPlatform(String _name, File _folder,
-                                   TargetPackage parent,
-                                   ContributionsIndex index)
-      throws TargetPlatformException {
+  public ContributedTargetPlatform(String _name, File _folder, TargetPackage parent) throws TargetPlatformException {
     super(_name, _folder, parent);
   }
 }

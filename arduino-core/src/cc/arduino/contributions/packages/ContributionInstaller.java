@@ -34,6 +34,7 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
+import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -41,6 +42,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
 import processing.app.PreferencesData;
@@ -62,17 +64,12 @@ import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
 
-  private final ContributionsIndexer indexer;
-  private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
 
-  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier) {
+  public ContributionInstaller(Platform platform, SignatureVerifier signatureVerifier) {
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
-    File stagingFolder = contributionsIndexer.getStagingFolder();
-    indexer = contributionsIndexer;
-    downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
   public synchronized List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
@@ -94,6 +91,8 @@ public class ContributionInstaller {
         toolsIterator.remove();
       }
     }
+
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
 
     // Calculate progress increases
     MultiStepProgress progress = new MultiStepProgress((tools.size() + 1) * 2);
@@ -118,7 +117,7 @@ public class ContributionInstaller {
     }
 
     ContributedPackage pack = contributedPlatform.getParentPackage();
-    File packageFolder = new File(indexer.getPackagesFolder(), pack.getName());
+    File packageFolder = new File(BaseNoGui.indexer.getPackagesFolder(), pack.getName());
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
@@ -137,7 +136,7 @@ public class ContributionInstaller {
       i++;
       ContributedTool tool = entry.getValue();
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
-      Path destFolder = Paths.get(indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
+      Path destFolder = Paths.get(BaseNoGui.indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
 
       Files.createDirectories(destFolder);
       assert toolContrib.getDownloadedFile() != null;
@@ -237,6 +236,7 @@ public class ContributionInstaller {
   }
 
   public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
+    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).peek(pl -> System.out.println(pl.getName() + " " + pl.getVersion())).collect(Collectors.toList());
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
       return new LinkedList<>();
     }
@@ -247,13 +247,9 @@ public class ContributionInstaller {
       errors.add(tr("Error running post install script"));
     }
 
-    FileUtils.recursiveDelete(contributedPlatform.getInstalledFolder());
-    contributedPlatform.setInstalled(false);
-    contributedPlatform.setInstalledFolder(null);
-
     // Check if the tools are no longer needed
     for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
-      if (indexer.isContributedToolUsed(tool)) {
+      if (BaseNoGui.indexer.isContributedToolUsed(contributedPlatform, tool)) {
         continue;
       }
 
@@ -272,6 +268,10 @@ public class ContributionInstaller {
         // ignore
       }
     }
+
+    FileUtils.recursiveDelete(contributedPlatform.getInstalledFolder());
+    contributedPlatform.setInstalled(false);
+    contributedPlatform.setInstalledFolder(null);
 
     return errors;
   }
@@ -324,8 +324,9 @@ public class ContributionInstaller {
     String statusText = tr("Downloading platforms index...");
     URL url = new URL(packageIndexUrl);
     String[] urlPathParts = url.getFile().split("/");
-    File outputFile = indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
+    File outputFile = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
     downloader.download(url, tmpFile, progress, statusText, progressListener);
 
     Files.deleteIfExists(outputFile.toPath());
@@ -335,7 +336,7 @@ public class ContributionInstaller {
   }
 
   public synchronized void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
-    File preferencesFolder = indexer.getIndexFile(".").getParentFile();
+    File preferencesFolder = BaseNoGui.indexer.getIndexFile(".").getParentFile();
     File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
     if (additionalPackageIndexFiles == null) {
       return;

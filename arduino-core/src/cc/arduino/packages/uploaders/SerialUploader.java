@@ -34,9 +34,9 @@
 
 package cc.arduino.packages.uploaders;
 
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import cc.arduino.packages.Uploader;
 import processing.app.*;
-import cc.arduino.LoadVIDPIDSpecificPreferences;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.OSUtils;

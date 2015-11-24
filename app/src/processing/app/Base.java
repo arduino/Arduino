@@ -301,8 +301,8 @@ public class Base {
     this.pdeKeywords = new PdeKeywords();
     this.pdeKeywords.reload();
 
-    contributionInstaller = new ContributionInstaller(BaseNoGui.indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-    libraryInstaller = new LibraryInstaller(BaseNoGui.librariesIndexer, BaseNoGui.getPlatform());
+    contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
 
     parser.parseArgumentsPhase2();
 
@@ -379,7 +379,7 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isInstallLibrary()) {
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
       ProgressListener progressListener = new ConsoleProgressListener();
       indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
@@ -462,7 +462,7 @@ public class Base {
       if (PreferencesData.getBoolean("update.check")) {
         new UpdateCheck(this);
 
-        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
+        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), contributionInstaller, libraryInstaller);
         new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
       }
 
