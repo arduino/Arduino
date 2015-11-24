@@ -310,7 +310,7 @@ public class ContributionsIndexer {
         File folder = platform.getInstalledFolder();
 
         try {
-          TargetPlatform targetPlatform = new ContributedTargetPlatform(arch, folder, targetPackage, index);
+          TargetPlatform targetPlatform = new ContributedTargetPlatform(arch, folder, targetPackage);
           if (!targetPackage.hasPlatform(targetPlatform)) {
             targetPackage.addPlatform(targetPlatform);
           }
@@ -332,11 +332,15 @@ public class ContributionsIndexer {
     return packages;
   }
 
-  public boolean isContributedToolUsed(ContributedTool tool) {
+  public boolean isContributedToolUsed(ContributedPlatform platformToIgnore, ContributedTool tool) {
     for (ContributedPackage pack : index.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (!platform.isInstalled())
+        if (platformToIgnore.equals(platform)) {
           continue;
+        }
+        if (!platform.isInstalled()) {
+          continue;
+        }
         for (ContributedTool requiredTool : platform.getResolvedTools()) {
           if (requiredTool.equals(tool))
             return true;

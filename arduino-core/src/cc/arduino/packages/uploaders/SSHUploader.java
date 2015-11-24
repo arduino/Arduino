@@ -39,8 +39,12 @@ import com.jcraft.jsch.Session;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
-import processing.app.debug.*;
-import processing.app.helpers.*;
+import processing.app.debug.RunnerException;
+import processing.app.debug.TargetPlatform;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
+import processing.app.helpers.StringUtils;
 
 import java.io.File;
 import java.io.IOException;

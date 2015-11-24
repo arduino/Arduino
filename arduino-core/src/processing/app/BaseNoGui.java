@@ -608,7 +608,7 @@ public class BaseNoGui {
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
+    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
     File librariesIndexFile = librariesIndexer.getIndexFile();
     copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
     try {

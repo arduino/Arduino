@@ -30,9 +30,9 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
+import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,12 +50,6 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
   private final String[] columnNames = {"Description"};
 
   private final Class<?>[] columnTypes = {ContributedPlatform.class};
-
-  private LibrariesIndexer indexer;
-
-  public void setIndexer(LibrariesIndexer _index) {
-    indexer = _index;
-  }
 
   Predicate<ContributedLibrary> selectedCategoryFilter = null;
   String selectedFilters[] = null;
@@ -202,8 +196,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   private void updateContributions() {
     contributions.clear();
-    indexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
-    indexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
+    BaseNoGui.librariesIndexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
+    BaseNoGui.librariesIndexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
     Collections.sort(contributions, new ContributedLibraryReleasesComparator("Arduino"));
   }
 

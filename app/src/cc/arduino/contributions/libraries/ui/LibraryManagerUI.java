@@ -31,7 +31,6 @@ package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.*;
@@ -136,17 +135,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
 
-    // TODO: Remove setIndexer and make getContribModel 
-    // return a FilteredAbstractTableModel
-    LibrariesIndexer indexer = BaseNoGui.librariesIndexer;
-    getContribModel().setIndexer(indexer);
-
     categoryFilter = null;
     categoryChooser.removeAllItems();
 
     // Load categories
     categoryChooser.addItem(new DropdownAllItem());
-    Collection<String> categories = indexer.getIndex().getCategories();
+    Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
       categoryChooser.addItem(new DropdownLibraryOfCategoryItem(category));
     }
@@ -163,9 +157,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeFilter = null;
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllItem());
-    typeChooser.addItem(new DropdownUpdatableLibrariesItem(indexer));
-    typeChooser.addItem(new DropdownInstalledLibraryItem(indexer.getIndex()));
-    java.util.List<String> types = new LinkedList<>(indexer.getIndex().getTypes());
+    typeChooser.addItem(new DropdownUpdatableLibrariesItem());
+    typeChooser.addItem(new DropdownInstalledLibraryItem());
+    java.util.List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));

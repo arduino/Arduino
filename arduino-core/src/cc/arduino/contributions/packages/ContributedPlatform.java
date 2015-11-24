@@ -97,4 +97,17 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   public String toString() {
     return getParsedVersion();
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ContributedPlatform)) {
+      return false;
+    }
+
+    ContributedPlatform obj1 = (ContributedPlatform) obj;
+    return getParentPackage().getName().equals(obj1.getParentPackage().getName()) && getArchitecture().equals(obj1.getArchitecture()) && getVersion().equals(obj1.getVersion()) && getName().equals(obj1.getName());
+  }
 }
