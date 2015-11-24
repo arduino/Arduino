@@ -746,7 +746,7 @@ msgstr "Ładowanie zakończone."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr "Pobrano [0}kb z {1}kb."
+msgstr "Pobrano {0}kb z {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
