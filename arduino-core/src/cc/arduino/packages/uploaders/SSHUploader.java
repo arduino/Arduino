@@ -110,6 +110,8 @@ public class SSHUploader extends Uploader {
       SSHClientSetupChainRing sshClientSetupChain = new SSHConfigFileSetup(new SSHPwdSetup());
       session = sshClientSetupChain.setup(port, jSch);
 
+      session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
+
       session.setUserInfo(new NoInteractionUserInfo(PreferencesData.get("runtime.pwd." + port.getAddress())));
       session.connect(30000);
 
