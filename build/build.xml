@@ -861,8 +861,6 @@
     <delete dir="windows/launcher/launch4j"/>
     <antcall target="download-${launch4j-download-unpack-target-name}" />
 
-    <patch patchfile="windows/launcher.timer.patch" strip="1" dir="windows/launcher/launch4j/"/>
-
     <property name="launch4j.dir" value="windows/launcher/launch4j/" />
     <taskdef name="launch4j"
 	     classname="net.sf.launch4j.ant.Launch4jTask"
