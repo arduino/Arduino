@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-11-22 02:00+0000\n"
+"Last-Translator: Andi Chandler <andi@gowling.com>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/mbanzi/arduino-ide-15/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,18 +43,18 @@ msgstr " Used: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' not found. Does your sketch include the line '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -62,7 +62,7 @@ msgstr "(edit only when Arduino is not running)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(legacy)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -225,7 +225,7 @@ msgstr "Archiving the sketch has been canceled because\nthe sketch couldn't save
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -345,7 +345,7 @@ msgstr "Board"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Board {0} (platform {1}, package {2}) is unknown"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -393,7 +393,7 @@ msgstr "Build options changed, rebuilding all"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Built-in Examples"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -480,7 +480,7 @@ msgstr "Comment/Uncomment"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Communication"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -492,7 +492,7 @@ msgstr "Compiling sketch..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Contributed"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -657,11 +657,11 @@ msgstr "Danish (Denmark)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Data Processing"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Data Storage"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -677,7 +677,7 @@ msgstr "Delete"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Device Control"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -691,7 +691,7 @@ msgstr "Discard all changes and reload sketch?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Display"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -910,7 +910,7 @@ msgstr "Error while printing."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Error while setting serial port parameters: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -945,15 +945,15 @@ msgstr "Examples"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Examples from Custom Libraries"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Examples from Libraries"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Export canceled, changes must first be saved."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
@@ -1066,11 +1066,11 @@ msgstr "Global variables use {0} bytes of dynamic memory."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Go to line"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Go to line..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1194,7 +1194,7 @@ msgstr "Invalid library found in {0}: {1}"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "Invalid quoting: no closing [{0}] char found."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1222,7 +1222,7 @@ msgstr "Library added to your libraries. Check \"Include library\" menu"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "Library can't use both 'src' and 'utility' folders. Double check {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1231,7 +1231,7 @@ msgstr "Library is already installed: {0} version {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Line number:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1244,7 +1244,7 @@ msgstr "Loading configuration..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "Looking for recipes like {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1269,7 +1269,7 @@ msgstr "Message"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "Missing '{0}' from library in {1}"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1452,7 +1452,7 @@ msgstr "Open..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Other"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1460,7 +1460,7 @@ msgstr "Page Setup"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1481,7 +1481,7 @@ msgstr "Persian (Iran)"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "Platform {0} (package {1}) is unknown"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
@@ -1601,7 +1601,7 @@ msgstr "Programmer"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Progress {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1609,11 +1609,11 @@ msgstr "Quit"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "RETIRED"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Recommended"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1669,12 +1669,12 @@ msgstr "Romanian"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "Running recipe: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Running: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1757,7 +1757,7 @@ msgstr "Send"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Sensors"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1788,7 +1788,7 @@ msgstr "Serial ports"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "Setting build path to {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -1812,7 +1812,7 @@ msgstr "Show verbose output during: "
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Signal Input/Output"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2048,7 +2048,7 @@ msgstr "Time for a Break"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Timing"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2104,7 +2104,7 @@ msgstr "Unable to connect: wrong password?"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "Unable to find {0} in {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2121,7 +2121,7 @@ msgstr "Unable to reach Arduino.cc due to possible network issues."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Uncategorised"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2130,12 +2130,12 @@ msgstr "Undo"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "Unhandled type {0} in context key {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "Unknown sketch file extension: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2262,12 +2262,12 @@ msgstr "Visit Arduino.cc"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "WARNING: Spurious {0} folder in '{1}' library"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2316,7 +2316,7 @@ msgstr "Warning: platform.txt from core '{0}' contains deprecated {1}, automatic
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "Warning: platform.txt from core '{0}' misses property '{1}', using default value '{2}'. Consider upgrading this core."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -2366,7 +2366,7 @@ msgstr "You can't rename the sketch to \"{0}\"\nbecause the sketch already has a
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
 "because the sketch already has a file with that name."
-msgstr ""
+msgstr "You can't save the sketch as \"{0}\"\nbecause the sketch already has a file with that name."
 
 #: Sketch.java:883
 msgid ""
@@ -2568,12 +2568,12 @@ msgstr "{0} libraries"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} must be a folder"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0} pattern is missing"
 
 #: debug/Compiler.java:365
 #, java-format
