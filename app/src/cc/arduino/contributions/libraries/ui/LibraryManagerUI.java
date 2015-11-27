@@ -207,6 +207,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
         setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Update Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
@@ -225,6 +226,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
         setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Installer Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
@@ -252,6 +254,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
         setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Remove Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }

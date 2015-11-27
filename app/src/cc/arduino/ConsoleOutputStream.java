@@ -54,18 +54,20 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
 
   private final SimpleAttributeSet attributes;
   private final PrintStream printStream;
-  private final StringBuilder buffer;
   private final Timer timer;
+
   private volatile EditorConsole editorConsole;
+  private volatile boolean newLinePrinted;
 
   public ConsoleOutputStream(SimpleAttributeSet attributes, PrintStream printStream) {
     this.attributes = attributes;
     this.printStream = printStream;
-    this.buffer = new StringBuilder();
+    this.newLinePrinted = false;
 
-    this.timer = new Timer(100, (e) -> {
-      if (editorConsole != null) {
+    this.timer = new Timer(500, (e) -> {
+      if (editorConsole != null && newLinePrinted) {
         editorConsole.scrollDown();
+        newLinePrinted = false;
       }
     });
     timer.setRepeats(false);
@@ -76,41 +78,24 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
   }
 
   public synchronized void flush() {
-    String message = toString();
+    String text = toString();
 
-    if (message.length() == 0) {
+    if (text.length() == 0) {
       return;
     }
 
-    handleAppend(message);
+    printStream.print(text);
+    printInConsole(text);
 
     reset();
   }
 
-  private void handleAppend(String message) {
-    resetBufferIfDocumentEmpty();
-
-    buffer.append(message);
-
-    clearBuffer();
-  }
-
-  private void resetBufferIfDocumentEmpty() {
-    if (editorConsole != null && editorConsole.isEmpty()) {
-      buffer.setLength(0);
-    }
-  }
-
-  private void clearBuffer() {
-    String line = buffer.toString();
-    buffer.setLength(0);
-
-    printStream.print(line);
-
+  private void printInConsole(String text) {
+    newLinePrinted = newLinePrinted || text.contains("\n");
     if (editorConsole != null) {
       SwingUtilities.invokeLater(() -> {
         try {
-          editorConsole.insertString(line, attributes);
+          editorConsole.insertString(text, attributes);
         } catch (BadLocationException ble) {
           //ignore
         }

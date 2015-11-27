@@ -147,6 +147,7 @@ public class ContributionManagerUI extends InstallerJDialog {
         setProgressVisible(false, "");
       }
     });
+    installerThread.setName("ContributionManager Update Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
@@ -171,6 +172,7 @@ public class ContributionManagerUI extends InstallerJDialog {
         }
       }
     });
+    installerThread.setName("ContributionManager Install Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
@@ -196,6 +198,7 @@ public class ContributionManagerUI extends InstallerJDialog {
         setProgressVisible(false, "");
       }
     });
+    installerThread.setName("ContributionManager Remove Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }

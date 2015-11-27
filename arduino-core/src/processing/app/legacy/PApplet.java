@@ -497,7 +497,11 @@ public class PApplet {
    */
   static public String[] match(String what, String regexp) {
     Pattern p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
-    Matcher m = p.matcher(what);
+    return match(what, p);
+  }
+
+  static public String[] match(String what, Pattern pattern) {
+    Matcher m = pattern.matcher(what);
     if (m.find()) {
       int count = m.groupCount() + 1;
       String[] groups = new String[count];
