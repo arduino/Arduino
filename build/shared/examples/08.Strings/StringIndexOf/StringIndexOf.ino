@@ -43,22 +43,22 @@ void loop() {
 
   stringOne = "<UL><LI>item<LI>item<LI>item</UL>";
   int firstListItem = stringOne.indexOf("<LI>");
-  int secondListItem = stringOne.indexOf("item", firstListItem + 1);
-  Serial.println("The index of the second list item in the string " + stringOne + " is " + secondClosingBracket);
+  int secondListItem = stringOne.indexOf("<LI>", firstListItem + 1);
+  Serial.println("The index of the second list tag in the string " + stringOne + " is " + secondListItem);
 
   // lastIndexOf() gives you the last occurrence of a character or string:
   int lastOpeningBracket = stringOne.lastIndexOf('<');
   Serial.println("The index of the last < in the string " + stringOne + " is " + lastOpeningBracket);
 
   int lastListItem  = stringOne.lastIndexOf("<LI>");
-  Serial.println("The index of the last list item in the string " + stringOne + " is " + lastListItem);
+  Serial.println("The index of the last list tag in the string " + stringOne + " is " + lastListItem);
 
 
   // lastIndexOf() can also search for a string:
   stringOne = "<p>Lorem ipsum dolor sit amet</p><p>Ipsem</p><p>Quod</p>";
   int lastParagraph = stringOne.lastIndexOf("<p");
   int secondLastGraf = stringOne.lastIndexOf("<p", lastParagraph - 1);
-  Serial.println("The index of the second last paragraph tag " + stringOne + " is " + secondLastGraf);
+  Serial.println("The index of the second to last paragraph tag " + stringOne + " is " + secondLastGraf);
 
   // do nothing while true:
   while (true);
