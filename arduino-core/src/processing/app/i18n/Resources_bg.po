@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-25 07:45+0000\n"
+"PO-Revision-Date: 2015-11-26 11:18+0000\n"
 "Last-Translator: Ivaylo Malinov <mals@mail.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -1739,7 +1739,7 @@ msgstr "Изберете ново местоположение на скицни
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
 msgid "Select version"
-msgstr ""
+msgstr "Избор версия"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
@@ -2123,7 +2123,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Некатегоризирано"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2149,7 +2149,7 @@ msgstr "Неизвестна платформа, няма зададен бра�
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "Обновяем"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2161,7 +2161,7 @@ msgstr "При запис обновявай файловете-скици къ�
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
-msgstr ""
+msgstr "Списък с обновяване на инсталирани библитеки"
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
