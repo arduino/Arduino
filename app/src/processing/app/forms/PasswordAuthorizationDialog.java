@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class PasswordAuthorizationDialog extends JDialog {
 
@@ -36,15 +36,15 @@ public class PasswordAuthorizationDialog extends JDialog {
 
     icon.setIcon(new ImageIcon(new File(Base.getContentFile("lib"), "theme/lock.png").getAbsolutePath()));
 
-    passwordLabel.setText(_("Password:"));
+    passwordLabel.setText(tr("Password:"));
 
     passwordField.setText("");
     passwordField.addActionListener(PasswordAuthorizationDialog.this::uploadButtonPressed);
 
-    uploadButton.setText(_("Upload"));
+    uploadButton.setText(tr("Upload"));
     uploadButton.addActionListener(PasswordAuthorizationDialog.this::uploadButtonPressed);
 
-    cancelButton.setText(_("Cancel"));
+    cancelButton.setText(tr("Cancel"));
     cancelButton.addActionListener(PasswordAuthorizationDialog.this::cancelButtonPressed);
 
     Base.registerWindowCloseKeys(getRootPane(), this::cancelButtonPressed);

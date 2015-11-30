@@ -29,14 +29,21 @@
 
 package cc.arduino.utils.network;
 
+import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
+import processing.app.PreferencesData;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Observable;
 
 public class FileDownloader extends Observable {
@@ -110,6 +117,24 @@ public class FileDownloader extends Observable {
   }
 
   public void download() throws InterruptedException {
+    if ("file".equals(downloadUrl.getProtocol())) {
+      saveLocalFile();
+    } else {
+      downloadFile();
+    }
+  }
+
+  private void saveLocalFile() {
+    try {
+      Files.write(outputFile.toPath(), Files.readAllBytes(Paths.get(downloadUrl.getPath())));
+      setStatus(Status.COMPLETE);
+    } catch (Exception e) {
+      setStatus(Status.ERROR);
+      setError(e);
+    }
+  }
+
+  private void downloadFile() throws InterruptedException {
     RandomAccessFile file = null;
 
     try {
@@ -120,7 +145,10 @@ public class FileDownloader extends Observable {
 
       setStatus(Status.CONNECTING);
 
-      Proxy proxy = ProxySelector.getDefault().select(downloadUrl.toURI()).get(0);
+      Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(downloadUrl.toURI());
+      if ("true".equals(System.getProperty("DEBUG"))) {
+        System.err.println("Using proxy " + proxy);
+      }
 
       HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
 
@@ -140,7 +168,7 @@ public class FileDownloader extends Observable {
       if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
         URL newUrl = new URL(connection.getHeaderField("Location"));
 
-        proxy = ProxySelector.getDefault().select(newUrl.toURI()).get(0);
+        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
 
         // open the new connnection again
         connection = (HttpURLConnection) newUrl.openConnection(proxy);

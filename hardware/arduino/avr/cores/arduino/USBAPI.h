@@ -32,6 +32,12 @@ typedef unsigned long u32;
 
 #include "Arduino.h"
 
+// This definitions is usefull if you want to reduce the EP_SIZE to 16
+// at the moment only 64 and 16 as EP_SIZE for all EPs are supported except the control endpoint
+#ifndef USB_EP_SIZE
+#define USB_EP_SIZE 64
+#endif
+
 #if defined(USBCON)
 
 #include "USBDesc.h"
@@ -40,6 +46,14 @@ typedef unsigned long u32;
 //================================================================================
 //================================================================================
 //	USB
+
+#define EP_TYPE_CONTROL				(0x00)
+#define EP_TYPE_BULK_IN				((1<<EPTYPE1) | (1<<EPDIR))
+#define EP_TYPE_BULK_OUT			(1<<EPTYPE1)
+#define EP_TYPE_INTERRUPT_IN		((1<<EPTYPE1) | (1<<EPTYPE0) | (1<<EPDIR))
+#define EP_TYPE_INTERRUPT_OUT		((1<<EPTYPE1) | (1<<EPTYPE0))
+#define EP_TYPE_ISOCHRONOUS_IN		((1<<EPTYPE0) | (1<<EPDIR))
+#define EP_TYPE_ISOCHRONOUS_OUT		(1<<EPTYPE0)
 
 class USBDevice_
 {
@@ -50,6 +64,7 @@ public:
 	void attach();
 	void detach();	// Serial port goes down too...
 	void poll();
+	bool wakeupHost(); // returns false, when wakeup cannot be processed
 };
 extern USBDevice_ USBDevice;
 
@@ -60,7 +75,7 @@ extern USBDevice_ USBDevice;
 struct ring_buffer;
 
 #ifndef SERIAL_BUFFER_SIZE
-#if (RAMEND < 1000)
+#if ((RAMEND - RAMSTART) < 1023)
 #define SERIAL_BUFFER_SIZE 16
 #else
 #define SERIAL_BUFFER_SIZE 64
@@ -83,6 +98,7 @@ public:
 	virtual int available(void);
 	virtual int peek(void);
 	virtual int read(void);
+	int availableForWrite(void);
 	virtual void flush(void);
 	virtual size_t write(uint8_t);
 	virtual size_t write(const uint8_t*, size_t);
@@ -92,6 +108,46 @@ public:
 	volatile uint8_t _rx_buffer_head;
 	volatile uint8_t _rx_buffer_tail;
 	unsigned char _rx_buffer[SERIAL_BUFFER_SIZE];
+
+	// This method allows processing "SEND_BREAK" requests sent by
+	// the USB host. Those requests indicate that the host wants to
+	// send a BREAK signal and are accompanied by a single uint16_t
+	// value, specifying the duration of the break. The value 0
+	// means to end any current break, while the value 0xffff means
+	// to start an indefinite break.
+	// readBreak() will return the value of the most recent break
+	// request, but will return it at most once, returning -1 when
+	// readBreak() is called again (until another break request is
+	// received, which is again returned once).
+	// This also mean that if two break requests are received
+	// without readBreak() being called in between, the value of the
+	// first request is lost.
+	// Note that the value returned is a long, so it can return
+	// 0-0xffff as well as -1.
+	int32_t readBreak();
+
+	// These return the settings specified by the USB host for the
+	// serial port. These aren't really used, but are offered here
+	// in case a sketch wants to act on these settings.
+	uint32_t baud();
+	uint8_t stopbits();
+	uint8_t paritytype();
+	uint8_t numbits();
+	bool dtr();
+	bool rts();
+	enum {
+		ONE_STOP_BIT = 0,
+		ONE_AND_HALF_STOP_BIT = 1,
+		TWO_STOP_BITS = 2,
+	};
+	enum {
+		NO_PARITY = 0,
+		ODD_PARITY = 1,
+		EVEN_PARITY = 2,
+		MARK_PARITY = 3,
+		SPACE_PARITY = 4,
+	};
+
 };
 extern Serial_ Serial;
 
@@ -99,98 +155,7 @@ extern Serial_ Serial;
 
 //================================================================================
 //================================================================================
-//	Mouse
-
-#define MOUSE_LEFT 1
-#define MOUSE_RIGHT 2
-#define MOUSE_MIDDLE 4
-#define MOUSE_ALL (MOUSE_LEFT | MOUSE_RIGHT | MOUSE_MIDDLE)
-
-class Mouse_
-{
-private:
-	uint8_t _buttons;
-	void buttons(uint8_t b);
-public:
-	Mouse_(void);
-	void begin(void);
-	void end(void);
-	void click(uint8_t b = MOUSE_LEFT);
-	void move(signed char x, signed char y, signed char wheel = 0);	
-	void press(uint8_t b = MOUSE_LEFT);		// press LEFT by default
-	void release(uint8_t b = MOUSE_LEFT);	// release LEFT by default
-	bool isPressed(uint8_t b = MOUSE_LEFT);	// check LEFT by default
-};
-extern Mouse_ Mouse;
-
-//================================================================================
-//================================================================================
-//	Keyboard
-
-#define KEY_LEFT_CTRL		0x80
-#define KEY_LEFT_SHIFT		0x81
-#define KEY_LEFT_ALT		0x82
-#define KEY_LEFT_GUI		0x83
-#define KEY_RIGHT_CTRL		0x84
-#define KEY_RIGHT_SHIFT		0x85
-#define KEY_RIGHT_ALT		0x86
-#define KEY_RIGHT_GUI		0x87
-
-#define KEY_UP_ARROW		0xDA
-#define KEY_DOWN_ARROW		0xD9
-#define KEY_LEFT_ARROW		0xD8
-#define KEY_RIGHT_ARROW		0xD7
-#define KEY_BACKSPACE		0xB2
-#define KEY_TAB				0xB3
-#define KEY_RETURN			0xB0
-#define KEY_ESC				0xB1
-#define KEY_INSERT			0xD1
-#define KEY_DELETE			0xD4
-#define KEY_PAGE_UP			0xD3
-#define KEY_PAGE_DOWN		0xD6
-#define KEY_HOME			0xD2
-#define KEY_END				0xD5
-#define KEY_CAPS_LOCK		0xC1
-#define KEY_F1				0xC2
-#define KEY_F2				0xC3
-#define KEY_F3				0xC4
-#define KEY_F4				0xC5
-#define KEY_F5				0xC6
-#define KEY_F6				0xC7
-#define KEY_F7				0xC8
-#define KEY_F8				0xC9
-#define KEY_F9				0xCA
-#define KEY_F10				0xCB
-#define KEY_F11				0xCC
-#define KEY_F12				0xCD
-
-//	Low level key report: up to 6 keys and shift, ctrl etc at once
-typedef struct
-{
-	uint8_t modifiers;
-	uint8_t reserved;
-	uint8_t keys[6];
-} KeyReport;
-
-class Keyboard_ : public Print
-{
-private:
-	KeyReport _keyReport;
-	void sendReport(KeyReport* keys);
-public:
-	Keyboard_(void);
-	void begin(void);
-	void end(void);
-	virtual size_t write(uint8_t k);
-	virtual size_t press(uint8_t k);
-	virtual size_t release(uint8_t k);
-	virtual void releaseAll(void);
-};
-extern Keyboard_ Keyboard;
-
-//================================================================================
-//================================================================================
-//	Low level API
+//  Low level API
 
 typedef struct
 {
@@ -200,16 +165,7 @@ typedef struct
 	uint8_t wValueH;
 	uint16_t wIndex;
 	uint16_t wLength;
-} Setup;
-
-//================================================================================
-//================================================================================
-//	HID 'Driver'
-
-int		HID_GetInterface(uint8_t* interfaceNum);
-int		HID_GetDescriptor(int i);
-bool	HID_Setup(Setup& setup);
-void	HID_SendReport(uint8_t id, const void* data, int len);
+} USBSetup;
 
 //================================================================================
 //================================================================================
@@ -217,7 +173,7 @@ void	HID_SendReport(uint8_t id, const void* data, int len);
 
 int		MSC_GetInterface(uint8_t* interfaceNum);
 int		MSC_GetDescriptor(int i);
-bool	MSC_Setup(Setup& setup);
+bool	MSC_Setup(USBSetup& setup);
 bool	MSC_Data(uint8_t rx,uint8_t tx);
 
 //================================================================================
@@ -226,7 +182,7 @@ bool	MSC_Data(uint8_t rx,uint8_t tx);
 
 int		CDC_GetInterface(uint8_t* interfaceNum);
 int		CDC_GetDescriptor(int i);
-bool	CDC_Setup(Setup& setup);
+bool	CDC_Setup(USBSetup& setup);
 
 //================================================================================
 //================================================================================
@@ -239,6 +195,7 @@ int USB_SendControl(uint8_t flags, const void* d, int len);
 int USB_RecvControl(void* d, int len);
 
 uint8_t	USB_Available(uint8_t ep);
+uint8_t USB_SendSpace(uint8_t ep);
 int USB_Send(uint8_t ep, const void* data, int len);	// blocking
 int USB_Recv(uint8_t ep, void* data, int len);		// non-blocking
 int USB_Recv(uint8_t ep);							// non-blocking

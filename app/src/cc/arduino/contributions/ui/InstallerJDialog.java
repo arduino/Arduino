@@ -43,7 +43,7 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -92,7 +92,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       categoryChooser.setMaximumRowCount(20);
       categoryChooser.setEnabled(false);
 
-      filterField = new FilterJTextField(_("Filter your search...")) {
+      filterField = new FilterJTextField(tr("Filter your search...")) {
         @Override
         protected void onFilter(String[] _filters) {
           filters = _filters;
@@ -106,7 +106,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       filtersContainer = new JPanel();
       filtersContainer.setLayout(new BoxLayout(filtersContainer, BoxLayout.X_AXIS));
       filtersContainer.add(Box.createHorizontalStrut(5));
-      filtersContainer.add(new JLabel(_("Type")));
+      filtersContainer.add(new JLabel(tr("Type")));
       filtersContainer.add(Box.createHorizontalStrut(5));
       filtersContainer.add(categoryChooser);
       filtersContainer.add(Box.createHorizontalStrut(5));
@@ -169,7 +169,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
     errorMessage.setForeground(Color.RED);
 
     {
-      JButton cancelButton = new JButton(_("Cancel"));
+      JButton cancelButton = new JButton(tr("Cancel"));
       cancelButton.addActionListener(arg0 -> onCancelPressed());
 
       progressBox = Box.createHorizontalBox();
@@ -177,13 +177,13 @@ public abstract class InstallerJDialog<T> extends JDialog {
       progressBox.add(Box.createHorizontalStrut(5));
       progressBox.add(cancelButton);
 
-      dismissErrorMessageButton = new JButton(_("OK"));
+      dismissErrorMessageButton = new JButton(tr("OK"));
       dismissErrorMessageButton.addActionListener(arg0 -> {
         clearErrorMessage();
         setErrorMessageVisible(false);
       });
 
-      closeButton = new JButton(_("Close"));
+      closeButton = new JButton(tr("Close"));
       closeButton.addActionListener(arg0 -> InstallerJDialog.this.dispatchEvent(new WindowEvent(InstallerJDialog.this, WindowEvent.WINDOW_CLOSING)));
 
       errorMessageBox = Box.createHorizontalBox();
@@ -274,6 +274,19 @@ public abstract class InstallerJDialog<T> extends JDialog {
       listener.focusGained(new FocusEvent(filterField, FocusEvent.FOCUS_GAINED));
     }
     filterField.setText(filterText);
+  }
+
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(categoryChooser, dropdownItem);
+  }
+
+  public void selectDropdownItemByClassName(JComboBox combo, String dropdownItem) {
+    for (int i = 0; i < combo.getItemCount(); i++) {
+      if (dropdownItem.equals(combo.getItemAt(i).getClass().getSimpleName())) {
+        combo.setSelectedIndex(i);
+        return;
+      }
+    }
   }
 
   /**

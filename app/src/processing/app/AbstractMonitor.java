@@ -1,46 +1,25 @@
 package processing.app;
 
-import static processing.app.I18n._;
+import cc.arduino.packages.BoardPort;
+import processing.app.legacy.PApplet;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultCaret;
-
-import cc.arduino.packages.BoardPort;
-import processing.app.debug.TextAreaFIFO;
-import processing.app.legacy.PApplet;
-
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
-  private boolean monitorEnabled;
   private boolean closed;
 
   private StringBuffer updateBuffer;
   private Timer updateTimer;
 
   private BoardPort boardPort;
-  
+
   protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000"};
 
   public AbstractMonitor(BoardPort boardPort) {
@@ -98,17 +77,15 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
 
-    monitorEnabled = true;
     closed = false;
   }
-  
+
   protected abstract void onCreateWindow(Container mainPane);
 
   public void enableWindow(boolean enable) {
     onEnableWindow(enable);
-    monitorEnabled = enable;
   }
-  
+
   protected abstract void onEnableWindow(boolean enable);
 
   // Puts the window in suspend state, closing the serial port
@@ -177,6 +154,9 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   }
 
   public void setBoardPort(BoardPort boardPort) {
+    if (boardPort == null) {
+      return;
+    }
     setTitle(boardPort.getLabel());
     this.boardPort = boardPort;
   }
@@ -190,7 +170,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     updateBuffer.setLength(0);
     return s;
   }
-  
+
   public void actionPerformed(ActionEvent e) {
     String s = consumeUpdateBuffer();
     if (s.isEmpty()) {

@@ -30,7 +30,8 @@
 package cc.arduino.contributions.packages.filters;
 
 import cc.arduino.contributions.packages.ContributedPlatform;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class PlatformArchitecturePredicate implements Predicate<ContributedPlatform> {
 
@@ -41,7 +42,7 @@ public class PlatformArchitecturePredicate implements Predicate<ContributedPlatf
   }
 
   @Override
-  public boolean apply(ContributedPlatform contributedPlatform) {
+  public boolean test(ContributedPlatform contributedPlatform) {
     return platformArch.equals(contributedPlatform.getArchitecture());
   }
 

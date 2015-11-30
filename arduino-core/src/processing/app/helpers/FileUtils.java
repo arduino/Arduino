@@ -3,6 +3,8 @@ package processing.app.helpers;
 import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -56,12 +58,12 @@ public class FileUtils {
   public static void copy(File sourceFolder, File destFolder) throws IOException {
     for (File file : sourceFolder.listFiles()) {
       File destFile = new File(destFolder, file.getName());
-      if (file.isDirectory()) {
-        if (!destFile.mkdir()) {
+      if (file.isDirectory() && !SOURCE_CONTROL_FOLDERS.contains(file.getName())) {
+        if (!destFile.exists() && !destFile.mkdir()) {
           throw new IOException("Unable to create folder: " + destFile);
         }
         copy(file, destFile);
-      } else {
+      } else if (!file.isDirectory()) {
         copyFile(file, destFile);
       }
     }
@@ -84,15 +86,27 @@ public class FileUtils {
   }
 
   public static File createTempFolder() throws IOException {
-    return createTempFolderIn(new File(System.getProperty("java.io.tmpdir")));
+    return createTempFolder(new File(System.getProperty("java.io.tmpdir")));
   }
 
-  public static File createTempFolderIn(File parent) throws IOException {
-    File tmpFolder = new File(parent, "arduino_" + new Random().nextInt(1000000));
-    if (!tmpFolder.mkdir()) {
-      throw new IOException("Unable to create temp folder " + tmpFolder);
-    }
-    return tmpFolder;
+  public static File createTempFolder(File parent) throws IOException {
+    return createTempFolder(parent, "arduino_");
+  }
+
+  public static File createTempFolder(File parent, String prefix) throws IOException {
+    return createTempFolder(parent, prefix, Integer.toString(new Random().nextInt(1000000)));
+  }
+
+  public static File createTempFolder(String prefix) throws IOException {
+    return createTempFolder(new File(System.getProperty("java.io.tmpdir")), prefix);
+  }
+
+  public static File createTempFolder(String prefix, String suffix) throws IOException {
+    return createTempFolder(new File(System.getProperty("java.io.tmpdir")), prefix, suffix);
+  }
+
+  public static File createTempFolder(File parent, String prefix, String suffix) throws IOException {
+    return Files.createDirectories(Paths.get(parent.getAbsolutePath(), prefix + suffix)).toFile();
   }
 
   //

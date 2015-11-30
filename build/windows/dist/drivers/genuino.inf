@@ -1,0 +1,105 @@
+;
+; Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+;
+; Developed by Zach Eveland, Blacklabel Development, Inc.
+;
+; Arduino is free software; you can redistribute it and/or modify
+; it under the terms of the GNU General Public License as published by
+; the Free Software Foundation; either version 2 of the License, or
+; (at your option) any later version.
+;
+; This program is distributed in the hope that it will be useful,
+; but WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+; GNU General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, write to the Free Software
+; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+;
+; As a special exception, you may use this file as part of a free software
+; library without restriction.  Specifically, if other files instantiate
+; templates or use macros or inline functions from this file, or you compile
+; this file and link it with other files to produce an executable, this
+; file does not by itself cause the resulting executable to be covered by
+; the GNU General Public License.  This exception does not however
+; invalidate any other reasons why the executable file might be covered by
+; the GNU General Public License.
+;
+
+[Strings]
+DriverPackageDisplayName="Genuino USB Driver"
+ManufacturerName="Arduino LLC (www.arduino.cc)"
+ServiceName="USB RS-232 Emulation Driver"
+unoR3.name="Genuino Uno"
+mega2560rev3.name="Genuino Mega 2560"
+micro.bootloader.name="Genuino Micro bootloader"
+micro.sketch.name="Genuino Micro"
+zero.sketch.name="Genuino Zero"
+zero.bootloader.name="Genuino Zero bootloader"
+
+[DefaultInstall]
+CopyINF=genuino.inf
+
+[Version]
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Signature="$Windows NT$"
+Provider=%ManufacturerName%
+DriverPackageDisplayName=%DriverPackageDisplayName%
+CatalogFile=genuino.cat
+DriverVer=10/25/2015,1.0.2.0
+
+[Manufacturer]
+%ManufacturerName%=DeviceList, NTamd64, NTia64
+
+[DestinationDirs]
+FakeModemCopyFileSection=12
+DefaultDestDir=12
+
+[DeviceList]
+%mega2560rev3.name%=DriverInstall, USB\VID_2341&PID_0242
+%micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
+%micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
+%unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
+
+[DeviceList.NTamd64]
+%mega2560rev3.name%=DriverInstall, USB\VID_2341&PID_0242
+%micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
+%micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
+%unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
+
+[DeviceList.NTia64]
+%mega2560rev3.name%=DriverInstall, USB\VID_2341&PID_0242
+%micro.bootloader.name%=DriverInstall, USB\VID_2341&PID_0237
+%micro.sketch.name%=DriverInstall, USB\VID_2341&PID_8237&MI_00
+%unoR3.name%=DriverInstall, USB\VID_2341&PID_0243
+%zero.sketch.name%=DriverInstall, USB\VID_2341&PID_824D&MI_00
+%zero.bootloader.name%=DriverInstall, USB\VID_2341&PID_024D
+
+[DriverInstall]
+include=mdmcpq.inf,usb.inf
+CopyFiles = FakeModemCopyFileSection
+AddReg=DriverAddReg
+
+[DriverAddReg]
+HKR,,DevLoader,,*ntkern 
+HKR,,NTMPDriver,,usbser.sys 
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.Services]
+include=mdmcpq.inf
+AddService=usbser, 0x00000002, DriverService
+
+[DriverService]
+DisplayName=%ServiceName%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+LoadOrderGroup=Base
+

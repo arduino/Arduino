@@ -38,7 +38,7 @@ public class JsonDownloaderTest {
 
   @Test
   public void testJsonDownload() throws Exception {
-    new JsonDownloader(downloader, new URL("http://downloads.arduino.cc/libraries/library_index.json")).download(tempFile, new MultiStepProgress(1), "");
+    new JsonDownloader(downloader, new URL("http://downloads.arduino.cc/libraries/library_index.json")).download(tempFile, new MultiStepProgress(1), "", new NoopProgressListener());
 
     InputStream indexIn = new FileInputStream(tempFile);
     ObjectMapper mapper = new ObjectMapper();

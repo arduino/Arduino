@@ -32,16 +32,17 @@ package cc.arduino.contributions.packages;
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
+import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
+import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
-import cc.arduino.utils.Progress;
-import com.google.common.collect.Collections2;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
 import processing.app.PreferencesData;
@@ -53,32 +54,25 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
 
-  private final ContributionsIndexer indexer;
-  private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
 
-  public ContributionInstaller(ContributionsIndexer contributionsIndexer, Platform platform, SignatureVerifier signatureVerifier) {
+  public ContributionInstaller(Platform platform, SignatureVerifier signatureVerifier) {
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
-    File stagingFolder = contributionsIndexer.getStagingFolder();
-    indexer = contributionsIndexer;
-    downloader = new DownloadableContributionsDownloader(stagingFolder) {
-      @Override
-      protected void onProgress(Progress progress) {
-        ContributionInstaller.this.onProgress(progress);
-      }
-    };
   }
 
-  public List<String> install(ContributedPlatform contributedPlatform) throws Exception {
+  public synchronized List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
     List<String> errors = new LinkedList<>();
     if (contributedPlatform.isInstalled()) {
       throw new Exception("Platform is already installed!");
@@ -91,12 +85,14 @@ public class ContributionInstaller {
       ContributedTool tool = toolsIterator.next();
       DownloadableContribution downloadable = tool.getDownloadableContribution(platform);
       if (downloadable == null) {
-        throw new Exception(format(_("Tool {0} is not available for your operating system."), tool.getName()));
+        throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
       if (downloadable.isInstalled()) {
         toolsIterator.remove();
       }
     }
+
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
 
     // Calculate progress increases
     MultiStepProgress progress = new MultiStepProgress((tools.size() + 1) * 2);
@@ -104,15 +100,15 @@ public class ContributionInstaller {
     // Download all
     try {
       // Download platform
-      downloader.download(contributedPlatform, progress, _("Downloading boards definitions."));
+      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener);
       progress.stepDone();
 
       // Download tools
       int i = 1;
       for (ContributedTool tool : tools) {
-        String msg = format(_("Downloading tools ({0}/{1})."), i, tools.size());
+        String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg);
+        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
         progress.stepDone();
       }
     } catch (InterruptedException e) {
@@ -121,38 +117,43 @@ public class ContributionInstaller {
     }
 
     ContributedPackage pack = contributedPlatform.getParentPackage();
-    File packageFolder = new File(indexer.getPackagesFolder(), pack.getName());
+    File packageFolder = new File(BaseNoGui.indexer.getPackagesFolder(), pack.getName());
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
     // all the temporary folders and abort installation.
 
-    // Unzip tools on the correct location
-    File toolsFolder = new File(packageFolder, "tools");
-    int i = 1;
-    for (ContributedTool tool : tools) {
-      progress.setStatus(format(_("Installing tools ({0}/{1})..."), i, tools.size()));
-      onProgress(progress);
-      i++;
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
-      File destFolder = new File(toolsFolder, tool.getName() + File.separator + tool.getVersion());
+    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform.getResolvedToolReferences().entrySet()
+      .stream()
+      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled())
+      .collect(Collectors.toList());
 
-      Files.createDirectories(destFolder.toPath());
+
+    int i = 1;
+    for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {
+      progress.setStatus(format(tr("Installing tools ({0}/{1})..."), i, resolvedToolReferences.size()));
+      progressListener.onProgress(progress);
+      i++;
+      ContributedTool tool = entry.getValue();
+      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
+      Path destFolder = Paths.get(BaseNoGui.indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
+
+      Files.createDirectories(destFolder);
       assert toolContrib.getDownloadedFile() != null;
-      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder, 1);
+      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
-        findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+        findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
       } catch (IOException e) {
-        errors.add(_("Error running post install script"));
+        errors.add(tr("Error running post install script"));
       }
       toolContrib.setInstalled(true);
-      toolContrib.setInstalledFolder(destFolder);
+      toolContrib.setInstalledFolder(destFolder.toFile());
       progress.stepDone();
     }
 
     // Unpack platform on the correct location
-    progress.setStatus(_("Installing boards..."));
-    onProgress(progress);
+    progress.setStatus(tr("Installing boards..."));
+    progressListener.onProgress(progress);
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
     Files.createDirectories(destFolder.toPath());
@@ -163,18 +164,18 @@ public class ContributionInstaller {
       findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
     } catch (IOException e) {
       e.printStackTrace();
-      errors.add(_("Error running post install script"));
+      errors.add(tr("Error running post install script"));
     }
     progress.stepDone();
 
-    progress.setStatus(_("Installation completed!"));
-    onProgress(progress);
+    progress.setStatus(tr("Installation completed!"));
+    progressListener.onProgress(progress);
 
     return errors;
   }
 
   private void findAndExecutePostInstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
-    Collection<File> scripts = Collections2.filter(platform.postInstallScripts(folder), new FileExecutablePredicate());
+    Collection<File> scripts = platform.postInstallScripts(folder).stream().filter(new FileExecutablePredicate()).collect(Collectors.toList());
 
     if (scripts.isEmpty()) {
       String[] subfolders = folder.list(new OnlyDirs());
@@ -190,7 +191,7 @@ public class ContributionInstaller {
   }
 
   private void findAndExecutePreUninstallScriptIfAny(File folder, boolean trusted, boolean trustAll) throws IOException {
-    Collection<File> scripts = Collections2.filter(platform.preUninstallScripts(folder), new FileExecutablePredicate());
+    Collection<File> scripts = platform.preUninstallScripts(folder).stream().filter(new FileExecutablePredicate()).collect(Collectors.toList());
 
     if (scripts.isEmpty()) {
       String[] subfolders = folder.list(new OnlyDirs());
@@ -209,12 +210,12 @@ public class ContributionInstaller {
     File script = postInstallScripts.iterator().next();
 
     if (!trusted && !trustAll) {
-      System.err.println(I18n.format(_("Warning: non trusted contribution, skipping script execution ({0})"), script));
+      System.err.println(I18n.format(tr("Warning: non trusted contribution, skipping script execution ({0})"), script));
       return;
     }
 
     if (trustAll) {
-      System.err.println(I18n.format(_("Warning: forced untrusted script execution ({0})"), script));
+      System.err.println(I18n.format(tr("Warning: forced untrusted script execution ({0})"), script));
     }
 
     ByteArrayOutputStream stdout = new ByteArrayOutputStream();
@@ -234,7 +235,8 @@ public class ContributionInstaller {
     }
   }
 
-  public List<String> remove(ContributedPlatform contributedPlatform) {
+  public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
+    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).peek(pl -> System.out.println(pl.getName() + " " + pl.getVersion())).collect(Collectors.toList());
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
       return new LinkedList<>();
     }
@@ -242,16 +244,12 @@ public class ContributionInstaller {
     try {
       findAndExecutePreUninstallScriptIfAny(contributedPlatform.getInstalledFolder(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
     } catch (IOException e) {
-      errors.add(_("Error running post install script"));
+      errors.add(tr("Error running post install script"));
     }
-
-    FileUtils.recursiveDelete(contributedPlatform.getInstalledFolder());
-    contributedPlatform.setInstalled(false);
-    contributedPlatform.setInstalledFolder(null);
 
     // Check if the tools are no longer needed
     for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
-      if (indexer.isContributedToolUsed(tool)) {
+      if (BaseNoGui.indexer.isContributedToolUsed(contributedPlatform, tool)) {
         continue;
       }
 
@@ -271,14 +269,18 @@ public class ContributionInstaller {
       }
     }
 
+    FileUtils.recursiveDelete(contributedPlatform.getInstalledFolder());
+    contributedPlatform.setInstalled(false);
+    contributedPlatform.setInstalledFolder(null);
+
     return errors;
   }
 
-  public List<String> updateIndex() throws Exception {
+  public synchronized List<String> updateIndex(ProgressListener progressListener) throws Exception {
     MultiStepProgress progress = new MultiStepProgress(1);
 
     List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
-    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL);
+    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL, progressListener);
 
     Set<String> packageIndexURLs = new HashSet<>();
     String additionalURLs = PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "");
@@ -287,7 +289,11 @@ public class ContributionInstaller {
     }
 
     for (String packageIndexURL : packageIndexURLs) {
-      downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL);
+      try {
+        downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
+      } catch (Exception e) {
+        System.err.println(e.getMessage());
+      }
     }
 
     progress.stepDone();
@@ -295,11 +301,11 @@ public class ContributionInstaller {
     return downloadedPackageIndexFilesAccumulator;
   }
 
-  private void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedPackagedIndexFilesAccumulator, String packageIndexUrl) throws Exception {
-    File packageIndex = download(progress, packageIndexUrl);
+  private void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedPackagedIndexFilesAccumulator, String packageIndexUrl, ProgressListener progressListener) throws Exception {
+    File packageIndex = download(progress, packageIndexUrl, progressListener);
     downloadedPackagedIndexFilesAccumulator.add(packageIndex.getName());
     try {
-      File packageIndexSignature = download(progress, packageIndexUrl + ".sig");
+      File packageIndexSignature = download(progress, packageIndexUrl + ".sig", progressListener);
       boolean signatureVerified = signatureVerifier.isSigned(packageIndex);
       if (signatureVerified) {
         downloadedPackagedIndexFilesAccumulator.add(packageIndexSignature.getName());
@@ -307,40 +313,30 @@ public class ContributionInstaller {
         downloadedPackagedIndexFilesAccumulator.remove(packageIndex.getName());
         Files.delete(packageIndex.toPath());
         Files.delete(packageIndexSignature.toPath());
-        System.err.println(I18n.format(_("{0} file signature verification failed. File ignored."), packageIndexUrl));
+        System.err.println(I18n.format(tr("{0} file signature verification failed. File ignored."), packageIndexUrl));
       }
     } catch (Exception e) {
       //ignore errors
     }
   }
 
-  private File download(MultiStepProgress progress, String packageIndexUrl) throws Exception {
-    String statusText = _("Downloading platforms index...");
+  private File download(MultiStepProgress progress, String packageIndexUrl, ProgressListener progressListener) throws Exception {
+    String statusText = tr("Downloading platforms index...");
     URL url = new URL(packageIndexUrl);
     String[] urlPathParts = url.getFile().split("/");
-    File outputFile = indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
+    File outputFile = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
-    downloader.download(url, tmpFile, progress, statusText);
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
+    downloader.download(url, tmpFile, progress, statusText, progressListener);
 
-    // Replace old index with the updated one
-    if (outputFile.exists()) {
-      if (!outputFile.delete()) {
-        throw new Exception("An error occurred while updating platforms index! I can't delete file " + outputFile);
-      }
-    }
-    if (!tmpFile.renameTo(outputFile)) {
-      throw new Exception("An error occurred while updating platforms index! I can't rename file " + tmpFile);
-    }
+    Files.deleteIfExists(outputFile.toPath());
+    Files.move(tmpFile.toPath(), outputFile.toPath());
 
     return outputFile;
   }
 
-  protected void onProgress(Progress progress) {
-    // Empty
-  }
-
-  public void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
-    File preferencesFolder = indexer.getIndexFile(".").getParentFile();
+  public synchronized void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
+    File preferencesFolder = BaseNoGui.indexer.getIndexFile(".").getParentFile();
     File[] additionalPackageIndexFiles = preferencesFolder.listFiles(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME));
     if (additionalPackageIndexFiles == null) {
       return;

@@ -34,12 +34,12 @@ import cc.arduino.contributions.filters.NoopPredicate;
 
 import java.util.function.Predicate;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
 
   public String toString() {
-    return _("All");
+    return tr("All");
   }
 
   @Override

@@ -31,15 +31,16 @@ package cc.arduino.contributions;
 
 import processing.app.I18n;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
+@SuppressWarnings("serial")
 public class SignatureVerificationFailedException extends Exception {
 
   public SignatureVerificationFailedException(String filename) {
-    super(I18n.format(_("{0} file signature verification failed"), filename));
+    super(I18n.format(tr("{0} file signature verification failed"), filename));
   }
 
   public SignatureVerificationFailedException(String filename, Throwable cause) {
-    super(I18n.format(_("{0} file signature verification failed"), filename), cause);
+    super(I18n.format(tr("{0} file signature verification failed"), filename), cause);
   }
 }

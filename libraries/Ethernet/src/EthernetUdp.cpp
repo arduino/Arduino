@@ -118,7 +118,12 @@ size_t EthernetUDP::write(const uint8_t *buffer, size_t size)
 int EthernetUDP::parsePacket()
 {
   // discard any remaining bytes in the last packet
-  flush();
+  while (_remaining) {
+    // could this fail (loop endlessly) if _remaining > 0 and recv in read fails?
+    // should only occur if recv fails after telling us the data is there, lets
+    // hope the w5100 always behaves :)
+    read();
+  }
 
   if (recvAvailable(_sock) > 0)
   {
@@ -206,14 +211,7 @@ int EthernetUDP::peek()
 
 void EthernetUDP::flush()
 {
-  // could this fail (loop endlessly) if _remaining > 0 and recv in read fails?
-  // should only occur if recv fails after telling us the data is there, lets
-  // hope the w5100 always behaves :)
-
-  while (_remaining)
-  {
-    read();
-  }
+  // TODO: we should wait for TX buffer to be emptied
 }
 
 /* Start EthernetUDP socket, listening at local port PORT */

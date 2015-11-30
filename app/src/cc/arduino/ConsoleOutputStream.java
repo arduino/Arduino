@@ -40,7 +40,6 @@ import processing.app.EditorConsole;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -55,70 +54,48 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
 
   private final SimpleAttributeSet attributes;
   private final PrintStream printStream;
-  private final StringBuilder buffer;
   private final Timer timer;
-  private JScrollPane scrollPane;
-  private Document document;
+
+  private volatile EditorConsole editorConsole;
+  private volatile boolean newLinePrinted;
 
   public ConsoleOutputStream(SimpleAttributeSet attributes, PrintStream printStream) {
     this.attributes = attributes;
     this.printStream = printStream;
-    this.buffer = new StringBuilder();
+    this.newLinePrinted = false;
 
-    this.timer = new Timer(100, (e) -> {
-      if (scrollPane != null) {
-        synchronized (scrollPane) {
-          scrollPane.getHorizontalScrollBar().setValue(0);
-          scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
-        }
+    this.timer = new Timer(500, (e) -> {
+      if (editorConsole != null && newLinePrinted) {
+        editorConsole.scrollDown();
+        newLinePrinted = false;
       }
     });
     timer.setRepeats(false);
   }
 
-  public synchronized void setCurrentEditorConsole(EditorConsole console) {
-    this.scrollPane = console;
-    this.document = console.getDocument();
+  public void setCurrentEditorConsole(EditorConsole console) {
+    this.editorConsole = console;
   }
 
   public synchronized void flush() {
-    String message = toString();
+    String text = toString();
 
-    if (message.length() == 0) {
+    if (text.length() == 0) {
       return;
     }
 
-    handleAppend(message);
+    printStream.print(text);
+    printInConsole(text);
 
     reset();
   }
 
-  private void handleAppend(String message) {
-    resetBufferIfDocumentEmpty();
-
-    buffer.append(message);
-
-    clearBuffer();
-  }
-
-  private void resetBufferIfDocumentEmpty() {
-    if (document != null && document.getLength() == 0) {
-      buffer.setLength(0);
-    }
-  }
-
-  private void clearBuffer() {
-    String line = buffer.toString();
-    buffer.setLength(0);
-
-    printStream.print(line);
-
-    if (document != null) {
+  private void printInConsole(String text) {
+    newLinePrinted = newLinePrinted || text.contains("\n");
+    if (editorConsole != null) {
       SwingUtilities.invokeLater(() -> {
         try {
-          String lineWithoutSlashR = line.replace("\r\n", "\n").replace("\r", "\n");
-          int offset = document.getLength();
-          document.insertString(offset, lineWithoutSlashR, attributes);
+          editorConsole.insertString(text, attributes);
         } catch (BadLocationException ble) {
           //ignore
         }

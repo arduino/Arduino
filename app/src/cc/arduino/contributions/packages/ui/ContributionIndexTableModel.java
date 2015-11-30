@@ -31,10 +31,11 @@ package cc.arduino.contributions.packages.ui;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.InstalledPredicate;
+import cc.arduino.contributions.packages.ContributedBoard;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
+import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -114,21 +115,16 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
 
   private final Class<?>[] columnTypes = {ContributedPlatform.class};
 
-  private ContributionsIndexer indexer;
-
-  public void setIndexer(ContributionsIndexer indexer) {
-    this.indexer = indexer;
-  }
-
-  public void updateIndexFilter(String filters[], Stream<Predicate<ContributedPlatform>> additionalFilters) {
+  public void updateIndexFilter(String[] filters, Stream<Predicate<ContributedPlatform>> additionalFilters) {
     contributions.clear();
     Predicate<ContributedPlatform> filter = additionalFilters.reduce(Predicate::and).get();
-    for (ContributedPackage pack : indexer.getPackages()) {
+    for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
+        String compoundTargetSearchText = platform.getName() + "\n" + platform.getBoards().stream().map(ContributedBoard::getName).collect(Collectors.joining(" "));
         if (!filter.test(platform)) {
           continue;
         }
-        if (!stringContainsAll(platform.getName(), filters))
+        if (!stringContainsAll(compoundTargetSearchText, filters))
           continue;
         addContribution(platform);
       }

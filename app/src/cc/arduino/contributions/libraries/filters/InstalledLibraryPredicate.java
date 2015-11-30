@@ -31,18 +31,12 @@ package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndex;
+import processing.app.BaseNoGui;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public class InstalledLibraryPredicate implements Predicate<ContributedLibrary> {
-
-  private final LibrariesIndex index;
-
-  public InstalledLibraryPredicate(LibrariesIndex index) {
-    this.index = index;
-  }
 
   @Override
   public boolean test(ContributedLibrary input) {
@@ -50,7 +44,8 @@ public class InstalledLibraryPredicate implements Predicate<ContributedLibrary> 
       return true;
     }
 
-    List<ContributedLibrary> libraries = index.find(input.getName());
+    List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(input.getName());
+
     return libraries.stream()
       .filter(new InstalledPredicate())
       .count() > 0;

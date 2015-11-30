@@ -23,32 +23,31 @@
 
 package processing.app.tools;
 
-import java.awt.*;
-import java.awt.datatransfer.*;
+import org.fife.ui.rsyntaxtextarea.Token;
+import processing.app.Editor;
+import processing.app.syntax.SketchTextArea;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Segment;
-
-import org.fife.ui.rsyntaxtextarea.Token;
-
-import processing.app.*;
-import processing.app.syntax.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 /**
  * Format for Discourse Tool
- * <p/>
+ * <p>
  * Original code by <A HREF="http://usuarios.iponet.es/imoreta">owd</A>.
  * Revised and updated for revision 0108 by Ben Fry (10 March 2006).
  * This code may later be moved to its own 'Tool' plugin, but is included
  * with release 0108+ while features for the "Tools" menu are in testing.
- * <p/>
+ * <p>
  * Updated for 0122 to simply copy the code directly to the clipboard,
  * rather than opening a new window.
- * <p/>
+ * <p>
  * Updated for 0144 to only format the selected lines.
- * <p/>
+ * <p>
  * Updated for 1.5.8 - Simplification, using RSyntaxTextArea TokenImpl formatter (08 dec 2014 - Ricardo JL Rufino)
- * <p/>
+ * <p>
  * Notes from the original source:
  * Discourse.java This is a dirty-mix source.
  * NOTE that: No macs and no keyboard. Unreliable source.
@@ -57,11 +56,9 @@ import processing.app.syntax.*;
  */
 public class DiscourseFormat {
 
-  private Editor editor;
-  // JTextArea of the actual Editor
-  private SketchTextArea textarea;
-  private boolean html;
-
+  private final Editor editor;
+  private final SketchTextArea textarea;
+  private final boolean html;
 
   /**
    * Creates a new window with the formated (YaBB tags) sketchcode
@@ -74,12 +71,10 @@ public class DiscourseFormat {
     this.html = html;
   }
 
-
   /**
    * Format and render sketch code.
    */
   public void show() {
-    // [code] tag cancels other tags, using [quote]
     StringBuilder cf = new StringBuilder(html ? "<pre>\n" : "[code]\n");
 
     int selStart = textarea.getSelectionStart();
@@ -105,6 +100,7 @@ public class DiscourseFormat {
           stopLine--;
         }
       } catch (BadLocationException e) {
+        // ignore
       }
     }
 
@@ -117,11 +113,9 @@ public class DiscourseFormat {
 
     StringSelection formatted = new StringSelection(cf.toString());
     Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    clipboard.setContents(formatted, new ClipboardOwner() {
-        public void lostOwnership(Clipboard clipboard, Transferable contents) {
-          // i don't care about ownership
-        }
-      });
+    clipboard.setContents(formatted, (clipboard1, contents) -> {
+      // i don't care about ownership
+    });
     Clipboard unixclipboard = Toolkit.getDefaultToolkit().getSystemSelection();
     if (unixclipboard != null) unixclipboard.setContents(formatted, null);
 
@@ -129,10 +123,11 @@ public class DiscourseFormat {
   }
 
   /**
-    * Append a char to a StringBuilder while escaping for proper display in HTML.
-    * @param c input char to escape
-    * @param buffer StringBuilder to append html-safe version of c to.
-    */
+   * Append a char to a StringBuilder while escaping for proper display in HTML.
+   *
+   * @param c      input char to escape
+   * @param buffer StringBuilder to append html-safe version of c to.
+   */
   private void appendToHTML(char c, StringBuilder buffer) {
     if (!html) {
       buffer.append(c);
@@ -143,51 +138,38 @@ public class DiscourseFormat {
     } else if (c == '&') {
       buffer.append("&amp;");
     } else if (c > 127) {
-      buffer.append("&#" + ((int) c) + ";");  // use unicode entity
+      buffer.append("&#").append((int) c).append(";");  // use unicode entity
     } else {
       buffer.append(c);  // normal character
     }
   }
 
-  // A terrible headache...
-  public void appendFormattedLine(StringBuilder cf, int line) {
+  private void appendFormattedLine(StringBuilder buffer, int line) {
     Segment segment = new Segment();
 
-    // get line text from parent text area
     textarea.getTextLine(line, segment);
-    
-    char[] segmentArray = segment.array;
-    int segmentOffset = segment.offset;
-    int segmentCount = segment.count;
-//    int width = 0;
 
     if (!html) {
+      char[] segmentArray = segment.array;
+      int segmentOffset = segment.offset;
+      int segmentCount = segment.count;
+
       for (int j = 0; j < segmentCount; j++) {
         char c = segmentArray[j + segmentOffset];
-        appendToHTML(c, cf);
-//        int charWidth;
-//        if (c == '\t') {
-//          charWidth = (int) painter.nextTabStop(width, j) - width;
-//        } else {
-//          charWidth = fm.charWidth(c);
-//        }
-//        width += charWidth;
+        appendToHTML(c, buffer);
       }
-
-    } else {
-      
-      Token tokenList = textarea.getTokenListForLine(line);
-      
-      while(tokenList != null){
-        if(tokenList.getType() == Token.NULL){
-          cf.append('\n');
-        }else if(tokenList.isPaintable()){
-          tokenList.appendHTMLRepresentation(cf, textarea, false);
-        }
-        
-        tokenList = tokenList.getNextToken();
-      }
-  
+      return;
     }
+
+    Token tokenList = textarea.getTokenListForLine(line);
+
+    while (tokenList != null) {
+      if (tokenList.getType() != Token.NULL) {
+        tokenList.appendHTMLRepresentation(buffer, textarea, false);
+      }
+      tokenList = tokenList.getNextToken();
+    }
+
+    buffer.append('\n');
   }
 }

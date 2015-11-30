@@ -29,8 +29,6 @@
 
 package cc.arduino.view.preferences;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.FluentIterable;
 import processing.app.Base;
 
 import java.awt.*;
@@ -39,8 +37,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
@@ -70,7 +69,7 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     unofficialListURLLabel = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    setTitle(_("Additional Boards Manager URLs"));
+    setTitle(tr("Additional Boards Manager URLs"));
     setModal(true);
     setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
 
@@ -79,23 +78,23 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
     additionalBoardsManagerURLs.setName(""); // NOI18N
     jScrollPane1.setViewportView(additionalBoardsManagerURLs);
 
-    cancel.setText(_("Cancel"));
+    cancel.setText(tr("Cancel"));
     cancel.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         cancelActionPerformed(evt);
       }
     });
 
-    ok.setText(_("OK"));
+    ok.setText(tr("OK"));
     ok.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         okActionPerformed(evt);
       }
     });
 
-    jLabel1.setText(_("Enter additional URLs, one for each row"));
+    jLabel1.setText(tr("Enter additional URLs, one for each row"));
 
-    unofficialListURLLabel.setText(_("Click for a list of unofficial boards support URLs"));
+    unofficialListURLLabel.setText(tr("Click for a list of unofficial boards support URLs"));
     unofficialListURLLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     unofficialListURLLabel.addMouseListener(new java.awt.event.MouseAdapter() {
       public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -174,17 +173,17 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
   public void setText(String text) {
     Collection<String> urls = splitAndTrim(text, ",");
-    additionalBoardsManagerURLs.setText(Joiner.on("\n").skipNulls().join(urls));
+    additionalBoardsManagerURLs.setText(urls.stream().filter(s -> s != null).collect(Collectors.joining("\n")));
   }
 
   private Collection<String> splitAndTrim(String text, String separator) {
     Collection<String> urls = Arrays.asList(text.split(separator));
-    return FluentIterable.from(urls).transform(String::trim).filter(url -> !url.isEmpty()).toList();
+    return urls.stream().map(String::trim).filter(url -> !url.isEmpty()).collect(Collectors.toList());
   }
 
   public String getText() {
     Collection<String> urls = splitAndTrim(additionalBoardsManagerURLs.getText(), "\n");
-    return Joiner.on(",").skipNulls().join(urls);
+    return urls.stream().filter(s -> s != null).collect(Collectors.joining(","));
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 /**
  * Storage class for theme settings. This was separated from the Preferences
@@ -55,7 +55,7 @@ public class Theme {
     try {
       table.load(new File(BaseNoGui.getContentFile("lib"), "theme/theme.txt"));
     } catch (Exception te) {
-      Base.showError(null, _("Could not read color theme settings.\n" +
+      Base.showError(null, tr("Could not read color theme settings.\n" +
               "You'll need to reinstall Arduino."), te);
     }
 
@@ -92,6 +92,19 @@ public class Theme {
 
   static public void setInteger(String key, int value) {
     set(key, String.valueOf(value));
+  }
+
+  static public Color getColorCycleColor(String name, int i) {
+    int cycleSize = getInteger(name + ".size");
+    name = String.format("%s.%02d", name, i % cycleSize);
+    return PreferencesHelper.parseColor(get(name));
+  }
+
+  static public void setColorCycleColor(String name, int i, Color color) {
+    name = String.format("%s.%02d", name, i);
+    PreferencesHelper.putColor(table, name, color);
+    int cycleSize = getInteger(name + ".size");
+    setInteger(name + ".size", (i + 1) > cycleSize ? (i + 1) : cycleSize);
   }
 
   static public Color getColor(String name) {

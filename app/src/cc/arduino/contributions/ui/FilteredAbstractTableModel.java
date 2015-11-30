@@ -43,7 +43,7 @@ public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
 
   abstract public void updateIndexFilter(String[] filters, Stream<Predicate<T>> additionalFilters);
 
-  protected static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
+  public static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
     contribs = new LinkedList<>(contribs);
     final VersionComparator versionComparator = new VersionComparator();
     Collections.sort(contribs, (contrib1, contrib2) -> versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion()));

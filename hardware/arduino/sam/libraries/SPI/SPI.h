@@ -82,9 +82,11 @@ class SPIClass {
 
 	// Transfer functions
 	byte transfer(byte _pin, uint8_t _data, SPITransferMode _mode = SPI_LAST);
+	uint16_t transfer16(byte _pin, uint16_t _data, SPITransferMode _mode = SPI_LAST);
 	void transfer(byte _pin, void *_buf, size_t _count, SPITransferMode _mode = SPI_LAST);
 	// Transfer functions on default pin BOARD_SPI_DEFAULT_SS
 	byte transfer(uint8_t _data, SPITransferMode _mode = SPI_LAST) { return transfer(BOARD_SPI_DEFAULT_SS, _data, _mode); }
+	uint16_t transfer16(uint16_t _data, SPITransferMode _mode = SPI_LAST) { return transfer16(BOARD_SPI_DEFAULT_SS, _data, _mode); }
 	void transfer(void *_buf, size_t _count, SPITransferMode _mode = SPI_LAST) { transfer(BOARD_SPI_DEFAULT_SS, _buf, _count, _mode); }
 
 	// Transaction Functions

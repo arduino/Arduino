@@ -40,7 +40,33 @@ public class Constants {
 
   public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
   public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
+
+  public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
+
+  public static final long BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD = 60000;
+  public static final int NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
+
+  public static final String PROXY_TYPE_NONE = "none";
+  public static final String PROXY_TYPE_AUTO = "auto";
+  public static final String PROXY_TYPE_MANUAL = "manual";
+  public static final String PROXY_MANUAL_TYPE_HTTP = "HTTP";
+  public static final String PROXY_MANUAL_TYPE_SOCKS = "SOCKS";
+  public static final String PREF_PROXY_MANUAL_TYPE = "proxy.manual.type";
+  public static final String PREF_PROXY_TYPE = "proxy.type";
+  public static final String PREF_PROXY_PAC_URL = "proxy.pac.url";
+  public static final String PREF_PROXY_MANUAL_HOSTNAME = "proxy.manual.hostname";
+  public static final String PREF_PROXY_MANUAL_PORT = "proxy.manual.port";
+  public static final String PREF_PROXY_MANUAL_USERNAME = "proxy.manual.username";
+  public static final String PREF_PROXY_MANUAL_PASSWORD = "proxy.manual.password";
+  public static final String PREF_PROXY_AUTO_USERNAME = "proxy.manual.username";
+  public static final String PREF_PROXY_AUTO_PASSWORD = "proxy.manual.password";
+
   public static final String PACKAGE_INDEX_URL;
+  public static final String LIBRARY_INDEX_URL;
+  public static final String LIBRARY_INDEX_URL_GZ;
+
+  public static final List<String> LIBRARY_CATEGORIES = Arrays.asList("Display", "Communication", "Signal Input/Output", "Sensors", "Device Control", "Timing", "Data Storage", "Data Processing", "Other", "Uncategorized");
+  public static final List<String> LIBRARY_MANDATORY_PROPERTIES = Arrays.asList("name", "version", "author", "maintainer", "sentence", "paragraph", "url");
 
   static {
     String extenalPackageIndexUrl = System.getProperty("PACKAGE_INDEX_URL");
@@ -49,7 +75,14 @@ public class Constants {
     } else {
       PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
     }
-  }
 
+    String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
+    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
+      LIBRARY_INDEX_URL = externalLibraryIndexUrl;
+    } else {
+      LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
+    }
+    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
+  }
 
 }

@@ -68,4 +68,16 @@ public abstract class ContributedTool {
     return res;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ContributedTool)) {
+      return false;
+    }
+
+    ContributedTool obj1 = (ContributedTool) obj;
+    return getName().equals(obj1.getName()) && getVersion().equals(obj1.getVersion());
+  }
 }

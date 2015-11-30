@@ -44,7 +44,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class ArchiveExtractor {
 
@@ -164,7 +164,7 @@ public class ArchiveExtractor {
           while (stripPath > 0) {
             slash = name.indexOf("/", slash);
             if (slash == -1) {
-              throw new IOException("Invalid archive: it must contains a single root folder");
+              throw new IOException("Invalid archive: it must contain a single root folder");
             }
             slash++;
             stripPath--;
@@ -174,7 +174,7 @@ public class ArchiveExtractor {
 
         // Strip the common path prefix when requested
         if (!name.startsWith(pathPrefix)) {
-          throw new IOException("Invalid archive: it must contains a single root folder while file " + name + " is outside " + pathPrefix);
+          throw new IOException("Invalid archive: it must contain a single root folder while file " + name + " is outside " + pathPrefix);
         }
         name = name.substring(pathPrefix.length());
         if (name.isEmpty()) {
@@ -185,7 +185,7 @@ public class ArchiveExtractor {
         File outputLinkedFile = null;
         if (isLink) {
           if (!linkName.startsWith(pathPrefix)) {
-            throw new IOException("Invalid archive: it must contains a single root folder while file " + linkName + " is outside " + pathPrefix);
+            throw new IOException("Invalid archive: it must contain a single root folder while file " + linkName + " is outside " + pathPrefix);
           }
           linkName = linkName.substring(pathPrefix.length());
           outputLinkedFile = new File(destFolder, linkName);
@@ -194,7 +194,7 @@ public class ArchiveExtractor {
           // Symbolic links are referenced with relative paths
           outputLinkedFile = new File(linkName);
           if (outputLinkedFile.isAbsolute()) {
-            System.err.println(I18n.format(_("Warning: file {0} links to an absolute path {1}"), outputFile, outputLinkedFile));
+            System.err.println(I18n.format(tr("Warning: file {0} links to an absolute path {1}"), outputFile, outputLinkedFile));
             System.err.println();
           }
         }

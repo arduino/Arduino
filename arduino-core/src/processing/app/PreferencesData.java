@@ -1,6 +1,5 @@
 package processing.app;
 
-import com.google.common.base.Joiner;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -15,8 +14,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.MissingResourceException;
+import java.util.stream.Collectors;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 
 public class PreferencesData {
@@ -52,7 +52,7 @@ public class PreferencesData {
     try {
       prefs.load(new File(BaseNoGui.getContentFile("lib"), PREFS_FILE));
     } catch (IOException e) {
-      BaseNoGui.showError(null, _("Could not read default settings.\n" +
+      BaseNoGui.showError(null, tr("Could not read default settings.\n" +
         "You'll need to reinstall Arduino."), e);
     }
 
@@ -69,8 +69,8 @@ public class PreferencesData {
       try {
         prefs.load(preferencesFile);
       } catch (IOException ex) {
-        BaseNoGui.showError(_("Error reading preferences"),
-          I18n.format(_("Error reading the preferences file. "
+        BaseNoGui.showError(tr("Error reading preferences"),
+          I18n.format(tr("Error reading the preferences file. "
               + "Please delete (or move)\n"
               + "{0} and restart Arduino."),
             preferencesFile.getAbsolutePath()), ex);
@@ -248,7 +248,7 @@ public class PreferencesData {
   }
 
   public static void setCollection(String key, Collection<String> values) {
-    String value = Joiner.on(',').join(values);
+    String value = values.stream().collect(Collectors.joining(","));
     set(key, value);
   }
 }

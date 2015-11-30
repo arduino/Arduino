@@ -196,6 +196,23 @@ byte SPIClass::transfer(byte _pin, uint8_t _data, SPITransferMode _mode) {
 	return d & 0xFF;
 }
 
+uint16_t SPIClass::transfer16(byte _pin, uint16_t _data, SPITransferMode _mode) {
+	union { uint16_t val; struct { uint8_t lsb; uint8_t msb; }; } t;
+	uint32_t ch = BOARD_PIN_TO_SPI_CHANNEL(_pin);
+
+	t.val = _data;
+
+	if (bitOrder[ch] == LSBFIRST) {
+		t.lsb = transfer(_pin, t.lsb, SPI_CONTINUE);
+		t.msb = transfer(_pin, t.msb, _mode);
+	} else {
+		t.msb = transfer(_pin, t.msb, SPI_CONTINUE);
+		t.lsb = transfer(_pin, t.lsb, _mode);
+	}
+
+	return t.val;
+}
+
 void SPIClass::transfer(byte _pin, void *_buf, size_t _count, SPITransferMode _mode) {
 	if (_count == 0)
 		return;

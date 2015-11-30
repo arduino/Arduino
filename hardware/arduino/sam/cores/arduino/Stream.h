@@ -28,12 +28,23 @@
 // compatability macros for testing
 /*
 #define   getInt()            parseInt()
-#define   getInt(skipChar)    parseInt(skipchar)
+#define   getInt(ignore)    parseInt(ignore)
 #define   getFloat()          parseFloat()
-#define   getFloat(skipChar)  parseFloat(skipChar)
+#define   getFloat(ignore)  parseFloat(ignore)
 #define   getString( pre_string, post_string, buffer, length)
 readBytesBetween( pre_string, terminator, buffer, length)
 */
+
+// This enumeration provides the lookahead options for parseInt(), parseFloat()
+// The rules set out here are used until either the first valid character is found
+// or a time out occurs due to lack of input.
+enum LookaheadMode{
+    SKIP_ALL,       // All invalid characters are ignored.
+    SKIP_NONE,      // Nothing is skipped, and the stream is not touched unless the first waiting character is valid.
+    SKIP_WHITESPACE // Only tabs, spaces, line feeds & carriage returns are skipped.
+};
+
+#define NO_IGNORE_CHAR  '\x01' // a char not found in a valid ASCII numeric field
 
 class Stream : public Print
 {
@@ -42,7 +53,7 @@ class Stream : public Print
     unsigned long _startMillis;  // used for timeout measurement
     int timedRead();    // private method to read stream with timeout
     int timedPeek();    // private method to peek stream with timeout
-    int peekNextDigit(); // returns the next numeric digit in the stream or -1 if timeout
+    int peekNextDigit(LookaheadMode lookahead, bool detectDecimal); // returns the next numeric digit in the stream or -1 if timeout
 
   public:
     virtual int available() = 0;
@@ -64,18 +75,23 @@ class Stream : public Print
   bool find(uint8_t *target, size_t length) { return find ((char *)target, length); }
   // returns true if target string is found, false if timed out
 
+  bool find(char target) { return find (&target, 1); }
+
   bool findUntil(char *target, char *terminator);   // as find but search ends if the terminator string is found
   bool findUntil(uint8_t *target, char *terminator) { return findUntil((char *)target, terminator); }
 
   bool findUntil(char *target, size_t targetLen, char *terminate, size_t termLen);   // as above but search ends if the terminate string is found
   bool findUntil(uint8_t *target, size_t targetLen, char *terminate, size_t termLen) {return findUntil((char *)target, targetLen, terminate, termLen); }
 
+  long parseInt(LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
+  // returns the first valid (long) integer value from the current position.
+  // lookahead determines how parseInt looks ahead in the stream.
+  // See LookaheadMode enumeration at the top of the file.
+  // Lookahead is terminated by the first character that is not a valid part of an integer.
+  // Once parsing commences, 'ignore' will be skipped in the stream.
 
-  long parseInt(); // returns the first valid (long) integer value from the current position.
-  // initial characters that are not digits (or the minus sign) are skipped
-  // integer is terminated by the first character that is not a digit.
-
-  float parseFloat();               // float version of parseInt
+  float parseFloat(LookaheadMode lookahead = SKIP_ALL, char ignore = NO_IGNORE_CHAR);
+  // float version of parseInt
 
   size_t readBytes( char *buffer, size_t length); // read chars from stream into buffer
   size_t readBytes( uint8_t *buffer, size_t length) { return readBytes((char *)buffer, length); }
@@ -92,11 +108,11 @@ class Stream : public Print
   String readStringUntil(char terminator);
 
   protected:
-  long parseInt(char skipChar); // as above but the given skipChar is ignored
-  // as above but the given skipChar is ignored
-  // this allows format characters (typically commas) in values to be ignored
-
-  float parseFloat(char skipChar);  // as above but the given skipChar is ignored
+  long parseInt(char ignore) { return parseInt(SKIP_ALL, ignore); }
+  float parseFloat(char ignore) { return parseFloat(SKIP_ALL, ignore); }
+  // These overload exists for compatibility with any class that has derived
+  // Stream and used parseFloat/Int with a custom ignore character. To keep
+  // the public API simple, these overload remains protected.
 
   struct MultiTarget {
     const char *str;  // string you're searching for
@@ -109,4 +125,5 @@ class Stream : public Print
   int findMulti(struct MultiTarget *targets, int tCount);
 };
 
+#undef NO_IGNORE_CHAR
 #endif

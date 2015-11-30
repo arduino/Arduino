@@ -35,6 +35,8 @@ import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
+import static processing.app.I18n.tr;
+
 public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLibrary> {
 
   private final String category;
@@ -44,7 +46,7 @@ public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLi
   }
 
   public String toString() {
-    return category;
+    return tr(category);
   }
 
   @Override

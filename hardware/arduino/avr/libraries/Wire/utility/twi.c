@@ -91,6 +91,22 @@ void twi_init(void)
 }
 
 /* 
+ * Function twi_disable
+ * Desc     disables twi pins
+ * Input    none
+ * Output   none
+ */
+void twi_disable(void)
+{
+  // disable twi module, acks, and twi interrupt
+  TWCR &= ~(_BV(TWEN) | _BV(TWIE) | _BV(TWEA));
+
+  // deactivate internal pullups for twi.
+  digitalWrite(SDA, 0);
+  digitalWrite(SCL, 0);
+}
+
+/* 
  * Function twi_slaveInit
  * Desc     sets slave address and enables interrupt
  * Input    none
@@ -151,7 +167,9 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     // up. Also, don't enable the START interrupt. There may be one pending from the 
     // repeated start that we sent outselves, and that would really confuse things.
     twi_inRepStart = false;			// remember, we're dealing with an ASYNC ISR
-    TWDR = twi_slarw;
+    do {
+      TWDR = twi_slarw;
+    } while(TWCR & _BV(TWWC));
     TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE);	// enable INTs, but not START
   }
   else
@@ -231,7 +249,9 @@ uint8_t twi_writeTo(uint8_t address, uint8_t* data, uint8_t length, uint8_t wait
     // up. Also, don't enable the START interrupt. There may be one pending from the 
     // repeated start that we sent outselves, and that would really confuse things.
     twi_inRepStart = false;			// remember, we're dealing with an ASYNC ISR
-    TWDR = twi_slarw;				
+    do {
+      TWDR = twi_slarw;				
+    } while(TWCR & _BV(TWWC));
     TWCR = _BV(TWINT) | _BV(TWEA) | _BV(TWEN) | _BV(TWIE);	// enable INTs, but not START
   }
   else
@@ -460,18 +480,16 @@ ISR(TWI_vect)
       }
       break;
     case TW_SR_STOP: // stop or repeated start condition received
+      // ack future responses and leave slave receiver state
+      twi_releaseBus();
       // put a null char after data if there's room
       if(twi_rxBufferIndex < TWI_BUFFER_LENGTH){
         twi_rxBuffer[twi_rxBufferIndex] = '\0';
       }
-      // sends ack and stops interface for clock stretching
-      twi_stop();
       // callback to user defined callback
       twi_onSlaveReceive(twi_rxBuffer, twi_rxBufferIndex);
       // since we submit rx buffer to "wire" library, we can reset it
       twi_rxBufferIndex = 0;
-      // ack future responses and leave slave receiver state
-      twi_releaseBus();
       break;
     case TW_SR_DATA_NACK:       // data received, returned nack
     case TW_SR_GCALL_DATA_NACK: // data received generally, returned nack

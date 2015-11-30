@@ -36,7 +36,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 
 /**
@@ -74,7 +74,7 @@ public class Platform {
   }
 
 
-  public void init() throws IOException {
+  public void init() throws Exception {
   }
 
 
@@ -202,8 +202,8 @@ public class Platform {
 
 
   protected void showLauncherWarning() {
-    BaseNoGui.showWarning(_("No launcher available"),
-      _("Unspecified platform, no launcher available.\nTo enable opening URLs or folders, add a \n\"launcher=/path/to/app\" line to preferences.txt"),
+    BaseNoGui.showWarning(tr("No launcher available"),
+      tr("Unspecified platform, no launcher available.\nTo enable opening URLs or folders, add a \n\"launcher=/path/to/app\" line to preferences.txt"),
       null);
   }
 

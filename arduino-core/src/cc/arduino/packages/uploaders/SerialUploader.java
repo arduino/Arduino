@@ -1,31 +1,40 @@
-/* -*- mode: jde; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
-  BasicUploader - generic command line uploader implementation
-  Part of the Arduino project - http://www.arduino.cc/
-
-  Copyright (c) 2004-05
-  Hernando Barragan
-  Copyright (c) 2012
-  Cristian Maglie <c.maglie@arduino.cc>
-
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation; either version 2 of the License, or
-  (at your option) any later version.
-
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software Foundation,
-  Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
+ * This file is part of Arduino.
+ *
+ * BasicUploader - generic command line uploader implementation
+ *
+ * Copyright (c) 2004-05
+ * Hernando Barragan
+ * Copyright (c) 2012
+ * Cristian Maglie <c.maglie@arduino.cc>
+ *
+ * Arduino is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * As a special exception, you may use this file as part of a free software
+ * library without restriction.  Specifically, if other files instantiate
+ * templates or use macros or inline functions from this file, or you compile
+ * this file and link it with other files to produce an executable, this
+ * file does not by itself cause the resulting executable to be covered by
+ * the GNU General Public License.  This exception does not however
+ * invalidate any other reasons why the executable file might be covered by
+ * the GNU General Public License.
+ */
 
 package cc.arduino.packages.uploaders;
 
+import cc.arduino.LoadVIDPIDSpecificPreferences;
 import cc.arduino.packages.Uploader;
 import processing.app.*;
 import processing.app.debug.RunnerException;
@@ -38,7 +47,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class SerialUploader extends Uploader {
 
@@ -116,7 +125,7 @@ public class SerialUploader extends Uploader {
         if (before.contains(userSelectedUploadPort)) {
           if (verbose)
             System.out.println(
-              I18n.format(_("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
+              I18n.format(tr("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
           Serial.touchForCDCReset(userSelectedUploadPort);
         }
         Thread.sleep(400);
@@ -242,7 +251,7 @@ public class SerialUploader extends Uploader {
     }
 
     // Something happened while detecting port
-    throw new RunnerException(_("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
+    throw new RunnerException(tr("Couldn't find a Board on the selected port. Check that you have the correct port selected.  If it is correct, try pressing the board's reset button after initiating the upload."), false);
   }
 
   private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
@@ -263,7 +272,7 @@ public class SerialUploader extends Uploader {
     PreferencesMap programmerPrefs = targetPlatform.getProgrammer(programmer);
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
     prefs.putAll(targetPlatform.getTool(programmerPrefs.getOrExcept("program.tool")));
     prefs.putAll(programmerPrefs);
 
@@ -308,7 +317,7 @@ public class SerialUploader extends Uploader {
     }
     if (programmerPrefs == null)
       throw new RunnerException(
-          _("Please select a programmer from Tools->Programmer menu"));
+          tr("Please select a programmer from Tools->Programmer menu"));
 
     // Build configuration for the current programmer
     PreferencesMap prefs = PreferencesData.getMap();
@@ -327,11 +336,11 @@ public class SerialUploader extends Uploader {
       tool = split[1];
       toolPrefs.putAll(platform.getTool(tool));
       if (toolPrefs.size() == 0)
-        throw new RunnerException(I18n.format(_("Could not find tool {0} from package {1}"), tool, split[0]));
+        throw new RunnerException(I18n.format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
     }
     toolPrefs.putAll(targetPlatform.getTool(tool));
     if (toolPrefs.size() == 0)
-      throw new RunnerException(I18n.format(_("Could not find tool {0}"), tool));
+      throw new RunnerException(I18n.format(tr("Could not find tool {0}"), tool));
 
     // Merge tool with global configuration
     prefs.putAll(toolPrefs);
@@ -342,6 +351,8 @@ public class SerialUploader extends Uploader {
       prefs.put("erase.verbose", prefs.getOrExcept("erase.params.quiet"));
       prefs.put("bootloader.verbose", prefs.getOrExcept("bootloader.params.quiet"));
     }
+
+    new LoadVIDPIDSpecificPreferences().load(prefs);
 
     String pattern = prefs.getOrExcept("erase.pattern");
     String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);

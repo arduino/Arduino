@@ -26,15 +26,13 @@
 #include <SPI.h>
 
 
-// assign a MAC address for the ethernet controller.
+// assign a MAC address for the Ethernet controller.
 // fill in your address here:
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 // assign an IP address for the controller:
 IPAddress ip(192, 168, 1, 20);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
 
 
 // Initialize the Ethernet server library
