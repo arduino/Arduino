@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-29 01:00+0000\n"
+"PO-Revision-Date: 2015-12-01 00:12+0000\n"
 "Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr ""
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "Az 'arch' mappa a továbbiakban nem támogatott! További információkért látogassa meg a http://goo.gl/gfFJzU -t"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -181,17 +181,17 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "Egy hiba lépett fel a vázlat feltöltése közben"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Egy hiba lépett fel a vázlat ellenőrzése közben"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Egy hiba lépett fel a vázlat ellenőrzése/feltöltése közben"
 
 #: Base.java:228
 msgid ""
@@ -482,7 +482,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Kommunikáció"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -587,7 +587,7 @@ msgstr "Nem sikerült újra-menteni vázlatot"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "Nem lehet olvasni a szín téma beállításokat.\nÚjra kell telepítenie az Arduino-t."
 
 #: Preferences.java:219
 msgid ""
@@ -659,11 +659,11 @@ msgstr "Dán (Dánia)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Adatfeldolgozás"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Adattárolás"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -927,11 +927,11 @@ msgstr "Hiba feltöltéskor: hiányzó '{0}' konfigurációs paraméter"
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Hiba ellenőrzés közben"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Hiba ellenőrzés/feltöltés közben"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -1229,7 +1229,7 @@ msgstr ""
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
-msgstr ""
+msgstr "A könyvtár már telepítve van: {0} verzió {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1258,7 +1258,7 @@ msgstr "Könyvtárak kezelése..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Manuális proxy konfigurálás"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1332,7 +1332,7 @@ msgstr "Új fül"
 
 #: SerialMonitor.java:112
 msgid "Newline"
-msgstr ""
+msgstr "Újsor"
 
 #: EditorHeader.java:340
 msgid "Next Tab"
@@ -1706,7 +1706,7 @@ msgstr "Vázlat mappa mentés mint..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "Mentés ellenőrzéskor vagy feltöltéskor"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1747,11 +1747,11 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr ""
+msgstr "A kiválasztott alaplap nem elérhető"
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
-msgstr ""
+msgstr "A kiválasztott könyvtár nem elérhető"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1763,11 +1763,11 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
-msgstr ""
+msgstr "Soros Monitor"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "Soros Plotter"
 
 #: Serial.java:194
 #, java-format
@@ -2084,7 +2084,7 @@ msgstr ""
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr ""
+msgstr "Gépelje be az alaplap jelszót új vázlat felöltéséhez"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
@@ -2093,7 +2093,7 @@ msgstr "Ukrán"
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "Nem lehet csatlakozni: a vázlat használja a hidat?"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
@@ -2101,7 +2101,7 @@ msgstr ""
 
 #: ../../../processing/app/Editor.java:2526
 msgid "Unable to connect: wrong password?"
-msgstr ""
+msgstr "Nem lehet csatlakozni: hibás jelszó?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
@@ -2110,11 +2110,11 @@ msgstr ""
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr ""
+msgstr "Nem lehet megnyitni soros monitort"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "Nem lehet megnyitni soros plottert"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
@@ -2137,7 +2137,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "Ismeretlen vázlat fájl kiterjesztés: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2161,7 +2161,7 @@ msgstr "Vázlat fájlok frissítés új kiterjesztésre mentésnél (.pde -> .in
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
-msgstr ""
+msgstr "Telepített könyvtárak listájának frissítése"
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
@@ -2213,19 +2213,19 @@ msgstr ""
 #: ../../../processing/app/debug/Compiler.java:320
 #, java-format
 msgid "Using previously compiled file: {0}"
-msgstr ""
+msgstr "Előzőleg fordított fájl használata: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr "Ellenőrzés"
+msgstr "Ellenőriz"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr "Kód ellenőrzés feltöltés után"
+msgstr "Kód ellenőrzése feltöltés után"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Ellenőriz/Fordít"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2237,7 +2237,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr "Ellenőrzés"
+msgstr "Ellenőrzés..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
@@ -2405,11 +2405,11 @@ msgstr ""
 
 #: Base.java:2638
 msgid "ZIP files or folders"
-msgstr ""
+msgstr "ZIP fájlok vagy mappák"
 
 #: Base.java:2661
 msgid "Zip doesn't contain a library"
-msgstr ""
+msgstr "A Zip nem tartalmaz egy könyvtárat"
 
 #: Sketch.java:364
 #, java-format
@@ -2575,7 +2575,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0} minta hiányzik"
 
 #: debug/Compiler.java:365
 #, java-format
