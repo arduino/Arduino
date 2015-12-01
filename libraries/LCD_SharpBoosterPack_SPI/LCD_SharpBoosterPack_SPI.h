@@ -117,7 +117,8 @@ public:
     void text(uint8_t x, uint8_t y, uint8_t c) ;
     void flush();
     void setCharXY(uint8_t x, uint8_t y);
-  
+    void drawImage(const uint8_t * image, uint8_t x,uint8_t y);
+
     virtual size_t write(uint8_t c);
     //virtual size_t write(const uint8_t *buffer, size_t size);
 
