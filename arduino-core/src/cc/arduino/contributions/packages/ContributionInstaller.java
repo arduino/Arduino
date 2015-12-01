@@ -236,7 +236,7 @@ public class ContributionInstaller {
   }
 
   public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
-    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).peek(pl -> System.out.println(pl.getName() + " " + pl.getVersion())).collect(Collectors.toList());
+    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).collect(Collectors.toList());
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
       return new LinkedList<>();
     }
