@@ -252,7 +252,7 @@ public class Platform {
     process.waitFor();
   }
 
-  public void fixSettingsLocation() throws IOException {
+  public void fixSettingsLocation() throws Exception {
     //noop
   }
 }

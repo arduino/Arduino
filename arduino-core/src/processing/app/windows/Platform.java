@@ -24,8 +24,6 @@ package processing.app.windows;
 
 import cc.arduino.os.windows.FolderFinderInWindowsEnvVar;
 import cc.arduino.os.windows.FolderFinderInWindowsRegistry;
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -44,7 +42,6 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 
 public class Platform extends processing.app.Platform {
@@ -68,6 +65,14 @@ public class Platform extends processing.app.Platform {
     this.settingsFolder = path.resolve("Arduino15").toFile();
   }
 
+  private Path recoverOldSettingsFolderPath() throws Exception {
+    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "AppData");
+    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
+
+    Path path = findInShellFolders.find();
+    return path.resolve("Arduino15");
+  }
+
   private void recoverDefaultSketchbookFolder() throws Exception {
     FolderFinderInWindowsEnvVar findInUserProfile = new FolderFinderInWindowsEnvVar(null, "Documents", "USERPROFILE");
     FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(findInUserProfile, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Personal");
@@ -75,19 +80,6 @@ public class Platform extends processing.app.Platform {
 
     Path path = findInShellFolders.find();
     this.defaultSketchbookFolder = path.resolve("Arduino").toFile();
-  }
-
-  private String readRegistryEntry(String[] lastPathElements, String key) {
-    for (String lastPathElement : lastPathElements) {
-      try {
-        String value = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\" + lastPathElement, key);
-        value = value.replaceAll("%[uU][sS][eE][rR][pP][rR][oO][fF][iI][lL][eE]%", Matcher.quoteReplacement(System.getenv("USERPROFILE")));
-        return value;
-      } catch (Exception e) {
-        //ignore
-      }
-    }
-    throw new IllegalStateException("Unable to find " + key + " key in Windows registry");
   }
 
   /**
@@ -255,14 +247,13 @@ public class Platform extends processing.app.Platform {
   }
 
   @Override
-  public void fixSettingsLocation() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
-    Path previousSettingsFolder = Paths.get(path, "Arduino15");
-    if (!Files.exists(previousSettingsFolder)) {
+  public void fixSettingsLocation() throws Exception {
+    Path oldSettingsFolder = recoverOldSettingsFolderPath();
+    if (!Files.exists(oldSettingsFolder)) {
       return;
     }
 
-    if (!Files.exists(previousSettingsFolder.resolve(Paths.get("preferences.txt")))) {
+    if (!Files.exists(oldSettingsFolder.resolve(Paths.get("preferences.txt")))) {
       return;
     }
 
@@ -270,6 +261,6 @@ public class Platform extends processing.app.Platform {
       return;
     }
 
-    Files.move(previousSettingsFolder, settingsFolder.toPath());
+    Files.move(oldSettingsFolder, settingsFolder.toPath());
   }
 }

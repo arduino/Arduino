@@ -973,7 +973,7 @@ public class BaseNoGui {
     }
   }
 
-  static public void initParameters(String args[]) throws IOException {
+  static public void initParameters(String args[]) throws Exception {
     String preferencesFile = null;
 
     // Do a first pass over the commandline arguments, the rest of them
