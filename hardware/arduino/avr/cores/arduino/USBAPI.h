@@ -55,6 +55,8 @@ typedef unsigned long u32;
 #define EP_TYPE_ISOCHRONOUS_IN		((1<<EPTYPE0) | (1<<EPDIR))
 #define EP_TYPE_ISOCHRONOUS_OUT		(1<<EPTYPE0)
 
+typedef void (*usbDeviceCallBack)();
+
 class USBDevice_
 {
 public:
@@ -65,6 +67,10 @@ public:
 	void detach();	// Serial port goes down too...
 	void poll();
 	bool wakeupHost(); // returns false, when wakeup cannot be processed
+
+	void setWakeUpHandler(usbDeviceCallBack delegate);
+	void setSuspendHandler(usbDeviceCallBack delegate);
+	bool isSuspended();
 };
 extern USBDevice_ USBDevice;
 
