@@ -71,7 +71,7 @@
     </or>
   </condition>
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.3" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.4" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
