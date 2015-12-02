@@ -24,10 +24,13 @@
   * breadboard
 
   This example code is in the public domain.
+  
+  2015-11-09 Rei Vilo
+  * timer changed for timer_ms to avoid conflict with timer()
  
 */
 
-int timer = 100;           // The higher the number, the slower the timing.
+int timer_ms = 100;           // The higher the number, the slower the timing.
 int ledPins[] = { 
   4, 10, 2, 6, 5, 3, 7, 9, 8};       // an array of pin numbers to which LEDs are attached
 int pinCount = 9;           // the number of pins (i.e. the length of the array)
@@ -45,7 +48,7 @@ void loop() {
   for (int thisPin = 0; thisPin < pinCount; thisPin++) { 
     // turn the pin on:
     digitalWrite(ledPins[thisPin], HIGH);   
-    delay(timer);                  
+    delay(timer_ms);                  
     // turn the pin off:
     digitalWrite(ledPins[thisPin], LOW);    
 
@@ -55,7 +58,7 @@ void loop() {
   for (int thisPin = pinCount - 1; thisPin >= 0; thisPin--) { 
     // turn the pin on:
     digitalWrite(ledPins[thisPin], HIGH);
-    delay(timer);
+    delay(timer_ms);
     // turn the pin off:
     digitalWrite(ledPins[thisPin], LOW);
   }
