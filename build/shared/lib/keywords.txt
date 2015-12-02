@@ -117,6 +117,7 @@ analogReference	KEYWORD2	AnalogReference
 analogRead	KEYWORD2	AnalogRead
 analogReadResolution	KEYWORD2	AnalogReadResolution
 analogWrite	KEYWORD2	AnalogWrite
+analogWriteResolution	KEYWORD2	AnalogWriteResolution
 attachInterrupt	KEYWORD2	AttachInterrupt
 detachInterrupt	KEYWORD2	DetachInterrupt
 digitalPinToInterrupt	KEYWORD2	DigitalPinToInterrupt
