@@ -36,13 +36,15 @@
 //
 //*****************************************************************************
 
-
-#include "datatypes.h"
+//Simplelink includes
 #include "simplelink.h"
 #include "cc_pal.h"
+
+//Driverlib includes
 #include <inc/hw_ints.h>
 #include <inc/hw_udma.h>
 #include <inc/hw_types.h>
+#include <driverlib/pin.h>
 #include <inc/hw_memmap.h>
 #include <inc/hw_mcspi.h>
 #include <inc/hw_common_reg.h>
@@ -50,49 +52,91 @@
 #include <driverlib/rom_map.h>
 #include <driverlib/spi.h>
 #include <driverlib/prcm.h>
+#include <driverlib/rom.h>
+#include <driverlib/rom_map.h>
+#include <inc/hw_ints.h>
 #include <driverlib/interrupt.h>
 #include <driverlib/udma.h>
 #include <driverlib/utils.h>
 
-P_EVENT_HANDLER g_pHostIntHdl  = NULL;
-
-#define REG_INT_MASK_SET 0x400F7088
-#define REG_INT_MASK_CLR 0x400F708C
-
-#define DMA_BUFF_SIZE_MIN 100
-
-#define APPS_SOFT_RESET_REG             0x4402D000
-#define OCP_SHARED_MAC_RESET_REG        0x4402E168
-#define ARCM_SHSPI_RESET_REG            0x440250CC
-
-#define SPI_IF_BIT_RATE                 13000000
-
-volatile Fd_t g_SpiFd =0;
-
-
-unsigned long g_ucDinDout[20];
-
-#define MAX_NUM_CH	            64	//32*2 entries
-
-
-
+//OSLib includes
 #if defined(SL_PLATFORM_MULTI_THREADED)
 #include <osi.h>
+#endif
+
+
+#define REG_INT_MASK_SET                0x400F7088
+#define REG_INT_MASK_CLR                0x400F708C
+#define APPS_SOFT_RESET_REG             0x4402D000
+#define OCP_SHARED_MAC_RESET_REG        0x4402E168
+#define ROM_VERSION_ADDR                0x00000400
+
+#define DMA_BUFF_SIZE_MIN               100
+#define MAX_NUM_CH	                    64	//32*2 entries
+#define MAX_DMA_RECV_TRANSACTION_SIZE   4000
+
+//SPI rate determined by the ROM version
+#define ROM_VER_PG1_21                  1
+#define ROM_VER_PG1_32                  2
+#define ROM_VER_PG1_33                  3
+#define SPI_RATE_13M 		            13000000
+#define SPI_RATE_20M                    20000000
+
+#define UNUSED(x) 						x=x
+
+//Structure definition to determine the ROM version
+typedef struct
+{
+    unsigned short ucMajorVerNum;
+    unsigned short ucMinorVerNum;
+    unsigned short ucSubMinorVerNum;
+    unsigned short ucDay;
+    unsigned short ucMonth;
+    unsigned short ucYear;
+}tROMVersion;
+
+//
+// GLOBAL VARIABLES -- Start
+//
+volatile Fd_t g_SpiFd =0;
+P_EVENT_HANDLER g_pHostIntHdl  = NULL;
+unsigned long g_ucDinDout[20];
+unsigned char g_ucDMAEnabled = 0;
+
+#if defined(SL_PLATFORM_MULTI_THREADED)
 OsiMsgQ_t DMAMsgQ;
 char g_cDummy[4];
 #else //SL_PLATFORM_MULTI_THREADED
 volatile char g_cDummy;
 #endif //SL_PLATFORM_MULTI_THREADED
 
+//
+// GLOBAL VARIABLES -- End
+//
 
-unsigned char g_ucDMAEnabled = 0;
 
-//******************************************************************************
-// This defines the system Clock in Hz
-//******************************************************************************
+//****************************************************************************
+//                      LOCAL FUNCTION PROTOTYPES
+//****************************************************************************
+static int spi_Read_CPU(unsigned char *pBuff, int len);
+static int spi_Write_CPU(unsigned char *pBuff, int len);
+void DmaSpiSwIntHandler();
+static void SetupDMAReceive(unsigned char *ucBuff,int len);
+static void SetupDMASend(unsigned char *ucBuff,int len);
+static void cc_UDMAChannelSelect(unsigned int uiChannel);
+static void cc_SetupTransfer(unsigned long ulChannel,
+					  unsigned long ulMode,
+					  unsigned long ulItemCount,
+					  unsigned long ulItemSize,
+					  unsigned long ulArbSize,
+					  void *pvSrcBuf,
+					  unsigned long ulSrcInc,
+					  void *pvDstBuf,
+					  unsigned long ulDstInc);
 
-#define SYS_CLK 80000000
-#define UNUSED(x) x=x
+//****************************************************************************
+//                      LOCAL FUNCTION DEFINITIONS
+//****************************************************************************
 
 /*!
     \brief attempts to read up to len bytes from SPI channel into a buffer starting at pBuff.
@@ -116,9 +160,7 @@ int spi_Read_CPU(unsigned char *pBuff, int len)
     unsigned long ulTxReg;
     unsigned long ulRxReg;
 
-    //Enable Chip Select
-    //HWREG(0x44022128)&=~1;
-    SPICSEnable(LSPI_BASE);
+    MAP_SPICSEnable(LSPI_BASE);
 
     //
     // Initialize local variable.
@@ -141,9 +183,7 @@ int spi_Read_CPU(unsigned char *pBuff, int len)
           ulDataIn++;
     }
 
-	//Disable  Chip Select
-	//HWREG(0x44022128)|= 1;
-    SPICSDisable(LSPI_BASE);
+    MAP_SPICSDisable(LSPI_BASE);
 
     return len;
 }
@@ -177,9 +217,8 @@ int spi_Write_CPU(unsigned char *pBuff, int len)
     unsigned long ulTxReg;
     unsigned long ulRxReg;
 
-    //Enable Chip Select
-    //HWREG(0x44022128)&=~1;
-    SPICSEnable(LSPI_BASE);
+
+    MAP_SPICSEnable(LSPI_BASE);
 
     //
     // Initialize local variable.
@@ -202,10 +241,7 @@ int spi_Write_CPU(unsigned char *pBuff, int len)
           ulDataOut++;
     }
 
-    //Disable  Chip Select
-    //HWREG(0x44022128)|= 1;
-
-    SPICSDisable(LSPI_BASE);
+    MAP_SPICSDisable(LSPI_BASE);
 
     UNUSED(ulDataIn);
     return len;
@@ -213,22 +249,23 @@ int spi_Write_CPU(unsigned char *pBuff, int len)
 }
 
 
-//*****************************************************************************
-//
-//! DMA SPI interrupt handler
-//!
-//! \param None
-//!
-//! This function
-//!        1. Invoked when SPI Transaction Completes
-//!
-//! \return None.
-//
-//*****************************************************************************
+
+/*!
+    \brief  DMA SPI interrupt handler
+
+	\param			None
+
+	\return			None
+
+	\note			This function
+       	   	   	   	   1. Invoked when SPI Transaction Completes
+    \warning
+*/
 void DmaSpiSwIntHandler()
 {
-    SPIIntClear(LSPI_BASE,SPI_INT_EOW);
-    SPICSDisable(LSPI_BASE);
+	MAP_SPIIntClear(LSPI_BASE,SPI_INT_EOW);
+	MAP_SPICSDisable(LSPI_BASE);
+
 #if defined(SL_PLATFORM_MULTI_THREADED)
     osi_MsgQWrite(&DMAMsgQ,g_cDummy,OSI_NO_WAIT);
 #else
@@ -236,65 +273,20 @@ void DmaSpiSwIntHandler()
 #endif
 }
 
-//*****************************************************************************
-//
-//! Configures the uDMA channel
-//!
-//! \param uiChannel is the DMA channel to be selected
-//! \param pfpAppCb is the application callback to be invoked on transfer
-//!
-//! This function
-//!        1. Configures the uDMA channel
-//!
-//! \return None.
-//
-//*****************************************************************************
-void cc_UDMAChannelSelect(unsigned int uiChannel)
-{
-    if((uiChannel & 0xFF) > MAX_NUM_CH)
-    {
-        return;
-    }
-    MAP_uDMAChannelAssign(uiChannel);
-    MAP_uDMAChannelAttributeDisable(uiChannel,UDMA_ATTR_ALTSELECT);
 
-}
+/*!
+    \brief  This function is used to set DMA receive on th SPI
 
-//*****************************************************************************
-//
-//! Does the actual Memory transfer
-//!
-//! \param TBD
-//!
-//! This function
-//!        1. Sets up the uDMA registers to perform the actual transfer
-//!
-//! \return None.
-//
-//*****************************************************************************
-void cc_SetupTransfer(
-                  unsigned long ulChannel,
-                  unsigned long ulMode,
-                  unsigned long ulItemCount,
-                  unsigned long ulItemSize,
-                  unsigned long ulArbSize,
-                  void *pvSrcBuf,
-                  unsigned long ulSrcInc,
-                  void *pvDstBuf,
-                  unsigned long ulDstInc)
-{
+	\param			ucBuff	- 	points to the first location of the receive buffer
 
-    MAP_uDMAChannelControlSet(ulChannel,
-                              ulItemSize | ulSrcInc | ulDstInc | ulArbSize);
+	\param			len		- Length of the data to be received
 
-    MAP_uDMAChannelAttributeEnable(ulChannel,UDMA_ATTR_USEBURST);
+	\sa             SetupDMASend
 
-    MAP_uDMAChannelTransferSet(ulChannel, ulMode,
-                               pvSrcBuf, pvDstBuf, ulItemCount);
+	\return			None
 
-    MAP_uDMAChannelEnable(ulChannel);
-
-}
+    \warning
+*/
 
 void SetupDMAReceive(unsigned char *ucBuff,int len)
 {
@@ -319,9 +311,24 @@ void SetupDMAReceive(unsigned char *ucBuff,int len)
                   	  	  (void *)ucBuff,
                   	  	  UDMA_DST_INC_32);
 
- SPIWordCountSet(LSPI_BASE,len/4);
+	MAP_SPIWordCountSet(LSPI_BASE,len/4);
 
 }
+
+
+/*!
+    \brief  This function is used to set DMA send on th SPI
+
+	\param			ucBuff	- 	points to the first location of the send buffer
+
+	\param			len		- Length of the data to be sent
+
+	\sa             SetupDMAReceive
+
+	\return			None
+
+    \warning
+*/
 
 void SetupDMASend(unsigned char *ucBuff,int len)
 {
@@ -347,14 +354,11 @@ void SetupDMASend(unsigned char *ucBuff,int len)
                   	  	  &g_ucDinDout[15],
                   	  	  UDMA_DST_INC_NONE);
 
- SPIWordCountSet(LSPI_BASE,len/4);
+	MAP_SPIWordCountSet(LSPI_BASE,len/4);
 
 
 }
 
-
-
-#define MAX_DMA_RECV_TRANSACTION_SIZE 4000
 /*!
     \brief open spi communication port to be used for communicating with a SimpleLink device
 
@@ -379,83 +383,101 @@ void SetupDMASend(unsigned char *ucBuff,int len)
 	\note
     \warning
 */
+
 Fd_t spi_Open(char *ifName, unsigned long flags)
 {
     unsigned long ulBase;
+    unsigned long ulSpiBitRate = 0;
+    tROMVersion* pRomVersion = (tROMVersion *)(ROM_VERSION_ADDR);
+
 
     //NWP master interface
     ulBase = LSPI_BASE;
 
     //Enable MCSPIA2
-    PRCMPeripheralClkEnable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
+    MAP_PRCMPeripheralClkEnable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
 
     //Disable Chip Select
-    SPICSDisable(ulBase);
+    MAP_SPICSDisable(ulBase);
 
     //Disable SPI Channel
-    SPIDisable(ulBase);
+    MAP_SPIDisable(ulBase);
 
     // Reset SPI
-    SPIReset(ulBase);
+    MAP_SPIReset(ulBase);
 
     //
-  // Configure SPI interface
-  //
-  SPIConfigSetExpClk(ulBase,PRCMPeripheralClockGet(PRCM_LSPI),
-                     SPI_IF_BIT_RATE,SPI_MODE_MASTER,SPI_SUB_MODE_0,
+    // Configure SPI interface
+	//
+
+    if(pRomVersion->ucMinorVerNum == ROM_VER_PG1_21 )
+    {
+    	ulSpiBitRate = SPI_RATE_13M;
+    }
+    else if(pRomVersion->ucMinorVerNum == ROM_VER_PG1_32)
+    {
+    	ulSpiBitRate = SPI_RATE_13M;
+    }
+    else if(pRomVersion->ucMinorVerNum >= ROM_VER_PG1_33)
+    {
+    	ulSpiBitRate = SPI_RATE_20M;
+    }
+
+    MAP_SPIConfigSetExpClk(ulBase,MAP_PRCMPeripheralClockGet(PRCM_LSPI),
+		  	  	  	 ulSpiBitRate,SPI_MODE_MASTER,SPI_SUB_MODE_0,
                      (SPI_SW_CTRL_CS |
                      SPI_4PIN_MODE |
                      SPI_TURBO_OFF |
                      SPI_CS_ACTIVEHIGH |
                      SPI_WL_32));
 
-if(PRCMPeripheralStatusGet(PRCM_UDMA))
-{
-  g_ucDMAEnabled = (HWREG(UDMA_BASE + UDMA_O_CTLBASE) != 0x0) ? 1 : 0;
-}
-else
-{
+	if(MAP_PRCMPeripheralStatusGet(PRCM_UDMA))
+	{
+	  g_ucDMAEnabled = (HWREG(UDMA_BASE + UDMA_O_CTLBASE) != 0x0) ? 1 : 0;
+	}
+	else
+	{
+		g_ucDMAEnabled = 0;
+	}
+	#ifdef SL_CPU_MODE
 	g_ucDMAEnabled = 0;
-}
-#ifdef SL_CPU_MODE
-g_ucDMAEnabled = 0;
-#endif
-if(g_ucDMAEnabled)
-{
-    memset(g_ucDinDout,0xFF,sizeof(g_ucDinDout));
-    //g_ucDout[0]=0xFF;
-    //Simplelink_UDMAInit();
-    // Set DMA channel
-    cc_UDMAChannelSelect(UDMA_CH12_LSPI_RX);
-    cc_UDMAChannelSelect(UDMA_CH13_LSPI_TX);
+	#endif
+	if(g_ucDMAEnabled)
+	{
+		memset(g_ucDinDout,0xFF,sizeof(g_ucDinDout));
+
+		// Set DMA channel
+		cc_UDMAChannelSelect(UDMA_CH12_LSPI_RX);
+		cc_UDMAChannelSelect(UDMA_CH13_LSPI_TX);
 
 
-    SPIFIFOEnable(ulBase,SPI_RX_FIFO);
-    SPIFIFOEnable(ulBase,SPI_TX_FIFO);
-    SPIDmaEnable(ulBase,SPI_RX_DMA);
-    SPIDmaEnable(ulBase,SPI_TX_DMA);
+		MAP_SPIFIFOEnable(ulBase,SPI_RX_FIFO);
+		MAP_SPIFIFOEnable(ulBase,SPI_TX_FIFO);
+		MAP_SPIDmaEnable(ulBase,SPI_RX_DMA);
+		MAP_SPIDmaEnable(ulBase,SPI_TX_DMA);
 
-    SPIFIFOLevelSet(ulBase,1,1);
-#if defined(SL_PLATFORM_MULTI_THREADED)
-    osi_InterruptRegister(INT_LSPI, (P_OSI_INTR_ENTRY)DmaSpiSwIntHandler,INT_PRIORITY_LVL_1);
-    SPIIntEnable(ulBase,SPI_INT_EOW);
-
-
-    osi_MsgQCreate(&DMAMsgQ,"DMAQueue",sizeof(int),1);
-#else
-
-    IntRegister(INT_LSPI,(void(*)(void))DmaSpiSwIntHandler);
-    IntPrioritySet(INT_LSPI, INT_PRIORITY_LVL_1);
-    IntEnable(INT_LSPI);
-
-    SPIIntEnable(ulBase,SPI_INT_EOW);
+		MAP_SPIFIFOLevelSet(ulBase,1,1);
+	#if defined(SL_PLATFORM_MULTI_THREADED)
+		osi_InterruptRegister(INT_LSPI, (P_OSI_INTR_ENTRY)DmaSpiSwIntHandler,INT_PRIORITY_LVL_1);
+		MAP_SPIIntEnable(ulBase,SPI_INT_EOW);
 
 
-    g_cDummy = 0x0;
-#endif
+		osi_MsgQCreate(&DMAMsgQ,"DMAQueue",sizeof(int),1);
 
-}
-    SPIEnable(ulBase);
+	#else
+
+		MAP_IntRegister(INT_LSPI,(void(*)(void))DmaSpiSwIntHandler);
+		MAP_IntPrioritySet(INT_LSPI, INT_PRIORITY_LVL_1);
+		MAP_IntEnable(INT_LSPI);
+
+		MAP_SPIIntEnable(ulBase,SPI_INT_EOW);
+
+
+		g_cDummy = 0x0;
+	#endif
+
+	}
+	MAP_SPIEnable(ulBase);
 
     g_SpiFd = 1;
     return g_SpiFd;
@@ -478,45 +500,59 @@ int spi_Close(Fd_t fd)
     unsigned long ulBase = LSPI_BASE;
 
     g_SpiFd = 0;
-if(g_ucDMAEnabled)
-{
-    //Simplelink_UDMADeInit();
-    #ifdef SL_PLATFORM_MULTI_THREADED
-      osi_InterruptDeRegister(INT_LSPI);
-      osi_MsgQDelete(&DMAMsgQ);
-    #else
-      SPIIntUnregister(ulBase);
-      g_cDummy = 0;
-    #endif
-    SPIFIFODisable(ulBase,SPI_RX_FIFO);
-    SPIFIFODisable(ulBase,SPI_TX_FIFO);
-    SPIDmaDisable(ulBase,SPI_RX_DMA);
-    SPIDmaDisable(ulBase,SPI_TX_DMA);
-}
-    //Disable Chip Select
-    SPICSDisable(LSPI_BASE);
+	if(g_ucDMAEnabled)
+	{
+
+		#ifdef SL_PLATFORM_MULTI_THREADED
+		  osi_InterruptDeRegister(INT_LSPI);
+		  osi_MsgQDelete(&DMAMsgQ);
+
+		#else
+		  MAP_SPIIntUnregister(ulBase);
+		  g_cDummy = 0;
+		#endif
+		  MAP_SPIFIFODisable(ulBase,SPI_RX_FIFO);
+		  MAP_SPIFIFODisable(ulBase,SPI_TX_FIFO);
+		  MAP_SPIDmaDisable(ulBase,SPI_RX_DMA);
+		  MAP_SPIDmaDisable(ulBase,SPI_TX_DMA);
+	}
+		//Disable Chip Select
+	MAP_SPICSDisable(LSPI_BASE);
 
 
-    //Disable SPI Channel
-    SPIDisable(ulBase);
+		//Disable SPI Channel
+	MAP_SPIDisable(ulBase);
 
-    // Reset SPI
-    SPIReset(ulBase);
+		// Reset SPI
+	MAP_SPIReset(ulBase);
 
-    // Enable SPI Peripheral
-    PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
+		// Enable SPI Peripheral
+	MAP_PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK|PRCM_SLP_MODE_CLK);
 
     return 0;
 }
-int g_len=0;
+
+/*!
+    \brief closes an opened spi communication port
+
+	\param	 		fd			-	file descriptor of an opened SPI channel
+
+	\return			upon successful completion, the function shall return 0.
+					Otherwise, -1 shall be returned
+
+    \sa             spi_Open
+	\note
+    \warning
+*/
+
 int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 {
     int read_size = 0;
+    unsigned int pBuffAddr = (unsigned int)pBuff;
     if(fd!=1 || g_SpiFd!=1)
     return -1;
 
-    g_len = len;
-	if(len>DMA_BUFF_SIZE_MIN && g_ucDMAEnabled)
+	if(len>DMA_BUFF_SIZE_MIN && g_ucDMAEnabled && ((pBuffAddr % 4) == 0))
 	{
 
 #if defined(SL_PLATFORM_MULTI_THREADED)
@@ -527,7 +563,7 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 				if( len < MAX_DMA_RECV_TRANSACTION_SIZE)
 				{
 				   SetupDMAReceive(&pBuff[read_size],len);
-				   SPICSEnable(LSPI_BASE);
+				   MAP_SPICSEnable(LSPI_BASE);
 #if defined(SL_PLATFORM_MULTI_THREADED)
 				   osi_MsgQRead(&DMAMsgQ,temp,OSI_WAIT_FOREVER);
 #else
@@ -540,12 +576,12 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 				else
 				{
 					SetupDMAReceive(&pBuff[read_size],MAX_DMA_RECV_TRANSACTION_SIZE);
-					SPICSEnable(LSPI_BASE);
+					MAP_SPICSEnable(LSPI_BASE);
 #if defined(SL_PLATFORM_MULTI_THREADED)
-					osi_MsgQRead(&DMAMsgQ,temp,OSI_WAIT_FOREVER);
+				   osi_MsgQRead(&DMAMsgQ,temp,OSI_WAIT_FOREVER);
 #else
-					while(g_cDummy != 0x1);
-					g_cDummy = 0x0;
+				   while(g_cDummy != 0x1);
+				   g_cDummy = 0x0;
 #endif
 					read_size += MAX_DMA_RECV_TRANSACTION_SIZE;
 
@@ -555,6 +591,7 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 	}
 	else
 	{
+		MAP_SPIWordCountSet(LSPI_BASE,0);
 		read_size += spi_Read_CPU(pBuff,len);
 	}
     return read_size;
@@ -583,49 +620,36 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len)
 int spi_Write(Fd_t fd, unsigned char *pBuff, int len)
 {
     int write_size = 0;
+    unsigned int pBuffAddr = (unsigned int)pBuff;
 
     if(fd!=1 || g_SpiFd!=1)
         return -1;
 
-	if(len>DMA_BUFF_SIZE_MIN && g_ucDMAEnabled)
+	if(len>DMA_BUFF_SIZE_MIN && g_ucDMAEnabled && ((pBuffAddr % 4) == 0))
 	{
 #if defined(SL_PLATFORM_MULTI_THREADED)
         char temp[4];
 #endif
 	    SetupDMASend(pBuff,len);
-	    SPICSEnable(LSPI_BASE);
+	    MAP_SPICSEnable(LSPI_BASE);
+
 #if defined(SL_PLATFORM_MULTI_THREADED)
-	    osi_MsgQRead(&DMAMsgQ,temp,OSI_WAIT_FOREVER);
+				   osi_MsgQRead(&DMAMsgQ,temp,OSI_WAIT_FOREVER);
 #else
-	    while(g_cDummy != 0x1);
-	    g_cDummy = 0x0;
+				   while(g_cDummy != 0x1);
+				   g_cDummy = 0x0;
 #endif
             write_size += len;
 	}
 
 	else
 	{
+		MAP_SPIWordCountSet(LSPI_BASE,0);
 		write_size += spi_Write_CPU(pBuff,len);
 	}
     return write_size;
 }
 
-
-
-void HostIntHanlder()
-{
-    if(g_pHostIntHdl != NULL)
-    {
-        g_pHostIntHdl();
-    }
-    else
-    {
-        while(1)
-        {
-
-        }
-    }
-}
 /*!
     \brief register an interrupt handler for the host IRQ
 
@@ -642,37 +666,31 @@ void HostIntHanlder()
     \warning
 */
 
-int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)    //do not know what to do with pValue
+int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)
 {
 
     if(InterruptHdl == NULL)
     {
-        //De-register Interprocessor communication interrupt between App and NWP
-        #ifdef SL_PLATFORM_MULTI_THREADED
-          osi_InterruptDeRegister(INT_NWPIC);
-        #else
-        IntDisable(INT_NWPIC);
-        IntUnregister(INT_NWPIC);
-        IntPendClear(INT_NWPIC);
-        #endif
-        g_pHostIntHdl = NULL;
+		//De-register Interprocessor communication interrupt between App and NWP
+		#ifdef SL_PLATFORM_MULTI_THREADED
+		  osi_InterruptDeRegister(INT_NWPIC);
+		#else
+		  MAP_IntDisable(INT_NWPIC);
+		  MAP_IntUnregister(INT_NWPIC);
+		  MAP_IntPendClear(INT_NWPIC);
+		#endif
     }
     else
     {
-          g_pHostIntHdl = InterruptHdl;
-#if 0
-          //Setting the 14th and 13th bit to '01' to make the HOST_IRQ edge triggered
-          HWREG(0x4402E168) |= 0x2000;
-#endif
-          #ifdef SL_PLATFORM_MULTI_THREADED
-          	 IntPendClear(INT_NWPIC);
-             osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)HostIntHanlder,INT_PRIORITY_LVL_1);
-          #else
-              IntRegister(INT_NWPIC, HostIntHanlder);
-              IntPrioritySet(INT_NWPIC, INT_PRIORITY_LVL_1);
-              IntPendClear(INT_NWPIC);
-              IntEnable(INT_NWPIC);
-          #endif
+		  #ifdef SL_PLATFORM_MULTI_THREADED
+			 MAP_IntPendClear(INT_NWPIC);
+			 osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)InterruptHdl,INT_PRIORITY_LVL_1);
+		  #else
+			 MAP_IntRegister(INT_NWPIC, InterruptHdl);
+			 MAP_IntPrioritySet(INT_NWPIC, INT_PRIORITY_LVL_1);
+			 MAP_IntPendClear(INT_NWPIC);
+			 MAP_IntEnable(INT_NWPIC);
+		  #endif
     }
 
   return 0;
@@ -706,14 +724,25 @@ void NwpUnMaskInterrupt()
 	(*(unsigned long *)REG_INT_MASK_CLR) = 0x1;
 }
 
+#ifndef DISABLE_DEBUGGER_RECONNECT
+/*!
+    \brief		Preamble to the enabling the Network Processor.
+                        Placeholder to implement any pre-process operations
+                        before enabling networking operations.
 
+    \sa			sl_DeviceEnable
+
+    \note       belongs to \ref ported_sec
+
+*/
 void NwpPowerOnPreamble(void)
 {
 #ifndef CC3200_ES_1_2_1
+
 #define MAX_RETRY_COUNT         1000
     unsigned int sl_stop_ind, apps_int_sts_raw, nwp_lpds_wake_cfg;
     unsigned int retry_count;
-    /* Perform the sl_stop equivalent to ensure network services 
+    /* Perform the sl_stop equivalent to ensure network services
        are turned off if active */
     HWREG(0x400F70B8) = 1;   /* APPs to NWP interrupt */
     UtilsDelay(800000/5);
@@ -721,7 +750,7 @@ void NwpPowerOnPreamble(void)
     retry_count = 0;
     nwp_lpds_wake_cfg = HWREG(0x4402D404);
     sl_stop_ind = HWREG(0x4402E16C);
-    
+
     if((nwp_lpds_wake_cfg != 0x20) && /* Check for NWP POR condition */
             !(sl_stop_ind & 0x2))     /* Check if sl_stop was executed */
     {
@@ -747,9 +776,19 @@ void NwpPowerOnPreamble(void)
     NwpPowerOff();
 #endif
 }
+#endif
 
+/*!
+    \brief		Enable the Network Processor
+
+    \sa			sl_DeviceDisable
+
+    \note       belongs to \ref ported_sec
+
+*/
 void NwpPowerOn(void)
 {
+
 #ifdef CC3200_ES_1_2_1
     //SPI CLK GATING
     HWREG(0x440250C8) = 0;
@@ -763,17 +802,25 @@ void NwpPowerOn(void)
     //bring the 1.32 eco out of reset
     HWREG(0x4402E16C) &= 0xFFFFFFFD;
 #endif
-    //UnMask Host Interrupt
 
-    //NWP Wakeup
-    //PRCMNWPEnable();
     //NWP Wakeup
     HWREG(0x44025118) = 1;
-
+#ifndef DISABLE_DEBUGGER_RECONNECT
     UtilsDelay(8000000);
+#endif
+
+    //UnMask Host Interrupt
     NwpUnMaskInterrupt();
 }
 
+
+/*!
+    \brief		Disable the Network Processor
+
+    \sa			sl_DeviceEnable
+
+    \note       belongs to \ref ported_sec
+*/
 void NwpPowerOff(void)
 {
 	//Must delay 300 usec to enable the NWP to finish all sl_stop activities
@@ -793,10 +840,75 @@ void NwpPowerOff(void)
     //sl_stop eco for PG1.32 devices
     HWREG(0x4402E16C) |= 0x2;
 
-    //UtilsDelay(4000);
     UtilsDelay(800000);
 #endif
 }
 
 
+/*!
+ 	 \brief		Configures the uDMA channel
 
+ 	 \param uiChannel - the DMA channel to be selected
+
+	 \param pfpAppCb - the application callback to be invoked on transfer
+
+     \return None.
+*/
+void cc_UDMAChannelSelect(unsigned int uiChannel)
+{
+    if((uiChannel & 0xFF) > MAX_NUM_CH)
+    {
+        return;
+    }
+    MAP_uDMAChannelAssign(uiChannel);
+    MAP_uDMAChannelAttributeDisable(uiChannel,UDMA_ATTR_ALTSELECT);
+
+}
+
+
+/*!
+ 	 \brief		Does the actual Memory transfer
+
+ 	 \param ulChannel - the DMA channel to be selected
+
+	 \param ulMode
+
+	 \param ulItemCount
+
+	 \param ulItemSize
+
+	 \param ulArbSize
+
+	 \param pvSrcBuf
+
+	 \param ulSrcInc
+
+	 \param pvDstBuf
+
+	 \param ulDstInc
+
+     \return None.
+*/
+void cc_SetupTransfer(
+                  unsigned long ulChannel,
+                  unsigned long ulMode,
+                  unsigned long ulItemCount,
+                  unsigned long ulItemSize,
+                  unsigned long ulArbSize,
+                  void *pvSrcBuf,
+                  unsigned long ulSrcInc,
+                  void *pvDstBuf,
+                  unsigned long ulDstInc)
+{
+
+    MAP_uDMAChannelControlSet(ulChannel,
+                              ulItemSize | ulSrcInc | ulDstInc | ulArbSize);
+
+    MAP_uDMAChannelAttributeEnable(ulChannel,UDMA_ATTR_USEBURST);
+
+    MAP_uDMAChannelTransferSet(ulChannel, ulMode,
+                               pvSrcBuf, pvDstBuf, ulItemCount);
+
+    MAP_uDMAChannelEnable(ulChannel);
+
+}
