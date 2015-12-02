@@ -22,6 +22,7 @@ setXY       KEYWORD2
 text        KEYWORD2
 flush       KEYWORD2
 setCharXY   KEYWORD2
+drawImage   KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
