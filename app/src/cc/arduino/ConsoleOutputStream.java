@@ -64,7 +64,7 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
     this.printStream = printStream;
     this.newLinePrinted = false;
 
-    this.timer = new Timer(250, (e) -> {
+    this.timer = new Timer(100, (e) -> {
       if (editorConsole != null && newLinePrinted) {
         editorConsole.scrollDown();
         newLinePrinted = false;
