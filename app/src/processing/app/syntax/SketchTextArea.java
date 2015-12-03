@@ -35,7 +35,6 @@ import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
-import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
@@ -44,9 +43,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.Segment;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -69,7 +66,8 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private PdeKeywords pdeKeywords;
 
-  public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
+  public SketchTextArea(RSyntaxDocument document, PdeKeywords pdeKeywords) throws IOException {
+    super(document);
     this.pdeKeywords = pdeKeywords;
     installFeatures();
   }
@@ -146,25 +144,6 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   public boolean isSelectionActive() {
     return this.getSelectedText() != null;
-  }
-
-  public void switchDocument(Document document, UndoManager newUndo) {
-
-    // HACK: Dont discard changes on curret UndoManager.
-    // BUG: https://github.com/bobbylight/RSyntaxTextArea/issues/84
-    setUndoManager(null); // bypass reset current undo manager...
-
-    super.setDocument(document);
-
-    setUndoManager((RUndoManager) newUndo);
-
-    // HACK: Complement previous hack (hide code folding on switch) | Drawback: Lose folding state
-//  if(sketch.getCodeCount() > 1 && textarea.isCodeFoldingEnabled()){
-//    textarea.setCodeFoldingEnabled(false);
-//    textarea.setCodeFoldingEnabled(true);
-//  }
-
-
   }
 
   @Override

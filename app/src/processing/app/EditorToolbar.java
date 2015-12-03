@@ -445,7 +445,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       shiftPressed = !shiftPressed;
       repaint();
     }
-    // Return false to continue processing this keyEvent  
+    // Return false to continue processing this keyEvent
     return false;
   }
 }

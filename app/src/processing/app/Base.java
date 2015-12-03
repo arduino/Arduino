@@ -610,10 +610,10 @@ public class Base {
     activeEditor.rebuildRecentSketchesMenu();
     if (PreferencesData.getBoolean("editor.external")) {
       try {
-        int previousCaretPosition = activeEditor.getTextArea().getCaretPosition();
+        int previousCaretPosition = activeEditor.getCurrentTab().getTextArea().getCaretPosition();
         activeEditor.getSketch().load(true);
-        if (previousCaretPosition < activeEditor.getText().length()) {
-          activeEditor.getTextArea().setCaretPosition(previousCaretPosition);
+        if (previousCaretPosition < activeEditor.getCurrentTab().getText().length()) {
+          activeEditor.getCurrentTab().getTextArea().setCaretPosition(previousCaretPosition);
         }
       } catch (IOException e) {
         // noop
