@@ -71,6 +71,8 @@
     </or>
   </condition>
 
+  <property name="portable" value="false" />
+
   <property name="ARDUINO-BUILDER-VERSION" value="1.3.5" />
 
   <!-- Libraries required for running arduino -->
@@ -95,12 +97,19 @@
     <antcall target="${platform}-start" />
   </target>
 
-  <target name="dist" depends="revision-check"
-	  description="Build Arduino for distribution.">
-    <input message="Enter version number:"
-	   addproperty="version"
-	   defaultvalue="${revision}" />
-    <antcall target="${platform}-dist" />
+  <target name="dist" depends="revision-check" description="Build Arduino for distribution.">
+    <input message="Enter version number:" addproperty="version" defaultvalue="${revision}"/>
+    <condition property="full-version" value="${version}-${platform}">
+      <not>
+        <equals arg1="${portable}" arg2="true"/>
+      </not>
+    </condition>
+    <condition property="full-version" value="${version}-${platform}-portable">
+      <equals arg1="${portable}" arg2="true"/>
+    </condition>
+    <antcall target="${platform}-dist">
+      <param name="full-version" value="${full-version}"/>
+    </antcall>
   </target>
 
   <!-- "§$§$&, ant doesn't have a built-in help target :(  -->
@@ -400,6 +409,9 @@
     </copy>
     <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
 
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="macosx/work/${staging_hardware_folder}/.." />
+    </antcall>
   </target>
 
   <!-- Unzip AVR tools -->
@@ -463,14 +475,14 @@
 
     <!-- Create signed zip file -->
     <exec executable="zip" dir="macosx/work" failonerror="true">
-      <arg line="-q -r ../arduino-${version}-${platform}-signed.zip ." />
+      <arg line="-q -r ../arduino-${full-version}-signed.zip ." />
     </exec>
 
     <echo>
       =======================================================
       Arduino for Mac OS X built and signed.
 
-      macosx/arduino-${version}-${platform}-signed.zip
+      macosx/arduino-${full-version}-signed.zip
       =======================================================
     </echo>
   </target>
@@ -486,14 +498,14 @@
   <!-- - - - - - - - - - - - - - - - - - - -->
   <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
     <exec executable="zip" dir="macosx/work" failonerror="true">
-      <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
+      <arg line="-q -r ../arduino-${full-version}.zip ." />
     </exec>
 
     <echo>
       =======================================================
       Arduino for Mac OS X was built. Grab the image from
 
-      macosx/arduino-${version}-${platform}.zip
+      macosx/arduino-${full-version}.zip
       =======================================================
     </echo>
   </target>
@@ -569,6 +581,10 @@
     </antcall>
     <copy file="linux/libastylej-2.05.1/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="linux/work" />
+    </antcall>
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
@@ -722,7 +738,7 @@
       <arg value="--lzma"/>
       <arg value="-c"/>
       <arg value="-f"/>
-      <arg value="arduino-${version}-${platform}.tar.xz"/>
+      <arg value="arduino-${full-version}.tar.xz"/>
       <arg value="arduino-${version}"/>
     </exec>
 
@@ -732,7 +748,7 @@
       =======================================================
       Arduino for Linux was built. Grab the archive from
 
-      linux/arduino-${version}-${platform}.tar.xz
+      linux/arduino-${full-version}.tar.xz
       =======================================================
     </echo>
   </target>
@@ -895,6 +911,10 @@
     <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
       <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
     </copy>
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="${staging_folder}/work" />
+    </antcall>
   </target>
 
   <target name="windows-build-avr-toolchain">
@@ -916,7 +936,7 @@
   </target>
 
   <target name="windows-dist" depends="build" description="Create .zip files of windows version">
-    <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
+    <zip destfile="windows/arduino-${full-version}.zip" level="9">
       <zipfileset dir="windows/work" prefix="arduino-${version}"/>
     </zip>
 
@@ -924,7 +944,7 @@
       =======================================================
       Arduino for Windows was built. Grab the archive from
 
-      windows/arduino-${version}-${platform}.zip
+      windows/arduino-${full-version}.zip
       =======================================================
     </echo>
   </target>
@@ -1030,4 +1050,8 @@
     <echo file="${staging_folder}/work/${staging_hardware_folder}/../lib/hourlyBuild.txt">${BUILD_DATE}</echo>
   </target>
 
+  <target name="portable-true">
+    <mkdir dir="${parentdir}/portable"/>
+  </target>
+  <target name="portable-false"/>
 </project>
