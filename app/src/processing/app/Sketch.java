@@ -95,6 +95,7 @@ public class Sketch {
   }
 
   protected void load(boolean forceUpdate) throws IOException {
+    current = null;
     data.load();
 
     for (SketchCode code : data.getCodes()) {
@@ -104,6 +105,7 @@ public class Sketch {
 
     // set the main file to be the current tab
     if (editor != null) {
+      editor.sketchLoaded(this);
       setCurrentCode(currentIndex, forceUpdate);
     }
   }
@@ -317,7 +319,7 @@ public class Sketch {
 
         // first get the contents of the editor text area
         if (current.getCode().isModified()) {
-          current.getCode().setProgram(editor.getText());
+          current.getCode().setProgram(editor.getCurrentTab().getText());
           try {
             // save this new SketchCode
             current.getCode().save();
@@ -362,9 +364,9 @@ public class Sketch {
         // (unfortunately this will kill positions for carets etc)
         editor.handleOpenUnchecked(newMainFile,
                                    currentIndex,
-                                   editor.getSelectionStart(),
-                                   editor.getSelectionStop(),
-                                   editor.getScrollPosition());
+                                   editor.getCurrentTab().getSelectionStart(),
+                                   editor.getCurrentTab().getSelectionStop(),
+                                   editor.getCurrentTab().getScrollPosition());
 
         // get the changes into the sketchbook menu
         // (re-enabled in 0115 to fix bug #332)
@@ -398,7 +400,17 @@ public class Sketch {
         return;
       }
       ensureExistence();
-      data.addCode((new SketchCodeDocument(this, newFile)).getCode());
+      SketchCode code = (new SketchCodeDocument(this, newFile)).getCode();
+      try {
+        editor.addTab(code);
+      } catch (IOException e) {
+        Base.showWarning(tr("Error"),
+       I18n.format(
+                           "Failed to open tab for new file"
+       ), e);
+        return;
+      }
+      data.addCode(code);
     }
 
     // sort the entries
@@ -542,7 +554,7 @@ public class Sketch {
 
     // first get the contents of the editor text area
     if (current.getCode().isModified()) {
-      current.getCode().setProgram(editor.getText());
+      current.getCode().setProgram(editor.getCurrentTab().getText());
     }
 
     // don't do anything if not actually modified
@@ -698,7 +710,7 @@ public class Sketch {
     // grab the contents of the current tab before saving
     // first get the contents of the editor text area
     if (current.getCode().isModified()) {
-      current.getCode().setProgram(editor.getText());
+      current.getCode().setProgram(editor.getCurrentTab().getText());
     }
 
     // save the other tabs to their new location
@@ -734,9 +746,9 @@ public class Sketch {
 
     editor.handleOpenUnchecked(newFile,
             currentIndex,
-            editor.getSelectionStart(),
-            editor.getSelectionStop(),
-            editor.getScrollPosition());
+            editor.getCurrentTab().getSelectionStart(),
+            editor.getCurrentTab().getSelectionStop(),
+            editor.getCurrentTab().getScrollPosition());
 
     // Name changed, rebuild the sketch menus
     //editor.sketchbook.rebuildMenusAsync();
@@ -950,9 +962,9 @@ public class Sketch {
       buffer.append(">\n");
     }
     buffer.append('\n');
-    buffer.append(editor.getText());
-    editor.setText(buffer.toString());
-    editor.setSelection(0, 0);  // scroll to start
+    buffer.append(editor.getCurrentTab().getText());
+    editor.getCurrentTab().setText(buffer.toString());
+    editor.getCurrentTab().setSelection(0, 0);  // scroll to start
     setModified(true);
   }
 
@@ -976,26 +988,12 @@ public class Sketch {
     }
 
     // get the text currently being edited
-    if (current != null) {
-      current.getCode().setProgram(editor.getText());
-      current.setSelectionStart(editor.getSelectionStart());
-      current.setSelectionStop(editor.getSelectionStop());
-      current.setScrollPosition(editor.getScrollPosition());
-    }
+    if (current != null)
+      current.getCode().setProgram(editor.getCurrentTab().getText());
 
     current = (SketchCodeDocument) data.getCode(which).getMetadata();
     currentIndex = which;
-
-    if (SwingUtilities.isEventDispatchThread()) {
-      editor.setCode(current);
-    } else {
-      try {
-        SwingUtilities.invokeAndWait(() -> editor.setCode(current));
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-
+    editor.setCode(current);
     editor.header.rebuild();
   }
 
@@ -1051,7 +1049,7 @@ public class Sketch {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    current.getCode().setProgram(editor.getText());
+    current.getCode().setProgram(editor.getCurrentTab().getText());
 
     // TODO record history here
     //current.history.record(program, SketchHistory.RUN);

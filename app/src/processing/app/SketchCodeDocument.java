@@ -5,23 +5,11 @@ import java.io.File;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
-import javax.swing.undo.UndoManager;
 
-public class SketchCodeDocument implements DocumentListener{
+public class SketchCodeDocument implements DocumentListener {
 
   private SketchCode code;
   private Sketch sketch;
-  private Document document;
-
-  // Undo Manager for this tab, each tab keeps track of their own Editor.undo
-  // will be set to this object when this code is the tab that's currently the
-  // front.
-  private UndoManager undo;
-
-  // saved positions from last time this tab was used
-  private int selectionStart;
-  private int selectionStop;
-  private int scrollPosition;
 
   public SketchCodeDocument(Sketch sketch, SketchCode code) {
     this.code = code;
@@ -30,40 +18,7 @@ public class SketchCodeDocument implements DocumentListener{
   }
 
   public SketchCodeDocument(Sketch sketch, File file) {
-    this.code = new SketchCode(file, this);
-    this.sketch = sketch;
-  }
-
-  public UndoManager getUndo() {
-    return undo;
-  }
-
-  public void setUndo(UndoManager undo) {
-    this.undo = undo;
-  }
-
-  public int getSelectionStart() {
-    return selectionStart;
-  }
-
-  public void setSelectionStart(int selectionStart) {
-    this.selectionStart = selectionStart;
-  }
-
-  public int getSelectionStop() {
-    return selectionStop;
-  }
-
-  public void setSelectionStop(int selectionStop) {
-    this.selectionStop = selectionStop;
-  }
-
-  public int getScrollPosition() {
-    return scrollPosition;
-  }
-
-  public void setScrollPosition(int scrollPosition) {
-    this.scrollPosition = scrollPosition;
+    this(sketch, new SketchCode(file));
   }
 
   public SketchCode getCode() {
@@ -74,12 +29,7 @@ public class SketchCodeDocument implements DocumentListener{
     this.code = code;
   }
 
-  public Document getDocument() {
-    return document;
-  }
-
   public void setDocument(Document document) {
-    this.document = document;
     document.addDocumentListener(this);
   }
 
@@ -96,8 +46,7 @@ public class SketchCodeDocument implements DocumentListener{
 
   @Override
   public void changedUpdate(DocumentEvent e) {
-     // Callback for when styles in the current document change.
-     // This method is never called.
+    // ignore
   }
   
 }

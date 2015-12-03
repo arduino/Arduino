@@ -55,7 +55,7 @@ public class BlockCommentGeneratesOneUndoActionTest extends AbstractGUITest {
     GuiActionRunner.execute(new GuiQuery<Frame>() {
 
       protected Frame executeInEDT() {
-        window.getEditor().handleCommentUncomment();
+        window.getEditor().getCurrentTab().handleCommentUncomment();
         return window.getEditor();
       }
 

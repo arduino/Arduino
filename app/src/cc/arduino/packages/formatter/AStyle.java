@@ -78,7 +78,7 @@ public class AStyle implements Tool {
 
   @Override
   public void run() {
-    String originalText = editor.getText();
+    String originalText = editor.getCurrentTab().getText();
     String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
 
     if (formattedText.equals(originalText)) {
@@ -86,14 +86,14 @@ public class AStyle implements Tool {
       return;
     }
 
-    SketchTextArea textArea = editor.getTextArea();
+    SketchTextArea textArea = editor.getCurrentTab().getTextArea();
 
     int line = getLineOfOffset(textArea);
     int lineOffset = getLineOffset(textArea, line);
 
     textArea.getUndoManager().beginInternalAtomicEdit();
     editor.removeAllLineHighlights();
-    editor.setText(formattedText);
+    editor.getCurrentTab().setText(formattedText);
     editor.getSketch().setModified(true);
     textArea.getUndoManager().endInternalAtomicEdit();
 
