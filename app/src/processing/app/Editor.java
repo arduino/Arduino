@@ -2748,28 +2748,28 @@ public class Editor extends JFrame implements RunnerListener {
   private void handleBurnBootloader() {
     console.clear();
     statusNotice(tr("Burning bootloader to I/O Board (this may take a minute)..."));
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        try {
-          Uploader uploader = new SerialUploader();
-          if (uploader.burnBootloader()) {
-            statusNotice(tr("Done burning bootloader."));
-          } else {
-            statusError(tr("Error while burning bootloader."));
-            // error message will already be visible
-          }
-        } catch (PreferencesMapException e) {
-          statusError(I18n.format(
-                      tr("Error while burning bootloader: missing '{0}' configuration parameter"),
-                      e.getMessage()));
-        } catch (RunnerException e) {
-          statusError(e.getMessage());
-        } catch (Exception e) {
-          statusError(tr("Error while burning bootloader."));
-          e.printStackTrace();
+    new Thread(() -> {
+      try {
+        Uploader uploader = new SerialUploader();
+        if (uploader.burnBootloader()) {
+          SwingUtilities.invokeLater(() -> statusNotice(tr("Done burning bootloader.")));
+        } else {
+          SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader.")));
+          // error message will already be visible
         }
+      } catch (PreferencesMapException e) {
+        SwingUtilities.invokeLater(() -> {
+          statusError(I18n.format(
+            tr("Error while burning bootloader: missing '{0}' configuration parameter"),
+            e.getMessage()));
+        });
+      } catch (RunnerException e) {
+        SwingUtilities.invokeLater(() -> statusError(e.getMessage()));
+      } catch (Exception e) {
+        SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader.")));
+        e.printStackTrace();
       }
-    });
+    }).start();
   }
 
 
