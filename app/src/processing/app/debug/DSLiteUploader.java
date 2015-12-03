@@ -24,6 +24,7 @@ public class DSLiteUploader extends Uploader{
 		Collection params = new ArrayList();
 
 		params.add("load");
+		params.add("-c");
 		if(Base.getArch() == "msp432") {
 			params.add(Base.getToolsPath() + File.separator + "common" + File.separator + "DSLite" + File.separator + "MSP432P401R.ccxml");
 		} else if (Base.getArch() == "cc2600emt") {
@@ -39,6 +40,7 @@ public class DSLiteUploader extends Uploader{
 				params.add(Base.getToolsPath() + File.separator + "common" + File.separator + "DSLite" + File.separator + "LAUNCHXL-F28377S.ccxml");
 		}
 
+		params.add("-f");
 		if (Base.isMacOS() || Base.isLinux()) {
 			if ( Base.isLinux()) {
 				params.add(buildPath + File.separator + className + ".elf");
