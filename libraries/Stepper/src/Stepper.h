@@ -1,13 +1,19 @@
 /*
- * Stepper.h - Stepper library for Wiring/Arduino - Version 1.1.0
+ * Stepper.h - Stepper library for Wiring/Arduino - Version 1.1.1
  *
- * Original library        (0.1)   by Tom Igoe.
- * Two-wire modifications  (0.2)   by Sebastian Gassner
- * Combination version     (0.3)   by Tom Igoe and David Mellis
- * Bug fix for four-wire   (0.4)   by Tom Igoe, bug fix from Noah Shibley
- * High-speed stepping mod         by Eugene Kozlenko
- * Timer rollover fix              by Eugene Kozlenko
- * Five phase five wire    (1.1.0) by Ryan Orendorff
+ * Original library                     (0.1)   by Tom Igoe.
+ * Two-wire modifications               (0.2)   by Sebastian Gassner
+ * Combination version                  (0.3)   by Tom Igoe and David Mellis
+ * Bug fix for four-wire                (0.4)   by Tom Igoe, bug fix from Noah Shibley
+ * High-speed stepping mod                      by Eugene Kozlenko
+ * Timer rollover fix                           by Eugene Kozlen
+ * Five phase five wire                 (1.1.0) by Ryan Orendorff
+ * Generic driver support (see example
+ * stepper_oneRevolution_ULN2003),
+ * constructors harmonization by
+ * introducing the initMotor method,
+ * optimization of method stepMotor by
+ * introducing the phasesMatrix array   (1.1.1) by Stanislav Kniazev
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -89,6 +95,10 @@ class Stepper {
     Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
                                  int motor_pin_3, int motor_pin_4,
                                  int motor_pin_5);
+    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
+                                 int motor_pin_3, int motor_pin_4,
+                                 int motor_pin_5, unsigned char *phasesMatrix,
+                                 int pin_count,   int phase_count);
 
     // speed setter method:
     void setSpeed(long whatSpeed);
@@ -100,21 +110,50 @@ class Stepper {
 
   private:
     void stepMotor(int this_step);
+    void initMotor(int number_of_steps, int motor_pin_1, int motor_pin_2,
+                                        int motor_pin_3, int motor_pin_4,
+                                        int motor_pin_5, unsigned char *phasesMatrix,
+                                        int pin_count,   int phase_count);
 
-    int direction;            // Direction of rotation
     unsigned long step_delay; // delay between steps, in ms, based on speed
     int number_of_steps;      // total number of steps this motor can take
     int pin_count;            // how many pins are in use.
+    int phase_count;          // how many phases are in use.
+    unsigned char *phasesMatrix;  // pointer to the phases Matrix
     int step_number;          // which step the motor is on
 
     // motor pin numbers:
-    int motor_pin_1;
-    int motor_pin_2;
-    int motor_pin_3;
-    int motor_pin_4;
-    int motor_pin_5;          // Only 5 phase motor
+    int motor_pin[5];         // Maximum 5 control signals
 
-    unsigned long last_step_time; // time stamp in us of when the last step was taken
+    //Default phases matrix for 2 control wires is as follows
+    const unsigned char phasesMatrix2[4]  = {
+      0b01000000,
+      0b11000000,
+      0b10000000,
+      0b00000000
+    };
+
+    //Default phases matrix for 4 control wires is as follows
+    const unsigned char phasesMatrix4[4]  = {
+      0b10100000,
+      0b01100000,
+      0b01010000,
+      0b10010000
+    };
+
+    //Default phases matrix for 5 control wires is as follows
+    const unsigned char phasesMatrix5[10] = {
+      0b01101000,
+      0b01001000,
+      0b01011000,
+      0b01010000,
+      0b11010000,
+      0b10010000,
+      0b10110000,
+      0b10100000,
+      0b10101000,
+      0b00101000
+    };
 };
 
 #endif
