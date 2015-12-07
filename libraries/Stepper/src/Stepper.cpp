@@ -188,11 +188,12 @@ void Stepper::step(int steps_to_move)
 /*
  * Moves the motor forward or backwards.
  */
-void Stepper::stepMotor(int thisStep)
+void Stepper::stepMotor(int thisPhase)
 {
+  unsigned char phase = pgm_read_byte_near(phasesMatrix + thisPhase);
   unsigned char running_one = 0b10000000;
   for (int i = 0; i < pin_count; i++, running_one >>= 1){
-    digitalWrite(motor_pin[i], (phasesMatrix[thisStep] & running_one));
+    digitalWrite(motor_pin[i], (phase & running_one));
   }
 }
 

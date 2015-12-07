@@ -35,7 +35,7 @@ const int stepsPerRevolution = 4096;  // change this to fit the number of steps 
  *    7  1  0  0  0
  *    8  1  0  0  1
  */
-const unsigned char phasesMatrix[8]= {
+const unsigned char phasesMatrix[8] PROGMEM = {
   0b00010000,
   0b00110000,
   0b00100000,

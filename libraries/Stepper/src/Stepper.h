@@ -85,6 +85,38 @@
 #ifndef Stepper_h
 #define Stepper_h
 
+#include <avr/pgmspace.h>
+
+    //Default phases matrix for 2 control wires is as follows
+    const unsigned char phasesMatrix2[4]  PROGMEM = {
+      0b01000000,
+      0b11000000,
+      0b10000000,
+      0b00000000
+    };
+
+    //Default phases matrix for 4 control wires is as follows
+    const unsigned char phasesMatrix4[4]  PROGMEM = {
+      0b10100000,
+      0b01100000,
+      0b01010000,
+      0b10010000
+    };
+
+    //Default phases matrix for 5 control wires is as follows
+    const unsigned char phasesMatrix5[10] PROGMEM = {
+      0b01101000,
+      0b01001000,
+      0b01011000,
+      0b01010000,
+      0b11010000,
+      0b10010000,
+      0b10110000,
+      0b10100000,
+      0b10101000,
+      0b00101000
+    };
+
 // library interface description
 class Stepper {
   public:
@@ -109,7 +141,7 @@ class Stepper {
     int version(void);
 
   private:
-    void stepMotor(int this_step);
+    void stepMotor(int thisPhase);
     void initMotor(int number_of_steps, int motor_pin_1, int motor_pin_2,
                                         int motor_pin_3, int motor_pin_4,
                                         int motor_pin_5, unsigned char *phasesMatrix,
@@ -124,36 +156,6 @@ class Stepper {
 
     // motor pin numbers:
     int motor_pin[5];         // Maximum 5 control signals
-
-    //Default phases matrix for 2 control wires is as follows
-    const unsigned char phasesMatrix2[4]  = {
-      0b01000000,
-      0b11000000,
-      0b10000000,
-      0b00000000
-    };
-
-    //Default phases matrix for 4 control wires is as follows
-    const unsigned char phasesMatrix4[4]  = {
-      0b10100000,
-      0b01100000,
-      0b01010000,
-      0b10010000
-    };
-
-    //Default phases matrix for 5 control wires is as follows
-    const unsigned char phasesMatrix5[10] = {
-      0b01101000,
-      0b01001000,
-      0b01011000,
-      0b01010000,
-      0b11010000,
-      0b10010000,
-      0b10110000,
-      0b10100000,
-      0b10101000,
-      0b00101000
-    };
 };
 
 #endif
