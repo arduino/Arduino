@@ -168,11 +168,6 @@ public class SketchCode {
   }
 
 
-  public int getLineCount() {
-    return BaseNoGui.countLines(program);
-  }
-
-
   public void setModified(boolean modified) {
     this.modified = modified;
   }
