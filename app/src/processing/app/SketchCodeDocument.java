@@ -6,7 +6,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
-public class SketchCodeDocument implements DocumentListener {
+public class SketchCodeDocument {
 
   private SketchCode code;
   private Sketch sketch;
@@ -29,24 +29,5 @@ public class SketchCodeDocument implements DocumentListener {
     this.code = code;
   }
 
-  public void setDocument(Document document) {
-    document.addDocumentListener(this);
-  }
-
-  @Override
-  public void insertUpdate(DocumentEvent e) {
-    if(!code.isModified()) sketch.setModified(true);
-  }
-
-
-  @Override
-  public void removeUpdate(DocumentEvent e) {
-    if(!code.isModified()) sketch.setModified(true);
-  }
-
-  @Override
-  public void changedUpdate(DocumentEvent e) {
-    // ignore
-  }
   
 }
