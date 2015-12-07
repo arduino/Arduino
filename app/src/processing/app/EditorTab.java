@@ -53,6 +53,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
@@ -91,8 +92,8 @@ public class EditorTab extends JPanel {
     } catch (BadLocationException bl) {
       bl.printStackTrace();
     }
-    ((SketchCodeDocument) code.getMetadata()).setDocument(document);
-    
+    document.addDocumentListener(new DocumentTextChangeListener(
+        () -> code.setModified(true)));
     return document;
   }
   
