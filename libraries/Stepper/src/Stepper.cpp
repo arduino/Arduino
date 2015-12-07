@@ -94,7 +94,6 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2)
                              0, 0, 0, (unsigned char*)phasesMatrix2, 2, 4);
 }
 
-
 /*
  *   constructor for four-pin version
  *   Sets which wires should control the motor.
@@ -155,44 +154,37 @@ void Stepper::step(int steps_to_move)
   while (steps_left > 0)
   {
     delayMicroseconds(this->step_delay);  // move only if the appropriate delay has passed
-//    unsigned long now = micros();
-//    // move only if the appropriate delay has passed:
-//    if (now - this->last_step_time >= this->step_delay)
-//    {
-//      // get the timeStamp of when you stepped:
-//      this->last_step_time = now;
       // increment or decrement the step number,
       // depending on direction:
       if (steps_to_move >= 0)
       {
         this->step_number++;
-        if (this->step_number == this->number_of_steps) {
+        if (this->step_number >= this->number_of_steps) {
           this->step_number = 0;
         }
       }
       else
       {
-        if (this->step_number == 0) {
+        if (this->step_number <= 0) {
           this->step_number = this->number_of_steps;
         }
         this->step_number--;
       }
-      // decrement the steps left:
-      steps_left--;
       // step the motor to step number 0, 1, ..., {3 or 9}
       stepMotor(this->step_number % phase_count);
-//    }
+      // decrement the steps left:
+      steps_left--;
   }
 }
 
 /*
  * Moves the motor forward or backwards.
  */
-void Stepper::stepMotor(int thisPhase)
+void Stepper::stepMotor(unsigned char thisPhase)
 {
   unsigned char phase = pgm_read_byte_near(phasesMatrix + thisPhase);
   unsigned char running_one = 0b10000000;
-  for (int i = 0; i < pin_count; i++, running_one >>= 1){
+  for (unsigned char i = 0; i < pin_count; i++, running_one >>= 1){
     digitalWrite(motor_pin[i], (phase & running_one));
   }
 }
@@ -200,10 +192,10 @@ void Stepper::stepMotor(int thisPhase)
 /*
  *   Initialize the motor
  */
-void Stepper::initMotor(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                    int motor_pin_3, int motor_pin_4,
-                                    int motor_pin_5, unsigned char *phasesMatrix,
-                                    int pin_count,   int phase_count)
+void Stepper::initMotor(int number_of_steps,  unsigned char motor_pin_1,  unsigned char motor_pin_2,
+                                              unsigned char motor_pin_3,  unsigned char motor_pin_4,
+                                              unsigned char motor_pin_5,  unsigned char *phasesMatrix,
+                                              unsigned char pin_count,    unsigned char phase_count)
 {
   this->step_number = 0;    // which step the motor is on
   this->number_of_steps = number_of_steps; // total number of steps for this motor
@@ -214,7 +206,7 @@ void Stepper::initMotor(int number_of_steps, int motor_pin_1, int motor_pin_2,
   this->phase_count   = phase_count;
   // phasesMatrix is used by the stepMotor() method:
   this->phasesMatrix  = phasesMatrix;
-  for (int i = 0; i < this->pin_count; i++){
+  for (unsigned char i = 0; i < this->pin_count; i++){
     switch (i) {
       case 0:
         this->motor_pin[i] = motor_pin_1; // Arduino pin 1 for the motor control connection

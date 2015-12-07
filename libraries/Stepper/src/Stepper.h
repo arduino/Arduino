@@ -141,21 +141,21 @@ class Stepper {
     int version(void);
 
   private:
-    void stepMotor(int thisPhase);
-    void initMotor(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                        int motor_pin_3, int motor_pin_4,
-                                        int motor_pin_5, unsigned char *phasesMatrix,
-                                        int pin_count,   int phase_count);
+    void stepMotor(unsigned char thisPhase);
+    void initMotor(int number_of_steps, unsigned char motor_pin_1,  unsigned char motor_pin_2,
+                                        unsigned char motor_pin_3,  unsigned char motor_pin_4,
+                                        unsigned char motor_pin_5,  unsigned char *phasesMatrix,
+                                        unsigned char pin_count,    unsigned char phase_count);
 
     unsigned long step_delay; // delay between steps, in ms, based on speed
     int number_of_steps;      // total number of steps this motor can take
-    int pin_count;            // how many pins are in use.
-    int phase_count;          // how many phases are in use.
+    unsigned char pin_count;      // how many pins are in use.
+    unsigned char phase_count;    // how many phases are in use.
     unsigned char *phasesMatrix;  // pointer to the phases Matrix
     int step_number;          // which step the motor is on
 
     // motor pin numbers:
-    int motor_pin[5];         // Maximum 5 control signals
+    unsigned char motor_pin[5];   // Maximum 5 control signals
 };
 
 #endif
