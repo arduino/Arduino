@@ -31,7 +31,6 @@ package cc.arduino.view.findreplace;
 
 import processing.app.Base;
 import processing.app.Editor;
-import processing.app.Sketch;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
@@ -328,7 +327,6 @@ public class FindReplace extends javax.swing.JFrame {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
         int numTabs = editor.getTabs().size();
-        Sketch sketch = editor.getSketch();
         if (numTabs > 1) {
           int realCurrentTab = editor.getCurrentTabIndex();
 
@@ -345,12 +343,12 @@ public class FindReplace extends javax.swing.JFrame {
             }
 
             if (backwards) {
-              sketch.handlePrevCode();
+              editor.selectNextTab();
               this.setVisible(true);
               int l = editor.getCurrentTab().getText().length() - 1;
               editor.getCurrentTab().setSelection(l, l);
             } else {
-              sketch.handleNextCode();
+              editor.selectPrevTab();
               this.setVisible(true);
               editor.getCurrentTab().setSelection(0, 0);
             }
@@ -420,7 +418,7 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     if (searchAllFilesBox.isSelected()) {
-      editor.getSketch().setCurrentCode(0); // select the first tab
+      editor.selectTab(0); // select the first tab
     }
 
     editor.getCurrentTab().setSelection(0, 0); // move to the beginning

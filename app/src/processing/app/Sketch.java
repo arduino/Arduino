@@ -102,7 +102,7 @@ public class Sketch {
       if (current < 0)
         current = 0;
       editor.sketchLoaded(this);
-      setCurrentCode(current, forceUpdate);
+      editor.selectTab(current);
     }
   }
 
@@ -419,7 +419,7 @@ public class Sketch {
     data.sortCode();
 
     // set the new guy as current
-    setCurrentCode(newName);
+    editor.selectTab(editor.findTabIndex(newName));
 
     // update the tabs
     editor.header.rebuild();
@@ -488,30 +488,12 @@ public class Sketch {
         data.removeCode(current);
 
         // just set current tab to the main tab
-        setCurrentCode(0);
+        editor.selectTab(0);
 
         // update the tabs
         editor.header.repaint();
       }
     }
-  }
-
-
-  /**
-   * Move to the previous tab.
-   */
-  public void handlePrevCode() {
-    int prev = editor.getCurrentTabIndex() - 1;
-    if (prev < 0) prev = data.getCodeCount()-1;
-    setCurrentCode(prev);
-  }
-
-
-  /**
-   * Move to the next tab.
-   */
-  public void handleNextCode() {
-    setCurrentCode((editor.getCurrentTabIndex() + 1) % data.getCodeCount());
   }
 
   /**
@@ -890,7 +872,7 @@ public class Sketch {
         data.addCode(newCode);
         data.sortCode();
       }
-      setCurrentCode(filename);
+      editor.selectTab(editor.findTabIndex(filename));
     }
     return true;
   }
@@ -917,7 +899,7 @@ public class Sketch {
     // if the current code is a .java file, insert into current
     //if (current.flavor == PDE) {
     if (hasDefaultExtension(editor.getCurrentTab().getSketchCode())) {
-      setCurrentCode(0);
+      editor.selectTab(0);
     }
     // could also scan the text in the file to see if each import
     // statement is already in there, but if the user has the import
@@ -933,44 +915,6 @@ public class Sketch {
     editor.getCurrentTab().setText(buffer.toString());
     editor.getCurrentTab().setSelection(0, 0);  // scroll to start
   }
-
-
-  /**
-   * Change what file is currently being edited. Changes the current tab index.
-   * <OL>
-   * <LI> store the String for the text of the current file.
-   * <LI> retrieve the String for the text of the new file.
-   * <LI> change the text that's visible in the text area
-   * </OL>
-   */
-  public void setCurrentCode(int which) {
-    setCurrentCode(which, false);
-  }
-
-  private void setCurrentCode(int which, boolean forceUpdate) {
-    if (!forceUpdate && (editor.getCurrentTabIndex() == which)) {
-      return;
-    }
-
-    editor.setCode((SketchCodeDocument)editor.getTabs().get(which).getSketchCode().getMetadata());
-    editor.header.rebuild();
-  }
-
-
-  /**
-   * Internal helper function to set the current tab based on a name.
-   * @param findName the file name (not pretty name) to be shown
-   */
-  protected void setCurrentCode(String findName) {
-    for (SketchCode code : data.getCodes()) {
-      if (findName.equals(code.getFileName()) ||
-          findName.equals(code.getPrettyName())) {
-        setCurrentCode(data.indexOfCode(code));
-        return;
-      }
-    }
-  }
-
 
   /**
    * Preprocess, Compile, and Run the current code.

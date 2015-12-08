@@ -96,12 +96,10 @@ public class EditorHeader extends JComponent {
     });
 
     public final Action prevTab = new SimpleAction(tr("Previous Tab"),
-        Keys.ctrlAlt(KeyEvent.VK_LEFT),
-        () -> editor.sketch.handlePrevCode());
+        Keys.ctrlAlt(KeyEvent.VK_LEFT), () -> editor.selectPrevTab());
 
     public final Action nextTab = new SimpleAction(tr("Next Tab"),
-        Keys.ctrlAlt(KeyEvent.VK_RIGHT),
-        () -> editor.sketch.handleNextCode());
+        Keys.ctrlAlt(KeyEvent.VK_RIGHT), () -> editor.selectNextTab());
 
     Actions() {
       // Explicitly bind keybindings for the actions with accelerators above
@@ -170,10 +168,10 @@ public class EditorHeader extends JComponent {
             popup.show(EditorHeader.this, x, y);
 
           } else {
-            Sketch sketch = editor.getSketch();
-            for (int i = 0; i < sketch.getCodeCount(); i++) {
+            int numTabs = editor.getTabs().size();
+            for (int i = 0; i < numTabs; i++) {
               if ((x > tabLeft[i]) && (x < tabRight[i])) {
-                sketch.setCurrentCode(i);
+                editor.selectTab(i);
                 repaint();
               }
             }
@@ -321,6 +319,7 @@ public class EditorHeader extends JComponent {
     Sketch sketch = editor.getSketch();
     if (sketch != null) {
       menu.addSeparator();
+
       int i = 0;
       for (EditorTab tab : editor.getTabs()) {
         SketchCode code = tab.getSketchCode();
@@ -328,9 +327,10 @@ public class EditorHeader extends JComponent {
         item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
                              code.getPrettyName() : code.getFileName());
         item.addActionListener((ActionEvent e) -> {
-          editor.getSketch().setCurrentCode(index);
+          editor.selectTab(index);
         });
         menu.add(item);
+        i++;
       }
     }
   }

@@ -1610,6 +1610,7 @@ public class Editor extends JFrame implements RunnerListener {
     undoAction.updateUndoState();
     redoAction.updateRedoState();
     updateTitle();
+    header.rebuild();
 
     // This must be run in the GUI thread
     SwingUtilities.invokeLater(() -> {
@@ -1625,6 +1626,14 @@ public class Editor extends JFrame implements RunnerListener {
     });
   }
 
+  public void selectNextTab() {
+    selectTab((currentTabIndex + 1) % tabs.size());
+  }
+
+  public void selectPrevTab() {
+    selectTab((currentTabIndex - 1 + tabs.size()) % tabs.size());
+  }
+
   public EditorTab findTab(final SketchCode doc) {
     return tabs.get(findTabIndex(doc));
   }
@@ -1633,6 +1642,22 @@ public class Editor extends JFrame implements RunnerListener {
     for (int i = 0; i < tabs.size(); ++i) {
       if (tabs.get(i).getSketchCode() == doc)
         return i;
+    }
+    return -1;
+  }
+
+  /**
+   * Finds the tab that shows the given file (as returned by
+   * SketchCode.getFileName() or SketchCode.getPrettyName()).
+   */
+  public int findTabIndex(final String name) {
+    int i = 0;
+    for (EditorTab tab : tabs) {
+      SketchCode code = tab.getSketchCode();
+      if (name.equals(code.getFileName()) ||
+          name.equals(code.getPrettyName())) {
+        return i;
+      }
     }
     return -1;
   }
@@ -1649,14 +1674,6 @@ public class Editor extends JFrame implements RunnerListener {
         System.err.println(e);
       }
     }
-  }
-
-  /**
-   * Switch between tabs, this swaps out the Document object
-   * that's currently being manipulated.
-   */
-  protected void setCode(final SketchCodeDocument codeDoc) {
-		selectTab(findTabIndex(codeDoc.getCode()));
   }
 
   /**
@@ -1896,7 +1913,7 @@ public class Editor extends JFrame implements RunnerListener {
     // untitled document, then editor.untitled will be set by Base.
     untitled = false;
 
-    sketch.setCurrentCode(codeIndex);
+    selectTab(codeIndex);
     getCurrentTab().setSelection(selStart, selStop);
     getCurrentTab().setScrollPosition(scrollPos);
   }
@@ -2588,7 +2605,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
       if (re.hasCodeIndex()) {
-        sketch.setCurrentCode(re.getCodeIndex());
+        selectTab(re.getCodeIndex());
       }
       if (re.hasCodeLine()) {
         int line = re.getCodeLine();
