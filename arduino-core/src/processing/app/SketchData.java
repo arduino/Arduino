@@ -45,6 +45,10 @@ public class SketchData {
   private static final Comparator<SketchCode> CODE_DOCS_COMPARATOR = new Comparator<SketchCode>() {
     @Override
     public int compare(SketchCode x, SketchCode y) {
+      if (x.isPrimary() && !y.isPrimary())
+        return -1;
+      if (y.isPrimary() && !x.isPrimary())
+        return 1;
       return x.getFileName().compareTo(y.getFileName());
     }
   };
@@ -146,16 +150,6 @@ public class SketchData {
     if (getCodeCount() == 0)
       throw new IOException(tr("No valid code files found"));
 
-    // move the main class to the first tab
-    // start at 1, if it's at zero, don't bother
-    for (SketchCode code : getCodes()) {
-      //if (code[i].file.getName().equals(mainFilename)) {
-      if (code.getFile().equals(primaryFile)) {
-        moveCodeToFront(code);
-        break;
-      }
-    }
-
     // sort the entries at the top
     sortCode();
   }
@@ -201,11 +195,6 @@ public class SketchData {
     codes.add(sketchCode);
   }
 
-  public void moveCodeToFront(SketchCode codeDoc) {
-    codes.remove(codeDoc);
-    codes.add(0, codeDoc);
-  }
-
   protected void replaceCode(SketchCode newCode) {
     for (SketchCode code : codes) {
       if (code.getFileName().equals(newCode.getFileName())) {
@@ -216,11 +205,7 @@ public class SketchData {
   }
 
   protected void sortCode() {
-    if (codes.size() < 2)
-      return;
-    SketchCode first = codes.remove(0);
     Collections.sort(codes, CODE_DOCS_COMPARATOR);
-    codes.add(0, first);
   }
 
   public SketchCode getCode(int i) {
