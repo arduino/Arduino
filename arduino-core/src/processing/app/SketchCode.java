@@ -46,6 +46,11 @@ public class SketchCode {
   private File file;
 
   /**
+   * Is this the primary file in the sketch?
+   */
+  private boolean primary;
+
+  /**
    * Interface for an in-memory storage of text file contents. This is
    * intended to allow a GUI to keep modified text in memory, and allow
    * SketchCode to check for changes when needed.
@@ -71,8 +76,17 @@ public class SketchCode {
    */
   private TextStorage storage;
 
-  public SketchCode(File file) {
+  /**
+   * Create a new SketchCode
+   *
+   * @param file
+   *          The file this SketchCode represents
+   * @param primary
+   *          Whether this file is the primary file of the sketch
+   */
+  public SketchCode(File file, boolean primary) {
     this.file = file;
+    this.primary = primary;
   }
 
   /**
@@ -88,6 +102,12 @@ public class SketchCode {
     return file;
   }
 
+  /**
+   * Is this the primary file in the sketch?
+   */
+  public boolean isPrimary() {
+    return primary;
+  }
 
   protected boolean fileExists() {
     return file.exists();

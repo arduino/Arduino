@@ -132,13 +132,12 @@ public class Sketch {
    */
   public void handleRenameCode() {
     SketchCode current = editor.getCurrentTab().getSketchCode();
-    int currentIndex = editor.getCurrentTabIndex();
 
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    if (currentIndex == 0 && editor.untitled) {
+    if (current.isPrimary() && editor.untitled) {
       Base.showMessage(tr("Sketch is Untitled"),
                        tr("How about saving the sketch first \n" +
                          "before trying to rename it?"));
@@ -158,7 +157,7 @@ public class Sketch {
     // ask for new name of file (internal to window)
     // TODO maybe just popup a text area?
     renamingCode = true;
-    String prompt = (currentIndex == 0) ?
+    String prompt = current.isPrimary() ?
       "New name for sketch:" : "New name for file:";
     String oldName = (current.isExtension("ino")) ? current.getPrettyName()
                                                   : current.getFileName();
@@ -264,7 +263,7 @@ public class Sketch {
       return;
     }
 
-    if (renamingCode && currentIndex == 0) {
+    if (renamingCode && current.isPrimary()) {
       for (SketchCode code : data.getCodes()) {
         if (sanitaryName.equalsIgnoreCase(code.getPrettyName()) &&
           code.isExtension("cpp")) {
@@ -297,7 +296,7 @@ public class Sketch {
 //    }
 
     if (renamingCode) {
-      if (currentIndex == 0) {
+      if (current.isPrimary()) {
         // get the new folder name/location
         String folderName = newName.substring(0, newName.indexOf('.'));
         File newFolder = new File(data.getFolder().getParentFile(), folderName);
@@ -397,7 +396,7 @@ public class Sketch {
         return;
       }
       ensureExistence();
-      SketchCode code = new SketchCode(newFile);
+      SketchCode code = new SketchCode(newFile, false);
       try {
         editor.addTab(code, "");
       } catch (IOException e) {
@@ -426,7 +425,6 @@ public class Sketch {
    */
   public void handleDeleteCode() throws IOException {
     SketchCode current = editor.getCurrentTab().getSketchCode();
-    int currentIndex = editor.getCurrentTabIndex();
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
@@ -443,7 +441,7 @@ public class Sketch {
 
     // confirm deletion with user, yes/no
     Object[] options = { tr("OK"), tr("Cancel") };
-    String prompt = (currentIndex == 0) ?
+    String prompt = current.isPrimary() ?
       tr("Are you sure you want to delete this sketch?") :
       I18n.format(tr("Are you sure you want to delete \"{0}\"?"),
                   current.getFileNameWithExtensionIfNotIno());
@@ -456,7 +454,7 @@ public class Sketch {
                                               options,
                                               options[0]);
     if (result == JOptionPane.YES_OPTION) {
-      if (currentIndex == 0) {
+      if (current.isPrimary()) {
         // need to unset all the modified flags, otherwise tries
         // to do a save on the handleNew()
 
@@ -857,7 +855,7 @@ public class Sketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = new SketchCode(destFile);
+      SketchCode newCode = new SketchCode(destFile, false);
 
       if (replacement) {
         data.replaceCode(newCode);
