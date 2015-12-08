@@ -228,21 +228,12 @@ public class SketchData {
   }
 
   protected void removeCode(SketchCode which) {
-    for (SketchCode code : codes) {
-      if (code == which) {
-        codes.remove(code);
-        return;
-      }
-    }
-    System.err.println("removeCode: internal error.. could not find code");
+    if (!codes.remove(which))
+      System.err.println("removeCode: internal error.. could not find code");
   }
 
   public int indexOfCode(SketchCode who) {
-    for (SketchCode code : codes) {
-      if (code == who)
-        return codes.indexOf(code);
-    }
-    return -1;
+    return codes.indexOf(who);
   }
 
   public String getName() {
