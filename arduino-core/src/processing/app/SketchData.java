@@ -248,10 +248,6 @@ public class SketchData {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
   public void clearCodeDocs() {
     codes.clear();
   }
