@@ -51,6 +51,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.RUndoManager;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import processing.app.helpers.DocumentTextChangeListener;
@@ -63,37 +64,64 @@ import processing.app.tools.DiscourseFormat;
 /**
  * Single tab, editing a single file, in the main window.
  */
-public class EditorTab extends JPanel {
+public class EditorTab extends JPanel implements SketchCode.TextStorage {
   protected Editor editor;
   protected SketchTextArea textarea;
   protected RTextScrollPane scrollPane;
   protected SketchCode code;
+  protected boolean modified;
   
-  public EditorTab(Editor editor, SketchCode code) throws IOException {
+  /**
+   * Create a new EditorTab
+   *
+   * @param editor
+   *          The Editor this tab runs in
+   * @param code
+   *          The file to display in this tab
+   * @param contents
+   *          Initial contents to display in this tab. Can be used when
+   *          editing a file that doesn't exist yet. If null is passed,
+   *          code.load() is called and displayed instead.
+   * @throws IOException
+   */
+  public EditorTab(Editor editor, SketchCode code, String contents)
+      throws IOException {
     super(new BorderLayout());
+
+    // Load initial contents contents from file if nothing was specified.
+    if (contents == null) {
+      contents = code.load();
+      modified = false;
+    } else {
+      modified = true;
+    }
+
     this.editor = editor;
     this.code = code;
-    this.textarea = createTextArea();
+    RSyntaxDocument document = createDocument(contents);
+    this.textarea = createTextArea(document);
     this.scrollPane = createScrollPane(this.textarea);
     applyPreferences();
     add(this.scrollPane, BorderLayout.CENTER);
-    
-    UndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
-    ((RSyntaxDocument)textarea.getDocument()).addUndoableEditListener(undo);
+
+    RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
+    document.addUndoableEditListener(undo);
+    textarea.setUndoManager(undo);
+    code.setStorage(this);
   }
 
-  private RSyntaxDocument createDocument() {
+  private RSyntaxDocument createDocument(String contents) {
     RSyntaxDocument document = new RSyntaxDocument(new ArduinoTokenMakerFactory(editor.base.getPdeKeywords()), RSyntaxDocument.SYNTAX_STYLE_CPLUSPLUS);
     document.putProperty(PlainDocument.tabSizeAttribute, PreferencesData.getInteger("editor.tabs.size"));
-    
+
     // insert the program text into the document object
     try {
-      document.insertString(0, code.getProgram(), null);
+      document.insertString(0, contents, null);
     } catch (BadLocationException bl) {
       bl.printStackTrace();
     }
     document.addDocumentListener(new DocumentTextChangeListener(
-        () -> code.setModified(true)));
+        () -> setModified(true)));
     return document;
   }
   
@@ -112,8 +140,8 @@ public class EditorTab extends JPanel {
     return scrollPane;
   }
 
-  private SketchTextArea createTextArea() throws IOException {
-    RSyntaxDocument document = createDocument();    
+  private SketchTextArea createTextArea(RSyntaxDocument document)
+      throws IOException {
     final SketchTextArea textArea = new SketchTextArea(document, editor.base.getPdeKeywords());
     textArea.setName("editor");
     textArea.setFocusTraversalKeysEnabled(false);
@@ -316,6 +344,29 @@ public class EditorTab extends JPanel {
    */
   public void setText(String what) {
     textarea.setText(what);
+  }
+
+  /**
+   * Is the text modified since the last save / load?
+   */
+  public boolean isModified() {
+    return modified;
+  }
+
+  /**
+   * Clear modified status. Should only be called by SketchCode through
+   * the TextStorage interface.
+   */
+  public void clearModified() {
+    setModified(false);
+  }
+
+  private void setModified(boolean value) {
+    if (value != modified) {
+      modified = value;
+      // TODO: Improve decoupling
+      editor.getSketch().calcModified();
+    }
   }
 
   public String getSelectedText() {

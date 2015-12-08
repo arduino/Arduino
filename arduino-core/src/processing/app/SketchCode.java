@@ -45,14 +45,33 @@ public class SketchCode {
    */
   private File file;
 
-  /**
-   * Text of the program text for this tab
-   */
-  private String program;
-
-  private boolean modified;
-
   private Object metadata;
+
+  /**
+   * Interface for an in-memory storage of text file contents. This is
+   * intended to allow a GUI to keep modified text in memory, and allow
+   * SketchCode to check for changes when needed.
+   */
+  public static interface TextStorage {
+    /** Get the current text */
+    public String getText();
+
+    /**
+     * Is the text modified externally, after the last call to
+     * clearModified() or setText()?
+     */
+    public boolean isModified();
+
+    /** Clear the isModified() result value */
+    public void clearModified();
+  };
+
+  /**
+   * A storage for this file's text. This can be set by a GUI, so we can
+   * have access to any modified version of the file. This can be null,
+   * in which case the file is never modified, and saving is a no-op.
+   */
+  private TextStorage storage;
 
   public SketchCode(File file) {
     init(file, null);
@@ -65,13 +84,14 @@ public class SketchCode {
   private void init(File file, Object metadata) {
     this.file = file;
     this.metadata = metadata;
+  }
 
-    try {
-      load();
-    } catch (IOException e) {
-      System.err.println(
-        I18n.format(tr("Error while loading code {0}"), file.getName()));
-    }
+  /**
+   * Set an in-memory storage for this file's text, that will be queried
+   * on compile, save, and whenever the text is needed.
+   */
+  public void setStorage(TextStorage text) {
+    this.storage = text;
   }
 
 
@@ -159,36 +179,33 @@ public class SketchCode {
 
 
   public String getProgram() {
-    return program;
-  }
+    if (storage != null)
+      return storage.getText();
 
-
-  public void setProgram(String replacement) {
-    program = replacement;
-  }
-
-
-  public void setModified(boolean modified) {
-    this.modified = modified;
+    return null;
   }
 
 
   public boolean isModified() {
-    return modified;
+    if (storage != null)
+      return storage.isModified();
+    return false;
   }
 
 
   /**
-   * Load this piece of code from a file.
+   * Load this piece of code from a file and return the contents. This
+   * completely ignores any changes in the linked storage, if any, and
+   * just directly reads the file.
    */
-  private void load() throws IOException {
-    program = BaseNoGui.loadFile(file);
+  public String load() throws IOException {
+    String text = BaseNoGui.loadFile(file);
 
-    if (program == null) {
+    if (text == null) {
       throw new IOException();
     }
 
-    if (program.indexOf('\uFFFD') != -1) {
+    if (text.indexOf('\uFFFD') != -1) {
       System.err.println(
         I18n.format(
           tr("\"{0}\" contains unrecognized characters. " +
@@ -201,8 +218,7 @@ public class SketchCode {
       );
       System.err.println();
     }
-
-    setModified(false);
+    return text;
   }
 
 
@@ -211,11 +227,11 @@ public class SketchCode {
    * flag is set or not.
    */
   public void save() throws IOException {
-    // TODO re-enable history
-    //history.record(s, SketchHistory.SAVE);
+    if (storage == null)
+      return; /* Nothing to do */
 
-    BaseNoGui.saveFile(program, file);
-    setModified(false);
+    BaseNoGui.saveFile(storage.getText(), file);
+    storage.clearModified();
   }
 
 
@@ -223,7 +239,10 @@ public class SketchCode {
    * Save this file to another location, used by Sketch.saveAs()
    */
   public void saveAs(File newFile) throws IOException {
-    BaseNoGui.saveFile(program, newFile);
+    if (storage == null)
+      return; /* Nothing to do */
+
+    BaseNoGui.saveFile(storage.getText(), newFile);
   }
 
 

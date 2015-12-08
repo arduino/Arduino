@@ -392,7 +392,6 @@ public class FindReplace extends javax.swing.JFrame {
     if (find(false, false, searchAllFilesBox.isSelected(), -1)) {
       foundAtLeastOne = true;
       editor.getCurrentTab().setSelectedText(replaceField.getText());
-      editor.getSketch().setModified(true); // TODO is this necessary?
     }
 
     if (!foundAtLeastOne) {
@@ -430,7 +429,6 @@ public class FindReplace extends javax.swing.JFrame {
       if (find(false, false, searchAllFilesBox.isSelected(), -1)) {
         foundAtLeastOne = true;
         editor.getCurrentTab().setSelectedText(replaceField.getText());
-        editor.getSketch().setModified(true); // TODO is this necessary?
       } else {
         break;
       }

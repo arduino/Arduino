@@ -1317,7 +1317,6 @@ public class Editor extends JFrame implements RunnerListener {
     pasteItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           getCurrentTab().handlePaste();
-          sketch.setModified(true);
         }
       });
     menu.add(pasteItem);
@@ -1482,7 +1481,6 @@ public class Editor extends JFrame implements RunnerListener {
     public void actionPerformed(ActionEvent e) {
       try {
         getCurrentTab().handleUndo();
-        sketch.setModified(true);
       } catch (CannotUndoException ex) {
         //System.out.println("Unable to undo: " + ex);
         //ex.printStackTrace();
@@ -1516,7 +1514,6 @@ public class Editor extends JFrame implements RunnerListener {
     public void actionPerformed(ActionEvent e) {
       try {
         getCurrentTab().handleRedo();
-        sketch.setModified(true);
       } catch (CannotRedoException ex) {
         //System.out.println("Unable to redo: " + ex);
         //ex.printStackTrace();
@@ -1622,7 +1619,7 @@ public class Editor extends JFrame implements RunnerListener {
     tabs.ensureCapacity(sketch.getCodeCount());
     for (SketchCode code : sketch.getCodes()) {
       try {
-        addTab(code);
+        addTab(code, null);
       } catch(IOException e) {
         // TODO: Improve / move error handling
         System.err.println(e);
@@ -1638,8 +1635,18 @@ public class Editor extends JFrame implements RunnerListener {
 		selectTab(findTabIndex(codeDoc.getCode()));
   }
 
-  protected void addTab(SketchCode code) throws IOException {
-    EditorTab tab = new EditorTab(this, code);
+  /**
+   * Add a new tab.
+   *
+   * @param code
+   *          The file to show in the tab.
+   * @param contents
+   *          The contents to show in the tab, or null to load the
+   *          contents from the given file.
+   * @throws IOException
+   */
+  protected void addTab(SketchCode code, String contents) throws IOException {
+    EditorTab tab = new EditorTab(this, code, contents);
     tabs.add(tab);
   }
 

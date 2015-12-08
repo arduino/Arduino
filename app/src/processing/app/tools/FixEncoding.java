@@ -67,9 +67,7 @@ public class FixEncoding implements Tool {
     try {
       for (int i = 0; i < sketch.getCodeCount(); i++) {
         SketchCode code = sketch.getCode(i);
-        code.setProgram(loadWithLocalEncoding(code.getFile()));
-        code.setModified(true);  // yes, because we want them to save this
-        editor.findTab(code).setText(code.getProgram());
+        editor.findTab(code).setText(loadWithLocalEncoding(code.getFile()));
       }
     } catch (IOException e) {
       String msg = 
