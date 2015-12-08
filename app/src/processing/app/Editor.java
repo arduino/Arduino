@@ -1574,6 +1574,21 @@ public class Editor extends JFrame implements RunnerListener {
   public EditorTab getCurrentTab() {
     return tabs.get(currentTabIndex);
   }
+
+  /**
+   * Gets the index of the currently displaying tab.
+   */
+  public int getCurrentTabIndex() {
+    return currentTabIndex;
+  }
+
+  /**
+   * Returns an (unmodifiable) list of currently opened tabs.
+   */
+  public List<EditorTab> getTabs() {
+    return Collections.unmodifiableList(tabs);
+  }
+
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
   /**
    * Change the currently displayed tab.
@@ -1962,10 +1977,12 @@ public class Editor extends JFrame implements RunnerListener {
     if (sketch == null) {
       return;
     }
-    if (sketch.getName().equals(sketch.getCurrentCode().getPrettyName())) {
+    SketchCode current = getCurrentTab().getSketchCode();
+    if (sketch.getName().equals(current.getPrettyName())) {
       setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(), BaseNoGui.VERSION_NAME_LONG));
     } else {
-      setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(), sketch.getCurrentCode().getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
+                           current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
     }
   }
 
@@ -2591,7 +2608,7 @@ public class Editor extends JFrame implements RunnerListener {
       printerJob.setPrintable(getCurrentTab().getTextArea());
     }
     // set the name of the job to the code name
-    printerJob.setJobName(sketch.getCurrentCode().getPrettyName());
+    printerJob.setJobName(getCurrentTab().getSketchCode().getPrettyName());
 
     if (printerJob.printDialog()) {
       try {

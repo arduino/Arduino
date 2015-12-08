@@ -32,7 +32,7 @@ import static processing.app.I18n.tr;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-
+import java.util.List;
 import javax.swing.*;
 
 import static processing.app.Theme.scale;
@@ -235,15 +235,18 @@ public class EditorHeader extends JComponent {
     g.setColor(backgroundColor);
     g.fillRect(0, 0, imageW, imageH);
 
-    int codeCount = sketch.getCodeCount();
+    List<EditorTab> tabs = editor.getTabs();
+
+    int codeCount = tabs.size();
     if ((tabLeft == null) || (tabLeft.length < codeCount)) {
       tabLeft = new int[codeCount];
       tabRight = new int[codeCount];
     }
 
     int x = scale(6); // offset from left edge of the component
-    for (int i = 0; i < sketch.getCodeCount(); i++) {
-      SketchCode code = sketch.getCode(i);
+    int i = 0;
+    for (EditorTab tab : tabs) {
+      SketchCode code = tab.getSketchCode();
 
       String codeName = code.isExtension(sketch.getHiddenExtensions()) ?
         code.getPrettyName() : code.getFileName();
@@ -257,7 +260,7 @@ public class EditorHeader extends JComponent {
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
 
-      int state = (code == sketch.getCurrentCode()) ? SELECTED : UNSELECTED;
+      int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
       g.drawImage(pieces[state][LEFT], x, 0, null);
       x += PIECE_WIDTH;
 
@@ -277,6 +280,7 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+      i++;
     }
 
     menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
@@ -323,7 +327,8 @@ public class EditorHeader extends JComponent {
     if (sketch != null) {
       menu.addSeparator();
       int i = 0;
-      for (SketchCode code : sketch.getCodes()) {
+      for (EditorTab tab : editor.getTabs()) {
+        SketchCode code = tab.getSketchCode();
         final int index = i++;
         item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
                              code.getPrettyName() : code.getFileName());

@@ -327,10 +327,10 @@ public class FindReplace extends javax.swing.JFrame {
     if (nextIndex == -1) {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
-        // editor.
+        int numTabs = editor.getTabs().size();
         Sketch sketch = editor.getSketch();
-        if (sketch.getCodeCount() > 1) {
-          int realCurrentTab = sketch.getCodeIndex(sketch.getCurrentCode());
+        if (numTabs > 1) {
+          int realCurrentTab = editor.getCurrentTabIndex();
 
           if (originTab != realCurrentTab) {
             if (originTab < 0) {
@@ -338,7 +338,8 @@ public class FindReplace extends javax.swing.JFrame {
             }
 
             if (!wrap) {
-              if ((!backwards && realCurrentTab + 1 >= sketch.getCodeCount()) || (backwards && realCurrentTab - 1 < 0)) {
+              if ((!backwards && realCurrentTab + 1 >= numTabs)
+                  || (backwards && realCurrentTab - 1 < 0)) {
                 return false; // Can't continue without wrap
               }
             }
