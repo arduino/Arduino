@@ -46,8 +46,6 @@ public class SketchCode {
    */
   private File file;
 
-  private Object metadata;
-
   /**
    * Interface for an in-memory storage of text file contents. This is
    * intended to allow a GUI to keep modified text in memory, and allow
@@ -75,16 +73,7 @@ public class SketchCode {
   private TextStorage storage;
 
   public SketchCode(File file) {
-    init(file, null);
-  }
-
-  public SketchCode(File file, Object metadata) {
-    init(file, metadata);
-  }
-
-  private void init(File file, Object metadata) {
     this.file = file;
-    this.metadata = metadata;
   }
 
   /**
@@ -244,15 +233,5 @@ public class SketchCode {
       return; /* Nothing to do */
 
     BaseNoGui.saveFile(storage.getText(), newFile);
-  }
-
-
-  public Object getMetadata() {
-    return metadata;
-  }
-
-
-  public void setMetadata(Object metadata) {
-    this.metadata = metadata;
   }
 }
