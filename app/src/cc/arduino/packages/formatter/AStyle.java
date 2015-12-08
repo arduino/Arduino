@@ -94,7 +94,6 @@ public class AStyle implements Tool {
     textArea.getUndoManager().beginInternalAtomicEdit();
     editor.removeAllLineHighlights();
     editor.getCurrentTab().setText(formattedText);
-    editor.getSketch().setModified(true);
     textArea.getUndoManager().endInternalAtomicEdit();
 
     if (line != -1 && lineOffset != -1) {

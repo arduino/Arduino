@@ -58,9 +58,6 @@ import static processing.app.I18n.tr;
 public class Sketch {
   private final Editor editor;
 
-  /** true if any of the files have been modified. */
-  private boolean modified;
-
   private SketchCodeDocument current;
   private int currentIndex;
 
@@ -320,7 +317,6 @@ public class Sketch {
 
         // first get the contents of the editor text area
         if (current.getCode().isModified()) {
-          current.getCode().setProgram(editor.getCurrentTab().getText());
           try {
             // save this new SketchCode
             current.getCode().save();
@@ -403,7 +399,7 @@ public class Sketch {
       ensureExistence();
       SketchCode code = (new SketchCodeDocument(this, newFile)).getCode();
       try {
-        editor.addTab(code);
+        editor.addTab(code, "");
       } catch (IOException e) {
         Base.showWarning(tr("Error"),
        I18n.format(
@@ -510,31 +506,16 @@ public class Sketch {
     setCurrentCode((currentIndex + 1) % data.getCodeCount());
   }
 
-
   /**
-   * Sets the modified value for the code in the frontmost tab.
+   * Called whenever the modification status of one of the tabs changes. TODO:
+   * Move this code into Editor and improve decoupling from EditorTab
    */
-  public void setModified(boolean state) {
-    //System.out.println("setting modified to " + state);
-    //new Exception().printStackTrace();
-    current.getCode().setModified(state);
-    calcModified();
-  }
-
-
-  private void calcModified() {
-    modified = false;
-    for (SketchCode code : data.getCodes()) {
-      if (code.isModified()) {
-        modified = true;
-        break;
-      }
-    }
+  public void calcModified() {
     editor.header.repaint();
 
     if (OSUtils.isMacOS()) {
       // http://developer.apple.com/qa/qa2001/qa1146.html
-      Object modifiedParam = modified ? Boolean.TRUE : Boolean.FALSE;
+      Object modifiedParam = isModified() ? Boolean.TRUE : Boolean.FALSE;
       editor.getRootPane().putClientProperty("windowModified", modifiedParam);
       editor.getRootPane().putClientProperty("Window.documentModified", modifiedParam);
     }
@@ -542,7 +523,11 @@ public class Sketch {
 
 
   public boolean isModified() {
-    return modified;
+    for (SketchCode code : data.getCodes()) {
+      if (code.isModified())
+        return true;
+    }
+    return false;
   }
 
 
@@ -552,14 +537,6 @@ public class Sketch {
   public boolean save() throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    // first get the contents of the editor text area
-    if (current.getCode().isModified()) {
-      current.getCode().setProgram(editor.getCurrentTab().getText());
-    }
-
-    // don't do anything if not actually modified
-    //if (!modified) return false;
 
     if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
       Base.showMessage(tr("Sketch is read-only"),
@@ -606,7 +583,6 @@ public class Sketch {
     }
 
     data.save();
-    calcModified();
     return true;
   }
 
@@ -707,12 +683,6 @@ public class Sketch {
 
     // now make a fresh copy of the folder
     newFolder.mkdirs();
-
-    // grab the contents of the current tab before saving
-    // first get the contents of the editor text area
-    if (current.getCode().isModified()) {
-      current.getCode().setProgram(editor.getCurrentTab().getText());
-    }
 
     // save the other tabs to their new location
     for (SketchCode code : data.getCodes()) {
@@ -913,18 +883,6 @@ public class Sketch {
         data.sortCode();
       }
       setCurrentCode(filename);
-      editor.header.repaint();
-      if (editor.untitled) {  // TODO probably not necessary? problematic?
-        // Mark the new code as modified so that the sketch is saved
-        current.getCode().setModified(true);
-      }
-
-    } else {
-      if (editor.untitled) {  // TODO probably not necessary? problematic?
-        // If a file has been added, mark the main code as modified so
-        // that the sketch is properly saved.
-        data.getCode(0).setModified(true);
-      }
     }
     return true;
   }
@@ -966,7 +924,6 @@ public class Sketch {
     buffer.append(editor.getCurrentTab().getText());
     editor.getCurrentTab().setText(buffer.toString());
     editor.getCurrentTab().setSelection(0, 0);  // scroll to start
-    setModified(true);
   }
 
 
@@ -987,10 +944,6 @@ public class Sketch {
     if (!forceUpdate && (currentIndex == which) && (current != null)) {
       return;
     }
-
-    // get the text currently being edited
-    if (current != null)
-      current.getCode().setProgram(editor.getCurrentTab().getText());
 
     current = (SketchCodeDocument) data.getCode(which).getMetadata();
     currentIndex = which;
@@ -1049,8 +1002,6 @@ public class Sketch {
   public void prepare() throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    current.getCode().setProgram(editor.getCurrentTab().getText());
 
     // TODO record history here
     //current.history.record(program, SketchHistory.RUN);
@@ -1215,7 +1166,6 @@ public class Sketch {
                        "but anything besides the code will be lost."), null);
     try {
       data.getFolder().mkdirs();
-      modified = true;
 
       for (SketchCode code : data.getCodes()) {
         code.save();  // this will force a save
