@@ -90,11 +90,6 @@ public class Sketch {
   protected void load(boolean forceUpdate) throws IOException {
     data.load();
 
-    for (SketchCode code : data.getCodes()) {
-      if (code.getMetadata() == null)
-        code.setMetadata(new SketchCodeDocument(this, code));
-    }
-
     // set the main file to be the current tab
     if (editor != null) {
       int current = editor.getCurrentTabIndex();
@@ -401,7 +396,7 @@ public class Sketch {
         return;
       }
       ensureExistence();
-      SketchCode code = (new SketchCodeDocument(this, newFile)).getCode();
+      SketchCode code = new SketchCode(newFile);
       try {
         editor.addTab(code, "");
       } catch (IOException e) {
@@ -861,7 +856,7 @@ public class Sketch {
     }
 
     if (codeExtension != null) {
-      SketchCode newCode = (new SketchCodeDocument(this, destFile)).getCode();
+      SketchCode newCode = new SketchCode(destFile);
 
       if (replacement) {
         data.replaceCode(newCode);
