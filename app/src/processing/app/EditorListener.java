@@ -54,15 +54,6 @@ public class EditorListener implements KeyListener {
         sketch.handlePrevCode();
     }
     
-    // Navigation..
-    if ((event.getModifiers() & CTRL_ALT) == CTRL_ALT) {
-      if (code == KeyEvent.VK_LEFT) {
-        sketch.handlePrevCode();
-      } else if (code == KeyEvent.VK_RIGHT) {
-        sketch.handleNextCode();
-      }
-    }
-    
 //    if (event.isAltDown() && code == KeyEvent.VK_T) {
 //      int line = textarea.getCaretLineNumber();
 //      textarea.setActiveLineRange(line, line + 3); 
