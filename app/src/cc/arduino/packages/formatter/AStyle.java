@@ -33,10 +33,8 @@ import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.Editor;
 import processing.app.helpers.FileUtils;
-import processing.app.syntax.SketchTextArea;
 import processing.app.tools.Tool;
 
-import javax.swing.text.BadLocationException;
 import java.io.File;
 import java.io.IOException;
 
@@ -86,51 +84,10 @@ public class AStyle implements Tool {
       return;
     }
 
-    SketchTextArea textArea = editor.getCurrentTab().getTextArea();
-
-    int line = getLineOfOffset(textArea);
-    int lineOffset = getLineOffset(textArea, line);
-
     editor.getCurrentTab().setText(formattedText);
-
-    if (line != -1 && lineOffset != -1) {
-      try {
-        setCaretPosition(textArea, line, lineOffset);
-      } catch (BadLocationException e) {
-        e.printStackTrace();
-      }
-    }
 
     // mark as finished
     editor.statusNotice(tr("Auto Format finished."));
-  }
-
-  private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) throws BadLocationException {
-    int caretPosition;
-    if (line < textArea.getLineCount()) {
-      caretPosition = Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getLineEndOffset(line) - 1);
-    } else {
-      caretPosition = textArea.getText().length() - 1;
-    }
-    textArea.setCaretPosition(caretPosition);
-  }
-
-  private int getLineOffset(SketchTextArea textArea, int line) {
-    try {
-      return textArea.getCaretPosition() - textArea.getLineStartOffset(line);
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-    return -1;
-  }
-
-  private int getLineOfOffset(SketchTextArea textArea) {
-    try {
-      return textArea.getLineOfOffset(textArea.getCaretPosition());
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-    return -1;
   }
 
   @Override
