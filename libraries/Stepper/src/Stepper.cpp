@@ -206,24 +206,12 @@ void Stepper::initMotor(int number_of_steps,  unsigned char motor_pin_1,  unsign
   this->phase_count   = phase_count;
   // phasesMatrix is used by the stepMotor() method:
   this->phasesMatrix  = phasesMatrix;
+  this->motor_pin[0] = motor_pin_1;
+  this->motor_pin[1] = motor_pin_2;
+  this->motor_pin[2] = motor_pin_3;
+  this->motor_pin[3] = motor_pin_4;
+  this->motor_pin[4] = motor_pin_5;
   for (unsigned char i = 0; i < this->pin_count; i++){
-    switch (i) {
-      case 0:
-        this->motor_pin[i] = motor_pin_1; // Arduino pin 1 for the motor control connection
-        break;
-      case 1:
-        this->motor_pin[i] = motor_pin_2; // Arduino pin 2 for the motor control connection
-        break;
-      case 2:
-        this->motor_pin[i] = motor_pin_3; // Arduino pin 3 for the motor control connection
-        break;
-      case 3:
-        this->motor_pin[i] = motor_pin_4; // Arduino pin 4 for the motor control connection
-        break;
-      case 4:
-        this->motor_pin[i] = motor_pin_5; // Arduino pin 5 for the motor control connection
-        break;
-      }
     pinMode(this->motor_pin[i], OUTPUT);  // setup the pins on the microcontroller
   }
 }
