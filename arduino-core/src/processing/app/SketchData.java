@@ -74,7 +74,7 @@ public class SketchData {
     folder = new File(file.getParent());
     codeFolder = new File(folder, "code");
     dataFolder = new File(folder, "data");
-    codes = listSketchFiles();
+    codes = listSketchFiles(true);
   }
 
   static public File checkSketchFile(File file) {
@@ -109,7 +109,7 @@ public class SketchData {
    *         not.
    */
   public boolean reload() throws IOException {
-    List<SketchCode> reloaded = listSketchFiles();
+    List<SketchCode> reloaded = listSketchFiles(false);
     if (!reloaded.equals(codes)) {
       codes = reloaded;
       return true;
@@ -122,13 +122,16 @@ public class SketchData {
    * part of this sketch. Doesn't modify this SketchData instance, just
    * returns a filtered and sorted list of File objects ready to be
    * passed to the SketchCode constructor.
+   *
+   * @param showWarnings
+   *          When true, any invalid filenames will show a warning.
    */
-  private List<SketchCode> listSketchFiles() throws IOException {
+  private List<SketchCode> listSketchFiles(boolean showWarnings) throws IOException {
     Set<SketchCode> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
     for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
       if (BaseNoGui.isSanitaryName(file.getName())) {
         result.add(new SketchCode(file, file.equals(primaryFile)));
-      } else {
+      } else if (showWarnings) {
         System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
       }
     }
