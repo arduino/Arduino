@@ -91,7 +91,8 @@ public class SketchCode {
 
   /**
    * Set an in-memory storage for this file's text, that will be queried
-   * on compile, save, and whenever the text is needed.
+   * on compile, save, and whenever the text is needed. null can be
+   * passed to detach any attached storage.
    */
   public void setStorage(TextStorage text) {
     this.storage = text;
@@ -201,6 +202,9 @@ public class SketchCode {
     return false;
   }
 
+  public boolean equals(Object o) {
+    return (o instanceof SketchCode) && file.equals(((SketchCode) o).file);
+  }
 
   /**
    * Load this piece of code from a file and return the contents. This

@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import processing.app.helpers.FileUtils;
+
 import static processing.app.I18n.tr;
 
 public class SketchData {
@@ -53,7 +55,14 @@ public class SketchData {
     }
   };
 
-  SketchData(File file) {
+  /**
+   * Create a new SketchData object, and looks at the sketch directory
+   * on disk to get populate the list of files in this sketch.
+   *
+   * @param file
+   *          The primary file for this sketch.
+   */
+  SketchData(File file) throws IOException {
     primaryFile = file;
 
     // get the name of the sketch by chopping .pde or .java
@@ -63,7 +72,9 @@ public class SketchData {
     name = mainFilename.substring(0, mainFilename.length() - suffixLength);
 
     folder = new File(file.getParent());
-    //System.out.println("sketch dir is " + folder);
+    codeFolder = new File(folder, "code");
+    dataFolder = new File(folder, "data");
+    codes = listSketchFiles();
   }
 
   static public File checkSketchFile(File file) {
@@ -90,68 +101,42 @@ public class SketchData {
   }
 
   /**
-   * Build the list of files.
-   * <p>
-   * Generally this is only done once, rather than
-   * each time a change is made, because otherwise it gets to be
-   * a nightmare to keep track of what files went where, because
-   * not all the data will be saved to disk.
-   * <p>
-   * This also gets called when the main sketch file is renamed,
-   * because the sketch has to be reloaded from a different folder.
-   * <p>
-   * Another exception is when an external editor is in use,
-   * in which case the load happens each time "run" is hit.
+   * Reload the list of files. This checks the sketch directory on disk,
+   * to see if any files were added or removed. This does *not* check
+   * the contents of the files, just their presence.
+   *
+   * @return true when the list of files was changed, false when it was
+   *         not.
    */
-  protected void load() throws IOException {
-    codeFolder = new File(folder, "code");
-    dataFolder = new File(folder, "data");
-
-    // get list of files in the sketch folder
-    String list[] = folder.list();
-    if (list == null) {
-      throw new IOException("Unable to list files from " + folder);
+  public boolean reload() throws IOException {
+    List<SketchCode> reloaded = listSketchFiles();
+    if (!reloaded.equals(codes)) {
+      codes = reloaded;
+      return true;
     }
+    return false;
+  }
 
-    // reset these because load() may be called after an
-    // external editor event. (fix for 0099)
-//    codeDocs = new SketchCodeDoc[list.length];
-    clearCodeDocs();
-//    data.setCodeDocs(codeDocs);
-
-    for (String filename : list) {
-      // Ignoring the dot prefix files is especially important to avoid files
-      // with the ._ prefix on Mac OS X. (You'll see this with Mac files on
-      // non-HFS drives, i.e. a thumb drive formatted FAT32.)
-      if (filename.startsWith(".")) continue;
-
-      // Don't let some wacko name a directory blah.pde or bling.java.
-      if (new File(folder, filename).isDirectory()) continue;
-
-      // figure out the name without any extension
-      String base = filename;
-      // now strip off the .pde and .java extensions
-      for (String extension : EXTENSIONS) {
-        if (base.toLowerCase().endsWith("." + extension)) {
-          base = base.substring(0, base.length() - (extension.length() + 1));
-
-          // Don't allow people to use files with invalid names, since on load,
-          // it would be otherwise possible to sneak in nasty filenames. [0116]
-          if (BaseNoGui.isSanitaryName(base)) {
-            File file = new File(folder, filename);
-            addCode(new SketchCode(file, file.equals(primaryFile)));
-          } else {
-            System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), filename));
-          }
-        }
+  /**
+   * Scan this sketch's directory for files that should be loaded as
+   * part of this sketch. Doesn't modify this SketchData instance, just
+   * returns a filtered and sorted list of File objects ready to be
+   * passed to the SketchCode constructor.
+   */
+  private List<SketchCode> listSketchFiles() throws IOException {
+    Set<SketchCode> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
+    for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
+      if (BaseNoGui.isSanitaryName(file.getName())) {
+        result.add(new SketchCode(file, file.equals(primaryFile)));
+      } else {
+        System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
       }
     }
 
-    if (getCodeCount() == 0)
+    if (result.size() == 0)
       throw new IOException(tr("No valid code files found"));
 
-    // sort the entries at the top
-    sortCode();
+    return new ArrayList<>(result);
   }
 
   public void save() throws IOException {
@@ -223,10 +208,6 @@ public class SketchData {
 
   public String getName() {
     return name;
-  }
-
-  public void clearCodeDocs() {
-    codes.clear();
   }
 
   public File getFolder() {

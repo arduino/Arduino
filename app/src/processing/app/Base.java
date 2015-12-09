@@ -610,11 +610,11 @@ public class Base {
     activeEditor.rebuildRecentSketchesMenu();
     if (PreferencesData.getBoolean("editor.external")) {
       try {
-        int previousCaretPosition = activeEditor.getCurrentTab().getTextArea().getCaretPosition();
-        activeEditor.getSketch().load(true);
-        if (previousCaretPosition < activeEditor.getCurrentTab().getText().length()) {
-          activeEditor.getCurrentTab().getTextArea().setCaretPosition(previousCaretPosition);
-        }
+        // If the list of files on disk changed, recreate the tabs for them
+        if (activeEditor.getSketch().reload())
+          activeEditor.createTabs();
+        else // Let the current tab know it was activated, so it can reload
+          activeEditor.getCurrentTab().activated();
       } catch (IOException e) {
         System.err.println(e);
       }

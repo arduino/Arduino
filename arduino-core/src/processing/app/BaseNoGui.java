@@ -466,14 +466,13 @@ public class BaseNoGui {
         boolean success = false;
         try {
           // Editor constructor loads the sketch with handleOpenInternal() that
-          // creates a new Sketch that, in trun, calls load() inside its constructor
+          // creates a new Sketch that, in turn, builds a SketchData
+          // inside its constructor.
           // This translates here as:
           //   SketchData data = new SketchData(file);
           //   File tempBuildFolder = getBuildFolder();
-          //   data.load();
           SketchData data = new SketchData(absoluteFile(parser.getFilenames().get(0)));
           File tempBuildFolder = getBuildFolder(data);
-          data.load();
 
           // Sketch.exportApplet()
           //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
@@ -520,7 +519,6 @@ public class BaseNoGui {
             //   data.load();
             SketchData data = new SketchData(absoluteFile(path));
             File tempBuildFolder = getBuildFolder(data);
-            data.load();
 
             // Sketch.prepare() calls Sketch.ensureExistence()
             // Sketch.build(verbose) calls Sketch.ensureExistence() and set progressListener and, finally, calls Compiler.build()

@@ -66,41 +66,7 @@ public class Sketch {
   public Sketch(Editor _editor, File file) throws IOException {
     editor = _editor;
     data = new SketchData(file);
-    load();
   }
-
-
-  /**
-   * Build the list of files.
-   * <P>
-   * Generally this is only done once, rather than
-   * each time a change is made, because otherwise it gets to be
-   * a nightmare to keep track of what files went where, because
-   * not all the data will be saved to disk.
-   * <P>
-   * This also gets called when the main sketch file is renamed,
-   * because the sketch has to be reloaded from a different folder.
-   * <P>
-   * Another exception is when an external editor is in use,
-   * in which case the load happens each time "run" is hit.
-   */
-  private void load() throws IOException {
-    load(false);
-  }
-
-  protected void load(boolean forceUpdate) throws IOException {
-    data.load();
-
-    // set the main file to be the current tab
-    if (editor != null) {
-      int current = editor.getCurrentTabIndex();
-      if (current < 0)
-        current = 0;
-      editor.sketchLoaded(this);
-      editor.selectTab(current);
-    }
-  }
-
 
   private boolean renamingCode;
 
@@ -944,24 +910,6 @@ public class Sketch {
   public void prepare() throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    // TODO record history here
-    //current.history.record(program, SketchHistory.RUN);
-
-    // if an external editor is being used, need to grab the
-    // latest version of the code from the file.
-    if (PreferencesData.getBoolean("editor.external")) {
-      // history gets screwed by the open..
-      //String historySaved = history.lastRecorded;
-      //handleOpen(sketch);
-      //history.lastRecorded = historySaved;
-
-      // nuke previous files and settings, just get things loaded
-      load(true);
-    }
-
-//    // handle preprocessing the main file's code
-//    return build(tempBuildFolder.getAbsolutePath());
   }
 
   /**
@@ -1280,6 +1228,9 @@ public class Sketch {
     return editor.untitled;
   }
 
+  public boolean reload() throws IOException {
+    return data.reload();
+  }
 
   // .................................................................
 

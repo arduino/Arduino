@@ -1611,6 +1611,7 @@ public class Editor extends JFrame implements RunnerListener {
     redoAction.updateRedoState();
     updateTitle();
     header.rebuild();
+    getCurrentTab().activated();
 
     // This must be run in the GUI thread
     SwingUtilities.invokeLater(() -> {
@@ -1662,7 +1663,11 @@ public class Editor extends JFrame implements RunnerListener {
     return -1;
   }
 
-  public void sketchLoaded(Sketch sketch) {
+  /**
+   * Create tabs for each of the current sketch's files, removing any existing
+   * tabs.
+   */
+  public void createTabs() {
     tabs.clear();
     currentTabIndex = -1;
     tabs.ensureCapacity(sketch.getCodeCount());
@@ -1674,6 +1679,7 @@ public class Editor extends JFrame implements RunnerListener {
         System.err.println(e);
       }
     }
+    selectTab(0);
   }
 
   /**
@@ -1988,9 +1994,8 @@ public class Editor extends JFrame implements RunnerListener {
       Base.showWarning(tr("Error"), tr("Could not create the sketch."), e);
       return false;
     }
+    createTabs();
 
-    header.rebuild();
-    updateTitle();
     // Disable untitled setting from previous document, if any
     untitled = false;
 
