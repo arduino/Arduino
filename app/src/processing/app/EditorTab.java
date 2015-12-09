@@ -45,6 +45,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
 import javax.swing.undo.UndoManager;
+import javax.swing.text.DefaultCaret;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
@@ -70,6 +71,8 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   protected RTextScrollPane scrollPane;
   protected SketchCode code;
   protected boolean modified;
+  /** Is external editing mode currently enabled? */
+  protected boolean external;
   
   /**
    * Create a new EditorTab
@@ -101,13 +104,13 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
     RSyntaxDocument document = createDocument(contents);
     this.textarea = createTextArea(document);
     this.scrollPane = createScrollPane(this.textarea);
+    code.setStorage(this);
     applyPreferences();
     add(this.scrollPane, BorderLayout.CENTER);
 
     RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
     document.addUndoableEditListener(undo);
     textarea.setUndoManager(undo);
-    code.setStorage(this);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -279,19 +282,29 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
     scrollPane.setFoldIndicatorEnabled(PreferencesData.getBoolean("editor.code_folding"));
     scrollPane.setLineNumbersEnabled(PreferencesData.getBoolean("editor.linenumbers"));
 
-    // apply the setting for 'use external editor'
-    if (PreferencesData.getBoolean("editor.external")) {
-      // disable line highlight and turn off the caret when disabling
-      textarea.setBackground(Theme.getColor("editor.external.bgcolor"));
-      textarea.setHighlightCurrentLine(false);
-      textarea.setEditable(false);
-
-    } else {
-      textarea.setBackground(Theme.getColor("editor.bgcolor"));
-      textarea.setHighlightCurrentLine(Theme.getBoolean("editor.linehighlight"));
-      textarea.setEditable(true);
+    // apply the setting for 'use external editor', but only if it changed
+    if (external != PreferencesData.getBoolean("editor.external")) {
+      external = !external;
+      if (external) {
+        // disable line highlight and turn off the caret when disabling
+        textarea.setBackground(Theme.getColor("editor.external.bgcolor"));
+        textarea.setHighlightCurrentLine(false);
+        textarea.setEditable(false);
+        // Detach from the code, since we are no longer the authoritative source
+        // for file contents.
+        code.setStorage(null);
+        // Reload, in case the file contents already changed.
+        reload();
+      } else {
+        textarea.setBackground(Theme.getColor("editor.bgcolor"));
+        textarea.setHighlightCurrentLine(Theme.getBoolean("editor.linehighlight"));
+        textarea.setEditable(true);
+        code.setStorage(this);
+        // Reload once just before disabling external mode, to ensure we have
+        // the latest contents.
+        reload();
+      }
     }
-
     // apply changes to the font size for the editor
     Font editorFont = scale(PreferencesData.getFont("editor.font"));
     textarea.setFont(editorFont);
@@ -306,7 +319,34 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
     document.setTokenMakerFactory(new ArduinoTokenMakerFactory(keywords));
     document.setSyntaxStyle(RSyntaxDocument.SYNTAX_STYLE_CPLUSPLUS);
   }
-  
+
+  /**
+   * Called when this tab is made the current one, or when it is the current one
+   * and the window is activated.
+   */
+  public void activated() {
+    // When external editing is enabled, reload the text whenever we get activated.
+    if (external) {
+      reload();
+    }
+  }
+
+  /**
+   * Reload the contents of our file.
+   */
+  private void reload() {
+    String text;
+    try {
+      text = code.load();
+    } catch (IOException e) {
+      System.err.println(I18n.format("Warning: Failed to reload file: \"{0}\"",
+                                     code.getFileName()));
+      return;
+    }
+    setText(text);
+    setModified(false);
+  }
+
   /**
    * Get the TextArea object for use (not recommended). This should only
    * be used in obscure cases that really need to hack the internals of the
@@ -343,7 +383,39 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
    * Replace the entire contents of this tab.
    */
   public void setText(String what) {
-    textarea.setText(what);
+    // Set the caret update policy to NEVER_UPDATE while completely replacing
+    // the current text. Normally, the caret tracks inserts and deletions, but
+    // replacing the entire text will always make the caret end up at the end,
+    // which isn't really useful. With NEVER_UPDATE, the caret will just keep
+    // its absolute position (number of characters from the start), which isn't
+    // always perfect, but the best we can do without making a diff of the old
+    // and new text and some guesswork.
+    // Note that we cannot use textarea.setText() here, since that first removes
+    // text and then inserts the new text. Even with NEVER_UPDATE, the caret
+    // always makes sure to stay valid, so first removing all text makes it
+    // reset to 0. Also note that simply saving and restoring the caret position
+    // will work, but then the scroll position might change in response to the
+    // caret position.
+    DefaultCaret caret = (DefaultCaret) textarea.getCaret();
+    int policy = caret.getUpdatePolicy();
+    caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    try {
+      RSyntaxDocument doc = (RSyntaxDocument)textarea.getDocument();
+      int oldLength = doc.getLength();
+      // The undo manager already seems to group the insert and remove together
+      // automatically, but better be explicit about it.
+      textarea.getUndoManager().beginInternalAtomicEdit();
+      try {
+        doc.insertString(oldLength, what, null);
+        doc.remove(0, oldLength);
+      } catch (BadLocationException e) {
+        System.err.println("Unexpected failure replacing text");
+      } finally {
+        textarea.getUndoManager().endInternalAtomicEdit();
+      }
+    } finally {
+      caret.setUpdatePolicy(policy);
+    }
   }
 
   /**
