@@ -91,10 +91,8 @@ public class AStyle implements Tool {
     int line = getLineOfOffset(textArea);
     int lineOffset = getLineOffset(textArea, line);
 
-    textArea.getUndoManager().beginInternalAtomicEdit();
     editor.removeAllLineHighlights();
     editor.getCurrentTab().setText(formattedText);
-    textArea.getUndoManager().endInternalAtomicEdit();
 
     if (line != -1 && lineOffset != -1) {
       try {
