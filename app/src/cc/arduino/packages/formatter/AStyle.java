@@ -91,7 +91,6 @@ public class AStyle implements Tool {
     int line = getLineOfOffset(textArea);
     int lineOffset = getLineOffset(textArea, line);
 
-    editor.removeAllLineHighlights();
     editor.getCurrentTab().setText(formattedText);
 
     if (line != -1 && lineOffset != -1) {

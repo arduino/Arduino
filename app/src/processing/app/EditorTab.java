@@ -383,6 +383,9 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
    * Replace the entire contents of this tab.
    */
   public void setText(String what) {
+    // Remove all highlights, since these will all end up at the start of the
+    // text otherwise. Preserving them is tricky, so better just remove them.
+    textarea.removeAllLineHighlights();
     // Set the caret update policy to NEVER_UPDATE while completely replacing
     // the current text. Normally, the caret tracks inserts and deletions, but
     // replacing the entire text will always make the caret end up at the end,
