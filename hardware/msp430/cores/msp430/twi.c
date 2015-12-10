@@ -444,6 +444,7 @@ uint8_t twi_readFrom(uint8_t address, uint8_t* data, uint8_t length, uint8_t sen
     UCBxCTLW0 |= (UCMST);                     // I2C Master, synchronous mode
     UCBxCTLW0 &= ~(UCTR);                     // Configure in receive mode
     UCBxI2CSA = address;                      // Set Slave Address
+    UCBxTBCNT = length;                       // set number of bytes to transmit
     UCBxCTLW0 &= ~UCSWRST;                    // Clear SW reset, resume operation
     UCBxIE |= (UCRXIE0|UCALIE|UCNACKIE|UCSTTIE|UCSTPIE); // Enable I2C interrupts
 #endif
