@@ -22,7 +22,10 @@
 */
 
 package processing.app;
+
+import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
+import processing.app.helpers.SimpleAction;
 import processing.app.tools.MenuScroller;
 import static processing.app.I18n.tr;
 
@@ -76,6 +79,31 @@ public class EditorHeader extends JComponent {
   int sizeW, sizeH;
   int imageW, imageH;
 
+  public class Actions {
+    public final Action newTab = new SimpleAction(tr("New Tab"),
+        Keys.ctrlShift(KeyEvent.VK_N),
+        () -> editor.getSketch().handleNewCode());
+
+    public final Action renameTab = new SimpleAction(tr("Rename"),
+        () -> editor.getSketch().handleRenameCode());
+
+    public final Action deleteTab = new SimpleAction(tr("Delete"), () -> {
+      try {
+        editor.getSketch().handleDeleteCode();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+
+    public final Action prevTab = new SimpleAction(tr("Previous Tab"),
+        Keys.ctrlAlt(KeyEvent.VK_LEFT),
+        () -> editor.sketch.handlePrevCode());
+
+    public final Action nextTab = new SimpleAction(tr("Next Tab"),
+        Keys.ctrlAlt(KeyEvent.VK_RIGHT),
+        () -> editor.sketch.handleNextCode());
+  }
+  public Actions actions = new Actions();
 
   public EditorHeader(Editor eddie) {
     this.editor = eddie; // weird name for listener
@@ -246,59 +274,12 @@ public class EditorHeader extends JComponent {
     }
     JMenuItem item;
 
-    item = Editor.newJMenuItemShift(tr("New Tab"), 'N');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleNewCode();
-        }
-      });
-    menu.add(item);
-
-    item = new JMenuItem(tr("Rename"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleRenameCode();
-        }
-      });
-    menu.add(item);
-
-    item = new JMenuItem(tr("Delete"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent event) {
-          try {
-            editor.getSketch().handleDeleteCode();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-      });
-    menu.add(item);
-
+    menu.add(new JMenuItem(actions.newTab));
+    menu.add(new JMenuItem(actions.renameTab));
+    menu.add(new JMenuItem(actions.deleteTab));
     menu.addSeparator();
-
-    item = new JMenuItem(tr("Previous Tab"));
-    KeyStroke ctrlAltLeft = KeyStroke
-        .getKeyStroke(KeyEvent.VK_LEFT, Editor.SHORTCUT_ALT_KEY_MASK);
-    item.setAccelerator(ctrlAltLeft);
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        editor.sketch.handlePrevCode();
-      }
-    });
-    menu.add(item);
-
-    item = new JMenuItem(tr("Next Tab"));
-    KeyStroke ctrlAltRight = KeyStroke
-        .getKeyStroke(KeyEvent.VK_RIGHT, Editor.SHORTCUT_ALT_KEY_MASK);
-    item.setAccelerator(ctrlAltRight);
-    item.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        editor.sketch.handleNextCode();
-      }
-    });
-    menu.add(item);
+    menu.add(new JMenuItem(actions.prevTab));
+    menu.add(new JMenuItem(actions.nextTab));
 
     Sketch sketch = editor.getSketch();
     if (sketch != null) {
