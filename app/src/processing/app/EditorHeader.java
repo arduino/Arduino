@@ -292,17 +292,14 @@ public class EditorHeader extends JComponent {
     Sketch sketch = editor.getSketch();
     if (sketch != null) {
       menu.addSeparator();
-
-      ActionListener jumpListener = new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            editor.getSketch().setCurrentCode(e.getActionCommand());
-          }
-        };
+      int i = 0;
       for (SketchCode code : sketch.getCodes()) {
+        final int index = i++;
         item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
                              code.getPrettyName() : code.getFileName());
-        item.setActionCommand(code.getFileName());
-        item.addActionListener(jumpListener);
+        item.addActionListener((ActionEvent e) -> {
+          editor.getSketch().setCurrentCode(index);
+        });
         menu.add(item);
       }
     }
