@@ -72,8 +72,6 @@ public class EditorHeader extends JComponent {
 
   static Image[][] pieces;
 
-  //
-
   Image offscreen;
   int sizeW, sizeH;
   int imageW, imageH;
@@ -236,7 +234,6 @@ public class EditorHeader extends JComponent {
 
 
   public void rebuildMenu() {
-    //System.out.println("rebuilding");
     if (menu != null) {
       menu.removeAll();
 
@@ -246,54 +243,9 @@ public class EditorHeader extends JComponent {
       popup = menu.getPopupMenu();
       add(popup);
       popup.setLightWeightPopupEnabled(true);
-
-      /*
-      popup.addPopupMenuListener(new PopupMenuListener() {
-          public void popupMenuCanceled(PopupMenuEvent e) {
-            // on redraw, the isVisible() will get checked.
-            // actually, a repaint may be fired anyway, so this
-            // may be redundant.
-            repaint();
-          }
-
-          public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
-          public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
-        });
-      */
     }
     JMenuItem item;
 
-    // maybe this shouldn't have a command key anyways..
-    // since we're not trying to make this a full ide..
-    //item = Editor.newJMenuItem("New", 'T');
-
-    /*
-    item = Editor.newJMenuItem("Previous", KeyEvent.VK_PAGE_UP);
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          System.out.println("prev");
-        }
-      });
-    if (editor.sketch != null) {
-      item.setEnabled(editor.sketch.codeCount > 1);
-    }
-    menu.add(item);
-
-    item = Editor.newJMenuItem("Next", KeyEvent.VK_PAGE_DOWN);
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          System.out.println("ext");
-        }
-      });
-    if (editor.sketch != null) {
-      item.setEnabled(editor.sketch.codeCount > 1);
-    }
-    menu.add(item);
-
-    menu.addSeparator();
-    */
-
-    //item = new JMenuItem("New Tab");
     item = Editor.newJMenuItemShift(tr("New Tab"), 'N');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -306,12 +258,6 @@ public class EditorHeader extends JComponent {
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           editor.getSketch().handleRenameCode();
-          /*
-          // this is already being called by nameCode(), the second stage of rename
-          if (editor.sketch.current == editor.sketch.code[0]) {
-            editor.sketchbook.rebuildMenus();
-          }
-          */
         }
       });
     menu.add(item);
@@ -329,8 +275,6 @@ public class EditorHeader extends JComponent {
     menu.add(item);
 
     menu.addSeparator();
-
-    //  KeyEvent.VK_LEFT and VK_RIGHT will make Windows beep
 
     item = new JMenuItem(tr("Previous Tab"));
     KeyStroke ctrlAltLeft = KeyStroke
