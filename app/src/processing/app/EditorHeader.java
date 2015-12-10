@@ -110,6 +110,10 @@ public class EditorHeader extends JComponent {
       Keys.bind(EditorHeader.this, newTab);
       Keys.bind(EditorHeader.this, prevTab);
       Keys.bind(EditorHeader.this, nextTab);
+
+      // Add alternative keybindings to switch tabs
+      Keys.bind(EditorHeader.this, prevTab, Keys.ctrlShift(KeyEvent.VK_TAB));
+      Keys.bind(EditorHeader.this, nextTab, Keys.ctrl(KeyEvent.VK_TAB));
     }
   }
   public Actions actions = new Actions();

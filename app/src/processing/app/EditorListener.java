@@ -34,31 +34,6 @@ public class EditorListener implements KeyListener {
 
   @Override
   public void keyPressed(KeyEvent event) {
-
-    SketchTextArea textarea = editor.getTextArea();
-    
-    if (!textarea.isEditable()) return;
-    
-    Sketch sketch = editor.getSketch();
-
-    int code = event.getKeyCode();
-    
-    // Navigation..
-    if ((event.getModifiers() & CTRL) == CTRL && code == KeyEvent.VK_TAB) {
-      sketch.handleNextCode();
-    }
-
-    // Navigation..
-    // FIXME: not working on LINUX !!!
-    if ((event.getModifiers() & CTRL_SHIFT) == CTRL_SHIFT && code == KeyEvent.VK_TAB) {
-        sketch.handlePrevCode();
-    }
-    
-//    if (event.isAltDown() && code == KeyEvent.VK_T) {
-//      int line = textarea.getCaretLineNumber();
-//      textarea.setActiveLineRange(line, line + 3); 
-//    }
-    
   }
 
   @Override
