@@ -102,6 +102,15 @@ public class EditorHeader extends JComponent {
     public final Action nextTab = new SimpleAction(tr("Next Tab"),
         Keys.ctrlAlt(KeyEvent.VK_RIGHT),
         () -> editor.sketch.handleNextCode());
+
+    Actions() {
+      // Explicitly bind keybindings for the actions with accelerators above
+      // Normally, this happens automatically for any actions bound to menu
+      // items, but only for menus attached to a window, not for popup menus.
+      Keys.bind(EditorHeader.this, newTab);
+      Keys.bind(EditorHeader.this, prevTab);
+      Keys.bind(EditorHeader.this, nextTab);
+    }
   }
   public Actions actions = new Actions();
 
@@ -269,7 +278,6 @@ public class EditorHeader extends JComponent {
       menu = new JMenu();
       MenuScroller.setScrollerFor(menu);
       popup = menu.getPopupMenu();
-      add(popup);
       popup.setLightWeightPopupEnabled(true);
     }
     JMenuItem item;
