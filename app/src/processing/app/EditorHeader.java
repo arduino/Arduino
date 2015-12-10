@@ -376,11 +376,6 @@ public class EditorHeader extends JComponent {
   }
 
 
-  public void deselectMenu() {
-    repaint();
-  }
-
-
   public Dimension getPreferredSize() {
     return getMinimumSize();
   }
