@@ -181,6 +181,7 @@ public class SketchData {
 
   public void addCode(SketchCode sketchCode) {
     codes.add(sketchCode);
+    Collections.sort(codes, CODE_DOCS_COMPARATOR);
   }
 
   protected void replaceCode(SketchCode newCode) {
@@ -190,10 +191,6 @@ public class SketchData {
         return;
       }
     }
-  }
-
-  protected void sortCode() {
-    Collections.sort(codes, CODE_DOCS_COMPARATOR);
   }
 
   public SketchCode getCode(int i) {
