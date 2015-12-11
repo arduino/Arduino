@@ -38,7 +38,6 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.Base;
 import processing.app.BaseNoGui;
-import processing.app.EditorListener;
 import processing.app.PreferencesData;
 
 import javax.swing.event.EventListenerList;
@@ -49,7 +48,6 @@ import javax.swing.text.Document;
 import javax.swing.text.Segment;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,8 +66,6 @@ import java.util.logging.Logger;
 public class SketchTextArea extends RSyntaxTextArea {
 
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
-
-  private EditorListener editorListener;
 
   private PdeKeywords pdeKeywords;
 
@@ -152,27 +148,6 @@ public class SketchTextArea extends RSyntaxTextArea {
     return this.getSelectedText() != null;
   }
 
-  public void processKeyEvent(KeyEvent evt) {
-
-    // this had to be added because the menu key events weren't making it up to the frame.
-
-    switch (evt.getID()) {
-      case KeyEvent.KEY_TYPED:
-        if (editorListener != null) editorListener.keyTyped(evt);
-        break;
-      case KeyEvent.KEY_PRESSED:
-        if (editorListener != null) editorListener.keyPressed(evt);
-        break;
-      case KeyEvent.KEY_RELEASED:
-        // inputHandler.keyReleased(evt);
-        break;
-    }
-
-    if (!evt.isConsumed()) {
-      super.processKeyEvent(evt);
-    }
-  }
-
   public void switchDocument(Document document, UndoManager newUndo) {
 
     // HACK: Dont discard changes on curret UndoManager.
@@ -204,11 +179,6 @@ public class SketchTextArea extends RSyntaxTextArea {
       getDocument().getText(offset, end - offset, segment);
     } catch (BadLocationException ignored) {
     }
-  }
-
-
-  public void setEditorListener(EditorListener editorListener) {
-    this.editorListener = editorListener;
   }
 
   private static class DocLinkGenerator implements LinkGenerator {
