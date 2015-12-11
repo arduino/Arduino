@@ -11,6 +11,7 @@
 # Translators:
 # Translators:
 # benewfy <benewfy@gmail.com>, 2015
+# Jáni Mátyás <jani.matyas@gmail.com>, 2015
 # Melinda <ghostgirl1983@gmail.com>, 2014
 # Cseh Robert <tavir@tavir.hu>, 2012
 msgid ""
@@ -18,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-01 00:12+0000\n"
+"PO-Revision-Date: 2015-12-10 01:03+0000\n"
 "Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -45,12 +46,12 @@ msgstr "Használt: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' nem található! Ellenőrizze, hogy a vázlat tartalmazza-e a '#include <Keyboard.h>' sort!"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' nem található! Ellenőrizze, hogy a vázlat tartalmazza-e a '#include <Mouse.h>' sort!"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -74,7 +75,7 @@ msgstr "--curdir továbbiakban nem támogatott"
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload és --verbose-build csak a --verify vagy --upload kapcsolókkal együttesen használható"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -83,18 +84,18 @@ msgstr ".pde -> .ino"
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>Frissítés érhető el néhány {0}alaplaphoz{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>Frissítés érhető el néhány {0}alaplaphoz{1] és {2}könyvtárhoz{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "Frissítés érhető el néhány {0}könyvtárhoz{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -123,12 +124,12 @@ msgstr "Ezen a néven {0} könyvtár már létezik"
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr "Elérhetö az Arduino új verziója. Szeretnéd meglátogatni az Arduino letöltö oldalát?"
+msgstr "Elérhetö az Arduino új verziója. Szeretné meglátogatni az Arduino letöltö oldalát?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr "Egy új {0} csomag elérhető"
+msgstr "Elérhető egy újabb {0} csomag"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
@@ -136,7 +137,7 @@ msgstr "A vázlatfüzetének egy almappája nem egy érvényes könyvtár"
 
 #: Editor.java:1116
 msgid "About Arduino"
-msgstr "Arduinoról"
+msgstr "Információ az Arduino-ról"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -148,11 +149,11 @@ msgstr "Fájl hozzáadása..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "További Alaplap-kezelő URL-ek"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "További Alaplap-kezelő URL-ek:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -177,7 +178,7 @@ msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "Hiba lépett fel a könytár index frissítésekor!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -223,11 +224,11 @@ msgstr "Vázlat archiválása megszakítva."
 msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
-msgstr ""
+msgstr "A vázlat archiválása megszakítva, mert\nnem menthető megfelelően."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -362,11 +363,11 @@ msgstr "Alaplap:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Alaplap-kezelő"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Alaplap-kezelő..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
@@ -391,7 +392,7 @@ msgstr "Böngészés"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Build beállítások megváltoztak, teljes újraépítés szükséges"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
@@ -425,7 +426,7 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Nem található a skicc a megadott útvonalon"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -470,7 +471,7 @@ msgstr "Kínai (Tajvan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Kattintson a nem hivatalos alaplap-támogatási URL-ek listájáért"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -478,7 +479,7 @@ msgstr "Bezárás"
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr ""
+msgstr "Megjegyzés/-visszavonás"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
@@ -494,7 +495,7 @@ msgstr "Vázlat fordítása..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Hozzáadott"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -746,11 +747,11 @@ msgstr "Letöltve {0}kb ebből: {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "Alaplap definíciók letöltése."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr ""
+msgstr "Könyvtár-index letöltése..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
@@ -759,7 +760,7 @@ msgstr "Könyvtár letöltése: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr ""
+msgstr "Platform-index letöltése..."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
@@ -805,11 +806,11 @@ msgstr "Angol (Egyesült Királyság)"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr ""
+msgstr "Adjon meg egy vesszővel elválasztott URL listát"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr ""
+msgstr "Adja meg a további URL-eket, soronként egyet"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -877,11 +878,11 @@ msgstr "Hiba a beállítások olvasása során. Kérem törölje (vagy mozgassa 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
 msgid "Error running post install script"
-msgstr ""
+msgstr "Hiba a telepítés utáni script futtatásakor"
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "Hiba a felderítő eljárás indításakor:"
 
 #: Serial.java:125
 #, java-format
@@ -955,11 +956,11 @@ msgstr "Példák Könyvtárakból"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Exportálás megszakítva, a változásoknak először mentve kell lenniük."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
-msgstr ""
+msgstr "Lefordított bináris exportálása"
 
 #: ../../../processing/app/Base.java:416
 #, java-format
@@ -976,7 +977,7 @@ msgstr "Filippínó"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "Keresés szűrése..."
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -992,7 +993,7 @@ msgstr "Előző keresése"
 
 #: Editor.java:1086 Editor.java:2775
 msgid "Find in Reference"
-msgstr ""
+msgstr "Keresés a kézikönyvben"
 
 #: Editor.java:1234
 msgid "Find..."
@@ -1000,7 +1001,7 @@ msgstr "Keresés..."
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr ""
+msgstr "Keresendő:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
@@ -1020,7 +1021,7 @@ msgstr ""
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Kényszerített Reset 1200bps-es nyitás/zárással a {0} porton"
 
 #: Preferences.java:95
 msgid "French"
@@ -1052,7 +1053,7 @@ msgstr "Német"
 
 #: Editor.java:1054
 msgid "Getting Started"
-msgstr ""
+msgstr "Kezdetek"
 
 #: ../../../processing/app/Sketch.java:1646
 #, java-format
@@ -1867,7 +1868,7 @@ msgstr "Vázlatfüzet helye:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr ""
+msgstr "A vázlatfüzet helye nincs meghatározva"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1921,7 +1922,7 @@ msgstr "Rendszer Alapértelmezett"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
@@ -2050,7 +2051,7 @@ msgstr "Itt az idő szünetet tartani"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Időzítés"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
