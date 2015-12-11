@@ -22,14 +22,6 @@ public class EditorListener implements KeyListener {
   private static final int CTRL_SHIFT = InputEvent.SHIFT_MASK | CTRL;
 
   public void keyTyped(KeyEvent event) {
-    char c = event.getKeyChar();
-
-    if ((event.getModifiers() & KeyEvent.CTRL_MASK) != 0) {
-      // The char is not control code when CTRL key pressed? It should be a shortcut.
-      if (!Character.isISOControl(c)) {
-        event.consume();
-      }
-    }
   }
 
   @Override
