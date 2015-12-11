@@ -147,7 +147,7 @@ public class EditorStatus extends JPanel {
     editField.setVisible(true);
     editField.setText(dflt);
     editField.selectAll();
-    editField.requestFocus();
+    editField.requestFocusInWindow();
 
     repaint();
   }
