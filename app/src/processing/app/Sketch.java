@@ -643,12 +643,6 @@ public class Sketch {
       Base.copyDir(data.getDataFolder(), newDataFolder);
     }
 
-    // re-copy the code folder
-    if (data.getCodeFolder().exists()) {
-      File newCodeFolder = new File(newFolder, "code");
-      Base.copyDir(data.getCodeFolder(), newCodeFolder);
-    }
-
     // save the main tab with its new name
     File newFile = new File(newFolder, newName + ".ino");
     data.getCode(0).saveAs(newFile);
@@ -730,28 +724,16 @@ public class Sketch {
     String codeExtension = null;
     boolean replacement = false;
 
-    // if the file appears to be code related, drop it
-    // into the code folder, instead of the data folder
-    if (filename.toLowerCase().endsWith(".o") ||
-        filename.toLowerCase().endsWith(".a") ||
-        filename.toLowerCase().endsWith(".so")) {
-
-      //if (!codeFolder.exists()) codeFolder.mkdirs();
-      prepareCodeFolder();
-      destFile = new File(data.getCodeFolder(), filename);
-
-    } else {
-      for (String extension : SketchData.EXTENSIONS) {
-        String lower = filename.toLowerCase();
-        if (lower.endsWith("." + extension)) {
-          destFile = new File(data.getFolder(), filename);
-          codeExtension = extension;
-        }
+    for (String extension : SketchData.EXTENSIONS) {
+      String lower = filename.toLowerCase();
+      if (lower.endsWith("." + extension)) {
+        destFile = new File(data.getFolder(), filename);
+        codeExtension = extension;
       }
-      if (codeExtension == null) {
-        prepareDataFolder();
-        destFile = new File(data.getDataFolder(), filename);
-      }
+    }
+    if (codeExtension == null) {
+      prepareDataFolder();
+      destFile = new File(data.getDataFolder(), filename);
     }
 
     // check whether this file already exists
@@ -1172,18 +1154,6 @@ public class Sketch {
       data.getDataFolder().mkdirs();
     }
     return data.getDataFolder();
-  }
-
-
-  /**
-   * Create the code folder if it does not exist already. As a convenience,
-   * it also returns the code folder, since it's likely about to be used.
-   */
-  private File prepareCodeFolder() {
-    if (!data.getCodeFolder().exists()) {
-      data.getCodeFolder().mkdirs();
-    }
-    return data.getCodeFolder();
   }
 
 
