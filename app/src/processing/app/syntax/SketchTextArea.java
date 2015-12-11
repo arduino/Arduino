@@ -41,7 +41,6 @@ import processing.app.BaseNoGui;
 import processing.app.EditorListener;
 import processing.app.PreferencesData;
 
-import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -57,9 +56,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -90,8 +87,6 @@ public class SketchTextArea extends RSyntaxTextArea {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
 
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
-
-    fixControlTab();
 
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
   }
@@ -152,28 +147,6 @@ public class SketchTextArea extends RSyntaxTextArea {
 
     getSyntaxScheme().setStyle(tokenType, style);
   }
-
-  // Removing the default focus traversal keys
-  // This is because the DefaultKeyboardFocusManager handles the keypress and consumes the event
-  private void fixControlTab() {
-    removeCTRLTabFromFocusTraversal();
-
-    removeCTRLSHIFTTabFromFocusTraversal();
-  }
-
-  private void removeCTRLSHIFTTabFromFocusTraversal() {
-    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-    Set<AWTKeyStroke> backwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-    backwardKeys.remove(ctrlShiftTab);
-  }
-
-  private void removeCTRLTabFromFocusTraversal() {
-    KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-    Set<AWTKeyStroke> forwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-    forwardKeys.remove(ctrlTab);
-    this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-  }
-
 
   public boolean isSelectionActive() {
     return this.getSelectedText() != null;

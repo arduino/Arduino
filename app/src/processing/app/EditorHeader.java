@@ -118,6 +118,27 @@ public class EditorHeader extends JComponent {
   }
   public Actions actions = new Actions();
 
+  /**
+   * Called whenever we, or any of our ancestors, is added to a container.
+   */
+  public void addNotify() {
+    super.addNotify();
+    /*
+     * Once we get added to a window, remove Ctrl-Tab and Ctrl-Shift-Tab from
+     * the keys used for focus traversal (so our bindings for these keys will
+     * work). All components inherit from the window eventually, so this should
+     * work whenever the focus is inside our window. Some components (notably
+     * JTextPane / JEditorPane) keep their own focus traversal keys, though, and
+     * have to be treated individually (either the same as below, or by
+     * disabling focus traversal entirely).
+     */
+    Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+      Keys.killFocusTraversalBinding(window, Keys.ctrl(KeyEvent.VK_TAB));
+      Keys.killFocusTraversalBinding(window, Keys.ctrlShift(KeyEvent.VK_TAB));
+    }
+  }
+
   public EditorHeader(Editor eddie) {
     this.editor = eddie; // weird name for listener
 

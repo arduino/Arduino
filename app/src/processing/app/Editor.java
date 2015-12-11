@@ -38,6 +38,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
@@ -312,6 +313,12 @@ public class Editor extends JFrame implements RunnerListener {
     // to fix ugliness.. normally macosx java 1.3 puts an
     // ugly white border around this object, so turn it off.
     splitPane.setBorder(null);
+    // By default, the split pane binds Ctrl-Tab and Ctrl-Shift-Tab for changing
+    // focus. Since we do not use that, but want to use these shortcuts for
+    // switching tabs, remove the bindings from the split pane. This allows the
+    // events to bubble up and be handled by the EditorHeader.
+    Keys.killBinding(splitPane, Keys.ctrl(KeyEvent.VK_TAB));
+    Keys.killBinding(splitPane, Keys.ctrlShift(KeyEvent.VK_TAB));
 
     // the default size on windows is too small and kinda ugly
     int dividerSize = PreferencesData.getInteger("editor.divider.size");

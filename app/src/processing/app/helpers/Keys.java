@@ -29,11 +29,17 @@
 
 package processing.app.helpers;
 
+import java.awt.AWTKeyStroke;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
@@ -113,6 +119,65 @@ public class Keys {
           disableBind(component, action, keystroke, condition);
       }
     });
+  }
+
+  /**
+   * Kill an existing binding from the given condition. If the binding is
+   * defined on the given component, it is removed, but if it is defined through
+   * a parent inputmap (typically shared by multiple components, so best not
+   * touched), this adds a dummy binding for this component, that will never
+   * match an action in the component's action map, effectively disabling the
+   * binding.
+   *
+   * This method is not intended to unbind a binding created by bind(), since
+   * such a binding would get re-enabled when the action is re-enabled.
+   */
+  public static void killBinding(final JComponent component,
+                                 final KeyStroke keystroke, int condition) {
+    InputMap map = component.getInputMap(condition);
+    // First, try removing it
+    map.remove(keystroke);
+    // If the binding is defined in a parent map, defining it will not work, so
+    // instead add an override that will never appear in the action map.
+    if (map.get(keystroke) != null)
+      map.put(keystroke, new Object());
+  }
+
+  /**
+   * Kill an existing binding like above, but from all three conditions
+   * (WHEN_FOCUSED, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, WHEN_IN_FOCUSED_WINDOW).
+   */
+  public static void killBinding(final JComponent component,
+                                 final KeyStroke key) {
+    killBinding(component, key, JComponent.WHEN_FOCUSED);
+    killBinding(component, key, JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    killBinding(component, key, JComponent.WHEN_IN_FOCUSED_WINDOW);
+  }
+
+  /**
+   * Remove a keystroke from the keys used to shift focus in or below the given
+   * component. This modifies all sets of focus traversal keys on the given
+   * component to remove the given keystroke. These sets are inherited down the
+   * component hierarchy (until a component that has a custom set itself).
+   */
+  public static void killFocusTraversalBinding(final Component component,
+                                               final KeyStroke keystroke) {
+    int[] sets = { KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS,
+        KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS,
+        KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS,
+        KeyboardFocusManager.DOWN_CYCLE_TRAVERSAL_KEYS };
+    for (int set : sets) {
+      Set<AWTKeyStroke> keys = component.getFocusTraversalKeys(set);
+      // keys is immutable, so create a new set to allow changes
+      keys = new HashSet<>(keys);
+      if (set == 0)
+        keys.add(ctrlAlt('Z'));
+
+      // If the given keystroke was present in the set, replace it with the
+      // updated set with the keystroke removed.
+      if (keys.remove(keystroke))
+        component.setFocusTraversalKeys(set, keys);
+    }
   }
 
   private static void enableBind(final JComponent component,
