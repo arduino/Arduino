@@ -575,9 +575,9 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   }
 
   @Override
-  public void requestFocus() {
+  public boolean requestFocusInWindow() {
     /** If focus is requested, focus the textarea instead. */
-    textarea.requestFocus();
+    return textarea.requestFocusInWindow();
   }
 
 }
