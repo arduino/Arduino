@@ -374,9 +374,6 @@ public class Sketch {
       data.addCode(code);
     }
 
-    // sort the entries
-    data.sortCode();
-
     // set the new guy as current
     editor.selectTab(editor.findTabIndex(newName));
 
@@ -828,7 +825,6 @@ public class Sketch {
       } else {
         ensureExistence();
         data.addCode(newCode);
-        data.sortCode();
       }
       editor.selectTab(editor.findTabIndex(filename));
     }
