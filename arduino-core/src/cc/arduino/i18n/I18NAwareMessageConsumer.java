@@ -39,16 +39,26 @@ import static processing.app.I18n.tr;
 
 public class I18NAwareMessageConsumer implements MessageConsumer {
 
-  private final PrintStream ps;
+  private final PrintStream out;
+  private final PrintStream err;
   private final MessageConsumer parent;
   private final ExternalProcessOutputParser parser;
 
-  public I18NAwareMessageConsumer(PrintStream ps) {
-    this(ps, null);
+  public I18NAwareMessageConsumer(PrintStream out) {
+    this(out, out, null);
   }
 
-  public I18NAwareMessageConsumer(PrintStream ps, MessageConsumer parent) {
-    this.ps = ps;
+  public I18NAwareMessageConsumer(PrintStream out, MessageConsumer parent) {
+    this(out, out, parent);
+  }
+
+  public I18NAwareMessageConsumer(PrintStream out, PrintStream err) {
+    this(out, err, null);
+  }
+
+  public I18NAwareMessageConsumer(PrintStream out, PrintStream err, MessageConsumer parent) {
+    this.out = out;
+    this.err = err;
     this.parent = parent;
     this.parser = new ExternalProcessOutputParser();
   }
@@ -57,14 +67,19 @@ public class I18NAwareMessageConsumer implements MessageConsumer {
   public void message(String s) {
     if (s.startsWith("===")) {
       Map<String, Object> parsedMessage = parser.parse(s);
-      ps.println(I18n.format(tr((String) parsedMessage.get("msg")), (Object[]) parsedMessage.get("args")));
+      String translatedMessage = I18n.format(tr((String) parsedMessage.get("msg")), (Object[]) parsedMessage.get("args"));
+      if (!parsedMessage.containsKey("level") || "".equals(parsedMessage.get("level")) || "info".equals(parsedMessage.get("level"))) {
+        out.println(translatedMessage);
+      } else {
+        err.println(translatedMessage);
+      }
       return;
     }
 
     if (parent != null) {
       parent.message(s);
     } else {
-      ps.println(s);
+      out.println(s);
     }
   }
 }
