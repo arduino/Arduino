@@ -1,7 +1,7 @@
 ARDUINO 1.6.7 - 2015.12.14
 
 [ide]
-* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...master
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.8
 * Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
 * New translations
 * Added support to file:// protocol for boards manager URLs
