@@ -336,6 +336,7 @@
       <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
+      <option value="-Dawt.useSystemAAFontSettings=on"/>
 
       <!--
       <option value="-Dapple.awt.showGrowBox=false"/>

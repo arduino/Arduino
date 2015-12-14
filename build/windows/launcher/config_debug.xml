@@ -36,6 +36,7 @@
     <path>java</path>
     <runtimeBits>32</runtimeBits>
     <opt>-Dsun.java2d.d3d=false</opt>
+    <opt>-Dawt.useSystemAAFontSettings=on</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
     <opt>-DDEBUG=true</opt>
   </jre>
