@@ -29,8 +29,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-20 03:49+0000\n"
-"Last-Translator: Armel FAUVEAU <armel.fauveau@globalis-ms.com>\n"
+"PO-Revision-Date: 2015-12-12 21:26+0000\n"
+"Last-Translator: Lucas Mascaro <mascaro.lucas@yahoo.fr>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -505,7 +505,7 @@ msgstr "Compilation du croquis..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Contribué"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -670,7 +670,7 @@ msgstr "Danois (Danemark)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Traitement des données"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
@@ -690,7 +690,7 @@ msgstr "Supprimer"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Controle du périphérique"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -704,7 +704,7 @@ msgstr "Laisser tomber les changements et recharger le croquis ?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Affichage"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -923,7 +923,7 @@ msgstr "Erreur d'impression."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Erreur durant la définition des paramètres du port série: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1235,7 +1235,7 @@ msgstr "La bibliothèque a été ajoutée à votre dossier de bibliothèques. Ve
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "Une bibliothèque ne peut utiliser les dossiers 'src' et 'utility' en même temps. Double vérification {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1626,7 +1626,7 @@ msgstr "Retiré"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Recommandé"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -2061,7 +2061,7 @@ msgstr "Il est temps de prendre une pause"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Timing"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2379,7 +2379,7 @@ msgstr "Vous ne pouvez renommer le croquis en « {0} »\ncar il existe déjà 
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
 "because the sketch already has a file with that name."
-msgstr ""
+msgstr "Vous ne pouvez pas sauvegarder le croquis en tant que \"{0}\"\nparce que le croquis a déjà un fichier avec ce nom"
 
 #: Sketch.java:883
 msgid ""
