@@ -41,6 +41,10 @@
  *
  * June 2015 StefanSch: Adopted for Energia
  *
+ * Dec 12, 2015 Rei Vilo
+ * 0b00000101 mask for LCDMEM[position+1] to avoid interferences with symbols
+ * Tested on MSP430 FR4133 and FR6989
+ *
  ******************************************************************************/
 
 #include "LCD_Launchpad.h"
@@ -436,25 +440,25 @@ void LCD_LAUNCHPAD::showChar(char c, int position)
     {
         // Display space
         LCDMEM[position] = 0;
-        LCDMEM[position+1] = 0;
+        LCDMEM[position+1] = 0 | (LCDMEM[position+1] & 0b00000101);
     }
     else if (c >= '0' && c <= '9')
     {
         // Display digit
         LCDMEM[position] = digit[c-48][0];
-        LCDMEM[position+1] = digit[c-48][1];
+        LCDMEM[position+1] = digit[c-48][1] | (LCDMEM[position+1] & 0b00000101);
     }
     else if (c >= 'A' && c <= 'Z')
     {
         // Display alphabet
         LCDMEM[position] = alphabetBig[c-65][0];
-        LCDMEM[position+1] = alphabetBig[c-65][1];
+        LCDMEM[position+1] = alphabetBig[c-65][1] | (LCDMEM[position+1] & 0b00000101);
     }
     else
     {
         // Turn all segments on if character is not a space, digit, or uppercase letter
         LCDMEM[position] = 0xFF;
-        LCDMEM[position+1] = 0xFF;
+        LCDMEM[position+1] = (0xFF & ~0b00000101) | (LCDMEM[position+1] & 0b00000101);
     }
 }
 
