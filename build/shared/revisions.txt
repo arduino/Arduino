@@ -1,4 +1,4 @@
-ARDUINO 1.6.7
+ARDUINO 1.6.7 - 2015.12.14
 
 [ide]
 * New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...master
