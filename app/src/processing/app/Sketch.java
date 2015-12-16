@@ -874,15 +874,6 @@ public class Sketch {
   //protected String compile() throws RunnerException {
 
   /**
-   * When running from the editor, take care of preparations before running
-   * the build.
-   */
-  public void prepare() throws IOException {
-    // make sure the user didn't hide the sketch folder
-    ensureExistence();
-  }
-
-  /**
    * Run the build inside the temporary build folder.
    * @return null if compilation failed, main class name if not
    * @throws RunnerException
@@ -948,8 +939,6 @@ public class Sketch {
    */
   private boolean exportApplet(String appletPath, boolean usingProgrammer)
     throws Exception {
-
-    prepare();
 
     // build the sketch
     editor.status.progressNotice(tr("Compiling sketch..."));

@@ -1771,7 +1771,6 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
       try {
         removeAllLineHighlights();
-        sketch.prepare();
         sketch.build(verbose, saveHex);
         statusNotice(tr("Done compiling."));
       } catch (PreferencesMapException e) {
