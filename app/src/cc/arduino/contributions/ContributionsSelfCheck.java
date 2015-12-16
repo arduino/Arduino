@@ -29,14 +29,13 @@
 
 package cc.arduino.contributions;
 
-import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
 import cc.arduino.contributions.packages.ContributionInstaller;
-import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.packages.filters.UpdatablePlatformPredicate;
 import cc.arduino.view.NotificationPopup;
 import processing.app.Base;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 
 import javax.swing.*;
@@ -49,21 +48,17 @@ public class ContributionsSelfCheck extends TimerTask {
 
   private final Base base;
   private final HyperlinkListener hyperlinkListener;
-  private final ContributionsIndexer contributionsIndexer;
   private final ContributionInstaller contributionInstaller;
-  private final LibrariesIndexer librariesIndexer;
   private final LibraryInstaller libraryInstaller;
   private final ProgressListener progressListener;
 
   private volatile boolean cancelled;
   private volatile NotificationPopup notificationPopup;
 
-  public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionsIndexer contributionsIndexer, ContributionInstaller contributionInstaller, LibrariesIndexer librariesIndexer, LibraryInstaller libraryInstaller) {
+  public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionInstaller contributionInstaller, LibraryInstaller libraryInstaller) {
     this.base = base;
     this.hyperlinkListener = hyperlinkListener;
-    this.contributionsIndexer = contributionsIndexer;
     this.contributionInstaller = contributionInstaller;
-    this.librariesIndexer = librariesIndexer;
     this.libraryInstaller = libraryInstaller;
     this.progressListener = new NoopProgressListener();
     this.cancelled = false;
@@ -74,12 +69,12 @@ public class ContributionsSelfCheck extends TimerTask {
     updateContributionIndex();
     updateLibrariesIndex();
 
-    long updatablePlatforms = contributionsIndexer.getPackages().stream()
+    long updatablePlatforms = BaseNoGui.indexer.getPackages().stream()
       .flatMap(pack -> pack.getPlatforms().stream())
-      .filter(new UpdatablePlatformPredicate(contributionsIndexer)).count();
+      .filter(new UpdatablePlatformPredicate()).count();
 
-    long updatableLibraries = librariesIndexer.getInstalledLibraries().stream()
-      .filter(new UpdatableLibraryPredicate(librariesIndexer))
+    long updatableLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries().stream()
+      .filter(new UpdatableLibraryPredicate())
       .count();
 
     if (updatableLibraries <= 0 && updatablePlatforms <= 0) {

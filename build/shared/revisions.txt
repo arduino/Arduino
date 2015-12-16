@@ -1,7 +1,28 @@
-ARDUINO 1.6.7
+ARDUINO 1.6.7 - 2015.12.14
+
+[ide]
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.8
+* Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
+* New translations
+* Added support to file:// protocol for boards manager URLs
+* Portable sketchbook folder can now be any arbitrary location
+* Fixed a bug that caused Boards Manager to install the same tool twice or more, thus wasting disk space, if other cores where using tools delivered by arduino
+* Fixed various Boards manager glitches, in particular when removing a board
+* Windows: Arduino IDE icon is now in high definition, bye bye that blurry icon
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
+* Ethernet, WiFi, SoftwareSerial: Fixed flush() behaviour:
+  the flush function is no more dropping the receive buffer, as per
+  1.0 API specification. Thanks @drmpf
+
+[core]
+* Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
+* Stream: Optional lookahead and skipChar options added to parseInt and parseFloat, 
+  parseFloat also support parsing floats without a leading 0,
+  Stream::find(char) added to SAM. Thanks @Chris--A.
+* Leonardo/Micro (and other atmega32u4 based boards) now have SerialUSB alias for Serial
+* Leonardo now has LED_BUILTIN_RX/TX definitions in variant file. Thanks @NicoHood
 
 ARDUINO 1.6.6 - 2015.11.03
 

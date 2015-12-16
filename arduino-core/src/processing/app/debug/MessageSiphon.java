@@ -54,6 +54,7 @@ public class MessageSiphon implements Runnable {
     this.lineTimeout = lineTimeout;
 
     thread = new Thread(this);
+    thread.setName("MessageSiphon");
     // don't set priority too low, otherwise exceptions won't
     // bubble up in time (i.e. compile errors have a weird delay)
     //thread.setPriority(Thread.MIN_PRIORITY);

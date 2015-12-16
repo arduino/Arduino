@@ -66,6 +66,7 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
@@ -81,7 +82,7 @@ public class Base {
   public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
   public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
 
-  private static final int RECENT_SKETCHES_MAX_SIZE = 5;
+  private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
   private static boolean commandLine;
   public static volatile Base INSTANCE;
@@ -140,7 +141,9 @@ public class Base {
   }
 
   static public void guardedMain(String args[]) throws Exception {
-    Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
+    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
+    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
+    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
 
     BaseNoGui.initLogger();
 
@@ -300,8 +303,8 @@ public class Base {
     this.pdeKeywords = new PdeKeywords();
     this.pdeKeywords.reload();
 
-    contributionInstaller = new ContributionInstaller(BaseNoGui.indexer, BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-    libraryInstaller = new LibraryInstaller(BaseNoGui.librariesIndexer, BaseNoGui.getPlatform());
+    contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
 
     parser.parseArgumentsPhase2();
 
@@ -378,7 +381,7 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isInstallLibrary()) {
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier()));
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
       ProgressListener progressListener = new ConsoleProgressListener();
       indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
@@ -461,7 +464,7 @@ public class Base {
       if (PreferencesData.getBoolean("update.check")) {
         new UpdateCheck(this);
 
-        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), BaseNoGui.indexer, contributionInstaller, BaseNoGui.librariesIndexer, libraryInstaller);
+        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), contributionInstaller, libraryInstaller);
         new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
       }
 
@@ -523,7 +526,7 @@ public class Base {
       if (path == null) {
         continue;
       }
-      if (BaseNoGui.getPortableFolder() != null) {
+      if (BaseNoGui.getPortableFolder() != null && !new File(path).isAbsolute()) {
         File absolute = new File(BaseNoGui.getPortableFolder(), path);
         try {
           path = absolute.getCanonicalPath();
@@ -570,12 +573,6 @@ public class Base {
       if (path.startsWith(untitledPath) && !editor.getSketch().isModified()) {
         continue;
       }
-      if (BaseNoGui.getPortableFolder() != null) {
-        path = FileUtils.relativePath(BaseNoGui.getPortableFolder().toString(), path);
-        if (path == null) {
-          continue;
-        }
-      }
       PreferencesData.set("last.sketch" + index + ".path", path);
 
       int[] location = editor.getPlacement();
@@ -613,7 +610,11 @@ public class Base {
     activeEditor.rebuildRecentSketchesMenu();
     if (PreferencesData.getBoolean("editor.external")) {
       try {
+        int previousCaretPosition = activeEditor.getTextArea().getCaretPosition();
         activeEditor.getSketch().load(true);
+        if (previousCaretPosition < activeEditor.getText().length()) {
+          activeEditor.getTextArea().setCaretPosition(previousCaretPosition);
+        }
       } catch (IOException e) {
         // noop
       }
@@ -1280,7 +1281,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.librariesIndexer, libraryInstaller) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, libraryInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
@@ -1309,7 +1310,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, BaseNoGui.indexer, contributionInstaller) {
+    ContributionManagerUI managerUI = new ContributionManagerUI(activeEditor, contributionInstaller) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
@@ -1915,22 +1916,20 @@ public class Base {
 
 
   /**
-   * Give this Frame a Processing icon.
+   * Give this Frame an icon.
    */
   static public void setIcon(Frame frame) {
-    // don't use the low-res icon on Mac OS X; the window should
-    // already have the right icon from the .app file.
-    if (OSUtils.isMacOS()) return;
-    
-    // don't use the low-res icon on Linux
-    if (OSUtils.isLinux()){
-      Image image = Toolkit.getDefaultToolkit().createImage(BaseNoGui.getContentFile("/lib/arduino.png").getAbsolutePath());
-      frame.setIconImage(image);
+    if (OSUtils.isMacOS()) {
       return;
     }
 
-    Image image = Toolkit.getDefaultToolkit().createImage(PApplet.ICON_IMAGE);
-    frame.setIconImage(image);
+    List<Image> icons = Stream
+      .of("16", "24", "32", "48", "64", "72", "96", "128", "256")
+      .map(res -> "/lib/icons/" + res + "x" + res + "/apps/arduino.png")
+      .map(path -> BaseNoGui.getContentFile(path).getAbsolutePath())
+      .map(absPath -> Toolkit.getDefaultToolkit().createImage(absPath))
+      .collect(Collectors.toList());
+    frame.setIconImages(icons);
   }
 
 

@@ -56,18 +56,16 @@ public class DiscoveryManager {
       }
     }
 
-    Thread closeHook = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        for (Discovery d : discoverers) {
-          try {
-            d.stop();
-          } catch (Exception e) {
-            e.printStackTrace(); //just printing as the JVM is terminating
-          }
+    Thread closeHook = new Thread(() -> {
+      for (Discovery d : discoverers) {
+        try {
+          d.stop();
+        } catch (Exception e) {
+          e.printStackTrace(); //just printing as the JVM is terminating
         }
       }
     });
+    closeHook.setName("DiscoveryManager closeHook");
     Runtime.getRuntime().addShutdownHook(closeHook);
   }
 

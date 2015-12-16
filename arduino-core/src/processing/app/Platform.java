@@ -74,7 +74,7 @@ public class Platform {
   }
 
 
-  public void init() throws IOException {
+  public void init() throws Exception {
   }
 
 
@@ -252,7 +252,7 @@ public class Platform {
     process.waitFor();
   }
 
-  public void fixSettingsLocation() throws IOException {
+  public void fixSettingsLocation() throws Exception {
     //noop
   }
 }

@@ -31,18 +31,16 @@ package cc.arduino.contributions.packages.filters;
 
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.packages.ContributionsIndexer;
+import processing.app.BaseNoGui;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform> {
 
-  private final ContributionsIndexer indexer;
   private final VersionComparator versionComparator;
 
-  public UpdatablePlatformPredicate(ContributionsIndexer indexer) {
-    this.indexer = indexer;
+  public UpdatablePlatformPredicate() {
     this.versionComparator = new VersionComparator();
   }
 
@@ -51,12 +49,12 @@ public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform
     String packageName = contributedPlatform.getParentPackage().getName();
     String architecture = contributedPlatform.getArchitecture();
 
-    ContributedPlatform installed = indexer.getInstalled(packageName, architecture);
+    ContributedPlatform installed = BaseNoGui.indexer.getInstalled(packageName, architecture);
     if (installed == null) {
       return false;
     }
 
-    List<ContributedPlatform> platforms = indexer.getIndex().findPlatforms(packageName, architecture);
+    List<ContributedPlatform> platforms = BaseNoGui.indexer.getIndex().findPlatforms(packageName, architecture);
     return platforms.stream()
       .filter(platform -> versionComparator.greaterThan(platform.getParsedVersion(), installed.getParsedVersion()))
       .count() > 0;

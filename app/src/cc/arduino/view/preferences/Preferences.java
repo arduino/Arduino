@@ -30,6 +30,8 @@
 package cc.arduino.view.preferences;
 
 import cc.arduino.Constants;
+import cc.arduino.i18n.Language;
+import cc.arduino.i18n.Languages;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -47,40 +49,8 @@ import static processing.app.I18n.tr;
 
 public class Preferences extends javax.swing.JDialog {
 
-  private final Language[] languages;
-
-  // Languages that are not translated at least to 65% are
-  // kept in the "missingLanguages" array until they have enough
-  // translated strings.
-  @SuppressWarnings("unused")
-  private final Language[] missingLanguages;
-
   private final WarningItem[] warningItems;
   private final Base base;
-
-  public static class Language {
-
-    private final String name;
-    private final String originalName;
-    private final String isoCode;
-
-    public Language(String name, String originalName, String isoCode) {
-      this.name = name;
-      this.originalName = originalName;
-      this.isoCode = isoCode;
-    }
-
-    public String toString() {
-      if (originalName.length() == 0) {
-        return name;
-      }
-      return originalName + " (" + name + ")";
-    }
-
-    public String getIsoCode() {
-      return isoCode;
-    }
-  }
 
   private static class WarningItem {
     private final String value;
@@ -104,76 +74,6 @@ public class Preferences extends javax.swing.JDialog {
   public Preferences(Window parent, Base base) {
     super(parent);
     this.base = base;
-
-    this.languages = new Language[]{
-      new Language(tr("System Default"), "", ""),
-      new Language(tr("Albanian"), "shqip", "sq"),
-      new Language(tr("Arabic"), "العربية", "ar"),
-      new Language(tr("Aragonese"), "Aragonés", "an"),
-      new Language(tr("Basque"), "Euskara", "eu"),
-      new Language(tr("Belarusian"), "Беларуская мова", "be"),
-      new Language(tr("Bulgarian"), "български", "bg"),
-      new Language(tr("Canadian French"), "Canadienne-français", "fr_CA"),
-      new Language(tr("Catalan"), "Català", "ca"),
-      new Language(tr("Chinese (China)"), "简体中文", "zh_CN"),
-      new Language(tr("Chinese (Taiwan) (Big5)"), "", "zh_TW.Big5"),
-      new Language(tr("Chinese (Taiwan)"), "", "zh_TW"),
-      new Language(tr("Croatian"), "Hrvatski", "hr_HR"),
-      new Language(tr("Czech (Czech Republic)"), "český (Czech Republic)", "cs_CZ"),
-      new Language(tr("Dutch"), "Nederlands", "nl"),
-      new Language(tr("English"), "English", "en"),
-      new Language(tr("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
-      new Language(tr("Estonian"), "Eesti", "et"),
-      new Language(tr("Estonian (Estonia)"), "Eesti keel", "et_EE"),
-      new Language(tr("Filipino"), "Pilipino", "fil"),
-      new Language(tr("Finnish"), "Suomi", "fi"),
-      new Language(tr("French"), "Français", "fr"),
-      new Language(tr("Galician"), "Galego", "gl"),
-      new Language(tr("Galician (Spain)"), "Galego (Spain)", "gl_ES"),
-      new Language(tr("Georgian"), "საქართველოს", "ka_GE"),
-      new Language(tr("German"), "Deutsch", "de_DE"),
-      new Language(tr("Hebrew"), "עברית", "he"),
-      new Language(tr("Hindi"), "हिंदी", "hi"),
-      new Language(tr("Indonesian"), "Bahasa Indonesia", "id"),
-      new Language(tr("Italian"), "Italiano", "it_IT"),
-      new Language(tr("Japanese"), "日本語", "ja_JP"),
-      new Language(tr("Korean"), "한국어", "ko_KR"),
-      new Language(tr("Latvian"), "Latviešu", "lv_LV"),
-      new Language(tr("Norwegian Bokmål"), "Norsk bokmål", "nb_NO"),
-      new Language(tr("Persian"), "فارسی", "fa"),
-      new Language(tr("Polish"), "Język Polski", "pl"),
-      new Language(tr("Portugese"), "Português", "pt"),
-      new Language(tr("Portuguese (Brazil)"), "Português (Brazil)", "pt_BR"),
-      new Language(tr("Portuguese (Portugal)"), "Português (Portugal)", "pt_PT"),
-      new Language(tr("Romanian"), "Română", "ro"),
-      new Language(tr("Russian"), "Русский", "ru"),
-      new Language(tr("Slovak"), "Slovenčina", "sk"),
-      new Language(tr("Slovenian"), "Slovenščina", "sl_SI"),
-      new Language(tr("Spanish"), "Español", "es"),
-      new Language(tr("Swedish"), "Svenska", "sv"),
-      new Language(tr("Tamil"), "தமிழ்", "ta"),
-      new Language(tr("Turkish"), "Türk", "tr"),
-      new Language(tr("Ukrainian"), "Український", "uk"),
-      new Language(tr("Vietnamese"), "Tiếng Việt", "vi"),
-    };
-
-    this.missingLanguages = new Language[]{
-      new Language(tr("Afrikaans"), "Afrikaans", "af"),
-      new Language(tr("Armenian"), "Հայերեն", "hy"),
-      new Language(tr("Asturian"), "Asturianu", "ast"),
-      new Language(tr("Bosnian"), "Bosanski", "bs"),
-      new Language(tr("Burmese (Myanmar)"), "ဗမာစကား", "my_MM"),
-      new Language(tr("Danish (Denmark)"), "Dansk (Denmark)", "da_DK"),
-      new Language(tr("Dutch (Netherlands)"), "Nederlands", "nl_NL"),
-      new Language(tr("Greek"), "ελληνικά", "el_GR"),
-      new Language(tr("Hungarian"), "Magyar", "hu"),
-      new Language(tr("Lithuaninan"), "Lietuvių Kalba", "lt_LT"),
-      new Language(tr("Marathi"), "मराठी", "mr"),
-      new Language(tr("Nepali"), "नेपाली", "ne"),
-      new Language(tr("Persian (Iran)"), "فارسی (Iran)", "fa_IR"),
-      new Language(tr("Talossan"), "Talossan", "tzl"),
-      new Language(tr("Western Frisian"), "Western Frisian", "fy")
-    };
 
     this.warningItems = new WarningItem[]{
       new WarningItem("none", tr("None")),
@@ -207,7 +107,7 @@ public class Preferences extends javax.swing.JDialog {
     sketchbookLocationField = new javax.swing.JTextField();
     javax.swing.JButton browseButton = new javax.swing.JButton();
     javax.swing.JLabel comboLanguageLabel = new javax.swing.JLabel();
-    comboLanguage = new JComboBox(languages);
+    comboLanguage = new JComboBox(Languages.languages);
     javax.swing.JLabel requiresRestartLabel = new javax.swing.JLabel();
     javax.swing.JLabel fontSizeLabel = new javax.swing.JLabel();
     fontSizeField = new javax.swing.JTextField();
@@ -656,12 +556,6 @@ public class Preferences extends javax.swing.JDialog {
     File file = Base.selectFolder(tr("Select new sketchbook location"), dflt, this);
     if (file != null) {
       String path = file.getAbsolutePath();
-      if (BaseNoGui.getPortableFolder() != null) {
-        path = FileUtils.relativePath(BaseNoGui.getPortableFolder().toString(), path);
-        if (path == null) {
-          path = BaseNoGui.getPortableSketchbookFolder();
-        }
-      }
       sketchbookLocationField.setText(path);
     }
   }//GEN-LAST:event_browseButtonActionPerformed
@@ -831,7 +725,7 @@ public class Preferences extends javax.swing.JDialog {
     sketchbookLocationField.setText(PreferencesData.get("sketchbook.path"));
 
     String currentLanguageISOCode = PreferencesData.get("editor.languages.current");
-    for (Language language : languages) {
+    for (Language language : Languages.languages) {
       if (language.getIsoCode().equals(currentLanguageISOCode)) {
         comboLanguage.setSelectedItem(language);
       }

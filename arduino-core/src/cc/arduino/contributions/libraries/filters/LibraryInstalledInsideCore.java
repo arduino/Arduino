@@ -30,21 +30,15 @@
 package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.packages.ContributionsIndexer;
+import processing.app.BaseNoGui;
 
 import java.util.function.Predicate;
 
 public class LibraryInstalledInsideCore implements Predicate<ContributedLibrary> {
 
-  private final ContributionsIndexer indexer;
-
-  public LibraryInstalledInsideCore(ContributionsIndexer indexer) {
-    this.indexer = indexer;
-  }
-
   @Override
   public boolean test(ContributedLibrary contributedLibrary) {
-    return indexer.isFolderInsidePlatform(contributedLibrary.getInstalledFolder());
+    return BaseNoGui.indexer.isFolderInsidePlatform(contributedLibrary.getInstalledFolder());
   }
 
 }

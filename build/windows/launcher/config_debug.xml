@@ -19,10 +19,10 @@
     <cp>%EXEDIR%/lib/commons-logging-1.0.4.jar</cp>
     <cp>%EXEDIR%/lib/commons-net-3.3.jar</cp>
     <cp>%EXEDIR%/lib/ecj.jar</cp>
-    <cp>%EXEDIR%/lib/jackson-annotations-2.2.3.jar</cp>
-    <cp>%EXEDIR%/lib/jackson-core-2.2.3.jar</cp>
-    <cp>%EXEDIR%/lib/jackson-databind-2.2.3.jar</cp>
-    <cp>%EXEDIR%/lib/jackson-module-mrbean-2.2.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-annotations-2.6.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-core-2.6.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-databind-2.6.3.jar</cp>
+    <cp>%EXEDIR%/lib/jackson-module-mrbean-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
     <cp>%EXEDIR%/lib/jmdns-3.4.1.jar</cp>
     <cp>%EXEDIR%/lib/jna-4.1.0.jar</cp>

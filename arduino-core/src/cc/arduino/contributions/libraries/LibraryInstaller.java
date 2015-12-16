@@ -35,6 +35,7 @@ import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
 import processing.app.helpers.FileUtils;
@@ -47,22 +48,18 @@ import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
 
-  private final LibrariesIndexer indexer;
-  private final DownloadableContributionsDownloader downloader;
   private final Platform platform;
 
-  public LibraryInstaller(LibrariesIndexer indexer, Platform platform) {
-    this.indexer = indexer;
+  public LibraryInstaller(Platform platform) {
     this.platform = platform;
-    File stagingFolder = indexer.getStagingFolder();
-    downloader = new DownloadableContributionsDownloader(stagingFolder);
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
-    File outputFile = indexer.getIndexFile();
+    File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     try {
       GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(Constants.LIBRARY_INDEX_URL), new URL(Constants.LIBRARY_INDEX_URL_GZ));
@@ -91,6 +88,8 @@ public class LibraryInstaller {
       return;
     }
 
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
+
     final MultiStepProgress progress = new MultiStepProgress(3);
 
     // Step 1: Download library
@@ -108,7 +107,7 @@ public class LibraryInstaller {
     // Step 2: Unpack library on the correct location
     progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
     progressListener.onProgress(progress);
-    File libsFolder = indexer.getSketchbookLibrariesFolder();
+    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
@@ -149,7 +148,7 @@ public class LibraryInstaller {
   private void rescanLibraryIndex(MultiStepProgress progress, ProgressListener progressListener) {
     progress.setStatus(tr("Updating list of installed libraries"));
     progressListener.onProgress(progress);
-    indexer.rescanLibraries();
+    BaseNoGui.librariesIndexer.rescanLibraries();
     progress.stepDone();
   }
 }

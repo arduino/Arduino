@@ -84,7 +84,7 @@ public class BaseNoGui {
   static final String portableSketchbookFolder = "sketchbook";
 
   public static ContributionsIndexer indexer;
-  static LibrariesIndexer librariesIndexer;
+  public static LibrariesIndexer librariesIndexer;
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
@@ -267,9 +267,11 @@ public class BaseNoGui {
   }
 
   static public File getSketchbookFolder() {
-    if (portableFolder != null)
-      return new File(portableFolder, PreferencesData.get("sketchbook.path"));
-    return absoluteFile(PreferencesData.get("sketchbook.path"));
+    String sketchBookPath = PreferencesData.get("sketchbook.path");
+    if (getPortableFolder() != null && !new File(sketchBookPath).isAbsolute()) {
+      return new File(getPortableFolder(), sketchBookPath);
+    }
+    return absoluteFile(sketchBookPath);
   }
 
   static public File getSketchbookHardwareFolder() {
@@ -301,10 +303,11 @@ public class BaseNoGui {
     // If it doesn't, warn the user that the sketchbook folder is being reset.
     if (sketchbookPath != null) {
       File sketchbookFolder;
-      if (getPortableFolder() != null)
+      if (getPortableFolder() != null && !new File(sketchbookPath).isAbsolute()) {
         sketchbookFolder = new File(getPortableFolder(), sketchbookPath);
-      else
+      } else {
         sketchbookFolder = absoluteFile(sketchbookPath);
+      }
       if (!sketchbookFolder.exists()) {
         showWarning(tr("Sketchbook folder disappeared"),
                     tr("The sketchbook folder no longer exists.\n" +
@@ -605,7 +608,7 @@ public class BaseNoGui {
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder(), indexer);
+    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
     File librariesIndexFile = librariesIndexer.getIndexFile();
     copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
     try {
@@ -658,8 +661,9 @@ public class BaseNoGui {
   static public void initPortableFolder() {
     // Portable folder
     portableFolder = getContentFile("portable");
-    if (!portableFolder.exists())
+    if (!portableFolder.exists()) {
       portableFolder = null;
+    }
   }
 
   static public void initVersion() {
@@ -753,7 +757,9 @@ public class BaseNoGui {
     }
     System.setProperty("java.net.useSystemProxies", "true");
 
-    Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
+    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
+    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
+    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
 
     initPlatform();
 
@@ -967,7 +973,7 @@ public class BaseNoGui {
     }
   }
 
-  static public void initParameters(String args[]) throws IOException {
+  static public void initParameters(String args[]) throws Exception {
     String preferencesFile = null;
 
     // Do a first pass over the commandline arguments, the rest of them

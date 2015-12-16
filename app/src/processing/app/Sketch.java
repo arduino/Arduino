@@ -463,7 +463,7 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data))) {
+        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data).toPath(), Paths.get(System.getProperty("java.io.tmpdir"), "arduino_" + DigestUtils.md5Hex(getMainFilePath())))) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getCode().getFileName()));
           return;

@@ -33,7 +33,10 @@ import org.junit.Test;
 import processing.app.AbstractWithPreferencesTest;
 import processing.app.I18n;
 
+import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.junit.Assert.assertEquals;
 
@@ -50,7 +53,38 @@ public class I18NTest extends AbstractWithPreferencesTest {
   public void testMessageFormatFromExternalProcess() throws Exception {
     Map<String, Object> output = new ExternalProcessOutputParser().parse("===WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}' ||| [ Wire Uncategorized]");
 
-    String actual = I18n.format((String) output.get("msg"), (Object[])output.get("args"));
+    String actual = I18n.format((String) output.get("msg"), (Object[]) output.get("args"));
     assertEquals("WARNING: Category '' in library Wire is not valid. Setting to 'Uncategorized'", actual);
+  }
+
+  @Test
+  public void testAllLocales() {
+    for (Language language : Languages.languages) {
+      if (!language.getIsoCode().equals("")) {
+        Locale locale = toLocale(language);
+        ResourceBundle bundle = ResourceBundle.getBundle("processing.app.i18n.Resources", locale);
+        if (locale.equals(bundle.getLocale())) {
+          Collections.list(bundle.getKeys()).stream().map(bundle::getString).filter(key -> !key.contains("<html")).forEach(key -> {
+            try {
+              I18n.format(key);
+            } catch (IllegalArgumentException e) {
+              System.out.println(language);
+              System.out.println(key);
+              throw e;
+            }
+          });
+        } else {
+          System.out.println("Missing locale: " + locale);
+        }
+      }
+    }
+  }
+
+  private Locale toLocale(Language language) {
+    String[] languageParts = language.getIsoCode().split("_");
+    if (languageParts.length == 2) {
+      return new Locale(languageParts[0], languageParts[1]);
+    }
+    return new Locale(languageParts[0]);
   }
 }

@@ -23,6 +23,7 @@ import processing.app.helpers.CircularBuffer;
 import processing.app.helpers.Ticks;
 import processing.app.legacy.PApplet;
 
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -35,22 +36,71 @@ import static processing.app.I18n.tr;
 public class SerialPlotter extends AbstractMonitor {
 
   private final StringBuffer messageBuffer;
-  private CircularBuffer buffer;
   private JComboBox<String> serialRates;
   private Serial serial;
   private int serialRate;
+
+  private ArrayList<Graph> graphs;
+  private final static int BUFFER_CAPACITY = 500;
+
+  private static class Graph {
+    public CircularBuffer buffer;
+    private Color color;
+
+    public Graph(int id) {
+      buffer = new CircularBuffer(BUFFER_CAPACITY);
+      color = Theme.getColorCycleColor("plotting.graphcolor", id);
+    }
+
+    public void paint(Graphics2D g, float xstep, double minY, 
+                      double maxY, double rangeY, double height) {
+      g.setColor(color);
+      g.setStroke(new BasicStroke(1.0f));
+
+      for (int i = 0; i < buffer.size() - 1; ++i) {
+        g.drawLine(
+          (int) (i * xstep), (int) transformY(buffer.get(i), minY, rangeY, height),
+          (int) ((i + 1) * xstep), (int) transformY(buffer.get(i + 1), minY, rangeY, height)
+        );
+      }
+    }
+
+    private float transformY(double rawY, double minY, double rangeY, double height) {
+      return (float) (5 + (height - 10) * (1.0 - (rawY - minY) / rangeY));
+    }
+  }
 
   private class GraphPanel extends JPanel {
     private double minY, maxY, rangeY;
     private Rectangle bounds;
     private int xOffset;
     private final Font font;
-    private final Color graphColor;
+    private final Color bgColor;
 
     public GraphPanel() {
       font = Theme.getFont("console.font");
-      graphColor = Theme.getColor("header.bgcolor");
+      bgColor = Theme.getColor("plotting.bgcolor");
       xOffset = 20;
+    }
+
+    private Ticks computeBounds() {
+      minY = Double.POSITIVE_INFINITY;
+      maxY = Double.NEGATIVE_INFINITY;
+      for(Graph g : graphs) {
+        double bMin = g.buffer.min() / 2.0;
+        double bMax = g.buffer.max() * 2.0;
+        minY = bMin < minY ? bMin : minY;
+        maxY = bMax > maxY ? bMax : maxY;
+      }
+      
+      Ticks ticks = new Ticks(minY, maxY, 3);
+      minY = Math.min(minY, ticks.getTick(0));
+      maxY = Math.max(maxY, ticks.getTick(ticks.getTickCount() - 1));
+      rangeY = maxY - minY;
+      minY -= 0.05 * rangeY;
+      maxY += 0.05 * rangeY;
+      rangeY = maxY - minY;
+      return ticks;
     }
 
     @Override
@@ -61,20 +111,12 @@ public class SerialPlotter extends AbstractMonitor {
       super.paintComponent(g);
 
       bounds = g.getClipBounds();
-      setBackground(Color.WHITE);
-      if (buffer.isEmpty()) {
+      setBackground(bgColor);
+      if (graphs.isEmpty()) {
         return;
       }
 
-      minY = buffer.min() / 2;
-      maxY = buffer.max() * 2;
-      Ticks ticks = new Ticks(minY, maxY, 3);
-      minY = Math.min(minY, ticks.getTick(0));
-      maxY = Math.max(maxY, ticks.getTick(ticks.getTickCount() - 1));
-      rangeY = maxY - minY;
-      minY -= 0.05 * rangeY;
-      maxY += 0.05 * rangeY;
-      rangeY = maxY - minY;
+      Ticks ticks = computeBounds();
 
       g.setStroke(new BasicStroke(1.0f));
       FontMetrics fm = g.getFontMetrics();
@@ -92,17 +134,19 @@ public class SerialPlotter extends AbstractMonitor {
       g.drawLine(bounds.x + xOffset, bounds.y + 5, bounds.x + xOffset, bounds.y + bounds.height - 10);
 
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
-      float xstep = (float) (bounds.width - xOffset) / (float) buffer.capacity();
+      float xstep = (float) (bounds.width - xOffset) / (float) BUFFER_CAPACITY;
+      int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
 
-      g.setColor(graphColor);
-      g.setStroke(new BasicStroke(0.75f));
-
-      for (int i = 0; i < buffer.size() - 1; ++i) {
-        g.drawLine(
-          (int) (i * xstep), (int) transformY(buffer.get(i)),
-          (int) ((i + 1) * xstep), (int) transformY(buffer.get(i + 1))
-        );
+      for(int i = 0; i < graphs.size(); ++i) {
+        graphs.get(i).paint(g, xstep, minY, maxY, rangeY, bounds.height);
+        if(graphs.size() > 1) {    
+          g.fillRect(bounds.width - (xOffset + legendLength + 10) + i * 13, 10, 10, 10);
+        }
       }
+    }
+
+    private float transformY(double rawY) {
+      return (float) (5 + (bounds.height - 10) * (1.0 - (rawY - minY) / rangeY));
     }
 
     @Override
@@ -113,10 +157,6 @@ public class SerialPlotter extends AbstractMonitor {
     @Override
     public Dimension getPreferredSize() {
       return new Dimension(500, 250);
-    }
-
-    private float transformY(double rawY) {
-      return (float) (5 + (bounds.height - 10) * (1.0 - (rawY - minY) / rangeY));
     }
   }
 
@@ -140,12 +180,12 @@ public class SerialPlotter extends AbstractMonitor {
     });
 
     messageBuffer = new StringBuffer();
+    graphs = new ArrayList<Graph>();
   }
 
   protected void onCreateWindow(Container mainPane) {
     mainPane.setLayout(new BorderLayout());
 
-    buffer = new CircularBuffer(500);
     GraphPanel graphPanel = new GraphPanel();
 
     mainPane.add(graphPanel, BorderLayout.CENTER);
@@ -182,14 +222,26 @@ public class SerialPlotter extends AbstractMonitor {
       }
 
       String line = messageBuffer.substring(0, linebreak);
-      line = line.trim();
       messageBuffer.delete(0, linebreak + 1);
 
-      try {
-        double value = Double.valueOf(line);
-        buffer.add(value);
-      } catch (NumberFormatException e) {
-        // ignore
+      line = line.trim();
+      String[] parts = line.split("[, \t]+");
+      if(parts.length == 0) {
+        continue;
+      }
+
+      int validParts = 0;
+      for(int i = 0; i < parts.length; ++i) {
+        try {          
+          double value = Double.valueOf(parts[i]);
+          if(i >= graphs.size()) {
+            graphs.add(new Graph(validParts));
+          }
+          graphs.get(validParts).buffer.add(value);
+          validParts++;
+        } catch (NumberFormatException e) {
+          // ignore
+        }
       }
     }
 

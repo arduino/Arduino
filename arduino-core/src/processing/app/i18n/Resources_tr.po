@@ -9,6 +9,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anıl Özbek <ozbekanil@gmail.com>, 2013
 # Ayse Gokce Bor <aysegokcebor@gmail.com>, 2012
 # b <burakguelsen@gmail.com>, 2015
@@ -23,6 +24,7 @@
 # Kaan CEYHAN <kaanceyhan@gmail.com>, 2013
 # Mert Gülsoy <mgulsoy@gmail.com>, 2015
 # nazrdogan <nazrdogan@gmail.com>, 2015
+# Oguzhan Gazi Aslantas <ouzhangazi@gmail.com>, 2015
 # Oğuzhan Gençel <genceloguzhan@gmail.com>, 2015
 # washaq <onlynewuser@gmail.com>, 2014
 # sercan <e.srcnblky@gmail.com>, 2015
@@ -37,7 +39,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-02 12:05+0000\n"
+"PO-Revision-Date: 2015-11-18 16:15+0000\n"
 "Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
 "Language-Team: Turkish (http://www.transifex.com/mbanzi/arduino-ide-15/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -64,12 +66,12 @@ msgstr "Kullanılıyor: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Klavye' bulunamadı. Taslağınızda '#include <Keyboard.h>' satırı yer alıyor mu?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Fare' bulunamadı. Taslağınızda '#include <Mouse.h>' satırı yer alıyor mu?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -83,7 +85,7 @@ msgstr "(sadece Arduino çalışmıyorken düzenleyin)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(eski)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -243,6 +245,10 @@ msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
 msgstr "Taslağın arşivlenmesi iptal edildi. Çünkü \ntaslak düzgün bir şekilde kaydedilemedi."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -495,6 +501,10 @@ msgstr "Kapat"
 msgid "Comment/Uncomment"
 msgstr "Yorum yap / Yorumu kaldır"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
 msgstr "Derleme uyarısı"
@@ -502,6 +512,10 @@ msgstr "Derleme uyarısı"
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "Çalışma derleniyor..."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -664,6 +678,14 @@ msgstr "Çekce(Çek Cumhuriyeti)"
 msgid "Danish (Denmark)"
 msgstr "Danimarkaca(Danimarka)"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Girintiyi Azalt"
@@ -676,6 +698,10 @@ msgstr "Varsayılan"
 msgid "Delete"
 msgstr "Sil"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
+
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
@@ -685,6 +711,10 @@ msgstr "Cihaz cevap vermiyor, doğru seri portun seçili olduğundan emin olunuz
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
 msgstr "Tüm değişikliklerden vazgeçip taslağı yeniden yüklemek istiyor musunuz?"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -903,7 +933,7 @@ msgstr "Yazdırma sırasında hata oluştu."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Seri port {0} {1} {2} {3} paramatreleri ayarlanırken hata oluştu."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1059,11 +1089,11 @@ msgstr "Global değişkenler dinamik bellekte {0} bayt kullanır."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Satıra git"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Satıra git..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1213,9 +1243,9 @@ msgstr "Library yöneticisi"
 msgid "Library added to your libraries. Check \"Include library\" menu"
 msgstr "Library sizin librarylerinize yüklendi. \"library ekle\" menüsünü kontrol edin"
 
-#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:71
-msgid "Library can't use both 'src' and 'utility' folders."
-msgstr "Kütüphane hem 'src' hem 'utility' dizinlerini kullanamaz."
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1224,7 +1254,7 @@ msgstr "{0} sürüm {1} kütüphanesi zaten kurulu."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Satır numarası:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1443,9 +1473,17 @@ msgstr "Arduino Taslak Çalışma Dosyası Aç..."
 msgid "Open..."
 msgstr "Aç..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr ""
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "Sayfa Ayarları"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1596,6 +1634,10 @@ msgstr "Çıkış"
 msgid "RETIRED"
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr ""
+
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
 msgstr "Tekrarla"
@@ -1736,6 +1778,10 @@ msgstr "Seçili kütüphane mevcut değil"
 msgid "Send"
 msgstr "Gönder"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr ""
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "Seri Port Ekranı"
@@ -1786,6 +1832,10 @@ msgstr "Derleme sırasında ayrıntılı çıktı göster"
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Aşağıdaki işlem sırasında ayrıntılı çıktı göster:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
@@ -2019,6 +2069,10 @@ msgstr "Rapor daha fazla veri içermeli"
 msgid "Time for a Break"
 msgstr "Mola Zamanı"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
@@ -2087,6 +2141,10 @@ msgstr "Seri port monitörü açılamıyor"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
 msgstr "Olası ağ sorunları nedeniyle Arduino.cc'ye erişilemedi."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2282,13 +2340,6 @@ msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
 msgstr "Dikkat: '{0}' çekirdeğindeki platform.txt'de '{1}' özelliği eksik olduğundan varsayılan '{2}' değeri kullanılıyor. Bu çekirdeği güncellemeye bakın."
-
-#: ../../../processing/app/debug/LegacyTargetPlatform.java:170
-#, java-format
-msgid ""
-"Warning: platform.txt from core '{0}' misses property {1}, automatically set"
-" to {2}. Consider upgrading this core."
-msgstr "Dikkat: '{0}' çekirdeğindeki platform.txt'de '{1}' özelliği eksik olduğundan otomatik olarak '{2}' değeri verildi. Bu çekirdeği güncellemeye bakın."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"

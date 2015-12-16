@@ -22,8 +22,8 @@
 
 package processing.app.windows;
 
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
+import cc.arduino.os.windows.FolderFinderInWindowsEnvVar;
+import cc.arduino.os.windows.FolderFinderInWindowsRegistry;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
@@ -49,7 +49,7 @@ public class Platform extends processing.app.Platform {
   private File settingsFolder;
   private File defaultSketchbookFolder;
 
-  public void init() throws IOException {
+  public void init() throws Exception {
     super.init();
 
     checkPath();
@@ -57,14 +57,29 @@ public class Platform extends processing.app.Platform {
     recoverDefaultSketchbookFolder();
   }
 
-  private void recoverSettingsFolderPath() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
-    this.settingsFolder = new File(path, "Arduino15");
+  private void recoverSettingsFolderPath() throws Exception {
+    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Local AppData");
+    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
+
+    Path path = findInShellFolders.find();
+    this.settingsFolder = path.resolve("Arduino15").toFile();
   }
 
-  private void recoverDefaultSketchbookFolder() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
-    this.defaultSketchbookFolder = new File(path, "Arduino");
+  private Path recoverOldSettingsFolderPath() throws Exception {
+    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "AppData");
+    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
+
+    Path path = findInShellFolders.find();
+    return path.resolve("Arduino15");
+  }
+
+  private void recoverDefaultSketchbookFolder() throws Exception {
+    FolderFinderInWindowsEnvVar findInUserProfile = new FolderFinderInWindowsEnvVar(null, "Documents", "USERPROFILE");
+    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(findInUserProfile, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Personal");
+    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
+
+    Path path = findInShellFolders.find();
+    this.defaultSketchbookFolder = path.resolve("Arduino").toFile();
   }
 
   /**
@@ -232,14 +247,13 @@ public class Platform extends processing.app.Platform {
   }
 
   @Override
-  public void fixSettingsLocation() throws IOException {
-    String path = Advapi32Util.registryGetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
-    Path previousSettingsFolder = Paths.get(path, "Arduino15");
-    if (!Files.exists(previousSettingsFolder)) {
+  public void fixSettingsLocation() throws Exception {
+    Path oldSettingsFolder = recoverOldSettingsFolderPath();
+    if (!Files.exists(oldSettingsFolder)) {
       return;
     }
 
-    if (!Files.exists(previousSettingsFolder.resolve(Paths.get("preferences.txt")))) {
+    if (!Files.exists(oldSettingsFolder.resolve(Paths.get("preferences.txt")))) {
       return;
     }
 
@@ -247,6 +261,6 @@ public class Platform extends processing.app.Platform {
       return;
     }
 
-    Files.move(previousSettingsFolder, settingsFolder.toPath());
+    Files.move(oldSettingsFolder, settingsFolder.toPath());
   }
 }

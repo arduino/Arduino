@@ -32,9 +32,12 @@ package cc.arduino.i18n;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ExternalProcessOutputParser {
+
+  private static final Pattern SPLIT = Pattern.compile(" \\|\\|\\| ");
 
   public Map<String, Object> parse(String s) {
     if (!s.startsWith("===")) {
@@ -45,10 +48,14 @@ public class ExternalProcessOutputParser {
 
     Map<String, Object> output = new HashMap<>();
 
-    String[] parts = s.split(" \\|\\|\\| ");
+    String[] parts = SPLIT.split(s);
 
-    output.put("msg", parts[0]);
-    output.put("args", parseArgs(parts[1]));
+    int idx = 0;
+    if (parts.length == 3) {
+      output.put("level", parts[idx++]);
+    }
+    output.put("msg", parts[idx++]);
+    output.put("args", parseArgs(parts[idx++]));
 
     return output;
   }

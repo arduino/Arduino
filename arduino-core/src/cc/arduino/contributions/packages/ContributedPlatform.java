@@ -30,11 +30,9 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class ContributedPlatform extends DownloadableContribution {
 
@@ -54,18 +52,21 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract ContributedHelp getHelp();
 
-  private List<ContributedTool> resolvedTools;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+
   private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
-    if (resolvedTools == null) {
-      return null;
-    }
-    return new LinkedList<>(resolvedTools);
+    return new LinkedList<>(resolvedToolReferences.values());
+  }
+
+  @JsonIgnore
+  public Map<ContributedToolReference, ContributedTool> getResolvedToolReferences() {
+    return resolvedToolReferences;
   }
 
   public void resolveToolsDependencies(Collection<ContributedPackage> packages) {
-    resolvedTools = new ArrayList<>();
+    resolvedToolReferences = new HashMap<>();
 
     // If there are no dependencies return empty list
     if (getToolsDependencies() == null) {
@@ -79,7 +80,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
       } else {
-        resolvedTools.add(tool);
+        resolvedToolReferences.put(dep, tool);
       }
     }
   }
@@ -95,5 +96,18 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   @Override
   public String toString() {
     return getParsedVersion();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ContributedPlatform)) {
+      return false;
+    }
+
+    ContributedPlatform obj1 = (ContributedPlatform) obj;
+    return getParentPackage().getName().equals(obj1.getParentPackage().getName()) && getArchitecture().equals(obj1.getArchitecture()) && getVersion().equals(obj1.getVersion()) && getName().equals(obj1.getName());
   }
 }

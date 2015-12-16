@@ -33,62 +33,71 @@ import java.util.List;
 /**
  * Deal with issues related to thinking different. This handles the basic
  * Mac OS X menu commands (and apple events) for open, about, prefs, etc.
- * <p/>
+ * <p>
  * Based on OSXAdapter.java from Apple DTS.
- * <p/>
+ * </p>
  * As of 0140, this code need not be built on platforms other than OS X,
  * because of the new platform structure which isolates through reflection.
  */
 public class ThinkDifferent {
 
-  private static final int MAX_WAIT_FOR_BASE = 10000;
+  private static final int MAX_WAIT_FOR_BASE = 30000;
 
   static public void init() {
     Application application = Application.getApplication();
     application.setAboutHandler(new AboutHandler() {
       @Override
       public void handleAbout(AppEvent.AboutEvent aboutEvent) {
-        if (waitForBase()) {
-          Base.INSTANCE.handleAbout();
-        }
+        new Thread(() -> {
+          if (waitForBase()) {
+            Base.INSTANCE.handleAbout();
+          }
+        }).start();
       }
     });
     application.setPreferencesHandler(new PreferencesHandler() {
       @Override
       public void handlePreferences(AppEvent.PreferencesEvent preferencesEvent) {
-        if (waitForBase()) {
-          Base.INSTANCE.handlePrefs();
-        }
+        new Thread(() -> {
+          if (waitForBase()) {
+            Base.INSTANCE.handlePrefs();
+          }
+        }).start();
       }
     });
     application.setOpenFileHandler(new OpenFilesHandler() {
       @Override
       public void openFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
-        if (waitForBase()) {
-          for (File file : openFilesEvent.getFiles()) {
-            try {
-              Base.INSTANCE.handleOpen(file);
-              List<Editor> editors = Base.INSTANCE.getEditors();
-              if (editors.size() == 2 && editors.get(0).getSketch().isUntitled()) {
-                Base.INSTANCE.handleClose(editors.get(0));
+        new Thread(() -> {
+          if (waitForBase()) {
+            for (File file : openFilesEvent.getFiles()) {
+              System.out.println(file);
+              try {
+                Base.INSTANCE.handleOpen(file);
+                List<Editor> editors = Base.INSTANCE.getEditors();
+                if (editors.size() == 2 && editors.get(0).getSketch().isUntitled()) {
+                  Base.INSTANCE.handleClose(editors.get(0));
+                }
+              } catch (Exception e) {
+                throw new RuntimeException(e);
               }
-            } catch (Exception e) {
-              throw new RuntimeException(e);
             }
           }
-        }
+        }).start();
       }
     });
     application.setQuitHandler(new QuitHandler() {
       @Override
       public void handleQuitRequestWith(AppEvent.QuitEvent quitEvent, QuitResponse quitResponse) {
-        if (waitForBase()) {
-          if (Base.INSTANCE.handleQuit()) {
-            quitResponse.performQuit();
-          } else {
-            quitResponse.cancelQuit();
+        new Thread(() -> {
+          if (waitForBase()) {
+            if (Base.INSTANCE.handleQuit()) {
+              quitResponse.performQuit();
+            } else {
+              quitResponse.cancelQuit();
+            }
           }
-        }
+        }).start();
       }
     });
   }

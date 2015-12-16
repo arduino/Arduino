@@ -71,7 +71,9 @@
     </or>
   </condition>
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.1.0" />
+  <property name="portable" value="false" />
+
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.9" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -95,12 +97,19 @@
     <antcall target="${platform}-start" />
   </target>
 
-  <target name="dist" depends="revision-check"
-	  description="Build Arduino for distribution.">
-    <input message="Enter version number:"
-	   addproperty="version"
-	   defaultvalue="${revision}" />
-    <antcall target="${platform}-dist" />
+  <target name="dist" depends="revision-check" description="Build Arduino for distribution.">
+    <input message="Enter version number:" addproperty="version" defaultvalue="${revision}"/>
+    <condition property="full-version" value="${version}-${platform}">
+      <not>
+        <equals arg1="${portable}" arg2="true"/>
+      </not>
+    </condition>
+    <condition property="full-version" value="${version}-${platform}-portable">
+      <equals arg1="${portable}" arg2="true"/>
+    </condition>
+    <antcall target="${platform}-dist">
+      <param name="full-version" value="${full-version}"/>
+    </antcall>
   </target>
 
   <!-- "§$§$&, ant doesn't have a built-in help target :(  -->
@@ -185,8 +194,8 @@
       <fileset dir="../libraries"/>
     </copy>
 
-    <download-library name="Firmata" version="2.4.4" tag="v2.4.4"/>
-    <download-library name="Bridge" version="1.1.0"/>
+    <download-library name="Firmata" version="2.5.0" tag="2.5.0"/>
+    <download-library name="Bridge" version="1.6.0"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
@@ -400,6 +409,9 @@
     </copy>
     <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
 
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="macosx/work/${staging_hardware_folder}/.." />
+    </antcall>
   </target>
 
   <!-- Unzip AVR tools -->
@@ -463,14 +475,14 @@
 
     <!-- Create signed zip file -->
     <exec executable="zip" dir="macosx/work" failonerror="true">
-      <arg line="-q -r ../arduino-${version}-${platform}-signed.zip ." />
+      <arg line="-q -r ../arduino-${full-version}-signed.zip ." />
     </exec>
 
     <echo>
       =======================================================
       Arduino for Mac OS X built and signed.
 
-      macosx/arduino-${version}-${platform}-signed.zip
+      macosx/arduino-${full-version}-signed.zip
       =======================================================
     </echo>
   </target>
@@ -486,14 +498,14 @@
   <!-- - - - - - - - - - - - - - - - - - - -->
   <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
     <exec executable="zip" dir="macosx/work" failonerror="true">
-      <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
+      <arg line="-q -r ../arduino-${full-version}.zip ." />
     </exec>
 
     <echo>
       =======================================================
       Arduino for Mac OS X was built. Grab the image from
 
-      macosx/arduino-${version}-${platform}.zip
+      macosx/arduino-${full-version}.zip
       =======================================================
     </echo>
   </target>
@@ -515,7 +527,7 @@
   <target name="linux-checkos" unless="linux">
     <echo>
       =======================================================
-      Arduino for Linux can only be built on on unix systems.
+      Arduino for Linux can only be built on unix systems.
 
       Bye.
       =======================================================
@@ -537,6 +549,10 @@
       <fileset dir="linux/dist" includes="lib/**" />
     </copy>
 
+    <copy todir="linux/work/lib">
+      <fileset dir="shared" includes="icons/**/*.png" />
+    </copy>
+
     <copy todir="linux/work/lib" flatten="true">
       <fileset refid="runtime.jars" />
     </copy>
@@ -545,13 +561,17 @@
       <param name="target.path" value="linux/work" />
     </antcall>
 
-    <copy todir="linux/work" file="linux/dist/arduino" />
-    <copy todir="linux/work" file="linux/dist/arduino.desktop" />
-    <copy todir="linux/work" file="linux/dist/install.sh" />
-    <chmod perm="755" file="linux/work/arduino" />
+    <copy tofile="linux/work/lib/arduino-arduinoide.xml" file="linux/dist/mime.xml" />
+    <copy todir="linux/work/lib" file="linux/dist/desktop.template" />
 
     <copy todir="linux/work" file="linux/dist/arduino" />
-    <chmod perm="755" file="linux/work/arduino" />
+    <copy todir="linux/work" file="linux/dist/install.sh" />
+    <copy todir="linux/work" file="linux/dist/uninstall.sh" />
+
+    <chmod perm="ugo+x">
+        <fileset dir="linux/work" includes="arduino" />
+        <fileset dir="linux/work" includes="**/*.sh" />
+    </chmod>
 
     <antcall target="unzip">
       <param name="archive_file" value="./libastylej-2.05.1.zip" />
@@ -561,6 +581,10 @@
     </antcall>
     <copy file="linux/libastylej-2.05.1/libastylej${arch-bits}.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="linux/work" />
+    </antcall>
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
@@ -714,7 +738,7 @@
       <arg value="--lzma"/>
       <arg value="-c"/>
       <arg value="-f"/>
-      <arg value="arduino-${version}-${platform}.tar.xz"/>
+      <arg value="arduino-${full-version}.tar.xz"/>
       <arg value="arduino-${version}"/>
     </exec>
 
@@ -724,7 +748,7 @@
       =======================================================
       Arduino for Linux was built. Grab the archive from
 
-      linux/arduino-${version}-${platform}.tar.xz
+      linux/arduino-${full-version}.tar.xz
       =======================================================
     </echo>
   </target>
@@ -761,8 +785,8 @@
 
   <target name="download-launch4j-windows">
     <antcall target="unzip-with-ant-task">
-      <param name="archive_file" value="windows/launch4j-3.7-win32.zip"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-win32.zip"/>
+      <param name="archive_file" value="windows/launch4j-3.8-win32.zip"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.8/launch4j-3.8-win32.zip"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -770,8 +794,8 @@
 
   <target name="download-launch4j-linux">
     <antcall target="untar">
-      <param name="archive_file" value="windows/launch4j-3.7-linux.tgz"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-linux.tgz"/>
+      <param name="archive_file" value="windows/launch4j-3.8-linux.tgz"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.8/launch4j-3.8-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -782,6 +806,10 @@
 	  description="Build windows version">
     <mkdir dir="windows/work" />
     <mkdir dir="windows/work/${staging_hardware_folder}" />
+
+    <copy todir="windows/work/lib">
+      <fileset dir="shared" includes="icons/**/*.png"/>
+    </copy>
 
     <!-- assemble the pde -->
     <mkdir dir="windows/work/lib" />
@@ -836,7 +864,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino4/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino5/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
@@ -883,6 +911,10 @@
     <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
       <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
     </copy>
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="${staging_folder}/work" />
+    </antcall>
   </target>
 
   <target name="windows-build-avr-toolchain">
@@ -904,7 +936,7 @@
   </target>
 
   <target name="windows-dist" depends="build" description="Create .zip files of windows version">
-    <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
+    <zip destfile="windows/arduino-${full-version}.zip" level="9">
       <zipfileset dir="windows/work" prefix="arduino-${version}"/>
     </zip>
 
@@ -912,7 +944,7 @@
       =======================================================
       Arduino for Windows was built. Grab the archive from
 
-      windows/arduino-${version}-${platform}.zip
+      windows/arduino-${full-version}.zip
       =======================================================
     </echo>
   </target>
@@ -1018,4 +1050,8 @@
     <echo file="${staging_folder}/work/${staging_hardware_folder}/../lib/hourlyBuild.txt">${BUILD_DATE}</echo>
   </target>
 
+  <target name="portable-true">
+    <mkdir dir="${parentdir}/portable"/>
+  </target>
+  <target name="portable-false"/>
 </project>

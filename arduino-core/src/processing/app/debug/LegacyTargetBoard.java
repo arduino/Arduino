@@ -20,27 +20,21 @@
  */
 package processing.app.debug;
 
-import static processing.app.I18n.tr;
-import static processing.app.I18n.format;
+import processing.app.helpers.PreferencesMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-import processing.app.helpers.PreferencesMap;
-
 public class LegacyTargetBoard implements TargetBoard {
 
-  private String id;
-  private PreferencesMap prefs;
-  private Map<String, PreferencesMap> menuOptions = new LinkedHashMap<String, PreferencesMap>();
-  private TargetPlatform containerPlatform;
+  private final String id;
+  private final PreferencesMap prefs;
+  private Map<String, PreferencesMap> menuOptions = new LinkedHashMap<>();
+  private final TargetPlatform containerPlatform;
 
   /**
    * Create a TargetBoard based on preferences passed as argument.
-   * 
-   * @param _prefs
-   * @return
    */
   public LegacyTargetBoard(String _id, PreferencesMap _prefs,
                            TargetPlatform parent) {
@@ -58,10 +52,6 @@ public class LegacyTargetBoard implements TargetBoard {
       String board = containerPlatform.getId() + "_" + id;
       board = board.toUpperCase();
       prefs.put("build.board", board);
-      System.err
-          .println(format(tr("Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to: {3}"),
-                          containerPlatform.getContainerPackage().getId(),
-                          containerPlatform.getId(), id, board));
     }
   }
 
