@@ -92,4 +92,29 @@ public class ExternalProcessOutputParserTest {
     assertEquals("", args[0]);
   }
 
+  @Test
+  public void testParser6() throws Exception {
+    Map<String, Object> output = new ExternalProcessOutputParser().parse("===info ||| Progress {0} ||| [79.31]");
+
+    assertEquals("info", output.get("level"));
+    assertEquals("Progress {0}", output.get("msg"));
+    Object[] args = (Object[]) output.get("args");
+    assertEquals(1, args.length);
+    assertEquals("79.31", args[0]);
+  }
+
+  @Test
+  public void testParser7() throws Exception {
+    Map<String, Object> output = new ExternalProcessOutputParser().parse("===info ||| Using library {0} at version {1} in folder: {2} {3} ||| [Bridge 1.6.0 %2Fhome%2Ffederico%2Fmateriale%2Fworks_Arduino%2FArduino%2Fbuild%2Flinux%2Fwork%2Flibraries%2FBridge ]");
+
+    assertEquals("info", output.get("level"));
+    assertEquals("Using library {0} at version {1} in folder: {2} {3}", output.get("msg"));
+    Object[] args = (Object[]) output.get("args");
+    assertEquals(4, args.length);
+    assertEquals("Bridge", args[0]);
+    assertEquals("1.6.0", args[1]);
+    assertEquals("/home/federico/materiale/works_Arduino/Arduino/build/linux/work/libraries/Bridge", args[2]);
+    assertEquals("", args[3]);
+  }
+
 }

@@ -69,7 +69,7 @@ public class BoardReachabilityFilter extends TimerTask {
           ports.add(0, 22);
         }
 
-        boolean reachable = NetUtils.isReachable(inetAddress, ports);
+        boolean reachable = board.getPrefs().get("tcp_check").contentEquals("no") || NetUtils.isReachable(inetAddress, ports);
         if (!reachable) {
           boardPortIterator.remove();
         }

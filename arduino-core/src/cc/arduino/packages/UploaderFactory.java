@@ -31,6 +31,7 @@ package cc.arduino.packages;
 
 import cc.arduino.packages.uploaders.SSHUploader;
 import cc.arduino.packages.uploaders.SerialUploader;
+import cc.arduino.packages.uploaders.GenericNetworkUploader;
 import processing.app.debug.TargetBoard;
 
 public class UploaderFactory {
@@ -41,6 +42,9 @@ public class UploaderFactory {
     }
 
     if (port != null && "network".equals(port.getProtocol())) {
+      if(port.getPrefs().get("ssh_upload").contentEquals("no")){
+        return new GenericNetworkUploader(port);
+      }
       return new SSHUploader(port);
     }
 
