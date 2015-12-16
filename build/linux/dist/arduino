@@ -25,7 +25,7 @@ if [ -x "$APPDIR/java/bin/java" ]; then
 fi
 
 # Collect options to java in an array, to properly handle whitespace in options
-JAVA_OPTIONS=("-DAPP_DIR=$APPDIR" "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel" "-Dawt.useSystemAAFontSettings=on")
+JAVA_OPTIONS=("-DAPP_DIR=$APPDIR" "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 
 if [[ "$@" != *"--upload"* && "$@" != *"--verify"* && "$@" != *"--get-pref"* && "$@" != *"--install-board"* && "$@" != *"--install-library"* ]] ; then
 	JAVA_OPTIONS+=("-splash:$APPDIR/lib/splash.png")

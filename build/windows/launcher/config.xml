@@ -37,7 +37,6 @@
     <runtimeBits>32</runtimeBits>
     <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
-    <opt>-Dawt.useSystemAAFontSettings=on</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
   <splash>
