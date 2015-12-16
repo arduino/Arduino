@@ -135,7 +135,7 @@ static uint8_t twi_my_addr;
 #define UCBxI2CSA     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0I2CSA_  - UCB0_BASE)))) 
 
 #define UCxIE         UC0IE
-#define UCBxI2CIE     UC0IE
+#define UCBxI2CIE     (*((volatile uint8_t *)((uint16_t)(I2C_baseAddress + UCB0I2CIE_  - UCB0_BASE)))) 
 #define UCxIFG        UC0IFG
 #if defined(UCB1RXIE)
 #define UCBxRXIE      UCB0RXIE  ? (I2C_baseAddress == UCB0_BASE) : UCB1RXIE
