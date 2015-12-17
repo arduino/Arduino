@@ -585,7 +585,7 @@ public class Compiler implements MessageConsumer {
 
       if (exception != null) {
         SketchCode code = sketch.getCode(exception.getCodeIndex());
-        String fileName = (code.isExtension("ino") || code.isExtension("pde")) ? code.getPrettyName() : code.getFileName();
+        String fileName = code.getPrettyName();
         int lineNum = exception.getCodeLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
