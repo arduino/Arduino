@@ -194,7 +194,6 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable presentHandler;
   private Runnable runAndSaveHandler;
   private Runnable presentAndSaveHandler;
-  private Runnable stopHandler;
   Runnable exportHandler;
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
@@ -1558,7 +1557,6 @@ public class Editor extends JFrame implements RunnerListener {
     presentHandler = new BuildHandler(true);
     runAndSaveHandler = new BuildHandler(false, true);
     presentAndSaveHandler = new BuildHandler(true, true);
-    stopHandler = new DefaultStopHandler();
     exportHandler = new DefaultExportHandler();
     exportAppHandler = new DefaultExportAppHandler();
     timeoutUploadHandler = new TimeoutUploadHandler();
@@ -1718,7 +1716,6 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void handleRun(final boolean verbose, Predicate<SketchController> shouldSavePredicate, Runnable verboseHandler, Runnable nonVerboseHandler) {
-    internalCloseRunner();
     if (shouldSavePredicate.test(sketchController)) {
       handleSave(true);
     }
@@ -1787,13 +1784,6 @@ public class Editor extends JFrame implements RunnerListener {
     getCurrentTab().getTextArea().setCaretPosition(getCurrentTab().getTextArea().getLineStartOffset(line));
   }
 
-  private class DefaultStopHandler implements Runnable {
-    public void run() {
-      // TODO
-      // DAM: we should try to kill the compilation or upload process here.
-    }
-  }
-
 
   /**
    * Implements Sketch &rarr; Stop, or pressing Stop on the toolbar.
@@ -1801,27 +1791,12 @@ public class Editor extends JFrame implements RunnerListener {
   private void handleStop() {  // called by menu or buttons
 //    toolbar.activate(EditorToolbar.STOP);
 
-    internalCloseRunner();
-
     toolbar.deactivateRun();
 //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
     toFront();
   }
-
-
-  /**
-   * Handle internal shutdown of the runner.
-   */
-  public void internalCloseRunner() {
-
-    if (stopHandler != null)
-    try {
-      stopHandler.run();
-    } catch (Exception e) { }
-  }
-
 
   /**
    * Check if the sketch is modified and ask user to save changes.
@@ -1904,7 +1879,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   protected void handleOpenUnchecked(File file, int codeIndex,
                                      int selStart, int selStop, int scrollPos) {
-    internalCloseRunner();
     handleOpenInternal(file);
     // Replacing a document that may be untitled. If this is an actual
     // untitled document, then editor.untitled will be set by Base.
