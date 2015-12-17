@@ -368,10 +368,8 @@ public class SketchController {
         return;
       }
       sketch.addCode(code);
+      editor.selectTab(editor.findTabIndex(code));
     }
-
-    // set the new guy as current
-    editor.selectTab(editor.findTabIndex(newName));
 
     // update the tabs
     editor.header.rebuild();
