@@ -88,14 +88,14 @@ public class EditorHeader extends JComponent {
   public class Actions {
     public final Action newTab = new SimpleAction(tr("New Tab"),
         Keys.ctrlShift(KeyEvent.VK_N),
-        () -> editor.getSketch().handleNewCode());
+        () -> editor.getSketchController().handleNewCode());
 
     public final Action renameTab = new SimpleAction(tr("Rename"),
-        () -> editor.getSketch().handleRenameCode());
+        () -> editor.getSketchController().handleRenameCode());
 
     public final Action deleteTab = new SimpleAction(tr("Delete"), () -> {
       try {
-        editor.getSketch().handleDeleteCode();
+        editor.getSketchController().handleDeleteCode();
       } catch (IOException e) {
         e.printStackTrace();
       }
@@ -195,7 +195,7 @@ public class EditorHeader extends JComponent {
   public void paintComponent(Graphics screen) {
     if (screen == null) return;
 
-    Sketch sketch = editor.getSketch();
+    SketchController sketch = editor.getSketchController();
     if (sketch == null) return;  // ??
 
     Dimension size = getSize();

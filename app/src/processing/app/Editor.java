@@ -85,18 +85,18 @@ public class Editor extends JFrame implements RunnerListener {
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
 
-  private static class ShouldSaveIfModified implements Predicate<Sketch> {
+  private static class ShouldSaveIfModified implements Predicate<SketchController> {
 
     @Override
-    public boolean test(Sketch sketch) {
+    public boolean test(SketchController sketch) {
       return PreferencesData.getBoolean("editor.save_on_verify") && sketch.isModified() && !sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
     }
   }
 
-  private static class ShouldSaveReadOnly implements Predicate<Sketch> {
+  private static class ShouldSaveReadOnly implements Predicate<SketchController> {
 
     @Override
-    public boolean test(Sketch sketch) {
+    public boolean test(SketchController sketch) {
       return sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
     }
   }
@@ -158,6 +158,7 @@ public class Editor extends JFrame implements RunnerListener {
   private JSplitPane splitPane;
 
   // currently opened program
+  SketchController sketchController;
   Sketch sketch;
 
   EditorLineStatus lineStatus;
@@ -332,7 +333,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
-    if (!loaded) sketch = null;
+    if (!loaded) sketchController = null;
   }
 
 
@@ -358,7 +359,7 @@ public class Editor extends JFrame implements RunnerListener {
           List<File> list = (List<File>)
             transferable.getTransferData(DataFlavor.javaFileListFlavor);
           for (File file : list) {
-            if (sketch.addFile(file)) {
+            if (sketchController.addFile(file)) {
               successful++;
             }
           }
@@ -376,7 +377,7 @@ public class Editor extends JFrame implements RunnerListener {
             } else if (piece.startsWith("file:/")) {
               path = piece.substring(5);
             }
-            if (sketch.addFile(new File(path))) {
+            if (sketchController.addFile(new File(path))) {
               successful++;
             }
           }
@@ -675,7 +676,7 @@ public class Editor extends JFrame implements RunnerListener {
     item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          if (new ShouldSaveReadOnly().test(sketch) && !handleSave(true)) {
+          if (new ShouldSaveReadOnly().test(sketchController) && !handleSave(true)) {
             System.out.println(tr("Export canceled, changes must first be saved."));
             return;
           }
@@ -713,7 +714,7 @@ public class Editor extends JFrame implements RunnerListener {
     item = new JMenuItem(tr("Add File..."));
     item.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        sketch.handleAddFile();
+        sketchController.handleAddFile();
       }
     });
     sketchMenu.add(item);
@@ -1562,7 +1563,14 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   /**
-   * Gets the current sketch object.
+   * Gets the current sketch controller.
+   */
+  public SketchController getSketchController() {
+    return sketchController;
+  }
+
+  /**
+   * Gets the current sketch.
    */
   public Sketch getSketch() {
     return sketch;
@@ -1719,9 +1727,9 @@ public class Editor extends JFrame implements RunnerListener {
     handleRun(verbose, new ShouldSaveIfModified(), verboseHandler, nonVerboseHandler);
   }
 
-  private void handleRun(final boolean verbose, Predicate<Sketch> shouldSavePredicate, Runnable verboseHandler, Runnable nonVerboseHandler) {
+  private void handleRun(final boolean verbose, Predicate<SketchController> shouldSavePredicate, Runnable verboseHandler, Runnable nonVerboseHandler) {
     internalCloseRunner();
-    if (shouldSavePredicate.test(sketch)) {
+    if (shouldSavePredicate.test(sketchController)) {
       handleSave(true);
     }
     toolbar.activateRun();
@@ -1762,7 +1770,7 @@ public class Editor extends JFrame implements RunnerListener {
     public void run() {
       try {
         removeAllLineHighlights();
-        sketch.build(verbose, saveHex);
+        sketchController.build(verbose, saveHex);
         statusNotice(tr("Done compiling."));
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
@@ -1830,14 +1838,15 @@ public class Editor extends JFrame implements RunnerListener {
    * @return false if canceling the close/quit operation
    */
   protected boolean checkModified() {
-    if (!sketch.isModified()) return true;
+    if (!sketchController.isModified()) return true;
 
     // As of Processing 1.0.10, this always happens immediately.
     // http://dev.processing.org/bugs/show_bug.cgi?id=1456
 
     toFront();
 
-    String prompt = I18n.format(tr("Save changes to \"{0}\"?  "), sketch.getName());
+    String prompt = I18n.format(tr("Save changes to \"{0}\"?  "),
+                                sketch.getName());
 
     if (!OSUtils.isMacOS()) {
       int result =
@@ -1924,7 +1933,7 @@ public class Editor extends JFrame implements RunnerListener {
     // in a folder of the same name
     String fileName = sketchFile.getName();
 
-    File file = SketchData.checkSketchFile(sketchFile);
+    File file = Sketch.checkSketchFile(sketchFile);
 
     if (file == null) {
       if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
@@ -1980,11 +1989,12 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     try {
-      sketch = new Sketch(this, file);
+      sketch = new Sketch(file);
     } catch (IOException e) {
       Base.showWarning(tr("Error"), tr("Could not create the sketch."), e);
       return false;
     }
+    sketchController = new SketchController(this, sketch);
     createTabs();
 
     // Disable untitled setting from previous document, if any
@@ -1995,12 +2005,13 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void updateTitle() {
-    if (sketch == null) {
+    if (sketchController == null) {
       return;
     }
     SketchCode current = getCurrentTab().getSketchCode();
     if (sketch.getName().equals(current.getPrettyName())) {
-      setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(), BaseNoGui.VERSION_NAME_LONG));
+      setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
+                           BaseNoGui.VERSION_NAME_LONG));
     } else {
       setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
                            current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
@@ -2045,15 +2056,15 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
-      boolean wasReadOnly = sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
+      boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
-      saved = sketch.save();
+      saved = sketchController.save();
       if (saved) {
         statusNotice(tr("Done Saving."));
         if (wasReadOnly) {
           base.removeRecentSketchPath(previousMainFilePath);
         }
-        base.storeRecentSketches(sketch);
+        base.storeRecentSketches(sketchController);
         base.rebuildRecentSketchesMenuItems();
       } else {
         statusEmpty();
@@ -2090,8 +2101,8 @@ public class Editor extends JFrame implements RunnerListener {
     //public void run() {
     statusNotice(tr("Saving..."));
     try {
-      if (sketch.saveAs()) {
-        base.storeRecentSketches(sketch);
+      if (sketchController.saveAs()) {
+        base.storeRecentSketches(sketchController);
         base.rebuildRecentSketchesMenuItems();
         statusNotice(tr("Done Saving."));
         // Disabling this for 0125, instead rebuild the menu inside
@@ -2158,7 +2169,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
     if (PreferencesData.getBoolean("editor.save_on_verify")) {
-      if (sketch.isModified() && !sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+      if (sketchController.isModified() && !sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
         handleSave(true);
       }
     }
@@ -2185,7 +2196,7 @@ public class Editor extends JFrame implements RunnerListener {
 
         uploading = true;
 
-        boolean success = sketch.exportApplet(false);
+        boolean success = sketchController.exportApplet(false);
         if (success) {
           statusNotice(tr("Done uploading."));
         }
@@ -2282,7 +2293,7 @@ public class Editor extends JFrame implements RunnerListener {
 
         uploading = true;
 
-        boolean success = sketch.exportApplet(true);
+        boolean success = sketchController.exportApplet(true);
         if (success) {
           statusNotice(tr("Done uploading."));
         }

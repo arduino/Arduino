@@ -10,7 +10,10 @@ import processing.app.helpers.FileUtils;
 
 import static processing.app.I18n.tr;
 
-public class SketchData {
+/**
+ * This represents a single sketch, consisting of one or more files.
+ */
+public class Sketch {
 
   public static final List<String> SKETCH_EXTENSIONS = Arrays.asList("ino", "pde");
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
@@ -57,7 +60,7 @@ public class SketchData {
    * @param file
    *          The primary file for this sketch.
    */
-  SketchData(File file) throws IOException {
+  Sketch(File file) throws IOException {
     primaryFile = file;
 
     // get the name of the sketch by chopping .pde or .java

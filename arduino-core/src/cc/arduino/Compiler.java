@@ -111,16 +111,16 @@ public class Compiler implements MessageConsumer {
   private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
   private final String pathToSketch;
-  private final SketchData sketch;
+  private final Sketch sketch;
   private final String buildPath;
   private final boolean verbose;
   private RunnerException exception;
 
-  public Compiler(SketchData data, String buildPath) {
+  public Compiler(Sketch data, String buildPath) {
     this(data.getMainFilePath(), data, buildPath);
   }
 
-  public Compiler(String pathToSketch, SketchData sketch, String buildPath) {
+  public Compiler(String pathToSketch, Sketch sketch, String buildPath) {
     this.pathToSketch = pathToSketch;
     this.sketch = sketch;
     this.buildPath = buildPath;

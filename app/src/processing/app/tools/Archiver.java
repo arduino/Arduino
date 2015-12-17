@@ -26,7 +26,7 @@ package processing.app.tools;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.Base;
 import processing.app.Editor;
-import processing.app.Sketch;
+import processing.app.SketchController;
 
 import java.awt.*;
 import java.io.File;
@@ -69,7 +69,7 @@ public class Archiver implements Tool {
 
 
   public void run() {
-    Sketch sketch = editor.getSketch();
+    SketchController sketch = editor.getSketchController();
     
     // first save the sketch so that things don't archive strangely
     boolean success = false;
@@ -84,7 +84,7 @@ public class Archiver implements Tool {
       return;
     }
 
-    File location = sketch.getFolder();
+    File location = sketch.getSketch().getFolder();
     String name = location.getName();
     File parent = new File(location.getParent());
 

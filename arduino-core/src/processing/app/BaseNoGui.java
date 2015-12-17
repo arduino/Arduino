@@ -124,7 +124,7 @@ public class BaseNoGui {
     return path;
   }
 
-  static public File getBuildFolder(SketchData data) throws IOException {
+  static public File getBuildFolder(Sketch data) throws IOException {
     File buildFolder;
     if (PreferencesData.get("build.path") != null) {
       buildFolder = absoluteFile(PreferencesData.get("build.path"));
@@ -507,7 +507,7 @@ public class BaseNoGui {
           // This translates here as:
           //   SketchData data = new SketchData(file);
           //   File tempBuildFolder = getBuildFolder();
-          SketchData data = new SketchData(absoluteFile(parser.getFilenames().get(0)));
+          Sketch data = new Sketch(absoluteFile(parser.getFilenames().get(0)));
           File tempBuildFolder = getBuildFolder(data);
 
           // Sketch.exportApplet()
@@ -553,7 +553,7 @@ public class BaseNoGui {
             //   SketchData data = new SketchData(file);
             //   File tempBuildFolder = getBuildFolder();
             //   data.load();
-            SketchData data = new SketchData(absoluteFile(path));
+            Sketch data = new Sketch(absoluteFile(path));
             File tempBuildFolder = getBuildFolder(data);
 
             // Sketch.prepare() calls Sketch.ensureExistence()

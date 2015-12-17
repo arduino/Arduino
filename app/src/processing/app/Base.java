@@ -542,8 +542,8 @@ public class Base {
     Collections.reverse(reversedEditors);
     int index = 0;
     for (Editor editor : reversedEditors) {
-      Sketch sketch = editor.getSketch();
-      String path = sketch.getMainFilePath();
+      SketchController sketch = editor.getSketchController();
+      String path = sketch.getSketch().getMainFilePath();
       // Skip untitled sketches if they do not contains changes.
       if (path.startsWith(untitledPath) && !sketch.isModified()) {
         continue;
@@ -581,13 +581,13 @@ public class Base {
     return PApplet.parseInt(PApplet.split(locationStr, ','));
   }
 
-  protected void storeRecentSketches(Sketch sketch) {
+  protected void storeRecentSketches(SketchController sketch) {
     if (sketch.isUntitled()) {
       return;
     }
 
     Set<String> sketches = new LinkedHashSet<String>();
-    sketches.add(sketch.getMainFilePath());
+    sketches.add(sketch.getSketch().getMainFilePath());
     sketches.addAll(PreferencesData.getCollection("recent.sketches"));
 
     PreferencesData.setCollection("recent.sketches", sketches);
@@ -871,7 +871,7 @@ public class Base {
     Editor editor = new Editor(this, file, storedLocation, defaultLocation, BaseNoGui.getPlatform());
 
     // Make sure that the sketch actually loaded
-    if (editor.getSketch() == null) {
+    if (editor.getSketchController() == null) {
       return null;  // Just walk away quietly
     }
 
@@ -883,7 +883,7 @@ public class Base {
       // Store information on who's open and running
       // (in case there's a crash or something that can't be recovered)
       storeSketches();
-      storeRecentSketches(editor.getSketch());
+      storeRecentSketches(editor.getSketchController());
       rebuildRecentSketchesMenuItems();
       PreferencesData.save();
     }
@@ -1176,7 +1176,7 @@ public class Base {
           public void actionPerformed(ActionEvent event) {
             UserLibrary l = (UserLibrary) getValue("library");
             try {
-              activeEditor.getSketch().importLibrary(l);
+              activeEditor.getSketchController().importLibrary(l);
             } catch (IOException e) {
               showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
             }
@@ -1714,7 +1714,7 @@ public class Base {
         public void actionPerformed(ActionEvent event) {
           UserLibrary l = (UserLibrary) getValue("library");
           try {
-            activeEditor.getSketch().importLibrary(l);
+            activeEditor.getSketchController().importLibrary(l);
           } catch (IOException e) {
             showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
           }

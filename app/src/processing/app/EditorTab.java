@@ -361,8 +361,8 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   /**
    * Get the sketch this tab is editing a file from.
    */
-  public Sketch getSketch() {
-    return editor.getSketch();
+  public SketchController getSketch() {
+    return editor.getSketchController();
   }
   
   /**
@@ -440,7 +440,7 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
     if (value != modified) {
       modified = value;
       // TODO: Improve decoupling
-      editor.getSketch().calcModified();
+      editor.getSketchController().calcModified();
     }
   }
 
