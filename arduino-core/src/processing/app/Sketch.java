@@ -156,13 +156,6 @@ public class Sketch {
   }
 
   /**
-   * Returns the default extension for this editor setup.
-   */
-  public String getDefaultExtension() {
-    return "ino";
-  }
-
-  /**
    * Returns a file object for the primary .pde of this sketch.
    */
   public File getPrimaryFile() {

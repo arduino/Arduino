@@ -801,9 +801,10 @@ public class SketchController {
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
     //if (current.flavor == PDE) {
-    if (hasDefaultExtension(editor.getCurrentTab().getSketchCode())) {
+    SketchCode code = editor.getCurrentTab().getSketchCode();
+    if (code.isExtension(Sketch.SKETCH_EXTENSIONS))
       editor.selectTab(0);
-    }
+
     // could also scan the text in the file to see if each import
     // statement is already in there, but if the user has the import
     // commented out, then this will be a problem.
@@ -1034,16 +1035,6 @@ public class SketchController {
   }
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-  // Breaking out extension types in order to clean up the code, and make it
-  // easier for other environments (like Arduino) to incorporate changes.
-
-  /**
-   * True if the specified code has the default file extension.
-   */
-  private boolean hasDefaultExtension(SketchCode code) {
-    return code.isExtension(sketch.getDefaultExtension());
-  }
 
   /**
    * Create the data folder if it does not exist already. As a convenience,
