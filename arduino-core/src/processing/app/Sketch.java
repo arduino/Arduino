@@ -205,10 +205,6 @@ public class Sketch {
       System.err.println("removeCode: internal error.. could not find code");
   }
 
-  public int indexOfCode(SketchCode who) {
-    return codes.indexOf(who);
-  }
-
   public String getName() {
     return name;
   }

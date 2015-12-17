@@ -2679,8 +2679,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
-      if (re.hasCodeIndex()) {
-        selectTab(re.getCodeIndex());
+      if (re.hasCodeFile()) {
+        selectTab(findTabIndex(re.getCodeFile()));
       }
       if (re.hasCodeLine()) {
         int line = re.getCodeLine();
