@@ -53,19 +53,15 @@ import static processing.app.I18n.tr;
 
 
 /**
- * Stores information about files in the current sketch
+ * Handles various tasks related to a sketch, in response to user inter-action.
  */
-public class Sketch {
+public class SketchController {
   private final Editor editor;
-  private final SketchData data;
+  private final Sketch sketch;
 
-  /**
-   * path is location of the main .pde file, because this is also
-   * simplest to use when opening the file from the finder/explorer.
-   */
-  public Sketch(Editor _editor, File file) throws IOException {
+  public SketchController(Editor _editor, Sketch _sketch) {
     editor = _editor;
-    data = new SketchData(file);
+    sketch = _sketch;
   }
 
   private boolean renamingCode;
@@ -147,7 +143,7 @@ public class Sketch {
 
     // Add the extension here, this simplifies some of the logic below.
     if (newName.indexOf('.') == -1) {
-      newName += "." + getDefaultExtension();
+      newName += "." + sketch.getDefaultExtension();
     }
 
     // if renaming to the same thing as before, just ignore.
@@ -186,7 +182,7 @@ public class Sketch {
     // Don't let the user create the main tab as a .java file instead of .pde
     if (!isDefaultExtension(newExtension)) {
       if (renamingCode) {  // If creating a new tab, don't show this error
-        if (current == data.getCode(0)) { // If this is the main tab, disallow
+        if (current == sketch.getCode(0)) { // If this is the main tab, disallow
           Base.showWarning(tr("Problem with rename"),
                            tr("The main file can't use an extension.\n" +
                              "(It may be time for your to graduate to a\n" +
@@ -208,13 +204,13 @@ public class Sketch {
     // In Arduino, we want to allow files with the same name but different
     // extensions, so compare the full names (including extensions).  This
     // might cause problems: http://dev.processing.org/bugs/show_bug.cgi?id=543
-    for (SketchCode c : data.getCodes()) {
+    for (SketchCode c : sketch.getCodes()) {
       if (newName.equalsIgnoreCase(c.getFileName()) && OSUtils.isWindows()) {
         Base.showMessage(tr("Error"),
                          I18n.format(
 			   tr("A file named \"{0}\" already exists in \"{1}\""),
 			   c.getFileName(),
-			   data.getFolder().getAbsolutePath()
+			   sketch.getFolder().getAbsolutePath()
 			 ));
         return;
       }
@@ -223,14 +219,14 @@ public class Sketch {
     // In Arduino, don't allow a .cpp file with the same name as the sketch,
     // because the sketch is concatenated into a file with that name as part
     // of the build process.  
-    if (newName.equals(getName() + ".cpp")) {
+    if (newName.equals(sketch.getName() + ".cpp")) {
       Base.showMessage(tr("Error"),
                        tr("You can't have a .cpp file with the same name as the sketch."));
       return;
     }
 
     if (renamingCode && current.isPrimary()) {
-      for (SketchCode code : data.getCodes()) {
+      for (SketchCode code : sketch.getCodes()) {
         if (sanitaryName.equalsIgnoreCase(code.getPrettyName()) &&
           code.isExtension("cpp")) {
           Base.showMessage(tr("Error"),
@@ -243,7 +239,7 @@ public class Sketch {
     }
 
 
-    File newFile = new File(data.getFolder(), newName);
+    File newFile = new File(sketch.getFolder(), newName);
 //    if (newFile.exists()) {  // yay! users will try anything
 //      Base.showMessage("Error",
 //                       "A file named \"" + newFile + "\" already exists\n" +
@@ -265,7 +261,7 @@ public class Sketch {
       if (current.isPrimary()) {
         // get the new folder name/location
         String folderName = newName.substring(0, newName.indexOf('.'));
-        File newFolder = new File(data.getFolder().getParentFile(), folderName);
+        File newFolder = new File(sketch.getFolder().getParentFile(), folderName);
         if (newFolder.exists()) {
           Base.showWarning(tr("Cannot Rename"),
                            I18n.format(
@@ -303,7 +299,7 @@ public class Sketch {
 
         // save each of the other tabs because this is gonna be re-opened
         try {
-          for (SketchCode code : data.getCodes()) {
+          for (SketchCode code : sketch.getCodes()) {
             code.save();
           }
         } catch (Exception e) {
@@ -312,7 +308,7 @@ public class Sketch {
         }
 
         // now rename the sketch folder and re-open
-        boolean success = data.getFolder().renameTo(newFolder);
+        boolean success = sketch.getFolder().renameTo(newFolder);
         if (!success) {
           Base.showWarning(tr("Error"), tr("Could not rename the sketch. (2)"), null);
           return;
@@ -357,7 +353,7 @@ public class Sketch {
 			 I18n.format(
                            "Could not create the file \"{0}\" in \"{1}\"",
 			   newFile,
-			   data.getFolder().getAbsolutePath()
+			   sketch.getFolder().getAbsolutePath()
 			 ), e);
         return;
       }
@@ -372,7 +368,7 @@ public class Sketch {
        ), e);
         return;
       }
-      data.addCode(code);
+      sketch.addCode(code);
     }
 
     // set the new guy as current
@@ -422,7 +418,7 @@ public class Sketch {
         // to do a save on the handleNew()
 
         // delete the entire sketch
-        Base.removeDir(data.getFolder());
+        Base.removeDir(sketch.getFolder());
 
         // get the changes into the sketchbook menu
         //sketchbook.rebuildMenus();
@@ -434,14 +430,14 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.deleteFile(BaseNoGui.getBuildFolder(data).toPath())) {
+        if (!current.deleteFile(BaseNoGui.getBuildFolder(sketch).toPath())) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
         }
 
         // remove code from the list
-        data.removeCode(current);
+        sketch.removeCode(current);
 
         // just set current tab to the main tab
         editor.selectTab(0);
@@ -469,7 +465,7 @@ public class Sketch {
 
 
   public boolean isModified() {
-    for (SketchCode code : data.getCodes()) {
+    for (SketchCode code : sketch.getCodes()) {
       if (code.isModified())
         return true;
     }
@@ -492,7 +488,7 @@ public class Sketch {
     }
 
     // rename .pde files to .ino
-    File mainFile = new File(getMainFilePath());
+    File mainFile = new File(sketch.getMainFilePath());
     File mainFolder = mainFile.getParentFile();
     File[] pdeFiles = mainFolder.listFiles((dir, name) -> {
       return name.toLowerCase().endsWith(".pde");
@@ -528,13 +524,13 @@ public class Sketch {
       }
     }
 
-    data.save();
+    sketch.save();
     return true;
   }
 
 
   private boolean renameCodeToInoExtension(File pdeFile) {
-    for (SketchCode c : data.getCodes()) {
+    for (SketchCode c : sketch.getCodes()) {
       if (!c.getFile().equals(pdeFile))
         continue;
 
@@ -567,9 +563,9 @@ public class Sketch {
       // default to the parent folder of where this was
       // on macs a .getParentFile() method is required
 
-      fd.setDirectory(data.getFolder().getParentFile().getAbsolutePath());
+      fd.setDirectory(sketch.getFolder().getParentFile().getAbsolutePath());
     }
-    String oldName = data.getName();
+    String oldName = sketch.getName();
     fd.setFile(oldName);
 
     fd.setVisible(true);
@@ -578,15 +574,15 @@ public class Sketch {
 
     // user canceled selection
     if (newName == null) return false;
-    newName = Sketch.checkName(newName);
+    newName = SketchController.checkName(newName);
 
     File newFolder = new File(newParentDir, newName);
 
     // make sure there doesn't exist a .cpp file with that name already
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
-    for (int i = 1; i < data.getCodeCount(); i++) {
-      SketchCode code = data.getCode(i);
+    for (int i = 1; i < sketch.getCodeCount(); i++) {
+      SketchCode code = sketch.getCode(i);
       if (newName.equalsIgnoreCase(code.getPrettyName())) {
         Base.showMessage(tr("Error"),
           I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
@@ -597,7 +593,7 @@ public class Sketch {
     }
 
     // check if the paths are identical
-    if (newFolder.equals(data.getFolder())) {
+    if (newFolder.equals(sketch.getFolder())) {
       // just use "save" here instead, because the user will have received a
       // message (from the operating system) about "do you want to replace?"
       return save();
@@ -606,7 +602,7 @@ public class Sketch {
     // check to see if the user is trying to save this sketch inside itself
     try {
       String newPath = newFolder.getCanonicalPath() + File.separator;
-      String oldPath = data.getFolder().getCanonicalPath() + File.separator;
+      String oldPath = sketch.getFolder().getCanonicalPath() + File.separator;
 
       if (newPath.indexOf(oldPath) == 0) {
         Base.showWarning(tr("How very Borges of you"),
@@ -631,21 +627,21 @@ public class Sketch {
     newFolder.mkdirs();
 
     // save the other tabs to their new location
-    for (SketchCode code : data.getCodes()) {
-      if (data.indexOfCode(code) == 0) continue;
+    for (SketchCode code : sketch.getCodes()) {
+      if (sketch.indexOfCode(code) == 0) continue;
       File newFile = new File(newFolder, code.getFileName());
       code.saveAs(newFile);
     }
 
     // re-copy the data folder (this may take a while.. add progress bar?)
-    if (data.getDataFolder().exists()) {
+    if (sketch.getDataFolder().exists()) {
       File newDataFolder = new File(newFolder, "data");
-      Base.copyDir(data.getDataFolder(), newDataFolder);
+      Base.copyDir(sketch.getDataFolder(), newDataFolder);
     }
 
     // save the main tab with its new name
     File newFile = new File(newFolder, newName + ".ino");
-    data.getCode(0).saveAs(newFile);
+    sketch.getCode(0).saveAs(newFile);
 
     editor.handleOpenUnchecked(newFile,
             editor.getCurrentTabIndex(),
@@ -724,16 +720,16 @@ public class Sketch {
     String codeExtension = null;
     boolean replacement = false;
 
-    for (String extension : SketchData.EXTENSIONS) {
+    for (String extension : Sketch.EXTENSIONS) {
       String lower = filename.toLowerCase();
       if (lower.endsWith("." + extension)) {
-        destFile = new File(data.getFolder(), filename);
+        destFile = new File(sketch.getFolder(), filename);
         codeExtension = extension;
       }
     }
     if (codeExtension == null) {
       prepareDataFolder();
-      destFile = new File(data.getDataFolder(), filename);
+      destFile = new File(sketch.getDataFolder(), filename);
     }
 
     // check whether this file already exists
@@ -795,11 +791,11 @@ public class Sketch {
       SketchCode newCode = new SketchCode(destFile, false);
 
       if (replacement) {
-        data.replaceCode(newCode);
+        sketch.replaceCode(newCode);
 
       } else {
         ensureExistence();
-        data.addCode(newCode);
+        sketch.addCode(newCode);
       }
       editor.selectTab(editor.findTabIndex(filename));
     }
@@ -879,7 +875,7 @@ public class Sketch {
    * @throws RunnerException
    */
   public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
-    return build(BaseNoGui.getBuildFolder(data).getAbsolutePath(), verbose, save);
+    return build(BaseNoGui.getBuildFolder(sketch).getAbsolutePath(), verbose, save);
   }
 
   /**
@@ -900,7 +896,7 @@ public class Sketch {
     CompilerProgressListener progressListener = editor.status::progressUpdate;
 
     boolean deleteTemp = false;
-    String pathToSketch = data.getMainFilePath();
+    String pathToSketch = sketch.getMainFilePath();
     if (isModified()) {
       // If any files are modified, make a copy of the sketch with the changes
       // saved, so arduino-builder will see the modifications.
@@ -909,8 +905,7 @@ public class Sketch {
     }
 
     try {
-      return new Compiler(pathToSketch, data, buildPath).build(progressListener,
-                                                               save);
+      return new Compiler(pathToSketch, sketch, buildPath).build(progressListener, save);
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
@@ -920,17 +915,17 @@ public class Sketch {
 
   private String saveSketchInTempFolder() throws IOException {
     File tempFolder = FileUtils.createTempFolder("arduino_modified_sketch_");
-    FileUtils.copy(getFolder(), tempFolder);
+    FileUtils.copy(sketch.getFolder(), tempFolder);
 
-    for (SketchCode sc : Stream.of(data.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
+    for (SketchCode sc : Stream.of(sketch.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
       Files.write(Paths.get(tempFolder.getAbsolutePath(), sc.getFileName()), sc.getProgram().getBytes());
     }
 
-    return Paths.get(tempFolder.getAbsolutePath(), data.getPrimaryFile().getName()).toString();
+    return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getName()).toString();
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
-    return exportApplet(BaseNoGui.getBuildFolder(data).getAbsolutePath(), usingProgrammer);
+    return exportApplet(BaseNoGui.getBuildFolder(sketch).getAbsolutePath(), usingProgrammer);
   }
 
 
@@ -982,7 +977,7 @@ public class Sketch {
 
       List<String> warningsAccumulator = new LinkedList<>();
       try {
-        success = new UploaderUtils().upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
+        success = new UploaderUtils().upload(sketch, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           PreferencesData.remove(uploader.getAuthorizationKey());
@@ -1007,16 +1002,16 @@ public class Sketch {
    * but not its contents.
    */
   private void ensureExistence() {
-    if (data.getFolder().exists()) return;
+    if (sketch.getFolder().exists()) return;
 
     Base.showWarning(tr("Sketch Disappeared"),
                      tr("The sketch folder has disappeared.\n " +
                        "Will attempt to re-save in the same location,\n" +
                        "but anything besides the code will be lost."), null);
     try {
-      data.getFolder().mkdirs();
+      sketch.getFolder().mkdirs();
 
-      for (SketchCode code : data.getCodes()) {
+      for (SketchCode code : sketch.getCodes()) {
         code.save();  // this will force a save
       }
       calcModified();
@@ -1037,7 +1032,7 @@ public class Sketch {
    * volumes or folders without appropriate permissions.
    */
   public boolean isReadOnly(LibraryList libraries, String examplesPath) {
-    String apath = data.getFolder().getAbsolutePath();
+    String apath = sketch.getFolder().getAbsolutePath();
 
     Optional<UserLibrary> libraryThatIncludesSketch = libraries.stream().filter(lib -> apath.startsWith(lib.getInstalledFolder().getAbsolutePath())).findFirst();
     if (libraryThatIncludesSketch.isPresent() && !libraryThatIncludesSketch.get().onGoingDevelopment()) {
@@ -1052,7 +1047,7 @@ public class Sketch {
   }
 
   private boolean sketchFilesAreReadOnly() {
-    for (SketchCode code : data.getCodes()) {
+    for (SketchCode code : sketch.getCodes()) {
       if (code.isModified() && code.fileReadOnly() && code.fileExists()) {
         return true;
       }
@@ -1069,7 +1064,7 @@ public class Sketch {
    * True if the specified code has the default file extension.
    */
   private boolean hasDefaultExtension(SketchCode code) {
-    return code.isExtension(getDefaultExtension());
+    return code.isExtension(sketch.getDefaultExtension());
   }
 
 
@@ -1077,7 +1072,7 @@ public class Sketch {
    * True if the specified extension is the default file extension.
    */
   private boolean isDefaultExtension(String what) {
-    return what.equals(getDefaultExtension());
+    return what.equals(sketch.getDefaultExtension());
   }
 
 
@@ -1086,15 +1081,7 @@ public class Sketch {
    * extensions.
    */
   private boolean validExtension(String what) {
-    return SketchData.EXTENSIONS.contains(what);
-  }
-
-
-  /**
-   * Returns the default extension for this editor setup.
-   */
-  public String getDefaultExtension() {
-    return data.getDefaultExtension();
+    return Sketch.EXTENSIONS.contains(what);
   }
 
   static private final List<String> hiddenExtensions = Arrays.asList("ino", "pde");
@@ -1103,66 +1090,15 @@ public class Sketch {
     return hiddenExtensions;
   }
 
-
-  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-  // Additional accessors added in 0136 because of package work.
-  // These will also be helpful for tool developers.
-
-
-  /**
-   * Returns the name of this sketch. (The pretty name of the main tab.)
-   */
-  public String getName() {
-    return data.getName();
-  }
-
-
-  /**
-   * Returns path to the main .pde file for this sketch.
-   */
-  public String getMainFilePath() {
-    return data.getMainFilePath();
-  }
-
-
-  /**
-   * Returns the sketch folder.
-   */
-  public File getFolder() {
-    return data.getFolder();
-  }
-
-
   /**
    * Create the data folder if it does not exist already. As a convenience,
    * it also returns the data folder, since it's likely about to be used.
    */
   private File prepareDataFolder() {
-    if (!data.getDataFolder().exists()) {
-      data.getDataFolder().mkdirs();
+    if (!sketch.getDataFolder().exists()) {
+      sketch.getDataFolder().mkdirs();
     }
-    return data.getDataFolder();
-  }
-
-
-  public SketchCode[] getCodes() {
-    return data.getCodes();
-  }
-
-
-  public int getCodeCount() {
-    return data.getCodeCount();
-  }
-
-
-  public SketchCode getCode(int index) {
-    return data.getCode(index);
-  }
-
-
-  public int getCodeIndex(SketchCode who) {
-    return data.indexOfCode(who);
+    return sketch.getDataFolder();
   }
 
 
@@ -1175,8 +1111,8 @@ public class Sketch {
     return editor.untitled;
   }
 
-  public boolean reload() throws IOException {
-    return data.reload();
+  public Sketch getSketch() {
+    return sketch;
   }
 
   // .................................................................

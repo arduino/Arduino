@@ -157,7 +157,8 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
         try {
-          editor.platform.openURL(editor.getSketch().getFolder(), hyperlinkEvent.getURL().toExternalForm());
+          editor.platform.openURL(editor.getSketch().getFolder(),
+                                  hyperlinkEvent.getURL().toExternalForm());
         } catch (Exception e) {
           Base.showWarning(e.getMessage(), e.getMessage(), e);
         }
@@ -357,8 +358,8 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   /**
    * Get the sketch this tab is editing a file from.
    */
-  public Sketch getSketch() {
-    return editor.getSketch();
+  public SketchController getSketch() {
+    return editor.getSketchController();
   }
   
   /**
@@ -415,7 +416,7 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
     if (value != modified) {
       modified = value;
       // TODO: Improve decoupling
-      editor.getSketch().calcModified();
+      editor.getSketchController().calcModified();
     }
   }
 

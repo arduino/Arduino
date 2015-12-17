@@ -242,7 +242,7 @@ public class EditorStatus extends JPanel {
       // answering to rename/new code question
       if (mode == EDIT) {  // this if() isn't (shouldn't be?) necessary
         String answer = editField.getText();
-        editor.getSketch().nameCode(answer);
+        editor.getSketchController().nameCode(answer);
         unedit();
       }
     });
@@ -281,7 +281,7 @@ public class EditorStatus extends JPanel {
 
         if (c == KeyEvent.VK_ENTER) {  // accept the input
           String answer = editField.getText();
-          editor.getSketch().nameCode(answer);
+          editor.getSketchController().nameCode(answer);
           unedit();
           event.consume();
 

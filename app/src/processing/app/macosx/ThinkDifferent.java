@@ -75,7 +75,7 @@ public class ThinkDifferent {
               try {
                 Base.INSTANCE.handleOpen(file);
                 List<Editor> editors = Base.INSTANCE.getEditors();
-                if (editors.size() == 2 && editors.get(0).getSketch().isUntitled()) {
+                if (editors.size() == 2 && editors.get(0).getSketchController().isUntitled()) {
                   Base.INSTANCE.handleClose(editors.get(0));
                 }
               } catch (Exception e) {
