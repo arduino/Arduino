@@ -761,46 +761,6 @@ public class Base {
 
 
   /**
-   * Replace the sketch in the current window with a new untitled document.
-   */
-  public void handleNewReplace() {
-    if (!activeEditor.checkModified()) {
-      return;  // sketch was modified, and user canceled
-    }
-
-    // Actually replace things
-    handleNewReplaceImpl();
-  }
-
-
-  protected void handleNewReplaceImpl() {
-    try {
-      File file = createNewUntitled();
-      if (file != null) {
-        activeEditor.handleOpenInternal(file);
-        activeEditor.untitled = true;
-      }
-
-    } catch (IOException e) {
-      activeEditor.statusError(e);
-    }
-  }
-
-
-  public void handleOpenReplace(File file) {
-    if (!activeEditor.checkModified()) {
-      return;  // sketch was modified, and user canceled
-    }
-
-    boolean loaded = activeEditor.handleOpenInternal(file);
-    if (!loaded) {
-      // replace the document without checking if that's ok
-      handleNewReplaceImpl();
-    }
-  }
-
-
-  /**
    * Prompt for a sketch to open, and open it in a new window.
    *
    * @throws Exception
