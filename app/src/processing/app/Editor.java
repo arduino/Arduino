@@ -2016,7 +2016,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     SketchCode current = getCurrentTab().getSketchCode();
-    if (sketch.getName().equals(current.getPrettyName())) {
+    if (current.isPrimary()) {
       setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
                            BaseNoGui.VERSION_NAME_LONG));
     } else {

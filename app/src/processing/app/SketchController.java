@@ -181,7 +181,7 @@ public class SketchController {
     // Don't let the user create the main tab as a .java file instead of .pde
     if (!isDefaultExtension(newExtension)) {
       if (renamingCode) {  // If creating a new tab, don't show this error
-        if (current == sketch.getCode(0)) { // If this is the main tab, disallow
+        if (current.isPrimary()) { // If this is the main tab, disallow
           Base.showWarning(tr("Problem with rename"),
                            tr("The main file can't use an extension.\n" +
                              "(It may be time for your to graduate to a\n" +
@@ -572,9 +572,8 @@ public class SketchController {
     // make sure there doesn't exist a .cpp file with that name already
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
-    for (int i = 1; i < sketch.getCodeCount(); i++) {
-      SketchCode code = sketch.getCode(i);
-      if (newName.equalsIgnoreCase(code.getPrettyName())) {
+    for (SketchCode code : sketch.getCodes()) {
+      if (!code.isPrimary() && newName.equalsIgnoreCase(code.getPrettyName())) {
         Base.showMessage(tr("Error"),
           I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
             "because the sketch already has a file with that name."), newName
@@ -619,7 +618,7 @@ public class SketchController {
 
     // save the other tabs to their new location
     for (SketchCode code : sketch.getCodes()) {
-      if (sketch.indexOfCode(code) == 0) continue;
+      if (code.isPrimary()) continue;
       File newFile = new File(newFolder, code.getFileName());
       code.saveAs(newFile);
     }
