@@ -183,8 +183,8 @@ void Stepper::step(int steps_to_move)
 void Stepper::stepMotor(unsigned char thisPhase)
 {
   unsigned char phase = pgm_read_byte_near(phasesMatrix + thisPhase);
-  unsigned char running_one = 0b10000000;
-  for (unsigned char i = 0; i < pin_count; i++, running_one >>= 1){
+  unsigned char running_one = 1;
+  for (char i = pin_count - 1; i >= 0; i--, running_one <<= 1){
     digitalWrite(motor_pin[i], (phase & running_one));
   }
 }

@@ -89,32 +89,32 @@
 
     //Default phases matrix for 2 control wires is as follows
     const unsigned char phasesMatrix2[4]  PROGMEM = {
-      0b01000000,
-      0b11000000,
-      0b10000000,
-      0b00000000
+      0b01,
+      0b11,
+      0b10,
+      0b00
     };
 
     //Default phases matrix for 4 control wires is as follows
     const unsigned char phasesMatrix4[4]  PROGMEM = {
-      0b10100000,
-      0b01100000,
-      0b01010000,
-      0b10010000
+      0b1010,
+      0b0110,
+      0b0101,
+      0b1001
     };
 
     //Default phases matrix for 5 control wires is as follows
     const unsigned char phasesMatrix5[10] PROGMEM = {
-      0b01101000,
-      0b01001000,
-      0b01011000,
-      0b01010000,
-      0b11010000,
-      0b10010000,
-      0b10110000,
-      0b10100000,
-      0b10101000,
-      0b00101000
+      0b01101,
+      0b01001,
+      0b01011,
+      0b01010,
+      0b11010,
+      0b10010,
+      0b10110,
+      0b10100,
+      0b10101,
+      0b00101
     };
 
 // library interface description

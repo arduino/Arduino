@@ -36,14 +36,14 @@ const int stepsPerRevolution = 4096;  // change this to fit the number of steps 
  *    8  1  0  0  1
  */
 const unsigned char phasesMatrix[8] PROGMEM = {
-  0b00010000,
-  0b00110000,
-  0b00100000,
-  0b01100000,
-  0b01000000,
-  0b11000000,
-  0b10000000,
-  0b10010000
+  0b0001,
+  0b0011,
+  0b0010,
+  0b0110,
+  0b0100,
+  0b1100,
+  0b1000,
+  0b1001
   };
 
 //initialize the stepper library on pins 8 through 11, phasesMatrix, pin_count, phase_count:
