@@ -1,7 +1,7 @@
-ARDUINO 1.6.7 - 2015.12.14
+ARDUINO 1.6.7 - 2015.12.17
 
 [ide]
-* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.8
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.9
 * Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
 * New translations
 * Added support to file:// protocol for boards manager URLs
@@ -9,6 +9,7 @@ ARDUINO 1.6.7 - 2015.12.14
 * Fixed a bug that caused Boards Manager to install the same tool twice or more, thus wasting disk space, if other cores where using tools delivered by arduino
 * Fixed various Boards manager glitches, in particular when removing a board
 * Windows: Arduino IDE icon is now in high definition, bye bye that blurry icon
+* Remote upload without SSH is now supported (allows OTA upload for many 3rd party boards). Thanks @me-no-dev.
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
