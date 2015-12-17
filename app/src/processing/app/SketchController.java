@@ -704,19 +704,15 @@ public class SketchController {
   public boolean addFile(File sourceFile) {
     String filename = sourceFile.getName();
     File destFile = null;
-    String codeExtension = null;
+    boolean isData = false;
     boolean replacement = false;
 
-    for (String extension : Sketch.EXTENSIONS) {
-      String lower = filename.toLowerCase();
-      if (lower.endsWith("." + extension)) {
-        destFile = new File(sketch.getFolder(), filename);
-        codeExtension = extension;
-      }
-    }
-    if (codeExtension == null) {
+    if (FileUtils.hasExtension(sourceFile, Sketch.EXTENSIONS)) {
+      destFile = new File(sketch.getFolder(), filename);
+    } else {
       prepareDataFolder();
       destFile = new File(sketch.getDataFolder(), filename);
+      isData = true;
     }
 
     // check whether this file already exists
@@ -752,7 +748,7 @@ public class SketchController {
     }
 
     // make sure they aren't the same file
-    if ((codeExtension == null) && sourceFile.equals(destFile)) {
+    if (isData && sourceFile.equals(destFile)) {
       Base.showWarning(tr("You can't fool me"),
                        tr("This file has already been copied to the\n" +
                          "location from which where you're trying to add it.\n" +
@@ -774,7 +770,7 @@ public class SketchController {
       }
     }
 
-    if (codeExtension != null) {
+    if (!isData) {
       SketchCode newCode = new SketchCode(destFile, false);
 
       if (replacement) {
