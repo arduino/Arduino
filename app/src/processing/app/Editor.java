@@ -1653,22 +1653,6 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   /**
-   * Finds the tab that shows the given file (as returned by
-   * SketchCode.getFileName() or SketchCode.getPrettyName()).
-   */
-  public int findTabIndex(final String name) {
-    int i = 0;
-    for (EditorTab tab : tabs) {
-      SketchCode code = tab.getSketchCode();
-      if (name.equals(code.getFileName()) ||
-          name.equals(code.getPrettyName())) {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  /**
    * Create tabs for each of the current sketch's files, removing any existing
    * tabs.
    */
