@@ -244,11 +244,11 @@ public class EditorHeader extends JComponent {
     int x = scale(6); // offset from left edge of the component
     int i = 0;
     for (EditorTab tab : tabs) {
-      SketchCode code = tab.getSketchCode();
-      String codeName = code.getPrettyName();
+      SketchFile file = tab.getSketchFile();
+      String filename = file.getPrettyName();
 
       // if modified, add the li'l glyph next to the name
-      String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
+      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
 
       int textWidth = (int)
         font.getStringBounds(text, g.getFontRenderContext()).getWidth();
@@ -325,9 +325,9 @@ public class EditorHeader extends JComponent {
 
       int i = 0;
       for (EditorTab tab : editor.getTabs()) {
-        SketchCode code = tab.getSketchCode();
+        SketchFile file = tab.getSketchFile();
         final int index = i++;
-        item = new JMenuItem(code.getPrettyName());
+        item = new JMenuItem(file.getPrettyName());
         item.addActionListener((ActionEvent e) -> {
           editor.selectTab(index);
         });
