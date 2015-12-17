@@ -121,15 +121,15 @@
 class Stepper {
   public:
     // constructors:
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4,
-                                 int motor_pin_5);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4,
-                                 int motor_pin_5, unsigned char *phasesMatrix,
+    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1);
+    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+                                 int motor_pin_2, int motor_pin_3);
+    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+                                 int motor_pin_2, int motor_pin_3,
+                                 int motor_pin_4);
+    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+                                 int motor_pin_2, int motor_pin_3,
+                                 int motor_pin_4, unsigned char *phasesMatrix,
                                  int pin_count,   int phase_count);
 
     // speed setter method:
@@ -142,9 +142,9 @@ class Stepper {
 
   private:
     void stepMotor(unsigned char thisPhase);
-    void initMotor(int number_of_steps, unsigned char motor_pin_1,  unsigned char motor_pin_2,
-                                        unsigned char motor_pin_3,  unsigned char motor_pin_4,
-                                        unsigned char motor_pin_5,  unsigned char *phasesMatrix,
+    void initMotor(int number_of_steps, unsigned char motor_pin_0,  unsigned char motor_pin_1,
+                                        unsigned char motor_pin_2,  unsigned char motor_pin_3,
+                                        unsigned char motor_pin_4,  unsigned char *phasesMatrix,
                                         unsigned char pin_count,    unsigned char phase_count);
 
     unsigned long step_delay; // delay between steps, in ms, based on speed
