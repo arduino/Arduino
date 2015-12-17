@@ -565,8 +565,7 @@ public class Compiler implements MessageConsumer {
       RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
       if (exception != null) {
-        SketchCode code = sketch.getCode(exception.getCodeIndex());
-        String fileName = code.getPrettyName();
+        String fileName = exception.getCodeFile().getPrettyName();
         int lineNum = exception.getCodeLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
@@ -597,7 +596,7 @@ public class Compiler implements MessageConsumer {
   private RunnerException placeException(String message, String fileName, int line) {
     for (SketchCode code : sketch.getCodes()) {
       if (new File(fileName).getName().equals(code.getFileName())) {
-        return new RunnerException(message, sketch.indexOfCode(code), line);
+        return new RunnerException(message, code, line);
       }
     }
     return null;
