@@ -457,20 +457,12 @@ public class SketchController {
 
     if (OSUtils.isMacOS()) {
       // http://developer.apple.com/qa/qa2001/qa1146.html
-      Object modifiedParam = isModified() ? Boolean.TRUE : Boolean.FALSE;
+      Object modifiedParam = sketch.isModified() ? Boolean.TRUE : Boolean.FALSE;
       editor.getRootPane().putClientProperty("windowModified", modifiedParam);
       editor.getRootPane().putClientProperty("Window.documentModified", modifiedParam);
     }
   }
 
-
-  public boolean isModified() {
-    for (SketchCode code : sketch.getCodes()) {
-      if (code.isModified())
-        return true;
-    }
-    return false;
-  }
 
 
   /**
@@ -897,7 +889,7 @@ public class SketchController {
 
     boolean deleteTemp = false;
     String pathToSketch = sketch.getMainFilePath();
-    if (isModified()) {
+    if (sketch.isModified()) {
       // If any files are modified, make a copy of the sketch with the changes
       // saved, so arduino-builder will see the modifications.
       pathToSketch = saveSketchInTempFolder();

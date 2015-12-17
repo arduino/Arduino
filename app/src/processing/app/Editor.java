@@ -84,11 +84,17 @@ public class Editor extends JFrame implements RunnerListener {
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
 
-  private static class ShouldSaveIfModified implements Predicate<SketchController> {
+  private static class ShouldSaveIfModified
+      implements Predicate<SketchController> {
 
     @Override
-    public boolean test(SketchController sketch) {
-      return PreferencesData.getBoolean("editor.save_on_verify") && sketch.isModified() && !sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
+    public boolean test(SketchController controller) {
+      return PreferencesData.getBoolean("editor.save_on_verify")
+             && controller.getSketch().isModified()
+             && !controller.isReadOnly(
+                                       BaseNoGui.librariesIndexer
+                                           .getInstalledLibraries(),
+                                       BaseNoGui.getExamplesPath());
     }
   }
 
@@ -1846,7 +1852,8 @@ public class Editor extends JFrame implements RunnerListener {
    * @return false if canceling the close/quit operation
    */
   protected boolean checkModified() {
-    if (!sketchController.isModified()) return true;
+    if (!sketch.isModified())
+      return true;
 
     // As of Processing 1.0.10, this always happens immediately.
     // http://dev.processing.org/bugs/show_bug.cgi?id=1456
@@ -2177,7 +2184,11 @@ public class Editor extends JFrame implements RunnerListener {
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
     if (PreferencesData.getBoolean("editor.save_on_verify")) {
-      if (sketchController.isModified() && !sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+      if (sketch.isModified()
+          && !sketchController.isReadOnly(
+                                          BaseNoGui.librariesIndexer
+                                              .getInstalledLibraries(),
+                                          BaseNoGui.getExamplesPath())) {
         handleSave(true);
       }
     }

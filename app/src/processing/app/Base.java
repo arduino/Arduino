@@ -570,7 +570,7 @@ public class Base {
       String path = editor.getSketch().getMainFilePath();
       // In case of a crash, save untitled sketches if they contain changes.
       // (Added this for release 0158, may not be a good idea.)
-      if (path.startsWith(untitledPath) && !editor.getSketchController().isModified()) {
+      if (path.startsWith(untitledPath) && !editor.getSketch().isModified()) {
         continue;
       }
       PreferencesData.set("last.sketch" + index + ".path", path);
