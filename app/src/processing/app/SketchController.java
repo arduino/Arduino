@@ -208,28 +208,6 @@ public class SketchController {
       }
     }
 
-    // In Arduino, don't allow a .cpp file with the same name as the sketch,
-    // because the sketch is concatenated into a file with that name as part
-    // of the build process.  
-    if (newName.equals(sketch.getName() + ".cpp")) {
-      Base.showMessage(tr("Error"),
-                       tr("You can't have a .cpp file with the same name as the sketch."));
-      return;
-    }
-
-    if (renamingCode && current.isPrimary()) {
-      for (SketchFile file : sketch.getFiles()) {
-        if (sanitaryName.equalsIgnoreCase(file.getBaseName()) &&
-          file.isExtension("cpp")) {
-          Base.showMessage(tr("Error"),
-                           I18n.format(tr("You can't rename the sketch to \"{0}\"\n"
-                                           + "because the sketch already has a .cpp file with that name."),
-                                       sanitaryName));
-          return;
-        }
-      }
-    }
-
 
     File newFile = new File(sketch.getFolder(), newName);
 //    if (newFile.exists()) {  // yay! users will try anything
@@ -559,19 +537,6 @@ public class SketchController {
     newName = SketchController.checkName(newName);
 
     File newFolder = new File(newParentDir, newName);
-
-    // make sure there doesn't exist a .cpp file with that name already
-    // but ignore this situation for the first tab, since it's probably being
-    // resaved (with the same name) to another location/folder.
-    for (SketchFile file : sketch.getFiles()) {
-      if (!file.isPrimary() && newName.equalsIgnoreCase(file.getBaseName())) {
-        Base.showMessage(tr("Error"),
-          I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
-            "because the sketch already has a file with that name."), newName
-          ));
-        return false;
-      }
-    }
 
     // check if the paths are identical
     if (newFolder.equals(sketch.getFolder())) {
