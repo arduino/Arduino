@@ -161,22 +161,30 @@ public class SketchCode {
   }
 
 
+  /*
+   * Returns the filename include extension.
+   */
   public String getFileName() {
     return file.getName();
   }
 
-
+  /**
+   * Returns the filename without extension for normal sketch files
+   * (Sketch.SKETCH_EXTENSIONS) and the filename with extension for all
+   * others.
+   */
   public String getPrettyName() {
-    String prettyName = getFileName();
-    int dot = prettyName.lastIndexOf('.');
-    return prettyName.substring(0, dot);
+    if (isExtension(Sketch.SKETCH_EXTENSIONS))
+      return getBaseName();
+    else
+      return getFileName();
   }
 
-  public String getFileNameWithExtensionIfNotIno() {
-    if (getFileName().endsWith(".ino")) {
-      return getPrettyName();
-    }
-    return getFileName();
+  /**
+   * Returns the filename without extension
+   */
+  public String getBaseName() {
+    return FileUtils.splitFilename(file).basename;
   }
 
   public boolean isExtension(String... extensions) {

@@ -42,7 +42,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -121,8 +120,7 @@ public class SketchController {
     renamingCode = true;
     String prompt = current.isPrimary() ?
       "New name for sketch:" : "New name for file:";
-    String oldName = (current.isExtension("ino")) ? current.getPrettyName()
-                                                  : current.getFileName();
+    String oldName = current.getPrettyName();
     editor.status.edit(prompt, oldName);
   }
 
@@ -227,7 +225,7 @@ public class SketchController {
 
     if (renamingCode && current.isPrimary()) {
       for (SketchCode code : sketch.getCodes()) {
-        if (sanitaryName.equalsIgnoreCase(code.getPrettyName()) &&
+        if (sanitaryName.equalsIgnoreCase(code.getBaseName()) &&
           code.isExtension("cpp")) {
           Base.showMessage(tr("Error"),
                            I18n.format(tr("You can't rename the sketch to \"{0}\"\n"
@@ -401,7 +399,7 @@ public class SketchController {
     String prompt = current.isPrimary() ?
       tr("Are you sure you want to delete this sketch?") :
       I18n.format(tr("Are you sure you want to delete \"{0}\"?"),
-                  current.getFileNameWithExtensionIfNotIno());
+                                                      current.getPrettyName());
     int result = JOptionPane.showOptionDialog(editor,
                                               prompt,
                                               tr("Delete"),
@@ -572,7 +570,7 @@ public class SketchController {
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
     for (SketchCode code : sketch.getCodes()) {
-      if (!code.isPrimary() && newName.equalsIgnoreCase(code.getPrettyName())) {
+      if (!code.isPrimary() && newName.equalsIgnoreCase(code.getBaseName())) {
         Base.showMessage(tr("Error"),
           I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
             "because the sketch already has a file with that name."), newName
@@ -1071,12 +1069,6 @@ public class SketchController {
    */
   private boolean validExtension(String what) {
     return Sketch.EXTENSIONS.contains(what);
-  }
-
-  static private final List<String> hiddenExtensions = Arrays.asList("ino", "pde");
-
-  public List<String> getHiddenExtensions() {
-    return hiddenExtensions;
   }
 
   /**

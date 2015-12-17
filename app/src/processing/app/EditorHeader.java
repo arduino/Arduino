@@ -239,9 +239,7 @@ public class EditorHeader extends JComponent {
     int i = 0;
     for (EditorTab tab : tabs) {
       SketchCode code = tab.getSketchCode();
-
-      String codeName = code.isExtension(sketch.getHiddenExtensions()) ?
-        code.getPrettyName() : code.getFileName();
+      String codeName = code.getPrettyName();
 
       // if modified, add the li'l glyph next to the name
       String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
@@ -324,8 +322,7 @@ public class EditorHeader extends JComponent {
       for (EditorTab tab : editor.getTabs()) {
         SketchCode code = tab.getSketchCode();
         final int index = i++;
-        item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
-                             code.getPrettyName() : code.getFileName());
+        item = new JMenuItem(code.getPrettyName());
         item.addActionListener((ActionEvent e) -> {
           editor.selectTab(index);
         });
