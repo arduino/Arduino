@@ -15,7 +15,8 @@ import static processing.app.I18n.tr;
  */
 public class Sketch {
 
-  public static final List<String> SKETCH_EXTENSIONS = Arrays.asList("ino", "pde");
+  public static final String DEFAULT_SKETCH_EXTENSION = "ino";
+  public static final List<String> SKETCH_EXTENSIONS = Arrays.asList(DEFAULT_SKETCH_EXTENSION, "pde");
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
   public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 

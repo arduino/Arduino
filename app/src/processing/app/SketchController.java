@@ -140,7 +140,7 @@ public class SketchController {
 
     // Add the extension here, this simplifies some of the logic below.
     if (newName.indexOf('.') == -1) {
-      newName += "." + sketch.getDefaultExtension();
+      newName += "." + Sketch.DEFAULT_SKETCH_EXTENSION;
     }
 
     // if renaming to the same thing as before, just ignore.
@@ -167,17 +167,17 @@ public class SketchController {
       return;
     }
 
-    String newExtension = newName.substring(dot+1).toLowerCase();
-    if (!validExtension(newExtension)) {
+    FileUtils.SplitFile split = FileUtils.splitFilename(newName);
+    if (!Sketch.EXTENSIONS.contains(split.extension)) {
       Base.showWarning(tr("Problem with rename"),
-                       I18n.format(
-			 tr("\".{0}\" is not a valid extension."), newExtension
-		       ), null);
+                       I18n.format(tr("\".{0}\" is not a valid extension."),
+                                   split.extension),
+                       null);
       return;
     }
 
     // Don't let the user create the main tab as a .java file instead of .pde
-    if (!isDefaultExtension(newExtension)) {
+    if (!split.extension.equals(Sketch.DEFAULT_SKETCH_EXTENSION)) {
       if (renamingCode) {  // If creating a new tab, don't show this error
         if (current.isPrimary()) { // If this is the main tab, disallow
           Base.showWarning(tr("Problem with rename"),
@@ -189,14 +189,9 @@ public class SketchController {
       }
     }
 
-    // dots are allowed for the .pde and .java, but not in the name
-    // make sure the user didn't name things poo.time.pde
-    // or something like that (nothing against poo time)
-    String shortName = newName.substring(0, dot);
-    String sanitaryName = BaseNoGui.sanitizeName(shortName);
-    if (!shortName.equals(sanitaryName)) {
-      newName = sanitaryName + "." + newExtension;
-    }
+    // Sanitize name
+    String sanitaryName = BaseNoGui.sanitizeName(split.basename);
+    newName = sanitaryName + "." + split.extension;
 
     // In Arduino, we want to allow files with the same name but different
     // extensions, so compare the full names (including extensions).  This
@@ -1056,23 +1051,6 @@ public class SketchController {
    */
   private boolean hasDefaultExtension(SketchCode code) {
     return code.isExtension(sketch.getDefaultExtension());
-  }
-
-
-  /**
-   * True if the specified extension is the default file extension.
-   */
-  private boolean isDefaultExtension(String what) {
-    return what.equals(sketch.getDefaultExtension());
-  }
-
-
-  /**
-   * Check this extension (no dots, please) against the list of valid
-   * extensions.
-   */
-  private boolean validExtension(String what) {
-    return Sketch.EXTENSIONS.contains(what);
   }
 
   /**
