@@ -23,7 +23,7 @@
 
 package processing.app.debug;
 
-import processing.app.SketchCode;
+import processing.app.SketchFile;
 
 /**
  * An exception with a line number attached that occurs
@@ -32,7 +32,7 @@ import processing.app.SketchCode;
 @SuppressWarnings("serial")
 public class RunnerException extends Exception {
   protected String message;
-  protected SketchCode codeFile;
+  protected SketchFile codeFile;
   protected int codeLine;
   protected int codeColumn;
   protected boolean showStackTrace;
@@ -46,17 +46,17 @@ public class RunnerException extends Exception {
     this(message, null, -1, -1, showStackTrace);
   }
 
-  public RunnerException(String message, SketchCode file, int line) {
+  public RunnerException(String message, SketchFile file, int line) {
     this(message, file, line, -1, true);
   }
 
   
-  public RunnerException(String message, SketchCode file, int line, int column) {
+  public RunnerException(String message, SketchFile file, int line, int column) {
     this(message, file, line, column, true);
   }
   
   
-  public RunnerException(String message, SketchCode file, int line, int column, 
+  public RunnerException(String message, SketchFile file, int line, int column, 
                          boolean showStackTrace) {
     this.message = message;
     this.codeFile = file;
@@ -85,12 +85,12 @@ public class RunnerException extends Exception {
   }
   
   
-  public SketchCode getCodeFile() {
+  public SketchFile getCodeFile() {
     return codeFile;
   }
   
   
-  public void setCodeFile(SketchCode file) {
+  public void setCodeFile(SketchFile file) {
     codeFile = file;
   }
 

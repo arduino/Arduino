@@ -1,5 +1,5 @@
 /*
-  SketchCode - data class for a single file inside a sketch
+  SketchFile - data class for a single file inside a sketch
   Part of the Processing project - http://processing.org
 
   Copyright (c) 2004-08 Ben Fry and Casey Reas
@@ -36,9 +36,9 @@ import java.util.stream.Stream;
 import static processing.app.I18n.tr;
 
 /**
- * Represents a single tab of a sketch.
+ * Represents a file within a sketch.
  */
-public class SketchCode {
+public class SketchFile {
 
   /**
    * File object for where this code is located
@@ -53,7 +53,7 @@ public class SketchCode {
   /**
    * Interface for an in-memory storage of text file contents. This is
    * intended to allow a GUI to keep modified text in memory, and allow
-   * SketchCode to check for changes when needed.
+   * SketchFile to check for changes when needed.
    */
   public static interface TextStorage {
     /** Get the current text */
@@ -77,14 +77,14 @@ public class SketchCode {
   private TextStorage storage;
 
   /**
-   * Create a new SketchCode
+   * Create a new SketchFile
    *
    * @param file
-   *          The file this SketchCode represents
+   *          The file this SketchFile represents
    * @param primary
    *          Whether this file is the primary file of the sketch
    */
-  public SketchCode(File file, boolean primary) {
+  public SketchFile(File file, boolean primary) {
     this.file = file;
     this.primary = primary;
   }
@@ -211,7 +211,7 @@ public class SketchCode {
   }
 
   public boolean equals(Object o) {
-    return (o instanceof SketchCode) && file.equals(((SketchCode) o).file);
+    return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
   }
 
   /**

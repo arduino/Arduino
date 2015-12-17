@@ -41,11 +41,11 @@ public class Sketch {
    */
   private String name;
 
-  private List<SketchCode> codes = new ArrayList<SketchCode>();
+  private List<SketchFile> files = new ArrayList<SketchFile>();
 
-  private static final Comparator<SketchCode> CODE_DOCS_COMPARATOR = new Comparator<SketchCode>() {
+  private static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
     @Override
-    public int compare(SketchCode x, SketchCode y) {
+    public int compare(SketchFile x, SketchFile y) {
       if (x.isPrimary() && !y.isPrimary())
         return -1;
       if (y.isPrimary() && !x.isPrimary())
@@ -72,7 +72,7 @@ public class Sketch {
 
     folder = new File(file.getParent());
     dataFolder = new File(folder, "data");
-    codes = listSketchFiles(true);
+    files = listSketchFiles(true);
   }
 
   static public File checkSketchFile(File file) {
@@ -107,9 +107,9 @@ public class Sketch {
    *         not.
    */
   public boolean reload() throws IOException {
-    List<SketchCode> reloaded = listSketchFiles(false);
-    if (!reloaded.equals(codes)) {
-      codes = reloaded;
+    List<SketchFile> reloaded = listSketchFiles(false);
+    if (!reloaded.equals(files)) {
+      files = reloaded;
       return true;
     }
     return false;
@@ -119,16 +119,16 @@ public class Sketch {
    * Scan this sketch's directory for files that should be loaded as
    * part of this sketch. Doesn't modify this SketchData instance, just
    * returns a filtered and sorted list of File objects ready to be
-   * passed to the SketchCode constructor.
+   * passed to the SketchFile constructor.
    *
    * @param showWarnings
    *          When true, any invalid filenames will show a warning.
    */
-  private List<SketchCode> listSketchFiles(boolean showWarnings) throws IOException {
-    Set<SketchCode> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
+  private List<SketchFile> listSketchFiles(boolean showWarnings) throws IOException {
+    Set<SketchFile> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
     for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
       if (BaseNoGui.isSanitaryName(file.getName())) {
-        result.add(new SketchCode(file, file.equals(primaryFile)));
+        result.add(new SketchFile(file, file.equals(primaryFile)));
       } else if (showWarnings) {
         System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
       }
@@ -153,18 +153,18 @@ public class Sketch {
   }
 
   public void save() throws IOException {
-    for (SketchCode code : getCodes()) {
-      if (code.isModified())
-        code.save();
+    for (SketchFile file : getFiles()) {
+      if (file.isModified())
+        file.save();
     }
   }
 
   public int getCodeCount() {
-    return codes.size();
+    return files.size();
   }
 
-  public SketchCode[] getCodes() {
-    return codes.toArray(new SketchCode[0]);
+  public SketchFile[] getFiles() {
+    return files.toArray(new SketchFile[0]);
   }
 
   /**
@@ -182,26 +182,26 @@ public class Sketch {
     //return code[0].file.getAbsolutePath();
   }
 
-  public void addCode(SketchCode sketchCode) {
-    codes.add(sketchCode);
-    Collections.sort(codes, CODE_DOCS_COMPARATOR);
+  public void addFile(SketchFile file) {
+    files.add(file);
+    Collections.sort(files, CODE_DOCS_COMPARATOR);
   }
 
-  protected void replaceCode(SketchCode newCode) {
-    for (SketchCode code : codes) {
-      if (code.getFileName().equals(newCode.getFileName())) {
-        codes.set(codes.indexOf(code), newCode);
+  protected void replaceFile(SketchFile newCode) {
+    for (SketchFile file : files) {
+      if (file.getFileName().equals(newCode.getFileName())) {
+        files.set(files.indexOf(file), newCode);
         return;
       }
     }
   }
 
-  public SketchCode getCode(int i) {
-    return codes.get(i);
+  public SketchFile getFile(int i) {
+    return files.get(i);
   }
 
-  protected void removeCode(SketchCode which) {
-    if (!codes.remove(which))
+  protected void removeFile(SketchFile which) {
+    if (!files.remove(which))
       System.err.println("removeCode: internal error.. could not find code");
   }
 
@@ -221,8 +221,8 @@ public class Sketch {
    * Is any of the files in this sketch modified?
    */
   public boolean isModified() {
-    for (SketchCode code : codes) {
-      if (code.isModified())
+    for (SketchFile file : files) {
+      if (file.isModified())
         return true;
     }
     return false;

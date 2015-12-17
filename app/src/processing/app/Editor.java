@@ -1649,13 +1649,13 @@ public class Editor extends JFrame implements RunnerListener {
     selectTab((currentTabIndex - 1 + tabs.size()) % tabs.size());
   }
 
-  public EditorTab findTab(final SketchCode doc) {
-    return tabs.get(findTabIndex(doc));
+  public EditorTab findTab(final SketchFile file) {
+    return tabs.get(findTabIndex(file));
   }
 
-  public int findTabIndex(final SketchCode doc) {
+  public int findTabIndex(final SketchFile file) {
     for (int i = 0; i < tabs.size(); ++i) {
-      if (tabs.get(i).getSketchCode() == doc)
+      if (tabs.get(i).getSketchFile() == file)
         return i;
     }
     return -1;
@@ -1669,9 +1669,9 @@ public class Editor extends JFrame implements RunnerListener {
     tabs.clear();
     currentTabIndex = -1;
     tabs.ensureCapacity(sketch.getCodeCount());
-    for (SketchCode code : sketch.getCodes()) {
+    for (SketchFile file : sketch.getFiles()) {
       try {
-        addTab(code, null);
+        addTab(file, null);
       } catch(IOException e) {
         // TODO: Improve / move error handling
         System.err.println(e);
@@ -1683,15 +1683,15 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Add a new tab.
    *
-   * @param code
+   * @param file
    *          The file to show in the tab.
    * @param contents
-   *          The contents to show in the tab, or null to load the
-   *          contents from the given file.
+   *          The contents to show in the tab, or null to load the contents from
+   *          the given file.
    * @throws IOException
    */
-  protected void addTab(SketchCode code, String contents) throws IOException {
-    EditorTab tab = new EditorTab(this, code, contents);
+  protected void addTab(SketchFile file, String contents) throws IOException {
+    EditorTab tab = new EditorTab(this, file, contents);
     tabs.add(tab);
   }
 
@@ -2007,7 +2007,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (sketchController == null) {
       return;
     }
-    SketchCode current = getCurrentTab().getSketchCode();
+    SketchFile current = getCurrentTab().getSketchFile();
     if (current.isPrimary()) {
       setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
                            BaseNoGui.VERSION_NAME_LONG));
@@ -2570,7 +2570,7 @@ public class Editor extends JFrame implements RunnerListener {
       printerJob.setPrintable(getCurrentTab().getTextArea());
     }
     // set the name of the job to the code name
-    printerJob.setJobName(getCurrentTab().getSketchCode().getPrettyName());
+    printerJob.setJobName(getCurrentTab().getSketchFile().getPrettyName());
 
     if (printerJob.printDialog()) {
       try {

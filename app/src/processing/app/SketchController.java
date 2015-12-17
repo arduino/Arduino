@@ -92,7 +92,7 @@ public class SketchController {
    * Handler for the Rename Code menu option.
    */
   public void handleRenameCode() {
-    SketchCode current = editor.getCurrentTab().getSketchCode();
+    SketchFile current = editor.getCurrentTab().getSketchFile();
 
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
@@ -133,7 +133,7 @@ public class SketchController {
    * where they diverge.
    */
   protected void nameCode(String newName) {
-    SketchCode current = editor.getCurrentTab().getSketchCode();
+    SketchFile current = editor.getCurrentTab().getSketchFile();
     int currentIndex = editor.getCurrentTabIndex();
 
     // make sure the user didn't hide the sketch folder
@@ -197,12 +197,12 @@ public class SketchController {
     // In Arduino, we want to allow files with the same name but different
     // extensions, so compare the full names (including extensions).  This
     // might cause problems: http://dev.processing.org/bugs/show_bug.cgi?id=543
-    for (SketchCode c : sketch.getCodes()) {
-      if (newName.equalsIgnoreCase(c.getFileName()) && OSUtils.isWindows()) {
+    for (SketchFile file : sketch.getFiles()) {
+      if (newName.equalsIgnoreCase(file.getFileName()) && OSUtils.isWindows()) {
         Base.showMessage(tr("Error"),
                          I18n.format(
 			   tr("A file named \"{0}\" already exists in \"{1}\""),
-			   c.getFileName(),
+			   file.getFileName(),
 			   sketch.getFolder().getAbsolutePath()
 			 ));
         return;
@@ -219,9 +219,9 @@ public class SketchController {
     }
 
     if (renamingCode && current.isPrimary()) {
-      for (SketchCode code : sketch.getCodes()) {
-        if (sanitaryName.equalsIgnoreCase(code.getBaseName()) &&
-          code.isExtension("cpp")) {
+      for (SketchFile file : sketch.getFiles()) {
+        if (sanitaryName.equalsIgnoreCase(file.getBaseName()) &&
+          file.isExtension("cpp")) {
           Base.showMessage(tr("Error"),
                            I18n.format(tr("You can't rename the sketch to \"{0}\"\n"
                                            + "because the sketch already has a .cpp file with that name."),
@@ -272,7 +272,7 @@ public class SketchController {
         // first get the contents of the editor text area
         if (current.isModified()) {
           try {
-            // save this new SketchCode
+            // save this new SketchFile
             current.save();
           } catch (Exception e) {
             Base.showWarning(tr("Error"), tr("Could not rename the sketch. (0)"), e);
@@ -292,8 +292,8 @@ public class SketchController {
 
         // save each of the other tabs because this is gonna be re-opened
         try {
-          for (SketchCode code : sketch.getCodes()) {
-            code.save();
+          for (SketchFile file : sketch.getFiles()) {
+            file.save();
           }
         } catch (Exception e) {
           Base.showWarning(tr("Error"), tr("Could not rename the sketch. (1)"), e);
@@ -351,9 +351,9 @@ public class SketchController {
         return;
       }
       ensureExistence();
-      SketchCode code = new SketchCode(newFile, false);
+      SketchFile file = new SketchFile(newFile, false);
       try {
-        editor.addTab(code, "");
+        editor.addTab(file, "");
       } catch (IOException e) {
         Base.showWarning(tr("Error"),
        I18n.format(
@@ -361,8 +361,8 @@ public class SketchController {
        ), e);
         return;
       }
-      sketch.addCode(code);
-      editor.selectTab(editor.findTabIndex(code));
+      sketch.addFile(file);
+      editor.selectTab(editor.findTabIndex(file));
     }
 
     // update the tabs
@@ -374,7 +374,7 @@ public class SketchController {
    * Remove a piece of code from the sketch and from the disk.
    */
   public void handleDeleteCode() throws IOException {
-    SketchCode current = editor.getCurrentTab().getSketchCode();
+    SketchFile current = editor.getCurrentTab().getSketchFile();
     editor.status.clearState();
     // make sure the user didn't hide the sketch folder
     ensureExistence();
@@ -428,7 +428,7 @@ public class SketchController {
         }
 
         // remove code from the list
-        sketch.removeCode(current);
+        sketch.removeFile(current);
 
         // just set current tab to the main tab
         editor.selectTab(0);
@@ -513,13 +513,13 @@ public class SketchController {
 
 
   private boolean renameCodeToInoExtension(File pdeFile) {
-    for (SketchCode c : sketch.getCodes()) {
-      if (!c.getFile().equals(pdeFile))
+    for (SketchFile file : sketch.getFiles()) {
+      if (!file.getFile().equals(pdeFile))
         continue;
 
       String pdeName = pdeFile.getPath();
       pdeName = pdeName.substring(0, pdeName.length() - 4) + ".ino";
-      return c.renameTo(new File(pdeName));
+      return file.renameTo(new File(pdeName));
     }
     return false;
   }
@@ -564,8 +564,8 @@ public class SketchController {
     // make sure there doesn't exist a .cpp file with that name already
     // but ignore this situation for the first tab, since it's probably being
     // resaved (with the same name) to another location/folder.
-    for (SketchCode code : sketch.getCodes()) {
-      if (!code.isPrimary() && newName.equalsIgnoreCase(code.getBaseName())) {
+    for (SketchFile file : sketch.getFiles()) {
+      if (!file.isPrimary() && newName.equalsIgnoreCase(file.getBaseName())) {
         Base.showMessage(tr("Error"),
           I18n.format(tr("You can't save the sketch as \"{0}\"\n" +
             "because the sketch already has a file with that name."), newName
@@ -609,10 +609,10 @@ public class SketchController {
     newFolder.mkdirs();
 
     // save the other tabs to their new location
-    for (SketchCode code : sketch.getCodes()) {
-      if (code.isPrimary()) continue;
-      File newFile = new File(newFolder, code.getFileName());
-      code.saveAs(newFile);
+    for (SketchFile file : sketch.getFiles()) {
+      if (file.isPrimary()) continue;
+      File newFile = new File(newFolder, file.getFileName());
+      file.saveAs(newFile);
     }
 
     // re-copy the data folder (this may take a while.. add progress bar?)
@@ -623,7 +623,7 @@ public class SketchController {
 
     // save the main tab with its new name
     File newFile = new File(newFolder, newName + ".ino");
-    sketch.getCode(0).saveAs(newFile);
+    sketch.getFile(0).saveAs(newFile);
 
     editor.handleOpenUnchecked(newFile,
             editor.getCurrentTabIndex(),
@@ -766,16 +766,16 @@ public class SketchController {
     }
 
     if (!isData) {
-      SketchCode newCode = new SketchCode(destFile, false);
+      SketchFile newFile = new SketchFile(destFile, false);
 
       if (replacement) {
-        sketch.replaceCode(newCode);
+        sketch.replaceFile(newFile);
 
       } else {
         ensureExistence();
-        sketch.addCode(newCode);
+        sketch.addFile(newFile);
       }
-      editor.selectTab(editor.findTabIndex(newCode));
+      editor.selectTab(editor.findTabIndex(newFile));
     }
     return true;
   }
@@ -801,8 +801,8 @@ public class SketchController {
     // import statements into the main sketch file (code[0])
     // if the current code is a .java file, insert into current
     //if (current.flavor == PDE) {
-    SketchCode code = editor.getCurrentTab().getSketchCode();
-    if (code.isExtension(Sketch.SKETCH_EXTENSIONS))
+    SketchFile file = editor.getCurrentTab().getSketchFile();
+    if (file.isExtension(Sketch.SKETCH_EXTENSIONS))
       editor.selectTab(0);
 
     // could also scan the text in the file to see if each import
@@ -896,8 +896,8 @@ public class SketchController {
     File tempFolder = FileUtils.createTempFolder("arduino_modified_sketch_");
     FileUtils.copy(sketch.getFolder(), tempFolder);
 
-    for (SketchCode sc : Stream.of(sketch.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
-      Files.write(Paths.get(tempFolder.getAbsolutePath(), sc.getFileName()), sc.getProgram().getBytes());
+    for (SketchFile file : Stream.of(sketch.getFiles()).filter(SketchFile::isModified).collect(Collectors.toList())) {
+      Files.write(Paths.get(tempFolder.getAbsolutePath(), file.getFileName()), file.getProgram().getBytes());
     }
 
     return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getName()).toString();
@@ -990,8 +990,8 @@ public class SketchController {
     try {
       sketch.getFolder().mkdirs();
 
-      for (SketchCode code : sketch.getCodes()) {
-        code.save();  // this will force a save
+      for (SketchFile file : sketch.getFiles()) {
+        file.save();  // this will force a save
       }
       calcModified();
 
@@ -1026,8 +1026,8 @@ public class SketchController {
   }
 
   private boolean sketchFilesAreReadOnly() {
-    for (SketchCode code : sketch.getCodes()) {
-      if (code.isModified() && code.fileReadOnly() && code.fileExists()) {
+    for (SketchFile file : sketch.getFiles()) {
+      if (file.isModified() && file.fileReadOnly() && file.fileExists()) {
         return true;
       }
     }

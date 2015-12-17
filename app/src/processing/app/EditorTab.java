@@ -64,11 +64,11 @@ import processing.app.tools.DiscourseFormat;
 /**
  * Single tab, editing a single file, in the main window.
  */
-public class EditorTab extends JPanel implements SketchCode.TextStorage {
+public class EditorTab extends JPanel implements SketchFile.TextStorage {
   protected Editor editor;
   protected SketchTextArea textarea;
   protected RTextScrollPane scrollPane;
-  protected SketchCode code;
+  protected SketchFile file;
   protected boolean modified;
   /** Is external editing mode currently enabled? */
   protected boolean external;
@@ -78,32 +78,32 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
    *
    * @param editor
    *          The Editor this tab runs in
-   * @param code
+   * @param file
    *          The file to display in this tab
    * @param contents
-   *          Initial contents to display in this tab. Can be used when
-   *          editing a file that doesn't exist yet. If null is passed,
-   *          code.load() is called and displayed instead.
+   *          Initial contents to display in this tab. Can be used when editing
+   *          a file that doesn't exist yet. If null is passed, code.load() is
+   *          called and displayed instead.
    * @throws IOException
    */
-  public EditorTab(Editor editor, SketchCode code, String contents)
+  public EditorTab(Editor editor, SketchFile file, String contents)
       throws IOException {
     super(new BorderLayout());
 
     // Load initial contents contents from file if nothing was specified.
     if (contents == null) {
-      contents = code.load();
+      contents = file.load();
       modified = false;
     } else {
       modified = true;
     }
 
     this.editor = editor;
-    this.code = code;
+    this.file = file;
     RSyntaxDocument document = createDocument(contents);
     this.textarea = createTextArea(document);
     this.scrollPane = createScrollPane(this.textarea);
-    code.setStorage(this);
+    file.setStorage(this);
     applyPreferences();
     add(this.scrollPane, BorderLayout.CENTER);
 
@@ -291,14 +291,14 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
         textarea.setEditable(false);
         // Detach from the code, since we are no longer the authoritative source
         // for file contents.
-        code.setStorage(null);
+        file.setStorage(null);
         // Reload, in case the file contents already changed.
         reload();
       } else {
         textarea.setBackground(Theme.getColor("editor.bgcolor"));
         textarea.setHighlightCurrentLine(Theme.getBoolean("editor.linehighlight"));
         textarea.setEditable(true);
-        code.setStorage(this);
+        file.setStorage(this);
         // Reload once just before disabling external mode, to ensure we have
         // the latest contents.
         reload();
@@ -334,10 +334,10 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   private void reload() {
     String text;
     try {
-      text = code.load();
+      text = file.load();
     } catch (IOException e) {
       System.err.println(I18n.format("Warning: Failed to reload file: \"{0}\"",
-                                     code.getFileName()));
+                                     file.getFileName()));
       return;
     }
     setText(text);
@@ -363,10 +363,10 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   }
   
   /**
-   * Get the SketchCodeDocument that is being edited in this tab.
+   * Get the SketchFile that is being edited in this tab.
    */
-  public SketchCode getSketchCode() {
-    return this.code;
+  public SketchFile getSketchFile() {
+    return this.file;
   }
   
   /**
@@ -405,8 +405,8 @@ public class EditorTab extends JPanel implements SketchCode.TextStorage {
   }
 
   /**
-   * Clear modified status. Should only be called by SketchCode through
-   * the TextStorage interface.
+   * Clear modified status. Should only be called by SketchFile through the
+   * TextStorage interface.
    */
   public void clearModified() {
     setModified(false);

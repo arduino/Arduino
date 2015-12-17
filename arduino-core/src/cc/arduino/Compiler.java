@@ -594,9 +594,9 @@ public class Compiler implements MessageConsumer {
   }
 
   private RunnerException placeException(String message, String fileName, int line) {
-    for (SketchCode code : sketch.getCodes()) {
-      if (new File(fileName).getName().equals(code.getFileName())) {
-        return new RunnerException(message, code, line);
+    for (SketchFile file : sketch.getFiles()) {
+      if (new File(fileName).getName().equals(file.getFileName())) {
+        return new RunnerException(message, file, line);
       }
     }
     return null;
