@@ -787,7 +787,7 @@ public class SketchController {
         ensureExistence();
         sketch.addCode(newCode);
       }
-      editor.selectTab(editor.findTabIndex(filename));
+      editor.selectTab(editor.findTabIndex(newCode));
     }
     return true;
   }
