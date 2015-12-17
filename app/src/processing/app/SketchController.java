@@ -704,7 +704,7 @@ public class SketchController {
     if (FileUtils.hasExtension(sourceFile, Sketch.EXTENSIONS)) {
       destFile = new File(sketch.getFolder(), filename);
     } else {
-      prepareDataFolder();
+      sketch.prepareDataFolder();
       destFile = new File(sketch.getDataFolder(), filename);
       isData = true;
     }
@@ -1044,16 +1044,6 @@ public class SketchController {
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
-  /**
-   * Create the data folder if it does not exist already. As a convenience,
-   * it also returns the data folder, since it's likely about to be used.
-   */
-  private File prepareDataFolder() {
-    if (!sketch.getDataFolder().exists()) {
-      sketch.getDataFolder().mkdirs();
-    }
-    return sketch.getDataFolder();
-  }
 
 
   private void setUntitled(boolean u) {
