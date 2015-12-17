@@ -49,7 +49,7 @@ public class FixEncoding implements Tool {
   
 
   public void run() {
-    SketchController sketch = editor.getSketchController();
+    Sketch sketch = editor.getSketch();
     //SketchCode code = sketch.current;
     
     if (sketch.isModified()) {
@@ -65,8 +65,8 @@ public class FixEncoding implements Tool {
       }
     }
     try {
-      for (int i = 0; i < sketch.getSketch().getCodeCount(); i++) {
-        SketchCode code = sketch.getSketch().getCode(i);
+      for (int i = 0; i < sketch.getCodeCount(); i++) {
+        SketchCode code = sketch.getCode(i);
         editor.findTab(code).setText(loadWithLocalEncoding(code.getFile()));
       }
     } catch (IOException e) {

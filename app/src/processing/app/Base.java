@@ -542,8 +542,8 @@ public class Base {
     Collections.reverse(reversedEditors);
     int index = 0;
     for (Editor editor : reversedEditors) {
-      SketchController sketch = editor.getSketchController();
-      String path = sketch.getSketch().getMainFilePath();
+      Sketch sketch = editor.getSketch();
+      String path = sketch.getMainFilePath();
       // Skip untitled sketches if they do not contains changes.
       if (path.startsWith(untitledPath) && !sketch.isModified()) {
         continue;

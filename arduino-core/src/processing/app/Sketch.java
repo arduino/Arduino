@@ -214,4 +214,15 @@ public class Sketch {
   public File getDataFolder() {
     return dataFolder;
   }
+
+  /**
+   * Is any of the files in this sketch modified?
+   */
+  public boolean isModified() {
+    for (SketchCode code : codes) {
+      if (code.isModified())
+        return true;
+    }
+    return false;
+  }
 }
