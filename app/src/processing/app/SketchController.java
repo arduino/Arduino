@@ -582,7 +582,7 @@ public class SketchController {
     // re-copy the data folder (this may take a while.. add progress bar?)
     if (sketch.getDataFolder().exists()) {
       File newDataFolder = new File(newFolder, "data");
-      Base.copyDir(sketch.getDataFolder(), newDataFolder);
+      FileUtils.copy(sketch.getDataFolder(), newDataFolder);
     }
 
     // save the main tab with its new name
