@@ -31,11 +31,6 @@ public class Sketch {
   private File folder;
 
   /**
-   * data folder location for this sketch (may not exist yet)
-   */
-  private File dataFolder;
-
-  /**
    * Name of sketch, which is the name of main file (without .pde or .java
    * extension)
    */
@@ -71,7 +66,6 @@ public class Sketch {
     name = mainFilename.substring(0, mainFilename.length() - suffixLength);
 
     folder = new File(file.getParent());
-    dataFolder = new File(folder, "data");
     files = listSketchFiles(true);
   }
 
@@ -146,6 +140,7 @@ public class Sketch {
    * about to be used.
    */
   public File prepareDataFolder() {
+    File dataFolder = getDataFolder();
     if (!dataFolder.exists()) {
       dataFolder.mkdirs();
     }
@@ -214,7 +209,7 @@ public class Sketch {
   }
 
   public File getDataFolder() {
-    return dataFolder;
+    return new File(folder, "data");
   }
 
   /**
