@@ -144,15 +144,30 @@ public class Platform {
     }
   }
 
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    return null;
+  static {
+    loadLib(new File(BaseNoGui.getContentFile("lib"), System.mapLibraryName("listSerialsj")));
+  };
+
+  private static void loadLib(File lib) {
+    try {
+      System.load(lib.getAbsolutePath());
+    } catch (UnsatisfiedLinkError e) {
+      e.printStackTrace();
+      System.out.println(e.getMessage());
+      System.out.println("Cannot load native library " + lib.getAbsolutePath());
+      System.out.println("The program has terminated!");
+      System.exit(1);
+    }
   }
+
+  public native String resolveDeviceAttachedToNative(String serial);
 
   public String preListAllCandidateDevices() {
     return null;
   }
 
-  protected Map<String, Object> resolveDeviceByVendorIdProductId(Map<String, TargetPackage> packages, String readVIDPID) {
+  public Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+    String vid_pid_iSerial = resolveDeviceAttachedToNative(serial);
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
@@ -161,12 +176,12 @@ public class Platform {
             List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid", 1).values());
             for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
-              if (readVIDPID.contains(vidPid.toUpperCase())) {
+              if (vid_pid_iSerial.toUpperCase().contains(vidPid.toUpperCase())) {
                 Map<String, Object> boardData = new HashMap<String, Object>();
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
-                boardData.put("iserial", readVIDPID.substring(vidPid.length()+1));
+                boardData.put("iserial", vid_pid_iSerial.substring(vidPid.length()+1));
                 return boardData;
               }
             }
