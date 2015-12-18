@@ -21,11 +21,6 @@ public class Sketch {
   public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 
   /**
-   * main pde file for this sketch.
-   */
-  private File primaryFile;
-
-  /**
    * folder that contains this sketch
    */
   private File folder;
@@ -57,8 +52,6 @@ public class Sketch {
    *          The primary file for this sketch.
    */
   Sketch(File file) throws IOException {
-    primaryFile = file;
-
     // get the name of the sketch by chopping .pde or .java
     // off of the main file name
     String mainFilename = primaryFile.getName();
@@ -122,7 +115,9 @@ public class Sketch {
     Set<SketchFile> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
     for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
       if (BaseNoGui.isSanitaryName(file.getName())) {
-        result.add(new SketchFile(file, file.equals(primaryFile)));
+        FileUtils.SplitFile split = FileUtils.splitFilename(file);
+        boolean isPrimary = split.basename.equals(folder.getName()) && SKETCH_EXTENSIONS.contains(split.extension);
+        result.add(new SketchFile(file, isPrimary));
       } else if (showWarnings) {
         System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
       }
@@ -165,16 +160,15 @@ public class Sketch {
   /**
    * Returns a file object for the primary .pde of this sketch.
    */
-  public File getPrimaryFile() {
-    return primaryFile;
+  public SketchFile getPrimaryFile() {
+    return files.get(0);
   }
 
   /**
    * Returns path to the main .pde file for this sketch.
    */
   public String getMainFilePath() {
-    return primaryFile.getAbsolutePath();
-    //return code[0].file.getAbsolutePath();
+    return getPrimaryFile().getFile().getAbsolutePath();
   }
 
   public void addFile(SketchFile file) {

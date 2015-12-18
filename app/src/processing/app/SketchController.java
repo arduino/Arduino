@@ -865,7 +865,7 @@ public class SketchController {
       Files.write(Paths.get(tempFolder.getAbsolutePath(), file.getFileName()), file.getProgram().getBytes());
     }
 
-    return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getName()).toString();
+    return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toString();
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
