@@ -157,7 +157,7 @@ public class Compiler implements MessageConsumer {
 
     size(prefs);
 
-    return sketch.getPrimaryFile().getName();
+    return sketch.getPrimaryFile().getFileName();
   }
 
   private String VIDPID() {
