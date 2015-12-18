@@ -2123,34 +2123,6 @@ public class Base {
   }
 
 
-  /**
-   * Copy a folder from one place to another. This ignores all dot files and
-   * folders found in the source directory, to avoid copying silly .DS_Store
-   * files and potentially troublesome .svn folders.
-   */
-  static public void copyDir(File sourceDir,
-                             File targetDir) throws IOException {
-    targetDir.mkdirs();
-    String files[] = sourceDir.list();
-    if (files == null) {
-      throw new IOException("Unable to list files from " + sourceDir);
-    }
-    for (String file : files) {
-      // Ignore dot files (.DS_Store), dot folders (.svn) while copying
-      if (file.charAt(0) == '.') continue;
-      //if (files[i].equals(".") || files[i].equals("..")) continue;
-      File source = new File(sourceDir, file);
-      File target = new File(targetDir, file);
-      if (source.isDirectory()) {
-        //target.mkdirs();
-        copyDir(source, target);
-        target.setLastModified(source.lastModified());
-      } else {
-        copyFile(source, target);
-      }
-    }
-  }
-
 
   /**
    * Remove all files in a directory and the directory itself.
