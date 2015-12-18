@@ -839,7 +839,7 @@ public class SketchController {
     CompilerProgressListener progressListener = editor.status::progressUpdate;
 
     boolean deleteTemp = false;
-    String pathToSketch = sketch.getMainFilePath();
+    File pathToSketch = sketch.getPrimaryFile().getFile();
     if (sketch.isModified()) {
       // If any files are modified, make a copy of the sketch with the changes
       // saved, so arduino-builder will see the modifications.
@@ -852,11 +852,11 @@ public class SketchController {
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
-        FileUtils.recursiveDelete(new File(pathToSketch).getParentFile());
+        FileUtils.recursiveDelete(pathToSketch.getParentFile());
     }
   }
 
-  private String saveSketchInTempFolder() throws IOException {
+  private File saveSketchInTempFolder() throws IOException {
     File tempFolder = FileUtils.createTempFolder("arduino_modified_sketch_");
     FileUtils.copy(sketch.getFolder(), tempFolder);
 
@@ -864,7 +864,7 @@ public class SketchController {
       Files.write(Paths.get(tempFolder.getAbsolutePath(), file.getFileName()), file.getProgram().getBytes());
     }
 
-    return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toString();
+    return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toFile();
   }
 
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
