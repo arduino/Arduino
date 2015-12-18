@@ -25,12 +25,6 @@ public class Sketch {
    */
   private File folder;
 
-  /**
-   * Name of sketch, which is the name of main file (without .pde or .java
-   * extension)
-   */
-  private String name;
-
   private List<SketchFile> files = new ArrayList<SketchFile>();
 
   private static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
@@ -49,15 +43,9 @@ public class Sketch {
    * on disk to get populate the list of files in this sketch.
    *
    * @param file
-   *          The primary file for this sketch.
+   *          Any file inside the sketch directory.
    */
   Sketch(File file) throws IOException {
-    // get the name of the sketch by chopping .pde or .java
-    // off of the main file name
-    String mainFilename = primaryFile.getName();
-    int suffixLength = getDefaultExtension().length() + 1;
-    name = mainFilename.substring(0, mainFilename.length() - suffixLength);
-
     folder = new File(file.getParent());
     files = listSketchFiles(true);
   }
@@ -195,7 +183,7 @@ public class Sketch {
   }
 
   public String getName() {
-    return name;
+    return folder.getName();
   }
 
   public File getFolder() {
