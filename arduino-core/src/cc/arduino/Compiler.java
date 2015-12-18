@@ -108,17 +108,17 @@ public class Compiler implements MessageConsumer {
 
   private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
-  private final String pathToSketch;
+  private final File pathToSketch;
   private final Sketch sketch;
   private final String buildPath;
   private final boolean verbose;
   private RunnerException exception;
 
   public Compiler(Sketch data, String buildPath) {
-    this(data.getMainFilePath(), data, buildPath);
+    this(data.getPrimaryFile().getFile(), data, buildPath);
   }
 
-  public Compiler(String pathToSketch, Sketch sketch, String buildPath) {
+  public Compiler(File pathToSketch, Sketch sketch, String buildPath) {
     this.pathToSketch = pathToSketch;
     this.sketch = sketch;
     this.buildPath = buildPath;
@@ -241,7 +241,7 @@ public class Compiler implements MessageConsumer {
       commandLine.addArgument("-verbose", false);
     }
 
-    commandLine.addArgument("\"" + pathToSketch + "\"", false);
+    commandLine.addArgument("\"" + pathToSketch.getAbsolutePath() + "\"", false);
 
     if (verbose) {
       System.out.println(commandLine);
