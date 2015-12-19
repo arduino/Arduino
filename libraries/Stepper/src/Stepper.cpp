@@ -153,7 +153,12 @@ void Stepper::step(int steps_to_move)
   // decrement the number of steps, moving one step each time:
   while (steps_left > 0)
   {
-    delayMicroseconds(this->step_delay);  // move only if the appropriate delay has passed
+    unsigned long now = micros();
+    // move only if the appropriate delay has passed:
+    if (now - this->last_step_time >= this->step_delay)
+    {
+      // get the timeStamp of when you stepped:
+      this->last_step_time = now;
       // increment or decrement the step number,
       // depending on direction:
       if (steps_to_move >= 0)
@@ -174,6 +179,7 @@ void Stepper::step(int steps_to_move)
       stepMotor(this->step_number % phase_count);
       // decrement the steps left:
       steps_left--;
+    }
   }
 }
 

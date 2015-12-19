@@ -156,6 +156,7 @@ class Stepper {
 
     // motor pin numbers:
     unsigned char motor_pin[5];   // Maximum 5 control signals
+    unsigned long last_step_time; // time stamp in us of when the last step was taken
 };
 
 #endif
