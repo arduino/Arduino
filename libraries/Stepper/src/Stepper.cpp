@@ -91,7 +91,7 @@
 Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1)
 {
   initMotor(number_of_steps, motor_pin_0, motor_pin_1,
-                             0, 0, 0, (unsigned char*)phasesMatrix2, 2, 4);
+                             0, 0, 0, 2, (unsigned char*)phasesMatrix2, 4);
 }
 
 /*
@@ -103,7 +103,7 @@ Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
 {
   initMotor(number_of_steps, motor_pin_0, motor_pin_1,
                              motor_pin_2, motor_pin_3,
-                             0, (unsigned char*)phasesMatrix4, 4, 4);
+                             0, 4, (unsigned char*)phasesMatrix4, 4);
 }
 
 /*
@@ -116,7 +116,61 @@ Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
 {
   initMotor(number_of_steps, motor_pin_0, motor_pin_1,
                              motor_pin_2, motor_pin_3,
-                             motor_pin_4, (unsigned char*)phasesMatrix5, 5, 10);
+                             motor_pin_4, 5, (unsigned char*)phasesMatrix5, 10);
+}
+
+/*
+ *   universal constructor for motors with only one wire
+ *   Sets which wires should control the motor, pointer to the phases matrix, number of pins and phases.
+ */
+Stepper::Stepper(unsigned number_of_steps, int motor_pin_0,
+                 int pin_count, unsigned char *phasesMatrix, int phase_count)
+{
+  initMotor(number_of_steps, motor_pin_0, 0,
+                             0,           0,
+                             0,           pin_count,
+                             phasesMatrix,phase_count);
+}
+
+/*
+ *   universal constructor for motors with maximum two wires
+ *   Sets which wires should control the motor, pointer to the phases matrix, number of pins and phases.
+ */
+Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+                 int pin_count, unsigned char *phasesMatrix, int phase_count)
+{
+  initMotor(number_of_steps, motor_pin_0, motor_pin_1,
+                             0,           0,
+                             0,           pin_count,
+                             phasesMatrix,phase_count);
+}
+
+/*
+ *   universal constructor for motors with maximum three wires
+ *   Sets which wires should control the motor, pointer to the phases matrix, number of pins and phases.
+ */
+Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+                 int motor_pin_2, int pin_count,
+                 unsigned char *phasesMatrix, int phase_count)
+{
+  initMotor(number_of_steps, motor_pin_0, motor_pin_1,
+                             motor_pin_2, 0,
+                             0,           pin_count,
+                             phasesMatrix,phase_count);
+}
+
+/*
+ *   universal constructor for motors with maximum four wires
+ *   Sets which wires should control the motor, pointer to the phases matrix, number of pins and phases.
+ */
+Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+                 int motor_pin_2, int motor_pin_3, int pin_count,
+                 unsigned char *phasesMatrix, int phase_count)
+{
+  initMotor(number_of_steps, motor_pin_0, motor_pin_1,
+                             motor_pin_2, motor_pin_3,
+                             0,           pin_count,
+                             phasesMatrix,phase_count);
 }
 
 /*
@@ -125,13 +179,13 @@ Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
  */
 Stepper::Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                       int motor_pin_2, int motor_pin_3,
-                                      int motor_pin_4, unsigned char *phasesMatrix,
-                                      int pin_count,   int phase_count)
+                                      int motor_pin_4, int pin_count,
+                                      unsigned char *phasesMatrix, int phase_count)
 {
   initMotor(number_of_steps, motor_pin_0, motor_pin_1,
                              motor_pin_2, motor_pin_3,
-                             motor_pin_4, phasesMatrix,
-                             pin_count,   phase_count);
+                             motor_pin_4, pin_count,
+                             phasesMatrix,phase_count);
 }
 
 /*
@@ -200,8 +254,8 @@ void Stepper::stepMotor(unsigned char thisPhase)
  */
 void Stepper::initMotor(unsigned number_of_steps,  unsigned char motor_pin_0,  unsigned char motor_pin_1,
                                               unsigned char motor_pin_2,  unsigned char motor_pin_3,
-                                              unsigned char motor_pin_4,  unsigned char *phasesMatrix,
-                                              unsigned char pin_count,    unsigned char phase_count)
+                                              unsigned char motor_pin_4,  unsigned char pin_count,
+                                              unsigned char *phasesMatrix,unsigned char phase_count)
 {
   this->step_number = 0;    // which step the motor is on
   this->number_of_steps = number_of_steps; // total number of steps for this motor

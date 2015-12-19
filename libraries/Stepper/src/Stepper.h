@@ -127,10 +127,20 @@ class Stepper {
     Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                  int motor_pin_2, int motor_pin_3,
                                  int motor_pin_4);
+    Stepper(unsigned number_of_steps, int motor_pin_0,
+            int pin_count, unsigned char *phasesMatrix, int phase_count);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+            int pin_count, unsigned char *phasesMatrix, int phase_count);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+            int motor_pin_2, int pin_count,
+            unsigned char *phasesMatrix, int phase_count);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+            int motor_pin_2, int motor_pin_3, int pin_count,
+            unsigned char *phasesMatrix, int phase_count);
     Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                  int motor_pin_2, int motor_pin_3,
-                                 int motor_pin_4, unsigned char *phasesMatrix,
-                                 int pin_count,   int phase_count);
+                                 int motor_pin_4, int pin_count,
+                                 unsigned char *phasesMatrix, int phase_count);
 
     // speed setter method:
     void setSpeed(long whatSpeed);
@@ -144,8 +154,8 @@ class Stepper {
     void stepMotor(unsigned char thisPhase);
     void initMotor(unsigned number_of_steps, unsigned char motor_pin_0,  unsigned char motor_pin_1,
                                         unsigned char motor_pin_2,  unsigned char motor_pin_3,
-                                        unsigned char motor_pin_4,  unsigned char *phasesMatrix,
-                                        unsigned char pin_count,    unsigned char phase_count);
+                                        unsigned char motor_pin_4,  unsigned char pin_count,
+                                        unsigned char *phasesMatrix,unsigned char phase_count);
 
     unsigned long step_delay; // delay between steps, in ms, based on speed
     unsigned number_of_steps;     // total number of steps this motor can take
