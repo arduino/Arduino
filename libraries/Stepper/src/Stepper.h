@@ -128,19 +128,17 @@ class Stepper {
                                  int motor_pin_2, int motor_pin_3,
                                  int motor_pin_4);
     Stepper(unsigned number_of_steps, int motor_pin_0,
-            int pin_count, unsigned char *phasesMatrix, int phase_count);
-    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
-            int pin_count, unsigned char *phasesMatrix, int phase_count);
-    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
-            int motor_pin_2, int pin_count,
             unsigned char *phasesMatrix, int phase_count);
     Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
-            int motor_pin_2, int motor_pin_3, int pin_count,
             unsigned char *phasesMatrix, int phase_count);
     Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
-                                 int motor_pin_2, int motor_pin_3,
-                                 int motor_pin_4, int pin_count,
-                                 unsigned char *phasesMatrix, int phase_count);
+            int motor_pin_2, unsigned char *phasesMatrix, int phase_count);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+            int motor_pin_2, int motor_pin_3,
+            unsigned char *phasesMatrix, int phase_count);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
+            int motor_pin_2, int motor_pin_3, int motor_pin_4,
+            unsigned char *phasesMatrix, int phase_count);
 
     // speed setter method:
     void setSpeed(long whatSpeed);

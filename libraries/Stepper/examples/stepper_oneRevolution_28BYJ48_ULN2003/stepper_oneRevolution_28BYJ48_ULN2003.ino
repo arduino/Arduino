@@ -47,7 +47,7 @@ const unsigned char phasesMatrix[8] PROGMEM = {
   };
 
 //initialize the stepper library on pins 8 through 11, phasesMatrix, pin_count, phase_count:
-Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11, 0, 4, (unsigned char*)phasesMatrix, 8);
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11, (unsigned char*)phasesMatrix, 8);
 
 void setup() {
   // 17 is the maximum for counterclockwise revolution of motor 28BYJ-48
