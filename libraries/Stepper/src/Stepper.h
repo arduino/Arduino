@@ -121,13 +121,13 @@
 class Stepper {
   public:
     // constructors:
-    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1);
-    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1);
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                  int motor_pin_2, int motor_pin_3);
-    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                  int motor_pin_2, int motor_pin_3,
                                  int motor_pin_4);
-    Stepper(int number_of_steps, int motor_pin_0, int motor_pin_1,
+    Stepper(unsigned number_of_steps, int motor_pin_0, int motor_pin_1,
                                  int motor_pin_2, int motor_pin_3,
                                  int motor_pin_4, unsigned char *phasesMatrix,
                                  int pin_count,   int phase_count);
@@ -142,17 +142,17 @@ class Stepper {
 
   private:
     void stepMotor(unsigned char thisPhase);
-    void initMotor(int number_of_steps, unsigned char motor_pin_0,  unsigned char motor_pin_1,
+    void initMotor(unsigned number_of_steps, unsigned char motor_pin_0,  unsigned char motor_pin_1,
                                         unsigned char motor_pin_2,  unsigned char motor_pin_3,
                                         unsigned char motor_pin_4,  unsigned char *phasesMatrix,
                                         unsigned char pin_count,    unsigned char phase_count);
 
     unsigned long step_delay; // delay between steps, in ms, based on speed
-    int number_of_steps;      // total number of steps this motor can take
+    unsigned number_of_steps;     // total number of steps this motor can take
     unsigned char pin_count;      // how many pins are in use.
     unsigned char phase_count;    // how many phases are in use.
     unsigned char *phasesMatrix;  // pointer to the phases Matrix
-    int step_number;          // which step the motor is on
+    unsigned step_number;         // which step the motor is on
 
     // motor pin numbers:
     unsigned char motor_pin[5];   // Maximum 5 control signals
