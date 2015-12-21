@@ -266,6 +266,24 @@ public class FileUtils {
   }
 
   /**
+   * Adds an extension to the given filename. If it already contains
+   * one, an additional extension is added. If the extension is the
+   * empty string, the file is returned unmodified.
+   */
+  public static String addExtension(String filename, String extension) {
+    return extension.equals("") ? filename : (filename + "." + extension);
+  }
+
+  /**
+   * Adds an extension to the given filename. If it already contains
+   * one, an additional extension is added. If the extension is the
+   * empty string, the file is returned unmodified.
+   */
+  public static File addExtension(File file, String extension) {
+    return new File(file.getParentFile(), addExtension(file.getName(), extension));
+  }
+
+  /**
    * The result of a splitFilename call.
    */
   public static class SplitFile {
@@ -278,10 +296,7 @@ public class FileUtils {
     public String extension;
 
     public String join() {
-      if (extension.equals(""))
-        return basename;
-      else
-        return basename + "." + extension;
+      return addExtension(basename, extension);
     }
   }
 

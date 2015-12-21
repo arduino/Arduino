@@ -1642,9 +1642,31 @@ public class Editor extends JFrame implements RunnerListener {
     return tabs.get(findTabIndex(file));
   }
 
+  /**
+   * Finds the index of the tab showing the given file. Matches the file against
+   * EditorTab.getSketchFile() using ==.
+   *
+   * @returns The index of the tab for the given file, or -1 if no such tab was
+   *          found.
+   */
   public int findTabIndex(final SketchFile file) {
     for (int i = 0; i < tabs.size(); ++i) {
       if (tabs.get(i).getSketchFile() == file)
+        return i;
+    }
+    return -1;
+  }
+
+  /**
+   * Finds the index of the tab showing the given file. Matches the file against
+   * EditorTab.getSketchFile().getFile() using equals.
+   *
+   * @returns The index of the tab for the given file, or -1 if no such tab was
+   *          found.
+   */
+  public int findTabIndex(final File file) {
+    for (int i = 0; i < tabs.size(); ++i) {
+      if (tabs.get(i).getSketchFile().getFile().equals(file))
         return i;
     }
     return -1;
@@ -1870,23 +1892,6 @@ public class Editor extends JFrame implements RunnerListener {
         return result == options[2];
       }
     }
-  }
-
-
-  /**
-   * Open a sketch from a particular path, but don't check to save changes.
-   * Used by Sketch.saveAs() to re-open a sketch after the "Save As"
-   */
-  protected void handleOpenUnchecked(File file, int codeIndex,
-                                     int selStart, int selStop, int scrollPos) {
-    handleOpenInternal(file);
-    // Replacing a document that may be untitled. If this is an actual
-    // untitled document, then editor.untitled will be set by Base.
-    untitled = false;
-
-    selectTab(codeIndex);
-    getCurrentTab().setSelection(selStart, selStop);
-    getCurrentTab().setScrollPosition(scrollPos);
   }
 
   /**
