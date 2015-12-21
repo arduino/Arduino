@@ -46,7 +46,7 @@ public class Sketch {
    *          Any file inside the sketch directory.
    */
   Sketch(File file) throws IOException {
-    folder = new File(file.getParent());
+    folder = file.getParentFile();
     files = listSketchFiles(true);
   }
 
