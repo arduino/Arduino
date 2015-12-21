@@ -426,12 +426,31 @@ static bool USB_SendStringDescriptor(const u8*string_P, u8 string_len, uint8_t f
 
 //	Does not timeout or cross fifo boundaries
 //	Will only work for transfers <= 64 bytes
-//	TODO
+//	Use USB_RecvControlLong for longer transfers
 int USB_RecvControl(void* d, int len)
 {
 	WaitOUT();
 	Recv((u8*)d,len);
 	ClearOUT();
+	return len;
+}
+
+//	Does not timeout or cross fifo boundaries
+int USB_RecvControlLong(void* d, int len)
+{
+	auto bytesleft = len;
+	while(bytesleft > 0)
+	{
+		// Dont receive more than the USB Control EP has to offer
+		// Use fixed 64 because control EP always have 64 bytes even on 16u2.
+		auto recvLength = bytesleft;
+		if(recvLength > 64){
+			recvLength = 64;
+		}
+
+		// Write data to fit to the beginning of the array
+		bytesleft -= USB_RecvControl((u8*)d + len - bytesleft, recvLength);
+	}
 	return len;
 }
 
