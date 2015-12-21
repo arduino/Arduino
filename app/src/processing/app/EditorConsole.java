@@ -63,6 +63,7 @@ public class EditorConsole extends JScrollPane {
     consoleTextPane.setEditable(false);
     DefaultCaret caret = (DefaultCaret) consoleTextPane.getCaret();
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    consoleTextPane.setFocusTraversalKeysEnabled(false);
 
     Color backgroundColour = Theme.getColor("console.color");
     consoleTextPane.setBackground(backgroundColour);
