@@ -159,20 +159,6 @@ public class Sketch {
     return getPrimaryFile().getFile().getAbsolutePath();
   }
 
-  public void addFile(SketchFile file) {
-    files.add(file);
-    Collections.sort(files, CODE_DOCS_COMPARATOR);
-  }
-
-  protected void replaceFile(SketchFile newCode) {
-    for (SketchFile file : files) {
-      if (file.getFileName().equals(newCode.getFileName())) {
-        files.set(files.indexOf(file), newCode);
-        return;
-      }
-    }
-  }
-
   public SketchFile getFile(int i) {
     return files.get(i);
   }
@@ -203,5 +189,165 @@ public class Sketch {
         return true;
     }
     return false;
+  }
+
+  /**
+   * Finds the file with the given filename and returns its index.
+   * Returns -1 when the file was not found.
+   */
+  public int findFileIndex(File filename) {
+    int i = 0;
+    for (SketchFile file : files) {
+      if (file.getFile().equals(filename))
+        return i;
+      i++;
+    }
+    return -1;
+  }
+
+  /**
+   * Check if renaming/saving this sketch to the given folder would
+   * cause a problem because: 1. The new folder already exists 2.
+   * Renaming the primary file would cause a conflict with an existing
+   * file. If so, an IOEXception is thrown. If not, the name of the new
+   * primary file is returned.
+   */
+  protected File checkNewFoldername(File newFolder) throws IOException {
+    String newPrimary = FileUtils.addExtension(newFolder.getName(), DEFAULT_SKETCH_EXTENSION);
+    // Verify the new folder does not exist yet
+    if (newFolder.exists()) {
+      String msg = I18n.format(tr("Sorry, the folder \"{0}\" already exists."), newFolder.getAbsoluteFile());
+      throw new IOException(msg);
+    }
+
+    // If the folder is actually renamed (as opposed to moved somewhere
+    // else), check for conflicts using the new filename, but the
+    // existing folder name.
+    if(newFolder.getName() != folder.getName())
+      checkNewFilename(new File(folder, newPrimary));
+
+    return new File(newFolder, newPrimary);
+  }
+
+  /**
+   * Check if renaming or adding a file would cause a problem because
+   * the file already exists in this sketch. If so, an IOEXception is
+   * thrown.
+   *
+   * @param newFile
+   *          The filename of the new file, or the new name for an
+   *          existing file.
+   */
+  protected void checkNewFilename(File newFile) throws IOException {
+    // Verify that the sketch doesn't have a filem with the new name
+    // already, other than the current primary (index 0)
+    if (findFileIndex(newFile) >= 0) {
+      String msg = I18n.format(tr("The sketch already contains a file named \"{0}\""), newFile.getName());
+      throw new IOException(msg);
+    }
+
+  }
+
+  /**
+   * Rename this sketch' folder to the given name. Unlike saveAs(), this
+   * moves the sketch directory, not leaving anything in the old place.
+   * This operation does not *save* the sketch, so the files on disk are
+   * moved, but not modified.
+   *
+   * @param newFolder
+   *          The new folder name for this sketch. The new primary
+   *          file's name will be derived from this.
+   *
+   * @throws IOException
+   *           When a problem occurs. The error message should be
+   *           already translated.
+   */
+  public void renameTo(File newFolder) throws IOException {
+    // Check intended rename (throws if there is a problem)
+    File newPrimary = checkNewFoldername(newFolder);
+
+    // Rename the sketch folder
+    if (!getFolder().renameTo(newFolder))
+      throw new IOException(tr("Failed to rename sketch folder"));
+
+    folder = newFolder;
+
+    // Tell each file about its new name
+    for (SketchFile file : files)
+      file.renamedTo(new File(newFolder, file.getFileName()));
+
+    // And finally, rename the primary file
+    if (!getPrimaryFile().renameTo(newPrimary))
+      throw new IOException(tr("Failed to rename primary sketch file"));
+  }
+
+  /**
+   * Rename the given file to get the given name.
+   *
+   * @param sketchfile
+   *          The SketchFile to be renamed.
+   * @param newName
+   *          The new name, including extension, excluding directory
+   *          name.
+   * @throws IOException
+   *           When a problem occurs, or is expected to occur. The error
+   *           message should be already translated.
+   */
+  public void renameFileTo(SketchFile sketchfile, String newName) throws IOException {
+    File newFile = new File(folder, newName);
+    checkNewFilename(newFile);
+    sketchfile.renameTo(newFile);
+  }
+
+  public SketchFile addFile(String newName) throws IOException {
+    // Check the name will not cause any conflicts
+    File newFile = new File(folder, newName);
+    checkNewFilename(newFile);
+
+    // Add a new sketchFile
+    SketchFile sketchFile = new SketchFile(newFile, false);
+    files.add(sketchFile);
+    Collections.sort(files, CODE_DOCS_COMPARATOR);
+
+    return sketchFile;
+  }
+
+  /**
+   * Save this sketch under the new name given. Unlike renameTo(), this
+   * leaves the existing sketch in place.
+   *
+   * @param newFolder
+   *          The new folder name for this sketch. The new primary
+   *          file's name will be derived from this.
+   *
+   * @throws IOException
+   *           When a problem occurs. The error message should be
+   *           already translated.
+   */
+  public void saveAs(File newFolder) throws IOException {
+    // Check intented rename (throws if there is a problem)
+    File newPrimary = checkNewFoldername(newFolder);
+
+    // Create the folder
+    if (!newFolder.mkdirs()) {
+      String msg = I18n.format(tr("Could not create directory \"{0}\""), newFolder.getAbsolutePath());
+      throw new IOException(msg);
+    }
+
+    // Save the files to their new location
+    for (SketchFile file : files) {
+      if (file.isPrimary())
+        file.saveAs(newPrimary);
+      else
+        file.saveAs(new File(newFolder, file.getFileName()));
+    }
+
+    folder = newFolder;
+
+    // Copy the data folder (this may take a while.. add progress bar?)
+    if (getDataFolder().exists()) {
+      File newDataFolder = new File(newFolder, "data");
+      FileUtils.copy(getDataFolder(), newDataFolder);
+    }
   }
 }

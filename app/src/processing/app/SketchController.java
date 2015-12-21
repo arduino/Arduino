@@ -134,213 +134,79 @@ public class SketchController {
    * where they diverge.
    */
   protected void nameCode(String newName) {
-    SketchFile current = editor.getCurrentTab().getSketchFile();
-    int currentIndex = editor.getCurrentTabIndex();
-
     // make sure the user didn't hide the sketch folder
     ensureExistence();
-
-    // Add the extension here, this simplifies some of the logic below.
-    if (newName.indexOf('.') == -1) {
-      newName += "." + Sketch.DEFAULT_SKETCH_EXTENSION;
-    }
-
-    // if renaming to the same thing as before, just ignore.
-    // also ignoring case here, because i don't want to write
-    // a bunch of special stuff for each platform
-    // (osx is case insensitive but preserving, windows insensitive,
-    // *nix is sensitive and preserving.. argh)
-    if (renamingCode) {
-      if (newName.equalsIgnoreCase(current.getFileName())
-          && OSUtils.isWindows()) {
-        // exit quietly for the 'rename' case.
-        // if it's a 'new' then an error will occur down below
-        return;
-      }
-    }
 
     newName = newName.trim();
     if (newName.equals("")) return;
 
-    int dot = newName.indexOf('.');
-    if (dot == 0) {
+    if (newName.charAt(0) == '.') {
       Base.showWarning(tr("Problem with rename"),
                        tr("The name cannot start with a period."), null);
       return;
     }
 
     FileUtils.SplitFile split = FileUtils.splitFilename(newName);
+    if (split.extension.equals(""))
+      split.extension = Sketch.DEFAULT_SKETCH_EXTENSION;
+
     if (!Sketch.EXTENSIONS.contains(split.extension)) {
-      Base.showWarning(tr("Problem with rename"),
-                       I18n.format(tr("\".{0}\" is not a valid extension."),
-                                   split.extension),
-                       null);
+      String msg = I18n.format(tr("\".{0}\" is not a valid extension."),
+                               split.extension);
+      Base.showWarning(tr("Problem with rename"), msg, null);
       return;
     }
 
-    // Don't let the user create the main tab as a .java file instead of .pde
-    if (!split.extension.equals(Sketch.DEFAULT_SKETCH_EXTENSION)) {
-      if (renamingCode) {  // If creating a new tab, don't show this error
-        if (current.isPrimary()) { // If this is the main tab, disallow
-          Base.showWarning(tr("Problem with rename"),
-                           tr("The main file can't use an extension.\n" +
-                             "(It may be time for your to graduate to a\n" +
-                             "\"real\" programming environment)"), null);
-          return;
-        }
-      }
-    }
-
     // Sanitize name
-    String sanitaryName = BaseNoGui.sanitizeName(split.basename);
-    newName = sanitaryName + "." + split.extension;
-
-    // In Arduino, we want to allow files with the same name but different
-    // extensions, so compare the full names (including extensions).  This
-    // might cause problems: http://dev.processing.org/bugs/show_bug.cgi?id=543
-    for (SketchFile file : sketch.getFiles()) {
-      if (newName.equalsIgnoreCase(file.getFileName()) && OSUtils.isWindows()) {
-        Base.showMessage(tr("Error"),
-                         I18n.format(
-			   tr("A file named \"{0}\" already exists in \"{1}\""),
-			   file.getFileName(),
-			   sketch.getFolder().getAbsolutePath()
-			 ));
-        return;
-      }
-    }
-
-
-    File newFile = new File(sketch.getFolder(), newName);
-//    if (newFile.exists()) {  // yay! users will try anything
-//      Base.showMessage("Error",
-//                       "A file named \"" + newFile + "\" already exists\n" +
-//                       "in \"" + folder.getAbsolutePath() + "\"");
-//      return;
-//    }
-
-//    File newFileHidden = new File(folder, newName + ".x");
-//    if (newFileHidden.exists()) {
-//      // don't let them get away with it if they try to create something
-//      // with the same name as something hidden
-//      Base.showMessage("No Way",
-//                       "A hidden tab with the same name already exists.\n" +
-//                       "Use \"Unhide\" to bring it back.");
-//      return;
-//    }
+    split.basename = BaseNoGui.sanitizeName(split.basename);
+    newName = split.join();
 
     if (renamingCode) {
+      SketchFile current = editor.getCurrentTab().getSketchFile();
+
       if (current.isPrimary()) {
-        // get the new folder name/location
-        String folderName = newName.substring(0, newName.indexOf('.'));
-        File newFolder = new File(sketch.getFolder().getParentFile(), folderName);
-        if (newFolder.exists()) {
-          Base.showWarning(tr("Cannot Rename"),
-                           I18n.format(
-			     tr("Sorry, a sketch (or folder) named " +
-                               "\"{0}\" already exists."),
-			     newName
-			   ), null);
+        if (!split.extension.equals(Sketch.DEFAULT_SKETCH_EXTENSION)) {
+          Base.showWarning(tr("Problem with rename"),
+                           tr("The main file cannot use an extension"), null);
           return;
         }
 
-        // unfortunately this can't be a "save as" because that
-        // only copies the sketch files and the data folder
-        // however this *will* first save the sketch, then rename
-
-        // first get the contents of the editor text area
-        if (current.isModified()) {
-          try {
-            // save this new SketchFile
-            current.save();
-          } catch (Exception e) {
-            Base.showWarning(tr("Error"), tr("Could not rename the sketch. (0)"), e);
-            return;
-          }
-        }
-
-        if (!current.renameTo(newFile)) {
-          Base.showWarning(tr("Error"),
-                           I18n.format(
-			     tr("Could not rename \"{0}\" to \"{1}\""),
-			     current.getFileName(),
-			     newFile.getName()
-			   ), null);
-          return;
-        }
-
-        // save each of the other tabs because this is gonna be re-opened
+        // Primary file, rename the entire sketch
+        final File parent = sketch.getFolder().getParentFile();
+        File newFolder = new File(parent, split.basename);
         try {
-          for (SketchFile file : sketch.getFiles()) {
-            file.save();
-          }
-        } catch (Exception e) {
-          Base.showWarning(tr("Error"), tr("Could not rename the sketch. (1)"), e);
+          sketch.renameTo(newFolder);
+        } catch (IOException e) {
+          // This does not pass on e, to prevent showing a backtrace for
+          // "normal" errors.
+          Base.showWarning(tr("Error"), e.getMessage(), null);
           return;
         }
 
-        // now rename the sketch folder and re-open
-        boolean success = sketch.getFolder().renameTo(newFolder);
-        if (!success) {
-          Base.showWarning(tr("Error"), tr("Could not rename the sketch. (2)"), null);
-          return;
-        }
-        // if successful, set base properties for the sketch
-
-        File newMainFile = new File(newFolder, newName + ".ino");
-
-        // having saved everything and renamed the folder and the main .pde,
-        // use the editor to re-open the sketch to re-init state
-        // (unfortunately this will kill positions for carets etc)
-        editor.handleOpenUnchecked(newMainFile,
-                                   currentIndex,
-                                   editor.getCurrentTab().getSelectionStart(),
-                                   editor.getCurrentTab().getSelectionStop(),
-                                   editor.getCurrentTab().getScrollPosition());
-
-        // get the changes into the sketchbook menu
-        // (re-enabled in 0115 to fix bug #332)
         editor.base.rebuildSketchbookMenus();
-
-      } else {  // else if something besides code[0]
-        if (!current.renameTo(newFile)) {
-          Base.showWarning(tr("Error"),
-                           I18n.format(
-			     tr("Could not rename \"{0}\" to \"{1}\""),
-                                       current.getFileName(),
-			     newFile.getName()
-			   ), null);
+      } else {
+        // Non-primary file, rename just that file
+        try {
+          sketch.renameFileTo(current, newName);
+        } catch (IOException e) {
+          // This does not pass on e, to prevent showing a backtrace for
+          // "normal" errors.
+          Base.showWarning(tr("Error"), e.getMessage(), null);
           return;
         }
       }
 
     } else {  // creating a new file
+      SketchFile file;
       try {
-        if (!newFile.createNewFile()) {
-          // Already checking for IOException, so make our own.
-          throw new IOException(tr("createNewFile() returned false"));
-        }
-      } catch (IOException e) {
-        Base.showWarning(tr("Error"),
-			 I18n.format(
-                           "Could not create the file \"{0}\" in \"{1}\"",
-			   newFile,
-			   sketch.getFolder().getAbsolutePath()
-			 ), e);
-        return;
-      }
-      ensureExistence();
-      SketchFile file = new SketchFile(newFile, false);
-      try {
+        file = sketch.addFile(newName);
         editor.addTab(file, "");
       } catch (IOException e) {
-        Base.showWarning(tr("Error"),
-       I18n.format(
-                           "Failed to open tab for new file"
-       ), e);
+        // This does not pass on e, to prevent showing a backtrace for
+        // "normal" errors.
+        Base.showWarning(tr("Error"), e.getMessage(), null);
         return;
       }
-      sketch.addFile(file);
       editor.selectTab(editor.findTabIndex(file));
     }
 
@@ -559,35 +425,17 @@ public class SketchController {
     // in fact, you can't do this on windows because the file dialog
     // will instead put you inside the folder, but it happens on osx a lot.
 
-    // now make a fresh copy of the folder
-    newFolder.mkdirs();
-
-    // save the other tabs to their new location
-    for (SketchFile file : sketch.getFiles()) {
-      if (file.isPrimary()) continue;
-      File newFile = new File(newFolder, file.getFileName());
-      file.saveAs(newFile);
+    try {
+      sketch.saveAs(newFolder);
+    } catch (IOException e) {
+      // This does not pass on e, to prevent showing a backtrace for "normal"
+      // errors.
+      Base.showWarning(tr("Error"), e.getMessage(), null);
     }
-
-    // re-copy the data folder (this may take a while.. add progress bar?)
-    if (sketch.getDataFolder().exists()) {
-      File newDataFolder = new File(newFolder, "data");
-      FileUtils.copy(sketch.getDataFolder(), newDataFolder);
-    }
-
-    // save the main tab with its new name
-    File newFile = new File(newFolder, newName + ".ino");
-    sketch.getFile(0).saveAs(newFile);
-
-    editor.handleOpenUnchecked(newFile,
-            editor.getCurrentTabIndex(),
-            editor.getCurrentTab().getSelectionStart(),
-            editor.getCurrentTab().getSelectionStop(),
-            editor.getCurrentTab().getScrollPosition());
-
     // Name changed, rebuild the sketch menus
     //editor.sketchbook.rebuildMenusAsync();
     editor.base.rebuildSketchbookMenus();
+    editor.header.rebuild();
 
     // Make sure that it's not an untitled sketch
     setUntitled(false);
@@ -720,16 +568,24 @@ public class SketchController {
     }
 
     if (!isData) {
-      SketchFile newFile = new SketchFile(destFile, false);
-
+      int tabIndex;
       if (replacement) {
-        sketch.replaceFile(newFile);
-
+        tabIndex = editor.findTabIndex(destFile);
+        editor.getTabs().get(tabIndex).reload();
       } else {
-        ensureExistence();
-        sketch.addFile(newFile);
+        SketchFile sketchFile;
+        try {
+          sketchFile = sketch.addFile(destFile.getName());
+          editor.addTab(sketchFile, null);
+        } catch (IOException e) {
+          // This does not pass on e, to prevent showing a backtrace for
+          // "normal" errors.
+          Base.showWarning(tr("Error"), e.getMessage(), null);
+          return false;
+        }
+        tabIndex = editor.findTabIndex(sketchFile);
       }
-      editor.selectTab(editor.findTabIndex(newFile));
+      editor.selectTab(tabIndex);
     }
     return true;
   }

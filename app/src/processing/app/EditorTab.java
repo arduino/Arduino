@@ -331,7 +331,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   /**
    * Reload the contents of our file.
    */
-  private void reload() {
+  public void reload() {
     String text;
     try {
       text = file.load();

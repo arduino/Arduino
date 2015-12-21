@@ -154,12 +154,18 @@ public class SketchFile {
 
   protected boolean renameTo(File what) {
     boolean success = file.renameTo(what);
-    if (success) {
-      file = what;
-    }
+    if (success)
+      renamedTo(what);
     return success;
   }
 
+  /**
+   * Should be called when this file was renamed and renameTo could not
+   * be used (e.g. when renaming the entire sketch directory).
+   */
+  protected void renamedTo(File what) {
+    file = what;
+  }
 
   /*
    * Returns the filename include extension.
@@ -264,5 +270,6 @@ public class SketchFile {
       return; /* Nothing to do */
 
     BaseNoGui.saveFile(storage.getText(), newFile);
+    renamedTo(newFile);
   }
 }
