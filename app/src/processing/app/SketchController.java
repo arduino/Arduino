@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -448,13 +449,13 @@ public class SketchController {
     }
 
     // rename .pde files to .ino
-    File mainFile = new File(sketch.getMainFilePath());
-    File mainFolder = mainFile.getParentFile();
-    File[] pdeFiles = mainFolder.listFiles((dir, name) -> {
-      return name.toLowerCase().endsWith(".pde");
-    });
+    List<SketchFile> oldFiles = new ArrayList<>();
+    for (SketchFile file : sketch.getFiles()) {
+      if (file.isExtension(Sketch.OLD_SKETCH_EXTENSIONS))
+        oldFiles.add(file);
+    }
 
-    if (pdeFiles != null && pdeFiles.length > 0) {
+    if (oldFiles.size() > 0) {
       if (PreferencesData.get("editor.update_extension") == null) {
         Object[] options = {tr("OK"), tr("Cancel")};
         int result = JOptionPane.showOptionDialog(editor,
@@ -479,28 +480,16 @@ public class SketchController {
 
       if (PreferencesData.getBoolean("editor.update_extension")) {
         // Do rename of all .pde files to new .ino extension
-        for (File pdeFile : pdeFiles)
-          renameCodeToInoExtension(pdeFile);
+        for (SketchFile file : oldFiles) {
+          File newName = FileUtils.replaceExtension(file.getFile(), Sketch.DEFAULT_SKETCH_EXTENSION);
+          file.renameTo(newName);
+        }
       }
     }
 
     sketch.save();
     return true;
   }
-
-
-  private boolean renameCodeToInoExtension(File pdeFile) {
-    for (SketchFile file : sketch.getFiles()) {
-      if (!file.getFile().equals(pdeFile))
-        continue;
-
-      String pdeName = pdeFile.getPath();
-      pdeName = pdeName.substring(0, pdeName.length() - 4) + ".ino";
-      return file.renameTo(new File(pdeName));
-    }
-    return false;
-  }
-
 
   /**
    * Handles 'Save As' for a sketch.

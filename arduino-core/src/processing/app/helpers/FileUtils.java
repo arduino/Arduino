@@ -246,6 +246,26 @@ public class FileUtils {
   }
 
   /**
+   * Returns the given filename with the extension replaced by the one
+   * given. If the filename does not have an extension yet, one is
+   * added.
+   */
+  public static String replaceExtension(String filename, String extension) {
+    SplitFile split = splitFilename(filename);
+    split.extension = extension;
+    return split.join();
+  }
+
+  /**
+   * Returns the given filename with the extension replaced by the one
+   * given. If the filename does not have an extension yet, one is
+   * added.
+   */
+  public static File replaceExtension(File file, String extension) {
+    return new File(file.getParentFile(), replaceExtension(file.getName(), extension));
+  }
+
+  /**
    * The result of a splitFilename call.
    */
   public static class SplitFile {
@@ -256,6 +276,13 @@ public class FileUtils {
 
     public String basename;
     public String extension;
+
+    public String join() {
+      if (extension.equals(""))
+        return basename;
+      else
+        return basename + "." + extension;
+    }
   }
 
   /**
