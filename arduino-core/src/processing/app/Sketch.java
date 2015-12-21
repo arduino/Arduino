@@ -14,9 +14,9 @@ import static processing.app.I18n.tr;
  * This represents a single sketch, consisting of one or more files.
  */
 public class Sketch {
-
   public static final String DEFAULT_SKETCH_EXTENSION = "ino";
-  public static final List<String> SKETCH_EXTENSIONS = Arrays.asList(DEFAULT_SKETCH_EXTENSION, "pde");
+  public static final List<String> OLD_SKETCH_EXTENSIONS = Arrays.asList("pde");
+  public static final List<String> SKETCH_EXTENSIONS = Stream.concat(Stream.of(DEFAULT_SKETCH_EXTENSION), OLD_SKETCH_EXTENSIONS.stream()).collect(Collectors.toList());
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
   public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 
