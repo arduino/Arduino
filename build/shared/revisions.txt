@@ -1,5 +1,9 @@
 ARDUINO 1.6.8
 
+[ide]
+* Fixed a NullPointerException when dealing with some rare combination of package_*.json files
+* Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
+
 ARDUINO 1.6.7 - 2015.12.17
 
 [ide]
