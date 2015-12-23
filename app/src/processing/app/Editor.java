@@ -45,6 +45,7 @@ import processing.app.legacy.PApplet;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
+import processing.app.syntax.SketchTextAreaEditorKit;
 import processing.app.tools.DiscourseFormat;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
@@ -1872,28 +1873,8 @@ public class Editor extends JFrame implements RunnerListener {
 
   private void handleIndentOutdent(boolean indent) {
     if (indent) {
-
-      int caretPosition = textarea.getCaretPosition();
-      boolean noSelec = !textarea.isSelectionActive();
-
-      // if no selection, focus on first char.
-      if (noSelec) {
-        try {
-          int line = textarea.getCaretLineNumber();
-          int startOffset = textarea.getLineStartOffset(line);
-          textarea.setCaretPosition(startOffset);
-        } catch (BadLocationException e) {
-        }
-      }
-
-      // Insert Tab or Spaces..
-      Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.insertTabAction);
+      Action action = textarea.getActionMap().get(SketchTextAreaEditorKit.rtaIncreaseIndentAction);
       action.actionPerformed(null);
-
-      if (noSelec) {
-        textarea.setCaretPosition(caretPosition);
-      }
-
     } else {
       Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaDecreaseIndentAction);
       action.actionPerformed(null);
