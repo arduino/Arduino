@@ -71,11 +71,11 @@ import processing.app.Base;
 @SuppressWarnings("serial")
 public class ContributedLibraryTableCell extends InstallerTableCell {
 
-  class Cell {
+  private class Cell {
     private final JPanel panel;
     private final JButton installButton;
     private final Component installButtonPlaceholder;
-    private JComboBox downgradeChooser;
+    private final JComboBox downgradeChooser;
     private final JComboBox versionToInstallChooser;
     private final JButton downgradeButton;
     private final JPanel buttonsPanel;
@@ -84,18 +84,10 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
 
     public Cell() {
       installButton = new JButton(tr("Install"));
-      installButton
-          .addActionListener(e -> onInstall(editorValue.getSelected(),
-                                            editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
 
       downgradeButton = new JButton(tr("Install"));
-      downgradeButton.addActionListener(e -> {
-        ContributedLibrary selected = (ContributedLibrary) downgradeChooser
-            .getSelectedItem();
-        onInstall(selected, editorValue.getInstalled());
-      });
 
       downgradeChooser = new JComboBox();
       downgradeChooser.addItem("-");
@@ -110,9 +102,6 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       versionToInstallChooser.addItem("-");
       versionToInstallChooser
           .setMaximumSize(versionToInstallChooser.getPreferredSize());
-      versionToInstallChooser.addItemListener(e -> editorValue
-          .select((ContributedLibrary) versionToInstallChooser
-              .getSelectedItem()));
 
       panel = new JPanel();
       panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -341,7 +330,19 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
                                                boolean isSelected, int row,
                                                int column) {
     editorValue = (ContributedLibraryReleases) value;
+
     editorCell = new Cell();
+    editorCell.installButton
+        .addActionListener(e -> onInstall(editorValue.getSelected(),
+                                          editorValue.getInstalled()));
+    editorCell.downgradeButton.addActionListener(e -> {
+      JComboBox chooser = editorCell.downgradeChooser;
+      ContributedLibrary lib = (ContributedLibrary) chooser.getSelectedItem();
+      onInstall(lib, editorValue.getInstalled());
+    });
+    editorCell.versionToInstallChooser.addItemListener(e -> editorValue
+        .select((ContributedLibrary) editorCell.versionToInstallChooser
+            .getSelectedItem()));
 
     setEnabled(true);
 
