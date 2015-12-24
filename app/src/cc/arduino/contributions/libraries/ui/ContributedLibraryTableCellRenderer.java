@@ -69,7 +69,7 @@ import cc.arduino.utils.ReverseComparator;
 import processing.app.Base;
 
 @SuppressWarnings("serial")
-public class ContributedLibraryTableCell extends InstallerTableCell {
+public class ContributedLibraryTableCellRenderer extends InstallerTableCell {
 
   private class Cell {
     private final JPanel panel;

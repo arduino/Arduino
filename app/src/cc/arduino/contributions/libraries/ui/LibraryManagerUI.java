@@ -66,12 +66,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   @Override
   protected InstallerTableCell createCellRenderer() {
-    return new ContributedLibraryTableCell();
+    return new ContributedLibraryTableCellRenderer();
   }
 
   @Override
   protected InstallerTableCell createCellEditor() {
-    return new ContributedLibraryTableCell() {
+    return new ContributedLibraryTableCellRenderer() {
       @Override
       protected void onInstall(ContributedLibrary selectedLibrary, ContributedLibrary installedLibrary) {
         if (selectedLibrary.isReadOnly()) {
