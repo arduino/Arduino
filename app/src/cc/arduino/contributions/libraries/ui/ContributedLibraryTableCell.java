@@ -156,8 +156,8 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       panel.add(Box.createVerticalStrut(15));
     }
 
-    private void update(Object value, boolean isSelected, int row,
-                        boolean hasBuiltInRelease) {
+    private void update(JTable parentTable, Object value, boolean isSelected,
+                        int row, boolean hasBuiltInRelease) {
       ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
 
       JTextPane description = makeNewDescription(panel);
@@ -307,13 +307,12 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
                                                  boolean isSelected,
                                                  boolean hasFocus, int row,
                                                  int column) {
-    parentTable = table;
 
     Cell cell = new Cell();
     cell.installButton.setEnabled(false);
     cell.buttonsPanel.setVisible(false);
     cell.inactiveButtonsPanel.setVisible(true);
-    cell.update(value, isSelected, row, false);
+    cell.update(table, value, isSelected, row, false);
     if (row % 2 == 0) {
       cell.panel.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {
@@ -330,7 +329,6 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
   }
 
   private ContributedLibraryReleases editorValue;
-  private JTable parentTable;
   private Cell editorCell;
 
   @Override
@@ -342,7 +340,6 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
   public Component getTableCellEditorComponent(JTable table, Object value,
                                                boolean isSelected, int row,
                                                int column) {
-    parentTable = table;
     editorValue = (ContributedLibraryReleases) value;
     editorCell = new Cell();
 
@@ -400,7 +397,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     editorCell.versionToInstallChooser
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    editorCell.update(value, true, row, !installedBuiltIn.isEmpty());
+    editorCell.update(table, value, true, row, !installedBuiltIn.isEmpty());
     editorCell.panel.setBackground(new Color(218, 227, 227)); // #dae3e3
     return editorCell.panel;
   }
