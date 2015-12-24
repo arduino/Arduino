@@ -29,69 +29,64 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContributionVersionComparator;
-import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
-import cc.arduino.contributions.packages.ContributedBoard;
-import cc.arduino.contributions.packages.ContributedHelp;
-import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.ui.InstallerTableCell;
-import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
-import cc.arduino.utils.ReverseComparator;
-import processing.app.Base;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
+import cc.arduino.contributions.DownloadableContributionVersionComparator;
+import cc.arduino.contributions.packages.ContributedBoard;
+import cc.arduino.contributions.packages.ContributedHelp;
+import cc.arduino.contributions.packages.ContributedPlatform;
+import cc.arduino.contributions.ui.InstallerTableCell;
+import processing.app.Base;
 
 @SuppressWarnings("serial")
-public class ContributedPlatformTableCell extends InstallerTableCell {
+public class ContributedPlatformTableCell {
 
-  private final JPanel panel;
-  private final JButton installButton;
-  private final JButton removeButton;
-  private final Component removeButtonPlaceholder;
-  private final Component installButtonPlaceholder;
-  private JComboBox downgradeChooser;
-  private final JComboBox versionToInstallChooser;
-  private final JButton downgradeButton;
-  private final JPanel buttonsPanel;
-  private final JPanel inactiveButtonsPanel;
-  private final JLabel statusLabel;
+  final JPanel panel;
+  final JButton installButton;
+  final JButton removeButton;
+  final Component removeButtonPlaceholder;
+  final Component installButtonPlaceholder;
+  JComboBox downgradeChooser;
+  final JComboBox versionToInstallChooser;
+  final JButton downgradeButton;
+  final JPanel buttonsPanel;
+  final JPanel inactiveButtonsPanel;
+  final JLabel statusLabel;
 
   public ContributedPlatformTableCell() {
     {
       installButton = new JButton(tr("Install"));
-      installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     {
       removeButton = new JButton(tr("Remove"));
-      removeButton.addActionListener(e -> onRemove(editorValue.getInstalled()));
       int width = removeButton.getPreferredSize().width;
       removeButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
 
     downgradeButton = new JButton(tr("Install"));
-    downgradeButton.addActionListener(e -> {
-      ContributedPlatform selected = (ContributedPlatform) downgradeChooser.getSelectedItem();
-      onInstall(selected, editorValue.getInstalled());
-    });
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
@@ -104,183 +99,62 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
-    versionToInstallChooser.setMaximumSize(versionToInstallChooser.getPreferredSize());
-    versionToInstallChooser.addItemListener(e -> editorValue.select((ContributedPlatform) versionToInstallChooser.getSelectedItem()));
+    versionToInstallChooser
+        .setMaximumSize(versionToInstallChooser.getPreferredSize());
 
     panel = new JPanel();
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
     makeNewDescription(panel);
 
-    {
-      buttonsPanel = new JPanel();
-      buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-      buttonsPanel.setOpaque(false);
+    buttonsPanel = new JPanel();
+    buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+    buttonsPanel.setOpaque(false);
 
-      buttonsPanel.add(Box.createHorizontalStrut(7));
-      buttonsPanel.add(downgradeChooser);
-      buttonsPanel.add(Box.createHorizontalStrut(5));
-      buttonsPanel.add(downgradeButton);
+    buttonsPanel.add(Box.createHorizontalStrut(7));
+    buttonsPanel.add(downgradeChooser);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(downgradeButton);
 
-      buttonsPanel.add(Box.createHorizontalGlue());
+    buttonsPanel.add(Box.createHorizontalGlue());
 
-      buttonsPanel.add(versionToInstallChooser);
-      buttonsPanel.add(Box.createHorizontalStrut(5));
-      buttonsPanel.add(installButton);
-      buttonsPanel.add(Box.createHorizontalStrut(5));
-      buttonsPanel.add(removeButton);
-      buttonsPanel.add(Box.createHorizontalStrut(5));
-      buttonsPanel.add(Box.createHorizontalStrut(15));
+    buttonsPanel.add(versionToInstallChooser);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(installButton);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(removeButton);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(Box.createHorizontalStrut(15));
 
-      panel.add(buttonsPanel);
-    }
+    panel.add(buttonsPanel);
 
-    {
-      inactiveButtonsPanel = new JPanel();
-      inactiveButtonsPanel.setLayout(new BoxLayout(inactiveButtonsPanel, BoxLayout.X_AXIS));
-      inactiveButtonsPanel.setOpaque(false);
+    inactiveButtonsPanel = new JPanel();
+    inactiveButtonsPanel
+        .setLayout(new BoxLayout(inactiveButtonsPanel, BoxLayout.X_AXIS));
+    inactiveButtonsPanel.setOpaque(false);
 
-      int height = installButton.getMinimumSize().height;
-      inactiveButtonsPanel.add(Box.createVerticalStrut(height));
-      inactiveButtonsPanel.add(Box.createGlue());
+    int height = installButton.getMinimumSize().height;
+    inactiveButtonsPanel.add(Box.createVerticalStrut(height));
+    inactiveButtonsPanel.add(Box.createGlue());
 
-      statusLabel = new JLabel(" ");
-      inactiveButtonsPanel.add(statusLabel);
-      inactiveButtonsPanel.add(Box.createHorizontalStrut(15));
+    statusLabel = new JLabel(" ");
+    inactiveButtonsPanel.add(statusLabel);
+    inactiveButtonsPanel.add(Box.createHorizontalStrut(15));
 
-      panel.add(inactiveButtonsPanel);
-    }
+    panel.add(inactiveButtonsPanel);
 
     panel.add(Box.createVerticalStrut(15));
   }
 
-  private JTextPane makeNewDescription(JPanel panel) {
-    if (panel.getComponentCount() > 0) {
-      panel.remove(0);
-    }
-    JTextPane description = new JTextPane();
-    description.setInheritsPopupMenu(true);
-    Insets margin = description.getMargin();
-    margin.bottom = 0;
-    description.setMargin(margin);
-    description.setContentType("text/html");
-    Document doc = description.getDocument();
-    if (doc instanceof HTMLDocument) {
-      HTMLDocument html = (HTMLDocument) doc;
-      StyleSheet stylesheet = html.getStyleSheet();
-      stylesheet.addRule("body { margin: 0; padding: 0;"
-        + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-        + "font-size: 100%;" + "font-size: 0.95em; }");
-    }
-    description.setOpaque(false);
-    description.setBorder(new EmptyBorder(4, 7, 7, 7));
-    description.setHighlighter(null);
-    description.setEditable(false);
-    description.addHyperlinkListener(e -> {
-      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-        Base.openURL(e.getDescription());
-      }
-    });
-    description.addKeyListener(new DelegatingKeyListener(parentTable));
-    panel.add(description, 0);
-    return description;
-  }
-
-  protected void onRemove(ContributedPlatform contributedPlatform) {
-    // Empty
-  }
-
-  protected void onInstall(ContributedPlatform contributedPlatform, ContributedPlatform installed) {
-    // Empty
-  }
-
-  public Component getTableCellRendererComponent(JTable table, Object value,
-                                                 boolean isSelected,
-                                                 boolean hasFocus, int row,
-                                                 int column) {
-    parentTable = table;
-    setEnabled(false);
-    Component component = getUpdatedCellComponent(value, isSelected, row, false);
-    if (row % 2 == 0) {
-      component.setBackground(new Color(236, 241, 241)); //#ecf1f1
-    } else {
-      component.setBackground(new Color(255, 255, 255));
-    }
-
-    int height = new Double(component.getPreferredSize().getHeight()).intValue();
-    if (table.getRowHeight(row) < height) {
-      table.setRowHeight(row, height);
-    }
-
-    return component;
-  }
-
-  private ContributionIndexTableModel.ContributedPlatformReleases editorValue;
-  private JTable parentTable;
-
-  @Override
-  public Object getCellEditorValue() {
-    return editorValue;
-  }
-
-  @Override
-  public Component getTableCellEditorComponent(JTable table, Object value,
-                                               boolean isSelected, int row,
-                                               int column) {
-    parentTable = table;
-    editorValue = (ContributionIndexTableModel.ContributedPlatformReleases) value;
-    setEnabled(true);
-
-    final ContributedPlatform installed = editorValue.getInstalled();
-
-    java.util.List<ContributedPlatform> releases = new LinkedList<>(editorValue.releases);
-    java.util.List<ContributedPlatform> uninstalledReleases = releases.stream().filter(new InstalledPredicate().negate()).collect(Collectors.toList());
-
-    java.util.List<ContributedPlatform> installedBuiltIn = releases.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
-
-    if (installed != null && !installedBuiltIn.contains(installed)) {
-      uninstalledReleases.addAll(installedBuiltIn);
-    }
-
-    Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
-
-    downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(tr("Select version"));
-
-    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
-    final java.util.List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
-
-    final VersionComparator versionComparator = new VersionComparator();
-    uninstalledReleases.stream().forEach(input -> {
-      if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
-        uninstalledPreviousReleases.add(input);
-      } else {
-        uninstalledNewerReleases.add(input);
-      }
-    });
-    uninstalledNewerReleases.forEach(downgradeChooser::addItem);
-    uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
-
-    downgradeChooser.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
-    downgradeButton.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
-
-    versionToInstallChooser.removeAllItems();
-    uninstalledReleases.forEach(versionToInstallChooser::addItem);
-    versionToInstallChooser.setVisible(installed == null && uninstalledReleases.size() > 1);
-
-    Component component = getUpdatedCellComponent(value, true, row, !installedBuiltIn.isEmpty());
-    component.setBackground(new Color(218, 227, 227)); //#dae3e3
-    return component;
-  }
-
-  private Component getUpdatedCellComponent(Object value, boolean isSelected, int row, boolean hasBuiltInRelease) {
+  void update(JTable parentTable, Object value, boolean isSelected, int row,
+              boolean hasBuiltInRelease) {
     ContributionIndexTableModel.ContributedPlatformReleases releases = (ContributionIndexTableModel.ContributedPlatformReleases) value;
 
     JTextPane description = makeNewDescription(panel);
 
-    //FIXME: happens on macosx, don't know why
+    // FIXME: happens on macosx, don't know why
     if (releases == null) {
-      return panel;
+      return;
     }
 
     ContributedPlatform selected = releases.getSelected();
@@ -294,7 +168,8 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     } else {
       installable = false;
       removable = !installed.isReadOnly() && !hasBuiltInRelease;
-      upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
+      upgradable = new DownloadableContributionVersionComparator()
+          .compare(selected, installed) > 0;
     }
     if (installable) {
       installButton.setText(tr("Install"));
@@ -318,7 +193,9 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       desc += " " + format("by <b>{0}</b>", author);
     }
     if (installed != null) {
-      desc += " " + format(tr("version <b>{0}</b>"), installed.getParsedVersion()) + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
+      desc += " "
+              + format(tr("version <b>{0}</b>"), installed.getParsedVersion())
+              + " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
     desc += "<br />";
 
@@ -358,7 +235,8 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
     // See:
     // http://stackoverflow.com/questions/3081210/how-to-set-jtextarea-to-have-height-that-matches-the-size-of-a-text-it-contains
     int width = parentTable.getBounds().width;
-    setJTextPaneDimensionToFitContainedText(description, width);
+    InstallerTableCell.setJTextPaneDimensionToFitContainedText(description,
+                                                               width);
 
     if (isSelected) {
       panel.setBackground(parentTable.getSelectionBackground());
@@ -367,41 +245,37 @@ public class ContributedPlatformTableCell extends InstallerTableCell {
       panel.setBackground(parentTable.getBackground());
       panel.setForeground(parentTable.getForeground());
     }
-
-    return panel;
   }
 
-  private final Timer enabler = new Timer(100, new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      enable(true);
-      enabler.stop();
+  private static JTextPane makeNewDescription(JPanel panel) {
+    if (panel.getComponentCount() > 0) {
+      panel.remove(0);
     }
-  });
-
-  @Override
-  public void setEnabled(boolean enabled) {
-    enable(false);
-    if (enabled) {
-      enabler.start();
-    } else {
-      enabler.stop();
+    JTextPane description = new JTextPane();
+    description.setInheritsPopupMenu(true);
+    Insets margin = description.getMargin();
+    margin.bottom = 0;
+    description.setMargin(margin);
+    description.setContentType("text/html");
+    Document doc = description.getDocument();
+    if (doc instanceof HTMLDocument) {
+      HTMLDocument html = (HTMLDocument) doc;
+      StyleSheet stylesheet = html.getStyleSheet();
+      stylesheet.addRule("body { margin: 0; padding: 0;"
+                         + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+                         + "font-size: 100%;" + "font-size: 0.95em; }");
     }
-    buttonsPanel.setVisible(enabled);
-    inactiveButtonsPanel.setVisible(!enabled);
-  }
-
-  public void enable(boolean enabled) {
-    installButton.setEnabled(enabled);
-    removeButton.setEnabled(enabled);
-  }
-
-  public void setStatus(String status) {
-    statusLabel.setText(status);
-  }
-
-  public void invalidate() {
-    panel.invalidate();
+    description.setOpaque(false);
+    description.setBorder(new EmptyBorder(4, 7, 7, 7));
+    description.setHighlighter(null);
+    description.setEditable(false);
+    description.addHyperlinkListener(e -> {
+      if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+        Base.openURL(e.getDescription());
+      }
+    });
+    panel.add(description, 0);
+    return description;
   }
 
 }
