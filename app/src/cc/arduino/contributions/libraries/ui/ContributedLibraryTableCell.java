@@ -29,24 +29,13 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContributionVersionComparator;
-import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
-import cc.arduino.contributions.ui.InstallerTableCell;
-import cc.arduino.contributions.ui.listeners.DelegatingKeyListener;
-import cc.arduino.utils.ReverseComparator;
-import processing.app.Base;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.text.Document;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.StyleSheet;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collections;
@@ -54,56 +43,82 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
+import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.text.Document;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
+
+import cc.arduino.contributions.DownloadableContributionVersionComparator;
+import cc.arduino.contributions.VersionComparator;
+import cc.arduino.contributions.filters.BuiltInPredicate;
+import cc.arduino.contributions.filters.InstalledPredicate;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
+import cc.arduino.contributions.ui.InstallerTableCell;
+import cc.arduino.utils.ReverseComparator;
+import processing.app.Base;
 
 @SuppressWarnings("serial")
 public class ContributedLibraryTableCell extends InstallerTableCell {
 
-  private final JPanel panel;
-  private final JButton installButton;
-  private final Component installButtonPlaceholder;
-  private JComboBox downgradeChooser;
-  private final JComboBox versionToInstallChooser;
-  private final JButton downgradeButton;
-  private final JPanel buttonsPanel;
-  private final JPanel inactiveButtonsPanel;
-  private final JLabel statusLabel;
+  class Cell {
+    private final JPanel panel;
+    private final JButton installButton;
+    private final Component installButtonPlaceholder;
+    private JComboBox downgradeChooser;
+    private final JComboBox versionToInstallChooser;
+    private final JButton downgradeButton;
+    private final JPanel buttonsPanel;
+    private final JPanel inactiveButtonsPanel;
+    private final JLabel statusLabel;
 
-  public ContributedLibraryTableCell() {
-    {
+    public Cell() {
       installButton = new JButton(tr("Install"));
-      installButton.addActionListener(e -> onInstall(editorValue.getSelected(), editorValue.getInstalled()));
+      installButton
+          .addActionListener(e -> onInstall(editorValue.getSelected(),
+                                            editorValue.getInstalled()));
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
-    }
 
-    downgradeButton = new JButton(tr("Install"));
-    downgradeButton.addActionListener(e -> {
-      ContributedLibrary selected = (ContributedLibrary) downgradeChooser.getSelectedItem();
-      onInstall(selected, editorValue.getInstalled());
-    });
+      downgradeButton = new JButton(tr("Install"));
+      downgradeButton.addActionListener(e -> {
+        ContributedLibrary selected = (ContributedLibrary) downgradeChooser
+            .getSelectedItem();
+        onInstall(selected, editorValue.getInstalled());
+      });
 
-    downgradeChooser = new JComboBox();
-    downgradeChooser.addItem("-");
-    downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(e -> {
-      Object selectVersionItem = downgradeChooser.getItemAt(0);
-      boolean disableDowngrade = (e.getItem() == selectVersionItem);
-      downgradeButton.setEnabled(!disableDowngrade);
-    });
+      downgradeChooser = new JComboBox();
+      downgradeChooser.addItem("-");
+      downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
+      downgradeChooser.addItemListener(e -> {
+        Object selectVersionItem = downgradeChooser.getItemAt(0);
+        boolean disableDowngrade = (e.getItem() == selectVersionItem);
+        downgradeButton.setEnabled(!disableDowngrade);
+      });
 
-    versionToInstallChooser = new JComboBox();
-    versionToInstallChooser.addItem("-");
-    versionToInstallChooser.setMaximumSize(versionToInstallChooser.getPreferredSize());
-    versionToInstallChooser.addItemListener(e -> editorValue.select((ContributedLibrary) versionToInstallChooser.getSelectedItem()));
+      versionToInstallChooser = new JComboBox();
+      versionToInstallChooser.addItem("-");
+      versionToInstallChooser
+          .setMaximumSize(versionToInstallChooser.getPreferredSize());
+      versionToInstallChooser.addItemListener(e -> editorValue
+          .select((ContributedLibrary) versionToInstallChooser
+              .getSelectedItem()));
 
-    panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+      panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-    makeNewDescription(panel);
+      makeNewDescription(panel);
 
-    {
       buttonsPanel = new JPanel();
       buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
       buttonsPanel.setOpaque(false);
@@ -122,11 +137,10 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       buttonsPanel.add(Box.createHorizontalStrut(15));
 
       panel.add(buttonsPanel);
-    }
 
-    {
       inactiveButtonsPanel = new JPanel();
-      inactiveButtonsPanel.setLayout(new BoxLayout(inactiveButtonsPanel, BoxLayout.X_AXIS));
+      inactiveButtonsPanel
+          .setLayout(new BoxLayout(inactiveButtonsPanel, BoxLayout.X_AXIS));
       inactiveButtonsPanel.setOpaque(false);
 
       int height = installButton.getMinimumSize().height;
@@ -138,12 +152,117 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       inactiveButtonsPanel.add(Box.createHorizontalStrut(15));
 
       panel.add(inactiveButtonsPanel);
+
+      panel.add(Box.createVerticalStrut(15));
     }
 
-    panel.add(Box.createVerticalStrut(15));
+    private void update(Object value, boolean isSelected, int row,
+                        boolean hasBuiltInRelease) {
+      ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
+
+      JTextPane description = makeNewDescription(panel);
+
+      // FIXME: happens on macosx, don't know why
+      if (releases == null)
+        return;
+
+      ContributedLibrary selected = releases.getSelected();
+      ContributedLibrary installed = releases.getInstalled();
+
+      boolean installable, upgradable;
+      if (installed == null) {
+        installable = true;
+        upgradable = false;
+      } else {
+        installable = false;
+        upgradable = new DownloadableContributionVersionComparator()
+            .compare(selected, installed) > 0;
+      }
+      if (installable) {
+        installButton.setText(tr("Install"));
+      }
+      if (upgradable) {
+        installButton.setText(tr("Update"));
+      }
+      installButton.setVisible(installable || upgradable);
+      installButtonPlaceholder.setVisible(!(installable || upgradable));
+
+      String name = selected.getName();
+      String author = selected.getAuthor();
+      // String maintainer = selectedLib.getMaintainer();
+      String website = selected.getWebsite();
+      String sentence = selected.getSentence();
+      String paragraph = selected.getParagraph();
+      // String availableVer = selectedLib.getVersion();
+      // String url = selected.getUrl();
+
+      String midcolor = isSelected ? "#000000" : "#888888";
+
+      String desc = "<html><body>";
+
+      // Library name...
+      desc += format("<b>{0}</b>", name);
+      if (installed != null && installed.isReadOnly()) {
+        desc += " Built-In ";
+      }
+
+      // ...author...
+      desc += format("<font color=\"{0}\">", midcolor);
+      if (author != null && !author.isEmpty()) {
+        desc += format(" by <b>{0}</b>", author);
+      }
+
+      // ...version.
+      if (installed != null) {
+        String installedVer = installed.getParsedVersion();
+        if (installedVer == null) {
+          desc += " " + tr("Version unknown");
+        } else {
+          desc += " " + format(tr("Version <b>{0}</b>"), installedVer);
+        }
+      }
+      desc += "</font>";
+
+      if (installed != null) {
+        desc += " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
+      }
+
+      desc += "<br/>";
+
+      // Description
+      if (sentence != null) {
+        desc += format("<b>{0}</b> ", sentence);
+        if (paragraph != null && !paragraph.isEmpty())
+          desc += format("{0}", paragraph);
+        desc += "<br />";
+      }
+      if (author != null && !author.isEmpty()) {
+        desc += format("<a href=\"{0}\">More info</a>", website);
+      }
+
+      desc += "</body></html>";
+      description.setText(desc);
+      description.setBackground(Color.WHITE);
+
+      // for modelToView to work, the text area has to be sized. It doesn't
+      // matter if it's visible or not.
+
+      // See:
+      // http://stackoverflow.com/questions/3081210/how-to-set-jtextarea-to-have-height-that-matches-the-size-of-a-text-it-contains
+      int width = parentTable.getBounds().width;
+      setJTextPaneDimensionToFitContainedText(description, width);
+
+      if (isSelected) {
+        panel.setBackground(parentTable.getSelectionBackground());
+        panel.setForeground(parentTable.getSelectionForeground());
+      } else {
+        panel.setBackground(parentTable.getBackground());
+        panel.setForeground(parentTable.getForeground());
+      }
+    }
   }
 
-  private JTextPane makeNewDescription(JPanel panel) {
+  private static JTextPane makeNewDescription(JPanel panel) {
     if (panel.getComponentCount() > 0) {
       panel.remove(0);
     }
@@ -158,8 +277,8 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
       HTMLDocument html = (HTMLDocument) doc;
       StyleSheet stylesheet = html.getStyleSheet();
       stylesheet.addRule("body { margin: 0; padding: 0;"
-        + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-        + "font-size: 100%;" + "font-size: 0.95em; }");
+                         + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+                         + "font-size: 100%;" + "font-size: 0.95em; }");
     }
     description.setOpaque(false);
     description.setBorder(new EmptyBorder(4, 7, 7, 7));
@@ -170,7 +289,7 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
         Base.openURL(e.getDescription());
       }
     });
-    description.addKeyListener(new DelegatingKeyListener(parentTable));
+    // description.addKeyListener(new DelegatingKeyListener(parentTable));
     panel.add(description, 0);
     return description;
   }
@@ -179,7 +298,8 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     // Empty
   }
 
-  protected void onInstall(ContributedLibrary selected, ContributedLibrary installed) {
+  protected void onInstall(ContributedLibrary selected,
+                           ContributedLibrary installed) {
     // Empty
   }
 
@@ -188,24 +308,30 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
                                                  boolean hasFocus, int row,
                                                  int column) {
     parentTable = table;
-    setEnabled(false);
-    Component component = getUpdatedCellComponent(value, isSelected, row, false);
+
+    Cell cell = new Cell();
+    cell.installButton.setEnabled(false);
+    cell.buttonsPanel.setVisible(false);
+    cell.inactiveButtonsPanel.setVisible(true);
+    cell.update(value, isSelected, row, false);
     if (row % 2 == 0) {
-      component.setBackground(new Color(236, 241, 241)); //#ecf1f1
+      cell.panel.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {
-      component.setBackground(new Color(255, 255, 255));
+      cell.panel.setBackground(new Color(255, 255, 255));
     }
 
-    int height = new Double(component.getPreferredSize().getHeight()).intValue();
+    int height = new Double(cell.panel.getPreferredSize().getHeight())
+        .intValue();
     if (table.getRowHeight(row) < height) {
       table.setRowHeight(row, height);
     }
 
-    return component;
+    return cell.panel;
   }
 
   private ContributedLibraryReleases editorValue;
   private JTable parentTable;
+  private Cell editorCell;
 
   @Override
   public Object getCellEditorValue() {
@@ -218,154 +344,65 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
                                                int column) {
     parentTable = table;
     editorValue = (ContributedLibraryReleases) value;
+    editorCell = new Cell();
+
     setEnabled(true);
 
     final ContributedLibrary installed = editorValue.getInstalled();
 
-    List<ContributedLibrary> releases = editorValue.getReleases().stream().filter(new OnlyUpstreamReleasePredicate()).collect(Collectors.toList());
-    List<ContributedLibrary> uninstalledReleases = releases.stream().filter(new InstalledPredicate().negate()).collect(Collectors.toList());
+    List<ContributedLibrary> releases = editorValue.getReleases().stream()
+        .filter(new OnlyUpstreamReleasePredicate())
+        .collect(Collectors.toList());
+    List<ContributedLibrary> uninstalledReleases = releases.stream()
+        .filter(new InstalledPredicate().negate()).collect(Collectors.toList());
 
-    List<ContributedLibrary> installedBuiltIn = releases.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
+    List<ContributedLibrary> installedBuiltIn = releases.stream()
+        .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
+        .collect(Collectors.toList());
 
     if (installed != null && !installedBuiltIn.contains(installed)) {
       uninstalledReleases.addAll(installedBuiltIn);
     }
 
-    Collections.sort(uninstalledReleases, new ReverseComparator<>(new DownloadableContributionVersionComparator()));
+    Collections.sort(uninstalledReleases, new ReverseComparator<>(
+        new DownloadableContributionVersionComparator()));
 
-    downgradeChooser.removeAllItems();
-    downgradeChooser.addItem(tr("Select version"));
+    editorCell.downgradeChooser.removeAllItems();
+    editorCell.downgradeChooser.addItem(tr("Select version"));
 
     final List<ContributedLibrary> uninstalledPreviousReleases = new LinkedList<>();
     final List<ContributedLibrary> uninstalledNewerReleases = new LinkedList<>();
 
     final VersionComparator versionComparator = new VersionComparator();
     uninstalledReleases.stream().forEach(input -> {
-      if (installed == null || versionComparator.greaterThan(installed.getParsedVersion(), input.getParsedVersion())) {
+      if (installed == null
+          || versionComparator.greaterThan(installed.getParsedVersion(),
+                                           input.getParsedVersion())) {
         uninstalledPreviousReleases.add(input);
       } else {
         uninstalledNewerReleases.add(input);
       }
     });
-    uninstalledNewerReleases.forEach(downgradeChooser::addItem);
-    uninstalledPreviousReleases.forEach(downgradeChooser::addItem);
+    uninstalledNewerReleases.forEach(editorCell.downgradeChooser::addItem);
+    uninstalledPreviousReleases.forEach(editorCell.downgradeChooser::addItem);
 
-    downgradeChooser.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
-    downgradeButton.setVisible(installed != null && (!uninstalledPreviousReleases.isEmpty() || uninstalledNewerReleases.size() > 1));
+    editorCell.downgradeChooser
+        .setVisible(installed != null
+                    && (!uninstalledPreviousReleases.isEmpty()
+                        || uninstalledNewerReleases.size() > 1));
+    editorCell.downgradeButton
+        .setVisible(installed != null
+                    && (!uninstalledPreviousReleases.isEmpty()
+                        || uninstalledNewerReleases.size() > 1));
 
-    versionToInstallChooser.removeAllItems();
-    uninstalledReleases.forEach(versionToInstallChooser::addItem);
-    versionToInstallChooser.setVisible(installed == null && uninstalledReleases.size() > 1);
+    editorCell.versionToInstallChooser.removeAllItems();
+    uninstalledReleases.forEach(editorCell.versionToInstallChooser::addItem);
+    editorCell.versionToInstallChooser
+        .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    Component component = getUpdatedCellComponent(value, true, row, !installedBuiltIn.isEmpty());
-    component.setBackground(new Color(218, 227, 227)); //#dae3e3
-    return component;
-  }
-
-  private Component getUpdatedCellComponent(Object value, boolean isSelected, int row, boolean hasBuiltInRelease) {
-    ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
-
-    JTextPane description = makeNewDescription(panel);
-
-    //FIXME: happens on macosx, don't know why
-    if (releases == null) {
-      return panel;
-    }
-
-    ContributedLibrary selected = releases.getSelected();
-    ContributedLibrary installed = releases.getInstalled();
-
-    boolean installable, upgradable;
-    if (installed == null) {
-      installable = true;
-      upgradable = false;
-    } else {
-      installable = false;
-      upgradable = new DownloadableContributionVersionComparator().compare(selected, installed) > 0;
-    }
-    if (installable) {
-      installButton.setText(tr("Install"));
-    }
-    if (upgradable) {
-      installButton.setText(tr("Update"));
-    }
-    installButton.setVisible(installable || upgradable);
-    installButtonPlaceholder.setVisible(!(installable || upgradable));
-
-    String name = selected.getName();
-    String author = selected.getAuthor();
-    // String maintainer = selectedLib.getMaintainer();
-    String website = selected.getWebsite();
-    String sentence = selected.getSentence();
-    String paragraph = selected.getParagraph();
-    // String availableVer = selectedLib.getVersion();
-    // String url = selected.getUrl();
-
-    String midcolor = isSelected ? "#000000" : "#888888";
-
-    String desc = "<html><body>";
-
-    // Library name...
-    desc += format("<b>{0}</b>", name);
-    if (installed != null && installed.isReadOnly()) {
-      desc += " Built-In ";
-    }
-
-    // ...author...
-    desc += format("<font color=\"{0}\">", midcolor);
-    if (author != null && !author.isEmpty()) {
-      desc += format(" by <b>{0}</b>", author);
-    }
-
-    // ...version.
-    if (installed != null) {
-      String installedVer = installed.getParsedVersion();
-      if (installedVer == null) {
-        desc += " " + tr("Version unknown");
-      } else {
-        desc += " " + format(tr("Version <b>{0}</b>"), installedVer);
-      }
-    }
-    desc += "</font>";
-
-    if (installed != null) {
-      desc += " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
-    }
-
-    desc += "<br/>";
-
-    // Description
-    if (sentence != null) {
-      desc += format("<b>{0}</b> ", sentence);
-      if (paragraph != null && !paragraph.isEmpty())
-        desc += format("{0}", paragraph);
-      desc += "<br />";
-    }
-    if (author != null && !author.isEmpty()) {
-      desc += format("<a href=\"{0}\">More info</a>", website);
-    }
-
-    desc += "</body></html>";
-    description.setText(desc);
-    description.setBackground(Color.WHITE);
-
-    // for modelToView to work, the text area has to be sized. It doesn't
-    // matter if it's visible or not.
-
-    // See:
-    // http://stackoverflow.com/questions/3081210/how-to-set-jtextarea-to-have-height-that-matches-the-size-of-a-text-it-contains
-    int width = parentTable.getBounds().width;
-    setJTextPaneDimensionToFitContainedText(description, width);
-
-    if (isSelected) {
-      panel.setBackground(parentTable.getSelectionBackground());
-      panel.setForeground(parentTable.getSelectionForeground());
-    } else {
-      panel.setBackground(parentTable.getBackground());
-      panel.setForeground(parentTable.getForeground());
-    }
-
-    return panel;
+    editorCell.update(value, true, row, !installedBuiltIn.isEmpty());
+    editorCell.panel.setBackground(new Color(218, 227, 227)); // #dae3e3
+    return editorCell.panel;
   }
 
   private final Timer enabler = new Timer(100, new ActionListener() {
@@ -384,20 +421,20 @@ public class ContributedLibraryTableCell extends InstallerTableCell {
     } else {
       enabler.stop();
     }
-    buttonsPanel.setVisible(enabled);
-    inactiveButtonsPanel.setVisible(!enabled);
+    editorCell.buttonsPanel.setVisible(enabled);
+    editorCell.inactiveButtonsPanel.setVisible(!enabled);
   }
 
   public void enable(boolean enabled) {
-    installButton.setEnabled(enabled);
+    editorCell.installButton.setEnabled(enabled);
   }
 
   public void setStatus(String status) {
-    statusLabel.setText(status);
+    editorCell.statusLabel.setText(status);
   }
 
   public void invalidate() {
-    panel.invalidate();
+    editorCell.panel.invalidate();
   }
 
 }
