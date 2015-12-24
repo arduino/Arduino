@@ -29,21 +29,44 @@
 
 package cc.arduino.contributions.ui;
 
-import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
-import processing.app.Base;
-import processing.app.Theme;
+import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
+import static processing.app.I18n.tr;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
-import static processing.app.I18n.tr;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
+import processing.app.Base;
+import processing.app.Theme;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -67,7 +90,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
   abstract protected FilteredAbstractTableModel<T> createContribModel();
 
-  abstract protected InstallerTableCell createCellRenderer();
+  abstract protected TableCellRenderer createCellRenderer();
 
   abstract protected InstallerTableCell createCellEditor();
 

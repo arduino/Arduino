@@ -29,16 +29,10 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibraryInstaller;
-import cc.arduino.contributions.libraries.LibraryTypeComparator;
-import cc.arduino.contributions.ui.*;
-import cc.arduino.utils.Progress;
-import processing.app.BaseNoGui;
+import static processing.app.I18n.tr;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -46,7 +40,24 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
-import static processing.app.I18n.tr;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableCellRenderer;
+
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.LibraryInstaller;
+import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.ui.DropdownAllItem;
+import cc.arduino.contributions.ui.DropdownItem;
+import cc.arduino.contributions.ui.FilteredAbstractTableModel;
+import cc.arduino.contributions.ui.InstallerJDialog;
+import cc.arduino.contributions.ui.InstallerJDialogUncaughtExceptionHandler;
+import cc.arduino.contributions.ui.InstallerTableCell;
+import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
@@ -65,13 +76,13 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   @Override
-  protected InstallerTableCell createCellRenderer() {
+  protected TableCellRenderer createCellRenderer() {
     return new ContributedLibraryTableCellRenderer();
   }
 
   @Override
   protected InstallerTableCell createCellEditor() {
-    return new ContributedLibraryTableCellRenderer() {
+    return new ContributedLibraryTableCellEditor() {
       @Override
       protected void onInstall(ContributedLibrary selectedLibrary, ContributedLibrary installedLibrary) {
         if (selectedLibrary.isReadOnly()) {
