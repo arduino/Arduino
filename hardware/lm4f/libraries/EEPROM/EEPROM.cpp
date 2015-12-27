@@ -65,4 +65,12 @@ void EEPROMClass::write(int address, uint8_t value)
 	ROM_EEPROMProgram(&wordVal, byteAddr, 4);
 }
 
+void EEPROMClass::update(int address, uint8_t value)
+{
+  	uint8_t old_value = read(address);
+  
+	if(value != old_value)
+		write(address, value);
+}
+
 EEPROMClass EEPROM;
