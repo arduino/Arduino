@@ -27,6 +27,7 @@ class EEPROMClass
   public:
     uint8_t read(int);
     void write(int, uint8_t);
+    void update(int, uint8_t);
 };
 
 extern EEPROMClass EEPROM;
