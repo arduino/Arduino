@@ -33,8 +33,6 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +40,6 @@ import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import javax.swing.JTable;
-import javax.swing.Timer;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
@@ -142,38 +139,16 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     return editorCell.panel;
   }
 
-  private final Timer enabler = new Timer(100, new ActionListener() {
-    @Override
-    public void actionPerformed(ActionEvent e) {
-      enable(true);
-      enabler.stop();
-    }
-  });
-
   @Override
   public void setEnabled(boolean enabled) {
-    enable(false);
-    if (enabled) {
-      enabler.start();
-    } else {
-      enabler.stop();
-    }
+    editorCell.installButton.setEnabled(enabled);
     editorCell.buttonsPanel.setVisible(enabled);
     editorCell.inactiveButtonsPanel.setVisible(!enabled);
-  }
-
-  public void enable(boolean enabled) {
-    editorCell.installButton.setEnabled(enabled);
   }
 
   public void setStatus(String status) {
     editorCell.statusLabel.setText(status);
   }
-
-  public void invalidate() {
-    editorCell.panel.invalidate();
-  }
-
 
   protected void onRemove(ContributedLibrary selected) {
     // Empty
