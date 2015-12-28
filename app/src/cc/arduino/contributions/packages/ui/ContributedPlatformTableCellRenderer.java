@@ -43,10 +43,7 @@ public class ContributedPlatformTableCellRenderer implements TableCellRenderer {
                                                  boolean hasFocus, int row,
                                                  int column) {
     ContributedPlatformTableCell cell = new ContributedPlatformTableCell();
-    cell.installButton.setEnabled(false);
-    cell.removeButton.setEnabled(false);
-    cell.buttonsPanel.setVisible(false);
-    cell.inactiveButtonsPanel.setVisible(true);
+    cell.setButtonsVisible(false);
     
     cell.update(table, value, isSelected, row, false);
     if (row % 2 == 0) {

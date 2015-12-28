@@ -239,5 +239,9 @@ public class ContributedLibraryTableCell {
     return description;
   }
 
-
+  public void setButtonsVisible(boolean enabled) {
+    installButton.setEnabled(enabled);
+    buttonsPanel.setVisible(enabled);
+    inactiveButtonsPanel.setVisible(!enabled);
+  }
 }

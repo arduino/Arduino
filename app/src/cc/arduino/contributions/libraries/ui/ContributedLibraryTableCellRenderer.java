@@ -44,10 +44,7 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
                                                  int column) {
 
     ContributedLibraryTableCell cell = new ContributedLibraryTableCell();
-    cell.installButton.setEnabled(false);
-    cell.buttonsPanel.setVisible(false);
-    cell.inactiveButtonsPanel.setVisible(true);
-
+    cell.setButtonsVisible(false);
     cell.update(table, value, isSelected, row, false);
 
     if (row % 2 == 0) {

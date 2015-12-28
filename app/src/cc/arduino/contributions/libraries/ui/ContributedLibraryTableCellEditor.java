@@ -141,9 +141,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
   @Override
   public void setEnabled(boolean enabled) {
-    editorCell.installButton.setEnabled(enabled);
-    editorCell.buttonsPanel.setVisible(enabled);
-    editorCell.inactiveButtonsPanel.setVisible(!enabled);
+    editorCell.setButtonsVisible(enabled);
   }
 
   public void setStatus(String status) {

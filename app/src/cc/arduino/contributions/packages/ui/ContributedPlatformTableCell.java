@@ -278,4 +278,11 @@ public class ContributedPlatformTableCell {
     return description;
   }
 
+  public void setButtonsVisible(boolean enabled) {
+    installButton.setEnabled(enabled);
+    removeButton.setEnabled(enabled);
+    buttonsPanel.setVisible(enabled);
+    inactiveButtonsPanel.setVisible(!enabled);
+  }
+
 }
