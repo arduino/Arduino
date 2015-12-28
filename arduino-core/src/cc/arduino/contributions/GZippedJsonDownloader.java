@@ -53,8 +53,13 @@ public class GZippedJsonDownloader {
     try {
       new JsonDownloader(downloader, gzippedUrl).download(tmpFile, progress, statusText, progressListener);
       File gzipTmpFile = new File(tmpFile.getParentFile(), GzipUtils.getCompressedFilename(tmpFile.getName()));
+      // remove eventual leftovers from previous downloads
+      if (gzipTmpFile.exists()) {
+        gzipTmpFile.delete();
+      }
       tmpFile.renameTo(gzipTmpFile);
       decompress(gzipTmpFile, tmpFile);
+      gzipTmpFile.delete();
     } catch (Exception e) {
       new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
     }
