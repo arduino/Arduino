@@ -1119,7 +1119,7 @@ public class Sketch {
   }
 
   private String saveSketchInTempFolder() throws IOException {
-    File tempFolder = FileUtils.createTempFolder("arduino_", DigestUtils.md5Hex(data.getMainFilePath()));
+    File tempFolder = FileUtils.createTempFolder("arduino_modified_sketch_");
     FileUtils.copy(getFolder(), tempFolder);
 
     for (SketchCode sc : Stream.of(data.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {
