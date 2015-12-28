@@ -26,7 +26,6 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
-import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.Uploader;
 import org.apache.commons.codec.digest.DigestUtils;
 import processing.app.debug.RunnerException;
@@ -463,7 +462,7 @@ public class Sketch {
 
       } else {
         // delete the file
-        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data).toPath(), Paths.get(System.getProperty("java.io.tmpdir"), "arduino_" + DigestUtils.md5Hex(getMainFilePath())))) {
+        if (!current.getCode().deleteFile(BaseNoGui.getBuildFolder(data).toPath())) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getCode().getFileName()));
           return;
@@ -1100,17 +1099,27 @@ public class Sketch {
 
     CompilerProgressListener progressListener = editor.status::progressUpdate;
 
+    boolean deleteTemp = false;
     String pathToSketch = data.getMainFilePath();
     if (isModified()) {
+      // If any files are modified, make a copy of the sketch with the changes
+      // saved, so arduino-builder will see the modifications.
       pathToSketch = saveSketchInTempFolder();
+      deleteTemp = true;
     }
 
-    return new Compiler(pathToSketch, data, buildPath).build(progressListener, save);
+    try {
+      return new Compiler(pathToSketch, data, buildPath).build(progressListener,
+                                                               save);
+    } finally {
+      // Make sure we clean up any temporary sketch copy
+      if (deleteTemp)
+        FileUtils.recursiveDelete(new File(pathToSketch).getParentFile());
+    }
   }
 
   private String saveSketchInTempFolder() throws IOException {
     File tempFolder = FileUtils.createTempFolder("arduino_", DigestUtils.md5Hex(data.getMainFilePath()));
-    DeleteFilesOnShutdown.add(tempFolder);
     FileUtils.copy(getFolder(), tempFolder);
 
     for (SketchCode sc : Stream.of(data.getCodes()).filter(SketchCode::isModified).collect(Collectors.toList())) {

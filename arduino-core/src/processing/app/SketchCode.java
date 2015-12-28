@@ -91,14 +91,13 @@ public class SketchCode {
   }
 
 
-  protected boolean deleteFile(Path tempBuildFolder, Path tempUnsavedSketchPath) throws IOException {
+  protected boolean deleteFile(Path tempBuildFolder) throws IOException {
     if (!file.delete()) {
       return false;
     }
 
-    List<Path> tempBuildFolders = Stream.of(tempBuildFolder, tempBuildFolder.resolve("sketch"), tempUnsavedSketchPath)
-      .filter(path -> Files.exists(path))
-      .collect(Collectors.toList());
+    List<Path> tempBuildFolders = Stream.of(tempBuildFolder, tempBuildFolder.resolve("sketch"))
+        .filter(path -> Files.exists(path)).collect(Collectors.toList());
 
     for (Path folder : tempBuildFolders) {
       if (!deleteCompiledFilesFrom(folder)) {
