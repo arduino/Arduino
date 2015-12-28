@@ -132,8 +132,8 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
     editorCell.update(table, value, true, row, !installedBuiltIn.isEmpty());
-    editorCell.panel.setBackground(new Color(218, 227, 227)); // #dae3e3
-    return editorCell.panel;
+    editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
+    return editorCell;
   }
 
   @Override

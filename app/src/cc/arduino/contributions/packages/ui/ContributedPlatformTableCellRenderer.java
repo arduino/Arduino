@@ -47,18 +47,18 @@ public class ContributedPlatformTableCellRenderer implements TableCellRenderer {
     
     cell.update(table, value, isSelected, row, false);
     if (row % 2 == 0) {
-      cell.panel.setBackground(new Color(236, 241, 241)); // #ecf1f1
+      cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {
-      cell.panel.setBackground(new Color(255, 255, 255));
+      cell.setBackground(new Color(255, 255, 255));
     }
 
-    int height = new Double(cell.panel.getPreferredSize().getHeight())
+    int height = new Double(cell.getPreferredSize().getHeight())
         .intValue();
     if (table.getRowHeight(row) < height) {
       table.setRowHeight(row, height);
     }
 
-    return cell.panel;
+    return cell;
   }
 
 }

@@ -59,9 +59,8 @@ import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 
 @SuppressWarnings("serial")
-public class ContributedPlatformTableCell {
+public class ContributedPlatformTableCell extends JPanel {
 
-  final JPanel panel;
   final JButton installButton;
   final JButton removeButton;
   final Component removeButtonPlaceholder;
@@ -74,6 +73,9 @@ public class ContributedPlatformTableCell {
   final JLabel statusLabel;
 
   public ContributedPlatformTableCell() {
+    super();
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
     {
       installButton = new JButton(tr("Install"));
       int width = installButton.getPreferredSize().width;
@@ -102,10 +104,7 @@ public class ContributedPlatformTableCell {
     versionToInstallChooser
         .setMaximumSize(versionToInstallChooser.getPreferredSize());
 
-    panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-    makeNewDescription(panel);
+    makeNewDescription();
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
@@ -126,7 +125,7 @@ public class ContributedPlatformTableCell {
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(Box.createHorizontalStrut(15));
 
-    panel.add(buttonsPanel);
+    add(buttonsPanel);
 
     inactiveButtonsPanel = new JPanel();
     inactiveButtonsPanel
@@ -141,16 +140,16 @@ public class ContributedPlatformTableCell {
     inactiveButtonsPanel.add(statusLabel);
     inactiveButtonsPanel.add(Box.createHorizontalStrut(15));
 
-    panel.add(inactiveButtonsPanel);
+    add(inactiveButtonsPanel);
 
-    panel.add(Box.createVerticalStrut(15));
+    add(Box.createVerticalStrut(15));
   }
 
   void update(JTable parentTable, Object value, boolean isSelected, int row,
               boolean hasBuiltInRelease) {
     ContributionIndexTableModel.ContributedPlatformReleases releases = (ContributionIndexTableModel.ContributedPlatformReleases) value;
 
-    JTextPane description = makeNewDescription(panel);
+    JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
     if (releases == null) {
@@ -239,17 +238,17 @@ public class ContributedPlatformTableCell {
                                                                width);
 
     if (isSelected) {
-      panel.setBackground(parentTable.getSelectionBackground());
-      panel.setForeground(parentTable.getSelectionForeground());
+      setBackground(parentTable.getSelectionBackground());
+      setForeground(parentTable.getSelectionForeground());
     } else {
-      panel.setBackground(parentTable.getBackground());
-      panel.setForeground(parentTable.getForeground());
+      setBackground(parentTable.getBackground());
+      setForeground(parentTable.getForeground());
     }
   }
 
-  private static JTextPane makeNewDescription(JPanel panel) {
-    if (panel.getComponentCount() > 0) {
-      panel.remove(0);
+  private JTextPane makeNewDescription() {
+    if (getComponentCount() > 0) {
+      remove(0);
     }
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
@@ -274,7 +273,7 @@ public class ContributedPlatformTableCell {
         Base.openURL(e.getDescription());
       }
     });
-    panel.add(description, 0);
+    add(description, 0);
     return description;
   }
 

@@ -27,9 +27,8 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 
-public class ContributedLibraryTableCell {
+public class ContributedLibraryTableCell extends JPanel {
 
-  protected final JPanel panel;
   protected final JButton installButton;
   protected final Component installButtonPlaceholder;
   protected final JComboBox downgradeChooser;
@@ -40,6 +39,9 @@ public class ContributedLibraryTableCell {
   protected final JLabel statusLabel;
 
   public ContributedLibraryTableCell() {
+    super();
+    setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
     installButton = new JButton(tr("Install"));
     int width = installButton.getPreferredSize().width;
     installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
@@ -60,10 +62,7 @@ public class ContributedLibraryTableCell {
     versionToInstallChooser
         .setMaximumSize(versionToInstallChooser.getPreferredSize());
 
-    panel = new JPanel();
-    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-    makeNewDescription(panel);
+    makeNewDescription();
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
@@ -82,7 +81,7 @@ public class ContributedLibraryTableCell {
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(Box.createHorizontalStrut(15));
 
-    panel.add(buttonsPanel);
+    add(buttonsPanel);
 
     inactiveButtonsPanel = new JPanel();
     inactiveButtonsPanel
@@ -97,16 +96,16 @@ public class ContributedLibraryTableCell {
     inactiveButtonsPanel.add(statusLabel);
     inactiveButtonsPanel.add(Box.createHorizontalStrut(15));
 
-    panel.add(inactiveButtonsPanel);
+    add(inactiveButtonsPanel);
 
-    panel.add(Box.createVerticalStrut(15));
+    add(Box.createVerticalStrut(15));
   }
 
-  void update(JTable parentTable, Object value, boolean isSelected,
-                      int row, boolean hasBuiltInRelease) {
+  void update(JTable parentTable, Object value, boolean isSelected, int row,
+              boolean hasBuiltInRelease) {
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
 
-    JTextPane description = makeNewDescription(panel);
+    JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
     if (releases == null)
@@ -196,20 +195,21 @@ public class ContributedLibraryTableCell {
     // See:
     // http://stackoverflow.com/questions/3081210/how-to-set-jtextarea-to-have-height-that-matches-the-size-of-a-text-it-contains
     int width = parentTable.getBounds().width;
-    InstallerTableCell.setJTextPaneDimensionToFitContainedText(description, width);
+    InstallerTableCell.setJTextPaneDimensionToFitContainedText(description,
+                                                               width);
 
     if (isSelected) {
-      panel.setBackground(parentTable.getSelectionBackground());
-      panel.setForeground(parentTable.getSelectionForeground());
+      setBackground(parentTable.getSelectionBackground());
+      setForeground(parentTable.getSelectionForeground());
     } else {
-      panel.setBackground(parentTable.getBackground());
-      panel.setForeground(parentTable.getForeground());
+      setBackground(parentTable.getBackground());
+      setForeground(parentTable.getForeground());
     }
   }
 
-  private static JTextPane makeNewDescription(JPanel panel) {
-    if (panel.getComponentCount() > 0) {
-      panel.remove(0);
+  private JTextPane makeNewDescription() {
+    if (getComponentCount() > 0) {
+      remove(0);
     }
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
@@ -235,7 +235,7 @@ public class ContributedLibraryTableCell {
       }
     });
     // description.addKeyListener(new DelegatingKeyListener(parentTable));
-    panel.add(description, 0);
+    add(description, 0);
     return description;
   }
 
