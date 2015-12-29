@@ -121,7 +121,7 @@ void serialEventRun(void)
 // Public Methods //////////////////////////////////////////////////////////////
 #define SMCLK F_CPU //SMCLK = F_CPU for now
 
-void HardwareSerial::begin(unsigned long baud, uint8_t config)
+void HardwareSerial::begin(unsigned long baud)
 {
 	unsigned int mod;
 	unsigned long divider;
@@ -153,7 +153,7 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
 		divider >>=4;
 	} else {
-		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) - INT(N/16)] * 16)
+		mod = divider&0xFFF0;                           // UCBRFx = INT([(N/16) – INT(N/16)] × 16)
 		divider>>=8;
 	}
 	*(&(UCAxBR0) + uartOffset) = divider;
@@ -162,7 +162,6 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 	uint16_t reg = (oversampling ? UCOS16:0) | mod;
 	*(&(UCAxMCTLW_L) + uartOffset) = reg;
 	*(&(UCAxMCTLW_H) + uartOffset)= reg>>8;
-    *(&(UCAxCTL0) + uartOffset) = (*(&(UCAxCTL0) + uartOffset) & ~SERIAL_PAR_MASK) | config;
 #else
 	if(!oversampling) {
 		mod = ((divider&0xF)+1)&0xE;                    // UCBRSx (bit 1-3)
@@ -174,8 +173,6 @@ void HardwareSerial::begin(unsigned long baud, uint8_t config)
 	*(&(UCAxBR0) + uartOffset)= divider;
 	*(&(UCAxBR1) + uartOffset) = divider>>8;
 	*(&(UCAxMCTL) + uartOffset) = (unsigned char)(oversampling ? UCOS16:0) | mod;
-    *(&(UCAxCTL0) + uartOffset) = (*(&(UCAxCTL0) + uartOffset) & ~SERIAL_PAR_MASK) | config;
-
 #endif	
 	*(&(UCAxCTL1) + uartOffset) &= ~UCSWRST;
 #if defined(__MSP430_HAS_USCI_A0__) || defined(__MSP430_HAS_USCI_A1__) || defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
