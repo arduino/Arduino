@@ -38,74 +38,14 @@ import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
-public class ContributionIndexTableModel extends FilteredAbstractTableModel<ContributedPlatform> {
-
-  public static class ContributedPlatformReleases {
-    public final ContributedPackage packager;
-    public final String arch;
-    public final List<ContributedPlatform> releases;
-    public final List<String> versions;
-    public ContributedPlatform selected = null;
-
-    public ContributedPlatformReleases(ContributedPlatform platform) {
-      this.packager = platform.getParentPackage();
-      this.arch = platform.getArchitecture();
-      this.releases = new LinkedList<>();
-      this.versions = new LinkedList<>();
-      add(platform);
-    }
-
-    public boolean shouldContain(ContributedPlatform platform) {
-      if (platform.getParentPackage() != packager)
-        return false;
-      return platform.getArchitecture().equals(arch);
-    }
-
-    public void add(ContributedPlatform platform) {
-      releases.add(platform);
-      String version = platform.getParsedVersion();
-      if (version != null) {
-        versions.add(version);
-      }
-      selected = getLatest();
-    }
-
-    public ContributedPlatform getInstalled() {
-      List<ContributedPlatform> installedReleases = releases.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-      Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-
-      if (installedReleases.isEmpty()) {
-        return null;
-      }
-
-      return installedReleases.get(0);
-    }
-
-    public ContributedPlatform getLatest() {
-      return getLatestOf(releases);
-    }
-
-    public ContributedPlatform getSelected() {
-      return selected;
-    }
-
-    public void select(ContributedPlatform value) {
-      for (ContributedPlatform plat : releases) {
-        if (plat == value) {
-          selected = plat;
-          return;
-        }
-      }
-    }
-  }
+public class ContributionIndexTableModel
+    extends FilteredAbstractTableModel<ContributedPlatform> {
 
   private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
 

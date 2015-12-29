@@ -51,7 +51,7 @@ import cc.arduino.utils.ReverseComparator;
 public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
   private ContributedPlatformTableCell editorCell;
-  private ContributionIndexTableModel.ContributedPlatformReleases editorValue;
+  private ContributedPlatformReleases editorValue;
 
   @Override
   public Object getCellEditorValue() {
@@ -77,7 +77,7 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
         .select((ContributedPlatform) editorCell.versionToInstallChooser
             .getSelectedItem()));
 
-    editorValue = (ContributionIndexTableModel.ContributedPlatformReleases) value;
+    editorValue = (ContributedPlatformReleases) value;
     setEnabled(true);
 
     final ContributedPlatform installed = editorValue.getInstalled();

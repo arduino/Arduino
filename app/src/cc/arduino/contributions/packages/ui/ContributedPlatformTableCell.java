@@ -147,7 +147,7 @@ public class ContributedPlatformTableCell extends JPanel {
 
   void update(JTable parentTable, Object value, boolean isSelected,
               boolean hasBuiltInRelease) {
-    ContributionIndexTableModel.ContributedPlatformReleases releases = (ContributionIndexTableModel.ContributedPlatformReleases) value;
+    ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
 
     JTextPane description = makeNewDescription();
 
