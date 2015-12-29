@@ -821,9 +821,8 @@ public class Base {
     if (!file.exists()) return null;
 
     // Cycle through open windows to make sure that it's not already open.
-    String path = file.getAbsolutePath();
     for (Editor editor : editors) {
-      if (editor.getSketch().getMainFilePath().equals(path)) {
+      if (editor.getSketch().getPrimaryFile().getFile().equals(file)) {
         editor.toFront();
         return editor;
       }
