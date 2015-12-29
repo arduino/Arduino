@@ -332,4 +332,11 @@ public class Sketch {
       FileUtils.copy(getDataFolder(), newDataFolder);
     }
   }
+
+  /**
+   * Deletes this entire sketch from disk.
+   */
+  void delete() {
+    FileUtils.recursiveDelete(folder);
+  }
 }
