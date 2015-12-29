@@ -2,10 +2,14 @@ package processing.app;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
 
 import static processing.app.I18n.tr;
@@ -26,6 +30,8 @@ public class Sketch {
   private File folder;
 
   private List<SketchFile> files = new ArrayList<SketchFile>();
+
+  private File buildPath;
 
   private static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
     @Override
@@ -159,6 +165,31 @@ public class Sketch {
 
   public SketchFile getFile(int i) {
     return files.get(i);
+  }
+
+  /**
+   * Gets the build path for this sketch. The first time this is called,
+   * a build path is generated and created and the same path is returned
+   * on all subsequent calls.
+   *
+   * This takes into account the build.path preference. If it is set,
+   * that path is always returned, and the directory is *not* deleted on
+   * shutdown. If the preference is not set, a pathname in a
+   * temporary directory is generated, which is automatically deleted on
+   * shutdown.
+   */
+  public File getBuildPath() throws IOException {
+    if (buildPath == null) {
+      if (PreferencesData.get("build.path") != null) {
+        buildPath = BaseNoGui.absoluteFile(PreferencesData.get("build.path"));
+        Files.createDirectories(buildPath.toPath());
+      } else {
+        buildPath = FileUtils.createTempFolder("build", DigestUtils.md5Hex(getMainFilePath()) + ".tmp");
+        DeleteFilesOnShutdown.add(buildPath);
+      }
+    }
+
+    return buildPath;
   }
 
   protected void removeFile(SketchFile which) {
