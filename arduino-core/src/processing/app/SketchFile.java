@@ -46,6 +46,11 @@ public class SketchFile {
   private File file;
 
   /**
+   * The sketch this file belongs to.
+   */
+  private Sketch sketch;
+
+  /**
    * Is this the primary file in the sketch?
    */
   private boolean primary;
@@ -79,12 +84,15 @@ public class SketchFile {
   /**
    * Create a new SketchFile
    *
+   * @param sketch
+   *          The sketch this file belongs to
    * @param file
    *          The file this SketchFile represents
    * @param primary
    *          Whether this file is the primary file of the sketch
    */
-  public SketchFile(File file, boolean primary) {
+  public SketchFile(Sketch sketch, File file, boolean primary) {
+    this.sketch = sketch;
     this.file = file;
     this.primary = primary;
   }
