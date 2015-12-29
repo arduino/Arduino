@@ -45,7 +45,7 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
 
     ContributedLibraryTableCell cell = new ContributedLibraryTableCell();
     cell.setButtonsVisible(false);
-    cell.update(table, value, isSelected, row, false);
+    cell.update(table, value, isSelected);
 
     if (row % 2 == 0) {
       cell.setBackground(new Color(236, 241, 241)); // #ecf1f1

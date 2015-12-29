@@ -134,7 +134,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     editorCell.versionToInstallChooser
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    editorCell.update(table, value, true, row, !installedBuiltIn.isEmpty());
+    editorCell.update(table, value, true);
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
     return editorCell;
   }

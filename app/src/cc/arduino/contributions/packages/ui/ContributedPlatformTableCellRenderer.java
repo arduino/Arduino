@@ -44,16 +44,15 @@ public class ContributedPlatformTableCellRenderer implements TableCellRenderer {
                                                  int column) {
     ContributedPlatformTableCell cell = new ContributedPlatformTableCell();
     cell.setButtonsVisible(false);
-    
-    cell.update(table, value, isSelected, row, false);
+    cell.update(table, value, isSelected, false);
+
     if (row % 2 == 0) {
       cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {
       cell.setBackground(new Color(255, 255, 255));
     }
 
-    int height = new Double(cell.getPreferredSize().getHeight())
-        .intValue();
+    int height = new Double(cell.getPreferredSize().getHeight()).intValue();
     if (table.getRowHeight(row) < height) {
       table.setRowHeight(row, height);
     }

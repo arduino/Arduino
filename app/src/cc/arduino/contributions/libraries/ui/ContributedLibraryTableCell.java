@@ -101,8 +101,7 @@ public class ContributedLibraryTableCell extends JPanel {
     add(Box.createVerticalStrut(15));
   }
 
-  void update(JTable parentTable, Object value, boolean isSelected, int row,
-              boolean hasBuiltInRelease) {
+  void update(JTable parentTable, Object value, boolean isSelected) {
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
 
     JTextPane description = makeNewDescription();

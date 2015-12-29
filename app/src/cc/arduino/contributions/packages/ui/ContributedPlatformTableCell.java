@@ -145,7 +145,7 @@ public class ContributedPlatformTableCell extends JPanel {
     add(Box.createVerticalStrut(15));
   }
 
-  void update(JTable parentTable, Object value, boolean isSelected, int row,
+  void update(JTable parentTable, Object value, boolean isSelected,
               boolean hasBuiltInRelease) {
     ContributionIndexTableModel.ContributedPlatformReleases releases = (ContributionIndexTableModel.ContributedPlatformReleases) value;
 
