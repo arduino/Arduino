@@ -7,8 +7,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
 
@@ -174,7 +172,7 @@ public class Sketch {
    *
    * This takes into account the build.path preference. If it is set,
    * that path is always returned, and the directory is *not* deleted on
-   * shutdown. If the preference is not set, a pathname in a
+   * shutdown. If the preference is not set, a random pathname in a
    * temporary directory is generated, which is automatically deleted on
    * shutdown.
    */
@@ -184,7 +182,7 @@ public class Sketch {
         buildPath = BaseNoGui.absoluteFile(PreferencesData.get("build.path"));
         Files.createDirectories(buildPath.toPath());
       } else {
-        buildPath = FileUtils.createTempFolder("build", DigestUtils.md5Hex(getMainFilePath()) + ".tmp");
+        buildPath = FileUtils.createTempFolder("arduino_build_");
         DeleteFilesOnShutdown.add(buildPath);
       }
     }
