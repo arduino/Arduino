@@ -67,6 +67,9 @@ public class EditorStatus extends JPanel {
     FGCOLOR[5] = Theme.getColor("status.notice.fgcolor");
   }
 
+  // value for the size bars, buttons, etc
+  static final int GRID_SIZE = 33 * Theme.getInteger("gui.scalePercent") / 100;
+
   private final Editor editor;
   private final Font font;
 
@@ -395,11 +398,11 @@ public class EditorStatus extends JPanel {
   }
 
   public Dimension getMinimumSize() {
-    return new Dimension(300, Preferences.GRID_SIZE);
+    return new Dimension(300, GRID_SIZE);
   }
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, Preferences.GRID_SIZE);
+    return new Dimension(3000, GRID_SIZE);
   }
 
   public boolean isErr() {
