@@ -254,7 +254,7 @@ public class SketchController {
         editor.base.handleClose(editor);
       } else {
         // delete the file
-        if (!current.deleteFile(BaseNoGui.getBuildFolder(sketch).toPath())) {
+        if (!current.delete(BaseNoGui.getBuildFolder(sketch).toPath())) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
