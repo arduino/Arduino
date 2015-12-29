@@ -259,9 +259,6 @@ public class SketchController {
           return;
         }
 
-        // remove code from the list
-        sketch.removeFile(current);
-
         // just set current tab to the main tab
         editor.selectTab(0);
 
