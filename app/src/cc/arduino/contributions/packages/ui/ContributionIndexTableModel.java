@@ -48,8 +48,6 @@ import java.util.stream.Stream;
 @SuppressWarnings("serial")
 public class ContributionIndexTableModel extends FilteredAbstractTableModel<ContributedPlatform> {
 
-  public final static int DESCRIPTION_COL = 0;
-
   public static class ContributedPlatformReleases {
     public final ContributedPackage packager;
     public final String arch;
@@ -184,9 +182,7 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    if (col == DESCRIPTION_COL) {
-      fireTableCellUpdated(row, col);
-    }
+    fireTableCellUpdated(row, col);
   }
 
   @Override
@@ -195,15 +191,12 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
       return null;
     }
     ContributedPlatformReleases contribution = contributions.get(row);
-    if (col == DESCRIPTION_COL) {
-      return contribution;// .getSelected();
-    }
-    return null;
+    return contribution;// .getSelected();
   }
 
   @Override
   public boolean isCellEditable(int row, int col) {
-    return col == DESCRIPTION_COL;
+    return true;
   }
 
   public ContributedPlatformReleases getReleases(int row) {

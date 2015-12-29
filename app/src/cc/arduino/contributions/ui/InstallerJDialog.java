@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.ui;
 
-import static cc.arduino.contributions.packages.ui.ContributionIndexTableModel.DESCRIPTION_COL;
 import static processing.app.I18n.tr;
 
 import java.awt.BorderLayout;
@@ -165,7 +164,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     {
       TableColumnModel tcm = contribTable.getColumnModel();
-      TableColumn col = tcm.getColumn(DESCRIPTION_COL);
+      TableColumn col = tcm.getColumn(0);
       col.setCellRenderer(createCellRenderer());
       col.setCellEditor(createCellEditor());
       col.setResizable(true);

@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel extends FilteredAbstractTableModel<ContributedLibrary> {
 
-  public final static int DESCRIPTION_COL = 0;
 
   private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
@@ -120,9 +119,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    if (col == DESCRIPTION_COL) {
-      fireTableCellUpdated(row, col);
-    }
+    fireTableCellUpdated(row, col);
   }
 
   @Override
@@ -131,15 +128,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
       return null;
     }
     ContributedLibraryReleases contribution = contributions.get(row);
-    if (col == DESCRIPTION_COL) {
-      return contribution;// .getSelected();
-    }
-    return null;
+    return contribution;// .getSelected();
   }
 
   @Override
   public boolean isCellEditable(int row, int col) {
-    return col == DESCRIPTION_COL;
+    return true;
   }
 
   public ContributedLibraryReleases getReleases(int row) {
