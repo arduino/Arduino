@@ -27,7 +27,7 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 
-public class ContributedLibraryTableCell extends JPanel {
+public class ContributedLibraryTableCellJPanel extends JPanel {
 
   final JButton installButton;
   final Component installButtonPlaceholder;
@@ -38,7 +38,7 @@ public class ContributedLibraryTableCell extends JPanel {
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
 
-  public ContributedLibraryTableCell(JTable parentTable, Object value,
+  public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
                                      boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

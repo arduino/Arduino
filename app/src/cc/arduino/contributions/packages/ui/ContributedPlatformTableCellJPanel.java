@@ -59,7 +59,7 @@ import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 
 @SuppressWarnings("serial")
-public class ContributedPlatformTableCell extends JPanel {
+public class ContributedPlatformTableCellJPanel extends JPanel {
 
   final JButton installButton;
   final JButton removeButton;
@@ -72,7 +72,7 @@ public class ContributedPlatformTableCell extends JPanel {
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
 
-  public ContributedPlatformTableCell() {
+  public ContributedPlatformTableCellJPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 

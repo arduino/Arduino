@@ -51,7 +51,7 @@ import cc.arduino.utils.ReverseComparator;
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
-  private ContributedPlatformTableCell cell;
+  private ContributedPlatformTableCellJPanel cell;
   private ContributedPlatformReleases value;
 
   @Override
@@ -65,7 +65,7 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
                                                int column) {
     value = (ContributedPlatformReleases) _value;
 
-    cell = new ContributedPlatformTableCell();
+    cell = new ContributedPlatformTableCellJPanel();
     cell.installButton.addActionListener(e -> onInstall(value.getSelected(),
                                                         value.getInstalled()));
     cell.removeButton.addActionListener(e -> onRemove(value.getInstalled()));

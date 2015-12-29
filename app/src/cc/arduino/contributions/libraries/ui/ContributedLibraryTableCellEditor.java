@@ -54,7 +54,7 @@ import cc.arduino.utils.ReverseComparator;
 public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
   private ContributedLibraryReleases editorValue;
-  private ContributedLibraryTableCell editorCell;
+  private ContributedLibraryTableCellJPanel editorCell;
 
   @Override
   public Object getCellEditorValue() {
@@ -67,7 +67,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
                                                int column) {
     editorValue = (ContributedLibraryReleases) value;
 
-    editorCell = new ContributedLibraryTableCell(table, value, true);
+    editorCell = new ContributedLibraryTableCellJPanel(table, value, true);
     editorCell.installButton
         .addActionListener(e -> onInstall(editorValue.getSelected(),
                                           editorValue.getInstalled()));

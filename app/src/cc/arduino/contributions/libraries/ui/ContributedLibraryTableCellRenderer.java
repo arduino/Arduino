@@ -42,7 +42,7 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
                                                  boolean isSelected,
                                                  boolean hasFocus, int row,
                                                  int column) {
-    ContributedLibraryTableCell cell = new ContributedLibraryTableCell(table,
+    ContributedLibraryTableCellJPanel cell = new ContributedLibraryTableCellJPanel(table,
         value, isSelected);
     cell.setButtonsVisible(false);
 
