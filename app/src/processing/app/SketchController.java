@@ -250,20 +250,8 @@ public class SketchController {
                                               options[0]);
     if (result == JOptionPane.YES_OPTION) {
       if (current.isPrimary()) {
-        // need to unset all the modified flags, otherwise tries
-        // to do a save on the handleNew()
-
-        // delete the entire sketch
-        FileUtils.recursiveDelete(sketch.getFolder());
-
-        // get the changes into the sketchbook menu
-        //sketchbook.rebuildMenus();
-
-        // make a new sketch, and i think this will rebuild the sketch menu
-        //editor.handleNewUnchecked();
-        //editor.handleClose2();
+        sketch.delete();
         editor.base.handleClose(editor);
-
       } else {
         // delete the file
         if (!current.deleteFile(BaseNoGui.getBuildFolder(sketch).toPath())) {
