@@ -27,7 +27,6 @@ import cc.arduino.Compiler;
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
 import cc.arduino.packages.Uploader;
-import org.apache.commons.codec.digest.DigestUtils;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.FileUtils;
