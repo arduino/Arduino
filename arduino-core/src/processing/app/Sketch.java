@@ -277,27 +277,9 @@ public class Sketch {
       file.renamedTo(new File(newFolder, file.getFileName()));
 
     // And finally, rename the primary file
-    if (!getPrimaryFile().renameTo(newPrimary))
-      throw new IOException(tr("Failed to rename primary sketch file"));
+    getPrimaryFile().renameTo(newPrimary.getName());
   }
 
-  /**
-   * Rename the given file to get the given name.
-   *
-   * @param sketchfile
-   *          The SketchFile to be renamed.
-   * @param newName
-   *          The new name, including extension, excluding directory
-   *          name.
-   * @throws IOException
-   *           When a problem occurs, or is expected to occur. The error
-   *           message should be already translated.
-   */
-  public void renameFileTo(SketchFile sketchfile, String newName) throws IOException {
-    File newFile = new File(folder, newName);
-    checkNewFilename(newFile);
-    sketchfile.renameTo(newFile);
-  }
 
   public SketchFile addFile(String newName) throws IOException {
     // Check the name will not cause any conflicts

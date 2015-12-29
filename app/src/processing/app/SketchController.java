@@ -187,7 +187,7 @@ public class SketchController {
       } else {
         // Non-primary file, rename just that file
         try {
-          sketch.renameFileTo(current, newName);
+          current.renameTo(newName);
         } catch (IOException e) {
           // This does not pass on e, to prevent showing a backtrace for
           // "normal" errors.
@@ -349,7 +349,7 @@ public class SketchController {
         // Do rename of all .pde files to new .ino extension
         for (SketchFile file : oldFiles) {
           File newName = FileUtils.replaceExtension(file.getFile(), Sketch.DEFAULT_SKETCH_EXTENSION);
-          file.renameTo(newName);
+          file.renameTo(newName.getName());
         }
       }
     }
