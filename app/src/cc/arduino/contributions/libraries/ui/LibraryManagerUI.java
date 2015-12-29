@@ -71,10 +71,6 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     return new LibrariesIndexTableModel();
   }
 
-  private LibrariesIndexTableModel getContribModel() {
-    return (LibrariesIndexTableModel) contribModel;
-  }
-
   @Override
   protected TableCellRenderer createCellRenderer() {
     return new ContributedLibraryTableCellRenderer();
