@@ -65,7 +65,7 @@ public class ContributedPlatformTableCell extends JPanel {
   final JButton removeButton;
   final Component removeButtonPlaceholder;
   final Component installButtonPlaceholder;
-  JComboBox downgradeChooser;
+  final JComboBox downgradeChooser;
   final JComboBox versionToInstallChooser;
   final JButton downgradeButton;
   final JPanel buttonsPanel;

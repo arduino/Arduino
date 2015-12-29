@@ -35,6 +35,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JTable;
@@ -50,44 +51,42 @@ import cc.arduino.utils.ReverseComparator;
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
-  private ContributedPlatformTableCell editorCell;
-  private ContributedPlatformReleases editorValue;
+  private ContributedPlatformTableCell cell;
+  private ContributedPlatformReleases value;
 
   @Override
   public Object getCellEditorValue() {
-    return editorValue;
+    return value;
   }
 
   @Override
-  public Component getTableCellEditorComponent(JTable table, Object value,
+  public Component getTableCellEditorComponent(JTable table, Object _value,
                                                boolean isSelected, int row,
                                                int column) {
-    editorCell = new ContributedPlatformTableCell();
-    editorCell.installButton
-        .addActionListener(e -> onInstall(editorValue.getSelected(),
-                                          editorValue.getInstalled()));
-    editorCell.removeButton
-        .addActionListener(e -> onRemove(editorValue.getInstalled()));
-    editorCell.downgradeButton.addActionListener(e -> {
-      ContributedPlatform selected = (ContributedPlatform) editorCell.downgradeChooser
+    value = (ContributedPlatformReleases) _value;
+
+    cell = new ContributedPlatformTableCell();
+    cell.installButton.addActionListener(e -> onInstall(value.getSelected(),
+                                                        value.getInstalled()));
+    cell.removeButton.addActionListener(e -> onRemove(value.getInstalled()));
+    cell.downgradeButton.addActionListener(e -> {
+      ContributedPlatform selected = (ContributedPlatform) cell.downgradeChooser
           .getSelectedItem();
-      onInstall(selected, editorValue.getInstalled());
+      onInstall(selected, value.getInstalled());
     });
-    editorCell.versionToInstallChooser.addItemListener(e -> editorValue
-        .select((ContributedPlatform) editorCell.versionToInstallChooser
+    cell.versionToInstallChooser.addItemListener(e -> value
+        .select((ContributedPlatform) cell.versionToInstallChooser
             .getSelectedItem()));
 
-    editorValue = (ContributedPlatformReleases) value;
     setEnabled(true);
 
-    final ContributedPlatform installed = editorValue.getInstalled();
+    final ContributedPlatform installed = value.getInstalled();
 
-    java.util.List<ContributedPlatform> releases = new LinkedList<>(
-        editorValue.releases);
-    java.util.List<ContributedPlatform> uninstalledReleases = releases.stream()
+    List<ContributedPlatform> releases = new LinkedList<>(value.releases);
+    List<ContributedPlatform> uninstalledReleases = releases.stream()
         .filter(new InstalledPredicate().negate()).collect(Collectors.toList());
 
-    java.util.List<ContributedPlatform> installedBuiltIn = releases.stream()
+    List<ContributedPlatform> installedBuiltIn = releases.stream()
         .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
         .collect(Collectors.toList());
 
@@ -98,11 +97,11 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
     Collections.sort(uninstalledReleases, new ReverseComparator<>(
         new DownloadableContributionVersionComparator()));
 
-    editorCell.downgradeChooser.removeAllItems();
-    editorCell.downgradeChooser.addItem(tr("Select version"));
+    cell.downgradeChooser.removeAllItems();
+    cell.downgradeChooser.addItem(tr("Select version"));
 
-    final java.util.List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
-    final java.util.List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
+    final List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
+    final List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
 
     final VersionComparator versionComparator = new VersionComparator();
     uninstalledReleases.stream().forEach(input -> {
@@ -114,35 +113,32 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
         uninstalledNewerReleases.add(input);
       }
     });
-    uninstalledNewerReleases.forEach(editorCell.downgradeChooser::addItem);
-    uninstalledPreviousReleases.forEach(editorCell.downgradeChooser::addItem);
+    uninstalledNewerReleases.forEach(cell.downgradeChooser::addItem);
+    uninstalledPreviousReleases.forEach(cell.downgradeChooser::addItem);
 
-    editorCell.downgradeChooser
-        .setVisible(installed != null
-                    && (!uninstalledPreviousReleases.isEmpty()
-                        || uninstalledNewerReleases.size() > 1));
-    editorCell.downgradeButton
-        .setVisible(installed != null
-                    && (!uninstalledPreviousReleases.isEmpty()
-                        || uninstalledNewerReleases.size() > 1));
+    boolean downgradeVisible = installed != null
+                               && (!uninstalledPreviousReleases.isEmpty()
+                                   || uninstalledNewerReleases.size() > 1);
+    cell.downgradeChooser.setVisible(downgradeVisible);
+    cell.downgradeButton.setVisible(downgradeVisible);
 
-    editorCell.versionToInstallChooser.removeAllItems();
-    uninstalledReleases.forEach(editorCell.versionToInstallChooser::addItem);
-    editorCell.versionToInstallChooser
+    cell.versionToInstallChooser.removeAllItems();
+    uninstalledReleases.forEach(cell.versionToInstallChooser::addItem);
+    cell.versionToInstallChooser
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    editorCell.update(table, value, true, !installedBuiltIn.isEmpty());
-    editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
-    return editorCell;
+    cell.update(table, _value, true, !installedBuiltIn.isEmpty());
+    cell.setBackground(new Color(218, 227, 227)); // #dae3e3
+    return cell;
   }
 
   @Override
   public void setEnabled(boolean enabled) {
-    editorCell.setButtonsVisible(enabled);
+    cell.setButtonsVisible(enabled);
   }
 
   public void setStatus(String status) {
-    editorCell.statusLabel.setText(status);
+    cell.statusLabel.setText(status);
   }
 
   protected void onRemove(ContributedPlatform contributedPlatform) {

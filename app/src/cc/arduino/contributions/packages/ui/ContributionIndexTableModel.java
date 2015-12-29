@@ -29,8 +29,6 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedBoard;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -48,17 +46,20 @@ public class ContributionIndexTableModel
     extends FilteredAbstractTableModel<ContributedPlatform> {
 
   private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
+  private final String[] columnNames = { "Description" };
+  private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
-  private final String[] columnNames = {"Description"};
-
-  private final Class<?>[] columnTypes = {ContributedPlatform.class};
-
-  public void updateIndexFilter(String[] filters, Stream<Predicate<ContributedPlatform>> additionalFilters) {
+  public void updateIndexFilter(String[] filters,
+                                Stream<Predicate<ContributedPlatform>> additionalFilters) {
     contributions.clear();
-    Predicate<ContributedPlatform> filter = additionalFilters.reduce(Predicate::and).get();
+    Predicate<ContributedPlatform> filter = additionalFilters
+        .reduce(Predicate::and).get();
     for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
-        String compoundTargetSearchText = platform.getName() + "\n" + platform.getBoards().stream().map(ContributedBoard::getName).collect(Collectors.joining(" "));
+        String compoundTargetSearchText = platform.getName() + "\n"
+                                          + platform.getBoards().stream()
+                                              .map(ContributedBoard::getName)
+                                              .collect(Collectors.joining(" "));
         if (!filter.test(platform)) {
           continue;
         }
@@ -77,7 +78,7 @@ public class ContributionIndexTableModel
    * @param string
    * @param set
    * @return <b>true<b> if all the strings in <b>set</b> are contained in
-   * <b>string</b>.
+   *         <b>string</b>.
    */
   private boolean stringContainsAll(String string, String set[]) {
     if (set == null)
