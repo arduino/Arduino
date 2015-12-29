@@ -42,10 +42,9 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
                                                  boolean isSelected,
                                                  boolean hasFocus, int row,
                                                  int column) {
-
-    ContributedLibraryTableCell cell = new ContributedLibraryTableCell();
+    ContributedLibraryTableCell cell = new ContributedLibraryTableCell(table,
+        value, isSelected);
     cell.setButtonsVisible(false);
-    cell.update(table, value, isSelected);
 
     if (row % 2 == 0) {
       cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
@@ -53,8 +52,7 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
       cell.setBackground(new Color(255, 255, 255));
     }
 
-    int height = new Double(cell.getPreferredSize().getHeight())
-        .intValue();
+    int height = new Double(cell.getPreferredSize().getHeight()).intValue();
     if (table.getRowHeight(row) < height) {
       table.setRowHeight(row, height);
     }

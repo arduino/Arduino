@@ -29,16 +29,17 @@ import processing.app.Base;
 
 public class ContributedLibraryTableCell extends JPanel {
 
-  protected final JButton installButton;
-  protected final Component installButtonPlaceholder;
-  protected final JComboBox downgradeChooser;
-  protected final JComboBox versionToInstallChooser;
-  protected final JButton downgradeButton;
-  protected final JPanel buttonsPanel;
-  protected final JPanel inactiveButtonsPanel;
-  protected final JLabel statusLabel;
+  final JButton installButton;
+  final Component installButtonPlaceholder;
+  final JComboBox downgradeChooser;
+  final JComboBox versionToInstallChooser;
+  final JButton downgradeButton;
+  final JPanel buttonsPanel;
+  final JPanel inactiveButtonsPanel;
+  final JLabel statusLabel;
 
-  public ContributedLibraryTableCell() {
+  public ContributedLibraryTableCell(JTable parentTable, Object value,
+                                     boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -99,11 +100,8 @@ public class ContributedLibraryTableCell extends JPanel {
     add(inactiveButtonsPanel);
 
     add(Box.createVerticalStrut(15));
-  }
 
-  void update(JTable parentTable, Object value, boolean isSelected) {
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
-
     JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
@@ -193,9 +191,9 @@ public class ContributedLibraryTableCell extends JPanel {
 
     // See:
     // http://stackoverflow.com/questions/3081210/how-to-set-jtextarea-to-have-height-that-matches-the-size-of-a-text-it-contains
-    int width = parentTable.getBounds().width;
-    InstallerTableCell.setJTextPaneDimensionToFitContainedText(description,
-                                                               width);
+    InstallerTableCell
+        .setJTextPaneDimensionToFitContainedText(description,
+                                                 parentTable.getBounds().width);
 
     if (isSelected) {
       setBackground(parentTable.getSelectionBackground());

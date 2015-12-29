@@ -67,7 +67,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
                                                int column) {
     editorValue = (ContributedLibraryReleases) value;
 
-    editorCell = new ContributedLibraryTableCell();
+    editorCell = new ContributedLibraryTableCell(table, value, true);
     editorCell.installButton
         .addActionListener(e -> onInstall(editorValue.getSelected(),
                                           editorValue.getInstalled()));
@@ -134,7 +134,6 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     editorCell.versionToInstallChooser
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    editorCell.update(table, value, true);
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
     return editorCell;
   }
