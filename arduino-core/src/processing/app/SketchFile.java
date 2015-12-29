@@ -91,10 +91,12 @@ public class SketchFile {
    * @param primary
    *          Whether this file is the primary file of the sketch
    */
-  public SketchFile(Sketch sketch, File file, boolean primary) {
+  public SketchFile(Sketch sketch, File file) {
     this.sketch = sketch;
     this.file = file;
-    this.primary = primary;
+    FileUtils.SplitFile split = FileUtils.splitFilename(file);
+    this.primary = split.basename.equals(sketch.getFolder().getName())
+        && Sketch.SKETCH_EXTENSIONS.contains(split.extension);
   }
 
   /**

@@ -103,9 +103,7 @@ public class Sketch {
     Set<SketchFile> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
     for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
       if (BaseNoGui.isSanitaryName(file.getName())) {
-        FileUtils.SplitFile split = FileUtils.splitFilename(file);
-        boolean isPrimary = split.basename.equals(folder.getName()) && SKETCH_EXTENSIONS.contains(split.extension);
-        result.add(new SketchFile(this, file, isPrimary));
+        result.add(new SketchFile(this, file));
       } else if (showWarnings) {
         System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
       }
@@ -287,7 +285,7 @@ public class Sketch {
     checkNewFilename(newFile);
 
     // Add a new sketchFile
-    SketchFile sketchFile = new SketchFile(this, newFile, false);
+    SketchFile sketchFile = new SketchFile(this, newFile);
     files.add(sketchFile);
     Collections.sort(files, CODE_DOCS_COMPARATOR);
 
