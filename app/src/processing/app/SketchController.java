@@ -253,7 +253,7 @@ public class SketchController {
         // to do a save on the handleNew()
 
         // delete the entire sketch
-        Base.removeDir(sketch.getFolder());
+        FileUtils.recursiveDelete(sketch.getFolder());
 
         // get the changes into the sketchbook menu
         //sketchbook.rebuildMenus();
@@ -419,7 +419,7 @@ public class SketchController {
     // its contents before copying everything over
     // (user will have already been warned)
     if (newFolder.exists()) {
-      Base.removeDir(newFolder);
+      FileUtils.recursiveDelete(newFolder);
     }
     // in fact, you can't do this on windows because the file dialog
     // will instead put you inside the folder, but it happens on osx a lot.
