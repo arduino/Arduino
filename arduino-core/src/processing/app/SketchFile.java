@@ -128,7 +128,7 @@ public class SketchFile {
   }
 
 
-  protected boolean deleteFile(Path tempBuildFolder) throws IOException {
+  protected boolean delete(Path tempBuildFolder) throws IOException {
     if (!file.delete()) {
       return false;
     }
