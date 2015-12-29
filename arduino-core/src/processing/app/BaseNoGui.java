@@ -992,49 +992,6 @@ public class BaseNoGui {
   }
 
   /**
-   * Recursively remove all files within a directory,
-   * used with removeDir(), or when the contents of a dir
-   * should be removed, but not the directory itself.
-   * (i.e. when cleaning temp files from lib/build)
-   */
-  static public void removeDescendants(File dir) {
-    if (!dir.exists()) return;
-
-    String files[] = dir.list();
-    if (files == null) {
-      return;
-    }
-
-    for (String file : files) {
-      if (file.equals(".") || file.equals("..")) continue;
-      File dead = new File(dir, file);
-      if (!dead.isDirectory()) {
-        if (!PreferencesData.getBoolean("compiler.save_build_files")) {
-          if (!dead.delete()) {
-            // temporarily disabled
-            System.err.println(I18n.format(tr("Could not delete {0}"), dead));
-          }
-        }
-      } else {
-        removeDir(dead);
-        //dead.delete();
-      }
-    }
-  }
-
-  /**
-   * Remove all files in a directory and the directory itself.
-   */
-  static public void removeDir(File dir) {
-    if (dir.exists()) {
-      removeDescendants(dir);
-      if (!dir.delete()) {
-        System.err.println(I18n.format(tr("Could not delete {0}"), dir));
-      }
-    }
-  }
-
-  /**
    * Produce a sanitized name that fits our standards for likely to work.
    * <p/>
    * Java classes have a wider range of names that are technically allowed

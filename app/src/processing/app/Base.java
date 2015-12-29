@@ -2123,26 +2123,6 @@ public class Base {
   }
 
 
-
-  /**
-   * Remove all files in a directory and the directory itself.
-   */
-  static public void removeDir(File dir) {
-    BaseNoGui.removeDir(dir);
-  }
-
-
-  /**
-   * Recursively remove all files within a directory,
-   * used with removeDir(), or when the contents of a dir
-   * should be removed, but not the directory itself.
-   * (i.e. when cleaning temp files from lib/build)
-   */
-  static public void removeDescendants(File dir) {
-    BaseNoGui.removeDescendants(dir);
-  }
-
-
   /**
    * Calculate the size of the contents of a folder.
    * Used to determine whether sketches are empty or not.
