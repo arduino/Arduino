@@ -254,7 +254,7 @@ public class SketchController {
         editor.base.handleClose(editor);
       } else {
         // delete the file
-        if (!current.delete(BaseNoGui.getBuildFolder(sketch).toPath())) {
+        if (!current.delete(sketch.getBuildPath().toPath())) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
@@ -616,43 +616,6 @@ public class SketchController {
   }
 
   /**
-   * Preprocess, Compile, and Run the current code.
-   * <P>
-   * There are three main parts to this process:
-   * <PRE>
-   *   (0. if not java, then use another 'engine'.. i.e. python)
-   *
-   *    1. do the p5 language preprocessing
-   *       this creates a working .java file in a specific location
-   *       better yet, just takes a chunk of java code and returns a
-   *       new/better string editor can take care of saving this to a
-   *       file location
-   *
-   *    2. compile the code from that location
-   *       catching errors along the way
-   *       placing it in a ready classpath, or .. ?
-   *
-   *    3. run the code
-   *       needs to communicate location for window
-   *       and maybe setup presentation space as well
-   *       run externally if a code folder exists,
-   *       or if more than one file is in the project
-   *
-   *    X. afterwards, some of these steps need a cleanup function
-   * </PRE>
-   */
-  //protected String compile() throws RunnerException {
-
-  /**
-   * Run the build inside the temporary build folder.
-   * @return null if compilation failed, main class name if not
-   * @throws RunnerException
-   */
-  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
-    return build(BaseNoGui.getBuildFolder(sketch).getAbsolutePath(), verbose, save);
-  }
-
-  /**
    * Preprocess and compile all the code for this sketch.
    *
    * In an advanced program, the returned class name could be different,
@@ -661,7 +624,7 @@ public class SketchController {
    *
    * @return null if compilation failed, main class name if not
    */
-  private String build(String buildPath, boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
+  public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     // run the preprocessor
     editor.status.progressUpdate(20);
 
@@ -679,7 +642,7 @@ public class SketchController {
     }
 
     try {
-      return new Compiler(pathToSketch, sketch, buildPath).build(progressListener, save);
+      return new Compiler(pathToSketch, sketch).build(progressListener, save);
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
@@ -698,20 +661,13 @@ public class SketchController {
     return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toFile();
   }
 
-  protected boolean exportApplet(boolean usingProgrammer) throws Exception {
-    return exportApplet(BaseNoGui.getBuildFolder(sketch).getAbsolutePath(), usingProgrammer);
-  }
-
-
   /**
    * Handle export to applet.
    */
-  private boolean exportApplet(String appletPath, boolean usingProgrammer)
-    throws Exception {
-
+  protected boolean exportApplet(boolean usingProgrammer) throws Exception {
     // build the sketch
     editor.status.progressNotice(tr("Compiling sketch..."));
-    String foundName = build(appletPath, false, false);
+    String foundName = build(false, false);
     // (already reported) error during export, exit this function
     if (foundName == null) return false;
 
@@ -725,12 +681,12 @@ public class SketchController {
 //    }
 
     editor.status.progressNotice(tr("Uploading..."));
-    boolean success = upload(appletPath, foundName, usingProgrammer);
+    boolean success = upload(foundName, usingProgrammer);
     editor.status.progressUpdate(100);
     return success;
   }
 
-  private boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
+  private boolean upload(String suggestedClassName, boolean usingProgrammer) throws Exception {
 
     Uploader uploader = new UploaderUtils().getUploaderByPreferences(false);
 
@@ -751,7 +707,7 @@ public class SketchController {
 
       List<String> warningsAccumulator = new LinkedList<>();
       try {
-        success = new UploaderUtils().upload(sketch, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
+        success = new UploaderUtils().upload(sketch, uploader, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           PreferencesData.remove(uploader.getAuthorizationKey());

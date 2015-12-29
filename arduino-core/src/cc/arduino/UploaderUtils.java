@@ -56,7 +56,7 @@ public class UploaderUtils {
     return new UploaderFactory().newUploader(target.getBoards().get(board), boardPort, noUploadPort);
   }
 
-  public boolean upload(Sketch data, Uploader uploader, String buildPath, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
+  public boolean upload(Sketch data, Uploader uploader, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
 
     if (uploader == null)
       uploader = getUploaderByPreferences(noUploadPort);
@@ -75,7 +75,7 @@ public class UploaderUtils {
     }
 
     try {
-      success = uploader.uploadUsingPreferences(data.getFolder(), buildPath, suggestedClassName, usingProgrammer, warningsAccumulator);
+      success = uploader.uploadUsingPreferences(data.getFolder(), data.getBuildPath().getAbsolutePath(), suggestedClassName, usingProgrammer, warningsAccumulator);
     } finally {
       if (uploader.requiresAuthorization() && !success) {
         PreferencesData.remove(uploader.getAuthorizationKey());

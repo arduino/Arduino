@@ -110,22 +110,23 @@ public class Compiler implements MessageConsumer {
 
   private final File pathToSketch;
   private final Sketch sketch;
-  private final String buildPath;
+  private String buildPath;
   private final boolean verbose;
   private RunnerException exception;
 
-  public Compiler(Sketch data, String buildPath) {
-    this(data.getPrimaryFile().getFile(), data, buildPath);
+  public Compiler(Sketch data) {
+    this(data.getPrimaryFile().getFile(), data);
   }
 
-  public Compiler(File pathToSketch, Sketch sketch, String buildPath) {
+  public Compiler(File pathToSketch, Sketch sketch) {
     this.pathToSketch = pathToSketch;
     this.sketch = sketch;
-    this.buildPath = buildPath;
     this.verbose = PreferencesData.getBoolean("build.verbose");
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+    this.buildPath = sketch.getBuildPath().getAbsolutePath();
+
     TargetBoard board = BaseNoGui.getTargetBoard();
     if (board == null) {
       throw new RunnerException("Board is not selected");
