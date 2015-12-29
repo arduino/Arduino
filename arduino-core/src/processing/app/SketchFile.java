@@ -160,11 +160,25 @@ public class SketchFile {
     return true;
   }
 
-  protected boolean renameTo(File what) {
-    boolean success = file.renameTo(what);
-    if (success)
-      renamedTo(what);
-    return success;
+  /**
+   * Rename the given file to get the given name.
+   *
+   * @param newName
+   *          The new name, including extension, excluding directory
+   *          name.
+   * @throws IOException
+   *           When a problem occurs, or is expected to occur. The error
+   *           message should be already translated.
+   */
+  public void renameTo(String newName) throws IOException {
+    File newFile = new File(file.getParentFile(), newName);
+    sketch.checkNewFilename(newFile);
+    if (file.renameTo(newFile)) {
+      renamedTo(newFile);
+    } else {
+      String msg = I18n.format(tr("Failed to rename \"{0}\" to \"{1}\""), file.getName(), newName);
+      throw new IOException(msg);
+    }
   }
 
   /**
