@@ -2148,48 +2148,6 @@ public class Base {
     return size;
   }
 
-
-  /**
-   * Recursively creates a list of all files within the specified folder,
-   * and returns a list of their relative paths.
-   * Ignores any files/folders prefixed with a dot.
-   */
-  static public String[] listFiles(String path, boolean relative) {
-    return listFiles(new File(path), relative);
-  }
-
-
-  static public String[] listFiles(File folder, boolean relative) {
-    String path = folder.getAbsolutePath();
-    Vector<String> vector = new Vector<String>();
-    listFiles(relative ? (path + File.separator) : "", path, vector);
-    String outgoing[] = new String[vector.size()];
-    vector.copyInto(outgoing);
-    return outgoing;
-  }
-
-
-  static protected void listFiles(String basePath,
-                                  String path, Vector<String> vector) {
-    File folder = new File(path);
-    String list[] = folder.list();
-    if (list == null) return;
-
-    for (int i = 0; i < list.length; i++) {
-      if (list[i].charAt(0) == '.') continue;
-
-      File file = new File(path, list[i]);
-      String newPath = file.getAbsolutePath();
-      if (newPath.startsWith(basePath)) {
-        newPath = newPath.substring(basePath.length());
-      }
-      vector.add(newPath);
-      if (file.isDirectory()) {
-        listFiles(basePath, newPath, vector);
-      }
-    }
-  }
-
   public void handleAddLibrary() {
     JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
     fileChooser.setDialogTitle(tr("Select a zip file or a folder containing the library you'd like to add"));
