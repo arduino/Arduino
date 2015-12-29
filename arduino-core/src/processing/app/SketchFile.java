@@ -142,6 +142,8 @@ public class SketchFile {
       }
     }
 
+    sketch.removeFile(this);
+
     return true;
   }
 
