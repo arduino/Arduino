@@ -1496,7 +1496,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     public void actionPerformed(ActionEvent e) {
       try {
-        getCurrentTab().handleRedo();
+        getCurrentTab().handleUndo();
       } catch (CannotUndoException ex) {
         //System.out.println("Unable to undo: " + ex);
         //ex.printStackTrace();

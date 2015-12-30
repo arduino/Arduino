@@ -53,6 +53,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.RUndoManager;
 
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.syntax.ArduinoTokenMakerFactory;
@@ -107,8 +108,10 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     applyPreferences();
     add(this.scrollPane, BorderLayout.CENTER);
 
-    UndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
-    ((RSyntaxDocument)textarea.getDocument()).addUndoableEditListener(undo);
+    RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea,
+        this.editor);
+    document.addUndoableEditListener(undo);
+    textarea.setUndoManager(undo);
   }
 
   private RSyntaxDocument createDocument(String contents) {
