@@ -4,6 +4,7 @@ ARDUINO 1.6.8
 * Fixed a NullPointerException when dealing with some rare combination of package_*.json files
 * Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
 * MacOSX: Fixed handling of add indent/remove indent shortcuts (CMD+[ and CMD+])
+* Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
 
 [core]
 * avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
