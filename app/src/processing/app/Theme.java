@@ -97,6 +97,16 @@ public class Theme {
     set(key, String.valueOf(value));
   }
 
+  static public int getScale() {
+    if (get("gui.scalePercent") == null)
+      return 100;
+    return getInteger("gui.scalePercent");
+  }
+
+  static public int scale(int size) {
+    return size * getScale() / 100;
+  }
+
   static public Color getColorCycleColor(String name, int i) {
     int cycleSize = getInteger(name + ".size");
     name = String.format("%s.%02d", name, i % cycleSize);
@@ -125,12 +135,7 @@ public class Theme {
       set(attr, value);
       font = PreferencesHelper.getFont(table, attr);
     }
-    int scale = getInteger("gui.scalePercent");
-    if (scale != 100) {
-      font = font
-          .deriveFont((float) (font.getSize()) * (float) scale / (float) 100.0);
-    }
-    return font;
+    return font.deriveFont((float) scale(font.getSize()));
   }
 
   /**
@@ -199,7 +204,7 @@ public class Theme {
     Toolkit tk = Toolkit.getDefaultToolkit();
 
     SplitFile name = FileUtils.splitFilename(filename);
-    int scale = getInteger("gui.scalePercent");
+    int scale = getScale();
     File libFolder = Base.getContentFile("lib");
     File imageFile1x = new File(libFolder, name.basename + "." + name.extension);
     File imageFile2x = new File(libFolder, name.basename + "@2x." + name.extension);

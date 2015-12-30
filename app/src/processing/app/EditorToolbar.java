@@ -56,19 +56,19 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   /**
    * Width of each toolbar button.
    */
-  private static final int BUTTON_WIDTH = 27 * Theme.getInteger("gui.scalePercent") / 100;
+  private static final int BUTTON_WIDTH = Theme.scale(27);
   /**
    * Height of each toolbar button.
    */
-  private static final int BUTTON_HEIGHT = 32 * Theme.getInteger("gui.scalePercent") / 100;
+  private static final int BUTTON_HEIGHT = Theme.scale(32);
   /**
    * The amount of space between groups of buttons on the toolbar.
    */
-  private static final int BUTTON_GAP = 5 * Theme.getInteger("gui.scalePercent") / 100;
+  private static final int BUTTON_GAP = Theme.scale(5);
   /**
    * Size of the button image being chopped up.
    */
-  private static final int BUTTON_IMAGE_SIZE = 33 * Theme.getInteger("gui.scalePercent") / 100;
+  private static final int BUTTON_IMAGE_SIZE = Theme.scale(33);
 
 
   private static final int RUN = 0;
@@ -437,7 +437,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000 * Theme.getInteger("gui.scalePercent") / 100, BUTTON_HEIGHT);
+    return new Dimension(Theme.scale(3000), BUTTON_HEIGHT);
   }
 
 

@@ -68,7 +68,7 @@ public class EditorStatus extends JPanel {
   }
 
   // value for the size bars, buttons, etc
-  static final int GRID_SIZE = 33 * Theme.getInteger("gui.scalePercent") / 100;
+  static final int GRID_SIZE = Theme.scale(33);
 
   private final Editor editor;
   private final Font font;

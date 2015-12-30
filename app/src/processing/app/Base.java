@@ -1752,11 +1752,10 @@ public class Base {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
-        int scale = Theme.getInteger("gui.scalePercent");
-        Font f = new Font("SansSerif", Font.PLAIN, 11 * scale / 100);
+        Font f = new Font("SansSerif", Font.PLAIN, Theme.scale(11));
         g.setFont(f);
         g.setColor(Color.white);
-        g.drawString(BaseNoGui.VERSION_NAME_LONG, 33 * scale / 100, 20 * scale / 100);
+        g.drawString(BaseNoGui.VERSION_NAME_LONG, Theme.scale(33), Theme.scale(20));
       }
     };
     window.addMouseListener(new MouseAdapter() {
