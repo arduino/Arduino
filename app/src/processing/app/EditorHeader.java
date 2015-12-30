@@ -150,7 +150,7 @@ public class EditorHeader extends JComponent {
       for (int i = 0; i < STATUS.length; i++) {
         for (int j = 0; j < WHERE.length; j++) {
           String path = "tab-" + STATUS[i] + "-" + WHERE[j] + ".png";
-          pieces[i][j] = Base.getThemeImage(path, this);
+          pieces[i][j] = Theme.getThemeImage(path, this);
         }
       }
     }

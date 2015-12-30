@@ -36,6 +36,7 @@ import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.PreferencesData;
+import processing.app.Theme;
 import processing.app.helpers.FileUtils;
 import processing.app.legacy.PApplet;
 
@@ -196,7 +197,7 @@ public class Preferences extends javax.swing.JDialog {
 
     additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls"));
 
-    extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Base.getThemeImage("newwindow.png", this)));
+    extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Theme.getThemeImage("newwindow.png", this)));
     extendedAdditionalUrlFieldWindow.setMargin(new java.awt.Insets(1, 1, 1, 1));
     extendedAdditionalUrlFieldWindow.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

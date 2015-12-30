@@ -58,7 +58,7 @@ public class EditorLineStatus extends JComponent {
     high = Theme.getInteger("linestatus.height") * Theme.getInteger("gui.scalePercent") / 100;
 
     if (OSUtils.isMacOS()) {
-      resize = Base.getThemeImage("resize.png", this);
+      resize = Theme.getThemeImage("resize.png", this);
     }
     //linestatus.bgcolor = #000000
     //linestatus.font    = SansSerif,plain,10

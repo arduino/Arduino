@@ -1743,7 +1743,7 @@ public class Base {
    */
   @SuppressWarnings("serial")
   public void handleAbout() {
-    final Image image = getLibImage("about.png", activeEditor);
+    final Image image = Theme.getLibImage("about.png", activeEditor);
     final Window window = new Window(activeEditor) {
       public void paint(Graphics g) {
         g.drawImage(image, 0, 0, null);
@@ -2037,57 +2037,6 @@ public class Base {
     return BaseNoGui.getContentFile(name);
   }
 
-
-  /**
-   * Get an image associated with the current color theme.
-   */
-  static public Image getThemeImage(String name, Component who) {
-    return getLibImage("theme/" + name, who);
-  }
-
-
-  /**
-   * Return an Image object from inside the Processing lib folder.
-   */
-  static public Image getLibImage(String filename, Component who) {
-    Toolkit tk = Toolkit.getDefaultToolkit();
-
-    SplitFile name = FileUtils.splitFilename(filename);
-    int scale = Theme.getInteger("gui.scalePercent");
-    File libFolder = getContentFile("lib");
-    File imageFile1x = new File(libFolder, name.basename + "." + name.extension);
-    File imageFile2x = new File(libFolder, name.basename + "@2x." + name.extension);
-
-    File imageFile;
-    int sourceScale;
-    if ((scale > 125 && imageFile2x.exists()) || !imageFile1x.exists()) {
-      imageFile = imageFile2x;
-      sourceScale = 200;
-    } else {
-      imageFile = imageFile1x;
-      sourceScale = 100;
-    }
-
-    Image image = tk.getImage(imageFile.getAbsolutePath());
-    MediaTracker tracker = new MediaTracker(who);
-    tracker.addImage(image, 0);
-    try {
-      tracker.waitForAll();
-    } catch (InterruptedException e) {
-    }
-
-    if (scale != sourceScale) {
-      int width = image.getWidth(null) * scale / sourceScale;
-      int height = image.getHeight(null) * scale / sourceScale;
-      image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-      tracker.addImage(image, 1);
-      try {
-        tracker.waitForAll();
-      } catch (InterruptedException e) {
-      }
-    }
-    return image;
-  }
 
   // ...................................................................
 

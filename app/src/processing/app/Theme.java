@@ -21,6 +21,8 @@
 
 package processing.app;
 
+import processing.app.helpers.FileUtils;
+import processing.app.helpers.FileUtils.SplitFile;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -55,8 +57,9 @@ public class Theme {
     try {
       table.load(new File(BaseNoGui.getContentFile("lib"), "theme/theme.txt"));
     } catch (Exception te) {
-      Base.showError(null, tr("Could not read color theme settings.\n" +
-              "You'll need to reinstall Arduino."), te);
+      Base.showError(null, tr("Could not read color theme settings.\n"
+                              + "You'll need to reinstall Arduino."),
+                     te);
     }
 
     // other things that have to be set explicitly for the defaults
@@ -124,7 +127,8 @@ public class Theme {
     }
     int scale = getInteger("gui.scalePercent");
     if (scale != 100) {
-      font = font.deriveFont((float)(font.getSize()) * (float)scale / (float)100.0);
+      font = font
+          .deriveFont((float) (font.getSize()) * (float) scale / (float) 100.0);
     }
     return font;
   }
@@ -159,7 +163,7 @@ public class Theme {
       }
     }
 
-    //System.out.println(font.getFamily() + ", " + font.getName());
+    // System.out.println(font.getFamily() + ", " + font.getName());
     return font;
   }
 
@@ -173,7 +177,8 @@ public class Theme {
     boolean italic = style.contains("italic");
     boolean underlined = style.contains("underlined");
 
-    Font styledFont = new Font(font.getFamily(), (bold ? Font.BOLD : 0) | (italic ? Font.ITALIC : 0), font.getSize());
+    Font styledFont = new Font(font.getFamily(),
+        (bold ? Font.BOLD : 0) | (italic ? Font.ITALIC : 0), font.getSize());
     if (underlined) {
       Map<TextAttribute, Object> attr = new Hashtable<TextAttribute, Object>();
       attr.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -185,6 +190,56 @@ public class Theme {
     result.put("font", styledFont);
 
     return result;
+  }
+
+  /**
+   * Return an Image object from inside the Processing lib folder.
+   */
+  static public Image getLibImage(String filename, Component who) {
+    Toolkit tk = Toolkit.getDefaultToolkit();
+
+    SplitFile name = FileUtils.splitFilename(filename);
+    int scale = getInteger("gui.scalePercent");
+    File libFolder = Base.getContentFile("lib");
+    File imageFile1x = new File(libFolder, name.basename + "." + name.extension);
+    File imageFile2x = new File(libFolder, name.basename + "@2x." + name.extension);
+
+    File imageFile;
+    int sourceScale;
+    if ((scale > 125 && imageFile2x.exists()) || !imageFile1x.exists()) {
+      imageFile = imageFile2x;
+      sourceScale = 200;
+    } else {
+      imageFile = imageFile1x;
+      sourceScale = 100;
+    }
+
+    Image image = tk.getImage(imageFile.getAbsolutePath());
+    MediaTracker tracker = new MediaTracker(who);
+    tracker.addImage(image, 0);
+    try {
+      tracker.waitForAll();
+    } catch (InterruptedException e) {
+    }
+
+    if (scale != sourceScale) {
+      int width = image.getWidth(null) * scale / sourceScale;
+      int height = image.getHeight(null) * scale / sourceScale;
+      image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+      tracker.addImage(image, 1);
+      try {
+        tracker.waitForAll();
+      } catch (InterruptedException e) {
+      }
+    }
+    return image;
+  }
+
+  /**
+   * Get an image associated with the current color theme.
+   */
+  static public Image getThemeImage(String name, Component who) {
+    return getLibImage("theme/" + name, who);
   }
 
 }
