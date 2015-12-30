@@ -390,11 +390,32 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     // its absolute position (number of characters from the start), which isn't
     // always perfect, but the best we can do without making a diff of the old
     // and new text and some guesswork.
+    // Note that we cannot use textarea.setText() here, since that first removes
+    // text and then inserts the new text. Even with NEVER_UPDATE, the caret
+    // always makes sure to stay valid, so first removing all text makes it
+    // reset to 0. Also note that simply saving and restoring the caret position
+    // will work, but then the scroll position might change in response to the
+    // caret position.
     DefaultCaret caret = (DefaultCaret) textarea.getCaret();
     int policy = caret.getUpdatePolicy();
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-    textarea.setText(what);
-    caret.setUpdatePolicy(policy);
+    try {
+      RSyntaxDocument doc = (RSyntaxDocument)textarea.getDocument();
+      int oldLength = doc.getLength();
+      // The undo manager already seems to group the insert and remove together
+      // automatically, but better be explicit about it.
+      textarea.getUndoManager().beginInternalAtomicEdit();
+      try {
+        doc.insertString(oldLength, what, null);
+        doc.remove(0, oldLength);
+      } catch (BadLocationException e) {
+        System.err.println("Unexpected failure replacing text");
+      } finally {
+        textarea.getUndoManager().endInternalAtomicEdit();
+      }
+    } finally {
+      caret.setUpdatePolicy(policy);
+    }
   }
 
   /**
