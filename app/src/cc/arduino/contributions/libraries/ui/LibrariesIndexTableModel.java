@@ -41,20 +41,20 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
-public class LibrariesIndexTableModel extends FilteredAbstractTableModel<ContributedLibrary> {
-
-  public final static int DESCRIPTION_COL = 0;
+public class LibrariesIndexTableModel
+    extends FilteredAbstractTableModel<ContributedLibrary> {
 
   private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
-  private final String[] columnNames = {"Description"};
+  private final String[] columnNames = { "Description" };
 
-  private final Class<?>[] columnTypes = {ContributedPlatform.class};
+  private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
   Predicate<ContributedLibrary> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
-  public void updateIndexFilter(String filters[], Stream<Predicate<ContributedLibrary>> additionalFilters) {
+  public void updateIndexFilter(String filters[],
+                                Stream<Predicate<ContributedLibrary>> additionalFilters) {
     selectedCategoryFilter = additionalFilters.reduce(Predicate::and).get();
     selectedFilters = filters;
     update();
@@ -67,7 +67,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
    * @param string
    * @param filters
    * @return <b>true<b> if all the strings in <b>set</b> are contained in
-   * <b>string</b>.
+   *         <b>string</b>.
    */
   private boolean stringContainsAll(String string, String filters[]) {
     if (string == null) {
@@ -120,9 +120,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    if (col == DESCRIPTION_COL) {
-      fireTableCellUpdated(row, col);
-    }
+    fireTableCellUpdated(row, col);
   }
 
   @Override
@@ -131,15 +129,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
       return null;
     }
     ContributedLibraryReleases contribution = contributions.get(row);
-    if (col == DESCRIPTION_COL) {
-      return contribution;// .getSelected();
-    }
-    return null;
+    return contribution;// .getSelected();
   }
 
   @Override
   public boolean isCellEditable(int row, int col) {
-    return col == DESCRIPTION_COL;
+    return true;
   }
 
   public ContributedLibraryReleases getReleases(int row) {
@@ -160,7 +155,8 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
       return;
     }
 
-    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph() + "\n" + lib.getSentence();
+    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph()
+                                      + "\n" + lib.getSentence();
     if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
       return;
     }
@@ -196,9 +192,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   private void updateContributions() {
     contributions.clear();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries().forEach(this::applyFilterToLibrary);
-    BaseNoGui.librariesIndexer.getInstalledLibraries().forEach(this::applyFilterToLibrary);
-    Collections.sort(contributions, new ContributedLibraryReleasesComparator("Arduino"));
+    BaseNoGui.librariesIndexer.getIndex().getLibraries()
+        .forEach(this::applyFilterToLibrary);
+    BaseNoGui.librariesIndexer.getInstalledLibraries()
+        .forEach(this::applyFilterToLibrary);
+    Collections.sort(contributions,
+                     new ContributedLibraryReleasesComparator("Arduino"));
   }
 
 }
