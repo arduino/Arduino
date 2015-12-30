@@ -36,12 +36,14 @@ import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.view.Event;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
+
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.*;
+import processing.app.helpers.FileUtils.SplitFile;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
@@ -2047,32 +2049,45 @@ public class Base {
   /**
    * Return an Image object from inside the Processing lib folder.
    */
-  static public Image getLibImage(String name, Component who) {
+  static public Image getLibImage(String filename, Component who) {
     Toolkit tk = Toolkit.getDefaultToolkit();
 
+    SplitFile name = FileUtils.splitFilename(filename);
     int scale = Theme.getInteger("gui.scalePercent");
-    // TODO: create high-res enlarged copies and load those if
-    //       the scale is more than 125%
-    File imageLocation = new File(getContentFile("lib"), name);
-    Image image = tk.getImage(imageLocation.getAbsolutePath());
+    File libFolder = getContentFile("lib");
+    File imageFile1x = new File(libFolder, name.basename + "." + name.extension);
+    File imageFile2x = new File(libFolder, name.basename + "@2x." + name.extension);
+
+    File imageFile;
+    int sourceScale;
+    if ((scale > 125 && imageFile2x.exists()) || !imageFile1x.exists()) {
+      imageFile = imageFile2x;
+      sourceScale = 200;
+    } else {
+      imageFile = imageFile1x;
+      sourceScale = 100;
+    }
+
+    Image image = tk.getImage(imageFile.getAbsolutePath());
     MediaTracker tracker = new MediaTracker(who);
     tracker.addImage(image, 0);
     try {
       tracker.waitForAll();
     } catch (InterruptedException e) {
     }
-    if (scale != 100) {
-      int width = image.getWidth(null) * scale / 100;
-      int height = image.getHeight(null) * scale / 100;
+
+    if (scale != sourceScale) {
+      int width = image.getWidth(null) * scale / sourceScale;
+      int height = image.getHeight(null) * scale / sourceScale;
       image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
       tracker.addImage(image, 1);
       try {
         tracker.waitForAll();
-      } catch (InterruptedException e) { }
+      } catch (InterruptedException e) {
+      }
     }
     return image;
   }
-
 
   // ...................................................................
 
