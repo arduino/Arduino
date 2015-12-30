@@ -471,15 +471,11 @@ public class SketchController {
 
   /**
    * Add a file to the sketch.
-   * <p/>
-   * .pde or .java files will be added to the sketch folder. <br/>
-   * .jar, .class, .dll, .jnilib, and .so files will all
-   * be added to the "code" folder. <br/>
-   * All other files will be added to the "data" folder.
-   * <p/>
-   * If they don't exist already, the "code" or "data" folder
-   * will be created.
-   * <p/>
+   *
+   * Supported code files will be copied to the sketch folder. All other files
+   * will be copied to the "data" folder (which is created if it does not exist
+   * yet).
+   * 
    * @return true if successful.
    */
   public boolean addFile(File sourceFile) {
