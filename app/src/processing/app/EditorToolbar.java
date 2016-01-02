@@ -146,9 +146,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       for (int state = 0; state < 3; state++) {
         Image image = createImage(BUTTON_WIDTH, BUTTON_HEIGHT);
         Graphics g = image.getGraphics();
-        g.drawImage(allButtons,
-          -(i * BUTTON_IMAGE_SIZE) - 3,
-          (-2 + state) * BUTTON_IMAGE_SIZE, null);
+        g.setColor(bgcolor);
+        g.fillRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+        int offset = (BUTTON_IMAGE_SIZE - BUTTON_WIDTH) / 2;
+        g.drawImage(allButtons, -(i * BUTTON_IMAGE_SIZE) - offset,
+                    (-2 + state) * BUTTON_IMAGE_SIZE, null);
         buttonImages[i][state] = image;
       }
     }

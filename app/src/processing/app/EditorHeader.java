@@ -35,6 +35,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import static processing.app.Theme.scale;
 
 /**
  * Sketch tabs at the top of the editor window.
@@ -71,10 +72,10 @@ public class EditorHeader extends JComponent {
   static final int RIGHT = 2;
   static final int MENU = 3;
 
-  static final int PIECE_WIDTH = 4;
+  static final int PIECE_WIDTH = scale(4);
 
   // value for the size bars, buttons, etc
-  static final int GRID_SIZE = Theme.scale(33);
+  static final int GRID_SIZE = scale(33);
 
   static Image[][] pieces;
 
@@ -238,7 +239,7 @@ public class EditorHeader extends JComponent {
       tabRight = new int[codeCount];
     }
 
-    int x = 6; // offset from left edge of the component
+    int x = scale(6); // offset from left edge of the component
     for (int i = 0; i < sketch.getCodeCount(); i++) {
       SketchCode code = sketch.getCode(i);
 
@@ -249,6 +250,7 @@ public class EditorHeader extends JComponent {
       String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
 
       Graphics2D g2 = (Graphics2D) g;
+
       int textWidth = (int)
         font.getStringBounds(text, g2.getFontRenderContext()).getWidth();
 

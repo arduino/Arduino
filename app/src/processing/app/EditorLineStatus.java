@@ -30,14 +30,17 @@ import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 import static processing.app.I18n.tr;
 
+import static processing.app.Theme.scale;
 
 /**
  * Li'l status bar fella that shows the line number.
  */
 public class EditorLineStatus extends JComponent {
+
   int start = -1, stop;
 
   Image resize;
+  private static final int RESIZE_IMAGE_SIZE = scale(20);
 
   Color foreground;
   Color background;
@@ -50,12 +53,11 @@ public class EditorLineStatus extends JComponent {
   String name = "";
   String serialport = "";
 
-
   public EditorLineStatus() {
     background = Theme.getColor("linestatus.bgcolor");
     font = Theme.getFont("linestatus.font");
     foreground = Theme.getColor("linestatus.color");
-    high = Theme.scale(Theme.getInteger("linestatus.height"));
+    high = scale(Theme.getInteger("linestatus.height"));
 
     if (OSUtils.isMacOS()) {
       resize = Theme.getThemeImage("resize.png", this);
@@ -103,17 +105,18 @@ public class EditorLineStatus extends JComponent {
     g.setFont(font);
     g.setColor(foreground);
     int baseline = (high + g.getFontMetrics().getAscent()) / 2;
-    g.drawString(text, 6, baseline);
+    g.drawString(text, scale(6), baseline);
 
     g.setColor(messageForeground);
     String tmp = I18n.format(tr("{0} on {1}"), name, serialport);
     
     Rectangle2D bounds = g.getFontMetrics().getStringBounds(tmp, null);
     
-    g.drawString(tmp, size.width - (int) bounds.getWidth() -20 , baseline);
+    g.drawString(tmp, size.width - (int) bounds.getWidth() - RESIZE_IMAGE_SIZE,
+                 baseline);
 
     if (OSUtils.isMacOS()) {
-      g.drawImage(resize, size.width - 20, 0, this);
+      g.drawImage(resize, size.width - RESIZE_IMAGE_SIZE, 0, this);
     }
   }
 
