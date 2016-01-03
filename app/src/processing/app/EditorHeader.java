@@ -66,11 +66,10 @@ public class EditorHeader extends JComponent {
   static final int UNSELECTED = 0;
   static final int SELECTED = 1;
 
-  static final String WHERE[] = { "left", "mid", "right", "menu" };
+  static final String WHERE[] = { "left", "mid", "right" };
   static final int LEFT = 0;
   static final int MIDDLE = 1;
   static final int RIGHT = 2;
-  static final int MENU = 3;
 
   static final int PIECE_WIDTH = scale(4);
   static final int PIECE_HEIGHT = scale(33);
@@ -79,6 +78,7 @@ public class EditorHeader extends JComponent {
   static final int GRID_SIZE = scale(33);
 
   static Image[][] pieces;
+  static Image menuButtons[];
 
   Image offscreen;
   int sizeW, sizeH;
@@ -149,15 +149,16 @@ public class EditorHeader extends JComponent {
 
     if (pieces == null) {
       pieces = new Image[STATUS.length][WHERE.length];
+      menuButtons = new Image[STATUS.length];
       for (int i = 0; i < STATUS.length; i++) {
         for (int j = 0; j < WHERE.length; j++) {
           String path = "tab-" + STATUS[i] + "-" + WHERE[j];
-          pieces[i][j] = Theme.getThemeImage(path, this,
-                                             // TODO: Refactor this mess...
-                                             j == MENU ? PIECE_HEIGHT
-                                                       : PIECE_WIDTH,
+          pieces[i][j] = Theme.getThemeImage(path, this, PIECE_WIDTH,
                                              PIECE_HEIGHT);
         }
+        String path = "tab-" + STATUS[i] + "-menu";
+        menuButtons[i] = Theme.getThemeImage(path, this, PIECE_HEIGHT,
+                                             PIECE_HEIGHT);
       }
     }
 
@@ -284,10 +285,10 @@ public class EditorHeader extends JComponent {
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
     }
 
-    menuLeft = sizeW - (16 + pieces[0][MENU].getWidth(this));
+    menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
     menuRight = sizeW - 16;
     // draw the dropdown menu target
-    g.drawImage(pieces[popup.isVisible() ? SELECTED : UNSELECTED][MENU],
+    g.drawImage(menuButtons[popup.isVisible() ? SELECTED : UNSELECTED],
                 menuLeft, 0, null);
 
     screen.drawImage(offscreen, 0, 0, null);
