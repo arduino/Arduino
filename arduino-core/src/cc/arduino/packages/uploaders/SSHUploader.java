@@ -203,7 +203,7 @@ public class SSHUploader extends Uploader {
       return false;
     }
     if (!www.canExecute()) {
-      warningsAccumulator.add(tr("Problem accessing files in folder ") + www);
+      warningsAccumulator.add(I18n.format(tr("Problem accessing files in folder \"{0}\""), www));
       return false;
     }
     if (!ssh.execSyncCommand("special-storage-available")) {
