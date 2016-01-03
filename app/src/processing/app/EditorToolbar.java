@@ -139,7 +139,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
 
   private void loadButtons() {
-    Image allButtons = Theme.getThemeImage("buttons.png", this);
+    Image allButtons = Theme.getThemeImage("buttons", this,
+                                           BUTTON_IMAGE_SIZE * BUTTON_COUNT,
+                                           BUTTON_IMAGE_SIZE * 3);
     buttonImages = new Image[BUTTON_COUNT][3];
 
     for (int i = 0; i < BUTTON_COUNT; i++) {

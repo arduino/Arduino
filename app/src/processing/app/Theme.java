@@ -21,21 +21,35 @@
 
 package processing.app;
 
-import processing.app.helpers.FileUtils;
-import processing.app.helpers.FileUtils.SplitFile;
-import processing.app.helpers.OSUtils;
-import processing.app.helpers.PreferencesHelper;
-import processing.app.helpers.PreferencesMap;
+import static processing.app.I18n.tr;
 
-import javax.swing.text.StyleContext;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.RenderingHints;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.font.TextAttribute;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static processing.app.I18n.tr;
+import javax.swing.text.StyleContext;
+
+import org.apache.batik.transcoder.Transcoder;
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
+
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesHelper;
+import processing.app.helpers.PreferencesMap;
 
 /**
  * Storage class for theme settings. This was separated from the Preferences
@@ -200,51 +214,77 @@ public class Theme {
   /**
    * Return an Image object from inside the Processing lib folder.
    */
-  static public Image getLibImage(String filename, Component who) {
-    Toolkit tk = Toolkit.getDefaultToolkit();
+  static public Image getLibImage(String filename, Component who, int width,
+                                  int height) {
+    File libFolder = BaseNoGui.getContentFile("lib");
+    Image image = null;
 
-    SplitFile name = FileUtils.splitFilename(filename);
-    int scale = getScale();
-    File libFolder = Base.getContentFile("lib");
-    File imageFile1x = new File(libFolder, name.basename + "." + name.extension);
-    File imageFile2x = new File(libFolder, name.basename + "@2x." + name.extension);
-
-    File imageFile;
-    int sourceScale;
-    if ((scale > 125 && imageFile2x.exists()) || !imageFile1x.exists()) {
-      imageFile = imageFile2x;
-      sourceScale = 200;
-    } else {
-      imageFile = imageFile1x;
-      sourceScale = 100;
+    // Use vector image when available
+    File vectorFile = new File(libFolder, filename + ".svg");
+    if (vectorFile.exists()) {
+      try {
+        image = imageFromSVG(vectorFile.toURI().toURL(), width, height);
+      } catch (Exception e) {
+        System.err.println("Failed to load " + vectorFile.getAbsolutePath()
+                           + ": " + e.getMessage());
+      }
     }
 
-    Image image = tk.getImage(imageFile.getAbsolutePath());
+    // Otherwise fall-back to PNG bitmaps
+    if (image == null) {
+      File bitmapFile = new File(libFolder, filename + ".png");
+      File bitmap2xFile = new File(libFolder, filename + "@2x.png");
+
+      File imageFile;
+      if ((getScale() > 125 && bitmap2xFile.exists()) || !bitmapFile.exists()) {
+        imageFile = bitmap2xFile;
+      } else {
+        imageFile = bitmapFile;
+      }
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      image = tk.getImage(imageFile.getAbsolutePath());
+    }
+
     MediaTracker tracker = new MediaTracker(who);
-    tracker.addImage(image, 0);
     try {
+      tracker.addImage(image, 0);
       tracker.waitForAll();
     } catch (InterruptedException e) {
     }
 
-    if (scale != sourceScale) {
-      int width = image.getWidth(null) * scale / sourceScale;
-      int height = image.getHeight(null) * scale / sourceScale;
+    if (image.getWidth(null) != width || image.getHeight(null) != height) {
       image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-      tracker.addImage(image, 1);
       try {
+        tracker.addImage(image, 1);
         tracker.waitForAll();
       } catch (InterruptedException e) {
       }
     }
+
     return image;
   }
 
   /**
    * Get an image associated with the current color theme.
    */
-  static public Image getThemeImage(String name, Component who) {
-    return getLibImage("theme/" + name, who);
+  static public Image getThemeImage(String name, Component who, int width,
+                                    int height) {
+    return getLibImage("theme/" + name, who, width, height);
+  }
+
+  private static Image imageFromSVG(URL url, int width, int height)
+      throws TranscoderException {
+    Transcoder t = new PNGTranscoder();
+    t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(width));
+    t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(height));
+
+    TranscoderInput input = new TranscoderInput(url.toString());
+    ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+    TranscoderOutput output = new TranscoderOutput(ostream);
+    t.transcode(input, output);
+
+    byte[] imgData = ostream.toByteArray();
+    return Toolkit.getDefaultToolkit().createImage(imgData);
   }
 
 }

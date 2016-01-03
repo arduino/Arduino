@@ -73,6 +73,7 @@ public class EditorHeader extends JComponent {
   static final int MENU = 3;
 
   static final int PIECE_WIDTH = scale(4);
+  static final int PIECE_HEIGHT = scale(33);
 
   // value for the size bars, buttons, etc
   static final int GRID_SIZE = scale(33);
@@ -150,8 +151,12 @@ public class EditorHeader extends JComponent {
       pieces = new Image[STATUS.length][WHERE.length];
       for (int i = 0; i < STATUS.length; i++) {
         for (int j = 0; j < WHERE.length; j++) {
-          String path = "tab-" + STATUS[i] + "-" + WHERE[j] + ".png";
-          pieces[i][j] = Theme.getThemeImage(path, this);
+          String path = "tab-" + STATUS[i] + "-" + WHERE[j];
+          pieces[i][j] = Theme.getThemeImage(path, this,
+                                             // TODO: Refactor this mess...
+                                             j == MENU ? PIECE_HEIGHT
+                                                       : PIECE_WIDTH,
+                                             PIECE_HEIGHT);
         }
       }
     }

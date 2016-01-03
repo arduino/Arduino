@@ -43,7 +43,6 @@ import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.*;
-import processing.app.helpers.FileUtils.SplitFile;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
@@ -1743,7 +1742,8 @@ public class Base {
    */
   @SuppressWarnings("serial")
   public void handleAbout() {
-    final Image image = Theme.getLibImage("about.png", activeEditor);
+    final Image image = Theme.getLibImage("about", activeEditor,
+                                          Theme.scale(475), Theme.scale(300));
     final Window window = new Window(activeEditor) {
       public void paint(Graphics g) {
         g.drawImage(image, 0, 0, null);
