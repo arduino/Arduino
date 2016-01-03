@@ -89,7 +89,8 @@ public class EditorLineStatus extends JComponent {
     repaint();
   }
 
-  public void paintComponent(Graphics g) {
+  public void paintComponent(Graphics graphics) {
+    Graphics2D g = Theme.setupGraphics2D(graphics);
     if (name == "" && serialport == "") {
       PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
       if (boardPreferences != null)

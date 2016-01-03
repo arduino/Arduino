@@ -1745,12 +1745,9 @@ public class Base {
     final Image image = Theme.getLibImage("about", activeEditor,
                                           Theme.scale(475), Theme.scale(300));
     final Window window = new Window(activeEditor) {
-      public void paint(Graphics g) {
+      public void paint(Graphics graphics) {
+        Graphics2D g = Theme.setupGraphics2D(graphics);
         g.drawImage(image, 0, 0, null);
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 
         Font f = new Font("SansSerif", Font.PLAIN, Theme.scale(11));
         g.setFont(f);

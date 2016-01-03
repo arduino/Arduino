@@ -218,15 +218,15 @@ public class EditorStatus extends JPanel {
       offscreen = createImage(imageW, imageH);
     }
 
-    Graphics graphics = offscreen.getGraphics();
-    graphics.setColor(BGCOLOR[mode]);
-    graphics.fillRect(0, 0, imageW, imageH);
-    graphics.setColor(FGCOLOR[mode]);
+    Graphics2D g = Theme.setupGraphics2D(offscreen.getGraphics());
+    g.setColor(BGCOLOR[mode]);
+    g.fillRect(0, 0, imageW, imageH);
+    g.setColor(FGCOLOR[mode]);
 
-    graphics.setFont(font); // needs to be set each time on osx
-    int ascent = graphics.getFontMetrics().getAscent();
+    g.setFont(font); // needs to be set each time on osx
+    int ascent = g.getFontMetrics().getAscent();
     assert message != null;
-    graphics.drawString(message, Preferences.GUI_SMALL, (sizeH + ascent) / 2);
+    g.drawString(message, Preferences.GUI_SMALL, (sizeH + ascent) / 2);
 
     screen.drawImage(offscreen, 0, 0, null);
   }

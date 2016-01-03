@@ -26,6 +26,8 @@ import static processing.app.I18n.tr;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.RenderingHints;
@@ -285,6 +287,15 @@ public class Theme {
 
     byte[] imgData = ostream.toByteArray();
     return Toolkit.getDefaultToolkit().createImage(imgData);
+  }
+
+  static public Graphics2D setupGraphics2D(Graphics graphics) {
+    Graphics2D g = (Graphics2D) graphics;
+    if (PreferencesData.getBoolean("editor.antialias")) {
+      g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    }
+    return g;
   }
 
 }

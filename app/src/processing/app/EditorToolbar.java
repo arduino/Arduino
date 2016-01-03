@@ -197,7 +197,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       x1[SERIAL] = width - BUTTON_WIDTH - 14;
       x2[SERIAL] = width - 14;
     }
-    Graphics g = offscreen.getGraphics();
+    Graphics2D g = Theme.setupGraphics2D(offscreen.getGraphics());
     g.setColor(bgcolor); //getBackground());
     g.fillRect(0, 0, width, height);
 
