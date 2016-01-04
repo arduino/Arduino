@@ -92,5 +92,7 @@
 			<string>true</string>
 		</dict>
 	</dict>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
