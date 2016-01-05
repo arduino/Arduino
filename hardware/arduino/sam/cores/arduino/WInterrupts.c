@@ -134,47 +134,47 @@ extern "C" {
 #endif
 
 void PIOA_Handler(void) {
-	uint32_t isr = PIOA->PIO_ISR;
-	uint32_t i;
-	for (i=0; i<32; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (callbacksPioA[i])
-			callbacksPioA[i]();
-	}
+  uint32_t isr = PIOA->PIO_ISR;
+  uint8_t leading_zeros;
+  while((leading_zeros=__CLZ(isr))<32)
+  {
+    uint8_t pin=32-leading_zeros-1;
+    if(callbacksPioA[pin]) callbacksPioA[pin]();
+    isr=isr&(~(1<<pin));
+  }
 }
 
 void PIOB_Handler(void) {
-	uint32_t isr = PIOB->PIO_ISR;
-	uint32_t i;
-	for (i=0; i<32; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (callbacksPioB[i])
-			callbacksPioB[i]();
-	}
+  uint32_t isr = PIOB->PIO_ISR;
+  uint8_t leading_zeros;
+  while((leading_zeros=__CLZ(isr))<32)
+  {
+    uint8_t pin=32-leading_zeros-1;
+    if(callbacksPioB[pin]) callbacksPioB[pin]();
+    isr=isr&(~(1<<pin));
+  }
 }
 
 void PIOC_Handler(void) {
-	uint32_t isr = PIOC->PIO_ISR;
-	uint32_t i;
-	for (i=0; i<32; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (callbacksPioC[i])
-			callbacksPioC[i]();
-	}
+  uint32_t isr = PIOC->PIO_ISR;
+  uint8_t leading_zeros;
+  while((leading_zeros=__CLZ(isr))<32)
+  {
+    uint8_t pin=32-leading_zeros-1;
+    if(callbacksPioC[pin]) callbacksPioC[pin]();
+    isr=isr&(~(1<<pin));
+  }
 }
 
 void PIOD_Handler(void) {
-	uint32_t isr = PIOD->PIO_ISR;
-	uint32_t i;
-	for (i=0; i<32; i++, isr>>=1) {
-		if ((isr & 0x1) == 0)
-			continue;
-		if (callbacksPioD[i])
-			callbacksPioD[i]();
-	}
+  uint32_t isr = PIOD->PIO_ISR;
+  uint8_t leading_zeros;
+  while((leading_zeros=__CLZ(isr))<32)
+  {
+    uint8_t pin=32-leading_zeros-1;
+    if(callbacksPioD[pin]) callbacksPioD[pin]();
+    isr=isr&(~(1<<pin));
+  }
 }
 
 #ifdef __cplusplus
