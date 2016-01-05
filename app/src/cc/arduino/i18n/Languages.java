@@ -97,6 +97,7 @@ public class Languages {
       new Language(tr("Swedish"), "Svenska", "sv"),
       new Language(tr("Talossan"), "Talossan", "tzl"),
       new Language(tr("Tamil"), "தமிழ்", "ta"),
+      new Language(tr("Thai"), "ภาษาไทย", "th"),
       new Language(tr("Turkish"), "Türk", "tr"),
       new Language(tr("Ukrainian"), "Український", "uk"),
       new Language(tr("Vietnamese"), "Tiếng Việt", "vi"),
