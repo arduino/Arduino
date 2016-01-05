@@ -12,7 +12,7 @@
 # Translators:
 # Dimitris Zervas <01ttouch@gmail.com>, 2012
 # firewalker <firew4lker@gmail.com>, 2015
-# Spyridon Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
+# Spyros Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
 # Γιάννης Σφακιανάκης <ysfakianakis@gmail.com>, 2013
 msgid ""
 msgstr ""
