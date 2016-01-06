@@ -114,9 +114,13 @@ public class Theme {
   }
 
   static public int getScale() {
-    if (get("gui.scalePercent") == null)
-      return 100;
-    return getInteger("gui.scalePercent");
+    try {
+      int scale = PreferencesData.getInteger("gui.scale", -1);
+      if (scale != -1)
+        return scale;
+    } catch (NumberFormatException ignore) {
+    }
+    return 100;
   }
 
   static public int scale(int size) {

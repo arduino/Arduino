@@ -7,9 +7,6 @@
 #COMMENTS // COLOR			#95A5A6 - LIGHT GREY
 #COMMENTS /**/ COLOR		#434F54	- DARK GREY
 
-# GUI - Scaling, edit this to scale to higher dots-per-inch displays
-gui.scalePercent = 100
-
 # GUI - STATUS
 status.notice.fgcolor = #002325
 status.notice.bgcolor = #17A1A5
