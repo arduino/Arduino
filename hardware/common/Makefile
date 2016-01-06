@@ -97,8 +97,18 @@ WIRING_DIR := $(APPLICATION_PATH)/hardware/emt/ti/runtime/wiring/
 ARCH_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/libraries
 ARCH_CORE_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)
 DRV_LIB_PATH := $(APPLICATION_PATH)/hardware/$(PLATFORM)/cores/$(PLATFORM)/driverlib
+ifeq ($(OS),Windows_NT)
+COMMON_CORE_DIR := $(APPLICATION_PATH)\hardware\emt
+else
 COMMON_CORE_DIR := $(APPLICATION_PATH)/hardware/emt
+endif
+
+ifeq ($(OS),Windows_NT)
+ARCH_EMT_DIR := $(COMMON_CORE_DIR)\ti\runtime\wiring\$(PLAT)
+else
 ARCH_EMT_DIR := $(COMMON_CORE_DIR)/ti/runtime/wiring/$(PLAT)
+endif
+
 DIRS := $(ARCH_LIB_PATH) $(COMMON_LIB_PATH) $(USER_LIB_PATH) $(BOARD_DIR) $(CORES) $(ARCH_CORE_PATH)
 INCLUDE_DIRS = $(foreach dir, $(DIRS), ${sort ${dir ${wildcard ${dir}/*/ ${dir}/*/utility/}}})
 # Exclude driverlib path from include paths
