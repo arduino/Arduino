@@ -152,6 +152,26 @@
       </fileset>
     </copy>
 
+    <macrodef name="copylibs">
+      <attribute name="todir"/>
+        <sequential>
+          <copy todir="@{todir}">
+            <fileset dir="../libraries"
+              includes="**/Adafruit_TMP006/, **/OneWire/, **/CogLCD/, **/aJson,
+                        **/PubNub/, **/Temboo/, **/MQTTClient, **/PubSubClient,
+                        **/OPT3001/, **/M2XStreamClient/, **/OneMsTaskTimer/,
+                        **/LCD_SharpBoosterPack_SPI/"
+            />
+          </copy>
+        </sequential>
+    </macrodef>
+
+    <copylibs todir="${target.path}/hardware/cc2600emt/libraries"/>
+    <copylibs todir="${target.path}/hardware/msp430/libraries"/>
+    <copylibs todir="${target.path}/hardware/lm4f/libraries"/>
+    <copylibs todir="${target.path}/hardware/cc3200/libraries"/>
+    <copylibs todir="${target.path}/hardware/msp432/libraries"/>
+    <copylibs todir="${target.path}/hardware/cc3200emt/libraries"/>
 
     <!-- download and unzip TI-RTOS closure -->
     <antcall target="unzip-closure"/>

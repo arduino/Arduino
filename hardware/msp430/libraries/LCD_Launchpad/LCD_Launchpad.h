@@ -41,6 +41,10 @@
  *
  * June 2015 StefanSch: Adopted for Energia
  *
+ * Dec 12, 2015 Rei Vilo
+ * 0b00000101 mask for LCDMEM[position+1] to avoid interferences with symbols
+ * Tested on MSP430 FR4133 and FR6989
+ *
  ******************************************************************************/
 
 #ifndef LCD_LAUNCHPAD_H_
