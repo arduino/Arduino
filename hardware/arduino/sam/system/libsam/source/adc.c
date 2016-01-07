@@ -192,18 +192,39 @@ void adc_set_resolution(Adc *p_adc,const enum adc_resolution_t resolution)
 void adc_configure_trigger(Adc *p_adc, const enum adc_trigger_t trigger,
 		uint8_t uc_freerun)
 {
-	p_adc->ADC_MR |= trigger | ((uc_freerun << 7) & ADC_MR_FREERUN);
+	//Warning ADC_MR_TRGSEL_Msk does not include ADC_MR_TRGEN.
+	p_adc->ADC_MR &= ~(ADC_MR_TRGEN | ADC_MR_TRGSEL_Msk | ADC_MR_FREERUN); //Clear all bits related to triggers and freerun
+	
+	//Configure FreeRun
+	if(uc_freerun & ADC_MR_FREERUN == ADC_MR_FREERUN_ON) {                 //FreeRun is enabled
+		p_adc->ADC_MR |= ADC_MR_FREERUN_ON;
+		
+		//Free Run Mode: Never wait for any trigger
+		//No need to continue and enable hardware triggers
+		return;
+	}
+	
+	//Configure hardware triggers
+	if(trigger & ADC_MR_TRGEN == ADC_MR_TRGEN_EN) {                       //Hardware trigger is enabled
+		p_adc->ADC_MR |= (trigger & ADC_MR_TRGSEL_Msk) | ADC_MR_TRGEN_EN; //Set trigger selection bits and enable hardware trigger
+	}
 }
 #elif SAM3U_SERIES
 /**
- * \brief Configure conversion trigger and free run mode.
+ * \brief Configure conversion trigger.
  *
  * \param p_adc Pointer to an ADC instance.
  * \param trigger Conversion trigger.
  */
 void adc_configure_trigger(Adc *p_adc, const enum adc_trigger_t trigger)
 {
-	p_adc->ADC_MR |= trigger;
+	//Warning ADC_MR_TRGSEL_Msk does not include ADC_MR_TRGEN.
+	p_adc->ADC_MR &= ~(ADC_MR_TRGEN | ADC_MR_TRGSEL_Msk);                  //Clear all bits related to triggers
+	
+	//Configure hardware triggers
+	if(trigger & ADC_MR_TRGEN == ADC_MR_TRGEN_EN) {                        //Hardware trigger is enabled
+		p_adc->ADC_MR |= (trigger & ADC_MR_TRGSEL_Msk) | ADC_MR_TRGEN_EN;  //Set trigger selection bits and enable hardware trigger
+	}
 }
 #endif
 
