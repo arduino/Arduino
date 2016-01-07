@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rfc.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-11-17 12:03:08 +0100 (Tue, 17 Nov 2015)
+*  Revision:       45108
 *
 *  Description:    Driver for the RF Core.
 *
@@ -37,5 +37,57 @@
 ******************************************************************************/
 
 #include <driverlib/rfc.h>
+
+//*****************************************************************************
+//
+//! Get and clear CPE interrupt flags
+//
+//*****************************************************************************
+uint32_t
+RFCCpeIntGetAndClear(void)
+{
+    uint32_t ui32Ifg = HWREG(RFC_DBELL_BASE+RFC_DBELL_O_RFCPEIFG);
+
+    do {
+        HWREG(RFC_DBELL_BASE+RFC_DBELL_O_RFCPEIFG) = 0;
+    } while (HWREG(RFC_DBELL_BASE+RFC_DBELL_O_RFCPEIFG));
+
+    return (ui32Ifg);
+}
+
+
+//*****************************************************************************
+//
+//! Send command to doorbell and wait for ack
+//
+//*****************************************************************************
+uint32_t
+RFCDoorbellSendTo(uint32_t pOp)
+{
+    while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_CMDR) != 0);
+
+    RFCAckIntClear();
+
+    HWREG(RFC_DBELL_BASE+RFC_DBELL_O_CMDR) = pOp;
+
+    while(!HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFACKIFG));
+    RFCAckIntClear();
+
+    return(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_CMDSTA));
+}
+
+
+//*****************************************************************************
+//
+// Handle support for DriverLib in ROM:
+// This section will undo prototype renaming made in the header file
+//
+//*****************************************************************************
+#if !defined(DOXYGEN)
+    #undef  RFCCpeIntGetAndClear
+    #define RFCCpeIntGetAndClear            NOROM_RFCCpeIntGetAndClear
+    #undef  RFCDoorbellSendTo
+    #define RFCDoorbellSendTo               NOROM_RFCDoorbellSendTo
+#endif
 
 // See rfc.h for implementation

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       i2s.h
-*  Revised:        2015-02-10 16:20:36 +0100 (ti, 10 feb 2015)
-*  Revision:       42636
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    Defines and prototypes for the I2S.
 *
@@ -38,6 +38,8 @@
 
 //****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup i2s_api
 //! @{
 //
@@ -78,10 +80,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define I2SEnable                       NOROM_I2SEnable
     #define I2SAudioFormatConfigure         NOROM_I2SAudioFormatConfigure
     #define I2SChannelConfigure             NOROM_I2SChannelConfigure
@@ -100,13 +100,14 @@ extern "C"
 //! These fields are used by the I2S and normally it is not necessary for
 //! software to directly read or write fields in the table.
 //!
-//! The control table must be defined by the user as a global variable and the
-//! global pointer must then be assigned the address of the control table:
+//! \note The control table must be defined by the user as a global variable and
+//! the global pointer must then be assigned the address of the control table
+//! inside a user function (but before calling any I2S-function).
 //!
 /*!
 \verbatim
- I2SControlTable g_controlTable;
- g_pControlTable = &g_controlTable;
+ I2SControlTable g_controlTable;    // Define global
+ g_pControlTable = &g_controlTable; // Assign pointer (inside a function)
 \endverbatim
 */
 //!
@@ -298,7 +299,7 @@ I2SDisable(uint32_t ui32Base)
     //
     // Disable the I2S module.
     //
-    HWREG(ui32Base + I2S_O_AIFDMACFG) = 0x0;
+    HWREG(I2S0_BASE + I2S_O_AIFDMACFG) = 0x0;
 }
 
 //*****************************************************************************
@@ -433,7 +434,7 @@ I2SClockConfigure(uint32_t ui32Base, uint32_t ui32ClkConfig)
 //!
 //! The next pointer should always be written while the DMA is using the
 //! previous written pointer. If not written in time an \ref I2S_INT_PTR_ERR will
-//! occure and all outputs will be disabled.
+//! occur and all outputs will be disabled.
 //!
 //! \note At startup the next data pointer should be
 //! written just before and just after calling the \ref I2SEnable().
@@ -456,7 +457,7 @@ extern void I2SBufferConfig(uint32_t ui32Base, uint32_t ui32InBufBase,
 //! \brief Update the buffer pointers.
 //!
 //! The next pointer should always be written while the DMA is using the
-//! previous written pointer. If not written in time an \ref I2S_INT_PTR_ERR will occure
+//! previous written pointer. If not written in time an \ref I2S_INT_PTR_ERR will occur
 //! and all outputs will be disabled. Nothing is preventing the pointers from
 //! being identical, but this function relies on both pointers (input or
 //! output pointers) are pointing to a valid address.
@@ -483,7 +484,7 @@ extern void I2SPointerUpdate(uint32_t ui32Base, bool bInput);
 //! This function allows bypassing of the pointers in the global control table.
 //!
 //! The next pointer should always be written while the DMA is using the
-//! previous written pointer. If not written in time an \ref I2S_INT_PTR_ERR will occure
+//! previous written pointer. If not written in time an \ref I2S_INT_PTR_ERR will occur
 //! and all outputs will be disabled. Nothing is preventing the pointers from
 //! being identical, but this function relies on both pointers (input or
 //! output pointers) are pointing to a valid address.
@@ -534,12 +535,12 @@ I2SIntRegister(uint32_t ui32Base, void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_I2S, pfnHandler);
+    IntRegister(INT_I2S_IRQ, pfnHandler);
 
     //
     // Enable the I2S interrupt.
     //
-    IntEnable(INT_I2S);
+    IntEnable(INT_I2S_IRQ);
 }
 
 //*****************************************************************************
@@ -570,12 +571,12 @@ I2SIntUnregister(uint32_t ui32Base)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_I2S);
+    IntDisable(INT_I2S_IRQ);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_I2S);
+    IntUnregister(INT_I2S_IRQ);
 }
 
 //*****************************************************************************
@@ -611,7 +612,7 @@ I2SIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Enable the specified interrupts.
     //
-    HWREG(ui32Base + I2S_O_IRQMASK) |= ui32IntFlags;
+    HWREG(I2S0_BASE + I2S_O_IRQMASK) |= ui32IntFlags;
 }
 
 //*****************************************************************************
@@ -647,7 +648,7 @@ I2SIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Disable the specified interrupts.
     //
-    HWREG(ui32Base + I2S_O_IRQMASK) &= ~ui32IntFlags;
+    HWREG(I2S0_BASE + I2S_O_IRQMASK) &= ~ui32IntFlags;
 }
 
 //*****************************************************************************
@@ -688,12 +689,12 @@ I2SIntStatus(uint32_t ui32Base, bool bMasked)
     //
     if(bMasked)
     {
-        ui32Mask = HWREG(ui32Base + I2S_O_IRQFLAGS);
-        return(ui32Mask & HWREG(ui32Base + I2S_O_IRQMASK));
+        ui32Mask = HWREG(I2S0_BASE + I2S_O_IRQFLAGS);
+        return(ui32Mask & HWREG(I2S0_BASE + I2S_O_IRQMASK));
     }
     else
     {
-        return(HWREG(ui32Base + I2S_O_IRQFLAGS));
+        return(HWREG(I2S0_BASE + I2S_O_IRQFLAGS));
     }
 }
 
@@ -705,14 +706,20 @@ I2SIntStatus(uint32_t ui32Base, bool bMasked)
 //! assert. This function must be called in the interrupt handler to keep the
 //! interrupt from being recognized again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32Base is the base address of the I2S port.
 //! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
@@ -739,7 +746,7 @@ I2SIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the requested interrupt sources.
     //
-    HWREG(ui32Base + I2S_O_IRQCLR) = ui32IntFlags;
+    HWREG(I2S0_BASE + I2S_O_IRQCLR) = ui32IntFlags;
 }
 
 //*****************************************************************************
@@ -762,7 +769,7 @@ I2SSampleStampEnable(uint32_t ui32Base)
     //
     // Set the enable bit.
     //
-    HWREG(ui32Base + I2S_O_STMPCTL) = I2S_STMPCTL_STMP_EN;
+    HWREG(I2S0_BASE + I2S_O_STMPCTL) = I2S_STMPCTL_STMP_EN;
 }
 
 //*****************************************************************************
@@ -781,7 +788,7 @@ I2SSampleStampDisable(uint32_t ui32Base)
     //
     // Clear the enable bit.
     //
-    HWREG(ui32Base + I2S_O_STMPCTL) = 0;
+    HWREG(I2S0_BASE + I2S_O_STMPCTL) = 0;
 
 }
 
@@ -819,7 +826,7 @@ extern uint32_t I2SSampleStampGet(uint32_t ui32Base, uint32_t ui32Channel);
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_I2SEnable
         #undef  I2SEnable
@@ -869,6 +876,7 @@ extern uint32_t I2SSampleStampGet(uint32_t ui32Base, uint32_t ui32Channel);
 //****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //****************************************************************************

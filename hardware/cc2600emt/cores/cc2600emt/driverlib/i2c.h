@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       i2c.h
-*  Revised:        2015-02-14 09:52:28 +0100 (lø, 14 feb 2015)
-*  Revision:       42727
+*  Revised:        2015-09-21 15:19:36 +0200 (Mon, 21 Sep 2015)
+*  Revision:       44629
 *
 *  Description:    Defines and prototypes for the I2C.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup i2c_api
 //! @{
 //
@@ -80,10 +82,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define I2CMasterInitExpClk             NOROM_I2CMasterInitExpClk
     #define I2CMasterErr                    NOROM_I2CMasterErr
     #define I2CIntRegister                  NOROM_I2CIntRegister
@@ -241,10 +241,10 @@ I2CMasterControl(uint32_t ui32Base, uint32_t ui32Cmd)
     //
     // Send the command.
     //
-    HWREG(ui32Base + I2C_O_MCTRL) = ui32Cmd;
+    HWREG(I2C0_BASE + I2C_O_MCTRL) = ui32Cmd;
 
     //
-    // Delay minimum four cycles in order to asure that the I2C_O_MSTAT
+    // Delay minimum four cycles in order to ensure that the I2C_O_MSTAT
     // register has been correctly updated before function exit
     //
     CPUdelay(2);
@@ -282,7 +282,7 @@ I2CMasterSlaveAddrSet(uint32_t ui32Base, uint8_t ui8SlaveAddr,
     //
     // Set the address of the slave with which the master will communicate.
     //
-    HWREG(ui32Base + I2C_O_MSA) = (ui8SlaveAddr << 1) | bReceive;
+    HWREG(I2C0_BASE + I2C_O_MSA) = (ui8SlaveAddr << 1) | bReceive;
 }
 
 //*****************************************************************************
@@ -299,20 +299,14 @@ I2CMasterSlaveAddrSet(uint32_t ui32Base, uint8_t ui8SlaveAddr,
 __STATIC_INLINE void
 I2CMasterEnable(uint32_t ui32Base)
 {
-    //
     // Check the arguments.
-    //
     ASSERT(I2CBaseValid(ui32Base));
 
-    //
     // Enable the clock for the master.
-    //
-    HWREG(ui32Base + I2C_O_MCR) |= I2C_MCR_MFE;
+    HWREGBITW(I2C0_BASE + I2C_O_MCR, I2C_MCR_MFE_BITN) = 1;
 
-    //
     // Enable the master block.
-    //
-    HWREG(ui32Base + I2C_O_MCTRL) = I2C_MCTRL_RUN;
+    HWREG(I2C0_BASE + I2C_O_MCTRL) = I2C_MCTRL_RUN;
 }
 
 //*****************************************************************************
@@ -329,20 +323,14 @@ I2CMasterEnable(uint32_t ui32Base)
 __STATIC_INLINE void
 I2CMasterDisable(uint32_t ui32Base)
 {
-    //
     // Check the arguments.
-    //
     ASSERT(I2CBaseValid(ui32Base));
 
-    //
     // Disable the master block.
-    //
-    HWREG(ui32Base + I2C_O_MCTRL) = 0;
+    HWREG(I2C0_BASE + I2C_O_MCTRL) = 0;
 
-    //
     // Disable the clock for the master.
-    //
-    HWREG(ui32Base + I2C_O_MCR) &= ~I2C_MCR_MFE;
+    HWREGBITW(I2C0_BASE + I2C_O_MCR, I2C_MCR_MFE_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -370,7 +358,7 @@ I2CMasterBusy(uint32_t ui32Base)
     //
     // Return the busy status.
     //
-    if(HWREG(ui32Base + I2C_O_MSTAT) & I2C_MSTAT_BUSY)
+    if(HWREG(I2C0_BASE + I2C_O_MSTAT) & I2C_MSTAT_BUSY)
     {
         return(true);
     }
@@ -406,7 +394,7 @@ I2CMasterBusBusy(uint32_t ui32Base)
     //
     // Return the bus busy status.
     //
-    if(HWREG(ui32Base + I2C_O_MSTAT) & I2C_MSTAT_BUSBSY)
+    if(HWREG(I2C0_BASE + I2C_O_MSTAT) & I2C_MSTAT_BUSBSY)
     {
         return(true);
     }
@@ -439,7 +427,7 @@ I2CMasterDataGet(uint32_t ui32Base)
     //
     // Read a byte.
     //
-    return(HWREG(ui32Base + I2C_O_MDR));
+    return(HWREG(I2C0_BASE + I2C_O_MDR));
 }
 
 //*****************************************************************************
@@ -465,7 +453,7 @@ I2CMasterDataPut(uint32_t ui32Base, uint8_t ui8Data)
     //
     // Write the byte.
     //
-    HWREG(ui32Base + I2C_O_MDR) = ui8Data;
+    HWREG(I2C0_BASE + I2C_O_MDR) = ui8Data;
 }
 
 //*****************************************************************************
@@ -508,7 +496,7 @@ I2CMasterIntEnable(uint32_t ui32Base)
     //
     // Enable the master interrupt.
     //
-    HWREG(ui32Base + I2C_O_MIMR) = I2C_MIMR_IM;
+    HWREG(I2C0_BASE + I2C_O_MIMR) = I2C_MIMR_IM;
 }
 
 //*****************************************************************************
@@ -533,7 +521,7 @@ I2CMasterIntDisable(uint32_t ui32Base)
     //
     // Disable the master interrupt.
     //
-    HWREG(ui32Base + I2C_O_MIMR) = 0;
+    HWREG(I2C0_BASE + I2C_O_MIMR) = 0;
 }
 
 //*****************************************************************************
@@ -544,14 +532,20 @@ I2CMasterIntDisable(uint32_t ui32Base)
 //! This must be done in the interrupt handler to keep it from being called
 //! again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32Base is the base address of the I2C module.
 //!
@@ -569,7 +563,7 @@ I2CMasterIntClear(uint32_t ui32Base)
     //
     // Clear the I2C master interrupt source.
     //
-    HWREG(ui32Base + I2C_O_MICR) = I2C_MICR_IC;
+    HWREG(I2C0_BASE + I2C_O_MICR) = I2C_MICR_IC;
 }
 
 //*****************************************************************************
@@ -604,11 +598,11 @@ I2CMasterIntStatus(uint32_t ui32Base, bool bMasked)
     //
     if(bMasked)
     {
-        return((HWREG(ui32Base + I2C_O_MMIS)) ? true : false);
+        return((HWREG(I2C0_BASE + I2C_O_MMIS)) ? true : false);
     }
     else
     {
-        return((HWREG(ui32Base + I2C_O_MRIS)) ? true : false);
+        return((HWREG(I2C0_BASE + I2C_O_MRIS)) ? true : false);
     }
 }
 
@@ -626,20 +620,14 @@ I2CMasterIntStatus(uint32_t ui32Base, bool bMasked)
 __STATIC_INLINE void
 I2CSlaveEnable(uint32_t ui32Base)
 {
-    //
     // Check the arguments.
-    //
     ASSERT(I2CBaseValid(ui32Base));
 
-    //
     // Enable the clock to the slave block.
-    //
-    HWREG(ui32Base + I2C_O_MCR) |= I2C_MCR_SFE;
+    HWREGBITW(I2C0_BASE + I2C_O_MCR, I2C_MCR_SFE_BITN) = 1;
 
-    //
     // Enable the slave.
-    //
-    HWREG(ui32Base + I2C_O_SCTL) = I2C_SCTL_DA;
+    HWREG(I2C0_BASE + I2C_O_SCTL) = I2C_SCTL_DA;
 }
 
 //*****************************************************************************
@@ -671,12 +659,12 @@ I2CSlaveInit(uint32_t ui32Base, uint8_t ui8SlaveAddr)
     //
     // Must enable the device before doing anything else.
     //
-    I2CSlaveEnable(ui32Base);
+    I2CSlaveEnable(I2C0_BASE);
 
     //
     // Set up the slave address.
     //
-    HWREG(ui32Base + I2C_O_SOAR) = ui8SlaveAddr;
+    HWREG(I2C0_BASE + I2C_O_SOAR) = ui8SlaveAddr;
 }
 
 //*****************************************************************************
@@ -703,7 +691,7 @@ I2CSlaveAddressSet(uint32_t ui32Base, uint8_t ui8SlaveAddr)
     //
     // Set up the primary slave address.
     //
-    HWREG(ui32Base + I2C_O_SOAR) = ui8SlaveAddr;
+    HWREG(I2C0_BASE + I2C_O_SOAR) = ui8SlaveAddr;
 }
 
 //*****************************************************************************
@@ -720,20 +708,14 @@ I2CSlaveAddressSet(uint32_t ui32Base, uint8_t ui8SlaveAddr)
 __STATIC_INLINE void
 I2CSlaveDisable(uint32_t ui32Base)
 {
-    //
     // Check the arguments.
-    //
     ASSERT(I2CBaseValid(ui32Base));
 
-    //
     // Disable the slave.
-    //
-    HWREG(ui32Base + I2C_O_SCTL) = 0x0;
+    HWREG(I2C0_BASE + I2C_O_SCTL) = 0x0;
 
-    //
     // Disable the clock to the slave block.
-    //
-    HWREG(ui32Base + I2C_O_MCR) &= ~I2C_MCR_SFE;
+    HWREGBITW(I2C0_BASE + I2C_O_MCR, I2C_MCR_SFE_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -763,7 +745,7 @@ I2CSlaveStatus(uint32_t ui32Base)
     //
     // Return the slave status.
     //
-    return(HWREG(ui32Base + I2C_O_SSTAT));
+    return(HWREG(I2C0_BASE + I2C_O_SSTAT));
 }
 
 //*****************************************************************************
@@ -789,7 +771,7 @@ I2CSlaveDataGet(uint32_t ui32Base)
     //
     // Read a byte.
     //
-    return(HWREG(ui32Base + I2C_O_SDR));
+    return(HWREG(I2C0_BASE + I2C_O_SDR));
 }
 
 //*****************************************************************************
@@ -815,7 +797,7 @@ I2CSlaveDataPut(uint32_t ui32Base, uint8_t ui8Data)
     //
     // Write the byte.
     //
-    HWREG(ui32Base + I2C_O_SDR) = ui8Data;
+    HWREG(I2C0_BASE + I2C_O_SDR) = ui8Data;
 }
 
 //*****************************************************************************
@@ -851,9 +833,9 @@ I2CSlaveIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Enable the slave interrupt.
     //
-    ui32Val = HWREG(ui32Base + I2C_O_SIMR);
+    ui32Val = HWREG(I2C0_BASE + I2C_O_SIMR);
     ui32Val |= ui32IntFlags;
-    HWREG(ui32Base + I2C_O_SIMR) = ui32Val;
+    HWREG(I2C0_BASE + I2C_O_SIMR) = ui32Val;
 }
 
 //*****************************************************************************
@@ -889,9 +871,9 @@ I2CSlaveIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Disable the slave interrupt.
     //
-    ui32Val = HWREG(ui32Base + I2C_O_SIMR);
+    ui32Val = HWREG(I2C0_BASE + I2C_O_SIMR);
     ui32Val &= ~ui32IntFlags;
-    HWREG(ui32Base + I2C_O_SIMR) = ui32Val;
+    HWREG(I2C0_BASE + I2C_O_SIMR) = ui32Val;
 }
 
 //*****************************************************************************
@@ -902,14 +884,20 @@ I2CSlaveIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! longer assert. This must be done in the interrupt handler to keep it from
 //! being called again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32Base is the base address of the I2C module.
 //! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
@@ -932,7 +920,7 @@ I2CSlaveIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
     //
     // Clear the I2C slave interrupt source.
     //
-    HWREG(ui32Base + I2C_O_SICR) = ui32IntFlags;
+    HWREG(I2C0_BASE + I2C_O_SICR) = ui32IntFlags;
 }
 
 //*****************************************************************************
@@ -969,11 +957,11 @@ I2CSlaveIntStatus(uint32_t ui32Base, bool bMasked)
     //
     if(bMasked)
     {
-        return(HWREG(ui32Base + I2C_O_SMIS));
+        return(HWREG(I2C0_BASE + I2C_O_SMIS));
     }
     else
     {
-        return(HWREG(ui32Base + I2C_O_SRIS));
+        return(HWREG(I2C0_BASE + I2C_O_SRIS));
     }
 }
 
@@ -1024,7 +1012,7 @@ extern void I2CIntUnregister(uint32_t ui32Base);
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_I2CMasterInitExpClk
         #undef  I2CMasterInitExpClk
@@ -1058,6 +1046,7 @@ extern void I2CIntUnregister(uint32_t ui32Base);
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_rtc.h
-*  Revised:        2015-03-23 14:13:09 +0100 (ma, 23 mar 2015)
-*  Revision:       43091
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AON RTC
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aon_group
+//! @{
 //! \addtogroup aonrtc_api
 //! @{
 //
@@ -76,22 +78,10 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
-    #define AONRTCStatus                    NOROM_AONRTCStatus
-    #define AONRTCEventClear                NOROM_AONRTCEventClear
-    #define AONRTCEventGet                  NOROM_AONRTCEventGet
-    #define AONRTCModeCh1Set                NOROM_AONRTCModeCh1Set
-    #define AONRTCModeCh1Get                NOROM_AONRTCModeCh1Get
-    #define AONRTCModeCh2Set                NOROM_AONRTCModeCh2Set
-    #define AONRTCModeCh2Get                NOROM_AONRTCModeCh2Get
-    #define AONRTCChannelEnable             NOROM_AONRTCChannelEnable
-    #define AONRTCChannelDisable            NOROM_AONRTCChannelDisable
-    #define AONRTCCompareValueSet           NOROM_AONRTCCompareValueSet
-    #define AONRTCCompareValueGet           NOROM_AONRTCCompareValueGet
+#if !defined(DOXYGEN)
     #define AONRTCCurrentCompareValueGet    NOROM_AONRTCCurrentCompareValueGet
+    #define AONRTCCurrent64BitValueGet      NOROM_AONRTCCurrent64BitValueGet
 #endif
 
 //*****************************************************************************
@@ -125,8 +115,6 @@ extern "C"
 #define AON_RTC_CONFIG_DELAY_112    11 // Delay of 112 clk cycles
 #define AON_RTC_CONFIG_DELAY_128    12 // Delay of 128 clk cycles
 #define AON_RTC_CONFIG_DELAY_144    13 // Delay of 144 clk cycles
-#define AON_RTC_CONFIG_DELAY_160    14 // Delay of 160 clk cycles
-#define AON_RTC_CONFIG_DELAY_176    15 // Delay of 176 clk cycles
 
 //*****************************************************************************
 //
@@ -172,7 +160,7 @@ AONRTCEnable(void)
     //
     // Enable RTC.
     //
-    HWREG(AON_RTC_BASE + AON_RTC_O_CTL) |= AON_RTC_CTL_EN;
+    HWREGBITW(AON_RTC_BASE + AON_RTC_O_CTL, AON_RTC_CTL_EN_BITN) = 1;
 }
 
 //*****************************************************************************
@@ -195,32 +183,8 @@ AONRTCDisable(void)
     //
     // Disable RTC
     //
-    HWREG(AON_RTC_BASE + AON_RTC_O_CTL) &= ~(AON_RTC_CTL_EN);
+    HWREGBITW(AON_RTC_BASE + AON_RTC_O_CTL, AON_RTC_CTL_EN_BITN) = 0;
 }
-
-//*****************************************************************************
-//
-//! \brief Check if the AON Real Time Clock is running.
-//!
-//! Use this function to check if the RTC is enabled. This can be relevant when
-//! recovering from powerdown mode. In powerdown the AON domain is still active
-//! and therefore the configuration of the RTC is not lost. The application
-//! code can poll the RTC with this function to check if the RTC is active
-//! before trying to (re)configure the RTC.
-//!
-//! \note An enabled channel in the return value does not indicate that the RTC
-//! is running. The AON_RTC_ACTIVE must be set as well.
-//!
-//! \return Returns a bitwise combination of values indicating if the the RTC
-//! is active and which channels are enabled.
-//! The returned value will be a bitwise OR'ed combination of the following:
-//! - \ref AON_RTC_ACTIVE
-//! - \ref AON_RTC_CH0
-//! - \ref AON_RTC_CH1
-//! - \ref AON_RTC_CH2
-//
-//*****************************************************************************
-extern uint32_t AONRTCStatus(void);
 
 //*****************************************************************************
 //
@@ -237,7 +201,61 @@ AONRTCReset(void)
     //
     // Reset RTC.
     //
-    HWREG(AON_RTC_BASE + AON_RTC_O_CTL) |= AON_RTC_CTL_RESET;
+    HWREGBITW(AON_RTC_BASE + AON_RTC_O_CTL, AON_RTC_CTL_RESET_BITN) = 1;
+}
+
+//*****************************************************************************
+//
+//! \brief Check if the RTC is active (enabled).
+//!
+//! \return Returns the status of the RTC.
+//! - false : RTC is disabled
+//! - true  : RTC is enabled
+//
+//*****************************************************************************
+__STATIC_INLINE bool
+AONRTCActive(void)
+{
+    // Read if RTC is enabled
+    return(HWREGBITW(AON_RTC_BASE + AON_RTC_O_CTL, AON_RTC_CTL_EN_BITN));
+}
+
+//*****************************************************************************
+//
+//! \brief Check if an RTC channel is active (enabled).
+//!
+//! \param ui32Channel specifies the RTC channel to check status of.
+//! Parameter must be one (and only one) of the following:
+//! - \ref AON_RTC_CH0
+//! - \ref AON_RTC_CH1
+//! - \ref AON_RTC_CH2
+//!
+//! \return Returns the status of the requested channel:
+//! - false : Channel is disabled
+//! - true  : Channel is enabled
+//
+//*****************************************************************************
+__STATIC_INLINE bool
+AONRTCChannelActive(uint32_t ui32Channel)
+{
+    uint32_t uint32Status = 0;
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        uint32Status = HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH0_EN_BITN);
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        uint32Status = HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH1_EN_BITN);
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        uint32Status = HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH2_EN_BITN);
+    }
+
+    return(uint32Status);
 }
 
 //*****************************************************************************
@@ -266,8 +284,6 @@ AONRTCReset(void)
 //! - \ref AON_RTC_CONFIG_DELAY_112
 //! - \ref AON_RTC_CONFIG_DELAY_128
 //! - \ref AON_RTC_CONFIG_DELAY_144
-//! - \ref AON_RTC_CONFIG_DELAY_160
-//! - \ref AON_RTC_CONFIG_DELAY_176
 //!
 //! \return None.
 //
@@ -280,7 +296,7 @@ AONRTCDelayConfig(uint32_t ui32Delay)
     //
     // Check the arguments.
     //
-    ASSERT(ui32Delay <= AON_RTC_CONFIG_DELAY_176);
+    ASSERT(ui32Delay <= AON_RTC_CONFIG_DELAY_144);
 
 
     ui32Cfg =  HWREG(AON_RTC_BASE + AON_RTC_O_CTL);
@@ -317,7 +333,8 @@ AONRTCCombinedEventConfig(uint32_t ui32Channels)
     //
     // Check the arguments.
     //
-    ASSERT(ui32Channels & (AON_RTC_CH0 | AON_RTC_CH1 | AON_RTC_CH2));
+    ASSERT( (ui32Channels & (AON_RTC_CH0 | AON_RTC_CH1 | AON_RTC_CH2)) ||
+            (ui32Channels == AON_RTC_CH_NONE) );
 
     ui32Cfg =  HWREG(AON_RTC_BASE + AON_RTC_O_CTL);
     ui32Cfg &= ~(AON_RTC_CTL_COMB_EV_MASK_M);
@@ -333,7 +350,7 @@ AONRTCCombinedEventConfig(uint32_t ui32Channels)
 //! In case of an active event from the specified channel, the event
 //! will be cleared (de-asserted).
 //!
-//! \param ui32Channel clears the event from one (and only one) of the following channels:
+//! \param ui32Channel clears the event from one or more RTC channels:
 //! - \ref AON_RTC_CH0
 //! - \ref AON_RTC_CH1
 //! - \ref AON_RTC_CH2
@@ -341,7 +358,29 @@ AONRTCCombinedEventConfig(uint32_t ui32Channels)
 //! \return None
 //
 //*****************************************************************************
-extern void AONRTCEventClear(uint32_t ui32Channel);
+__STATIC_INLINE void
+AONRTCEventClear(uint32_t ui32Channel)
+{
+    // Check the arguments.
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH0_BITN) = 1;
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH1_BITN) = 1;
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH2_BITN) = 1;
+    }
+}
 
 //*****************************************************************************
 //
@@ -360,11 +399,37 @@ extern void AONRTCEventClear(uint32_t ui32Channel);
 //! otherwise \c false.
 //
 //*****************************************************************************
-extern bool AONRTCEventGet(uint32_t ui32Channel);
+__STATIC_INLINE bool
+AONRTCEventGet(uint32_t ui32Channel)
+{
+    uint32_t uint32Event = 0;
+
+    // Check the arguments.
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        uint32Event = HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH0_BITN);
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        uint32Event = HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH1_BITN);
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        uint32Event = HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH2_BITN);
+    }
+
+    return(uint32Event);
+}
 
 //*****************************************************************************
 //
-//! \brief Get nominal seconds of RTC free-running timer.
+//! \brief Get integer part (seconds) of RTC free-running timer.
 //!
 //! Get the value in seconds of RTC free-running timer, i.e. the integer part.
 //! The fractional part is returned from a call to AONRTCFractionGet().
@@ -394,7 +459,7 @@ AONRTCSecGet(void)
 
 //*****************************************************************************
 //
-//! \brief Get fractional part of RTC free-running timer.
+//! \brief Get fractional part (sub-seconds) of RTC free-running timer.
 //!
 //! Get the value of the fractional part of RTC free-running timer, i.e. the
 //! sub-second part.
@@ -416,7 +481,7 @@ __STATIC_INLINE uint32_t
 AONRTCFractionGet(void)
 {
     //
-    // Note1: It is recommended to use \ref AONRTCCurrentCompareValueGet() instead
+    // Note1: It is recommended to use AON RTCCurrentCompareValueGet() instead
     //        of this function if the <16.16> format is sufficient.
     // Note2: AONRTCSecGet() must be called before this function to get a
     //        consistent reading.
@@ -470,7 +535,15 @@ AONRTCSubSecIncrGet(void)
 //!  \sa AONRTCModeCh1Get()
 //
 //*****************************************************************************
-extern void AONRTCModeCh1Set(uint32_t ui32Mode);
+__STATIC_INLINE void
+AONRTCModeCh1Set(uint32_t ui32Mode)
+{
+    // Check the arguments.
+    ASSERT((ui32Mode == AON_RTC_MODE_CH1_CAPTURE) ||
+           (ui32Mode == AON_RTC_MODE_CH1_COMPARE));
+
+    HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH1_CAPT_EN_BITN) = ui32Mode;
+}
 
 //*****************************************************************************
 //
@@ -487,7 +560,11 @@ extern void AONRTCModeCh1Set(uint32_t ui32Mode);
 //! \sa AONRTCModeCh1Set()
 //
 //*****************************************************************************
-extern uint32_t AONRTCModeCh1Get(void);
+__STATIC_INLINE uint32_t
+AONRTCModeCh1Get(void)
+{
+    return(HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH1_CAPT_EN_BITN));
+}
 
 //*****************************************************************************
 //
@@ -512,7 +589,15 @@ extern uint32_t AONRTCModeCh1Get(void);
 //! \sa AONRTCIncValueCh2Set(), AONRTCIncValueCh2Get()
 //
 //*****************************************************************************
-extern void AONRTCModeCh2Set(uint32_t ui32Mode);
+__STATIC_INLINE void
+AONRTCModeCh2Set(uint32_t ui32Mode)
+{
+    // Check the arguments.
+    ASSERT((ui32Mode == AON_RTC_MODE_CH2_CONTINUOUS) ||
+           (ui32Mode == AON_RTC_MODE_CH2_NORMALCOMPARE));
+
+    HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH2_CONT_EN_BITN) = ui32Mode;
+}
 
 //*****************************************************************************
 //
@@ -532,7 +617,11 @@ extern void AONRTCModeCh2Set(uint32_t ui32Mode);
 //! \sa AONRTCIncValueCh2Set(), AONRTCIncValueCh2Get()
 //
 //*****************************************************************************
-extern uint32_t AONRTCModeCh2Get(void);
+__STATIC_INLINE uint32_t
+AONRTCModeCh2Get(void)
+{
+    return(HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH2_CONT_EN_BITN));
+}
 
 //*****************************************************************************
 //
@@ -543,8 +632,7 @@ extern uint32_t AONRTCModeCh2Get(void);
 //! \note The RTC free running clock  must also be enabled globally using the
 //! AONRTCEnable() call.
 //!
-//! \param ui32Channel specifies the channel from which to enable events.
-//! The parameter must be one of the following:
+//! \param ui32Channel specifies one or more channels to enable:
 //! - \ref AON_RTC_CH0
 //! - \ref AON_RTC_CH1
 //! - \ref AON_RTC_CH2
@@ -554,7 +642,29 @@ extern uint32_t AONRTCModeCh2Get(void);
 //! \sa AONRTCEnable()
 //
 //*****************************************************************************
-extern void AONRTCChannelEnable(uint32_t ui32Channel);
+__STATIC_INLINE void
+AONRTCChannelEnable(uint32_t ui32Channel)
+{
+    // Check the arguments.
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH0_EN_BITN) = 1;
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH1_EN_BITN) = 1;
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH2_EN_BITN) = 1;
+    }
+}
 
 //*****************************************************************************
 //
@@ -565,8 +675,7 @@ extern void AONRTCChannelEnable(uint32_t ui32Channel);
 //! \note The RTC free running clock  can also be disabled globally using the
 //! AONRTCDisable() call.
 //!
-//! \param ui32Channel specifies the channel from which to disable events.
-//! The parameter must be one of the following:
+//! \param ui32Channel specifies one or more channels to disable:
 //! - \ref AON_RTC_CH0
 //! - \ref AON_RTC_CH1
 //! - \ref AON_RTC_CH2
@@ -576,7 +685,29 @@ extern void AONRTCChannelEnable(uint32_t ui32Channel);
 //! \sa AONRTCDisable()
 //
 //*****************************************************************************
-extern void AONRTCChannelDisable(uint32_t ui32Channel);
+__STATIC_INLINE void
+AONRTCChannelDisable(uint32_t ui32Channel)
+{
+    // Check the arguments.
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH0_EN_BITN) = 0;
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH1_EN_BITN) = 0;
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        HWREGBITW(AON_RTC_BASE + AON_RTC_O_CHCTL, AON_RTC_CHCTL_CH2_EN_BITN) = 0;
+    }
+}
 
 //*****************************************************************************
 //
@@ -587,9 +718,9 @@ extern void AONRTCChannelDisable(uint32_t ui32Channel);
 //! The format of the compare value is a 16 bit integer and 16 bit fractional
 //! format <16 sec.16 subsec>. The current value of the RTC counter
 //! can be retrieved in a format compatible to the compare register using
-//! \b AONRTCCurrentCompareValueGet()
+//! \ref AONRTCCurrentCompareValueGet()
 //!
-//! \param ui32Channel specifies a compare channel and must be one of the following:
+//! \param ui32Channel specifies one or more channels to set compare value for:
 //! - \ref AON_RTC_CH0
 //! - \ref AON_RTC_CH1
 //! - \ref AON_RTC_CH2
@@ -601,8 +732,29 @@ extern void AONRTCChannelDisable(uint32_t ui32Channel);
 //! \sa AONRTCCurrentCompareValueGet()
 //
 //*****************************************************************************
-extern void AONRTCCompareValueSet(uint32_t ui32Channel,
-                                  uint32_t ui32CompValue);
+__STATIC_INLINE void
+AONRTCCompareValueSet(uint32_t ui32Channel, uint32_t ui32CompValue)
+{
+    // Check the arguments.
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        HWREG(AON_RTC_BASE + AON_RTC_O_CH0CMP) = ui32CompValue;
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        HWREG(AON_RTC_BASE + AON_RTC_O_CH1CMP) = ui32CompValue;
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        HWREG(AON_RTC_BASE + AON_RTC_O_CH2CMP) = ui32CompValue;
+    }
+}
 
 //*****************************************************************************
 //
@@ -611,15 +763,41 @@ extern void AONRTCCompareValueSet(uint32_t ui32Channel,
 //! Get compare value for the specified channel.
 //!
 //! \param ui32Channel specifies a channel.
-//! The parameter must be one of the following:
+//! The parameter must be one (and only one) of the following:
 //! - \ref AON_RTC_CH0
 //! - \ref AON_RTC_CH1
 //! - \ref AON_RTC_CH2
 //!
-//! \return Returns the stored compare value for the given channel
+//! \return Returns the stored compare value for the given channel.
 //
 //*****************************************************************************
-extern uint32_t AONRTCCompareValueGet(uint32_t ui32Channel);
+__STATIC_INLINE uint32_t
+AONRTCCompareValueGet(uint32_t ui32Channel)
+{
+    uint32_t ui32Value = 0;
+
+    // Check the arguments
+    ASSERT((ui32Channel == AON_RTC_CH0) ||
+           (ui32Channel == AON_RTC_CH1) ||
+           (ui32Channel == AON_RTC_CH2));
+
+    if(ui32Channel & AON_RTC_CH0)
+    {
+        ui32Value = HWREG(AON_RTC_BASE + AON_RTC_O_CH0CMP);
+    }
+
+    if(ui32Channel & AON_RTC_CH1)
+    {
+        ui32Value = HWREG(AON_RTC_BASE + AON_RTC_O_CH1CMP);
+    }
+
+    if(ui32Channel & AON_RTC_CH2)
+    {
+        ui32Value = HWREG(AON_RTC_BASE + AON_RTC_O_CH2CMP);
+    }
+
+    return(ui32Value);
+}
 
 //*****************************************************************************
 //
@@ -630,8 +808,9 @@ extern uint32_t AONRTCCompareValueGet(uint32_t ui32Channel);
 //! This function will return the current value of the RTC counter in an
 //! identical format.
 //!
-//! \note This function reads the SEC and SUBSEC registers with interrupts
-//! disabled to ensure that these operations are performed atomically.
+//! \note Reading SEC both before and after SUBSEC in order to detect if SEC
+//! incremented while reading SUBSEC. If SEC incremented, we can't be sure
+//! which SEC the SUBSEC belongs to, so repeating the sequence then.
 //!
 //! \return Returns the current value of the RTC counter in a <16.16> format
 //! (SEC[15:0].SUBSEC[31:16]).
@@ -639,7 +818,21 @@ extern uint32_t AONRTCCompareValueGet(uint32_t ui32Channel);
 //! \sa \ref AONRTCCompareValueSet()
 //
 //*****************************************************************************
-extern uint32_t AONRTCCurrentCompareValueGet( void );
+extern uint32_t AONRTCCurrentCompareValueGet(void);
+
+//*****************************************************************************
+//
+//! \brief Get the current 64-bit value of the RTC counter.
+//!
+//! \note Reading SEC both before and after SUBSEC in order to detect if SEC
+//! incremented while reading SUBSEC. If SEC incremented, we can't be sure
+//! which SEC the SUBSEC belongs to, so repeating the sequence then.
+//!
+//! \return Returns the current value of the RTC counter in a 64-bits format
+//! (SEC[31:0].SUBSEC[31:0]).
+//
+//*****************************************************************************
+extern uint64_t AONRTCCurrent64BitValueGet(void);
 
 //*****************************************************************************
 //
@@ -682,7 +875,7 @@ AONRTCIncValueCh2Set(uint32_t ui32IncValue)
 __STATIC_INLINE uint32_t
 AONRTCIncValueCh2Get(void)
 {
-    return (HWREG(AON_RTC_BASE + AON_RTC_O_CH2CMPINC));
+    return(HWREG(AON_RTC_BASE + AON_RTC_O_CH2CMPINC));
 }
 
 //*****************************************************************************
@@ -700,7 +893,7 @@ AONRTCIncValueCh2Get(void)
 __STATIC_INLINE uint32_t
 AONRTCCaptureValueCh1Get(void)
 {
-    return (HWREG(AON_RTC_BASE + AON_RTC_O_CH1CAPT));
+    return(HWREG(AON_RTC_BASE + AON_RTC_O_CH1CAPT));
 }
 
 //*****************************************************************************
@@ -709,55 +902,15 @@ AONRTCCaptureValueCh1Get(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
-    #ifdef ROM_AONRTCStatus
-        #undef  AONRTCStatus
-        #define AONRTCStatus                    ROM_AONRTCStatus
-    #endif
-    #ifdef ROM_AONRTCEventClear
-        #undef  AONRTCEventClear
-        #define AONRTCEventClear                ROM_AONRTCEventClear
-    #endif
-    #ifdef ROM_AONRTCEventGet
-        #undef  AONRTCEventGet
-        #define AONRTCEventGet                  ROM_AONRTCEventGet
-    #endif
-    #ifdef ROM_AONRTCModeCh1Set
-        #undef  AONRTCModeCh1Set
-        #define AONRTCModeCh1Set                ROM_AONRTCModeCh1Set
-    #endif
-    #ifdef ROM_AONRTCModeCh1Get
-        #undef  AONRTCModeCh1Get
-        #define AONRTCModeCh1Get                ROM_AONRTCModeCh1Get
-    #endif
-    #ifdef ROM_AONRTCModeCh2Set
-        #undef  AONRTCModeCh2Set
-        #define AONRTCModeCh2Set                ROM_AONRTCModeCh2Set
-    #endif
-    #ifdef ROM_AONRTCModeCh2Get
-        #undef  AONRTCModeCh2Get
-        #define AONRTCModeCh2Get                ROM_AONRTCModeCh2Get
-    #endif
-    #ifdef ROM_AONRTCChannelEnable
-        #undef  AONRTCChannelEnable
-        #define AONRTCChannelEnable             ROM_AONRTCChannelEnable
-    #endif
-    #ifdef ROM_AONRTCChannelDisable
-        #undef  AONRTCChannelDisable
-        #define AONRTCChannelDisable            ROM_AONRTCChannelDisable
-    #endif
-    #ifdef ROM_AONRTCCompareValueSet
-        #undef  AONRTCCompareValueSet
-        #define AONRTCCompareValueSet           ROM_AONRTCCompareValueSet
-    #endif
-    #ifdef ROM_AONRTCCompareValueGet
-        #undef  AONRTCCompareValueGet
-        #define AONRTCCompareValueGet           ROM_AONRTCCompareValueGet
-    #endif
     #ifdef ROM_AONRTCCurrentCompareValueGet
         #undef  AONRTCCurrentCompareValueGet
         #define AONRTCCurrentCompareValueGet    ROM_AONRTCCurrentCompareValueGet
+    #endif
+    #ifdef ROM_AONRTCCurrent64BitValueGet
+        #undef  AONRTCCurrent64BitValueGet
+        #define AONRTCCurrent64BitValueGet      ROM_AONRTCCurrent64BitValueGet
     #endif
 #endif
 
@@ -775,6 +928,7 @@ AONRTCCaptureValueCh1Get(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,3 +1,3 @@
-COMPILER_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/EW_7_30_3/arm/bin/iccarm.exe"
-ARCHIVER_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/EW_7_30_3/arm/bin/iarchive.exe"
-OBJ_MANIP_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/EW_7_30_3/arm/bin/iobjmanip.exe"
+COMPILER_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/IAR EWARMv7.40.2/arm/bin/iccarm.exe"
+ARCHIVER_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/IAR EWARMv7.40.2/arm/bin/iarchive.exe"
+OBJ_MANIP_TOOL = "/cygdrive/c/Program Files (x86)/IAR Systems/IAR EWARMv7.40.2/arm/bin/iobjmanip.exe"

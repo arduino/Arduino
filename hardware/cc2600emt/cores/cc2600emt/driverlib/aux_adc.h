@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_adc.h
-*  Revised:        2015-04-15 13:58:36 +0200 (on, 15 apr 2015)
-*  Revision:       43229
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AUX Analog-to-Digital
 *                  Converter
@@ -39,6 +39,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aux_group
+//! @{
 //! \addtogroup auxadc_api
 //! @{
 //
@@ -80,15 +82,12 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define AUXADCDisable                   NOROM_AUXADCDisable
     #define AUXADCEnableAsync               NOROM_AUXADCEnableAsync
     #define AUXADCEnableSync                NOROM_AUXADCEnableSync
     #define AUXADCDisableInputScaling       NOROM_AUXADCDisableInputScaling
-    #define AUXADCReenableInputScaling      NOROM_AUXADCReenableInputScaling
     #define AUXADCFlushFifo                 NOROM_AUXADCFlushFifo
     #define AUXADCReadFifo                  NOROM_AUXADCReadFifo
     #define AUXADCPopFifo                   NOROM_AUXADCPopFifo
@@ -105,9 +104,8 @@ extern "C"
 // Defines for ADC reference sources.
 //
 //*****************************************************************************
-#define AUXADC_REF_FIXED                    (ADI_4_AUX_ADCREF0_EN_M)
-#define AUXADC_REF_VDDA_REL                 (ADI_4_AUX_ADCREF0_SRC_M | ADI_4_AUX_ADCREF0_EN_M)
-#define AUXADC_REF_EXT                      (ADI_4_AUX_ADCREF0_EXT_M | ADI_4_AUX_ADCREF0_IOMUX_M)
+#define AUXADC_REF_FIXED                    (0 << ADI_4_AUX_ADCREF0_SRC_S)
+#define AUXADC_REF_VDDS_REL                 (1 << ADI_4_AUX_ADCREF0_SRC_S)
 
 //*****************************************************************************
 //
@@ -172,7 +170,7 @@ extern "C"
 
 //*****************************************************************************
 //
-//! \brief Disables the ADC
+//! \brief Disables the ADC.
 //!
 //! This function must be called:
 //! - Before re-enabling the ADC using \ref AUXADCEnableAsync() or
@@ -184,7 +182,7 @@ extern void AUXADCDisable(void);
 
 //*****************************************************************************
 //
-//! \brief Enables the ADC for asynchronous operation
+//! \brief Enables the ADC for asynchronous operation.
 //!
 //! In asynchronous operation, the ADC samples continuously between
 //! conversions.
@@ -192,23 +190,14 @@ extern void AUXADCDisable(void);
 //! The ADC trigger starts the conversion. Note that the first conversion may
 //! be invalid if the sampling period is too short.
 //!
-//! When using external reference voltage, the AUX I/O 7 pin must have been
-//! configured in advance. This must be done manually when using DriverLib (the
-//! Sensor Controller Interface driver would do this automatically):
-//! - Ensure that AUX I/Os are not latched
-//! - AUX_AIODIO0: Configure AUX I/O 7 as input/analog with input buffers
-//!   disabled
-//! - IOC: Configure matching DIO pin as AUX I/O with no pull
-//!
-//! ADC input scaling is enabled by default after calling this function, and
-//! must, if desired, be disabled explicitly by calling
-//! \ref AUXADCDisableInputScaling().
+//! ADC input scaling is enabled by default after device reset, and is also re-
+//! enabled by \ref AUXADCDisable(). To disable input scaling, call
+//! \ref AUXADCDisableInputScaling() before calling \ref AUXADCEnableAsync().
 //!
 //! \param refSource
 //!     ADC reference source:
 //!     - \ref AUXADC_REF_FIXED (nominally 4.3 V)
-//!     - \ref AUXADC_REF_VDDA_REL (nominally VDDS)
-//!     - \ref AUXADC_REF_EXT (unscaled voltage applied to AUX I/O 7)
+//!     - \ref AUXADC_REF_VDDS_REL (nominally VDDS)
 //! \param trigger
 //!     ADC conversion trigger:
 //!     - \ref AUXADC_TRIGGER_MANUAL
@@ -226,7 +215,7 @@ extern void AUXADCEnableAsync(uint32_t refSource, uint32_t trigger);
 
 //*****************************************************************************
 //
-//! \brief Enables the ADC for synchronous operation
+//! \brief Enables the ADC for synchronous operation.
 //!
 //! In synchronous operation, the ADC is idle between a conversion and
 //! subsequent samplings.
@@ -235,23 +224,14 @@ extern void AUXADCEnableAsync(uint32_t refSource, uint32_t trigger);
 //! conversion. Note that the first conversion may be invalid if the initial
 //! sampling period is too short.
 //!
-//! When using external reference voltage, the AUX I/O 7 pin must have been
-//! configured in advance. This must be done manually when using DriverLib (the
-//! Sensor Controller Interface driver would do this automatically):
-//! - Ensure that AUX I/Os are not latched
-//! - AUX_AIODIO0: Configure AUX I/O 7 as input/analog with input buffers
-//!   disabled
-//! - IOC: Configure matching DIO pin as AUX I/O with no pull
-//!
-//! ADC input scaling is enabled by default after calling this function, and
-//! must, if desired, be disabled explicitly by calling
-//! \ref AUXADCDisableInputScaling().
+//! ADC input scaling is enabled by default after device reset, and is also re-
+//! enabled by \ref AUXADCDisable(). To disable input scaling, call
+//! \ref AUXADCDisableInputScaling() before calling \ref AUXADCEnableSync().
 //!
 //! \param refSource
 //!     ADC reference source:
 //!     - \ref AUXADC_REF_FIXED (nominally 4.3 V)
-//!     - \ref AUXADC_REF_VDDA_REL (nominally VDDS)
-//!     - \ref AUXADC_REF_EXT (unscaled voltage applied to AUX I/O 7)
+//!     - \ref AUXADC_REF_VDDS_REL (nominally VDDS)
 //! \param sampleTime
 //!     ADC sampling time:
 //!     - \ref AUXADC_SAMPLE_TIME_2P7_US
@@ -284,37 +264,24 @@ extern void AUXADCEnableSync(uint32_t refSource, uint32_t sampleTime, uint32_t t
 
 //*****************************************************************************
 //
-//! \brief Disables scaling of the ADC input
+//! \brief Disables scaling of the ADC input.
 //!
 //! By default, the ADC operates internally on a version of the input signal
-//! that has been scaled down by a factor <tt>(22 * 64) / (63 * 65)</tt>. This
-//! function disables that scaling, allowing for a trade-off between dynamic
-//! range and and resolution.
+//! that has been scaled down by a factor <tt>1408 / 4095</tt>. This function
+//! disables that scaling, allowing for a trade-off between dynamic range and
+//! and resolution.
 //!
+//! \note This function must only be called while the ADC is disabled, before
+//!       calling \ref AUXADCEnableSync() or \ref AUXADCEnableAsync().
 //! \note Different input maximum ratings apply when input scaling is disabled.
 //!       Violating these may damage the device.
-//! \note This function must only be called while the ADC is enabled.
 //
 //*****************************************************************************
 extern void AUXADCDisableInputScaling(void);
 
 //*****************************************************************************
 //
-//! \brief Re-enables scaling of the ADC input
-//!
-//! This function must be called after using \ref AUXADCDisableInputScaling()
-//! when switching from an unscaled to a scaled ADC input.
-//!
-//! Note that scaling is by default enabled after calling
-//! \ref AUXADCEnableAsync() or \ref AUXADCEnableSync(), and is also re-enabled
-//! by \ref AUXADCDisable().
-//
-//*****************************************************************************
-extern void AUXADCReenableInputScaling(void);
-
-//*****************************************************************************
-//
-//! \brief Flushes the ADC FIFO
+//! \brief Flushes the ADC FIFO.
 //!
 //! This empties the FIFO and clears the underflow/overflow flags.
 //!
@@ -325,7 +292,7 @@ extern void AUXADCFlushFifo(void);
 
 //*****************************************************************************
 //
-//! \brief Generates a single manual ADC trigger
+//! \brief Generates a single manual ADC trigger.
 //!
 //! For synchronous mode, the trigger starts sampling followed by conversion.
 //! For asynchronous mode, the trigger starts conversion.
@@ -345,7 +312,7 @@ AUXADCGenManualTrigger(void)
 //! overflow/underflow has occurred.
 //!
 //! \return
-//|     A combination (bitwise OR) of the following flags:
+//!     A combination (bitwise OR) of the following flags:
 //!     - \ref AUXADC_FIFO_EMPTY_M
 //!     - \ref AUXADC_FIFO_ALMOST_FULL_M
 //!     - \ref AUXADC_FIFO_FULL_M
@@ -361,7 +328,7 @@ AUXADCGetFifoStatus(void)
 
 //*****************************************************************************
 //
-//! \brief Waits for and returns the first sample in the ADC FIFO
+//! \brief Waits for and returns the first sample in the ADC FIFO.
 //!
 //! This function waits until there is at least one sample in the ADC FIFO. It
 //! then pops and returns the first sample from the FIFO.
@@ -377,7 +344,7 @@ extern uint32_t AUXADCReadFifo(void);
 
 //*****************************************************************************
 //
-//! \brief Returns the first sample in the ADC FIFO, without waiting
+//! \brief Returns the first sample in the ADC FIFO, without waiting.
 //!
 //! This function does not wait, and must only be called when there is at least
 //! one sample in the ADC FIFO. Otherwise the call will generate FIFO underflow
@@ -391,15 +358,15 @@ extern uint32_t AUXADCPopFifo(void);
 
 //*****************************************************************************
 //
-//! \brief Selects internal or external input for the ADC
+//! \brief Selects internal or external input for the ADC.
 //!
 //! Note that calling this function also selects the same input for AUX_COMPB.
 //!
 //! \param input
 //!     Internal/external input selection:
-//!     - \ref ADC_COMPB_IN_VDD1P2V
-//!     - \ref ADC_COMPB_IN_VSSA
-//!     - \ref ADC_COMPB_IN_VDDA3P3V
+//!     - \ref ADC_COMPB_IN_DCOUPL
+//!     - \ref ADC_COMPB_IN_VSS
+//!     - \ref ADC_COMPB_IN_VDDS
 //!     - \ref ADC_COMPB_IN_AUXIO7
 //!     - \ref ADC_COMPB_IN_AUXIO6
 //!     - \ref ADC_COMPB_IN_AUXIO5
@@ -418,19 +385,17 @@ AUXADCSelectInput(uint32_t input)
 
 //*****************************************************************************
 //
-//! \brief Returns the gain value used when adjusting for ADC gain/offset
+//! \brief Returns the gain value used when adjusting for ADC gain/offset.
 //!
 //! The function returns the gain value to be used with
 //! \ref AUXADCAdjustValueForGainAndOffset() or
 //! \ref AUXADCUnadjustValueForGainAndOffset(). The gain value is found during
 //! chip manufacturing and is stored in the factory configuration, FCFG1.
 //!
-//! \note This function cannot be used with external ADC reference
-//!
 //! \param refSource
 //!     ADC reference source:
 //!     - \ref AUXADC_REF_FIXED (nominally 4.3 V)
-//!     - \ref AUXADC_REF_VDDA_REL (nominally VDDS)
+//!     - \ref AUXADC_REF_VDDS_REL (nominally VDDS)
 //!
 //! \return
 //!     The gain value to be used in adjustments
@@ -440,7 +405,7 @@ extern int32_t AUXADCGetAdjustmentGain(uint32_t refSource);
 
 //*****************************************************************************
 //
-//! \brief Returns the offset value used when adjusting for ADC gain/offset
+//! \brief Returns the offset value used when adjusting for ADC gain/offset.
 //!
 //! The function returns the offset value to be used with
 //! \ref AUXADCAdjustValueForGainAndOffset() or
@@ -448,12 +413,10 @@ extern int32_t AUXADCGetAdjustmentGain(uint32_t refSource);
 //! during chip manufacturing and is stored in the factory configuration,
 //! FCFG1.
 //!
-//! \note This function cannot be used with external ADC reference
-//!
 //! \param refSource
 //!     ADC reference source:
 //!     - \ref AUXADC_REF_FIXED (nominally 4.3 V)
-//!     - \ref AUXADC_REF_VDDA_REL (nominally VDDS)
+//!     - \ref AUXADC_REF_VDDS_REL (nominally VDDS)
 //!
 //! \return
 //!     The offset value to be used in adjustments
@@ -463,7 +426,7 @@ extern int32_t AUXADCGetAdjustmentOffset(uint32_t refSource);
 
 //*****************************************************************************
 //
-//! \brief Converts an "adjusted" ADC value to microvolts
+//! \brief Converts an "adjusted" ADC value to microvolts.
 //!
 //! This function can only be used when measuring with fixed ADC reference
 //! (\ref AUXADC_REF_FIXED). The specified reference voltage accounts for
@@ -484,7 +447,7 @@ extern int32_t AUXADCValueToMicrovolts(int32_t fixedRefVoltage, int32_t adcValue
 
 //*****************************************************************************
 //
-//! \brief Converts a number of microvolts to corresponding "adjusted" ADC value
+//! \brief Converts a number of microvolts to corresponding "adjusted" ADC value.
 //!
 //! This function can only be used when measuring with fixed ADC reference
 //! (\ref AUXADC_REF_FIXED). The specified reference voltage accounts for
@@ -505,12 +468,10 @@ extern int32_t AUXADCMicrovoltsToValue(int32_t fixedRefVoltage, int32_t microvol
 
 //*****************************************************************************
 //
-//! \brief Performs ADC value gain and offset adjustment
+//! \brief Performs ADC value gain and offset adjustment.
 //!
 //! This function takes a measured ADC value compensates for the internal gain
 //! and offset in the ADC.
-//!
-//! \note This function cannot be used with external ADC reference
 //!
 //! \param adcValue
 //!     12-bit ADC unadjusted value
@@ -527,14 +488,12 @@ extern int32_t AUXADCAdjustValueForGainAndOffset(int32_t adcValue, int32_t gain,
 
 //*****************************************************************************
 //
-//! \brief Performes the inverse of the ADC value gain and offset adjustment
+//! \brief Performs the inverse of the ADC value gain and offset adjustment.
 //!
 //! This function finds the expected measured ADC value, without gain and
 //! offset compensation, for a given "ideal" ADC value. The function can for
 //! example be used to find ADC value thresholds to be used in Sensor
 //! Controller task configurations.
-//!
-//! \note This function cannot be used with external ADC reference
 //!
 //! \param adcValue
 //!     12-bit ADC adjusted value
@@ -555,7 +514,7 @@ extern int32_t AUXADCUnadjustValueForGainAndOffset(int32_t adcValue, int32_t gai
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_AUXADCDisable
         #undef  AUXADCDisable
@@ -572,10 +531,6 @@ extern int32_t AUXADCUnadjustValueForGainAndOffset(int32_t adcValue, int32_t gai
     #ifdef ROM_AUXADCDisableInputScaling
         #undef  AUXADCDisableInputScaling
         #define AUXADCDisableInputScaling       ROM_AUXADCDisableInputScaling
-    #endif
-    #ifdef ROM_AUXADCReenableInputScaling
-        #undef  AUXADCReenableInputScaling
-        #define AUXADCReenableInputScaling      ROM_AUXADCReenableInputScaling
     #endif
     #ifdef ROM_AUXADCFlushFifo
         #undef  AUXADCFlushFifo
@@ -629,6 +584,7 @@ extern int32_t AUXADCUnadjustValueForGainAndOffset(int32_t adcValue, int32_t gai
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

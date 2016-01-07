@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ioc.c
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-11-19 12:18:15 +0100 (Thu, 19 Nov 2015)
+*  Revision:       45147
 *
 *  Description:    Driver for the IOC.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  IOCPortConfigureSet
     #define IOCPortConfigureSet             NOROM_IOCPortConfigureSet
     #undef  IOCPortConfigureGet
@@ -83,32 +83,13 @@
     #define IOCPinTypeSsiSlave              NOROM_IOCPinTypeSsiSlave
     #undef  IOCPinTypeI2c
     #define IOCPinTypeI2c                   NOROM_IOCPinTypeI2c
-    #undef  IOCPinTypeSpis
-    #define IOCPinTypeSpis                  NOROM_IOCPinTypeSpis
     #undef  IOCPinTypeAux
     #define IOCPinTypeAux                   NOROM_IOCPinTypeAux
 #endif
 
 //*****************************************************************************
 //
-// This is the mapping between an IO and the corresponding configuration
-// register.
-//
-//*****************************************************************************
-static const uint32_t g_pui32IOCfgReg[] =
-{
-    IOC_O_IOCFG0, IOC_O_IOCFG1, IOC_O_IOCFG2, IOC_O_IOCFG3, IOC_O_IOCFG4,
-    IOC_O_IOCFG5, IOC_O_IOCFG6, IOC_O_IOCFG7, IOC_O_IOCFG8, IOC_O_IOCFG9,
-    IOC_O_IOCFG10, IOC_O_IOCFG11, IOC_O_IOCFG12, IOC_O_IOCFG13, IOC_O_IOCFG14,
-    IOC_O_IOCFG15, IOC_O_IOCFG16, IOC_O_IOCFG17, IOC_O_IOCFG18, IOC_O_IOCFG19,
-    IOC_O_IOCFG20, IOC_O_IOCFG21, IOC_O_IOCFG22, IOC_O_IOCFG23, IOC_O_IOCFG24,
-    IOC_O_IOCFG25, IOC_O_IOCFG26, IOC_O_IOCFG27, IOC_O_IOCFG28, IOC_O_IOCFG29,
-    IOC_O_IOCFG30, IOC_O_IOCFG31
-};
-
-//*****************************************************************************
-//
-//! Set the configuration of an IO port
+// Set the configuration of an IO port
 //
 //*****************************************************************************
 void
@@ -126,7 +107,7 @@ IOCPortConfigureSet(uint32_t ui32IOId, uint32_t ui32PortId,
     //
     // Get the register address.
     //
-    ui32Reg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32Reg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the port.
@@ -136,7 +117,7 @@ IOCPortConfigureSet(uint32_t ui32IOId, uint32_t ui32PortId,
 
 //*****************************************************************************
 //
-//! Get the configuration of an IO port
+// Get the configuration of an IO port
 //
 //*****************************************************************************
 uint32_t
@@ -152,7 +133,7 @@ IOCPortConfigureGet(uint32_t ui32IOId)
     //
     // Get the register address.
     //
-    ui32Reg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32Reg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Return the IO configuration.
@@ -162,7 +143,7 @@ IOCPortConfigureGet(uint32_t ui32IOId)
 
 //*****************************************************************************
 //
-//! Set wake-up on an IO port
+// Set wake-up on an IO port
 //
 //*****************************************************************************
 void
@@ -182,7 +163,7 @@ IOCIOShutdownSet(uint32_t ui32IOId, uint32_t ui32IOShutdown)
     //
     // Get the register address.
     //
-    ui32Reg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32Reg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -195,7 +176,7 @@ IOCIOShutdownSet(uint32_t ui32IOId, uint32_t ui32IOShutdown)
 
 //*****************************************************************************
 //
-//! Set the IO Mode of an IO Port
+// Set the IO Mode of an IO Port
 //
 //*****************************************************************************
 void
@@ -218,7 +199,7 @@ IOCIOModeSet(uint32_t ui32IOId, uint32_t ui32IOMode)
     //
     // Get the register address.
     //
-    ui32Reg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32Reg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -230,7 +211,7 @@ IOCIOModeSet(uint32_t ui32IOId, uint32_t ui32IOMode)
 
 //*****************************************************************************
 //
-//! Setup interrupt detection on an IO Port
+// Setup interrupt detection on an IO Port
 //
 //*****************************************************************************
 void
@@ -253,7 +234,7 @@ IOCIOIntSet(uint32_t ui32IOId, uint32_t ui32Int, uint32_t ui32EdgeDet)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -265,7 +246,7 @@ IOCIOIntSet(uint32_t ui32IOId, uint32_t ui32Int, uint32_t ui32EdgeDet)
 
 //*****************************************************************************
 //
-//! Set the pull on an IO port
+// Set the pull on an IO port
 //
 //*****************************************************************************
 void
@@ -285,7 +266,7 @@ IOCIOPortPullSet(uint32_t ui32IOId, uint32_t ui32Pull)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -297,7 +278,7 @@ IOCIOPortPullSet(uint32_t ui32IOId, uint32_t ui32Pull)
 
 //*****************************************************************************
 //
-//! Configure hysteresis on and IO port
+// Configure hysteresis on and IO port
 //
 //*****************************************************************************
 void
@@ -316,7 +297,7 @@ IOCIOHystSet(uint32_t ui32IOId, uint32_t ui32Hysteresis)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -328,7 +309,7 @@ IOCIOHystSet(uint32_t ui32IOId, uint32_t ui32Hysteresis)
 
 //*****************************************************************************
 //
-//! Enable/disable IO port as input
+// Enable/disable IO port as input
 //
 //*****************************************************************************
 void
@@ -347,7 +328,7 @@ IOCIOInputSet(uint32_t ui32IOId, uint32_t ui32Input)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -359,7 +340,7 @@ IOCIOInputSet(uint32_t ui32IOId, uint32_t ui32Input)
 
 //*****************************************************************************
 //
-//! Enable/disable the slew control on an IO port
+// Enable/disable the slew control on an IO port
 //
 //*****************************************************************************
 void
@@ -378,7 +359,7 @@ IOCIOSlewCtrlSet(uint32_t ui32IOId, uint32_t ui32SlewEnable)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -390,7 +371,7 @@ IOCIOSlewCtrlSet(uint32_t ui32IOId, uint32_t ui32SlewEnable)
 
 //*****************************************************************************
 //
-//! Configure the drive strength and maxium current of an IO port
+// Configure the drive strength and maximum current of an IO port
 //
 //*****************************************************************************
 void
@@ -406,8 +387,7 @@ IOCIODrvStrengthSet(uint32_t ui32IOId, uint32_t ui32IOCurrent,
     ASSERT(ui32IOId <= IOID_31);
     ASSERT((ui32IOCurrent == IOC_CURRENT_2MA) ||
            (ui32IOCurrent == IOC_CURRENT_4MA) ||
-           (ui32IOCurrent == IOC_CURRENT_8MA) ||
-           (ui32IOCurrent == IOC_CURRENT_16MA));
+           (ui32IOCurrent == IOC_CURRENT_8MA));
     ASSERT((ui32DrvStrength == IOC_STRENGTH_MIN) ||
            (ui32DrvStrength == IOC_STRENGTH_MAX) ||
            (ui32DrvStrength == IOC_STRENGTH_MED) ||
@@ -416,7 +396,7 @@ IOCIODrvStrengthSet(uint32_t ui32IOId, uint32_t ui32IOCurrent,
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -428,7 +408,7 @@ IOCIODrvStrengthSet(uint32_t ui32IOId, uint32_t ui32IOCurrent,
 
 //*****************************************************************************
 //
-//! Setup the Port ID for this IO
+// Setup the Port ID for this IO
 //
 //*****************************************************************************
 void
@@ -446,7 +426,7 @@ IOCIOPortIdSet(uint32_t ui32IOId, uint32_t ui32PortId)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Configure the IO.
@@ -458,7 +438,7 @@ IOCIOPortIdSet(uint32_t ui32IOId, uint32_t ui32PortId)
 
 //*****************************************************************************
 //
-//! Enables individual IO edge detect interrupt
+// Enables individual IO edge detect interrupt
 //
 //*****************************************************************************
 void
@@ -475,7 +455,7 @@ IOCIntEnable(uint32_t ui32IOId)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Enable the specified interrupt.
@@ -487,7 +467,7 @@ IOCIntEnable(uint32_t ui32IOId)
 
 //*****************************************************************************
 //
-//! Disables individual IO edge interrupt sources
+// Disables individual IO edge interrupt sources
 //
 //*****************************************************************************
 void
@@ -504,7 +484,7 @@ IOCIntDisable(uint32_t ui32IOId)
     //
     // Get the register address.
     //
-    ui32IOReg = IOC_BASE + g_pui32IOCfgReg[ui32IOId];
+    ui32IOReg = IOC_BASE + ( ui32IOId << 2 );
 
     //
     // Disable the specified interrupt.
@@ -516,7 +496,7 @@ IOCIntDisable(uint32_t ui32IOId)
 
 //*****************************************************************************
 //
-//! Setup an IO for standard GPIO input
+// Setup an IO for standard GPIO input
 //
 //*****************************************************************************
 void
@@ -535,12 +515,12 @@ IOCPinTypeGpioInput(uint32_t ui32IOId)
     //
     // Enable input mode in the GPIO module.
     //
-    GPIODirModeSet(1 << ui32IOId, GPIO_DIR_MODE_IN);
+    GPIO_setOutputEnableDio(ui32IOId, GPIO_OUTPUT_DISABLE);
 }
 
 //*****************************************************************************
 //
-//! Setup an IO for standard GPIO output
+// Setup an IO for standard GPIO output
 //
 //*****************************************************************************
 void
@@ -559,12 +539,12 @@ IOCPinTypeGpioOutput(uint32_t ui32IOId)
     //
     // Enable output mode in the GPIO module.
     //
-    GPIODirModeSet(1 << ui32IOId, GPIO_DIR_MODE_OUT);
+    GPIO_setOutputEnableDio(ui32IOId, GPIO_OUTPUT_ENABLE);
 }
 
 //*****************************************************************************
 //
-//! Configure a set of IOs for standard UART peripheral control
+// Configure a set of IOs for standard UART peripheral control
 //
 //*****************************************************************************
 void
@@ -603,7 +583,7 @@ IOCPinTypeUart(uint32_t ui32Base, uint32_t ui32Rx, uint32_t ui32Tx,
 
 //*****************************************************************************
 //
-//! Configure a set of IOs for standard SSI peripheral master control
+// Configure a set of IOs for standard SSI peripheral master control
 //
 //*****************************************************************************
 void
@@ -665,7 +645,7 @@ IOCPinTypeSsiMaster(uint32_t ui32Base, uint32_t ui32Rx,
 
 //*****************************************************************************
 //
-//! Configure a set of IOs for standard SSI peripheral slave control
+// Configure a set of IOs for standard SSI peripheral slave control
 //
 //*****************************************************************************
 void
@@ -727,7 +707,7 @@ IOCPinTypeSsiSlave(uint32_t ui32Base, uint32_t ui32Rx,
 
 //*****************************************************************************
 //
-//! Configure a set of IOs for standard I2C peripheral control
+// Configure a set of IOs for standard I2C peripheral control
 //
 //*****************************************************************************
 void
@@ -756,47 +736,10 @@ IOCPinTypeI2c(uint32_t ui32Base, uint32_t ui32Data, uint32_t ui32Clk)
     IOCPortConfigureSet(ui32Clk, IOC_PORT_MCU_I2C_MSSCL, ui32IOConfig);
 }
 
-//*****************************************************************************
-//
-//! Configure a set of IOs for standard SPIS peripheral control
-//
-//*****************************************************************************
-void
-IOCPinTypeSpis(uint32_t ui32Rx, uint32_t ui32Tx, uint32_t ui32Fss,
-               uint32_t ui32Clk)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ui32Rx <= IOID_31) || (ui32Rx == IOID_UNUSED));
-    ASSERT((ui32Tx <= IOID_31) || (ui32Tx == IOID_UNUSED));
-    ASSERT((ui32Fss <= IOID_31) || (ui32Fss == IOID_UNUSED));
-    ASSERT((ui32Clk <= IOID_31) || (ui32Clk == IOID_UNUSED));
-
-    //
-    // Setup the IOs in the desired configuration.
-    //
-   if(ui32Rx != IOID_UNUSED)
-   {
-       IOCPortConfigureSet(ui32Rx, IOC_PORT_AON_SDI,  IOC_STD_INPUT);
-   }
-   if(ui32Tx != IOID_UNUSED)
-   {
-       IOCPortConfigureSet(ui32Tx, IOC_PORT_AON_SDO, IOC_STD_OUTPUT);
-   }
-   if(ui32Fss != IOID_UNUSED)
-   {
-       IOCPortConfigureSet(ui32Fss, IOC_PORT_AON_SCS, IOC_STD_INPUT);
-   }
-   if(ui32Clk != IOID_UNUSED)
-   {
-       IOCPortConfigureSet(ui32Clk, IOC_PORT_AON_SCK, IOC_STD_INPUT);
-   }
-}
 
 //*****************************************************************************
 //
-//! Configure an IO for AUX control
+// Configure an IO for AUX control
 //
 //*****************************************************************************
 void

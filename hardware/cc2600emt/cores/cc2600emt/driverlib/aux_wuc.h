@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_wuc.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AUX Wakeup Controller
 *
@@ -38,6 +38,8 @@
 
 //****************************************************************************
 //
+//! \addtogroup aux_group
+//! @{
 //! \addtogroup auxwuc_api
 //! @{
 //
@@ -76,10 +78,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define AUXWUCClockEnable               NOROM_AUXWUCClockEnable
     #define AUXWUCClockDisable              NOROM_AUXWUCClockDisable
     #define AUXWUCClockStatus               NOROM_AUXWUCClockStatus
@@ -100,14 +100,14 @@ extern "C"
 // Defines for the AUX peripherals clock control.
 //
 //*****************************************************************************
-#define AUX_WUC_SMPH_CLOCK      0x00000001
-#define AUX_WUC_AIODIO0_CLOCK   0x00000002
-#define AUX_WUC_AIODIO1_CLOCK   0x00000004
-#define AUX_WUC_TIMER_CLOCK     0x00000008
-#define AUX_WUC_SOC_CLOCK       0x00000010
-#define AUX_WUC_TDCIF_CLOCK     0x00000020
-#define AUX_WUC_OSCCTRL_CLOCK   0x00000040
-#define AUX_WUC_ADI_CLOCK       0x00000080
+#define AUX_WUC_SMPH_CLOCK      (AUX_WUC_MODCLKEN0_SMPH_EN)
+#define AUX_WUC_AIODIO0_CLOCK   (AUX_WUC_MODCLKEN0_AIODIO0_EN)
+#define AUX_WUC_AIODIO1_CLOCK   (AUX_WUC_MODCLKEN0_AIODIO1_EN)
+#define AUX_WUC_TIMER_CLOCK     (AUX_WUC_MODCLKEN0_TIMER_EN)
+#define AUX_WUC_ANAIF_CLOCK     (AUX_WUC_MODCLKEN0_ANAIF_EN)
+#define AUX_WUC_TDCIF_CLOCK     (AUX_WUC_MODCLKEN0_TDC_EN)
+#define AUX_WUC_OSCCTRL_CLOCK   (AUX_WUC_MODCLKEN0_AUX_DDI0_OSC_EN)
+#define AUX_WUC_ADI_CLOCK       (AUX_WUC_MODCLKEN0_AUX_ADI4_EN)
 #define AUX_WUC_MODCLK_MASK     0x000000FF
 
 #define AUX_WUC_TDC_CLOCK       0x00000100
@@ -138,7 +138,7 @@ extern "C"
 //! - \ref AUX_WUC_ADI_CLOCK
 //! - \ref AUX_WUC_OSCCTRL_CLOCK
 //! - \ref AUX_WUC_TDCIF_CLOCK
-//! - \ref AUX_WUC_SOC_CLOCK
+//! - \ref AUX_WUC_ANAIF_CLOCK
 //! - \ref AUX_WUC_TIMER_CLOCK
 //! - \ref AUX_WUC_AIODIO0_CLOCK
 //! - \ref AUX_WUC_AIODIO1_CLOCK
@@ -165,7 +165,7 @@ extern void AUXWUCClockEnable(uint32_t ui32Clocks);
 //! - \ref AUX_WUC_ADI_CLOCK
 //! - \ref AUX_WUC_OSCCTRL_CLOCK
 //! - \ref AUX_WUC_TDCIF_CLOCK
-//! - \ref AUX_WUC_SOC_CLOCK
+//! - \ref AUX_WUC_ANAIF_CLOCK
 //! - \ref AUX_WUC_TIMER_CLOCK
 //! - \ref AUX_WUC_AIODIO0_CLOCK
 //! - \ref AUX_WUC_AIODIO1_CLOCK
@@ -192,7 +192,7 @@ extern void AUXWUCClockDisable(uint32_t ui32Clocks);
 //! - \ref AUX_WUC_ADI_CLOCK
 //! - \ref AUX_WUC_OSCCTRL_CLOCK
 //! - \ref AUX_WUC_TDCIF_CLOCK
-//! - \ref AUX_WUC_SOC_CLOCK
+//! - \ref AUX_WUC_ANAIF_CLOCK
 //! - \ref AUX_WUC_TIMER_CLOCK
 //! - \ref AUX_WUC_AIODIO0_CLOCK
 //! - \ref AUX_WUC_AIODIO1_CLOCK
@@ -216,7 +216,7 @@ extern uint32_t AUXWUCClockStatus(uint32_t ui32Clocks);
 //! Control to use a high or low frequency clock as clock source for the AUX
 //! domain.
 //!
-//! \note A low freqency clock is always 32 kHz, while a high frequency clock
+//! \note A low frequency clock is always 32 kHz, while a high frequency clock
 //! is really a large span of frequencies determined by the clock source (High
 //! Frequency or Medium Frequency) and the setting for the clock divider for
 //! the AUX domain in the System Control.
@@ -315,7 +315,7 @@ AUXWUCFreezeDisable(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_AUXWUCClockEnable
         #undef  AUXWUCClockEnable
@@ -349,6 +349,7 @@ AUXWUCFreezeDisable(void)
 //****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //****************************************************************************

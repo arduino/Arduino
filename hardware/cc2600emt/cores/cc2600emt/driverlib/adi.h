@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       adi.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-16 17:05:11 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45087
 *
 *  Description:    Defines and prototypes for the ADI master interface.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup analog_group
+//! @{
 //! \addtogroup adi_api
 //! @{
 //
@@ -124,181 +126,9 @@ ADIBaseValid(uint32_t ui32Base)
 }
 #endif
 
-//*****************************************************************************
-//
-//! \brief Get the status of an ADI module.
-//!
-//! This function will return the value of the status register ADI_O_SLAVESTAT
-//! which contains status of Request and Acklowledge signals.
-//!
-//! \param ui32Base is ADI base address. Allowed values are:
-//! - ADI2_BASE : Status of ADI2.
-//! - ADI3_BASE : Status of ADI3.
-//! - AUX_ADI4_BASE : Status of AUX_ADI4.
-//!
-//! \return Returns the current value of the status register.
-//
-//*****************************************************************************
-__STATIC_INLINE uint32_t
-ADIStatusGet(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ADIBaseValid(ui32Base));
 
-    //
-    // Return the status value for the correct ADI Slave.
-    //
-    return(HWREG(ui32Base + ADI_O_SLAVESTAT));
-}
 
-//*****************************************************************************
-//
-//! \brief Configure the ADI Slave.
-//!
-//! Use this function to configure the interface between the ADI master and the
-//! ADI slave. The configuration value for the ADI slave sets the
-//! speed of the ADI interface and define if the master should wait for
-//! acknowledge from the slave.
-//!
-//! If the \c bProtect parameter is set, the configuration register in the
-//! ADI slave is locked for future writes.
-//!
-//! \note Once the \c bProtect parameter is set, it is no longer possible to modify
-//! the configuration register.
-//!
-//! \note AUX_ADI4_BASE : Both the AUX module and the clock for the AUX SMPH module must be
-//! enabled before calling this function.
-//!
-//! \param ui32Base is ADI base address.
-//! \param ui32Config is the configuration of the ADI slave. Value must be a
-//! bitwise OR'ed combination of one of each of the two following items:
-//! - Speed: \ref ADI_SPEED_2, \ref ADI_SPEED_4, \ref ADI_SPEED_8, or \ref ADI_SPEED_16.
-//! - Acknowledge: \ref ADI_NO_WAIT or \ref ADI_WAIT_FOR_ACK.
-//! \param bProtect determines if the register access should be protected.
-//! - \c false: Do not protect configuration register.
-//! - \c true: Protect configuration register.
-//!
-//! \return None
-//
-//*****************************************************************************
-__STATIC_INLINE void
-ADIConfigSet(uint32_t ui32Base, uint32_t ui32Config, bool bProtect)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ADIBaseValid(ui32Base));
-    ASSERT(((ui32Config & 0x4) == ADI_NO_WAIT) ||
-           ((ui32Config & 0x4) == ADI_WAIT_FOR_ACK));
-    ASSERT(((ui32Config & 0x3) == ADI_SPEED_2) ||
-           ((ui32Config & 0x3) == ADI_SPEED_4) ||
-           ((ui32Config & 0x3) == ADI_SPEED_8) ||
-           ((ui32Config & 0x3) == ADI_SPEED_16));
 
-    //
-    // Configure the ADI slave.
-    //
-    if (ui32Base==AUX_ADI4_BASE) {
-        AuxAdiDdiSafeWrite(
-            ui32Base + ADI_O_SLAVECONF,
-            (ui32Config & 0x7) | (bProtect ? ADI_PROTECT : 0),
-            4
-        );
-    } else {
-        HWREG(ui32Base + ADI_O_SLAVECONF) = (ui32Config & 0x7) |
-                                            (bProtect ? ADI_PROTECT : 0);
-    }
-}
-
-//*****************************************************************************
-//
-//! \brief Synchronize the ADI slave.
-//!
-//! This function will perform a sync on the ADI slave by issuing a NOP
-//! ADI command to the master with REQ=0. In other words, the master
-//! performs a dummy write request to ensure the master and slave are
-//! synchronized.
-//!
-//! \note It is recommended to sync with all the ADI slaves before a power down
-//! of the ADI master.
-//!
-//! \note AUX_ADI4_BASE : Both the AUX module and the clock for the AUX SMPH module must be
-//! enabled before calling this function.
-//!
-//! \param ui32Base is ADI base address.
-//!
-//! \return None
-//
-//*****************************************************************************
-__STATIC_INLINE void
-ADISync(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ADIBaseValid(ui32Base));
-
-    //
-    // Synchronize the ADI slave to guarantee future write operations.
-    //
-    if (ui32Base==AUX_ADI4_BASE) {
-        AuxAdiDdiSafeWrite(ui32Base + ADI_O_SLAVESTAT, ADI_SYNC, 1);
-    } else {
-        HWREGB(ui32Base + ADI_O_SLAVESTAT) = ADI_SYNC;
-    }
-}
-
-//*****************************************************************************
-//
-//! \brief Protect an ADI slave configuration by locking the configuration register access.
-//!
-//! This function will lock the configuration interface to the ADI slave.
-//!
-//! \note Once locked it is no longer possible to modify the configuration
-//! register in the ADI slave.
-//!
-//! \note This function uses read-modify-write to guarantee the integrity of
-//! the configuration. This might take exceedingly long time, so if the
-//! configuration is known, it is advised to use ADIConfigSet() for
-//! protecting the ADI slave configuration.
-//!
-//! \note AUX_ADI4_BASE : Both the AUX module and the clock for the AUX SMPH module must be
-//! enabled before calling this function.
-//!
-//! \param ui32Base is ADI base address.
-//!
-//! \return None
-//!
-//! \sa ADIConfigSet()
-//
-//*****************************************************************************
-__STATIC_INLINE void
-ADIProtect(uint32_t ui32Base)
-{
-    uint32_t ui32Val;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT(ADIBaseValid(ui32Base));
-
-    //
-    // Lock the register interface on the ADI slave.
-    //
-    if (ui32Base==AUX_ADI4_BASE) {
-        ui32Val = AuxAdiDdiSafeRead(ui32Base + ADI_O_SLAVECONF, 4);
-    } else {
-        ui32Val = HWREG(ui32Base + ADI_O_SLAVECONF);
-    }
-    ui32Val |= ADI_PROTECT;
-    if (ui32Base==AUX_ADI4_BASE) {
-        AuxAdiDdiSafeWrite(ui32Base + ADI_O_SLAVECONF, ui32Val, 4);
-    } else {
-        HWREG(ui32Base + ADI_O_SLAVECONF) = ui32Val;
-    }
-}
 
 //*****************************************************************************
 //
@@ -309,7 +139,7 @@ ADIProtect(uint32_t ui32Base)
 //! aligned. You can only do 16 bit access on registers 0-1 / 2-3, etc. Similarly
 //! 32 bit accesses are always performed on register 0-3 / 4-7, etc. Addresses
 //! for the registers and values being written to the registers will be
-//! truncated according to this access sceme.
+//! truncated according to this access scheme.
 //!
 //! \note This operation is write only for the specified register. No
 //! previous value of the register will be kept (i.e. this is NOT
@@ -355,7 +185,7 @@ ADI8RegWrite(uint32_t ui32Base, uint32_t ui32Reg, uint8_t ui8Val)
 //! or 32 bit aligned. You can only do 16 bit access on registers 0-1 / 2-3,
 //! etc. Similarly 32 bit accesses are always performed on register 0-3 / 4-7,
 //! etc. Addresses for the registers and values being written
-//! to the registers will be truncated according to this access sceme.
+//! to the registers will be truncated according to this access scheme.
 //!
 //! \note The byte addressing bit will be ignored, to ensure 16 bit access
 //! to the ADI slave.
@@ -405,7 +235,7 @@ ADI16RegWrite(uint32_t ui32Base, uint32_t ui32Reg,
 //! or 32 bit aligned. You can only do 16 bit access on registers 0-1 / 2-3,
 //! etc. Similarly 32 bit accesses are always performed on register 0-3 / 4-7,
 //! etc. Addresses for the registers and values being written
-//! to the registers will be truncated according to this access sceme.
+//! to the registers will be truncated according to this access scheme.
 //!
 //! \note The byte and half word addressing bits will be ignored, to ensure
 //! 32 bit access to the ADI slave.
@@ -455,7 +285,7 @@ ADI32RegWrite(uint32_t ui32Base, uint32_t ui32Reg, uint32_t ui32Val)
 //! only do 16 bit access on registers 0-1 / 2-3, etc. Similarly 32 bit accesses
 //! are always performed on register 0-3 / 4-7, etc. Addresses for the
 //! registers and values being written to the registers will be truncated
-//! according to this access sceme.
+//! according to this access scheme.
 //!
 //! \param ui32Base is ADI base address.
 //! \param ui32Reg is the 8 bit register to read.
@@ -495,7 +325,7 @@ ADI8RegRead(uint32_t ui32Base, uint32_t ui32Reg)
 //! only do 16 bit access on registers 0-1 / 2-3, etc. Similarly 32 bit accesses
 //! are always performed on register 0-3 / 4-7, etc. Addresses for the
 //! registers and values being written to the registers will be truncated
-//! according to this access sceme.
+//! according to this access scheme.
 //!
 //! \note The byte addressing bit will be ignored, to ensure 16 bit access
 //! to the ADI slave.
@@ -537,7 +367,7 @@ ADI16RegRead(uint32_t ui32Base, uint32_t ui32Reg)
 //! domain is either 8, 16 or 32 bit aligned. You can only do 16 bit access on
 //! registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always performed on
 //! register 0-3 / 4-7, etc. Addresses for the registers and values being
-//! written to the registers will be truncated according to this access sceme.
+//! written to the registers will be truncated according to this access scheme.
 //!
 //! \note The byte and half word addressing bits will be ignored, to ensure
 //! 32 bit access to the ADI slave.
@@ -575,11 +405,11 @@ ADI32RegRead(uint32_t ui32Base, uint32_t ui32Reg)
 //!
 //! This function will set bits in a single register in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to set bits in a specific 8 bit register in the
@@ -620,7 +450,7 @@ ADI8BitsSet(uint32_t ui32Base, uint32_t ui32Reg, uint8_t ui8Val)
     // Set the selected bits.
     //
     if (ui32Base==AUX_ADI4_BASE) {
-        AuxAdiDdiSafeWrite(ui32Base + ui32RegOffset + ui32Reg, ui8Val, 4);
+        AuxAdiDdiSafeWrite(ui32Base + ui32RegOffset + ui32Reg, ui8Val, 1);
     } else {
         HWREGB(ui32Base + ui32RegOffset + ui32Reg) = ui8Val;
     }
@@ -632,11 +462,11 @@ ADI8BitsSet(uint32_t ui32Base, uint32_t ui32Reg, uint8_t ui8Val)
 //!
 //! This function will set bits in 2 registers in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to set bits in 2 consecutive 8 bit registers in the
@@ -689,11 +519,11 @@ ADI16BitsSet(uint32_t ui32Base, uint32_t ui32Reg, uint16_t ui16Val)
 //!
 //! This function will set bits in 4 registers in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to set bits in 4 consecutive 8 bit registers in the
@@ -746,11 +576,11 @@ ADI32BitsSet(uint32_t ui32Base, uint32_t ui32Reg, uint32_t ui32Val)
 //!
 //! This function will clear bits in a register in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to clear bits in a specific 8 bit register in
@@ -803,11 +633,11 @@ ADI8BitsClear(uint32_t ui32Base, uint32_t ui32Reg, uint8_t ui8Val)
 //!
 //! This function will clear bits in 2 registers in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to clear bits in 2 consecutive 8 bit registers in
@@ -860,11 +690,11 @@ ADI16BitsClear(uint32_t ui32Base, uint32_t ui32Reg, uint16_t ui16Val)
 //!
 //! This function will clear bits in 4 registers in the analog domain.
 //! The access to the registers in the analog domain is either 8, 16 or 32 bit
-//! aligned, but arranged in chunck of 32 bits. You can only do 16 bit access
+//! aligned, but arranged in chunks of 32 bits. You can only do 16 bit access
 //! on registers 0-1 / 2-3, etc. Similarly 32 bit accesses are always
 //! performed on register 0-3 / 4-7 etc. Addresses for the registers and values
 //! being written to the registers will be truncated according to this access
-//! sceme.
+//! scheme.
 //!
 //! \note This operation is write only for the specified register.
 //! This function is used to clear bits in 4 consecutive 8 bit registers in
@@ -1105,6 +935,7 @@ ADI16SetValBit(uint32_t ui32Base, uint32_t ui32Reg, uint32_t ui32Mask,
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

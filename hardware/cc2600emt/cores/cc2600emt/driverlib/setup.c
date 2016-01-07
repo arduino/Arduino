@@ -1,9 +1,9 @@
 /******************************************************************************
 *  Filename:       setup.c
-*  Revised:        2015-04-08 09:23:19 +0200 (on, 08 apr 2015)
-*  Revision:       43168
+*  Revised:        2015-11-12 09:09:18 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45045
 *
-*  Description:    Setup file for CC26xx PG2 device family.
+*  Description:    Setup file for CC13xx/CC26xx devices.
 *
 *  Copyright (c) 2015, Texas Instruments Incorporated
 *  All rights reserved.
@@ -52,10 +52,7 @@
 #include <inc/hw_ccfg.h>
 #include <inc/hw_chip_def.h>
 #include <inc/hw_ddi.h>
-#if ( CC_GET_CHIP_OPTION == CC_CHIP_OPTION_OTP )
-#else
 #include <inc/hw_flash.h>
-#endif
 #include <inc/hw_fcfg1.h>
 #include <inc/hw_ddi_0_osc.h>
 #include <inc/hw_prcm.h>
@@ -64,13 +61,14 @@
 #include <inc/hw_aon_rtc.h>
 // Driverlib headers
 #include <driverlib/adi.h>
+#include <driverlib/aon_batmon.h>
 #include <driverlib/cpu.h>
 #include <driverlib/chipinfo.h>
 #include <driverlib/ddi.h>
 #include <driverlib/ioc.h>
 #include <driverlib/prcm.h>
+#include <driverlib/setup.h>
 #include <driverlib/sys_ctrl.h>
-#include <driverlib/aon_batmon.h>
 
 // We need intrinsic functions for IAR (if used in source code)
 #ifdef __IAR_SYSTEMS_ICC__
@@ -82,26 +80,25 @@
 // Function declarations
 //
 //*****************************************************************************
-void   trimDevice( void );
 static uint32_t GetTrimForAdcShModeEn( uint32_t ui32Fcfg1Revision );
 static uint32_t GetTrimForAdcShVbufEn( uint32_t ui32Fcfg1Revision );
 static uint32_t GetTrimForAmpcompCtrl( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForAmpcompTh1( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForAmpcompTh2( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForAnabypassValue1( uint32_t ui32Fcfg1Revision, uint32_t ccfg_ModeConfReg );
+static uint32_t GetTrimForAmpcompTh1( void );
+static uint32_t GetTrimForAmpcompTh2( void );
+static uint32_t GetTrimForAnabypassValue1( uint32_t ccfg_ModeConfReg );
 static uint32_t GetTrimForDblrLoopFilterResetVoltage( uint32_t ui32Fcfg1Revision );
 static uint32_t GetTrimForRadcExtCfg( uint32_t ui32Fcfg1Revision );
 static uint32_t GetTrimForRcOscLfIBiasTrim( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForRcOscLfRtuneCtuneTrim( uint32_t ui32Fcfg1Revision );
+static uint32_t GetTrimForRcOscLfRtuneCtuneTrim( void );
 static uint32_t GetTrimForXoscHfCtl( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForXoscHfFastStart( uint32_t ui32Fcfg1Revision );
-static uint32_t GetTrimForXoscHfIbiastherm( uint32_t ui32Fcfg1Revision );
+static uint32_t GetTrimForXoscHfFastStart( void );
+static uint32_t GetTrimForXoscHfIbiastherm( void );
 static uint32_t GetTrimForXoscLfRegulatorAndCmirrwrRatio( uint32_t ui32Fcfg1Revision );
 
-static int32_t  SignExtendVddrTrimValue( uint32_t ui32VddrTrimVal );
-static void     HapiTrimDeviceColdReset( uint32_t ui32Fcfg1Revision );
+int32_t         SignExtendVddrTrimValue( uint32_t ui32VddrTrimVal );
+static void     HapiTrimDeviceColdReset( void );
 static void     HapiTrimDeviceShutDown( uint32_t ui32Fcfg1Revision );
-static void     HapiTrimDevicePowerDown( uint32_t ui32Fcfg1Revision );
+static void     HapiTrimDevicePowerDown( void );
 
 
 //*****************************************************************************
@@ -115,7 +112,7 @@ static void     HapiTrimDevicePowerDown( uint32_t ui32Fcfg1Revision );
 //*****************************************************************************
 //
 // Defined CPU delay macro with microseconds as input
-// Quick check shows: (Tob be further investigated)
+// Quick check shows: (To be further investigated)
 // At 48 MHz RCOSC and VIMS.CONTROL.PREFETCH = 0, there is 5 cycles
 // At 48 MHz RCOSC and VIMS.CONTROL.PREFETCH = 1, there is 4 cycles
 // At 24 MHz RCOSC and VIMS.CONTROL.PREFETCH = 0, there is 3 cycles
@@ -126,20 +123,74 @@ static void     HapiTrimDevicePowerDown( uint32_t ui32Fcfg1Revision );
 
 
 //*****************************************************************************
-// Need to know the CCFG:MODE_CONF.VDDR_TRIM_SLEEP_DELTA fild width in order
+// Need to know the CCFG:MODE_CONF.VDDR_TRIM_SLEEP_DELTA field width in order
 // to sign extend correctly but this is however not defined in the hardware
-// description fields and are therefore defined separately here.
+// description fields and is therefore defined separately here.
 //*****************************************************************************
 #define CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH    4
 
 
 //*****************************************************************************
 //
-//! Perform the necessary trim of the device which is not done in boot code
+//! \brief Set correct VIMS_MODE according to CCFG setting (CACHE or GPRAM)
 //!
-//! This function should only execute coming from ROM boot. The current
-//! implementation does not take soft reset into account. However, it does no
-//! damage to execute it again. It only consumes time.
+//! \return None
+//
+//*****************************************************************************
+static void
+SetupCacheModeAccordingToCcfgSetting( void )
+{
+    //
+    // - Make sure to enable aggressive VIMS clock gating for power optimization
+    //   Only for PG2 devices.
+    // - Enable cache prefetch enable as default setting
+    //   (Slightly higher power consumption, but higher CPU performance)
+    // - IF ( CCFG_..._DIS_GPRAM == 1 )
+    //   then: Enable cache (set cache mode = 1), even if set by ROM boot code
+    //         (This is done because it's not set by boot code when running inside
+    //         a debugger supporting the Halt In Boot (HIB) functionality).
+    //   else: Set MODE_GPRAM if not already set (see inline comments as well)
+    //
+    uint32_t vimsCtlMode0 ;
+
+    while ( HWREGBITW( VIMS_BASE + VIMS_O_STAT, VIMS_STAT_MODE_CHANGING_BITN )) {
+        // Do nothing - wait for an eventual ongoing mode change to complete.
+        // (There should typically be no wait time here, but need to be sure)
+    }
+
+    //
+    // Note that Mode=0 is equal to MODE_GPRAM
+    //
+    vimsCtlMode0 = (( HWREG( VIMS_BASE + VIMS_O_CTL ) & ~VIMS_CTL_MODE_M ) | VIMS_CTL_DYN_CG_EN_M | VIMS_CTL_PREF_EN_M );
+
+
+    if ( HWREG( CCFG_BASE + CCFG_O_SIZE_AND_DIS_FLAGS ) & CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM ) {
+        // Enable cache (and hence disable GPRAM)
+        HWREG( VIMS_BASE + VIMS_O_CTL ) = ( vimsCtlMode0 | VIMS_CTL_MODE_CACHE );
+    } else if (( HWREG( VIMS_BASE + VIMS_O_STAT ) & VIMS_STAT_MODE_M ) != VIMS_STAT_MODE_GPRAM ) {
+        //
+        // GPRAM is enabled in CCFG but not selected
+        // Note: It is recommended to go via MODE_OFF when switching to MODE_GPRAM
+        //
+        HWREG( VIMS_BASE + VIMS_O_CTL ) = ( vimsCtlMode0 | VIMS_CTL_MODE_OFF );
+        while (( HWREG( VIMS_BASE + VIMS_O_STAT ) & VIMS_STAT_MODE_M ) != VIMS_STAT_MODE_OFF ) {
+            // Do nothing - wait for an eventual mode change to complete (This goes fast).
+        }
+        HWREG( VIMS_BASE + VIMS_O_CTL ) = vimsCtlMode0;
+    } else {
+        // Correct mode, but make sure PREF_EN and DYN_CG_EN always are set
+        HWREG( VIMS_BASE + VIMS_O_CTL ) = vimsCtlMode0;
+    }
+}
+
+
+//*****************************************************************************
+//
+// Perform the necessary trim of the device which is not done in boot code
+//
+// This function should only execute coming from ROM boot. The current
+// implementation does not take soft reset into account. However, it does no
+// damage to execute it again. It only consumes time.
 //
 //*****************************************************************************
 void
@@ -183,6 +234,11 @@ trimDevice(void)
     //
     HWREGBITW( PRCM_BASE + PRCM_O_WARMRESET, PRCM_WARMRESET_WR_TO_PINRESET_BITN ) = 1;
 
+    //
+    // Select correct CACHE mode and set correct CACHE configuration
+    //
+    SetupCacheModeAccordingToCcfgSetting();
+
     // 1. Check for powerdown
     // 2. Check for shutdown
     // 3. Assume cold reset if none of the above.
@@ -198,7 +254,7 @@ trimDevice(void)
         // NB. This should be calling a ROM implementation of required trim and
         // compensation
         // e.g. HapiTrimDevicePowerDown()
-        HapiTrimDevicePowerDown(ui32Fcfg1Revision);
+        HapiTrimDevicePowerDown();
     }
     // Check for shutdown
     //
@@ -214,7 +270,7 @@ trimDevice(void)
         // e.g. HapiTrimDeviceShutDown()    -->
         //      HapiTrimDevicePowerDown();
         HapiTrimDeviceShutDown(ui32Fcfg1Revision);
-        HapiTrimDevicePowerDown(ui32Fcfg1Revision);
+        HapiTrimDevicePowerDown();
     }
     else
     {
@@ -226,25 +282,18 @@ trimDevice(void)
         // e.g. HapiTrimDeviceColdReset()   -->
         //      HapiTrimDeviceShutDown()    -->
         //      HapiTrimDevicePowerDown()
-        HapiTrimDeviceColdReset(ui32Fcfg1Revision);
+        HapiTrimDeviceColdReset();
         HapiTrimDeviceShutDown(ui32Fcfg1Revision);
-        HapiTrimDevicePowerDown(ui32Fcfg1Revision);
+        HapiTrimDevicePowerDown();
 
     }
 
     //
-    // - Make sure to enable agressive VIMS clock gating for power optimization
-    //   Only for PG2 devices.
-    // - Enable cache prefetch enable as default setting
-    //   (Slightly higer power consumption, but higher CPU performance)
-    // - Enable cache (set cache mode = 1), even if set by ROM boot code
-    //   (This is done because it's not set by boot code when running inside
-    //   a debugger supporting the Halt In Boot (HIB) functionality).
+    // Set VIMS power domain control.
+    // PDCTL1VIMS = 0 ==> VIMS power domain is only powered when CPU power domain is powered
     //
-    HWREG( VIMS_BASE + VIMS_O_CTL ) = (( HWREG( VIMS_BASE + VIMS_O_CTL ) & ~VIMS_CTL_MODE_M ) |
-        VIMS_CTL_DYN_CG_EN | VIMS_CTL_PREF_EN | VIMS_CTL_MODE_CACHE );
+    HWREG( PRCM_BASE + PRCM_O_PDCTL1VIMS ) = 0;
 
-#if ( CC_GET_CHIP_OPTION != CC_CHIP_OPTION_OTP )
     //
     // Configure optimal wait time for flash FSM in cases where flash pump
     // wakes up from sleep
@@ -252,12 +301,11 @@ trimDevice(void)
     HWREG(FLASH_BASE + FLASH_O_FPAC1) = (HWREG(FLASH_BASE + FLASH_O_FPAC1) &
                                          ~FLASH_FPAC1_PSLEEPTDIS_M) |
                                         (0x139<<FLASH_FPAC1_PSLEEPTDIS_S);
-#endif
 
     //
     // And finally at the end of the flash boot process:
     // SET BOOT_DET bits in AON_SYSCTL to 3 if already found to be 1
-    // Note: The BOOT_DET_x_CLR/SET bits must be maually cleared
+    // Note: The BOOT_DET_x_CLR/SET bits must be manually cleared
     //
     if ((( HWREG( AON_SYSCTL_BASE + AON_SYSCTL_O_RESETCTL ) &
         ( AON_SYSCTL_RESETCTL_BOOT_DET_1_M | AON_SYSCTL_RESETCTL_BOOT_DET_0_M )) >>
@@ -269,16 +317,39 @@ trimDevice(void)
         HWREG( AON_SYSCTL_BASE + AON_SYSCTL_O_RESETCTL ) = ui32AonSysResetctl | AON_SYSCTL_RESETCTL_BOOT_DET_1_SET_M;
         HWREG( AON_SYSCTL_BASE + AON_SYSCTL_O_RESETCTL ) = ui32AonSysResetctl;
     }
+
+    //
+    // Make sure there are no ongoing VIMS mode change when leaving trimDevice()
+    // (There should typically be no wait time here, but need to be sure)
+    //
+    while ( HWREGBITW( VIMS_BASE + VIMS_O_STAT, VIMS_STAT_MODE_CHANGING_BITN )) {
+        // Do nothing - wait for an eventual ongoing mode change to complete.
+    }
 }
 
+//*****************************************************************************
+//
+//! \brief Trims to be applied when coming from POWER_DOWN (also called when
+//! coming from SHUTDOWN and PIN_RESET).
+//!
+//! \return None
+//
+//*****************************************************************************
 static void
-HapiTrimDevicePowerDown(uint32_t ui32Fcfg1Revision)
+HapiTrimDevicePowerDown( void )
 {
     //
     // Currently no specific trim for Powerdown
     //
 }
 
+//*****************************************************************************
+//
+//! \brief Doing the tricky stuff needed to enter new RTCSUBSECINC value
+//!
+//! \return None
+//
+//*****************************************************************************
 static void
 SetAonRtcSubSecInc( uint32_t subSecInc )
 {
@@ -298,6 +369,14 @@ SetAonRtcSubSecInc( uint32_t subSecInc )
    HWREG( AUX_WUC_BASE + AUX_WUC_O_RTCSUBSECINCCTL ) = 0;
 }
 
+//*****************************************************************************
+//
+//! \brief Trims to be applied when coming from SHUTDOWN (also called when
+//! coming from PIN_RESET).
+//!
+//! \return None
+//
+//*****************************************************************************
 static void
 HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
 {
@@ -307,6 +386,7 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     uint32_t   ccfgExtLfClk      ;
     int32_t    i32VddrSleepTrim  ;
     int32_t    i32VddrSleepDelta ;
+    uint32_t   fcfg1OscConf      ;
 
     //
     // Force AUX on and enable clocks
@@ -322,15 +402,10 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     while( ! ( HWREGBITW( AON_WUC_BASE + AON_WUC_O_PWRSTAT, AON_WUC_PWRSTAT_AUX_PD_ON_BITN )));
 
     //
-    // Enable the clock
+    // Enable the clocks for AUX_DDI0_OSC and AUX_ADI4
     //
     HWREG(AUX_WUC_BASE + AUX_WUC_O_MODCLKEN0) = AUX_WUC_MODCLKEN0_AUX_DDI0_OSC |
-                                               AUX_WUC_MODCLKEN0_AUX_ADI4;
-
-    //
-    // read the MODE_CONF register in CCFG
-    //
-    ccfg_ModeConfReg = HWREG( CCFG_BASE + CCFG_O_MODE_CONF );
+                                                AUX_WUC_MODCLKEN0_AUX_ADI4;
 
     //
     // It's found to be optimal to override the FCFG1..DCDC_IPEAK setting as follows:
@@ -345,24 +420,37 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
         //
         HWREGB( ADI3_BASE + ADI_O_MASK4B + ( ADI_3_REFSYS_O_DCDCCTL5 * 2 )) = ( 0xF0 |
             ( HWREG( CCFG_BASE + CCFG_O_MODE_CONF_1 ) >> CCFG_MODE_CONF_1_ALT_DCDC_IPEAK_S ));
-    } else {
-        HWREGB( ADI3_BASE + ADI_O_MASK4B + ( ADI_3_REFSYS_O_DCDCCTL5 * 2 )) = 0x72;
+
+    }
+
+    //
+    // Enable for JTAG to be powered down (will still be powered on if debugger is connected)
+    //
+    AONWUCJtagPowerOff();
+
+    //
+    // read the MODE_CONF register in CCFG
+    //
+    ccfg_ModeConfReg = HWREG( CCFG_BASE + CCFG_O_MODE_CONF );
+
+    {
+        i32VddrSleepTrim = SignExtendVddrTrimValue((
+            HWREG( FCFG1_BASE + FCFG1_O_LDO_TRIM ) &
+            FCFG1_LDO_TRIM_VDDR_TRIM_SLEEP_M ) >>
+            FCFG1_LDO_TRIM_VDDR_TRIM_SLEEP_S ) ;
     }
 
     //
     // Adjust the VDDR_TRIM_SLEEP value with value adjustable by customer (CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA)
-    //
-    i32VddrSleepTrim = SignExtendVddrTrimValue(( HWREG( FCFG1_BASE + FCFG1_O_LDO_TRIM ) &
-        FCFG1_LDO_TRIM_VDDR_TRIM_SLEEP_M ) >> FCFG1_LDO_TRIM_VDDR_TRIM_SLEEP_S );
     // Read and sign extend VddrSleepDelta (in range -8 to +7)
-    i32VddrSleepDelta = ((((int32_t)HWREG( CCFG_BASE + CCFG_O_MODE_CONF ))
+    //
+    i32VddrSleepDelta = ((((int32_t)ccfg_ModeConfReg )
         << ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_S ))
         >> ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH ));
     // Calculate new VDDR sleep trim
     i32VddrSleepTrim = ( i32VddrSleepTrim + i32VddrSleepDelta + 1 );
-    if ( i32VddrSleepTrim < -10 ) {
-        i32VddrSleepTrim = -10;
-    }
+    if ( i32VddrSleepTrim >  21 ) i32VddrSleepTrim =  21;
+    if ( i32VddrSleepTrim < -10 ) i32VddrSleepTrim = -10;
     // Write adjusted value using MASKED write (MASK8)
     HWREGH( ADI3_BASE + ADI_O_MASK8B + ( ADI_3_REFSYS_O_DCDCCTL1 * 2 )) = (( ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_M << 8 ) |
         (( i32VddrSleepTrim << ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_S ) & ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_M ));
@@ -387,12 +475,12 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     //
     // Trim CAP settings. Get and set trim value for the ANABYPASS_VALUE1
     // register
-    ui32Trim = GetTrimForAnabypassValue1( ui32Fcfg1Revision, ccfg_ModeConfReg );
+    ui32Trim = GetTrimForAnabypassValue1( ccfg_ModeConfReg );
     DDI32RegWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_ANABYPASSVAL1, ui32Trim);
 
     // Trim RCOSC_LF. Get and set trim values for the RCOSCLF_RTUNE_TRIM and
     // RCOSCLF_CTUNE_TRIM fields in the XOSCLF_RCOSCLF_CTRL register.
-    ui32Trim = GetTrimForRcOscLfRtuneCtuneTrim(ui32Fcfg1Revision);
+    ui32Trim = GetTrimForRcOscLfRtuneCtuneTrim();
     DDI16BitfieldWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_LFOSCCTL,
                        (DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_M |
                         DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_M),
@@ -402,20 +490,20 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     // Trim XOSCHF IBIAS THERM. Get and set trim value for the
     // XOSCHF IBIAS THERM bit field in the ANABYPASS_VALUE2 register. Other
     // register bit fields are set to 0.
-    ui32Trim = GetTrimForXoscHfIbiastherm(ui32Fcfg1Revision);
+    ui32Trim = GetTrimForXoscHfIbiastherm();
     DDI32RegWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_ANABYPASSVAL2,
                   ui32Trim<<DDI_0_OSC_ANABYPASSVAL2_XOSC_HF_IBIASTHERM_S);
 
     // Trim AMPCOMP settings required before switch to XOSCHF
-    ui32Trim = GetTrimForAmpcompTh2(ui32Fcfg1Revision);
+    ui32Trim = GetTrimForAmpcompTh2();
     DDI32RegWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_AMPCOMPTH2, ui32Trim);
-    ui32Trim = GetTrimForAmpcompTh1(ui32Fcfg1Revision);
+    ui32Trim = GetTrimForAmpcompTh1();
     DDI32RegWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_AMPCOMPTH1, ui32Trim);
-    ui32Trim = GetTrimForAmpcompCtrl(ui32Fcfg1Revision);
+    ui32Trim = GetTrimForAmpcompCtrl( ui32Fcfg1Revision );
     DDI32RegWrite(AUX_DDI0_OSC_BASE, DDI_0_OSC_O_AMPCOMPCTL, ui32Trim);
 
     //
-    // Set trim for DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_SH_MODE_EN in acordance to FCFG1 setting
+    // Set trim for DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_SH_MODE_EN in accordance to FCFG1 setting
     // This is bit[5] in the DDI_0_OSC_O_ADCDOUBLERNANOAMPCTL register
     // Using MASK4 write + 1 => writing to bits[7:4]
     //
@@ -424,7 +512,7 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
       ( 0x20 | ( ui32Trim << 1 ));
 
     //
-    // Set trim for DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_SH_VBUF_EN in acordance to FCFG1 setting
+    // Set trim for DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_SH_VBUF_EN in accordance to FCFG1 setting
     // This is bit[4] in the DDI_0_OSC_O_ADCDOUBLERNANOAMPCTL register
     // Using MASK4 write + 1 => writing to bits[7:4]
     //
@@ -484,14 +572,63 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
 
     // Setting FORCE_KICKSTART_EN (ref. CC26_V1_BUG00261). Should also be done for PG2
     // (This is bit 22 in DDI_0_OSC_O_CTL0)
-    HWREGB( AUX_DDI0_OSC_BASE + DDI_O_MASK4B + ( DDI_0_OSC_O_CTL0 * 2 ) + 5 ) = 0x44;
+    HWREG( AUX_DDI0_OSC_BASE + DDI_O_SET + DDI_0_OSC_O_CTL0 ) = DDI_0_OSC_CTL0_FORCE_KICKSTART_EN;
 
-    // Set bit DDI_0_OSC_CTL0_XTAL_IS_24M (this is bit 31 in DDI_0_OSC_O_CTL0)
-    HWREGB( AUX_DDI0_OSC_BASE + DDI_O_MASK4B + ( DDI_0_OSC_O_CTL0 * 2 ) + 7 ) = 0x88;
+    //
+    // Examin the XOSC_FREQ field to select 0x1=HPOSC, 0x2=48MHz XOSC, 0x3=24MHz XOSC
+    //
+    switch (( ccfg_ModeConfReg & CCFG_MODE_CONF_XOSC_FREQ_M ) >> CCFG_MODE_CONF_XOSC_FREQ_S ) {
+    case 2 :
+        // XOSC source is a 48 MHz xtal
+        // Do nothing (since this is the reset setting)
+        break;
+    case 1 :
+        // XOSC source is HPOSC (trim the HPOSC if this is a chip with HPOSC, otherwise skip trimming and default to 24 MHz XOSC)
+
+        fcfg1OscConf = HWREG( FCFG1_BASE + FCFG1_O_OSC_CONF );
+
+        if (( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_OPTION ) == 0 ) {
+            // This is a HPOSC chip, apply HPOSC settings
+            // Set bit DDI_0_OSC_CTL0_HPOSC_MODE_EN (this is bit 14 in DDI_0_OSC_O_CTL0)
+            HWREG( AUX_DDI0_OSC_BASE + DDI_O_SET + DDI_0_OSC_O_CTL0 ) = DDI_0_OSC_CTL0_HPOSC_MODE_EN;
+
+            // ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN = FCFG1_OSC_CONF_HPOSC_BIAS_HOLD_MODE_EN   (1 bit)
+            // ADI_2_REFSYS_HPOSCCTL2_CURRMIRR_RATIO    = FCFG1_OSC_CONF_HPOSC_CURRMIRR_RATIO      (4 bits)
+            // ADI_2_REFSYS_HPOSCCTL1_BIAS_RES_SET      = FCFG1_OSC_CONF_HPOSC_BIAS_RES_SET        (4 bits)
+            // ADI_2_REFSYS_HPOSCCTL0_FILTER_EN         = FCFG1_OSC_CONF_HPOSC_FILTER_EN           (1 bit)
+            // ADI_2_REFSYS_HPOSCCTL0_BIAS_RECHARGE_DLY = FCFG1_OSC_CONF_HPOSC_BIAS_RECHARGE_DELAY (2 bits)
+            // ADI_2_REFSYS_HPOSCCTL0_SERIES_CAP        = FCFG1_OSC_CONF_HPOSC_SERIES_CAP          (2 bits)
+            // ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS       = FCFG1_OSC_CONF_HPOSC_DIV3_BYPASS         (1 bit)
+
+            HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL2 ) = (( HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL2 ) &
+                  ~( ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN_M | ADI_2_REFSYS_HPOSCCTL2_CURRMIRR_RATIO_M  )                                                                       ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_BIAS_HOLD_MODE_EN_M   ) >> FCFG1_OSC_CONF_HPOSC_BIAS_HOLD_MODE_EN_S   ) << ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN_S   ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_CURRMIRR_RATIO_M      ) >> FCFG1_OSC_CONF_HPOSC_CURRMIRR_RATIO_S      ) << ADI_2_REFSYS_HPOSCCTL2_CURRMIRR_RATIO_S      )   );
+            HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL1 ) = (( HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL1 ) & ~( ADI_2_REFSYS_HPOSCCTL1_BIAS_RES_SET_M )                          ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_BIAS_RES_SET_M        ) >> FCFG1_OSC_CONF_HPOSC_BIAS_RES_SET_S        ) << ADI_2_REFSYS_HPOSCCTL1_BIAS_RES_SET_S        )   );
+            HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL0 ) = (( HWREG( ADI2_BASE + ADI_2_REFSYS_O_HPOSCCTL0 ) &
+                  ~( ADI_2_REFSYS_HPOSCCTL0_FILTER_EN_M | ADI_2_REFSYS_HPOSCCTL0_BIAS_RECHARGE_DLY_M | ADI_2_REFSYS_HPOSCCTL0_SERIES_CAP_M | ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_M )) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_FILTER_EN_M           ) >> FCFG1_OSC_CONF_HPOSC_FILTER_EN_S           ) << ADI_2_REFSYS_HPOSCCTL0_FILTER_EN_S           ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_BIAS_RECHARGE_DELAY_M ) >> FCFG1_OSC_CONF_HPOSC_BIAS_RECHARGE_DELAY_S ) << ADI_2_REFSYS_HPOSCCTL0_BIAS_RECHARGE_DLY_S   ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_SERIES_CAP_M          ) >> FCFG1_OSC_CONF_HPOSC_SERIES_CAP_S          ) << ADI_2_REFSYS_HPOSCCTL0_SERIES_CAP_S          ) |
+                   ((( fcfg1OscConf & FCFG1_OSC_CONF_HPOSC_DIV3_BYPASS_M         ) >> FCFG1_OSC_CONF_HPOSC_DIV3_BYPASS_S         ) << ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_S         )   );
+            break;
+        }
+        // Not a HPOSC chip - fall through to default
+    default :
+        // XOSC source is a 24 MHz xtal (default)
+        // Set bit DDI_0_OSC_CTL0_XTAL_IS_24M (this is bit 31 in DDI_0_OSC_O_CTL0)
+        HWREG( AUX_DDI0_OSC_BASE + DDI_O_SET + DDI_0_OSC_O_CTL0 ) = DDI_0_OSC_CTL0_XTAL_IS_24M;
+        break;
+    }
+
+    // Clear DDI_0_OSC_CTL0_CLK_LOSS_EN (ClockLossEventEnable()). This is bit 9 in DDI_0_OSC_O_CTL0.
+    // This is typically already 0 except on Lizard where it is set in ROM-boot
+    HWREG( AUX_DDI0_OSC_BASE + DDI_O_CLR + DDI_0_OSC_O_CTL0 ) = DDI_0_OSC_CTL0_CLK_LOSS_EN;
 
     // Setting DDI_0_OSC_CTL1_XOSC_HF_FAST_START according to value found in FCFG1
-    ui32Trim = GetTrimForXoscHfFastStart( ui32Fcfg1Revision );
-    HWREGB( AUX_DDI0_OSC_BASE + DDI_O_MASK4B + ( 0x00000004 * 2 )) = ( 0x30 | ui32Trim );
+    ui32Trim = GetTrimForXoscHfFastStart();
+    HWREGB( AUX_DDI0_OSC_BASE + DDI_O_MASK4B + ( DDI_0_OSC_O_CTL1 * 2 )) = ( 0x30 | ui32Trim );
 
     //
     // setup the LF clock based upon CCFG:MODE_CONF:SCLK_LF_OPTION
@@ -537,7 +674,7 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     //
     // Set ADI_4_AUX:ADC0.SMPL_CYCLE_EXP to it's default minimum value (=3)
     // (Note: Using MASK8B requires that the bits to be modified must be within the same
-    //        byte boundary whivh is the case for the ADI_4_AUX_ADC0_SMPL_CYCLE_EXP field)
+    //        byte boundary which is the case for the ADI_4_AUX_ADC0_SMPL_CYCLE_EXP field)
     //
     HWREGH( AUX_ADI4_BASE + ADI_O_MASK8B + ( ADI_4_AUX_O_ADC0 * 2 )) =
       ( ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_M << 8 ) | ( 3 << ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_S );
@@ -548,25 +685,27 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     SysCtrlAonSync();
 
     //
-    // Disable clock for OSC_DIG and release power on AUX
+    // Allow AUX to power down
     //
-    HWREG(AUX_WUC_BASE + AUX_WUC_O_MODCLKEN0) = 0x0;
+    AUXWUCPowerCtrl( AUX_WUC_POWER_DOWN );
 
     //
-    // Release "Force AUX on"
+    // Leaving on AUX and clock for AUX_DDI0_OSC on but turn off clock for AUX_ADI4
     //
-    // No need to save the current status of the power/clock registers.
-    // At this point both AUX and AON should have been reset to 0x0.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) = 0;
+    HWREG( AUX_WUC_BASE + AUX_WUC_O_MODCLKEN0 ) = AUX_WUC_MODCLKEN0_AUX_DDI0_OSC;
 
-#if ( CC_GET_CHIP_OPTION != CC_CHIP_OPTION_OTP )
     // Disable EFUSE clock
     HWREGBITW( FLASH_BASE + FLASH_O_CFG, FLASH_CFG_DIS_EFUSECLK_BITN ) = 1;
-#endif
 }
 
-static int32_t
+//*****************************************************************************
+//
+//! \brief Sign extend the VDDR_TRIM setting (special format ranging from -10 to +21)
+//!
+//! \return
+//
+//*****************************************************************************
+int32_t
 SignExtendVddrTrimValue( uint32_t ui32VddrTrimVal )
 {
     //
@@ -580,8 +719,15 @@ SignExtendVddrTrimValue( uint32_t ui32VddrTrimVal )
     return ( i32SignedVddrVal );
 }
 
+//*****************************************************************************
+//
+//! \brief Trims to be applied when coming from PIN_RESET.
+//!
+//! \return None
+//
+//*****************************************************************************
 static void
-HapiTrimDeviceColdReset(uint32_t ui32Fcfg1Revision)
+HapiTrimDeviceColdReset( void )
 {
     //
     // Currently no specific trim for Cold Reset
@@ -590,12 +736,11 @@ HapiTrimDeviceColdReset(uint32_t ui32Fcfg1Revision)
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the ANABYPASS_VALUE1 register in
-//! OSC_DIG
+//! \brief Returns the trim value to be used for the ANABYPASS_VALUE1 register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForAnabypassValue1( uint32_t ui32Fcfg1Revision, uint32_t ccfg_ModeConfReg )
+GetTrimForAnabypassValue1( uint32_t ccfg_ModeConfReg )
 {
     uint32_t ui32Fcfg1Value            ;
     uint32_t ui32XoscHfRow             ;
@@ -603,213 +748,187 @@ GetTrimForAnabypassValue1( uint32_t ui32Fcfg1Revision, uint32_t ccfg_ModeConfReg
     int32_t  i32CustomerDeltaAdjust    ;
     uint32_t ui32TrimValue             ;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Set hardcoded trim values for all bit fields in the
-        // ANABYPASS_VALUE1 register
-        ui32TrimValue = 0x000F0FFF;
-    } else {
-        // Use device specific trim values located in factory configuration
-        // area for the XOSC_HF_COLUMN_Q12 and XOSC_HF_ROW_Q12 bit fields in
-        // the ANABYPASS_VALUE1 register. Value for the other bit fields
-        // are set to 0.
+    // Use device specific trim values located in factory configuration
+    // area for the XOSC_HF_COLUMN_Q12 and XOSC_HF_ROW_Q12 bit fields in
+    // the ANABYPASS_VALUE1 register. Value for the other bit fields
+    // are set to 0.
 
-        ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP);
-        ui32XoscHfRow = (( ui32Fcfg1Value &
-            FCFG1_CONFIG_OSC_TOP_XOSC_HF_ROW_Q12_M ) >>
-            FCFG1_CONFIG_OSC_TOP_XOSC_HF_ROW_Q12_S );
-        ui32XoscHfCol = (( ui32Fcfg1Value &
-            FCFG1_CONFIG_OSC_TOP_XOSC_HF_COLUMN_Q12_M ) >>
-            FCFG1_CONFIG_OSC_TOP_XOSC_HF_COLUMN_Q12_S );
+    ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP);
+    ui32XoscHfRow = (( ui32Fcfg1Value &
+        FCFG1_CONFIG_OSC_TOP_XOSC_HF_ROW_Q12_M ) >>
+        FCFG1_CONFIG_OSC_TOP_XOSC_HF_ROW_Q12_S );
+    ui32XoscHfCol = (( ui32Fcfg1Value &
+        FCFG1_CONFIG_OSC_TOP_XOSC_HF_COLUMN_Q12_M ) >>
+        FCFG1_CONFIG_OSC_TOP_XOSC_HF_COLUMN_Q12_S );
 
-        i32CustomerDeltaAdjust = 0;
-        if (( ccfg_ModeConfReg & CCFG_MODE_CONF_XOSC_CAP_MOD ) == 0 ) {
-            // XOSC_CAP_MOD = 0 means: CAP_ARRAY_DELTA is in use -> Apply compensation
-            // XOSC_CAPARRAY_DELTA is located in bit[15:8] of ccfg_ModeConfReg
-            // Note: HW_REV_DEPENDENT_IMPLEMENTATION. Field width is not given by
-            // a define and sign extention must therefore be hardcoded.
-            // ( A small testprogram is created vrifying the code lines below:
-            //   Ref.: ..\test\small_standalone_test_programs\CapArrayDeltaAdjust_test.c)
-            i32CustomerDeltaAdjust = ((int32_t)ccfg_ModeConfReg << 16 ) >> 24;
+    i32CustomerDeltaAdjust = 0;
+    if (( ccfg_ModeConfReg & CCFG_MODE_CONF_XOSC_CAP_MOD ) == 0 ) {
+        // XOSC_CAP_MOD = 0 means: CAP_ARRAY_DELTA is in use -> Apply compensation
+        // XOSC_CAPARRAY_DELTA is located in bit[15:8] of ccfg_ModeConfReg
+        // Note: HW_REV_DEPENDENT_IMPLEMENTATION. Field width is not given by
+        // a define and sign extension must therefore be hardcoded.
+        // ( A small test program is created verifying the code lines below:
+        //   Ref.: ..\test\small_standalone_test_programs\CapArrayDeltaAdjust_test.c)
+        i32CustomerDeltaAdjust = ((int32_t)ccfg_ModeConfReg << 16 ) >> 24;
 
-            while ( i32CustomerDeltaAdjust < 0 ) {
-                ui32XoscHfCol >>= 1;                              // COL 1 step down
-                if ( ui32XoscHfCol == 0 ) {                       // if COL below minimum
-                    ui32XoscHfCol = 0xFFFF;                       //   Set COL to maximum
-                    ui32XoscHfRow >>= 1;                          //   ROW 1 step down
-                    if ( ui32XoscHfRow == 0 ) {                   // if ROW below minimum
-                       ui32XoscHfRow = 1;                         //   Set both ROW and COL
-                       ui32XoscHfCol = 1;                         //   to minimum
-                    }
+        while ( i32CustomerDeltaAdjust < 0 ) {
+            ui32XoscHfCol >>= 1;                              // COL 1 step down
+            if ( ui32XoscHfCol == 0 ) {                       // if COL below minimum
+                ui32XoscHfCol = 0xFFFF;                       //   Set COL to maximum
+                ui32XoscHfRow >>= 1;                          //   ROW 1 step down
+                if ( ui32XoscHfRow == 0 ) {                   // if ROW below minimum
+                   ui32XoscHfRow = 1;                         //   Set both ROW and COL
+                   ui32XoscHfCol = 1;                         //   to minimum
                 }
-                i32CustomerDeltaAdjust++;
             }
-            while ( i32CustomerDeltaAdjust > 0 ) {
-                ui32XoscHfCol = ( ui32XoscHfCol << 1 ) | 1;       // COL 1 step up
-                if ( ui32XoscHfCol > 0xFFFF ) {                   // if COL abowe maximum
-                    ui32XoscHfCol = 1;                            //   Set COL to minimum
-                    ui32XoscHfRow = ( ui32XoscHfRow << 1 ) | 1;   //   ROW 1 step up
-                    if ( ui32XoscHfRow > 0xF ) {                  // if ROW abowe maximum
-                       ui32XoscHfRow = 0xF;                       //   Set both ROW and COL
-                       ui32XoscHfCol = 0xFFFF;                    //   to maximum
-                    }
-                }
-                i32CustomerDeltaAdjust--;
-            }
+            i32CustomerDeltaAdjust++;
         }
-
-        ui32TrimValue = (( ui32XoscHfRow << DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_ROW_Q12_S    ) |
-                         ( ui32XoscHfCol << DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_COLUMN_Q12_S )   );
+        while ( i32CustomerDeltaAdjust > 0 ) {
+            ui32XoscHfCol = ( ui32XoscHfCol << 1 ) | 1;       // COL 1 step up
+            if ( ui32XoscHfCol > 0xFFFF ) {                   // if COL above maximum
+                ui32XoscHfCol = 1;                            //   Set COL to minimum
+                ui32XoscHfRow = ( ui32XoscHfRow << 1 ) | 1;   //   ROW 1 step up
+                if ( ui32XoscHfRow > 0xF ) {                  // if ROW above maximum
+                   ui32XoscHfRow = 0xF;                       //   Set both ROW and COL
+                   ui32XoscHfCol = 0xFFFF;                    //   to maximum
+                }
+            }
+            i32CustomerDeltaAdjust--;
+        }
     }
+
+    ui32TrimValue = (( ui32XoscHfRow << DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_ROW_Q12_S    ) |
+                     ( ui32XoscHfCol << DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_COLUMN_Q12_S )   );
 
     return (ui32TrimValue);
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the RCOSCLF_RTUNE_TRIM and the
-//! RCOSCLF_CTUNE_TRIM bit fields in the XOSCLF_RCOSCLF_CTRL register in OSC_DIG
+//! \brief Returns the trim value to be used for the RCOSCLF_RTUNE_TRIM and the
+//! RCOSCLF_CTUNE_TRIM bit fields in the XOSCLF_RCOSCLF_CTRL register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForRcOscLfRtuneCtuneTrim(uint32_t ui32Fcfg1Revision)
+GetTrimForRcOscLfRtuneCtuneTrim( void )
 {
     uint32_t ui32TrimValue;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Use hardcoded trim value
-        ui32TrimValue = 0x00D8;
-    } else {
-        // Use device specific trim values located in factory configuration
-        // area
-        ui32TrimValue =
-            ((HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP) &
-              FCFG1_CONFIG_OSC_TOP_RCOSCLF_CTUNE_TRIM_M)>>
-              FCFG1_CONFIG_OSC_TOP_RCOSCLF_CTUNE_TRIM_S)<<
-                DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_S;
+    // Use device specific trim values located in factory configuration
+    // area
+    ui32TrimValue =
+        ((HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP) &
+          FCFG1_CONFIG_OSC_TOP_RCOSCLF_CTUNE_TRIM_M)>>
+          FCFG1_CONFIG_OSC_TOP_RCOSCLF_CTUNE_TRIM_S)<<
+            DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_S;
 
-        ui32TrimValue |=
-            ((HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP) &
-              FCFG1_CONFIG_OSC_TOP_RCOSCLF_RTUNE_TRIM_M)>>
-              FCFG1_CONFIG_OSC_TOP_RCOSCLF_RTUNE_TRIM_S)<<
-                DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_S;
-    }
+    ui32TrimValue |=
+        ((HWREG(FCFG1_BASE + FCFG1_O_CONFIG_OSC_TOP) &
+          FCFG1_CONFIG_OSC_TOP_RCOSCLF_RTUNE_TRIM_M)>>
+          FCFG1_CONFIG_OSC_TOP_RCOSCLF_RTUNE_TRIM_S)<<
+            DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_S;
 
     return(ui32TrimValue);
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the XOSC_HF_IBIASTHERM bit field in
-//! the ANABYPASS_VALUE2 register in OSC_DIG
+//! \brief Returns the trim value to be used for the XOSC_HF_IBIASTHERM bit field in
+//! the ANABYPASS_VALUE2 register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForXoscHfIbiastherm(uint32_t ui32Fcfg1Revision)
+GetTrimForXoscHfIbiastherm( void )
 {
     uint32_t ui32TrimValue;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Use hardcoded trim value
-        ui32TrimValue = 0x03FF;
-    } else {
-        // Use device specific trim value located in factory configuration
-        // area
-        ui32TrimValue =
-            (HWREG(FCFG1_BASE + FCFG1_O_ANABYPASS_VALUE2) &
-             FCFG1_ANABYPASS_VALUE2_XOSC_HF_IBIASTHERM_M)>>
-             FCFG1_ANABYPASS_VALUE2_XOSC_HF_IBIASTHERM_S;
-    }
+    // Use device specific trim value located in factory configuration
+    // area
+    ui32TrimValue =
+        (HWREG(FCFG1_BASE + FCFG1_O_ANABYPASS_VALUE2) &
+         FCFG1_ANABYPASS_VALUE2_XOSC_HF_IBIASTHERM_M)>>
+         FCFG1_ANABYPASS_VALUE2_XOSC_HF_IBIASTHERM_S;
 
     return(ui32TrimValue);
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the AMPCOMP_TH2 register in OSC_DIG
+//! \brief Returns the trim value to be used for the AMPCOMP_TH2 register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForAmpcompTh2(uint32_t ui32Fcfg1Revision)
+GetTrimForAmpcompTh2( void )
 {
     uint32_t ui32TrimValue;
     uint32_t ui32Fcfg1Value;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Use hardcoded trim values
-        ui32TrimValue = 0x68880000;
-    } else {
-        // Use device specific trim value located in factory configuration
-        // area. All defined register bit fields have corresponding trim
-        // value in the factory configuration area
-        ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_AMPCOMP_TH2);
-        ui32TrimValue = ((ui32Fcfg1Value &
-                          FCFG1_AMPCOMP_TH2_LPMUPDATE_LTH_M)>>
-                          FCFG1_AMPCOMP_TH2_LPMUPDATE_LTH_S)<<
-                       DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_LTH_S;
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH2_LPMUPDATE_HTM_M)>>
-                            FCFG1_AMPCOMP_TH2_LPMUPDATE_HTM_S)<<
-                         DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_HTH_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_LPM_M)>>
-                            FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_LPM_S)<<
-                         DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_LPM_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_HPM_M)>>
-                            FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_HPM_S)<<
-                         DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_HPM_S);
-    }
+    // Use device specific trim value located in factory configuration
+    // area. All defined register bit fields have corresponding trim
+    // value in the factory configuration area
+    ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_AMPCOMP_TH2);
+    ui32TrimValue = ((ui32Fcfg1Value &
+                      FCFG1_AMPCOMP_TH2_LPMUPDATE_LTH_M)>>
+                      FCFG1_AMPCOMP_TH2_LPMUPDATE_LTH_S)<<
+                   DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_LTH_S;
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH2_LPMUPDATE_HTM_M)>>
+                        FCFG1_AMPCOMP_TH2_LPMUPDATE_HTM_S)<<
+                     DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_HTH_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_LPM_M)>>
+                        FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_LPM_S)<<
+                     DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_LPM_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_HPM_M)>>
+                        FCFG1_AMPCOMP_TH2_ADC_COMP_AMPTH_HPM_S)<<
+                     DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_HPM_S);
 
     return(ui32TrimValue);
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the AMPCOMP_TH1 register in OSC_DIG
+//! \brief Returns the trim value to be used for the AMPCOMP_TH1 register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForAmpcompTh1(uint32_t ui32Fcfg1Revision)
+GetTrimForAmpcompTh1( void )
 {
     uint32_t ui32TrimValue;
     uint32_t ui32Fcfg1Value;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Use hardcoded trim values
-        ui32TrimValue = 0x0068768A;
-    } else {
-        // Use device specific trim values located in factory configuration
-        // area. All defined register bit fields have a corresponding trim
-        // value in the factory configuration area
-        ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_AMPCOMP_TH1);
-        ui32TrimValue = (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH1_HPMRAMP3_LTH_M)>>
-                            FCFG1_AMPCOMP_TH1_HPMRAMP3_LTH_S)<<
-                         DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH1_HPMRAMP3_HTH_M)>>
-                            FCFG1_AMPCOMP_TH1_HPMRAMP3_HTH_S)<<
-                         DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_HTH_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH1_IBIASCAP_LPTOHP_OL_CNT_M)>>
-                            FCFG1_AMPCOMP_TH1_IBIASCAP_LPTOHP_OL_CNT_S)<<
-                         DDI_0_OSC_AMPCOMPTH1_IBIASCAP_LPTOHP_OL_CNT_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_TH1_HPMRAMP1_TH_M)>>
-                            FCFG1_AMPCOMP_TH1_HPMRAMP1_TH_S)<<
-                         DDI_0_OSC_AMPCOMPTH1_HPMRAMP1_TH_S);
-    }
+    // Use device specific trim values located in factory configuration
+    // area. All defined register bit fields have a corresponding trim
+    // value in the factory configuration area
+    ui32Fcfg1Value = HWREG(FCFG1_BASE + FCFG1_O_AMPCOMP_TH1);
+    ui32TrimValue = (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH1_HPMRAMP3_LTH_M)>>
+                        FCFG1_AMPCOMP_TH1_HPMRAMP3_LTH_S)<<
+                     DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH1_HPMRAMP3_HTH_M)>>
+                        FCFG1_AMPCOMP_TH1_HPMRAMP3_HTH_S)<<
+                     DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_HTH_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH1_IBIASCAP_LPTOHP_OL_CNT_M)>>
+                        FCFG1_AMPCOMP_TH1_IBIASCAP_LPTOHP_OL_CNT_S)<<
+                     DDI_0_OSC_AMPCOMPTH1_IBIASCAP_LPTOHP_OL_CNT_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_TH1_HPMRAMP1_TH_M)>>
+                        FCFG1_AMPCOMP_TH1_HPMRAMP1_TH_S)<<
+                     DDI_0_OSC_AMPCOMPTH1_HPMRAMP1_TH_S);
 
     return(ui32TrimValue);
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the AMPCOMP_CTRL register in OSC_DIG
+//! \brief Returns the trim value to be used for the AMPCOMP_CTRL register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForAmpcompCtrl(uint32_t ui32Fcfg1Revision)
+GetTrimForAmpcompCtrl( uint32_t ui32Fcfg1Revision )
 {
     uint32_t ui32TrimValue    ;
     uint32_t ui32Fcfg1Value   ;
@@ -818,69 +937,64 @@ GetTrimForAmpcompCtrl(uint32_t ui32Fcfg1Revision)
     uint32_t modeConf1        ;
     int32_t  deltaAdjust      ;
 
-    if ( ui32Fcfg1Revision == 0 ) {
-        // Use hardcoded trim values
-        ui32TrimValue = 0x00713F27;
-    } else {
-        // Use device specific trim valuse loacted in factory configuration
-        // area. Register bit fields without trim values in the factory
-        // configuration area will be set to the value of 0.
-        ui32Fcfg1Value = HWREG( FCFG1_BASE + FCFG1_O_AMPCOMP_CTRL1 );
+    // Use device specific trim values located in factory configuration
+    // area. Register bit fields without trim values in the factory
+    // configuration area will be set to the value of 0.
+    ui32Fcfg1Value = HWREG( FCFG1_BASE + FCFG1_O_AMPCOMP_CTRL1 );
 
-        ibiasOffset    = ( ui32Fcfg1Value &
-                           FCFG1_AMPCOMP_CTRL1_IBIAS_OFFSET_M ) >>
-                           FCFG1_AMPCOMP_CTRL1_IBIAS_OFFSET_S ;
-        ibiasInit      = ( ui32Fcfg1Value &
-                           FCFG1_AMPCOMP_CTRL1_IBIAS_INIT_M ) >>
-                           FCFG1_AMPCOMP_CTRL1_IBIAS_INIT_S ;
+    ibiasOffset    = ( ui32Fcfg1Value &
+                       FCFG1_AMPCOMP_CTRL1_IBIAS_OFFSET_M ) >>
+                       FCFG1_AMPCOMP_CTRL1_IBIAS_OFFSET_S ;
+    ibiasInit      = ( ui32Fcfg1Value &
+                       FCFG1_AMPCOMP_CTRL1_IBIAS_INIT_M ) >>
+                       FCFG1_AMPCOMP_CTRL1_IBIAS_INIT_S ;
 
-        if (( HWREG( CCFG_BASE + CCFG_O_SIZE_AND_DIS_FLAGS ) & CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR_M ) == 0 ) {
-            // Adjust with DELTA_IBIAS_OFFSET and DELTA_IBIAS_INIT from CCFG
-            modeConf1   = HWREG( CCFG_BASE + CCFG_O_MODE_CONF_1 );
+    if (( HWREG( CCFG_BASE + CCFG_O_SIZE_AND_DIS_FLAGS ) & CCFG_SIZE_AND_DIS_FLAGS_DIS_XOSC_OVR_M ) == 0 ) {
+        // Adjust with DELTA_IBIAS_OFFSET and DELTA_IBIAS_INIT from CCFG
+        modeConf1   = HWREG( CCFG_BASE + CCFG_O_MODE_CONF_1 );
 
-            // Both fields are signed 4-bit values. This is an assumption when doing the sign extention.
-            deltaAdjust = (int32_t)modeConf1 << ( 32 - CCFG_MODE_CONF_1_DELTA_IBIAS_OFFSET_S - 4 ) >> 28;
-            deltaAdjust += (int32_t)ibiasOffset;
-            if ( deltaAdjust < 0 ) {
-               deltaAdjust = 0;
-            }
-            if ( deltaAdjust > ( DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S )) {
-                deltaAdjust  = ( DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S );
-            }
-            ibiasOffset = (uint32_t)deltaAdjust;
-
-            deltaAdjust = (int32_t)modeConf1 << ( 32 - CCFG_MODE_CONF_1_DELTA_IBIAS_INIT_S - 4 ) >> 28;
-            deltaAdjust += (int32_t)ibiasInit;
-            if ( deltaAdjust < 0 ) {
-               deltaAdjust = 0;
-            }
-            if ( deltaAdjust > ( DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S )) {
-                deltaAdjust  = ( DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S );
-            }
-            ibiasInit = (uint32_t)deltaAdjust;
+        // Both fields are signed 4-bit values. This is an assumption when doing the sign extension.
+        deltaAdjust = ((int32_t)modeConf1 << ( 32 - CCFG_MODE_CONF_1_DELTA_IBIAS_OFFSET_S - 4 )) >> 28;
+        deltaAdjust += (int32_t)ibiasOffset;
+        if ( deltaAdjust < 0 ) {
+           deltaAdjust = 0;
         }
-        ui32TrimValue = ( ibiasOffset << DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S ) |
-                        ( ibiasInit   << DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S   ) ;
-
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_CTRL1_LPM_IBIAS_WAIT_CNT_FINAL_M)>>
-                            FCFG1_AMPCOMP_CTRL1_LPM_IBIAS_WAIT_CNT_FINAL_S)<<
-                           DDI_0_OSC_AMPCOMPCTL_LPM_IBIAS_WAIT_CNT_FINAL_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_CTRL1_CAP_STEP_M)>>
-                            FCFG1_AMPCOMP_CTRL1_CAP_STEP_S)<<
-                           DDI_0_OSC_AMPCOMPCTL_CAP_STEP_S);
-        ui32TrimValue |= (((ui32Fcfg1Value &
-                            FCFG1_AMPCOMP_CTRL1_IBIASCAP_HPTOLP_OL_CNT_M)>>
-                            FCFG1_AMPCOMP_CTRL1_IBIASCAP_HPTOLP_OL_CNT_S)<<
-                           DDI_0_OSC_AMPCOMPCTL_IBIASCAP_HPTOLP_OL_CNT_S);
-
-        if ( ui32Fcfg1Revision >= 0x00000022 ) {
-            ui32TrimValue |= ((( ui32Fcfg1Value &
-                FCFG1_AMPCOMP_CTRL1_AMPCOMP_REQ_MODE_M ) >>
-                FCFG1_AMPCOMP_CTRL1_AMPCOMP_REQ_MODE_S ) <<
-               DDI_0_OSC_AMPCOMPCTL_AMPCOMP_REQ_MODE_S );
+        if ( deltaAdjust > ( DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S )) {
+            deltaAdjust  = ( DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S );
         }
+        ibiasOffset = (uint32_t)deltaAdjust;
+
+        deltaAdjust = ((int32_t)modeConf1 << ( 32 - CCFG_MODE_CONF_1_DELTA_IBIAS_INIT_S - 4 )) >> 28;
+        deltaAdjust += (int32_t)ibiasInit;
+        if ( deltaAdjust < 0 ) {
+           deltaAdjust = 0;
+        }
+        if ( deltaAdjust > ( DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S )) {
+            deltaAdjust  = ( DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_M >> DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S );
+        }
+        ibiasInit = (uint32_t)deltaAdjust;
+    }
+    ui32TrimValue = ( ibiasOffset << DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S ) |
+                    ( ibiasInit   << DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S   ) ;
+
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_CTRL1_LPM_IBIAS_WAIT_CNT_FINAL_M)>>
+                        FCFG1_AMPCOMP_CTRL1_LPM_IBIAS_WAIT_CNT_FINAL_S)<<
+                       DDI_0_OSC_AMPCOMPCTL_LPM_IBIAS_WAIT_CNT_FINAL_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_CTRL1_CAP_STEP_M)>>
+                        FCFG1_AMPCOMP_CTRL1_CAP_STEP_S)<<
+                       DDI_0_OSC_AMPCOMPCTL_CAP_STEP_S);
+    ui32TrimValue |= (((ui32Fcfg1Value &
+                        FCFG1_AMPCOMP_CTRL1_IBIASCAP_HPTOLP_OL_CNT_M)>>
+                        FCFG1_AMPCOMP_CTRL1_IBIASCAP_HPTOLP_OL_CNT_S)<<
+                       DDI_0_OSC_AMPCOMPCTL_IBIASCAP_HPTOLP_OL_CNT_S);
+
+    if ( ui32Fcfg1Revision >= 0x00000022 ) {
+        ui32TrimValue |= ((( ui32Fcfg1Value &
+            FCFG1_AMPCOMP_CTRL1_AMPCOMP_REQ_MODE_M ) >>
+            FCFG1_AMPCOMP_CTRL1_AMPCOMP_REQ_MODE_S ) <<
+           DDI_0_OSC_AMPCOMPCTL_AMPCOMP_REQ_MODE_S );
     }
 
     return(ui32TrimValue);
@@ -888,7 +1002,7 @@ GetTrimForAmpcompCtrl(uint32_t ui32Fcfg1Revision)
 
 //*****************************************************************************
 //
-//! Returns the trim value from FCFG1 to be used as DBLR_LOOP_FILTER_RESET_VOLTAGE setting
+//! \brief Returns the trim value from FCFG1 to be used as DBLR_LOOP_FILTER_RESET_VOLTAGE setting.
 //
 //*****************************************************************************
 static uint32_t
@@ -907,13 +1021,13 @@ GetTrimForDblrLoopFilterResetVoltage( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-//! Returns the trim value from FCFG1 to be used as ADC_SH_MODE_EN setting
+//! \brief Returns the trim value from FCFG1 to be used as ADC_SH_MODE_EN setting.
 //
 //*****************************************************************************
 static uint32_t
 GetTrimForAdcShModeEn( uint32_t ui32Fcfg1Revision )
 {
-   uint32_t getTrimForAdcShModeEnValue = 1; // Recommanded default setting
+   uint32_t getTrimForAdcShModeEnValue = 1; // Recommended default setting
 
    if ( ui32Fcfg1Revision >= 0x00000022 ) {
       getTrimForAdcShModeEnValue = ( HWREG( FCFG1_BASE + FCFG1_O_OSC_CONF ) &
@@ -926,13 +1040,13 @@ GetTrimForAdcShModeEn( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-//! Returns the trim value from FCFG1 to be used as ADC_SH_VBUF_EN setting
+//! \brief Returns the trim value from FCFG1 to be used as ADC_SH_VBUF_EN setting.
 //
 //*****************************************************************************
 static uint32_t
 GetTrimForAdcShVbufEn( uint32_t ui32Fcfg1Revision )
 {
-   uint32_t getTrimForAdcShVbufEnValue = 1; // Recommanded default setting
+   uint32_t getTrimForAdcShVbufEnValue = 1; // Recommended default setting
 
    if ( ui32Fcfg1Revision >= 0x00000022 ) {
       getTrimForAdcShVbufEnValue = ( HWREG( FCFG1_BASE + FCFG1_O_OSC_CONF ) &
@@ -945,13 +1059,13 @@ GetTrimForAdcShVbufEn( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the XOSCHFCTL register in OSC_DIG
+//! \brief Returns the trim value to be used for the XOSCHFCTL register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
 GetTrimForXoscHfCtl( uint32_t ui32Fcfg1Revision )
 {
-   uint32_t getTrimForXoschfCtlValue = 0; // Recommanded default setting
+   uint32_t getTrimForXoschfCtlValue = 0; // Recommended default setting
    uint32_t fcfg1Data;
 
    if ( ui32Fcfg1Revision >= 0x00000020 ) {
@@ -977,36 +1091,31 @@ GetTrimForXoscHfCtl( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used as OSC_DIG:CTL1.XOSC_HF_FAST_START
+//! \brief Returns the trim value to be used as OSC_DIG:CTL1.XOSC_HF_FAST_START.
 //
 //*****************************************************************************
 static uint32_t
-GetTrimForXoscHfFastStart( uint32_t ui32Fcfg1Revision )
+GetTrimForXoscHfFastStart( void )
 {
    uint32_t ui32XoscHfFastStartValue   ;
 
-   if ( ui32Fcfg1Revision == 0 ) {
-      // Use reset value
-      ui32XoscHfFastStartValue = 0;
-   } else {
-      // Get value from FCFG1
-      ui32XoscHfFastStartValue = ( HWREG( FCFG1_BASE + FCFG1_O_OSC_CONF ) &
-         FCFG1_OSC_CONF_XOSC_HF_FAST_START_M ) >>
-         FCFG1_OSC_CONF_XOSC_HF_FAST_START_S;
-   }
+   // Get value from FCFG1
+   ui32XoscHfFastStartValue = ( HWREG( FCFG1_BASE + FCFG1_O_OSC_CONF ) &
+      FCFG1_OSC_CONF_XOSC_HF_FAST_START_M ) >>
+      FCFG1_OSC_CONF_XOSC_HF_FAST_START_S;
 
    return ( ui32XoscHfFastStartValue );
 }
 
 //*****************************************************************************
 //
-//! Returns the trim value to be used for the RADCEXTCFG register in OSC_DIG
+//! \brief Returns the trim value to be used for the RADCEXTCFG register in OSC_DIG.
 //
 //*****************************************************************************
 static uint32_t
 GetTrimForRadcExtCfg( uint32_t ui32Fcfg1Revision )
 {
-   uint32_t getTrimForRadcExtCfgValue = 0x403F8000; // Recommanded default setting
+   uint32_t getTrimForRadcExtCfgValue = 0x403F8000; // Recommended default setting
    uint32_t fcfg1Data;
 
    if ( ui32Fcfg1Revision >= 0x00000020 ) {
@@ -1032,7 +1141,7 @@ GetTrimForRadcExtCfg( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-// Returns the FCFG1_OSC_CONF_ATESTLF_RCOSCLF_IBIAS_TRIM
+//! \brief Returns the FCFG1 OSC_CONF_ATESTLF_RCOSCLF_IBIAS_TRIM.
 //
 //*****************************************************************************
 static uint32_t
@@ -1051,8 +1160,8 @@ GetTrimForRcOscLfIBiasTrim( uint32_t ui32Fcfg1Revision )
 
 //*****************************************************************************
 //
-// Returns XOSCLF_REGULATOR_TRIM and XOSCLF_CMIRRWR_RATIO as one packet
-// spanning bits [5:0] in the returned value.
+//! \brief Returns XOSCLF_REGULATOR_TRIM and XOSCLF_CMIRRWR_RATIO as one packet
+//! spanning bits [5:0] in the returned value.
 //
 //*****************************************************************************
 static uint32_t

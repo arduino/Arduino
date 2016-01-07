@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       flash.h
-*  Revised:        2015-02-03 14:18:59 +0100 (ti, 03 feb 2015)
-*  Revision:       42551
+*  Revised:        2015-09-21 15:19:36 +0200 (Mon, 21 Sep 2015)
+*  Revision:       44629
 *
 *  Description:    Defines and prototypes for the Flash driver.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_control_group
+//! @{
 //! \addtogroup flash_api
 //! @{
 //
@@ -80,10 +82,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define FlashPowerModeSet               NOROM_FlashPowerModeSet
     #define FlashPowerModeGet               NOROM_FlashPowerModeGet
     #define FlashProtectionSet              NOROM_FlashProtectionSet
@@ -91,7 +91,6 @@ extern "C"
     #define FlashProtectionSave             NOROM_FlashProtectionSave
     #define FlashSectorErase                NOROM_FlashSectorErase
     #define FlashProgram                    NOROM_FlashProgram
-    #define FlashProgramNowait              NOROM_FlashProgramNowait
     #define FlashEfuseReadRow               NOROM_FlashEfuseReadRow
     #define FlashDisableSectorsForWrite     NOROM_FlashDisableSectorsForWrite
 #endif
@@ -625,14 +624,20 @@ FlashIntStatus(void)
 //! asserts. This must be done in the interrupt handler to keep it from being
 //! called again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the CM3, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately re-entered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32IntFlags is the bit mask of the interrupt sources to be cleared.
 //! Can be any of:
@@ -770,7 +775,7 @@ extern void FlashDisableSectorsForWrite(void);
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_FlashPowerModeSet
         #undef  FlashPowerModeSet
@@ -800,10 +805,6 @@ extern void FlashDisableSectorsForWrite(void);
         #undef  FlashProgram
         #define FlashProgram                    ROM_FlashProgram
     #endif
-    #ifdef ROM_FlashProgramNowait
-        #undef  FlashProgramNowait
-        #define FlashProgramNowait              ROM_FlashProgramNowait
-    #endif
     #ifdef ROM_FlashEfuseReadRow
         #undef  FlashEfuseReadRow
         #define FlashEfuseReadRow               ROM_FlashEfuseReadRow
@@ -828,6 +829,7 @@ extern void FlashDisableSectorsForWrite(void);
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

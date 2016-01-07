@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_wuc.c
-*  Revised:        2015-02-13 15:47:13 +0100 (fr, 13 feb 2015)
-*  Revision:       42724
+*  Revised:        2015-06-01 15:19:54 +0200 (Mon, 01 Jun 2015)
+*  Revision:       43689
 *
 *  Description:    Driver for the AUX Wakeup Controller.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  AUXWUCClockEnable
     #define AUXWUCClockEnable               NOROM_AUXWUCClockEnable
     #undef  AUXWUCClockDisable
@@ -69,7 +69,7 @@ AUXWUCClockEnable(uint32_t ui32Clocks)
     ASSERT((ui32Clocks & AUX_WUC_ADI_CLOCK) ||
            (ui32Clocks & AUX_WUC_OSCCTRL_CLOCK) ||
            (ui32Clocks & AUX_WUC_TDCIF_CLOCK) ||
-           (ui32Clocks & AUX_WUC_SOC_CLOCK) ||
+           (ui32Clocks & AUX_WUC_ANAIF_CLOCK) ||
            (ui32Clocks & AUX_WUC_TIMER_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO0_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO1_CLOCK) ||
@@ -118,7 +118,7 @@ AUXWUCClockDisable(uint32_t ui32Clocks)
     ASSERT((ui32Clocks & AUX_WUC_ADI_CLOCK) ||
            (ui32Clocks & AUX_WUC_OSCCTRL_CLOCK) ||
            (ui32Clocks & AUX_WUC_TDCIF_CLOCK) ||
-           (ui32Clocks & AUX_WUC_SOC_CLOCK) ||
+           (ui32Clocks & AUX_WUC_ANAIF_CLOCK) ||
            (ui32Clocks & AUX_WUC_TIMER_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO0_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO1_CLOCK) ||
@@ -170,7 +170,7 @@ AUXWUCClockStatus(uint32_t ui32Clocks)
     ASSERT((ui32Clocks & AUX_WUC_ADI_CLOCK) ||
            (ui32Clocks & AUX_WUC_OSCCTRL_CLOCK) ||
            (ui32Clocks & AUX_WUC_TDCIF_CLOCK) ||
-           (ui32Clocks & AUX_WUC_SOC_CLOCK) ||
+           (ui32Clocks & AUX_WUC_ANAIF_CLOCK) ||
            (ui32Clocks & AUX_WUC_TIMER_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO0_CLOCK) ||
            (ui32Clocks & AUX_WUC_AIODIO1_CLOCK) ||
@@ -207,7 +207,7 @@ AUXWUCClockStatus(uint32_t ui32Clocks)
                                               AUX_WUC_MODCLKEN0_TDC ?
                                               true : false);
     }
-    if(ui32Clocks & AUX_WUC_SOC_CLOCK)
+    if(ui32Clocks & AUX_WUC_ANAIF_CLOCK)
     {
         bClockStatus = bClockStatus && (ui32ClockRegister &
                                               AUX_WUC_MODCLKEN0_ANAIF ?

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_wuc.c
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-04-28 11:13:22 +0200 (Tue, 28 Apr 2015)
+*  Revision:       43340
 *
 *  Description:    Driver for the AON Wake-Up Controller.
 *
@@ -44,11 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
-    #undef  AONWUCAuxSRamConfig
-    #define AONWUCAuxSRamConfig             NOROM_AONWUCAuxSRamConfig
-    #undef  AONWUCAuxWakeupEvent
-    #define AONWUCAuxWakeupEvent            NOROM_AONWUCAuxWakeupEvent
+#if !defined(DOXYGEN)
     #undef  AONWUCAuxReset
     #define AONWUCAuxReset                  NOROM_AONWUCAuxReset
     #undef  AONWUCRechargeCtrlConfigSet
@@ -60,86 +56,24 @@
 
 //*****************************************************************************
 //
-//! Configure the rentention on the AUX SRAM
-//
-//*****************************************************************************
-void
-AONWUCAuxSRamConfig(uint32_t ui32Retention)
-{
-
-    //
-    // Enable/disable the retention.
-    //
-    if(ui32Retention)
-    {
-        HWREG(AON_WUC_BASE + AON_WUC_O_AUXCFG) |= AON_WUC_AUXCFG_RAM_RET_EN;
-    }
-    else
-    {
-        HWREG(AON_WUC_BASE + AON_WUC_O_AUXCFG) &= ~AON_WUC_AUXCFG_RAM_RET_EN;
-    }
-}
-
-//*****************************************************************************
-//
-//! Control the wake up procedure of the AUX domain
-//
-//*****************************************************************************
-void
-AONWUCAuxWakeupEvent(uint32_t ui32Mode)
-{
-    uint32_t ui32Reg;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT((ui32Mode == AONWUC_AUX_WAKEUP_SWEVT) ||
-           (ui32Mode == AONWUC_AUX_WAKEUP) ||
-           (ui32Mode == AONWUC_AUX_ALLOW_SLEEP));
-
-    //
-    // Wake up the AUX domain.
-    //
-    ui32Reg = HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL);
-
-    if(ui32Mode == AONWUC_AUX_ALLOW_SLEEP)
-    {
-        ui32Reg &= ~AON_WUC_AUXCTL_AUX_FORCE_ON;
-    }
-    else
-    {
-        ui32Reg |= ui32Mode;
-    }
-
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) = ui32Reg;
-}
-
-//*****************************************************************************
-//
 //! Reset the AUX domain
 //
 //*****************************************************************************
 void
 AONWUCAuxReset(void)
 {
-    //
     // Reset the AUX domain.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) |= AON_WUC_AUXCTL_RESET_REQ;
+//  HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) |= AON_WUC_AUXCTL_RESET_REQ;  // ROM version
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCTL, AON_WUC_AUXCTL_RESET_REQ_BITN) = 1;
 
-    //
     // Wait for AON interface to be in sync.
-    //
     HWREG(AON_RTC_BASE + AON_RTC_O_SYNC);
 
-    //
     // De-assert reset on the AUX domain.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) &= ~AON_WUC_AUXCTL_RESET_REQ;
+//  HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) &= ~AON_WUC_AUXCTL_RESET_REQ;  // ROM version
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCTL, AON_WUC_AUXCTL_RESET_REQ_BITN) = 0;
 
-    //
     // Wait for AON interface to be in sync.
-    //
     HWREG(AON_RTC_BASE + AON_RTC_O_SYNC);
 }
 
@@ -181,12 +115,12 @@ AONWUCRechargeCtrlConfigSet(bool bAdaptEnable, uint32_t ui32AdaptRate,
                  AON_WUC_RECHARGECFG_C2_M);
 
     //
-    // Check if the recharge controller adaption algorithm should be active.
+    // Check if the recharge controller adaptation algorithm should be active.
     //
     if(bAdaptEnable)
     {
         //
-        // Calculate adaption parameters.
+        // Calculate adaptation parameters.
         //
         while(ui32AdaptRate)
         {
@@ -299,7 +233,7 @@ AONWUCOscConfig(uint32_t ui32Period)
         (ui32Exponent << AON_WUC_OSCCFG_PER_E_S);
 
     //
-    // Set the maximum reacharge period equal to the oscillator amplitude
+    // Set the maximum recharge period equal to the oscillator amplitude
     // calibration period.
     //
     ui32Reg = HWREG(AON_WUC_BASE + AON_WUC_O_RECHARGECFG);

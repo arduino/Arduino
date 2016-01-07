@@ -1,2 +1,2 @@
-COMPILER_TOOL = "/cygdrive/c/keil/mdk-arm_5_11a/ARM/ARMCC/bin/armcc"
-ARCHIVER_TOOL = "/cygdrive/c/keil/mdk-arm_5_11a/ARM/ARMCC/bin/armar"
+COMPILER_TOOL = "/cygdrive/c/Keil_v5/ARM/ARMCC/bin/armcc"
+ARCHIVER_TOOL = "/cygdrive/c/Keil_v5/ARM/ARMCC/bin/armar"

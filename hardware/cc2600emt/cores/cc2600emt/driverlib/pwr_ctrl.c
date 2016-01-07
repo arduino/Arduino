@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       pwr_ctrl.c
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-05-19 11:38:08 +0200 (Tue, 19 May 2015)
+*  Revision:       43528
 *
 *  Description:    Power Control driver.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  PowerCtrlStateSet
     #define PowerCtrlStateSet               NOROM_PowerCtrlStateSet
     #undef  PowerCtrlSourceSet
@@ -101,8 +101,8 @@ PowerCtrlStateSet(uint32_t ui32Powerstate)
         // Enable AUX power down
         // This will tell the system that no HF source is needed and will
         // allow the system to use the low-leakage/effect power supply.
-        // NB. This does not allow co-existence of an independent AUX
-        // controller.
+        // NB. This does not allow co-existence of an independent
+        // Sensor Controller.
         //
         AUXWUCPowerCtrl(AUX_WUC_POWER_DOWN);
         while(AONWUCPowerStatusGet() & AONWUC_AUX_POWER_ON);
@@ -146,7 +146,7 @@ PowerCtrlStateSet(uint32_t ui32Powerstate)
                            PRCM_DOMAIN_VIMS);
 
         //
-        // Turn off the MCU voltage domain. This will not take effect until CM3
+        // Turn off the MCU voltage domain. This will not take effect until System CPU
         // is in deep sleep.
         //
         PRCMMcuPowerOff();
@@ -207,7 +207,7 @@ PowerCtrlStateSet(uint32_t ui32Powerstate)
                            PRCM_DOMAIN_VIMS);
 
         //
-        // Turn off the MCU voltage domain. This will not take effect until CM3
+        // Turn off the MCU voltage domain. This will not take effect until System CPU
         // is in deep sleep.
         //
         PRCMMcuPowerOff();

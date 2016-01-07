@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ioc.h
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-11-17 14:14:34 +0100 (Tue, 17 Nov 2015)
+*  Revision:       45115
 *
 *  Description:    Defines and prototypes for the IO Controller.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup ioc_api
 //! @{
 //
@@ -79,10 +81,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define IOCPortConfigureSet             NOROM_IOCPortConfigureSet
     #define IOCPortConfigureGet             NOROM_IOCPortConfigureGet
     #define IOCIOShutdownSet                NOROM_IOCIOShutdownSet
@@ -102,7 +102,6 @@ extern "C"
     #define IOCPinTypeSsiMaster             NOROM_IOCPinTypeSsiMaster
     #define IOCPinTypeSsiSlave              NOROM_IOCPinTypeSsiSlave
     #define IOCPinTypeI2c                   NOROM_IOCPinTypeI2c
-    #define IOCPinTypeSpis                  NOROM_IOCPinTypeSpis
     #define IOCPinTypeAux                   NOROM_IOCPinTypeAux
 #endif
 
@@ -150,7 +149,7 @@ extern "C"
 #define IOID_29                 0x0000001D  // IO Id 29
 #define IOID_30                 0x0000001E  // IO Id 30
 #define IOID_31                 0x0000001F  // IO Id 31
-#define IOID_UNUSED             0xFFFFFFFF  // Unsued IO Id
+#define IOID_UNUSED             0xFFFFFFFF  // Unused IO Id
 
 #define IOC_IOID_MASK           0x000000FF  // IOC IO Id bit mask
 
@@ -167,10 +166,6 @@ extern "C"
 //
 //*****************************************************************************
 #define IOC_PORT_GPIO             0x00000000  // Default general purpose IO usage
-#define IOC_PORT_AON_SCS          0x00000001  // AON SPI-S SCS Pin
-#define IOC_PORT_AON_SCK          0x00000002  // AON SPI-S SCK Pin
-#define IOC_PORT_AON_SDI          0x00000003  // AON SPI-S SDI Pin
-#define IOC_PORT_AON_SDO          0x00000004  // AON SPI-S SDO Pin
 #define IOC_PORT_AON_CLK32K       0x00000007  // AON External 32kHz clock
 #define IOC_PORT_AUX_IO           0x00000008  // AUX IO Pin
 #define IOC_PORT_MCU_SSI0_RX      0x00000009  // MCU SSI0 Receive Pin
@@ -280,7 +275,6 @@ extern "C"
 #define IOC_CURRENT_2MA         0x00000000  // 2mA drive strength
 #define IOC_CURRENT_4MA         0x00000400  // 4mA drive strength
 #define IOC_CURRENT_8MA         0x00000800  // 4 or 8mA drive strength
-#define IOC_CURRENT_16MA        0x00000C00  // Up to 16mA drive strength
 
 #define IOC_STRENGTH_AUTO       0x00000000  // Automatic Drive Strength
                                             // (2/4/8 mA @ VVDS)
@@ -288,7 +282,7 @@ extern "C"
                                             // (2/4/8 mA @ 1.8V)
 #define IOC_STRENGTH_MED        0x00000200  // Medium Drive Strength
                                             // (2/4/8 mA @ 2.5V)
-#define IOC_STRENGTH_MIN        0x00000100  // Miniumm Drive Strength
+#define IOC_STRENGTH_MIN        0x00000100  // Minimum Drive Strength
                                             // (2/4/8 mA @ 3.3V)
 //*****************************************************************************
 //
@@ -338,10 +332,6 @@ extern "C"
 //! \param ui32PortId selects the functional IO port to connect.
 //! The available IO ports are:
 //! - \ref IOC_PORT_GPIO
-//! - \ref IOC_PORT_AON_SCS
-//! - \ref IOC_PORT_AON_SCK
-//! - \ref IOC_PORT_AON_SDI
-//! - \ref IOC_PORT_AON_SDO
 //! - \ref IOC_PORT_AON_CLK32K
 //! - \ref IOC_PORT_AUX_IO
 //! - \ref IOC_PORT_MCU_SSI0_RX
@@ -417,7 +407,6 @@ extern "C"
 //!   - \ref IOC_CURRENT_2MA
 //!   - \ref IOC_CURRENT_4MA
 //!   - \ref IOC_CURRENT_8MA
-//!   - \ref IOC_CURRENT_16MA
 //! - Drive strength mode:
 //!   - \ref IOC_STRENGTH_AUTO
 //!   - \ref IOC_STRENGTH_MAX
@@ -598,24 +587,36 @@ extern void IOCIOSlewCtrlSet(uint32_t ui32IOId, uint32_t ui32SlewEnable);
 
 //*****************************************************************************
 //
-//! \brief Configure the drive strength and maxium current of an IO port.
+//! \brief Configure the drive strength source and current mode of an IO port.
 //!
-//! This function sets the drive strength of an IO port.
+//! The drive strength of an IO is configured by a combination of multiple settings
+//! in several modules. The drive strength source \ti_code{ui32DrvStrength} is used for controlling
+//! drive strength at different supply levels. When set to AUTO the battery monitor
+//! (BATMON) adjusts the drive strength to compensate for changes in supply voltage
+//! in order to keep IO current constant. Alternatively, drive strength source can
+//! be controlled manually by selecting one of three options each of which is configurable
+//! in the AON IOC by \ref AONIOCDriveStrengthSet().
+//!
+//! Each drive strength source has three current modes: Low-Current (LC), High-Current (HC), and
+//! Extended-Current (EC), and typically drive strength doubles when selecting a higher mode.
+//! I.e. EC = 2 x HC = 4 x LC.
+//!
+//! \note Not all IOs support Extended-Current mode. See datasheet for more information
+//! on the specific device.
 //!
 //! \param ui32IOId defines the IO to configure.
 //! - \ref IOID_0
 //! - ...
 //! - \ref IOID_31
-//! \param ui32IOCurrent sets the IO current on the IO port.
-//! - \ref IOC_CURRENT_2MA
-//! - \ref IOC_CURRENT_4MA
-//! - \ref IOC_CURRENT_8MA
-//! - \ref IOC_CURRENT_16MA
-//! \param ui32DrvStrength sets the drive strength for the IO port.
-//! - \ref IOC_STRENGTH_AUTO
-//! - \ref IOC_STRENGTH_MAX
-//! - \ref IOC_STRENGTH_MED
-//! - \ref IOC_STRENGTH_MIN
+//! \param ui32IOCurrent selects the IO current mode.
+//! - \ref IOC_CURRENT_2MA : Low-Current mode. Min 2 mA when \ti_code{ui32DrvStrength} is set to AUTO.
+//! - \ref IOC_CURRENT_4MA : High-Current mode. Min 4 mA when \ti_code{ui32DrvStrength} is set to AUTO.
+//! - \ref IOC_CURRENT_8MA : Extended-Current mode. Min 8 mA for double drive strength IOs (min 4 mA for normal IOs) when \ti_code{ui32DrvStrength} is set to AUTO.
+//! \param ui32DrvStrength sets the source for drive strength control of the IO port.
+//! - \ref IOC_STRENGTH_AUTO : Automatic drive strength, controlled by AON BATMON based on battery voltage (default).
+//! - \ref IOC_STRENGTH_MAX : Maximum drive strength, used for low supply levels. Controlled by AON IOC (see \ref AONIOCDriveStrengthSet()).
+//! - \ref IOC_STRENGTH_MED : Medium drive strength, used for medium supply levels. Controlled by AON IOC (see \ref AONIOCDriveStrengthSet()).
+//! - \ref IOC_STRENGTH_MIN : Minimum drive strength, used for high supply levels. Controlled by AON IOC (see \ref AONIOCDriveStrengthSet()).
 //!
 //! \return None
 //
@@ -636,10 +637,6 @@ extern void IOCIODrvStrengthSet(uint32_t ui32IOId, uint32_t ui32IOCurrent,
 //! - \ref IOID_31
 //! \param ui32PortId selects the port to map to the IO.
 //! - \ref IOC_PORT_GPIO
-//! - \ref IOC_PORT_AON_SCS
-//! - \ref IOC_PORT_AON_SCK
-//! - \ref IOC_PORT_AON_SDI
-//! - \ref IOC_PORT_AON_SDO
 //! - \ref IOC_PORT_AON_CLK32K
 //! - \ref IOC_PORT_AUX_IO
 //! - \ref IOC_PORT_MCU_SSI0_RX
@@ -707,12 +704,12 @@ IOCIntRegister(void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_EDGE_DETECT, pfnHandler);
+    IntRegister(INT_AON_GPIO_EDGE, pfnHandler);
 
     //
     // Enable the IO edge interrupt.
     //
-    IntEnable(INT_EDGE_DETECT);
+    IntEnable(INT_AON_GPIO_EDGE);
 }
 
 //*****************************************************************************
@@ -734,12 +731,12 @@ IOCIntUnregister(void)
     //
     // Disable the interrupts.
     //
-    IntDisable(INT_EDGE_DETECT);
+    IntDisable(INT_AON_GPIO_EDGE);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_EDGE_DETECT);
+    IntUnregister(INT_AON_GPIO_EDGE);
 }
 
 //*****************************************************************************
@@ -783,14 +780,20 @@ extern void IOCIntDisable(uint32_t ui32IOId);
 //! asserts. This function must be called in the interrupt handler to keep the
 //! interrupt from being recognized again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32IOId is the IO causing the interrupt.
 //! - \ref IOID_0
@@ -811,7 +814,7 @@ IOCIntClear(uint32_t ui32IOId)
     //
     // Clear the requested interrupt source by clearing the event.
     //
-    GPIOEventClear(1 << ui32IOId);
+    GPIO_clearEventDio(ui32IOId);
 }
 
 //*****************************************************************************
@@ -837,7 +840,7 @@ IOCIntStatus(uint32_t ui32IOId)
     //
     // Get the event status.
     //
-    return (GPIOEventGet(1 << ui32IOId));
+    return (GPIO_getEventDio(ui32IOId));
 }
 
 
@@ -944,7 +947,7 @@ extern void IOCPinTypeUart(uint32_t ui32Base, uint32_t ui32Rx,
 //
 //! \brief Configure a set of IOs for standard SSI peripheral master control.
 //!
-//! \param ui32Base is the mase address of the SSI module to connect to the IOs
+//! \param ui32Base is the base address of the SSI module to connect to the IOs
 //! \param ui32Rx is the IO to connect to the SSI MISO line.
 //! - \ref IOID_0
 //! - ...
@@ -1024,36 +1027,6 @@ extern void IOCPinTypeSsiSlave(uint32_t ui32Base, uint32_t ui32Rx,
 extern void IOCPinTypeI2c(uint32_t ui32Base, uint32_t ui32Data,
                           uint32_t ui32Clk);
 
-//*****************************************************************************
-//
-//! \brief Configure a set of IOs for standard SPIS peripheral control.
-//!
-//! \param ui32Rx is the IO to connect to the SPIs MOSI line.
-//! - \ref IOID_0
-//! - ...
-//! - \ref IOID_31
-//! - \ref IOID_UNUSED
-//! \param ui32Tx is the IO to connect to the SPIS MISO line.
-//! - \ref IOID_0
-//! - ...
-//! - \ref IOID_31
-//! - \ref IOID_UNUSED
-//! \param ui32Fss is the IO to connect to the SPIS FSS line.
-//! - \ref IOID_0
-//! - ...
-//! - \ref IOID_31
-//! - \ref IOID_UNUSED
-//! \param ui32Clk is the IO to connect to the SPIS Clock input line.
-//! - \ref IOID_0
-//! - ...
-//! - \ref IOID_31
-//! - \ref IOID_UNUSED
-//!
-//! \return None
-//
-//*****************************************************************************
-extern void IOCPinTypeSpis(uint32_t ui32Rx, uint32_t ui32Tx, uint32_t ui32Fss,
-                           uint32_t ui32Clk);
 
 //*****************************************************************************
 //
@@ -1083,7 +1056,7 @@ extern void IOCPinTypeAux(uint32_t ui32IOId);
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_IOCPortConfigureSet
         #undef  IOCPortConfigureSet
@@ -1161,10 +1134,6 @@ extern void IOCPinTypeAux(uint32_t ui32IOId);
         #undef  IOCPinTypeI2c
         #define IOCPinTypeI2c                   ROM_IOCPinTypeI2c
     #endif
-    #ifdef ROM_IOCPinTypeSpis
-        #undef  IOCPinTypeSpis
-        #define IOCPinTypeSpis                  ROM_IOCPinTypeSpis
-    #endif
     #ifdef ROM_IOCPinTypeAux
         #undef  IOCPinTypeAux
         #define IOCPinTypeAux                   ROM_IOCPinTypeAux
@@ -1185,6 +1154,7 @@ extern void IOCPinTypeAux(uint32_t ui32IOId);
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

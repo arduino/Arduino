@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       i2s.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-05-11 13:56:01 +0200 (Mon, 11 May 2015)
+*  Revision:       43476
 *
 *  Description:    Driver for the I2S.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  I2SEnable
     #define I2SEnable                       NOROM_I2SEnable
     #undef  I2SAudioFormatConfigure
@@ -84,7 +84,7 @@ I2SEnable(uint32_t ui32Base)
     ASSERT(I2SBaseValid(ui32Base));
 
     //
-    // Make sure the controltable pointer is setup to a memory location.
+    // Make sure the control table pointer is setup to a memory location.
     //
     if(!(g_pControlTable))
     {
@@ -102,7 +102,7 @@ I2SEnable(uint32_t ui32Base)
     //
     // Enable the I2S module.
     //
-    HWREG(ui32Base + I2S_O_AIFDMACFG) = (uint32_t)g_pControlTable->ui16DMABufSize - 1;
+    HWREG(I2S0_BASE + I2S_O_AIFDMACFG) = (uint32_t)g_pControlTable->ui16DMABufSize - 1;
 }
 
 //*****************************************************************************
@@ -128,7 +128,7 @@ I2SAudioFormatConfigure(uint32_t ui32Base, uint32_t ui32FmtCfg,
     //
     // Write the configuration.
     //
-    HWREG(ui32Base + I2S_O_AIFFMTCFG) = ui32FmtCfg | (ui32BitClkDelay << I2S_AIFFMTCFG_DATA_DELAY_S);
+    HWREG(I2S0_BASE + I2S_O_AIFFMTCFG) = ui32FmtCfg | (ui32BitClkDelay << I2S_AIFFMTCFG_DATA_DELAY_S);
 }
 
 //****************************************************************************
@@ -158,7 +158,7 @@ I2SChannelConfigure(uint32_t ui32Base, uint32_t ui32Chan0Cfg,
     //
     // Configure input/output channels.
     //
-    HWREG(ui32Base + I2S_O_AIFDIRCFG) = ((ui32Chan0Cfg << I2S_AIFDIRCFG_AD0_S)
+    HWREG(I2S0_BASE + I2S_O_AIFDIRCFG) = ((ui32Chan0Cfg << I2S_AIFDIRCFG_AD0_S)
                                          & I2S_AIFDIRCFG_AD0_M) |
                                         ((ui32Chan1Cfg << I2S_AIFDIRCFG_AD1_S)
                                          & I2S_AIFDIRCFG_AD1_M) |
@@ -168,9 +168,9 @@ I2SChannelConfigure(uint32_t ui32Base, uint32_t ui32Chan0Cfg,
     //
     // Configure the valid channel mask.
     //
-    HWREG(ui32Base + I2S_O_AIFWMASK0) = (ui32Chan0Cfg >> 8) & I2S_AIFWMASK0_MASK_M;
-    HWREG(ui32Base + I2S_O_AIFWMASK1) = (ui32Chan1Cfg >> 8) & I2S_AIFWMASK1_MASK_M;
-    HWREG(ui32Base + I2S_O_AIFWMASK2) = (ui32Chan2Cfg >> 8) & I2S_AIFWMASK2_MASK_M;
+    HWREG(I2S0_BASE + I2S_O_AIFWMASK0) = (ui32Chan0Cfg >> 8) & I2S_AIFWMASK0_MASK_M;
+    HWREG(I2S0_BASE + I2S_O_AIFWMASK1) = (ui32Chan1Cfg >> 8) & I2S_AIFWMASK1_MASK_M;
+    HWREG(I2S0_BASE + I2S_O_AIFWMASK2) = (ui32Chan2Cfg >> 8) & I2S_AIFWMASK2_MASK_M;
 
     //
     // Resolve and save the number of input and output channels.
@@ -313,11 +313,11 @@ I2SPointerSet(uint32_t ui32Base, bool bInput, void * pNextPointer)
     //
     if(bInput == true)
     {
-        HWREG(ui32Base + I2S_O_AIFINPTRNEXT) = (uint32_t)pNextPointer;
+        HWREG(I2S0_BASE + I2S_O_AIFINPTRNEXT) = (uint32_t)pNextPointer;
     }
     else
     {
-        HWREG(ui32Base + I2S_O_AIFOUTPTRNEXT) = (uint32_t)pNextPointer;
+        HWREG(I2S0_BASE + I2S_O_AIFOUTPTRNEXT) = (uint32_t)pNextPointer;
     }
 }
 
@@ -347,7 +347,7 @@ I2SPointerUpdate(uint32_t ui32Base, bool bInput)
         g_pControlTable->ui32InOffset = ((g_pControlTable->ui32InOffset +
                                          ui32NextPtr) %
                                          g_pControlTable->ui16ChBufSize);
-        HWREG(ui32Base + I2S_O_AIFINPTRNEXT) = g_pControlTable->ui32InOffset +
+        HWREG(I2S0_BASE + I2S_O_AIFINPTRNEXT) = g_pControlTable->ui32InOffset +
                                                g_pControlTable->ui32InBase;
     }
     else
@@ -358,7 +358,7 @@ I2SPointerUpdate(uint32_t ui32Base, bool bInput)
         g_pControlTable->ui32OutOffset = ((g_pControlTable->ui32OutOffset +
                                          ui32NextPtr) %
                                          g_pControlTable->ui16ChBufSize);
-        HWREG(ui32Base + I2S_O_AIFOUTPTRNEXT) =
+        HWREG(I2S0_BASE + I2S_O_AIFOUTPTRNEXT) =
                          g_pControlTable->ui32OutOffset +
                          g_pControlTable->ui32OutBase;
     }
@@ -383,7 +383,7 @@ I2SSampleStampConfigure(uint32_t ui32Base, bool bInput, bool bOutput)
     ui32Trigger = (ui32Trigger + 2) % g_pControlTable->ui16ChBufSize;
 
     //
-    // Setup the samplestamp trigger for input streams.
+    // Setup the sample stamp trigger for input streams.
     //
     if(bInput)
     {
@@ -391,7 +391,7 @@ I2SSampleStampConfigure(uint32_t ui32Base, bool bInput, bool bOutput)
     }
 
     //
-    // Setup the samplestamp trigger for output streams.
+    // Setup the sample stamp trigger for output streams.
     //
     if(bOutput)
     {
@@ -416,17 +416,17 @@ I2SSampleStampGet(uint32_t ui32Base, uint32_t ui32Channel)
     //
     // Get the number of Frame clock counts since last stamp.
     //
-    ui32FrameClkCnt = HWREG(ui32Base + I2S_O_STMPWCNTCAPT0);
+    ui32FrameClkCnt = HWREG(I2S0_BASE + I2S_O_STMPWCNTCAPT0);
 
     //
     // Get the number of system clock ticks since last frame clock edge.
     //
-    ui32SysClkCnt = HWREG(ui32Base + I2S_O_STMPXCNTCAPT0);
+    ui32SysClkCnt = HWREG(I2S0_BASE + I2S_O_STMPXCNTCAPT0);
 
     //
     // Get the number system clock ticks in the last frame clock period.
     //
-    ui32PeriodSysClkCnt = HWREG(ui32Base + I2S_O_STMPXPER);
+    ui32PeriodSysClkCnt = HWREG(I2S0_BASE + I2S_O_STMPXPER);
 
     //
     // Calculate the sample stamp.

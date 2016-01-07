@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rfc.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-17 12:03:08 +0100 (Tue, 17 Nov 2015)
+*  Revision:       45108
 *
 *  Description:    Defines and prototypes for the RF Core.
 *
@@ -62,6 +62,25 @@ extern "C"
 #include <inc/hw_types.h>
 #include <inc/hw_memmap.h>
 #include <inc/hw_rfc_pwr.h>
+#include <inc/hw_rfc_dbell.h>
+
+//*****************************************************************************
+//
+// Support for DriverLib in ROM:
+// This section renames all functions that are not "static inline", so that
+// calling these functions will default to implementation in flash. At the end
+// of this file a second renaming will change the defaults to implementation in
+// ROM for available functions.
+//
+// To force use of the implementation in flash, e.g. for debugging:
+// - Globally: Define DRIVERLIB_NOROM at project level
+// - Per function: Use prefix "NOROM_" when calling the function
+//
+//*****************************************************************************
+#if !defined(DOXYGEN)
+    #define RFCCpeIntGetAndClear            NOROM_RFCCpeIntGetAndClear
+    #define RFCDoorbellSendTo               NOROM_RFCDoorbellSendTo
+#endif
 
 //*****************************************************************************
 //
@@ -123,6 +142,208 @@ RFCClockDisable(void)
     //
     HWREG(RFC_PWR_NONBUF_BASE + RFC_PWR_O_PWMCLKEN) = 0x0;
 }
+
+//*****************************************************************************
+//
+//! Enable CPE0 interrupt
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCCpe0IntEnable(uint32_t ui32Mask)
+{
+  //
+  // Multiplex RF Core interrupts to CPE0 IRQ.
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEISL) &= ~ui32Mask;
+
+  do
+  {
+    //
+    // Clear any pending interrupts.
+    //
+    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) = 0x0;
+  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != 0x0);
+
+  //
+  //  Enable the masked interrupts
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIEN) |= ui32Mask;
+}
+
+
+//*****************************************************************************
+//
+//! Enable CPE1 interrupt
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCCpe1IntEnable(uint32_t ui32Mask)
+{
+  //
+  // Multiplex RF Core interrupts to CPE1 IRQ.
+  //
+  HWREG( RFC_DBELL_BASE + RFC_DBELL_O_RFCPEISL) |= ui32Mask;
+
+  do
+  {
+    //
+    // Clear any pending interrupts.
+    //
+    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) = 0x0;
+  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != 0x0);
+
+  //
+  //  Enable the masked interrupts
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIEN) |= ui32Mask;
+}
+
+
+//*****************************************************************************
+//
+//! This function is used to map only HW interrupts, and
+//! clears/unmasks them. These interrupts are then enabled.
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCHwIntEnable(uint32_t ui32Mask)
+{
+  //
+  // Clear any pending interrupts.
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) = 0x0;
+
+  //
+  //  Enable the masked interrupts
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIEN) |= ui32Mask;
+}
+
+
+//*****************************************************************************
+//
+//! Disable CPE interrupt
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCCpeIntDisable(uint32_t ui32Mask)
+{
+  //
+  //  Disable the masked interrupts
+  //
+  HWREG( RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIEN ) &= ~ui32Mask;
+
+  do
+  {
+    //
+    // Clear any pending interrupts.
+    //
+    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) = 0x0;
+  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != 0x0);
+}
+
+
+//*****************************************************************************
+//
+//! Disable HW interrupt
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCHwIntDisable(uint32_t ui32Mask)
+{
+  //
+  //  Disable the masked interrupts
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIEN) &= ~ui32Mask;
+
+  //
+  // Clear any pending interrupts.
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) = 0x0;
+}
+
+
+//*****************************************************************************
+//
+//! Get and clear CPE interrupt flags
+//
+//*****************************************************************************
+extern uint32_t RFCCpeIntGetAndClear(void);
+
+
+//*****************************************************************************
+//
+//! Clear interrupt flags
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCCpeIntClear(uint32_t ui32Mask)
+{
+  do
+  {
+    //
+    // Clear interrupts that may now be pending
+    //
+    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) &= ~ui32Mask;
+  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != ~ui32Mask);
+}
+
+
+//*****************************************************************************
+//
+//! Clear interrupt flags
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCHwIntClear(uint32_t ui32Mask)
+{
+  //
+  // Clear pending interrupts.
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) &= ~ui32Mask;
+}
+
+
+//*****************************************************************************
+//
+//! Clear interrupt flags
+//
+//*****************************************************************************
+__STATIC_INLINE void
+RFCAckIntClear(void)
+{
+  //
+  // Clear any pending interrupts.
+  //
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFACKIFG) = 0x0;
+}
+
+
+//*****************************************************************************
+//
+//! Send command to doorbell and wait for ack
+//
+//*****************************************************************************
+extern uint32_t RFCDoorbellSendTo(uint32_t pOp);
+
+
+//*****************************************************************************
+//
+// Support for DriverLib in ROM:
+// Redirect to implementation in ROM when available.
+//
+//*****************************************************************************
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
+    #include <driverlib/rom.h>
+    #ifdef ROM_RFCCpeIntGetAndClear
+        #undef  RFCCpeIntGetAndClear
+        #define RFCCpeIntGetAndClear            ROM_RFCCpeIntGetAndClear
+    #endif
+    #ifdef ROM_RFCDoorbellSendTo
+        #undef  RFCDoorbellSendTo
+        #define RFCDoorbellSendTo               ROM_RFCDoorbellSendTo
+    #endif
+#endif
 
 //*****************************************************************************
 //

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_ioc.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-09-08 10:21:22 +0200 (Tue, 08 Sep 2015)
+*  Revision:       44526
 *
 *  Description:    Driver for the AON IO Controller
 *
@@ -37,107 +37,3 @@
 ******************************************************************************/
 
 #include <driverlib/aon_ioc.h>
-
-//*****************************************************************************
-//
-// Handle support for DriverLib in ROM:
-// This section will undo prototype renaming made in the header file
-//
-//*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
-    #undef  AONIOCDriveStrengthSet
-    #define AONIOCDriveStrengthSet          NOROM_AONIOCDriveStrengthSet
-    #undef  AONIOCDriveStrengthGet
-    #define AONIOCDriveStrengthGet          NOROM_AONIOCDriveStrengthGet
-#endif
-
-//*****************************************************************************
-//
-//! Setup the drive strength for all IOs on the chip
-//
-//*****************************************************************************
-void
-AONIOCDriveStrengthSet(uint32_t ui32LowDrvStr, uint32_t ui32MedDrvStr,
-                       uint32_t ui32MaxDrvStr)
-{
-    ASSERT((ui32LowDrvStr == AONIOC_DRV_STR5_7_14) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR5_10_20) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR7_14_28) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR10_20_40) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR14_28_56) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR20_40_80) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR28_56_112) ||
-           (ui32LowDrvStr == AONIOC_DRV_STR40_80_112));
-    ASSERT((ui32MedDrvStr == AONIOC_DRV_STR5_7_14) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR5_10_20) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR7_14_28) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR10_20_40) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR14_28_56) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR20_40_80) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR28_56_112) ||
-           (ui32MedDrvStr == AONIOC_DRV_STR40_80_112));
-    ASSERT((ui32MaxDrvStr == AONIOC_DRV_STR5_7_14) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR5_10_20) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR7_14_28) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR10_20_40) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR14_28_56) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR20_40_80) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR28_56_112) ||
-           (ui32MaxDrvStr == AONIOC_DRV_STR40_80_112));
-
-    //
-    // Set the minimum drive strength.
-    //
-    HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMIN) = ui32LowDrvStr &
-                                               AON_IOC_IOSTRMIN_GRAY_CODE_M;
-    //
-    // Set the medium drive strength.
-    //
-    HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMED) = ui32MedDrvStr &
-                                               AON_IOC_IOSTRMED_GRAY_CODE_M;
-    //
-    // Set the maximum drive strength.
-    //
-    HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMAX) = ui32MaxDrvStr &
-                                               AON_IOC_IOSTRMAX_GRAY_CODE_M;
-
-}
-
-//*****************************************************************************
-//
-//! Get a specific drive level setting for all IOs
-//
-//*****************************************************************************
-uint32_t
-AONIOCDriveStrengthGet(uint32_t ui32DriveLevel)
-{
-    uint32_t ui32DrvStr;
-
-    //
-    // Check the arguments.
-    //
-    ASSERT((ui32DriveLevel == AONIOC_MAX_DRIVE) ||
-           (ui32DriveLevel == AONIOC_MED_DRIVE) ||
-           (ui32DriveLevel == AONIOC_MIN_DRIVE));
-
-    //
-    // Get the specified drive strength level.
-    //
-    if(ui32DriveLevel == AONIOC_MAX_DRIVE)
-    {
-        ui32DrvStr = HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMAX);
-    }
-    else if(ui32DriveLevel == AONIOC_MED_DRIVE)
-    {
-        ui32DrvStr = HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMED);
-    }
-    else
-    {
-        ui32DrvStr = HWREG(AON_IOC_BASE + AON_IOC_O_IOSTRMIN);
-    }
-
-    //
-    // Return the drive strength value.
-    //
-    return(ui32DrvStr);
-}

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       vims.c
-*  Revised:        2015-03-04 13:37:39 +0100 (on, 04 mar 2015)
-*  Revision:       42883
+*  Revised:        2015-09-21 15:46:11 +0200 (Mon, 21 Sep 2015)
+*  Revision:       44630
 *
 *  Description:    Driver for the VIMS.
 *
@@ -44,20 +44,20 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  VIMSConfigure
     #define VIMSConfigure                   NOROM_VIMSConfigure
     #undef  VIMSModeSet
     #define VIMSModeSet                     NOROM_VIMSModeSet
     #undef  VIMSModeGet
     #define VIMSModeGet                     NOROM_VIMSModeGet
-    #undef  VIMSModeSetBlocking
-    #define VIMSModeSetBlocking             NOROM_VIMSModeSetBlocking
+    #undef  VIMSModeSafeSet
+    #define VIMSModeSafeSet                 NOROM_VIMSModeSafeSet
 #endif
 
 //*****************************************************************************
 //
-//! Configures the VIMS.
+// Configures the VIMS.
 //
 //*****************************************************************************
 void
@@ -89,7 +89,7 @@ VIMSConfigure(uint32_t ui32Base, bool bRoundRobin, bool bPrefetch)
 
 //*****************************************************************************
 //
-//! Set the operational mode of the VIMS
+// Set the operational mode of the VIMS
 //
 //*****************************************************************************
 void
@@ -104,8 +104,7 @@ VIMSModeSet(uint32_t ui32Base, uint32_t ui32Mode)
 
     ASSERT((ui32Mode == VIMS_MODE_DISABLED)   ||
            (ui32Mode == VIMS_MODE_ENABLED)    ||
-           (ui32Mode == VIMS_MODE_OFF)        ||
-           (ui32Mode == VIMS_MODE_SPLIT));
+           (ui32Mode == VIMS_MODE_OFF));
 
     //
     // Set the mode.
@@ -119,7 +118,7 @@ VIMSModeSet(uint32_t ui32Base, uint32_t ui32Mode)
 
 //*****************************************************************************
 //
-//! Get the current operational mode of the VIMS.
+// Get the current operational mode of the VIMS.
 //
 //*****************************************************************************
 uint32_t
@@ -146,37 +145,69 @@ VIMSModeGet(uint32_t ui32Base)
 //*****************************************************************************
 //
 // Safe setting of new VIMS mode
-// - Function is blocking
+// - Function might be blocking
 // - Can be called for any mode change (also if actually not changing mode)
-// Note: The shift operators (VIMS_CTL_MODE_S and VIMS_STAT_MODE_S) is not
-//       used bacause we know that they both are = 0.
 //
 //*****************************************************************************
 void
-VIMSModeSetBlocking( uint32_t ui32Mode )
+VIMSModeSafeSet( uint32_t ui32Base, uint32_t ui32NewMode, bool blocking )
 {
-   //
-   // Make sure that only the mode bits are set (just for sequirity)
-   //
-   ui32Mode &= VIMS_CTL_MODE_M;
+    uint32_t currentMode;
 
-   //
-   // Wait for any pending change to complete
-   //
-   while ( HWREGBITW( VIMS_BASE + VIMS_O_STAT, VIMS_STAT_MODE_CHANGING_BITN )) {
-      // Do nothing - wait for change to complete.
-   }
+    //
+    // Check the arguments.
+    //
+    ASSERT(VIMSBaseValid(ui32Base));
+    ASSERT((ui32NewMode == VIMS_MODE_DISABLED)   ||
+           (ui32NewMode == VIMS_MODE_ENABLED)    ||
+           (ui32NewMode == VIMS_MODE_OFF));
 
-   //
-   // Request mode change
-   //
-   HWREG( VIMS_BASE + VIMS_O_CTL ) =
-      ( HWREG( VIMS_BASE + VIMS_O_CTL ) & ~VIMS_CTL_MODE_M ) | ui32Mode;
+    //
+    // Make sure that only the mode bits are set in the input parameter
+    // (done just for security since it is critical to the code flow)
+    //
+    ui32NewMode &= VIMS_CTL_MODE_M;
 
-   //
-   // Wait for mode change to complete
-   //
-   while (( HWREG( VIMS_BASE + VIMS_O_STAT ) & VIMS_STAT_MODE_M ) != ui32Mode ) {
-      // Do nothing - wait for new mode to be entered
-   }
+    //
+    // Wait for any pending change to complete and get current VIMS mode
+    // (This is a blocking point but will typically only be a blocking point
+    // only if mode is changed multiple times with blocking=0)
+    //
+    do {
+        currentMode = VIMSModeGet( ui32Base );
+    } while ( currentMode == VIMS_MODE_CHANGING );
+
+    //
+    // First check that it actually is a mode change request
+    //
+    if ( ui32NewMode != currentMode ) {
+        //
+        // Due to a hw-problem it is strongly recommended to go via VIMS_MODE_OFF
+        // when leaving VIMS_MODE_ENABLED (=VIMS_CTL_MODE_CACHE)
+        // (And no need to go via OFF, if OFF is the final state and will be set later)
+        //
+        if (( currentMode == VIMS_CTL_MODE_CACHE ) &&
+            ( ui32NewMode != VIMS_CTL_MODE_OFF   )    )
+        {
+            VIMSModeSet( ui32Base, VIMS_MODE_OFF );
+
+            while ( HWREGBITW( VIMS_BASE + VIMS_O_STAT, VIMS_STAT_MODE_CHANGING_BITN )) {
+                // Do nothing - wait for change to complete.
+                // (Needed blocking point but it takes only some few cycles)
+            }
+        }
+        //
+        // Set new mode
+        //
+        VIMSModeSet( ui32Base, ui32NewMode );
+
+        //
+        // Wait for final mode change to complete - if blocking is requested
+        //
+        if ( blocking ) {
+            while ( HWREGBITW( VIMS_BASE + VIMS_O_STAT, VIMS_STAT_MODE_CHANGING_BITN )) {
+                // Do nothing - wait for change to complete.
+            }
+        }
+    }
 }

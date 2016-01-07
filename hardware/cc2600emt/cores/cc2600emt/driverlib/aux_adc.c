@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_adc.c
-*  Revised:        2015-04-15 13:58:36 +0200 (on, 15 apr 2015)
-*  Revision:       43229
+*  Revised:        2015-10-14 18:23:25 +0200 (Wed, 14 Oct 2015)
+*  Revision:       44751
 *
 *  Description:    Driver for the AUX Time to Digital Converter interface.
 *
@@ -49,7 +49,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  AUXADCDisable
     #define AUXADCDisable                   NOROM_AUXADCDisable
     #undef  AUXADCEnableAsync
@@ -58,8 +58,6 @@
     #define AUXADCEnableSync                NOROM_AUXADCEnableSync
     #undef  AUXADCDisableInputScaling
     #define AUXADCDisableInputScaling       NOROM_AUXADCDisableInputScaling
-    #undef  AUXADCReenableInputScaling
-    #define AUXADCReenableInputScaling      NOROM_AUXADCReenableInputScaling
     #undef  AUXADCFlushFifo
     #define AUXADCFlushFifo                 NOROM_AUXADCFlushFifo
     #undef  AUXADCReadFifo
@@ -89,13 +87,13 @@ void
 AUXADCDisable(void)
 {
     // Disable the ADC reference
-    ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADCREF0, ADI_4_AUX_ADCREF0_EN_M | ADI_4_AUX_ADCREF0_REF_ON_IDLE_M | ADI_4_AUX_ADCREF0_SRC_M | ADI_4_AUX_ADCREF0_EXT_M | ADI_4_AUX_ADCREF0_IOMUX_M);
-
-    // For safety: Ensure that scaling is re-enabled before next use of the ADC
-    ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADC1, ADI_4_AUX_ADC1_SCALE_DIS_M);
+    ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADCREF0, ADI_4_AUX_ADCREF0_EN_M | ADI_4_AUX_ADCREF0_REF_ON_IDLE_M | ADI_4_AUX_ADCREF0_SRC_M);
 
     // Assert reset and disable the ADC
     ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_EN_M | ADI_4_AUX_ADC0_RESET_N_M | ADI_4_AUX_ADC0_SMPL_MODE_M | ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_M);
+
+    // Ensure that scaling is enabled by default before next use of the ADC
+    ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADC1, ADI_4_AUX_ADC1_SCALE_DIS_M);
 
     // Disable the ADC clock (no need to wait since IOB_WUC_ADCCLKCTL_ACK goes low immediately)
     HWREG(AUX_WUC_BASE + AUX_WUC_O_ADCCLKCTL) = 0;
@@ -131,8 +129,11 @@ AUXADCEnableAsync(uint32_t refSource, uint32_t trigger)
         HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL) = AUX_ANAIF_ADCCTL_START_SRC_MCU_EV | AUX_ANAIF_ADCCTL_CMD_EN;
     }
 
+    // Configure the ADC
+    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_SMPL_MODE_M);
+
     // Release reset and enable the ADC
-    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_EN_M | ADI_4_AUX_ADC0_RESET_N_M | ADI_4_AUX_ADC0_SMPL_MODE_M);
+    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_EN_M | ADI_4_AUX_ADC0_RESET_N_M);
 }
 
 //*****************************************************************************
@@ -166,9 +167,11 @@ AUXADCEnableSync(uint32_t refSource, uint32_t sampleTime, uint32_t trigger)
         HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL) = AUX_ANAIF_ADCCTL_START_SRC_MCU_EV | AUX_ANAIF_ADCCTL_CMD_EN;
     }
 
+    // Configure the ADC
+    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, sampleTime << ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_S);
+
     // Release reset and enable the ADC
-    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_EN_M | ADI_4_AUX_ADC0_RESET_N_M |
-                                                 (sampleTime << ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_S));
+    ADI8BitsSet(AUX_ADI4_BASE, ADI_4_AUX_O_ADC0, ADI_4_AUX_ADC0_EN_M | ADI_4_AUX_ADC0_RESET_N_M);
 }
 
 //*****************************************************************************
@@ -184,25 +187,14 @@ AUXADCDisableInputScaling(void)
 
 //*****************************************************************************
 //
-// Re-enables scaling of the ADC input
-//
-//*****************************************************************************
-void
-AUXADCReenableInputScaling(void)
-{
-    ADI8BitsClear(AUX_ADI4_BASE, ADI_4_AUX_O_ADC1, ADI_4_AUX_ADC1_SCALE_DIS_M);
-}
-
-//*****************************************************************************
-//
 // Flushes the ADC FIFO
 //
 //*****************************************************************************
 void
 AUXADCFlushFifo(void)
 {
-    HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL) |= 0x00000002;
-    HWREG(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL) &= 0x00000002;
+    HWREGBITW(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL, 1) = 1; // CMD: EN(1) -> FLUSH(3)
+    HWREGBITW(AUX_ANAIF_BASE + AUX_ANAIF_O_ADCCTL, 1) = 0; // CMD: FLUSH(3) -> EN(1)
 }
 
 //*****************************************************************************
@@ -246,7 +238,7 @@ AUXADCGetAdjustmentGain(uint32_t refSource)
         // AUXADC_REF_FIXED ==> ABS_GAIN
         gain = (HWREG(FCFG1_BASE + FCFG1_O_SOC_ADC_ABS_GAIN) & FCFG1_SOC_ADC_ABS_GAIN_SOC_ADC_ABS_GAIN_TEMP1_M) >> FCFG1_SOC_ADC_ABS_GAIN_SOC_ADC_ABS_GAIN_TEMP1_S;
     } else {
-      // AUXADC_REF_VDDA_REL ==> REL_GAIN
+      // AUXADC_REF_VDDS_REL ==> REL_GAIN
         gain = (HWREG(FCFG1_BASE + FCFG1_O_SOC_ADC_REL_GAIN) & FCFG1_SOC_ADC_REL_GAIN_SOC_ADC_REL_GAIN_TEMP1_M) >> FCFG1_SOC_ADC_REL_GAIN_SOC_ADC_REL_GAIN_TEMP1_S;
     }
     return gain;
@@ -265,7 +257,7 @@ AUXADCGetAdjustmentOffset(uint32_t refSource)
         // AUXADC_REF_FIXED ==> ABS_OFFSET
         offset = HWREG(FCFG1_BASE + FCFG1_O_SOC_ADC_OFFSET_INT) >> FCFG1_SOC_ADC_OFFSET_INT_SOC_ADC_ABS_OFFSET_TEMP1_S;
     } else {
-        // AUXADC_REF_VDDA_REL ==> REL_OFFSET
+        // AUXADC_REF_VDDS_REL ==> REL_OFFSET
         offset = HWREG(FCFG1_BASE + FCFG1_O_SOC_ADC_OFFSET_INT) >> FCFG1_SOC_ADC_OFFSET_INT_SOC_ADC_REL_OFFSET_TEMP1_S;
     }
     return offset;
@@ -281,7 +273,7 @@ AUXADCValueToMicrovolts(int32_t fixedRefVoltage, int32_t adcValue)
 {
     // Chop off 4 bits during calculations to avoid 32-bit overflow
     fixedRefVoltage >>= 4;
-    return (((adcValue * fixedRefVoltage) + (2048 >> 4)) / 4095) << 4;
+    return (((adcValue * fixedRefVoltage) + 2047) / 4095) << 4;
 }
 
 //*****************************************************************************
@@ -321,7 +313,7 @@ AUXADCAdjustValueForGainAndOffset(int32_t adcValue, int32_t gain, int32_t offset
 
 //*****************************************************************************
 //
-// Performes the inverse of the ADC value gain and offset adjustment
+// Performs the inverse of the ADC value gain and offset adjustment
 //
 //*****************************************************************************
 int32_t

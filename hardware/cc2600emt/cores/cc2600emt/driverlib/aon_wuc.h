@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_wuc.h
-*  Revised:        2015-04-13 12:35:02 +0200 (ma, 13 apr 2015)
-*  Revision:       43212
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AON Wake-Up Controller
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aon_group
+//! @{
 //! \addtogroup aonwuc_api
 //! @{
 //
@@ -79,12 +81,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
-    #define AONWUCAuxSRamConfig             NOROM_AONWUCAuxSRamConfig
-    #define AONWUCAuxWakeupEvent            NOROM_AONWUCAuxWakeupEvent
+#if !defined(DOXYGEN)
     #define AONWUCAuxReset                  NOROM_AONWUCAuxReset
     #define AONWUCRechargeCtrlConfigSet     NOROM_AONWUCRechargeCtrlConfigSet
     #define AONWUCOscConfig                 NOROM_AONWUCOscConfig
@@ -210,14 +208,14 @@ extern "C"
 //!
 //! Use this function to control which one of the clock sources that
 //! is fed into the MCU domain when the system is in standby mode. When the
-//! power is back in Active mode the clock source will autmatically switch to
+//! power is back in Active mode the clock source will automatically switch to
 //! \ref AONWUC_CLOCK_SRC_HF.
 //!
 //! Each clock is fed 'as is' into the MCU domain, since the MCU domain
 //! contains internal clock dividers controllable through the PRCM.
 //!
 //! \param ui32ClkSrc is the clock source for the MCU domain when in power
-//! down. Three values are available as clock source:
+//! down. Values available as clock source:
 //! - \ref AONWUC_NO_CLOCK
 //! - \ref AONWUC_CLOCK_SRC_LF
 //!
@@ -266,20 +264,12 @@ AONWUCMcuPowerDownConfig(uint32_t ui32ClkSrc)
 __STATIC_INLINE void
 AONWUCMcuPowerOffConfig(uint32_t ui32Mode)
 {
-    uint32_t ui32Reg;
-
-    //
     // Check the arguments.
-    //
     ASSERT((ui32Mode == MCU_VIRT_PWOFF_ENABLE) ||
            (ui32Mode == MCU_VIRT_PWOFF_DISABLE));
 
-    //
     // Set the powerdown mode.
-    //
-    ui32Reg = HWREG(AON_WUC_BASE + AON_WUC_O_MCUCFG);
-    ui32Reg &= ~AON_WUC_MCUCFG_VIRT_OFF_M;
-    HWREG(AON_WUC_BASE + AON_WUC_O_MCUCFG) = ui32Reg | ui32Mode;
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_MCUCFG, AON_WUC_MCUCFG_VIRT_OFF_BITN) = (ui32Mode != 0);
 }
 
 //*****************************************************************************
@@ -303,20 +293,12 @@ AONWUCMcuPowerOffConfig(uint32_t ui32Mode)
 __STATIC_INLINE void
 AONWUCMcuWakeUpConfig(uint32_t ui32WakeUp)
 {
-    uint32_t ui32Reg;
-
-    //
     // Check the arguments.
-    //
     ASSERT((ui32WakeUp == MCU_IMM_WAKE_UP) ||
            (ui32WakeUp == MCU_FIXED_WAKE_UP));
 
-    //
     // Configure the wake up procedure.
-    //
-    ui32Reg = HWREG(AON_WUC_BASE + AON_WUC_O_MCUCFG);
-    ui32Reg &= ~AON_WUC_MCUCFG_FIXED_WU_EN;
-    HWREG(AON_WUC_BASE + AON_WUC_O_MCUCFG) = ui32Reg | ui32WakeUp;
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_MCUCFG, AON_WUC_MCUCFG_FIXED_WU_EN_BITN) = (ui32WakeUp != 0);
 }
 
 //*****************************************************************************
@@ -402,7 +384,7 @@ AONWUCAuxClockConfigGet(void)
 //!
 //! Use this function to control which one of the clock sources that
 //! is fed into the MCU domain when it is in Power Down mode. When the Power
-//! is back in active mode the clock source will autmatically switch to
+//! is back in active mode the clock source will automatically switch to
 //! \ref AONWUC_CLOCK_SRC_HF.
 //!
 //! Each clock is fed 'as is' into the AUX domain, since the AUX domain
@@ -445,8 +427,8 @@ AONWUCAuxPowerDownConfig(uint32_t ui32ClkSrc)
 //! the retention on the entire RAM.
 //!
 //! \param ui32Retention either enables or disables AUX SRAM retention.
-//! - 0             : Disable retention.
-//! - Anything else : Enable retention.
+//! - 0 : Disable retention.
+//! - 1 : Enable retention.
 //!
 //! \note Retention on the SRAM is not enabled by default. If retention is
 //! turned off then the SRAM is powered off when it would otherwise be put in
@@ -455,28 +437,33 @@ AONWUCAuxPowerDownConfig(uint32_t ui32ClkSrc)
 //! \return None
 //
 //*****************************************************************************
-extern void AONWUCAuxSRamConfig(uint32_t ui32Retention);
+__STATIC_INLINE void
+AONWUCAuxSRamConfig(uint32_t ui32Retention)
+{
+    // Enable/disable the retention.
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCFG, AON_WUC_AUXCFG_RAM_RET_EN_BITN) = ui32Retention;
+}
 
 //*****************************************************************************
 //
 //! \brief Control the wake up procedure of the AUX domain.
 //!
 //! The AUX domain can be woken in two different modes. In both modes power
-//! is turned on. In one mode a software event is generated for the AUX
-//! controller and it is allowed to start processing. The second mode will
-//! just force power on the AUX controller. If CM3 requires exclusive access
-//! to the AUX domain resources, it is adviced to ensure that the image in
-//! the AUX controller memory is declared invalid. This can be achieved by
+//! is turned on. In one mode a software event is generated for the
+//! Sensor Controller and it is allowed to start processing. The second mode will
+//! just force power on the Sensor Controller. If System CPU requires exclusive access
+//! to the AUX domain resources, it is advised to ensure that the image in
+//! the Sensor Controller memory is declared invalid. This can be achieved by
 //! calling AONWUCAuxImageInvalid().
 //!
 //! \note Any writes to the AON interface must pass a 32 kHz clock boundary,
 //! and is therefore relatively slow. To ensure that a given write is
 //! complete the value of the register can be read back after write.
 //
-//! \note When accessing the AUX domain from the CM3, it is adviced always to
+//! \note When accessing the AUX domain from the System CPU, it is advised always to
 //! have set the AUX in at least \ref AONWUC_AUX_WAKEUP. This overwrites any
-//! instruction from the AUX controller and ensures that the AUX domain
-//! is on so it won't leave the CM3 hanging.
+//! instruction from the Sensor Controller and ensures that the AUX domain
+//! is on so it won't leave the System CPU hanging.
 //!
 //! \param ui32Mode is the wake up mode for the AUX domain.
 //! - \ref AONWUC_AUX_WAKEUP
@@ -485,7 +472,16 @@ extern void AONWUCAuxSRamConfig(uint32_t ui32Retention);
 //! \return None
 //
 //*****************************************************************************
-extern void AONWUCAuxWakeupEvent(uint32_t ui32Mode);
+__STATIC_INLINE void
+AONWUCAuxWakeupEvent(uint32_t ui32Mode)
+{
+    // Check the arguments.
+    ASSERT((ui32Mode == AONWUC_AUX_WAKEUP) ||
+           (ui32Mode == AONWUC_AUX_ALLOW_SLEEP));
+
+    // Wake up the AUX domain.
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCTL, AON_WUC_AUXCTL_AUX_FORCE_ON_BITN) = ui32Mode;
+}
 
 //*****************************************************************************
 //
@@ -493,7 +489,7 @@ extern void AONWUCAuxWakeupEvent(uint32_t ui32Mode);
 //!
 //! Use this function to reset the entire AUX domain. The write to the AON_WUC
 //! module must pass an 32 kHz clock boundary. By reading the
-//! AON_RTC_O_SYNC register after each write, it is guarateed that the AON
+//! AON_RTC_O_SYNC register after each write, it is guaranteed that the AON
 //! interface will be in sync and that both the assert and the de-assert of the
 //! reset signal to AUX will propagate.
 //!
@@ -506,7 +502,7 @@ extern void AONWUCAuxReset(void);
 
 //*****************************************************************************
 //
-//! \brief Tells the AUX controller that the image in memory is valid.
+//! \brief Tells the Sensor Controller that the image in memory is valid.
 //!
 //! Use this function to tell the sensor controller that the image in memory is
 //! valid, and it is allowed to start executing the program.
@@ -517,18 +513,16 @@ extern void AONWUCAuxReset(void);
 __STATIC_INLINE void
 AONWUCAuxImageValid(void)
 {
-    //
-    // Tell the AUX controller that the iamge in memory is invalid.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) |= AON_WUC_AUXCTL_SCE_RUN_EN;
+    // Tell the Sensor Controller that the image in memory is valid.
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCTL, AON_WUC_AUXCTL_SCE_RUN_EN_BITN) = 1;
 }
 
 //*****************************************************************************
 //
-//! \brief Tells the AUX controller that the image in memory is invalid.
+//! \brief Tells the Sensor Controller that the image in memory is invalid.
 //!
 //! Use this function to tell the sensor controller that the image in memory is
-//! invalid. AUX controller might wake up, but it will stay idle.
+//! invalid. Sensor Controller might wake up, but it will stay idle.
 //!
 //! \return None
 //
@@ -536,10 +530,8 @@ AONWUCAuxImageValid(void)
 __STATIC_INLINE void
 AONWUCAuxImageInvalid(void)
 {
-    //
-    // Tell the AUX controller that the iamge in memory is invalid.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_AUXCTL) &= ~AON_WUC_AUXCTL_SCE_RUN_EN;
+    // Tell the Sensor Controller that the image in memory is invalid.
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_AUXCTL, AON_WUC_AUXCTL_SCE_RUN_EN_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -577,7 +569,7 @@ AONWUCPowerStatusGet(void)
 //! be latched - possibly enabling I/O wakeup - then all internal power
 //! supplies are turned off, effectively putting the device into shut-down mode.
 //!
-//! \note No action will take place before the CM3 is put to deep sleep.
+//! \note No action will take place before the System CPU is put to deep sleep.
 //!
 //! \note The shut-down command is ignored if the JTAG interface has been
 //! activated.
@@ -588,16 +580,12 @@ AONWUCPowerStatusGet(void)
 __STATIC_INLINE void
 AONWUCShutDownEnable(void)
 {
-    //
     // Ensure the JTAG domain is turned off;
     // otherwise MCU domain can't be turned off.
-    //
     HWREG(AON_WUC_BASE + AON_WUC_O_JTAGCFG) = 0;
 
-    //
     // Enable shutdown of the device.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_CTL0) &= ~AON_WUC_CTL0_PWR_DWN_DIS;
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_CTL0, AON_WUC_CTL0_PWR_DWN_DIS_BITN) = 0;
     HWREG(AON_WUC_BASE + AON_WUC_O_SHUTDOWN) = AON_WUC_SHUTDOWN_EN;
 }
 
@@ -616,16 +604,12 @@ AONWUCShutDownEnable(void)
 __STATIC_INLINE void
 AONWUCDomainPowerDownEnable(void)
 {
-    //
     // Ensure the JTAG domain is turned off;
     // otherwise MCU domain can't be turned off.
-    //
     HWREG(AON_WUC_BASE + AON_WUC_O_JTAGCFG) = 0;
 
-    //
     // Enable power down mode.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_CTL0) &= ~AON_WUC_CTL0_PWR_DWN_DIS;
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_CTL0, AON_WUC_CTL0_PWR_DWN_DIS_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -642,10 +626,8 @@ AONWUCDomainPowerDownEnable(void)
 __STATIC_INLINE void
 AONWUCDomainPowerDownDisable(void)
 {
-    //
     // Disable power down mode.
-    //
-    HWREG(AON_WUC_BASE + AON_WUC_O_CTL0) |= AON_WUC_CTL0_PWR_DWN_DIS;
+    HWREGBITW(AON_WUC_BASE + AON_WUC_O_CTL0, AON_WUC_CTL0_PWR_DWN_DIS_BITN) = 1;
 }
 
 //*****************************************************************************
@@ -659,7 +641,7 @@ AONWUCDomainPowerDownDisable(void)
 //! the corresponding status bits will be set in the status register and can
 //! be read using \ref AONWUCMcuResetStatusGet() or cleared using this function. The reset
 //! source and type give information about what and how the latest reset
-//! was performed. Access to these bits are indentical to the flash erase
+//! was performed. Access to these bits are identical to the flash erase
 //! bits.
 //!
 //! \param ui32Status defines in a one-hot encoding which bits to clear in the
@@ -728,7 +710,7 @@ AONWUCMcuResetStatusGet(void)
 //! resulting in an adaptive rate between 0.2% and 75%.
 //!
 //! The \c ui32Period is the number of 32 KHz clocks between two recharges. The
-//! length of the interval is defined by the formular:
+//! length of the interval is defined by the formula:
 //!
 /*!
 \verbatim
@@ -745,7 +727,7 @@ AONWUCMcuResetStatusGet(void)
 //! period between two oscillator amplitude calibrations which is configured
 //! using AONWUCOscConfig().
 //!
-//! \param bAdaptEnable enables the adaption algorithm for the controller.
+//! \param bAdaptEnable enables the adaptation algorithm for the controller.
 //! \param ui32AdaptRate determines the adjustment value for the adoption
 //! algorithm.
 //! \param ui32Period determines the number of clock cycles between each
@@ -786,7 +768,7 @@ AONWUCRechargeCtrlConfigGet(void)
 //! Use this function to set the number of 32 kHz clocks between oscillator
 //! amplitude calibrations.
 //!
-//! The value of the interval is defined by the formular:
+//! The value of the interval is defined by the formula:
 //!
 /*!
 \verbatim
@@ -846,16 +828,8 @@ AONWUCJtagPowerOff(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
-    #ifdef ROM_AONWUCAuxSRamConfig
-        #undef  AONWUCAuxSRamConfig
-        #define AONWUCAuxSRamConfig             ROM_AONWUCAuxSRamConfig
-    #endif
-    #ifdef ROM_AONWUCAuxWakeupEvent
-        #undef  AONWUCAuxWakeupEvent
-        #define AONWUCAuxWakeupEvent            ROM_AONWUCAuxWakeupEvent
-    #endif
     #ifdef ROM_AONWUCAuxReset
         #undef  AONWUCAuxReset
         #define AONWUCAuxReset                  ROM_AONWUCAuxReset
@@ -884,6 +858,7 @@ AONWUCJtagPowerOff(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

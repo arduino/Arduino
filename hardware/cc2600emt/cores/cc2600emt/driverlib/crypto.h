@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       crypto.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    AES header file.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup crypto_api
 //! @{
 //
@@ -79,10 +81,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define CRYPTOAesLoadKey                NOROM_CRYPTOAesLoadKey
     #define CRYPTOAesEcb                    NOROM_CRYPTOAesEcb
     #define CRYPTOAesEcbStatus              NOROM_CRYPTOAesEcbStatus
@@ -312,7 +312,7 @@ CRYPTOAesEcbFinish(void)
 //! \param ui32AuthLength is the the length of the authentication field -
 //! 0, 2, 4, 6, 8, 10, 12, 14 or 16 octets.
 //! \param pui32Nonce is a pointer to 13-byte or 12-byte Nonce (Number used once).
-//! \param pui32PlainText is a poiner to the octet string input message.
+//! \param pui32PlainText is a pointer to the octet string input message.
 //! \param ui32PlainTextLength is the length of the message.
 //! \param pui32Header is the length of the header (Additional Authentication
 //! Data or AAD).
@@ -372,7 +372,7 @@ extern uint32_t CRYPTOCcmAuthEncryptStatus(void);
 //! This function should be called after \ref CRYPTOCcmAuthEncryptStatus().
 //!
 //! \param ui32TagLength is length of the Tag.
-//! \param pui32CcmTag is the location of the authetication Tag.
+//! \param pui32CcmTag is the location of the authentication Tag.
 //!
 //! \return Returns \ref AES_SUCCESS if successful.
 //!
@@ -393,7 +393,7 @@ extern uint32_t CRYPTOCcmAuthEncryptResultGet(uint32_t ui32TagLength,
 //! \param ui32AuthLength is the the length of the authentication field -
 //! 0, 2, 4, 6, 8, 10, 12, 14 or 16 octets.
 //! \param pui32Nonce is a pointer to 13-byte or 12-byte Nonce (Number used once).
-//! \param pui32CipherText is a poiner to the octet string encrypted message.
+//! \param pui32CipherText is a pointer to the octet string encrypted message.
 //! \param ui32CipherTextLength is the length of the encrypted message.
 //! \param pui32Header is the length of the header (Additional Authentication
 //! Data or AAD).
@@ -445,7 +445,7 @@ extern uint32_t CRYPTOCcmInvAuthDecryptStatus(void);
 //!
 //! \param ui32AuthLength is the the length of the authentication field -
 //! 0, 2, 4, 6, 8, 10, 12, 14 or 16 octets.
-//! \param pui32CipherText is a poiner to the octet string encrypted message.
+//! \param pui32CipherText is a pointer to the octet string encrypted message.
 //! \param ui32CipherTextLength is the length of the encrypted message.
 //! \param pui32CcmTag is the location of the authentication Tag.
 //!
@@ -462,7 +462,7 @@ extern uint32_t CRYPTOCcmInvAuthDecryptResultGet(uint32_t ui32AuthLength,
 //! \brief Get the current status of the Crypto DMA controller.
 //!
 //! This function is used to poll the Crypto DMA controller to check if it is
-//! ready for a new operation or if an error has occured.
+//! ready for a new operation or if an error has occurred.
 //!
 //! The \ref CRYPTO_DMA_BUS_ERROR can also be caught using the crypto event
 //! handler.
@@ -622,14 +622,20 @@ CRYPTOIntStatus(bool bMasked)
 //! assert. This function must be called in the interrupt handler to keep the
 //! interrupt from being recognized again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the CM3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source is cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately re-entered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
 //! - \ref CRYPTO_DMA_IN_DONE
@@ -677,12 +683,12 @@ CRYPTOIntRegister(void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_CRYPTO, pfnHandler);
+    IntRegister(INT_CRYPTO_RESULT_AVAIL_IRQ, pfnHandler);
 
     //
     // Enable the UART interrupt.
     //
-    IntEnable(INT_CRYPTO);
+    IntEnable(INT_CRYPTO_RESULT_AVAIL_IRQ);
 }
 
 //*****************************************************************************
@@ -706,12 +712,12 @@ CRYPTOIntUnregister(void)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_CRYPTO);
+    IntUnregister(INT_CRYPTO_RESULT_AVAIL_IRQ);
 }
 
 //*****************************************************************************
@@ -720,7 +726,7 @@ CRYPTOIntUnregister(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_CRYPTOAesLoadKey
         #undef  CRYPTOAesLoadKey
@@ -782,6 +788,7 @@ CRYPTOIntUnregister(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_ioc.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-09-08 16:38:55 +0200 (Tue, 08 Sep 2015)
+*  Revision:       44531
 *
 *  Description:    Defines and prototypes for the AON IO Controller
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aon_group
+//! @{
 //! \addtogroup aonioc_api
 //! @{
 //
@@ -66,41 +68,21 @@ extern "C"
 
 //*****************************************************************************
 //
-// Support for DriverLib in ROM:
-// This section renames all functions that are not "static inline", so that
-// calling these functions will default to implementation in flash. At the end
-// of this file a second renaming will change the defaults to implementation in
-// ROM for available functions.
-//
-// To force use of the implementation in flash, e.g. for debugging:
-// - Globally: Define DRIVERLIB_NOROM at project level
-// - Per function: Use prefix "NOROM_" when calling the function
-//
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
-//*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
-    #define AONIOCDriveStrengthSet          NOROM_AONIOCDriveStrengthSet
-    #define AONIOCDriveStrengthGet          NOROM_AONIOCDriveStrengthGet
-#endif
-
-//*****************************************************************************
-//
 // Defines for the drive strength
 //
 //*****************************************************************************
-#define AONIOC_DRV_STR5_7_14    0x00000000  //
-#define AONIOC_DRV_STR5_10_20   0x00000001  //
-#define AONIOC_DRV_STR7_14_28   0x00000003  //
-#define AONIOC_DRV_STR10_20_40  0x00000002  //
-#define AONIOC_DRV_STR14_28_56  0x00000006  //
-#define AONIOC_DRV_STR20_40_80  0x00000007  //
-#define AONIOC_DRV_STR28_56_112 0x00000005  //
-#define AONIOC_DRV_STR40_80_112 0x00000004  //
+#define AONIOC_DRV_STR_1  0x00000000 // Lowest drive strength
+#define AONIOC_DRV_STR_2  0x00000001
+#define AONIOC_DRV_STR_3  0x00000003
+#define AONIOC_DRV_STR_4  0x00000002
+#define AONIOC_DRV_STR_5  0x00000006
+#define AONIOC_DRV_STR_6  0x00000007
+#define AONIOC_DRV_STR_7  0x00000005
+#define AONIOC_DRV_STR_8  0x00000004 // Highest drive strength
 
-#define AONIOC_MAX_DRIVE        AONIOC_DRV_STR40_80_112
-#define AONIOC_MED_DRIVE        AONIOC_DRV_STR14_28_56
-#define AONIOC_MIN_DRIVE        AONIOC_DRV_STR5_7_14
+#define AONIOC_DRV_LVL_MIN  (AON_IOC_O_IOSTRMIN)
+#define AONIOC_DRV_LVL_MED  (AON_IOC_O_IOSTRMED)
+#define AONIOC_DRV_LVL_MAX  (AON_IOC_O_IOSTRMAX)
 
 //*****************************************************************************
 //
@@ -110,76 +92,108 @@ extern "C"
 
 //*****************************************************************************
 //
-//! \brief Setup the drive strength for all IOs on the chip.
+//! \brief Configure drive strength values for the manual drive strength options.
 //!
-//! Use this function to define the general drive strength settings for all IOs
-//! on the device. The drive strength of the individual IOs is set using the
-//! IOC driver.
+//! This function defines the general drive strength settings for the non-AUTO
+//! drive strength options in the MCU IOC. Consequently, if all IOs are using the
+//! automatic drive strength option this function has no effect.
 //!
-//! \param ui32LowDrvStr is the minimum drive strength for all IOs
-//! - \ref AONIOC_DRV_STR5_7_14
-//! - \ref AONIOC_DRV_STR5_10_20
-//! - \ref AONIOC_DRV_STR7_14_28
-//! - \ref AONIOC_DRV_STR10_20_40
-//! - \ref AONIOC_DRV_STR14_28_56
-//! - \ref AONIOC_DRV_STR20_40_80
-//! - \ref AONIOC_DRV_STR28_56_112
-//! - \ref AONIOC_DRV_STR40_80_112
-//! \param ui32MedDrvStr is the medium drive strength for all IOs
-//! - \ref AONIOC_DRV_STR5_7_14
-//! - \ref AONIOC_DRV_STR5_10_20
-//! - \ref AONIOC_DRV_STR7_14_28
-//! - \ref AONIOC_DRV_STR10_20_40
-//! - \ref AONIOC_DRV_STR14_28_56
-//! - \ref AONIOC_DRV_STR20_40_80
-//! - \ref AONIOC_DRV_STR28_56_112
-//! - \ref AONIOC_DRV_STR40_80_112
-//! \param ui32MaxDrvStr is the maximum drive strength for all IOs
-//! - \ref AONIOC_DRV_STR5_7_14
-//! - \ref AONIOC_DRV_STR5_10_20
-//! - \ref AONIOC_DRV_STR7_14_28
-//! - \ref AONIOC_DRV_STR10_20_40
-//! - \ref AONIOC_DRV_STR14_28_56
-//! - \ref AONIOC_DRV_STR20_40_80
-//! - \ref AONIOC_DRV_STR28_56_112
-//! - \ref AONIOC_DRV_STR40_80_112
+//! Changing the drive strength values affects all current modes (Low-Current,
+//! High-Current, and Extended-Current). Current mode for individual IOs is set in
+//! MCU IOC by \ref IOCIODrvStrengthSet().
+//!
+//! \note Values are Gray encoded. Simply incrementing values to increase drive
+//! strength will not work.
+//!
+//! \param ui32DriveLevel
+//! - \ref AONIOC_DRV_LVL_MIN : Minimum drive strength option. Default value is selected
+//!        to give minimum 2/4/8 mA @3.3V for Low-Current mode, High-Current mode,
+//!        and Extended-Current mode respectively.
+//! - \ref AONIOC_DRV_LVL_MED : Medium drive strength option. Default value is selected
+//!        to give minimum 2/4/8 mA @2.5V for Low-Current mode, High-Current mode,
+//!        and Extended-Current mode respectively.
+//! - \ref AONIOC_DRV_LVL_MAX : Maximum drive strength option. Default value is selected
+//!        to give minimum 2/4/8 mA @1.8V for Low-Current mode, High-Current mode,
+//!        and Extended-Current mode respectively.
+//! \param ui32DriveStrength sets the value used by IOs configured as non-AUTO drive strength in MCU IOC.
+//! - \ref AONIOC_DRV_STR_1 : Lowest drive strength
+//! - \ref AONIOC_DRV_STR_2
+//! - \ref AONIOC_DRV_STR_3
+//! - \ref AONIOC_DRV_STR_4
+//! - \ref AONIOC_DRV_STR_5
+//! - \ref AONIOC_DRV_STR_6
+//! - \ref AONIOC_DRV_STR_7
+//! - \ref AONIOC_DRV_STR_8 : Highest drive strength
 //!
 //! \return None
 //!
-//! \sa AONIOCDriveStrengthGet()
+//! \sa \ref AONIOCDriveStrengthGet(), \ref IOCIODrvStrengthSet()
 //
 //*****************************************************************************
-extern void AONIOCDriveStrengthSet(uint32_t ui32LowDrvStr,
-                                   uint32_t ui32MedDrvStr,
-                                   uint32_t ui32MaxDrvStr);
+__STATIC_INLINE void
+AONIOCDriveStrengthSet(uint32_t ui32DriveLevel, uint32_t ui32DriveStrength)
+{
+    ASSERT((ui32DriveLevel == AONIOC_DRV_LVL_MIN) ||
+           (ui32DriveLevel == AONIOC_DRV_LVL_MED) ||
+           (ui32DriveLevel == AONIOC_DRV_LVL_MAX));
+    ASSERT((ui32DriveStrength == AONIOC_DRV_STR_1) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_2) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_3) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_4) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_5) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_6) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_7) ||
+           (ui32DriveStrength == AONIOC_DRV_STR_8));
+
+    //
+    // Set the drive strength.
+    //
+    HWREG(AON_IOC_BASE + ui32DriveLevel) = ui32DriveStrength;
+}
 
 //*****************************************************************************
 //
 //! \brief Get a specific drive level setting for all IOs.
 //!
-//! Use this function to retreive the driver strengt setting for a specific
+//! Use this function to read the drive strength setting for a specific
 //! IO drive level.
 //!
+//! \note Values are Gray encoded.
+//!
 //! \param ui32DriveLevel is the specific drive level to get the setting for.
-//! - \ref AONIOC_MAX_DRIVE
-//! - \ref AONIOC_MED_DRIVE
-//! - \ref AONIOC_MIN_DRIVE
+//! - \ref AONIOC_DRV_LVL_MIN : Minimum drive strength option.
+//! - \ref AONIOC_DRV_LVL_MED : Medium drive strength option.
+//! - \ref AONIOC_DRV_LVL_MAX : Maximum drive strength option.
 //!
 //! \return Returns the requested drive strength level setting for all IOs.
 //! Possible values are:
-//! - \ref AONIOC_DRV_STR5_7_14
-//! - \ref AONIOC_DRV_STR5_10_20
-//! - \ref AONIOC_DRV_STR7_14_28
-//! - \ref AONIOC_DRV_STR10_20_40
-//! - \ref AONIOC_DRV_STR14_28_56
-//! - \ref AONIOC_DRV_STR20_40_80
-//! - \ref AONIOC_DRV_STR28_56_112
-//! - \ref AONIOC_DRV_STR40_80_112
+//! - \ref AONIOC_DRV_STR_1 : Lowest drive strength
+//! - \ref AONIOC_DRV_STR_2
+//! - \ref AONIOC_DRV_STR_3
+//! - \ref AONIOC_DRV_STR_4
+//! - \ref AONIOC_DRV_STR_5
+//! - \ref AONIOC_DRV_STR_6
+//! - \ref AONIOC_DRV_STR_7
+//! - \ref AONIOC_DRV_STR_8 : Highest drive strength
 //!
 //! \sa AONIOCDriveStrengthSet()
 //
 //*****************************************************************************
-extern uint32_t AONIOCDriveStrengthGet(uint32_t ui32DriveLevel);
+__STATIC_INLINE uint32_t
+AONIOCDriveStrengthGet(uint32_t ui32DriveLevel)
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT((ui32DriveLevel == AONIOC_DRV_LVL_MIN) ||
+           (ui32DriveLevel == AONIOC_DRV_LVL_MED) ||
+           (ui32DriveLevel == AONIOC_DRV_LVL_MAX));
+
+    //
+    // Return the drive strength value.
+    //
+    return( HWREG(AON_IOC_BASE + ui32DriveLevel) );
+}
 
 //*****************************************************************************
 //
@@ -274,24 +288,6 @@ AONIOC32kHzOutputEnable(void)
 
 //*****************************************************************************
 //
-// Support for DriverLib in ROM:
-// Redirect to implementation in ROM when available.
-//
-//*****************************************************************************
-#ifndef DRIVERLIB_NOROM
-    #include <driverlib/rom.h>
-    #ifdef ROM_AONIOCDriveStrengthSet
-        #undef  AONIOCDriveStrengthSet
-        #define AONIOCDriveStrengthSet          ROM_AONIOCDriveStrengthSet
-    #endif
-    #ifdef ROM_AONIOCDriveStrengthGet
-        #undef  AONIOCDriveStrengthGet
-        #define AONIOCDriveStrengthGet          ROM_AONIOCDriveStrengthGet
-    #endif
-#endif
-
-//*****************************************************************************
-//
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
@@ -304,6 +300,7 @@ AONIOC32kHzOutputEnable(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       driverlib_release.c
-*  Revised:        $Date: 2015-03-11 11:25:46 +0100 (on, 11 mar 2015) $
+*  Revised:        $Date: 2015-03-11 11:25:46 +0100 (Wed, 11 Mar 2015) $
 *  Revision:       $Revision: 42932 $
 *
 *  Description:    Provides macros for ensuring that a specfic release of
@@ -42,4 +42,4 @@
 
 
 /// Declare the current DriverLib release
-DRIVERLIB_DECLARE_RELEASE(0, 43243);
+DRIVERLIB_DECLARE_RELEASE(0, 45180);

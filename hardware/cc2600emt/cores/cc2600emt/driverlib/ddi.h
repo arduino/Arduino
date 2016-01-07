@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ddi.h
-*  Revised:        2015-03-24 14:53:26 +0100 (ti, 24 mar 2015)
-*  Revision:       43115
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the DDI master interface.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup analog_group
+//! @{
 //! \addtogroup ddi_api
 //! @{
 //
@@ -78,10 +80,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define DDI16BitWrite                   NOROM_DDI16BitWrite
     #define DDI16BitfieldWrite              NOROM_DDI16BitfieldWrite
     #define DDI16BitRead                    NOROM_DDI16BitRead
@@ -560,7 +560,7 @@ extern uint16_t DDI16BitfieldRead(uint32_t ui32Base, uint32_t ui32Reg,
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_DDI16BitWrite
         #undef  DDI16BitWrite
@@ -594,6 +594,7 @@ extern uint16_t DDI16BitfieldRead(uint32_t ui32Base, uint32_t ui32Reg,
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

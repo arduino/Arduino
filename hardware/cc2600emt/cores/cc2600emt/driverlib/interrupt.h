@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       interrupt.h
-*  Revised:        2015-03-04 13:37:39 +0100 (on, 04 mar 2015)
-*  Revision:       42883
+*  Revised:        2015-07-24 15:00:55 +0200 (Fri, 24 Jul 2015)
+*  Revision:       44203
 *
 *  Description:    Defines and prototypes for the NVIC Interrupt Controller
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_cpu_group
+//! @{
 //! \addtogroup interrupt_api
 //! @{
 //
@@ -77,10 +79,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define IntRegister                     NOROM_IntRegister
     #define IntUnregister                   NOROM_IntUnregister
     #define IntPriorityGroupingSet          NOROM_IntPriorityGroupingSet
@@ -98,7 +98,7 @@ extern "C"
 //
 // Macro to generate an interrupt priority mask based on the number of bits
 // of priority supported by the hardware. For CC26xx the number of priority
-// bit is 3 as defifined in <tt>hw_types.h</tt>. The priority mask is
+// bit is 3 as defined in <tt>hw_types.h</tt>. The priority mask is
 // defined as
 //
 // INT_PRIORITY_MASK = ((0xFF << (8 - NUM_PRIORITY_BITS)) & 0xFF)
@@ -354,7 +354,7 @@ extern void IntPendSet(uint32_t ui32Interrupt);
 //! waiting for an interrupt of higher priority to be done executing.
 //!
 //! \note This function does not support the lower 16 IRQ vectors which are
-//! hardware defined for the Cortex M3.
+//! hardware defined for the System CPU.
 //!
 //! \param ui32Interrupt specifies the interrupt to be queried.
 //!
@@ -442,7 +442,7 @@ IntPriorityMaskGet(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_IntRegister
         #undef  IntRegister
@@ -504,6 +504,7 @@ IntPriorityMaskGet(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_batmon.h
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AON Battery and Temperature
 *                  Monitor
@@ -39,6 +39,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aon_group
+//! @{
 //! \addtogroup aonbatmon_api
 //! @{
 //
@@ -74,13 +76,13 @@ extern "C"
 
 //*****************************************************************************
 //
-//! \brief Enable the temperatur and battery monitoring.
+//! \brief Enable the temperature and battery monitoring.
 //!
 //! This function will enable the measurements of the temperature and the
 //! battery voltage.
 //!
 //! To speed up the measurement of the levels the measurement can be enabled
-//! before configuring the battery and temperatur settings. When all of the
+//! before configuring the battery and temperature settings. When all of the
 //! AON_BATMON registers are configured, the calculation of the voltage and
 //! temperature values can be enabled (the measurement will now take
 //! effect/propagate to other blocks).
@@ -113,7 +115,7 @@ AONBatMonEnable(void)
 
 //*****************************************************************************
 //
-//! \brief Disable the temperatur and battery monitoring.
+//! \brief Disable the temperature and battery monitoring.
 //!
 //! This function will disable the measurements of the temperature and the
 //! battery voltage.
@@ -286,6 +288,7 @@ AONBatMonNewTempMeasureReady(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

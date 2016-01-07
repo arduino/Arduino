@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       systick.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    Prototypes for the SysTick driver.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_cpu_group
+//! @{
 //! \addtogroup systick_api
 //! @{
 //
@@ -138,7 +140,7 @@ SysTickIntRegister(void (*pfnHandler)(void))
     //
     // Register the interrupt handler, returning an error if an error occurs.
     //
-    IntRegister(FAULT_SYSTICK, pfnHandler);
+    IntRegister(INT_SYSTICK, pfnHandler);
 
     //
     // Enable the SysTick interrupt.
@@ -170,7 +172,7 @@ SysTickIntUnregister(void)
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(FAULT_SYSTICK);
+    IntUnregister(INT_SYSTICK);
 }
 
 //*****************************************************************************
@@ -300,6 +302,7 @@ SysTickValueGet(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,0 +1,3 @@
+COMPILER_TOOL = "/cygdrive/c/ti/ccsv6/tools/compiler/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-gcc"
+COMPILER_INCL = "/cygdrive/c/ti/ccsv6/tools/compiler/gcc-arm-none-eabi-4_8-2014q3/lib/gcc/arm-none-eabi/4.8.4/include"
+ARCHIVER_TOOL = "/cygdrive/c/ti/ccsv6/tools/compiler/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-ar"

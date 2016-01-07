@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_batmon.c
-*  Revised:        2015-02-18 11:12:55 +0100 (on, 18 feb 2015)
-*  Revision:       42790
+*  Revised:        2015-10-21 16:28:04 +0200 (Wed, 21 Oct 2015)
+*  Revision:       44798
 *
 *  Description:    Driver for the AON Battery and Temperature Monitor
 *
@@ -44,11 +44,10 @@
 // (This is not given in the hw_aon_batmon.h file and therefore hard coded here)
 //*****************************************************************************
 #define AON_BATMON_TEMP_INT_FIELD_WIDTH   9
-
 //*****************************************************************************
 //
 // AONBatMonTemperatureGetDegC()
-// Returns sign exteded temperature in Deg C (-256 .. +255)
+// Returns sign extended temperature in Deg C (-256 .. +255)
 //
 //*****************************************************************************
 int32_t
@@ -67,7 +66,7 @@ AONBatMonTemperatureGetDegC( void )
 
    //
    // Typecasting voltageSlope to int8_t prior to assignment in order to make sure sign extension works properly
-   // Using byte read (HWREGB) in order to make more efficient code since FCFG1_O_MISC_TRIM is assigned to bits[7:0]
+   // Using byte read (HWREGB) in order to make more efficient code since voltageSlope is assigned to bits[7:0] of FCFG1_O_MISC_TRIM
    //
    voltageSlope      = ((int8_t)HWREGB( FCFG1_BASE + FCFG1_O_MISC_TRIM ));
    tempCorrection    = (( voltageSlope * (((int32_t)HWREG( AON_BATMON_BASE + AON_BATMON_O_BAT )) - 0x300 )) >> 4 );

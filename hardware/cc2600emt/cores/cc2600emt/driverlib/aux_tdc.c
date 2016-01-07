@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       aux_tdc.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
+*  Revised:        2015-01-13 16:59:55 +0100 (Tue, 13 Jan 2015)
 *  Revision:       42365
 *
 *  Description:    Driver for the AUX Time to Digital Converter interface.
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  AUXTDCConfigSet
     #define AUXTDCConfigSet                 NOROM_AUXTDCConfigSet
     #undef  AUXTDCMeasurementDone

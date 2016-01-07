@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       sys_ctrl.h
-*  Revised:        2015-03-16 14:43:45 +0100 (ma, 16 mar 2015)
-*  Revision:       42989
+*  Revised:        2015-11-09 11:32:42 +0100 (Mon, 09 Nov 2015)
+*  Revision:       45004
 *
 *  Description:    Defines and prototypes for the System Controller.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_control_group
+//! @{
 //! \addtogroup sysctrl_api
 //! @{
 //
@@ -99,10 +101,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define SysCtrlPowerEverything          NOROM_SysCtrlPowerEverything
     #define SysCtrlStandby                  NOROM_SysCtrlStandby
     #define SysCtrlPowerdown                NOROM_SysCtrlPowerdown
@@ -120,12 +120,20 @@ extern "C"
 
 //*****************************************************************************
 //
-// Defines for the different power modes of the Cortex M3
+// Defines for the different power modes of the System CPU
 //
 //*****************************************************************************
 #define CPU_RUN                 0x00000000
 #define CPU_SLEEP               0x00000001
 #define CPU_DEEP_SLEEP          0x00000002
+
+//*****************************************************************************
+//
+// Defines for SysCtrlSetRechargeBeforePowerDown
+//
+//*****************************************************************************
+#define XOSC_IN_HIGH_POWER_MODE 0 // When xosc_hf is in HIGH_POWER_XOSC
+#define XOSC_IN_LOW_POWER_MODE  1 // When xosc_hf is in LOW_POWER_XOSC
 
 //*****************************************************************************
 //
@@ -200,7 +208,7 @@ extern void SysCtrlShutdown(void);
 //
 //! \brief Get the CPU core clock frequency.
 //!
-//! Use this function to retreive the current clock frequency for the CPU.
+//! Use this function to get the current clock frequency for the CPU.
 //!
 //! The CPU can run from 48 MHz and down to 750kHz. The frequency is defined
 //! by the combined division factor of the SYSBUS and the CPU clock divider.
@@ -222,10 +230,14 @@ SysCtrlClockGet( void )
 //
 //! \brief Sync all accesses to the AON register interface.
 //!
-//! When this function returns, all writes to the AON register interface is
-//! guaranteed to have progressed to hardware.
+//! When this function returns, all writes to the AON register interface are
+//! guaranteed to have propagated to hardware. The function will return
+//! immediately if no AON writes are pending; otherwise, it will wait for the next
+//! AON clock before returning.
 //!
 //! \return None
+//!
+//! \sa \ref SysCtrlAonUpdate()
 //
 //*****************************************************************************
 __STATIC_INLINE void
@@ -246,11 +258,13 @@ SysCtrlAonSync(void)
 //! is guaranteed to be in sync.
 //!
 //! \note This function should primarily be used after wakeup from sleep modes,
-//! as it will guarantee that all shadow registers on the interface between MCU
-//! and AON are updated. If a write has been done to the AON interface it is
-//! sufficient to call the \ref SysCtrlAonSync().
+//! as it will guarantee that all shadow registers on the AON interface are updated
+//! before reading any AON registers from the MCU domain. If a write has been
+//! done to the AON interface it is sufficient to call the \ref SysCtrlAonSync().
 //!
 //! \return None
+//!
+//! \sa \ref SysCtrlAonSync()
 //
 //*****************************************************************************
 __STATIC_INLINE void
@@ -264,21 +278,6 @@ SysCtrlAonUpdate(void)
     HWREG(AON_RTC_BASE + AON_RTC_O_SYNC);
 }
 
-
-//*****************************************************************************
-//
-//! \brief Enumeration describing possible input options to
-//! \ref SysCtrlSetRechargeBeforePowerDown().
-//!
-//! Inform the \ref SysCtrlSetRechargeBeforePowerDown() function whether the XOSC is
-//! in High or Low power mode. This is typically set by calling the function
-//! \ref OSCXHfPowerModeSet().
-//
-//*****************************************************************************
-typedef enum {
-   XoscInHighPowerMode = 0, //!< When xosc_hf is in HIGH_POWER_XOSC.
-   XoscInLowPowerMode       //!< When xosc_hf is in LOW_POWER_XOSC.
-} XoscPowerMode_t;
 
 //*****************************************************************************
 //
@@ -296,13 +295,15 @@ typedef enum {
 //! \ref SysCtrlAonSync() since this call will not return before there are no
 //! outstanding write requests between MCU and AON.
 //!
-//! \param xoscPowerMode (typically running in XoscInHighPowerMode all the time).
+//! \param xoscPowerMode (typically running in XOSC_IN_HIGH_POWER_MODE all the time).
+//! - \ref XOSC_IN_HIGH_POWER_MODE : When xosc_hf is in HIGH_POWER_XOSC.
+//! - \ref XOSC_IN_LOW_POWER_MODE  : When xosc_hf is in LOW_POWER_XOSC.
 //!
 //! \return None
 //
 //*****************************************************************************
 void
-SysCtrlSetRechargeBeforePowerDown( XoscPowerMode_t xoscPowerMode );
+SysCtrlSetRechargeBeforePowerDown( uint32_t xoscPowerMode );
 
 
 //*****************************************************************************
@@ -353,15 +354,15 @@ SysCtrl_DCDC_VoltageConditionalControl( void );
 // \name Return values from calling SysCtrlResetSourceGet()
 //@{
 //*****************************************************************************
-#define RSTSRC_PWR_ON               (( AON_SYSCTL_RESETCTL_RESET_SRC_PWR_ON    >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_PIN_RESET            (( AON_SYSCTL_RESETCTL_RESET_SRC_PIN_RESET >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_VDDS_LOSS            (( AON_SYSCTL_RESETCTL_RESET_SRC_VDDS_LOSS >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_VDD_LOSS             (( AON_SYSCTL_RESETCTL_RESET_SRC_VDD_LOSS  >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_VDDR_LOSS            (( AON_SYSCTL_RESETCTL_RESET_SRC_VDDR_LOSS >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_CLK_LOSS             (( AON_SYSCTL_RESETCTL_RESET_SRC_CLK_LOSS  >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_SYSRESET             (( AON_SYSCTL_RESETCTL_RESET_SRC_SYSRESET  >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_WARMRESET            (( AON_SYSCTL_RESETCTL_RESET_SRC_WARMRESET >> AON_SYSCTL_RESETCTL_RESET_SRC_S ))
-#define RSTSRC_WAKEUP_FROM_SHUTDOWN (( AON_SYSCTL_RESETCTL_RESET_SRC_M         >> AON_SYSCTL_RESETCTL_RESET_SRC_S ) + 1 )
+#define RSTSRC_PWR_ON               (( AON_SYSCTL_RESETCTL_RESET_SRC_PWR_ON    ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_PIN_RESET            (( AON_SYSCTL_RESETCTL_RESET_SRC_PIN_RESET ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_VDDS_LOSS            (( AON_SYSCTL_RESETCTL_RESET_SRC_VDDS_LOSS ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_VDD_LOSS             (( AON_SYSCTL_RESETCTL_RESET_SRC_VDD_LOSS  ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_VDDR_LOSS            (( AON_SYSCTL_RESETCTL_RESET_SRC_VDDR_LOSS ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_CLK_LOSS             (( AON_SYSCTL_RESETCTL_RESET_SRC_CLK_LOSS  ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_SYSRESET             (( AON_SYSCTL_RESETCTL_RESET_SRC_SYSRESET  ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_WARMRESET            (( AON_SYSCTL_RESETCTL_RESET_SRC_WARMRESET ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S ))
+#define RSTSRC_WAKEUP_FROM_SHUTDOWN ((( AON_SYSCTL_RESETCTL_RESET_SRC_M        ) >> ( AON_SYSCTL_RESETCTL_RESET_SRC_S )) + 1 )
 //@}
 
 //*****************************************************************************
@@ -375,7 +376,7 @@ extern uint32_t SysCtrlResetSourceGet( void );
 
 //*****************************************************************************
 //
-//! \brief Perform a full system reset
+//! \brief Perform a full system reset.
 //!
 //! \return The chip will reset and hence never return from this call.
 //
@@ -393,6 +394,53 @@ SysCtrlSystemReset( void )
    }
 }
 
+//*****************************************************************************
+//
+//! \brief Enables reset if OSC clock loss event is asserted.
+//!
+//! Clock loss circuit in analog domain must be enabled as well in order to
+//! actually enable for a clock loss reset to occur
+//! \ref OSCClockLossEventEnable().
+//!
+//! \note This function shall typically not be called because the clock loss
+//! reset functionality is controlled by the boot code (a factory configuration
+//! defines whether it is set or not).
+//!
+//! \return None
+//!
+//! \sa \ref SysCtrlClockLossResetDisable(), \ref OSCClockLossEventEnable()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+SysCtrlClockLossResetEnable(void)
+{
+    //
+    // Set clock loss enable bit in AON_SYSCTRL using bit banding
+    //
+    HWREGBITW(AON_SYSCTL_BASE + AON_SYSCTL_O_RESETCTL, AON_SYSCTL_RESETCTL_CLK_LOSS_EN_BITN) = 1;
+}
+
+//*****************************************************************************
+//
+//! \brief Disables reset due to OSC clock loss event.
+//!
+//! \note This function shall typically not be called because the clock loss
+//! reset functionality is controlled by the boot code (a factory configuration
+//! defines whether it is set or not).
+//!
+//! \return None
+//!
+//! \sa \ref SysCtrlClockLossResetEnable()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+SysCtrlClockLossResetDisable(void)
+{
+    //
+    // Clear clock loss enable bit in AON_SYSCTRL using bit banding
+    //
+    HWREGBITW(AON_SYSCTL_BASE + AON_SYSCTL_O_RESETCTL, AON_SYSCTL_RESETCTL_CLK_LOSS_EN_BITN) = 0;
+}
 
 //*****************************************************************************
 //
@@ -400,7 +448,7 @@ SysCtrlSystemReset( void )
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_SysCtrlPowerEverything
         #undef  SysCtrlPowerEverything
@@ -438,6 +486,7 @@ SysCtrlSystemReset( void )
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

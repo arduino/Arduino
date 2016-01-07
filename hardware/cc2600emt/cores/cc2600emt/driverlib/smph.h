@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       smph.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the MCU Semaphore.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup mcusemaphore_api
 //! @{
 //
@@ -76,10 +78,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define SMPHAcquire                     NOROM_SMPHAcquire
 #endif
 
@@ -292,7 +292,7 @@ SMPHRelease(uint32_t ui32Semaphore)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_SMPHAcquire
         #undef  SMPHAcquire
@@ -314,6 +314,7 @@ SMPHRelease(uint32_t ui32Semaphore)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

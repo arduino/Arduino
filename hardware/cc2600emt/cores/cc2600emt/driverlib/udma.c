@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       udma.c
-*  Revised:        2015-04-07 14:16:28 +0200 (ti, 07 apr 2015)
+*  Revised:        2015-04-07 14:16:28 +0200 (Tue, 07 Apr 2015)
 *  Revision:       43160
 *
 *  Description:    Driver for the uDMA controller
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  uDMAChannelAttributeEnable
     #define uDMAChannelAttributeEnable      NOROM_uDMAChannelAttributeEnable
     #undef  uDMAChannelAttributeDisable

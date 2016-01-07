@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       gpio.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-19 16:24:40 +0100 (Thu, 19 Nov 2015)
+*  Revision:       45170
 *
 *  Description:    Defines and prototypes for the GPIO.
 *
@@ -36,12 +36,14 @@
 *
 ******************************************************************************/
 
-//****************************************************************************
+//*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup gpio_api
 //! @{
 //
-//****************************************************************************
+//*****************************************************************************
 
 #ifndef __GPIO_H__
 #define __GPIO_H__
@@ -57,7 +59,6 @@ extern "C"
 {
 #endif
 
-#include <stdbool.h>
 #include <stdint.h>
 #include <inc/hw_types.h>
 #include <inc/hw_memmap.h>
@@ -66,59 +67,67 @@ extern "C"
 
 //*****************************************************************************
 //
-// Number of GPIO pins
+// Check for legal range of variable dioNumber
 //
 //*****************************************************************************
-#define NUM_GPIO_PINS 32
+#ifdef DRIVERLIB_DEBUG
+static bool
+dioNumberLegal( uint32_t dioNumber )
+{
+    return ( dioNumber < (( HWREG( FCFG_BASE + FCFG1_O_IOCONF ) &
+        FCFG1_IOCONF_GPIO_CNT_M ) >>
+        FCFG1_IOCONF_GPIO_CNT_S ) );
+}
+#endif
 
 //*****************************************************************************
 //
-// The following values define the bit field for the GPIO Pins in a port.
+// The following values define the bit field for the GPIO DIOs.
 //
 //*****************************************************************************
-#define GPIO_PIN_0              0x00000001  // GPIO pin 0
-#define GPIO_PIN_1              0x00000002  // GPIO pin 1
-#define GPIO_PIN_2              0x00000004  // GPIO pin 2
-#define GPIO_PIN_3              0x00000008  // GPIO pin 3
-#define GPIO_PIN_4              0x00000010  // GPIO pin 4
-#define GPIO_PIN_5              0x00000020  // GPIO pin 5
-#define GPIO_PIN_6              0x00000040  // GPIO pin 6
-#define GPIO_PIN_7              0x00000080  // GPIO pin 7
-#define GPIO_PIN_8              0x00000100  // GPIO pin 8
-#define GPIO_PIN_9              0x00000200  // GPIO pin 9
-#define GPIO_PIN_10             0x00000400  // GPIO pin 10
-#define GPIO_PIN_11             0x00000800  // GPIO pin 11
-#define GPIO_PIN_12             0x00001000  // GPIO pin 12
-#define GPIO_PIN_13             0x00002000  // GPIO pin 13
-#define GPIO_PIN_14             0x00004000  // GPIO pin 14
-#define GPIO_PIN_15             0x00008000  // GPIO pin 15
-#define GPIO_PIN_16             0x00010000  // GPIO pin 16
-#define GPIO_PIN_17             0x00020000  // GPIO pin 17
-#define GPIO_PIN_18             0x00040000  // GPIO pin 18
-#define GPIO_PIN_19             0x00080000  // GPIO pin 19
-#define GPIO_PIN_20             0x00100000  // GPIO pin 20
-#define GPIO_PIN_21             0x00200000  // GPIO pin 21
-#define GPIO_PIN_22             0x00400000  // GPIO pin 22
-#define GPIO_PIN_23             0x00800000  // GPIO pin 23
-#define GPIO_PIN_24             0x01000000  // GPIO pin 24
-#define GPIO_PIN_25             0x02000000  // GPIO pin 25
-#define GPIO_PIN_26             0x04000000  // GPIO pin 26
-#define GPIO_PIN_27             0x08000000  // GPIO pin 27
-#define GPIO_PIN_28             0x10000000  // GPIO pin 28
-#define GPIO_PIN_29             0x20000000  // GPIO pin 29
-#define GPIO_PIN_30             0x40000000  // GPIO pin 30
-#define GPIO_PIN_31             0x80000000  // GPIO pin 31
-#define GPIO_PIN_UNUSED         0x00000000  // GPIO pin unused
-#define GPIO_PIN_MASK           0xFFFFFFFF  // GPIO pin mask
+#define GPIO_DIO_0_MASK         0x00000001  // GPIO DIO 0 mask
+#define GPIO_DIO_1_MASK         0x00000002  // GPIO DIO 1 mask
+#define GPIO_DIO_2_MASK         0x00000004  // GPIO DIO 2 mask
+#define GPIO_DIO_3_MASK         0x00000008  // GPIO DIO 3 mask
+#define GPIO_DIO_4_MASK         0x00000010  // GPIO DIO 4 mask
+#define GPIO_DIO_5_MASK         0x00000020  // GPIO DIO 5 mask
+#define GPIO_DIO_6_MASK         0x00000040  // GPIO DIO 6 mask
+#define GPIO_DIO_7_MASK         0x00000080  // GPIO DIO 7 mask
+#define GPIO_DIO_8_MASK         0x00000100  // GPIO DIO 8 mask
+#define GPIO_DIO_9_MASK         0x00000200  // GPIO DIO 9 mask
+#define GPIO_DIO_10_MASK        0x00000400  // GPIO DIO 10 mask
+#define GPIO_DIO_11_MASK        0x00000800  // GPIO DIO 11 mask
+#define GPIO_DIO_12_MASK        0x00001000  // GPIO DIO 12 mask
+#define GPIO_DIO_13_MASK        0x00002000  // GPIO DIO 13 mask
+#define GPIO_DIO_14_MASK        0x00004000  // GPIO DIO 14 mask
+#define GPIO_DIO_15_MASK        0x00008000  // GPIO DIO 15 mask
+#define GPIO_DIO_16_MASK        0x00010000  // GPIO DIO 16 mask
+#define GPIO_DIO_17_MASK        0x00020000  // GPIO DIO 17 mask
+#define GPIO_DIO_18_MASK        0x00040000  // GPIO DIO 18 mask
+#define GPIO_DIO_19_MASK        0x00080000  // GPIO DIO 19 mask
+#define GPIO_DIO_20_MASK        0x00100000  // GPIO DIO 20 mask
+#define GPIO_DIO_21_MASK        0x00200000  // GPIO DIO 21 mask
+#define GPIO_DIO_22_MASK        0x00400000  // GPIO DIO 22 mask
+#define GPIO_DIO_23_MASK        0x00800000  // GPIO DIO 23 mask
+#define GPIO_DIO_24_MASK        0x01000000  // GPIO DIO 24 mask
+#define GPIO_DIO_25_MASK        0x02000000  // GPIO DIO 25 mask
+#define GPIO_DIO_26_MASK        0x04000000  // GPIO DIO 26 mask
+#define GPIO_DIO_27_MASK        0x08000000  // GPIO DIO 27 mask
+#define GPIO_DIO_28_MASK        0x10000000  // GPIO DIO 28 mask
+#define GPIO_DIO_29_MASK        0x20000000  // GPIO DIO 29 mask
+#define GPIO_DIO_30_MASK        0x40000000  // GPIO DIO 30 mask
+#define GPIO_DIO_31_MASK        0x80000000  // GPIO DIO 31 mask
+#define GPIO_DIO_ALL_MASK       0xFFFFFFFF  // GPIO all DIOs mask
 
 //*****************************************************************************
 //
-// Values that can be passed to GPIODirModeSet as the ui32PinIO parameter, and
-// returned from GPIODirModeGet.
+// Define constants that shall be passed as the outputEnableValue parameter to
+// GPIO_setOutputEnableDio() and will be returned from the function
+// GPIO_getOutputEnableDio().
 //
 //*****************************************************************************
-#define GPIO_DIR_MODE_IN        0x00000000  // Pin is a GPIO input
-#define GPIO_DIR_MODE_OUT       0x00000001  // Pin is a GPIO output
+#define GPIO_OUTPUT_DISABLE     0x00000000  // DIO output is disabled
+#define GPIO_OUTPUT_ENABLE      0x00000001  // DIO output is enabled
 
 //*****************************************************************************
 //
@@ -126,263 +135,539 @@ extern "C"
 //
 //*****************************************************************************
 
-//****************************************************************************
+//*****************************************************************************
 //
-//! \brief Sets the direction of the specified pin(s).
+//! \brief Reads a specific DIO.
 //!
-//! This function will set the specified pin(s) on the GPIO port
-//! as either an input or output under software control.
+//! \param dioNumber specifies the DIO to read (0-31).
 //!
-//! \param ui32Pins is the bit-packed representation of the pin(s)
-//! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
-//! - ...
-//! - \ref GPIO_PIN_31
-//! \param ui32Dir is the direction of the pin(s):
-//! - \ref GPIO_DIR_MODE_IN  : Software controlled input.
-//! - \ref GPIO_DIR_MODE_OUT : Software controlled output.
+//! \return Returns 0 or 1 reflecting the input value of the specified DIO.
 //!
-//! \return None
+//! \sa \ref GPIO_readMultiDio(), \ref GPIO_writeDio(), \ref GPIO_writeMultiDio()
 //
-//****************************************************************************
-__STATIC_INLINE void
-GPIODirModeSet(uint32_t ui32Pins, uint32_t ui32Dir)
+//*****************************************************************************
+__STATIC_INLINE uint32_t
+GPIO_readDio( uint32_t dioNumber )
 {
-    uint32_t ui32Reg;
-
     //
     // Check the arguments.
     //
-    ASSERT(ui32Pins & GPIO_PIN_MASK);
-    ASSERT((ui32Dir == GPIO_DIR_MODE_IN) ||
-           (ui32Dir == GPIO_DIR_MODE_OUT));
+    ASSERT( dioNumberLegal( dioNumber ));
 
     //
-    // Update the output pin enable bit.
+    // Return the input value from the specified DIO.
     //
-    ui32Reg = HWREG(GPIO_BASE + GPIO_O_DOE31_0);
-    if(ui32Dir == GPIO_DIR_MODE_IN)
-    {
-        ui32Reg &= ~ui32Pins;
-    }
-    else
-    {
-        ui32Reg |= ui32Pins;
-    }
-    HWREG(GPIO_BASE + GPIO_O_DOE31_0) = ui32Reg;
+    return (( HWREG( GPIO_BASE + GPIO_O_DIN31_0 ) >> dioNumber ) & 1 );
 }
 
 //*****************************************************************************
 //
-//! \brief Gets the direction of a pin.
+//! \brief Reads the input value for the specified DIOs.
 //!
-//! This function gets the direction and control mode for a specified pin on
-//! the selected GPIO port. The pin can be configured as either an input or
-//! output under software control.
+//! This function returns the the input value for multiple DIOs.
+//! The value returned is not shifted and hence matches the corresponding dioMask bits.
 //!
-//! \param ui32Pin is the pin number.
-//! - \ref GPIO_PIN_0
+//! \param dioMask is the bit-mask representation of the DIOs to read.
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
 //! - ...
-//! - \ref GPIO_PIN_31
+//! - \ref GPIO_DIO_31_MASK
 //!
-//! \return Returns one of the enumerated data types:
-//! - \ref GPIO_DIR_MODE_IN  : Software controlled input.
-//! - \ref GPIO_DIR_MODE_OUT : Software controlled output.
+//! \return Returns a bit vector reflecting the input value of the corresponding DIOs.
+//! - 0 : Corresponding DIO is low.
+//! - 1 : Corresponding DIO is high.
+//!
+//! \sa \ref GPIO_readDio(), \ref GPIO_writeDio(), \ref GPIO_writeMultiDio()
 //
 //*****************************************************************************
 __STATIC_INLINE uint32_t
-GPIODirModeGet(uint32_t ui32Pin)
+GPIO_readMultiDio( uint32_t dioMask )
 {
-    uint32_t ui32Reg;
-
     //
     // Check the arguments.
     //
-    ASSERT((ui32Pin >= GPIO_PIN_0) && (ui32Pin <= GPIO_PIN_31));
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
 
     //
-    // Return the pin direction.
+    // Return the input value from the specified DIOs.
     //
-    ui32Reg = HWREG(GPIO_BASE + GPIO_O_DOE31_0);
-    return((ui32Reg & ui32Pin) ? GPIO_DIR_MODE_OUT : GPIO_DIR_MODE_IN);
+    return ( HWREG( GPIO_BASE + GPIO_O_DIN31_0 ) & dioMask );
 }
 
-//****************************************************************************
+//*****************************************************************************
 //
-//! \brief Write to pin(s).
+//! \brief Writes a value to a specific DIO.
 //!
-//!
-//! All the specified pins will be set to the same value, either '0' or '1'.
-//!
-//! \param ui32Pins is the bit-packed representation of the GPIO(s) to set.
-//! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
-//! - ...
-//! - \ref GPIO_PIN_31
-//! \param ui32Val is the value to write on the specified GPIO(s):
-//! - 0 : Set the GPIO(s) to 0 (low).
-//! - 1 : Set the GPIO(s) to 1 (high).
+//! \param dioNumber specifies the DIO to update (0-31).
+//! \param value specifies the value to write
+//! - 0 : Logic zero (low)
+//! - 1 : Logic one (high)
 //!
 //! \return None
+//!
+//! \sa \ref GPIO_writeMultiDio(), \ref GPIO_readDio(), \ref GPIO_readMultiDio()
 //
-//****************************************************************************
+//*****************************************************************************
 __STATIC_INLINE void
-GPIOPinWrite(uint32_t ui32Pins, uint32_t ui32Val)
+GPIO_writeDio( uint32_t dioNumber, uint32_t value )
 {
-    uint32_t ui32Addr;
-
     //
     // Check the arguments.
     //
-    ASSERT(ui32Pins & GPIO_PIN_MASK);
+    ASSERT( dioNumberLegal( dioNumber ));
+    ASSERT(( value == 0 ) || ( value == 1 ));
 
     //
-    // Write to the port.
+    // Write 0 or 1 to the byte indexed DOUT map
     //
-    if(ui32Val)
-    {
-        ui32Addr = GPIO_BASE + GPIO_O_DOUTSET31_0;
-    }
-    else
-    {
-        ui32Addr = GPIO_BASE + GPIO_O_DOUTCLR31_0;
-    }
-    HWREG(ui32Addr) = ui32Pins;
+    HWREGB( GPIO_BASE + dioNumber ) = value;
 }
 
-//****************************************************************************
+//*****************************************************************************
 //
-//! \brief Read the value of specific pin(s).
+//! \brief Writes masked data to the specified DIOs.
 //!
-//! \param ui32Pins is the bit-packed representation of the pin(s) to read.
+//! Enables for writing multiple bits simultaneously.
+//! The value to write must be shifted so it matches the corresponding dioMask bits.
+//!
+//! \note Note that this is a read-modify-write operation and hence not atomic.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to write.
 //! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
+//! - \ref GPIO_DIO_0_MASK
 //! - ...
-//! - \ref GPIO_PIN_31
+//! - \ref GPIO_DIO_31_MASK
+//! \param bitVectoredValue holds the value to be written to the corresponding DIO-bits.
 //!
-//! \return Returns the value of the specified pin(s).
+//! \return None
+//!
+//! \sa \ref GPIO_writeDio(), \ref GPIO_readDio(), \ref GPIO_readMultiDio()
 //
-//****************************************************************************
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_writeMultiDio( uint32_t dioMask, uint32_t bitVectoredValue )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    HWREG( GPIO_BASE + GPIO_O_DOUT31_0 ) =
+        ( HWREG( GPIO_BASE + GPIO_O_DOUT31_0 ) & ~dioMask ) |
+        ( bitVectoredValue & dioMask );
+}
+
+//*****************************************************************************
+//
+//! \brief Sets a specific DIO to 1 (high).
+//!
+//! \param dioNumber specifies the DIO to set (0-31).
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_setMultiDio(), \ref GPIO_clearDio(), \ref GPIO_clearMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_setDio( uint32_t dioNumber )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioNumberLegal( dioNumber ));
+
+    //
+    // Set the specified DIO.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTSET31_0 ) = ( 1 << dioNumber );
+}
+
+//*****************************************************************************
+//
+//! \brief Sets the specified DIOs to 1 (high).
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to set.
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_setDio(), \ref GPIO_clearDio(), \ref GPIO_clearMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_setMultiDio( uint32_t dioMask )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    //
+    // Set the DIOs.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTSET31_0 ) = dioMask;
+}
+
+//*****************************************************************************
+//
+//! \brief Clears a specific DIO to 0 (low).
+//!
+//! \param dioNumber specifies the DIO to clear (0-31).
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_clearMultiDio(), \ref GPIO_setDio(), \ref GPIO_setMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_clearDio( uint32_t dioNumber )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioNumberLegal( dioNumber ));
+
+    //
+    // Clear the specified DIO.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTCLR31_0 ) = ( 1 << dioNumber );
+}
+
+//*****************************************************************************
+//
+//! \brief Clears the specified DIOs to 0 (low).
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to clear.
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_clearDio(), \ref GPIO_setDio(), \ref GPIO_setMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_clearMultiDio( uint32_t dioMask )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    //
+    // Clear the DIOs.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTCLR31_0 ) = dioMask;
+}
+
+//*****************************************************************************
+//
+//! \brief Toggles a specific DIO.
+//!
+//! \param dioNumber specifies the DIO to toggle (0-31).
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_toggleMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_toggleDio( uint32_t dioNumber )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioNumberLegal( dioNumber ));
+
+    //
+    // Toggle the specified DIO.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTTGL31_0 ) = ( 1 << dioNumber );
+}
+
+//*****************************************************************************
+//
+//! \brief Toggles the specified DIOs.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to toggle.
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_toggleDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_toggleMultiDio( uint32_t dioMask )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    //
+    // Toggle the DIOs.
+    //
+    HWREG( GPIO_BASE + GPIO_O_DOUTTGL31_0 ) = dioMask;
+}
+
+//*****************************************************************************
+//
+//! \brief Gets the output enable status of a specific DIO.
+//!
+//! This function returns the output enable status for the specified DIO.
+//! The DIO can be configured as either input or output under software control.
+//!
+//! \param dioNumber specifies the DIO to get the output enable setting from (0-31).
+//!
+//! \return Returns one of the enumerated data types (0 or 1):
+//! - \ref GPIO_OUTPUT_DISABLE : DIO output is disabled.
+//! - \ref GPIO_OUTPUT_ENABLE  : DIO output is enabled.
+//!
+//! \sa \ref GPIO_getOutputEnableMultiDio(), \ref GPIO_setOutputEnableDio(), \ref GPIO_setOutputEnableMultiDio()
+//
+//*****************************************************************************
 __STATIC_INLINE uint32_t
-GPIOPinRead(uint32_t ui32Pins)
+GPIO_getOutputEnableDio( uint32_t dioNumber )
 {
     //
     // Check the arguments.
     //
-    ASSERT((ui32Pins >= GPIO_PIN_0) && (ui32Pins <= GPIO_PIN_31));
+    ASSERT( dioNumberLegal( dioNumber ));
 
     //
-    // Return the value of the pin(s).
+    // Return the output enable status for the specified DIO.
     //
-    return (HWREG(GPIO_BASE + GPIO_O_DIN31_0) & ui32Pins);
+    return (( HWREG( GPIO_BASE + GPIO_O_DOE31_0 ) >> dioNumber ) & 1 );
 }
 
-//****************************************************************************
+//*****************************************************************************
 //
-//! \brief Clear specific pin(s).
+//! \brief Gets the output enable setting of the specified DIOs.
 //!
-//! \param ui32Pins are the pins to clear
+//! This function returns the output enable setting for multiple DIOs.
+//! The value returned is not shifted and hence matches the corresponding dioMask bits.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to return the output enable settings from.
 //! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
+//! - \ref GPIO_DIO_0_MASK
 //! - ...
-//! - \ref GPIO_PIN_31
+//! - \ref GPIO_DIO_31_MASK
 //!
-//! \return None
-//
-//****************************************************************************
-__STATIC_INLINE void
-GPIOPinClear(uint32_t ui32Pins)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Pins & GPIO_PIN_MASK);
-
-    //
-    // Clear the pin(s).
-    //
-    HWREG(GPIO_BASE + GPIO_O_DOUTCLR31_0) = ui32Pins;
-}
-
-//****************************************************************************
-//
-//! \brief Toggle specific pin(s).
+//! \return Returns the output enable setting for multiple DIOs as a bit vector corresponding to the dioMask bits.
+//! - 0 : Corresponding DIO is configured with output disabled.
+//! - 1 : Corresponding DIO is configured with output enabled.
 //!
-//! \param ui32Pins is the pins to toggle.
-//! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
-//! - ...
-//! - \ref GPIO_PIN_31
-//!
-//! \return None
+//! \sa \ref GPIO_getOutputEnableDio(), \ref GPIO_setOutputEnableDio(), \ref GPIO_setOutputEnableMultiDio()
 //
-//****************************************************************************
-__STATIC_INLINE void
-GPIOPinToggle(uint32_t ui32Pins)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Pins & GPIO_PIN_MASK);
-
-    //
-    // Toggle the pin.
-    //
-    HWREG(GPIO_BASE + GPIO_O_DOUTTGL31_0) = ui32Pins;
-}
-
-//****************************************************************************
-//
-//! \brief Get the event status of a specific pin.
-//!
-//! \param ui32Pin is the pins to toggle.
-//! The parameter must be one of:
-//! - \ref GPIO_PIN_0
-//! - ...
-//! - \ref GPIO_PIN_31
-//!
-//! \return Returns the current event status on a specific GPIO
-//
-//****************************************************************************
+//*****************************************************************************
 __STATIC_INLINE uint32_t
-GPIOEventGet(uint32_t ui32Pin)
+GPIO_getOutputEnableMultiDio( uint32_t dioMask )
 {
     //
     // Check the arguments.
     //
-    ASSERT(ui32Pin & GPIO_PIN_MASK);
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
 
     //
-    // Return the event status.
+    // Return the output enable value for the specified DIOs.
     //
-    return ((HWREG(GPIO_BASE + GPIO_O_EVFLAGS31_0) & ui32Pin) ? 1 : 0);
+    return ( HWREG( GPIO_BASE + GPIO_O_DOE31_0 ) & dioMask );
 }
 
-//****************************************************************************
+//*****************************************************************************
 //
-//! \brief Clear an IO event on a pin.
+//! \brief Sets output enable of a specific DIO.
 //!
-//! \param ui32Pins specifies the pins to clear the events on.
-//! The parameter must be a bitwise OR'ed combination of the following:
-//! - \ref GPIO_PIN_0
-//! - ...
-//! - \ref GPIO_PIN_31
+//! This function sets the GPIO output enable bit for the specified DIO.
+//! The DIO can be configured as either input or output under software control.
+//!
+//! \param dioNumber specifies the DIO to configure (0-31).
+//! \param outputEnableValue specifies the output enable setting of the specified DIO:
+//! - \ref GPIO_OUTPUT_DISABLE : DIO output is disabled.
+//! - \ref GPIO_OUTPUT_ENABLE  : DIO output is enabled.
 //!
 //! \return None
+//!
+//! \sa \ref GPIO_setOutputEnableMultiDio(), \ref GPIO_getOutputEnableDio(), \ref GPIO_getOutputEnableMultiDio()
 //
-//****************************************************************************
+//*****************************************************************************
 __STATIC_INLINE void
-GPIOEventClear(uint32_t ui32Pins)
+GPIO_setOutputEnableDio( uint32_t dioNumber, uint32_t outputEnableValue )
 {
     //
     // Check the arguments.
     //
-    ASSERT(ui32Pins & GPIO_PIN_MASK);
+    ASSERT( dioNumberLegal( dioNumber ));
+    ASSERT(( outputEnableValue == GPIO_OUTPUT_DISABLE ) ||
+           ( outputEnableValue == GPIO_OUTPUT_ENABLE  )    );
 
     //
-    // Toggle the pin.
+    // Update the output enable bit for the specified DIO.
     //
-    HWREG(GPIO_BASE + GPIO_O_EVFLAGS31_0) = ui32Pins;
+    HWREGBITW( GPIO_BASE + GPIO_O_DOE31_0, dioNumber ) = outputEnableValue;
+}
+
+//*****************************************************************************
+//
+//! \brief Configures the output enable setting for all specified DIOs.
+//!
+//! This function configures the output enable setting for the specified DIOs.
+//! The output enable setting must be shifted so it matches the corresponding dioMask bits.
+//! The DIOs can be configured as either an input or output under software control.
+//!
+//! \note Note that this is a read-modify-write operation and hence not atomic.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs on which to configure the
+//! output enable setting. The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//! \param bitVectoredOutputEnable holds the output enable setting the corresponding DIO-bits:
+//! - 0 : Corresponding DIO is configured with output disabled.
+//! - 1 : Corresponding DIO is configured with output enabled.
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_setOutputEnableDio(), \ref GPIO_getOutputEnableDio(), \ref GPIO_getOutputEnableMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_setOutputEnableMultiDio( uint32_t dioMask, uint32_t bitVectoredOutputEnable )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    HWREG( GPIO_BASE + GPIO_O_DOE31_0 ) =
+        ( HWREG( GPIO_BASE + GPIO_O_DOE31_0 ) & ~dioMask ) |
+        ( bitVectoredOutputEnable & dioMask );
+}
+
+//*****************************************************************************
+//
+//! \brief Gets the event status of a specific DIO.
+//!
+//! \param dioNumber specifies the DIO to get the event status from (0-31).
+//!
+//! \return Returns the current event status on the specified DIO.
+//! - 0 : Non-triggered event.
+//! - 1 : Triggered event.
+//!
+//! \sa \ref GPIO_getEventMultiDio(), \ref GPIO_clearEventDio(), \ref GPIO_clearEventMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE uint32_t
+GPIO_getEventDio( uint32_t dioNumber )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioNumberLegal( dioNumber ));
+
+    //
+    // Return the event status for the specified DIO.
+    //
+    return (( HWREG( GPIO_BASE + GPIO_O_EVFLAGS31_0 ) >> dioNumber ) & 1 );
+}
+
+//*****************************************************************************
+//
+//! \brief Gets the event status of the specified DIOs.
+//!
+//! This function returns the event status for multiple DIOs.
+//! The value returned is not shifted and hence matches the corresponding dioMask bits.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs to get the
+//! event status from (0-31).
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//!
+//! \return Returns a bit vector with the current event status correspondig to the specified DIOs.
+//! - 0 : Corresponding DIO has no triggered event.
+//! - 1 : Corresponding DIO has a triggered event.
+//!
+//! \sa \ref GPIO_getEventDio(), \ref GPIO_clearEventDio(), \ref GPIO_clearEventMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE uint32_t
+GPIO_getEventMultiDio( uint32_t dioMask )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    //
+    // Return the event status for the specified DIO.
+    //
+    return ( HWREG( GPIO_BASE + GPIO_O_EVFLAGS31_0 ) & dioMask );
+}
+
+//*****************************************************************************
+//
+//! \brief Clears the IO event status of a specific DIO.
+//!
+//! \param dioNumber specifies the DIO on which to clear the event status (0-31).
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_clearEventMultiDio(), \ref GPIO_getEventDio(), \ref GPIO_getEventMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_clearEventDio( uint32_t dioNumber )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioNumberLegal( dioNumber ));
+
+    //
+    // Clear the event status for the specified DIO.
+    //
+    HWREG( GPIO_BASE + GPIO_O_EVFLAGS31_0 ) = ( 1 << dioNumber );
+}
+
+//*****************************************************************************
+//
+//! \brief Clears the IO event status on the specified DIOs.
+//!
+//! \param dioMask is the bit-mask representation of the DIOs on which to
+//! clear the events status.
+//! The parameter must be a bitwise OR'ed combination of the following:
+//! - \ref GPIO_DIO_0_MASK
+//! - ...
+//! - \ref GPIO_DIO_31_MASK
+//!
+//! \return None
+//!
+//! \sa \ref GPIO_clearEventDio(), \ref GPIO_getEventDio(), \ref GPIO_getEventMultiDio()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+GPIO_clearEventMultiDio( uint32_t dioMask )
+{
+    //
+    // Check the arguments.
+    //
+    ASSERT( dioMask & GPIO_DIO_ALL_MASK );
+
+    //
+    // Clear the event status for the specified DIOs.
+    //
+    HWREG( GPIO_BASE + GPIO_O_EVFLAGS31_0 ) = dioMask;
 }
 
 //*****************************************************************************
@@ -396,9 +681,10 @@ GPIOEventClear(uint32_t ui32Pins)
 
 #endif // __GPIO_H__
 
-//****************************************************************************
+//*****************************************************************************
 //
 //! Close the Doxygen group.
 //! @}
+//! @}
 //
-//****************************************************************************
+//*****************************************************************************

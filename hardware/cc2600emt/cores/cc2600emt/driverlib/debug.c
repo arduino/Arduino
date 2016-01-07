@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       debug.c
-*  Revised:        2015-02-10 16:20:36 +0100 (ti, 10 feb 2015)
-*  Revision:       42636
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Driver for the Debug functionality (NB. This is a stub which
 *                  should never be included in a release).
@@ -37,13 +37,6 @@
 *
 ******************************************************************************/
 
-//*****************************************************************************
-//
-//! \addtogroup debug_api
-//! @{
-//
-//*****************************************************************************
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <inc/hw_types.h>
@@ -64,10 +57,3 @@ __error__(char *pcFilename, uint32_t ui32Line)
     // Setting breakpoint here allows tracing of the failing ASSERT.
     while( true );
 }
-
-//*****************************************************************************
-//
-//! Close the Doxygen group.
-//! @}
-//
-//*****************************************************************************

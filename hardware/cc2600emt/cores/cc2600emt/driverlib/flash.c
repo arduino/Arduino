@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       flash.c
-*  Revised:        2015-02-03 14:18:59 +0100 (ti, 03 feb 2015)
-*  Revision:       42551
+*  Revised:        2015-11-02 14:35:00 +0100 (Mon, 02 Nov 2015)
+*  Revision:       44906
 *
 *  Description:    Driver for on chip Flash.
 *
@@ -47,7 +47,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  FlashPowerModeSet
     #define FlashPowerModeSet               NOROM_FlashPowerModeSet
     #undef  FlashPowerModeGet
@@ -62,8 +62,6 @@
     #define FlashSectorErase                NOROM_FlashSectorErase
     #undef  FlashProgram
     #define FlashProgram                    NOROM_FlashProgram
-    #undef  FlashProgramNowait
-    #define FlashProgramNowait              NOROM_FlashProgramNowait
     #undef  FlashEfuseReadRow
     #define FlashEfuseReadRow               NOROM_FlashEfuseReadRow
     #undef  FlashDisableSectorsForWrite
@@ -312,7 +310,7 @@ FlashProtectionSave(uint32_t ui32SectorAddress)
     uint32_t ui32ErrorReturn;
     uint32_t ui32SectorNumber;
     uint32_t ui32CcfgSectorAddr;
-    uint8_t pui8ProgBuf[4];
+    uint32_t ui32ProgBuf;
 
     ui32ErrorReturn = FAPI_STATUS_SUCCESS;
 
@@ -342,10 +340,10 @@ FlashProtectionSave(uint32_t ui32SectorAddress)
         // corresponds to specified sector number, to 0.
         // Leave other protect-bits unchanged.
         //
-        *(uint32_t *)pui8ProgBuf = (~(1 << (ui32SectorNumber & 0x1F))) &
+        ui32ProgBuf = (~(1 << (ui32SectorNumber & 0x1F))) &
                                    *(uint32_t *)ui32CcfgSectorAddr;
 
-        ui32ErrorReturn = FlashProgram(pui8ProgBuf, ui32CcfgSectorAddr,
+        ui32ErrorReturn = FlashProgram((uint8_t*)&ui32ProgBuf, ui32CcfgSectorAddr,
                                        CCFG_SIZE_SECT_PROT);
     }
 
@@ -376,7 +374,7 @@ FlashSectorErase(uint32_t ui32SectorAddress)
     //
     // Call ROM function
     //
-    FuncPointer = (uint32_t (*)(uint32_t)) (ROM_FLASHTABLE[5]);
+    FuncPointer = (uint32_t (*)(uint32_t)) (ROM_API_FLASH_TABLE[5]);
     ui32ErrorReturn = FuncPointer(ui32SectorAddress);
 
     //
@@ -411,7 +409,7 @@ FlashProgram(uint8_t *pui8DataBuffer, uint32_t ui32Address, uint32_t ui32Count)
     //
     // Call ROM function
     //
-    FuncPointer = (uint32_t (*)(uint8_t *, uint32_t, uint32_t)) (ROM_FLASHTABLE[6]);
+    FuncPointer = (uint32_t (*)(uint8_t *, uint32_t, uint32_t)) (ROM_API_FLASH_TABLE[6]);
     ui32ErrorReturn = FuncPointer( pui8DataBuffer, ui32Address, ui32Count);
 
     //

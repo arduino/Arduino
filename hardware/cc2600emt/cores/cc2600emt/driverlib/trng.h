@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       trng.h
-*  Revised:        2015-02-11 15:22:32 +0100 (on, 11 feb 2015)
-*  Revision:       42672
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    Defines and prototypes for the true random number gen.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup trng_api
 //! @{
 //
@@ -79,10 +81,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define TRNGConfigure                   NOROM_TRNGConfigure
     #define TRNGNumberGet                   NOROM_TRNGNumberGet
 #endif
@@ -150,10 +150,8 @@ extern void TRNGConfigure(uint32_t ui32MinSamplesPerCycle,
 __STATIC_INLINE void
 TRNGEnable(void)
 {
-    //
     // Enable the TRNG.
-    //
-    HWREG(TRNG_BASE + TRNG_O_CTL) |= TRNG_CTL_TRNG_EN;
+    HWREGBITW(TRNG_BASE + TRNG_O_CTL, TRNG_CTL_TRNG_EN_BITN) = 1;
 }
 
 //*****************************************************************************
@@ -166,10 +164,8 @@ TRNGEnable(void)
 __STATIC_INLINE void
 TRNGDisable(void)
 {
-    //
     // Enable the TRNG
-    //
-    HWREG(TRNG_BASE + TRNG_O_CTL) &= ~TRNG_CTL_TRNG_EN;
+    HWREGBITW(TRNG_BASE + TRNG_O_CTL, TRNG_CTL_TRNG_EN_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -220,7 +216,7 @@ TRNGStatusGet(void)
 //! \brief Reset the TRNG.
 //!
 //! Use this function to reset the TRNG module. Reset will be low for
-//! approximately 5 clock cyles.
+//! approximately 5 clock cycles.
 //!
 //! \return None
 //
@@ -341,14 +337,20 @@ TRNGIntStatus(bool bMasked)
 //! assert. This function must be called in the interrupt handler to keep the
 //! interrupt from being recognized again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M3 processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
 //! The parameter is the bitwise OR of any of the following:
@@ -397,12 +399,12 @@ TRNGIntRegister(void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_TRNG, pfnHandler);
+    IntRegister(INT_TRNG_IRQ, pfnHandler);
 
     //
     // Enable the TRNG interrupt.
     //
-    IntEnable(INT_TRNG);
+    IntEnable(INT_TRNG_IRQ);
 }
 
 //*****************************************************************************
@@ -426,12 +428,12 @@ TRNGIntUnregister(void)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_TRNG);
+    IntDisable(INT_TRNG_IRQ);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_TRNG);
+    IntUnregister(INT_TRNG_IRQ);
 }
 
 //*****************************************************************************
@@ -440,7 +442,7 @@ TRNGIntUnregister(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_TRNGConfigure
         #undef  TRNGConfigure
@@ -466,6 +468,7 @@ TRNGIntUnregister(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

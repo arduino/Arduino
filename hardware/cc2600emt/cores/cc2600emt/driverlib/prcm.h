@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       prcm.h
-*  Revised:        2015-03-16 16:39:58 +0100 (ma, 16 mar 2015)
-*  Revision:       42996
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the PRCM
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_control_group
+//! @{
 //! \addtogroup prcm_api
 //! @{
 //
@@ -81,10 +83,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define PRCMInfClockConfigureSet        NOROM_PRCMInfClockConfigureSet
     #define PRCMInfClockConfigureGet        NOROM_PRCMInfClockConfigureGet
     #define PRCMAudioClockConfigSet         NOROM_PRCMAudioClockConfigSet
@@ -103,7 +103,7 @@ extern "C"
 
 //*****************************************************************************
 //
-// Defines for the different Cortex M3 power modes.
+// Defines for the different System CPU power modes.
 //
 //*****************************************************************************
 #define PRCM_RUN_MODE           0x00000001
@@ -238,9 +238,9 @@ PRCMPeripheralValid(uint32_t ui32Peripheral)
 //
 //! \brief Configure the infrastructure clock.
 //!
-//! Each CM3 power mode has its own infrastructure clock division factor. This
+//! Each System CPU power mode has its own infrastructure clock division factor. This
 //! function can be used for setting up the division factor for the
-//! infrastructure clock in the available power modes for the CM3. The
+//! infrastructure clock in the available power modes for the System CPU. The
 //! infrastructure clock is used for all internal logic in the PRCM, and is
 //! always running as long as power is on in the MCU voltage domain.
 //! This can be enabled and disabled from the AON Wake Up Controller.
@@ -249,12 +249,12 @@ PRCMPeripheralValid(uint32_t ui32Peripheral)
 //!
 //! \param ui32ClkDiv determines the division ratio for the infrastructure
 //! clock when the device is in the specified mode.
-//! Allowed division factors for all three Cortex M3 power modes are:
+//! Allowed division factors for all three System CPU power modes are:
 //! - \ref PRCM_CLOCK_DIV_1
 //! - \ref PRCM_CLOCK_DIV_2
 //! - \ref PRCM_CLOCK_DIV_8
 //! - \ref PRCM_CLOCK_DIV_32
-//! \param ui32PowerMode determines the Cortex M3 operation mode for which to
+//! \param ui32PowerMode determines the System CPU operation mode for which to
 //! modify the clock division factor.
 //! The three allowed power modes are:
 //! - \ref PRCM_RUN_MODE
@@ -269,9 +269,9 @@ extern void PRCMInfClockConfigureSet(uint32_t ui32ClkDiv,
 
 //*****************************************************************************
 //
-//! \brief Use this function to retreive the set infrastructure clock configuration.
+//! \brief Use this function to get the infrastructure clock configuration.
 //!
-//! \param ui32PowerMode determines which Cortex M3 power mode to return the
+//! \param ui32PowerMode determines which System CPU power mode to return the
 //! infrastructure clock division ratio for.
 //! The three allowed power modes are:
 //! - \ref PRCM_RUN_MODE
@@ -308,7 +308,7 @@ PRCMMcuPowerOff(void)
     //
     // Assert the power off request signal.
     //
-    HWREG(PRCM_BASE + PRCM_O_VDCTL) |= PRCM_VDCTL_MCU_VD;
+    HWREGBITW(PRCM_BASE + PRCM_O_VDCTL, PRCM_VDCTL_MCU_VD_BITN) = 1;
 }
 
 //*****************************************************************************
@@ -330,15 +330,15 @@ PRCMMcuPowerOffCancel(void)
     //
     // Assert the power off request signal.
     //
-    HWREG(PRCM_BASE + PRCM_O_VDCTL) &= ~PRCM_VDCTL_MCU_VD;
+    HWREGBITW(PRCM_BASE + PRCM_O_VDCTL, PRCM_VDCTL_MCU_VD_BITN) = 0;
 }
 
 //*****************************************************************************
 //
-//! \brief Assert or deassert a request for the uLDO.
+//! \brief Assert or de-assert a request for the uLDO.
 //!
 //! Use this function to request to switch to the micro Low Voltage Dropout
-//! regulator (uLDO). The uLDO has a much lower capacicty for supplying power
+//! regulator (uLDO). The uLDO has a much lower capacity for supplying power
 //! to the system. It is therefore imperative and solely the programmers
 //! responsibility to ensure that a sufficient amount of peripheral modules
 //! have been turned of before requesting a switch to the uLDO.
@@ -346,6 +346,10 @@ PRCMMcuPowerOffCancel(void)
 //! \note Asserting this bit has no effect until:
 //! 1. FLASH has accepted to be powered down
 //! 2. Deepsleep must be asserted
+//!
+//! \param ui32Enable
+//! - 0 : Disable uLDO request
+//! - 1 : Enable uLDO request
 //!
 //! \return None
 //!
@@ -355,21 +359,8 @@ PRCMMcuPowerOffCancel(void)
 __STATIC_INLINE void
 PRCMMcuUldoConfigure(uint32_t ui32Enable)
 {
-    uint32_t ui32Val;
-
-    //
-    // Enable/disable the uLDO request signal.
-    //
-    ui32Val = HWREG(PRCM_BASE + PRCM_O_VDCTL);
-    if(ui32Enable)
-    {
-        ui32Val |= PRCM_VDCTL_ULDO;
-    }
-    else
-    {
-        ui32Val &= ~PRCM_VDCTL_ULDO;
-    }
-    HWREG(PRCM_BASE + PRCM_O_VDCTL) = ui32Val;
+    // Enable or disable the uLDO request signal.
+    HWREGBITW(PRCM_BASE + PRCM_O_VDCTL, PRCM_VDCTL_ULDO_BITN) = ui32Enable;
 }
 
 //*****************************************************************************
@@ -450,10 +441,8 @@ PRCMGPTimerClockDivisionGet( void )
 __STATIC_INLINE void
 PRCMAudioClockEnable(void)
 {
-    //
     // Enable the audio clock generation.
-    //
-    HWREG(PRCM_BASE + PRCM_O_I2SCLKCTL) |= PRCM_I2SCLKCTL_EN;
+    HWREGBITW(PRCM_BASE + PRCM_O_I2SCLKCTL, PRCM_I2SCLKCTL_EN_BITN) = 1;
 }
 
 //*****************************************************************************
@@ -468,10 +457,8 @@ PRCMAudioClockEnable(void)
 __STATIC_INLINE void
 PRCMAudioClockDisable(void)
 {
-    //
     // Disable the audio clock generation
-    //
-    HWREG(PRCM_BASE + PRCM_O_I2SCLKCTL) &= ~PRCM_I2SCLKCTL_EN;
+    HWREGBITW(PRCM_BASE + PRCM_O_I2SCLKCTL, PRCM_I2SCLKCTL_EN_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -604,7 +591,7 @@ PRCMLoadGet(void)
 //!
 //! \note Clocks will only be running if the domain is powered.
 //!
-//! \param ui32Domains is a bitmask containing the clock domains to enable.
+//! \param ui32Domains is a bit mask containing the clock domains to enable.
 //! The independent clock domains inside the MCU voltage domain which can be
 //! configured are:
 //! - \ref PRCM_DOMAIN_RFCORE
@@ -646,7 +633,7 @@ PRCMDomainEnable(uint32_t ui32Domains)
 //!
 //! \note Clocks will only be running if the domain is powered.
 //!
-//! \param ui32Domains is a bitmask containing the clock domains to disable.
+//! \param ui32Domains is a bit mask containing the clock domains to disable.
 //! The independent clock domains inside the MCU voltage domain are:
 //! - \ref PRCM_DOMAIN_RFCORE
 //! - \ref PRCM_DOMAIN_VIMS
@@ -689,7 +676,7 @@ PRCMDomainDisable(uint32_t ui32Domains)
 //! different power domains.
 //! - RF Core power domain:
 //!   - Power On : Domain is on or in the process of turning on.
-//!   - Power Off: Domain is powered down when CM3 is in deep sleep. The third
+//!   - Power Off: Domain is powered down when System CPU is in deep sleep. The third
 //!                option for the RF Core is to power down when the it is idle.
 //!                This can be set using \b PRCMRfPowerDownWhenIdle()
 //! - SERIAL power domain:
@@ -703,17 +690,17 @@ PRCMDomainDisable(uint32_t ui32Domains)
 //!   - Power Off: Domain is only powered when CPU domain is on.
 //! - BUS power domain:
 //!   - Power On: Domain is on.
-//!   - Power Off: Domain is on if requested by RF Core or if CPU domian is on.
+//!   - Power Off: Domain is on if requested by RF Core or if CPU domain is on.
 //! - CPU power domain:
 //!   - Power On: Domain is on.
-//!   - Power Off: Domain is powering down if Cortex M3 is idle. This will also
+//!   - Power Off: Domain is powering down if System CPU is idle. This will also
 //!                initiate a power down of the SRAM and BUS power domains, unless
 //!                RF Core is requesting them to be on.
 //!
 //! \note After a call to this function the status of the power domain should
 //! be checked using either \ref PRCMPowerDomainStatus().
 //! Any write operation to a power domain which is still not operational can
-//! result in unexpected behaviour.
+//! result in unexpected behavior.
 //!
 //! \param ui32Domains determines which power domains to turn on.
 //! The domains that can be turned on/off are:
@@ -769,10 +756,8 @@ extern void PRCMPowerDomainOff(uint32_t ui32Domains);
 __STATIC_INLINE void
 PRCMRfPowerDownWhenIdle(void)
 {
-    //
     // Configure the RF power domain.
-    //
-    HWREG(PRCM_BASE + PRCM_O_PDCTL0RFC) &= ~PRCM_PDCTL0RFC_ON;
+    HWREGBITW(PRCM_BASE + PRCM_O_PDCTL0RFC, PRCM_PDCTL0RFC_ON_BITN) = 0;
 }
 
 //*****************************************************************************
@@ -1070,31 +1055,6 @@ PRCMRfReady(void)
              PRCM_PDSTAT1RFC_ON) ? true : false);
 }
 
-//*****************************************************************************
-//
-//! \brief Read reset status for WatchDog Timer.
-//!
-//! WDT reset is the only reset status available through the PRCM module.
-//! This function can be used to check whether or not a WDT reset has
-//! occured since last time this bit was cleared.
-//!
-//! \note This function will automatically clear the WDT reset status bit
-//! if asserted. If the reset bit is not asserted then nothing happens.
-//!
-//! \return Returns reset status of Watchdog Timer.
-//! - \c true  : A WDT reset occured since last time the bit was cleared.
-//! - \c false : A WDT reset has not occured since last clear.
-//
-//*****************************************************************************
-__STATIC_INLINE bool
-PRCMWdtResetStatus(void)
-{
-    //
-    // Return the WDT reset status.
-    //
-    return ((HWREG(PRCM_BASE + PRCM_O_WARMRESET) & PRCM_WARMRESET_WDT_STAT)
-            ? true : false);
-}
 
 //*****************************************************************************
 //
@@ -1172,7 +1132,7 @@ PRCMCacheRetentionDisable( void )
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_PRCMInfClockConfigureSet
         #undef  PRCMInfClockConfigureSet
@@ -1246,6 +1206,7 @@ PRCMCacheRetentionDisable( void )
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

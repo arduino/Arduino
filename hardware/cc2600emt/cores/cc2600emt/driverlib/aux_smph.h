@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_smph.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AUX Semaphore
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aux_group
+//! @{
 //! \addtogroup auxsmph_api
 //! @{
 //
@@ -100,8 +102,8 @@ extern "C"
 //! This function acquires the given AUX semaphore, blocking the call until
 //! the semaphore is available.
 //!
-//! \note The semaphore can also be acquired by the dedicated AUX controller.
-//! The CM3 master can thus be competing for the shared resource, i.e.
+//! \note The semaphore can also be acquired by the dedicated Sensor Controller.
+//! The System CPU master can thus be competing for the shared resource, i.e.
 //! the specified semaphore.
 //!
 //! \param ui32Semaphore is the semaphore number.
@@ -152,8 +154,8 @@ AUXSMPHAcquire(uint32_t ui32Semaphore)
 //! This function tries to acquire the given AUX semaphore, if the semaphore
 //! could not be claimed the function returns false.
 //!
-//! \note The semaphore can also be acquired by the dedicated AUX controller.
-//! The CM3 master can thus be competing for the shared resource, i.e.
+//! \note The semaphore can also be acquired by the dedicated Sensor Controller.
+//! The System CPU master can thus be competing for the shared resource, i.e.
 //! the specified semaphore.
 //!
 //! \param ui32Semaphore is the semaphore number.
@@ -199,15 +201,15 @@ AUXSMPHTryAcquire(uint32_t ui32Semaphore)
 
 //*****************************************************************************
 //
-//! \brief Release an AUX semaphore by CM3 master.
+//! \brief Release an AUX semaphore by System CPU master.
 //!
 //! This function releases the given AUX semaphore.
 //!
 //! \note It is up to the application to provide the convention for clearing
 //! semaphore.
 //!
-//! \note The semaphore can also be acquired by the dedicated AUX controller.
-//! The CM3 master can thus be competing for the shared resource, i.e.
+//! \note The semaphore can also be acquired by the dedicated Sensor Controller.
+//! The System CPU master can thus be competing for the shared resource, i.e.
 //! the specified semaphore.
 //!
 //! \param ui32Semaphore is the semaphore number.
@@ -262,6 +264,7 @@ AUXSMPHRelease(uint32_t ui32Semaphore)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

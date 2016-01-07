@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       cpu.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-11-03 19:58:00 +0100 (Tue, 03 Nov 2015)
+*  Revision:       44946
 *
 *  Description:    Instruction wrappers for special CPU instructions needed by
 *                  the drivers.
@@ -45,7 +45,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  CPUcpsid
     #define CPUcpsid                        NOROM_CPUcpsid
     #undef  CPUprimask
@@ -63,7 +63,56 @@
 //! Disable all external interrupts
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+uint32_t
+CPUcpsid(void)
+{
+    //
+    // Read PRIMASK and disable interrupts.
+    //
+    __asm("    mrs     r0, PRIMASK\n"
+          "    cpsid   i\n");
+
+    //
+    // "Warning[Pe940]: missing return statement at end of non-void function"
+    // is suppressed here to avoid putting a "bx lr" in the inline assembly
+    // above and a superfluous return statement here.
+    //
+#pragma diag_suppress=Pe940
+}
+#pragma diag_default=Pe940
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
+__asm uint32_t
+CPUcpsid(void)
+{
+    //
+    // Read PRIMASK and disable interrupts.
+    //
+    mrs     r0, PRIMASK;
+    cpsid   i;
+    bx      lr
+}
+#elif defined(__TI_COMPILER_VERSION__)
+uint32_t
+CPUcpsid(void)
+{
+    //
+    // Read PRIMASK and disable interrupts.
+    //
+    __asm("    mrs     r0, PRIMASK\n"
+          "    cpsid   i\n"
+          "    bx      lr\n");
+
+    //
+    // The following keeps the compiler happy, because it wants to see a
+    // return value from this function.  It will generate code to return
+    // a zero.  However, the real return is the "bx lr" above, so the
+    // return(0) is never executed and the function returns with the value
+    // you expect in R0.
+    //
+    return(0);
+}
+#else
 uint32_t __attribute__((naked))
 CPUcpsid(void)
 {
@@ -86,15 +135,20 @@ CPUcpsid(void)
     return(ui32Ret);
 }
 #endif
+
+//*****************************************************************************
+//
+//! Get the current interrupt state
+//
+//*****************************************************************************
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 uint32_t
-CPUcpsid(void)
+CPUprimask(void)
 {
     //
-    // Read PRIMASK and disable interrupts.
+    // Read PRIMASK.
     //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsid   i\n");
+    __asm("    mrs     r0, PRIMASK\n");
 
     //
     // "Warning[Pe940]: missing return statement at end of non-void function"
@@ -104,28 +158,24 @@ CPUcpsid(void)
 #pragma diag_suppress=Pe940
 }
 #pragma diag_default=Pe940
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm uint32_t
-CPUcpsid(void)
+CPUprimask(void)
 {
     //
-    // Read PRIMASK and disable interrupts.
+    // Read PRIMASK.
     //
     mrs     r0, PRIMASK;
-    cpsid   i;
     bx      lr
 }
-#endif
-#if defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__)
 uint32_t
-CPUcpsid(void)
+CPUprimask(void)
 {
     //
-    // Read PRIMASK and disable interrupts.
+    // Read PRIMASK.
     //
     __asm("    mrs     r0, PRIMASK\n"
-          "    cpsid   i\n"
           "    bx      lr\n");
 
     //
@@ -137,14 +187,7 @@ CPUcpsid(void)
     //
     return(0);
 }
-#endif
-
-//*****************************************************************************
-//
-//! Get the current interrupt state
-//
-//*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#else
 uint32_t __attribute__((naked))
 CPUprimask(void)
 {
@@ -166,84 +209,12 @@ CPUprimask(void)
     return(ui32Ret);
 }
 #endif
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
-uint32_t
-CPUprimask(void)
-{
-    //
-    // Read PRIMASK.
-    //
-    __asm("    mrs     r0, PRIMASK\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm uint32_t
-CPUprimask(void)
-{
-    //
-    // Read PRIMASK.
-    //
-    mrs     r0, PRIMASK;
-    bx      lr
-}
-#endif
-#if defined(__TI_COMPILER_VERSION__)
-uint32_t
-CPUprimask(void)
-{
-    //
-    // Read PRIMASK.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif
 
 //*****************************************************************************
 //
 //! Enable all external interrupts
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
-uint32_t __attribute__((naked))
-CPUcpsie(void)
-{
-    uint32_t ui32Ret;
-
-    //
-    // Read PRIMASK and enable interrupts.
-    //
-    __asm("    mrs     r0, PRIMASK\n"
-          "    cpsie   i\n"
-          "    bx      lr\n"
-      : "=r"(ui32Ret));
-
-    //
-    // The return is handled in the inline assembly, but the compiler will
-    // still complain if there is not an explicit return here (despite the fact
-    // that this does not result in any code being produced because of the
-    // naked attribute).
-    //
-    return(ui32Ret);
-}
-#endif
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 uint32_t
 CPUcpsie(void)
@@ -262,8 +233,7 @@ CPUcpsie(void)
 #pragma diag_suppress=Pe940
 }
 #pragma diag_default=Pe940
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm uint32_t
 CPUcpsie(void)
 {
@@ -274,8 +244,7 @@ CPUcpsie(void)
     cpsie   i;
     bx      lr
 }
-#endif
-#if defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__)
 uint32_t
 CPUcpsie(void)
 {
@@ -295,6 +264,28 @@ CPUcpsie(void)
     //
     return(0);
 }
+#else
+uint32_t __attribute__((naked))
+CPUcpsie(void)
+{
+    uint32_t ui32Ret;
+
+    //
+    // Read PRIMASK and enable interrupts.
+    //
+    __asm("    mrs     r0, PRIMASK\n"
+          "    cpsie   i\n"
+          "    bx      lr\n"
+      : "=r"(ui32Ret));
+
+    //
+    // The return is handled in the inline assembly, but the compiler will
+    // still complain if there is not an explicit return here (despite the fact
+    // that this does not result in any code being produced because of the
+    // naked attribute).
+    //
+    return(ui32Ret);
+}
 #endif
 
 //*****************************************************************************
@@ -302,7 +293,53 @@ CPUcpsie(void)
 //! Get the interrupt priority disable level
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+uint32_t
+CPUbasepriGet(void)
+{
+    //
+    // Read BASEPRI.
+    //
+    __asm("    mrs     r0, BASEPRI\n");
+
+    //
+    // "Warning[Pe940]: missing return statement at end of non-void function"
+    // is suppressed here to avoid putting a "bx lr" in the inline assembly
+    // above and a superfluous return statement here.
+    //
+#pragma diag_suppress=Pe940
+}
+#pragma diag_default=Pe940
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
+__asm uint32_t
+CPUbasepriGet(void)
+{
+    //
+    // Read BASEPRI.
+    //
+    mrs     r0, BASEPRI;
+    bx      lr
+}
+#elif defined(__TI_COMPILER_VERSION__)
+uint32_t
+CPUbasepriGet(void)
+{
+    //
+    // Read BASEPRI.
+    //
+    __asm("    mrs     r0, BASEPRI\n"
+          "    bx      lr\n");
+
+    //
+    // The following keeps the compiler happy, because it wants to see a
+    // return value from this function.  It will generate code to return
+    // a zero.  However, the real return is the "bx lr" above, so the
+    // return(0) is never executed and the function returns with the value
+    // you expect in R0.
+    //
+    return(0);
+}
+#else
 uint32_t __attribute__((naked))
 CPUbasepriGet(void)
 {
@@ -324,79 +361,12 @@ CPUbasepriGet(void)
     return(ui32Ret);
 }
 #endif
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
-uint32_t
-CPUbasepriGet(void)
-{
-    //
-    // Read BASEPRI.
-    //
-    __asm("    mrs     r0, BASEPRI\n");
-
-    //
-    // "Warning[Pe940]: missing return statement at end of non-void function"
-    // is suppressed here to avoid putting a "bx lr" in the inline assembly
-    // above and a superfluous return statement here.
-    //
-#pragma diag_suppress=Pe940
-}
-#pragma diag_default=Pe940
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm uint32_t
-CPUbasepriGet(void)
-{
-    //
-    // Read BASEPRI.
-    //
-    mrs     r0, BASEPRI;
-    bx      lr
-}
-#endif
-#if defined(__TI_COMPILER_VERSION__)
-uint32_t
-CPUbasepriGet(void)
-{
-    //
-    // Read BASEPRI.
-    //
-    __asm("    mrs     r0, BASEPRI\n"
-          "    bx      lr\n");
-
-    //
-    // The following keeps the compiler happy, because it wants to see a
-    // return value from this function.  It will generate code to return
-    // a zero.  However, the real return is the "bx lr" above, so the
-    // return(0) is never executed and the function returns with the value
-    // you expect in R0.
-    //
-    return(0);
-}
-#endif
 
 //*****************************************************************************
 //
 //! Provide a small delay
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
-void __attribute__((naked))
-CPUdelay(uint32_t ui32Count)
-{
-    //
-    // Delay the specified number of times (3 cycles pr. loop)
-    //
-#ifdef DRIVERLIB_GENERATE_ROM
-    __asm("    subs    r0, #1\n"
-          "    bne     CPUdelay\n"
-          "    bx      lr");
-#else
-    __asm("    subs    r0, #1\n"
-          "    bne     NOROM_CPUdelay\n"
-          "    bx      lr");
-#endif
-}
-#endif
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 void
 CPUdelay(uint32_t ui32Count)
@@ -411,8 +381,7 @@ CPUdelay(uint32_t ui32Count)
 #pragma diag_suppress=Pe940
 }
 #pragma diag_default=Pe940
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm void
 CPUdelay(uint32_t ui32Count)
 {
@@ -424,26 +393,14 @@ CPUdel
     bne     CPUdel;
     bx      lr;
 }
-#endif
+#elif defined(__TI_COMPILER_VERSION__)
 //
 // For CCS implement this function in pure assembly. This prevents the TI
 // compiler from doing funny things with the optimizer.
 //
-#if defined(__TI_COMPILER_VERSION__)
     //
     // Delay the specified number of times (3 cycles pr. loop)
     //
-#ifdef DRIVERLIB_GENERATE_ROM
-__asm("    .sect \".text:CPUdelay\"\n"
-      "    .clink\n"
-      "    .thumbfunc CPUdelay\n"
-      "    .thumb\n"
-      "    .global CPUdelay\n"
-      "CPUdelay:\n"
-      "    subs r0, #1\n"
-      "    bne.n CPUdelay\n"
-      "    bx lr\n");
-#else
 __asm("    .sect \".text:NOROM_CPUdelay\"\n"
       "    .clink\n"
       "    .thumbfunc NOROM_CPUdelay\n"
@@ -453,5 +410,15 @@ __asm("    .sect \".text:NOROM_CPUdelay\"\n"
       "    subs r0, #1\n"
       "    bne.n NOROM_CPUdelay\n"
       "    bx lr\n");
-#endif
+#else
+void __attribute__((naked))
+CPUdelay(uint32_t ui32Count)
+{
+    //
+    // Delay the specified number of times (3 cycles pr. loop)
+    //
+    __asm("    subs    r0, #1\n"
+          "    bne     NOROM_CPUdelay\n"
+          "    bx      lr");
+}
 #endif

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       chipinfo.h
-*  Revised:        2015-04-15 13:12:25 +0200 (on, 15 apr 2015)
-*  Revision:       43227
+*  Revised:        2015-10-27 13:41:27 +0100 (Tue, 27 Oct 2015)
+*  Revision:       44843
 *
 *  Description:    Collection of functions returning chip information.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_control_group
+//! @{
 //! \addtogroup ChipInfo
 //! @{
 //
@@ -247,7 +249,8 @@ typedef enum {
    FAMILY_Unknown       = -1, //!< -1 means that the chip's family member is unknown.
    FAMILY_CC26xx        =  0, //!<  0 means that the chip is a CC26xx family member.
    FAMILY_CC13xx        =  1, //!<  1 means that the chip is a CC13xx family member.
-   FAMILY_CC26xxLizard  =  2  //!<  2 means that the chip is a CC26xxLizard family member.
+   FAMILY_CC26xxLizard  =  2, //!<  2 means that the chip is a CC26xxLizard family member.
+   FAMILY_CC26xxAgama   =  3  //!<  3 means that the chip is a CC26xxAgama family member.
 } ChipFamily_t;
 
 //*****************************************************************************
@@ -300,6 +303,20 @@ __STATIC_INLINE bool
 ChipInfo_ChipFamilyIsCC26xxLizard( void )
 {
    return ( ChipInfo_GetChipFamily() == FAMILY_CC26xxLizard );
+}
+
+//*****************************************************************************
+//
+//! \brief Returns true if this chip is member of the CC26xxAgama family.
+//!
+//! \return
+//! Returns \c true if this chip is member of the CC26xxAgama family, \c false otherwise.
+//
+//*****************************************************************************
+__STATIC_INLINE bool
+ChipInfo_ChipFamilyIsCC26xxAgama( void )
+{
+   return ( ChipInfo_GetChipFamily() == FAMILY_CC26xxAgama );
 }
 
 //*****************************************************************************
@@ -410,6 +427,20 @@ ChipInfo_HwRevisionIs_GTEQ_2_2( void )
    return ( ChipInfo_GetHwRevision() >= HWREV_2_2 );
 }
 
+//*****************************************************************************
+//
+//! \brief Returns true if HW revision for this chip is 2.3 or greater.
+//!
+//! \return
+//! Returns \c true if HW revision for this chip is 2.3 or greater, \c false otherwise.
+//
+//*****************************************************************************
+__STATIC_INLINE bool
+ChipInfo_HwRevisionIs_GTEQ_2_3( void )
+{
+   return ( ChipInfo_GetHwRevision() >= HWREV_2_3 );
+}
+
 
 //*****************************************************************************
 //
@@ -434,6 +465,7 @@ extern void ThisCodeIsBuiltForCC26xxHwRev22AndLater_HaltIfViolated( void );
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

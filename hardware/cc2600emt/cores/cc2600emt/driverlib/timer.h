@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       timer.h
-*  Revised:        2015-04-14 14:41:18 +0200 (ti, 14 apr 2015)
-*  Revision:       43221
+*  Revised:        2015-11-03 09:54:47 +0100 (Tue, 03 Nov 2015)
+*  Revision:       44933
 *
 *  Copyright (c) 2015, Texas Instruments Incorporated
 *  All rights reserved.
@@ -36,6 +36,8 @@
 
 //****************************************************************************
 //
+//! \addtogroup peripheral_group
+//! @{
 //! \addtogroup timer_api
 //! @{
 //
@@ -76,13 +78,10 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define TimerConfigure                  NOROM_TimerConfigure
     #define TimerLevelControl               NOROM_TimerLevelControl
-    #define TimerTriggerControl             NOROM_TimerTriggerControl
     #define TimerStallControl               NOROM_TimerStallControl
     #define TimerWaitOnTriggerControl       NOROM_TimerWaitOnTriggerControl
     #define TimerIntRegister                NOROM_TimerIntRegister
@@ -100,7 +99,6 @@ extern "C"
 #define TIMER_CFG_ONE_SHOT_UP     0x00000031  // Full-width one-shot up-count timer
 #define TIMER_CFG_PERIODIC        0x00000022  // Full-width periodic timer
 #define TIMER_CFG_PERIODIC_UP     0x00000032  // Full-width periodic up-count timer
-#define TIMER_CFG_RTC             0x01000000  // Full-width RTC timer
 #define TIMER_CFG_SPLIT_PAIR      0x04000000  // Two half-width timers
 #define TIMER_CFG_A_ONE_SHOT      0x00000021  // Timer A one-shot timer
 #define TIMER_CFG_A_ONE_SHOT_UP   0x00000031  // Timer A one-shot up-count timer
@@ -135,7 +133,6 @@ extern "C"
 #define TIMER_TIMB_TIMEOUT        0x00000100  // TimerB time out interrupt
 #define TIMER_TIMA_DMA            0x00000020  // TimerA DMA Done interrupt
 #define TIMER_TIMA_MATCH          0x00000010  // TimerA match interrupt
-#define TIMER_RTC_MATCH           0x00000008  // RTC interrupt mask
 #define TIMER_CAPA_EVENT          0x00000004  // CaptureA event interrupt
 #define TIMER_CAPA_MATCH          0x00000002  // CaptureA match interrupt
 #define TIMER_TIMA_TIMEOUT        0x00000001  // TimerA time out interrupt
@@ -305,7 +302,6 @@ TimerDisable(uint32_t ui32Base, uint32_t ui32Timer)
 //! - \ref TIMER_CFG_PERIODIC    : Full-width periodic timer.
 //! - \ref TIMER_CFG_PERIODIC_UP : Full-width periodic timer that counts up
 //!   instead of down.
-//! - \ref TIMER_CFG_RTC         : Full-width real time clock timer.
 //!
 //! When configuring for a pair of half-width timers, each timer is separately
 //! configured. The timers are configured by setting \c ui32Config to
@@ -357,27 +353,6 @@ extern void TimerConfigure(uint32_t ui32Base, uint32_t ui32Config);
 //*****************************************************************************
 extern void TimerLevelControl(uint32_t ui32Base, uint32_t ui32Timer,
                               bool bInvert);
-
-//*****************************************************************************
-//
-//! \brief Enables or disables the ADC trigger output.
-//!
-//! This function controls the ADC trigger output for the specified timer.
-//!
-//! \param ui32Base is the base address of the timer module.
-//! \param ui32Timer specifies the timer to adjust; must be one of:
-//! - \ref TIMER_A
-//! - \ref TIMER_B
-//! - \ref TIMER_BOTH
-//! \param bEnable specifies the desired ADC trigger state.
-//! - \c true  : Enable timer's ADC output trigger.
-//! - \c false : Disable timer's ADC output trigger.
-//!
-//! \return None
-//
-//*****************************************************************************
-extern void TimerTriggerControl(uint32_t ui32Base, uint32_t ui32Timer,
-                                bool bEnable);
 
 //*****************************************************************************
 //
@@ -466,57 +441,6 @@ extern void TimerStallControl(uint32_t ui32Base, uint32_t ui32Timer,
 //*****************************************************************************
 extern void TimerWaitOnTriggerControl(uint32_t ui32Base, uint32_t ui32Timer,
                                       bool bWait);
-
-//*****************************************************************************
-//
-//! \brief Enable RTC counting.
-//!
-//! This function causes the timer to start counting when in RTC mode. If not
-//! configured for RTC mode, this function does nothing.
-//!
-//! \param ui32Base is the base address of the timer module.
-//!
-//! \return None
-//
-//*****************************************************************************
-__STATIC_INLINE void
-TimerRtcEnable(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ui32Base));
-
-    //
-    // Enable RTC counting.
-    //
-    HWREG(ui32Base + GPT_O_CTL) |= GPT_CTL_RTCEN;
-}
-
-//*****************************************************************************
-//
-//! \brief Disable RTC counting.
-//!
-//! This function causes the timer to stop counting when in RTC mode.
-//!
-//! \param ui32Base is the base address of the timer module.
-//!
-//! \return None
-//
-//*****************************************************************************
-__STATIC_INLINE void
-TimerRtcDisable(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ui32Base));
-
-    //
-    // Disable RTC counting.
-    //
-    HWREG(ui32Base + GPT_O_CTL) &= ~(GPT_CTL_RTCEN);
-}
 
 //*****************************************************************************
 //
@@ -986,7 +910,6 @@ extern void TimerIntUnregister(uint32_t ui32Base, uint32_t ui32Timer);
 //! - \ref TIMER_CAPB_EVENT    : Capture B event interrupt.
 //! - \ref TIMER_CAPB_MATCH    : Capture B match interrupt.
 //! - \ref TIMER_TIMB_TIMEOUT  : Timer B timeout interrupt.
-//! - \ref TIMER_RTC_MATCH     : RTC interrupt mask.
 //! - \ref TIMER_CAPA_EVENT    : Capture A event interrupt.
 //! - \ref TIMER_CAPA_MATCH    : Capture A match interrupt.
 //! - \ref TIMER_TIMA_TIMEOUT  : Timer A timeout interrupt.
@@ -1023,7 +946,6 @@ TimerIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! - \ref TIMER_CAPB_EVENT    : Capture B event interrupt.
 //! - \ref TIMER_CAPB_MATCH    : Capture B match interrupt.
 //! - \ref TIMER_TIMB_TIMEOUT  : Timer B timeout interrupt.
-//! - \ref TIMER_RTC_MATCH     : RTC interrupt mask.
 //! - \ref TIMER_CAPA_EVENT    : Capture A event interrupt.
 //! - \ref TIMER_CAPA_MATCH    : Capture A match interrupt.
 //! - \ref TIMER_TIMA_TIMEOUT  : Timer A timeout interrupt.
@@ -1062,7 +984,6 @@ TimerIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! - \ref TIMER_CAPB_EVENT    : Capture B event interrupt.
 //! - \ref TIMER_CAPB_MATCH    : Capture B match interrupt.
 //! - \ref TIMER_TIMB_TIMEOUT  : Timer B timeout interrupt.
-//! - \ref TIMER_RTC_MATCH     : RTC interrupt mask.
 //! - \ref TIMER_CAPA_EVENT    : Capture A event interrupt.
 //! - \ref TIMER_CAPA_MATCH    : Capture A match interrupt.
 //! - \ref TIMER_TIMA_TIMEOUT  : Timer A timeout interrupt.
@@ -1092,14 +1013,20 @@ TimerIntStatus(uint32_t ui32Base, bool bMasked)
 //! assert. This function must be called in the interrupt handler to keep the
 //! interrupt from being triggered again immediately upon exit.
 //!
-//! \note Because there is a write buffer in the Cortex-M processor, it may
-//! take several clock cycles before the interrupt source is actually cleared.
-//! Therefore, it is recommended that the interrupt source be cleared early in
-//! the interrupt handler (as opposed to the very last action) to avoid
-//! returning from the interrupt handler before the interrupt source is
-//! actually cleared. Failure to do so may result in the interrupt handler
-//! being immediately reentered (because the interrupt controller still sees
-//! the interrupt source asserted).
+//! \note Due to write buffers and synchronizers in the system it may take several
+//! clock cycles from a register write clearing an event in a module and until the
+//! event is actually cleared in the NVIC of the system CPU. It is recommended to
+//! clear the event source early in the interrupt service routine (ISR) to allow
+//! the event clear to propagate to the NVIC before returning from the ISR.
+//! At the same time, an early event clear allows new events of the same type to be
+//! pended instead of ignored if the event is cleared later in the ISR.
+//! It is the responsibility of the programmer to make sure that enough time has passed
+//! before returning from the ISR to avoid false re-triggering of the cleared event.
+//! A simple, although not necessarily optimal, way of clearing an event before
+//! returning from the ISR is:
+//! -# Write to clear event (interrupt source). (buffered write)
+//! -# Dummy read from the event source module. (making sure the write has propagated)
+//! -# Wait two system CPU clock cycles (user code or two NOPs). (allowing cleared event to propagate through any synchronizers)
 //!
 //! \param ui32Base is the base address of the timer module.
 //! \param ui32IntFlags is a bit mask of the interrupt sources to be cleared.
@@ -1108,7 +1035,6 @@ TimerIntStatus(uint32_t ui32Base, bool bMasked)
 //! - \ref TIMER_CAPB_EVENT    : Capture B event interrupt.
 //! - \ref TIMER_CAPB_MATCH    : Capture B match interrupt.
 //! - \ref TIMER_TIMB_TIMEOUT  : Timer B timeout interrupt.
-//! - \ref TIMER_RTC_MATCH     : RTC interrupt mask.
 //! - \ref TIMER_CAPA_EVENT    : Capture A event interrupt.
 //! - \ref TIMER_CAPA_MATCH    : Capture A match interrupt.
 //! - \ref TIMER_TIMA_TIMEOUT  : Timer A timeout interrupt.
@@ -1185,8 +1111,8 @@ TimerCcpCombineEnable(uint32_t ui32Base)
     // Check the arguments
     ASSERT(TimerBaseValid(ui32Base));
 
-    // Set the bit using bit banding
-    HWREGBITW(ui32Base + GPT_O_ANDCCP, GPT_ANDCCP_CCP_AND_EN_BITN) = 1;
+    // Set the bit
+    HWREG(ui32Base + GPT_O_ANDCCP) |= GPT_ANDCCP_CCP_AND_EN;
 }
 
 //*****************************************************************************
@@ -1204,8 +1130,8 @@ TimerCcpCombineDisable(uint32_t ui32Base)
     // Check the arguments
     ASSERT(TimerBaseValid(ui32Base));
 
-    // Clear the bit using bit banding
-    HWREGBITW(ui32Base + GPT_O_ANDCCP, GPT_ANDCCP_CCP_AND_EN_BITN) = 0;
+    // Clear the bit
+    HWREG(ui32Base + GPT_O_ANDCCP) &= ~(GPT_ANDCCP_CCP_AND_EN);
 }
 
 //*****************************************************************************
@@ -1267,7 +1193,7 @@ extern void TimerIntervalLoadMode(uint32_t ui32Base, uint32_t ui32Timer, uint32_
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_TimerConfigure
         #undef  TimerConfigure
@@ -1276,10 +1202,6 @@ extern void TimerIntervalLoadMode(uint32_t ui32Base, uint32_t ui32Timer, uint32_
     #ifdef ROM_TimerLevelControl
         #undef  TimerLevelControl
         #define TimerLevelControl               ROM_TimerLevelControl
-    #endif
-    #ifdef ROM_TimerTriggerControl
-        #undef  TimerTriggerControl
-        #define TimerTriggerControl             ROM_TimerTriggerControl
     #endif
     #ifdef ROM_TimerStallControl
         #undef  TimerStallControl
@@ -1321,6 +1243,7 @@ extern void TimerIntervalLoadMode(uint32_t ui32Base, uint32_t ui32Timer, uint32_
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       uart.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    Driver for the UART.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  UARTFIFOLevelGet
     #define UARTFIFOLevelGet                NOROM_UARTFIFOLevelGet
     #undef  UARTConfigSetExpClk
@@ -132,11 +132,6 @@ UARTConfigSetExpClk(uint32_t ui32Base, uint32_t ui32UARTClk,
     // Set parity, data length, and number of stop bits.
     //
     HWREG(ui32Base + UART_O_LCRH) = ui32Config;
-
-    //
-    // Clear the flags register.
-    //
-    HWREG(ui32Base + UART_O_FR) = 0;
 }
 
 //*****************************************************************************
@@ -340,12 +335,12 @@ UARTIntRegister(uint32_t ui32Base, void (*pfnHandler)(void))
     //
     // Register the interrupt handler.
     //
-    IntRegister(INT_UART0, pfnHandler);
+    IntRegister(INT_UART0_COMB, pfnHandler);
 
     //
     // Enable the UART interrupt.
     //
-    IntEnable(INT_UART0);
+    IntEnable(INT_UART0_COMB);
 }
 
 //*****************************************************************************
@@ -364,10 +359,10 @@ UARTIntUnregister(uint32_t ui32Base)
     //
     // Disable the interrupt.
     //
-    IntDisable(INT_UART0);
+    IntDisable(INT_UART0_COMB);
 
     //
     // Unregister the interrupt handler.
     //
-    IntUnregister(INT_UART0);
+    IntUnregister(INT_UART0_COMB);
 }

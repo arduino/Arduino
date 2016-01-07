@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       cpu.h
-*  Revised:        2015-02-09 17:18:47 +0100 (ma, 09 feb 2015)
-*  Revision:       42616
+*  Revised:        2015-10-28 15:51:56 +0100 (Wed, 28 Oct 2015)
+*  Revision:       44872
 *
 *  Description:    Defines and prototypes for the CPU instruction wrapper
 *                  functions.
@@ -39,6 +39,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup system_cpu_group
+//! @{
 //! \addtogroup cpu_api
 //! @{
 //
@@ -61,6 +63,8 @@ extern "C"
 #include <stdbool.h>
 #include <stdint.h>
 #include <inc/hw_types.h>
+#include <inc/hw_memmap.h>
+#include <inc/hw_cpu_scs.h>
 
 //*****************************************************************************
 //
@@ -74,10 +78,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define CPUcpsid                        NOROM_CPUcpsid
     #define CPUprimask                      NOROM_CPUprimask
     #define CPUcpsie                        NOROM_CPUcpsie
@@ -133,22 +135,12 @@ extern uint32_t CPUcpsie(void);
 //
 //! \brief Wait for interrupt.
 //!
-//! Use this function to let the CM3 wait for the next interrupt. This
+//! Use this function to let the System CPU wait for the next interrupt. This
 //! function is implemented as a wrapper function for the WFI instruction.
 //!
 //! \return None
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
-__STATIC_INLINE void __attribute__((always_inline))
-CPUwfi(void)
-{
-    //
-    // Wait for the next interrupt.
-    //
-    __asm("    wfi\n");
-}
-#endif
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 __STATIC_INLINE void
 CPUwfi(void)
@@ -158,8 +150,7 @@ CPUwfi(void)
     //
     __asm("    wfi\n");
 }
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm __STATIC_INLINE void
 CPUwfi(void)
 {
@@ -169,9 +160,17 @@ CPUwfi(void)
     wfi;
     bx      lr
 }
-#endif
-#if defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__)
 __STATIC_INLINE void
+CPUwfi(void)
+{
+    //
+    // Wait for the next interrupt.
+    //
+    __asm("    wfi\n");
+}
+#else
+__STATIC_INLINE void __attribute__((always_inline))
 CPUwfi(void)
 {
     //
@@ -185,22 +184,12 @@ CPUwfi(void)
 //
 //! \brief Wait for event.
 //!
-//! Use this function to let the CM3 wait for the next event. This
+//! Use this function to let the System CPU wait for the next event. This
 //! function is implemented as a wrapper function for the WFE instruction.
 //!
 //! \return None
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
-__STATIC_INLINE void __attribute__((always_inline))
-CPUwfe(void)
-{
-    //
-    // Wait for the next event.
-    //
-    __asm("    wfe\n");
-}
-#endif
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 __STATIC_INLINE void
 CPUwfe(void)
@@ -210,8 +199,7 @@ CPUwfe(void)
     //
     __asm("    wfe\n");
 }
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm __STATIC_INLINE void
 CPUwfe(void)
 {
@@ -221,9 +209,17 @@ CPUwfe(void)
     wfe;
     bx      lr
 }
-#endif
-#if defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__)
 __STATIC_INLINE void
+CPUwfe(void)
+{
+    //
+    // Wait for the next event.
+    //
+    __asm("    wfe\n");
+}
+#else
+__STATIC_INLINE void __attribute__((always_inline))
 CPUwfe(void)
 {
     //
@@ -237,22 +233,12 @@ CPUwfe(void)
 //
 //! \brief Send event.
 //!
-//! Use this function to let the CM3 send an event. This function is
+//! Use this function to let the System CPU send an event. This function is
 //! implemented as a wrapper function for the SEV instruction.
 //!
 //! \return None
 //
 //*****************************************************************************
-#if defined(codered) || defined(gcc) || defined(sourcerygxx)
-__STATIC_INLINE void __attribute__((always_inline))
-CPUsev(void)
-{
-    //
-    // Send event.
-    //
-    __asm("    sev\n");
-}
-#endif
 #if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
 __STATIC_INLINE void
 CPUsev(void)
@@ -262,8 +248,7 @@ CPUsev(void)
     //
     __asm("    sev\n");
 }
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
 __asm __STATIC_INLINE void
 CPUsev(void)
 {
@@ -273,9 +258,17 @@ CPUsev(void)
     sev;
     bx      lr
 }
-#endif
-#if defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__)
 __STATIC_INLINE void
+CPUsev(void)
+{
+    //
+    // Send event.
+    //
+    __asm("    sev\n");
+}
+#else
+__STATIC_INLINE void __attribute__((always_inline))
 CPUsev(void)
 {
     //
@@ -298,7 +291,35 @@ CPUsev(void)
 //! \return None
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+__STATIC_INLINE void
+CPUbasepriSet(uint32_t ui32NewBasepri)
+{
+    //
+    // Set the BASEPRI register.
+    //
+    __asm("    msr     BASEPRI, r0\n");
+}
+#elif defined(__CC_ARM) || defined(__ARMCC_VERSION)
+__asm __STATIC_INLINE void
+CPUbasepriSet(uint32_t ui32NewBasepri)
+{
+    //
+    // Set the BASEPRI register.
+    //
+    msr     BASEPRI, r0;
+    bx      lr
+}
+#elif defined(__TI_COMPILER_VERSION__)
+__STATIC_INLINE void
+CPUbasepriSet(uint32_t ui32NewBasepri)
+{
+    //
+    // Set the BASEPRI register.
+    //
+    __asm("    msr     BASEPRI, r0\n");
+}
+#else
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wattributes"
 __STATIC_INLINE void __attribute__ ((naked))
@@ -311,37 +332,6 @@ CPUbasepriSet(uint32_t ui32NewBasepri)
          "    bx      lr\n");
 }
 #pragma GCC diagnostic pop
-#endif
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
-__STATIC_INLINE void
-CPUbasepriSet(uint32_t ui32NewBasepri)
-{
-    //
-    // Set the BASEPRI register.
-    //
-    __asm("    msr     BASEPRI, r0\n");
-}
-#endif
-#if defined(rvmdk) || defined(__ARMCC_VERSION)
-__asm __STATIC_INLINE void
-CPUbasepriSet(uint32_t ui32NewBasepri)
-{
-    //
-    // Set the BASEPRI register.
-    //
-    msr     BASEPRI, r0;
-    bx      lr
-}
-#endif
-#if defined(__TI_COMPILER_VERSION__)
-__STATIC_INLINE void
-CPUbasepriSet(uint32_t ui32NewBasepri)
-{
-    //
-    // Set the BASEPRI register.
-    //
-    __asm("    msr     BASEPRI, r0\n");
-}
 #endif
 
 //*****************************************************************************
@@ -375,11 +365,51 @@ extern void CPUdelay(uint32_t ui32Count);
 
 //*****************************************************************************
 //
+//! \brief Disable CPU write buffering (recommended for debug purpose only).
+//!
+//! This function helps debugging "bus fault crashes".
+//! Disables write buffer use during default memory map accesses.
+//!
+//! This causes all bus faults to be precise bus faults but decreases the
+//! performance of the processor because the stores to memory have to complete
+//! before the next instruction can be executed.
+//!
+//! \return None
+//!
+//! \sa \ref CPU_WriteBufferEnable()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+CPU_WriteBufferDisable( void )
+{
+    HWREGBITW( CPU_SCS_BASE + CPU_SCS_O_ACTLR, CPU_SCS_ACTLR_DISDEFWBUF_BITN ) = 1;
+}
+
+//*****************************************************************************
+//
+//! \brief Enable CPU write buffering (default setting).
+//!
+//! Re-enables write buffer during default memory map accesses if
+//! \ref CPU_WriteBufferDisable() has been used for bus fault debugging.
+//!
+//! \return None
+//!
+//! \sa \ref CPU_WriteBufferDisable()
+//
+//*****************************************************************************
+__STATIC_INLINE void
+CPU_WriteBufferEnable( void )
+{
+    HWREGBITW( CPU_SCS_BASE + CPU_SCS_O_ACTLR, CPU_SCS_ACTLR_DISDEFWBUF_BITN ) = 0;
+}
+
+//*****************************************************************************
+//
 // Support for DriverLib in ROM:
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_CPUcpsid
         #undef  CPUcpsid
@@ -417,6 +447,7 @@ extern void CPUdelay(uint32_t ui32Count);
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

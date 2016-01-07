@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_event.h
-*  Revised:        2015-02-10 16:20:36 +0100 (ti, 10 feb 2015)
-*  Revision:       42636
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AON Event fabric.
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aon_group
+//! @{
 //! \addtogroup aonevent_api
 //! @{
 //
@@ -77,10 +79,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define AONEventMcuWakeUpSet            NOROM_AONEventMcuWakeUpSet
     #define AONEventMcuWakeUpGet            NOROM_AONEventMcuWakeUpGet
     #define AONEventAuxWakeUpSet            NOROM_AONEventAuxWakeUpSet
@@ -95,43 +95,46 @@ extern "C"
 // Note: Events are level-triggered active high
 //
 //*****************************************************************************
-// AON_EVENT_DIO0                 // Edge detect on DIO0. See hw_device.h
-// ...                            // ...
-// AON_EVENT_DIO31                // Edge detect on DIO31. See hw_device.h
-#define AON_EVENT_IO           32 // Edge detect on any DIO
-#define AON_EVENT_SPISRTX      33 // SPIS byte transmitted
-#define AON_EVENT_SPISCS       34 // SPIS CS_N asserted
-#define AON_EVENT_RTC0         35 // RTC channel 0
-#define AON_EVENT_RTC1         36 // RTC channel 1
-#define AON_EVENT_RTC2         37 // RTC channel 2
-#define AON_EVENT_RTC0DLY      38 // RTC channel 0 - delayed event
-#define AON_EVENT_RTC1DLY      39 // RTC channel 1 - delayed event
-#define AON_EVENT_RTC2DLY      40 // RTC channel 2 - delayed event
-#define AON_EVENT_RTCDLYC      41 // RTC combined delayed event
-                                  // Event ID 42 is reserved for future use
-#define AON_EVENT_JTAG         43 // JTAG generated event
-#define AON_EVENT_AUX0         44 // SW programmable
-                                  // default: Statemachine done
-#define AON_EVENT_AUX1         45 // SW programmable
-                                  // default: Error event
-#define AON_EVENT_AUX2         46 // SW programmable
-                                  // default: RTC Channel 2 clear
-#define AON_EVENT_AUX_CMPA     47 // Comparator A triggered
-#define AON_EVENT_AUX_CMPB     48 // Comparator B triggered
-#define AON_EVENT_AUX_ADC_DONE 49 // ADC conversion completed
-#define AON_EVENT_AUX_TDC_DONE 50 // TDC completed or timed out
-#define AON_EVENT_AUX_TIMER0   51 // Timer 0 event
-#define AON_EVENT_AUX_TIMER1   52 // Timer 1 event
+// AON_EVENT_DIO0                      // Edge detect on DIO0. See hw_device.h for DIO-to-PAD mapping.
+// ...                                 // ...
+// AON_EVENT_DIO31                     // Edge detect on DIO31. See hw_device.h for DIO-to-PAD mapping.
+#define AON_EVENT_IO                32 // Edge detect on any DIO
+                                       // Event ID 33 is reserved for future use
+                                       // Event ID 34 is reserved for future use
+#define AON_EVENT_RTC_CH0           35 // RTC channel 0
+#define AON_EVENT_RTC_CH1           36 // RTC channel 1
+#define AON_EVENT_RTC_CH2           37 // RTC channel 2
+#define AON_EVENT_RTC_CH0_DLY       38 // RTC channel 0 - delayed event
+#define AON_EVENT_RTC_CH1_DLY       39 // RTC channel 1 - delayed event
+#define AON_EVENT_RTC_CH2_DLY       40 // RTC channel 2 - delayed event
+#define AON_EVENT_RTC_COMB_DLY      41 // RTC combined delayed event
+#define AON_EVENT_RTC_UPD           42 // RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+#define AON_EVENT_JTAG              43 // JTAG generated event
+#define AON_EVENT_AUX_SWEV0         44 // AUX Software triggered event #0
+#define AON_EVENT_AUX_SWEV1         45 // AUX Software triggered event #1
+#define AON_EVENT_AUX_SWEV2         46 // AUX Software triggered event #2
+#define AON_EVENT_AUX_COMPA         47 // Comparator A triggered (synchronized in AUX)
+#define AON_EVENT_AUX_COMPB         48 // Comparator B triggered (synchronized in AUX)
+#define AON_EVENT_AUX_ADC_DONE      49 // ADC conversion completed
+#define AON_EVENT_AUX_TDC_DONE      50 // TDC completed or timed out
+#define AON_EVENT_AUX_TIMER0_EV     51 // Timer 0 event
+#define AON_EVENT_AUX_TIMER1_EV     52 // Timer 1 event
+#define AON_EVENT_BATMON_TEMP       53 // BATMON temperature update event
+#define AON_EVENT_BATMON_VOLT       54 // BATMON voltage update event
+#define AON_EVENT_AUX_COMPB_ASYNC   55 // Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+#define AON_EVENT_AUX_COMPB_ASYNC_N 56 // Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+                                       // Event ID 57-62 is reserved for future use
+#define AON_EVENT_NONE              63 // No event, always low
 
-#define AON_EVENT_BATMON_TEMP  53 //
-#define AON_EVENT_BATMON_VOLT  54 //
-                                  // Event ID 55-62 is reserved for future use
-#define AON_EVENT_NULL         63 // No event
+//
+// Keeping backward compatibility until major revision number is incremented
+//
+#define AON_EVENT_RTC0     ( AON_EVENT_RTC_CH0 )
 
 //*****************************************************************************
 //
-// Values that can be passed to AONEventSetMCUWakeUp() and returned
-// by AONEventGetMCUWakeUp().
+// Values that can be passed to AONEventMCUWakeUpSet() and returned
+// by AONEventMCUWakeUpGet().
 //
 //*****************************************************************************
 #define AON_EVENT_MCU_WU0 0     // Programmable MCU wakeup event 0
@@ -153,12 +156,9 @@ extern "C"
 // Values that can be passed to AONEventMcuSet() and AONEventMcuGet()
 //
 //*****************************************************************************
-#define AON_EVENT_MCU_EVENT0 0  // Programmable event source fed to
-                                // MCU event fabric (first of 3)
-#define AON_EVENT_MCU_EVENT1 1  // Programmable event source fed to
-                                // MCU event fabric (second of 3)
-#define AON_EVENT_MCU_EVENT2 2  // Programmable event source fed to
-                                // MCU event fabric (third of 3)
+#define AON_EVENT_MCU_EVENT0 0  // Programmable event source fed to MCU event fabric (first of 3)
+#define AON_EVENT_MCU_EVENT1 1  // Programmable event source fed to MCU event fabric (second of 3)
+#define AON_EVENT_MCU_EVENT2 2  // Programmable event source fed to MCU event fabric (third of 3)
 
 //*****************************************************************************
 //
@@ -182,10 +182,33 @@ extern "C"
 //! - \ref AON_EVENT_MCU_WU2
 //! - \ref AON_EVENT_MCU_WU3
 //! \param ui32EventSrc is an event source for the event AON fabric.
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \return None
 //!
@@ -210,10 +233,33 @@ extern void AONEventMcuWakeUpSet(uint32_t ui32MCUWUEvent,
 //!
 //! \return Returns an event source for the event AON fabric, i.e. one of the
 //! following:
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \sa AONEventMcuWakeUpSet()
 //
@@ -236,10 +282,33 @@ extern uint32_t AONEventMcuWakeUpGet(uint32_t ui32MCUWUEvent);
 //! - \ref AON_EVENT_AUX_WU1
 //! - \ref AON_EVENT_AUX_WU2
 //! \param ui32EventSrc is an event sources for the event AON fabric.
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \return None
 //!
@@ -263,10 +332,33 @@ extern void AONEventAuxWakeUpSet(uint32_t ui32AUXWUEvent,
 //! - \ref AON_EVENT_AUX_WU2
 //!
 //! \return Returns an event source for the event AON fabric, i.e. one of the following:
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \sa AONEventAuxWakeUpSet()
 //
@@ -281,11 +373,11 @@ extern uint32_t AONEventAuxWakeUpGet(uint32_t ui32AUXWUEvent);
 //! The AON event fabric has a total of three programmable events that can
 //! be forwarded to the MCU event fabric.
 //!
-//! \note The three programmable event sources are forwarded to the following
-//! MCU event fabric events:
-//! - \ref EVENT_AON_PROG_0
-//! - \ref EVENT_AON_PROG_1
-//! - \ref EVENT_AON_PROG_2
+//! \note The three programmable event sources are forwarded to the MCU Event
+//! Fabric as:
+//! - AON_PROG0
+//! - AON_PROG1
+//! - AON_PROG2
 //!
 //! \param ui32MCUEvent is one of three programmable events forwarded to the
 //! MCU event fabric.
@@ -293,10 +385,33 @@ extern uint32_t AONEventAuxWakeUpGet(uint32_t ui32AUXWUEvent);
 //! - \ref AON_EVENT_MCU_EVENT1
 //! - \ref AON_EVENT_MCU_EVENT2
 //! \param ui32EventSrc is event sources for the event AON fabric.
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \return None
 //!
@@ -320,10 +435,33 @@ extern void AONEventMcuSet(uint32_t ui32MCUEvent, uint32_t ui32EventSrc);
 //! - \ref AON_EVENT_MCU_EVENT2
 //!
 //! \return Returns an event source for the event AON fabric, i.e. one of the following:
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \sa AONEventMcuSet()
 //
@@ -338,10 +476,33 @@ extern uint32_t AONEventMcuGet(uint32_t ui32MCUEvent);
 //! for triggering a capture event on RTC channel 1.
 //!
 //! \param ui32EventSrc is the event sources for the event AON fabric.
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \return None
 //!
@@ -356,7 +517,7 @@ AONEventRtcSet(uint32_t ui32EventSrc)
     //
     // Check the arguments.
     //
-    ASSERT(ui32EventSrc <= AON_EVENT_NULL);
+    ASSERT(ui32EventSrc <= AON_EVENT_NONE);
 
     ui32Ctrl = HWREG(AON_EVENT_BASE + AON_EVENT_O_RTCSEL);
     ui32Ctrl &= ~(AON_EVENT_RTCSEL_RTC_CH1_CAPT_EV_M);
@@ -373,10 +534,33 @@ AONEventRtcSet(uint32_t ui32EventSrc)
 //! for triggering a capture event on RTC channel 1.
 //!
 //! \return Returns an event source to the event AON fabric, i.e. one of the following:
-//! - AON_EVENT_DIO0
-//! - AON_EVENT_DIO1
+//! - AON_EVENT_DIO0                   : Edge detect on DIO0. See hw_device.h
 //! - ...
-//! - \ref AON_EVENT_NULL
+//! - AON_EVENT_DIO31                  : Edge detect on DIO31. See hw_device.h
+//! - \ref AON_EVENT_IO                : Edge detect on any DIO
+//! - \ref AON_EVENT_RTC_CH0           : RTC channel 0
+//! - \ref AON_EVENT_RTC_CH1           : RTC channel 1
+//! - \ref AON_EVENT_RTC_CH2           : RTC channel 2
+//! - \ref AON_EVENT_RTC_CH0_DLY       : RTC channel 0 - delayed event
+//! - \ref AON_EVENT_RTC_CH1_DLY       : RTC channel 1 - delayed event
+//! - \ref AON_EVENT_RTC_CH2_DLY       : RTC channel 2 - delayed event
+//! - \ref AON_EVENT_RTC_COMB_DLY      : RTC combined delayed event
+//! - \ref AON_EVENT_RTC_UPD           : RTC Update Tick (16 kHz signal, i.e. event line toggles value every 32 kHz clock period)
+//! - \ref AON_EVENT_JTAG              : JTAG generated event
+//! - \ref AON_EVENT_AUX_SWEV0         : AUX Software triggered event #0
+//! - \ref AON_EVENT_AUX_SWEV1         : AUX Software triggered event #1
+//! - \ref AON_EVENT_AUX_SWEV2         : AUX Software triggered event #2
+//! - \ref AON_EVENT_AUX_COMPA         : Comparator A triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_COMPB         : Comparator B triggered (synchronized in AUX)
+//! - \ref AON_EVENT_AUX_ADC_DONE      : ADC conversion completed
+//! - \ref AON_EVENT_AUX_TDC_DONE      : TDC completed or timed out
+//! - \ref AON_EVENT_AUX_TIMER0_EV     : Timer 0 event
+//! - \ref AON_EVENT_AUX_TIMER1_EV     : Timer 1 event
+//! - \ref AON_EVENT_BATMON_TEMP       : BATMON temperature update event
+//! - \ref AON_EVENT_BATMON_VOLT       : BATMON voltage update event
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC   : Comparator B triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_AUX_COMPB_ASYNC_N : Comparator B not triggered. Asynchronous signal directly from the AUX Comparator B
+//! - \ref AON_EVENT_NONE              : No event, always low
 //!
 //! \sa AONEventRtcSet()
 //
@@ -401,7 +585,7 @@ AONEventRtcGet(void)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_AONEventMcuWakeUpSet
         #undef  AONEventMcuWakeUpSet
@@ -443,6 +627,7 @@ AONEventRtcGet(void)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

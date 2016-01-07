@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       interrupt.c
-*  Revised:        2015-02-10 16:20:36 +0100 (ti, 10 feb 2015)
-*  Revision:       42636
+*  Revised:        2015-11-16 20:04:11 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45095
 *
 *  Description:    Driver for the NVIC Interrupt Controller.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  IntRegister
     #define IntRegister                     NOROM_IntRegister
     #undef  IntUnregister
@@ -97,8 +97,7 @@ static const uint32_t g_pui32Regs[] =
 
 //*****************************************************************************
 //
-//! \internal
-//! The default interrupt handler.
+//! \brief The default interrupt handler.
 //!
 //! This is the default interrupt handler for all interrupts. It simply loops
 //! forever so that the system state is preserved for observation by a
@@ -128,8 +127,6 @@ IntDefaultHandler(void)
 // of an interrupt causes the processor to start executing directly at the
 // address given in the corresponding location in this list.
 //
-// TBD : FIX Remember to remove "zero_init" from interrupt vector declaration
-//
 //*****************************************************************************
 #if defined(__IAR_SYSTEMS_ICC__)
 #pragma data_alignment=256
@@ -138,10 +135,9 @@ static __no_init void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) @ ".vtable_ram";
 #pragma DATA_ALIGN(g_pfnRAMVectors, 256)
 #pragma DATA_SECTION(g_pfnRAMVectors, ".vtable_ram")
 void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void);
-#elif defined (rvmdk)
+#elif defined (__CC_ARM)
 static __attribute__((section("vtable_ram")))
-void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__((aligned(256),
-        zero_init));
+void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__((aligned(256)));
 #else
 static __attribute__((section("vtable_ram")))
 void (*g_pfnRAMVectors[NUM_INTERRUPTS])(void) __attribute__((aligned(256)));
@@ -329,28 +325,28 @@ IntEnable(uint32_t ui32Interrupt)
     //
     // Determine the interrupt to enable.
     //
-    if(ui32Interrupt == FAULT_MPU)
+    if(ui32Interrupt == INT_MEMMANAGE_FAULT)
     {
         //
         // Enable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_MEM;
     }
-    else if(ui32Interrupt == FAULT_BUS)
+    else if(ui32Interrupt == INT_BUS_FAULT)
     {
         //
         // Enable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_BUS;
     }
-    else if(ui32Interrupt == FAULT_USAGE)
+    else if(ui32Interrupt == INT_USAGE_FAULT)
     {
         //
         // Enable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) |= NVIC_SYS_HND_CTRL_USAGE;
     }
-    else if(ui32Interrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == INT_SYSTICK)
     {
         //
         // Enable the System Tick interrupt.
@@ -389,28 +385,28 @@ IntDisable(uint32_t ui32Interrupt)
     //
     // Determine the interrupt to disable.
     //
-    if(ui32Interrupt == FAULT_MPU)
+    if(ui32Interrupt == INT_MEMMANAGE_FAULT)
     {
         //
         // Disable the MemManage interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_MEM);
     }
-    else if(ui32Interrupt == FAULT_BUS)
+    else if(ui32Interrupt == INT_BUS_FAULT)
     {
         //
         // Disable the bus fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_BUS);
     }
-    else if(ui32Interrupt == FAULT_USAGE)
+    else if(ui32Interrupt == INT_USAGE_FAULT)
     {
         //
         // Disable the usage fault interrupt.
         //
         HWREG(NVIC_SYS_HND_CTRL) &= ~(NVIC_SYS_HND_CTRL_USAGE);
     }
-    else if(ui32Interrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == INT_SYSTICK)
     {
         //
         // Disable the System Tick interrupt.
@@ -449,21 +445,21 @@ IntPendSet(uint32_t ui32Interrupt)
     //
     // Determine the interrupt to pend.
     //
-    if(ui32Interrupt == FAULT_NMI)
+    if(ui32Interrupt == INT_NMI_FAULT)
     {
         //
         // Pend the NMI interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_NMI_SET;
     }
-    else if(ui32Interrupt == FAULT_PENDSV)
+    else if(ui32Interrupt == INT_PENDSV)
     {
         //
         // Pend the PendSV interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_PEND_SV;
     }
-    else if(ui32Interrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == INT_SYSTICK)
     {
         //
         // Pend the SysTick interrupt.
@@ -545,14 +541,14 @@ IntPendClear(uint32_t ui32Interrupt)
     //
     // Determine the interrupt to unpend.
     //
-    if(ui32Interrupt == FAULT_PENDSV)
+    if(ui32Interrupt == INT_PENDSV)
     {
         //
         // Unpend the PendSV interrupt.
         //
         HWREG(NVIC_INT_CTRL) |= NVIC_INT_CTRL_UNPEND_SV;
     }
-    else if(ui32Interrupt == FAULT_SYSTICK)
+    else if(ui32Interrupt == INT_SYSTICK)
     {
         //
         // Unpend the SysTick interrupt.

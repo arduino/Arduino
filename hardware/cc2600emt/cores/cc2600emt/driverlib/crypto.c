@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       crypto.c
-*  Revised:        2015-02-09 18:38:31 +0100 (ma, 09 feb 2015)
-*  Revision:       42620
+*  Revised:        2015-11-16 19:41:47 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45094
 *
 *  Description:    Driver for the Crypto module
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  CRYPTOAesLoadKey
     #define CRYPTOAesLoadKey                NOROM_CRYPTOAesLoadKey
     #undef  CRYPTOAesEcb
@@ -104,9 +104,9 @@ CRYPTOAesLoadKey(uint32_t *pui32AesKey,
 
     //
     // Disable the external interrupt to stop the interrupt form propagating
-    // from the module to the CM3.
+    // from the module to the System CPU.
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
 
     //
     // Enable internal interrupts.
@@ -118,8 +118,7 @@ CRYPTOAesLoadKey(uint32_t *pui32AesKey,
     //
     // Configure master control module.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_ALGSEL) &= (~CRYPTO_ALGSEL_KEY_STORE);
-    HWREG(CRYPTO_BASE + CRYPTO_O_ALGSEL) |= CRYPTO_ALGSEL_KEY_STORE;
+    HWREGBITW(CRYPTO_BASE + CRYPTO_O_ALGSEL, CRYPTO_ALGSEL_KEY_STORE_BITN) = 1;
 
     //
     // Clear any outstanding events.
@@ -141,7 +140,7 @@ CRYPTOAesLoadKey(uint32_t *pui32AesKey,
     //
     // Enable Crypto DMA channel 0.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+    HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
 
     //
     // Base address of the key in ext. memory.
@@ -227,8 +226,8 @@ CRYPTOAesEcb(uint32_t *pui32MsgIn, uint32_t *pui32MsgOut,
     //
     if(bIntEnable)
     {
-        IntPendClear(INT_CRYPTO);
-        IntEnable(INT_CRYPTO);
+        IntPendClear(INT_CRYPTO_RESULT_AVAIL_IRQ);
+        IntEnable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     }
 
     //
@@ -280,7 +279,7 @@ CRYPTOAesEcb(uint32_t *pui32MsgIn, uint32_t *pui32MsgOut,
     //
     // Enable Crypto DMA channel 0.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+    HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
 
     //
     // Base address of the input data in ext. memory.
@@ -295,10 +294,10 @@ CRYPTOAesEcb(uint32_t *pui32MsgIn, uint32_t *pui32MsgOut,
     //
     // Enable Crypto DMA channel 1.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) |= CRYPTO_DMACH1CTL_EN;
+    HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 1;
 
     //
-    // Setup the address and length of the output data.
+    // Set up the address and length of the output data.
     //
     HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1EXTADDR) = (uint32_t)pui32MsgOut;
     HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1LEN) = AES_ECB_LENGTH;
@@ -342,10 +341,10 @@ CRYPTOAesEcbStatus(void)
     }
 
     //
-    // Operation successfull - disable interrupt and return success.
+    // Operation successful - disable interrupt and return success.
     //
     g_ui32CurrentAesOp = CRYPTO_AES_NONE;
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     return (AES_SUCCESS);
 }
 
@@ -361,10 +360,13 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
                      uint32_t ui32HeaderLength, uint32_t ui32KeyLocation,
                      uint32_t ui32FieldLength, bool bIntEnable)
 {
-    uint8_t ui8InitVec[16];
     uint32_t ui32CtrlVal;
     uint32_t i;
     uint32_t *pui32CipherText;
+    union {
+        uint32_t w[4];
+        uint8_t  b[16];
+    } ui8InitVec;
 
     //
     // Input address for the encryption engine is the same as the output.
@@ -380,7 +382,7 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
     // Disable global interrupt, enable local interrupt and clear any pending
     // interrupts.
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     HWREG(CRYPTO_BASE + CRYPTO_O_IRQCLR) = (CRYPTO_IRQCLR_DMA_IN_DONE |
                                             CRYPTO_IRQCLR_RESULT_AVAIL);
 
@@ -422,29 +424,29 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
     // Prepare the initialization vector (IV),
     // Length of Nonce l(n) = 15 - ui32FieldLength.
     //
-    ui8InitVec[0] = ui32FieldLength - 1;
+    ui8InitVec.b[0] = ui32FieldLength - 1;
     for(i = 0; i < 12; i++)
     {
-        ui8InitVec[i + 1] = ((uint8_t*)pui32Nonce)[i];
+        ui8InitVec.b[i + 1] = ((uint8_t*)pui32Nonce)[i];
     }
     if(ui32FieldLength == 2)
     {
-        ui8InitVec[13] = ((uint8_t*)pui32Nonce)[12];
+        ui8InitVec.b[13] = ((uint8_t*)pui32Nonce)[12];
     }
     else
     {
-        ui8InitVec[13] = 0;
+        ui8InitVec.b[13] = 0;
     }
-    ui8InitVec[14] = 0;
-    ui8InitVec[15] = 0;
+    ui8InitVec.b[14] = 0;
+    ui8InitVec.b[15] = 0;
 
     //
     // Write initialization vector.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV0) = ((uint32_t  *)&ui8InitVec)[0];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV1) = ((uint32_t  *)&ui8InitVec)[1];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV2) = ((uint32_t  *)&ui8InitVec)[2];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV3) = ((uint32_t  *)&ui8InitVec)[3];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV0) = ui8InitVec.w[0];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV1) = ui8InitVec.w[1];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV2) = ui8InitVec.w[2];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV3) = ui8InitVec.w[3];
 
     //
     // Configure AES engine.
@@ -487,7 +489,7 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
         //
         // Enable DMA channel 0.
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
 
         //
         // Register the base address of the header (AAD).
@@ -528,8 +530,8 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
     //
     if(bIntEnable)
     {
-        IntPendClear(INT_CRYPTO);
-        IntEnable(INT_CRYPTO);
+        IntPendClear(INT_CRYPTO_RESULT_AVAIL_IRQ);
+        IntEnable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     }
 
     //
@@ -545,8 +547,8 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
         //
         // Configure the DMA controller - enable both DMA channels.
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) |= CRYPTO_DMACH1CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 1;
 
         //
         // base address of the payload data in ext. memory.
@@ -562,7 +564,7 @@ CRYPTOCcmAuthEncrypt(bool bEncrypt, uint32_t ui32AuthLength ,
         //
         // Enable DMA channel 1
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) |= CRYPTO_DMACH1CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 1;  // Redundant (see above)?
 
         //
         // Base address of the output data buffer.
@@ -612,9 +614,9 @@ CRYPTOCcmAuthEncryptStatus(void)
     }
 
     //
-    // Operation successfull - disable interrupt and return success.
+    // Operation successful - disable interrupt and return success.
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     return (AES_SUCCESS);
 }
 
@@ -659,7 +661,7 @@ CRYPTOCcmAuthEncryptResultGet(uint32_t ui32TagLength, uint32_t *pui32CcmTag)
     }
 
     //
-    // Operation successfull -  clear interrupt status.
+    // Operation successful -  clear interrupt status.
     //
     HWREG(CRYPTO_BASE + CRYPTO_O_IRQCLR) = (CRYPTO_IRQCLR_DMA_IN_DONE |
                                             CRYPTO_IRQCLR_RESULT_AVAIL);
@@ -680,11 +682,14 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
                         uint32_t ui32KeyLocation,
                         uint32_t ui32FieldLength, bool bIntEnable)
 {
-    uint8_t ui8InitVec[16];
     uint32_t ui32CtrlVal;
     uint32_t i;
     uint32_t *pui32PlainText;
     uint32_t ui32CryptoBlockLength;
+    union {
+        uint32_t w[4];
+        uint8_t  b[16];
+    } ui8InitVec;
 
     //
     // Input address for the encryption engine is the same as the output.
@@ -700,7 +705,7 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
     // Disable global interrupt, enable local interrupt and clear any pending.
     // interrupts.
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     HWREG(CRYPTO_BASE + CRYPTO_O_IRQCLR) = (CRYPTO_IRQCLR_DMA_IN_DONE |
                                             CRYPTO_IRQCLR_RESULT_AVAIL);
     //
@@ -741,29 +746,29 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
     // Prepare the initialization vector (IV),
     // Length of Nonce l(n) = 15 - ui32FieldLength.
     //
-    ui8InitVec[0] = ui32FieldLength - 1;
+    ui8InitVec.b[0] = ui32FieldLength - 1;
     for(i = 0; i < 12; i++)
     {
-        ui8InitVec[i + 1] = ((uint8_t*)pui32Nonce)[i];
+        ui8InitVec.b[i + 1] = ((uint8_t*)pui32Nonce)[i];
     }
     if(ui32FieldLength == 2)
     {
-        ui8InitVec[13] = ((uint8_t*)pui32Nonce)[12];
+        ui8InitVec.b[13] = ((uint8_t*)pui32Nonce)[12];
     }
     else
     {
-        ui8InitVec[13] = 0;
+        ui8InitVec.b[13] = 0;
     }
-    ui8InitVec[14] = 0;
-    ui8InitVec[15] = 0;
+    ui8InitVec.b[14] = 0;
+    ui8InitVec.b[15] = 0;
 
     //
     // Write initialization vector.
     //
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV0) = ((uint32_t  *)&ui8InitVec)[0];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV1) = ((uint32_t  *)&ui8InitVec)[1];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV2) = ((uint32_t  *)&ui8InitVec)[2];
-    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV3) = ((uint32_t  *)&ui8InitVec)[3];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV0) = ui8InitVec.w[0];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV1) = ui8InitVec.w[1];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV2) = ui8InitVec.w[2];
+    HWREG(CRYPTO_BASE + CRYPTO_O_AESIV3) = ui8InitVec.w[3];
 
     //
     // Configure AES engine
@@ -807,7 +812,7 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
         //
         // Enable DMA channel 0.
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
 
         //
         // Register the base address of the header (AAD).
@@ -848,8 +853,8 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
     //
     if(bIntEnable)
     {
-        IntPendClear(INT_CRYPTO);
-        IntEnable(INT_CRYPTO);
+        IntPendClear(INT_CRYPTO_RESULT_AVAIL_IRQ);
+        IntEnable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     }
 
     //
@@ -866,7 +871,7 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
         //
         // Configure the DMA controller - enable both DMA channels.
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
 
         //
         // Base address of the payload data in ext. memory.
@@ -882,7 +887,7 @@ CRYPTOCcmInvAuthDecrypt(bool bDecrypt, uint32_t ui32AuthLength,
         //
         // Enable DMA channel 1.
         //
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) |= CRYPTO_DMACH1CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 1;
 
         //
         // Base address of the output data buffer.
@@ -932,9 +937,9 @@ CRYPTOCcmInvAuthDecryptStatus(void)
     }
 
     //
-    // Operation successfull - disable interrupt and return success
+    // Operation successful - disable interrupt and return success
     //
-    IntDisable(INT_CRYPTO);
+    IntDisable(INT_CRYPTO_RESULT_AVAIL_IRQ);
     return (AES_SUCCESS);
 }
 
@@ -986,7 +991,7 @@ CRYPTOCcmInvAuthDecryptResultGet(uint32_t ui32AuthLength,
     }
 
     //
-    // Operation successfull -  clear interrupt status.
+    // Operation successful -  clear interrupt status.
     //
     HWREG(CRYPTO_BASE + CRYPTO_O_IRQCLR) = (CRYPTO_IRQCLR_DMA_IN_DONE |
                                             CRYPTO_IRQCLR_RESULT_AVAIL);
@@ -1026,11 +1031,11 @@ CRYPTODmaEnable(uint32_t ui32Channels)
     //
     if(ui32Channels & CRYPTO_DMA_CHAN0)
     {
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) |= CRYPTO_DMACH0CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 1;
     }
     if(ui32Channels & CRYPTO_DMA_CHAN1)
     {
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) |= CRYPTO_DMACH1CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 1;
     }
 }
 
@@ -1053,10 +1058,10 @@ CRYPTODmaDisable(uint32_t ui32Channels)
     //
     if(ui32Channels & CRYPTO_DMA_CHAN0)
     {
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH0CTL) &= ~CRYPTO_DMACH0CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH0CTL, CRYPTO_DMACH0CTL_EN_BITN) = 0;
     }
     if(ui32Channels & CRYPTO_DMA_CHAN1)
     {
-        HWREG(CRYPTO_BASE + CRYPTO_O_DMACH1CTL) &= ~CRYPTO_DMACH1CTL_EN;
+        HWREGBITW(CRYPTO_BASE + CRYPTO_O_DMACH1CTL, CRYPTO_DMACH1CTL_EN_BITN) = 0;
     }
 }

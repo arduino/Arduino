@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       chipinfo.c
-*  Revised:        2015-04-15 13:12:25 +0200 (on, 15 apr 2015)
-*  Revision:       43227
+*  Revised:        2015-10-28 11:48:13 +0100 (Wed, 28 Oct 2015)
+*  Revision:       44860
 *
 *  Description:    Collection of functions returning chip information.
 *
@@ -100,6 +100,7 @@ ChipInfo_GetChipFamily( void )
    if (      waferId == 0xB99A )  chipFam = FAMILY_CC26xx       ;
    else if ( waferId == 0xB9BE )  chipFam = FAMILY_CC13xx       ;
    else if ( waferId == 0xBB20 )  chipFam = FAMILY_CC26xxLizard ;
+   else if ( waferId == 0xBB41 )  chipFam = FAMILY_CC26xxAgama  ;
 
    return ( chipFam );
 }
@@ -145,11 +146,15 @@ ChipInfo_GetHwRevision( void )
       }
       break;
    case FAMILY_CC26xxLizard :
+   case FAMILY_CC26xxAgama  :
       switch ( fcfg1Rev ) {
-      case 0 : // CC26xxLizard PG1.0 (or later)
+      case 0 : // CC26xxLizard or CC26xxAgama PG1.0 (or later)
          hwRev = (HwRevision_t)(((uint32_t)HWREV_1_0 ) + minorHwRev );
          break;
       }
+      break;
+   default :
+      // GCC gives warning if not handling all options explicitly in a "switch" on a variable of type "enum"
       break;
    }
 

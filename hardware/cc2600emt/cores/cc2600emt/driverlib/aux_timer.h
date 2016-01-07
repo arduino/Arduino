@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_timer.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
+*  Revision:       44151
 *
 *  Description:    Defines and prototypes for the AUX Timer
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aux_group
+//! @{
 //! \addtogroup auxtimer_api
 //! @{
 //
@@ -78,10 +80,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define AUXTimerConfigure               NOROM_AUXTimerConfigure
     #define AUXTimerStart                   NOROM_AUXTimerStart
     #define AUXTimerStop                    NOROM_AUXTimerStop
@@ -93,78 +93,48 @@ extern "C"
 //
 // Values that can be passed to AUXTimerConfigure().
 //
+// Requires timer0 and timer1 to use same enumerations and values!
+//
 //*****************************************************************************
-#define AUX_TIMER_CFG_ONE_SHOT \
-                                0x00000000  // One-shot timer mode
-#define AUX_TIMER_CFG_PERIODIC \
-                                0x00000001  // Period timer mode
-#define AUX_TIMER_CFG_ONE_SHOT_EDGE_COUNT \
-                                0x00000002  // One-shot timer with edge count
-#define AUX_TIMER_CFG_PERIODIC_EDGE_COUNT \
-                                0x00000003  // Periodic timer with edge count
-#define AUX_TIMER_CFG_RISING_EDGE \
-                                0x00000000  // Count rising edges (used with
-                                            // edge count mode)
-#define AUX_TIMER_CFG_FALLING_EDGE \
-                                0x00002000  // Count falling edges (used with
-                                            // edge count mode)
-#define AUX_TIMER_CFG_TICK_SRC_RTC_EVENT \
-                                0x00000000 // AON wake-up event
-#define AUX_TIMER_CFG_TICK_SRC_CMP_A \
-                                0x00000100 // Comperator A
-#define AUX_TIMER_CFG_TICK_SRC_CMP_B \
-                                0x00000200 // Comperator B
-#define AUX_TIMER_CFG_TICK_SRC_TDCDONE \
-                                0x00000300 // TDC Done
-#define AUX_TIMER_CFG_TICK_SRC_TIMER0_EVENT \
-                                0x00000400 // Timer 0 event
-#define AUX_TIMER_CFG_TICK_SRC_TIMER1_EVENT \
-                                0x00000500 // Timer 1 event
-#define AUX_TIMER_CFG_TICK_SRC_SMPH_RELEASE \
-                                0x00000600 // Semaphore release
-#define AUX_TIMER_CFG_TICK_SRC_ADC_DONE \
-                                0x00000700 // ADC done
-#define AUX_TIMER_CFG_TICK_SRC_ADC_DONE \
-                                0x00000700 // ADC done
+#define AUX_TIMER_CFG_ONE_SHOT              (AUX_TIMER_T0CFG_RELOAD_MAN)        // One-shot timer mode
+#define AUX_TIMER_CFG_PERIODIC              (AUX_TIMER_T0CFG_RELOAD_CONT)       // Period timer mode
+#define AUX_TIMER_CFG_ONE_SHOT_EDGE_COUNT   ((AUX_TIMER_T0CFG_RELOAD_MAN) | (AUX_TIMER_T0CFG_MODE_TICK))  // One-shot timer with edge count
+#define AUX_TIMER_CFG_PERIODIC_EDGE_COUNT   ((AUX_TIMER_T0CFG_RELOAD_CONT) | (AUX_TIMER_T0CFG_MODE_TICK)) // Periodic timer with edge count
+#define AUX_TIMER_CFG_RISING_EDGE           (AUX_TIMER_T0CFG_TICK_SRC_POL_RISE) // Count rising edges (used with edge count mode)
+#define AUX_TIMER_CFG_FALLING_EDGE          (AUX_TIMER_T0CFG_TICK_SRC_POL_FALL) // Count falling edges (used with edge count mode)
 
-#define AUX_TIMER_CFG_TICK_SRC_AIO0 \
-                                0x00000d00 // AIO_DAT[ 0]
-#define AUX_TIMER_CFG_TICK_SRC_AIO1 \
-                                0x00000e00 // AIO_DAT[ 1]
-#define AUX_TIMER_CFG_TICK_SRC_AIO2 \
-                                0x00000f00 // AIO_DAT[ 2]
-#define AUX_TIMER_CFG_TICK_SRC_AIO3 \
-                                0x00001000 // AIO_DAT[ 3]
-#define AUX_TIMER_CFG_TICK_SRC_AIO4 \
-                                0x00001100 // AIO_DAT[ 4]
-#define AUX_TIMER_CFG_TICK_SRC_AIO5 \
-                                0x00001200 // AIO_DAT[ 5]
-#define AUX_TIMER_CFG_TICK_SRC_AIO6 \
-                                0x00001300 // AIO_DAT[ 6]
-#define AUX_TIMER_CFG_TICK_SRC_AIO7 \
-                                0x00001400 // AIO_DAT[ 7]
-#define AUX_TIMER_CFG_TICK_SRC_AIO8 \
-                                0x00001500 // AIO_DAT[ 8]
-#define AUX_TIMER_CFG_TICK_SRC_AIO9 \
-                                0x00001600 // AIO_DAT[ 9]
-#define AUX_TIMER_CFG_TICK_SRC_AIO10 \
-                                0x00001700 // AIO_DAT[10]
-#define AUX_TIMER_CFG_TICK_SRC_AIO11 \
-                                0x00001800 // AIO_DAT[11]
-#define AUX_TIMER_CFG_TICK_SRC_AIO12 \
-                                0x00001900 // AIO_DAT[12]
-#define AUX_TIMER_CFG_TICK_SRC_AIO13 \
-                                0x00001A00 // AIO_DAT[13]
-#define AUX_TIMER_CFG_TICK_SRC_AIO14 \
-                                0x00001B00 // AIO_DAT[14]
-#define AUX_TIMER_CFG_TICK_SRC_AIO15 \
-                                0x00001C00 // AIO_DAT[15]
-#define AUX_TIMER_CFG_TICK_SRC_ACLK_REF \
-                                0x00001D00 // ACLK_REF_i
-#define AUX_TIMER_CFG_TICK_SRC_MCU_EVENT \
-                                0x00001E00 // MCU event
-#define AUX_TIMER_CFG_TICK_SRC_ADC_IRQ \
-                                0x00001F00 // DMA done
+#define AUX_TIMER_CFG_TICK_SRC_RTC_EVENT    (AUX_TIMER_T0CFG_TICK_SRC_RTC_CH2_EV) // AON wake-up event
+#define AUX_TIMER_CFG_TICK_SRC_CMP_A        (AUX_TIMER_T0CFG_TICK_SRC_AUX_COMPA)  // Comparator A
+#define AUX_TIMER_CFG_TICK_SRC_CMP_B        (AUX_TIMER_T0CFG_TICK_SRC_AUX_COMPB)  // Comparator B
+#define AUX_TIMER_CFG_TICK_SRC_TDCDONE      (AUX_TIMER_T0CFG_TICK_SRC_TDC_DONE)   // TDC Done
+#define AUX_TIMER_CFG_TICK_SRC_TIMER0_EVENT (AUX_TIMER_T1CFG_TICK_SRC_TIMER0_EV)  // Timer 0 event
+#define AUX_TIMER_CFG_TICK_SRC_TIMER1_EVENT (AUX_TIMER_T0CFG_TICK_SRC_TIMER1_EV)  // Timer 1 event
+#define AUX_TIMER_CFG_TICK_SRC_SMPH_RELEASE (AUX_TIMER_T0CFG_TICK_SRC_SMPH_AUTOTAKE_DONE) // Semaphore release
+#define AUX_TIMER_CFG_TICK_SRC_ADC_DONE     (AUX_TIMER_T0CFG_TICK_SRC_ADC_DONE)   // ADC done
+#define AUX_TIMER_CFG_TICK_SRC_RTC_4KHZ     (AUX_TIMER_T0CFG_TICK_SRC_RTC_4KHZ)
+#define AUX_TIMER_CFG_TICK_SRC_OBSMUX0      (AUX_TIMER_T0CFG_TICK_SRC_OBSMUX0)
+#define AUX_TIMER_CFG_TICK_SRC_OBSMUX1      (AUX_TIMER_T0CFG_TICK_SRC_OBSMUX1)
+#define AUX_TIMER_CFG_TICK_SRC_AON_SW       (AUX_TIMER_T0CFG_TICK_SRC_AON_SW)
+#define AUX_TIMER_CFG_TICK_SRC_AON_PROG_WU  (AUX_TIMER_T0CFG_TICK_SRC_AON_PROG_WU)
+#define AUX_TIMER_CFG_TICK_SRC_AIO0         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO0)     // AIO_DAT[ 0]
+#define AUX_TIMER_CFG_TICK_SRC_AIO1         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO1)     // AIO_DAT[ 1]
+#define AUX_TIMER_CFG_TICK_SRC_AIO2         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO2)     // AIO_DAT[ 2]
+#define AUX_TIMER_CFG_TICK_SRC_AIO3         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO3)     // AIO_DAT[ 3]
+#define AUX_TIMER_CFG_TICK_SRC_AIO4         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO4)     // AIO_DAT[ 4]
+#define AUX_TIMER_CFG_TICK_SRC_AIO5         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO5)     // AIO_DAT[ 5]
+#define AUX_TIMER_CFG_TICK_SRC_AIO6         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO6)     // AIO_DAT[ 6]
+#define AUX_TIMER_CFG_TICK_SRC_AIO7         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO7)     // AIO_DAT[ 7]
+#define AUX_TIMER_CFG_TICK_SRC_AIO8         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO8)     // AIO_DAT[ 8]
+#define AUX_TIMER_CFG_TICK_SRC_AIO9         (AUX_TIMER_T0CFG_TICK_SRC_AUXIO9)     // AIO_DAT[ 9]
+#define AUX_TIMER_CFG_TICK_SRC_AIO10        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO10)    // AIO_DAT[10]
+#define AUX_TIMER_CFG_TICK_SRC_AIO11        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO11)    // AIO_DAT[11]
+#define AUX_TIMER_CFG_TICK_SRC_AIO12        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO12)    // AIO_DAT[12]
+#define AUX_TIMER_CFG_TICK_SRC_AIO13        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO13)    // AIO_DAT[13]
+#define AUX_TIMER_CFG_TICK_SRC_AIO14        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO14)    // AIO_DAT[14]
+#define AUX_TIMER_CFG_TICK_SRC_AIO15        (AUX_TIMER_T0CFG_TICK_SRC_AUXIO15)    // AIO_DAT[15]
+#define AUX_TIMER_CFG_TICK_SRC_ACLK_REF     (AUX_TIMER_T0CFG_TICK_SRC_ACLK_REF)   // ACLK_REF_i
+#define AUX_TIMER_CFG_TICK_SRC_MCU_EVENT    (AUX_TIMER_T0CFG_TICK_SRC_MCU_EVENT)  // MCU event
+#define AUX_TIMER_CFG_TICK_SRC_ADC_IRQ      (AUX_TIMER_T0CFG_TICK_SRC_ADC_IRQ)    // DMA done
 
 //*****************************************************************************
 //
@@ -182,38 +152,22 @@ extern "C"
 // AUXTimerPrescaleGet.
 //
 //*****************************************************************************
-#define AUX_TIMER_PRESCALE_DIV_1 \
-                                0x00000000  // Prescale division ratio 1
-#define AUX_TIMER_PRESCALE_DIV_2 \
-                                0x00000010  // Prescale division ratio 2
-#define AUX_TIMER_PRESCALE_DIV_4 \
-                                0x00000020  // Prescale division ratio 4
-#define AUX_TIMER_PRESCALE_DIV_8 \
-                                0x00000030  // Prescale division ratio 8
-#define AUX_TIMER_PRESCALE_DIV_16 \
-                                0x00000040  // Prescale division ratio 16
-#define AUX_TIMER_PRESCALE_DIV_32 \
-                                0x00000050  // Prescale division ratio 32
-#define AUX_TIMER_PRESCALE_DIV_64 \
-                                0x00000060  // Prescale division ratio 64
-#define AUX_TIMER_PRESCALE_DIV_128 \
-                                0x00000070  // Prescale division ratio 128
-#define AUX_TIMER_PRESCALE_DIV_256 \
-                                0x00000080  // Prescale division ratio 256
-#define AUX_TIMER_PRESCALE_DIV_512 \
-                                0x00000090  // Prescale division ratio 512
-#define AUX_TIMER_PRESCALE_DIV_1028 \
-                                0x000000A0  // Prescale div. ratio 1028
-#define AUX_TIMER_PRESCALE_DIV_2048 \
-                                0x000000B0  // Prescale div. ratio 2048
-#define AUX_TIMER_PRESCALE_DIV_4096 \
-                                0x000000C0  // Prescale div. ratio 4096
-#define AUX_TIMER_PRESCALE_DIV_8192 \
-                                0x000000D0  // Prescale div. ratio 8192
-#define AUX_TIMER_PRESCALE_DIV_16384 \
-                                0x000000E0  // Prescale div. ratio 16384
-#define AUX_TIMER_PRESCALE_DIV_32768 \
-                                0x000000F0  // Prescale div. ratio 32768
+#define AUX_TIMER_PRESCALE_DIV_1      0x00000000  // Prescale division ratio 1
+#define AUX_TIMER_PRESCALE_DIV_2      0x00000010  // Prescale division ratio 2
+#define AUX_TIMER_PRESCALE_DIV_4      0x00000020  // Prescale division ratio 4
+#define AUX_TIMER_PRESCALE_DIV_8      0x00000030  // Prescale division ratio 8
+#define AUX_TIMER_PRESCALE_DIV_16     0x00000040  // Prescale division ratio 16
+#define AUX_TIMER_PRESCALE_DIV_32     0x00000050  // Prescale division ratio 32
+#define AUX_TIMER_PRESCALE_DIV_64     0x00000060  // Prescale division ratio 64
+#define AUX_TIMER_PRESCALE_DIV_128    0x00000070  // Prescale division ratio 128
+#define AUX_TIMER_PRESCALE_DIV_256    0x00000080  // Prescale division ratio 256
+#define AUX_TIMER_PRESCALE_DIV_512    0x00000090  // Prescale division ratio 512
+#define AUX_TIMER_PRESCALE_DIV_1028   0x000000A0  // Prescale div. ratio 1028
+#define AUX_TIMER_PRESCALE_DIV_2048   0x000000B0  // Prescale div. ratio 2048
+#define AUX_TIMER_PRESCALE_DIV_4096   0x000000C0  // Prescale div. ratio 4096
+#define AUX_TIMER_PRESCALE_DIV_8192   0x000000D0  // Prescale div. ratio 8192
+#define AUX_TIMER_PRESCALE_DIV_16384  0x000000E0  // Prescale div. ratio 16384
+#define AUX_TIMER_PRESCALE_DIV_32768  0x000000F0  // Prescale div. ratio 32768
 
 //*****************************************************************************
 //
@@ -236,14 +190,14 @@ extern "C"
 //! - \ref AUX_TIMER_CFG_ONE_SHOT_EDGE_COUNT : One-shot edge counter.
 //! - \ref AUX_TIMER_CFG_PERIODIC_EDGE_COUNT : Periodic edge counter.
 //!
-//! When configured as timer, the counter is incremented based on the aux clock
+//! When configured as timer, the counter is incremented based on the AUX clock
 //! after the prescaler. The prescale division ratio is set
 //! using \ref AUXTimerPrescaleSet().
 //!
 //! When configured as an edge counter the counter is incremented only on edges
 //! of the selected event.
 //! The polarity of the event is selected by:
-//! - \ref AUX_TIMER_CFG_RISING_EDGE  : risging edge trigger
+//! - \ref AUX_TIMER_CFG_RISING_EDGE  : rising edge trigger
 //! - \ref AUX_TIMER_CFG_FALLING_EDGE : falling edge trigger
 //!
 //! The event source is selected as one of the following defines:
@@ -255,6 +209,11 @@ extern "C"
 //! - \ref AUX_TIMER_CFG_TICK_SRC_TIMER1_EVENT
 //! - \ref AUX_TIMER_CFG_TICK_SRC_SMPH_RELEASE
 //! - \ref AUX_TIMER_CFG_TICK_SRC_ADC_DONE
+//! - \ref AUX_TIMER_CFG_TICK_SRC_RTC_4KHZ
+//! - \ref AUX_TIMER_CFG_TICK_SRC_OBSMUX0
+//! - \ref AUX_TIMER_CFG_TICK_SRC_OBSMUX1
+//! - \ref AUX_TIMER_CFG_TICK_SRC_AON_SW
+//! - \ref AUX_TIMER_CFG_TICK_SRC_AON_PROG_WU
 //! - \ref AUX_TIMER_CFG_TICK_SRC_AIO0
 //! - \ref AUX_TIMER_CFG_TICK_SRC_AIO1
 //! - \ref AUX_TIMER_CFG_TICK_SRC_AIO2
@@ -412,7 +371,7 @@ AUXTimerTargetValGet(uint32_t ui32Timer)
 //! When configured as timer, the counter is incremented based on the AUX clock
 //! after the prescaler.
 //!
-//! \note Setting prescale value is \b not adviced when the timer is running.
+//! \note Setting prescale value is \b not advised when the timer is running.
 //!
 //! \note When timer is used as an edge counter the prescaler should be
 //!       set to \ref AUX_TIMER_PRESCALE_DIV_1.
@@ -447,7 +406,7 @@ extern void AUXTimerPrescaleSet(uint32_t ui32Timer, uint32_t ui32PrescaleDiv);
 //
 //! \brief Get AUX timer prescale value.
 //!
-//! When configured as timer, the counter is incremented based on the aux clock
+//! When configured as timer, the counter is incremented based on the AUX clock
 //! after the prescaler. This call returns the setting of the prescale divide
 //! ratio for the specified timer.
 //!
@@ -482,7 +441,7 @@ extern uint32_t AUXTimerPrescaleGet(uint32_t ui32Timer);
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_AUXTimerConfigure
         #undef  AUXTimerConfigure
@@ -520,6 +479,7 @@ extern uint32_t AUXTimerPrescaleGet(uint32_t ui32Timer);
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

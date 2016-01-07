@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_event.c
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-06-09 12:16:53 +0200 (Tue, 09 Jun 2015)
+*  Revision:       43826
 *
 *  Description:    Driver for the AON Event fabric.
 *
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  AONEventMcuWakeUpSet
     #define AONEventMcuWakeUpSet            NOROM_AONEventMcuWakeUpSet
     #undef  AONEventMcuWakeUpGet
@@ -76,7 +76,7 @@ AONEventMcuWakeUpSet(uint32_t ui32MCUWUEvent, uint32_t ui32EventSrc)
            (ui32MCUWUEvent == AON_EVENT_MCU_WU1) ||
            (ui32MCUWUEvent == AON_EVENT_MCU_WU2) ||
            (ui32MCUWUEvent == AON_EVENT_MCU_WU3));
-    ASSERT(ui32EventSrc <= AON_EVENT_NULL);
+    ASSERT(ui32EventSrc <= AON_EVENT_NONE);
 
     ui32Ctrl = HWREG(AON_EVENT_BASE + AON_EVENT_O_MCUWUSEL);
 
@@ -168,7 +168,7 @@ AONEventAuxWakeUpSet(uint32_t ui32AUXWUEvent, uint32_t ui32EventSrc)
     ASSERT((ui32AUXWUEvent == AON_EVENT_AUX_WU0) ||
            (ui32AUXWUEvent == AON_EVENT_AUX_WU1) ||
            (ui32AUXWUEvent == AON_EVENT_AUX_WU2));
-    ASSERT(ui32EventSrc <= AON_EVENT_NULL);
+    ASSERT(ui32EventSrc <= AON_EVENT_NONE);
 
     ui32Ctrl = HWREG(AON_EVENT_BASE + AON_EVENT_O_AUXWUSEL);
 
@@ -250,7 +250,7 @@ AONEventMcuSet(uint32_t ui32MCUEvent, uint32_t ui32EventSrc)
     ASSERT((ui32MCUEvent == AON_EVENT_MCU_EVENT0) ||
            (ui32MCUEvent == AON_EVENT_MCU_EVENT1) ||
            (ui32MCUEvent == AON_EVENT_MCU_EVENT2));
-    ASSERT(ui32EventSrc <= AON_EVENT_NULL);
+    ASSERT(ui32EventSrc <= AON_EVENT_NONE);
 
     ui32Ctrl = HWREG(AON_EVENT_BASE + AON_EVENT_O_EVTOMCUSEL);
 
@@ -310,7 +310,7 @@ AONEventMcuGet(uint32_t ui32MCUEvent)
     }
 
     //
-    // Should never get to this statement, but supress warning.
+    // Should never get to this statement, but suppress warning.
     //
     ASSERT(0);
     return(0);

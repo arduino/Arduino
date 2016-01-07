@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aux_tdc.h
-*  Revised:        2015-01-14 12:12:44 +0100 (on, 14 jan 2015)
-*  Revision:       42373
+*  Revised:        2015-11-03 09:54:47 +0100 (Tue, 03 Nov 2015)
+*  Revision:       44933
 *
 *  Description:    Defines and prototypes for the AUX Time-to-Digital Converter
 *
@@ -38,6 +38,8 @@
 
 //*****************************************************************************
 //
+//! \addtogroup aux_group
+//! @{
 //! \addtogroup auxtdc_api
 //! @{
 //
@@ -77,10 +79,8 @@ extern "C"
 // - Globally: Define DRIVERLIB_NOROM at project level
 // - Per function: Use prefix "NOROM_" when calling the function
 //
-// Do not define DRIVERLIB_GENERATE_ROM!
-//
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #define AUXTDCConfigSet                 NOROM_AUXTDCConfigSet
     #define AUXTDCMeasurementDone           NOROM_AUXTDCMeasurementDone
 #endif
@@ -108,106 +108,113 @@ extern "C"
 // Defines for possible states of the TDC internal state machine.
 //
 //*****************************************************************************
-#define AUXTDC_WAIT_START         AUX_TDC_STAT_STATE_WAIT_START
-#define AUXTDC_WAIT_START_CNTEN   AUX_TDC_STAT_STATE_WAIT_START_STOP_CNT_EN
-#define AUXTDC_IDLE               AUX_TDC_STAT_STATE_IDLE
-#define AUXTDC_CLRCNT             AUX_TDC_STAT_STATE_CLR_CNT
-#define AUXTDC_WAIT_STOP          AUX_TDC_STAT_STATE_WAIT_STOP
-#define AUXTDC_WAIT_STOP_CNTDOWN  AUX_TDC_STAT_STATE_WAIT_STOP_CNTDWN
-#define AUXTDC_GETRESULTS         AUX_TDC_STAT_STATE_GET_RESULT
-#define AUXTDC_POR                AUX_TDC_STAT_STATE_POR
-#define AUXTDC_WAIT_CLRCNT_DONE   AUX_TDC_STAT_STATE_WAIT_CLR_CNT_DONE
-#define AUXTDC_START_FALL         AUX_TDC_STAT_STATE_START_FALL
-#define AUXTDC_FORCE_STOP         AUX_TDC_STAT_STATE_FORCE_STOP
+#define AUXTDC_WAIT_START         (AUX_TDC_STAT_STATE_WAIT_START)
+#define AUXTDC_WAIT_START_CNTEN   (AUX_TDC_STAT_STATE_WAIT_START_STOP_CNT_EN)
+#define AUXTDC_IDLE               (AUX_TDC_STAT_STATE_IDLE)
+#define AUXTDC_CLRCNT             (AUX_TDC_STAT_STATE_CLR_CNT)
+#define AUXTDC_WAIT_STOP          (AUX_TDC_STAT_STATE_WAIT_STOP)
+#define AUXTDC_WAIT_STOP_CNTDOWN  (AUX_TDC_STAT_STATE_WAIT_STOP_CNTDWN)
+#define AUXTDC_GETRESULTS         (AUX_TDC_STAT_STATE_GET_RESULT)
+#define AUXTDC_POR                (AUX_TDC_STAT_STATE_POR)
+#define AUXTDC_WAIT_CLRCNT_DONE   (AUX_TDC_STAT_STATE_WAIT_CLR_CNT_DONE)
+#define AUXTDC_START_FALL         (AUX_TDC_STAT_STATE_START_FALL)
+#define AUXTDC_FORCE_STOP         (AUX_TDC_STAT_STATE_FORCE_STOP)
 
 //*****************************************************************************
 //
-// Defines for controlling the AUX TDC. Values can be passed to AUXTDCConfig().
+// Defines for controlling the AUX TDC. Values can be passed to AUXTDCConfigSet().
 //
 //*****************************************************************************
-#define AUXTDC_STOPPOL_RIS      0x00000000  // Rising edge polarity for stop
-                                            // event
-#define AUXTDC_STOPPOL_FALL     0x00002000  // Falling edge polarity for stop
-                                            // event
-#define AUXTDC_STOP_AON_WUC     0x00000000
-#define AUXTDC_STOP_CMP_A       0x00000100
-#define AUXTDC_STOP_CMP_B       0x00000200
-#define AUXTDC_STOP_CS_RESET    0x00000300
-#define AUXTDC_STOP_TIMER0      0x00000400
-#define AUXTDC_STOP_TIMER1      0x00000500
-#define AUXTDC_STOP_ADC_DONE    0x00000700
-#define AUXTDC_STOP_AIO0        0x00000D00
-#define AUXTDC_STOP_AIO1        0x00000E00
-#define AUXTDC_STOP_AIO2        0x00000F00
-#define AUXTDC_STOP_AIO3        0x00001000
-#define AUXTDC_STOP_AIO4        0x00001100
-#define AUXTDC_STOP_AIO5        0x00001200
-#define AUXTDC_STOP_AIO6        0x00001300
-#define AUXTDC_STOP_AIO7        0x00001400
-#define AUXTDC_STOP_AIO8        0x00001500
-#define AUXTDC_STOP_AIO9        0x00001600
-#define AUXTDC_STOP_AIO10       0x00001700
-#define AUXTDC_STOP_AIO11       0x00001800
-#define AUXTDC_STOP_AIO12       0x00001900
-#define AUXTDC_STOP_AIO13       0x00001A00
-#define AUXTDC_STOP_AIO14       0x00001B00
-#define AUXTDC_STOP_AIO15       0x00001C00
-#define AUXTDC_STOP_ACLK        0x00001D00
-#define AUXTDC_STOP_MCU_EVT     0x00001E00
-#define AUXTDC_STOP_PRESCALER   0x00001F00
+#define AUXTDC_STOPPOL_RIS                (AUX_TDC_TRIGSRC_STOP_POL_HIGH) // Rising edge polarity for stop event
+#define AUXTDC_STOPPOL_FALL               (AUX_TDC_TRIGSRC_STOP_POL_LOW)  // Falling edge polarity for stop event
 
-#define AUXTDC_STARTPOL_RIS     0x00000000  // Rising edge polarity for start
-                                            // event
-#define AUXTDC_STARTPOL_FALL    0x00002000  // Falling edge polarity for start
-                                            // event
-#define AUXTDC_START_AON_WUC    0x00000000
-#define AUXTDC_START_CMP_A      0x00000001
-#define AUXTDC_START_CMP_B      0x00000002
-#define AUXTDC_START_CS_RESET   0x00000003
-#define AUXTDC_START_TIMER0     0x00000004
-#define AUXTDC_START_TIMER1     0x00000005
-#define AUXTDC_START_ADC_DONE   0x00000007
-#define AUXTDC_START_AIO0       0x0000000D
-#define AUXTDC_START_AIO1       0x0000000E
-#define AUXTDC_START_AIO2       0x0000000F
-#define AUXTDC_START_AIO3       0x00000010
-#define AUXTDC_START_AIO4       0x00000011
-#define AUXTDC_START_AIO5       0x00000012
-#define AUXTDC_START_AIO6       0x00000013
-#define AUXTDC_START_AIO7       0x00000014
-#define AUXTDC_START_AIO8       0x00000015
-#define AUXTDC_START_AIO9       0x00000016
-#define AUXTDC_START_AIO10      0x00000017
-#define AUXTDC_START_AIO11      0x00000018
-#define AUXTDC_START_AIO12      0x00000019
-#define AUXTDC_START_AIO13      0x0000001A
-#define AUXTDC_START_AIO14      0x0000001B
-#define AUXTDC_START_AIO15      0x0000001C
-#define AUXTDC_START_ACLK       0x0000001D
-#define AUXTDC_START_MCU_EVT    0x0000001E
-#define AUXTDC_START_PRESCALER  0x0000001F
+#define AUXTDC_STOP_AON_RTC_CH2           (AUX_TDC_TRIGSRC_STOP_SRC_AON_RTC_CH2)
+#define AUXTDC_STOP_AUX_COMPA             (AUX_TDC_TRIGSRC_STOP_SRC_AUX_COMPA)
+#define AUXTDC_STOP_AUX_COMPB             (AUX_TDC_TRIGSRC_STOP_SRC_AUX_COMPB)
+#define AUXTDC_STOP_ISRC_RESET            (AUX_TDC_TRIGSRC_STOP_SRC_ISRC_RESET)
+#define AUXTDC_STOP_TIMER0_EV             (AUX_TDC_TRIGSRC_STOP_SRC_TIMER0_EV)
+#define AUXTDC_STOP_TIMER1_EV             (AUX_TDC_TRIGSRC_STOP_SRC_TIMER1_EV)
+#define AUXTDC_STOP_SMPH_AUTOTAKE_DONE    (AUX_TDC_TRIGSRC_STOP_SRC_SMPH_AUTOTAKE_DONE)
+#define AUXTDC_STOP_ADC_DONE              (AUX_TDC_TRIGSRC_STOP_SRC_ADC_DONE)
+#define AUXTDC_STOP_ADC_FIFO_ALMOST_FULL  (AUX_TDC_TRIGSRC_STOP_SRC_ADC_FIFO_ALMOST_FULL)
+#define AUXTDC_STOP_OBSMUX0               (AUX_TDC_TRIGSRC_STOP_SRC_OBSMUX0)
+#define AUXTDC_STOP_OBSMUX1               (AUX_TDC_TRIGSRC_STOP_SRC_OBSMUX1)
+#define AUXTDC_STOP_AON_SW                (AUX_TDC_TRIGSRC_STOP_SRC_AON_SW)
+#define AUXTDC_STOP_AON_PROG_WU           (AUX_TDC_TRIGSRC_STOP_SRC_AON_PROG_WU)
+#define AUXTDC_STOP_AUXIO0                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO0)
+#define AUXTDC_STOP_AUXIO1                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO1)
+#define AUXTDC_STOP_AUXIO2                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO2)
+#define AUXTDC_STOP_AUXIO3                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO3)
+#define AUXTDC_STOP_AUXIO4                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO4)
+#define AUXTDC_STOP_AUXIO5                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO5)
+#define AUXTDC_STOP_AUXIO6                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO6)
+#define AUXTDC_STOP_AUXIO7                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO7)
+#define AUXTDC_STOP_AUXIO8                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO8)
+#define AUXTDC_STOP_AUXIO9                (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO9)
+#define AUXTDC_STOP_AUXIO10               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO10)
+#define AUXTDC_STOP_AUXIO11               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO11)
+#define AUXTDC_STOP_AUXIO12               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO12)
+#define AUXTDC_STOP_AUXIO13               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO13)
+#define AUXTDC_STOP_AUXIO14               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO14)
+#define AUXTDC_STOP_AUXIO15               (AUX_TDC_TRIGSRC_STOP_SRC_AUXIO15)
+#define AUXTDC_STOP_ACLK_REF              (AUX_TDC_TRIGSRC_STOP_SRC_ACLK_REF)
+#define AUXTDC_STOP_MCU_EV                (AUX_TDC_TRIGSRC_STOP_SRC_MCU_EV)
+#define AUXTDC_STOP_TDC_PRE               (AUX_TDC_TRIGSRC_STOP_SRC_TDC_PRE)
+
+#define AUXTDC_STARTPOL_RIS               (AUX_TDC_TRIGSRC_START_POL_HIGH) // Rising edge polarity for start event
+#define AUXTDC_STARTPOL_FALL              (AUX_TDC_TRIGSRC_START_POL_LOW)  // Falling edge polarity for start event
+
+#define AUXTDC_START_AON_RTC_CH2          (AUX_TDC_TRIGSRC_START_SRC_AON_RTC_CH2)
+#define AUXTDC_START_AUX_COMPA            (AUX_TDC_TRIGSRC_START_SRC_AUX_COMPA)
+#define AUXTDC_START_AUX_COMPB            (AUX_TDC_TRIGSRC_START_SRC_AUX_COMPB)
+#define AUXTDC_START_ISRC_RESET           (AUX_TDC_TRIGSRC_START_SRC_ISRC_RESET)
+#define AUXTDC_START_TIMER0_EV            (AUX_TDC_TRIGSRC_START_SRC_TIMER0_EV)
+#define AUXTDC_START_TIMER1_EV            (AUX_TDC_TRIGSRC_START_SRC_TIMER1_EV)
+#define AUXTDC_START_SMPH_AUTOTAKE_DONE   (AUX_TDC_TRIGSRC_START_SRC_SMPH_AUTOTAKE_DONE)
+#define AUXTDC_START_ADC_DONE             (AUX_TDC_TRIGSRC_START_SRC_ADC_DONE)
+#define AUXTDC_START_ADC_FIFO_ALMOST_FULL (AUX_TDC_TRIGSRC_START_SRC_ADC_FIFO_ALMOST_FULL)
+#define AUXTDC_START_OBSMUX0              (AUX_TDC_TRIGSRC_START_SRC_OBSMUX0)
+#define AUXTDC_START_OBSMUX1              (AUX_TDC_TRIGSRC_START_SRC_OBSMUX1)
+#define AUXTDC_START_AON_SW               (AUX_TDC_TRIGSRC_START_SRC_AON_SW)
+#define AUXTDC_START_AON_PROG_WU          (AUX_TDC_TRIGSRC_START_SRC_AON_PROG_WU)
+#define AUXTDC_START_AUXIO0               (AUX_TDC_TRIGSRC_START_SRC_AUXIO0)
+#define AUXTDC_START_AUXIO1               (AUX_TDC_TRIGSRC_START_SRC_AUXIO1)
+#define AUXTDC_START_AUXIO2               (AUX_TDC_TRIGSRC_START_SRC_AUXIO2)
+#define AUXTDC_START_AUXIO3               (AUX_TDC_TRIGSRC_START_SRC_AUXIO3)
+#define AUXTDC_START_AUXIO4               (AUX_TDC_TRIGSRC_START_SRC_AUXIO4)
+#define AUXTDC_START_AUXIO5               (AUX_TDC_TRIGSRC_START_SRC_AUXIO5)
+#define AUXTDC_START_AUXIO6               (AUX_TDC_TRIGSRC_START_SRC_AUXIO6)
+#define AUXTDC_START_AUXIO7               (AUX_TDC_TRIGSRC_START_SRC_AUXIO7)
+#define AUXTDC_START_AUXIO8               (AUX_TDC_TRIGSRC_START_SRC_AUXIO8)
+#define AUXTDC_START_AUXIO9               (AUX_TDC_TRIGSRC_START_SRC_AUXIO9)
+#define AUXTDC_START_AUXIO10              (AUX_TDC_TRIGSRC_START_SRC_AUXIO10)
+#define AUXTDC_START_AUXIO11              (AUX_TDC_TRIGSRC_START_SRC_AUXIO11)
+#define AUXTDC_START_AUXIO12              (AUX_TDC_TRIGSRC_START_SRC_AUXIO12)
+#define AUXTDC_START_AUXIO13              (AUX_TDC_TRIGSRC_START_SRC_AUXIO13)
+#define AUXTDC_START_AUXIO14              (AUX_TDC_TRIGSRC_START_SRC_AUXIO14)
+#define AUXTDC_START_AUXIO15              (AUX_TDC_TRIGSRC_START_SRC_AUXIO15)
+#define AUXTDC_START_ACLK_REF             (AUX_TDC_TRIGSRC_START_SRC_ACLK_REF)
+#define AUXTDC_START_MCU_EV               (AUX_TDC_TRIGSRC_START_SRC_MCU_EV)
+#define AUXTDC_START_TDC_PRE              (AUX_TDC_TRIGSRC_START_SRC_TDC_PRE)
 
 //*****************************************************************************
 //
 // Defines for the possible saturation values set using AUXTDCLimitSet().
 //
 //*****************************************************************************
-#define AUXTDC_SAT_512          0x00000000
-#define AUXTDC_SAT_1024         0x00000001
-#define AUXTDC_SAT_2048         0x00000002
-#define AUXTDC_SAT_4096         0x00000003
-#define AUXTDC_SAT_8192         0x00000004
-#define AUXTDC_SAT_16384        0x00000005
-#define AUXTDC_SAT_32768        0x00000006
-#define AUXTDC_SAT_65536        0x00000007
-#define AUXTDC_SAT_131072       0x00000008
-#define AUXTDC_SAT_262144       0x00000009
-#define AUXTDC_SAT_524288       0x0000000A
-#define AUXTDC_SAT_1048576      0x0000000B
-#define AUXTDC_SAT_2097152      0x0000000C
-#define AUXTDC_SAT_4194304      0x0000000D
-#define AUXTDC_SAT_8388608      0x0000000E
-#define AUXTDC_SAT_WRAP_AROUND  0x0000000F
+#define AUXTDC_SAT_4096         (AUX_TDC_SATCFG_LIMIT_R12)
+#define AUXTDC_SAT_8192         (AUX_TDC_SATCFG_LIMIT_R13)
+#define AUXTDC_SAT_16384        (AUX_TDC_SATCFG_LIMIT_R14)
+#define AUXTDC_SAT_32768        (AUX_TDC_SATCFG_LIMIT_R15)
+#define AUXTDC_SAT_65536        (AUX_TDC_SATCFG_LIMIT_R16)
+#define AUXTDC_SAT_131072       (AUX_TDC_SATCFG_LIMIT_R17)
+#define AUXTDC_SAT_262144       (AUX_TDC_SATCFG_LIMIT_R18)
+#define AUXTDC_SAT_524288       (AUX_TDC_SATCFG_LIMIT_R19)
+#define AUXTDC_SAT_1048576      (AUX_TDC_SATCFG_LIMIT_R20)
+#define AUXTDC_SAT_2097152      (AUX_TDC_SATCFG_LIMIT_R21)
+#define AUXTDC_SAT_4194304      (AUX_TDC_SATCFG_LIMIT_R22)
+#define AUXTDC_SAT_8388608      (AUX_TDC_SATCFG_LIMIT_R23)
+#define AUXTDC_SAT_16777216     (AUX_TDC_SATCFG_LIMIT_R24)
 #define AUXTDC_NUM_SAT_VALS     16
 
 //*****************************************************************************
@@ -233,7 +240,7 @@ extern "C"
 static bool
 AUXTDCBaseValid(uint32_t ui32Base)
 {
-    return(ui32Base == AUX_TDCIF_BASE);
+    return(ui32Base == AUX_TDC_BASE);
 }
 #endif
 
@@ -283,72 +290,84 @@ AUXTDCStatusGet(uint32_t ui32Base)
 //!
 //! The \c ui32StartCondition must be a bitwise OR of the start event and the
 //! polarity of the start event. The start events are:
-//! - \ref AUXTDC_START_AON_WUC
-//! - \ref AUXTDC_START_CMP_A
-//! - \ref AUXTDC_START_CMP_B
-//! - \ref AUXTDC_START_CS_RESET
-//! - \ref AUXTDC_START_TIMER0
-//! - \ref AUXTDC_START_TIMER1
+//! - \ref AUXTDC_START_AON_RTC_CH2
+//! - \ref AUXTDC_START_AUX_COMPA
+//! - \ref AUXTDC_START_AUX_COMPB
+//! - \ref AUXTDC_START_ISRC_RESET
+//! - \ref AUXTDC_START_TIMER0_EV
+//! - \ref AUXTDC_START_TIMER1_EV
+//! - \ref AUXTDC_START_SMPH_AUTOTAKE_DONE
 //! - \ref AUXTDC_START_ADC_DONE
-//! - \ref AUXTDC_START_AIO0
-//! - \ref AUXTDC_START_AIO1
-//! - \ref AUXTDC_START_AIO2
-//! - \ref AUXTDC_START_AIO3
-//! - \ref AUXTDC_START_AIO4
-//! - \ref AUXTDC_START_AIO5
-//! - \ref AUXTDC_START_AIO6
-//! - \ref AUXTDC_START_AIO7
-//! - \ref AUXTDC_START_AIO8
-//! - \ref AUXTDC_START_AIO9
-//! - \ref AUXTDC_START_AIO10
-//! - \ref AUXTDC_START_AIO11
-//! - \ref AUXTDC_START_AIO12
-//! - \ref AUXTDC_START_AIO13
-//! - \ref AUXTDC_START_AIO14
-//! - \ref AUXTDC_START_AIO15
-//! - \ref AUXTDC_START_ACLK
-//! - \ref AUXTDC_START_MCU_EVT
-//! - \ref AUXTDC_START_PRESCALER
+//! - \ref AUXTDC_START_ADC_FIFO_ALMOST_FULL
+//! - \ref AUXTDC_START_OBSMUX0
+//! - \ref AUXTDC_START_OBSMUX1
+//! - \ref AUXTDC_START_AON_SW
+//! - \ref AUXTDC_START_AON_PROG_WU
+//! - \ref AUXTDC_START_AUXIO0
+//! - \ref AUXTDC_START_AUXIO1
+//! - \ref AUXTDC_START_AUXIO2
+//! - \ref AUXTDC_START_AUXIO3
+//! - \ref AUXTDC_START_AUXIO4
+//! - \ref AUXTDC_START_AUXIO5
+//! - \ref AUXTDC_START_AUXIO6
+//! - \ref AUXTDC_START_AUXIO7
+//! - \ref AUXTDC_START_AUXIO8
+//! - \ref AUXTDC_START_AUXIO9
+//! - \ref AUXTDC_START_AUXIO10
+//! - \ref AUXTDC_START_AUXIO11
+//! - \ref AUXTDC_START_AUXIO12
+//! - \ref AUXTDC_START_AUXIO13
+//! - \ref AUXTDC_START_AUXIO14
+//! - \ref AUXTDC_START_AUXIO15
+//! - \ref AUXTDC_START_ACLK_REF
+//! - \ref AUXTDC_START_MCU_EV
+//! - \ref AUXTDC_START_TDC_PRE
 //!
 //! The polarity of the start event is either rising \ref AUXTDC_STARTPOL_RIS
 //! or falling \ref AUXTDC_STARTPOL_FALL.
 //!
 //! The \c ui32StopCondition must be a bitwise OR of the stop event and the
 //! polarity of the stop event. The stop events are:
-//! - \ref AUXTDC_STOP_AON_WUC
-//! - \ref AUXTDC_STOP_CMP_A
-//! - \ref AUXTDC_STOP_CMP_B
-//! - \ref AUXTDC_STOP_CS_RESET
-//! - \ref AUXTDC_STOP_TIMER0
-//! - \ref AUXTDC_STOP_TIMER1
+//! - \ref AUXTDC_STOP_AON_RTC_CH2
+//! - \ref AUXTDC_STOP_AUX_COMPA
+//! - \ref AUXTDC_STOP_AUX_COMPB
+//! - \ref AUXTDC_STOP_ISRC_RESET
+//! - \ref AUXTDC_STOP_TIMER0_EV
+//! - \ref AUXTDC_STOP_TIMER1_EV
+//! - \ref AUXTDC_STOP_SMPH_AUTOTAKE_DONE
 //! - \ref AUXTDC_STOP_ADC_DONE
-//! - \ref AUXTDC_STOP_AIO0
-//! - \ref AUXTDC_STOP_AIO1
-//! - \ref AUXTDC_STOP_AIO2
-//! - \ref AUXTDC_STOP_AIO3
-//! - \ref AUXTDC_STOP_AIO4
-//! - \ref AUXTDC_STOP_AIO5
-//! - \ref AUXTDC_STOP_AIO6
-//! - \ref AUXTDC_STOP_AIO7
-//! - \ref AUXTDC_STOP_AIO8
-//! - \ref AUXTDC_STOP_AIO9
-//! - \ref AUXTDC_STOP_AIO10
-//! - \ref AUXTDC_STOP_AIO11
-//! - \ref AUXTDC_STOP_AIO12
-//! - \ref AUXTDC_STOP_AIO13
-//! - \ref AUXTDC_STOP_AIO14
-//! - \ref AUXTDC_STOP_AIO15
-//! - \ref AUXTDC_STOP_ACLK
-//! - \ref AUXTDC_STOP_MCU_EVT
-//! - \ref AUXTDC_STOP_PRESCALER
+//! - \ref AUXTDC_STOP_ADC_FIFO_ALMOST_FULL
+//! - \ref AUXTDC_STOP_OBSMUX0
+//! - \ref AUXTDC_STOP_OBSMUX1
+//! - \ref AUXTDC_STOP_AON_SW
+//! - \ref AUXTDC_STOP_AON_PROG_WU
+//! - \ref AUXTDC_STOP_AUXIO0
+//! - \ref AUXTDC_STOP_AUXIO1
+//! - \ref AUXTDC_STOP_AUXIO2
+//! - \ref AUXTDC_STOP_AUXIO3
+//! - \ref AUXTDC_STOP_AUXIO4
+//! - \ref AUXTDC_STOP_AUXIO5
+//! - \ref AUXTDC_STOP_AUXIO6
+//! - \ref AUXTDC_STOP_AUXIO7
+//! - \ref AUXTDC_STOP_AUXIO8
+//! - \ref AUXTDC_STOP_AUXIO9
+//! - \ref AUXTDC_STOP_AUXIO10
+//! - \ref AUXTDC_STOP_AUXIO11
+//! - \ref AUXTDC_STOP_AUXIO12
+//! - \ref AUXTDC_STOP_AUXIO13
+//! - \ref AUXTDC_STOP_AUXIO14
+//! - \ref AUXTDC_STOP_AUXIO15
+//! - \ref AUXTDC_STOP_ACLK_REF
+//! - \ref AUXTDC_STOP_MCU_EV
+//! - \ref AUXTDC_STOP_TDC_PRE
 //!
 //! The polarity of the stop event is either rising \ref AUXTDC_STOPPOL_RIS
 //! or falling \ref AUXTDC_STOPPOL_FALL.
 //!
 //! \note The AUX TDC should only be configured when the AUX TDC is in the Idle
 //! state. To ensure that software does not lock up, it is recommended to
-//! ensure that the AUX TDC is actually in idle when calling AUXTDCConfigSet().
-//! This can be tested using AUXTDCIdle().
+//! ensure that the AUX TDC is actually in idle when calling \ref AUXTDCConfigSet().
+//! This can be tested using \ref AUXTDCIdle().
 //!
 //! \param ui32Base is base address of the AUX TDC.
 //! \param ui32StartCondition is AUX TDC a bitwise OR of a start event and polarity.
@@ -356,7 +375,7 @@ AUXTDCStatusGet(uint32_t ui32Base)
 //!
 //! \return None
 //!
-//! \sa AUXTDCConfigSet(), AUXTDCIdle()
+//! \sa \ref AUXTDCConfigSet(), \ref AUXTDCIdle()
 //
 //*****************************************************************************
 extern void AUXTDCConfigSet(uint32_t ui32Base, uint32_t ui32StartCondition,
@@ -397,17 +416,17 @@ AUXTDCIdle(uint32_t ui32Base)
 //!
 //! This function is used for arming the AUX TDC to begin a measurement as
 //! soon as the start condition is met. There are two run modes:
-//! \ref AUX_TDC_RUNSYNC will wait for a falling event of the start pulse before
-//! starting measurement on next rising edge of start. This guarantees an edge
-//! triggered start and is recommended for frequency measurements. If the
-//! first falling edge is close to the start command it may be missed, but
-//! the TDC shall catch later falling edges and in any case guarantee a
-//! measurement start synchronous to the rising edge of the start event.
-//! The \ref AUX_TDC_RUN is asynchronous start and asynchronous stop mode. Using
-//! this a TDC measurement may start immediately if start is high and hence it
-//! may not give precise edge to edge measurements. This mode is only
-//! recommended when start pulse is guaranteed to arrive at least 7 clock
-//! periods after command.
+//! - \ref AUX_TDC_RUNSYNC will wait for a falling event of the start pulse before
+//!   starting measurement on next rising edge of start. This guarantees an edge
+//!   triggered start and is recommended for frequency measurements. If the
+//!   first falling edge is close to the start command it may be missed, but
+//!   the TDC shall catch later falling edges and in any case guarantee a
+//!   measurement start synchronous to the rising edge of the start event.
+//! - The \ref AUX_TDC_RUN is asynchronous start and asynchronous stop mode. Using
+//!   this a TDC measurement may start immediately if start is high and hence it
+//!   may not give precise edge to edge measurements. This mode is only
+//!   recommended when start pulse is guaranteed to arrive at least 7 clock
+//!   periods after command.
 //!
 //! \note The AUX TDC should be configured and in Idle mode before calling this
 //! function.
@@ -443,13 +462,13 @@ AUXTDCEnable(uint32_t ui32Base, uint32_t ui32RunMode)
 //! This function will force the AUX TDC in Idle mode. The internal state
 //! machine will not go directly to Idle mode, so it is left to the programmer to
 //! ensure that the state machine is in Idle mode before doing any new
-//! configuration. This can be checked using AUXTDCIdle().
+//! configuration. This can be checked using \ref AUXTDCIdle().
 //!
 //! \param ui32Base is the base address of the AUX TDC.
 //!
 //! \return None
 //!
-//! \sa AUXTDCIdle()
+//! \sa \ref AUXTDCIdle()
 //
 //*****************************************************************************
 __STATIC_INLINE void
@@ -472,7 +491,7 @@ AUXTDCIdleForce(uint32_t ui32Base)
 //!
 //! This function can be used to check whether the AUX TDC has finished a
 //! measurement. The AUX TDC may have completed a measurement for two reasons.
-//! Either it finish succesfully \ref AUX_TDC_DONE or it failed due to a timeout
+//! Either it finish successfully \ref AUX_TDC_DONE or it failed due to a timeout
 //! \ref AUX_TDC_TIMEOUT. If the AUX TDC is still measuring it this function
 //! will return \ref AUX_TDC_BUSY.
 //!
@@ -490,7 +509,7 @@ extern uint32_t AUXTDCMeasurementDone(uint32_t ui32Base);
 //
 //! \brief Get the value of the latest measurement.
 //!
-//! This function is used for retrieving the value of the lastest measurement
+//! This function is used for retrieving the value of the latest measurement
 //! performed by the AUX TDC.
 //!
 //! \param ui32Base is the base address of the AUX TDC.
@@ -534,11 +553,14 @@ AUXTDCMeasurementGet(uint32_t ui32Base)
 //! - \ref AUXTDC_SAT_2097152
 //! - \ref AUXTDC_SAT_4194304
 //! - \ref AUXTDC_SAT_8388608
-//! - \ref AUXTDC_SAT_WRAP_AROUND
+//! - \ref AUXTDC_SAT_16777216 (default)
 //!
 //! \return None
 //!
-//! \sa AUXTDCLimitGet()
+//! \note The actual value of the accumulation register might increase slightly beyond
+//! the saturation value before the saturation takes effect.
+//!
+//! \sa \ref AUXTDCLimitGet()
 //
 //*****************************************************************************
 __STATIC_INLINE void
@@ -578,9 +600,9 @@ AUXTDCLimitSet(uint32_t ui32Base, uint32_t ui32Limit)
 //! - \ref AUXTDC_SAT_2097152
 //! - \ref AUXTDC_SAT_4194304
 //! - \ref AUXTDC_SAT_8388608
-//! - \ref AUXTDC_SAT_WRAP_AROUND
+//! - \ref AUXTDC_SAT_16777216
 //!
-//! \sa AUXTDCLimitSet()
+//! \sa \ref AUXTDCLimitSet()
 //
 //*****************************************************************************
 __STATIC_INLINE uint32_t
@@ -601,21 +623,21 @@ AUXTDCLimitGet(uint32_t ui32Base)
 //
 //! \brief Enables the counter if possible.
 //!
-//! This function can be used to ensable the AUX TDC stop/compare event counter.
+//! This function can be used to enable the AUX TDC stop/compare event counter.
 //! The counter can be used to measure multiple periods of a clock signal.
 //! For each stop/compare event the counter will be decremented by one and
 //! the measurement will continue running until the value of the counter
 //! reaches 0. The current value of the counter can be read using
-//! AUXTDCCounterGet(). The reset value of the counter can be set using
-//! AUXTDCCounterSet().
+//! \ref AUXTDCCounterGet(). The reset value of the counter can be set using
+//! \ref AUXTDCCounterSet().
 //!
 //! \param ui32Base is base address of the AUX TDC.
 //!
-//! \return Returns \c true if the counter was succesfully enabled. If the
+//! \return Returns \c true if the counter was successfully enabled. If the
 //! AUX TDC is not in Idle mode, the counter can not be enabled, and the
 //! return value will be \c false.
 //!
-//! \sa AUXTDCCounterGet(), AUXTDCCounterSet()
+//! \sa \ref AUXTDCCounterGet(), \ref AUXTDCCounterSet()
 //
 //*****************************************************************************
 __STATIC_INLINE bool
@@ -642,7 +664,7 @@ AUXTDCCounterEnable(uint32_t ui32Base)
     HWREG(ui32Base + AUX_TDC_O_TRIGCNTCFG) = AUX_TDC_TRIGCNTCFG_EN;
 
     //
-    // Counter succesfully enabled.
+    // Counter successfully enabled.
     //
     return true;
 }
@@ -655,11 +677,11 @@ AUXTDCCounterEnable(uint32_t ui32Base)
 //!
 //! \param ui32Base is base address of the AUX TDC.
 //!
-//! \return Returns \c true if the counter was succesfully disabled. If the
+//! \return Returns \c true if the counter was successfully disabled. If the
 //! AUX TDC is not in Idle mode, the counter can not be disabled, and the
 //! return value will be \c false.
 //!
-//! \sa AUXTDCCounterEnable() for more information on how to use the counter.
+//! \sa \ref AUXTDCCounterEnable() for more information on how to use the counter.
 //
 //*****************************************************************************
 __STATIC_INLINE bool
@@ -686,7 +708,7 @@ AUXTDCCounterDisable(uint32_t ui32Base)
     HWREG(ui32Base + AUX_TDC_O_TRIGCNTCFG) = 0;
 
     //
-    // Counter succesfull disabled.
+    // Counter successfully disabled.
     //
     return true;
 }
@@ -704,11 +726,11 @@ AUXTDCCounterDisable(uint32_t ui32Base)
 //! \param ui32Events is the number of compare/stop events to load into the
 //! counter.
 //!
-//! \return Returns \c true if the counter was succesfully updated. If the
+//! \return Returns \c true if the counter was successfully updated. If the
 //! AUX TDC is not in Idle mode, the counter can not be updated, and the
 //! return value will be \c false.
 //!
-//! \sa AUXTDCCounterEnable()
+//! \sa \ref AUXTDCCounterEnable()
 //
 //*****************************************************************************
 __STATIC_INLINE bool
@@ -735,7 +757,7 @@ AUXTDCCounterSet(uint32_t ui32Base, uint32_t ui32Events)
     HWREG(ui32Base + AUX_TDC_O_TRIGCNTLOAD) = ui32Events;
 
     //
-    // Counter succesfully updated.
+    // Counter successfully updated.
     //
     return true;
 }
@@ -748,14 +770,14 @@ AUXTDCCounterSet(uint32_t ui32Base, uint32_t ui32Events)
 //! This function returns the current value of compare/stop events before
 //! a measurement is registered. This value is decremented by one for each
 //! registered compare/stop event and will always be less than or equal the
-//! reset value of the counter set using AUXTDCCounterSet().
+//! reset value of the counter set using \ref AUXTDCCounterSet().
 //!
 //! \param ui32Base is base address of the AUX TDC.
 //!
 //! \return Returns the current value of compare/stop events ignored before a
 //! measurement is performed.
 //!
-//! \sa AUXTDCCounterEnable().
+//! \sa \ref AUXTDCCounterEnable().
 //
 //*****************************************************************************
 __STATIC_INLINE uint32_t
@@ -778,7 +800,7 @@ AUXTDCCounterGet(uint32_t ui32Base)
 // Redirect to implementation in ROM when available.
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_NOROM
+#if !defined(DRIVERLIB_NOROM) && !defined(DOXYGEN)
     #include <driverlib/rom.h>
     #ifdef ROM_AUXTDCConfigSet
         #undef  AUXTDCConfigSet
@@ -804,6 +826,7 @@ AUXTDCCounterGet(uint32_t ui32Base)
 //*****************************************************************************
 //
 //! Close the Doxygen group.
+//! @}
 //! @}
 //
 //*****************************************************************************

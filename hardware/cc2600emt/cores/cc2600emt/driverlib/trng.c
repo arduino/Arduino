@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       trng.c
-*  Revised:        2015-02-10 22:32:28 +0100 (ti, 10 feb 2015)
+*  Revised:        2015-02-10 22:32:28 +0100 (Tue, 10 Feb 2015)
 *  Revision:       42645
 *
 *  Description:    Driver for the TRNG module
@@ -44,7 +44,7 @@
 // This section will undo prototype renaming made in the header file
 //
 //*****************************************************************************
-#ifndef DRIVERLIB_GENERATE_ROM
+#if !defined(DOXYGEN)
     #undef  TRNGConfigure
     #define TRNGConfigure                   NOROM_TRNGConfigure
     #undef  TRNGNumberGet
