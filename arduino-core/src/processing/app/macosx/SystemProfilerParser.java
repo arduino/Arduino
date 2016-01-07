@@ -81,7 +81,7 @@ public class SystemProfilerParser {
           String computedDevicePathMinusChar = computedDevicePath.substring(0, computedDevicePath.length() - 1);
           String serialMinusChar = serial.substring(0, serial.length() - 1);
           if (computedDevicePath.equalsIgnoreCase(serial) || computedDevicePathMinusChar.equalsIgnoreCase(serialMinusChar)) {
-            return (device.get(VID) + "_" + device.get(PID)).toUpperCase() + "_" + device.get(SERIAL_NUMBER);
+            return (device.get(VID) + "_" + device.get(PID)).toUpperCase();
           }
         }
         device = new HashMap<>();
