@@ -184,43 +184,6 @@ public class Platform extends processing.app.Platform {
   }
 
   @Override
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    assert packages != null;
-    if (devicesListOutput == null) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
-
-    try {
-      String vidPid = new ListComPortsParser().extractVIDAndPID(devicesListOutput, serial);
-
-      if (vidPid == null) {
-        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-      }
-
-      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
-    } catch (IOException e) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
-  }
-
-  @Override
-  public String preListAllCandidateDevices() {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    try {
-      String listComPorts = BaseNoGui.getContentFile("hardware/tools/listComPorts.exe").getCanonicalPath();
-
-      CommandLine toDevicePath = CommandLine.parse(listComPorts);
-      executor.execute(toDevicePath);
-      return new String(baos.toByteArray());
-    } catch (Throwable e) {
-      return super.preListAllCandidateDevices();
-    }
-  }
-
-  @Override
   public void fixPrefsFilePermissions(File prefsFile) throws IOException {
     //noop
   }

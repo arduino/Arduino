@@ -59,8 +59,9 @@ public class ListComPortsParser {
         String vidPidPart = lineParts[lineParts.length - 1];
         Matcher vidMatcher = vidRegExp.matcher(vidPidPart);
         Matcher pidMatcher = pidRegExp.matcher(vidPidPart);
+        String iSerial = vidPidPart.substring(vidPidPart.lastIndexOf("\\")+1);
         if (vidMatcher.find() && pidMatcher.find()) {
-          return ("0x" + vidMatcher.group(1) + "_0x" + pidMatcher.group(1)).toUpperCase();
+          return ("0x" + vidMatcher.group(1) + "_0x" + pidMatcher.group(1)).toUpperCase() + "_" + iSerial;
         }
       }
     }
