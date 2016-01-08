@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_ssi_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-16 12:30:01 +0100 (Mon, 16 Nov 2015)
+*  Revision:       45078
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -83,8 +83,9 @@
 // Serial clock rate:
 // This is used to generate the transmit and receive bit rate of the SSI. The
 // bit rate is
-// (SSI&#39;s clock frequency)/((SCR+1)*CPSR.CPSDVSR).
+// (SSI's clock frequency)/((SCR+1)*CPSR.CPSDVSR).
 // SCR is a value from 0-255.
+#define SSI_CR0_SCR_W                                                        8
 #define SSI_CR0_SCR_M                                               0x0000FF00
 #define SSI_CR0_SCR_S                                                        8
 
@@ -97,9 +98,9 @@
 // permitting a clock transition before the first data capture edge.
 // ENUMs:
 // 2ND_CLK_EDGE             Data is captured on the second clock edge
-// transition.
+//                          transition.
 // 1ST_CLK_EDGE             Data is captured on the first clock edge
-// transition.
+//                          transition.
 #define SSI_CR0_SPH                                                 0x00000080
 #define SSI_CR0_SPH_BITN                                                     7
 #define SSI_CR0_SPH_M                                               0x00000080
@@ -112,9 +113,10 @@
 // CLKOUT polarity (Motorola SPI frame format only)
 // ENUMs:
 // HIGH                     SSI produces a steady state HIGH value on the
-// CLKOUT pin when data is not being transferred.
+//                          CLKOUT pin when data is not being transferred.
 // LOW                      SSI produces a steady state LOW value on the
-// CLKOUT pin when data is not being transferred.
+//                          CLKOUT pin when data is
+//                          not being transferred.
 #define SSI_CR0_SPO                                                 0x00000040
 #define SSI_CR0_SPO_BITN                                                     6
 #define SSI_CR0_SPO_M                                               0x00000040
@@ -127,11 +129,12 @@
 // Frame format.
 // The supported frame formats are Motorola SPI, TI synchronous serial and
 // National Microwire.
-// Value 0&#39;b11 is reserved and shall not be used.
+// Value 0'b11 is reserved and shall not be used.
 // ENUMs:
 // NATIONAL_MICROWIRE       National Microwire frame format
 // TI_SYNC_SERIAL           TI synchronous serial frame format
 // MOTOROLA_SPI             Motorola SPI frame format
+#define SSI_CR0_FRF_W                                                        2
 #define SSI_CR0_FRF_M                                               0x00000030
 #define SSI_CR0_FRF_S                                                        4
 #define SSI_CR0_FRF_NATIONAL_MICROWIRE                              0x00000020
@@ -141,7 +144,7 @@
 // Field:   [3:0] DSS
 //
 // Data Size Select.
-// Values 0b0000, 0b0001, 0b0010 and 0b0011 are reserved and shall not be used.
+// Values 0b0000, 0b0001, 0b0010 are reserved and shall not be used.
 // ENUMs:
 // 16_BIT                   16-bit data
 // 15_BIT                   15-bit data
@@ -156,6 +159,7 @@
 // 6_BIT                    6-bit data
 // 5_BIT                    5-bit data
 // 4_BIT                    4-bit data
+#define SSI_CR0_DSS_W                                                        4
 #define SSI_CR0_DSS_M                                               0x0000000F
 #define SSI_CR0_DSS_S                                                        0
 #define SSI_CR0_DSS_16_BIT                                          0x0000000F
@@ -245,6 +249,7 @@
 // right-justified when SSI is programmed for a data size that is less than 16
 // bits (CR0.DSS != 0b1111). Unused bits at the top are ignored by transmit
 // logic. The receive logic automatically right-justifies.
+#define SSI_DR_DATA_W                                                       16
 #define SSI_DR_DATA_M                                               0x0000FFFF
 #define SSI_DR_DATA_S                                                        0
 
@@ -323,6 +328,7 @@
 // (2-254). The least significant bit of the programmed number is hard-coded to
 // zero. If an odd number is written to this register, data read back from
 // this register has the least significant bit as zero.
+#define SSI_CPSR_CPSDVSR_W                                                   8
 #define SSI_CPSR_CPSDVSR_M                                          0x000000FF
 #define SSI_CPSR_CPSDVSR_S                                                   0
 

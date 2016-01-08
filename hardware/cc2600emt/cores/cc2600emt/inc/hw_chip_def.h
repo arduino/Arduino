@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_chip_def.h
-*  Revised:        2015-02-16 09:52:27 +0100 (ma, 16 feb 2015)
-*  Revision:       42737
+*  Revised:        2015-05-12 17:41:19 +0200 (Tue, 12 May 2015)
+*  Revision:       43491
 *
 *  Description:    Defines for device properties.
 *
@@ -178,8 +178,6 @@ extern "C"
         #error "Specified chip hardware revision does not match DriverLib release"
     #endif
 #endif
-
-#define CC_CHIP_OPTION_OTP 1
 
 //*****************************************************************************
 //

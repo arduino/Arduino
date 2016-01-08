@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_3_refsys_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -46,16 +46,16 @@
 // Analog Test Control
 #define ADI_3_REFSYS_O_SPARE0                                       0x00000001
 
-// Reference System Control 0
+// Internal
 #define ADI_3_REFSYS_O_REFSYSCTL0                                   0x00000002
 
-// Reference System Control 1
+// Internal
 #define ADI_3_REFSYS_O_REFSYSCTL1                                   0x00000003
 
-// Reference System Control 2
+// Internal
 #define ADI_3_REFSYS_O_REFSYSCTL2                                   0x00000004
 
-// Reference System Control 3
+// Internal
 #define ADI_3_REFSYS_O_REFSYSCTL3                                   0x00000005
 
 // DCDC Control 0
@@ -70,10 +70,10 @@
 // DCDC Control 3
 #define ADI_3_REFSYS_O_DCDCCTL3                                     0x00000009
 
-// DCDC Control 5
+// Internal
 #define ADI_3_REFSYS_O_DCDCCTL4                                     0x0000000A
 
-// DCDC Control 6
+// Internal
 #define ADI_3_REFSYS_O_DCDCCTL5                                     0x0000000B
 
 //*****************************************************************************
@@ -85,6 +85,7 @@
 //
 // Software should not rely on the value of a reserved. Writing any other value
 // than the reset value may result in undefined behavior.
+#define ADI_3_REFSYS_SPARE0_SPARE0_W                                         8
 #define ADI_3_REFSYS_SPARE0_SPARE0_M                                0x000000FF
 #define ADI_3_REFSYS_SPARE0_SPARE0_S                                         0
 
@@ -106,6 +107,7 @@
 // IVREF4U                  Internal. Only to be used through TI provided API.
 // IPTAT2U                  Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL0_TESTCTL_W                                    8
 #define ADI_3_REFSYS_REFSYSCTL0_TESTCTL_M                           0x000000FF
 #define ADI_3_REFSYS_REFSYSCTL0_TESTCTL_S                                    0
 #define ADI_3_REFSYS_REFSYSCTL0_TESTCTL_BMCOMPOUT                   0x00000080
@@ -159,6 +161,7 @@
 // POS_6                    Internal. Only to be used through TI provided API.
 // POS_5                    Internal. Only to be used through TI provided API.
 // POS_4                    Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL1_TRIM_VDDS_BOD_W                              5
 #define ADI_3_REFSYS_REFSYSCTL1_TRIM_VDDS_BOD_M                     0x000000F8
 #define ADI_3_REFSYS_REFSYSCTL1_TRIM_VDDS_BOD_S                              3
 #define ADI_3_REFSYS_REFSYSCTL1_TRIM_VDDS_BOD_POS_27                0x000000F8
@@ -214,6 +217,7 @@
 // IPTAT1U                  Internal. Only to be used through TI provided API.
 // BMCOMPIN                 Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL1_TESTCTL_W                                    2
 #define ADI_3_REFSYS_REFSYSCTL1_TESTCTL_M                           0x00000003
 #define ADI_3_REFSYS_REFSYSCTL1_TESTCTL_S                                    0
 #define ADI_3_REFSYS_REFSYSCTL1_TESTCTL_IPTAT1U                     0x00000002
@@ -228,12 +232,14 @@
 // Field:   [7:4] TRIM_VREF
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL2_TRIM_VREF_W                                  4
 #define ADI_3_REFSYS_REFSYSCTL2_TRIM_VREF_M                         0x000000F0
 #define ADI_3_REFSYS_REFSYSCTL2_TRIM_VREF_S                                  4
 
 // Field:   [1:0] TRIM_TSENSE
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL2_TRIM_TSENSE_W                                2
 #define ADI_3_REFSYS_REFSYSCTL2_TRIM_TSENSE_M                       0x00000003
 #define ADI_3_REFSYS_REFSYSCTL2_TRIM_TSENSE_S                                0
 
@@ -266,6 +272,7 @@
 // Field:   [5:0] TRIM_VBG
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_REFSYSCTL3_TRIM_VBG_W                                   6
 #define ADI_3_REFSYS_REFSYSCTL3_TRIM_VBG_M                          0x0000003F
 #define ADI_3_REFSYS_REFSYSCTL3_TRIM_VBG_S                                   0
 
@@ -277,11 +284,12 @@
 // Field:   [7:5] GLDO_ISRC
 //
 // Set charge and re-charge current level.
-// 2&#39;s complement encoding.
+// 2's complement encoding.
 //
 // 0x0: Default 11mA.
 // 0x3: Max 15mA.
 // 0x4: Max 5mA
+#define ADI_3_REFSYS_DCDCCTL0_GLDO_ISRC_W                                    3
 #define ADI_3_REFSYS_DCDCCTL0_GLDO_ISRC_M                           0x000000E0
 #define ADI_3_REFSYS_DCDCCTL0_GLDO_ISRC_S                                    5
 
@@ -298,6 +306,7 @@
 // 0x05: Typical voltage after trim voltage 1.71V.
 // 0x15: Max voltage 1.96V.
 // 0x16: Min voltage 1.47V.
+#define ADI_3_REFSYS_DCDCCTL0_VDDR_TRIM_W                                    5
 #define ADI_3_REFSYS_DCDCCTL0_VDDR_TRIM_M                           0x0000001F
 #define ADI_3_REFSYS_DCDCCTL0_VDDR_TRIM_S                                    0
 
@@ -315,6 +324,7 @@
 // 0x1: Increase GLDO bias by 1.3x.
 // 0x2: Increase GLDO bias by 1.6x.
 // 0x3: Decrease GLDO bias by 0.7x.
+#define ADI_3_REFSYS_DCDCCTL1_IPTAT_TRIM_W                                   2
 #define ADI_3_REFSYS_DCDCCTL1_IPTAT_TRIM_M                          0x000000C0
 #define ADI_3_REFSYS_DCDCCTL1_IPTAT_TRIM_S                                   6
 
@@ -342,6 +352,7 @@
 // 0x19: Typical voltage after trim voltage 1.52V.
 // 0x15: Max voltage 1.96V.
 // 0x16: Min voltage 1.47V.
+#define ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_W                              5
 #define ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_M                     0x0000001F
 #define ADI_3_REFSYS_DCDCCTL1_VDDR_TRIM_SLEEP_S                              0
 
@@ -391,9 +402,11 @@
 // ENUMs:
 // VDDROK                   VDDR_OK connected to test bus.
 // IB1U                     1uA bias current connected to test bus.
-// PASSGATE                 Pass transistor gate voltage connected to test bus.
+// PASSGATE                 Pass transistor gate voltage connected to test
+//                          bus.
 // ERRAMP_OUT               Error amp output voltage connected to test bus.
 // NC                       No signal connected to test bus.
+#define ADI_3_REFSYS_DCDCCTL2_TESTSEL_W                                      4
 #define ADI_3_REFSYS_DCDCCTL2_TESTSEL_M                             0x0000000F
 #define ADI_3_REFSYS_DCDCCTL2_TESTSEL_S                                      0
 #define ADI_3_REFSYS_DCDCCTL2_TESTSEL_VDDROK                        0x00000008
@@ -415,18 +428,21 @@
 // Field:   [7:6] DEADTIME_TRIM
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_DCDCCTL4_DEADTIME_TRIM_W                                2
 #define ADI_3_REFSYS_DCDCCTL4_DEADTIME_TRIM_M                       0x000000C0
 #define ADI_3_REFSYS_DCDCCTL4_DEADTIME_TRIM_S                                6
 
 // Field:   [5:3] LOW_EN_SEL
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_DCDCCTL4_LOW_EN_SEL_W                                   3
 #define ADI_3_REFSYS_DCDCCTL4_LOW_EN_SEL_M                          0x00000038
 #define ADI_3_REFSYS_DCDCCTL4_LOW_EN_SEL_S                                   3
 
 // Field:   [2:0] HIGH_EN_SEL
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_DCDCCTL4_HIGH_EN_SEL_W                                  3
 #define ADI_3_REFSYS_DCDCCTL4_HIGH_EN_SEL_M                         0x00000007
 #define ADI_3_REFSYS_DCDCCTL4_HIGH_EN_SEL_S                                  0
 
@@ -467,6 +483,7 @@
 // Field:   [2:0] IPEAK
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_3_REFSYS_DCDCCTL5_IPEAK_W                                        3
 #define ADI_3_REFSYS_DCDCCTL5_IPEAK_M                               0x00000007
 #define ADI_3_REFSYS_DCDCCTL5_IPEAK_S                                        0
 

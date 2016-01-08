@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_cpu_dwt_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -235,6 +235,7 @@
 // BIT26                    Tap at bit 26 of CYCCNT
 // BIT24                    Tap at bit 24 of CYCCNT
 // DIS                      Disabled. No synchronization packets
+#define CPU_DWT_CTRL_SYNCTAP_W                                               2
 #define CPU_DWT_CTRL_SYNCTAP_M                                      0x00000C00
 #define CPU_DWT_CTRL_SYNCTAP_S                                              10
 #define CPU_DWT_CTRL_SYNCTAP_BIT28                                  0x00000C00
@@ -265,6 +266,7 @@
 // to 1 or 1 to 0, the post scalar counter is down-counted when not 0. If 0, it
 // triggers an event for PCSAMPLEENA or CYCEVTENA use. It also reloads with the
 // value from POSTPRESET.
+#define CPU_DWT_CTRL_POSTCNT_W                                               4
 #define CPU_DWT_CTRL_POSTCNT_M                                      0x000001E0
 #define CPU_DWT_CTRL_POSTCNT_S                                               5
 
@@ -275,6 +277,7 @@
 // a count-down value, to be reloaded into POSTCNT each time it reaches 0. For
 // example, a value 1 in this register means an event is formed every other tap
 // change.
+#define CPU_DWT_CTRL_POSTPRESET_W                                            4
 #define CPU_DWT_CTRL_POSTPRESET_M                                   0x0000001E
 #define CPU_DWT_CTRL_POSTPRESET_S                                            1
 
@@ -300,6 +303,7 @@
 // advance in power modes where free-running clock to CPU stops). It wraps
 // around to 0 on overflow. The debugger must initialize this to 0 when first
 // enabling.
+#define CPU_DWT_CYCCNT_CYCCNT_W                                             32
 #define CPU_DWT_CYCCNT_CYCCNT_M                                     0xFFFFFFFF
 #define CPU_DWT_CYCCNT_CYCCNT_S                                              0
 
@@ -316,6 +320,7 @@
 // stalls. If CTRL.CPIEVTENA is set, an event is emitted when the counter
 // overflows. This counter initializes to 0 when it is enabled using
 // CTRL.CPIEVTENA.
+#define CPU_DWT_CPICNT_CPICNT_W                                              8
 #define CPU_DWT_CPICNT_CPICNT_M                                     0x000000FF
 #define CPU_DWT_CPICNT_CPICNT_S                                              0
 
@@ -330,6 +335,7 @@
 // interrupt processing (for example entry stacking, return unstacking,
 // pre-emption). An event is emitted on counter overflow (every 256 cycles).
 // This counter initializes to 0 when it is enabled using CTRL.EXCEVTENA.
+#define CPU_DWT_EXCCNT_EXCCNT_W                                              8
 #define CPU_DWT_EXCCNT_EXCCNT_M                                     0x000000FF
 #define CPU_DWT_EXCCNT_EXCCNT_S                                              0
 
@@ -343,10 +349,11 @@
 // Sleep counter. Counts the number of cycles during which the processor is
 // sleeping. An event is emitted on counter overflow (every 256 cycles). This
 // counter initializes to 0 when it is enabled using CTRL.SLEEPEVTENA. Note
-// that the sleep counter is clocked using CPU&#39;s free-running clock. In
-// some power modes the free-running clock to CPU is gated to minimize power
+// that the sleep counter is clocked using CPU's free-running clock. In some
+// power modes the free-running clock to CPU is gated to minimize power
 // consumption. This means that the sleep counter will be invalid in these
 // power modes.
+#define CPU_DWT_SLEEPCNT_SLEEPCNT_W                                          8
 #define CPU_DWT_SLEEPCNT_SLEEPCNT_M                                 0x000000FF
 #define CPU_DWT_SLEEPCNT_SLEEPCNT_S                                          0
 
@@ -364,6 +371,7 @@
 // cycles (i.e. takes four cycles to execute), increments this counter three
 // times. An event is emitted on counter overflow (every 256 cycles). This
 // counter initializes to 0 when it is enabled using CTRL.LSUEVTENA.
+#define CPU_DWT_LSUCNT_LSUCNT_W                                              8
 #define CPU_DWT_LSUCNT_LSUCNT_M                                     0x000000FF
 #define CPU_DWT_LSUCNT_LSUCNT_S                                              0
 
@@ -376,6 +384,7 @@
 //
 // This counts the total number folded instructions. This counter initializes
 // to 0 when it is enabled using CTRL.FOLDEVTENA.
+#define CPU_DWT_FOLDCNT_FOLDCNT_W                                            8
 #define CPU_DWT_FOLDCNT_FOLDCNT_M                                   0x000000FF
 #define CPU_DWT_FOLDCNT_FOLDCNT_S                                            0
 
@@ -387,6 +396,7 @@
 // Field:  [31:0] EIASAMPLE
 //
 // Execution instruction address sample, or 0xFFFFFFFF if the core is halted.
+#define CPU_DWT_PCSR_EIASAMPLE_W                                            32
 #define CPU_DWT_PCSR_EIASAMPLE_M                                    0xFFFFFFFF
 #define CPU_DWT_PCSR_EIASAMPLE_S                                             0
 
@@ -400,6 +410,7 @@
 // Reference value to compare against PC or the data address as given by
 // FUNCTION0. Comparator 0 can also compare against the value of the PC Sampler
 // Counter (CYCCNT).
+#define CPU_DWT_COMP0_COMP_W                                                32
 #define CPU_DWT_COMP0_COMP_M                                        0xFFFFFFFF
 #define CPU_DWT_COMP0_COMP_S                                                 0
 
@@ -416,6 +427,7 @@
 // slightly more complex to enable matching an address wherever it appears on a
 // bus. So, if COMP0 is 3, this matches a word access of 0, because 3 would be
 // within the word.
+#define CPU_DWT_MASK0_MASK_W                                                 4
 #define CPU_DWT_MASK0_MASK_M                                        0x0000000F
 #define CPU_DWT_MASK0_MASK_S                                                 0
 
@@ -488,6 +500,7 @@
 // sampled for the first address of a burst.
 // Note 3: PC match is not recommended for watchpoints because it stops after
 // the instruction. It mainly guards and triggers the ETM.
+#define CPU_DWT_FUNCTION0_FUNCTION_W                                         4
 #define CPU_DWT_FUNCTION0_FUNCTION_M                                0x0000000F
 #define CPU_DWT_FUNCTION0_FUNCTION_S                                         0
 
@@ -502,6 +515,7 @@
 // FUNCTION1.
 // Comparator 1 can also compare data values. So this register can contain
 // reference values for data matching.
+#define CPU_DWT_COMP1_COMP_W                                                32
 #define CPU_DWT_COMP1_COMP_M                                        0xFFFFFFFF
 #define CPU_DWT_COMP1_COMP_S                                                 0
 
@@ -518,6 +532,7 @@
 // slightly more complex to enable matching an address wherever it appears on a
 // bus. So, if COMP1 is 3, this matches a word access of 0, because 3 would be
 // within the word.
+#define CPU_DWT_MASK1_MASK_W                                                 4
 #define CPU_DWT_MASK1_MASK_M                                        0x0000000F
 #define CPU_DWT_MASK1_MASK_S                                                 0
 
@@ -540,6 +555,7 @@
 //
 // Identity of a second linked address comparator for data value matching when
 // DATAVMATCH == 1 and LNK1ENA == 1.
+#define CPU_DWT_FUNCTION1_DATAVADDR1_W                                       4
 #define CPU_DWT_FUNCTION1_DATAVADDR1_M                              0x000F0000
 #define CPU_DWT_FUNCTION1_DATAVADDR1_S                                      16
 
@@ -547,6 +563,7 @@
 //
 // Identity of a linked address comparator for data value matching when
 // DATAVMATCH == 1.
+#define CPU_DWT_FUNCTION1_DATAVADDR0_W                                       4
 #define CPU_DWT_FUNCTION1_DATAVADDR0_M                              0x0000F000
 #define CPU_DWT_FUNCTION1_DATAVADDR0_S                                      12
 
@@ -558,6 +575,7 @@
 // 0x1: Halfword
 // 0x2: Word
 // 0x3: Unpredictable.
+#define CPU_DWT_FUNCTION1_DATAVSIZE_W                                        2
 #define CPU_DWT_FUNCTION1_DATAVSIZE_M                               0x00000C00
 #define CPU_DWT_FUNCTION1_DATAVSIZE_S                                       10
 
@@ -642,6 +660,7 @@
 // reading DATAVMATCH. If it is not settable then data matching is unavailable.
 // Note 5: PC match is not recommended for watchpoints because it stops after
 // the instruction. It mainly guards and triggers the ETM.
+#define CPU_DWT_FUNCTION1_FUNCTION_W                                         4
 #define CPU_DWT_FUNCTION1_FUNCTION_M                                0x0000000F
 #define CPU_DWT_FUNCTION1_FUNCTION_S                                         0
 
@@ -654,6 +673,7 @@
 //
 // Reference value to compare against PC or the data address as given by
 // FUNCTION2.
+#define CPU_DWT_COMP2_COMP_W                                                32
 #define CPU_DWT_COMP2_COMP_M                                        0xFFFFFFFF
 #define CPU_DWT_COMP2_COMP_S                                                 0
 
@@ -670,6 +690,7 @@
 // slightly more complex to enable matching an address wherever it appears on a
 // bus. So, if COMP2 is 3, this matches a word access of 0, because 3 would be
 // within the word.
+#define CPU_DWT_MASK2_MASK_W                                                 4
 #define CPU_DWT_MASK2_MASK_M                                        0x0000000F
 #define CPU_DWT_MASK2_MASK_S                                                 0
 
@@ -733,6 +754,7 @@
 // sampled for the first address of a burst.
 // Note 3: PC match is not recommended for watchpoints because it stops after
 // the instruction. It mainly guards and triggers the ETM.
+#define CPU_DWT_FUNCTION2_FUNCTION_W                                         4
 #define CPU_DWT_FUNCTION2_FUNCTION_M                                0x0000000F
 #define CPU_DWT_FUNCTION2_FUNCTION_S                                         0
 
@@ -745,6 +767,7 @@
 //
 // Reference value to compare against PC or the data address as given by
 // FUNCTION3.
+#define CPU_DWT_COMP3_COMP_W                                                32
 #define CPU_DWT_COMP3_COMP_M                                        0xFFFFFFFF
 #define CPU_DWT_COMP3_COMP_S                                                 0
 
@@ -761,6 +784,7 @@
 // slightly more complex to enable matching an address wherever it appears on a
 // bus. So, if COMP3 is 3, this matches a word access of 0, because 3 would be
 // within the word.
+#define CPU_DWT_MASK3_MASK_W                                                 4
 #define CPU_DWT_MASK3_MASK_M                                        0x0000000F
 #define CPU_DWT_MASK3_MASK_S                                                 0
 
@@ -824,6 +848,7 @@
 // sampled for the first address of a burst.
 // Note 3: PC match is not recommended for watchpoints because it stops after
 // the instruction. It mainly guards and triggers the ETM.
+#define CPU_DWT_FUNCTION3_FUNCTION_W                                         4
 #define CPU_DWT_FUNCTION3_FUNCTION_M                                0x0000000F
 #define CPU_DWT_FUNCTION3_FUNCTION_S                                         0
 

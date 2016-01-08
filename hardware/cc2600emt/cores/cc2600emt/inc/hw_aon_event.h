@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aon_event_h
-*  Revised:        2015-03-18 10:25:07 +0100 (on, 18 mar 2015)
-*  Revision:       43030
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -70,11 +70,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -84,14 +85,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -132,6 +133,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_MCUWUSEL_WU3_EV_W                                          6
 #define AON_EVENT_MCUWUSEL_WU3_EV_M                                 0x3F000000
 #define AON_EVENT_MCUWUSEL_WU3_EV_S                                         24
 #define AON_EVENT_MCUWUSEL_WU3_EV_NONE                              0x3F000000
@@ -201,11 +203,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -215,14 +218,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -263,6 +266,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_MCUWUSEL_WU2_EV_W                                          6
 #define AON_EVENT_MCUWUSEL_WU2_EV_M                                 0x003F0000
 #define AON_EVENT_MCUWUSEL_WU2_EV_S                                         16
 #define AON_EVENT_MCUWUSEL_WU2_EV_NONE                              0x003F0000
@@ -332,11 +336,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -346,14 +351,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -394,6 +399,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_MCUWUSEL_WU1_EV_W                                          6
 #define AON_EVENT_MCUWUSEL_WU1_EV_M                                 0x00003F00
 #define AON_EVENT_MCUWUSEL_WU1_EV_S                                          8
 #define AON_EVENT_MCUWUSEL_WU1_EV_NONE                              0x00003F00
@@ -463,11 +469,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -477,14 +484,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -525,6 +532,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_MCUWUSEL_WU0_EV_W                                          6
 #define AON_EVENT_MCUWUSEL_WU0_EV_M                                 0x0000003F
 #define AON_EVENT_MCUWUSEL_WU0_EV_S                                          0
 #define AON_EVENT_MCUWUSEL_WU0_EV_NONE                              0x0000003F
@@ -599,11 +607,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -613,14 +622,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -661,6 +670,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_AUXWUSEL_WU2_EV_W                                          6
 #define AON_EVENT_AUXWUSEL_WU2_EV_M                                 0x003F0000
 #define AON_EVENT_AUXWUSEL_WU2_EV_S                                         16
 #define AON_EVENT_AUXWUSEL_WU2_EV_NONE                              0x003F0000
@@ -730,11 +740,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -744,14 +755,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -792,6 +803,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_AUXWUSEL_WU1_EV_W                                          6
 #define AON_EVENT_AUXWUSEL_WU1_EV_M                                 0x00003F00
 #define AON_EVENT_AUXWUSEL_WU1_EV_S                                          8
 #define AON_EVENT_AUXWUSEL_WU1_EV_NONE                              0x00003F00
@@ -861,11 +873,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -875,14 +888,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -923,6 +936,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_AUXWUSEL_WU0_EV_W                                          6
 #define AON_EVENT_AUXWUSEL_WU0_EV_M                                 0x0000003F
 #define AON_EVENT_AUXWUSEL_WU0_EV_S                                          0
 #define AON_EVENT_AUXWUSEL_WU0_EV_NONE                              0x0000003F
@@ -995,11 +1009,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -1009,14 +1024,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -1057,6 +1072,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_EVTOMCUSEL_AON_PROG2_EV_W                                  6
 #define AON_EVENT_EVTOMCUSEL_AON_PROG2_EV_M                         0x003F0000
 #define AON_EVENT_EVTOMCUSEL_AON_PROG2_EV_S                                 16
 #define AON_EVENT_EVTOMCUSEL_AON_PROG2_EV_NONE                      0x003F0000
@@ -1124,11 +1140,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -1138,14 +1155,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -1186,6 +1203,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_EVTOMCUSEL_AON_PROG1_EV_W                                  6
 #define AON_EVENT_EVTOMCUSEL_AON_PROG1_EV_M                         0x00003F00
 #define AON_EVENT_EVTOMCUSEL_AON_PROG1_EV_S                                  8
 #define AON_EVENT_EVTOMCUSEL_AON_PROG1_EV_NONE                      0x00003F00
@@ -1253,11 +1271,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -1267,14 +1286,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -1315,6 +1334,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_EVTOMCUSEL_AON_PROG0_EV_W                                  6
 #define AON_EVENT_EVTOMCUSEL_AON_PROG0_EV_M                         0x0000003F
 #define AON_EVENT_EVTOMCUSEL_AON_PROG0_EV_S                                  0
 #define AON_EVENT_EVTOMCUSEL_AON_PROG0_EV_NONE                      0x0000003F
@@ -1386,11 +1406,12 @@
 // ENUMs:
 // NONE                     No event, always low
 // AUX_COMPB_ASYNC_N        Comparator B not triggered. Asynchronous signal
-// directly from AUX Comparator B (inverted) as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from AUX Comparator B (inverted) as
+//                          opposed to AUX_COMPB which is synchronized in
+//                          AUX
 // AUX_COMPB_ASYNC          Comparator B triggered. Asynchronous signal
-// directly from the AUX Comparator B as opposed to AUX_COMPB which is
-// synchronized in AUX
+//                          directly from the AUX Comparator B as opposed
+//                          to AUX_COMPB which is synchronized in AUX
 // BATMON_VOLT              BATMON voltage update event
 // BATMON_TEMP              BATMON temperature update event
 // AUX_TIMER1_EV            AUX Timer 1 Event
@@ -1400,14 +1421,14 @@
 // AUX_COMPB                Comparator B triggered
 // AUX_COMPA                Comparator A triggered
 // AUX_SWEV2                AUX Software triggered event #2. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV2
+//                          AUX_EVCTL:SWEVSET.SWEV2
 // AUX_SWEV1                AUX Software triggered event #1. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV1
+//                          AUX_EVCTL:SWEVSET.SWEV1
 // AUX_SWEV0                AUX Software triggered event #0. Triggered by
-// AUX_EVCTL:SWEVSET.SWEV0
+//                          AUX_EVCTL:SWEVSET.SWEV0
 // JTAG                     JTAG generated event
 // RTC_UPD                  RTC Update Tick (16 kHz signal, i.e. event line
-// toggles value every 32 kHz clock period)
+//                          toggles value every 32 kHz clock period)
 // RTC_COMB_DLY             RTC combined delayed event
 // RTC_CH2_DLY              RTC channel 2 - delayed event
 // RTC_CH1_DLY              RTC channel 1 - delayed event
@@ -1448,6 +1469,7 @@
 // PAD2                     Edge detect on PAD2
 // PAD1                     Edge detect on PAD1
 // PAD0                     Edge detect on PAD0
+#define AON_EVENT_RTCSEL_RTC_CH1_CAPT_EV_W                                   6
 #define AON_EVENT_RTCSEL_RTC_CH1_CAPT_EV_M                          0x0000003F
 #define AON_EVENT_RTCSEL_RTC_CH1_CAPT_EV_S                                   0
 #define AON_EVENT_RTCSEL_RTC_CH1_CAPT_EV_NONE                       0x0000003F

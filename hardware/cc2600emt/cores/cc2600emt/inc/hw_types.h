@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_types.h
-*  Revised:        2015-03-26 16:52:06 +0100 (to, 26 mar 2015)
-*  Revision:       43138
+*  Revised:        2015-06-25 09:45:13 +0200 (Thu, 25 Jun 2015)
+*  Revision:       44027
 *
 *  Description:    Common types and macros.
 *
@@ -92,25 +92,6 @@ typedef unsigned int  __UINT32;
 // Write example : HWREGB(base_addr + offset) = my8BitVar ;
 #define HWREGB(x)                                                             \
         (*((volatile unsigned char *)(x)))
-
-#if (CC_GET_CHIP_OPTION == CC_CHIP_OPTION_OTP)
-//*****************************************************************************
-//
-// Macro for 32-bits read only accesses in RAW apertures of the OTP memory.
-//
-//*****************************************************************************
-// Data word (32 bit) read access to ECC map address offset o within RAW aperture
-// base address x
-// Read example  : my32WordData = HWREGRAW(raw_base_addr + ecc_offset) ;
-#define HWREGRAW(x,o)                                                         \
-        HWREG( x + (( o << 1 ) & 0xFFFFFFF0 ) + ( o & 0x4 ))
-
-// Info word (32 bit) read access to ECC map address offset o within RAW aperture
-// base address x
-// Read example  : my32WordInfo = HWREGRAWINFO(raw_base_addr + ecc_offset) ;
-#define HWREGRAWINFO(x,o)                                                     \
-        HWREG( x + (( o << 1 ) & 0xFFFFFFF0 ) + 8)
-#endif
 
 //*****************************************************************************
 //

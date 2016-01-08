@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aux_evctl_h
-*  Revised:        2015-02-13 15:47:13 +0100 (fr, 13 feb 2015)
-*  Revision:       42724
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -122,7 +122,8 @@
 // Note: Lower vectors (0) have priority.
 // ENUMs:
 // EN                       An event selected by VEC1_EV with polarity from
-// VEC1_POL triggers a jump to vector # 1 when AUX_SCE is in sleep
+//                          VEC1_POL triggers a jump to vector # 1 when
+//                          AUX_SCE is in sleep
 // DIS                      Event detection is disabled
 #define AUX_EVCTL_VECCFG0_VEC1_EN                                   0x00002000
 #define AUX_EVCTL_VECCFG0_VEC1_EN_BITN                                      13
@@ -167,6 +168,7 @@
 // AUX_COMPB                AUX_COMPB event
 // AUX_COMPA                AUX_COMPA event
 // AON_RTC_CH2              AON_RTC_CH2 event
+#define AUX_EVCTL_VECCFG0_VEC1_EV_W                                          5
 #define AUX_EVCTL_VECCFG0_VEC1_EV_M                                 0x00001F00
 #define AUX_EVCTL_VECCFG0_VEC1_EV_S                                          8
 #define AUX_EVCTL_VECCFG0_VEC1_EV_ADC_IRQ                           0x00001F00
@@ -226,7 +228,8 @@
 // will set VECFLAGS.VEC0, which in turn triggers vector 0 execution.
 // ENUMs:
 // EN                       An event selected by VEC0_EV with polarity from
-// VEC0_POL triggers a jump to vector #0 when AUX_SCE is in sleep
+//                          VEC0_POL triggers a jump to vector #0 when
+//                          AUX_SCE is in sleep
 // DIS                      Event detection is disabled
 #define AUX_EVCTL_VECCFG0_VEC0_EN                                   0x00000020
 #define AUX_EVCTL_VECCFG0_VEC0_EN_BITN                                       5
@@ -271,6 +274,7 @@
 // AUX_COMPB                AUX_COMPB event
 // AUX_COMPA                AUX_COMPA event
 // AON_RTC_CH2              AON_RTC_CH2 event
+#define AUX_EVCTL_VECCFG0_VEC0_EV_W                                          5
 #define AUX_EVCTL_VECCFG0_VEC0_EV_M                                 0x0000001F
 #define AUX_EVCTL_VECCFG0_VEC0_EV_S                                          0
 #define AUX_EVCTL_VECCFG0_VEC0_EV_ADC_IRQ                           0x0000001F
@@ -337,7 +341,8 @@
 // Note: Lower vectors (0, 1 and 2) have priority.
 // ENUMs:
 // EN                       An event selected by VEC3_EV with polarity from
-// VEC3_POL triggers a jump to vector # 3 when AUX_SCE is in sleep
+//                          VEC3_POL triggers a jump to vector # 3 when
+//                          AUX_SCE is in sleep
 // DIS                      Event detection is disabled
 #define AUX_EVCTL_VECCFG1_VEC3_EN                                   0x00002000
 #define AUX_EVCTL_VECCFG1_VEC3_EN_BITN                                      13
@@ -382,6 +387,7 @@
 // AUX_COMPB                AUX_COMPB event
 // AUX_COMPA                AUX_COMPA event
 // AON_RTC_CH2              AON_RTC_CH2 event
+#define AUX_EVCTL_VECCFG1_VEC3_EV_W                                          5
 #define AUX_EVCTL_VECCFG1_VEC3_EV_M                                 0x00001F00
 #define AUX_EVCTL_VECCFG1_VEC3_EV_S                                          8
 #define AUX_EVCTL_VECCFG1_VEC3_EV_ADC_IRQ                           0x00001F00
@@ -443,7 +449,8 @@
 // Note: Lower vectors (0 and 1) have priority.
 // ENUMs:
 // EN                       An event selected by VEC2_EV with polarity from
-// VEC2_POL triggers a jump to vector # 2 when AUX_SCE is in sleep
+//                          VEC2_POL triggers a jump to vector # 2 when
+//                          AUX_SCE is in sleep
 // DIS                      Event detection is disabled
 #define AUX_EVCTL_VECCFG1_VEC2_EN                                   0x00000020
 #define AUX_EVCTL_VECCFG1_VEC2_EN_BITN                                       5
@@ -488,6 +495,7 @@
 // AUX_COMPB                AUX_COMPB event
 // AUX_COMPA                AUX_COMPA event
 // AON_RTC_CH2              AON_RTC_CH2 event
+#define AUX_EVCTL_VECCFG1_VEC2_EV_W                                          5
 #define AUX_EVCTL_VECCFG1_VEC2_EV_M                                 0x0000001F
 #define AUX_EVCTL_VECCFG1_VEC2_EV_S                                          0
 #define AUX_EVCTL_VECCFG1_VEC2_EV_ADC_IRQ                           0x0000001F
@@ -564,6 +572,7 @@
 // AUX_COMPB                AUX_COMPB event
 // AUX_COMPA                AUX_COMPA event
 // AON_RTC_CH2              AON_RTC_CH2 event
+#define AUX_EVCTL_SCEWEVSEL_WEV7_EV_W                                        5
 #define AUX_EVCTL_SCEWEVSEL_WEV7_EV_M                               0x0000001F
 #define AUX_EVCTL_SCEWEVSEL_WEV7_EV_S                                        0
 #define AUX_EVCTL_SCEWEVSEL_WEV7_EV_ADC_IRQ                         0x0000001F
@@ -768,10 +777,10 @@
 //
 // DMA Request mode
 // ENUMs:
-// SINGLE                   Single requests are generated on DMA channel 7 when
-// the condition configured in SEL is met
+// SINGLE                   Single requests are generated on DMA channel 7
+//                          when the condition configured in SEL is met
 // BURST                    Burst requests are generated on DMA channel 7 when
-// the condition configured in SEL is met
+//                          the condition configured in SEL is met
 #define AUX_EVCTL_DMACTL_REQ_MODE                                   0x00000004
 #define AUX_EVCTL_DMACTL_REQ_MODE_BITN                                       2
 #define AUX_EVCTL_DMACTL_REQ_MODE_M                                 0x00000004
@@ -793,9 +802,9 @@
 // Selection of FIFO watermark level required to trigger an ADC_DMA transfer
 // ENUMs:
 // FIFO_ALMOST_FULL         ADC_DMA event will be generated when the ADC FIFO
-// is almost full (3/4 full)
+//                          is almost full (3/4 full)
 // FIFO_NOT_EMPTY           ADC_DMA event will be generated when there are
-// valid samples in the ADC FIFO
+//                          valid samples in the ADC FIFO
 #define AUX_EVCTL_DMACTL_SEL                                        0x00000001
 #define AUX_EVCTL_DMACTL_SEL_BITN                                            0
 #define AUX_EVCTL_DMACTL_SEL_M                                      0x00000001

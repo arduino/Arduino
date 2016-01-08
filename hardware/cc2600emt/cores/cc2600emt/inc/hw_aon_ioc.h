@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aon_ioc_h
-*  Revised:        2015-02-12 20:48:43 +0100 (to, 12 feb 2015)
-*  Revision:       42710
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,13 +43,13 @@
 // AON_IOC component
 //
 //*****************************************************************************
-// IO Drive Strength Minimum
+// Internal
 #define AON_IOC_O_IOSTRMIN                                          0x00000000
 
-// IO Drive Strength Medium
+// Internal
 #define AON_IOC_O_IOSTRMED                                          0x00000004
 
-// IO Drive Strength Maximum
+// Internal
 #define AON_IOC_O_IOSTRMAX                                          0x00000008
 
 // IO Latch Control
@@ -66,6 +66,7 @@
 // Field:   [2:0] GRAY_CODE
 //
 // Internal. Only to be used through TI provided API.
+#define AON_IOC_IOSTRMIN_GRAY_CODE_W                                         3
 #define AON_IOC_IOSTRMIN_GRAY_CODE_M                                0x00000007
 #define AON_IOC_IOSTRMIN_GRAY_CODE_S                                         0
 
@@ -77,6 +78,7 @@
 // Field:   [2:0] GRAY_CODE
 //
 // Internal. Only to be used through TI provided API.
+#define AON_IOC_IOSTRMED_GRAY_CODE_W                                         3
 #define AON_IOC_IOSTRMED_GRAY_CODE_M                                0x00000007
 #define AON_IOC_IOSTRMED_GRAY_CODE_S                                         0
 
@@ -88,6 +90,7 @@
 // Field:   [2:0] GRAY_CODE
 //
 // Internal. Only to be used through TI provided API.
+#define AON_IOC_IOSTRMAX_GRAY_CODE_W                                         3
 #define AON_IOC_IOSTRMAX_GRAY_CODE_M                                0x00000007
 #define AON_IOC_IOSTRMAX_GRAY_CODE_S                                         0
 
@@ -106,10 +109,12 @@
 // order to preserve IO values on external pins.
 // ENUMs:
 // TRANSP                   Latches are transparent, meaning the value of the
-// IO is directly controlled by the GPIO or peripheral value
+//                          IO is directly controlled by the GPIO or
+//                          peripheral value
 // STATIC                   Latches are static, meaning the current value on
-// the IO pin is frozen by latches and kept even if GPIO module or a peripheral
-// module is turned off
+//                          the IO pin is frozen by latches and kept even
+//                          if GPIO module or a peripheral module is turned
+//                          off
 #define AON_IOC_IOCLATCH_EN                                         0x00000001
 #define AON_IOC_IOCLATCH_EN_BITN                                             0
 #define AON_IOC_IOCLATCH_EN_M                                       0x00000001

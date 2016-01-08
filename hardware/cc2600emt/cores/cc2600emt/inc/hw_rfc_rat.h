@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_rfc_rat_h
-*  Revised:        2015-02-10 21:34:21 +0100 (ti, 10 feb 2015)
-*  Revision:       42642
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -46,6 +46,30 @@
 // Radio Timer Counter Value
 #define RFC_RAT_O_RATCNT                                            0x00000004
 
+// Timer Channel 0 Capture/Compare Register
+#define RFC_RAT_O_RATCH0VAL                                         0x00000080
+
+// Timer Channel 1 Capture/Compare Register
+#define RFC_RAT_O_RATCH1VAL                                         0x00000084
+
+// Timer Channel 2 Capture/Compare Register
+#define RFC_RAT_O_RATCH2VAL                                         0x00000088
+
+// Timer Channel 3 Capture/Compare Register
+#define RFC_RAT_O_RATCH3VAL                                         0x0000008C
+
+// Timer Channel 4 Capture/Compare Register
+#define RFC_RAT_O_RATCH4VAL                                         0x00000090
+
+// Timer Channel 5 Capture/Compare Register
+#define RFC_RAT_O_RATCH5VAL                                         0x00000094
+
+// Timer Channel 6 Capture/Compare Register
+#define RFC_RAT_O_RATCH6VAL                                         0x00000098
+
+// Timer Channel 7 Capture/Compare Register
+#define RFC_RAT_O_RATCH7VAL                                         0x0000009C
+
 //*****************************************************************************
 //
 // Register: RFC_RAT_O_RATCNT
@@ -54,8 +78,113 @@
 // Field:  [31:0] CNT
 //
 // Counter value. This is not writable while radio timer counter is enabled.
+#define RFC_RAT_RATCNT_CNT_W                                                32
 #define RFC_RAT_RATCNT_CNT_M                                        0xFFFFFFFF
 #define RFC_RAT_RATCNT_CNT_S                                                 0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH0VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH0VAL_VAL_W                                             32
+#define RFC_RAT_RATCH0VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH0VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH1VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH1VAL_VAL_W                                             32
+#define RFC_RAT_RATCH1VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH1VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH2VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH2VAL_VAL_W                                             32
+#define RFC_RAT_RATCH2VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH2VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH3VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH3VAL_VAL_W                                             32
+#define RFC_RAT_RATCH3VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH3VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH4VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH4VAL_VAL_W                                             32
+#define RFC_RAT_RATCH4VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH4VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH5VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH5VAL_VAL_W                                             32
+#define RFC_RAT_RATCH5VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH5VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH6VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH6VAL_VAL_W                                             32
+#define RFC_RAT_RATCH6VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH6VAL_VAL_S                                              0
+
+//*****************************************************************************
+//
+// Register: RFC_RAT_O_RATCH7VAL
+//
+//*****************************************************************************
+// Field:  [31:0] VAL
+//
+// Capture/compare value. The system CPU can safely read this register, but it
+// is recommended to use the CPE API commands to configure it for compare mode.
+#define RFC_RAT_RATCH7VAL_VAL_W                                             32
+#define RFC_RAT_RATCH7VAL_VAL_M                                     0xFFFFFFFF
+#define RFC_RAT_RATCH7VAL_VAL_S                                              0
 
 
 #endif // __RFC_RAT__

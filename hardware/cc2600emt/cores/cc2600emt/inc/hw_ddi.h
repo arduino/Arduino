@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       hw_ddi.h
-*  Revised:        2015-03-04 17:53:59 +0100 (on, 04 mar 2015)
+*  Revised:        2015-03-04 17:53:59 +0100 (Wed, 04 Mar 2015)
 *  Revision:       42892
 *
 *  Copyright (c) 2015, Texas Instruments Incorporated

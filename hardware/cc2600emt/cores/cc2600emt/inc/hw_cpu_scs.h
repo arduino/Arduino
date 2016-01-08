@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_cpu_scs_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -240,6 +240,7 @@
 // 5: 161...192
 // 6: 193...224
 // 7: 225...256
+#define CPU_SCS_ICTR_INTLINESNUM_W                                           3
 #define CPU_SCS_ICTR_INTLINESNUM_M                                  0x00000007
 #define CPU_SCS_ICTR_INTLINESNUM_S                                           0
 
@@ -341,6 +342,7 @@
 //
 // Value to load into the SysTick Current Value Register STCVR.CURRENT when the
 // counter reaches 0.
+#define CPU_SCS_STRVR_RELOAD_W                                              24
 #define CPU_SCS_STRVR_RELOAD_M                                      0x00FFFFFF
 #define CPU_SCS_STRVR_RELOAD_S                                               0
 
@@ -355,6 +357,7 @@
 // protection is provided, so change with care. Writing to it with any value
 // clears the register to 0. Clearing this register also clears
 // STCSR.COUNTFLAG.
+#define CPU_SCS_STCVR_CURRENT_W                                             24
 #define CPU_SCS_STCVR_CURRENT_M                                     0x00FFFFFF
 #define CPU_SCS_STCVR_CURRENT_S                                              0
 
@@ -385,6 +388,7 @@
 // An optional Reload value to be used for 10ms (100Hz) timing, subject to
 // system clock skew errors. The value read is valid only when core clock is at
 // 48MHz.
+#define CPU_SCS_STCR_TENMS_W                                                24
 #define CPU_SCS_STCR_TENMS_M                                        0x00FFFFFF
 #define CPU_SCS_STCR_TENMS_S                                                 0
 
@@ -2146,24 +2150,28 @@
 // Field: [31:24] PRI_3
 //
 // Priority of interrupt 3 (See EVENT:CPUIRQSEL3.EV for details).
+#define CPU_SCS_NVIC_IPR0_PRI_3_W                                            8
 #define CPU_SCS_NVIC_IPR0_PRI_3_M                                   0xFF000000
 #define CPU_SCS_NVIC_IPR0_PRI_3_S                                           24
 
 // Field: [23:16] PRI_2
 //
 // Priority of interrupt 2 (See EVENT:CPUIRQSEL2.EV for details).
+#define CPU_SCS_NVIC_IPR0_PRI_2_W                                            8
 #define CPU_SCS_NVIC_IPR0_PRI_2_M                                   0x00FF0000
 #define CPU_SCS_NVIC_IPR0_PRI_2_S                                           16
 
 // Field:  [15:8] PRI_1
 //
 // Priority of interrupt 1 (See EVENT:CPUIRQSEL1.EV for details).
+#define CPU_SCS_NVIC_IPR0_PRI_1_W                                            8
 #define CPU_SCS_NVIC_IPR0_PRI_1_M                                   0x0000FF00
 #define CPU_SCS_NVIC_IPR0_PRI_1_S                                            8
 
 // Field:   [7:0] PRI_0
 //
 // Priority of interrupt 0 (See EVENT:CPUIRQSEL0.EV for details).
+#define CPU_SCS_NVIC_IPR0_PRI_0_W                                            8
 #define CPU_SCS_NVIC_IPR0_PRI_0_M                                   0x000000FF
 #define CPU_SCS_NVIC_IPR0_PRI_0_S                                            0
 
@@ -2175,24 +2183,28 @@
 // Field: [31:24] PRI_7
 //
 // Priority of interrupt 7 (See EVENT:CPUIRQSEL7.EV for details).
+#define CPU_SCS_NVIC_IPR1_PRI_7_W                                            8
 #define CPU_SCS_NVIC_IPR1_PRI_7_M                                   0xFF000000
 #define CPU_SCS_NVIC_IPR1_PRI_7_S                                           24
 
 // Field: [23:16] PRI_6
 //
 // Priority of interrupt 6 (See EVENT:CPUIRQSEL6.EV for details).
+#define CPU_SCS_NVIC_IPR1_PRI_6_W                                            8
 #define CPU_SCS_NVIC_IPR1_PRI_6_M                                   0x00FF0000
 #define CPU_SCS_NVIC_IPR1_PRI_6_S                                           16
 
 // Field:  [15:8] PRI_5
 //
 // Priority of interrupt 5 (See EVENT:CPUIRQSEL5.EV for details).
+#define CPU_SCS_NVIC_IPR1_PRI_5_W                                            8
 #define CPU_SCS_NVIC_IPR1_PRI_5_M                                   0x0000FF00
 #define CPU_SCS_NVIC_IPR1_PRI_5_S                                            8
 
 // Field:   [7:0] PRI_4
 //
 // Priority of interrupt 4 (See EVENT:CPUIRQSEL4.EV for details).
+#define CPU_SCS_NVIC_IPR1_PRI_4_W                                            8
 #define CPU_SCS_NVIC_IPR1_PRI_4_M                                   0x000000FF
 #define CPU_SCS_NVIC_IPR1_PRI_4_S                                            0
 
@@ -2204,24 +2216,28 @@
 // Field: [31:24] PRI_11
 //
 // Priority of interrupt 11 (See EVENT:CPUIRQSEL11.EV for details).
+#define CPU_SCS_NVIC_IPR2_PRI_11_W                                           8
 #define CPU_SCS_NVIC_IPR2_PRI_11_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR2_PRI_11_S                                          24
 
 // Field: [23:16] PRI_10
 //
 // Priority of interrupt 10 (See EVENT:CPUIRQSEL10.EV for details).
+#define CPU_SCS_NVIC_IPR2_PRI_10_W                                           8
 #define CPU_SCS_NVIC_IPR2_PRI_10_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR2_PRI_10_S                                          16
 
 // Field:  [15:8] PRI_9
 //
 // Priority of interrupt 9 (See EVENT:CPUIRQSEL9.EV for details).
+#define CPU_SCS_NVIC_IPR2_PRI_9_W                                            8
 #define CPU_SCS_NVIC_IPR2_PRI_9_M                                   0x0000FF00
 #define CPU_SCS_NVIC_IPR2_PRI_9_S                                            8
 
 // Field:   [7:0] PRI_8
 //
 // Priority of interrupt 8 (See EVENT:CPUIRQSEL8.EV for details).
+#define CPU_SCS_NVIC_IPR2_PRI_8_W                                            8
 #define CPU_SCS_NVIC_IPR2_PRI_8_M                                   0x000000FF
 #define CPU_SCS_NVIC_IPR2_PRI_8_S                                            0
 
@@ -2233,24 +2249,28 @@
 // Field: [31:24] PRI_15
 //
 // Priority of interrupt 15 (See EVENT:CPUIRQSEL15.EV for details).
+#define CPU_SCS_NVIC_IPR3_PRI_15_W                                           8
 #define CPU_SCS_NVIC_IPR3_PRI_15_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR3_PRI_15_S                                          24
 
 // Field: [23:16] PRI_14
 //
 // Priority of interrupt 14 (See EVENT:CPUIRQSEL14.EV for details).
+#define CPU_SCS_NVIC_IPR3_PRI_14_W                                           8
 #define CPU_SCS_NVIC_IPR3_PRI_14_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR3_PRI_14_S                                          16
 
 // Field:  [15:8] PRI_13
 //
 // Priority of interrupt 13 (See EVENT:CPUIRQSEL13.EV for details).
+#define CPU_SCS_NVIC_IPR3_PRI_13_W                                           8
 #define CPU_SCS_NVIC_IPR3_PRI_13_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR3_PRI_13_S                                           8
 
 // Field:   [7:0] PRI_12
 //
 // Priority of interrupt 12 (See EVENT:CPUIRQSEL12.EV for details).
+#define CPU_SCS_NVIC_IPR3_PRI_12_W                                           8
 #define CPU_SCS_NVIC_IPR3_PRI_12_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR3_PRI_12_S                                           0
 
@@ -2262,24 +2282,28 @@
 // Field: [31:24] PRI_19
 //
 // Priority of interrupt 19 (See EVENT:CPUIRQSEL19.EV for details).
+#define CPU_SCS_NVIC_IPR4_PRI_19_W                                           8
 #define CPU_SCS_NVIC_IPR4_PRI_19_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR4_PRI_19_S                                          24
 
 // Field: [23:16] PRI_18
 //
 // Priority of interrupt 18 (See EVENT:CPUIRQSEL18.EV for details).
+#define CPU_SCS_NVIC_IPR4_PRI_18_W                                           8
 #define CPU_SCS_NVIC_IPR4_PRI_18_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR4_PRI_18_S                                          16
 
 // Field:  [15:8] PRI_17
 //
 // Priority of interrupt 17 (See EVENT:CPUIRQSEL17.EV for details).
+#define CPU_SCS_NVIC_IPR4_PRI_17_W                                           8
 #define CPU_SCS_NVIC_IPR4_PRI_17_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR4_PRI_17_S                                           8
 
 // Field:   [7:0] PRI_16
 //
 // Priority of interrupt 16 (See EVENT:CPUIRQSEL16.EV for details).
+#define CPU_SCS_NVIC_IPR4_PRI_16_W                                           8
 #define CPU_SCS_NVIC_IPR4_PRI_16_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR4_PRI_16_S                                           0
 
@@ -2291,24 +2315,28 @@
 // Field: [31:24] PRI_23
 //
 // Priority of interrupt 23 (See EVENT:CPUIRQSEL23.EV for details).
+#define CPU_SCS_NVIC_IPR5_PRI_23_W                                           8
 #define CPU_SCS_NVIC_IPR5_PRI_23_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR5_PRI_23_S                                          24
 
 // Field: [23:16] PRI_22
 //
 // Priority of interrupt 22 (See EVENT:CPUIRQSEL22.EV for details).
+#define CPU_SCS_NVIC_IPR5_PRI_22_W                                           8
 #define CPU_SCS_NVIC_IPR5_PRI_22_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR5_PRI_22_S                                          16
 
 // Field:  [15:8] PRI_21
 //
 // Priority of interrupt 21 (See EVENT:CPUIRQSEL21.EV for details).
+#define CPU_SCS_NVIC_IPR5_PRI_21_W                                           8
 #define CPU_SCS_NVIC_IPR5_PRI_21_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR5_PRI_21_S                                           8
 
 // Field:   [7:0] PRI_20
 //
 // Priority of interrupt 20 (See EVENT:CPUIRQSEL20.EV for details).
+#define CPU_SCS_NVIC_IPR5_PRI_20_W                                           8
 #define CPU_SCS_NVIC_IPR5_PRI_20_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR5_PRI_20_S                                           0
 
@@ -2320,24 +2348,28 @@
 // Field: [31:24] PRI_27
 //
 // Priority of interrupt 27 (See EVENT:CPUIRQSEL27.EV for details).
+#define CPU_SCS_NVIC_IPR6_PRI_27_W                                           8
 #define CPU_SCS_NVIC_IPR6_PRI_27_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR6_PRI_27_S                                          24
 
 // Field: [23:16] PRI_26
 //
 // Priority of interrupt 26 (See EVENT:CPUIRQSEL26.EV for details).
+#define CPU_SCS_NVIC_IPR6_PRI_26_W                                           8
 #define CPU_SCS_NVIC_IPR6_PRI_26_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR6_PRI_26_S                                          16
 
 // Field:  [15:8] PRI_25
 //
 // Priority of interrupt 25 (See EVENT:CPUIRQSEL25.EV for details).
+#define CPU_SCS_NVIC_IPR6_PRI_25_W                                           8
 #define CPU_SCS_NVIC_IPR6_PRI_25_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR6_PRI_25_S                                           8
 
 // Field:   [7:0] PRI_24
 //
 // Priority of interrupt 24 (See EVENT:CPUIRQSEL24.EV for details).
+#define CPU_SCS_NVIC_IPR6_PRI_24_W                                           8
 #define CPU_SCS_NVIC_IPR6_PRI_24_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR6_PRI_24_S                                           0
 
@@ -2349,24 +2381,28 @@
 // Field: [31:24] PRI_31
 //
 // Priority of interrupt 31 (See EVENT:CPUIRQSEL31.EV for details).
+#define CPU_SCS_NVIC_IPR7_PRI_31_W                                           8
 #define CPU_SCS_NVIC_IPR7_PRI_31_M                                  0xFF000000
 #define CPU_SCS_NVIC_IPR7_PRI_31_S                                          24
 
 // Field: [23:16] PRI_30
 //
 // Priority of interrupt 30 (See EVENT:CPUIRQSEL30.EV for details).
+#define CPU_SCS_NVIC_IPR7_PRI_30_W                                           8
 #define CPU_SCS_NVIC_IPR7_PRI_30_M                                  0x00FF0000
 #define CPU_SCS_NVIC_IPR7_PRI_30_S                                          16
 
 // Field:  [15:8] PRI_29
 //
 // Priority of interrupt 29 (See EVENT:CPUIRQSEL29.EV for details).
+#define CPU_SCS_NVIC_IPR7_PRI_29_W                                           8
 #define CPU_SCS_NVIC_IPR7_PRI_29_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR7_PRI_29_S                                           8
 
 // Field:   [7:0] PRI_28
 //
 // Priority of interrupt 28 (See EVENT:CPUIRQSEL28.EV for details).
+#define CPU_SCS_NVIC_IPR7_PRI_28_W                                           8
 #define CPU_SCS_NVIC_IPR7_PRI_28_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR7_PRI_28_S                                           0
 
@@ -2378,12 +2414,14 @@
 // Field:  [15:8] PRI_33
 //
 // Priority of interrupt 33 (See EVENT:CPUIRQSEL33.EV for details).
+#define CPU_SCS_NVIC_IPR8_PRI_33_W                                           8
 #define CPU_SCS_NVIC_IPR8_PRI_33_M                                  0x0000FF00
 #define CPU_SCS_NVIC_IPR8_PRI_33_S                                           8
 
 // Field:   [7:0] PRI_32
 //
 // Priority of interrupt 32 (See EVENT:CPUIRQSEL32.EV for details).
+#define CPU_SCS_NVIC_IPR8_PRI_32_W                                           8
 #define CPU_SCS_NVIC_IPR8_PRI_32_M                                  0x000000FF
 #define CPU_SCS_NVIC_IPR8_PRI_32_S                                           0
 
@@ -2395,30 +2433,35 @@
 // Field: [31:24] IMPLEMENTER
 //
 // Implementor code.
+#define CPU_SCS_CPUID_IMPLEMENTER_W                                          8
 #define CPU_SCS_CPUID_IMPLEMENTER_M                                 0xFF000000
 #define CPU_SCS_CPUID_IMPLEMENTER_S                                         24
 
 // Field: [23:20] VARIANT
 //
 // Implementation defined variant number.
+#define CPU_SCS_CPUID_VARIANT_W                                              4
 #define CPU_SCS_CPUID_VARIANT_M                                     0x00F00000
 #define CPU_SCS_CPUID_VARIANT_S                                             20
 
 // Field: [19:16] CONSTANT
 //
 // Reads as 0xF
+#define CPU_SCS_CPUID_CONSTANT_W                                             4
 #define CPU_SCS_CPUID_CONSTANT_M                                    0x000F0000
 #define CPU_SCS_CPUID_CONSTANT_S                                            16
 
 // Field:  [15:4] PARTNO
 //
 // Number of processor within family.
+#define CPU_SCS_CPUID_PARTNO_W                                              12
 #define CPU_SCS_CPUID_PARTNO_M                                      0x0000FFF0
 #define CPU_SCS_CPUID_PARTNO_S                                               4
 
 // Field:   [3:0] REVISION
 //
 // Implementation defined revision number.
+#define CPU_SCS_CPUID_REVISION_W                                             4
 #define CPU_SCS_CPUID_REVISION_M                                    0x0000000F
 #define CPU_SCS_CPUID_REVISION_S                                             0
 
@@ -2512,6 +2555,7 @@
 //
 // Pending ISR number field. This field contains the interrupt number of the
 // highest priority pending ISR.
+#define CPU_SCS_ICSR_VECTPENDING_W                                           6
 #define CPU_SCS_ICSR_VECTPENDING_M                                  0x0003F000
 #define CPU_SCS_ICSR_VECTPENDING_S                                          12
 
@@ -2530,6 +2574,7 @@
 // Field:   [8:0] VECTACTIVE
 //
 // Active ISR number field. Reset clears this field.
+#define CPU_SCS_ICSR_VECTACTIVE_W                                            9
 #define CPU_SCS_ICSR_VECTACTIVE_M                                   0x000001FF
 #define CPU_SCS_ICSR_VECTACTIVE_S                                            0
 
@@ -2541,6 +2586,7 @@
 // Field:  [29:7] TBLOFF
 //
 // Bits 29 down to 7 of the vector table base offset.
+#define CPU_SCS_VTOR_TBLOFF_W                                               23
 #define CPU_SCS_VTOR_TBLOFF_M                                       0x3FFFFF80
 #define CPU_SCS_VTOR_TBLOFF_S                                                7
 
@@ -2553,6 +2599,7 @@
 //
 // Register key. Writing to this register (AIRCR) requires 0x05FA in VECTKEY.
 // Otherwise the write value is ignored. Read always returns 0xFA05.
+#define CPU_SCS_AIRCR_VECTKEY_W                                             16
 #define CPU_SCS_AIRCR_VECTKEY_M                                     0xFFFF0000
 #define CPU_SCS_AIRCR_VECTKEY_S                                             16
 
@@ -2579,6 +2626,7 @@
 // means that the PRIGROUP value represents a point starting at the left of the
 // Least Significant Bit (LSB). The lowest value might not be 0 depending on
 // the number of bits allocated for priorities, and implementation choices.
+#define CPU_SCS_AIRCR_PRIGROUP_W                                             3
 #define CPU_SCS_AIRCR_PRIGROUP_M                                    0x00000700
 #define CPU_SCS_AIRCR_PRIGROUP_S                                             8
 
@@ -2773,18 +2821,21 @@
 // Field: [23:16] PRI_6
 //
 // Priority of system handler 6. UsageFault
+#define CPU_SCS_SHPR1_PRI_6_W                                                8
 #define CPU_SCS_SHPR1_PRI_6_M                                       0x00FF0000
 #define CPU_SCS_SHPR1_PRI_6_S                                               16
 
 // Field:  [15:8] PRI_5
 //
 // Priority of system handler 5: BusFault
+#define CPU_SCS_SHPR1_PRI_5_W                                                8
 #define CPU_SCS_SHPR1_PRI_5_M                                       0x0000FF00
 #define CPU_SCS_SHPR1_PRI_5_S                                                8
 
 // Field:   [7:0] PRI_4
 //
 // Priority of system handler 4: MemManage
+#define CPU_SCS_SHPR1_PRI_4_W                                                8
 #define CPU_SCS_SHPR1_PRI_4_M                                       0x000000FF
 #define CPU_SCS_SHPR1_PRI_4_S                                                0
 
@@ -2796,6 +2847,7 @@
 // Field: [31:24] PRI_11
 //
 // Priority of system handler 11. SVCall
+#define CPU_SCS_SHPR2_PRI_11_W                                               8
 #define CPU_SCS_SHPR2_PRI_11_M                                      0xFF000000
 #define CPU_SCS_SHPR2_PRI_11_S                                              24
 
@@ -2807,18 +2859,21 @@
 // Field: [31:24] PRI_15
 //
 // Priority of system handler 15. SysTick exception
+#define CPU_SCS_SHPR3_PRI_15_W                                               8
 #define CPU_SCS_SHPR3_PRI_15_M                                      0xFF000000
 #define CPU_SCS_SHPR3_PRI_15_S                                              24
 
 // Field: [23:16] PRI_14
 //
 // Priority of system handler 14. Pend SV
+#define CPU_SCS_SHPR3_PRI_14_W                                               8
 #define CPU_SCS_SHPR3_PRI_14_M                                      0x00FF0000
 #define CPU_SCS_SHPR3_PRI_14_S                                              16
 
 // Field:   [7:0] PRI_12
 //
 // Priority of system handler 12. Debug Monitor
+#define CPU_SCS_SHPR3_PRI_12_W                                               8
 #define CPU_SCS_SHPR3_PRI_12_M                                      0x000000FF
 #define CPU_SCS_SHPR3_PRI_12_S                                               0
 
@@ -3315,6 +3370,7 @@
 // address can be any offset in the range of the requested size. Flags
 // CFSR.IACCVIOL, CFSR.DACCVIOL ,CFSR.MUNSTKERR and CFSR.MSTKERR in combination
 // with CFSR.MMARVALIDindicate the cause of the fault.
+#define CPU_SCS_MMFAR_ADDRESS_W                                             32
 #define CPU_SCS_MMFAR_ADDRESS_M                                     0xFFFFFFFF
 #define CPU_SCS_MMFAR_ADDRESS_S                                              0
 
@@ -3331,6 +3387,7 @@
 // Flags CFSR.IBUSERR, CFSR.PRECISERR, CFSR.IMPRECISERR, CFSR.UNSTKERR and
 // CFSR.STKERR in combination with CFSR.BFARVALID indicate the cause of the
 // fault.
+#define CPU_SCS_BFAR_ADDRESS_W                                              32
 #define CPU_SCS_BFAR_ADDRESS_M                                      0xFFFFFFFF
 #define CPU_SCS_BFAR_ADDRESS_S                                               0
 
@@ -3343,6 +3400,7 @@
 //
 // Implementation defined. The bits map directly onto the signal assignment to
 // the auxiliary fault inputs. Tied to 0
+#define CPU_SCS_AFSR_IMPDEF_W                                               32
 #define CPU_SCS_AFSR_IMPDEF_M                                       0xFFFFFFFF
 #define CPU_SCS_AFSR_IMPDEF_S                                                0
 
@@ -3362,6 +3420,7 @@
 // instructions can be added using the appropriate instruction attribute, but
 // other 32-bit basic instructions cannot.)
 // 0x3: Thumb-2 encoding with all Thumb-2 basic instructions
+#define CPU_SCS_ID_PFR0_STATE1_W                                             4
 #define CPU_SCS_ID_PFR0_STATE1_M                                    0x000000F0
 #define CPU_SCS_ID_PFR0_STATE1_S                                             4
 
@@ -3371,6 +3430,7 @@
 //
 // 0x0: No ARM encoding
 // 0x1: N/A
+#define CPU_SCS_ID_PFR0_STATE0_W                                             4
 #define CPU_SCS_ID_PFR0_STATE0_M                                    0x0000000F
 #define CPU_SCS_ID_PFR0_STATE0_S                                             0
 
@@ -3381,10 +3441,11 @@
 //*****************************************************************************
 // Field:  [11:8] MICROCONTROLLER_PROGRAMMERS_MODEL
 //
-// Microcontroller programmer&#39;s model
+// Microcontroller programmer's model
 //
 // 0x0: Not supported
 // 0x2: Two-stack support
+#define CPU_SCS_ID_PFR1_MICROCONTROLLER_PROGRAMMERS_MODEL_W                  4
 #define CPU_SCS_ID_PFR1_MICROCONTROLLER_PROGRAMMERS_MODEL_M         0x00000F00
 #define CPU_SCS_ID_PFR1_MICROCONTROLLER_PROGRAMMERS_MODEL_S                  8
 
@@ -3399,6 +3460,7 @@
 //
 // 0x0: Not supported
 // 0x1: Microcontroller debug v1 (ITMv1 and DWTv1)
+#define CPU_SCS_ID_DFR0_MICROCONTROLLER_DEBUG_MODEL_W                        4
 #define CPU_SCS_ID_DFR0_MICROCONTROLLER_DEBUG_MODEL_M               0x00F00000
 #define CPU_SCS_ID_DFR0_MICROCONTROLLER_DEBUG_MODEL_S                       20
 
@@ -3640,8 +3702,8 @@
 // 0x10: XPSR/flags, execution state information, and exception number
 // 0x11: MSP (Main SP)
 // 0x12: PSP (Process SP)
-// 0x14: CONTROL&#60;&#60;24 | FAULTMASK&#60;&#60;16 | BASEPRI&#60;&#60;8 |
-// PRIMASK
+// 0x14: CONTROL<<24 | FAULTMASK<<16 | BASEPRI<<8 | PRIMASK
+#define CPU_SCS_DCRSR_REGSEL_W                                               5
 #define CPU_SCS_DCRSR_REGSEL_M                                      0x0000001F
 #define CPU_SCS_DCRSR_REGSEL_S                                               0
 
@@ -3660,6 +3722,7 @@
 // can use this register for communication in non-halting debug. This enables
 // flags and bits to acknowledge state and indicate if commands have been
 // accepted to, replied to, or accepted and replied to.
+#define CPU_SCS_DCRDR_DCRDR_W                                               32
 #define CPU_SCS_DCRDR_DCRDR_M                                       0xFFFFFFFF
 #define CPU_SCS_DCRDR_DCRDR_S                                                0
 
@@ -3814,6 +3877,7 @@
 // Interrupt ID field. Writing a value to this bit-field is the same as
 // manually pending an interrupt by setting the corresponding interrupt bit in
 // an Interrupt Set Pending Register in NVIC_ISPR0 or NVIC_ISPR1.
+#define CPU_SCS_STIR_INTID_W                                                 9
 #define CPU_SCS_STIR_INTID_M                                        0x000001FF
 #define CPU_SCS_STIR_INTID_S                                                 0
 

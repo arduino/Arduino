@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aon_batmon_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,31 +43,31 @@
 // AON_BATMON component
 //
 //*****************************************************************************
-// Control
+// Internal
 #define AON_BATMON_O_CTL                                            0x00000000
 
-// Measurement Periode Configuration
+// Internal
 #define AON_BATMON_O_MEASCFG                                        0x00000004
 
-// Temperature Calculation Parameter 0
+// Internal
 #define AON_BATMON_O_TEMPP0                                         0x0000000C
 
-// Temperature Calculation Parameter 1
+// Internal
 #define AON_BATMON_O_TEMPP1                                         0x00000010
 
-// Temperature Calculation Parameter 2
+// Internal
 #define AON_BATMON_O_TEMPP2                                         0x00000014
 
-// Battery Voltage Calculation Parameter 0
+// Internal
 #define AON_BATMON_O_BATMONP0                                       0x00000018
 
-// Battery Voltage Calculation Parameter 1
+// Internal
 #define AON_BATMON_O_BATMONP1                                       0x0000001C
 
-// IO Drive Strength Conversion Parameter 0
+// Internal
 #define AON_BATMON_O_IOSTRP0                                        0x00000020
 
-// Flash Pump Conversion Parameter 0
+// Internal
 #define AON_BATMON_O_FLASHPUMPP0                                    0x00000024
 
 // Last Measured Battery Voltage
@@ -116,6 +116,7 @@
 // 16CYC                    Internal. Only to be used through TI provided API.
 // 8CYC                     Internal. Only to be used through TI provided API.
 // CONT                     Internal. Only to be used through TI provided API.
+#define AON_BATMON_MEASCFG_PER_W                                             2
 #define AON_BATMON_MEASCFG_PER_M                                    0x00000003
 #define AON_BATMON_MEASCFG_PER_S                                             0
 #define AON_BATMON_MEASCFG_PER_32CYC                                0x00000003
@@ -131,6 +132,7 @@
 // Field:   [7:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_TEMPP0_CFG_W                                              8
 #define AON_BATMON_TEMPP0_CFG_M                                     0x000000FF
 #define AON_BATMON_TEMPP0_CFG_S                                              0
 
@@ -142,6 +144,7 @@
 // Field:   [5:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_TEMPP1_CFG_W                                              6
 #define AON_BATMON_TEMPP1_CFG_M                                     0x0000003F
 #define AON_BATMON_TEMPP1_CFG_S                                              0
 
@@ -153,6 +156,7 @@
 // Field:   [4:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_TEMPP2_CFG_W                                              5
 #define AON_BATMON_TEMPP2_CFG_M                                     0x0000001F
 #define AON_BATMON_TEMPP2_CFG_S                                              0
 
@@ -164,6 +168,7 @@
 // Field:   [5:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_BATMONP0_CFG_W                                            6
 #define AON_BATMON_BATMONP0_CFG_M                                   0x0000003F
 #define AON_BATMON_BATMONP0_CFG_S                                            0
 
@@ -175,6 +180,7 @@
 // Field:   [5:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_BATMONP1_CFG_W                                            6
 #define AON_BATMON_BATMONP1_CFG_M                                   0x0000003F
 #define AON_BATMON_BATMONP1_CFG_S                                            0
 
@@ -186,12 +192,14 @@
 // Field:   [5:4] CFG2
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_IOSTRP0_CFG2_W                                            2
 #define AON_BATMON_IOSTRP0_CFG2_M                                   0x00000030
 #define AON_BATMON_IOSTRP0_CFG2_S                                            4
 
 // Field:   [3:0] CFG1
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_IOSTRP0_CFG1_W                                            4
 #define AON_BATMON_IOSTRP0_CFG1_M                                   0x0000000F
 #define AON_BATMON_IOSTRP0_CFG1_S                                            0
 
@@ -211,6 +219,7 @@
 // Field:   [7:6] HIGHLIM
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_FLASHPUMPP0_HIGHLIM_W                                     2
 #define AON_BATMON_FLASHPUMPP0_HIGHLIM_M                            0x000000C0
 #define AON_BATMON_FLASHPUMPP0_HIGHLIM_S                                     6
 
@@ -233,6 +242,7 @@
 // Field:   [3:0] CFG
 //
 // Internal. Only to be used through TI provided API.
+#define AON_BATMON_FLASHPUMPP0_CFG_W                                         4
 #define AON_BATMON_FLASHPUMPP0_CFG_M                                0x0000000F
 #define AON_BATMON_FLASHPUMPP0_CFG_S                                         0
 
@@ -249,6 +259,7 @@
 // ...
 // 0x3: 3V + fractional part
 // 0x4: 4V + fractional part
+#define AON_BATMON_BAT_INT_W                                                 3
 #define AON_BATMON_BAT_INT_M                                        0x00000700
 #define AON_BATMON_BAT_INT_S                                                 8
 
@@ -265,6 +276,7 @@
 // 0xA0: 1/2 + 1/8 = .625V
 // ...
 // 0xFF: Max
+#define AON_BATMON_BAT_FRAC_W                                                8
 #define AON_BATMON_BAT_FRAC_M                                       0x000000FF
 #define AON_BATMON_BAT_FRAC_S                                                0
 
@@ -294,7 +306,7 @@
 //
 // Integer part (signed) of temperature value.
 // Total value = INTEGER + FRACTIONAL
-// 2&#39;s complement encoding
+// 2's complement encoding
 //
 // 0x100: Min value
 // 0x1D8: -40C
@@ -303,6 +315,7 @@
 // 0x1B: 27C
 // 0x55: 85C
 // 0xFF: Max value
+#define AON_BATMON_TEMP_INT_W                                                9
 #define AON_BATMON_TEMP_INT_M                                       0x0001FF00
 #define AON_BATMON_TEMP_INT_S                                                8
 

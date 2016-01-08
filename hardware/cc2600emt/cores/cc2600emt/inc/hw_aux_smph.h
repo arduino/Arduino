@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aux_smph_h
-*  Revised:        2015-02-10 21:34:21 +0100 (ti, 10 feb 2015)
-*  Revision:       42642
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -238,6 +238,7 @@
 // Note: SW must wait until SMPH_AUTOTAKE_DONE event is triggered before
 // writing a new ID to SMPH_ID . Failing to do so might lead to permanently
 // lost semaphores as the owners may be unknown
+#define AUX_SMPH_AUTOTAKE_SMPH_ID_W                                          3
 #define AUX_SMPH_AUTOTAKE_SMPH_ID_M                                 0x00000007
 #define AUX_SMPH_AUTOTAKE_SMPH_ID_S                                          0
 

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aux_sce_h
-*  Revised:        2015-02-12 20:48:43 +0100 (to, 12 feb 2015)
-*  Revision:       42710
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,34 +43,34 @@
 // AUX_SCE component
 //
 //*****************************************************************************
-// Control
+// Internal
 #define AUX_SCE_O_CTL                                               0x00000000
 
-// Fetch Status
+// Internal
 #define AUX_SCE_O_FETCHSTAT                                         0x00000004
 
-// CPU Status
+// Internal
 #define AUX_SCE_O_CPUSTAT                                           0x00000008
 
-// Wake-up Status
+// Internal
 #define AUX_SCE_O_WUSTAT                                            0x0000000C
 
-// Registers 1 and 0
+// Internal
 #define AUX_SCE_O_REG1_0                                            0x00000010
 
-// Registers 3 and 2
+// Internal
 #define AUX_SCE_O_REG3_2                                            0x00000014
 
-// Registers 5 and 4
+// Internal
 #define AUX_SCE_O_REG5_4                                            0x00000018
 
-// Registers 7 and 6
+// Internal
 #define AUX_SCE_O_REG7_6                                            0x0000001C
 
-// Loop Address
+// Internal
 #define AUX_SCE_O_LOOPADDR                                          0x00000020
 
-// Loop Counter
+// Internal
 #define AUX_SCE_O_LOOPCNT                                           0x00000024
 
 //*****************************************************************************
@@ -81,18 +81,21 @@
 // Field: [31:24] FORCE_EV_LOW
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_CTL_FORCE_EV_LOW_W                                           8
 #define AUX_SCE_CTL_FORCE_EV_LOW_M                                  0xFF000000
 #define AUX_SCE_CTL_FORCE_EV_LOW_S                                          24
 
 // Field: [23:16] FORCE_EV_HIGH
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_CTL_FORCE_EV_HIGH_W                                          8
 #define AUX_SCE_CTL_FORCE_EV_HIGH_M                                 0x00FF0000
 #define AUX_SCE_CTL_FORCE_EV_HIGH_S                                         16
 
 // Field:  [11:8] RESET_VECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_CTL_RESET_VECTOR_W                                           4
 #define AUX_SCE_CTL_RESET_VECTOR_M                                  0x00000F00
 #define AUX_SCE_CTL_RESET_VECTOR_S                                           8
 
@@ -160,12 +163,14 @@
 // Field: [31:16] OPCODE
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_FETCHSTAT_OPCODE_W                                          16
 #define AUX_SCE_FETCHSTAT_OPCODE_M                                  0xFFFF0000
 #define AUX_SCE_FETCHSTAT_OPCODE_S                                          16
 
 // Field:  [15:0] PC
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_FETCHSTAT_PC_W                                              16
 #define AUX_SCE_FETCHSTAT_PC_M                                      0x0000FFFF
 #define AUX_SCE_FETCHSTAT_PC_S                                               0
 
@@ -246,6 +251,7 @@
 // Field: [17:16] EXC_VECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_WUSTAT_EXC_VECTOR_W                                          2
 #define AUX_SCE_WUSTAT_EXC_VECTOR_M                                 0x00030000
 #define AUX_SCE_WUSTAT_EXC_VECTOR_S                                         16
 
@@ -260,6 +266,7 @@
 // Field:   [7:0] EV_SIGNALS
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_WUSTAT_EV_SIGNALS_W                                          8
 #define AUX_SCE_WUSTAT_EV_SIGNALS_M                                 0x000000FF
 #define AUX_SCE_WUSTAT_EV_SIGNALS_S                                          0
 
@@ -271,12 +278,14 @@
 // Field: [31:16] REG1
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG1_0_REG1_W                                               16
 #define AUX_SCE_REG1_0_REG1_M                                       0xFFFF0000
 #define AUX_SCE_REG1_0_REG1_S                                               16
 
 // Field:  [15:0] REG0
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG1_0_REG0_W                                               16
 #define AUX_SCE_REG1_0_REG0_M                                       0x0000FFFF
 #define AUX_SCE_REG1_0_REG0_S                                                0
 
@@ -288,12 +297,14 @@
 // Field: [31:16] REG3
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG3_2_REG3_W                                               16
 #define AUX_SCE_REG3_2_REG3_M                                       0xFFFF0000
 #define AUX_SCE_REG3_2_REG3_S                                               16
 
 // Field:  [15:0] REG2
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG3_2_REG2_W                                               16
 #define AUX_SCE_REG3_2_REG2_M                                       0x0000FFFF
 #define AUX_SCE_REG3_2_REG2_S                                                0
 
@@ -305,12 +316,14 @@
 // Field: [31:16] REG5
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG5_4_REG5_W                                               16
 #define AUX_SCE_REG5_4_REG5_M                                       0xFFFF0000
 #define AUX_SCE_REG5_4_REG5_S                                               16
 
 // Field:  [15:0] REG4
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG5_4_REG4_W                                               16
 #define AUX_SCE_REG5_4_REG4_M                                       0x0000FFFF
 #define AUX_SCE_REG5_4_REG4_S                                                0
 
@@ -322,12 +335,14 @@
 // Field: [31:16] REG7
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG7_6_REG7_W                                               16
 #define AUX_SCE_REG7_6_REG7_M                                       0xFFFF0000
 #define AUX_SCE_REG7_6_REG7_S                                               16
 
 // Field:  [15:0] REG6
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_REG7_6_REG6_W                                               16
 #define AUX_SCE_REG7_6_REG6_M                                       0x0000FFFF
 #define AUX_SCE_REG7_6_REG6_S                                                0
 
@@ -339,12 +354,14 @@
 // Field: [31:16] STOP
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_LOOPADDR_STOP_W                                             16
 #define AUX_SCE_LOOPADDR_STOP_M                                     0xFFFF0000
 #define AUX_SCE_LOOPADDR_STOP_S                                             16
 
 // Field:  [15:0] START
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_LOOPADDR_START_W                                            16
 #define AUX_SCE_LOOPADDR_START_M                                    0x0000FFFF
 #define AUX_SCE_LOOPADDR_START_S                                             0
 
@@ -356,6 +373,7 @@
 // Field:   [7:0] ITER_LEFT
 //
 // Internal. Only to be used through TI provided API.
+#define AUX_SCE_LOOPCNT_ITER_LEFT_W                                          8
 #define AUX_SCE_LOOPCNT_ITER_LEFT_M                                 0x000000FF
 #define AUX_SCE_LOOPCNT_ITER_LEFT_S                                          0
 

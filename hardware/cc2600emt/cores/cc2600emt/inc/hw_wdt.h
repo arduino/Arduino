@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_wdt_h
-*  Revised:        2015-02-10 21:34:21 +0100 (ti, 10 feb 2015)
-*  Revision:       42642
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -81,6 +81,7 @@
 // this register is written, the value is immediately loaded and the counter is
 // restarted to count down from the new value. If this register is loaded with
 // 0x0000.0000, an interrupt is immediately generated.
+#define WDT_LOAD_WDTLOAD_W                                                  32
 #define WDT_LOAD_WDTLOAD_M                                          0xFFFFFFFF
 #define WDT_LOAD_WDTLOAD_S                                                   0
 
@@ -92,6 +93,7 @@
 // Field:  [31:0] WDTVALUE
 //
 //  This register contains the current count value of the timer.
+#define WDT_VALUE_WDTVALUE_W                                                32
 #define WDT_VALUE_WDTVALUE_M                                        0xFFFFFFFF
 #define WDT_VALUE_WDTVALUE_S                                                 0
 
@@ -160,6 +162,7 @@
 // This register is the interrupt clear register. A write of any value to this
 // register clears the WDT interrupt and reloads the 32-bit counter from the
 // LOAD register.
+#define WDT_ICR_WDTICR_W                                                    32
 #define WDT_ICR_WDTICR_M                                            0xFFFFFFFF
 #define WDT_ICR_WDTICR_S                                                     0
 
@@ -279,6 +282,7 @@
 //
 // 0x0000.0000: Unlocked
 // 0x0000.0001:  Locked
+#define WDT_LOCK_WDTLOCK_W                                                  32
 #define WDT_LOCK_WDTLOCK_M                                          0xFFFFFFFF
 #define WDT_LOCK_WDTLOCK_S                                                   0
 

@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       hw_ccfg_simple_struct_h
-*  Revised:        2015-03-03 09:29:52 +0100 (ti, 03 mar 2015)
+*  Revised:        2015-03-03 09:29:52 +0100 (Tue, 03 Mar 2015)
 *  Revision:       42862
 *
 * Copyright (c) 2015, Texas Instruments Incorporated

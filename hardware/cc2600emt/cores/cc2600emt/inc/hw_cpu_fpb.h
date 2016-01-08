@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_cpu_fpb_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -83,7 +83,8 @@
 // Number of full banks of code comparators, sixteen comparators per bank.
 // Where less than sixteen code comparators are provided, the bank count is
 // zero, and the number present indicated by NUM_CODE1. This read only field
-// contains 3&#39;b000 to indicate 0 banks for Cortex-M processor.
+// contains 3'b000 to indicate 0 banks for Cortex-M processor.
+#define CPU_FPB_CTRL_NUM_CODE2_W                                             2
 #define CPU_FPB_CTRL_NUM_CODE2_M                                    0x00003000
 #define CPU_FPB_CTRL_NUM_CODE2_S                                            12
 
@@ -93,6 +94,7 @@
 //
 // 0x0: No literal slots
 // 0x2: Two literal slots
+#define CPU_FPB_CTRL_NUM_LIT_W                                               4
 #define CPU_FPB_CTRL_NUM_LIT_M                                      0x00000F00
 #define CPU_FPB_CTRL_NUM_LIT_S                                               8
 
@@ -103,13 +105,14 @@
 // 0x0: No code slots
 // 0x2: Two code slots
 // 0x6: Six code slots
+#define CPU_FPB_CTRL_NUM_CODE1_W                                             4
 #define CPU_FPB_CTRL_NUM_CODE1_M                                    0x000000F0
 #define CPU_FPB_CTRL_NUM_CODE1_S                                             4
 
 // Field:     [1] KEY
 //
 // Key field. In order to write to this register, this bit-field must be
-// written to &#39;1&#39;. This bit always reads 0.
+// written to '1'. This bit always reads 0.
 #define CPU_FPB_CTRL_KEY                                            0x00000002
 #define CPU_FPB_CTRL_KEY_BITN                                                1
 #define CPU_FPB_CTRL_KEY_M                                          0x00000002
@@ -134,6 +137,7 @@
 // Field:  [28:5] REMAP
 //
 // Remap base address field.
+#define CPU_FPB_REMAP_REMAP_W                                               24
 #define CPU_FPB_REMAP_REMAP_M                                       0x1FFFFFE0
 #define CPU_FPB_REMAP_REMAP_S                                                5
 
@@ -151,12 +155,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP0_REPLACE_W                                              2
 #define CPU_FPB_COMP0_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP0_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP0_COMP_W                                                27
 #define CPU_FPB_COMP0_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP0_COMP_S                                                 2
 
@@ -186,12 +192,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP1_REPLACE_W                                              2
 #define CPU_FPB_COMP1_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP1_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP1_COMP_W                                                27
 #define CPU_FPB_COMP1_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP1_COMP_S                                                 2
 
@@ -221,12 +229,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP2_REPLACE_W                                              2
 #define CPU_FPB_COMP2_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP2_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP2_COMP_W                                                27
 #define CPU_FPB_COMP2_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP2_COMP_S                                                 2
 
@@ -256,12 +266,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP3_REPLACE_W                                              2
 #define CPU_FPB_COMP3_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP3_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP3_COMP_W                                                27
 #define CPU_FPB_COMP3_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP3_COMP_S                                                 2
 
@@ -291,12 +303,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP4_REPLACE_W                                              2
 #define CPU_FPB_COMP4_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP4_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP4_COMP_W                                                27
 #define CPU_FPB_COMP4_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP4_COMP_S                                                 2
 
@@ -326,12 +340,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP5_REPLACE_W                                              2
 #define CPU_FPB_COMP5_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP5_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP5_COMP_W                                                27
 #define CPU_FPB_COMP5_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP5_COMP_S                                                 2
 
@@ -362,12 +378,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP6_REPLACE_W                                              2
 #define CPU_FPB_COMP6_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP6_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP6_COMP_W                                                27
 #define CPU_FPB_COMP6_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP6_COMP_S                                                 2
 
@@ -398,12 +416,14 @@
 // 0x1: Set BKPT on lower halfword, upper is unaffected
 // 0x2: Set BKPT on upper halfword, lower is unaffected
 // 0x3: Set BKPT on both lower and upper halfwords.
+#define CPU_FPB_COMP7_REPLACE_W                                              2
 #define CPU_FPB_COMP7_REPLACE_M                                     0xC0000000
 #define CPU_FPB_COMP7_REPLACE_S                                             30
 
 // Field:  [28:2] COMP
 //
 // Comparison address.
+#define CPU_FPB_COMP7_COMP_W                                                27
 #define CPU_FPB_COMP7_COMP_M                                        0x1FFFFFFC
 #define CPU_FPB_COMP7_COMP_S                                                 2
 

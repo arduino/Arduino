@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_ddi_0_osc_h
-*  Revised:        2015-03-03 09:29:52 +0100 (ti, 03 mar 2015)
-*  Revision:       42862
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -64,7 +64,7 @@
 // Analog Bypass Values 1
 #define DDI_0_OSC_O_ANABYPASSVAL1                                   0x00000018
 
-// Analog Bypass Values 2
+// Internal
 #define DDI_0_OSC_O_ANABYPASSVAL2                                   0x0000001C
 
 // Analog Test Control
@@ -128,6 +128,7 @@
 // Field: [27:26] DOUBLER_START_DURATION
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_CTL0_DOUBLER_START_DURATION_W                              2
 #define DDI_0_OSC_CTL0_DOUBLER_START_DURATION_M                     0x0C000000
 #define DDI_0_OSC_CTL0_DOUBLER_START_DURATION_S                             26
 
@@ -165,6 +166,18 @@
 #define DDI_0_OSC_CTL0_ALLOW_SCLK_HF_SWITCHING_BITN                         16
 #define DDI_0_OSC_CTL0_ALLOW_SCLK_HF_SWITCHING_M                    0x00010000
 #define DDI_0_OSC_CTL0_ALLOW_SCLK_HF_SWITCHING_S                            16
+
+// Field:    [14] HPOSC_MODE_EN
+//
+// 0: HPOSC mode is not enabled.  The high frequency crystal is assumed to be
+// used as the synth reference clock.
+// 1: Enables 'HPOSC' mode.  When used the high frequency crystal clock is
+// assumed to be replaced with a HPOSC resonator. The synth reference clock
+// will come from the HPOSC.
+#define DDI_0_OSC_CTL0_HPOSC_MODE_EN                                0x00004000
+#define DDI_0_OSC_CTL0_HPOSC_MODE_EN_BITN                                   14
+#define DDI_0_OSC_CTL0_HPOSC_MODE_EN_M                              0x00004000
+#define DDI_0_OSC_CTL0_HPOSC_MODE_EN_S                                      14
 
 // Field:    [12] RCOSC_LF_TRIMMED
 //
@@ -232,6 +245,7 @@
 // 01: RCOSC_HF (24MHz)
 // 10: XOSC_HF (24MHz)
 // 11: Not used
+#define DDI_0_OSC_CTL0_ACLK_TDC_SRC_SEL_W                                    2
 #define DDI_0_OSC_CTL0_ACLK_TDC_SRC_SEL_M                           0x00000180
 #define DDI_0_OSC_CTL0_ACLK_TDC_SRC_SEL_S                                    7
 
@@ -243,6 +257,7 @@
 // 01: XOSC_HF derived (31.25kHz)
 // 10: RCOSC_LF (32kHz)
 // 11: XOSC_LF (32.768kHz)
+#define DDI_0_OSC_CTL0_ACLK_REF_SRC_SEL_W                                    2
 #define DDI_0_OSC_CTL0_ACLK_REF_SRC_SEL_M                           0x00000060
 #define DDI_0_OSC_CTL0_ACLK_REF_SRC_SEL_S                                    5
 
@@ -253,9 +268,10 @@
 // XOSCLF                   Low frequency XOSC
 // RCOSCLF                  Low frequency RCOSC
 // XOSCHFDLF                Low frequency clock derived from High Frequency
-// XOSC
+//                          XOSC
 // RCOSCHFDLF               Low frequency clock derived from High Frequency
-// RCOSC
+//                          RCOSC
+#define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_W                                     2
 #define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_M                            0x0000000C
 #define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_S                                     2
 #define DDI_0_OSC_CTL0_SCLK_LF_SRC_SEL_XOSCLF                       0x0000000C
@@ -268,7 +284,7 @@
 // Internal. Only to be used through TI provided API.
 // ENUMs:
 // XCOSCHFDMF               Medium frequency clock derived from high frequency
-// XOSC.
+//                          XOSC.
 // RCOSCHFDMF               Internal. Only to be used through TI provided API.
 #define DDI_0_OSC_CTL0_SCLK_MF_SRC_SEL                              0x00000002
 #define DDI_0_OSC_CTL0_SCLK_MF_SRC_SEL_BITN                                  1
@@ -298,6 +314,7 @@
 // Field: [22:18] RCOSCHFCTRIMFRACT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_CTL1_RCOSCHFCTRIMFRACT_W                                   5
 #define DDI_0_OSC_CTL1_RCOSCHFCTRIMFRACT_M                          0x007C0000
 #define DDI_0_OSC_CTL1_RCOSCHFCTRIMFRACT_S                                  18
 
@@ -312,6 +329,7 @@
 // Field:   [1:0] XOSC_HF_FAST_START
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_CTL1_XOSC_HF_FAST_START_W                                  2
 #define DDI_0_OSC_CTL1_XOSC_HF_FAST_START_M                         0x00000003
 #define DDI_0_OSC_CTL1_XOSC_HF_FAST_START_S                                  0
 
@@ -323,24 +341,28 @@
 // Field: [31:22] HPM_IBIAS_WAIT_CNT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_RADCEXTCFG_HPM_IBIAS_WAIT_CNT_W                           10
 #define DDI_0_OSC_RADCEXTCFG_HPM_IBIAS_WAIT_CNT_M                   0xFFC00000
 #define DDI_0_OSC_RADCEXTCFG_HPM_IBIAS_WAIT_CNT_S                           22
 
 // Field: [21:16] LPM_IBIAS_WAIT_CNT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_RADCEXTCFG_LPM_IBIAS_WAIT_CNT_W                            6
 #define DDI_0_OSC_RADCEXTCFG_LPM_IBIAS_WAIT_CNT_M                   0x003F0000
 #define DDI_0_OSC_RADCEXTCFG_LPM_IBIAS_WAIT_CNT_S                           16
 
 // Field: [15:12] IDAC_STEP
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_RADCEXTCFG_IDAC_STEP_W                                     4
 #define DDI_0_OSC_RADCEXTCFG_IDAC_STEP_M                            0x0000F000
 #define DDI_0_OSC_RADCEXTCFG_IDAC_STEP_S                                    12
 
 // Field:  [11:6] RADC_DAC_TH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_RADCEXTCFG_RADC_DAC_TH_W                                   6
 #define DDI_0_OSC_RADCEXTCFG_RADC_DAC_TH_M                          0x00000FC0
 #define DDI_0_OSC_RADCEXTCFG_RADC_DAC_TH_S                                   6
 
@@ -373,6 +395,7 @@
 // 500KHZ                   Internal. Only to be used through TI provided API.
 // 1MHZ                     Internal. Only to be used through TI provided API.
 // 2MHZ                     Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_AMPCOMP_FSM_UPDATE_RATE_W                       2
 #define DDI_0_OSC_AMPCOMPCTL_AMPCOMP_FSM_UPDATE_RATE_M              0x30000000
 #define DDI_0_OSC_AMPCOMPCTL_AMPCOMP_FSM_UPDATE_RATE_S                      28
 #define DDI_0_OSC_AMPCOMPCTL_AMPCOMP_FSM_UPDATE_RATE_250KHZ         0x30000000
@@ -399,30 +422,35 @@
 // Field: [23:20] IBIAS_OFFSET
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_W                                  4
 #define DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_M                         0x00F00000
 #define DDI_0_OSC_AMPCOMPCTL_IBIAS_OFFSET_S                                 20
 
 // Field: [19:16] IBIAS_INIT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_W                                    4
 #define DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_M                           0x000F0000
 #define DDI_0_OSC_AMPCOMPCTL_IBIAS_INIT_S                                   16
 
 // Field:  [15:8] LPM_IBIAS_WAIT_CNT_FINAL
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_LPM_IBIAS_WAIT_CNT_FINAL_W                      8
 #define DDI_0_OSC_AMPCOMPCTL_LPM_IBIAS_WAIT_CNT_FINAL_M             0x0000FF00
 #define DDI_0_OSC_AMPCOMPCTL_LPM_IBIAS_WAIT_CNT_FINAL_S                      8
 
 // Field:   [7:4] CAP_STEP
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_CAP_STEP_W                                      4
 #define DDI_0_OSC_AMPCOMPCTL_CAP_STEP_M                             0x000000F0
 #define DDI_0_OSC_AMPCOMPCTL_CAP_STEP_S                                      4
 
 // Field:   [3:0] IBIASCAP_HPTOLP_OL_CNT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPCTL_IBIASCAP_HPTOLP_OL_CNT_W                        4
 #define DDI_0_OSC_AMPCOMPCTL_IBIASCAP_HPTOLP_OL_CNT_M               0x0000000F
 #define DDI_0_OSC_AMPCOMPCTL_IBIASCAP_HPTOLP_OL_CNT_S                        0
 
@@ -434,24 +462,28 @@
 // Field: [23:18] HPMRAMP3_LTH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_W                                  6
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_M                         0x00FC0000
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_LTH_S                                 18
 
 // Field: [15:10] HPMRAMP3_HTH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_HTH_W                                  6
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_HTH_M                         0x0000FC00
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP3_HTH_S                                 10
 
 // Field:   [9:6] IBIASCAP_LPTOHP_OL_CNT
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH1_IBIASCAP_LPTOHP_OL_CNT_W                        4
 #define DDI_0_OSC_AMPCOMPTH1_IBIASCAP_LPTOHP_OL_CNT_M               0x000003C0
 #define DDI_0_OSC_AMPCOMPTH1_IBIASCAP_LPTOHP_OL_CNT_S                        6
 
 // Field:   [5:0] HPMRAMP1_TH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH1_HPMRAMP1_TH_W                                   6
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP1_TH_M                          0x0000003F
 #define DDI_0_OSC_AMPCOMPTH1_HPMRAMP1_TH_S                                   0
 
@@ -463,24 +495,28 @@
 // Field: [31:26] LPMUPDATE_LTH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_LTH_W                                 6
 #define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_LTH_M                        0xFC000000
 #define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_LTH_S                                26
 
 // Field: [23:18] LPMUPDATE_HTH
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_HTH_W                                 6
 #define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_HTH_M                        0x00FC0000
 #define DDI_0_OSC_AMPCOMPTH2_LPMUPDATE_HTH_S                                18
 
 // Field: [15:10] ADC_COMP_AMPTH_LPM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_LPM_W                            6
 #define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_LPM_M                   0x0000FC00
 #define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_LPM_S                           10
 
 // Field:   [7:2] ADC_COMP_AMPTH_HPM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_HPM_W                            6
 #define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_HPM_M                   0x000000FC
 #define DDI_0_OSC_AMPCOMPTH2_ADC_COMP_AMPTH_HPM_S                            2
 
@@ -492,12 +528,14 @@
 // Field: [19:16] XOSC_HF_ROW_Q12
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_ROW_Q12_W                            4
 #define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_ROW_Q12_M                   0x000F0000
 #define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_ROW_Q12_S                           16
 
 // Field:  [15:0] XOSC_HF_COLUMN_Q12
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_COLUMN_Q12_W                        16
 #define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_COLUMN_Q12_M                0x0000FFFF
 #define DDI_0_OSC_ANABYPASSVAL1_XOSC_HF_COLUMN_Q12_S                         0
 
@@ -509,6 +547,7 @@
 // Field:  [13:0] XOSC_HF_IBIASTHERM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_ANABYPASSVAL2_XOSC_HF_IBIASTHERM_W                        14
 #define DDI_0_OSC_ANABYPASSVAL2_XOSC_HF_IBIASTHERM_M                0x00003FFF
 #define DDI_0_OSC_ANABYPASSVAL2_XOSC_HF_IBIASTHERM_S                         0
 
@@ -566,6 +605,7 @@
 // Field:   [1:0] ADC_IREF_CTRL
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_IREF_CTRL_W                       2
 #define DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_IREF_CTRL_M              0x00000003
 #define DDI_0_OSC_ADCDOUBLERNANOAMPCTL_ADC_IREF_CTRL_S                       0
 
@@ -577,6 +617,7 @@
 // Field:   [9:8] PEAK_DET_ITRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_XOSCHFCTL_PEAK_DET_ITRIM_W                                 2
 #define DDI_0_OSC_XOSCHFCTL_PEAK_DET_ITRIM_M                        0x00000300
 #define DDI_0_OSC_XOSCHFCTL_PEAK_DET_ITRIM_S                                 8
 
@@ -591,12 +632,14 @@
 // Field:   [4:2] HP_BUF_ITRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_XOSCHFCTL_HP_BUF_ITRIM_W                                   3
 #define DDI_0_OSC_XOSCHFCTL_HP_BUF_ITRIM_M                          0x0000001C
 #define DDI_0_OSC_XOSCHFCTL_HP_BUF_ITRIM_S                                   2
 
 // Field:   [1:0] LP_BUF_ITRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_XOSCHFCTL_LP_BUF_ITRIM_W                                   2
 #define DDI_0_OSC_XOSCHFCTL_LP_BUF_ITRIM_M                          0x00000003
 #define DDI_0_OSC_XOSCHFCTL_LP_BUF_ITRIM_S                                   0
 
@@ -608,12 +651,14 @@
 // Field: [23:22] XOSCLF_REGULATOR_TRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_LFOSCCTL_XOSCLF_REGULATOR_TRIM_W                           2
 #define DDI_0_OSC_LFOSCCTL_XOSCLF_REGULATOR_TRIM_M                  0x00C00000
 #define DDI_0_OSC_LFOSCCTL_XOSCLF_REGULATOR_TRIM_S                          22
 
 // Field: [21:18] XOSCLF_CMIRRWR_RATIO
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_LFOSCCTL_XOSCLF_CMIRRWR_RATIO_W                            4
 #define DDI_0_OSC_LFOSCCTL_XOSCLF_CMIRRWR_RATIO_M                   0x003C0000
 #define DDI_0_OSC_LFOSCCTL_XOSCLF_CMIRRWR_RATIO_S                           18
 
@@ -625,6 +670,7 @@
 // 6P5MEG                   Internal. Only to be used through TI provided API.
 // 7P0MEG                   Internal. Only to be used through TI provided API.
 // 7P5MEG                   Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_W                              2
 #define DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_M                     0x00000300
 #define DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_S                              8
 #define DDI_0_OSC_LFOSCCTL_RCOSCLF_RTUNE_TRIM_6P0MEG                0x00000300
@@ -635,6 +681,7 @@
 // Field:   [7:0] RCOSCLF_CTUNE_TRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_W                              8
 #define DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_M                     0x000000FF
 #define DDI_0_OSC_LFOSCCTL_RCOSCLF_CTUNE_TRIM_S                              0
 
@@ -646,6 +693,7 @@
 // Field:  [15:8] RCOSCHF_CTRIM
 //
 // Internal. Only to be used through TI provided API.
+#define DDI_0_OSC_RCOSCHFCTL_RCOSCHF_CTRIM_W                                 8
 #define DDI_0_OSC_RCOSCHFCTL_RCOSCHF_CTRIM_M                        0x0000FF00
 #define DDI_0_OSC_RCOSCHFCTL_RCOSCHF_CTRIM_S                                 8
 
@@ -661,9 +709,10 @@
 // XOSCLF                   Low frequency XOSC
 // RCOSCLF                  Low frequency RCOSC
 // XOSCHFDLF                Low frequency clock derived from High Frequency
-// XOSC
+//                          XOSC
 // RCOSCHFDLF               Low frequency clock derived from High Frequency
-// RCOSC
+//                          RCOSC
+#define DDI_0_OSC_STAT0_SCLK_LF_SRC_W                                        2
 #define DDI_0_OSC_STAT0_SCLK_LF_SRC_M                               0x60000000
 #define DDI_0_OSC_STAT0_SCLK_LF_SRC_S                                       29
 #define DDI_0_OSC_STAT0_SCLK_LF_SRC_XOSCLF                          0x60000000
@@ -794,6 +843,7 @@
 // Field:   [6:1] ADC_DATA
 //
 // adc_data
+#define DDI_0_OSC_STAT0_ADC_DATA_W                                           6
 #define DDI_0_OSC_STAT0_ADC_DATA_M                                  0x0000007E
 #define DDI_0_OSC_STAT0_ADC_DATA_S                                           1
 
@@ -829,6 +879,7 @@
 // HPM_RAMP1                HPM_RAMP1
 // INITIALIZATION           INITIALIZATION
 // RESET                    RESET
+#define DDI_0_OSC_STAT1_RAMPSTATE_W                                          4
 #define DDI_0_OSC_STAT1_RAMPSTATE_M                                 0xF0000000
 #define DDI_0_OSC_STAT1_RAMPSTATE_S                                         28
 #define DDI_0_OSC_STAT1_RAMPSTATE_FAST_START_SETTLE                 0xE0000000
@@ -851,6 +902,7 @@
 //
 // OSC amplitude during HPM_UPDATE state.
 // The vaue is an unsigned interger. It is used for debug only.
+#define DDI_0_OSC_STAT1_HMP_UPDATE_AMP_W                                     6
 #define DDI_0_OSC_STAT1_HMP_UPDATE_AMP_M                            0x0FC00000
 #define DDI_0_OSC_STAT1_HMP_UPDATE_AMP_S                                    22
 
@@ -858,6 +910,7 @@
 //
 // OSC amplitude during LPM_UPDATE state
 // The vaue is an unsigned interger. It is used for debug only.
+#define DDI_0_OSC_STAT1_LPM_UPDATE_AMP_W                                     6
 #define DDI_0_OSC_STAT1_LPM_UPDATE_AMP_M                            0x003F0000
 #define DDI_0_OSC_STAT1_LPM_UPDATE_AMP_S                                    16
 
@@ -998,6 +1051,7 @@
 //
 // DC Bias read by RADC during SAR mode
 // The vaue is an unsigned interger. It is used for debug only.
+#define DDI_0_OSC_STAT2_ADC_DCBIAS_W                                         6
 #define DDI_0_OSC_STAT2_ADC_DCBIAS_M                                0xFC000000
 #define DDI_0_OSC_STAT2_ADC_DCBIAS_S                                        26
 
@@ -1030,6 +1084,7 @@
 // xosc_hf amplitude compensation FSM
 //
 // This is identical to STAT1.RAMPSTATE. See that description for encoding.
+#define DDI_0_OSC_STAT2_RAMPSTATE_W                                          4
 #define DDI_0_OSC_STAT2_RAMPSTATE_M                                 0x0000F000
 #define DDI_0_OSC_STAT2_RAMPSTATE_S                                         12
 

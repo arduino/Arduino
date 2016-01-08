@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_cpu_rom_table_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -75,7 +75,8 @@
 // Field:  [31:0] SCS
 //
 // Points to the SCS at 0xE000E000.
-// (SCS + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE000E000.
+// (SCS + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE000E000.
+#define CPU_ROM_TABLE_SCS_SCS_W                                             32
 #define CPU_ROM_TABLE_SCS_SCS_M                                     0xFFFFFFFF
 #define CPU_ROM_TABLE_SCS_SCS_S                                              0
 
@@ -87,7 +88,8 @@
 // Field:  [31:1] DWT
 //
 // Points to the Data Watchpoint and Trace block at 0xE0001000.
-// (2*DWT + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE0001000.
+// (2*DWT + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE0001000.
+#define CPU_ROM_TABLE_DWT_DWT_W                                             31
 #define CPU_ROM_TABLE_DWT_DWT_M                                     0xFFFFFFFE
 #define CPU_ROM_TABLE_DWT_DWT_S                                              1
 
@@ -108,7 +110,8 @@
 // Field:  [31:1] FPB
 //
 // Points to the Flash Patch and Breakpoint block at 0xE0002000.
-// (2*FPB + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE0002000.
+// (2*FPB + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE0002000.
+#define CPU_ROM_TABLE_FPB_FPB_W                                             31
 #define CPU_ROM_TABLE_FPB_FPB_M                                     0xFFFFFFFE
 #define CPU_ROM_TABLE_FPB_FPB_S                                              1
 
@@ -129,7 +132,8 @@
 // Field:  [31:1] ITM
 //
 // Points to the Instrumentation Trace block at 0xE0000000.
-// (2*ITM + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE0000000.
+// (2*ITM + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE0000000.
+#define CPU_ROM_TABLE_ITM_ITM_W                                             31
 #define CPU_ROM_TABLE_ITM_ITM_M                                     0xFFFFFFFE
 #define CPU_ROM_TABLE_ITM_ITM_S                                              1
 
@@ -150,7 +154,8 @@
 // Field:  [31:1] TPIU
 //
 // Points to the TPIU. TPIU is at 0xE0040000.
-// (2*TPIU + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE0040000.
+// (2*TPIU + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE0040000.
+#define CPU_ROM_TABLE_TPIU_TPIU_W                                           31
 #define CPU_ROM_TABLE_TPIU_TPIU_M                                   0xFFFFFFFE
 #define CPU_ROM_TABLE_TPIU_TPIU_S                                            1
 
@@ -171,7 +176,8 @@
 // Field:  [31:1] ETM
 //
 // Points to the ETM. ETM is at 0xE0041000.
-// (2*ETM + Base address for ROM_TABLE) &#38; 0x0FFFFFFF0 = 0xE0041000.
+// (2*ETM + Base address for ROM_TABLE) & 0x0FFFFFFF0 = 0xE0041000.
+#define CPU_ROM_TABLE_ETM_ETM_W                                             31
 #define CPU_ROM_TABLE_ETM_ETM_M                                     0xFFFFFFFE
 #define CPU_ROM_TABLE_ETM_ETM_S                                              1
 
@@ -192,6 +198,7 @@
 // Field:  [31:0] END
 //
 // End of the ROM table
+#define CPU_ROM_TABLE_END_END_W                                             32
 #define CPU_ROM_TABLE_END_END_M                                     0xFFFFFFFF
 #define CPU_ROM_TABLE_END_END_S                                              0
 

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_i2c_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -106,6 +106,7 @@
 //
 // I2C slave own address
 // This field specifies bits a6 through a0 of the slave address.
+#define I2C_SOAR_OAR_W                                                       7
 #define I2C_SOAR_OAR_M                                              0x0000007F
 #define I2C_SOAR_OAR_S                                                       0
 
@@ -119,7 +120,7 @@
 // First byte received
 //
 // 0: The first byte has not been received.
-// 1: The first byte following the slave&#39;s own address has been received.
+// 1: The first byte following the slave's own address has been received.
 //
 // This bit is only valid when the RREQ bit is set and is automatically cleared
 // when data has been read from the SDR register.
@@ -184,6 +185,7 @@
 // read, this register returns the last data received.
 // Data is stored until next update, either by a system write for transmit or
 // by an external master for receive.
+#define I2C_SDR_DATA_W                                                       8
 #define I2C_SDR_DATA_M                                              0x000000FF
 #define I2C_SDR_DATA_S                                                       0
 
@@ -373,6 +375,7 @@
 //
 // I2C master slave address
 // Defines which slave is addressed for the transaction in master mode
+#define I2C_MSA_SA_W                                                         7
 #define I2C_MSA_SA_M                                                0x000000FE
 #define I2C_MSA_SA_S                                                         1
 
@@ -567,6 +570,7 @@
 //
 // When Read: Last RX Data is returned
 // When Written: Data is transferred during TX  transaction
+#define I2C_MDR_DATA_W                                                       8
 #define I2C_MDR_DATA_M                                              0x000000FF
 #define I2C_MDR_DATA_S                                                       0
 
@@ -594,6 +598,7 @@
 // SCL_LP is the SCL low period (fixed at 6).
 // SCL_HP is the SCL high period (fixed at 4).
 // CLK_PRD is the system clock period in ns.
+#define I2C_MTPR_TPR_W                                                       7
 #define I2C_MTPR_TPR_M                                              0x0000007F
 #define I2C_MTPR_TPR_S                                                       0
 

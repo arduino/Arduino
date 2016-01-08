@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aux_timer_h
-*  Revised:        2015-02-10 21:34:21 +0100 (ti, 10 feb 2015)
-*  Revision:       42642
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -114,6 +114,7 @@
 // AUX_COMPB                Selects AUX_COMPB
 // AUX_COMPA                Selects AUX_COMPA
 // RTC_CH2_EV               Selects RTC_CH2_EV
+#define AUX_TIMER_T0CFG_TICK_SRC_W                                           5
 #define AUX_TIMER_T0CFG_TICK_SRC_M                                  0x00001F00
 #define AUX_TIMER_T0CFG_TICK_SRC_S                                           8
 #define AUX_TIMER_T0CFG_TICK_SRC_ADC_IRQ                            0x00001F00
@@ -151,6 +152,7 @@
 // Field:   [7:4] PRE
 //
 // Prescaler division ratio is 2^PRE
+#define AUX_TIMER_T0CFG_PRE_W                                                4
 #define AUX_TIMER_T0CFG_PRE_M                                       0x000000F0
 #define AUX_TIMER_T0CFG_PRE_S                                                4
 
@@ -159,9 +161,10 @@
 // Timer 0 mode
 // ENUMs:
 // TICK                     Timer 0 counter increments only on edges of the
-// event set by TICK_SRC. The events are divided by the PRE setting.
+//                          event set by TICK_SRC. The events are divided
+//                          by the PRE setting.
 // CLK                      Timer 0 increments on every 2^PRE edges of AUX
-// clock
+//                          clock
 #define AUX_TIMER_T0CFG_MODE                                        0x00000002
 #define AUX_TIMER_T0CFG_MODE_BITN                                            1
 #define AUX_TIMER_T0CFG_MODE_M                                      0x00000002
@@ -174,7 +177,7 @@
 // Timer 0 reload setting
 // ENUMs:
 // CONT                     Timer is automatically restarted when target is
-// reached
+//                          reached
 // MAN                      Timer has to be restarted manually
 #define AUX_TIMER_T0CFG_RELOAD                                      0x00000001
 #define AUX_TIMER_T0CFG_RELOAD_BITN                                          0
@@ -236,6 +239,7 @@
 // AUX_COMPB                Selects AUX_COMPB
 // AUX_COMPA                Selects AUX_COMPA
 // RTC_CH2_EV               Selects RTC_CH2_EV
+#define AUX_TIMER_T1CFG_TICK_SRC_W                                           5
 #define AUX_TIMER_T1CFG_TICK_SRC_M                                  0x00001F00
 #define AUX_TIMER_T1CFG_TICK_SRC_S                                           8
 #define AUX_TIMER_T1CFG_TICK_SRC_ADC_IRQ                            0x00001F00
@@ -273,6 +277,7 @@
 // Field:   [7:4] PRE
 //
 // Prescaler division ratio is 2^PRE
+#define AUX_TIMER_T1CFG_PRE_W                                                4
 #define AUX_TIMER_T1CFG_PRE_M                                       0x000000F0
 #define AUX_TIMER_T1CFG_PRE_S                                                4
 
@@ -281,9 +286,10 @@
 // Timer 1 mode
 // ENUMs:
 // TICK                     Timer 1 counter increments only on edges of the
-// event set by TICK_SRC. The events are divided by the PRE setting.
+//                          event set by TICK_SRC. The events are divided
+//                          by the PRE setting.
 // CLK                      Timer 1 increments on every 2^PRE edges of AUX
-// clock
+//                          clock
 #define AUX_TIMER_T1CFG_MODE                                        0x00000002
 #define AUX_TIMER_T1CFG_MODE_BITN                                            1
 #define AUX_TIMER_T1CFG_MODE_M                                      0x00000002
@@ -296,7 +302,7 @@
 // Timer 1 reload setting
 // ENUMs:
 // CONT                     Timer is automatically restarted when target is
-// reached
+//                          reached
 // MAN                      Timer has to be restarted manually
 #define AUX_TIMER_T1CFG_RELOAD                                      0x00000001
 #define AUX_TIMER_T1CFG_RELOAD_BITN                                          0
@@ -337,6 +343,7 @@
 //
 // If T0CFG.MODE=0,no prescaler is used, and VALUE equals 1, the TIMER0_EV
 // event line will be always set
+#define AUX_TIMER_T0TARGET_VALUE_W                                          16
 #define AUX_TIMER_T0TARGET_VALUE_M                                  0x0000FFFF
 #define AUX_TIMER_T0TARGET_VALUE_S                                           0
 
@@ -354,6 +361,7 @@
 //
 // If T1CFG.MODE=0,no prescaler is used, and VALUE equals 1, the TIMER1_EV
 // event line will be always set
+#define AUX_TIMER_T1TARGET_VALUE_W                                           8
 #define AUX_TIMER_T1TARGET_VALUE_M                                  0x000000FF
 #define AUX_TIMER_T1TARGET_VALUE_S                                           0
 

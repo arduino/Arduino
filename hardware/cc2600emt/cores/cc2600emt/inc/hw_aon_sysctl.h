@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aon_sysctl_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -147,7 +147,7 @@
 // SHUTDOWN has occurred as a result of the debugger being attached.. (TCK pin
 // being forced low)
 //
-// Please refer to [IOC:IOCFGn,.WU_CFG] for configuring the IO&#39;s as wakeup
+// Please refer to [IOC:IOCFGn,.WU_CFG] for configuring the IO's as wakeup
 // sources.
 //
 // 0: Wakeup occurred from cold reset or brown out as seen in RESET_SRC
@@ -164,7 +164,7 @@
 //
 // A wakeup from SHUTDOWN on an IO event has occurred
 //
-// Please refer to [IOC:IOCFGn,.WU_CFG] for configuring the IO&#39;s as wakeup
+// Please refer to [IOC:IOCFGn,.WU_CFG] for configuring the IO's as wakeup
 // sources.
 //
 // 0: The wakeup did not occur from SHUTDOWN on an IO event
@@ -310,6 +310,7 @@
 // VDDS_LOSS                Brown out detect on VDDS
 // PIN_RESET                Reset pin
 // PWR_ON                   Power on reset
+#define AON_SYSCTL_RESETCTL_RESET_SRC_W                                      3
 #define AON_SYSCTL_RESETCTL_RESET_SRC_M                             0x0000000E
 #define AON_SYSCTL_RESETCTL_RESET_SRC_S                                      1
 #define AON_SYSCTL_RESETCTL_RESET_SRC_WARMRESET                     0x0000000E
@@ -336,8 +337,8 @@
 // toggle.
 // 1: I/O pad sleep mode is disabled
 //
-// Application software may want to reconfigure the state for all IO&#39;s
-// before setting this bitfield upon waking up from a SHUTDOWN.
+// Application software may want to reconfigure the state for all IO's before
+// setting this bitfield upon waking up from a SHUTDOWN.
 #define AON_SYSCTL_SLEEPCTL_IO_PAD_SLEEP_DIS                        0x00000001
 #define AON_SYSCTL_SLEEPCTL_IO_PAD_SLEEP_DIS_BITN                            0
 #define AON_SYSCTL_SLEEPCTL_IO_PAD_SLEEP_DIS_M                      0x00000001

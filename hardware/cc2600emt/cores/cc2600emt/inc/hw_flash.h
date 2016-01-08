@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_flash_h
-*  Revised:        2015-02-12 20:48:43 +0100 (to, 12 feb 2015)
-*  Revision:       42710
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -46,370 +46,370 @@
 // FMC and Efuse Status
 #define FLASH_O_STAT                                                0x0000001C
 
-// Configuration
+// Internal
 #define FLASH_O_CFG                                                 0x00000024
 
-// Syscode Start Address Offset Configuration
+// Internal
 #define FLASH_O_SYSCODE_START                                       0x00000028
 
-// Flash Size Configuration
+// Internal
 #define FLASH_O_FLASH_SIZE                                          0x0000002C
 
-// Firmware Lock
+// Internal
 #define FLASH_O_FWLOCK                                              0x0000003C
 
-// Firmware Flags
+// Internal
 #define FLASH_O_FWFLAG                                              0x00000040
 
-// E-Fuse instruction register
+// Internal
 #define FLASH_O_EFUSE                                               0x00001000
 
-// E-Fuse address register
+// Internal
 #define FLASH_O_EFUSEADDR                                           0x00001004
 
-// E-Fuse data register - upper
+// Internal
 #define FLASH_O_DATAUPPER                                           0x00001008
 
-// E-fuse data register - lower
+// Internal
 #define FLASH_O_DATALOWER                                           0x0000100C
 
-// OCP standard system configuration register
+// Internal
 #define FLASH_O_EFUSECFG                                            0x00001010
 
-// System Status
+// Internal
 #define FLASH_O_EFUSESTAT                                           0x00001014
 
-// Arbitrary Instruction count
+// Internal
 #define FLASH_O_ACC                                                 0x00001018
 
-// Boundary test register to drive I/O
+// Internal
 #define FLASH_O_BOUNDARY                                            0x0000101C
 
-// Efuse Key Loaded Flag
+// Internal
 #define FLASH_O_EFUSEFLAG                                           0x00001020
 
-// Efuse Key
+// Internal
 #define FLASH_O_EFUSEKEY                                            0x00001024
 
-// Efuse Release
+// Internal
 #define FLASH_O_EFUSERELEASE                                        0x00001028
 
-// Efuse Pins
+// Internal
 #define FLASH_O_EFUSEPINS                                           0x0000102C
 
-// Efuse Column Repair Address
+// Internal
 #define FLASH_O_EFUSECRA                                            0x00001030
 
-// Efuse Read
+// Internal
 #define FLASH_O_EFUSEREAD                                           0x00001034
 
-// Efuse Program
+// Internal
 #define FLASH_O_EFUSEPROGRAM                                        0x00001038
 
-// Efuse Error
+// Internal
 #define FLASH_O_EFUSEERROR                                          0x0000103C
 
-// Single-Bit Error Status
+// Internal
 #define FLASH_O_SINGLEBIT                                           0x00001040
 
-// Two-Bit Error Status
+// Internal
 #define FLASH_O_TWOBIT                                              0x00001044
 
-// Self-Test Cycles
+// Internal
 #define FLASH_O_SELFTESTCYC                                         0x00001048
 
-// Self-Test Signature
+// Internal
 #define FLASH_O_SELFTESTSIGN                                        0x0000104C
 
-// FMC Read Control
+// Internal
 #define FLASH_O_FRDCTL                                              0x00002000
 
-// FMC Read Margin Control
+// Internal
 #define FLASH_O_FSPRD                                               0x00002004
 
-// FMC Error Correction Control 1
+// Internal
 #define FLASH_O_FEDACCTL1                                           0x00002008
 
-// FMC Error Status
+// Internal
 #define FLASH_O_FEDACSTAT                                           0x0000201C
 
-// FMC Bank Protection
+// Internal
 #define FLASH_O_FBPROT                                              0x00002030
 
-// FMC Bank Sector Enable
+// Internal
 #define FLASH_O_FBSE                                                0x00002034
 
-// FMC Bank Busy
+// Internal
 #define FLASH_O_FBBUSY                                              0x00002038
 
-// FMC Bank Access Control
+// Internal
 #define FLASH_O_FBAC                                                0x0000203C
 
-// FMC Bank Fallback Power
+// Internal
 #define FLASH_O_FBFALLBACK                                          0x00002040
 
-// FMC Bank/Pump Ready
+// Internal
 #define FLASH_O_FBPRDY                                              0x00002044
 
-// FMC Pump Access Control 1
+// Internal
 #define FLASH_O_FPAC1                                               0x00002048
 
-// FMC Pump Access Control 2
+// Internal
 #define FLASH_O_FPAC2                                               0x0000204C
 
-// FMC Module Access Control
+// Internal
 #define FLASH_O_FMAC                                                0x00002050
 
-// FMC Module Status
+// Internal
 #define FLASH_O_FMSTAT                                              0x00002054
 
-// FMC Flash Lock
+// Internal
 #define FLASH_O_FLOCK                                               0x00002064
 
-// FMC VREADCT Trim
+// Internal
 #define FLASH_O_FVREADCT                                            0x00002080
 
-// FMC VHVCT1 Trim
+// Internal
 #define FLASH_O_FVHVCT1                                             0x00002084
 
-// FMC VHVCT2 Trim
+// Internal
 #define FLASH_O_FVHVCT2                                             0x00002088
 
-// FMC VHVCT3 Trim
+// Internal
 #define FLASH_O_FVHVCT3                                             0x0000208C
 
-// FMC VNVCT Trim
+// Internal
 #define FLASH_O_FVNVCT                                              0x00002090
 
-// FMC VSL_P Trim
+// Internal
 #define FLASH_O_FVSLP                                               0x00002094
 
-// FMC VWLCT Trim
+// Internal
 #define FLASH_O_FVWLCT                                              0x00002098
 
-// FMC EFUSE Control
+// Internal
 #define FLASH_O_FEFUSECTL                                           0x0000209C
 
-// FMC EFUSE Status
+// Internal
 #define FLASH_O_FEFUSESTAT                                          0x000020A0
 
-// FMC EFUSE Data
+// Internal
 #define FLASH_O_FEFUSEDATA                                          0x000020A4
 
-// FMC Sequential Pump Information
+// Internal
 #define FLASH_O_FSEQPMP                                             0x000020A8
 
-// FMC Bank Signal Strobe
+// Internal
 #define FLASH_O_FBSTROBES                                           0x00002100
 
-// FMC Pump Signal Strobe
+// Internal
 #define FLASH_O_FPSTROBES                                           0x00002104
 
-// FMC Bank and Pump Mode
+// Internal
 #define FLASH_O_FBMODE                                              0x00002108
 
-// FMC Test Command Control
+// Internal
 #define FLASH_O_FTCR                                                0x0000210C
 
-// FMC Bank Address
+// Internal
 #define FLASH_O_FADDR                                               0x00002110
 
-// FMC Test Control
+// Internal
 #define FLASH_O_FTCTL                                               0x0000211C
 
-// FMC Flash Wide Programming Write Data 0
+// Internal
 #define FLASH_O_FWPWRITE0                                           0x00002120
 
-// FMC Flash Wide Programming Write Data  1
+// Internal
 #define FLASH_O_FWPWRITE1                                           0x00002124
 
-// FMC Flash Wide Programming Write Data  2
+// Internal
 #define FLASH_O_FWPWRITE2                                           0x00002128
 
-// FMC Flash Wide Programming Write Data  3
+// Internal
 #define FLASH_O_FWPWRITE3                                           0x0000212C
 
-// FMC Flash Wide Programming Write Data  4
+// Internal
 #define FLASH_O_FWPWRITE4                                           0x00002130
 
-// FMC Flash Wide Programming Write Data  5
+// Internal
 #define FLASH_O_FWPWRITE5                                           0x00002134
 
-// FMC Flash Wide Programming Write Data  6
+// Internal
 #define FLASH_O_FWPWRITE6                                           0x00002138
 
-// FMC Flash Wide Programming Write Data  7
+// Internal
 #define FLASH_O_FWPWRITE7                                           0x0000213C
 
-// FMC Flash Wide Programming ECC
+// Internal
 #define FLASH_O_FWPWRITE_ECC                                        0x00002140
 
-// FMC Software Interface Status
+// Internal
 #define FLASH_O_FSWSTAT                                             0x00002144
 
-// FMC FSM Global Control
+// Internal
 #define FLASH_O_FSM_GLBCTL                                          0x00002200
 
-// FMC FSM State Status
+// Internal
 #define FLASH_O_FSM_STATE                                           0x00002204
 
-// FMC FSM Status
+// Internal
 #define FLASH_O_FSM_STAT                                            0x00002208
 
-// FMC FSM Command
+// Internal
 #define FLASH_O_FSM_CMD                                             0x0000220C
 
-// FMC FSM Program/Erase Operation Setup
+// Internal
 #define FLASH_O_FSM_PE_OSU                                          0x00002210
 
-// FMC FSM Voltage Status Setup
+// Internal
 #define FLASH_O_FSM_VSTAT                                           0x00002214
 
-// FMC FSM Program/Erase Verify Setup
+// Internal
 #define FLASH_O_FSM_PE_VSU                                          0x00002218
 
-// FMC FSM Compare Verify Setup
+// Internal
 #define FLASH_O_FSM_CMP_VSU                                         0x0000221C
 
-// FMC FSM EXECUTEZ to Valid Data
+// Internal
 #define FLASH_O_FSM_EX_VAL                                          0x00002220
 
-// FMC FSM Read Mode Hold
+// Internal
 #define FLASH_O_FSM_RD_H                                            0x00002224
 
-// FMC FSM Program Hold
+// Internal
 #define FLASH_O_FSM_P_OH                                            0x00002228
 
-// FMC FSM Erase Operation Hold
+// Internal
 #define FLASH_O_FSM_ERA_OH                                          0x0000222C
 
-// FMC FSM Saved Program Pulses
+// Internal
 #define FLASH_O_FSM_SAV_PPUL                                        0x00002230
 
-// FMC FSM Program/Erase Verify Hold
+// Internal
 #define FLASH_O_FSM_PE_VH                                           0x00002234
 
-// FMC FSM Program Pulse Width
+// Internal
 #define FLASH_O_FSM_PRG_PW                                          0x00002240
 
-// FMC FSM Erase Pulse Width
+// Internal
 #define FLASH_O_FSM_ERA_PW                                          0x00002244
 
-// FMC FSM Saved Erased Pulses
+// Internal
 #define FLASH_O_FSM_SAV_ERA_PUL                                     0x00002254
 
-// FMC FSM Timer
+// Internal
 #define FLASH_O_FSM_TIMER                                           0x00002258
 
-// FMC FSM MODE
+// Internal
 #define FLASH_O_FSM_MODE                                            0x0000225C
 
-// FMC FSM Program Bits
+// Internal
 #define FLASH_O_FSM_PGM                                             0x00002260
 
-// FMC FSM Erase Bits
+// Internal
 #define FLASH_O_FSM_ERA                                             0x00002264
 
-// FMC FSM Maximum Programming Pulses
+// Internal
 #define FLASH_O_FSM_PRG_PUL                                         0x00002268
 
-// FMC FSM Maximum Erase Pulses
+// Internal
 #define FLASH_O_FSM_ERA_PUL                                         0x0000226C
 
-// FMC FSM EC Step Size
+// Internal
 #define FLASH_O_FSM_STEP_SIZE                                       0x00002270
 
-// FMC FSM Pulse Counter
+// Internal
 #define FLASH_O_FSM_PUL_CNTR                                        0x00002274
 
-// FMC FSM EC Step Height
+// Internal
 #define FLASH_O_FSM_EC_STEP_HEIGHT                                  0x00002278
 
-// FMC FSM_ST_MACHINE
+// Internal
 #define FLASH_O_FSM_ST_MACHINE                                      0x0000227C
 
-// FMC FLES Memory Control Bits
+// Internal
 #define FLASH_O_FSM_FLES                                            0x00002280
 
-// FMC FSM Register Write Enable
+// Internal
 #define FLASH_O_FSM_WR_ENA                                          0x00002288
 
-// FMC FSM Accumulate Program Pulses
+// Internal
 #define FLASH_O_FSM_ACC_PP                                          0x0000228C
 
-// FMC FSM Accumulate Erase Pulses
+// Internal
 #define FLASH_O_FSM_ACC_EP                                          0x00002290
 
-// FMC FSM Address
+// Internal
 #define FLASH_O_FSM_ADDR                                            0x000022A0
 
-// FMC Sectors Erased
+// Internal
 #define FLASH_O_FSM_SECTOR                                          0x000022A4
 
-// FMC Revision Identification
+// Internal
 #define FLASH_O_FMC_REV_ID                                          0x000022A8
 
-// FSM Error Address
+// Internal
 #define FLASH_O_FSM_ERR_ADDR                                        0x000022AC
 
-// FMC FSM Maximum Program Pulse
+// Internal
 #define FLASH_O_FSM_PGM_MAXPUL                                      0x000022B0
 
-// FMC FSM Command Execute
+// Internal
 #define FLASH_O_FSM_EXECUTE                                         0x000022B4
 
-// FMC FSM Sector Erased 1
+// Internal
 #define FLASH_O_FSM_SECTOR1                                         0x000022C0
 
-// FMC FSM Sector Erased  2
+// Internal
 #define FLASH_O_FSM_SECTOR2                                         0x000022C4
 
-// FMC FSM Bank Sector Lock Erase 0
+// Internal
 #define FLASH_O_FSM_BSLE0                                           0x000022E0
 
-// FMC FSM Bank Sector Lock Erase 1
+// Internal
 #define FLASH_O_FSM_BSLE1                                           0x000022E4
 
-// FMC FSM Bank Sector Lock Program 0
+// Internal
 #define FLASH_O_FSM_BSLP0                                           0x000022F0
 
-// FMC FSM Bank Sector Lock Program 1
+// Internal
 #define FLASH_O_FSM_BSLP1                                           0x000022F4
 
-// FMC Flash Configuration Bank
+// Internal
 #define FLASH_O_FCFG_BANK                                           0x00002400
 
-// FMC Flash Wrapper Configuration
+// Internal
 #define FLASH_O_FCFG_WRAPPER                                        0x00002404
 
-// FMC Flash Bank Type
+// Internal
 #define FLASH_O_FCFG_BNK_TYPE                                       0x00002408
 
-// FMC Flash Bank 0 Starting Address
+// Internal
 #define FLASH_O_FCFG_B0_START                                       0x00002410
 
-// FMC Flash Bank 1 Starting Address
+// Internal
 #define FLASH_O_FCFG_B1_START                                       0x00002414
 
-// FMC Flash Bank 2 Starting Address
+// Internal
 #define FLASH_O_FCFG_B2_START                                       0x00002418
 
-// FMC Flash Bank 3 Starting Address
+// Internal
 #define FLASH_O_FCFG_B3_START                                       0x0000241C
 
-// FMC Flash Bank 4 Starting Address
+// Internal
 #define FLASH_O_FCFG_B4_START                                       0x00002420
 
-// FMC Flash Bank 5 Starting Address
+// Internal
 #define FLASH_O_FCFG_B5_START                                       0x00002424
 
-// FMC Flash Bank 6 Starting Address
+// Internal
 #define FLASH_O_FCFG_B6_START                                       0x00002428
 
-// FMC Flash Bank 7 Starting Address
+// Internal
 #define FLASH_O_FCFG_B7_START                                       0x0000242C
 
-// FMC Flash Bank 0 Sector Size 0
+// Internal
 #define FLASH_O_FCFG_B0_SSIZE0                                      0x00002430
 
 //*****************************************************************************
@@ -450,6 +450,7 @@
 // Field:  [12:8] EFUSE_ERRCODE
 //
 // Same as EFUSEERROR.CODE
+#define FLASH_STAT_EFUSE_ERRCODE_W                                           5
 #define FLASH_STAT_EFUSE_ERRCODE_M                                  0x00001F00
 #define FLASH_STAT_EFUSE_ERRCODE_S                                           8
 
@@ -502,6 +503,7 @@
 // Field:   [7:6] STANDBY_PW_SEL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_CFG_STANDBY_PW_SEL_W                                           2
 #define FLASH_CFG_STANDBY_PW_SEL_M                                  0x000000C0
 #define FLASH_CFG_STANDBY_PW_SEL_S                                           6
 
@@ -553,6 +555,7 @@
 // Field:   [4:0] SYSCODE_START
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_SYSCODE_START_SYSCODE_START_W                                  5
 #define FLASH_SYSCODE_START_SYSCODE_START_M                         0x0000001F
 #define FLASH_SYSCODE_START_SYSCODE_START_S                                  0
 
@@ -564,6 +567,7 @@
 // Field:   [7:0] SECTORS
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FLASH_SIZE_SECTORS_W                                           8
 #define FLASH_FLASH_SIZE_SECTORS_M                                  0x000000FF
 #define FLASH_FLASH_SIZE_SECTORS_S                                           0
 
@@ -575,6 +579,7 @@
 // Field:   [2:0] FWLOCK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWLOCK_FWLOCK_W                                                3
 #define FLASH_FWLOCK_FWLOCK_M                                       0x00000007
 #define FLASH_FWLOCK_FWLOCK_S                                                0
 
@@ -586,6 +591,7 @@
 // Field:   [2:0] FWFLAG
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWFLAG_FWFLAG_W                                                3
 #define FLASH_FWFLAG_FWFLAG_M                                       0x00000007
 #define FLASH_FWFLAG_FWFLAG_S                                                0
 
@@ -597,12 +603,14 @@
 // Field: [28:24] INSTRUCTION
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSE_INSTRUCTION_W                                            5
 #define FLASH_EFUSE_INSTRUCTION_M                                   0x1F000000
 #define FLASH_EFUSE_INSTRUCTION_S                                           24
 
 // Field:  [15:0] DUMPWORD
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSE_DUMPWORD_W                                              16
 #define FLASH_EFUSE_DUMPWORD_M                                      0x0000FFFF
 #define FLASH_EFUSE_DUMPWORD_S                                               0
 
@@ -614,12 +622,14 @@
 // Field: [15:11] BLOCK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEADDR_BLOCK_W                                              5
 #define FLASH_EFUSEADDR_BLOCK_M                                     0x0000F800
 #define FLASH_EFUSEADDR_BLOCK_S                                             11
 
 // Field:  [10:0] ROW
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEADDR_ROW_W                                               11
 #define FLASH_EFUSEADDR_ROW_M                                       0x000007FF
 #define FLASH_EFUSEADDR_ROW_S                                                0
 
@@ -631,6 +641,7 @@
 // Field:   [7:3] SPARE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_DATAUPPER_SPARE_W                                              5
 #define FLASH_DATAUPPER_SPARE_M                                     0x000000F8
 #define FLASH_DATAUPPER_SPARE_S                                              3
 
@@ -666,6 +677,7 @@
 // Field:  [31:0] DATA
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_DATALOWER_DATA_W                                              32
 #define FLASH_DATALOWER_DATA_M                                      0xFFFFFFFF
 #define FLASH_DATALOWER_DATA_S                                               0
 
@@ -685,6 +697,7 @@
 // Field:   [4:3] SLAVEPOWER
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSECFG_SLAVEPOWER_W                                          2
 #define FLASH_EFUSECFG_SLAVEPOWER_M                                 0x00000018
 #define FLASH_EFUSECFG_SLAVEPOWER_S                                          3
 
@@ -717,6 +730,7 @@
 // Field:  [23:0] ACCUMULATOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_ACC_ACCUMULATOR_W                                             24
 #define FLASH_ACC_ACCUMULATOR_M                                     0x00FFFFFF
 #define FLASH_ACC_ACCUMULATOR_S                                              0
 
@@ -776,16 +790,17 @@
 // Field: [17:14] OUTPUTENABLE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_BOUNDARY_OUTPUTENABLE_W                                        4
 #define FLASH_BOUNDARY_OUTPUTENABLE_M                               0x0003C000
 #define FLASH_BOUNDARY_OUTPUTENABLE_S                                       14
 
-// Field:    [13] YS_ECC_SELF_TEST_EN
+// Field:    [13] SYS_ECC_SELF_TEST_EN
 //
 // Internal. Only to be used through TI provided API.
-#define FLASH_BOUNDARY_YS_ECC_SELF_TEST_EN                          0x00002000
-#define FLASH_BOUNDARY_YS_ECC_SELF_TEST_EN_BITN                             13
-#define FLASH_BOUNDARY_YS_ECC_SELF_TEST_EN_M                        0x00002000
-#define FLASH_BOUNDARY_YS_ECC_SELF_TEST_EN_S                                13
+#define FLASH_BOUNDARY_SYS_ECC_SELF_TEST_EN                         0x00002000
+#define FLASH_BOUNDARY_SYS_ECC_SELF_TEST_EN_BITN                            13
+#define FLASH_BOUNDARY_SYS_ECC_SELF_TEST_EN_M                       0x00002000
+#define FLASH_BOUNDARY_SYS_ECC_SELF_TEST_EN_S                               13
 
 // Field:    [12] SYS_ECC_OVERRIDE_EN
 //
@@ -814,18 +829,21 @@
 // Field:   [9:8] SYS_REPAIR_EN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_BOUNDARY_SYS_REPAIR_EN_W                                       2
 #define FLASH_BOUNDARY_SYS_REPAIR_EN_M                              0x00000300
 #define FLASH_BOUNDARY_SYS_REPAIR_EN_S                                       8
 
 // Field:   [7:4] SYS_WS_READ_STATES
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_BOUNDARY_SYS_WS_READ_STATES_W                                  4
 #define FLASH_BOUNDARY_SYS_WS_READ_STATES_M                         0x000000F0
 #define FLASH_BOUNDARY_SYS_WS_READ_STATES_S                                  4
 
 // Field:   [3:0] INPUTENABLE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_BOUNDARY_INPUTENABLE_W                                         4
 #define FLASH_BOUNDARY_INPUTENABLE_M                                0x0000000F
 #define FLASH_BOUNDARY_INPUTENABLE_S                                         0
 
@@ -850,6 +868,7 @@
 // Field:  [31:0] CODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEKEY_CODE_W                                               32
 #define FLASH_EFUSEKEY_CODE_M                                       0xFFFFFFFF
 #define FLASH_EFUSEKEY_CODE_S                                                0
 
@@ -861,36 +880,42 @@
 // Field: [31:25] ODPYEAR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_ODPYEAR_W                                         7
 #define FLASH_EFUSERELEASE_ODPYEAR_M                                0xFE000000
 #define FLASH_EFUSERELEASE_ODPYEAR_S                                        25
 
 // Field: [24:21] ODPMONTH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_ODPMONTH_W                                        4
 #define FLASH_EFUSERELEASE_ODPMONTH_M                               0x01E00000
 #define FLASH_EFUSERELEASE_ODPMONTH_S                                       21
 
 // Field: [20:16] ODPDAY
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_ODPDAY_W                                          5
 #define FLASH_EFUSERELEASE_ODPDAY_M                                 0x001F0000
 #define FLASH_EFUSERELEASE_ODPDAY_S                                         16
 
 // Field:  [15:9] EFUSEYEAR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_EFUSEYEAR_W                                       7
 #define FLASH_EFUSERELEASE_EFUSEYEAR_M                              0x0000FE00
 #define FLASH_EFUSERELEASE_EFUSEYEAR_S                                       9
 
 // Field:   [8:5] EFUSEMONTH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_EFUSEMONTH_W                                      4
 #define FLASH_EFUSERELEASE_EFUSEMONTH_M                             0x000001E0
 #define FLASH_EFUSERELEASE_EFUSEMONTH_S                                      5
 
 // Field:   [4:0] EFUSEDAY
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSERELEASE_EFUSEDAY_W                                        5
 #define FLASH_EFUSERELEASE_EFUSEDAY_M                               0x0000001F
 #define FLASH_EFUSERELEASE_EFUSEDAY_S                                        0
 
@@ -982,12 +1007,14 @@
 // Field:   [5:4] SYS_REPAIR_EN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEPINS_SYS_REPAIR_EN_W                                      2
 #define FLASH_EFUSEPINS_SYS_REPAIR_EN_M                             0x00000030
 #define FLASH_EFUSEPINS_SYS_REPAIR_EN_S                                      4
 
 // Field:   [3:0] SYS_WS_READ_STATES
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEPINS_SYS_WS_READ_STATES_W                                 4
 #define FLASH_EFUSEPINS_SYS_WS_READ_STATES_M                        0x0000000F
 #define FLASH_EFUSEPINS_SYS_WS_READ_STATES_S                                 0
 
@@ -999,6 +1026,7 @@
 // Field:   [5:0] DATA
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSECRA_DATA_W                                                6
 #define FLASH_EFUSECRA_DATA_M                                       0x0000003F
 #define FLASH_EFUSECRA_DATA_S                                                0
 
@@ -1010,12 +1038,14 @@
 // Field:   [9:8] DATABIT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEREAD_DATABIT_W                                            2
 #define FLASH_EFUSEREAD_DATABIT_M                                   0x00000300
 #define FLASH_EFUSEREAD_DATABIT_S                                            8
 
 // Field:   [7:4] READCLOCK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEREAD_READCLOCK_W                                          4
 #define FLASH_EFUSEREAD_READCLOCK_M                                 0x000000F0
 #define FLASH_EFUSEREAD_READCLOCK_S                                          4
 
@@ -1038,6 +1068,7 @@
 // Field:   [1:0] MARGIN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEREAD_MARGIN_W                                             2
 #define FLASH_EFUSEREAD_MARGIN_M                                    0x00000003
 #define FLASH_EFUSEREAD_MARGIN_S                                             0
 
@@ -1057,6 +1088,7 @@
 // Field: [29:14] CLOCKSTALL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEPROGRAM_CLOCKSTALL_W                                     16
 #define FLASH_EFUSEPROGRAM_CLOCKSTALL_M                             0x3FFFC000
 #define FLASH_EFUSEPROGRAM_CLOCKSTALL_S                                     14
 
@@ -1071,12 +1103,14 @@
 // Field:  [12:9] ITERATIONS
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEPROGRAM_ITERATIONS_W                                      4
 #define FLASH_EFUSEPROGRAM_ITERATIONS_M                             0x00001E00
 #define FLASH_EFUSEPROGRAM_ITERATIONS_S                                      9
 
 // Field:   [8:0] WRITECLOCK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEPROGRAM_WRITECLOCK_W                                      9
 #define FLASH_EFUSEPROGRAM_WRITECLOCK_M                             0x000001FF
 #define FLASH_EFUSEPROGRAM_WRITECLOCK_S                                      0
 
@@ -1096,6 +1130,7 @@
 // Field:   [4:0] CODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_EFUSEERROR_CODE_W                                              5
 #define FLASH_EFUSEERROR_CODE_M                                     0x0000001F
 #define FLASH_EFUSEERROR_CODE_S                                              0
 
@@ -1107,6 +1142,7 @@
 // Field:  [31:1] FROMN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_SINGLEBIT_FROMN_W                                             31
 #define FLASH_SINGLEBIT_FROMN_M                                     0xFFFFFFFE
 #define FLASH_SINGLEBIT_FROMN_S                                              1
 
@@ -1126,6 +1162,7 @@
 // Field:  [31:1] FROMN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_TWOBIT_FROMN_W                                                31
 #define FLASH_TWOBIT_FROMN_M                                        0xFFFFFFFE
 #define FLASH_TWOBIT_FROMN_S                                                 1
 
@@ -1145,6 +1182,7 @@
 // Field:  [31:0] CYCLES
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_SELFTESTCYC_CYCLES_W                                          32
 #define FLASH_SELFTESTCYC_CYCLES_M                                  0xFFFFFFFF
 #define FLASH_SELFTESTCYC_CYCLES_S                                           0
 
@@ -1156,6 +1194,7 @@
 // Field:  [31:0] SIGNATURE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_SELFTESTSIGN_SIGNATURE_W                                      32
 #define FLASH_SELFTESTSIGN_SIGNATURE_M                              0xFFFFFFFF
 #define FLASH_SELFTESTSIGN_SIGNATURE_S                                       0
 
@@ -1167,6 +1206,7 @@
 // Field:  [11:8] RWAIT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FRDCTL_RWAIT_W                                                 4
 #define FLASH_FRDCTL_RWAIT_M                                        0x00000F00
 #define FLASH_FRDCTL_RWAIT_S                                                 8
 
@@ -1178,6 +1218,7 @@
 // Field:  [15:8] RMBSEM
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSPRD_RMBSEM_W                                                 8
 #define FLASH_FSPRD_RMBSEM_M                                        0x0000FF00
 #define FLASH_FSPRD_RMBSEM_S                                                 8
 
@@ -1252,6 +1293,7 @@
 // Field:  [15:0] BSE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBSE_BSE_W                                                    16
 #define FLASH_FBSE_BSE_M                                            0x0000FFFF
 #define FLASH_FBSE_BSE_S                                                     0
 
@@ -1263,6 +1305,7 @@
 // Field:   [7:0] BUSY
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBBUSY_BUSY_W                                                  8
 #define FLASH_FBBUSY_BUSY_M                                         0x000000FF
 #define FLASH_FBBUSY_BUSY_S                                                  0
 
@@ -1282,12 +1325,14 @@
 // Field:  [15:8] BAGP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBAC_BAGP_W                                                    8
 #define FLASH_FBAC_BAGP_M                                           0x0000FF00
 #define FLASH_FBAC_BAGP_S                                                    8
 
 // Field:   [7:0] VREADS
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBAC_VREADS_W                                                  8
 #define FLASH_FBAC_VREADS_M                                         0x000000FF
 #define FLASH_FBAC_VREADS_S                                                  0
 
@@ -1299,60 +1344,70 @@
 // Field: [27:24] FSM_PWRSAV
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_FSM_PWRSAV_W                                        4
 #define FLASH_FBFALLBACK_FSM_PWRSAV_M                               0x0F000000
 #define FLASH_FBFALLBACK_FSM_PWRSAV_S                                       24
 
 // Field: [19:16] REG_PWRSAV
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_REG_PWRSAV_W                                        4
 #define FLASH_FBFALLBACK_REG_PWRSAV_M                               0x000F0000
 #define FLASH_FBFALLBACK_REG_PWRSAV_S                                       16
 
 // Field: [15:14] BANKPWR7
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR7_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR7_M                                 0x0000C000
 #define FLASH_FBFALLBACK_BANKPWR7_S                                         14
 
 // Field: [13:12] BANKPWR6
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR6_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR6_M                                 0x00003000
 #define FLASH_FBFALLBACK_BANKPWR6_S                                         12
 
 // Field: [11:10] BANKPWR5
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR5_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR5_M                                 0x00000C00
 #define FLASH_FBFALLBACK_BANKPWR5_S                                         10
 
 // Field:   [9:8] BANKPWR4
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR4_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR4_M                                 0x00000300
 #define FLASH_FBFALLBACK_BANKPWR4_S                                          8
 
 // Field:   [7:6] BANKPWR3
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR3_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR3_M                                 0x000000C0
 #define FLASH_FBFALLBACK_BANKPWR3_S                                          6
 
 // Field:   [5:4] BANKPWR2
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR2_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR2_M                                 0x00000030
 #define FLASH_FBFALLBACK_BANKPWR2_S                                          4
 
 // Field:   [3:2] BANKPWR1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR1_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR1_M                                 0x0000000C
 #define FLASH_FBFALLBACK_BANKPWR1_S                                          2
 
 // Field:   [1:0] BANKPWR0
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBFALLBACK_BANKPWR0_W                                          2
 #define FLASH_FBFALLBACK_BANKPWR0_M                                 0x00000003
 #define FLASH_FBFALLBACK_BANKPWR0_S                                          0
 
@@ -1393,18 +1448,21 @@
 // Field: [27:16] PSLEEPTDIS
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FPAC1_PSLEEPTDIS_W                                            12
 #define FLASH_FPAC1_PSLEEPTDIS_M                                    0x0FFF0000
 #define FLASH_FPAC1_PSLEEPTDIS_S                                            16
 
 // Field:  [15:4] PUMPRESET_PW
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FPAC1_PUMPRESET_PW_W                                          12
 #define FLASH_FPAC1_PUMPRESET_PW_M                                  0x0000FFF0
 #define FLASH_FPAC1_PUMPRESET_PW_S                                           4
 
 // Field:   [1:0] PUMPPWR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FPAC1_PUMPPWR_W                                                2
 #define FLASH_FPAC1_PUMPPWR_M                                       0x00000003
 #define FLASH_FPAC1_PUMPPWR_S                                                0
 
@@ -1416,6 +1474,7 @@
 // Field:  [15:0] PAGP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FPAC2_PAGP_W                                                  16
 #define FLASH_FPAC2_PAGP_M                                          0x0000FFFF
 #define FLASH_FPAC2_PAGP_S                                                   0
 
@@ -1427,6 +1486,7 @@
 // Field:   [2:0] BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FMAC_BANK_W                                                    3
 #define FLASH_FMAC_BANK_M                                           0x00000007
 #define FLASH_FMAC_BANK_S                                                    0
 
@@ -1587,6 +1647,7 @@
 // Field:  [15:0] ENCOM
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FLOCK_ENCOM_W                                                 16
 #define FLASH_FLOCK_ENCOM_M                                         0x0000FFFF
 #define FLASH_FLOCK_ENCOM_S                                                  0
 
@@ -1598,6 +1659,7 @@
 // Field:   [3:0] VREADCT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVREADCT_VREADCT_W                                             4
 #define FLASH_FVREADCT_VREADCT_M                                    0x0000000F
 #define FLASH_FVREADCT_VREADCT_S                                             0
 
@@ -1609,24 +1671,28 @@
 // Field: [23:20] TRIM13_E
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT1_TRIM13_E_W                                             4
 #define FLASH_FVHVCT1_TRIM13_E_M                                    0x00F00000
 #define FLASH_FVHVCT1_TRIM13_E_S                                            20
 
 // Field: [19:16] VHVCT_E
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT1_VHVCT_E_W                                              4
 #define FLASH_FVHVCT1_VHVCT_E_M                                     0x000F0000
 #define FLASH_FVHVCT1_VHVCT_E_S                                             16
 
 // Field:   [7:4] TRIM13_PV
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT1_TRIM13_PV_W                                            4
 #define FLASH_FVHVCT1_TRIM13_PV_M                                   0x000000F0
 #define FLASH_FVHVCT1_TRIM13_PV_S                                            4
 
 // Field:   [3:0] VHVCT_PV
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT1_VHVCT_PV_W                                             4
 #define FLASH_FVHVCT1_VHVCT_PV_M                                    0x0000000F
 #define FLASH_FVHVCT1_VHVCT_PV_S                                             0
 
@@ -1638,12 +1704,14 @@
 // Field: [23:20] TRIM13_P
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT2_TRIM13_P_W                                             4
 #define FLASH_FVHVCT2_TRIM13_P_M                                    0x00F00000
 #define FLASH_FVHVCT2_TRIM13_P_S                                            20
 
 // Field: [19:16] VHVCT_P
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT2_VHVCT_P_W                                              4
 #define FLASH_FVHVCT2_VHVCT_P_M                                     0x000F0000
 #define FLASH_FVHVCT2_VHVCT_P_S                                             16
 
@@ -1655,12 +1723,14 @@
 // Field: [19:16] WCT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT3_WCT_W                                                  4
 #define FLASH_FVHVCT3_WCT_M                                         0x000F0000
 #define FLASH_FVHVCT3_WCT_S                                                 16
 
 // Field:   [3:0] VHVCT_READ
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVHVCT3_VHVCT_READ_W                                           4
 #define FLASH_FVHVCT3_VHVCT_READ_M                                  0x0000000F
 #define FLASH_FVHVCT3_VHVCT_READ_S                                           0
 
@@ -1672,12 +1742,14 @@
 // Field:  [12:8] VCG2P5CT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVNVCT_VCG2P5CT_W                                              5
 #define FLASH_FVNVCT_VCG2P5CT_M                                     0x00001F00
 #define FLASH_FVNVCT_VCG2P5CT_S                                              8
 
 // Field:   [4:0] VIN_CT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVNVCT_VIN_CT_W                                                5
 #define FLASH_FVNVCT_VIN_CT_M                                       0x0000001F
 #define FLASH_FVNVCT_VIN_CT_S                                                0
 
@@ -1689,6 +1761,7 @@
 // Field: [15:12] VSL_P
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVSLP_VSL_P_W                                                  4
 #define FLASH_FVSLP_VSL_P_M                                         0x0000F000
 #define FLASH_FVSLP_VSL_P_S                                                 12
 
@@ -1700,6 +1773,7 @@
 // Field:   [4:0] VWLCT_P
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FVWLCT_VWLCT_P_W                                               5
 #define FLASH_FVWLCT_VWLCT_P_M                                      0x0000001F
 #define FLASH_FVWLCT_VWLCT_P_S                                               0
 
@@ -1711,6 +1785,7 @@
 // Field: [26:24] CHAIN_SEL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FEFUSECTL_CHAIN_SEL_W                                          3
 #define FLASH_FEFUSECTL_CHAIN_SEL_M                                 0x07000000
 #define FLASH_FEFUSECTL_CHAIN_SEL_S                                         24
 
@@ -1749,6 +1824,7 @@
 // Field:   [3:0] EFUSE_EN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FEFUSECTL_EFUSE_EN_W                                           4
 #define FLASH_FEFUSECTL_EFUSE_EN_M                                  0x0000000F
 #define FLASH_FEFUSECTL_EFUSE_EN_S                                           0
 
@@ -1773,6 +1849,7 @@
 // Field:  [31:0] FEFUSEDATA
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FEFUSEDATA_FEFUSEDATA_W                                       32
 #define FLASH_FEFUSEDATA_FEFUSEDATA_M                               0xFFFFFFFF
 #define FLASH_FEFUSEDATA_FEFUSEDATA_S                                        0
 
@@ -1784,24 +1861,28 @@
 // Field: [27:24] TRIM_3P4
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSEQPMP_TRIM_3P4_W                                             4
 #define FLASH_FSEQPMP_TRIM_3P4_M                                    0x0F000000
 #define FLASH_FSEQPMP_TRIM_3P4_S                                            24
 
 // Field: [21:20] TRIM_1P7
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSEQPMP_TRIM_1P7_W                                             2
 #define FLASH_FSEQPMP_TRIM_1P7_M                                    0x00300000
 #define FLASH_FSEQPMP_TRIM_1P7_S                                            20
 
 // Field: [19:16] TRIM_0P8
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSEQPMP_TRIM_0P8_W                                             4
 #define FLASH_FSEQPMP_TRIM_0P8_M                                    0x000F0000
 #define FLASH_FSEQPMP_TRIM_0P8_S                                            16
 
 // Field: [14:12] VIN_AT_X
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSEQPMP_VIN_AT_X_W                                             3
 #define FLASH_FSEQPMP_VIN_AT_X_M                                    0x00007000
 #define FLASH_FSEQPMP_VIN_AT_X_S                                            12
 
@@ -1935,6 +2016,7 @@
 // Field:   [2:0] MODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FBMODE_MODE_W                                                  3
 #define FLASH_FBMODE_MODE_M                                         0x00000007
 #define FLASH_FBMODE_MODE_S                                                  0
 
@@ -1946,6 +2028,7 @@
 // Field:   [6:0] TCR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FTCR_TCR_W                                                     7
 #define FLASH_FTCR_TCR_M                                            0x0000007F
 #define FLASH_FTCR_TCR_S                                                     0
 
@@ -1957,6 +2040,7 @@
 // Field:  [31:0] FADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FADDR_FADDR_W                                                 32
 #define FLASH_FADDR_FADDR_M                                         0xFFFFFFFF
 #define FLASH_FADDR_FADDR_S                                                  0
 
@@ -1989,6 +2073,7 @@
 // Field:  [31:0] FWPWRITE0
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE0_FWPWRITE0_W                                         32
 #define FLASH_FWPWRITE0_FWPWRITE0_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE0_FWPWRITE0_S                                          0
 
@@ -2000,6 +2085,7 @@
 // Field:  [31:0] FWPWRITE1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE1_FWPWRITE1_W                                         32
 #define FLASH_FWPWRITE1_FWPWRITE1_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE1_FWPWRITE1_S                                          0
 
@@ -2011,6 +2097,7 @@
 // Field:  [31:0] FWPWRITE2
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE2_FWPWRITE2_W                                         32
 #define FLASH_FWPWRITE2_FWPWRITE2_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE2_FWPWRITE2_S                                          0
 
@@ -2022,6 +2109,7 @@
 // Field:  [31:0] FWPWRITE3
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE3_FWPWRITE3_W                                         32
 #define FLASH_FWPWRITE3_FWPWRITE3_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE3_FWPWRITE3_S                                          0
 
@@ -2033,6 +2121,7 @@
 // Field:  [31:0] FWPWRITE4
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE4_FWPWRITE4_W                                         32
 #define FLASH_FWPWRITE4_FWPWRITE4_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE4_FWPWRITE4_S                                          0
 
@@ -2044,6 +2133,7 @@
 // Field:  [31:0] FWPWRITE5
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE5_FWPWRITE5_W                                         32
 #define FLASH_FWPWRITE5_FWPWRITE5_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE5_FWPWRITE5_S                                          0
 
@@ -2055,6 +2145,7 @@
 // Field:  [31:0] FWPWRITE6
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE6_FWPWRITE6_W                                         32
 #define FLASH_FWPWRITE6_FWPWRITE6_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE6_FWPWRITE6_S                                          0
 
@@ -2066,6 +2157,7 @@
 // Field:  [31:0] FWPWRITE7
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE7_FWPWRITE7_W                                         32
 #define FLASH_FWPWRITE7_FWPWRITE7_M                                 0xFFFFFFFF
 #define FLASH_FWPWRITE7_FWPWRITE7_S                                          0
 
@@ -2077,24 +2169,28 @@
 // Field: [31:24] ECCBYTES07_00
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE_ECC_ECCBYTES07_00_W                                   8
 #define FLASH_FWPWRITE_ECC_ECCBYTES07_00_M                          0xFF000000
 #define FLASH_FWPWRITE_ECC_ECCBYTES07_00_S                                  24
 
 // Field: [23:16] ECCBYTES15_08
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE_ECC_ECCBYTES15_08_W                                   8
 #define FLASH_FWPWRITE_ECC_ECCBYTES15_08_M                          0x00FF0000
 #define FLASH_FWPWRITE_ECC_ECCBYTES15_08_S                                  16
 
 // Field:  [15:8] ECCBYTES23_16
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE_ECC_ECCBYTES23_16_W                                   8
 #define FLASH_FWPWRITE_ECC_ECCBYTES23_16_M                          0x0000FF00
 #define FLASH_FWPWRITE_ECC_ECCBYTES23_16_S                                   8
 
 // Field:   [7:0] ECCBYTES31_24
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FWPWRITE_ECC_ECCBYTES31_24_W                                   8
 #define FLASH_FWPWRITE_ECC_ECCBYTES31_24_M                          0x000000FF
 #define FLASH_FWPWRITE_ECC_ECCBYTES31_24_S                                   0
 
@@ -2206,6 +2302,7 @@
 // Field:   [5:0] FSMCMD
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_CMD_FSMCMD_W                                               6
 #define FLASH_FSM_CMD_FSMCMD_M                                      0x0000003F
 #define FLASH_FSM_CMD_FSMCMD_S                                               0
 
@@ -2217,12 +2314,14 @@
 // Field:  [15:8] PGM_OSU
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PE_OSU_PGM_OSU_W                                           8
 #define FLASH_FSM_PE_OSU_PGM_OSU_M                                  0x0000FF00
 #define FLASH_FSM_PE_OSU_PGM_OSU_S                                           8
 
 // Field:   [7:0] ERA_OSU
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PE_OSU_ERA_OSU_W                                           8
 #define FLASH_FSM_PE_OSU_ERA_OSU_M                                  0x000000FF
 #define FLASH_FSM_PE_OSU_ERA_OSU_S                                           0
 
@@ -2234,6 +2333,7 @@
 // Field: [15:12] VSTAT_CNT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_VSTAT_VSTAT_CNT_W                                          4
 #define FLASH_FSM_VSTAT_VSTAT_CNT_M                                 0x0000F000
 #define FLASH_FSM_VSTAT_VSTAT_CNT_S                                         12
 
@@ -2245,12 +2345,14 @@
 // Field:  [15:8] PGM_VSU
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PE_VSU_PGM_VSU_W                                           8
 #define FLASH_FSM_PE_VSU_PGM_VSU_M                                  0x0000FF00
 #define FLASH_FSM_PE_VSU_PGM_VSU_S                                           8
 
 // Field:   [7:0] ERA_VSU
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PE_VSU_ERA_VSU_W                                           8
 #define FLASH_FSM_PE_VSU_ERA_VSU_M                                  0x000000FF
 #define FLASH_FSM_PE_VSU_ERA_VSU_S                                           0
 
@@ -2262,6 +2364,7 @@
 // Field: [15:12] ADD_EXZ
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_CMP_VSU_ADD_EXZ_W                                          4
 #define FLASH_FSM_CMP_VSU_ADD_EXZ_M                                 0x0000F000
 #define FLASH_FSM_CMP_VSU_ADD_EXZ_S                                         12
 
@@ -2273,12 +2376,14 @@
 // Field:  [15:8] REP_VSU
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_EX_VAL_REP_VSU_W                                           8
 #define FLASH_FSM_EX_VAL_REP_VSU_M                                  0x0000FF00
 #define FLASH_FSM_EX_VAL_REP_VSU_S                                           8
 
 // Field:   [7:0] EXE_VALD
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_EX_VAL_EXE_VALD_W                                          8
 #define FLASH_FSM_EX_VAL_EXE_VALD_M                                 0x000000FF
 #define FLASH_FSM_EX_VAL_EXE_VALD_S                                          0
 
@@ -2290,6 +2395,7 @@
 // Field:   [7:0] RD_H
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_RD_H_RD_H_W                                                8
 #define FLASH_FSM_RD_H_RD_H_M                                       0x000000FF
 #define FLASH_FSM_RD_H_RD_H_S                                                0
 
@@ -2301,6 +2407,7 @@
 // Field:  [15:8] PGM_OH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_P_OH_PGM_OH_W                                              8
 #define FLASH_FSM_P_OH_PGM_OH_M                                     0x0000FF00
 #define FLASH_FSM_P_OH_PGM_OH_S                                              8
 
@@ -2312,6 +2419,7 @@
 // Field:  [15:0] ERA_OH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_OH_ERA_OH_W                                           16
 #define FLASH_FSM_ERA_OH_ERA_OH_M                                   0x0000FFFF
 #define FLASH_FSM_ERA_OH_ERA_OH_S                                            0
 
@@ -2323,6 +2431,7 @@
 // Field:  [11:0] SAV_P_PUL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SAV_PPUL_SAV_P_PUL_W                                      12
 #define FLASH_FSM_SAV_PPUL_SAV_P_PUL_M                              0x00000FFF
 #define FLASH_FSM_SAV_PPUL_SAV_P_PUL_S                                       0
 
@@ -2334,6 +2443,7 @@
 // Field:  [15:8] PGM_VH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PE_VH_PGM_VH_W                                             8
 #define FLASH_FSM_PE_VH_PGM_VH_M                                    0x0000FF00
 #define FLASH_FSM_PE_VH_PGM_VH_S                                             8
 
@@ -2345,6 +2455,7 @@
 // Field:  [15:0] PROG_PUL_WIDTH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PRG_PW_PROG_PUL_WIDTH_W                                   16
 #define FLASH_FSM_PRG_PW_PROG_PUL_WIDTH_M                           0x0000FFFF
 #define FLASH_FSM_PRG_PW_PROG_PUL_WIDTH_S                                    0
 
@@ -2356,6 +2467,7 @@
 // Field:  [31:0] FSM_ERA_PW
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_PW_FSM_ERA_PW_W                                       32
 #define FLASH_FSM_ERA_PW_FSM_ERA_PW_M                               0xFFFFFFFF
 #define FLASH_FSM_ERA_PW_FSM_ERA_PW_S                                        0
 
@@ -2367,6 +2479,7 @@
 // Field:  [11:0] SAV_ERA_PUL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SAV_ERA_PUL_SAV_ERA_PUL_W                                 12
 #define FLASH_FSM_SAV_ERA_PUL_SAV_ERA_PUL_M                         0x00000FFF
 #define FLASH_FSM_SAV_ERA_PUL_SAV_ERA_PUL_S                                  0
 
@@ -2378,6 +2491,7 @@
 // Field:  [31:0] FSM_TIMER
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_TIMER_FSM_TIMER_W                                         32
 #define FLASH_FSM_TIMER_FSM_TIMER_M                                 0xFFFFFFFF
 #define FLASH_FSM_TIMER_FSM_TIMER_S                                          0
 
@@ -2389,48 +2503,56 @@
 // Field: [19:18] RDV_SUBMODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_RDV_SUBMODE_W                                         2
 #define FLASH_FSM_MODE_RDV_SUBMODE_M                                0x000C0000
 #define FLASH_FSM_MODE_RDV_SUBMODE_S                                        18
 
 // Field: [17:16] PGM_SUBMODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_PGM_SUBMODE_W                                         2
 #define FLASH_FSM_MODE_PGM_SUBMODE_M                                0x00030000
 #define FLASH_FSM_MODE_PGM_SUBMODE_S                                        16
 
 // Field: [15:14] ERA_SUBMODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_ERA_SUBMODE_W                                         2
 #define FLASH_FSM_MODE_ERA_SUBMODE_M                                0x0000C000
 #define FLASH_FSM_MODE_ERA_SUBMODE_S                                        14
 
 // Field: [13:12] SUBMODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_SUBMODE_W                                             2
 #define FLASH_FSM_MODE_SUBMODE_M                                    0x00003000
 #define FLASH_FSM_MODE_SUBMODE_S                                            12
 
 // Field:  [11:9] SAV_PGM_CMD
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_SAV_PGM_CMD_W                                         3
 #define FLASH_FSM_MODE_SAV_PGM_CMD_M                                0x00000E00
 #define FLASH_FSM_MODE_SAV_PGM_CMD_S                                         9
 
 // Field:   [8:6] SAV_ERA_MODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_SAV_ERA_MODE_W                                        3
 #define FLASH_FSM_MODE_SAV_ERA_MODE_M                               0x000001C0
 #define FLASH_FSM_MODE_SAV_ERA_MODE_S                                        6
 
 // Field:   [5:3] MODE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_MODE_W                                                3
 #define FLASH_FSM_MODE_MODE_M                                       0x00000038
 #define FLASH_FSM_MODE_MODE_S                                                3
 
 // Field:   [2:0] CMD
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_MODE_CMD_W                                                 3
 #define FLASH_FSM_MODE_CMD_M                                        0x00000007
 #define FLASH_FSM_MODE_CMD_S                                                 0
 
@@ -2442,12 +2564,14 @@
 // Field: [25:23] PGM_BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PGM_PGM_BANK_W                                             3
 #define FLASH_FSM_PGM_PGM_BANK_M                                    0x03800000
 #define FLASH_FSM_PGM_PGM_BANK_S                                            23
 
 // Field:  [22:0] PGM_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PGM_PGM_ADDR_W                                            23
 #define FLASH_FSM_PGM_PGM_ADDR_M                                    0x007FFFFF
 #define FLASH_FSM_PGM_PGM_ADDR_S                                             0
 
@@ -2459,12 +2583,14 @@
 // Field: [25:23] ERA_BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_ERA_BANK_W                                             3
 #define FLASH_FSM_ERA_ERA_BANK_M                                    0x03800000
 #define FLASH_FSM_ERA_ERA_BANK_S                                            23
 
 // Field:  [22:0] ERA_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_ERA_ADDR_W                                            23
 #define FLASH_FSM_ERA_ERA_ADDR_M                                    0x007FFFFF
 #define FLASH_FSM_ERA_ERA_ADDR_S                                             0
 
@@ -2476,12 +2602,14 @@
 // Field: [19:16] BEG_EC_LEVEL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PRG_PUL_BEG_EC_LEVEL_W                                     4
 #define FLASH_FSM_PRG_PUL_BEG_EC_LEVEL_M                            0x000F0000
 #define FLASH_FSM_PRG_PUL_BEG_EC_LEVEL_S                                    16
 
 // Field:  [11:0] MAX_PRG_PUL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PRG_PUL_MAX_PRG_PUL_W                                     12
 #define FLASH_FSM_PRG_PUL_MAX_PRG_PUL_M                             0x00000FFF
 #define FLASH_FSM_PRG_PUL_MAX_PRG_PUL_S                                      0
 
@@ -2493,12 +2621,14 @@
 // Field: [19:16] MAX_EC_LEVEL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_PUL_MAX_EC_LEVEL_W                                     4
 #define FLASH_FSM_ERA_PUL_MAX_EC_LEVEL_M                            0x000F0000
 #define FLASH_FSM_ERA_PUL_MAX_EC_LEVEL_S                                    16
 
 // Field:  [11:0] MAX_ERA_PUL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERA_PUL_MAX_ERA_PUL_W                                     12
 #define FLASH_FSM_ERA_PUL_MAX_ERA_PUL_M                             0x00000FFF
 #define FLASH_FSM_ERA_PUL_MAX_ERA_PUL_S                                      0
 
@@ -2510,6 +2640,7 @@
 // Field: [24:16] EC_STEP_SIZE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_STEP_SIZE_EC_STEP_SIZE_W                                   9
 #define FLASH_FSM_STEP_SIZE_EC_STEP_SIZE_M                          0x01FF0000
 #define FLASH_FSM_STEP_SIZE_EC_STEP_SIZE_S                                  16
 
@@ -2521,12 +2652,14 @@
 // Field: [24:16] CUR_EC_LEVEL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PUL_CNTR_CUR_EC_LEVEL_W                                    9
 #define FLASH_FSM_PUL_CNTR_CUR_EC_LEVEL_M                           0x01FF0000
 #define FLASH_FSM_PUL_CNTR_CUR_EC_LEVEL_S                                   16
 
 // Field:  [11:0] PUL_CNTR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PUL_CNTR_PUL_CNTR_W                                       12
 #define FLASH_FSM_PUL_CNTR_PUL_CNTR_M                               0x00000FFF
 #define FLASH_FSM_PUL_CNTR_PUL_CNTR_S                                        0
 
@@ -2538,6 +2671,7 @@
 // Field:   [3:0] EC_STEP_HEIGHT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_EC_STEP_HEIGHT_EC_STEP_HEIGHT_W                            4
 #define FLASH_FSM_EC_STEP_HEIGHT_EC_STEP_HEIGHT_M                   0x0000000F
 #define FLASH_FSM_EC_STEP_HEIGHT_EC_STEP_HEIGHT_S                            0
 
@@ -2629,6 +2763,7 @@
 // Field:  [10:7] DBG_SHORT_ROW
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ST_MACHINE_DBG_SHORT_ROW_W                                 4
 #define FLASH_FSM_ST_MACHINE_DBG_SHORT_ROW_M                        0x00000780
 #define FLASH_FSM_ST_MACHINE_DBG_SHORT_ROW_S                                 7
 
@@ -2688,12 +2823,14 @@
 // Field:  [11:8] BLK_TIOTP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_FLES_BLK_TIOTP_W                                           4
 #define FLASH_FSM_FLES_BLK_TIOTP_M                                  0x00000F00
 #define FLASH_FSM_FLES_BLK_TIOTP_S                                           8
 
 // Field:   [7:0] BLK_OTP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_FLES_BLK_OTP_W                                             8
 #define FLASH_FSM_FLES_BLK_OTP_M                                    0x000000FF
 #define FLASH_FSM_FLES_BLK_OTP_S                                             0
 
@@ -2705,6 +2842,7 @@
 // Field:   [2:0] WR_ENA
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_WR_ENA_WR_ENA_W                                            3
 #define FLASH_FSM_WR_ENA_WR_ENA_M                                   0x00000007
 #define FLASH_FSM_WR_ENA_WR_ENA_S                                            0
 
@@ -2716,6 +2854,7 @@
 // Field:  [31:0] FSM_ACC_PP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ACC_PP_FSM_ACC_PP_W                                       32
 #define FLASH_FSM_ACC_PP_FSM_ACC_PP_M                               0xFFFFFFFF
 #define FLASH_FSM_ACC_PP_FSM_ACC_PP_S                                        0
 
@@ -2727,6 +2866,7 @@
 // Field:  [15:0] ACC_EP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ACC_EP_ACC_EP_W                                           16
 #define FLASH_FSM_ACC_EP_ACC_EP_M                                   0x0000FFFF
 #define FLASH_FSM_ACC_EP_ACC_EP_S                                            0
 
@@ -2738,12 +2878,14 @@
 // Field: [30:28] BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ADDR_BANK_W                                                3
 #define FLASH_FSM_ADDR_BANK_M                                       0x70000000
 #define FLASH_FSM_ADDR_BANK_S                                               28
 
 // Field:  [27:0] CUR_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ADDR_CUR_ADDR_W                                           28
 #define FLASH_FSM_ADDR_CUR_ADDR_M                                   0x0FFFFFFF
 #define FLASH_FSM_ADDR_CUR_ADDR_S                                            0
 
@@ -2755,24 +2897,28 @@
 // Field: [31:16] SECT_ERASED
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR_SECT_ERASED_W                                      16
 #define FLASH_FSM_SECTOR_SECT_ERASED_M                              0xFFFF0000
 #define FLASH_FSM_SECTOR_SECT_ERASED_S                                      16
 
 // Field:  [15:8] FSM_SECTOR_EXTENSION
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR_FSM_SECTOR_EXTENSION_W                              8
 #define FLASH_FSM_SECTOR_FSM_SECTOR_EXTENSION_M                     0x0000FF00
 #define FLASH_FSM_SECTOR_FSM_SECTOR_EXTENSION_S                              8
 
 // Field:   [7:4] SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR_SECTOR_W                                            4
 #define FLASH_FSM_SECTOR_SECTOR_M                                   0x000000F0
 #define FLASH_FSM_SECTOR_SECTOR_S                                            4
 
 // Field:   [3:0] SEC_OUT
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR_SEC_OUT_W                                           4
 #define FLASH_FSM_SECTOR_SEC_OUT_M                                  0x0000000F
 #define FLASH_FSM_SECTOR_SEC_OUT_S                                           0
 
@@ -2784,12 +2930,14 @@
 // Field: [31:12] MOD_VERSION
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FMC_REV_ID_MOD_VERSION_W                                      20
 #define FLASH_FMC_REV_ID_MOD_VERSION_M                              0xFFFFF000
 #define FLASH_FMC_REV_ID_MOD_VERSION_S                                      12
 
 // Field:  [11:0] CONFIG_CRC
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FMC_REV_ID_CONFIG_CRC_W                                       12
 #define FLASH_FMC_REV_ID_CONFIG_CRC_M                               0x00000FFF
 #define FLASH_FMC_REV_ID_CONFIG_CRC_S                                        0
 
@@ -2801,12 +2949,14 @@
 // Field:  [31:8] FSM_ERR_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERR_ADDR_FSM_ERR_ADDR_W                                   24
 #define FLASH_FSM_ERR_ADDR_FSM_ERR_ADDR_M                           0xFFFFFF00
 #define FLASH_FSM_ERR_ADDR_FSM_ERR_ADDR_S                                    8
 
 // Field:   [3:0] FSM_ERR_BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_ERR_ADDR_FSM_ERR_BANK_W                                    4
 #define FLASH_FSM_ERR_ADDR_FSM_ERR_BANK_M                           0x0000000F
 #define FLASH_FSM_ERR_ADDR_FSM_ERR_BANK_S                                    0
 
@@ -2818,6 +2968,7 @@
 // Field:  [11:0] FSM_PGM_MAXPUL
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_PGM_MAXPUL_FSM_PGM_MAXPUL_W                               12
 #define FLASH_FSM_PGM_MAXPUL_FSM_PGM_MAXPUL_M                       0x00000FFF
 #define FLASH_FSM_PGM_MAXPUL_FSM_PGM_MAXPUL_S                                0
 
@@ -2829,12 +2980,14 @@
 // Field: [19:16] SUSPEND_NOW
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_EXECUTE_SUSPEND_NOW_W                                      4
 #define FLASH_FSM_EXECUTE_SUSPEND_NOW_M                             0x000F0000
 #define FLASH_FSM_EXECUTE_SUSPEND_NOW_S                                     16
 
 // Field:   [4:0] FSMEXECUTE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_EXECUTE_FSMEXECUTE_W                                       5
 #define FLASH_FSM_EXECUTE_FSMEXECUTE_M                              0x0000001F
 #define FLASH_FSM_EXECUTE_FSMEXECUTE_S                                       0
 
@@ -2846,6 +2999,7 @@
 // Field:  [31:0] FSM_SECTOR1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR1_FSM_SECTOR1_W                                     32
 #define FLASH_FSM_SECTOR1_FSM_SECTOR1_M                             0xFFFFFFFF
 #define FLASH_FSM_SECTOR1_FSM_SECTOR1_S                                      0
 
@@ -2857,6 +3011,7 @@
 // Field:  [31:0] FSM_SECTOR2
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_SECTOR2_FSM_SECTOR2_W                                     32
 #define FLASH_FSM_SECTOR2_FSM_SECTOR2_M                             0xFFFFFFFF
 #define FLASH_FSM_SECTOR2_FSM_SECTOR2_S                                      0
 
@@ -2868,6 +3023,7 @@
 // Field:  [31:0] FSM_BSLE0
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_BSLE0_FSM_BSLE0_W                                         32
 #define FLASH_FSM_BSLE0_FSM_BSLE0_M                                 0xFFFFFFFF
 #define FLASH_FSM_BSLE0_FSM_BSLE0_S                                          0
 
@@ -2879,6 +3035,7 @@
 // Field:  [31:0] FSM_BSL1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_BSLE1_FSM_BSL1_W                                          32
 #define FLASH_FSM_BSLE1_FSM_BSL1_M                                  0xFFFFFFFF
 #define FLASH_FSM_BSLE1_FSM_BSL1_S                                           0
 
@@ -2890,6 +3047,7 @@
 // Field:  [31:0] FSM_BSLP0
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_BSLP0_FSM_BSLP0_W                                         32
 #define FLASH_FSM_BSLP0_FSM_BSLP0_M                                 0xFFFFFFFF
 #define FLASH_FSM_BSLP0_FSM_BSLP0_S                                          0
 
@@ -2901,6 +3059,7 @@
 // Field:  [31:0] FSM_BSL1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FSM_BSLP1_FSM_BSL1_W                                          32
 #define FLASH_FSM_BSLP1_FSM_BSL1_M                                  0xFFFFFFFF
 #define FLASH_FSM_BSLP1_FSM_BSL1_S                                           0
 
@@ -2912,24 +3071,28 @@
 // Field: [31:20] EE_BANK_WIDTH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BANK_EE_BANK_WIDTH_W                                     12
 #define FLASH_FCFG_BANK_EE_BANK_WIDTH_M                             0xFFF00000
 #define FLASH_FCFG_BANK_EE_BANK_WIDTH_S                                     20
 
 // Field: [19:16] EE_NUM_BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BANK_EE_NUM_BANK_W                                        4
 #define FLASH_FCFG_BANK_EE_NUM_BANK_M                               0x000F0000
 #define FLASH_FCFG_BANK_EE_NUM_BANK_S                                       16
 
 // Field:  [15:4] MAIN_BANK_WIDTH
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BANK_MAIN_BANK_WIDTH_W                                   12
 #define FLASH_FCFG_BANK_MAIN_BANK_WIDTH_M                           0x0000FFF0
 #define FLASH_FCFG_BANK_MAIN_BANK_WIDTH_S                                    4
 
 // Field:   [3:0] MAIN_NUM_BANK
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BANK_MAIN_NUM_BANK_W                                      4
 #define FLASH_FCFG_BANK_MAIN_NUM_BANK_M                             0x0000000F
 #define FLASH_FCFG_BANK_MAIN_NUM_BANK_S                                      0
 
@@ -2941,6 +3104,7 @@
 // Field: [31:24] FAMILY_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_FAMILY_TYPE_W                                     8
 #define FLASH_FCFG_WRAPPER_FAMILY_TYPE_M                            0xFF000000
 #define FLASH_FCFG_WRAPPER_FAMILY_TYPE_S                                    24
 
@@ -2955,12 +3119,14 @@
 // Field: [19:16] CPU2
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_CPU2_W                                            4
 #define FLASH_FCFG_WRAPPER_CPU2_M                                   0x000F0000
 #define FLASH_FCFG_WRAPPER_CPU2_S                                           16
 
 // Field: [15:12] EE_IN_MAIN
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_EE_IN_MAIN_W                                      4
 #define FLASH_FCFG_WRAPPER_EE_IN_MAIN_M                             0x0000F000
 #define FLASH_FCFG_WRAPPER_EE_IN_MAIN_S                                     12
 
@@ -2999,18 +3165,21 @@
 // Field:   [7:6] AUTO_SUSP
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_AUTO_SUSP_W                                       2
 #define FLASH_FCFG_WRAPPER_AUTO_SUSP_M                              0x000000C0
 #define FLASH_FCFG_WRAPPER_AUTO_SUSP_S                                       6
 
 // Field:   [5:4] UERR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_UERR_W                                            2
 #define FLASH_FCFG_WRAPPER_UERR_M                                   0x00000030
 #define FLASH_FCFG_WRAPPER_UERR_S                                            4
 
 // Field:   [3:0] CPU_TYPE1
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_WRAPPER_CPU_TYPE1_W                                       4
 #define FLASH_FCFG_WRAPPER_CPU_TYPE1_M                              0x0000000F
 #define FLASH_FCFG_WRAPPER_CPU_TYPE1_S                                       0
 
@@ -3022,48 +3191,56 @@
 // Field: [31:28] B7_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B7_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B7_TYPE_M                               0xF0000000
 #define FLASH_FCFG_BNK_TYPE_B7_TYPE_S                                       28
 
 // Field: [27:24] B6_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B6_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B6_TYPE_M                               0x0F000000
 #define FLASH_FCFG_BNK_TYPE_B6_TYPE_S                                       24
 
 // Field: [23:20] B5_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B5_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B5_TYPE_M                               0x00F00000
 #define FLASH_FCFG_BNK_TYPE_B5_TYPE_S                                       20
 
 // Field: [19:16] B4_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B4_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B4_TYPE_M                               0x000F0000
 #define FLASH_FCFG_BNK_TYPE_B4_TYPE_S                                       16
 
 // Field: [15:12] B3_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B3_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B3_TYPE_M                               0x0000F000
 #define FLASH_FCFG_BNK_TYPE_B3_TYPE_S                                       12
 
 // Field:  [11:8] B2_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B2_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B2_TYPE_M                               0x00000F00
 #define FLASH_FCFG_BNK_TYPE_B2_TYPE_S                                        8
 
 // Field:   [7:4] B1_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B1_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B1_TYPE_M                               0x000000F0
 #define FLASH_FCFG_BNK_TYPE_B1_TYPE_S                                        4
 
 // Field:   [3:0] B0_TYPE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_BNK_TYPE_B0_TYPE_W                                        4
 #define FLASH_FCFG_BNK_TYPE_B0_TYPE_M                               0x0000000F
 #define FLASH_FCFG_BNK_TYPE_B0_TYPE_S                                        0
 
@@ -3075,18 +3252,21 @@
 // Field: [31:28] B0_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B0_START_B0_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B0_START_B0_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B0_START_B0_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B0_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B0_START_B0_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B0_START_B0_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B0_START_B0_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B0_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B0_START_B0_START_ADDR_W                                 24
 #define FLASH_FCFG_B0_START_B0_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B0_START_B0_START_ADDR_S                                  0
 
@@ -3098,18 +3278,21 @@
 // Field: [31:28] B1_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B1_START_B1_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B1_START_B1_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B1_START_B1_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B1_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B1_START_B1_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B1_START_B1_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B1_START_B1_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B1_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B1_START_B1_START_ADDR_W                                 24
 #define FLASH_FCFG_B1_START_B1_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B1_START_B1_START_ADDR_S                                  0
 
@@ -3121,18 +3304,21 @@
 // Field: [31:28] B2_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B2_START_B2_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B2_START_B2_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B2_START_B2_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B2_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B2_START_B2_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B2_START_B2_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B2_START_B2_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B2_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B2_START_B2_START_ADDR_W                                 24
 #define FLASH_FCFG_B2_START_B2_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B2_START_B2_START_ADDR_S                                  0
 
@@ -3144,18 +3330,21 @@
 // Field: [31:28] B3_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B3_START_B3_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B3_START_B3_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B3_START_B3_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B3_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B3_START_B3_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B3_START_B3_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B3_START_B3_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B3_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B3_START_B3_START_ADDR_W                                 24
 #define FLASH_FCFG_B3_START_B3_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B3_START_B3_START_ADDR_S                                  0
 
@@ -3167,18 +3356,21 @@
 // Field: [31:28] B4_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B4_START_B4_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B4_START_B4_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B4_START_B4_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B4_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B4_START_B4_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B4_START_B4_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B4_START_B4_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B4_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B4_START_B4_START_ADDR_W                                 24
 #define FLASH_FCFG_B4_START_B4_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B4_START_B4_START_ADDR_S                                  0
 
@@ -3190,18 +3382,21 @@
 // Field: [31:28] B5_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B5_START_B5_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B5_START_B5_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B5_START_B5_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B5_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B5_START_B5_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B5_START_B5_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B5_START_B5_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B5_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B5_START_B5_START_ADDR_W                                 24
 #define FLASH_FCFG_B5_START_B5_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B5_START_B5_START_ADDR_S                                  0
 
@@ -3213,18 +3408,21 @@
 // Field: [31:28] B6_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B6_START_B6_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B6_START_B6_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B6_START_B6_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B6_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B6_START_B6_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B6_START_B6_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B6_START_B6_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B6_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B6_START_B6_START_ADDR_W                                 24
 #define FLASH_FCFG_B6_START_B6_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B6_START_B6_START_ADDR_S                                  0
 
@@ -3236,18 +3434,21 @@
 // Field: [31:28] B7_MAX_SECTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B7_START_B7_MAX_SECTOR_W                                  4
 #define FLASH_FCFG_B7_START_B7_MAX_SECTOR_M                         0xF0000000
 #define FLASH_FCFG_B7_START_B7_MAX_SECTOR_S                                 28
 
 // Field: [27:24] B7_MUX_FACTOR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B7_START_B7_MUX_FACTOR_W                                  4
 #define FLASH_FCFG_B7_START_B7_MUX_FACTOR_M                         0x0F000000
 #define FLASH_FCFG_B7_START_B7_MUX_FACTOR_S                                 24
 
 // Field:  [23:0] B7_START_ADDR
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B7_START_B7_START_ADDR_W                                 24
 #define FLASH_FCFG_B7_START_B7_START_ADDR_M                         0x00FFFFFF
 #define FLASH_FCFG_B7_START_B7_START_ADDR_S                                  0
 
@@ -3259,12 +3460,14 @@
 // Field: [27:16] B0_NUM_SECTORS
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B0_SSIZE0_B0_NUM_SECTORS_W                               12
 #define FLASH_FCFG_B0_SSIZE0_B0_NUM_SECTORS_M                       0x0FFF0000
 #define FLASH_FCFG_B0_SSIZE0_B0_NUM_SECTORS_S                               16
 
 // Field:   [3:0] B0_SECT_SIZE
 //
 // Internal. Only to be used through TI provided API.
+#define FLASH_FCFG_B0_SSIZE0_B0_SECT_SIZE_W                                  4
 #define FLASH_FCFG_B0_SSIZE0_B0_SECT_SIZE_M                         0x0000000F
 #define FLASH_FCFG_B0_SSIZE0_B0_SECT_SIZE_S                                  0
 

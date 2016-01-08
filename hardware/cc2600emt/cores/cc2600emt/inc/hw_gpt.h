@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_gpt_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -106,13 +106,10 @@
 // Timer B Value
 #define GPT_O_TBV                                                   0x00000054
 
-// RTC Pre-divide Value
-#define GPT_O_RTCPD                                                 0x00000058
-
 // Timer A Pre-scale Snap-shot
 #define GPT_O_TAPS                                                  0x0000005C
 
-// Timer A Pre-scale Snap-shot
+// Timer B Pre-scale Snap-shot
 #define GPT_O_TBPS                                                  0x00000060
 
 // Timer A Pre-scale Value
@@ -123,9 +120,6 @@
 
 // DMA Event
 #define GPT_O_DMAEV                                                 0x0000006C
-
-// ADC Event
-#define GPT_O_ADCEV                                                 0x00000070
 
 // Peripheral Version
 #define GPT_O_VERSION                                               0x00000FB0
@@ -145,14 +139,15 @@
 // 0x5- 0x7 - Reserved
 // ENUMs:
 // 16BIT_TIMER              16-bit timer configuration.
-// Configure for two 16-bit timers.
-// Also see TAMR.TAMR and TBMR.TBMR.
-// REALTIME_CLOCK           32-bit real-time clock
+//                          Configure for two 16-bit
+//                          timers.
+//                          Also see TAMR.TAMR and
+//                          TBMR.TBMR.
 // 32BIT_TIMER              32-bit timer configuration
+#define GPT_CFG_CFG_W                                                        3
 #define GPT_CFG_CFG_M                                               0x00000007
 #define GPT_CFG_CFG_S                                                        0
 #define GPT_CFG_CFG_16BIT_TIMER                                     0x00000004
-#define GPT_CFG_CFG_REALTIME_CLOCK                                  0x00000001
 #define GPT_CFG_CFG_32BIT_TIMER                                     0x00000000
 
 //*****************************************************************************
@@ -165,17 +160,18 @@
 // Timer Compare Action Select
 // ENUMs:
 // CLRSET_ON_TO             Clear CCP output pin immediately and set on
-// Time-Out
+//                          Time-Out
 // SETCLR_ON_TO             Set CCP output pin immediately and clear on
-// Time-Out
+//                          Time-Out
 // CLRTOG_ON_TO             Clear CCP output pin immediately and toggle on
-// Time-Out
+//                          Time-Out
 // SETTOG_ON_TO             Set CCP output pin immediately and toggle on
-// Time-Out
+//                          Time-Out
 // SET_ON_TO                Set CCP output pin on Time-Out
 // CLR_ON_TO                Clear CCP output pin on Time-Out
 // TOG_ON_TO                Toggle State on Time-Out
 // DIS_CMP                  Disable compare operations
+#define GPT_TAMR_TCACT_W                                                     3
 #define GPT_TAMR_TCACT_M                                            0x0000E000
 #define GPT_TAMR_TCACT_S                                                    13
 #define GPT_TAMR_TCACT_CLRSET_ON_TO                                 0x0000E000
@@ -202,7 +198,15 @@
 
 // Field:    [11] TAPLO
 //
-// Legacy PWM operation
+// GPTM Timer A PWM Legacy Operation
+//
+// 0  Legacy operation with CCP pin driven Low when the TAILR
+// register is reloaded after the timer reaches 0.
+//
+// 1 CCP is driven High when the TAILR  register is reloaded after the timer
+// reaches 0.
+//
+// This bit is only valid in PWM mode.
 // ENUMs:
 // CCP_ON_TO                CCP output pin is set to 1 on time-out
 // LEGACY                   Legacy operation
@@ -217,15 +221,17 @@
 //
 // Timer A Match Register Update mode
 //
+// This bit defines when the TAMATCHR and TAPR registers are updated.
+//
 // If the timer is disabled (CTL.TAEN = 0) when this bit is set, TAMATCHR and
-// TAPR are updated when the timer is enabled. If the timer is stalled
-// (CTL.TASTALL is set), TAMATCHR and TAPR are updated according to the
-// configuration of this bit.
+// TAPR are updated when the timer is enabled.
+// If the timer is stalled (CTL.TASTALL = 1) when this bit is set, TAMATCHR and
+// TAPR are updated according to the configuration of this bit.
 // ENUMs:
 // TOUPDATE                 Update TAMATCHR and TAPR, if used, on the next
-// time-out.
+//                          time-out.
 // CYCLEUPDATE              Update TAMATCHR and TAPR, if used, on the next
-// cycle.
+//                          cycle.
 #define GPT_TAMR_TAMRSU                                             0x00000400
 #define GPT_TAMR_TAMRSU_BITN                                                10
 #define GPT_TAMR_TAMRSU_M                                           0x00000400
@@ -235,11 +241,20 @@
 
 // Field:     [9] TAPWMIE
 //
-// GPT Timer A PWM Interrupt Enable This bit enables interrupts in PWM mode on
-// rising, falling, or both edges of the CCP output.
+// GPTM Timer A PWM Interrupt Enable
+// This bit enables interrupts in PWM mode on rising, falling, or both edges of
+// the CCP output, as defined by the CTL.TAEVENT
+// In addition, when this bit is set and a capture event occurs, Timer A
+// automatically generates triggers to the DMA if the trigger capability is
+// enabled by setting the CTL.TAOTE bit and the DMAEV.CAEDMAEN bit
+// respectively.
+//
+// 0 Capture event interrupt is disabled.
+// 1 Capture event interrupt is enabled.
+// This bit is only valid in PWM mode.
 // ENUMs:
 // EN                       Interrupt is enabled.  This bit is only valid in
-// PWM mode.
+//                          PWM mode.
 // DIS                      Interrupt is disabled.
 #define GPT_TAMR_TAPWMIE                                            0x00000200
 #define GPT_TAMR_TAPWMIE_BITN                                                9
@@ -252,12 +267,16 @@
 //
 // GPT Timer A PWM Interval Load Write
 // ENUMs:
-// TOUPDATE                 Update the TAR register with the value in the TAILR
-// register on the next timeout. If the prescaler is used, update the TAPS
-// register with the value in the TAPR register on the next timeout.
-// CYCLEUPDATE              Update the TAR register with the value in the TAILR
-// register on the next clock cycle. If the pre-scaler is used, update the TAPS
-// register with the value in the TAPR register on the next clock cycle.
+// TOUPDATE                 Update the TAR register with the value in the
+//                          TAILR register on the next timeout. If the
+//                          prescaler is used, update the TAPS register
+//                          with the value in the TAPR register on the next
+//                          timeout.
+// CYCLEUPDATE              Update the TAR register with the value in the
+//                          TAILR register on the next clock cycle. If the
+//                          pre-scaler is used, update the TAPS register
+//                          with the value in the TAPR register on the next
+//                          clock cycle.
 #define GPT_TAMR_TAILD                                              0x00000100
 #define GPT_TAMR_TAILD_BITN                                                  8
 #define GPT_TAMR_TAILD_M                                            0x00000100
@@ -270,8 +289,9 @@
 // GPT Timer A Snap-Shot Mode
 // ENUMs:
 // EN                       If Timer A is configured in the periodic mode, the
-// actual free-running value of Timer A is loaded at the time-out event into
-// the GPT Timer A (TAR) register.
+//                          actual free-running value of Timer A is loaded
+//                          at the time-out event into the GPT Timer A
+//                          (TAR) register.
 // DIS                      Snap-shot mode is disabled.
 #define GPT_TAMR_TASNAPS                                            0x00000080
 #define GPT_TAMR_TASNAPS_BITN                                                7
@@ -285,9 +305,11 @@
 // GPT Timer A Wait-On-Trigger
 // ENUMs:
 // WAIT                     If Timer A is enabled (CTL.TAEN = 1), Timer A does
-// not begin counting until it receives a trigger from the timer in the
-// previous position in the daisy chain. This bit must be clear for GPT Module
-// 0, Timer A
+//                          not begin counting until it receives a trigger
+//                          from the timer in the previous position in the
+//                          daisy chain. This bit must be clear for GPT
+//                          Module 0, Timer A. This function is valid for
+//                          one-shot, periodic, and PWM modes
 // NOWAIT                   Timer A begins counting as soon as it is enabled.
 #define GPT_TAMR_TAWOT                                              0x00000040
 #define GPT_TAMR_TAWOT_BITN                                                  6
@@ -301,9 +323,11 @@
 // GPT Timer A Match Interrupt Enable
 // ENUMs:
 // EN                       An interrupt is generated when the match value in
-// TAMATCHR is reached in the one-shot and periodic modes.
+//                          TAMATCHR is reached in the one-shot and
+//                          periodic modes.
 // DIS                      The match interrupt is disabled for match events.
-// Additionally, triggers to the DMA and ADC on match events are prevented
+//                          Additionally, output triggers on match events
+//                          are prevented.
 #define GPT_TAMR_TAMIE                                              0x00000020
 #define GPT_TAMR_TAMIE_BITN                                                  5
 #define GPT_TAMR_TAMIE_M                                            0x00000020
@@ -316,7 +340,7 @@
 // GPT Timer A Count Direction
 // ENUMs:
 // UP                       The timer counts up. When counting up, the timer
-// starts from a value of 0x0.
+//                          starts from a value of 0x0.
 // DOWN                     The timer counts down.
 #define GPT_TAMR_TACDIR                                             0x00000010
 #define GPT_TAMR_TACDIR_BITN                                                 4
@@ -358,11 +382,17 @@
 //
 // GPT Timer A Mode
 //
-// The Timer mode is based on the timer configuration defined by CFG
+// 0x0 Reserved
+// 0x1 One-Shot Timer mode
+// 0x2 Periodic Timer mode
+// 0x3 Capture mode
+// The Timer mode is based on the timer configuration defined by bits 2:0 in
+// the CFG register
 // ENUMs:
 // CAPTURE                  Capture mode
 // PERIODIC                 Periodic Timer mode
 // ONE_SHOT                 One-Shot Timer mode
+#define GPT_TAMR_TAMR_W                                                      2
 #define GPT_TAMR_TAMR_M                                             0x00000003
 #define GPT_TAMR_TAMR_S                                                      0
 #define GPT_TAMR_TAMR_CAPTURE                                       0x00000003
@@ -379,17 +409,18 @@
 // Timer Compare Action Select
 // ENUMs:
 // CLRSET_ON_TO             Clear CCP output pin immediately and set on
-// Time-Out
+//                          Time-Out
 // SETCLR_ON_TO             Set CCP output pin immediately and clear on
-// Time-Out
+//                          Time-Out
 // CLRTOG_ON_TO             Clear CCP output pin immediately and toggle on
-// Time-Out
+//                          Time-Out
 // SETTOG_ON_TO             Set CCP output pin immediately and toggle on
-// Time-Out
+//                          Time-Out
 // SET_ON_TO                Set CCP output pin on Time-Out
 // CLR_ON_TO                Clear CCP output pin on Time-Out
 // TOG_ON_TO                Toggle State on Time-Out
 // DIS_CMP                  Disable compare operations
+#define GPT_TBMR_TCACT_W                                                     3
 #define GPT_TBMR_TCACT_M                                            0x0000E000
 #define GPT_TBMR_TCACT_S                                                    13
 #define GPT_TBMR_TCACT_CLRSET_ON_TO                                 0x0000E000
@@ -416,7 +447,15 @@
 
 // Field:    [11] TBPLO
 //
-// Legacy PWM operation
+// GPTM Timer B PWM Legacy Operation
+//
+// 0  Legacy operation with CCP pin driven Low when the TBILR
+// register is reloaded after the timer reaches 0.
+//
+// 1 CCP is driven High when the TBILR  register is reloaded after the timer
+// reaches 0.
+//
+// This bit is only valid in PWM mode.
 // ENUMs:
 // CCP_ON_TO                CCP output pin is set to 1 on time-out
 // LEGACY                   Legacy operation
@@ -431,15 +470,17 @@
 //
 // Timer B Match Register Update mode
 //
+// This bit defines when the TBMATCHR and TBPR registers are updated
+//
 // If the timer is disabled (CTL.TBEN is clear) when this bit is set, TBMATCHR
-// and TBPR are updated when the timer is enabled. If the timer is stalled
-// (CTL.TBSTALL is set), TBMATCHR and TBPR are updated according to the
-// configuration of this bit.
+// and TBPR are updated when the timer is enabled.
+// If the timer is stalled (CTL.TBSTALL is set) when this bit is set, TBMATCHR
+// and TBPR are updated according to the configuration of this bit.
 // ENUMs:
 // TOUPDATE                 Update the TBMATCHR and the TBPR, if used on the
-// next time-out.
+//                          next time-out.
 // CYCLEUPDATE              Update TBMATCHR and TBPR, if used on the next
-// cycle.
+//                          cycle.
 #define GPT_TBMR_TBMRSU                                             0x00000400
 #define GPT_TBMR_TBMRSU_BITN                                                10
 #define GPT_TBMR_TBMRSU_M                                           0x00000400
@@ -449,11 +490,20 @@
 
 // Field:     [9] TBPWMIE
 //
-// GPT Timer B PWM Interrupt Enable This bit enables interrupts in PWM mode on
-// rising, falling, or both edges of the CCP output
+// GPTM Timer B PWM Interrupt Enable
+// This bit enables interrupts in PWM mode on rising, falling, or both edges of
+// the CCP output, as defined by the CTL.TBEVENT
+// In addition, when this bit is set and a capture event occurs, Timer A
+// automatically generates triggers to the DMA if the trigger capability is
+// enabled by setting the CTL.TBOTE bit and the DMAEV.CBEDMAEN bit
+// respectively.
+//
+// 0 Capture event interrupt is disabled.
+// 1 Capture event interrupt is enabled.
+// This bit is only valid in PWM mode.
 // ENUMs:
 // EN                       Interrupt is enabled.  This bit is only valid in
-// PWM mode.
+//                          PWM mode.
 // DIS                      Interrupt is disabled.
 #define GPT_TBMR_TBPWMIE                                            0x00000200
 #define GPT_TBMR_TBPWMIE_BITN                                                9
@@ -466,12 +516,16 @@
 //
 // GPT Timer B PWM Interval Load Write
 // ENUMs:
-// TOUPDATE                 Update the TBR register with the value in the TBILR
-// register on the next timeout. If the prescaler is used, update the TBPS
-// register with the value in the TBPR register on the next timeout.
-// CYCLEUPDATE              Update the TBR register with the value in the TBILR
-// register on the next clock cycle. If the pre-scaler is used, update the TBPS
-// register with the value in the TBPR register on the next clock cycle.
+// TOUPDATE                 Update the TBR register with the value in the
+//                          TBILR register on the next timeout. If the
+//                          prescaler is used, update the TBPS register
+//                          with the value in the TBPR register on the next
+//                          timeout.
+// CYCLEUPDATE              Update the TBR register with the value in the
+//                          TBILR register on the next clock cycle. If the
+//                          prescaler is used, update the TBPS register
+//                          with the value in the TBPR register on the next
+//                          timeout.
 #define GPT_TBMR_TBILD                                              0x00000100
 #define GPT_TBMR_TBILD_BITN                                                  8
 #define GPT_TBMR_TBILD_M                                            0x00000100
@@ -497,8 +551,10 @@
 // GPT Timer B Wait-On-Trigger
 // ENUMs:
 // WAIT                     If Timer B is enabled (CTL.TBEN is set), Timer B
-// does not begin counting until it receives a trigger from the timer in the
-// previous position in the daisy chain.
+//                          does not begin counting until it receives a
+//                          trigger from the timer in the previous position
+//                          in the daisy chain. This function is valid for
+//                          one-shot, periodic, and PWM modes
 // NOWAIT                   Timer B begins counting as soon as it is enabled.
 #define GPT_TBMR_TBWOT                                              0x00000040
 #define GPT_TBMR_TBWOT_BITN                                                  6
@@ -512,9 +568,11 @@
 // GPT Timer B Match Interrupt Enable.
 // ENUMs:
 // EN                       An interrupt is generated when the match value in
-// the TBMATCHR register is reached in the one-shot and periodic modes.
+//                          the TBMATCHR register is reached in the
+//                          one-shot and periodic modes.
 // DIS                      The match interrupt is disabled for match events.
-// Additionally, triggers to the DMA and ADC on match events are prevented
+//                          Additionally, output triggers on match events
+//                          are prevented.
 #define GPT_TBMR_TBMIE                                              0x00000020
 #define GPT_TBMR_TBMIE_BITN                                                  5
 #define GPT_TBMR_TBMIE_M                                            0x00000020
@@ -524,10 +582,10 @@
 
 // Field:     [4] TBCDIR
 //
-// GPT Timer B Count Direction
+// grep
 // ENUMs:
 // UP                       The timer counts up. When counting up, the timer
-// starts from a value of 0x0.
+//                          starts from a value of 0x0.
 // DOWN                     The timer counts down.
 #define GPT_TBMR_TBCDIR                                             0x00000010
 #define GPT_TBMR_TBCDIR_BITN                                                 4
@@ -569,11 +627,17 @@
 //
 // GPT Timer B Mode
 //
-// The Timer mode is based on the timer configuration defined by CFG.CFG
+// 0x0 Reserved
+// 0x1 One-Shot Timer mode
+// 0x2 Periodic Timer mode
+// 0x3 Capture mode
+// The Timer mode is based on the timer configuration defined by bits 2:0 in
+// the CFG register
 // ENUMs:
 // CAPTURE                  Capture mode
 // PERIODIC                 Periodic Timer mode
 // ONE_SHOT                 One-Shot Timer mode
+#define GPT_TBMR_TBMR_W                                                      2
 #define GPT_TBMR_TBMR_M                                             0x00000003
 #define GPT_TBMR_TBMR_S                                                      0
 #define GPT_TBMR_TBMR_CAPTURE                                       0x00000003
@@ -601,26 +665,26 @@
 #define GPT_CTL_TBPWML_INVERTED                                     0x00004000
 #define GPT_CTL_TBPWML_NORMAL                                       0x00000000
 
-// Field:    [13] TBOTE
-//
-// GPT Timer B Output Trigger Enable
-// ENUMs:
-// EN                       The output Timer B ADC trigger is enabled.
-// DIS                      The output Timer B ADC trigger is disabled.
-#define GPT_CTL_TBOTE                                               0x00002000
-#define GPT_CTL_TBOTE_BITN                                                  13
-#define GPT_CTL_TBOTE_M                                             0x00002000
-#define GPT_CTL_TBOTE_S                                                     13
-#define GPT_CTL_TBOTE_EN                                            0x00002000
-#define GPT_CTL_TBOTE_DIS                                           0x00000000
-
 // Field: [11:10] TBEVENT
 //
 // GPT Timer B Event Mode
+//
+// The values in this register are defined as follows:
+// Value Description
+// 0x0 Positive edge
+// 0x1 Negative edge
+// 0x2 Reserved
+// 0x3 Both edges
+// Note: If PWM output inversion is enabled, edge detection interrupt
+// behavior is reversed. Thus, if a positive-edge interrupt trigger
+// has been set and the PWM inversion generates a postive
+// edge, no event-trigger interrupt asserts. Instead, the interrupt
+// is generated on the negative edge of the PWM signal.
 // ENUMs:
 // BOTH                     Both edges
 // NEG                      Negative edge
 // POS                      Positive edge
+#define GPT_CTL_TBEVENT_W                                                    2
 #define GPT_CTL_TBEVENT_M                                           0x00000C00
 #define GPT_CTL_TBEVENT_S                                                   10
 #define GPT_CTL_TBEVENT_BOTH                                        0x00000C00
@@ -632,9 +696,9 @@
 // GPT Timer B Stall Enable
 // ENUMs:
 // EN                       Timer B freezes counting while the processor is
-// halted by the debugger.
+//                          halted by the debugger.
 // DIS                      Timer B continues counting while the processor is
-// halted by the debugger.
+//                          halted by the debugger.
 #define GPT_CTL_TBSTALL                                             0x00000200
 #define GPT_CTL_TBSTALL_BITN                                                 9
 #define GPT_CTL_TBSTALL_M                                           0x00000200
@@ -647,7 +711,7 @@
 // GPT Timer B Enable
 // ENUMs:
 // EN                       Timer B is enabled and begins counting or the
-// capture logic is enabled based on CFG register.
+//                          capture logic is enabled based on CFG register.
 // DIS                      Timer B is disabled.
 #define GPT_CTL_TBEN                                                0x00000100
 #define GPT_CTL_TBEN_BITN                                                    8
@@ -669,39 +733,26 @@
 #define GPT_CTL_TAPWML_INVERTED                                     0x00000040
 #define GPT_CTL_TAPWML_NORMAL                                       0x00000000
 
-// Field:     [5] TAOTE
-//
-// GPT Timer A Output Trigger Enable
-// ENUMs:
-// EN                       The output Timer A ADC trigger is enabled.
-// DIS                      The output Timer A ADC trigger is disabled.
-#define GPT_CTL_TAOTE                                               0x00000020
-#define GPT_CTL_TAOTE_BITN                                                   5
-#define GPT_CTL_TAOTE_M                                             0x00000020
-#define GPT_CTL_TAOTE_S                                                      5
-#define GPT_CTL_TAOTE_EN                                            0x00000020
-#define GPT_CTL_TAOTE_DIS                                           0x00000000
-
-// Field:     [4] RTCEN
-//
-// GPT RTC Enable
-// ENUMs:
-// EN                       RTC counting is enabled.
-// DIS                      RTC counting is disabled.
-#define GPT_CTL_RTCEN                                               0x00000010
-#define GPT_CTL_RTCEN_BITN                                                   4
-#define GPT_CTL_RTCEN_M                                             0x00000010
-#define GPT_CTL_RTCEN_S                                                      4
-#define GPT_CTL_RTCEN_EN                                            0x00000010
-#define GPT_CTL_RTCEN_DIS                                           0x00000000
-
 // Field:   [3:2] TAEVENT
 //
 // GPT Timer A Event Mode
+//
+// The values in this register are defined as follows:
+// Value Description
+// 0x0 Positive edge
+// 0x1 Negative edge
+// 0x2 Reserved
+// 0x3 Both edges
+// Note: If PWM output inversion is enabled, edge detection interrupt
+// behavior is reversed. Thus, if a positive-edge interrupt trigger
+// has been set and the PWM inversion generates a postive
+// edge, no event-trigger interrupt asserts. Instead, the interrupt
+// is generated on the negative edge of the PWM signal.
 // ENUMs:
 // BOTH                     Both edges
 // NEG                      Negative edge
 // POS                      Positive edge
+#define GPT_CTL_TAEVENT_W                                                    2
 #define GPT_CTL_TAEVENT_M                                           0x0000000C
 #define GPT_CTL_TAEVENT_S                                                    2
 #define GPT_CTL_TAEVENT_BOTH                                        0x0000000C
@@ -713,9 +764,9 @@
 // GPT Timer A Stall Enable
 // ENUMs:
 // EN                       Timer A freezes counting while the processor is
-// halted by the debugger.
+//                          halted by the debugger.
 // DIS                      Timer A continues counting while the processor is
-// halted by the debugger.
+//                          halted by the debugger.
 #define GPT_CTL_TASTALL                                             0x00000002
 #define GPT_CTL_TASTALL_BITN                                                 1
 #define GPT_CTL_TASTALL_M                                           0x00000002
@@ -728,7 +779,8 @@
 // GPT Timer A Enable
 // ENUMs:
 // EN                       Timer A is enabled and begins counting or the
-// capture logic is enabled based on the CFG register.
+//                          capture logic is enabled based on the CFG
+//                          register.
 // DIS                      Timer A is disabled.
 #define GPT_CTL_TAEN                                                0x00000001
 #define GPT_CTL_TAEN_BITN                                                    0
@@ -747,10 +799,11 @@
 // Synchronize GPT Timer 3.
 // ENUMs:
 // BOTH                     A timeout event for both Timer A and Timer B of
-// GPT3 is triggered
+//                          GPT3 is triggered
 // TIMERB                   A timeout event for Timer B of GPT3 is triggered
 // TIMERA                   A timeout event for Timer A of GPT3 is triggered
 // NOSYNC                   No Sync. GPT3 is not affected.
+#define GPT_SYNC_SYNC3_W                                                     2
 #define GPT_SYNC_SYNC3_M                                            0x000000C0
 #define GPT_SYNC_SYNC3_S                                                     6
 #define GPT_SYNC_SYNC3_BOTH                                         0x000000C0
@@ -763,10 +816,11 @@
 // Synchronize GPT Timer 2.
 // ENUMs:
 // BOTH                     A timeout event for both Timer A and Timer B of
-// GPT2 is triggered
+//                          GPT2 is triggered
 // TIMERB                   A timeout event for Timer B of GPT2 is triggered
 // TIMERA                   A timeout event for Timer A of GPT2 is triggered
 // NOSYNC                   No Sync. GPT2 is not affected.
+#define GPT_SYNC_SYNC2_W                                                     2
 #define GPT_SYNC_SYNC2_M                                            0x00000030
 #define GPT_SYNC_SYNC2_S                                                     4
 #define GPT_SYNC_SYNC2_BOTH                                         0x00000030
@@ -779,10 +833,11 @@
 // Synchronize GPT Timer 1
 // ENUMs:
 // BOTH                     A timeout event for both Timer A and Timer B of
-// GPT1 is triggered
+//                          GPT1 is triggered
 // TIMERB                   A timeout event for Timer B of GPT1 is triggered
 // TIMERA                   A timeout event for Timer A of GPT1 is triggered
 // NOSYNC                   No Sync. GPT1 is not affected.
+#define GPT_SYNC_SYNC1_W                                                     2
 #define GPT_SYNC_SYNC1_M                                            0x0000000C
 #define GPT_SYNC_SYNC1_S                                                     2
 #define GPT_SYNC_SYNC1_BOTH                                         0x0000000C
@@ -795,10 +850,11 @@
 // Synchronize GPT Timer 0
 // ENUMs:
 // BOTH                     A timeout event for both Timer A and Timer B of
-// GPT0 is triggered
+//                          GPT0 is triggered
 // TIMERB                   A timeout event for Timer B of GPT0 is triggered
 // TIMERA                   A timeout event for Timer A of GPT0 is triggered
 // NOSYNC                   No Sync. GPT0 is not affected.
+#define GPT_SYNC_SYNC0_W                                                     2
 #define GPT_SYNC_SYNC0_M                                            0x00000003
 #define GPT_SYNC_SYNC0_S                                                     0
 #define GPT_SYNC_SYNC0_BOTH                                         0x00000003
@@ -811,19 +867,6 @@
 // Register: GPT_O_IMR
 //
 //*****************************************************************************
-// Field:    [16] WUMIS
-//
-// Enabling this bit will make the RIS.WURIS interrupt propagate to MIS.WUMIS
-// ENUMs:
-// EN                       Enable Interrupt
-// DIS                      Disable Interrupt
-#define GPT_IMR_WUMIS                                               0x00010000
-#define GPT_IMR_WUMIS_BITN                                                  16
-#define GPT_IMR_WUMIS_M                                             0x00010000
-#define GPT_IMR_WUMIS_S                                                     16
-#define GPT_IMR_WUMIS_EN                                            0x00010000
-#define GPT_IMR_WUMIS_DIS                                           0x00000000
-
 // Field:    [13] DMABIM
 //
 // Enabling this bit will make the RIS.DMABRIS interrupt propagate to
@@ -918,19 +961,6 @@
 #define GPT_IMR_TAMIM_EN                                            0x00000010
 #define GPT_IMR_TAMIM_DIS                                           0x00000000
 
-// Field:     [3] RTCIM
-//
-// Enabling this bit will make the RIS.RTCRIS interrupt propagate to MIS.RTCMIS
-// ENUMs:
-// EN                       Enable Interrupt
-// DIS                      Disable Interrupt
-#define GPT_IMR_RTCIM                                               0x00000008
-#define GPT_IMR_RTCIM_BITN                                                   3
-#define GPT_IMR_RTCIM_M                                             0x00000008
-#define GPT_IMR_RTCIM_S                                                      3
-#define GPT_IMR_RTCIM_EN                                            0x00000008
-#define GPT_IMR_RTCIM_DIS                                           0x00000000
-
 // Field:     [2] CAEIM
 //
 // Enabling this bit will make the RIS.CAERIS interrupt propagate to MIS.CAEMIS
@@ -976,18 +1006,6 @@
 // Register: GPT_O_RIS
 //
 //*****************************************************************************
-// Field:    [16] WURIS
-//
-// GPT Write Update Error Raw Interrupt
-//
-// 0: No error.
-// 1: Either Timer A or B was written twice in a Row or Timer A was written
-// before the corresponding Timer B was written.
-#define GPT_RIS_WURIS                                               0x00010000
-#define GPT_RIS_WURIS_BITN                                                  16
-#define GPT_RIS_WURIS_M                                             0x00010000
-#define GPT_RIS_WURIS_S                                                     16
-
 // Field:    [13] DMABRIS
 //
 // GPT Timer B DMA Done Raw Interrupt Status
@@ -1031,12 +1049,13 @@
 //
 // GPT Timer B Capture Mode Match Raw Interrupt
 //
-// 0:  Match for Timer B has not occured
-// 1:  Match for Timer B has occurred.
+// 0:  The capture mode match for Timer B has not occurred.
+// 1:  A capture mode match has occurred for Timer B. This interrupt
+// asserts when the values in the TBR and TBPR
+// match the values in the TBMATCHR and TBPMR
+// when configured in Input Edge-Time mode.
 //
-// This interrupt asserts when the values in the TBR and TBPR match values in
-// the TBMATCHR and TBPMR, and when configured in Input Edge-Time mode (reg-ref
-// instead!!)
+// This bit is cleared by writing a 1 to the ICLR.CBMCINT bit.
 #define GPT_RIS_CBMRIS                                              0x00000200
 #define GPT_RIS_CBMRIS_BITN                                                  9
 #define GPT_RIS_CBMRIS_M                                            0x00000200
@@ -1050,7 +1069,7 @@
 // 1:  Timer B has timed out.
 //
 // This interrupt is asserted when a one-shot or periodic mode timer reaches
-// it&#39;s count limit. The count limit is 0 or the value loaded into TBILR,
+// its count limit. The count limit is 0 or the value loaded into TBILR,
 // depending on the count direction.
 #define GPT_RIS_TBTORIS                                             0x00000100
 #define GPT_RIS_TBTORIS_BITN                                                 8
@@ -1070,7 +1089,7 @@
 
 // Field:     [4] TAMRIS
 //
-// **GPT **Timer A Match Raw  Interrupt
+// GPT Timer A Match Raw  Interrupt
 //
 // 0:  The match value has not been reached
 // 1:  The match value is reached.
@@ -1081,17 +1100,6 @@
 #define GPT_RIS_TAMRIS_BITN                                                  4
 #define GPT_RIS_TAMRIS_M                                            0x00000010
 #define GPT_RIS_TAMRIS_S                                                     4
-
-// Field:     [3] RTCRIS
-//
-// GPT RTC Raw Interrupt
-//
-// 0:  The RTC event has not occured
-// 1:  The RTC event has occured
-#define GPT_RIS_RTCRIS                                              0x00000008
-#define GPT_RIS_RTCRIS_BITN                                                  3
-#define GPT_RIS_RTCRIS_M                                            0x00000008
-#define GPT_RIS_RTCRIS_S                                                     3
 
 // Field:     [2] CAERIS
 //
@@ -1111,12 +1119,13 @@
 //
 // GPT Timer A Capture Mode Match Raw Interrupt
 //
-// 0:  Match for Timer A has not occured
-// 1:  Match for Timer A has occurred
+// 0:  The capture mode match for Timer A has not occurred.
+// 1:  A capture mode match has occurred for Timer A. This interrupt
+// asserts when the values in the TAR and TAPR
+// match the values in the TAMATCHR and TAPMR
+// when configured in Input Edge-Time mode.
 //
-// This interrupt asserts when the values in the TAR and TAPR match values in
-// the TAMATCHR and TAPMR, and when configured in Input Edge-Time mode (reg-ref
-// instead!!)
+// This bit is cleared by writing a 1 to the ICLR.CAMCINT bit.
 #define GPT_RIS_CAMRIS                                              0x00000002
 #define GPT_RIS_CAMRIS_BITN                                                  1
 #define GPT_RIS_CAMRIS_M                                            0x00000002
@@ -1130,7 +1139,7 @@
 // 1:  Timer A has timed out.
 //
 // This interrupt is asserted when a one-shot or periodic mode timer reaches
-// it&#39;s count limit. The count limit is 0 or the value loaded into TAILR,
+// its count limit. The count limit is 0 or the value loaded into TAILR,
 // depending on the count direction.
 #define GPT_RIS_TATORIS                                             0x00000001
 #define GPT_RIS_TATORIS_BITN                                                 0
@@ -1142,19 +1151,10 @@
 // Register: GPT_O_MIS
 //
 //*****************************************************************************
-// Field:    [16] WUMIS
-//
-// 0: No interrupt or interrupt not enabled
-// 1: RIS.WURIS = 1 &#38;&#38; IMR.WUMIS = 1
-#define GPT_MIS_WUMIS                                               0x00010000
-#define GPT_MIS_WUMIS_BITN                                                  16
-#define GPT_MIS_WUMIS_M                                             0x00010000
-#define GPT_MIS_WUMIS_S                                                     16
-
 // Field:    [13] DMABMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.DMABRIS = 1 &#38;&#38; IMR.DMABIM = 1
+// 1: RIS.DMABRIS = 1 && IMR.DMABIM = 1
 #define GPT_MIS_DMABMIS                                             0x00002000
 #define GPT_MIS_DMABMIS_BITN                                                13
 #define GPT_MIS_DMABMIS_M                                           0x00002000
@@ -1163,7 +1163,7 @@
 // Field:    [11] TBMMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.TBMRIS = 1 &#38;&#38; IMR.TBMIM = 1
+// 1: RIS.TBMRIS = 1 && IMR.TBMIM = 1
 #define GPT_MIS_TBMMIS                                              0x00000800
 #define GPT_MIS_TBMMIS_BITN                                                 11
 #define GPT_MIS_TBMMIS_M                                            0x00000800
@@ -1172,7 +1172,7 @@
 // Field:    [10] CBEMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.CBERIS = 1 &#38;&#38; IMR.CBEIM = 1
+// 1: RIS.CBERIS = 1 && IMR.CBEIM = 1
 #define GPT_MIS_CBEMIS                                              0x00000400
 #define GPT_MIS_CBEMIS_BITN                                                 10
 #define GPT_MIS_CBEMIS_M                                            0x00000400
@@ -1181,7 +1181,7 @@
 // Field:     [9] CBMMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.CBMRIS = 1 &#38;&#38; IMR.CBMIM = 1
+// 1: RIS.CBMRIS = 1 && IMR.CBMIM = 1
 #define GPT_MIS_CBMMIS                                              0x00000200
 #define GPT_MIS_CBMMIS_BITN                                                  9
 #define GPT_MIS_CBMMIS_M                                            0x00000200
@@ -1190,7 +1190,7 @@
 // Field:     [8] TBTOMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.TBTORIS = 1 &#38;&#38; IMR.TBTOIM = 1
+// 1: RIS.TBTORIS = 1 && IMR.TBTOIM = 1
 #define GPT_MIS_TBTOMIS                                             0x00000100
 #define GPT_MIS_TBTOMIS_BITN                                                 8
 #define GPT_MIS_TBTOMIS_M                                           0x00000100
@@ -1199,7 +1199,7 @@
 // Field:     [5] DMAAMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.DMAARIS = 1 &#38;&#38; IMR.DMAAIM = 1
+// 1: RIS.DMAARIS = 1 && IMR.DMAAIM = 1
 #define GPT_MIS_DMAAMIS                                             0x00000020
 #define GPT_MIS_DMAAMIS_BITN                                                 5
 #define GPT_MIS_DMAAMIS_M                                           0x00000020
@@ -1208,25 +1208,16 @@
 // Field:     [4] TAMMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.TAMRIS = 1 &#38;&#38; IMR.TAMIM = 1
+// 1: RIS.TAMRIS = 1 && IMR.TAMIM = 1
 #define GPT_MIS_TAMMIS                                              0x00000010
 #define GPT_MIS_TAMMIS_BITN                                                  4
 #define GPT_MIS_TAMMIS_M                                            0x00000010
 #define GPT_MIS_TAMMIS_S                                                     4
 
-// Field:     [3] RTCMIS
-//
-// 0: No interrupt or interrupt not enabled
-// 1: RIS.RTCRIS = 1 &#38;&#38; IMR.RTCIM = 1
-#define GPT_MIS_RTCMIS                                              0x00000008
-#define GPT_MIS_RTCMIS_BITN                                                  3
-#define GPT_MIS_RTCMIS_M                                            0x00000008
-#define GPT_MIS_RTCMIS_S                                                     3
-
 // Field:     [2] CAEMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.CAERIS = 1 &#38;&#38; IMR.CAEIM = 1
+// 1: RIS.CAERIS = 1 && IMR.CAEIM = 1
 #define GPT_MIS_CAEMIS                                              0x00000004
 #define GPT_MIS_CAEMIS_BITN                                                  2
 #define GPT_MIS_CAEMIS_M                                            0x00000004
@@ -1235,7 +1226,7 @@
 // Field:     [1] CAMMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.CAMRIS = 1 &#38;&#38; IMR.CAMIM = 1
+// 1: RIS.CAMRIS = 1 && IMR.CAMIM = 1
 #define GPT_MIS_CAMMIS                                              0x00000002
 #define GPT_MIS_CAMMIS_BITN                                                  1
 #define GPT_MIS_CAMMIS_M                                            0x00000002
@@ -1244,7 +1235,7 @@
 // Field:     [0] TATOMIS
 //
 // 0: No interrupt or interrupt not enabled
-// 1: RIS.TATORIS = 1 &#38;&#38; IMR.TATOIM = 1
+// 1: RIS.TATORIS = 1 && IMR.TATOIM = 1
 #define GPT_MIS_TATOMIS                                             0x00000001
 #define GPT_MIS_TATOMIS_BITN                                                 0
 #define GPT_MIS_TATOMIS_M                                           0x00000001
@@ -1255,15 +1246,6 @@
 // Register: GPT_O_ICLR
 //
 //*****************************************************************************
-// Field:    [16] WUECINT
-//
-// 0: Do nothing.
-// 1: Clear RIS.WURIS and MIS.WUMIS
-#define GPT_ICLR_WUECINT                                            0x00010000
-#define GPT_ICLR_WUECINT_BITN                                               16
-#define GPT_ICLR_WUECINT_M                                          0x00010000
-#define GPT_ICLR_WUECINT_S                                                  16
-
 // Field:    [13] DMABINT
 //
 // 0: Do nothing.
@@ -1327,15 +1309,6 @@
 #define GPT_ICLR_TAMCINT_M                                          0x00000010
 #define GPT_ICLR_TAMCINT_S                                                   4
 
-// Field:     [3] RTCCINT
-//
-// 0: Do nothing.
-// 1: Clear RIS.RTCRIS and MIS.RTCMIS
-#define GPT_ICLR_RTCCINT                                            0x00000008
-#define GPT_ICLR_RTCCINT_BITN                                                3
-#define GPT_ICLR_RTCCINT_M                                          0x00000008
-#define GPT_ICLR_RTCCINT_S                                                   3
-
 // Field:     [2] CAECINT
 //
 // 0: Do nothing.
@@ -1371,6 +1344,10 @@
 // Field:  [31:0] TAILR
 //
 // GPT Timer A Interval Load  Register
+//
+// Writing this field loads the counter for Timer A. A read returns the current
+// value of TAILR.
+#define GPT_TAILR_TAILR_W                                                   32
 #define GPT_TAILR_TAILR_M                                           0xFFFFFFFF
 #define GPT_TAILR_TAILR_S                                                    0
 
@@ -1382,6 +1359,10 @@
 // Field:  [31:0] TBILR
 //
 // GPT Timer B Interval Load  Register
+//
+// Writing this field loads the counter for Timer B. A read returns the current
+// value of TBILR.
+#define GPT_TBILR_TBILR_W                                                   32
 #define GPT_TBILR_TBILR_M                                           0xFFFFFFFF
 #define GPT_TBILR_TBILR_S                                                    0
 
@@ -1393,6 +1374,7 @@
 // Field:  [31:0] TAMATCHR
 //
 // GPT Timer A Match Register
+#define GPT_TAMATCHR_TAMATCHR_W                                             32
 #define GPT_TAMATCHR_TAMATCHR_M                                     0xFFFFFFFF
 #define GPT_TAMATCHR_TAMATCHR_S                                              0
 
@@ -1401,10 +1383,11 @@
 // Register: GPT_O_TBMATCHR
 //
 //*****************************************************************************
-// Field:  [31:0] TBMATCHR
+// Field:  [15:0] TBMATCHR
 //
 // GPT Timer B Match Register
-#define GPT_TBMATCHR_TBMATCHR_M                                     0xFFFFFFFF
+#define GPT_TBMATCHR_TBMATCHR_W                                             16
+#define GPT_TBMATCHR_TBMATCHR_M                                     0x0000FFFF
 #define GPT_TBMATCHR_TBMATCHR_S                                              0
 
 //*****************************************************************************
@@ -1416,13 +1399,14 @@
 //
 // Timer A Pre-scale.
 //
-// Prescaler ratio in one-shot and periodic count mode is TAPSR + 1, ie:
+// Prescaler ratio in one-shot and periodic count mode is TAPSR + 1, that is:
 //
 // 0: Prescaler ratio = 1
 // 1: Prescaler ratio = 2
 // 2: Prescaler ratio = 3
 // ...
 // 255: Prescaler ratio = 256
+#define GPT_TAPR_TAPSR_W                                                     8
 #define GPT_TAPR_TAPSR_M                                            0x000000FF
 #define GPT_TAPR_TAPSR_S                                                     0
 
@@ -1435,14 +1419,14 @@
 //
 // Timer B Pre-scale.
 //
-// Prescale ratio in one-shot and periodic count mode is TBPSR + 1, ie:
-//
+// Prescale ratio in one-shot and periodic count mode is TBPSR + 1, that is:
 //
 // 0: Prescaler ratio = 1
 // 1: Prescaler ratio = 2
 // 2: Prescaler ratio = 3
 // ...
 // 255: Prescaler ratio = 256
+#define GPT_TBPR_TBPSR_W                                                     8
 #define GPT_TBPR_TBPSR_M                                            0x000000FF
 #define GPT_TBPR_TBPSR_S                                                     0
 
@@ -1454,6 +1438,7 @@
 // Field:   [7:0] TAPSMR
 //
 // GPT Timer A Pre-scale Match.  In 16 bit mode this field holds bits 23 to 16.
+#define GPT_TAPMR_TAPSMR_W                                                   8
 #define GPT_TAPMR_TAPSMR_M                                          0x000000FF
 #define GPT_TAPMR_TAPSMR_S                                                   0
 
@@ -1466,6 +1451,7 @@
 //
 // GPT Timer B Pre-scale Match Register.  In 16 bit mode this field holds bits
 // 23 to 16.
+#define GPT_TBPMR_TBPSMR_W                                                   8
 #define GPT_TBPMR_TBPSMR_M                                          0x000000FF
 #define GPT_TBPMR_TBPSMR_S                                                   0
 
@@ -1478,11 +1464,16 @@
 //
 // GPT Timer A Register
 //
+// Based on the value in the register field TAMR.TAILD, this register is
+// updated with the value from TAILR register either on the next cycle or on
+// the next timeout.
+//
 // A read returns the current value of the Timer A Count Register, in all cases
 // except for Input Edge count and Timer modes.
 // In the Input Edge Count Mode, this register contains the number of edges
 // that have occurred. In the Input Edge Time mode, this register contains the
 // time at which the last edge event took place.
+#define GPT_TAR_TAR_W                                                       32
 #define GPT_TAR_TAR_M                                               0xFFFFFFFF
 #define GPT_TAR_TAR_S                                                        0
 
@@ -1495,11 +1486,16 @@
 //
 // GPT Timer B Register
 //
+// Based on the value in the register field TBMR.TBILD, this register is
+// updated with the value from TBILR register either on the next cycle or on
+// the next timeout.
+//
 // A read returns the current value of the Timer B Count Register, in all cases
 // except for Input Edge count and Timer modes.
 // In the Input Edge Count Mode, this register contains the number of edges
 // that have occurred. In the Input Edge Time mode, this register contains the
 // time at which the last edge event took place.
+#define GPT_TBR_TBR_W                                                       32
 #define GPT_TBR_TBR_M                                               0xFFFFFFFF
 #define GPT_TBR_TBR_S                                                        0
 
@@ -1511,6 +1507,13 @@
 // Field:  [31:0] TAV
 //
 // GPT Timer A Register
+// A read returns the current, free-running value of Timer A in all modes.
+// When written, the value written into this register is loaded into the
+// TAR register on the next clock cycle.
+// Note: In 16-bit mode, only the lower 16-bits of this
+// register can be written with a new value. Writes to the prescaler bits have
+// no effect
+#define GPT_TAV_TAV_W                                                       32
 #define GPT_TAV_TAV_M                                               0xFFFFFFFF
 #define GPT_TAV_TAV_S                                                        0
 
@@ -1522,29 +1525,26 @@
 // Field:  [31:0] TBV
 //
 // GPT Timer B Register
+// A read returns the current, free-running value of Timer B in all modes.
+// When written, the value written into this register is loaded into the
+// TBR register on the next clock cycle.
+// Note: In 16-bit mode, only the lower 16-bits of this
+// register can be written with a new value. Writes to the prescaler bits have
+// no effect
+#define GPT_TBV_TBV_W                                                       32
 #define GPT_TBV_TBV_M                                               0xFFFFFFFF
 #define GPT_TBV_TBV_S                                                        0
-
-//*****************************************************************************
-//
-// Register: GPT_O_RTCPD
-//
-//*****************************************************************************
-// Field:  [15:0] RTCPD
-//
-// GPT RTC Pre-divider
-#define GPT_RTCPD_RTCPD_M                                           0x0000FFFF
-#define GPT_RTCPD_RTCPD_S                                                    0
 
 //*****************************************************************************
 //
 // Register: GPT_O_TAPS
 //
 //*****************************************************************************
-// Field:  [15:0] PSS
+// Field:   [7:0] PSS
 //
 // GPT Timer A Pre-scaler
-#define GPT_TAPS_PSS_M                                              0x0000FFFF
+#define GPT_TAPS_PSS_W                                                       8
+#define GPT_TAPS_PSS_M                                              0x000000FF
 #define GPT_TAPS_PSS_S                                                       0
 
 //*****************************************************************************
@@ -1552,10 +1552,11 @@
 // Register: GPT_O_TBPS
 //
 //*****************************************************************************
-// Field:  [15:0] PSS
+// Field:   [7:0] PSS
 //
 // GPT Timer B Pre-scaler
-#define GPT_TBPS_PSS_M                                              0x0000FFFF
+#define GPT_TBPS_PSS_W                                                       8
+#define GPT_TBPS_PSS_M                                              0x000000FF
 #define GPT_TBPS_PSS_S                                                       0
 
 //*****************************************************************************
@@ -1563,10 +1564,11 @@
 // Register: GPT_O_TAPV
 //
 //*****************************************************************************
-// Field:  [15:0] PSV
+// Field:   [7:0] PSV
 //
 // GPT Timer A Pre-scaler Value
-#define GPT_TAPV_PSV_M                                              0x0000FFFF
+#define GPT_TAPV_PSV_W                                                       8
+#define GPT_TAPV_PSV_M                                              0x000000FF
 #define GPT_TAPV_PSV_S                                                       0
 
 //*****************************************************************************
@@ -1574,10 +1576,11 @@
 // Register: GPT_O_TBPV
 //
 //*****************************************************************************
-// Field:  [15:0] PSV
+// Field:   [7:0] PSV
 //
 // GPT Timer B Pre-scaler Value
-#define GPT_TBPV_PSV_M                                              0x0000FFFF
+#define GPT_TBPV_PSV_W                                                       8
+#define GPT_TBPV_PSV_M                                              0x000000FF
 #define GPT_TBPV_PSV_S                                                       0
 
 //*****************************************************************************
@@ -1625,14 +1628,6 @@
 #define GPT_DMAEV_TAMDMAEN_M                                        0x00000010
 #define GPT_DMAEV_TAMDMAEN_S                                                 4
 
-// Field:     [3] RTCDMAEN
-//
-// GPT RTC Match DMA Trigger Enable
-#define GPT_DMAEV_RTCDMAEN                                          0x00000008
-#define GPT_DMAEV_RTCDMAEN_BITN                                              3
-#define GPT_DMAEV_RTCDMAEN_M                                        0x00000008
-#define GPT_DMAEV_RTCDMAEN_S                                                 3
-
 // Field:     [2] CAEDMAEN
 //
 // GPT Timer A Capture Event DMA Trigger Enable
@@ -1659,89 +1654,13 @@
 
 //*****************************************************************************
 //
-// Register: GPT_O_ADCEV
-//
-//*****************************************************************************
-// Field:    [11] TBMADCEN
-//
-// GPT Timer B Match ADC Trigger Enable
-#define GPT_ADCEV_TBMADCEN                                          0x00000800
-#define GPT_ADCEV_TBMADCEN_BITN                                             11
-#define GPT_ADCEV_TBMADCEN_M                                        0x00000800
-#define GPT_ADCEV_TBMADCEN_S                                                11
-
-// Field:    [10] CBEADCEN
-//
-// GPT Timer B Capture Event ADC Trigger Enable
-#define GPT_ADCEV_CBEADCEN                                          0x00000400
-#define GPT_ADCEV_CBEADCEN_BITN                                             10
-#define GPT_ADCEV_CBEADCEN_M                                        0x00000400
-#define GPT_ADCEV_CBEADCEN_S                                                10
-
-// Field:     [9] CBMADCEN
-//
-// GPT Timer B Capture Match ADC Trigger Enable
-#define GPT_ADCEV_CBMADCEN                                          0x00000200
-#define GPT_ADCEV_CBMADCEN_BITN                                              9
-#define GPT_ADCEV_CBMADCEN_M                                        0x00000200
-#define GPT_ADCEV_CBMADCEN_S                                                 9
-
-// Field:     [8] TBTOADCEN
-//
-// GPT Timer B Time-Out ADC Trigger Enable
-#define GPT_ADCEV_TBTOADCEN                                         0x00000100
-#define GPT_ADCEV_TBTOADCEN_BITN                                             8
-#define GPT_ADCEV_TBTOADCEN_M                                       0x00000100
-#define GPT_ADCEV_TBTOADCEN_S                                                8
-
-// Field:     [4] TAMADCEN
-//
-// GPT Timer A Match ADC Trigger Enable
-#define GPT_ADCEV_TAMADCEN                                          0x00000010
-#define GPT_ADCEV_TAMADCEN_BITN                                              4
-#define GPT_ADCEV_TAMADCEN_M                                        0x00000010
-#define GPT_ADCEV_TAMADCEN_S                                                 4
-
-// Field:     [3] RTCADCEN
-//
-// GPT RTC Match ADC Trigger Enable
-#define GPT_ADCEV_RTCADCEN                                          0x00000008
-#define GPT_ADCEV_RTCADCEN_BITN                                              3
-#define GPT_ADCEV_RTCADCEN_M                                        0x00000008
-#define GPT_ADCEV_RTCADCEN_S                                                 3
-
-// Field:     [2] CAEADCEN
-//
-// GPT Timer A Capture Event ADC Trigger Enable
-#define GPT_ADCEV_CAEADCEN                                          0x00000004
-#define GPT_ADCEV_CAEADCEN_BITN                                              2
-#define GPT_ADCEV_CAEADCEN_M                                        0x00000004
-#define GPT_ADCEV_CAEADCEN_S                                                 2
-
-// Field:     [1] CAMADCEN
-//
-// GPT Timer A Capture Match ADC Trigger Enable
-#define GPT_ADCEV_CAMADCEN                                          0x00000002
-#define GPT_ADCEV_CAMADCEN_BITN                                              1
-#define GPT_ADCEV_CAMADCEN_M                                        0x00000002
-#define GPT_ADCEV_CAMADCEN_S                                                 1
-
-// Field:     [0] TATOADCEN
-//
-// GPT Timer A Time-Out ADC Trigger Enable
-#define GPT_ADCEV_TATOADCEN                                         0x00000001
-#define GPT_ADCEV_TATOADCEN_BITN                                             0
-#define GPT_ADCEV_TATOADCEN_M                                       0x00000001
-#define GPT_ADCEV_TATOADCEN_S                                                0
-
-//*****************************************************************************
-//
 // Register: GPT_O_VERSION
 //
 //*****************************************************************************
 // Field:  [31:0] VERSION
 //
 // Timer Revision.
+#define GPT_VERSION_VERSION_W                                               32
 #define GPT_VERSION_VERSION_M                                       0xFFFFFFFF
 #define GPT_VERSION_VERSION_S                                                0
 
@@ -1752,7 +1671,12 @@
 //*****************************************************************************
 // Field:     [0] CCP_AND_EN
 //
-// Enables anding of the CCP outputs for timers A and B
+// Enables AND operation of the CCP outputs for timers A and B.
+//
+// 0 : PWM outputs of Timer A and Timer B are the internal generated PWM
+// signals of the respective timers.
+// 1 : PWM output of Timer A is ANDed version of Timer A and Timer B PWM
+// signals and Timer B PWM ouput is Timer B PWM signal only.
 #define GPT_ANDCCP_CCP_AND_EN                                       0x00000001
 #define GPT_ANDCCP_CCP_AND_EN_BITN                                           0
 #define GPT_ANDCCP_CCP_AND_EN_M                                     0x00000001

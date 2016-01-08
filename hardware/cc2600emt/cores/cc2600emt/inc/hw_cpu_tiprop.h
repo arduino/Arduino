@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_cpu_tiprop_h
-*  Revised:        2015-02-13 15:47:13 +0100 (fr, 13 feb 2015)
-*  Revision:       42724
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,10 +43,10 @@
 // CPU_TIPROP component
 //
 //*****************************************************************************
-// Mux Selector for SWV or TRACECLK
+// Internal
 #define CPU_TIPROP_O_TRACECLKMUX                                    0x00000FF8
 
-// Clock Gating Scheme Configuration
+// Internal
 #define CPU_TIPROP_O_DYN_CG                                         0x00000FFC
 
 //*****************************************************************************
@@ -75,6 +75,7 @@
 // Field:   [1:0] DYN_CG
 //
 // Internal. Only to be used through TI provided API.
+#define CPU_TIPROP_DYN_CG_DYN_CG_W                                           2
 #define CPU_TIPROP_DYN_CG_DYN_CG_M                                  0x00000003
 #define CPU_TIPROP_DYN_CG_DYN_CG_S                                           0
 

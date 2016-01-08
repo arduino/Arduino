@@ -1,6 +1,6 @@
 /******************************************************************************
 *  Filename:       hw_adi.h
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
+*  Revised:        2015-01-13 16:59:55 +0100 (Tue, 13 Jan 2015)
 *  Revision:       42365
 *
 *  Copyright (c) 2015, Texas Instruments Incorporated

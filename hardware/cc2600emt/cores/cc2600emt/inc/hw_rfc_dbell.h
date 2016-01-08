@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_rfc_dbell_h
-*  Revised:        2015-02-10 21:34:21 +0100 (ti, 10 feb 2015)
-*  Revision:       42642
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -80,6 +80,7 @@
 //
 // Command register. Raises an interrupt to the Command and packet engine (CPE)
 // upon write.
+#define RFC_DBELL_CMDR_CMD_W                                                32
 #define RFC_DBELL_CMDR_CMD_M                                        0xFFFFFFFF
 #define RFC_DBELL_CMDR_CMD_S                                                 0
 
@@ -91,6 +92,7 @@
 // Field:  [31:0] STAT
 //
 // Status of the last command used
+#define RFC_DBELL_CMDSTA_STAT_W                                             32
 #define RFC_DBELL_CMDSTA_STAT_M                                     0xFFFFFFFF
 #define RFC_DBELL_CMDSTA_STAT_S                                              0
 
@@ -218,8 +220,10 @@
 
 // Field:     [5] MDMSOFT
 //
-// Modem software defined interrupt flag. Write zero to clear flag. Write to
-// one has no effect.
+// Modem synchronization word detection interrupt flag. This interrupt will be
+// raised by modem when the synchronization word is received. The CPE may
+// decide to reject the packet based on its header (protocol specific). Write
+// zero to clear flag. Write to one has no effect.
 #define RFC_DBELL_RFHWIFG_MDMSOFT                                   0x00000020
 #define RFC_DBELL_RFHWIFG_MDMSOFT_BITN                                       5
 #define RFC_DBELL_RFHWIFG_MDMSOFT_M                                 0x00000020
@@ -591,15 +595,13 @@
 #define RFC_DBELL_RFCPEIFG_IRQ13_M                                  0x00002000
 #define RFC_DBELL_RFCPEIFG_IRQ13_S                                          13
 
-// Field:    [12] BG_COMMAND_SUSPENDED
+// Field:    [12] IRQ12
 //
-// Interrupt flag 12. IEEE 802.15.4 mode only: A background level radio
-// operation command has been suspended. Write zero to clear flag. Write to one
-// has no effect.
-#define RFC_DBELL_RFCPEIFG_BG_COMMAND_SUSPENDED                     0x00001000
-#define RFC_DBELL_RFCPEIFG_BG_COMMAND_SUSPENDED_BITN                        12
-#define RFC_DBELL_RFCPEIFG_BG_COMMAND_SUSPENDED_M                   0x00001000
-#define RFC_DBELL_RFCPEIFG_BG_COMMAND_SUSPENDED_S                           12
+// Interrupt flag 12. Write zero to clear flag. Write to one has no effect.
+#define RFC_DBELL_RFCPEIFG_IRQ12                                    0x00001000
+#define RFC_DBELL_RFCPEIFG_IRQ12_BITN                                       12
+#define RFC_DBELL_RFCPEIFG_IRQ12_M                                  0x00001000
+#define RFC_DBELL_RFCPEIFG_IRQ12_S                                          12
 
 // Field:    [11] TX_BUFFER_CHANGED
 //
@@ -873,13 +875,13 @@
 #define RFC_DBELL_RFCPEIEN_IRQ13_M                                  0x00002000
 #define RFC_DBELL_RFCPEIEN_IRQ13_S                                          13
 
-// Field:    [12] BG_COMMAND_SUSPENDED
+// Field:    [12] IRQ12
 //
-// Interrupt enable for RFCPEIFG.BG_COMMAND_SUSPENDED.
-#define RFC_DBELL_RFCPEIEN_BG_COMMAND_SUSPENDED                     0x00001000
-#define RFC_DBELL_RFCPEIEN_BG_COMMAND_SUSPENDED_BITN                        12
-#define RFC_DBELL_RFCPEIEN_BG_COMMAND_SUSPENDED_M                   0x00001000
-#define RFC_DBELL_RFCPEIEN_BG_COMMAND_SUSPENDED_S                           12
+// Interrupt enable for RFCPEIFG.IRQ12.
+#define RFC_DBELL_RFCPEIEN_IRQ12                                    0x00001000
+#define RFC_DBELL_RFCPEIEN_IRQ12_BITN                                       12
+#define RFC_DBELL_RFCPEIEN_IRQ12_M                                  0x00001000
+#define RFC_DBELL_RFCPEIEN_IRQ12_S                                          12
 
 // Field:    [11] TX_BUFFER_CHANGED
 //
@@ -988,9 +990,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_INTERNAL_ERROR                           0x80000000
 #define RFC_DBELL_RFCPEISL_INTERNAL_ERROR_BITN                              31
 #define RFC_DBELL_RFCPEISL_INTERNAL_ERROR_M                         0x80000000
@@ -1004,9 +1006,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_BOOT_DONE                                0x40000000
 #define RFC_DBELL_RFCPEISL_BOOT_DONE_BITN                                   30
 #define RFC_DBELL_RFCPEISL_BOOT_DONE_M                              0x40000000
@@ -1020,9 +1022,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_MODULES_UNLOCKED                         0x20000000
 #define RFC_DBELL_RFCPEISL_MODULES_UNLOCKED_BITN                            29
 #define RFC_DBELL_RFCPEISL_MODULES_UNLOCKED_M                       0x20000000
@@ -1036,9 +1038,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_SYNTH_NO_LOCK                            0x10000000
 #define RFC_DBELL_RFCPEISL_SYNTH_NO_LOCK_BITN                               28
 #define RFC_DBELL_RFCPEISL_SYNTH_NO_LOCK_M                          0x10000000
@@ -1051,9 +1053,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.IRQ27 interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_IRQ27                                    0x08000000
 #define RFC_DBELL_RFCPEISL_IRQ27_BITN                                       27
 #define RFC_DBELL_RFCPEISL_IRQ27_M                                  0x08000000
@@ -1067,9 +1069,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_ABORTED                               0x04000000
 #define RFC_DBELL_RFCPEISL_RX_ABORTED_BITN                                  26
 #define RFC_DBELL_RFCPEISL_RX_ABORTED_M                             0x04000000
@@ -1083,9 +1085,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_N_DATA_WRITTEN                        0x02000000
 #define RFC_DBELL_RFCPEISL_RX_N_DATA_WRITTEN_BITN                           25
 #define RFC_DBELL_RFCPEISL_RX_N_DATA_WRITTEN_M                      0x02000000
@@ -1099,9 +1101,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_DATA_WRITTEN                          0x01000000
 #define RFC_DBELL_RFCPEISL_RX_DATA_WRITTEN_BITN                             24
 #define RFC_DBELL_RFCPEISL_RX_DATA_WRITTEN_M                        0x01000000
@@ -1115,9 +1117,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_ENTRY_DONE                            0x00800000
 #define RFC_DBELL_RFCPEISL_RX_ENTRY_DONE_BITN                               23
 #define RFC_DBELL_RFCPEISL_RX_ENTRY_DONE_M                          0x00800000
@@ -1131,9 +1133,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_BUF_FULL                              0x00400000
 #define RFC_DBELL_RFCPEISL_RX_BUF_FULL_BITN                                 22
 #define RFC_DBELL_RFCPEISL_RX_BUF_FULL_M                            0x00400000
@@ -1147,9 +1149,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_CTRL_ACK                              0x00200000
 #define RFC_DBELL_RFCPEISL_RX_CTRL_ACK_BITN                                 21
 #define RFC_DBELL_RFCPEISL_RX_CTRL_ACK_M                            0x00200000
@@ -1162,9 +1164,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.RX_CTRL interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_CTRL                                  0x00100000
 #define RFC_DBELL_RFCPEISL_RX_CTRL_BITN                                     20
 #define RFC_DBELL_RFCPEISL_RX_CTRL_M                                0x00100000
@@ -1178,9 +1180,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_EMPTY                                 0x00080000
 #define RFC_DBELL_RFCPEISL_RX_EMPTY_BITN                                    19
 #define RFC_DBELL_RFCPEISL_RX_EMPTY_M                               0x00080000
@@ -1194,9 +1196,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_IGNORED                               0x00040000
 #define RFC_DBELL_RFCPEISL_RX_IGNORED_BITN                                  18
 #define RFC_DBELL_RFCPEISL_RX_IGNORED_M                             0x00040000
@@ -1209,9 +1211,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.RX_NOK interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_NOK                                   0x00020000
 #define RFC_DBELL_RFCPEISL_RX_NOK_BITN                                      17
 #define RFC_DBELL_RFCPEISL_RX_NOK_M                                 0x00020000
@@ -1224,9 +1226,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.RX_OK interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_RX_OK                                    0x00010000
 #define RFC_DBELL_RFCPEISL_RX_OK_BITN                                       16
 #define RFC_DBELL_RFCPEISL_RX_OK_M                                  0x00010000
@@ -1239,9 +1241,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.IRQ15 interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_IRQ15                                    0x00008000
 #define RFC_DBELL_RFCPEISL_IRQ15_BITN                                       15
 #define RFC_DBELL_RFCPEISL_IRQ15_M                                  0x00008000
@@ -1254,9 +1256,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.IRQ14 interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_IRQ14                                    0x00004000
 #define RFC_DBELL_RFCPEISL_IRQ14_BITN                                       14
 #define RFC_DBELL_RFCPEISL_IRQ14_M                                  0x00004000
@@ -1269,9 +1271,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.IRQ13 interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_IRQ13                                    0x00002000
 #define RFC_DBELL_RFCPEISL_IRQ13_BITN                                       13
 #define RFC_DBELL_RFCPEISL_IRQ13_M                                  0x00002000
@@ -1279,21 +1281,20 @@
 #define RFC_DBELL_RFCPEISL_IRQ13_CPE1                               0x00002000
 #define RFC_DBELL_RFCPEISL_IRQ13_CPE0                               0x00000000
 
-// Field:    [12] BG_COMMAND_SUSPENDED
+// Field:    [12] IRQ12
 //
-// Select which CPU interrupt vector the RFCPEIFG.BG_COMMAND_SUSPENDED
-// interrupt should use.
+// Select which CPU interrupt vector the RFCPEIFG.IRQ12 interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED                     0x00001000
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED_BITN                        12
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED_M                   0x00001000
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED_S                           12
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED_CPE1                0x00001000
-#define RFC_DBELL_RFCPEISL_BG_COMMAND_SUSPENDED_CPE0                0x00000000
+//                          interrupt vector
+#define RFC_DBELL_RFCPEISL_IRQ12                                    0x00001000
+#define RFC_DBELL_RFCPEISL_IRQ12_BITN                                       12
+#define RFC_DBELL_RFCPEISL_IRQ12_M                                  0x00001000
+#define RFC_DBELL_RFCPEISL_IRQ12_S                                          12
+#define RFC_DBELL_RFCPEISL_IRQ12_CPE1                               0x00001000
+#define RFC_DBELL_RFCPEISL_IRQ12_CPE0                               0x00000000
 
 // Field:    [11] TX_BUFFER_CHANGED
 //
@@ -1301,9 +1302,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_BUFFER_CHANGED                        0x00000800
 #define RFC_DBELL_RFCPEISL_TX_BUFFER_CHANGED_BITN                           11
 #define RFC_DBELL_RFCPEISL_TX_BUFFER_CHANGED_M                      0x00000800
@@ -1317,9 +1318,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_ENTRY_DONE                            0x00000400
 #define RFC_DBELL_RFCPEISL_TX_ENTRY_DONE_BITN                               10
 #define RFC_DBELL_RFCPEISL_TX_ENTRY_DONE_M                          0x00000400
@@ -1333,9 +1334,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_RETRANS                               0x00000200
 #define RFC_DBELL_RFCPEISL_TX_RETRANS_BITN                                   9
 #define RFC_DBELL_RFCPEISL_TX_RETRANS_M                             0x00000200
@@ -1349,9 +1350,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK_ACK                          0x00000100
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK_ACK_BITN                              8
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK_ACK_M                        0x00000100
@@ -1365,9 +1366,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK                              0x00000080
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK_BITN                                  7
 #define RFC_DBELL_RFCPEISL_TX_CTRL_ACK_M                            0x00000080
@@ -1380,9 +1381,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.TX_CTRL interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_CTRL                                  0x00000040
 #define RFC_DBELL_RFCPEISL_TX_CTRL_BITN                                      6
 #define RFC_DBELL_RFCPEISL_TX_CTRL_M                                0x00000040
@@ -1395,9 +1396,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.TX_ACK interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_ACK                                   0x00000020
 #define RFC_DBELL_RFCPEISL_TX_ACK_BITN                                       5
 #define RFC_DBELL_RFCPEISL_TX_ACK_M                                 0x00000020
@@ -1410,9 +1411,9 @@
 // Select which CPU interrupt vector the RFCPEIFG.TX_DONE interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_TX_DONE                                  0x00000010
 #define RFC_DBELL_RFCPEISL_TX_DONE_BITN                                      4
 #define RFC_DBELL_RFCPEISL_TX_DONE_M                                0x00000010
@@ -1426,9 +1427,9 @@
 // interrupt should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_LAST_FG_COMMAND_DONE                     0x00000008
 #define RFC_DBELL_RFCPEISL_LAST_FG_COMMAND_DONE_BITN                         3
 #define RFC_DBELL_RFCPEISL_LAST_FG_COMMAND_DONE_M                   0x00000008
@@ -1442,9 +1443,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_FG_COMMAND_DONE                          0x00000004
 #define RFC_DBELL_RFCPEISL_FG_COMMAND_DONE_BITN                              2
 #define RFC_DBELL_RFCPEISL_FG_COMMAND_DONE_M                        0x00000004
@@ -1458,9 +1459,9 @@
 // should use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_LAST_COMMAND_DONE                        0x00000002
 #define RFC_DBELL_RFCPEISL_LAST_COMMAND_DONE_BITN                            1
 #define RFC_DBELL_RFCPEISL_LAST_COMMAND_DONE_M                      0x00000002
@@ -1474,9 +1475,9 @@
 // use.
 // ENUMs:
 // CPE1                     Associate this interrupt line with INT_RF_CPE1
-// interrupt vector
+//                          interrupt vector
 // CPE0                     Associate this interrupt line with INT_RF_CPE0
-// interrupt vector
+//                          interrupt vector
 #define RFC_DBELL_RFCPEISL_COMMAND_DONE                             0x00000001
 #define RFC_DBELL_RFCPEISL_COMMAND_DONE_BITN                                 0
 #define RFC_DBELL_RFCPEISL_COMMAND_DONE_M                           0x00000001
@@ -1523,6 +1524,7 @@
 // CPEGPO2                  CPE GPO line 2
 // CPEGPO1                  CPE GPO line 1
 // CPEGPO0                  CPE GPO line 0
+#define RFC_DBELL_SYSGPOCTL_GPOCTL3_W                                        4
 #define RFC_DBELL_SYSGPOCTL_GPOCTL3_M                               0x0000F000
 #define RFC_DBELL_SYSGPOCTL_GPOCTL3_S                                       12
 #define RFC_DBELL_SYSGPOCTL_GPOCTL3_RATGPO3                         0x0000F000
@@ -1563,6 +1565,7 @@
 // CPEGPO2                  CPE GPO line 2
 // CPEGPO1                  CPE GPO line 1
 // CPEGPO0                  CPE GPO line 0
+#define RFC_DBELL_SYSGPOCTL_GPOCTL2_W                                        4
 #define RFC_DBELL_SYSGPOCTL_GPOCTL2_M                               0x00000F00
 #define RFC_DBELL_SYSGPOCTL_GPOCTL2_S                                        8
 #define RFC_DBELL_SYSGPOCTL_GPOCTL2_RATGPO3                         0x00000F00
@@ -1603,6 +1606,7 @@
 // CPEGPO2                  CPE GPO line 2
 // CPEGPO1                  CPE GPO line 1
 // CPEGPO0                  CPE GPO line 0
+#define RFC_DBELL_SYSGPOCTL_GPOCTL1_W                                        4
 #define RFC_DBELL_SYSGPOCTL_GPOCTL1_M                               0x000000F0
 #define RFC_DBELL_SYSGPOCTL_GPOCTL1_S                                        4
 #define RFC_DBELL_SYSGPOCTL_GPOCTL1_RATGPO3                         0x000000F0
@@ -1643,6 +1647,7 @@
 // CPEGPO2                  CPE GPO line 2
 // CPEGPO1                  CPE GPO line 1
 // CPEGPO0                  CPE GPO line 0
+#define RFC_DBELL_SYSGPOCTL_GPOCTL0_W                                        4
 #define RFC_DBELL_SYSGPOCTL_GPOCTL0_M                               0x0000000F
 #define RFC_DBELL_SYSGPOCTL_GPOCTL0_S                                        0
 #define RFC_DBELL_SYSGPOCTL_GPOCTL0_RATGPO3                         0x0000000F

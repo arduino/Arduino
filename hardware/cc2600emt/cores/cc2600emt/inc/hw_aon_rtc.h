@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_aon_rtc_h
-*  Revised:        2015-02-13 15:47:13 +0100 (fr, 13 feb 2015)
-*  Revision:       42724
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -46,7 +46,7 @@
 // Control
 #define AON_RTC_O_CTL                                               0x00000000
 
-// Event Flags - RTC Status
+// Event Flags, RTC Status
 #define AON_RTC_O_EVFLAGS                                           0x00000004
 
 // Second Counter Value, Integer Part
@@ -87,13 +87,12 @@
 // Field: [18:16] COMB_EV_MASK
 //
 // Eventmask selecting which delayed events that form the combined event.
-//
-// Enumeration values can be combined with a logical or.
 // ENUMs:
 // CH2                      Use Channel 2 delayed event in combined event
 // CH1                      Use Channel 1 delayed event in combined event
 // CH0                      Use Channel 0 delayed event in combined event
 // NONE                     No event is selected for combined event.
+#define AON_RTC_CTL_COMB_EV_MASK_W                                           3
 #define AON_RTC_CTL_COMB_EV_MASK_M                                  0x00070000
 #define AON_RTC_CTL_COMB_EV_MASK_S                                          16
 #define AON_RTC_CTL_COMB_EV_MASK_CH2                                0x00040000
@@ -120,6 +119,7 @@
 // D2                       Delay by 2 clock cycles
 // D1                       Delay by 1 clock cycles
 // D0                       No delay on delayed event
+#define AON_RTC_CTL_EV_DELAY_W                                               4
 #define AON_RTC_CTL_EV_DELAY_M                                      0x00000F00
 #define AON_RTC_CTL_EV_DELAY_S                                               8
 #define AON_RTC_CTL_EV_DELAY_D144                                   0x00000D00
@@ -151,7 +151,7 @@
 
 // Field:     [2] RTC_4KHZ_EN
 //
-// RTC_4KHZ is a 4 KHz reference output, tapped from  SUBSEC:VALUE  bit 19
+// RTC_4KHZ is a 4 KHz reference output, tapped from  SUBSEC.VALUE  bit 19
 // which is used by AUX timer.
 //
 // 0: RTC_4KHZ signal is forced to 0
@@ -201,8 +201,8 @@
 // Writing 1 clears this flag. Note that a new event can not occur on this
 // channel in first 2 SCLK_LF cycles after a clearance.
 //
-// AUX_SCE can read the flag through AUX_WUC:WUEVFLAGS.AON_RTC and clear it
-// using AUX_WUC:WUEVCLR.AON_RTC.
+// AUX_SCE can read the flag through AUX_WUC:WUEVFLAGS.AON_RTC_CH2 and clear it
+// using AUX_WUC:WUEVCLR.AON_RTC_CH2.
 #define AON_RTC_EVFLAGS_CH2                                         0x00010000
 #define AON_RTC_EVFLAGS_CH2_BITN                                            16
 #define AON_RTC_EVFLAGS_CH2_M                                       0x00010000
@@ -254,6 +254,7 @@
 // When reading this register the content of SUBSEC.VALUE is simultaneously
 // latched. A consistent reading of the combined Real Time Clock can be
 // obtained by first reading this register, then reading SUBSEC register.
+#define AON_RTC_SEC_VALUE_W                                                 32
 #define AON_RTC_SEC_VALUE_M                                         0xFFFFFFFF
 #define AON_RTC_SEC_VALUE_S                                                  0
 
@@ -272,6 +273,7 @@
 // - 0x4000_0000 = 0.25 sec
 // - 0x8000_0000 = 0.5 sec
 // - 0xC000_0000 = 0.75 sec
+#define AON_RTC_SUBSEC_VALUE_W                                              32
 #define AON_RTC_SUBSEC_VALUE_M                                      0xFFFFFFFF
 #define AON_RTC_SUBSEC_VALUE_S                                               0
 
@@ -299,6 +301,7 @@
 // NOTE: This register is read only. Modification of the register value must be
 // done using registers AUX_WUC:RTCSUBSECINC1 ,  AUX_WUC:RTCSUBSECINC0 and
 // AUX_WUC:RTCSUBSECINCCTL
+#define AON_RTC_SUBSECINC_VALUEINC_W                                        24
 #define AON_RTC_SUBSECINC_VALUEINC_M                                0x00FFFFFF
 #define AON_RTC_SUBSECINC_VALUEINC_S                                         0
 
@@ -309,7 +312,7 @@
 //*****************************************************************************
 // Field:    [18] CH2_CONT_EN
 //
-// Set to enable continuous opereation of Channel 2
+// Set to enable continuous operation of Channel 2
 #define AON_RTC_CHCTL_CH2_CONT_EN                                   0x00040000
 #define AON_RTC_CHCTL_CH2_CONT_EN_BITN                                      18
 #define AON_RTC_CHCTL_CH2_CONT_EN_M                                 0x00040000
@@ -385,6 +388,7 @@
 //
 // *) It can take up to 2 SCLK_LF clock cycles before event occurs due to
 // synchronization.
+#define AON_RTC_CH0CMP_VALUE_W                                              32
 #define AON_RTC_CH0CMP_VALUE_M                                      0xFFFFFFFF
 #define AON_RTC_CH0CMP_VALUE_S                                               0
 
@@ -414,6 +418,7 @@
 //
 // *) It can take up to 2 SCLK_LF clock cycles before event occurs due to
 // synchronization.
+#define AON_RTC_CH1CMP_VALUE_W                                              32
 #define AON_RTC_CH1CMP_VALUE_M                                      0xFFFFFFFF
 #define AON_RTC_CH1CMP_VALUE_S                                               0
 
@@ -443,6 +448,7 @@
 //
 // *) It can take up to 2 SCLK_LF clock cycles before event occurs due to
 // synchronization.
+#define AON_RTC_CH2CMP_VALUE_W                                              32
 #define AON_RTC_CH2CMP_VALUE_M                                      0xFFFFFFFF
 #define AON_RTC_CH2CMP_VALUE_S                                               0
 
@@ -455,6 +461,7 @@
 //
 // If CHCTL.CH2_CONT_EN is set, this value is added to CH2CMP.VALUE on every
 // channel 2 compare event.
+#define AON_RTC_CH2CMPINC_VALUE_W                                           32
 #define AON_RTC_CH2CMPINC_VALUE_M                                   0xFFFFFFFF
 #define AON_RTC_CH2CMPINC_VALUE_S                                            0
 
@@ -466,12 +473,14 @@
 // Field: [31:16] SEC
 //
 // Value of SEC.VALUE bits 15:0 at capture time.
+#define AON_RTC_CH1CAPT_SEC_W                                               16
 #define AON_RTC_CH1CAPT_SEC_M                                       0xFFFF0000
 #define AON_RTC_CH1CAPT_SEC_S                                               16
 
 // Field:  [15:0] SUBSEC
 //
 // Value of SUBSEC.VALUE bits 31:16 at capture time.
+#define AON_RTC_CH1CAPT_SUBSEC_W                                            16
 #define AON_RTC_CH1CAPT_SUBSEC_M                                    0x0000FFFF
 #define AON_RTC_CH1CAPT_SUBSEC_S                                             0
 

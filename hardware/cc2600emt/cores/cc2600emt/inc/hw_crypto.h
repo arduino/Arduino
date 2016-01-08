@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_crypto_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -245,6 +245,7 @@
 // Channel external address value.
 // Holds the last updated external address after being sent to the master
 // interface.
+#define CRYPTO_DMACH0EXTADDR_ADDR_W                                         32
 #define CRYPTO_DMACH0EXTADDR_ADDR_M                                 0xFFFFFFFF
 #define CRYPTO_DMACH0EXTADDR_ADDR_S                                          0
 
@@ -261,6 +262,7 @@
 // transfer length after being sent to the master interface.
 // Note: Writing a non-zero value to this register field starts the transfer if
 // the channel is enabled by setting DMACH0CTL.EN.
+#define CRYPTO_DMACH0LEN_LEN_W                                              16
 #define CRYPTO_DMACH0LEN_LEN_M                                      0x0000FFFF
 #define CRYPTO_DMACH0LEN_LEN_S                                               0
 
@@ -366,6 +368,7 @@
 // Channel external address value.
 // Holds the last updated external address after being sent to the master
 // interface.
+#define CRYPTO_DMACH1EXTADDR_ADDR_W                                         32
 #define CRYPTO_DMACH1EXTADDR_ADDR_M                                 0xFFFFFFFF
 #define CRYPTO_DMACH1EXTADDR_ADDR_S                                          0
 
@@ -382,6 +385,7 @@
 // transfer length after being sent to the master interface.
 // Note: Writing a non-zero value to this register field starts the transfer if
 // the channel is enabled by setting DMACH1CTL.EN.
+#define CRYPTO_DMACH1LEN_LEN_W                                              16
 #define CRYPTO_DMACH1LEN_LEN_M                                      0x0000FFFF
 #define CRYPTO_DMACH1LEN_LEN_S                                               0
 
@@ -399,6 +403,7 @@
 // 16_BYTE                  16 bytes
 // 8_BYTE                   8 bytes
 // 4_BYTE                   4 bytes
+#define CRYPTO_DMABUSCFG_AHB_MST1_BURST_SIZE_W                               4
 #define CRYPTO_DMABUSCFG_AHB_MST1_BURST_SIZE_M                      0x0000F000
 #define CRYPTO_DMABUSCFG_AHB_MST1_BURST_SIZE_S                              12
 #define CRYPTO_DMABUSCFG_AHB_MST1_BURST_SIZE_64_BYTE                0x00006000
@@ -489,30 +494,35 @@
 // Field: [27:24] HW_MAJOR_VER
 //
 // Major version number
+#define CRYPTO_DMAHWVER_HW_MAJOR_VER_W                                       4
 #define CRYPTO_DMAHWVER_HW_MAJOR_VER_M                              0x0F000000
 #define CRYPTO_DMAHWVER_HW_MAJOR_VER_S                                      24
 
 // Field: [23:20] HW_MINOR_VER
 //
 // Minor version number
+#define CRYPTO_DMAHWVER_HW_MINOR_VER_W                                       4
 #define CRYPTO_DMAHWVER_HW_MINOR_VER_M                              0x00F00000
 #define CRYPTO_DMAHWVER_HW_MINOR_VER_S                                      20
 
 // Field: [19:16] HW_PATCH_LVL
 //
 // Patch level.
+#define CRYPTO_DMAHWVER_HW_PATCH_LVL_W                                       4
 #define CRYPTO_DMAHWVER_HW_PATCH_LVL_M                              0x000F0000
 #define CRYPTO_DMAHWVER_HW_PATCH_LVL_S                                      16
 
 // Field:  [15:8] VER_NUM_COMPL
 //
 // Bit-by-bit complement of the VER_NUM field bits.
+#define CRYPTO_DMAHWVER_VER_NUM_COMPL_W                                      8
 #define CRYPTO_DMAHWVER_VER_NUM_COMPL_M                             0x0000FF00
 #define CRYPTO_DMAHWVER_VER_NUM_COMPL_S                                      8
 
 // Field:   [7:0] VER_NUM
 //
 // Version number of the DMA Controller (209)
+#define CRYPTO_DMAHWVER_VER_NUM_W                                            8
 #define CRYPTO_DMAHWVER_VER_NUM_M                                   0x000000FF
 #define CRYPTO_DMAHWVER_VER_NUM_S                                            0
 
@@ -672,9 +682,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN7                     0x00000080
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN7_BITN                         7
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN7_M                   0x00000080
@@ -692,9 +703,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN6                     0x00000040
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN6_BITN                         6
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN6_M                   0x00000040
@@ -712,9 +724,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN5                     0x00000020
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN5_BITN                         5
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN5_M                   0x00000020
@@ -732,9 +745,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN4                     0x00000010
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN4_BITN                         4
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN4_M                   0x00000010
@@ -752,9 +766,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN3                     0x00000008
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN3_BITN                         3
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN3_M                   0x00000008
@@ -772,9 +787,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN2                     0x00000004
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN2_BITN                         2
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN2_M                   0x00000004
@@ -792,9 +808,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN1                     0x00000002
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN1_BITN                         1
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN1_M                   0x00000002
@@ -813,9 +830,10 @@
 // DMASWRESET.RESET. After a soft reset, all keys must be rewritten to the key
 // store memory.
 // ENUMs:
-// WRITTEN                  This RAM area is written with valid key information
+// WRITTEN                  This RAM area is written with valid key
+//                          information
 // NOT_WRITTEN              This RAM area is not written with valid key
-// information
+//                          information
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN0                     0x00000001
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN0_BITN                         0
 #define CRYPTO_KEYWRITTENAREA_RAM_AREA_WRITTEN0_M                   0x00000001
@@ -841,6 +859,7 @@
 // 256_BIT                  Not supported
 // 192_BIT                  Not supported
 // 128_BIT                  128 bits
+#define CRYPTO_KEYSIZE_SIZE_W                                                2
 #define CRYPTO_KEYSIZE_SIZE_M                                       0x00000003
 #define CRYPTO_KEYSIZE_SIZE_S                                                0
 #define CRYPTO_KEYSIZE_SIZE_256_BIT                                 0x00000003
@@ -879,6 +898,7 @@
 // RAM_AREA2                RAM Area 2
 // RAM_AREA1                RAM Area 1
 // RAM_AREA0                RAM Area 0
+#define CRYPTO_KEYREADAREA_RAM_AREA_W                                        4
 #define CRYPTO_KEYREADAREA_RAM_AREA_M                               0x0000000F
 #define CRYPTO_KEYREADAREA_RAM_AREA_S                                        0
 #define CRYPTO_KEYREADAREA_RAM_AREA_NO_RAM                          0x00000008
@@ -901,6 +921,7 @@
 // AESKEY2.* bits 31+x:0+x or AES_GHASH_H.* bits 31+x:0+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register array.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY20_KEY2_W                                              32
 #define CRYPTO_AESKEY20_KEY2_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY20_KEY2_S                                               0
 
@@ -914,6 +935,7 @@
 // AESKEY2.* bits 31+x:0+x or AES_GHASH_H.* bits 31+x:0+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register array.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY21_KEY2_W                                              32
 #define CRYPTO_AESKEY21_KEY2_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY21_KEY2_S                                               0
 
@@ -927,6 +949,7 @@
 // AESKEY2.* bits 31+x:0+x or AES_GHASH_H.* bits 31+x:0+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register array.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY22_KEY2_W                                              32
 #define CRYPTO_AESKEY22_KEY2_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY22_KEY2_S                                               0
 
@@ -940,6 +963,7 @@
 // AESKEY2.* bits 31+x:0+x or AES_GHASH_H.* bits 31+x:0+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register array.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY23_KEY2_W                                              32
 #define CRYPTO_AESKEY23_KEY2_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY23_KEY2_S                                               0
 
@@ -953,6 +977,7 @@
 // AESKEY3.* bits 31+x:0+x or AESKEY2.* bits 159+x:128+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register arrary.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY30_KEY3_W                                              32
 #define CRYPTO_AESKEY30_KEY3_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY30_KEY3_S                                               0
 
@@ -966,6 +991,7 @@
 // AESKEY3.* bits 31+x:0+x or AESKEY2.* bits 159+x:128+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register arrary.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY31_KEY3_W                                              32
 #define CRYPTO_AESKEY31_KEY3_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY31_KEY3_S                                               0
 
@@ -979,6 +1005,7 @@
 // AESKEY3.* bits 31+x:0+x or AESKEY2.* bits 159+x:128+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register arrary.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY32_KEY3_W                                              32
 #define CRYPTO_AESKEY32_KEY3_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY32_KEY3_S                                               0
 
@@ -992,6 +1019,7 @@
 // AESKEY3.* bits 31+x:0+x or AESKEY2.* bits 159+x:128+x, where x = 0, 32, 64,
 // 96 ordered from the LSW entry of this 4-deep register arrary.
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESKEY33_KEY3_W                                              32
 #define CRYPTO_AESKEY33_KEY3_M                                      0xFFFFFFFF
 #define CRYPTO_AESKEY33_KEY3_S                                               0
 
@@ -1003,6 +1031,7 @@
 // Field:  [31:0] IV
 //
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESIV0_IV_W                                                  32
 #define CRYPTO_AESIV0_IV_M                                          0xFFFFFFFF
 #define CRYPTO_AESIV0_IV_S                                                   0
 
@@ -1014,6 +1043,7 @@
 // Field:  [31:0] IV
 //
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESIV1_IV_W                                                  32
 #define CRYPTO_AESIV1_IV_M                                          0xFFFFFFFF
 #define CRYPTO_AESIV1_IV_S                                                   0
 
@@ -1025,6 +1055,7 @@
 // Field:  [31:0] IV
 //
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESIV2_IV_W                                                  32
 #define CRYPTO_AESIV2_IV_M                                          0xFFFFFFFF
 #define CRYPTO_AESIV2_IV_S                                                   0
 
@@ -1036,6 +1067,7 @@
 // Field:  [31:0] IV
 //
 // The interpretation of this field depends on the crypto operation mode.
+#define CRYPTO_AESIV3_IV_W                                                  32
 #define CRYPTO_AESIV3_IV_M                                          0xFFFFFFFF
 #define CRYPTO_AESIV3_IV_S                                                   0
 
@@ -1095,6 +1127,7 @@
 // CCM_M plus one.
 // Note: The Crypto peripheral always returns a 128-bit authentication field,
 // of which the M least significant bytes are valid. All values are supported.
+#define CRYPTO_AESCTL_CCM_M_W                                                3
 #define CRYPTO_AESCTL_CCM_M_M                                       0x01C00000
 #define CRYPTO_AESCTL_CCM_M_S                                               22
 
@@ -1103,6 +1136,7 @@
 // Defines L that indicates the width of the length field for CCM operations;
 // the length field in bytes equals the value of CMM_L plus one. All values are
 // supported.
+#define CRYPTO_AESCTL_CCM_L_W                                                3
 #define CRYPTO_AESCTL_CCM_L_M                                       0x00380000
 #define CRYPTO_AESCTL_CCM_L_S                                               19
 
@@ -1139,6 +1173,7 @@
 // 96_BIT                   96 bits
 // 64_BIT                   64 bits
 // 32_BIT                   32 bits
+#define CRYPTO_AESCTL_CTR_WIDTH_W                                            2
 #define CRYPTO_AESCTL_CTR_WIDTH_M                                   0x00000180
 #define CRYPTO_AESCTL_CTR_WIDTH_S                                            7
 #define CRYPTO_AESCTL_CTR_WIDTH_128_BIT                             0x00000180
@@ -1173,6 +1208,7 @@
 // 10 = N/A - reserved
 // 11 = N/A - reserved
 // For the Crypto peripheral this field is fixed to 128 bits.
+#define CRYPTO_AESCTL_KEY_SIZE_W                                             2
 #define CRYPTO_AESCTL_KEY_SIZE_M                                    0x00000018
 #define CRYPTO_AESCTL_KEY_SIZE_S                                             3
 
@@ -1242,6 +1278,7 @@
 // Used to write the Length values to the Crypto peripheral.
 //
 // This register contains bits [31:0] of the combined data length.
+#define CRYPTO_AESDATALEN0_LEN_LSW_W                                        32
 #define CRYPTO_AESDATALEN0_LEN_LSW_M                                0xFFFFFFFF
 #define CRYPTO_AESDATALEN0_LEN_LSW_S                                         0
 
@@ -1266,14 +1303,15 @@
 // Note: For the combined modes (GCM and CCM), this length does not include the
 // authentication only data; the authentication length is specified in the
 // AESAUTHLEN.LEN.
-// All modes must have a length &#62; 0. For the combined modes, it is allowed
-// to have one of the lengths equal to zero.
+// All modes must have a length > 0. For the combined modes, it is allowed to
+// have one of the lengths equal to zero.
 // For the basic encryption modes (ECB/CBC/CTR) it is allowed to program zero
 // to the length field; in that case the length is assumed infinite.
 // All data must be byte (8-bit) aligned for stream cipher modes; bit aligned
 // data streams are not supported by the Crypto peripheral. For block cipher
 // modes, the data length must be programmed in multiples of the block cipher
 // size, 16 bytes.
+#define CRYPTO_AESDATALEN1_LEN_MSW_W                                        29
 #define CRYPTO_AESDATALEN1_LEN_MSW_M                                0x1FFFFFFF
 #define CRYPTO_AESDATALEN1_LEN_MSW_S                                         0
 
@@ -1289,6 +1327,7 @@
 // processing with this context is started, this length decrements to zero.
 // Writing this register triggers the engine to start using this context for
 // CCM.
+#define CRYPTO_AESAUTHLEN_LEN_W                                             32
 #define CRYPTO_AESAUTHLEN_LEN_M                                     0xFFFFFFFF
 #define CRYPTO_AESAUTHLEN_LEN_S                                              0
 
@@ -1317,6 +1356,7 @@
 //
 // Note: The AAD / authentication only data is not copied to the output buffer
 // but only used for authentication.
+#define CRYPTO_AESDATAOUT0_DATA_W                                           32
 #define CRYPTO_AESDATAOUT0_DATA_M                                   0xFFFFFFFF
 #define CRYPTO_AESDATAOUT0_DATA_S                                            0
 
@@ -1344,12 +1384,13 @@
 //
 // Note: AES typically operates on 128 bits block multiple input data. The CTR,
 // GCM and CCM modes form an exception. The last block of a CTR-mode message
-// may contain less than 128 bits (refer to [NIST 800-38A]): 0 &#60; n &#60;=
-// 128 bits. For GCM/CCM, the last block of both AAD and message data may
-// contain less than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral
-// automatically pads or masks misaligned ending data blocks with zeroes for
-// GCM, CCM and CBC-MAC. For CTR mode, the remaining data in an unaligned data
-// block is ignored.
+// may contain less than 128 bits (refer to [NIST 800-38A]): 0 < n <= 128 bits.
+// For GCM/CCM, the last block of both AAD and message data may contain less
+// than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral automatically
+// pads or masks misaligned ending data blocks with zeroes for GCM, CCM and
+// CBC-MAC. For CTR mode, the remaining data in an unaligned data block is
+// ignored.
+#define CRYPTO_AESDATAIN0_DATA_W                                            32
 #define CRYPTO_AESDATAIN0_DATA_M                                    0xFFFFFFFF
 #define CRYPTO_AESDATAIN0_DATA_S                                             0
 
@@ -1378,6 +1419,7 @@
 //
 // Note: The AAD / authentication only data is not copied to the output buffer
 // but only used for authentication.
+#define CRYPTO_AESDATAOUT1_DATA_W                                           32
 #define CRYPTO_AESDATAOUT1_DATA_M                                   0xFFFFFFFF
 #define CRYPTO_AESDATAOUT1_DATA_S                                            0
 
@@ -1405,12 +1447,13 @@
 //
 // Note: AES typically operates on 128 bits block multiple input data. The CTR,
 // GCM and CCM modes form an exception. The last block of a CTR-mode message
-// may contain less than 128 bits (refer to [NIST 800-38A]): 0 &#60; n &#60;=
-// 128 bits. For GCM/CCM, the last block of both AAD and message data may
-// contain less than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral
-// automatically pads or masks misaligned ending data blocks with zeroes for
-// GCM, CCM and CBC-MAC. For CTR mode, the remaining data in an unaligned data
-// block is ignored.
+// may contain less than 128 bits (refer to [NIST 800-38A]): 0 < n <= 128 bits.
+// For GCM/CCM, the last block of both AAD and message data may contain less
+// than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral automatically
+// pads or masks misaligned ending data blocks with zeroes for GCM, CCM and
+// CBC-MAC. For CTR mode, the remaining data in an unaligned data block is
+// ignored.
+#define CRYPTO_AESDATAIN1_DATA_W                                            32
 #define CRYPTO_AESDATAIN1_DATA_M                                    0xFFFFFFFF
 #define CRYPTO_AESDATAIN1_DATA_S                                             0
 
@@ -1439,6 +1482,7 @@
 //
 // Note: The AAD / authentication only data is not copied to the output buffer
 // but only used for authentication.
+#define CRYPTO_AESDATAOUT2_DATA_W                                           32
 #define CRYPTO_AESDATAOUT2_DATA_M                                   0xFFFFFFFF
 #define CRYPTO_AESDATAOUT2_DATA_S                                            0
 
@@ -1466,12 +1510,13 @@
 //
 // Note: AES typically operates on 128 bits block multiple input data. The CTR,
 // GCM and CCM modes form an exception. The last block of a CTR-mode message
-// may contain less than 128 bits (refer to [NIST 800-38A]): 0 &#60; n &#60;=
-// 128 bits. For GCM/CCM, the last block of both AAD and message data may
-// contain less than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral
-// automatically pads or masks misaligned ending data blocks with zeroes for
-// GCM, CCM and CBC-MAC. For CTR mode, the remaining data in an unaligned data
-// block is ignored.
+// may contain less than 128 bits (refer to [NIST 800-38A]): 0 < n <= 128 bits.
+// For GCM/CCM, the last block of both AAD and message data may contain less
+// than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral automatically
+// pads or masks misaligned ending data blocks with zeroes for GCM, CCM and
+// CBC-MAC. For CTR mode, the remaining data in an unaligned data block is
+// ignored.
+#define CRYPTO_AESDATAIN2_DATA_W                                            32
 #define CRYPTO_AESDATAIN2_DATA_M                                    0xFFFFFFFF
 #define CRYPTO_AESDATAIN2_DATA_S                                             0
 
@@ -1500,6 +1545,7 @@
 //
 // Note: The AAD / authentication only data is not copied to the output buffer
 // but only used for authentication.
+#define CRYPTO_AESDATAOUT3_DATA_W                                           32
 #define CRYPTO_AESDATAOUT3_DATA_M                                   0xFFFFFFFF
 #define CRYPTO_AESDATAOUT3_DATA_S                                            0
 
@@ -1527,12 +1573,13 @@
 //
 // Note: AES typically operates on 128 bits block multiple input data. The CTR,
 // GCM and CCM modes form an exception. The last block of a CTR-mode message
-// may contain less than 128 bits (refer to [NIST 800-38A]): 0 &#60; n &#60;=
-// 128 bits. For GCM/CCM, the last block of both AAD and message data may
-// contain less than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral
-// automatically pads or masks misaligned ending data blocks with zeroes for
-// GCM, CCM and CBC-MAC. For CTR mode, the remaining data in an unaligned data
-// block is ignored.
+// may contain less than 128 bits (refer to [NIST 800-38A]): 0 < n <= 128 bits.
+// For GCM/CCM, the last block of both AAD and message data may contain less
+// than 128 bits (refer to [NIST 800-38D]). The Crypto peripheral automatically
+// pads or masks misaligned ending data blocks with zeroes for GCM, CCM and
+// CBC-MAC. For CTR mode, the remaining data in an unaligned data block is
+// ignored.
+#define CRYPTO_AESDATAIN3_DATA_W                                            32
 #define CRYPTO_AESDATAIN3_DATA_M                                    0xFFFFFFFF
 #define CRYPTO_AESDATAIN3_DATA_S                                             0
 
@@ -1545,6 +1592,7 @@
 //
 // This register contains the authentication TAG for the combined and
 // authentication-only modes.
+#define CRYPTO_AESTAGOUT0_TAG_W                                             32
 #define CRYPTO_AESTAGOUT0_TAG_M                                     0xFFFFFFFF
 #define CRYPTO_AESTAGOUT0_TAG_S                                              0
 
@@ -1557,6 +1605,7 @@
 //
 // This register contains the authentication TAG for the combined and
 // authentication-only modes.
+#define CRYPTO_AESTAGOUT1_TAG_W                                             32
 #define CRYPTO_AESTAGOUT1_TAG_M                                     0xFFFFFFFF
 #define CRYPTO_AESTAGOUT1_TAG_S                                              0
 
@@ -1569,6 +1618,7 @@
 //
 // This register contains the authentication TAG for the combined and
 // authentication-only modes.
+#define CRYPTO_AESTAGOUT2_TAG_W                                             32
 #define CRYPTO_AESTAGOUT2_TAG_M                                     0xFFFFFFFF
 #define CRYPTO_AESTAGOUT2_TAG_S                                              0
 
@@ -1581,6 +1631,7 @@
 //
 // This register contains the authentication TAG for the combined and
 // authentication-only modes.
+#define CRYPTO_AESTAGOUT3_TAG_W                                             32
 #define CRYPTO_AESTAGOUT3_TAG_M                                     0xFFFFFFFF
 #define CRYPTO_AESTAGOUT3_TAG_S                                              0
 
@@ -1627,8 +1678,8 @@
 //
 // Select AHB transfer protection control for DMA transfers using the key store
 // area as destination.
-// 0 : transfers use &#39;USER&#39; type access.
-// 1 : transfers use &#39;PRIVILEGED&#39; type access.
+// 0 : transfers use 'USER' type access.
+// 1 : transfers use 'PRIVILEGED' type access.
 #define CRYPTO_DMAPROTCTL_EN                                        0x00000001
 #define CRYPTO_DMAPROTCTL_EN_BITN                                            0
 #define CRYPTO_DMAPROTCTL_EN_M                                      0x00000001
@@ -1825,18 +1876,21 @@
 // Field: [27:24] HW_MAJOR_VER
 //
 // Major version number
+#define CRYPTO_HWVER_HW_MAJOR_VER_W                                          4
 #define CRYPTO_HWVER_HW_MAJOR_VER_M                                 0x0F000000
 #define CRYPTO_HWVER_HW_MAJOR_VER_S                                         24
 
 // Field: [23:20] HW_MINOR_VER
 //
 // Minor version number
+#define CRYPTO_HWVER_HW_MINOR_VER_W                                          4
 #define CRYPTO_HWVER_HW_MINOR_VER_M                                 0x00F00000
 #define CRYPTO_HWVER_HW_MINOR_VER_S                                         20
 
 // Field: [19:16] HW_PATCH_LVL
 //
 // Patch level, starts at 0 at first delivery of this version.
+#define CRYPTO_HWVER_HW_PATCH_LVL_W                                          4
 #define CRYPTO_HWVER_HW_PATCH_LVL_M                                 0x000F0000
 #define CRYPTO_HWVER_HW_PATCH_LVL_S                                         16
 
@@ -1844,6 +1898,7 @@
 //
 // These bits simply contain the complement of VER_NUM (0x87), used by a driver
 // to ascertain that the Crypto peripheral register is indeed read.
+#define CRYPTO_HWVER_VER_NUM_COMPL_W                                         8
 #define CRYPTO_HWVER_VER_NUM_COMPL_M                                0x0000FF00
 #define CRYPTO_HWVER_VER_NUM_COMPL_S                                         8
 
@@ -1851,6 +1906,7 @@
 //
 // The version number for the Crypto peripheral, this field contains the value
 // 120 (decimal) or 0x78.
+#define CRYPTO_HWVER_VER_NUM_W                                               8
 #define CRYPTO_HWVER_VER_NUM_M                                      0x000000FF
 #define CRYPTO_HWVER_VER_NUM_S                                               0
 

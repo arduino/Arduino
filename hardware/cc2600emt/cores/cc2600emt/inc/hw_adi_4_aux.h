@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_4_aux_h
-*  Revised:        2015-03-24 13:39:29 +0100 (ti, 24 mar 2015)
-*  Revision:       43111
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,16 +43,16 @@
 // ADI_4_AUX component
 //
 //*****************************************************************************
-// Multiplexer 0
+// Internal
 #define ADI_4_AUX_O_MUX0                                            0x00000000
 
-// Multiplexer 1
+// Internal
 #define ADI_4_AUX_O_MUX1                                            0x00000001
 
-// l
+// Internal
 #define ADI_4_AUX_O_MUX2                                            0x00000002
 
-// Multiplexer 3
+// Internal
 #define ADI_4_AUX_O_MUX3                                            0x00000003
 
 // Current Source
@@ -61,7 +61,7 @@
 // Comparator
 #define ADI_4_AUX_O_COMP                                            0x00000005
 
-// Multiplexer 4
+// Internal
 #define ADI_4_AUX_O_MUX4                                            0x00000007
 
 // ADC Control 0
@@ -90,6 +90,7 @@
 // ATEST1                   Internal. Only to be used through TI provided API.
 // ATEST0                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX0_COMPA_IN_W                                            4
 #define ADI_4_AUX_MUX0_COMPA_IN_M                                   0x000000F0
 #define ADI_4_AUX_MUX0_COMPA_IN_S                                            4
 #define ADI_4_AUX_MUX0_COMPA_IN_FCAP1                               0x00000080
@@ -107,6 +108,7 @@
 // VSS                      Internal. Only to be used through TI provided API.
 // DCOUPL                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX0_COMPA_REF_W                                           4
 #define ADI_4_AUX_MUX0_COMPA_REF_M                                  0x0000000F
 #define ADI_4_AUX_MUX0_COMPA_REF_S                                           0
 #define ADI_4_AUX_MUX0_COMPA_REF_ADCVREFP                           0x00000008
@@ -133,6 +135,7 @@
 // AUXIO6                   Internal. Only to be used through TI provided API.
 // AUXIO7                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX1_COMPA_IN_W                                            8
 #define ADI_4_AUX_MUX1_COMPA_IN_M                                   0x000000FF
 #define ADI_4_AUX_MUX1_COMPA_IN_S                                            0
 #define ADI_4_AUX_MUX1_COMPA_IN_AUXIO0                              0x00000080
@@ -160,6 +163,7 @@
 // ATEST1                   Internal. Only to be used through TI provided API.
 // ATEST0                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX2_ADCCOMPB_IN_W                                         5
 #define ADI_4_AUX_MUX2_ADCCOMPB_IN_M                                0x000000F8
 #define ADI_4_AUX_MUX2_ADCCOMPB_IN_S                                         3
 #define ADI_4_AUX_MUX2_ADCCOMPB_IN_VDDS                             0x00000080
@@ -177,6 +181,7 @@
 // VSS                      Internal. Only to be used through TI provided API.
 // DCOUPL                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX2_COMPB_REF_W                                           3
 #define ADI_4_AUX_MUX2_COMPB_REF_M                                  0x00000007
 #define ADI_4_AUX_MUX2_COMPB_REF_S                                           0
 #define ADI_4_AUX_MUX2_COMPB_REF_VDDS                               0x00000004
@@ -202,6 +207,7 @@
 // AUXIO6                   Internal. Only to be used through TI provided API.
 // AUXIO7                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX3_ADCCOMPB_IN_W                                         8
 #define ADI_4_AUX_MUX3_ADCCOMPB_IN_M                                0x000000FF
 #define ADI_4_AUX_MUX3_ADCCOMPB_IN_S                                         0
 #define ADI_4_AUX_MUX3_ADCCOMPB_IN_AUXIO0                           0x00000080
@@ -232,6 +238,7 @@
 // 0P5U                     0.5 uA
 // 0P25U                    0.25 uA
 // NC                       No current connected
+#define ADI_4_AUX_ISRC_TRIM_W                                                6
 #define ADI_4_AUX_ISRC_TRIM_M                                       0x000000FC
 #define ADI_4_AUX_ISRC_TRIM_S                                                2
 #define ADI_4_AUX_ISRC_TRIM_11P75U                                  0x00000080
@@ -282,6 +289,7 @@
 // DIV3                     Divide reference by 3
 // DIV2                     Divide reference by 2
 // DIV1                     No reference division
+#define ADI_4_AUX_COMP_COMPB_TRIM_W                                          3
 #define ADI_4_AUX_COMP_COMPB_TRIM_M                                 0x00000038
 #define ADI_4_AUX_COMP_COMPB_TRIM_S                                          3
 #define ADI_4_AUX_COMP_COMPB_TRIM_DIV4                              0x00000038
@@ -323,6 +331,7 @@
 // AUXIO6                   Internal. Only to be used through TI provided API.
 // AUXIO7                   Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_4_AUX_MUX4_COMPA_REF_W                                           8
 #define ADI_4_AUX_MUX4_COMPA_REF_M                                  0x000000FF
 #define ADI_4_AUX_MUX4_COMPA_REF_S                                           0
 #define ADI_4_AUX_MUX4_COMPA_REF_AUXIO0                             0x00000080
@@ -351,8 +360,7 @@
 // sampling starts when the ADC clock detects a rising edge on the trigger
 // signal. Jitter/uncertainty will be inferred in the detection if the trigger
 // signal originates from a domain that is asynchronous to the ADC clock.
-// SMPL_CYCLE_EXP  determines the the duration of sampling as
-// 2^(SMPL_CYCLE_EXP+1) * 1/6MHz.
+// SMPL_CYCLE_EXP  determines the the duration of sampling.
 // Conversion starts immediately after sampling ends.
 //
 // In asynchronous mode the sampling is continuous when enabled. Sampling ends
@@ -367,14 +375,39 @@
 
 // Field:   [6:3] SMPL_CYCLE_EXP
 //
-// Controls number of 6 MHz clock cycles in sampling/tracking mode before
-// conversion. The sampling time will be 2^(SMPL_CYCLE_EXP + 1) 6 MHz clock
-// periods. Giving a range of 2 to 65536 clock periods sampling time (up to
-// 10.9ms). This setting only has effect in synchronous mode (SMPL_MODE =0).
-// The default minimum value should be 3 (2.7us sampling time). Less than that
-// should be considered experimental.
+// Controls the sampling duration before conversion when the ADC is operated in
+// synchronous mode (SMPL_MODE = 0). The setting has no effect in asynchronous
+// mode. The sampling duration is given as 2^(SMPL_CYCLE_EXP + 1) / 6 us.
+// ENUMs:
+// 10P9_MS                  65536x 6 MHz clock periods = 10.9ms
+// 5P46_MS                  32768x 6 MHz clock periods = 5.46ms
+// 2P73_MS                  16384x 6 MHz clock periods = 2.73ms
+// 1P37_MS                  8192x 6 MHz clock periods = 1.37ms
+// 682_US                   4096x 6 MHz clock periods = 682us
+// 341_US                   2048x 6 MHz clock periods = 341us
+// 170_US                   1024x 6 MHz clock periods = 170us
+// 85P3_US                  512x 6 MHz clock periods = 85.3us
+// 42P6_US                  256x 6 MHz clock periods = 42.6us
+// 21P3_US                  128x 6 MHz clock periods = 21.3us
+// 10P6_US                  64x 6 MHz clock periods = 10.6us
+// 5P3_US                   32x 6 MHz clock periods = 5.3us
+// 2P7_US                   16x 6 MHz clock periods = 2.7us
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_W                                      4
 #define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_M                             0x00000078
 #define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_S                                      3
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_10P9_MS                       0x00000078
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_5P46_MS                       0x00000070
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_2P73_MS                       0x00000068
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_1P37_MS                       0x00000060
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_682_US                        0x00000058
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_341_US                        0x00000050
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_170_US                        0x00000048
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_85P3_US                       0x00000040
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_42P6_US                       0x00000038
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_21P3_US                       0x00000030
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_10P6_US                       0x00000028
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_5P3_US                        0x00000020
+#define ADI_4_AUX_ADC0_SMPL_CYCLE_EXP_2P7_US                        0x00000018
 
 // Field:     [1] RESET_N
 //
@@ -406,11 +439,7 @@
 //*****************************************************************************
 // Field:     [0] SCALE_DIS
 //
-// Disable capacitive input voltage scaling. Should only be 1 for test
-// purposes.
-//
-// 0: ADC input is scaled from 0-4.3V to 0-1.4V internally
-// 1: ADC input is not scaled. Do not exceed 1.4V on input
+// Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADC1_SCALE_DIS                                    0x00000001
 #define ADI_4_AUX_ADC1_SCALE_DIS_BITN                                        0
 #define ADI_4_AUX_ADC1_SCALE_DIS_M                                  0x00000001
@@ -433,7 +462,7 @@
 
 // Field:     [5] IOMUX
 //
-// Connect ADC reference to AUXIO7
+// Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADCREF0_IOMUX                                     0x00000020
 #define ADI_4_AUX_ADCREF0_IOMUX_BITN                                         5
 #define ADI_4_AUX_ADCREF0_IOMUX_M                                   0x00000020
@@ -441,10 +470,7 @@
 
 // Field:     [4] EXT
 //
-// External reference enable:
-//
-// 0: Reference output pulled low when EN = 0
-// 1: Reference output high impedance when EN = 0
+// Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADCREF0_EXT                                       0x00000010
 #define ADI_4_AUX_ADCREF0_EXT_BITN                                           4
 #define ADI_4_AUX_ADCREF0_EXT_M                                     0x00000010
@@ -479,7 +505,7 @@
 //*****************************************************************************
 // Field:   [5:0] VTRIM
 //
-// Trim output voltage of ADC fixed reference (64 steps, 2&#39;s complement).
+// Trim output voltage of ADC fixed reference (64 steps, 2's complement).
 // Applies only for ADCREF0.SRC = 0.
 //
 // Examples:
@@ -488,6 +514,7 @@
 // 0x3F - nominal - 0.4% 1.425V
 // 0x1F - maximum voltage 1.6V
 // 0x20 - minimum voltage 1.3V
+#define ADI_4_AUX_ADCREF1_VTRIM_W                                            6
 #define ADI_4_AUX_ADCREF1_VTRIM_M                                   0x0000003F
 #define ADI_4_AUX_ADCREF1_VTRIM_S                                            0
 

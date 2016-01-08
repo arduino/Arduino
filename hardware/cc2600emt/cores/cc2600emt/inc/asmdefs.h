@@ -1,9 +1,9 @@
 /******************************************************************************
 *  Filename:       asmdefs.h
-*  Revised:        2015-01-13 16:59:55 +0100 (ti, 13 jan 2015)
-*  Revision:       42365
+*  Revised:        2015-06-05 14:39:10 +0200 (Fri, 05 Jun 2015)
+*  Revision:       43803
 *
-*  Description:    Macros to allow assembly code be portable among toolchains.
+*  Description:    Macros to allow assembly code be portable among tool chains.
 *
 *  Copyright (c) 2015, Texas Instruments Incorporated
 *  All rights reserved.
@@ -41,44 +41,6 @@
 
 //*****************************************************************************
 //
-// The defines required for code_red.
-//
-//*****************************************************************************
-#ifdef codered
-
-//
-// The assembly code preamble required to put the assembler into the correct
-// configuration.
-//
-    .syntax unified
-    .thumb
-
-//
-// Section headers.
-//
-#define __LIBRARY__             @
-#define __TEXT__                .text
-#define __DATA__                .data
-#define __BSS__                 .bss
-#define __TEXT_NOROOT__         .text
-
-//
-// Assembler nmenonics.
-//
-#define __ALIGN__               .balign 4
-#define __END__                 .end
-#define __EXPORT__              .globl
-#define __IMPORT__              .extern
-#define __LABEL__               :
-#define __STR__                 .ascii
-#define __THUMB_LABEL__         .thumb_func
-#define __WORD__                .word
-#define __INLINE_DATA__
-
-#endif // codered
-
-//*****************************************************************************
-//
 // The defines required for EW-ARM.
 //
 //*****************************************************************************
@@ -94,7 +56,7 @@
 #define __TEXT_NOROOT__         rseg CODE:CODE:NOROOT(2)
 
 //
-// Assembler nmenonics.
+// Assembler mnemonics.
 //
 #define __ALIGN__               alignrom 2
 #define __END__                 end
@@ -113,7 +75,7 @@
 // The defines required for GCC.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 
 //
 // The assembly code preamble required to put the assembler into the correct
@@ -132,7 +94,7 @@
 #define __TEXT_NOROOT__         .text
 
 //
-// Assembler nmenonics.
+// Assembler mnemonics.
 //
 #define __ALIGN__               .balign 4
 #define __END__                 .end
@@ -144,14 +106,14 @@
 #define __WORD__                .word
 #define __INLINE_DATA__
 
-#endif // gcc
+#endif // __GNUC__
 
 //*****************************************************************************
 //
 // The defines required for RV-MDK.
 //
 //*****************************************************************************
-#ifdef rvmdk
+#if defined(__CC_ARM)
 
 //
 // The assembly code preamble required to put the assembler into the correct
@@ -171,7 +133,7 @@
 #define __TEXT_NOROOT__         area ||.text||, code, readonly, align=2
 
 //
-// Assembler nmenonics.
+// Assembler mnemonics.
 //
 #define __ALIGN__               align 4
 #define __END__                 end
@@ -183,44 +145,7 @@
 #define __WORD__                dcd
 #define __INLINE_DATA__
 
-#endif // rvmdk
+#endif // __CC_ARM
 
-//*****************************************************************************
-//
-// The defines required for Sourcery G++.
-//
-//*****************************************************************************
-#if defined(sourcerygxx)
-
-//
-// The assembly code preamble required to put the assembler into the correct
-// configuration.
-//
-    .syntax unified
-    .thumb
-
-//
-// Section headers.
-//
-#define __LIBRARY__             @
-#define __TEXT__                .text
-#define __DATA__                .data
-#define __BSS__                 .bss
-#define __TEXT_NOROOT__         .text
-
-//
-// Assembler nmenonics.
-//
-#define __ALIGN__               .balign 4
-#define __END__                 .end
-#define __EXPORT__              .globl
-#define __IMPORT__              .extern
-#define __LABEL__               :
-#define __STR__                 .ascii
-#define __THUMB_LABEL__         .thumb_func
-#define __WORD__                .word
-#define __INLINE_DATA__
-
-#endif // sourcerygxx
 
 #endif // __ASMDEF_H__

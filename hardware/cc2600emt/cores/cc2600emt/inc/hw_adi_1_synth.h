@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_1_synth_h
-*  Revised:        2015-02-13 15:47:13 +0100 (fr, 13 feb 2015)
-*  Revision:       42724
+*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
+*  Revision:       45056
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -43,31 +43,31 @@
 // ADI_1_SYNTH component
 //
 //*****************************************************************************
-// VCOLDO Control 0
+// Internal
 #define ADI_1_SYNTH_O_VCOLDOCTL0                                    0x00000000
 
-// VCOLDO Control 1
+// Internal
 #define ADI_1_SYNTH_O_VCOLDOCTL1                                    0x00000001
 
-// VCOLDO Configuration
+// Internal
 #define ADI_1_SYNTH_O_VCOLDOCFG                                     0x00000002
 
-// Synthesizer LDO Control 0
+// Internal
 #define ADI_1_SYNTH_O_SLDOCTL0                                      0x00000003
 
-// Synthesizer LDO Control 1
+// Internal
 #define ADI_1_SYNTH_O_SLDOCTL1                                      0x00000004
 
-// Synthesizer Control of Initialisation
+// Internal
 #define ADI_1_SYNTH_O_SYNTHCTLINIT                                  0x00000008
 
-// Analog Test Control 0
+// Internal
 #define ADI_1_SYNTH_O_ATESTCTL0                                     0x00000009
 
-// Analog Test Control 1
+// Internal
 #define ADI_1_SYNTH_O_ATESTCTL1                                     0x0000000A
 
-// Status
+// Internal
 #define ADI_1_SYNTH_O_STAT                                          0x0000000F
 
 //*****************************************************************************
@@ -131,6 +131,7 @@
 // Field:   [5:0] TRIM_OUT
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_VCOLDOCTL1_TRIM_OUT_W                                    6
 #define ADI_1_SYNTH_VCOLDOCTL1_TRIM_OUT_M                           0x0000003F
 #define ADI_1_SYNTH_VCOLDOCTL1_TRIM_OUT_S                                    0
 
@@ -150,12 +151,14 @@
 // Field:   [5:3] COMP_RES
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_VCOLDOCFG_COMP_RES_W                                     3
 #define ADI_1_SYNTH_VCOLDOCFG_COMP_RES_M                            0x00000038
 #define ADI_1_SYNTH_VCOLDOCFG_COMP_RES_S                                     3
 
 // Field:   [2:0] COMP_CAP
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_VCOLDOCFG_COMP_CAP_W                                     3
 #define ADI_1_SYNTH_VCOLDOCFG_COMP_CAP_M                            0x00000007
 #define ADI_1_SYNTH_VCOLDOCFG_COMP_CAP_S                                     0
 
@@ -220,6 +223,7 @@
 // Field:   [5:0] TRIM_OUT
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_SLDOCTL1_TRIM_OUT_W                                      6
 #define ADI_1_SYNTH_SLDOCTL1_TRIM_OUT_M                             0x0000003F
 #define ADI_1_SYNTH_SLDOCTL1_TRIM_OUT_S                                      0
 
@@ -262,6 +266,7 @@
 // RXOUTQP_A0               Internal. Only to be used through TI provided API.
 // RXOUTIP_A0               Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_ATESTCTL0_TESTSEL_W                                      8
 #define ADI_1_SYNTH_ATESTCTL0_TESTSEL_M                             0x000000FF
 #define ADI_1_SYNTH_ATESTCTL0_TESTSEL_S                                      0
 #define ADI_1_SYNTH_ATESTCTL0_TESTSEL_PEAKDETN_A1                   0x00000080
@@ -282,6 +287,7 @@
 // Field:   [7:2] RESEREVED2
 //
 // Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_ATESTCTL1_RESEREVED2_W                                   6
 #define ADI_1_SYNTH_ATESTCTL1_RESEREVED2_M                          0x000000FC
 #define ADI_1_SYNTH_ATESTCTL1_RESEREVED2_S                                   2
 
@@ -292,6 +298,7 @@
 // LDOITEST_A1              Internal. Only to be used through TI provided API.
 // IFADCTESTN_A1            Internal. Only to be used through TI provided API.
 // NC                       Internal. Only to be used through TI provided API.
+#define ADI_1_SYNTH_ATESTCTL1_TESTSEL_W                                      2
 #define ADI_1_SYNTH_ATESTCTL1_TESTSEL_M                             0x00000003
 #define ADI_1_SYNTH_ATESTCTL1_TESTSEL_S                                      0
 #define ADI_1_SYNTH_ATESTCTL1_TESTSEL_LDOITEST_A1                   0x00000002
