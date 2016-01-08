@@ -346,9 +346,9 @@ public class EditorStatus extends JPanel {
       message1 += editor.console.getText();
       if (!(PreferencesData.getBoolean("build.verbose"))) {
         message1 += "\n\n";
-        message1 += "  " + tr("This report would have more information with") + "\n";
-        message1 += "  \"" + tr("Show verbose output during compilation") + "\"\n";
-        message1 += "  " + tr("enabled in File > Preferences.") + "\n";
+        message1 += tr("This report would have more information with\n" +
+                       "\"Show verbose output during compilation\"\n" +
+                       "option enabled in File -> Preferences.\n");
       }
       Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
       StringSelection data = new StringSelection(message1);

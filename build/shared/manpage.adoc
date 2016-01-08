@@ -289,7 +289,7 @@ afterwards:
      #!/bin/bash
      Xvfb :1 -nolisten tcp -screen :1 1280x800x24 &
      xvfb="$!"
-     DISPLAY=:1 arduino $@
+     DISPLAY=:1 arduino "$@"
      kill -9 $xvfb
 
 Save the script as *arduino-headless* and run it with the options described above.

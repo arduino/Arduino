@@ -22,8 +22,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-12-20 15:05+0000\n"
+"Last-Translator: yehnan <yehnan174@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,12 +49,12 @@ msgstr "已使用: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "找不到'Keyboard'，草稿碼有加入這一行嗎'#include <Keyboard.h>'？"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "找不到'Mouse'，草稿碼有加入這一行嗎'#include <Mouse.h>'？"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -68,7 +68,7 @@ msgstr "（只能在Arduino未執行之時進行編輯）"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(舊東西)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -87,18 +87,18 @@ msgstr ".pde -> .ino"
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
 #, java-format
 msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
+msgstr "<br/>你的{0}boards{1}其中部分可更新"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
 #, java-format
 msgid ""
 "<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "<br/>你的{0}boards{1}與{2}libraries{3}其中部分可更新"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
 #, java-format
 msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
+msgstr "<br/>你的{0}libraries{1}其中部分可更新"
 
 #: Editor.java:2053
 msgid ""
@@ -231,7 +231,7 @@ msgstr "封存草稿碼的動作已取消，因為\n無法正確地儲存草稿�
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -245,7 +245,7 @@ msgstr "Arduino AVR板"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino只能開啟它自己的草稿碼\n與其他以.ino或.pde為副檔名的檔案"
 
 #: Base.java:1682
 msgid ""
@@ -292,7 +292,7 @@ msgstr "需要加上參數 --preferences-file"
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "{0}需要參數"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -316,7 +316,7 @@ msgstr "自動格式化完畢。"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr "自動偵測代理伺服器設定"
+msgstr "自動偵測代理伺服器組態設定"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -424,7 +424,7 @@ msgstr "CRC校對錯誤。檔案已毀損。"
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "只能傳{0}的其中之一"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -486,7 +486,7 @@ msgstr "註解／移除註解"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "溝通"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -498,7 +498,7 @@ msgstr "草稿碼編譯中..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "貢獻"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -591,7 +591,7 @@ msgstr "無法重新儲存草稿碼"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "無法讀取顏色佈景設定。\n你需要重新安裝Arduino。"
 
 #: Preferences.java:219
 msgid ""
@@ -655,19 +655,19 @@ msgstr "剪下"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr "捷克語（捷克共和國）"
+msgstr "捷克語(捷克共和國)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr "丹麥語（丹麥）"
+msgstr "丹麥語(丹麥)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "資料處理"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "資料儲存"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -683,7 +683,7 @@ msgstr "刪除"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "裝置控制"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -697,7 +697,7 @@ msgstr "放棄所有變更並重新載入草稿碼？"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "顯示"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -708,7 +708,7 @@ msgstr "顯示行數"
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "你想要移除{0}嗎？\n移除後，就無法再使用{0}。"
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -885,7 +885,7 @@ msgstr "執行安裝後續腳本檔時發生錯誤"
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "開始探知方法時發生錯誤："
 
 #: Serial.java:125
 #, java-format
@@ -916,7 +916,7 @@ msgstr "列印時發生錯誤。"
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "設定序列埠參數時發生錯誤：{0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1019,7 +1019,7 @@ msgstr "修正編碼並重新載入"
 msgid ""
 "For information on installing libraries, see: "
 "http://www.arduino.cc/en/Guide/Libraries\n"
-msgstr ""
+msgstr "關於如何安裝程式庫，詳情請見http://www.arduino.cc/en/Guide/Libraries\n"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
@@ -1228,12 +1228,12 @@ msgstr "已加入程式庫。請檢查選單「匯入程式庫」"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "程式庫無法同時使用資料夾'src'與'utility'。再次檢查{0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
-msgstr ""
+msgstr "程式庫已經安裝：{0} version {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1262,7 +1262,7 @@ msgstr "管理程式庫..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr "手動代理伺服器組態設定"
+msgstr "手動設定代理伺服器組態"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1458,7 +1458,7 @@ msgstr "開啟..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1466,7 +1466,7 @@ msgstr "頁面設定"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "夥伴"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1508,7 +1508,7 @@ msgstr "請導入Wire從 草稿碼>導入函式庫。"
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "請從選單「工具->燒錄器」選擇燒錄器"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1619,7 +1619,7 @@ msgstr "已廢棄"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "受推薦"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1675,7 +1675,7 @@ msgstr "羅馬尼亞語"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "執行指引：{0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
@@ -1763,7 +1763,7 @@ msgstr "傳送"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "感測器"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1771,7 +1771,7 @@ msgstr "序列埠監控視窗"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "序列繪圖家"
 
 #: Serial.java:194
 #, java-format
@@ -1818,7 +1818,7 @@ msgstr "顯示詳細輸出："
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "訊號輸入∕輸出"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1875,7 +1875,7 @@ msgstr "沒有定義草稿碼簿的路徑"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "斯洛伐克語"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1948,7 +1948,7 @@ msgstr "類別Client已改名為EthernetClient。"
 msgid ""
 "The IDE includes an updated {0} package, but you're using an older one.\n"
 "Do you want to upgrade {0}?"
-msgstr ""
+msgstr "IDE匯入更新後的{0}套件，但你正使用較舊的版本。\n想要更新嗎{0}？"
 
 #: debug/Compiler.java:420
 msgid "The Server class has been renamed EthernetServer."
@@ -2029,7 +2029,7 @@ msgstr "草稿碼簿資料夾已不存在。\nArduino將轉為使用預設的草
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr ""
+msgstr "指定的草稿碼簿資料夾含有你的IDE。\n請為草稿碼簿另選資料夾。"
 
 #: Sketch.java:1075
 msgid ""
@@ -2042,7 +2042,7 @@ msgstr "這支檔案已經複製到\n你想要加入的位置內，\n我絕對�
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr ""
+msgstr "程式庫管理員並未列出這個程式庫，你將無法在此重新安裝它。\n你確定想要刪除它嗎？"
 
 #: ../../../processing/app/EditorStatus.java:467
 msgid "This report would have more information with"
@@ -2054,7 +2054,7 @@ msgstr "休息時間到了"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "時序"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2080,7 +2080,7 @@ msgstr "土耳其語"
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr ""
+msgstr "類型"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -2097,7 +2097,7 @@ msgstr "烏克蘭語"
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "無法連接：這是使用Bridge的草稿碼嗎？"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
@@ -2118,16 +2118,16 @@ msgstr "無法開啟序列監視器"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "無法開啟序列繪圖家"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
-msgstr ""
+msgstr "因為網路問題無法存取Arduino.cc"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "無分類"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2141,7 +2141,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "未知草稿碼檔案副檔名：{0}"
 
 #: Platform.java:168
 msgid ""
@@ -2237,7 +2237,7 @@ msgstr "驗證並上傳..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
 msgid "Verifying archive integrity..."
-msgstr ""
+msgstr "驗證封存檔的完整性..."
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
@@ -2273,7 +2273,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "警告：程式庫'{1}'裡有偽造資料夾{0}"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2290,12 +2290,12 @@ msgstr "警告"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr ""
+msgstr "警告：這個核心不支援匯出草稿碼。請試著更新或聯絡作者"
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
 msgid "Warning: file {0} links to an absolute path {1}"
-msgstr ""
+msgstr "警告：檔案{0}連結到絕對路徑{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
@@ -2326,7 +2326,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "西弗利然語"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -2360,7 +2360,7 @@ msgstr "你不能讓一支.cpp檔擁有與草稿碼相同的名字。"
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
+msgstr "不能匯入含有你草稿碼簿的資料夾"
 
 #: Sketch.java:421
 msgid ""

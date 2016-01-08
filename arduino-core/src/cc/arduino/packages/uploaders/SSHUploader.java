@@ -110,6 +110,8 @@ public class SSHUploader extends Uploader {
       SSHClientSetupChainRing sshClientSetupChain = new SSHConfigFileSetup(new SSHPwdSetup());
       session = sshClientSetupChain.setup(port, jSch);
 
+      session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
+
       session.setUserInfo(new NoInteractionUserInfo(PreferencesData.get("runtime.pwd." + port.getAddress())));
       session.connect(30000);
 
@@ -203,7 +205,7 @@ public class SSHUploader extends Uploader {
       return false;
     }
     if (!www.canExecute()) {
-      warningsAccumulator.add(tr("Problem accessing files in folder ") + www);
+      warningsAccumulator.add(I18n.format(tr("Problem accessing files in folder \"{0}\""), www));
       return false;
     }
     if (!ssh.execSyncCommand("special-storage-available")) {

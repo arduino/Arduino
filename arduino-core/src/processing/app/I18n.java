@@ -25,6 +25,7 @@ public class I18n {
     tr("Partner");
     tr("Recommended");
     tr("Contributed");
+    tr("Retired");
 
     tr("Display");
     tr("Communication");

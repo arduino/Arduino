@@ -393,6 +393,15 @@
     <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
 
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="macosx/liblistSerials-1.0.5/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
+    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
+
     <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-macosx"/>
     <antcall target="untar">
@@ -585,6 +594,16 @@
     <antcall target="portable-${portable}">
       <param name="parentdir" value="linux/work" />
     </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/liblistSerials-1.0.5/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
+    <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+
   </target>
 
   <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
@@ -845,13 +864,14 @@
     <copy file="windows/msvcp100.dll" todir="windows/work" />
     <copy file="windows/msvcr100.dll" todir="windows/work" />
 
-    <!-- Copy listComPort.exe tool -->
-    <copy todir="windows/work/hardware/tools">
-      <fileset file="windows/listComPorts.exe" />
-    </copy>
-    <chmod perm="755">
-      <fileset file="windows/work/hardware/tools/listComPorts.exe" />
-    </chmod>
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="windows/liblistSerials-1.0.5/windows/listSerialsj.dll" todir="windows/work/lib/" />
+    <chmod perm="755" file="windows/work/lib/listSerialsj.dll" />
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-windows"/>

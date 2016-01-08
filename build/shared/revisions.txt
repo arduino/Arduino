@@ -1,7 +1,19 @@
-ARDUINO 1.6.7 - 2015.12.14
+ARDUINO 1.6.8
 
 [ide]
-* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.8
+* Fixed a NullPointerException when dealing with some rare combination of package_*.json files
+* Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
+* MacOSX: Fixed handling of add indent/remove indent shortcuts (CMD+[ and CMD+])
+* Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
+
+[core]
+* avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
+* avr: fixed yield() usage inside delay(). Thanks @vbextreme
+
+ARDUINO 1.6.7 - 2015.12.17
+
+[ide]
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.9
 * Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
 * New translations
 * Added support to file:// protocol for boards manager URLs
@@ -9,6 +21,7 @@ ARDUINO 1.6.7 - 2015.12.14
 * Fixed a bug that caused Boards Manager to install the same tool twice or more, thus wasting disk space, if other cores where using tools delivered by arduino
 * Fixed various Boards manager glitches, in particular when removing a board
 * Windows: Arduino IDE icon is now in high definition, bye bye that blurry icon
+* Remote upload without SSH is now supported (allows OTA upload for many 3rd party boards). Thanks @me-no-dev.
 
 [libraries]
 * SPI: Added SPI.transfer16(...) function to SAM core.
