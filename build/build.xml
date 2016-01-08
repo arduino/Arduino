@@ -41,6 +41,7 @@
     <include name="app/lib/ant-launcher.jar" />
   </fileset>
 
+  <property name="version.suffix" value=""/>
   <property name="closure-version" value="emt-a61"/>
   <target name="check-closure">
     <condition property="closure.exists">
@@ -146,11 +147,13 @@
 
     <!-- create the emt directory -->
     <mkdir dir="${target.path}/hardware/emt" />
-    <!-- copy emt sources -->
+
+    <!-- copy emt sources 
     <copy todir="${target.path}/hardware/emt/ti/runtime/wiring/">
       <fileset dir="../emt/src/ti/runtime/wiring/">
       </fileset>
     </copy>
+-->
 
     <macrodef name="copylibs">
       <attribute name="todir"/>
@@ -187,7 +190,7 @@
     <unzip dest="${target.path}" src="shared/reference.zip" overwrite="false"/>
     
     <!-- Write the revision file! -->
-    <echo file="${target.path}/lib/version.txt" message="${version}" />
+    <echo file="${target.path}/lib/version.txt" message="${version}${version.suffix}" />
   </target>
 
   
