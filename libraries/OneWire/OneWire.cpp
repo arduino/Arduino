@@ -121,8 +121,6 @@ OneWire::OneWire(uint8_t pin)
 //
 uint8_t OneWire::reset(void)
 {
-	pinMode(3, OUTPUT);
-	digitalWrite(3, HIGH);
 	IO_REG_TYPE mask = bitmask;
 	volatile IO_REG_TYPE *reg IO_REG_ASM = baseReg;
 	uint8_t r;
