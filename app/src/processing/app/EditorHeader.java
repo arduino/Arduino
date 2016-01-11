@@ -327,7 +327,6 @@ public class EditorHeader extends JComponent {
           editor.selectTab(index);
         });
         menu.add(item);
-        i++;
       }
     }
   }
