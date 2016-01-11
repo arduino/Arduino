@@ -97,7 +97,6 @@ void loop() {
     // close the connection:
     client.stop();
     Serial.println("client disconnected");
-    Ethernet.maintain();
   }
 }
 
