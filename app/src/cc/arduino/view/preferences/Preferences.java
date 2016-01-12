@@ -257,7 +257,7 @@ public class Preferences extends javax.swing.JDialog {
 
     jLabel2.setText(tr("  (requires restart of Arduino)"));
 
-    scaleSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 100, 200, 5));
+    scaleSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 100, 400, 5));
     scaleSpinner.setEnabled(false);
 
     autoScaleCheckBox.setSelected(true);
