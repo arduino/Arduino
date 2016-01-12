@@ -563,21 +563,22 @@ public class Base {
     String untitledPath = untitledFolder.getAbsolutePath();
 
     // Save the sketch path and window placement for each open sketch
-    LinkedList<Editor> reverseEditors = new LinkedList<Editor>(editors);
-    Collections.reverse(reverseEditors);
+    String untitledPath = untitledFolder.getAbsolutePath();
+    List<Editor> reversedEditors = new LinkedList<>(editors);
+    Collections.reverse(reversedEditors);
     int index = 0;
-    for (Editor editor : reverseEditors) {
-      String path = editor.getSketch().getMainFilePath();
-      // In case of a crash, save untitled sketches if they contain changes.
-      // (Added this for release 0158, may not be a good idea.)
-      if (path.startsWith(untitledPath) && !editor.getSketch().isModified()) {
+    for (Editor editor : reversedEditors) {
+      Sketch sketch = editor.getSketch();
+      String path = sketch.getMainFilePath();
+      // Skip untitled sketches if they do not contains changes.
+      if (path.startsWith(untitledPath) && !sketch.isModified()) {
         continue;
       }
       PreferencesData.set("last.sketch" + index + ".path", path);
 
-      int[] location = editor.getPlacement();
-      String locationStr = PApplet.join(PApplet.str(location), ",");
-      PreferencesData.set("last.sketch" + index + ".location", locationStr);
+      int[] placement = editor.getPlacement();
+      String location = PApplet.join(PApplet.str(placement), ",");
+      PreferencesData.set("last.sketch" + index + ".location", location);
       index++;
     }
     PreferencesData.setInteger("last.sketch.count", index);
@@ -896,12 +897,7 @@ public class Base {
     // now that we're ready, show the window
     // (don't do earlier, cuz we might move it based on a window being closed)
     if (showEditor) {
-      SwingUtilities.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-          editor.setVisible(true);
-        }
-      });
+      SwingUtilities.invokeLater(() -> editor.setVisible(true));
     }
 
     return editor;
