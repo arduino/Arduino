@@ -957,6 +957,8 @@ public class Base {
     editor.internalCloseRunner();
 
     if (editors.size() == 1) {
+      storeSketches();
+
       // This will store the sketch count as zero
       editors.remove(editor);
       try {
@@ -964,7 +966,6 @@ public class Base {
       } catch (Exception e) {
         //ignore
       }
-      storeSketches();
       rebuildRecentSketchesMenuItems();
 
       // Save out the current prefs state
