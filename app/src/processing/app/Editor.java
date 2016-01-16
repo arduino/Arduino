@@ -79,6 +79,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -304,7 +305,6 @@ public class Editor extends JFrame implements RunnerListener {
     upper.add(scrollPane);
     splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
 
-    splitPane.setOneTouchExpandable(true);
     // repaint child panes while resizing
     splitPane.setContinuousLayout(true);
     // if window increases in size, give all of increase to
@@ -321,15 +321,11 @@ public class Editor extends JFrame implements RunnerListener {
     Keys.killBinding(splitPane, Keys.ctrl(KeyEvent.VK_TAB));
     Keys.killBinding(splitPane, Keys.ctrlShift(KeyEvent.VK_TAB));
 
-    // the default size on windows is too small and kinda ugly
-    int dividerSize = PreferencesData.getInteger("editor.divider.size");
-    if (dividerSize != 0) {
-      splitPane.setDividerSize(dividerSize);
-    }
+    splitPane.setDividerSize(scale(splitPane.getDividerSize()));
 
     // the following changed from 600, 400 for netbooks
     // http://code.google.com/p/arduino/issues/detail?id=52
-    splitPane.setMinimumSize(new Dimension(600, 100));
+    splitPane.setMinimumSize(scale(new Dimension(600, 100)));
     box.add(splitPane);
 
     // hopefully these are no longer needed w/ swing
