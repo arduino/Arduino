@@ -59,9 +59,6 @@
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
-  <splash>
-    <file>lib/splash.bmp</file>
-  </splash>
   <versionInfo>
     <fileDescription>Arduino IDE</fileDescription>
     <copyright>Arduino LLC</copyright>
