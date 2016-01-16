@@ -25,6 +25,7 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -125,6 +126,10 @@ public class Theme {
 
   static public int scale(int size) {
     return size * getScale() / 100;
+  }
+
+  static public Dimension scale(Dimension dim) {
+    return new Dimension(scale(dim.width), scale(dim.height));
   }
 
   static public Color getColorCycleColor(String name, int i) {
