@@ -54,6 +54,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -338,36 +339,23 @@ public class Editor extends JFrame implements RunnerListener {
 
     pane.setTransferHandler(new FileDropHandler());
 
-//    System.out.println("t1");
-
     // Finish preparing Editor (formerly found in Base)
     pack();
 
-//    System.out.println("t2");
-
     // Set the window bounds and the divider location before setting it visible
     setPlacement(storedLocation, defaultLocation);
-
 
     // Set the minimum size for the editor window
     setMinimumSize(scale(new Dimension(
         PreferencesData.getInteger("editor.window.width.min"),
         PreferencesData.getInteger("editor.window.height.min"))));
-//    System.out.println("t3");
 
     // Bring back the general options for the editor
     applyPreferences();
 
-//    System.out.println("t4");
-
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketch = null;
-
-//    System.out.println("t5");
-
-    // All set, now show the window
-    //setVisible(true);
   }
 
 
@@ -1025,28 +1013,20 @@ public class Editor extends JFrame implements RunnerListener {
     textArea.setAntiAliasingEnabled(PreferencesData.getBoolean("editor.antialias"));
     textArea.setTabsEmulated(PreferencesData.getBoolean("editor.tabs.expand"));
     textArea.setTabSize(PreferencesData.getInteger("editor.tabs.size"));
-    textArea.addHyperlinkListener(new HyperlinkListener() {
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
-        try {
-          platform.openURL(sketch.getFolder(), hyperlinkEvent.getURL().toExternalForm());
-        } catch (Exception e) {
-          Base.showWarning(e.getMessage(), e.getMessage(), e);
-        }
+    textArea.addHyperlinkListener(evt -> {
+      try {
+        platform.openURL(sketch.getFolder(), evt.getURL().toExternalForm());
+      } catch (Exception e) {
+        Base.showWarning(e.getMessage(), e.getMessage(), e);
       }
     });
-    textArea.addCaretListener(new CaretListener() {
+    textArea.addCaretListener(e -> {
+      Element root = textArea.getDocument().getDefaultRootElement();
+      int lineStart = root.getElementIndex(e.getMark());
+      int lineEnd = root.getElementIndex(e.getDot());
 
-      @Override
-      public void caretUpdate(CaretEvent e) {
-        int lineStart = textArea.getDocument().getDefaultRootElement().getElementIndex(e.getMark());
-        int lineEnd = textArea.getDocument().getDefaultRootElement().getElementIndex(e.getDot());
-
-        lineStatus.set(lineStart, lineEnd);
-      }
-
+      lineStatus.set(lineStart, lineEnd);
     });
-
     ToolTipManager.sharedInstance().registerComponent(textArea);
 
     configurePopupMenu(textArea);
