@@ -1,5 +1,5 @@
-Arduino  ![image](https://github.com/ChathunKurera/Arduino/blob/master/Arduino_Logo.png)
-========
+![image](https://github.com/ChathunKurera/Arduino/blob/master/Arduino_Logo.png)
+========================================
 
 * Arduino is an open-source physical computing platform based on a simple i/o
 board and a development environment that implements the Processing/Wiring
