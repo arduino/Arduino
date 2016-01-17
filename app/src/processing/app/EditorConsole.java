@@ -28,6 +28,8 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.io.PrintStream;
 
+import static processing.app.Theme.scale;
+
 /**
  * Message console that sits below the editing area.
  */
@@ -70,7 +72,7 @@ public class EditorConsole extends JScrollPane {
 
     Font consoleFont = Theme.getFont("console.font");
     Font editorFont = PreferencesData.getFont("editor.font");
-    Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
+    Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
 
     SimpleAttributeSet stdOutStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdOutStyle, Theme.getColor("console.output.color"));

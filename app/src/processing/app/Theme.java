@@ -133,6 +133,14 @@ public class Theme {
     return new Dimension(scale(dim.width), scale(dim.height));
   }
 
+  static public Font scale(Font font) {
+    float size = scale(font.getSize());
+    // size must be float to call the correct Font.deriveFont(float)
+    // method that is different from Font.deriveFont(int)!
+    Font scaled = font.deriveFont(size);
+    return scaled;
+  }
+
   static public Rectangle scale(Rectangle rect) {
     Rectangle res = new Rectangle(rect);
     res.x = scale(res.x);
