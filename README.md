@@ -1,4 +1,4 @@
-Arduino  ![alt tag](https://github.com/ChathunKurera/Arduino/blob/master/Arduino_Logo.png)
+Arduino  ![alt tag](https://github.com/ChathunKurera/Arduino/blob/master/Arduino_Logo.png = 250x)
 ========
 
 * Arduino is an open-source physical computing platform based on a simple i/o
