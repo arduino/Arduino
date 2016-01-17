@@ -339,12 +339,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     pane.setTransferHandler(new FileDropHandler());
 
-    // Finish preparing Editor (formerly found in Base)
-    pack();
-
-    // Set the window bounds and the divider location before setting it visible
-    setPlacement(storedLocation, defaultLocation);
-
     // Set the minimum size for the editor window
     setMinimumSize(scale(new Dimension(
         PreferencesData.getInteger("editor.window.width.min"),
@@ -352,6 +346,12 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Bring back the general options for the editor
     applyPreferences();
+
+    // Finish preparing Editor (formerly found in Base)
+    pack();
+
+    // Set the window bounds and the divider location before setting it visible
+    setPlacement(storedLocation, defaultLocation);
 
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);

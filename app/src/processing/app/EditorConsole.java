@@ -104,8 +104,8 @@ public class EditorConsole extends JScrollPane {
     int height = metrics.getAscent() + metrics.getDescent();
     int lines = PreferencesData.getInteger("console.lines");
     int sizeFudge = 6; //10; // unclear why this is necessary, but it is
-    setPreferredSize(new Dimension(1024, (height * lines) + sizeFudge));
-    setMinimumSize(new Dimension(1024, (height * 5) + sizeFudge));
+    setPreferredSize(new Dimension(100, (height * lines) + sizeFudge));
+    setMinimumSize(new Dimension(100, (height * 5) + sizeFudge));
 
     EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
   }
