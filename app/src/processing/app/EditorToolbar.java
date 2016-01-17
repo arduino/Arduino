@@ -31,7 +31,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import static processing.app.I18n.tr;
-
+import static processing.app.Theme.scale;
 
 /**
  * run/stop/etc buttons for the ide
@@ -56,19 +56,19 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   /**
    * Width of each toolbar button.
    */
-  private static final int BUTTON_WIDTH = Theme.scale(27);
+  private static final int BUTTON_WIDTH = scale(27);
   /**
    * Height of each toolbar button.
    */
-  private static final int BUTTON_HEIGHT = Theme.scale(32);
+  private static final int BUTTON_HEIGHT = scale(32);
   /**
    * The amount of space between groups of buttons on the toolbar.
    */
-  private static final int BUTTON_GAP = Theme.scale(5);
+  private static final int BUTTON_GAP = scale(5);
   /**
    * Size of the button image being chopped up.
    */
-  private static final int BUTTON_IMAGE_SIZE = Theme.scale(33);
+  private static final int BUTTON_IMAGE_SIZE = scale(33);
 
 
   private static final int RUN = 0;
@@ -441,7 +441,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMaximumSize() {
-    return new Dimension(Theme.scale(3000), BUTTON_HEIGHT);
+    return new Dimension(scale(3000), BUTTON_HEIGHT);
   }
 
 

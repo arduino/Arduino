@@ -75,7 +75,8 @@ public class EditorHeader extends JComponent {
   static final int PIECE_HEIGHT = scale(33);
 
   // value for the size bars, buttons, etc
-  static final int GRID_SIZE = scale(33);
+  // TODO: Should be a Theme value?
+  static final int GRID_SIZE = 33;
 
   static Image[][] pieces;
   static Image menuButtons[];
@@ -341,17 +342,17 @@ public class EditorHeader extends JComponent {
 
 
   public Dimension getMinimumSize() {
-    if (OSUtils.isMacOS()) {
-      return new Dimension(300, GRID_SIZE);
-    }
-    return new Dimension(300, GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(300, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 
 
   public Dimension getMaximumSize() {
-    if (OSUtils.isMacOS()) {
-      return new Dimension(3000, GRID_SIZE);
-    }
-    return new Dimension(3000, GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(3000, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 }

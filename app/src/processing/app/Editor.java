@@ -350,8 +350,9 @@ public class Editor extends JFrame implements RunnerListener {
 
 
     // Set the minimum size for the editor window
-    setMinimumSize(new Dimension(PreferencesData.getInteger("editor.window.width.min"),
-                                 PreferencesData.getInteger("editor.window.height.min")));
+    setMinimumSize(scale(new Dimension(
+        PreferencesData.getInteger("editor.window.width.min"),
+        PreferencesData.getInteger("editor.window.height.min"))));
 //    System.out.println("t3");
 
     // Bring back the general options for the editor
@@ -466,18 +467,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     return location;
   }
-
-
-  /**
-   * Hack for #@#)$(* Mac OS X 10.2.
-   * <p/>
-   * This appears to only be required on OS X 10.2, and is not
-   * even being called on later versions of OS X or Windows.
-   */
-//  public Dimension getMinimumSize() {
-//    //System.out.println("getting minimum size");
-//    return new Dimension(500, 550);
-//  }
 
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

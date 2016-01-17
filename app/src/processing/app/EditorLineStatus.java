@@ -47,7 +47,7 @@ public class EditorLineStatus extends JComponent {
   Color messageForeground;
   
   Font font;
-  int high;
+  int height;
 
   String text = "";
   String name = "";
@@ -57,7 +57,7 @@ public class EditorLineStatus extends JComponent {
     background = Theme.getColor("linestatus.bgcolor");
     font = Theme.getFont("linestatus.font");
     foreground = Theme.getColor("linestatus.color");
-    high = scale(Theme.getInteger("linestatus.height"));
+    height = Theme.getInteger("linestatus.height");
 
     if (OSUtils.isMacOS()) {
       resize = Theme.getThemeImage("resize", this, RESIZE_IMAGE_SIZE, RESIZE_IMAGE_SIZE);
@@ -105,7 +105,7 @@ public class EditorLineStatus extends JComponent {
 
     g.setFont(font);
     g.setColor(foreground);
-    int baseline = (high + g.getFontMetrics().getAscent()) / 2;
+    int baseline = (size.height + g.getFontMetrics().getAscent()) / 2;
     g.drawString(text, scale(6), baseline);
 
     g.setColor(messageForeground);
@@ -130,7 +130,7 @@ public class EditorLineStatus extends JComponent {
   }
 
   public Dimension getPreferredSize() {
-    return new Dimension(300, high);
+    return scale(new Dimension(300, height));
   }
 
   public Dimension getMinimumSize() {
@@ -138,6 +138,6 @@ public class EditorLineStatus extends JComponent {
   }
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, high);
+    return scale(new Dimension(3000, height));
   }
 }

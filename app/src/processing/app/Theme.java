@@ -31,6 +31,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -130,6 +131,15 @@ public class Theme {
 
   static public Dimension scale(Dimension dim) {
     return new Dimension(scale(dim.width), scale(dim.height));
+  }
+
+  static public Rectangle scale(Rectangle rect) {
+    Rectangle res = new Rectangle(rect);
+    res.x = scale(res.x);
+    res.y = scale(res.y);
+    res.width = scale(res.width);
+    res.height = scale(res.height);
+    return res;
   }
 
   static public Color getColorCycleColor(String name, int i) {

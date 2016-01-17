@@ -33,7 +33,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import static processing.app.I18n.tr;
-
+import static processing.app.Theme.scale;
 
 /**
  * Panel just below the editing area that contains status messages.
@@ -68,7 +68,8 @@ public class EditorStatus extends JPanel {
   }
 
   // value for the size bars, buttons, etc
-  static final int GRID_SIZE = Theme.scale(33);
+  // TODO: Should be a Theme value?
+  static final int GRID_SIZE = 33;
 
   private final Editor editor;
   private final Font font;
@@ -398,11 +399,11 @@ public class EditorStatus extends JPanel {
   }
 
   public Dimension getMinimumSize() {
-    return new Dimension(300, GRID_SIZE);
+    return scale(new Dimension(300, GRID_SIZE));
   }
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, GRID_SIZE);
+    return scale(new Dimension(3000, GRID_SIZE));
   }
 
   public boolean isErr() {
