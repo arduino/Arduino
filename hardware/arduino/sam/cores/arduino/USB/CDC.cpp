@@ -309,8 +309,7 @@ Serial_::operator bool()
 }
 
 int32_t Serial_::readBreak() {
-	uint8_t enableInterrupts = ((__get_PRIMASK() & 0x1) == 0 && 
-								(__get_FAULTMASK() & 0x1) == 0);
+	uint8_t enableInterrupts = ((__get_PRIMASK() & 0x1) == 0 && (__get_FAULTMASK() & 0x1) == 0);
 
 	// disable interrupts,
 	// to avoid clearing a breakValue that might occur 
