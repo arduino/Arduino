@@ -149,12 +149,12 @@ size_t UARTClass::write( const uint8_t uc_data )
       (_tx_buffer->_iTail != _tx_buffer->_iHead))
   {
     // If busy we buffer
-    unsigned int l = (_tx_buffer->_iHead + 1) % SERIAL_BUFFER_SIZE;
-    while (_tx_buffer->_iTail == l)
+    int nextWrite = (_tx_buffer->_iHead + 1) % SERIAL_BUFFER_SIZE;
+    while (_tx_buffer->_iTail == nextWrite)
       ; // Spin locks if we're about to overwrite the buffer. This continues once the data is sent
 
     _tx_buffer->_aucBuffer[_tx_buffer->_iHead] = uc_data;
-    _tx_buffer->_iHead = l;
+    _tx_buffer->_iHead = nextWrite;
     // Make sure TX interrupt is enabled
     _pUart->UART_IER = UART_IER_TXRDY;
   }
