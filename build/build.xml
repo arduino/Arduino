@@ -625,6 +625,20 @@
     </antcall>
     <copy file="linux/libastylej-2.05.1/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
     <chmod perm="755" file="linux/work/lib/libastylej.so" />
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="linux/work" />
+    </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/liblistSerials-1.0.5/arm/liblistSerialsj.so" todir="linux/work/lib/" />
+    <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+
   </target>
 
   <target name="arm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
