@@ -120,30 +120,4 @@ public class Platform extends processing.app.Platform {
   public String getName() {
     return PConstants.platformNames[PConstants.LINUX];
   }
-
-  @Override
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    assert packages != null;
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    try {
-      CommandLine toDevicePath = CommandLine.parse("udevadm info -q path -n " + serial);
-      executor.execute(toDevicePath);
-      String devicePath = new String(baos.toByteArray());
-      baos.reset();
-      CommandLine commandLine = CommandLine.parse("udevadm info --query=property -p " + devicePath);
-      executor.execute(commandLine);
-      String vidPid = new UDevAdmParser().extractVIDAndPID(new String(baos.toByteArray()));
-
-      if (vidPid == null) {
-        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-      }
-
-      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
-    } catch (IOException e) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
-  }
 }

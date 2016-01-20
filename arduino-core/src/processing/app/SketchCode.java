@@ -91,14 +91,13 @@ public class SketchCode {
   }
 
 
-  protected boolean deleteFile(Path tempBuildFolder, Path tempUnsavedSketchPath) throws IOException {
+  protected boolean deleteFile(Path tempBuildFolder) throws IOException {
     if (!file.delete()) {
       return false;
     }
 
-    List<Path> tempBuildFolders = Stream.of(tempBuildFolder, tempBuildFolder.resolve("sketch"), tempUnsavedSketchPath)
-      .filter(path -> Files.exists(path))
-      .collect(Collectors.toList());
+    List<Path> tempBuildFolders = Stream.of(tempBuildFolder, tempBuildFolder.resolve("sketch"))
+        .filter(path -> Files.exists(path)).collect(Collectors.toList());
 
     for (Path folder : tempBuildFolders) {
       if (!deleteCompiledFilesFrom(folder)) {
@@ -198,10 +197,10 @@ public class SketchCode {
     if (program.indexOf('\uFFFD') != -1) {
       System.err.println(
         I18n.format(
-          tr("\"{0}\" contains unrecognized characters." +
-            "If this code was created with an older version of Arduino," +
-            "you may need to use Tools -> Fix Encoding & Reload to update" +
-            "the sketch to use UTF-8 encoding. If not, you may need to" +
+          tr("\"{0}\" contains unrecognized characters. " +
+            "If this code was created with an older version of Arduino, " +
+            "you may need to use Tools -> Fix Encoding & Reload to update " +
+            "the sketch to use UTF-8 encoding. If not, you may need to " +
             "delete the bad characters to get rid of this warning."),
           file.getName()
         )

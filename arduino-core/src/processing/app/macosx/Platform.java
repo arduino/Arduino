@@ -165,41 +165,6 @@ public class Platform extends processing.app.Platform {
   }
 
   @Override
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    assert packages != null;
-    if (devicesListOutput == null) {
-      return super.resolveDeviceAttachedTo(serial, packages, null);
-    }
-
-    try {
-      String vidPid = new SystemProfilerParser().extractVIDAndPID(devicesListOutput, serial);
-
-      if (vidPid == null) {
-        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-      }
-
-      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
-    } catch (IOException e) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
-  }
-
-  @Override
-  public String preListAllCandidateDevices() {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    try {
-      CommandLine toDevicePath = CommandLine.parse("/usr/sbin/system_profiler SPUSBDataType");
-      executor.execute(toDevicePath);
-      return new String(baos.toByteArray());
-    } catch (Throwable e) {
-      return super.preListAllCandidateDevices();
-    }
-  }
-
-  @Override
   public java.util.List<BoardPort> filterPorts(java.util.List<BoardPort> ports, boolean showAll) {
     if (showAll) {
       return super.filterPorts(ports, true);

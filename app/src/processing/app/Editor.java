@@ -38,12 +38,14 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
+import processing.app.syntax.SketchTextAreaEditorKit;
 import processing.app.tools.DiscourseFormat;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
@@ -312,6 +314,12 @@ public class Editor extends JFrame implements RunnerListener {
     // to fix ugliness.. normally macosx java 1.3 puts an
     // ugly white border around this object, so turn it off.
     splitPane.setBorder(null);
+    // By default, the split pane binds Ctrl-Tab and Ctrl-Shift-Tab for changing
+    // focus. Since we do not use that, but want to use these shortcuts for
+    // switching tabs, remove the bindings from the split pane. This allows the
+    // events to bubble up and be handled by the EditorHeader.
+    Keys.killBinding(splitPane, Keys.ctrl(KeyEvent.VK_TAB));
+    Keys.killBinding(splitPane, Keys.ctrlShift(KeyEvent.VK_TAB));
 
     // the default size on windows is too small and kinda ugly
     int dividerSize = PreferencesData.getInteger("editor.divider.size");
@@ -1033,7 +1041,6 @@ public class Editor extends JFrame implements RunnerListener {
     textArea.setAntiAliasingEnabled(PreferencesData.getBoolean("editor.antialias"));
     textArea.setTabsEmulated(PreferencesData.getBoolean("editor.tabs.expand"));
     textArea.setTabSize(PreferencesData.getInteger("editor.tabs.size"));
-    textArea.setEditorListener(new EditorListener(this));
     textArea.addHyperlinkListener(new HyperlinkListener() {
       @Override
       public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
@@ -1866,28 +1873,8 @@ public class Editor extends JFrame implements RunnerListener {
 
   private void handleIndentOutdent(boolean indent) {
     if (indent) {
-
-      int caretPosition = textarea.getCaretPosition();
-      boolean noSelec = !textarea.isSelectionActive();
-
-      // if no selection, focus on first char.
-      if (noSelec) {
-        try {
-          int line = textarea.getCaretLineNumber();
-          int startOffset = textarea.getLineStartOffset(line);
-          textarea.setCaretPosition(startOffset);
-        } catch (BadLocationException e) {
-        }
-      }
-
-      // Insert Tab or Spaces..
-      Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.insertTabAction);
+      Action action = textarea.getActionMap().get(SketchTextAreaEditorKit.rtaIncreaseIndentAction);
       action.actionPerformed(null);
-
-      if (noSelec) {
-        textarea.setCaretPosition(caretPosition);
-      }
-
     } else {
       Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaDecreaseIndentAction);
       action.actionPerformed(null);
@@ -2562,7 +2549,7 @@ public class Editor extends JFrame implements RunnerListener {
       if(serialPlotter.isClosed()) {
         serialPlotter = null;
       } else {
-        statusError(I18n.format("Serial monitor not available while plotter is open"));
+        statusError(tr("Serial monitor not available while plotter is open"));
         return;
       }
     }
@@ -2591,7 +2578,7 @@ public class Editor extends JFrame implements RunnerListener {
     BoardPort port = Base.getDiscoveryManager().find(PreferencesData.get("serial.port"));
 
     if (port == null) {
-      statusError(I18n.format("Board at {0} is not available", PreferencesData.get("serial.port")));
+      statusError(I18n.format(tr("Board at {0} is not available"), PreferencesData.get("serial.port")));
       return;
     }
 
@@ -2659,7 +2646,7 @@ public class Editor extends JFrame implements RunnerListener {
       if(serialMonitor.isClosed()) {
         serialMonitor = null;
       } else {
-        statusError(I18n.format("Plotter not available while serial monitor is open"));
+        statusError(tr("Plotter not available while serial monitor is open"));
         return;
       }
     }
@@ -2687,7 +2674,7 @@ public class Editor extends JFrame implements RunnerListener {
     BoardPort port = Base.getDiscoveryManager().find(PreferencesData.get("serial.port"));
 
     if (port == null) {
-      statusError(I18n.format("Board at {0} is not available", PreferencesData.get("serial.port")));
+      statusError(I18n.format(tr("Board at {0} is not available"), PreferencesData.get("serial.port")));
       return;
     }
 

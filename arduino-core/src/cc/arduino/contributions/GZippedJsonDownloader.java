@@ -51,10 +51,14 @@ public class GZippedJsonDownloader {
 
   public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
     try {
-      new JsonDownloader(downloader, gzippedUrl).download(tmpFile, progress, statusText, progressListener);
       File gzipTmpFile = new File(tmpFile.getParentFile(), GzipUtils.getCompressedFilename(tmpFile.getName()));
-      tmpFile.renameTo(gzipTmpFile);
+      // remove eventual leftovers from previous downloads
+      if (gzipTmpFile.exists()) {
+        gzipTmpFile.delete();
+      }
+      new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener);
       decompress(gzipTmpFile, tmpFile);
+      gzipTmpFile.delete();
     } catch (Exception e) {
       new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
     }

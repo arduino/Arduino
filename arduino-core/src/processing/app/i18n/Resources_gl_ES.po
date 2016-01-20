@@ -16,8 +16,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2015-12-25 20:20+0000\n"
+"Last-Translator: Xurxo Guerra Perez <xguerrap@gmail.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -360,15 +360,15 @@ msgstr "Placa:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Xestor de Placas"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Xestor de Placas..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "Placas incluídas neste paquete:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
@@ -744,7 +744,7 @@ msgstr "Descargados {0}kb de {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "Descargando a definición de placas."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
@@ -974,7 +974,7 @@ msgstr "Tagalo"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "Filtra a túa busca..."
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -1169,7 +1169,7 @@ msgstr "Instalado"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr ""
+msgstr "Instalando placas..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
@@ -1252,7 +1252,7 @@ msgstr "Pouca memoria dispoñíbel, poden acontecer problemas de estabilidade."
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
-msgstr ""
+msgstr "Xestionar bibliotecas..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
@@ -2338,7 +2338,7 @@ msgstr ""
 msgid ""
 "Wrong microcontroller found.  Did you select the right board from the Tools "
 "> Board menu?"
-msgstr ""
+msgstr "Atopouse un microcrontrolador incorrecto. Selecciona a tarxeta correcta dende o menú Ferramentas > Placa?"
 
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
@@ -2346,7 +2346,7 @@ msgstr "Si"
 
 #: Sketch.java:1074
 msgid "You can't fool me"
-msgstr ""
+msgstr "Non me podes enganar"
 
 #: Sketch.java:411
 msgid "You can't have a .cpp file with the same name as the sketch."
@@ -2476,7 +2476,7 @@ msgstr ""
 
 #: SerialMonitor.java:130 SerialMonitor.java:133
 msgid "baud"
-msgstr ""
+msgstr "baudio"
 
 #: Preferences.java:389
 msgid "compilation "
@@ -2496,7 +2496,7 @@ msgstr "activado en Ficheiro > Preferencias."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
-msgstr ""
+msgstr "http://www.arduino.cc/"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -2537,12 +2537,12 @@ msgstr "subir"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
 #, java-format
 msgid "version <b>{0}</b>"
-msgstr ""
+msgstr "versión <b>{0}</b>"
 
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
-msgstr ""
+msgstr "{0} - {1} | Arduino {2}"
 
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
@@ -2563,12 +2563,12 @@ msgstr "{0} ficheiros engadidos ao sketch."
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr ""
+msgstr "{0} bibliotecas"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} ten que ser un cartafol"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

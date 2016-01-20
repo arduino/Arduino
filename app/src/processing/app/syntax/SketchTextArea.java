@@ -38,10 +38,8 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.Base;
 import processing.app.BaseNoGui;
-import processing.app.EditorListener;
 import processing.app.PreferencesData;
 
-import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -50,16 +48,13 @@ import javax.swing.text.Document;
 import javax.swing.text.Segment;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -71,8 +66,6 @@ import java.util.logging.Logger;
 public class SketchTextArea extends RSyntaxTextArea {
 
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
-
-  private EditorListener editorListener;
 
   private PdeKeywords pdeKeywords;
 
@@ -90,8 +83,6 @@ public class SketchTextArea extends RSyntaxTextArea {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
 
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
-
-    fixControlTab();
 
     setSyntaxEditingStyle(SYNTAX_STYLE_CPLUSPLUS);
   }
@@ -153,51 +144,8 @@ public class SketchTextArea extends RSyntaxTextArea {
     getSyntaxScheme().setStyle(tokenType, style);
   }
 
-  // Removing the default focus traversal keys
-  // This is because the DefaultKeyboardFocusManager handles the keypress and consumes the event
-  private void fixControlTab() {
-    removeCTRLTabFromFocusTraversal();
-
-    removeCTRLSHIFTTabFromFocusTraversal();
-  }
-
-  private void removeCTRLSHIFTTabFromFocusTraversal() {
-    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-    Set<AWTKeyStroke> backwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-    backwardKeys.remove(ctrlShiftTab);
-  }
-
-  private void removeCTRLTabFromFocusTraversal() {
-    KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-    Set<AWTKeyStroke> forwardKeys = new HashSet<>(this.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-    forwardKeys.remove(ctrlTab);
-    this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-  }
-
-
   public boolean isSelectionActive() {
     return this.getSelectedText() != null;
-  }
-
-  public void processKeyEvent(KeyEvent evt) {
-
-    // this had to be added because the menu key events weren't making it up to the frame.
-
-    switch (evt.getID()) {
-      case KeyEvent.KEY_TYPED:
-        if (editorListener != null) editorListener.keyTyped(evt);
-        break;
-      case KeyEvent.KEY_PRESSED:
-        if (editorListener != null) editorListener.keyPressed(evt);
-        break;
-      case KeyEvent.KEY_RELEASED:
-        // inputHandler.keyReleased(evt);
-        break;
-    }
-
-    if (!evt.isConsumed()) {
-      super.processKeyEvent(evt);
-    }
   }
 
   public void switchDocument(Document document, UndoManager newUndo) {
@@ -231,11 +179,6 @@ public class SketchTextArea extends RSyntaxTextArea {
       getDocument().getText(offset, end - offset, segment);
     } catch (BadLocationException ignored) {
     }
-  }
-
-
-  public void setEditorListener(EditorListener editorListener) {
-    this.editorListener = editorListener;
   }
 
   private static class DocLinkGenerator implements LinkGenerator {

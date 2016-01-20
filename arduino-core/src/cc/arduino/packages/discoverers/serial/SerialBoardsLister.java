@@ -47,7 +47,7 @@ public class SerialBoardsLister extends TimerTask {
   }
 
   public void start(Timer timer) {
-    timer.schedule(this, 0, 3000);
+    timer.schedule(this, 0, 1000);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class SerialBoardsLister extends TimerTask {
     }
 
     for (String port : ports) {
-      Map<String, Object> boardData = platform.resolveDeviceAttachedTo(port, BaseNoGui.packages, devicesListOutput);
+      Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages, devicesListOutput);
 
       BoardPort boardPort = new BoardPort();
       boardPort.setAddress(port);
@@ -86,6 +86,7 @@ public class SerialBoardsLister extends TimerTask {
       if (boardData != null) {
         boardPort.getPrefs().put("vid", boardData.get("vid").toString());
         boardPort.getPrefs().put("pid", boardData.get("pid").toString());
+        boardPort.getPrefs().put("iserial", boardData.get("iserial").toString());
 
         TargetBoard board = (TargetBoard) boardData.get("board");
         if (board != null) {

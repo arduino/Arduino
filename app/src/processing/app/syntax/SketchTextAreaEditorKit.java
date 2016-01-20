@@ -13,10 +13,12 @@ public class SketchTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
 
   public static final String rtaDeleteNextWordAction = "RTA.DeleteNextWordAction";
   public static final String rtaDeleteLineToCursorAction = "RTA.DeleteLineToCursorAction";
+  public static final String rtaIncreaseIndentAction = "RTA.IncreaseIndentAction";
 
   private static final Action[] defaultActions = {
     new DeleteNextWordAction(),
     new DeleteLineToCursorAction(),
+    new IncreaseIndentAction(),
     new SelectWholeLineAction(),
     new ToggleCommentAction()
   };
@@ -101,6 +103,39 @@ public class SketchTextAreaEditorKit extends RSyntaxTextAreaEditorKit {
       return rtaDeleteLineToCursorAction;
     }
 
+  }
+
+  /**
+   * Increases the indent of the selected or current line(s).
+   */
+  public static class IncreaseIndentAction extends RSyntaxTextAreaEditorKit.InsertTabAction {
+
+    public IncreaseIndentAction() {
+      super(rtaIncreaseIndentAction);
+    }
+
+    @Override
+    public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+      int caretPosition = textArea.getCaretPosition();
+      boolean noSelec = textArea.getSelectedText() == null;
+
+      // if no selection, focus on first char.
+      if (noSelec) {
+        try {
+          int line = textArea.getCaretLineNumber();
+          int startOffset = textArea.getLineStartOffset(line);
+          textArea.setCaretPosition(startOffset);
+        } catch (BadLocationException ex) {
+        }
+      }
+
+      // Insert Tab or Spaces..
+      super.actionPerformedImpl(e, textArea);
+
+      if (noSelec) {
+        textArea.setCaretPosition(caretPosition + (textArea.getTabsEmulated() ? textArea.getTabSize() : 1));
+      }
+    }
   }
 
   /**

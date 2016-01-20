@@ -27,36 +27,37 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.ui;
+package cc.arduino.contributions.packages.ui;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
+import java.awt.Color;
+import java.awt.Component;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.JTextPane;
-import javax.swing.table.TableCellEditor;
-import javax.swing.text.BadLocationException;
+import javax.swing.JTable;
+import javax.swing.table.TableCellRenderer;
 
-public abstract class InstallerTableCell extends AbstractCellEditor implements TableCellEditor {
+@SuppressWarnings("serial")
+public class ContributedPlatformTableCellRenderer implements TableCellRenderer {
 
-  abstract public void setEnabled(boolean b);
+  public Component getTableCellRendererComponent(JTable table, Object value,
+                                                 boolean isSelected,
+                                                 boolean hasFocus, int row,
+                                                 int column) {
+    ContributedPlatformTableCellJPanel cell = new ContributedPlatformTableCellJPanel();
+    cell.setButtonsVisible(false);
+    cell.update(table, value, isSelected, false);
 
-  abstract public void setStatus(String s);
-  
-  public static void setJTextPaneDimensionToFitContainedText(JTextPane jTextPane, int width) {
-    Dimension minimumDimension = new Dimension(width, 10);
-    jTextPane.setPreferredSize(minimumDimension);
-    jTextPane.setSize(minimumDimension);
-
-    try {
-      Rectangle r = jTextPane.modelToView(jTextPane.getDocument().getLength());
-      //r.height += jTextPane.modelToView(0).y; // add margins
-      Dimension d = new Dimension(minimumDimension.width, r.y + r.height);
-      jTextPane.setPreferredSize(d);
-    } catch (BadLocationException e) {
-      throw new RuntimeException(e);
+    if (row % 2 == 0) {
+      cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
+    } else {
+      cell.setBackground(new Color(255, 255, 255));
     }
 
+    int height = new Double(cell.getPreferredSize().getHeight()).intValue();
+    if (table.getRowHeight(row) < height) {
+      table.setRowHeight(row, height);
+    }
+
+    return cell;
   }
 
 }
