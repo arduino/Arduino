@@ -69,22 +69,30 @@ size_t Print::print(char c)
   return write(c);
 }
 
+size_t Print::print(char b, int base)
+{
+  if(base == 10)
+    return print((long) b, base);
+  else
+    return print((((unsigned long) b) & 0x000000FF), base);
+}
+
 size_t Print::print(unsigned char b, int base)
 {
-	return print((((unsigned long) b) & 0x000000FF), base);
+  return print((unsigned long) b, base);
 }
 
 size_t Print::print(int n, int base)
 {
   if(base == 10)
-  	return print((long) n, base);
+    return print((long) n, base);
   else
-	return print((((unsigned long) n) & 0x0000FFFF), base);
+    return print((((unsigned long) n) & 0x0000FFFF), base);
 }
 
 size_t Print::print(unsigned int n, int base)
 {
-	return print((((unsigned long) n) & 0x0000FFFF), base);
+  return print((unsigned long) n, base);
 }
 
 size_t Print::print(long n, int base)
@@ -148,6 +156,13 @@ size_t Print::println(const char c[])
 size_t Print::println(char c)
 {
   size_t n = print(c);
+  n += println();
+  return n;
+}
+
+size_t Print::println(char c, int base)
+{
+  size_t n = print(c, base);
   n += println();
   return n;
 }
