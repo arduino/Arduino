@@ -71,17 +71,20 @@ size_t Print::print(char c)
 
 size_t Print::print(unsigned char b, int base)
 {
-  return print((unsigned long) b, base);
+	return print((((unsigned long) b) & 0x000000FF), base);
 }
 
 size_t Print::print(int n, int base)
 {
-  return print((long) n, base);
+  if(base == 10)
+  	return print((long) n, base);
+  else
+	return print((((unsigned long) n) & 0x0000FFFF), base);
 }
 
 size_t Print::print(unsigned int n, int base)
 {
-  return print((unsigned long) n, base);
+	return print((((unsigned long) n) & 0x0000FFFF), base);
 }
 
 size_t Print::print(long n, int base)
