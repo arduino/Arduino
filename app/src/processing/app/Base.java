@@ -327,7 +327,7 @@ public class Base {
       boolean showEditor = parser.isGuiMode();
       if (!parser.isForceSavePrefs())
         PreferencesData.setDoSave(showEditor);
-      if (handleOpen(file, nextEditorLocation(), showEditor, false) == null) {
+      if (handleOpen(file, retrieveSketchLocation(".default"), showEditor, false) == null) {
         String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
         // Open failure is fatal in upload/verify mode
         if (parser.isVerifyOrUploadMode())
@@ -528,7 +528,10 @@ public class Base {
     PreferencesData.setInteger("last.screen.width", screen.width);
     PreferencesData.setInteger("last.screen.height", screen.height);
 
-    String untitledPath = untitledFolder.getAbsolutePath();
+    // If there is only one sketch opened save his position as default
+    if (editors.size() == 1) {
+      storeSketchLocation(editors.get(0), ".default");
+    }
 
     // Save the sketch path and window placement for each open sketch
     String untitledPath = untitledFolder.getAbsolutePath();
