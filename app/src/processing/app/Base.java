@@ -574,14 +574,17 @@ public class Base {
       if (path.startsWith(untitledPath) && !sketch.isModified()) {
         continue;
       }
-      PreferencesData.set("last.sketch" + index + ".path", path);
-
-      int[] placement = editor.getPlacement();
-      String location = PApplet.join(PApplet.str(placement), ",");
-      PreferencesData.set("last.sketch" + index + ".location", location);
+      storeSketchLocation(editor, "" + index);
       index++;
     }
     PreferencesData.setInteger("last.sketch.count", index);
+  }
+
+  private void storeSketchLocation(Editor editor, String index) {
+    String path = editor.getSketch().getMainFilePath();
+    String loc = StringUtils.join(editor.getPlacement(), ',');
+    PreferencesData.set("last.sketch" + index + ".path", path);
+    PreferencesData.set("last.sketch" + index + ".location", loc);
   }
 
   protected void storeRecentSketches(Sketch sketch) {
