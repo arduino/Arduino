@@ -489,32 +489,6 @@ public class Base {
    * @throws Exception
    */
   protected boolean restoreSketches() throws Exception {
-    // figure out window placement
-
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    boolean windowPositionValid = true;
-
-    if (PreferencesData.get("last.screen.height") != null) {
-      // if screen size has changed, the window coordinates no longer
-      // make sense, so don't use them unless they're identical
-      int screenW = PreferencesData.getInteger("last.screen.width");
-      int screenH = PreferencesData.getInteger("last.screen.height");
-
-      if ((screen.width != screenW) || (screen.height != screenH)) {
-        windowPositionValid = false;
-      }
-      /*
-      int windowX = Preferences.getInteger("last.window.x");
-      int windowY = Preferences.getInteger("last.window.y");
-      if ((windowX < 0) || (windowY < 0) ||
-          (windowX > screenW) || (windowY > screenH)) {
-        windowPositionValid = false;
-      }
-      */
-    } else {
-      windowPositionValid = false;
-    }
-
     // Iterate through all sketches that were open last time p5 was running.
     // If !windowPositionValid, then ignore the coordinates found for each.
 
@@ -534,13 +508,7 @@ public class Base {
           // path unchanged.
         }
       }
-      int[] location;
-      if (windowPositionValid) {
-        String locationStr = PreferencesData.get("last.sketch" + i + ".location");
-        location = PApplet.parseInt(PApplet.split(locationStr, ','));
-      } else {
-        location = nextEditorLocation();
-      }
+      int[] location = retrieveSketchLocation("" + i);
       // If file did not exist, null will be returned for the Editor
       if (handleOpen(new File(path), location, nextEditorLocation(), true, false, false) != null) {
         opened++;
@@ -587,6 +555,26 @@ public class Base {
     PreferencesData.set("last.sketch" + index + ".location", loc);
   }
 
+  private int[] retrieveSketchLocation(String index) {
+    if (PreferencesData.get("last.screen.height") == null)
+      return defaultEditorLocation();
+
+    // if screen size has changed, the window coordinates no longer
+    // make sense, so don't use them unless they're identical
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    int screenW = PreferencesData.getInteger("last.screen.width");
+    int screenH = PreferencesData.getInteger("last.screen.height");
+
+    if ((screen.width != screenW) || (screen.height != screenH))
+      return defaultEditorLocation();
+
+    String locationStr = PreferencesData
+        .get("last.sketch" + index + ".location");
+    if (locationStr == null)
+      return defaultEditorLocation();
+    return PApplet.parseInt(PApplet.split(locationStr, ','));
+  }
+
   protected void storeRecentSketches(Sketch sketch) {
     if (sketch.isUntitled()) {
       return;
@@ -628,49 +616,46 @@ public class Base {
     EditorConsole.setCurrentEditorConsole(activeEditor.console);
   }
 
-
-  protected int[] nextEditorLocation() {
+  protected int[] defaultEditorLocation() {
     int defaultWidth = PreferencesData.getInteger("editor.window.width.default");
     int defaultHeight = PreferencesData.getInteger("editor.window.height.default");
+    Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+    return new int[]{
+            (screen.width - defaultWidth) / 2,
+            (screen.height - defaultHeight) / 2,
+            defaultWidth, defaultHeight, 0
+    };
+  }
 
+  protected int[] nextEditorLocation() {
     if (activeEditor == null) {
-      Rectangle screen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
       // If no current active editor, use default placement
-      return new int[]{
-              (screen.width - defaultWidth) / 2,
-              (screen.height - defaultHeight) / 2,
-              defaultWidth, defaultHeight, 0
-      };
+      return defaultEditorLocation();
+    }
 
-    } else {
-      Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-      // With a currently active editor, open the new window
-      // using the same dimensions, but offset slightly.
-      synchronized (editors) {
-        final int OVER = 50;
-        // In release 0160, don't
-        //location = activeEditor.getPlacement();
-        Editor lastOpened = activeEditor;
-        int[] location = lastOpened.getPlacement();
-        // Just in case the bounds for that window are bad
-        location[0] += OVER;
-        location[1] += OVER;
+    // With a currently active editor, open the new window
+    // using the same dimensions, but offset slightly.
+    synchronized (editors) {
+      int[] location = activeEditor.getPlacement();
 
-        if (location[0] == OVER ||
-                location[2] == OVER ||
-                location[0] + location[2] > screen.width ||
-                location[1] + location[3] > screen.height) {
-          // Warp the next window to a randomish location on screen.
-          return new int[]{
-                  (int) (Math.random() * (screen.width - defaultWidth)),
-                  (int) (Math.random() * (screen.height - defaultHeight)),
-                  defaultWidth, defaultHeight, 0
-          };
-        }
+      // Just in case the bounds for that window are bad
+      final int OVER = 50;
+      location[0] += OVER;
+      location[1] += OVER;
 
-        return location;
+      if (location[0] == OVER || location[2] == OVER
+          || location[0] + location[2] > screen.width
+          || location[1] + location[3] > screen.height) {
+        // Warp the next window to a randomish location on screen.
+        int[] l = defaultEditorLocation();
+        l[0] *= Math.random() * 2;
+        l[1] *= Math.random() * 2;
+        return l;
       }
+
+      return location;
     }
   }
 
