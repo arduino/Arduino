@@ -139,7 +139,7 @@ public class SSHUploader extends Uploader {
         return false;
       }
       if (e.getMessage().contains("Connection refused")) {
-        throw new RunnerException(I18n.format("Unable to connect to {0}", port.getAddress()));
+        throw new RunnerException(I18n.format(tr("Unable to connect to {0}"), port.getAddress()));
       }
       throw new RunnerException(e);
     } catch (Exception e) {

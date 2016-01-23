@@ -136,7 +136,7 @@ public class SketchData {
           if (BaseNoGui.isSanitaryName(base)) {
             addCode(new SketchCode(new File(folder, filename)));
           } else {
-            System.err.println(I18n.format("File name {0} is invalid: ignored", filename));
+            System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), filename));
           }
         }
       }
