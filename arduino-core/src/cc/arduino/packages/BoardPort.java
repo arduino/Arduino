@@ -36,8 +36,12 @@ public class BoardPort {
   private String address;
   private String protocol;
   private String boardName;
+  private String vid;
+  private String pid;
+  private String iserial;
   private String label;
   private final PreferencesMap prefs;
+  private boolean online;
 
   public BoardPort() {
     this.prefs = new PreferencesMap();
@@ -79,4 +83,36 @@ public class BoardPort {
     return label;
   }
 
+  public void setOnlineStatus(boolean online) {
+    this.online = online;
+  }
+
+  public boolean isOnline() {
+    return online;
+  }
+
+  public void setVIDPID(String vid, String pid) {
+    this.vid = vid;
+    this.pid = pid;
+  }
+
+  public String getVID() {
+    return vid;
+  }
+
+  public String getPID() {
+    return pid;
+  }
+
+  public void setISerial(String iserial) {
+    this.iserial = iserial;
+  }
+  public String getISerial() {
+    return iserial;
+  }
+
+  @Override
+  public String toString() {
+    return this.address+"_"+this.vid+"_"+this.pid;
+  }
 }
