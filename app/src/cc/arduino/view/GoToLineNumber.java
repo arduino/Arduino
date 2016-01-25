@@ -127,7 +127,7 @@ public class GoToLineNumber extends javax.swing.JDialog {
   private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
     try {
       int line = Integer.parseInt(lineNumber.getText());
-      editor.goToLine(line);
+      editor.getCurrentTab().goToLine(line);
       cancelActionPerformed(evt);
     } catch (Exception e) {
       // ignore

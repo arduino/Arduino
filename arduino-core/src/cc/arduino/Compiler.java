@@ -108,24 +108,25 @@ public class Compiler implements MessageConsumer {
 
   private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
-  private final String pathToSketch;
-  private final SketchData sketch;
-  private final String buildPath;
+  private final File pathToSketch;
+  private final Sketch sketch;
+  private String buildPath;
   private final boolean verbose;
   private RunnerException exception;
 
-  public Compiler(SketchData data, String buildPath) {
-    this(data.getMainFilePath(), data, buildPath);
+  public Compiler(Sketch data) {
+    this(data.getPrimaryFile().getFile(), data);
   }
 
-  public Compiler(String pathToSketch, SketchData sketch, String buildPath) {
+  public Compiler(File pathToSketch, Sketch sketch) {
     this.pathToSketch = pathToSketch;
     this.sketch = sketch;
-    this.buildPath = buildPath;
     this.verbose = PreferencesData.getBoolean("build.verbose");
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+    this.buildPath = sketch.getBuildPath().getAbsolutePath();
+
     TargetBoard board = BaseNoGui.getTargetBoard();
     if (board == null) {
       throw new RunnerException("Board is not selected");
@@ -155,7 +156,7 @@ public class Compiler implements MessageConsumer {
 
     size(prefs);
 
-    return sketch.getPrimaryFile().getName();
+    return sketch.getPrimaryFile().getFileName();
   }
 
   private String VIDPID() {
@@ -241,7 +242,7 @@ public class Compiler implements MessageConsumer {
       commandLine.addArgument("-verbose", false);
     }
 
-    commandLine.addArgument("\"" + pathToSketch + "\"", false);
+    commandLine.addArgument("\"" + pathToSketch.getAbsolutePath() + "\"", false);
 
     if (verbose) {
       System.out.println(commandLine);
@@ -565,8 +566,7 @@ public class Compiler implements MessageConsumer {
       RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
       if (exception != null) {
-        SketchCode code = sketch.getCode(exception.getCodeIndex());
-        String fileName = (code.isExtension("ino") || code.isExtension("pde")) ? code.getPrettyName() : code.getFileName();
+        String fileName = exception.getCodeFile().getPrettyName();
         int lineNum = exception.getCodeLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
@@ -595,9 +595,9 @@ public class Compiler implements MessageConsumer {
   }
 
   private RunnerException placeException(String message, String fileName, int line) {
-    for (SketchCode code : sketch.getCodes()) {
-      if (new File(fileName).getName().equals(code.getFileName())) {
-        return new RunnerException(message, sketch.indexOfCode(code), line);
+    for (SketchFile file : sketch.getFiles()) {
+      if (new File(fileName).getName().equals(file.getFileName())) {
+        return new RunnerException(message, file, line);
       }
     }
     return null;

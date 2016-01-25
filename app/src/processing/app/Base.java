@@ -583,13 +583,13 @@ public class Base {
     PreferencesData.setInteger("last.sketch.count", index);
   }
 
-  protected void storeRecentSketches(Sketch sketch) {
+  protected void storeRecentSketches(SketchController sketch) {
     if (sketch.isUntitled()) {
       return;
     }
 
     Set<String> sketches = new LinkedHashSet<String>();
-    sketches.add(sketch.getMainFilePath());
+    sketches.add(sketch.getSketch().getMainFilePath());
     sketches.addAll(PreferencesData.getCollection("recent.sketches"));
 
     PreferencesData.setCollection("recent.sketches", sketches);
@@ -610,13 +610,13 @@ public class Base {
     activeEditor.rebuildRecentSketchesMenu();
     if (PreferencesData.getBoolean("editor.external")) {
       try {
-        int previousCaretPosition = activeEditor.getTextArea().getCaretPosition();
-        activeEditor.getSketch().load(true);
-        if (previousCaretPosition < activeEditor.getText().length()) {
-          activeEditor.getTextArea().setCaretPosition(previousCaretPosition);
-        }
+        // If the list of files on disk changed, recreate the tabs for them
+        if (activeEditor.getSketch().reload())
+          activeEditor.createTabs();
+        else // Let the current tab know it was activated, so it can reload
+          activeEditor.getCurrentTab().activated();
       } catch (IOException e) {
-        // noop
+        System.err.println(e);
       }
     }
 
@@ -761,50 +761,6 @@ public class Base {
 
 
   /**
-   * Replace the sketch in the current window with a new untitled document.
-   */
-  public void handleNewReplace() {
-    if (!activeEditor.checkModified()) {
-      return;  // sketch was modified, and user canceled
-    }
-    // Close the running window, avoid window boogers with multiple sketches
-    activeEditor.internalCloseRunner();
-
-    // Actually replace things
-    handleNewReplaceImpl();
-  }
-
-
-  protected void handleNewReplaceImpl() {
-    try {
-      File file = createNewUntitled();
-      if (file != null) {
-        activeEditor.handleOpenInternal(file);
-        activeEditor.untitled = true;
-      }
-
-    } catch (IOException e) {
-      activeEditor.statusError(e);
-    }
-  }
-
-
-  public void handleOpenReplace(File file) {
-    if (!activeEditor.checkModified()) {
-      return;  // sketch was modified, and user canceled
-    }
-    // Close the running window, avoid window boogers with multiple sketches
-    activeEditor.internalCloseRunner();
-
-    boolean loaded = activeEditor.handleOpenInternal(file);
-    if (!loaded) {
-      // replace the document without checking if that's ok
-      handleNewReplaceImpl();
-    }
-  }
-
-
-  /**
    * Prompt for a sketch to open, and open it in a new window.
    *
    * @throws Exception
@@ -865,9 +821,8 @@ public class Base {
     if (!file.exists()) return null;
 
     // Cycle through open windows to make sure that it's not already open.
-    String path = file.getAbsolutePath();
     for (Editor editor : editors) {
-      if (editor.getSketch().getMainFilePath().equals(path)) {
+      if (editor.getSketch().getPrimaryFile().getFile().equals(file)) {
         editor.toFront();
         return editor;
       }
@@ -876,7 +831,7 @@ public class Base {
     Editor editor = new Editor(this, file, storedLocation, defaultLocation, BaseNoGui.getPlatform());
 
     // Make sure that the sketch actually loaded
-    if (editor.getSketch() == null) {
+    if (editor.getSketchController() == null) {
       return null;  // Just walk away quietly
     }
 
@@ -888,7 +843,7 @@ public class Base {
       // Store information on who's open and running
       // (in case there's a crash or something that can't be recovered)
       storeSketches();
-      storeRecentSketches(editor.getSketch());
+      storeRecentSketches(editor.getSketchController());
       rebuildRecentSketchesMenuItems();
       PreferencesData.save();
     }
@@ -957,9 +912,6 @@ public class Base {
       return false;
     }
 
-    // Close the running window, avoid window boogers with multiple sketches
-    editor.internalCloseRunner();
-
     if (editors.size() == 1) {
       // This will store the sketch count as zero
       editors.remove(editor);
@@ -1014,10 +966,6 @@ public class Base {
     }
 
     if (handleQuitEach()) {
-      // make sure running sketches close before quitting
-      for (Editor editor : editors) {
-        editor.internalCloseRunner();
-      }
       // Save out the current prefs state
       PreferencesData.save();
 
@@ -1184,7 +1132,7 @@ public class Base {
           public void actionPerformed(ActionEvent event) {
             UserLibrary l = (UserLibrary) getValue("library");
             try {
-              activeEditor.getSketch().importLibrary(l);
+              activeEditor.getSketchController().importLibrary(l);
             } catch (IOException e) {
               showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
             }
@@ -1719,7 +1667,7 @@ public class Base {
         public void actionPerformed(ActionEvent event) {
           UserLibrary l = (UserLibrary) getValue("library");
           try {
-            activeEditor.getSketch().importLibrary(l);
+            activeEditor.getSketchController().importLibrary(l);
           } catch (IOException e) {
             showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
           }
@@ -2175,54 +2123,6 @@ public class Base {
 
 
   /**
-   * Copy a folder from one place to another. This ignores all dot files and
-   * folders found in the source directory, to avoid copying silly .DS_Store
-   * files and potentially troublesome .svn folders.
-   */
-  static public void copyDir(File sourceDir,
-                             File targetDir) throws IOException {
-    targetDir.mkdirs();
-    String files[] = sourceDir.list();
-    if (files == null) {
-      throw new IOException("Unable to list files from " + sourceDir);
-    }
-    for (String file : files) {
-      // Ignore dot files (.DS_Store), dot folders (.svn) while copying
-      if (file.charAt(0) == '.') continue;
-      //if (files[i].equals(".") || files[i].equals("..")) continue;
-      File source = new File(sourceDir, file);
-      File target = new File(targetDir, file);
-      if (source.isDirectory()) {
-        //target.mkdirs();
-        copyDir(source, target);
-        target.setLastModified(source.lastModified());
-      } else {
-        copyFile(source, target);
-      }
-    }
-  }
-
-
-  /**
-   * Remove all files in a directory and the directory itself.
-   */
-  static public void removeDir(File dir) {
-    BaseNoGui.removeDir(dir);
-  }
-
-
-  /**
-   * Recursively remove all files within a directory,
-   * used with removeDir(), or when the contents of a dir
-   * should be removed, but not the directory itself.
-   * (i.e. when cleaning temp files from lib/build)
-   */
-  static public void removeDescendants(File dir) {
-    BaseNoGui.removeDescendants(dir);
-  }
-
-
-  /**
    * Calculate the size of the contents of a folder.
    * Used to determine whether sketches are empty or not.
    * Note that the function calls itself recursively.
@@ -2245,48 +2145,6 @@ public class Base {
       }
     }
     return size;
-  }
-
-
-  /**
-   * Recursively creates a list of all files within the specified folder,
-   * and returns a list of their relative paths.
-   * Ignores any files/folders prefixed with a dot.
-   */
-  static public String[] listFiles(String path, boolean relative) {
-    return listFiles(new File(path), relative);
-  }
-
-
-  static public String[] listFiles(File folder, boolean relative) {
-    String path = folder.getAbsolutePath();
-    Vector<String> vector = new Vector<String>();
-    listFiles(relative ? (path + File.separator) : "", path, vector);
-    String outgoing[] = new String[vector.size()];
-    vector.copyInto(outgoing);
-    return outgoing;
-  }
-
-
-  static protected void listFiles(String basePath,
-                                  String path, Vector<String> vector) {
-    File folder = new File(path);
-    String list[] = folder.list();
-    if (list == null) return;
-
-    for (int i = 0; i < list.length; i++) {
-      if (list[i].charAt(0) == '.') continue;
-
-      File file = new File(path, list[i]);
-      String newPath = file.getAbsolutePath();
-      if (newPath.startsWith(basePath)) {
-        newPath = newPath.substring(basePath.length());
-      }
-      vector.add(newPath);
-      if (file.isDirectory()) {
-        listFiles(basePath, newPath, vector);
-      }
-    }
   }
 
   public void handleAddLibrary() {

@@ -12,7 +12,6 @@ import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.packages.Uploader;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
@@ -28,7 +27,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,18 +117,6 @@ public class BaseNoGui {
       return "";  // use distribution provided avr tools if bundled tools missing
     }
     return path;
-  }
-
-  static public File getBuildFolder(SketchData data) throws IOException {
-    File buildFolder;
-    if (PreferencesData.get("build.path") != null) {
-      buildFolder = absoluteFile(PreferencesData.get("build.path"));
-      Files.createDirectories(buildFolder.toPath());
-    } else {
-      buildFolder = FileUtils.createTempFolder("build", DigestUtils.md5Hex(data.getMainFilePath()) + ".tmp");
-      DeleteFilesOnShutdown.add(buildFolder);
-    }
-    return buildFolder;
   }
 
   static public PreferencesMap getBoardPreferences() {
@@ -466,14 +452,12 @@ public class BaseNoGui {
         boolean success = false;
         try {
           // Editor constructor loads the sketch with handleOpenInternal() that
-          // creates a new Sketch that, in trun, calls load() inside its constructor
+          // creates a new Sketch that, in turn, builds a SketchData
+          // inside its constructor.
           // This translates here as:
           //   SketchData data = new SketchData(file);
           //   File tempBuildFolder = getBuildFolder();
-          //   data.load();
-          SketchData data = new SketchData(absoluteFile(parser.getFilenames().get(0)));
-          File tempBuildFolder = getBuildFolder(data);
-          data.load();
+          Sketch data = new Sketch(absoluteFile(parser.getFilenames().get(0)));
 
           // Sketch.exportApplet()
           //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
@@ -482,7 +466,7 @@ public class BaseNoGui {
           if (!data.getFolder().exists()) {
             showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
           }
-          String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
+          String suggestedClassName = new Compiler(data).build(null, false);
           if (suggestedClassName == null) {
             showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
           }
@@ -491,7 +475,7 @@ public class BaseNoGui {
           Uploader uploader = new UploaderUtils().getUploaderByPreferences(parser.isNoUploadPort());
           if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
           try {
-            success = new UploaderUtils().upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
+            success = new UploaderUtils().upload(data, uploader, suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
             showMessage(tr("Done uploading"), tr("Done uploading"));
           } finally {
             if (uploader.requiresAuthorization() && !success) {
@@ -518,9 +502,7 @@ public class BaseNoGui {
             //   SketchData data = new SketchData(file);
             //   File tempBuildFolder = getBuildFolder();
             //   data.load();
-            SketchData data = new SketchData(absoluteFile(path));
-            File tempBuildFolder = getBuildFolder(data);
-            data.load();
+            Sketch data = new Sketch(absoluteFile(path));
 
             // Sketch.prepare() calls Sketch.ensureExistence()
             // Sketch.build(verbose) calls Sketch.ensureExistence() and set progressListener and, finally, calls Compiler.build()
@@ -528,7 +510,7 @@ public class BaseNoGui {
             //    if (!data.getFolder().exists()) showError(...);
             //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
             if (!data.getFolder().exists()) showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
+            String suggestedClassName = new Compiler(data).build(null, false);
             if (suggestedClassName == null) showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
             showMessage(tr("Done compiling"), tr("Done compiling"));
           } catch (Exception e) {
@@ -991,49 +973,6 @@ public class BaseNoGui {
 
     // run static initialization that grabs all the prefs
     PreferencesData.init(absoluteFile(preferencesFile));
-  }
-
-  /**
-   * Recursively remove all files within a directory,
-   * used with removeDir(), or when the contents of a dir
-   * should be removed, but not the directory itself.
-   * (i.e. when cleaning temp files from lib/build)
-   */
-  static public void removeDescendants(File dir) {
-    if (!dir.exists()) return;
-
-    String files[] = dir.list();
-    if (files == null) {
-      return;
-    }
-
-    for (String file : files) {
-      if (file.equals(".") || file.equals("..")) continue;
-      File dead = new File(dir, file);
-      if (!dead.isDirectory()) {
-        if (!PreferencesData.getBoolean("compiler.save_build_files")) {
-          if (!dead.delete()) {
-            // temporarily disabled
-            System.err.println(I18n.format(tr("Could not delete {0}"), dead));
-          }
-        }
-      } else {
-        removeDir(dead);
-        //dead.delete();
-      }
-    }
-  }
-
-  /**
-   * Remove all files in a directory and the directory itself.
-   */
-  static public void removeDir(File dir) {
-    if (dir.exists()) {
-      removeDescendants(dir);
-      if (!dir.delete()) {
-        System.err.println(I18n.format(tr("Could not delete {0}"), dir));
-      }
-    }
   }
 
   /**
