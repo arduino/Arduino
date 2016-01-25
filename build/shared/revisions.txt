@@ -6,10 +6,14 @@ ARDUINO 1.6.8
 * MacOSX: Fixed handling of add indent/remove indent shortcuts (CMD+[ and CMD+])
 * Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
 * Serial plotter now correctly resize graphs with negative values. Thanks @vicnevicne
+* Improved sketch preprocessor when handling C++11 keywords. Thanks @matthijskooijman @igrr
 
 [core]
 * avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
 * avr: fixed yield() usage inside delay(). Thanks @vbextreme
+
+[libraries]
+* SD library is now board agnostic. Thanks @fakufaku
 
 ARDUINO 1.6.7 - 2015.12.17
 
