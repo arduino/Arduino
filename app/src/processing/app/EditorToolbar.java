@@ -337,7 +337,10 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     switch (sel) {
       case RUN:
-        editor.handleRun(false, editor.presentHandler, editor.runHandler);
+        if (!editor.avoidMultipleOperations) {
+          editor.handleRun(false, editor.presentHandler, editor.runHandler);
+          editor.avoidMultipleOperations = true;
+        }
         break;
 
 //    case STOP:
@@ -366,7 +369,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         break;
 
       case EXPORT:
-        editor.handleExport(e.isShiftDown());
+        // launch a timeout timer which can reenable to upload button functionality an
+        if (!editor.avoidMultipleOperations) {
+          editor.handleExport(e.isShiftDown());
+          editor.avoidMultipleOperations = true;
+        }
         break;
 
       case SERIAL:
