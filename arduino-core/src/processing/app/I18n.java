@@ -70,11 +70,6 @@ public class I18n {
     PROMPT_BROWSE = tr("Browse");
   }
 
-  @Deprecated
-  public static String _(String s) {
-    return tr(s);
-  }
-
   public static String tr(String s) {
     String res;
     try {
