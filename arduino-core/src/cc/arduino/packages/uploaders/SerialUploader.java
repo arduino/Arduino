@@ -78,6 +78,11 @@ public class SerialUploader extends Uploader {
     }
     prefs.putAll(targetPlatform.getTool(tool));
 
+    if (programmerPid != null && programmerPid.isAlive()) {
+      // kill the previous programmer
+      programmerPid.destroyForcibly();
+    }
+
     // if no protocol is specified for this board, assume it lacks a 
     // bootloader and upload using the selected programmer.
     if (usingProgrammer || prefs.get("upload.protocol") == null) {
@@ -134,7 +139,7 @@ public class SerialUploader extends Uploader {
           // Scanning for available ports seems to open the port or
           // otherwise assert DTR, which would cancel the WDT reset if
           // it happened within 250 ms. So we wait until the reset should
-          // have already occured before we start scanning.
+          // have already occurred before we start scanning.
           actualUploadPort = waitForUploadPort(userSelectedUploadPort, before);
         }
       } catch (SerialException e) {
@@ -213,6 +218,7 @@ public class SerialUploader extends Uploader {
       finalUploadPort = userSelectedUploadPort;
     }
     BaseNoGui.selectSerialPort(finalUploadPort);
+
     return uploadResult;
   }
 
