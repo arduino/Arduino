@@ -207,8 +207,10 @@ public class FileDownloader extends Observable {
         file.write(buffer, 0, read);
         setDownloaded(getDownloaded() + read);
 
-        if (Thread.interrupted())
+        if (Thread.interrupted()) {
+          file.close();
           throw new InterruptedException();
+        }
       }
 
       if (getDownloadSize() != null) {
