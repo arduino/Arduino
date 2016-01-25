@@ -1,6 +1,7 @@
 ARDUINO 1.6.8
 
 [ide]
+* Editor position is saved when closing with Alt+F4 or clicking on the "X" button. Thanks @willie68
 * Fixed a NullPointerException when dealing with some rare combination of package_*.json files
 * Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
 * MacOSX: Fixed handling of add indent/remove indent shortcuts (CMD+[ and CMD+])
