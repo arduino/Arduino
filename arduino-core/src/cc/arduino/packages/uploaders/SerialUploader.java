@@ -44,6 +44,8 @@ import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.StringReplacer;
 
+import cc.arduino.packages.discoverers.SerialDiscovery;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -156,13 +158,12 @@ public class SerialUploader extends Uploader {
       } else {
         prefs.put("serial.port.file", actualUploadPort);
       }
-    }
 
-    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
-    try {
-      prefs.put("serial.port.iserial", boardPort.getPrefs().getOrExcept("iserial"));
-    } catch (Exception e) {
-      // if serial port does not contain an iserial field
+      // retrigger a discovery
+      BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(true);
+      Thread.sleep(100);
+      BaseNoGui.getDiscoveryManager().getSerialDiscoverer().forceRefresh();
+      Thread.sleep(100);
     }
 
     prefs.put("build.path", buildPath);
@@ -184,6 +185,8 @@ public class SerialUploader extends Uploader {
       throw new RunnerException(e);
     }
 
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
+
     String finalUploadPort = null;
     if (uploadResult && doTouch) {
       try {
@@ -196,15 +199,13 @@ public class SerialUploader extends Uploader {
           long started = System.currentTimeMillis();
           while (System.currentTimeMillis() - started < 2000) {
             List<String> portList = Serial.list();
-            if (portList.contains(actualUploadPort)) {
-              finalUploadPort = actualUploadPort;
-              break;
-            } else if (portList.contains(userSelectedUploadPort)) {
+            if (portList.contains(userSelectedUploadPort)) {
               finalUploadPort = userSelectedUploadPort;
               break;
             }
             Thread.sleep(250);
           }
+          finalUploadPort = actualUploadPort;
         }
       } catch (InterruptedException ex) {
         // noop
