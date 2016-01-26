@@ -101,11 +101,11 @@ static const uint8_t A15  = 128 + 15; // Not available on BoosterPack header
                                +--\/--+                                 +--\/--+
                           3.3v |1   21| 5.0v               (TB0.6) P2.7 |40  20| GND
                     (A10) P9.2 |2   22| GND                (TB0.5) P2.6 |39  19| P2.1 (TB0.5)
-     (UCA0RXD -> Serial1) P4.3 |3   23| P8.4 (A7)          (TA1.1) P3.3 |38  18| P1.5 (TA0.0)
+     (UCA0RXD -> Serial1) P4.3 |3   23| P8.4 (A7)          (TA1.1) P3.3 |38  18| P1.5
      (UCA0TXD -> Serial1) P4.2 |4   24| P8.5 (A6)          (TB0.2) P3.6 |37  17| P9.4 (A12)
                           P3.2 |5   25| P8.6 (A5)          (TB0.3) P3.7 |36  16| RST
                     (A11) P9.3 |6   26| P8.7 (A4)          (TB0.4) P2.2 |35  15| P1.6 (UCB0SIMO) (UCB0SDA)
-                  (TA1.0) P1.4 |7   27| P9.0 (A8)          (A3)    P1.3 |34  14| P1.7 (UCB0SOMI) (UCB0SCL)
+                          P1.4 |7   27| P9.0 (A8)          (A3)    P1.3 |34  14| P1.7 (UCB0SOMI) (UCB0SCL)
                   (TB0.6) P2.0 |8   28| P9.1 (A9)                  P3.1 |33  13| P2.5 (TB0.4)
              (PM_UCB1SCL) P4.1 |9   29| P9.5 (A13)                 P3.2 |32  12| P2.4 (TB0.3)
              (PM_UCB1SDA) P4.0 |10  30| P9.6 (A14)                 P3.3 |31  11| P4.7 (TA1.2)
@@ -389,19 +389,19 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /*  4 - P4.2 */
 	NOT_ON_TIMER, /*  5 - P3.2 */
 	NOT_ON_TIMER, /*  6 - P9.3 */
-	T1A0,         /*  7 - P1.4 */
-	T0B6,         /*  8 - P2.0 */
+	NOT_ON_TIMER, /*  7 - P1.4  - note: CCR0 output cannot be used with analogWrite */
+	T0B6_SEL1,    /*  8 - P2.0 */
 	NOT_ON_TIMER, /*  9 - P4.1 */
 	NOT_ON_TIMER, /* 10 - P4.0 */
-	T1A2,         /* 11 - P4.7 */
+	T1A2_SEL01,   /* 11 - P4.7 */
 	T0B3,         /* 12 - P2.4 */
 	T0B4,         /* 13 - P2.5 */
-	T0A2,         /* 14 - P1.7 */
-	T0A1,         /* 15 - P1.6 */
+	T0A2_SEL01,   /* 14 - P1.7 */
+	T0A1_SEL01,   /* 15 - P1.6 */
 	NOT_ON_TIMER, /* 16 - RST  */
 	NOT_ON_TIMER, /* 17 - P9.4 */
-	T0A0,         /* 18 - P1.5 */
-	T0B5,         /* 19 - P2.1 */
+	NOT_ON_TIMER, /* 18 - P1.5  - note: CCR0 output cannot be used with analogWrite */
+	T0B5_SEL1,    /* 19 - P2.1 */
 	NOT_ON_TIMER, /* 20 - GND  */
 	NOT_ON_TIMER, /* 21 - 5.0v */
 	NOT_ON_TIMER, /* 22 - GND  */
@@ -417,14 +417,14 @@ const uint8_t digital_pin_to_timer[] = {
 	NOT_ON_TIMER, /* 32 - P3.1 */
 	NOT_ON_TIMER, /* 33 - P3.0 */
 	T1A2,         /* 34 - P1.3 */
-	T0B4,         /* 35 - P2.2 */
-	T0B3,         /* 36 - P3.7 */
-	T0B2,         /* 37 - P3.6 */
-	T1A1,         /* 38 - P3.3 */
+	T0B4_SEL1,    /* 35 - P2.2 */
+	T0B3_SEL1,    /* 36 - P3.7 */
+	T0B2_SEL1,    /* 37 - P3.6 */
+	T1A1_SEL1,    /* 38 - P3.3 */
 	T0B5,         /* 39 - P2.6 */
 	T0B6,         /* 40 - P2.7 */
-	T0B0,         /* 41 - P3.4 */
-	T0B1,         /* 42 - P3.5 */
+	T0B0_SEL1,    /* 41 - P3.4 */
+	T0B1_SEL1,    /* 42 - P3.5 */
 	T0A1,         /* 43 - P1.0 */
 	NOT_ON_TIMER, /* 44 - P9.7 */
 	T0A2,         /* 45 - P1.1 */

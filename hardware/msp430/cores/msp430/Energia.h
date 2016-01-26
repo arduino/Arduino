@@ -123,8 +123,8 @@ enum{
   };
 
 enum{
-  T0A0,
-  T0A1,
+  T0A0,     // here starts the enum for Timer pins
+  T0A1,     // mapped with PxSEL0
   T0A2,
   T0A3,
   T0A4,
@@ -149,7 +149,61 @@ enum{
   T1B2,
   T2B0,
   T2B1,
-  T2B2
+  T2B2,
+  T0A0_SEL1,  // here starts the enum for Timer pins
+  T0A1_SEL1,  // mapped with PxSEL1
+  T0A2_SEL1,
+  T0A3_SEL1,
+  T0A4_SEL1,
+  T1A0_SEL1,
+  T1A1_SEL1,
+  T1A2_SEL1,
+  T1A3_SEL1,
+  T1A4_SEL1,
+  T1A5_SEL1,
+  T2A0_SEL1,
+  T2A1_SEL1,
+  T2A2_SEL1,
+  T0B0_SEL1,
+  T0B1_SEL1,
+  T0B2_SEL1,
+  T0B3_SEL1,
+  T0B4_SEL1,
+  T0B5_SEL1,
+  T0B6_SEL1,
+  T1B0_SEL1,
+  T1B1_SEL1,
+  T1B2_SEL1,
+  T2B0_SEL1,
+  T2B1_SEL1,
+  T2B2_SEL1,
+  T0A0_SEL01,  // here starts the enum for Timer pins
+  T0A1_SEL01,  // mapped with PxSEL0 and PxSEL1
+  T0A2_SEL01,
+  T0A3_SEL01,
+  T0A4_SEL01,
+  T1A0_SEL01,
+  T1A1_SEL01,
+  T1A2_SEL01,
+  T1A3_SEL01,
+  T1A4_SEL01,
+  T1A5_SEL01,
+  T2A0_SEL01,
+  T2A1_SEL01,
+  T2A2_SEL01,
+  T0B0_SEL01,
+  T0B1_SEL01,
+  T0B2_SEL01,
+  T0B3_SEL01,
+  T0B4_SEL01,
+  T0B5_SEL01,
+  T0B6_SEL01,
+  T1B0_SEL01,
+  T1B1_SEL01,
+  T1B2_SEL01,
+  T2B0_SEL01,
+  T2B1_SEL01,
+  T2B2_SEL01
   };
 
 typedef uint8_t boolean;

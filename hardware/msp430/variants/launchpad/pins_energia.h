@@ -202,16 +202,16 @@ const uint8_t digital_pin_to_timer[] = {
    NOT_ON_TIMER, /*  dummy */
    NOT_ON_TIMER, /*  1 - VCC */
    NOT_ON_TIMER, /*  2 - P1.0 */
-   T0A0,         /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
+   NOT_ON_TIMER, /*  3 - P1.1, note: A0 output cannot be used with analogWrite */
    T0A1,         /*  4 - P1.2 */
    NOT_ON_TIMER, /*  5 - P1.3 */
    NOT_ON_TIMER, /*  6 - P1.4 note: special case. Leaving as no timer due to difficulty determining if available */
-   T0A0,         /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
+   NOT_ON_TIMER, /*  7 - P1.5 note: A0 output cannot be used with analogWrite  */
 #if defined(__MSP430_HAS_T1A3__) 
-   T1A0,         /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
+   NOT_ON_TIMER, /*  8 - P2.0 note: A0 output cannot be used with analogWrite */
    T1A1,         /*  9 - P2.1 */
    T1A1,         /* 10 - P2.2 */
-   T1A0,         /* 11 - P2.3 note: A0 output cannot be used with analogWrite  */
+   NOT_ON_TIMER, /* 11 - P2.3 note: A0 output cannot be used with analogWrite  */
    T1A2,         /* 12 - P2.4 */
    T1A2,         /* 13 - P2.5 */
 #else

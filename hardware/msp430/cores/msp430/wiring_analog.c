@@ -127,7 +127,7 @@ void analogResolution(uint16_t res)
 #define PWM_DUTY(x) ( (unsigned long)x*PWM_PERIOD / (unsigned long)analog_res )
 void analogWrite(uint8_t pin, int val)
 {
-        pinMode(pin, OUTPUT); // pin as output
+    pinMode(pin, OUTPUT); // pin as output
 
  	if (val == 0)
 	{
@@ -142,16 +142,25 @@ void analogWrite(uint8_t pin, int val)
 	else
 	{
 
-	        uint8_t bit = digitalPinToBitMask(pin); // get pin bit
 	        uint8_t port = digitalPinToPort(pin);   // get pin port
-	        volatile uint8_t *sel;
-                
-                if (port == NOT_A_PORT) return; // pin on timer?
-               
-	        sel = portSelRegister(port); // get the port function select register address
-		*sel |= bit;                 // set bit in pin function select register  
+	        uint8_t pin2timer = digitalPinToTimer(pin);   // get pin 2 timer
+	        if (port == NOT_A_PORT) return; // pin on timer?
 
-                switch(digitalPinToTimer(pin)) {                // which timer and CCR?
+			if(pin2timer < T0A0_SEL1)
+			{
+				pinMode_int(pin, OUTPUT | PORT_SELECTION0);
+			}
+			else if(pin2timer < T0A0_SEL01)
+			{
+				pinMode_int(pin, OUTPUT | PORT_SELECTION1);
+				pin2timer -= (T0A0_SEL1 - T0A0);    // correct offset
+			}
+			else
+			{
+				pinMode_int(pin, OUTPUT | PORT_SELECTION0 | PORT_SELECTION1);
+				pin2timer -= (T0A0_SEL01 - T0A0);    // correct offset
+			}
+			switch(pin2timer) {                     // which timer and CCR?
  			//case: T0A0                            // CCR0 used as period register
 			case T0A1:                              // TimerA0 / CCR1
                                 TA0CCR0 = PWM_PERIOD;           // PWM Period
