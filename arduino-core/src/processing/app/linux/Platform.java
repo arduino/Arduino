@@ -22,18 +22,10 @@
 
 package processing.app.linux;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.Executor;
-import org.apache.commons.exec.PumpStreamHandler;
 import processing.app.PreferencesData;
-import processing.app.debug.TargetPackage;
 import processing.app.legacy.PConstants;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
 
 
 /**
