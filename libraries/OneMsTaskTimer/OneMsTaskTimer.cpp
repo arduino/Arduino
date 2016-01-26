@@ -271,11 +271,11 @@ void OneMsTaskTimer_int(void)
 #define DEFAULT_TIMER 1
 uint32_t timer_index_ = DEFAULT_TIMER;
 static volatile uint32_t g_ulBase;
+Clock_Handle myClock = NULL;
 void OneMsTaskTimer_int(UArg arg);
 
 void OneMsTaskTimer::start(uint32_t timer_index) {
     Clock_Params clockParams;
-    Clock_Handle myClock;
     Error_Block eb;
     Error_init(&eb);
 
@@ -283,10 +283,15 @@ void OneMsTaskTimer::start(uint32_t timer_index) {
     clockParams.period = 1;
     clockParams.startFlag = TRUE;
     clockParams.arg = (UArg)0x5555;
-
-    myClock = Clock_create(OneMsTaskTimer_int, 1, &clockParams, &eb);
+    if (myClock == NULL){
+		myClock = Clock_create(OneMsTaskTimer_int, 1, &clockParams, &eb);
+	}
+    Clock_start(myClock);
 }
 
+void OneMsTaskTimer::stop() {
+    Clock_stop(myClock);
+}
 void OneMsTaskTimer_int(UArg arg)
 {
   OneMsTaskTimer::_ticHandler();
