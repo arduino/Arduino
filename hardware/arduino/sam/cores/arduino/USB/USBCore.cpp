@@ -258,15 +258,21 @@ int USBD_SendControl(uint8_t flags __attribute__ ((unused)), const void* d, uint
 // plain ASCII string but is sent out as UTF-16 with the
 // correct 2-byte prefix
 static bool USB_SendStringDescriptor(const uint8_t *string, int wLength) {
-	uint16_t buff[64];
-	int l = 1;
-	wLength-=2;
-	while (*string && wLength>0) {
-		buff[l++] = (uint8_t)(*string++);
-		wLength-=2;
+	if (wLength < 2)
+		return false;
+
+	uint8_t buffer[wLength];
+	buffer[0] = strlen((const char*)string) * 2 + 2;
+	buffer[1] = 0x03;
+
+	uint8_t i;
+	for (i = 2; i < wLength && *string; i++) {
+		buffer[i++] = *string++;
+		if (i == wLength) break;
+		buffer[i] = 0;
 	}
-	buff[0] = (3<<8) | (l*2);
-	return USBD_SendControl(0, (uint8_t*)buff, l*2);
+
+	return USBD_SendControl(0, (uint8_t*)buffer, i);
 }
 
 //	Does not timeout or cross fifo boundaries
