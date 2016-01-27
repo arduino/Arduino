@@ -194,13 +194,13 @@
       <fileset dir="../libraries"/>
     </copy>
 
-    <download-library name="Firmata" version="2.5.0" tag="2.5.0"/>
+    <download-library name="Firmata" version="2.5.0"/>
     <download-library name="Bridge" version="1.6.0"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
     <download-library name="SpacebrewYun" version="1.0.0"/>
-    <download-library name="Temboo" version="1.1.4" githubuser="temboo"/>
+    <download-library name="Temboo" version="1.1.4"/>
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.0"/>
     <download-library name="Keyboard" version="1.0.0"/>
