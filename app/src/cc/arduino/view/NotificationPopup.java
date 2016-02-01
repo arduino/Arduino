@@ -29,6 +29,8 @@
 
 package cc.arduino.view;
 
+import static processing.app.Theme.scale;
+
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -45,14 +47,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkListener;
 
 import processing.app.Theme;
-import static processing.app.Theme.scale;
 
 public class NotificationPopup extends JDialog {
 
@@ -132,19 +132,5 @@ public class NotificationPopup extends JDialog {
 
   public void close() {
     dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-  }
-
-  public static void main(String args[]) {
-    NotificationPopup dialog = new NotificationPopup(new JFrame(),
-        System.out::println,
-        "<a href='arduinoide://boardsmanager'>test</a> test test test test test test test test\n"
-                             + " test test test test test test test test test test test");
-    dialog.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-        System.exit(0);
-      }
-    });
-    dialog.setVisible(true);
   }
 }
