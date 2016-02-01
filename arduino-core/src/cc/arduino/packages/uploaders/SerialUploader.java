@@ -247,11 +247,10 @@ public class SerialUploader extends Uploader {
       Thread.sleep(250);
       elapsed += 250;
 
-      // On Windows, it can take a long time for the port to disappear and
-      // come back, so use a longer time out before assuming that the
-      // selected
-      // port is the bootloader (not the sketch).
-      if (((!OSUtils.isWindows() && elapsed >= 500) || elapsed >= 5000) && now.contains(uploadPort)) {
+      // On Windows and OS X, it can take a few seconds for the port to disappear and
+      // come back, so use a time out before assuming that the selected port is the
+      // bootloader (not the sketch).
+      if (elapsed >= 5000 && now.contains(uploadPort)) {
         if (verbose)
           System.out.println("Uploading using selected port: " + uploadPort);
         return uploadPort;
