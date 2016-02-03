@@ -35,7 +35,7 @@
 static void nothing(void) {
 }
 
-static volatile voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS] = {
+static volatile voidFuncPtrParam intFunc[EXTERNAL_NUM_INTERRUPTS] = {
 #if EXTERNAL_NUM_INTERRUPTS > 8
     #warning There are more than 8 external interrupts. Some callbacks may not be initialized.
     nothing,
@@ -65,11 +65,23 @@ static volatile voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS] = {
     nothing,
 #endif
 };
+static volatile void* intFuncParam[EXTERNAL_NUM_INTERRUPTS];
 // volatile static voidFuncPtr twiIntFunc;
 
-void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
+void attachInterrupt(uint8_t interruptNum, voidFuncPtr userFunc, int mode) {
+  // THIS IMPLEMENTATION IS NOT PORTABLE!
+  // 
+  // On AVR's calling convention, calling a function with more arguments than it declares 
+  // is OK - The extra parameter is ignored and causes no harm
+  //
+  // This implementation takes advantage of it to support callbacks with and without parameters with minimum overhead.
+  attachInterruptParam(interruptNum, (voidFuncPtrParam)userFunc, mode, NULL);
+}
+
+void attachInterruptParam(uint8_t interruptNum, voidFuncPtrParam userFunc, int mode, void* param) {
   if(interruptNum < EXTERNAL_NUM_INTERRUPTS) {
     intFunc[interruptNum] = userFunc;
+    intFuncParam[interruptNum] = param;
     
     // Configure the interrupt mode (trigger on low input, any change, rising
     // edge, or falling edge).  The mode constants were chosen to correspond
@@ -271,6 +283,7 @@ void detachInterrupt(uint8_t interruptNum) {
     }
       
     intFunc[interruptNum] = nothing;
+    intFuncParam[interruptNum] = NULL;
   }
 }
 
@@ -282,7 +295,7 @@ void attachInterruptTwi(void (*userFunc)(void) ) {
 
 #define IMPLEMENT_ISR(vect, interrupt) \
   ISR(vect) { \
-    intFunc[interrupt](); \
+    intFunc[interrupt](intFuncParam [interrupt]); \
   }
 
 #if defined(__AVR_ATmega32U4__)
