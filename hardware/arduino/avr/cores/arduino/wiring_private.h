@@ -63,6 +63,7 @@ extern "C"{
 #endif
 
 typedef void (*voidFuncPtr)(void);
+typedef void (*voidFuncPtrParam)(void*);
 
 #ifdef __cplusplus
 } // extern "C"
