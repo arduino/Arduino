@@ -280,75 +280,37 @@ void attachInterruptTwi(void (*userFunc)(void) ) {
 }
 */
 
+#define IMPLEMENT_ISR(vect, interrupt) \
+  ISR(vect) { \
+    intFunc[interrupt](); \
+  }
+
 #if defined(__AVR_ATmega32U4__)
-ISR(INT0_vect) {
-    intFunc[EXTERNAL_INT_0]();
-}
 
-ISR(INT1_vect) {
-    intFunc[EXTERNAL_INT_1]();
-}
-
-ISR(INT2_vect) {
-    intFunc[EXTERNAL_INT_2]();
-}
-
-ISR(INT3_vect) {
-    intFunc[EXTERNAL_INT_3]();
-}
-
-ISR(INT6_vect) {
-    intFunc[EXTERNAL_INT_4]();
-}
+IMPLEMENT_ISR(INT0_vect, EXTERNAL_INT_0)
+IMPLEMENT_ISR(INT1_vect, EXTERNAL_INT_1)
+IMPLEMENT_ISR(INT2_vect, EXTERNAL_INT_2)
+IMPLEMENT_ISR(INT3_vect, EXTERNAL_INT_3)
+IMPLEMENT_ISR(INT6_vect, EXTERNAL_INT_4)
 
 #elif defined(EICRA) && defined(EICRB)
 
-ISR(INT0_vect) {
-    intFunc[EXTERNAL_INT_2]();
-}
-
-ISR(INT1_vect) {
-    intFunc[EXTERNAL_INT_3]();
-}
-
-ISR(INT2_vect) {
-    intFunc[EXTERNAL_INT_4]();
-}
-
-ISR(INT3_vect) {
-    intFunc[EXTERNAL_INT_5]();
-}
-
-ISR(INT4_vect) {
-    intFunc[EXTERNAL_INT_0]();
-}
-
-ISR(INT5_vect) {
-    intFunc[EXTERNAL_INT_1]();
-}
-
-ISR(INT6_vect) {
-    intFunc[EXTERNAL_INT_6]();
-}
-
-ISR(INT7_vect) {
-    intFunc[EXTERNAL_INT_7]();
-}
+IMPLEMENT_ISR(INT0_vect, EXTERNAL_INT_2)
+IMPLEMENT_ISR(INT1_vect, EXTERNAL_INT_3)
+IMPLEMENT_ISR(INT2_vect, EXTERNAL_INT_4)
+IMPLEMENT_ISR(INT3_vect, EXTERNAL_INT_5)
+IMPLEMENT_ISR(INT4_vect, EXTERNAL_INT_0)
+IMPLEMENT_ISR(INT5_vect, EXTERNAL_INT_1)
+IMPLEMENT_ISR(INT6_vect, EXTERNAL_INT_6)
+IMPLEMENT_ISR(INT7_vect, EXTERNAL_INT_7)
 
 #else
 
-ISR(INT0_vect) {
-    intFunc[EXTERNAL_INT_0]();
-}
-
-ISR(INT1_vect) {
-    intFunc[EXTERNAL_INT_1]();
-}
+IMPLEMENT_ISR(INT0_vect, EXTERNAL_INT_0)
+IMPLEMENT_ISR(INT1_vect, EXTERNAL_INT_1)
 
 #if defined(EICRA) && defined(ISC20)
-ISR(INT2_vect) {
-    intFunc[EXTERNAL_INT_2]();
-}
+IMPLEMENT_ISR(INT2_vect, EXTERNAL_INT_2)
 #endif
 
 #endif
