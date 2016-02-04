@@ -25,6 +25,7 @@ public class I18n {
     tr("Partner");
     tr("Recommended");
     tr("Contributed");
+    tr("Retired");
 
     tr("Display");
     tr("Communication");
@@ -67,11 +68,6 @@ public class I18n {
     PROMPT_CANCEL = tr("Cancel");
     PROMPT_OK = tr("OK");
     PROMPT_BROWSE = tr("Browse");
-  }
-
-  @Deprecated
-  public static String _(String s) {
-    return tr(s);
   }
 
   public static String tr(String s) {

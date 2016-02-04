@@ -48,7 +48,7 @@ public class ProgressAwareMessageConsumer implements MessageConsumer {
 
   @Override
   public void message(String s) {
-    if (s.startsWith("===Progress")) {
+    if (s.startsWith("===info ||| Progress") || s.startsWith("===Progress")) {
       Map<String, Object> parsedMessage = parser.parse(s);
       Object[] args = (Object[]) parsedMessage.get("args");
       progressListener.progress(Double.valueOf(args[0].toString()).intValue());

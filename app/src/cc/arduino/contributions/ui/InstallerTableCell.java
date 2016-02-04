@@ -29,21 +29,21 @@
 
 package cc.arduino.contributions.ui;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
+import javax.swing.AbstractCellEditor;
+import javax.swing.JTextPane;
 import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
-import java.awt.*;
 
-public abstract class InstallerTableCell extends AbstractCellEditor implements TableCellEditor, TableCellRenderer {
+public abstract class InstallerTableCell extends AbstractCellEditor implements TableCellEditor {
 
-  public void setEnabled(boolean b) {
-  }
+  abstract public void setEnabled(boolean b);
 
-  public void setStatus(String s) {
-  }
+  abstract public void setStatus(String s);
   
-  protected void setJTextPaneDimensionToFitContainedText(JTextPane jTextPane, int width) {
+  public static void setJTextPaneDimensionToFitContainedText(JTextPane jTextPane, int width) {
     Dimension minimumDimension = new Dimension(width, 10);
     jTextPane.setPreferredSize(minimumDimension);
     jTextPane.setSize(minimumDimension);

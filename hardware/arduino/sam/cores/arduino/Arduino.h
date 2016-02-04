@@ -155,6 +155,16 @@ typedef enum _ETCChannel
 #define PIN_ATTR_PWM           (1UL<<3)
 #define PIN_ATTR_TIMER         (1UL<<4)
 
+#define PIN_STATUS_DIGITAL_INPUT_PULLUP  (0x01)
+#define PIN_STATUS_DIGITAL_INPUT         (0x02)
+#define PIN_STATUS_DIGITAL_OUTPUT        (0x03)
+#define PIN_STATUS_ANALOG                (0x04)
+#define PIN_STATUS_PWM                   (0x05)
+#define PIN_STATUS_TIMER                 (0x06)
+#define PIN_STATUS_SERIAL                (0x07)
+#define PIN_STATUS_DW_LOW                (0x10)
+#define PIN_STATUS_DW_HIGH               (0x11)
+
 /* Types used for the tables below */
 typedef struct _PinDescription
 {
@@ -169,6 +179,8 @@ typedef struct _PinDescription
   EPWMChannel ulPWMChannel ;
   ETCChannel ulTCChannel ;
 } PinDescription ;
+
+extern uint8_t g_pinStatus[];
 
 /* Pins table to be instanciated into variant.cpp */
 extern const PinDescription g_APinDescription[] ;

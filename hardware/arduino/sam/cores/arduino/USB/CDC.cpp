@@ -55,6 +55,8 @@ static volatile LineInfo _usbLineInfo = {
     0x00   // lineState
 };
 
+static volatile int32_t breakValue = -1;
+
 _Pragma("pack(1)")
 static const CDCDescriptor _cdcInterface =
 {
@@ -139,6 +141,12 @@ bool WEAK CDC_Setup(USBSetup& setup)
 				else
 					cancelReset();
 			}
+			return true;
+		}
+
+		if (CDC_SEND_BREAK == r)
+		{
+			breakValue = ((uint16_t)setup.wValueH << 8) | setup.wValueL;
 			return true;
 		}
 	}
@@ -298,6 +306,27 @@ Serial_::operator bool()
 
 	delay(10);
 	return result;
+}
+
+int32_t Serial_::readBreak() {
+	uint8_t enableInterrupts = ((__get_PRIMASK() & 0x1) == 0 && (__get_FAULTMASK() & 0x1) == 0);
+
+	// disable interrupts,
+	// to avoid clearing a breakValue that might occur 
+	// while processing the current break value
+	__disable_irq();
+
+	int ret = breakValue;
+
+	breakValue = -1;
+
+	if (enableInterrupts)
+	{
+		// re-enable the interrupts
+		__enable_irq();
+	}
+
+	return ret;
 }
 
 unsigned long Serial_::baud() {

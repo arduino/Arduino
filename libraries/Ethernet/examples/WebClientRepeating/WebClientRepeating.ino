@@ -89,7 +89,7 @@ void httpRequest() {
   // if there's a successful connection:
   if (client.connect(server, 80)) {
     Serial.println("connecting...");
-    // send the HTTP PUT request:
+    // send the HTTP GET request:
     client.println("GET /latest.txt HTTP/1.1");
     client.println("Host: www.arduino.cc");
     client.println("User-Agent: arduino-ethernet");
@@ -103,5 +103,3 @@ void httpRequest() {
     Serial.println("connection failed");
   }
 }
-
-

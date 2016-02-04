@@ -29,7 +29,6 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.lang3.StringUtils;
-import processing.app.debug.TargetPackage;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -41,7 +40,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -162,41 +160,6 @@ public class Platform extends processing.app.Platform {
   @Override
   public String getName() {
     return PConstants.platformNames[PConstants.MACOSX];
-  }
-
-  @Override
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    assert packages != null;
-    if (devicesListOutput == null) {
-      return super.resolveDeviceAttachedTo(serial, packages, null);
-    }
-
-    try {
-      String vidPid = new SystemProfilerParser().extractVIDAndPID(devicesListOutput, serial);
-
-      if (vidPid == null) {
-        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-      }
-
-      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
-    } catch (IOException e) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
-  }
-
-  @Override
-  public String preListAllCandidateDevices() {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler(baos, null));
-
-    try {
-      CommandLine toDevicePath = CommandLine.parse("/usr/sbin/system_profiler SPUSBDataType");
-      executor.execute(toDevicePath);
-      return new String(baos.toByteArray());
-    } catch (Throwable e) {
-      return super.preListAllCandidateDevices();
-    }
   }
 
   @Override

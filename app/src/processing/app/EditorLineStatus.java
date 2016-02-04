@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
+import static processing.app.I18n.tr;
 
 
 /**
@@ -105,7 +106,7 @@ public class EditorLineStatus extends JComponent {
     g.drawString(text, 6, baseline);
 
     g.setColor(messageForeground);
-    String tmp = name + " on " + serialport;
+    String tmp = I18n.format(tr("{0} on {1}"), name, serialport);
     
     Rectangle2D bounds = g.getFontMetrics().getStringBounds(tmp, null);
     

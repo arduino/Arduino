@@ -148,11 +148,12 @@ uint32_t analogRead(uint32_t ulPin)
 		case ADC11 :
 
 			// Enable the corresponding channel
-			if (ulChannel != latestSelectedChannel) {
+			if (adc_get_channel_status(ADC, ulChannel) != 1) {
 				adc_enable_channel( ADC, ulChannel );
-				if ( latestSelectedChannel != (uint32_t)-1 )
+				if ( latestSelectedChannel != (uint32_t)-1 && ulChannel != latestSelectedChannel)
 					adc_disable_channel( ADC, latestSelectedChannel );
 				latestSelectedChannel = ulChannel;
+				g_pinStatus[ulPin] = (g_pinStatus[ulPin] & 0xF0) | PIN_STATUS_ANALOG;
 			}
 
 			// Start the ADC
@@ -189,13 +190,9 @@ static void TC_SetCMR_ChannelB(Tc *tc, uint32_t chan, uint32_t v)
 }
 
 static uint8_t PWMEnabled = 0;
-static uint8_t pinEnabled[PINS_COUNT];
 static uint8_t TCChanEnabled[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void analogOutputInit(void) {
-	uint8_t i;
-	for (i=0; i<PINS_COUNT; i++)
-		pinEnabled[i] = 0;
 }
 
 // Right now, PWM output only works on the pins with
@@ -263,7 +260,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 		}
 
 		uint32_t chan = g_APinDescription[ulPin].ulPWMChannel;
-		if (!pinEnabled[ulPin]) {
+		if ((g_pinStatus[ulPin] & 0xF) != PIN_STATUS_PWM) {
 			// Setup PWM for this pin
 			PIO_Configure(g_APinDescription[ulPin].pPort,
 					g_APinDescription[ulPin].ulPinType,
@@ -273,7 +270,7 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 			PWMC_SetPeriod(PWM_INTERFACE, chan, PWM_MAX_DUTY_CYCLE);
 			PWMC_SetDutyCycle(PWM_INTERFACE, chan, ulValue);
 			PWMC_EnableChannel(PWM_INTERFACE, chan);
-			pinEnabled[ulPin] = 1;
+			g_pinStatus[ulPin] = (g_pinStatus[ulPin] & 0xF0) | PIN_STATUS_PWM;
 		}
 
 		PWMC_SetDutyCycle(PWM_INTERFACE, chan, ulValue);
@@ -328,12 +325,12 @@ void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 				TC_SetCMR_ChannelB(chTC, chNo, TC_CMR_BCPB_CLEAR | TC_CMR_BCPC_SET);
 			}
 		}
-		if (!pinEnabled[ulPin]) {
+		if ((g_pinStatus[ulPin] & 0xF) != PIN_STATUS_PWM) {
 			PIO_Configure(g_APinDescription[ulPin].pPort,
 					g_APinDescription[ulPin].ulPinType,
 					g_APinDescription[ulPin].ulPin,
 					g_APinDescription[ulPin].ulPinConfiguration);
-			pinEnabled[ulPin] = 1;
+			g_pinStatus[ulPin] = (g_pinStatus[ulPin] & 0xF0) | PIN_STATUS_PWM;
 		}
 		if (!TCChanEnabled[interfaceID]) {
 			TC_Start(chTC, chNo);

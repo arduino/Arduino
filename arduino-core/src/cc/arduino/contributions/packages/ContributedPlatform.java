@@ -108,6 +108,24 @@ public abstract class ContributedPlatform extends DownloadableContribution {
     }
 
     ContributedPlatform obj1 = (ContributedPlatform) obj;
-    return getParentPackage().getName().equals(obj1.getParentPackage().getName()) && getArchitecture().equals(obj1.getArchitecture()) && getVersion().equals(obj1.getVersion()) && getName().equals(obj1.getName());
+
+    ContributedPackage parentPackage = getParentPackage();
+    ContributedPackage parentPackage1 = obj1.getParentPackage();
+    if (parentPackage == null) {
+      if (parentPackage1 != null)
+        return false;
+    } else {
+      if (parentPackage1 == null)
+        return false;
+      if (!parentPackage.getName().equals(parentPackage1.getName()))
+        return false;
+    }
+    if (!getArchitecture().equals(obj1.getArchitecture())) {
+      return false;
+    }
+    if (!getVersion().equals(obj1.getVersion())) {
+      return false;
+    }
+    return getName().equals(obj1.getName());
   }
 }
