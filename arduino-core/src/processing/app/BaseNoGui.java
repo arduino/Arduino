@@ -1122,7 +1122,9 @@ public class BaseNoGui {
   public static void selectSerialPort(String port) {
     PreferencesData.set("serial.port", port);
     BoardPort boardPort = getDiscoveryManager().find(port, true);
-    PreferencesData.set("serial.port.iserial", boardPort.getPrefs().get("iserial"));
+    if (boardPort != null) {
+      PreferencesData.set("serial.port.iserial", boardPort.getPrefs().get("iserial"));
+    }
     String portFile = port;
     if (port.startsWith("/dev/")) {
       portFile = portFile.substring(5);
