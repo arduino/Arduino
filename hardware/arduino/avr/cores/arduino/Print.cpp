@@ -88,14 +88,12 @@ size_t Print::print(long n, int base)
 {
   if (base == 0) {
     return write(n);
-  } else if (base == 10) {
+  } else {
     if (n < 0) {
       int t = print('-');
       n = -n;
-      return printNumber(n, 10) + t;
+      return printNumber(n, base) + t;
     }
-    return printNumber(n, 10);
-  } else {
     return printNumber(n, base);
   }
 }
