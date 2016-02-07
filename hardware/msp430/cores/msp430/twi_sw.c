@@ -25,6 +25,9 @@
 
 #include "twi_sw.h"
 
+#if DEFAULT_I2C == -1 /* indicates SW I2C on pseudo module 1 */
+
+
 #define I2C_DELAY1() __delay_cycles(F_CPU / 1000000UL * 10)
 #define I2C_DELAY2() __delay_cycles(F_CPU / 1000000UL * 20)
 
@@ -161,3 +164,5 @@ void i2c_sw_stop(void)             // Send I2C stop command
   pinMode(TWISDA1, INPUT);
   I2C_DELAY2();
 }
+
+#endif // #if DEFAULT_I2C = -1 /* indicates SW I2C on pseudo module 1 */
