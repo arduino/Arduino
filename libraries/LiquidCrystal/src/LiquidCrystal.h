@@ -103,6 +103,7 @@ private:
 
   uint8_t _numlines;
   uint8_t _row_offsets[4];
+  unsigned long _oldmicros;
 };
 
 #endif

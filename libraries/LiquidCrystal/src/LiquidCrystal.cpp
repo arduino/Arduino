@@ -5,6 +5,9 @@
 #include <inttypes.h>
 #include "Arduino.h"
 
+// Minimum time between falling edges of E (enable pin to do writes)
+#define _MIN_WRITE_DELAY    80
+
 // When the display powers up, it is configured as follows:
 //
 // 1. Display clear
@@ -301,12 +304,16 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
 }
 
 void LiquidCrystal::pulseEnable(void) {
-  digitalWrite(_enable_pin, LOW);
-  delayMicroseconds(1);    
+  unsigned long _delaymicros;  
+  
   digitalWrite(_enable_pin, HIGH);
-  delayMicroseconds(1);    // enable pulse must be >450ns
+  _delaymicros = micros( ) - _oldmicros; // PREVIOUS commands need > 37us to settle
+  if( _delaymicros < _MIN_WRITE_DELAY )
+    delayMicroseconds( _MIN_WRITE_DELAY - _delaymicros ); // wait time for delay
+  else
+    delayMicroseconds(1);    // enable pulse HIGH must be >450ns
   digitalWrite(_enable_pin, LOW);
-  delayMicroseconds(100);   // commands need > 37us to settle
+  _oldmicros = micros( );       // save time to check next time
 }
 
 void LiquidCrystal::write4bits(uint8_t value) {
