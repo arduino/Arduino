@@ -36,6 +36,7 @@ import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.view.Event;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
+
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import processing.app.debug.TargetBoard;
@@ -157,8 +158,6 @@ public class Base {
 
     BaseNoGui.initParameters(args);
 
-    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
-
     BaseNoGui.initVersion();
 
 //    if (System.getProperty("mrj.version") != null) {
@@ -207,6 +206,7 @@ public class Base {
 
     // setup the theme coloring fun
     Theme.init();
+    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
 
     // Set the look and feel before opening the window
     try {
@@ -1742,18 +1742,17 @@ public class Base {
    */
   @SuppressWarnings("serial")
   public void handleAbout() {
-    final Image image = getLibImage("about.png", activeEditor);
+    final Image image = Theme.getLibImage("about", activeEditor,
+                                          Theme.scale(475), Theme.scale(300));
     final Window window = new Window(activeEditor) {
-      public void paint(Graphics g) {
+      public void paint(Graphics graphics) {
+        Graphics2D g = Theme.setupGraphics2D(graphics);
         g.drawImage(image, 0, 0, null);
 
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-
-        g.setFont(new Font("SansSerif", Font.PLAIN, 11));
+        Font f = new Font("SansSerif", Font.PLAIN, Theme.scale(11));
+        g.setFont(f);
         g.setColor(Color.white);
-        g.drawString(BaseNoGui.VERSION_NAME_LONG, 33, 20);
+        g.drawString(BaseNoGui.VERSION_NAME_LONG, Theme.scale(33), Theme.scale(20));
       }
     };
     window.addMouseListener(new MouseAdapter() {
@@ -2032,32 +2031,6 @@ public class Base {
 
   static public File getContentFile(String name) {
     return BaseNoGui.getContentFile(name);
-  }
-
-
-  /**
-   * Get an image associated with the current color theme.
-   */
-  static public Image getThemeImage(String name, Component who) {
-    return getLibImage("theme/" + name, who);
-  }
-
-
-  /**
-   * Return an Image object from inside the Processing lib folder.
-   */
-  static public Image getLibImage(String name, Component who) {
-    Toolkit tk = Toolkit.getDefaultToolkit();
-
-    File imageLocation = new File(getContentFile("lib"), name);
-    Image image = tk.getImage(imageLocation.getAbsolutePath());
-    MediaTracker tracker = new MediaTracker(who);
-    tracker.addImage(image, 0);
-    try {
-      tracker.waitForAll();
-    } catch (InterruptedException e) {
-    }
-    return image;
   }
 
 
