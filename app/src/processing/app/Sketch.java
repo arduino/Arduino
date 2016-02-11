@@ -1200,7 +1200,11 @@ public class Sketch {
     } while (uploader.requiresAuthorization() && !success);
 
     if (!success) {
-      editor.statusError(uploader.getFailureMessage());
+      String errorMessage = uploader.getFailureMessage();
+      if (errorMessage.equals("")) {
+        errorMessage = tr("An error occurred while uploading the sketch");
+      }
+      editor.statusError(errorMessage);
     }
 
     return success;
