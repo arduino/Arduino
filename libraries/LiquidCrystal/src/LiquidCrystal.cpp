@@ -6,7 +6,7 @@
 #include "Arduino.h"
 
 // Minimum time between falling edges of E (enable pin to do writes)
-#define _MIN_WRITE_DELAY    80
+#define _LCD_COMMAND_DELAY    40
 
 // When the display powers up, it is configured as follows:
 //
@@ -121,19 +121,19 @@ void LiquidCrystal::begin(uint8_t cols, uint8_t lines, uint8_t dotsize) {
     // figure 24, pg 46
 
     // we start in 8bit mode, try to set 4 bit mode
-    write4bits(0x03);
+    writebits(0x03, 4, 1);
     delayMicroseconds(4500); // wait min 4.1ms
 
     // second try
-    write4bits(0x03);
+    writebits(0x03, 4, 1);
     delayMicroseconds(4500); // wait min 4.1ms
     
     // third go!
-    write4bits(0x03); 
+    writebits(0x03, 4, 1);
     delayMicroseconds(150);
 
     // finally, set to 4-bit interface
-    write4bits(0x02); 
+    writebits(0x02, 4, 1);
   } else {
     // this is according to the hitachi HD44780 datasheet
     // page 45 figure 23
@@ -263,6 +263,7 @@ void LiquidCrystal::noAutoscroll(void) {
   command(LCD_ENTRYMODESET | _displaymode);
 }
 
+
 // Allows us to fill the first 8 CGRAM locations
 // with custom characters
 void LiquidCrystal::createChar(uint8_t location, uint8_t charmap[]) {
@@ -296,38 +297,51 @@ void LiquidCrystal::send(uint8_t value, uint8_t mode) {
   }
   
   if (_displayfunction & LCD_8BITMODE) {
-    write8bits(value); 
+    writebits(value, 8, 0); 
   } else {
-    write4bits(value>>4);
-    write4bits(value);
+    writebits(value>>4, 4, 0);
+    writebits(value, 4, 1);
   }
 }
 
-void LiquidCrystal::pulseEnable(void) {
+
+/* pulseEnable once data and RS set pulse enable line to send data in 4/8 bit mode
+
+   Checks when last falling edge of enable was and if sending a NEW command
+   delays for time to get to _LCD_COMMAND_DELAY to ensure controller ready
+   
+   When in 4 bit mode 2nd nibble can be sent at minimum delay forEnable high 
+   time delay 1us
+
+   Parameter  type -  0 = new command start
+                      1 = 2nd nibble for 4 bit mode (needs 1us delay 
+                           NOT _LCD_COMMAND_DELAY)
+*/
+void LiquidCrystal::pulseEnable(uint8_t type) {
   unsigned long _delaymicros;  
   
   digitalWrite(_enable_pin, HIGH);
   _delaymicros = micros( ) - _oldmicros; // PREVIOUS commands need > 37us to settle
-  if( _delaymicros < _MIN_WRITE_DELAY )
-    delayMicroseconds( _MIN_WRITE_DELAY - _delaymicros ); // wait time for delay
+  if( _delaymicros < _LCD_COMMAND_DELAY && type == 0 )
+    delayMicroseconds( _LCD_COMMAND_DELAY - _delaymicros ); // wait time for delay
   else
     delayMicroseconds(1);    // enable pulse HIGH must be >450ns
   digitalWrite(_enable_pin, LOW);
   _oldmicros = micros( );       // save time to check next time
 }
 
-void LiquidCrystal::write4bits(uint8_t value) {
-  for (int i = 0; i < 4; i++) {
+
+/* writebits transfer correct number of bits to output and then call pulse enable
+
+   Parameters  value - 4 or 8 bits to send
+                       in 4 bit mode shift top 4 bits right before calling
+               bits -  value 4 or 8 for bits to send
+               type -  0 = new command start
+                       1 = 2nd nibble for 4 bit mode (needs 1us delay NOT _MIN_WRITE_DELAY
+*/
+void LiquidCrystal::writebits(uint8_t value, uint8_t bits, uint8_t type) {
+  for (int i = 0; i < bits; i++) {
     digitalWrite(_data_pins[i], (value >> i) & 0x01);
   }
-
-  pulseEnable();
-}
-
-void LiquidCrystal::write8bits(uint8_t value) {
-  for (int i = 0; i < 8; i++) {
-    digitalWrite(_data_pins[i], (value >> i) & 0x01);
-  }
-  
-  pulseEnable();
+  pulseEnable( type );
 }
