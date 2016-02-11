@@ -139,13 +139,11 @@ public abstract class Uploader implements MessageConsumer {
       e.printStackTrace();
     }
 
-    if (error != null) {
-      RunnerException exception = new RunnerException(error);
-      exception.hideStackTrace();
-      throw exception;
-    }
-
     return result == 0;
+  }
+
+  public String getFailureMessage() {
+    return error;
   }
 
   public void message(String s) {
@@ -157,8 +155,9 @@ public abstract class Uploader implements MessageConsumer {
     System.err.print(s);
 
     // ignore cautions
-    if (s.contains("Error")) {
+    if (s.toLowerCase().contains("error")) {
       notFoundError = true;
+      error = s;
       return;
     }
     if (notFoundError) {
