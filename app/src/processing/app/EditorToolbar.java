@@ -31,7 +31,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import static processing.app.I18n.tr;
-
+import static processing.app.Theme.scale;
 
 /**
  * run/stop/etc buttons for the ide
@@ -56,19 +56,19 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   /**
    * Width of each toolbar button.
    */
-  private static final int BUTTON_WIDTH = 27;
+  private static final int BUTTON_WIDTH = scale(27);
   /**
    * Height of each toolbar button.
    */
-  private static final int BUTTON_HEIGHT = 32;
+  private static final int BUTTON_HEIGHT = scale(32);
   /**
    * The amount of space between groups of buttons on the toolbar.
    */
-  private static final int BUTTON_GAP = 5;
+  private static final int BUTTON_GAP = scale(5);
   /**
    * Size of the button image being chopped up.
    */
-  private static final int BUTTON_IMAGE_SIZE = 33;
+  private static final int BUTTON_IMAGE_SIZE = scale(33);
 
 
   private static final int RUN = 0;
@@ -139,16 +139,20 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
 
   private void loadButtons() {
-    Image allButtons = Base.getThemeImage("buttons.gif", this);
+    Image allButtons = Theme.getThemeImage("buttons", this,
+                                           BUTTON_IMAGE_SIZE * BUTTON_COUNT,
+                                           BUTTON_IMAGE_SIZE * 3);
     buttonImages = new Image[BUTTON_COUNT][3];
 
     for (int i = 0; i < BUTTON_COUNT; i++) {
       for (int state = 0; state < 3; state++) {
         Image image = createImage(BUTTON_WIDTH, BUTTON_HEIGHT);
         Graphics g = image.getGraphics();
-        g.drawImage(allButtons,
-          -(i * BUTTON_IMAGE_SIZE) - 3,
-          (-2 + state) * BUTTON_IMAGE_SIZE, null);
+        g.setColor(bgcolor);
+        g.fillRect(0, 0, BUTTON_WIDTH, BUTTON_HEIGHT);
+        int offset = (BUTTON_IMAGE_SIZE - BUTTON_WIDTH) / 2;
+        g.drawImage(allButtons, -(i * BUTTON_IMAGE_SIZE) - offset,
+                    (-2 + state) * BUTTON_IMAGE_SIZE, null);
         buttonImages[i][state] = image;
       }
     }
@@ -193,7 +197,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       x1[SERIAL] = width - BUTTON_WIDTH - 14;
       x2[SERIAL] = width - 14;
     }
-    Graphics g = offscreen.getGraphics();
+    Graphics2D g = Theme.setupGraphics2D(offscreen.getGraphics());
     g.setColor(bgcolor); //getBackground());
     g.fillRect(0, 0, width, height);
 
@@ -437,7 +441,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, BUTTON_HEIGHT);
+    return new Dimension(scale(3000), BUTTON_HEIGHT);
   }
 
 

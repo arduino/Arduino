@@ -35,6 +35,7 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import static processing.app.Theme.scale;
 
 /**
  * Sketch tabs at the top of the editor window.
@@ -65,15 +66,20 @@ public class EditorHeader extends JComponent {
   static final int UNSELECTED = 0;
   static final int SELECTED = 1;
 
-  static final String WHERE[] = { "left", "mid", "right", "menu" };
+  static final String WHERE[] = { "left", "mid", "right" };
   static final int LEFT = 0;
   static final int MIDDLE = 1;
   static final int RIGHT = 2;
-  static final int MENU = 3;
 
-  static final int PIECE_WIDTH = 4;
+  static final int PIECE_WIDTH = scale(4);
+  static final int PIECE_HEIGHT = scale(33);
+
+  // value for the size bars, buttons, etc
+  // TODO: Should be a Theme value?
+  static final int GRID_SIZE = 33;
 
   static Image[][] pieces;
+  static Image menuButtons[];
 
   Image offscreen;
   int sizeW, sizeH;
@@ -144,11 +150,16 @@ public class EditorHeader extends JComponent {
 
     if (pieces == null) {
       pieces = new Image[STATUS.length][WHERE.length];
+      menuButtons = new Image[STATUS.length];
       for (int i = 0; i < STATUS.length; i++) {
         for (int j = 0; j < WHERE.length; j++) {
-          String path = "tab-" + STATUS[i] + "-" + WHERE[j] + ".gif";
-          pieces[i][j] = Base.getThemeImage(path, this);
+          String path = "tab-" + STATUS[i] + "-" + WHERE[j];
+          pieces[i][j] = Theme.getThemeImage(path, this, PIECE_WIDTH,
+                                             PIECE_HEIGHT);
         }
+        String path = "tab-" + STATUS[i] + "-menu";
+        menuButtons[i] = Theme.getThemeImage(path, this, PIECE_HEIGHT,
+                                             PIECE_HEIGHT);
       }
     }
 
@@ -212,18 +223,13 @@ public class EditorHeader extends JComponent {
       offscreen = createImage(imageW, imageH);
     }
 
-    Graphics g = offscreen.getGraphics();
+    Graphics2D g = Theme.setupGraphics2D(offscreen.getGraphics());
     if (font == null) {
       font = Theme.getFont("header.text.font");
     }
     g.setFont(font);  // need to set this each time through
     metrics = g.getFontMetrics();
     fontAscent = metrics.getAscent();
-    //}
-
-    //Graphics2D g2 = (Graphics2D) g;
-    //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-    //                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
     // set the background for the offscreen
     g.setColor(backgroundColor);
@@ -235,7 +241,7 @@ public class EditorHeader extends JComponent {
       tabRight = new int[codeCount];
     }
 
-    int x = 6; // offset from left edge of the component
+    int x = scale(6); // offset from left edge of the component
     for (int i = 0; i < sketch.getCodeCount(); i++) {
       SketchCode code = sketch.getCode(i);
 
@@ -245,9 +251,8 @@ public class EditorHeader extends JComponent {
       // if modified, add the li'l glyph next to the name
       String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
 
-      Graphics2D g2 = (Graphics2D) g;
       int textWidth = (int)
-        font.getStringBounds(text, g2.getFontRenderContext()).getWidth();
+        font.getStringBounds(text, g.getFontRenderContext()).getWidth();
 
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
@@ -274,10 +279,10 @@ public class EditorHeader extends JComponent {
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
     }
 
-    menuLeft = sizeW - (16 + pieces[0][MENU].getWidth(this));
+    menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
     menuRight = sizeW - 16;
     // draw the dropdown menu target
-    g.drawImage(pieces[popup.isVisible() ? SELECTED : UNSELECTED][MENU],
+    g.drawImage(menuButtons[popup.isVisible() ? SELECTED : UNSELECTED],
                 menuLeft, 0, null);
 
     screen.drawImage(offscreen, 0, 0, null);
@@ -337,17 +342,17 @@ public class EditorHeader extends JComponent {
 
 
   public Dimension getMinimumSize() {
-    if (OSUtils.isMacOS()) {
-      return new Dimension(300, Preferences.GRID_SIZE);
-    }
-    return new Dimension(300, Preferences.GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(300, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 
 
   public Dimension getMaximumSize() {
-    if (OSUtils.isMacOS()) {
-      return new Dimension(3000, Preferences.GRID_SIZE);
-    }
-    return new Dimension(3000, Preferences.GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(3000, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 }
