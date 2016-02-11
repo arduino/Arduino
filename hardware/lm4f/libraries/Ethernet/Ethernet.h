@@ -13,9 +13,9 @@
 #define CLASS_A 0x0
 #define CLASS_B 0x2
 #define CLASS_C 0x6
-const IPAddress CLASS_A_SUBNET(255, 255, 255, 0);
+const IPAddress CLASS_A_SUBNET(255, 0, 0, 0);
 const IPAddress CLASS_B_SUBNET(255, 255, 0, 0);
-const IPAddress CLASS_C_SUBNET(255, 0, 0, 0);
+const IPAddress CLASS_C_SUBNET(255, 255, 255, 0);
 
 class EthernetClass {
 private:
