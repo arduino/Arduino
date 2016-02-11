@@ -73,7 +73,7 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.10" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.11" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -885,7 +885,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino6/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino7/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>

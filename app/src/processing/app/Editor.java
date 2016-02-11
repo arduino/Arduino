@@ -54,6 +54,7 @@ import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -79,6 +80,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -304,7 +306,6 @@ public class Editor extends JFrame implements RunnerListener {
     upper.add(scrollPane);
     splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
 
-    splitPane.setOneTouchExpandable(true);
     // repaint child panes while resizing
     splitPane.setContinuousLayout(true);
     // if window increases in size, give all of increase to
@@ -321,15 +322,11 @@ public class Editor extends JFrame implements RunnerListener {
     Keys.killBinding(splitPane, Keys.ctrl(KeyEvent.VK_TAB));
     Keys.killBinding(splitPane, Keys.ctrlShift(KeyEvent.VK_TAB));
 
-    // the default size on windows is too small and kinda ugly
-    int dividerSize = PreferencesData.getInteger("editor.divider.size");
-    if (dividerSize != 0) {
-      splitPane.setDividerSize(dividerSize);
-    }
+    splitPane.setDividerSize(scale(splitPane.getDividerSize()));
 
     // the following changed from 600, 400 for netbooks
     // http://code.google.com/p/arduino/issues/detail?id=52
-    splitPane.setMinimumSize(new Dimension(600, 100));
+    splitPane.setMinimumSize(scale(new Dimension(600, 100)));
     box.add(splitPane);
 
     // hopefully these are no longer needed w/ swing
@@ -342,35 +339,23 @@ public class Editor extends JFrame implements RunnerListener {
 
     pane.setTransferHandler(new FileDropHandler());
 
-//    System.out.println("t1");
-
-    // Finish preparing Editor (formerly found in Base)
-    pack();
-
-//    System.out.println("t2");
-
-    // Set the window bounds and the divider location before setting it visible
-    setPlacement(storedLocation, defaultLocation);
-
-
     // Set the minimum size for the editor window
-    setMinimumSize(new Dimension(PreferencesData.getInteger("editor.window.width.min"),
-                                 PreferencesData.getInteger("editor.window.height.min")));
-//    System.out.println("t3");
+    setMinimumSize(scale(new Dimension(
+        PreferencesData.getInteger("editor.window.width.min"),
+        PreferencesData.getInteger("editor.window.height.min"))));
 
     // Bring back the general options for the editor
     applyPreferences();
 
-//    System.out.println("t4");
+    // Finish preparing Editor (formerly found in Base)
+    pack();
+
+    // Set the window bounds and the divider location before setting it visible
+    setPlacement(storedLocation, defaultLocation);
 
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketch = null;
-
-//    System.out.println("t5");
-
-    // All set, now show the window
-    //setVisible(true);
   }
 
 
@@ -472,18 +457,6 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  /**
-   * Hack for #@#)$(* Mac OS X 10.2.
-   * <p/>
-   * This appears to only be required on OS X 10.2, and is not
-   * even being called on later versions of OS X or Windows.
-   */
-//  public Dimension getMinimumSize() {
-//    //System.out.println("getting minimum size");
-//    return new Dimension(500, 550);
-//  }
-
-
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
@@ -518,10 +491,9 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     // apply changes to the font size for the editor
-    //TextAreaPainter painter = textarea.getPainter();
-    textarea.setFont(PreferencesData.getFont("editor.font"));
-    //Font font = painter.getFont();
-    //textarea.getPainter().setFont(new Font("Courier", Font.PLAIN, 36));
+    Font editorFont = scale(PreferencesData.getFont("editor.font"));
+    textarea.setFont(editorFont);
+    scrollPane.getGutter().setLineNumberFont(editorFont);
 
     // in case tab expansion stuff has changed
     // listener.applyPreferences();
@@ -1041,28 +1013,20 @@ public class Editor extends JFrame implements RunnerListener {
     textArea.setAntiAliasingEnabled(PreferencesData.getBoolean("editor.antialias"));
     textArea.setTabsEmulated(PreferencesData.getBoolean("editor.tabs.expand"));
     textArea.setTabSize(PreferencesData.getInteger("editor.tabs.size"));
-    textArea.addHyperlinkListener(new HyperlinkListener() {
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent hyperlinkEvent) {
-        try {
-          platform.openURL(sketch.getFolder(), hyperlinkEvent.getURL().toExternalForm());
-        } catch (Exception e) {
-          Base.showWarning(e.getMessage(), e.getMessage(), e);
-        }
+    textArea.addHyperlinkListener(evt -> {
+      try {
+        platform.openURL(sketch.getFolder(), evt.getURL().toExternalForm());
+      } catch (Exception e) {
+        Base.showWarning(e.getMessage(), e.getMessage(), e);
       }
     });
-    textArea.addCaretListener(new CaretListener() {
+    textArea.addCaretListener(e -> {
+      Element root = textArea.getDocument().getDefaultRootElement();
+      int lineStart = root.getElementIndex(e.getMark());
+      int lineEnd = root.getElementIndex(e.getDot());
 
-      @Override
-      public void caretUpdate(CaretEvent e) {
-        int lineStart = textArea.getDocument().getDefaultRootElement().getElementIndex(e.getMark());
-        int lineEnd = textArea.getDocument().getDefaultRootElement().getElementIndex(e.getDot());
-
-        lineStatus.set(lineStart, lineEnd);
-      }
-
+      lineStatus.set(lineStart, lineEnd);
     });
-
     ToolTipManager.sharedInstance().registerComponent(textArea);
 
     configurePopupMenu(textArea);

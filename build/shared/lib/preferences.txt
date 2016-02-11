@@ -71,6 +71,11 @@ platform.auto_file_type_associations = true
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+# GUI - Scaling, edit this to scale to higher dots-per-inch displays
+# "auto" means autodetect.
+gui.scale=auto
+#gui.scale=200
+
 # default size for the main window
 editor.window.width.default = 500
 editor.window.height.default = 600

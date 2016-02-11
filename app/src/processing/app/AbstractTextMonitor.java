@@ -43,7 +43,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected void onCreateWindow(Container mainPane) {
     Font consoleFont = Theme.getFont("console.font");
     Font editorFont = PreferencesData.getFont("editor.font");
-    Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
+    Font font = Theme.scale(new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize()));
 
     mainPane.setLayout(new BorderLayout());
 

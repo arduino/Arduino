@@ -3,31 +3,52 @@
 	<classpathentry excluding="processing/app/tools/format/" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="lib" path="lib/apple.jar"/>
+	<classpathentry kind="lib" path="lib/batik-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-anim-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-awt-util-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-bridge-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-codec-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-css-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-dom-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-ext-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-gvt-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-parser-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-rasterizer-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-script-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-squiggle-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-svg-dom-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-svgpp-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-transcoder-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-util-1.8.jar"/>
+	<classpathentry kind="lib" path="lib/batik-xml-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/commons-exec-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-3.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
+	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmdns-3.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.5.8.1+arduino.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis-ext-1.3.04.jar"/>
+	<classpathentry kind="lib" path="lib/xmlgraphics-commons-2.0.jar"/>
 	<classpathentry kind="lib" path="test-lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-assert-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-reflect-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.5.8.1+arduino.jar"/>
-	<classpathentry kind="output" path="bin"/>
 </classpath>

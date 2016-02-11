@@ -1,6 +1,10 @@
 ARDUINO 1.6.8
 
 [ide]
+* Added support for GUI interface scaling for UHD monitors.
+  Thanks to all contributors and testers:
+  https://github.com/arduino/Arduino/pull/4376
+  https://github.com/arduino/Arduino/pull/2776
 * Editor position is saved when closing with Alt+F4 or clicking on the "X" button. Thanks @willie68
 * Fixed a NullPointerException when dealing with some rare combination of package_*.json files
 * Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
