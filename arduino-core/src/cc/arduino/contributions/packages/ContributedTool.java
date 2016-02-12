@@ -32,6 +32,7 @@ package cc.arduino.contributions.packages;
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class ContributedTool {
@@ -41,6 +42,20 @@ public abstract class ContributedTool {
   public abstract String getVersion();
 
   public abstract List<HostDependentDownloadableContribution> getSystems();
+
+  private LinkedList<String> users = null;
+  public void usetUserArchitecture(String vendorAndArch) {
+    if (users == null) {
+      users = new LinkedList<>();
+    }
+    if (!users.contains(vendorAndArch)) {
+      users.add(vendorAndArch);
+    }
+  }
+
+  public List<String> ugetUserArchitectures() {
+    return users;
+  }
 
   public DownloadableContribution getDownloadableContribution(Platform platform) {
     for (HostDependentDownloadableContribution c : getSystems()) {
