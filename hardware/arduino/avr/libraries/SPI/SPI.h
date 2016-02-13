@@ -255,6 +255,21 @@ public:
     while (!(SPSR & _BV(SPIF))) ;
     *p = SPDR;
   }
+  /*
+   * An alternative "output only" transfer that doesn't destroy the
+   * contents of the source buffer with the bytes returned from the
+   * slave device. 
+   * Some code simplifications and const enforcement
+   * by Pedro Ribeiro pamribeirox@gmail.com
+   */
+  inline static void transfer_out(const void *buf, size_t count) {
+    if (count == 0) return;
+    uint8_t *p = (uint8_t *)buf;
+    while (count-- > 0) {
+      SPDR = *p++;
+      while (!(SPSR & _BV(SPIF))) ;
+    }
+  }
   // After performing a group of transfers and releasing the chip select
   // signal, this function allows others to access the SPI bus
   inline static void endTransaction(void) {
