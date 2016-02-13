@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// Copyright (C) 2012 - 2014 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2012 - 2015 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -41,8 +41,14 @@
 // CMSIS-compatible instruction calls
 //*****************************************************************************
 
+#ifndef __cplusplus
 // No Operation
 __attribute__( ( always_inline ) ) static inline void __nop(void)
+{
+	__asm("  nop");
+}
+
+__attribute__( ( always_inline ) ) static inline void __NOP(void)
 {
 	__asm("  nop");
 }
@@ -58,6 +64,7 @@ __attribute__( ( always_inline ) ) static inline void __wfe(void)
 {
 	__asm("  wfe");
 }
+#endif
 
 // Enable Interrupts
 __attribute__( ( always_inline ) ) static inline void __enable_irq(void)
@@ -194,7 +201,7 @@ static inline void __set_PRIMASK(uint32_t priMask)
 #define __SMUAD		_smuad
 #define __SMUADX	_smuadx
 #define __SMUSD		_smusd
-#define __SMUSDX	_smusd
+#define __SMUSDX	_smusdx
 #define __SSAT16	_ssat16
 #define __SSUB16	_ssub16
 #define __SSUB8		_ssub8

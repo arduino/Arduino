@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,7 @@
 #include <debug.h>
 #include <cpu.h>
 #include <interrupt.h>
+#include <hw_memmap.h>
 
 //*****************************************************************************
 //
@@ -232,7 +233,7 @@ void Interrupt_setPriorityGrouping(uint32_t bits)
     //
     // Set the priority grouping.
     //
-    SCB->AIRCR = SCB_AIRCR_VECTKEY_M | g_pulPriority[bits];
+    SCB->AIRCR = SCB_AIRCR_VECTKEY_Msk | g_pulPriority[bits];
 }
 
 uint32_t Interrupt_getPriorityGrouping(void)
@@ -311,19 +312,19 @@ void Interrupt_enableInterrupt(uint32_t interruptNumber)
         //
         // Enable the MemManage interrupt.
         //
-        SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA;
+        SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
     } else if (interruptNumber == FAULT_BUS)
     {
         //
         // Enable the bus fault interrupt.
         //
-        SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA;
+        SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
     } else if (interruptNumber == FAULT_USAGE)
     {
         //
         // Enable the usage fault interrupt.
         //
-        SCB->SHCSR |= SCB_SHCSR_USGFAULTENA;
+        SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
     } else if (interruptNumber == FAULT_SYSTICK)
     {
         //
@@ -355,19 +356,19 @@ void Interrupt_disableInterrupt(uint32_t interruptNumber)
         //
         // Disable the MemManage interrupt.
         //
-        SCB->SHCSR &= ~(SCB_SHCSR_MEMFAULTENA);
+        SCB->SHCSR &= ~(SCB_SHCSR_MEMFAULTENA_Msk);
     } else if (interruptNumber == FAULT_BUS)
     {
         //
         // Disable the bus fault interrupt.
         //
-        SCB->SHCSR &= ~(SCB_SHCSR_BUSFAULTENA);
+        SCB->SHCSR &= ~(SCB_SHCSR_BUSFAULTENA_Msk);
     } else if (interruptNumber == FAULT_USAGE)
     {
         //
         // Disable the usage fault interrupt.
         //
-        SCB->SHCSR &= ~(SCB_SHCSR_USGFAULTENA);
+        SCB->SHCSR &= ~(SCB_SHCSR_USGFAULTENA_Msk);
     } else if (interruptNumber == FAULT_SYSTICK)
     {
         //
@@ -406,19 +407,19 @@ bool Interrupt_isEnabled(uint32_t interruptNumber)
         //
         // Check the MemManage interrupt.
         //
-        ulRet = SCB->SHCSR & SCB_SHCSR_MEMFAULTENA;
+        ulRet = SCB->SHCSR & SCB_SHCSR_MEMFAULTENA_Msk;
     } else if (interruptNumber == FAULT_BUS)
     {
         //
         // Check the bus fault interrupt.
         //
-        ulRet = SCB->SHCSR & SCB_SHCSR_BUSFAULTENA;
+        ulRet = SCB->SHCSR & SCB_SHCSR_BUSFAULTENA_Msk;
     } else if (interruptNumber == FAULT_USAGE)
     {
         //
         // Check the usage fault interrupt.
         //
-        ulRet = SCB->SHCSR & SCB_SHCSR_USGFAULTENA;
+        ulRet = SCB->SHCSR & SCB_SHCSR_USGFAULTENA_Msk;
     } else if (interruptNumber == FAULT_SYSTICK)
     {
         //
@@ -451,19 +452,19 @@ void Interrupt_pendInterrupt(uint32_t interruptNumber)
         //
         // Pend the NMI interrupt.
         //
-        SCB->ICSR |= SCB_ICSR_NMIPENDSET;
+        SCB->ICSR |= SCB_ICSR_NMIPENDSET_Msk;
     } else if (interruptNumber == FAULT_PENDSV)
     {
         //
         // Pend the PendSV interrupt.
         //
-        SCB->ICSR |= SCB_ICSR_PENDSVSET;
+        SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk;
     } else if (interruptNumber == FAULT_SYSTICK)
     {
         //
         // Pend the SysTick interrupt.
         //
-        SCB->ICSR |= SCB_ICSR_PENDSTSET;
+        SCB->ICSR |= SCB_ICSR_PENDSTSET_Msk;
     } else if (interruptNumber >= 16)
     {
         //
@@ -489,13 +490,13 @@ void Interrupt_unpendInterrupt(uint32_t interruptNumber)
         //
         // Unpend the PendSV interrupt.
         //
-        SCB->ICSR |= SCB_ICSR_PENDSVCLR;
+        SCB->ICSR |= SCB_ICSR_PENDSVCLR_Msk;
     } else if (interruptNumber == FAULT_SYSTICK)
     {
         //
         // Unpend the SysTick interrupt.
         //
-        SCB->ICSR |= SCB_ICSR_PENDSTCLR;
+        SCB->ICSR |= SCB_ICSR_PENDSTCLR_Msk;
     } else if (interruptNumber >= 16)
     {
         //
@@ -528,10 +529,10 @@ uint32_t Interrupt_getVectorTableAddress(void)
 
 void Interrupt_enableSleepOnIsrExit(void)
 {
-    SCB->SCR |= SCB_SCR_SLEEPONEXIT;
+    SCB->SCR |= SCB_SCR_SLEEPONEXIT_Msk;
 }
 
 void Interrupt_disableSleepOnIsrExit(void)
 {
-    SCB->SCR &= ~SCB_SCR_SLEEPONEXIT;
+    SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;
 }

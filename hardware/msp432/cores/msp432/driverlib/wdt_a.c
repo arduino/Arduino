@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,31 +45,31 @@
 void WDT_A_holdTimer(void)
 {
     //Set Hold bit
-    uint8_t newWDTStatus = (WDT_A->rCTL.r | WDTHOLD);
+    uint8_t newWDTStatus = (WDT_A->CTL | WDT_A_CTL_HOLD);
 
-    WDT_A->rCTL.r = WDTPW + newWDTStatus;
+    WDT_A->CTL = WDT_A_CTL_PW + newWDTStatus;
 }
 
 void WDT_A_startTimer(void)
 {
     //Reset Hold bit
-    uint8_t newWDTStatus = (WDT_A->rCTL.r & ~(WDTHOLD));
+    uint8_t newWDTStatus = (WDT_A->CTL & ~(WDT_A_CTL_HOLD));
 
-    WDT_A->rCTL.r = WDTPW + newWDTStatus;
+    WDT_A->CTL = WDT_A_CTL_PW + newWDTStatus;
 }
 
 void WDT_A_clearTimer(void)
 {
     //Set Counter Clear bit
-    uint8_t newWDTStatus = (WDT_A->rCTL.r | WDTCNTCL);
+    uint8_t newWDTStatus = (WDT_A->CTL | WDT_A_CTL_CNTCL);
 
-    WDT_A->rCTL.r = WDTPW + newWDTStatus;
+    WDT_A->CTL = WDT_A_CTL_PW + newWDTStatus;
 }
 
 void WDT_A_initWatchdogTimer(uint_fast8_t clockSelect,
         uint_fast8_t clockIterations)
 {
-    WDT_A->rCTL.r = WDTPW + WDTCNTCL + WDTHOLD +
+    WDT_A->CTL = WDT_A_CTL_PW + WDT_A_CTL_CNTCL + WDT_A_CTL_HOLD +
             clockSelect + clockIterations;
 }
 
@@ -77,7 +77,7 @@ void WDT_A_initIntervalTimer(uint_fast8_t clockSelect,
         uint_fast8_t clockIterations)
 {
 
-    WDT_A->rCTL.r = WDTPW + WDTCNTCL + WDTHOLD + WDTTMSEL
+    WDT_A->CTL = WDT_A_CTL_PW + WDT_A_CTL_CNTCL + WDT_A_CTL_HOLD + WDT_A_CTL_TMSEL
             + clockSelect + clockIterations;
 }
 

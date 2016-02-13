@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -74,22 +74,22 @@ extern "C"
 #define SYSCTL_HARD_RESET 1
 #define SYSCTL_SOFT_RESET 0
 
-#define SYSCTL_PERIPH_DMA SYSCTL_PERIHALT_CTL_DMA
-#define SYSCTL_PERIPH_WDT SYSCTL_PERIHALT_CTL_WDT
-#define SYSCTL_PERIPH_ADC SYSCTL_PERIHALT_CTL_ADC
-#define SYSCTL_PERIPH_EUSCIB3 SYSCTL_PERIHALT_CTL_EUB3
-#define SYSCTL_PERIPH_EUSCIB2 SYSCTL_PERIHALT_CTL_EUB2
-#define SYSCTL_PERIPH_EUSCIB1 SYSCTL_PERIHALT_CTL_EUB1
-#define SYSCTL_PERIPH_EUSCIB0 SYSCTL_PERIHALT_CTL_EUB0
-#define SYSCTL_PERIPH_EUSCIA3 SYSCTL_PERIHALT_CTL_EUA3
-#define SYSCTL_PERIPH_EUSCIA2 SYSCTL_PERIHALT_CTL_EUA2
-#define SYSCTL_PERIPH_EUSCIA1 SYSCTL_PERIHALT_CTL_EUA1
-#define SYSCTL_PERIPH_EUSCIA0 SYSCTL_PERIHALT_CTL_EUA0
-#define SYSCTL_PERIPH_TIMER32_0_MODULE SYSCTL_PERIHALT_CTL_T32_0
-#define SYSCTL_PERIPH_TIMER16_3 SYSCTL_PERIHALT_CTL_T16_3
-#define SYSCTL_PERIPH_TIMER16_2 SYSCTL_PERIHALT_CTL_T16_2
-#define SYSCTL_PERIPH_TIMER16_1 SYSCTL_PERIHALT_CTL_T16_1
-#define SYSCTL_PERIPH_TIMER16_0 SYSCTL_PERIHALT_CTL_T16_0
+#define SYSCTL_PERIPH_DMA SYSCTL_PERIHALT_CTL_HALT_DMA
+#define SYSCTL_PERIPH_WDT SYSCTL_PERIHALT_CTL_HALT_WDT
+#define SYSCTL_PERIPH_ADC SYSCTL_PERIHALT_CTL_HALT_ADC
+#define SYSCTL_PERIPH_EUSCIB3 SYSCTL_PERIHALT_CTL_HALT_EUB3
+#define SYSCTL_PERIPH_EUSCIB2 SYSCTL_PERIHALT_CTL_HALT_EUB2
+#define SYSCTL_PERIPH_EUSCIB1 SYSCTL_PERIHALT_CTL_HALT_EUB1
+#define SYSCTL_PERIPH_EUSCIB0 SYSCTL_PERIHALT_CTL_HALT_EUB0
+#define SYSCTL_PERIPH_EUSCIA3 SYSCTL_PERIHALT_CTL_HALT_EUA3
+#define SYSCTL_PERIPH_EUSCIA2 SYSCTL_PERIHALT_CTL_HALT_EUA2
+#define SYSCTL_PERIPH_EUSCIA1 SYSCTL_PERIHALT_CTL_HALT_EUA1
+#define SYSCTL_PERIPH_EUSCIA0 SYSCTL_PERIHALT_CTL_HALT_EUA0
+#define SYSCTL_PERIPH_TIMER32_0_MODULE SYSCTL_PERIHALT_CTL_HALT_T32_0
+#define SYSCTL_PERIPH_TIMER16_3 SYSCTL_PERIHALT_CTL_HALT_T16_3
+#define SYSCTL_PERIPH_TIMER16_2 SYSCTL_PERIHALT_CTL_HALT_T16_2
+#define SYSCTL_PERIPH_TIMER16_1 SYSCTL_PERIHALT_CTL_HALT_T16_1
+#define SYSCTL_PERIPH_TIMER16_0 SYSCTL_PERIHALT_CTL_HALT_T16_0
 
 #define SYSCTL_NMIPIN_SRC SYSCTL_NMI_CTLSTAT_PIN_SRC
 #define SYSCTL_PCM_SRC SYSCTL_NMI_CTLSTAT_PCM_SRC
@@ -98,12 +98,63 @@ extern "C"
 
 #define SYSCTL_REBOOT_KEY   0x6900
 
-#define SYSCTL_1_2V_REF        OFS_TLV_ADC14_REF1P2V_TS30C
-#define SYSCTL_1_45V_REF       OFS_TLV_ADC14_REF1P45V_TS30C
-#define SYSCTL_2_5V_REF        OFS_TLV_ADC14_REF2P5V_TS30C
+#define SYSCTL_1_2V_REF        (uint32_t)&TLV->ADC14_REF1P2V_TS30C - (uint32_t)TLV_BASE
+#define SYSCTL_1_45V_REF       (uint32_t)&TLV->ADC14_REF1P45V_TS30C - (uint32_t)TLV_BASE
+#define SYSCTL_2_5V_REF        (uint32_t)&TLV->ADC14_REF2P5V_TS30C - (uint32_t)TLV_BASE
 
-#define SYSCTL_85_DEGREES_C    0
-#define SYSCTL_30_DEGREES_C    16
+#define SYSCTL_85_DEGREES_C    4
+#define SYSCTL_30_DEGREES_C    0
+
+
+#define TLV_START               0x00201004
+#define TLV_TAG_RESERVED1      1
+#define TLV_TAG_RESERVED2      2
+#define TLV_TAG_CS             3
+#define TLV_TAG_FLASHCTL       4
+#define TLV_TAG_ADC14          5
+#define TLV_TAG_RESERVED6      6
+#define TLV_TAG_RESERVED7      7
+#define TLV_TAG_REF            8
+#define TLV_TAG_RESERVED9      9
+#define TLV_TAG_RESERVED10     10
+#define TLV_TAG_DEVINFO        11
+#define TLV_TAG_DIEREC         12
+#define TLV_TAG_RANDNUM        13
+#define TLV_TAG_RESERVED14     14
+#define TLV_TAG_BSL            15
+#define TLV_TAGEND             0x0BD0E11D
+
+//*****************************************************************************
+//
+// Structures for TLV definitions
+// 
+//*****************************************************************************
+typedef struct
+{
+    uint32_t    maxProgramPulses;
+    uint32_t    maxErasePulses;
+} SysCtl_FlashTLV_Info;
+
+typedef struct
+{
+    uint32_t rDCOIR_FCAL_RSEL04;
+    uint32_t rDCOIR_FCAL_RSEL5;
+    uint32_t rDCOIR_MAXPOSTUNE_RSEL04;
+    uint32_t rDCOIR_MAXNEGTUNE_RSEL04;
+    uint32_t rDCOIR_MAXPOSTUNE_RSEL5;
+    uint32_t rDCOIR_MAXNEGTUNE_RSEL5;
+    uint32_t rDCOIR_CONSTK_RSEL04;
+    uint32_t rDCOIR_CONSTK_RSEL5;
+    uint32_t rDCOER_FCAL_RSEL04;
+    uint32_t rDCOER_FCAL_RSEL5;
+    uint32_t rDCOER_MAXPOSTUNE_RSEL04;
+    uint32_t rDCOER_MAXNEGTUNE_RSEL04;
+    uint32_t rDCOER_MAXPOSTUNE_RSEL5;
+    uint32_t rDCOER_MAXNEGTUNE_RSEL5;
+    uint32_t rDCOER_CONSTK_RSEL04;
+    uint32_t rDCOER_CONSTK_RSEL5;
+
+} SysCtl_CSCalTLV_Info;
 
 //*****************************************************************************
 //
@@ -137,6 +188,51 @@ extern uint_least32_t SysCtl_getFlashSize(void);
 //
 //*****************************************************************************
 extern void SysCtl_rebootDevice(void);
+
+//*****************************************************************************
+//
+//! The TLV structure uses a tag or base address to identify segments of the
+//! table where information is stored. Some examples of TLV tags are Peripheral
+//! Descriptor, Interrupts, Info Block and Die Record. This function retrieves
+//! the value of a tag and the length of the tag.
+//!
+//! \param tag represents the tag for which the information needs to be
+//!        retrieved.
+//!        Valid values are:
+//!        - \b TLV_TAG_RESERVED1
+//!        - \b TLV_TAG_RESERVED2
+//!        - \b TLV_TAG_CS
+//!        - \b TLV_TAG_FLASHCTL
+//!        - \b TLV_TAG_ADC14
+//!        - \b TLV_TAG_RESERVED6
+//!        - \b TLV_TAG_RESERVED7
+//!        - \b TLV_TAG_REF
+//!        - \b TLV_TAG_RESERVED9
+//!        - \b TLV_TAG_RESERVED10
+//!        - \b TLV_TAG_DEVINFO
+//!        - \b TLV_TAG_DIEREC
+//!        - \b TLV_TAG_RANDNUM
+//!        - \b TLV_TAG_RESERVED14
+//! \param instance In some cases a specific tag may have more than one
+//!        instance. For example there may be multiple instances of timer
+//!        calibration data present under a single Timer Cal tag. This variable
+//!        specifies the instance for which information is to be retrieved (0,
+//!        1, etc.). When only one instance exists; 0 is passed.
+//! \param length Acts as a return through indirect reference. The function
+//!        retrieves the value of the TLV tag length. This value is pointed to
+//!        by *length and can be used by the application level once the
+//!        function is called. If the specified tag is not found then the
+//!        pointer is null 0.
+//! \param data_address acts as a return through indirect reference. Once the
+//!        function is called data_address points to the pointer that holds the
+//!        value retrieved from the specified TLV tag. If the specified tag is
+//!        not found then the pointer is null 0.
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void SysCtl_getTLVInfo(uint_fast8_t tag, uint_fast8_t instance,
+        uint_fast8_t *length, uint32_t **data_address);
 
 //*****************************************************************************
 //
@@ -410,7 +506,7 @@ extern void SysCtl_disableGlitchFilter(void);
 //!
 //! \param refVoltage Reference voltage being used.
 //!
-//! The \e resetType parameter must be only one of the following values:
+//! The \e refVoltage parameter must be only one of the following values:
 //!         - \b SYSCTL_1_2V_REF
 //!         - \b SYSCTL_1_45V_REF
 //!         - \b SYSCTL_2_5V_REF

@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,6 +80,7 @@ extern "C"
 #define PCM_LPM0_LF_VCORE0    0x18
 #define PCM_LPM0_LF_VCORE1    0x19
 #define PCM_LPM3               0x20
+#define PCM_LPM4               0x21
 #define PCM_LPM35_VCORE0       0xC0
 #define PCM_LPM45              0xA0
 
@@ -94,10 +95,10 @@ extern "C"
 #define PCM_SHUTDOWN_PARTIAL PCM_LPM35_VCORE0
 #define PCM_SHUTDOWN_COMPLETE PCM_LPM45
 
-#define PCM_DCDCERROR   PCM_INTEN_EN_DCDC_ERROR
-#define PCM_AM_INVALIDTRANSITION  PCM_INTEN_EN_AM_INVALID_TR
-#define PCM_SM_INVALIDCLOCK PCM_INTEN_EN_SM_INVALID_CLK
-#define PCM_SM_INVALIDTRANSITION    PCM_INTEN_EN_SM_INVALID_TR
+#define PCM_DCDCERROR PCM_IE_DCDC_ERROR_IE
+#define PCM_AM_INVALIDTRANSITION PCM_IE_AM_INVALID_TR_IE
+#define PCM_SM_INVALIDCLOCK PCM_IE_LPM_INVALID_CLK_IE
+#define PCM_SM_INVALIDTRANSITION PCM_IE_LPM_INVALID_TR_IE
 
 //*****************************************************************************
 //
@@ -174,6 +175,29 @@ extern bool PCM_setCoreVoltageLevelWithTimeout(uint_fast8_t voltageLevel,
 
 //******************************************************************************
 //
+//! Sets the core voltage level (Vcore).  This function is similar to
+//! PCM_setCoreVoltageLevel, however there are no polling flags to ensure
+//! a state has changed. Execution is returned back to the calling program
+//  and it is up to the user to ensure proper state transitions happen
+//! correctly. For MSP432, changing into different power modes/states
+//! require very specific logic. This function will initiate only one state
+//! transition and then return. It is up to the user to keep calling this
+//! function until the correct power state has been achieved.
+//!
+//! Refer to the device specific data sheet for specifics about core voltage
+//! levels.
+//!
+//! \param voltageLevel The voltage level to be shifted to.
+//!           - \b PCM_VCORE0,
+//!           - \b PCM_VCORE1
+//!
+//! \return true if voltage level set, false otherwise.
+//
+//******************************************************************************
+extern bool PCM_setCoreVoltageLevelNonBlocking(uint_fast8_t voltageLevel);
+
+//******************************************************************************
+//
 //! Switches between power modes. This function will take care of all
 //! power state transitions needed to shift between power modes. Note for
 //! changing to DCDC mode, specific hardware considerations are required.
@@ -219,6 +243,30 @@ extern bool PCM_setPowerModeWithTimeout(uint_fast8_t powerMode,
 
 //******************************************************************************
 //
+//! Sets the core voltage level (Vcore).  This function is similar to
+//! PCM_setPowerMode, however there are no polling flags to ensure
+//! a state has changed. Execution is returned back to the calling program
+//  and it is up to the user to ensure proper state transitions happen
+//! correctly. For MSP432, changing into different power modes/states
+//! require very specific logic. This function will initiate only one state
+//! transition and then return. It is up to the user to keep calling this
+//! function until the correct power state has been achieved.
+//!
+//! Refer to the device specific data sheet for specifics about core voltage
+//! levels.
+//!
+//! \param powerMode The voltage modes to be shifted to. Valid values are:
+//!           - \b PCM_LDO_MODE,
+//!           - \b PCM_DCDC_MODE,
+//!           - \b PCM_LF_MODE
+//!
+//! \return true if power mode change was initiated, false otherwise
+//
+//******************************************************************************
+extern bool PCM_setPowerModeNonBlocking(uint_fast8_t powerMode);
+
+//******************************************************************************
+//
 //! Returns the current powers state of the system see the \b PCM_setPowerState
 //! function for specific information about the modes.
 //!
@@ -231,8 +279,8 @@ extern uint8_t PCM_getPowerMode(void);
 //******************************************************************************
 //
 //! Switches between power states. This is a convenience function that combines
-//! the functionality of PCMSetPowerMode and PCMSetCoreVoltageLevel as well as
-//! the sleep/LPM3/shutdown functions.
+//! the functionality of PCM_setPowerMode and PCM_setCoreVoltageLevel as well as
+//! the LPM0/LPM3 functions.
 //!
 //! Refer to the device specific data sheet for specifics about power states.
 //!
@@ -251,6 +299,7 @@ extern uint8_t PCM_getPowerMode(void);
 //!           - \b PCM_LPM0_LF_VCORE1,     [LMP0, Low Frequency, VCORE1]
 //!           - \b PCM_LPM3,               [LPM3]
 //!           - \b PCM_LPM35_VCORE0,       [LPM3.5 VCORE 0]
+//!           - \b PCM_LPM4,               [LPM4]
 //!           - \b PCM_LPM45,              [LPM4.5]
 //!
 //! \return true if power state is set, false otherwise.
@@ -261,10 +310,10 @@ extern bool PCM_setPowerState(uint_fast8_t powerState);
 //******************************************************************************
 //
 //! Switches between power states. This is a convenience function that combines
-//! the functionality of PCMSetPowerMode and PCMSetCoreVoltageLevel as well as
+//! the functionality of PCM_setPowerMode and PCM_setCoreVoltageLevel as well as
 //! the LPM modes.
 //!
-//! This function is similar to PCMChangePowerState, however a timeout
+//! This function is similar to PCM_setPowerState, however a timeout
 //! mechanism is used.
 //!
 //! Refer to the device specific data sheet for specifics about power states.
@@ -284,6 +333,7 @@ extern bool PCM_setPowerState(uint_fast8_t powerState);
 //!           - \b PCM_LPM0_LF_VCORE1,     [LMP0, Low Frequency, VCORE1]
 //!           - \b PCM_LPM3,               [LPM3]
 //!           - \b PCM_LPM35_VCORE0,       [LPM3.5 VCORE 0]
+//!           - \b PCM_LPM4,               [LPM4]
 //!           - \b PCM_LPM45,              [LPM4.5]
 //!
 //! \param timeout Number of loop iterations to timeout when checking for
@@ -311,6 +361,42 @@ extern bool PCM_setPowerStateWithTimeout(uint_fast8_t powerState,
 //
 //******************************************************************************
 extern uint8_t PCM_getPowerState(void);
+
+//******************************************************************************
+//
+//! Sets the power state of the part.  This function is similar to
+//! PCM_getPowerState, however there are no polling flags to ensure
+//! a state has changed. Execution is returned back to the calling program
+//  and it is up to the user to ensure proper state transitions happen
+//! correctly. For MSP432, changing into different power modes/states
+//! require very specific logic. This function will initiate only one state
+//! transition and then return. It is up to the user to keep calling this
+//! function until the correct power state has been achieved.
+//!
+//! Refer to the device specific data sheet for specifics about core voltage
+//! levels.
+//!
+//! \param powerState The voltage modes to be shifted to. Valid values are:
+//!           - \b PCM_AM_LDO_VCORE0,      [Active Mode, LDO, VCORE0]
+//!           - \b PCM_AM_LDO_VCORE1,      [Active Mode, LDO, VCORE1]
+//!           - \b PCM_AM_DCDC_VCORE0,     [Active Mode, DCDC, VCORE0]
+//!           - \b PCM_AM_DCDC_VCORE1,     [Active Mode, DCDC, VCORE1]
+//!           - \b PCM_AM_LF_VCORE0,       [Active Mode, Low Frequency, VCORE0]
+//!           - \b PCM_AM_LF_VCORE1,       [Active Mode, Low Frequency, VCORE1]
+//!           - \b PCM_LPM0_LDO_VCORE0,    [LMP0, LDO, VCORE0]
+//!           - \b PCM_LPM0_LDO_VCORE1,    [LMP0, LDO, VCORE1]
+//!           - \b PCM_LPM0_DCDC_VCORE0,   [LMP0, DCDC, VCORE0]
+//!           - \b PCM_LPM0_DCDC_VCORE1,   [LMP0, DCDC, VCORE1]
+//!           - \b PCM_LPM0_LF_VCORE0,     [LMP0, Low Frequency, VCORE0]
+//!           - \b PCM_LPM0_LF_VCORE1,     [LMP0, Low Frequency, VCORE1]
+//!           - \b PCM_LPM3,               [LPM3]
+//!           - \b PCM_LPM35_VCORE0,       [LPM3.5 VCORE 0]
+//!           - \b PCM_LPM45,              [LPM4.5]
+//!
+//! \return true if power state change was initiated, false otherwise
+//
+//******************************************************************************
+extern bool PCM_setPowerStateNonBlocking(uint_fast8_t powerState);
 
 //******************************************************************************
 //
@@ -368,7 +454,7 @@ extern bool PCM_gotoLPM3(void);
 //! Transitions the device into LPM0 while maintaining a safe
 //! interrupt handling mentality. This function is meant to be used in
 //! situations where the user wants to go to sleep, however does not want
-//! to go to "miss" any interrupts due to the fact that going to DSL is not
+//! to go to "miss" any interrupts due to the fact that going to LPM0 is not
 //! an atomic operation. This function will modify the PRIMASK and on exit of
 //! the program the master interrupts will be disabled.
 //!
@@ -384,7 +470,7 @@ extern bool PCM_gotoLPM0InterruptSafe(void);
 //! Transitions the device into LPM3 while maintaining a safe
 //! interrupt handling mentality. This function is meant to be used in
 //! situations where the user wants to go to LPM3, however does not want
-//! to go to "miss" any interrupts due to the fact that going to DSL is not
+//! to go to "miss" any interrupts due to the fact that going to LPM3 is not
 //! an atomic operation. This function will modify the PRIMASK and on exit of
 //! the program the master interrupts will be disabled.
 //!
@@ -397,6 +483,36 @@ extern bool PCM_gotoLPM0InterruptSafe(void);
 //
 //******************************************************************************
 extern bool PCM_gotoLPM3InterruptSafe(void);
+
+//******************************************************************************
+//
+//! Transitions the device into LPM4. LPM4 is the exact same with LPM3, just
+//! with RTC_C and WDT_A disabled. When waking up, RTC_C and WDT_A will remain
+//! disabled until reconfigured by the user.
+//!
+//! \return false if sleep state cannot be entered, true otherwise.
+//
+//******************************************************************************
+extern bool PCM_gotoLPM4(void);
+
+//******************************************************************************
+//
+//! Transitions the device into LPM4 while maintaining a safe
+//! interrupt handling mentality. This function is meant to be used in
+//! situations where the user wants to go to LPM4, however does not want
+//! to go to "miss" any interrupts due to the fact that going to LPM4 is not
+//! an atomic operation. This function will modify the PRIMASK and on exit of
+//! the program the master interrupts will be disabled.
+//!
+//! Refer to the device specific data sheet for specifics about low power modes.
+//! Note that since LPM3 cannot be entered from  a DCDC power modes, the
+//! power mode is first switched to LDO operation (if in DCDC mode), the deep
+//! sleep is entered, and the DCDC mode is restored on wake up.
+//!
+//! \return false if sleep state cannot be entered, true otherwise.
+//
+//******************************************************************************
+extern bool PCM_gotoLPM4InterruptSafe(void);
 
 //******************************************************************************
 //

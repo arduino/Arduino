@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,8 +64,8 @@ extern "C"
 // Flags that can be passed to MPU_enableModule.
 //
 //*****************************************************************************
-#define MPU_CONFIG_PRIV_DEFAULT     MPU_CTRL_PRIVDEFENA
-#define MPU_CONFIG_HARDFLT_NMI      MPU_CTRL_HFNMIENA
+#define MPU_CONFIG_PRIV_DEFAULT     MPU_CTRL_PRIVDEFENA_Msk
+#define MPU_CONFIG_HARDFLT_NMI      MPU_CTRL_HFNMIENA_Msk
 #define MPU_CONFIG_NONE             0
 
 //*****************************************************************************

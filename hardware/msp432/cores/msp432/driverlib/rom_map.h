@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,17 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * --/COPYRIGHT--*/
+//*****************************************************************************
+//
+// rom_map.h - Macros to facilitate calling functions in the ROM when they are
+//             available and in flash otherwise.
+//
+// Copyright (c) 2013 Texas Instruments Incorporated.  All rights reserved.
+// TI Information - Selective Disclosure
+//
+//
+//*****************************************************************************
+
 #ifndef __ROM_MAP_H__
 #define __ROM_MAP_H__
 
@@ -404,6 +415,13 @@
 #else
 #define MAP_AES256_unregisterInterrupt                                        \
         AES256_unregisterInterrupt
+#endif
+#ifdef ROM_AES256_getInterruptFlagStatus
+#define MAP_AES256_getInterruptFlagStatus                                     \
+        ROM_AES256_getInterruptFlagStatus
+#else
+#define MAP_AES256_getInterruptFlagStatus                                     \
+        AES256_getInterruptFlagStatus
 #endif
 
 //*****************************************************************************
@@ -850,6 +868,13 @@
 #define MAP_CS_setExternalClockSourceFrequency                                \
         CS_setExternalClockSourceFrequency
 #endif
+#ifdef ROM_CS_setDCOExternalResistorCalibration
+#define MAP_CS_setDCOExternalResistorCalibration                              \
+        ROM_CS_setDCOExternalResistorCalibration
+#else
+#define MAP_CS_setDCOExternalResistorCalibration                              \
+        CS_setDCOExternalResistorCalibration
+#endif
 
 //*****************************************************************************
 //
@@ -1239,6 +1264,69 @@
 #else
 #define MAP_FlashCtl_unregisterInterrupt                                      \
         FlashCtl_unregisterInterrupt
+#endif
+#ifdef ROM___FlashCtl_remaskData8Post
+#define MAP___FlashCtl_remaskData8Post                                        \
+        ROM___FlashCtl_remaskData8Post
+#else
+#define MAP___FlashCtl_remaskData8Post                                        \
+        __FlashCtl_remaskData8Post
+#endif
+#ifdef ROM___FlashCtl_remaskData8Pre
+#define MAP___FlashCtl_remaskData8Pre                                         \
+        ROM___FlashCtl_remaskData8Pre
+#else
+#define MAP___FlashCtl_remaskData8Pre                                         \
+        __FlashCtl_remaskData8Pre
+#endif
+#ifdef ROM___FlashCtl_remaskData32Pre
+#define MAP___FlashCtl_remaskData32Pre                                        \
+        ROM___FlashCtl_remaskData32Pre
+#else
+#define MAP___FlashCtl_remaskData32Pre                                        \
+        __FlashCtl_remaskData32Pre
+#endif
+#ifdef ROM___FlashCtl_remaskData32Post
+#define MAP___FlashCtl_remaskData32Post                                       \
+        ROM___FlashCtl_remaskData32Post
+#else
+#define MAP___FlashCtl_remaskData32Post                                       \
+        __FlashCtl_remaskData32Post
+#endif
+#ifdef ROM___FlashCtl_remaskBurstDataPre
+#define MAP___FlashCtl_remaskBurstDataPre                                     \
+        ROM___FlashCtl_remaskBurstDataPre
+#else
+#define MAP___FlashCtl_remaskBurstDataPre                                     \
+        __FlashCtl_remaskBurstDataPre
+#endif
+#ifdef ROM___FlashCtl_remaskBurstDataPost
+#define MAP___FlashCtl_remaskBurstDataPost                                    \
+        ROM___FlashCtl_remaskBurstDataPost
+#else
+#define MAP___FlashCtl_remaskBurstDataPost                                    \
+        __FlashCtl_remaskBurstDataPost
+#endif
+#ifdef ROM_FlashCtl_initiateSectorErase
+#define MAP_FlashCtl_initiateSectorErase                                      \
+        ROM_FlashCtl_initiateSectorErase
+#else
+#define MAP_FlashCtl_initiateSectorErase                                      \
+        FlashCtl_initiateSectorErase
+#endif
+#ifdef ROM_FlashCtl_initiateMassErase
+#define MAP_FlashCtl_initiateMassErase                                        \
+        ROM_FlashCtl_initiateMassErase
+#else
+#define MAP_FlashCtl_initiateMassErase                                        \
+        FlashCtl_initiateMassErase
+#endif
+#ifdef ROM_FlashCtl_getMemoryInfo
+#define MAP_FlashCtl_getMemoryInfo                                            \
+        ROM_FlashCtl_getMemoryInfo
+#else
+#define MAP_FlashCtl_getMemoryInfo                                            \
+        FlashCtl_getMemoryInfo
 #endif
 
 //*****************************************************************************
@@ -1748,6 +1836,13 @@
 #define MAP_I2C_unregisterInterrupt                                           \
         I2C_unregisterInterrupt
 #endif
+#ifdef ROM_I2C_slaveSendNAK
+#define MAP_I2C_slaveSendNAK                                                  \
+        ROM_I2C_slaveSendNAK
+#else
+#define MAP_I2C_slaveSendNAK                                                  \
+        I2C_slaveSendNAK
+#endif
 
 //*****************************************************************************
 //
@@ -1872,6 +1967,20 @@
 #else
 #define MAP_Interrupt_registerInterrupt                                       \
         Interrupt_registerInterrupt
+#endif
+#ifdef ROM_Interrupt_unregisterInterrupt
+#define MAP_Interrupt_unregisterInterrupt                                     \
+        ROM_Interrupt_unregisterInterrupt
+#else
+#define MAP_Interrupt_unregisterInterrupt                                     \
+        Interrupt_unregisterInterrupt
+#endif
+#ifdef ROM_Interrupt_unpendInterrupt
+#define MAP_Interrupt_unpendInterrupt                                         \
+        ROM_Interrupt_unpendInterrupt
+#else
+#define MAP_Interrupt_unpendInterrupt                                         \
+        Interrupt_unpendInterrupt
 #endif
 
 //*****************************************************************************
@@ -2123,6 +2232,41 @@
 #define MAP_PCM_unregisterInterrupt                                           \
         PCM_unregisterInterrupt
 #endif
+#ifdef ROM_PCM_setCoreVoltageLevelNonBlocking
+#define MAP_PCM_setCoreVoltageLevelNonBlocking                                \
+        ROM_PCM_setCoreVoltageLevelNonBlocking
+#else
+#define MAP_PCM_setCoreVoltageLevelNonBlocking                                \
+        PCM_setCoreVoltageLevelNonBlocking
+#endif
+#ifdef ROM_PCM_setPowerModeNonBlocking
+#define MAP_PCM_setPowerModeNonBlocking                                       \
+        ROM_PCM_setPowerModeNonBlocking
+#else
+#define MAP_PCM_setPowerModeNonBlocking                                       \
+        PCM_setPowerModeNonBlocking
+#endif
+#ifdef ROM_PCM_setPowerStateNonBlocking
+#define MAP_PCM_setPowerStateNonBlocking                                      \
+        ROM_PCM_setPowerStateNonBlocking
+#else
+#define MAP_PCM_setPowerStateNonBlocking                                      \
+        PCM_setPowerStateNonBlocking
+#endif
+#ifdef ROM_PCM_gotoLPM4
+#define MAP_PCM_gotoLPM4                                                      \
+        ROM_PCM_gotoLPM4
+#else
+#define MAP_PCM_gotoLPM4                                                      \
+        PCM_gotoLPM4
+#endif
+#ifdef ROM_PCM_gotoLPM4InterruptSafe
+#define MAP_PCM_gotoLPM4InterruptSafe                                         \
+        ROM_PCM_gotoLPM4InterruptSafe
+#else
+#define MAP_PCM_gotoLPM4InterruptSafe                                         \
+        PCM_gotoLPM4InterruptSafe
+#endif
 
 //*****************************************************************************
 //
@@ -2155,34 +2299,6 @@
 #else
 #define MAP_PSS_disableHighSidePinToggle                                      \
         PSS_disableHighSidePinToggle
-#endif
-#ifdef ROM_setLowSidePerformanceMode 
-#define MAP_PSS_setLowSidePerformanceMode                                      \
-        ROM_PSS_setLowSidePerformanceMode 
-#else
-#define MAP_PSS_setLowSidePerformanceMode                                      \
-        PSS_setLowSidePerformanceMode 
-#endif
-#ifdef ROM_getLowSidePerformanceMode 
-#define MAP_PSS_getLowSidePerformanceMode                                      \
-        ROM_PSS_getLowSidePerformanceMode 
-#else
-#define MAP_PSS_getLowSidePerformanceMode                                      \
-        PSS_getLowSidePerformanceMode 
-#endif
-#ifdef ROM_PSS_disableLowSide
-#define MAP_PSS_disableLowSide                                                 \
-        ROM_PSS_disableLowSide
-#else
-#define MAP_PSS_disableLowSide                                                 \
-        PSS_disableLowSide
-#endif
-#ifdef ROM_PSS_enableLowSide
-#define MAP_PSS_enableLowSide                                                 \
-        ROM_PSS_enableLowSide
-#else
-#define MAP_PSS_enableLowSide                                                 \
-        PSS_enableLowSide
 #endif
 #ifdef ROM_PSS_enableHighSide
 #define MAP_PSS_enableHighSide                                                \
@@ -2281,6 +2397,20 @@
 #else
 #define MAP_PSS_unregisterInterrupt                                           \
         PSS_unregisterInterrupt
+#endif
+#ifdef ROM_PSS_enableForcedDCDCOperation
+#define MAP_PSS_enableForcedDCDCOperation                                     \
+        ROM_PSS_enableForcedDCDCOperation
+#else
+#define MAP_PSS_enableForcedDCDCOperation                                     \
+        PSS_enableForcedDCDCOperation
+#endif
+#ifdef ROM_PSS_disableForcedDCDCOperation
+#define MAP_PSS_disableForcedDCDCOperation                                    \
+        ROM_PSS_disableForcedDCDCOperation
+#else
+#define MAP_PSS_disableForcedDCDCOperation                                    \
+        PSS_disableForcedDCDCOperation
 #endif
 
 //*****************************************************************************
@@ -2886,6 +3016,27 @@
 #define MAP_SysCtl_getTempCalibrationConstant                                 \
         SysCtl_getTempCalibrationConstant
 #endif
+#ifdef ROM_SysCtl_enableGlitchFilter
+#define MAP_SysCtl_enableGlitchFilter                                         \
+        ROM_SysCtl_enableGlitchFilter
+#else
+#define MAP_SysCtl_enableGlitchFilter                                         \
+        SysCtl_enableGlitchFilter
+#endif
+#ifdef ROM_SysCtl_disableGlitchFilter
+#define MAP_SysCtl_disableGlitchFilter                                        \
+        ROM_SysCtl_disableGlitchFilter
+#else
+#define MAP_SysCtl_disableGlitchFilter                                        \
+        SysCtl_disableGlitchFilter
+#endif
+#ifdef ROM_SysCtl_getTLVInfo
+#define MAP_SysCtl_getTLVInfo                                                 \
+        ROM_SysCtl_getTLVInfo
+#else
+#define MAP_SysCtl_getTLVInfo                                                 \
+        SysCtl_getTLVInfo
+#endif
 
 //*****************************************************************************
 //
@@ -3142,6 +3293,13 @@
 #else
 #define MAP_Timer_A_unregisterInterrupt                                       \
         Timer_A_unregisterInterrupt
+#endif
+#ifdef ROM_Timer_A_getCounterValue
+#define MAP_Timer_A_getCounterValue                                           \
+        ROM_Timer_A_getCounterValue
+#else
+#define MAP_Timer_A_getCounterValue                                           \
+        Timer_A_getCounterValue
 #endif
 
 //*****************************************************************************
@@ -3433,6 +3591,20 @@
 #else
 #define MAP_WDT_A_unregisterInterrupt                                         \
         WDT_A_unregisterInterrupt
+#endif
+#ifdef ROM_WDT_A_setPasswordViolationReset
+#define MAP_WDT_A_setPasswordViolationReset                                   \
+        ROM_WDT_A_setPasswordViolationReset
+#else
+#define MAP_WDT_A_setPasswordViolationReset                                   \
+        WDT_A_setPasswordViolationReset
+#endif
+#ifdef ROM_WDT_A_setTimeoutReset
+#define MAP_WDT_A_setTimeoutReset                                             \
+        ROM_WDT_A_setTimeoutReset
+#else
+#define MAP_WDT_A_setTimeoutReset                                             \
+        WDT_A_setTimeoutReset
 #endif
 
 #endif // __ROM_MAP_H__

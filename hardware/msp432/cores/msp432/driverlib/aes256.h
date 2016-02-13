@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,7 +89,7 @@ extern "C"
 // can be returned by the AES256_getErrorFlagStatus() function.
 //
 //*****************************************************************************
-#define AES256_ERROR_OCCURRED                                          AESERRFG
+#define AES256_ERROR_OCCURRED                                 AES256_CTL0_ERRFG
 #define AES256_NO_ERROR                                                    0x00
 
 //*****************************************************************************
@@ -98,7 +98,7 @@ extern "C"
 // can be returned by the AES256_isBusy() function.
 //
 //*****************************************************************************
-#define AES256_BUSY                                                     AESBUSY
+#define AES256_BUSY                                            AES256_STAT_BUSY
 #define AES256_NOT_BUSY                                                    0x00
 
 //*****************************************************************************

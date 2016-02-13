@@ -1,6 +1,6 @@
 //*****************************************************************************
 //
-// Copyright (C) 2013 - 2014 Texas Instruments Incorporated - http://www.ti.com/
+// Copyright (C) 2013 - 2015 Texas Instruments Incorporated - http://www.ti.com/
 //
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions
@@ -34,8 +34,27 @@
 //
 //****************************************************************************
 
+/******************************************************************************
+* Definitions for 8/16/32-bit wide memory access                              *
+******************************************************************************/
+#define HWREG8(x)         (*((volatile uint8_t *)(x)))
+#define HWREG16(x)        (*((volatile uint16_t *)(x)))
+#define HWREG32(x)        (*((volatile uint32_t *)(x)))
+#define HWREG(x)          (HWREG16(x))
+#define HWREG8_L(x)       (*((volatile uint8_t *)((uint8_t *)&x)))
+#define HWREG8_H(x)       (*((volatile uint8_t *)(((uint8_t *)&x)+1)))
+#define HWREG16_L(x)      (*((volatile uint16_t *)((uint16_t *)&x)))
+#define HWREG16_H(x)      (*((volatile uint16_t *)(((uint16_t *)&x)+1)))
+
+/******************************************************************************
+* Definitions for 8/16/32-bit wide bit band access                            *
+******************************************************************************/
+#define HWREGBIT8(x, b)   (HWREG8(((uint32_t)(x) & 0xF0000000) | 0x02000000 | (((uint32_t)(x) & 0x000FFFFF) << 5) | ((b) << 2)))
+#define HWREGBIT16(x, b)  (HWREG16(((uint32_t)(x) & 0xF0000000) | 0x02000000 | (((uint32_t)(x) & 0x000FFFFF) << 5) | ((b) << 2)))
+#define HWREGBIT32(x, b)  (HWREG32(((uint32_t)(x) & 0xF0000000) | 0x02000000 | (((uint32_t)(x) & 0x000FFFFF) << 5) | ((b) << 2)))
+
 // Intrinsics with ARM equivalents
-#if defined ( __TMS470__ ) /* TI CGT Compiler */
+#if defined ( __TI_ARM__ ) /* TI CGT Compiler */
 
 #include <cmsis_ccs.h>
 
@@ -87,6 +106,7 @@
 #define __bis_SR_register(x)            { while(1); /* Using not-supported MSP430 intrinsic. No replacement available. */ }
 #define __bis_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
 #define __bic_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
+#define __delay_cycles(x)               { while(1); /* Using not-supported MSP430 intrinsic. Recommended to use a timer or a custom for loop. */ }
 
 #elif defined ( __CC_ARM ) /* ARM Compiler */
 
@@ -118,9 +138,11 @@
 #define __bis_SR_register(x)            { while(1); /* Using not-supported MSP430 intrinsic. No replacement available. */ }
 #define __bis_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
 #define __bic_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
+#define __delay_cycles(x)               { while(1); /* Using not-supported MSP430 intrinsic. Recommended to use a timer or a custom for loop. */ }
 
 #elif defined ( __GNUC__ ) /* GCC Compiler */
-
+#undef __wfi
+#define __wfi()                         asm("  wfi")
 #define __sleep()                       __wfi()
 #define __deep_sleep()                  { (*((volatile uint32_t *)(0xE000ED10))) |= 0x00000004; __wfi(); (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000004; }
 #define __low_power_mode_off_on_exit()  { (*((volatile uint32_t *)(0xE000ED10))) &= ~0x00000002; }
@@ -149,6 +171,7 @@
 #define __bis_SR_register(x)            { while(1); /* Using not-supported MSP430 intrinsic. No replacement available. */ }
 #define __bis_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
 #define __bic_SR_register_on_exit(x)    { while(1); /* Using not-supported MSP430 intrinsic. Recommended to write to SCS_SCR register. */ }
+#define __delay_cycles(x)               { while(1); /* Using not-supported MSP430 intrinsic. Recommended to use a timer or a custom for loop. */ }
 
 #endif
 

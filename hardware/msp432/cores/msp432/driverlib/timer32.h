@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,10 +63,12 @@ extern "C"
 // Control specific variables
 //
 //*****************************************************************************
+#define TIMER32_CMSIS(x) ((Timer32_Type *) x)
+
 #define TIMER_OFFSET    0x020
 
-#define TIMER32_0_MODULE   TIMER32_BASE
-#define TIMER32_1_MODULE   (TIMER32_BASE + OFS_TIMER32_LOAD2)
+#define TIMER32_0_BASE   TIMER32_1
+#define TIMER32_1_BASE   TIMER32_2
 
 #define TIMER32_0_INTERRUPT         INT_T32_INT1
 #define TIMER32_1_INTERRUPT         INT_T32_INT2
@@ -94,8 +96,8 @@ extern "C"
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! \param preScaler is the prescaler (or divider) to apply to the clock
 //! source given to the Timer32 module.
@@ -130,8 +132,8 @@ extern void Timer32_initModule(uint32_t timer, uint32_t preScaler,
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //! \param count Value of the timer to set. Note that
 //! if the timer is in 16-bit mode and a value is passed in that exceeds
 //! UINT16_MAX, the value will be truncated to UINT16_MAX.
@@ -153,8 +155,8 @@ extern void Timer32_setCount(uint32_t timer, uint32_t count);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //! \param count Value of the timer to set in the background. Note that
 //! if the timer is in 16-bit mode and a value is passed in that exceeds
 //! UINT16_MAX, the value will be truncated to UINT16_MAX.
@@ -174,8 +176,8 @@ extern void Timer32_setCountInBackground(uint32_t timer, uint32_t count);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! \return The current count of the timer.
 //
@@ -190,8 +192,8 @@ extern uint32_t Timer32_getValue(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! \param oneShot sets whether the Timer32 module operates in one shot
 //!  or continuous mode. In one shot mode, the timer will halt when a zero is
@@ -214,8 +216,8 @@ extern void Timer32_startTimer(uint32_t timer, bool oneShot);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! \return None
 //
@@ -228,8 +230,8 @@ extern void Timer32_haltTimer(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! Enables the indicated Timer32 interrupt source.
 //!
@@ -244,8 +246,8 @@ extern void Timer32_enableInterrupt(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! Disables the indicated Timer32 interrupt source.
 //!
@@ -260,8 +262,8 @@ extern void Timer32_disableInterrupt(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! The Timer32 interrupt source is cleared, so that it no longer asserts.
 //!
@@ -276,8 +278,8 @@ extern void Timer32_clearInterruptFlag(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer32 module.
 //! Valid parameters must be one of the following values:
-//!         - \b TIMER32_0_MODULE
-//!         - \b TIMER32_1_MODULE
+//!         - \b TIMER32_0_BASE
+//!         - \b TIMER32_1_BASE
 //!
 //! This returns the interrupt status for the Timer32 module. A positive value
 //! will indicate that an interrupt is pending while a zero value will indicate

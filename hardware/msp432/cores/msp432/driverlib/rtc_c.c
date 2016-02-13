@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,45 +37,46 @@
 #include <rtc_c.h>
 #include <interrupt.h>
 #include <debug.h>
+#include <hw_memmap.h>
 
 void RTC_C_startClock(void)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
-    BITBAND_PERI(RTC_C->rCTL13.r, RTCHOLD_OFS) = 0;
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
+    BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_HOLD_OFS) = 0;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 void RTC_C_holdClock(void)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
-    BITBAND_PERI(RTC_C->rCTL13.r, RTCHOLD_OFS) = 1;
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
+    BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_HOLD_OFS) = 1;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 void RTC_C_setCalibrationFrequency(uint_fast16_t frequencySelect)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
-    RTC_C->rCTL13.r = (RTC_C->rCTL13.r & ~(RTCCALF_3)) | frequencySelect;
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
+    RTC_C->CTL13 = (RTC_C->CTL13 & ~(RTC_C_CTL13_CALF_3)) | frequencySelect;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 void RTC_C_setCalibrationData(uint_fast8_t offsetDirection,
         uint_fast8_t offsetValue)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
-    RTC_C->rOCAL.r = offsetValue + offsetDirection;
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
+    RTC_C->OCAL = offsetValue + offsetDirection;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 bool RTC_C_setTemperatureCompensation(uint_fast16_t offsetDirection,
         uint_fast8_t offsetValue)
 {
-    while (!BITBAND_PERI(RTC_C->rTCMP.r, RTCTCRDY_OFS))
+    while (!BITBAND_PERI(RTC_C->TCMP, RTC_C_TCMP_TCRDY_OFS))
         ;
 
-    RTC_C->rTCMP.r = offsetValue + offsetDirection;
+    RTC_C->TCMP = offsetValue + offsetDirection;
 
-    if (BITBAND_PERI(RTC_C->rTCMP.r, RTCTCOK_OFS))
+    if (BITBAND_PERI(RTC_C->TCMP, RTC_C_TCMP_TCOK_OFS))
         return true;
     else
         return false;
@@ -84,40 +85,37 @@ bool RTC_C_setTemperatureCompensation(uint_fast16_t offsetDirection,
 void RTC_C_initCalendar(const RTC_C_Calendar *calendarTime,
         uint_fast16_t formatSelect)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
 
-    BITBAND_PERI(RTC_C->rCTL13.r, RTCHOLD_OFS) = 1;
+    BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_HOLD_OFS) = 1;
 
     if (formatSelect)
-        BITBAND_PERI(RTC_C->rCTL13.r, RTCBCD_OFS) = 1;
+        BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_BCD_OFS) = 1;
     else
-        BITBAND_PERI(RTC_C->rCTL13.r, RTCBCD_OFS) = 0;
+        BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_BCD_OFS) = 0;
 
-    RTC_C->rTIM0.b.bSEC = calendarTime->seconds;
-    RTC_C->rTIM0.b.bMIN = calendarTime->minutes;
-    RTC_C->rTIM1.b.bHOUR = calendarTime->hours;
-    RTC_C->rTIM1.b.bDOW = calendarTime->dayOfWeek;
-    RTC_C->rDATE.b.bDAY = calendarTime->dayOfmonth;
-    RTC_C->rDATE.b.bMON = calendarTime->month;
-    RTC_C->rYEAR.r = calendarTime->year;
+    RTC_C->TIM0 = (calendarTime->minutes<<RTC_C_TIM0_MIN_OFS) | calendarTime->seconds;
+    RTC_C->TIM1 = (calendarTime->dayOfWeek<<RTC_C_TIM1_DOW_OFS) | calendarTime->hours;
+    RTC_C->DATE = (calendarTime->month<<RTC_C_DATE_MON_OFS) | calendarTime->dayOfmonth;
+    RTC_C->YEAR = calendarTime->year;
 
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 RTC_C_Calendar RTC_C_getCalendarTime(void)
 {
     RTC_C_Calendar tempCal;
 
-    while (!(BITBAND_PERI(RTC_C->rCTL13.r, RTCRDY_OFS)))
+    while (!(BITBAND_PERI(RTC_C->CTL13, RTC_C_CTL13_RDY_OFS)))
         ;
 
-    tempCal.seconds = RTC_C->rTIM0.b.bSEC;
-    tempCal.minutes = RTC_C->rTIM0.b.bMIN;
-    tempCal.hours = RTC_C->rTIM1.b.bHOUR;
-    tempCal.dayOfWeek = RTC_C->rTIM1.b.bDOW;
-    tempCal.dayOfmonth = RTC_C->rDATE.b.bDAY;
-    tempCal.month = RTC_C->rDATE.b.bMON;
-    tempCal.year = RTC_C->rYEAR.r;
+    tempCal.seconds = RTC_C->TIM0 & RTC_C_TIM0_SEC_MASK;
+    tempCal.minutes = (RTC_C->TIM0 & RTC_C_TIM0_MIN_MASK)>>RTC_C_TIM0_MIN_OFS;
+    tempCal.hours   = RTC_C->TIM1 & RTC_C_TIM1_HOUR_MASK;
+    tempCal.dayOfWeek   = (RTC_C->TIM1 & RTC_C_TIM1_DOW_MASK)>>RTC_C_TIM1_DOW_OFS;
+    tempCal.dayOfmonth = RTC_C->DATE & RTC_C_DATE_DAY_MASK;
+    tempCal.month = (RTC_C->DATE & RTC_C_DATE_MON_MASK)>>RTC_C_DATE_MON_OFS;
+    tempCal.year = RTC_C->YEAR;
 
     return (tempCal);
 }
@@ -127,24 +125,22 @@ void RTC_C_setCalendarAlarm(uint_fast8_t minutesAlarm, uint_fast8_t hoursAlarm,
 {
     //Each of these is XORed with 0x80 to turn on if an integer is passed,
     //or turn OFF if RTC_ALARM_OFF (0x80) is passed.
-    HWREG8(RTC_C_BASE + OFS_RTCAMINHR) = (minutesAlarm ^ 0x80);
-    HWREG8(RTC_C_BASE + OFS_RTCAMINHR + 1) = (hoursAlarm ^ 0x80);
-    HWREG8(RTC_C_BASE + OFS_RTCADOWDAY) = (dayOfWeekAlarm ^ 0x80);
-    HWREG8(RTC_C_BASE + OFS_RTCADOWDAY + 1) = (dayOfmonthAlarm ^ 0x80);
+    RTC_C->AMINHR = ((hoursAlarm ^ 0x80) << 8 )| (minutesAlarm ^ 0x80);
+    RTC_C->ADOWDAY = ((dayOfmonthAlarm ^ 0x80) << 8 )| (dayOfWeekAlarm ^ 0x80);
 }
 
 void RTC_C_setCalendarEvent(uint_fast16_t eventSelect)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
-    RTC_C->rCTL13.r = (RTC_C->rCTL13.r & ~(RTCTEV_3)) | eventSelect;
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
+    RTC_C->CTL13 = (RTC_C->CTL13 & ~(RTC_C_CTL13_TEV_3)) | eventSelect;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 void RTC_C_definePrescaleEvent(uint_fast8_t prescaleSelect,
         uint_fast8_t prescaleEventDivider)
 {
-    HWREG8(RTC_C_BASE + OFS_RTCPS0CTL + prescaleSelect) &= ~(RT0IP_7);
-    HWREG8(RTC_C_BASE + OFS_RTCPS0CTL + prescaleSelect) |=
+    HWREG8(&RTC_C->PS0CTL + prescaleSelect) &= ~(RTC_C_PS0CTL_RT0IP_7);
+    HWREG8(&RTC_C->PS0CTL + prescaleSelect) |=
             prescaleEventDivider;
 }
 
@@ -152,10 +148,10 @@ uint_fast8_t RTC_C_getPrescaleValue(uint_fast8_t prescaleSelect)
 {
     if (RTC_C_PRESCALE_0 == prescaleSelect)
     {
-        return (RTC_C->rPS.b.bRT0PS);
+        return (RTC_C->PS & RTC_C_PS_RT0PS_MASK);
     } else if (RTC_C_PRESCALE_1 == prescaleSelect)
     {
-        return (RTC_C->rPS.b.bRT1PS);
+        return (RTC_C->PS & RTC_C_PS_RT1PS_MASK)>>RTC_C_PS_RT1PS_OFS;
     } else
     {
         return (0);
@@ -165,70 +161,74 @@ uint_fast8_t RTC_C_getPrescaleValue(uint_fast8_t prescaleSelect)
 void RTC_C_setPrescaleValue(uint_fast8_t prescaleSelect,
         uint_fast8_t prescaleCounterValue)
 {
-    RTC_C->rCTL0.b.bKEY = RTCKEY_H;
+	RTC_C->CTL0 = (RTC_C->CTL0 & ~RTC_C_CTL0_KEY_MASK) | RTC_C_KEY;
 
     if (RTC_C_PRESCALE_0 == prescaleSelect)
     {
-        RTC_C->rPS.b.bRT0PS = prescaleCounterValue;
+        RTC_C->PS = (RTC_C->PS & ~RTC_C_PS_RT0PS_MASK) | prescaleCounterValue;
     } else if (RTC_C_PRESCALE_1 == prescaleSelect)
     {
-        RTC_C->rPS.b.bRT1PS = prescaleCounterValue;
+    	RTC_C->PS = (RTC_C->PS & ~RTC_C_PS_RT1PS_MASK)
+    			| (prescaleCounterValue << RTC_C_PS_RT1PS_OFS);
     }
 
-    BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+    BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
 }
 
 uint16_t RTC_C_convertBCDToBinary(uint16_t valueToConvert)
 {
-    RTC_C->rBCD2BIN = valueToConvert;
-    return (RTC_C->rBCD2BIN);
+    RTC_C->BCD2BIN = valueToConvert;
+    return (RTC_C->BCD2BIN);
 }
 
 uint16_t RTC_C_convertBinaryToBCD(uint16_t valueToConvert)
 {
-    RTC_C->rBIN2BCD = valueToConvert;
-    return (RTC_C->rBIN2BCD);
+    RTC_C->BIN2BCD = valueToConvert;
+    return (RTC_C->BIN2BCD);
 }
 
 void RTC_C_enableInterrupt(uint8_t interruptMask)
 {
-    if (interruptMask & (RTCOFIE + RTCTEVIE + RTCAIE + RTCRDYIE))
+    if (interruptMask & (RTC_C_CTL0_OFIE + RTC_C_CTL0_TEVIE + RTC_C_CTL0_AIE
+    		+ RTC_C_CTL0_RDYIE))
     {
-        RTC_C->rCTL0.r = RTCKEY | (interruptMask
-                & (RTCOFIE + RTCTEVIE + RTCAIE + RTCRDYIE));
-        BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+        RTC_C->CTL0 = RTC_C_KEY | (interruptMask
+                & (RTC_C_CTL0_OFIE + RTC_C_CTL0_TEVIE + RTC_C_CTL0_AIE
+                + RTC_C_CTL0_RDYIE));
+        BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
     }
 
     if (interruptMask & RTC_C_PRESCALE_TIMER0_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS0CTL.r,RT0PSIE_OFS) = 1;
+        BITBAND_PERI(RTC_C->PS0CTL, RTC_C_PS0CTL_RT0PSIE_OFS) = 1;
     }
 
     if (interruptMask & RTC_C_PRESCALE_TIMER1_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS1CTL.r,RT1PSIE_OFS) = 1;
+        BITBAND_PERI(RTC_C->PS1CTL,RTC_C_PS1CTL_RT1PSIE_OFS) = 1;
     }
 }
 
 void RTC_C_disableInterrupt(uint8_t interruptMask)
 {
-    if (interruptMask & (RTCOFIE + RTCTEVIE + RTCAIE + RTCRDYIE))
+    if (interruptMask & (RTC_C_CTL0_OFIE + RTC_C_CTL0_TEVIE + RTC_C_CTL0_AIE
+    		+ RTC_C_CTL0_RDYIE))
     {
-        RTC_C->rCTL0.r = RTCKEY
-                | (RTC_C->rCTL0.r
-                        & ~((interruptMask | RTCKEY_M)
-                                & (RTCOFIE + RTCTEVIE + RTCAIE + RTCRDYIE)));
-        BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+        RTC_C->CTL0 = RTC_C_KEY
+                | (RTC_C->CTL0 & ~((interruptMask | RTC_C_CTL0_KEY_MASK)
+                & (RTC_C_CTL0_OFIE + RTC_C_CTL0_TEVIE + RTC_C_CTL0_AIE
+                + RTC_C_CTL0_RDYIE)));
+        BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
     }
 
     if (interruptMask & RTC_C_PRESCALE_TIMER0_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS0CTL.r,RT0PSIE_OFS) = 0;
+        BITBAND_PERI(RTC_C->PS0CTL, RTC_C_PS0CTL_RT0PSIE_OFS) = 0;
     }
 
     if (interruptMask & RTC_C_PRESCALE_TIMER1_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS1CTL.r,RT1PSIE_OFS) = 0;
+        BITBAND_PERI(RTC_C->PS1CTL, RTC_C_PS1CTL_RT1PSIE_OFS) = 0;
     }
 }
 
@@ -240,13 +240,13 @@ uint_fast8_t RTC_C_getInterruptStatus(void)
             | RTC_C_PRESCALE_TIMER0_INTERRUPT | RTC_C_PRESCALE_TIMER1_INTERRUPT
             | RTC_C_OSCILLATOR_FAULT_INTERRUPT;
 
-    tempInterruptFlagMask |= (RTC_C->rCTL0.r & (interruptFlagMask >> 4));
+    tempInterruptFlagMask |= (RTC_C->CTL0 & (interruptFlagMask >> 4));
 
     tempInterruptFlagMask = tempInterruptFlagMask << 4;
 
     if (interruptFlagMask & RTC_C_PRESCALE_TIMER0_INTERRUPT)
     {
-        if (BITBAND_PERI(RTC_C->rPS0CTL.r, RT0PSIFG_OFS))
+        if (BITBAND_PERI(RTC_C->PS0CTL, RTC_C_PS0CTL_RT0PSIFG_OFS))
         {
             tempInterruptFlagMask |= RTC_C_PRESCALE_TIMER0_INTERRUPT;
         }
@@ -254,7 +254,7 @@ uint_fast8_t RTC_C_getInterruptStatus(void)
 
     if (interruptFlagMask & RTC_C_PRESCALE_TIMER1_INTERRUPT)
     {
-        if (BITBAND_PERI(RTC_C->rPS1CTL.r, RT1PSIFG_OFS))
+        if (BITBAND_PERI(RTC_C->PS1CTL, RTC_C_PS1CTL_RT1PSIFG_OFS))
         {
             tempInterruptFlagMask |= RTC_C_PRESCALE_TIMER1_INTERRUPT;
         }
@@ -268,32 +268,32 @@ uint_fast8_t RTC_C_getEnabledInterruptStatus(void)
 
     uint32_t intStatus = RTC_C_getInterruptStatus();
 
-    if (!BITBAND_PERI(RTC_C->rCTL0.r, RTCOFIE_OFS))
+    if (!BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_OFIE_OFS))
     {
         intStatus &= ~RTC_C_OSCILLATOR_FAULT_INTERRUPT;
     }
 
-    if (!BITBAND_PERI(RTC_C->rCTL0.r, RTCTEVIE_OFS))
+    if (!BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_TEVIE_OFS))
     {
         intStatus &= ~RTC_C_TIME_EVENT_INTERRUPT;
     }
 
-    if (!BITBAND_PERI(RTC_C->rCTL0.r, RTCAIE_OFS))
+    if (!BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_AIE_OFS))
     {
         intStatus &= ~RTC_C_CLOCK_ALARM_INTERRUPT;
     }
 
-    if (!BITBAND_PERI(RTC_C->rCTL0.r, RTCRDYIE_OFS))
+    if (!BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_RDYIE_OFS))
     {
         intStatus &= ~RTC_C_CLOCK_READ_READY_INTERRUPT;
     }
 
-    if (!BITBAND_PERI(RTC_C->rPS0CTL, RT0PSIE_OFS))
+    if (!BITBAND_PERI(RTC_C->PS0CTL, RTC_C_PS0CTL_RT0PSIE_OFS))
     {
         intStatus &= ~RTC_C_PRESCALE_TIMER0_INTERRUPT;
     }
 
-    if (!BITBAND_PERI(RTC_C->rPS1CTL.r, RT1PSIE_OFS))
+    if (!BITBAND_PERI(RTC_C->PS1CTL, RTC_C_PS1CTL_RT1PSIE_OFS))
     {
         intStatus &= ~RTC_C_PRESCALE_TIMER1_INTERRUPT;
     }
@@ -308,19 +308,19 @@ void RTC_C_clearInterruptFlag(uint_fast8_t interruptFlagMask)
                     + RTC_C_CLOCK_READ_READY_INTERRUPT
                     + RTC_C_OSCILLATOR_FAULT_INTERRUPT))
     {
-        RTC_C->rCTL0.r = RTCKEY
-                | (RTC_C->rCTL0.r & ~((interruptFlagMask >> 4) | RTCKEY_M));
-        BITBAND_PERI(RTC_C->rCTL0.r, RTCKEY_OFS) = 0;
+        RTC_C->CTL0 = RTC_C_KEY
+                | (RTC_C->CTL0 & ~((interruptFlagMask >> 4) | RTC_C_CTL0_KEY_MASK));
+        BITBAND_PERI(RTC_C->CTL0, RTC_C_CTL0_KEY_OFS) = 0;
     }
 
     if (interruptFlagMask & RTC_C_PRESCALE_TIMER0_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS0CTL.r,RT0PSIFG_OFS) = 0;
+        BITBAND_PERI(RTC_C->PS0CTL, RTC_C_PS0CTL_RT0PSIFG_OFS) = 0;
     }
 
     if (interruptFlagMask & RTC_C_PRESCALE_TIMER1_INTERRUPT)
     {
-        BITBAND_PERI(RTC_C->rPS1CTL.r, RT1PSIFG_OFS) = 0;
+        BITBAND_PERI(RTC_C->PS1CTL, RTC_C_PS1CTL_RT1PSIFG_OFS) = 0;
     }
 }
 

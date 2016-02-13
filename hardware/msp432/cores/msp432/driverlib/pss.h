@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,9 +64,9 @@ extern "C"
 // Control specific variables
 //
 //*****************************************************************************
-#define PSS_KEY_VALUE 0x0000695A
+#define PSS_KEY_VALUE PSS_KEY_KEY_VAL
 
-#define PSS_SVSMH SVSMHIE
+#define PSS_SVSMH PSS_IE_SVSMHIE
 
 #define PSS_FULL_PERFORMANCE_MODE   0x01
 #define PSS_NORMAL_PERFORMANCE_MODE 0x00
@@ -205,51 +205,6 @@ extern uint_fast8_t PSS_getHighSideVoltageTrigger(void);
 
 //*****************************************************************************
 //
-//! Enables low side voltage supervisor/monitor.
-//!
-//! \return None.
-//
-//*****************************************************************************
-extern void PSS_enableLowSide(void);
-
-//*****************************************************************************
-//
-//! Disables low side voltage supervisor/monitor.
-//!
-//! \return None.
-//
-//*****************************************************************************
-extern void PSS_disableLowSide(void);
-
-//*****************************************************************************
-//
-//! Sets the performance mode of the high side regulator. Full performance
-//! mode allows for the best response times while normal performance mode is
-//! optimized for the lowest possible current consumption.
-//!
-//! \param ui8PowerMode is the performance mode to set. Valid values are one of
-//! the following:
-//!     - \b PSS_FULL_PERFORMANCE_MODE,
-//!     - \b PSS_NORMAL_PERFORMANCE_MODE
-//!
-//! \return None.
-//
-//*****************************************************************************
-extern void PSS_setLowSidePerformanceMode(uint_fast8_t ui8PowerMode);
-
-//*****************************************************************************
-//
-//! Gets the performance mode of the low side voltage regulator. Refer to the
-//! user's guide for specific information about information about the different
-//! performance modes.
-//!
-//! \return Performance mode of the voltage regulator
-//
-//*****************************************************************************
-extern uint_fast8_t PSS_getLowSidePerformanceMode(void);
-
-//*****************************************************************************
-//
 //! Enables the power supply system interrupt source.
 //!
 //! \return None.
@@ -283,6 +238,32 @@ extern uint32_t PSS_getInterruptStatus(void);
 //
 //*****************************************************************************
 extern void PSS_clearInterruptFlag(void);
+
+
+//*****************************************************************************
+//
+//! Enables the "forced" mode of the DCDC regulator. In this mode, the fail
+//! safe mechanism that disables the regulator to LDO mode when the supply
+//! voltage falls below the minimum supply voltage required for DCDC operation
+//! is turned off.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void PSS_enableForcedDCDCOperation(void);
+
+
+//*****************************************************************************
+//
+//! Disables the "forced" mode of the DCDC regulator. In this mode, the fail
+//! safe mechanism that disables the regulator to LDO mode when the supply
+//! voltage falls below the minimum supply voltage required for DCDC operation
+//! is turned on.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void PSS_disableForcedDCDCOperation(void);
 
 //*****************************************************************************
 //
