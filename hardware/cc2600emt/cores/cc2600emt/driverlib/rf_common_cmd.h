@@ -203,12 +203,7 @@ struct __RFC_STRUCT rfc_CMD_RADIO_SETUP_s {
       uint16_t bNoFsPowerUp:1;          //!< \brief 0: Power up frequency synth<br>
                                         //!<        1: Do not power up frequency synth
    } config;                            //!<        Configuration options
-   struct {
-      uint16_t IB:6;                    //!<        Value to write to the PA power control field at 25 &deg;C
-      uint16_t GC:2;                    //!<        Value to write to the gain control of the 1st stage of the PA
-      uint16_t boost:1;                 //!<        Value of boost bit in synth
-      uint16_t tempCoeff:7;             //!<        Temperature coefficient for IB. 0: No temperature compensation
-   } txPower;                           //!<        Transmit power
+   uint16_t txPower;					//!<        Transmit power
    uint32_t* pRegOverride;              //!< \brief Pointer to a list of hardware and configuration registers to override. If NULL, no
                                         //!<        override is used.
 };

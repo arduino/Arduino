@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_4_aux_h
-*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45056
+*  Revised:        2015-12-03 09:20:10 +0100 (Thu, 03 Dec 2015)
+*  Revision:       45256
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -253,7 +253,6 @@
 //
 // Current source enable
 #define ADI_4_AUX_ISRC_EN                                           0x00000001
-#define ADI_4_AUX_ISRC_EN_BITN                                               0
 #define ADI_4_AUX_ISRC_EN_M                                         0x00000001
 #define ADI_4_AUX_ISRC_EN_S                                                  0
 
@@ -267,7 +266,6 @@
 // Enables 400kohm resistance from COMPA reference node to ground. Used with
 // COMPA_REF_CURR_EN to generate voltage reference for cap-sense.
 #define ADI_4_AUX_COMP_COMPA_REF_RES_EN                             0x00000080
-#define ADI_4_AUX_COMP_COMPA_REF_RES_EN_BITN                                 7
 #define ADI_4_AUX_COMP_COMPA_REF_RES_EN_M                           0x00000080
 #define ADI_4_AUX_COMP_COMPA_REF_RES_EN_S                                    7
 
@@ -277,7 +275,6 @@
 // ISRC.EN = 1. Used with COMPA_REF_RES_EN to generate voltage reference for
 // cap-sense.
 #define ADI_4_AUX_COMP_COMPA_REF_CURR_EN                            0x00000040
-#define ADI_4_AUX_COMP_COMPA_REF_CURR_EN_BITN                                6
 #define ADI_4_AUX_COMP_COMPA_REF_CURR_EN_M                          0x00000040
 #define ADI_4_AUX_COMP_COMPA_REF_CURR_EN_S                                   6
 
@@ -301,7 +298,6 @@
 //
 // Comparator B enable
 #define ADI_4_AUX_COMP_COMPB_EN                                     0x00000004
-#define ADI_4_AUX_COMP_COMPB_EN_BITN                                         2
 #define ADI_4_AUX_COMP_COMPB_EN_M                                   0x00000004
 #define ADI_4_AUX_COMP_COMPB_EN_S                                            2
 
@@ -309,7 +305,6 @@
 //
 // COMPA enable
 #define ADI_4_AUX_COMP_COMPA_EN                                     0x00000001
-#define ADI_4_AUX_COMP_COMPA_EN_BITN                                         0
 #define ADI_4_AUX_COMP_COMPA_EN_M                                   0x00000001
 #define ADI_4_AUX_COMP_COMPA_EN_S                                            0
 
@@ -369,7 +364,6 @@
 // Asynchronous mode is useful when it is important to avoid jitter in the
 // sampling instant of an externally driven signal
 #define ADI_4_AUX_ADC0_SMPL_MODE                                    0x00000080
-#define ADI_4_AUX_ADC0_SMPL_MODE_BITN                                        7
 #define ADI_4_AUX_ADC0_SMPL_MODE_M                                  0x00000080
 #define ADI_4_AUX_ADC0_SMPL_MODE_S                                           7
 
@@ -417,7 +411,6 @@
 // 0: Reset
 // 1: Normal operation
 #define ADI_4_AUX_ADC0_RESET_N                                      0x00000002
-#define ADI_4_AUX_ADC0_RESET_N_BITN                                          1
 #define ADI_4_AUX_ADC0_RESET_N_M                                    0x00000002
 #define ADI_4_AUX_ADC0_RESET_N_S                                             1
 
@@ -428,7 +421,6 @@
 // 0: Disable
 // 1: Enable
 #define ADI_4_AUX_ADC0_EN                                           0x00000001
-#define ADI_4_AUX_ADC0_EN_BITN                                               0
 #define ADI_4_AUX_ADC0_EN_M                                         0x00000001
 #define ADI_4_AUX_ADC0_EN_S                                                  0
 
@@ -441,7 +433,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADC1_SCALE_DIS                                    0x00000001
-#define ADI_4_AUX_ADC1_SCALE_DIS_BITN                                        0
 #define ADI_4_AUX_ADC1_SCALE_DIS_M                                  0x00000001
 #define ADI_4_AUX_ADC1_SCALE_DIS_S                                           0
 
@@ -456,7 +447,6 @@
 //
 // Set to 1 if ADC0.SMPL_CYCLE_EXP is less than 6 (21.3us sampling time)
 #define ADI_4_AUX_ADCREF0_REF_ON_IDLE                               0x00000040
-#define ADI_4_AUX_ADCREF0_REF_ON_IDLE_BITN                                   6
 #define ADI_4_AUX_ADCREF0_REF_ON_IDLE_M                             0x00000040
 #define ADI_4_AUX_ADCREF0_REF_ON_IDLE_S                                      6
 
@@ -464,7 +454,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADCREF0_IOMUX                                     0x00000020
-#define ADI_4_AUX_ADCREF0_IOMUX_BITN                                         5
 #define ADI_4_AUX_ADCREF0_IOMUX_M                                   0x00000020
 #define ADI_4_AUX_ADCREF0_IOMUX_S                                            5
 
@@ -472,7 +461,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_4_AUX_ADCREF0_EXT                                       0x00000010
-#define ADI_4_AUX_ADCREF0_EXT_BITN                                           4
 #define ADI_4_AUX_ADCREF0_EXT_M                                     0x00000010
 #define ADI_4_AUX_ADCREF0_EXT_S                                              4
 
@@ -483,7 +471,6 @@
 // 0: Fixed reference = 4.3V
 // 1: Relative reference = VDDS
 #define ADI_4_AUX_ADCREF0_SRC                                       0x00000008
-#define ADI_4_AUX_ADCREF0_SRC_BITN                                           3
 #define ADI_4_AUX_ADCREF0_SRC_M                                     0x00000008
 #define ADI_4_AUX_ADCREF0_SRC_S                                              3
 
@@ -494,7 +481,6 @@
 // 0: ADC reference module powered down
 // 1: ADC reference module enabled
 #define ADI_4_AUX_ADCREF0_EN                                        0x00000001
-#define ADI_4_AUX_ADCREF0_EN_BITN                                            0
 #define ADI_4_AUX_ADCREF0_EN_M                                      0x00000001
 #define ADI_4_AUX_ADCREF0_EN_S                                               0
 

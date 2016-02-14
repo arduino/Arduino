@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       setup.c
-*  Revised:        2015-11-12 09:09:18 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45045
+*  Revised:        2016-01-07 16:01:48 +0100 (Thu, 07 Jan 2016)
+*  Revision:       45399
 *
 *  Description:    Setup file for CC13xx/CC26xx devices.
 *
@@ -120,14 +120,6 @@ static void     HapiTrimDevicePowerDown( void );
 //*****************************************************************************
 #define CPU_DELAY_MICRO_SECONDS( x ) \
    CPUdelay(((uint32_t)((( x ) * 48.0 ) / 5.0 )) - 1 )
-
-
-//*****************************************************************************
-// Need to know the CCFG:MODE_CONF.VDDR_TRIM_SLEEP_DELTA field width in order
-// to sign extend correctly but this is however not defined in the hardware
-// description fields and is therefore defined separately here.
-//*****************************************************************************
-#define CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH    4
 
 
 //*****************************************************************************
@@ -421,6 +413,8 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
         HWREGB( ADI3_BASE + ADI_O_MASK4B + ( ADI_3_REFSYS_O_DCDCCTL5 * 2 )) = ( 0xF0 |
             ( HWREG( CCFG_BASE + CCFG_O_MODE_CONF_1 ) >> CCFG_MODE_CONF_1_ALT_DCDC_IPEAK_S ));
 
+    } else {
+        HWREGB( ADI3_BASE + ADI_O_MASK4B + ( ADI_3_REFSYS_O_DCDCCTL5 * 2 )) = 0x72;
     }
 
     //
@@ -445,8 +439,8 @@ HapiTrimDeviceShutDown(uint32_t ui32Fcfg1Revision)
     // Read and sign extend VddrSleepDelta (in range -8 to +7)
     //
     i32VddrSleepDelta = ((((int32_t)ccfg_ModeConfReg )
-        << ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_S ))
-        >> ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH ));
+        << ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_W - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_S ))
+        >> ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_W ));
     // Calculate new VDDR sleep trim
     i32VddrSleepTrim = ( i32VddrSleepTrim + i32VddrSleepDelta + 1 );
     if ( i32VddrSleepTrim >  21 ) i32VddrSleepTrim =  21;

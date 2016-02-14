@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       sys_ctrl.c
-*  Revised:        2015-09-25 11:16:31 +0200 (Fri, 25 Sep 2015)
-*  Revision:       44664
+*  Revised:        2016-01-07 16:01:48 +0100 (Thu, 07 Jan 2016)
+*  Revision:       45399
 *
 *  Description:    Driver for the System Control.
 *
@@ -322,13 +322,6 @@ SysCtrlShutdown(void)
 
 
 //*****************************************************************************
-// Need to know the CCFG:MODE_CONF.VDDR_TRIM_SLEEP_DELTA fild width in order
-// to sign extend correctly but this is however not defined in the hardware
-// description fields and are therefore defined separately here.
-//*****************************************************************************
-#define CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH    4
-
-//*****************************************************************************
 //
 // SysCtrlSetRechargeBeforePowerDown( xoscPowerMode )
 //
@@ -378,8 +371,8 @@ SysCtrlSetRechargeBeforePowerDown( uint32_t xoscPowerMode )
    ccfg_ModeConfReg = HWREG( CCFG_BASE + CCFG_O_MODE_CONF );
    // Get VDDR_TRIM_SLEEP_DELTA + 1 (sign extended)
    deltaVddrSleepTrim = ((((int32_t) ccfg_ModeConfReg )
-      << ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_S ))
-      >> ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_WIDTH )) + 1;
+      << ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_W - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_S ))
+      >> ( 32 - CCFG_MODE_CONF_VDDR_TRIM_SLEEP_DELTA_W )) + 1;
    // Do temperature compensation if enabled
    if (( ccfg_ModeConfReg & CCFG_MODE_CONF_VDDR_TRIM_SLEEP_TC ) == 0 ) {
       int32_t tcDelta = ( 62 - curTemp ) >> 3;

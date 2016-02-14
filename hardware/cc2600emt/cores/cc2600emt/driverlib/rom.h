@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rom.h
-*  Revised:        2015-11-11 14:08:23 +0100 (Wed, 11 Nov 2015)
-*  Revision:       45027
+*  Revised:        2015-12-15 10:40:56 +0100 (Tue, 15 Dec 2015)
+*  Revision:       45307
 *
 *  Description:    Prototypes for the ROM utility functions.
 *
@@ -150,6 +150,7 @@ typedef struct
 //
 // Add wrapper around the Hapi functions needing the "bus arbitration issue" workaround
 //
+extern void SafeHapiVoid( FPTR_VOID_VOID_T fPtr );
 extern void SafeHapiAuxAdiSelect( FPTR_VOID_UINT8_T fPtr, uint8_t ut8Signal );
 
 #define HapiCrc32(a,b,c)             P_HARD_API->Crc32(a,b,c)
@@ -163,7 +164,7 @@ extern void SafeHapiAuxAdiSelect( FPTR_VOID_UINT8_T fPtr, uint8_t ut8Signal );
 #define HapiMaxValue(a,b)            P_HARD_API->MaxValue(a,b)
 #define HapiMeanValue(a,b)           P_HARD_API->MeanValue(a,b)
 #define HapiStandDeviationValue(a,b) P_HARD_API->StandDeviationValue(a,b)
-#define HapiHFSourceSafeSwitch()     P_HARD_API->HFSourceSafeSwitch()
+#define HapiHFSourceSafeSwitch()     SafeHapiVoid( P_HARD_API->HFSourceSafeSwitch )
 #define HapiSelectCompAInput(a)      SafeHapiAuxAdiSelect( P_HARD_API->SelectCompAInput   , a )
 #define HapiSelectCompARef(a)        SafeHapiAuxAdiSelect( P_HARD_API->SelectCompARef     , a )
 #define HapiSelectADCCompBInput(a)   SafeHapiAuxAdiSelect( P_HARD_API->SelectADCCompBInput, a )

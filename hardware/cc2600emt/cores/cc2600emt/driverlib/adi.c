@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       adi.c
-*  Revised:        2015-04-29 16:41:08 +0200 (Wed, 29 Apr 2015)
-*  Revision:       43361
+*  Revised:        2015-12-15 10:40:56 +0100 (Tue, 15 Dec 2015)
+*  Revision:       45307
 *
 *  Description:    Driver for the ADI interface
 *
@@ -45,11 +45,22 @@
 
 //*****************************************************************************
 //
-// SafeHapiAuxAdiSelect()
-// Common wrapper function for the Hapi functions needing the "bus arbitration
+// SafeHapiVoid() and SafeHapiAuxAdiSelect()
+// Common wrapper functions for the Hapi functions needing the "bus arbitration
 // issue" workaround.
 //
 //*****************************************************************************
+void SafeHapiVoid( FPTR_VOID_VOID_T fPtr )
+{
+    bool bIrqEnabled = ( ! CPUcpsid() );
+    while ( ! HWREG( AUX_SMPH_BASE + AUX_SMPH_O_SMPH0 ));
+    fPtr();
+    HWREG( AUX_SMPH_BASE + AUX_SMPH_O_SMPH0 ) = 1;
+    if ( bIrqEnabled ) {
+        CPUcpsie();
+    }
+}
+
 void SafeHapiAuxAdiSelect( FPTR_VOID_UINT8_T fPtr, uint8_t ut8Signal )
 {
     bool bIrqEnabled = ( ! CPUcpsid() );
