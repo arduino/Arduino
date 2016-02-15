@@ -3,6 +3,7 @@
  * Copyright (c) 2014 by Paul Stoffregen <paul@pjrc.com> (Transaction API)
  * Copyright (c) 2014 by Matthijs Kooijman <matthijs@stdin.nl> (SPISettings AVR)
  * Copyright (c) 2014 by Andrew J. Kroll <xxxajk@gmail.com> (atomicity fixes)
+ * Copyright (c) 2016 by Pedro M. Ribeiro <pamribeirox@gmail.com> (transfer_out)
  * SPI Master library for arduino.
  *
  * This file is free software; you can redistribute it and/or modify
@@ -260,15 +261,19 @@ public:
    * contents of the source buffer with the bytes returned from the
    * slave device. 
    * Some code simplifications and const enforcement
-   * by Pedro Ribeiro pamribeirox@gmail.com
-   */
+   * Revision with speedup of about 25% in atmega328p tests
+   * NOTE: I can't explain that "*(p++ + 1);" being speedier than "*++p"
+   */ 
   inline static void transfer_out(const void *buf, size_t count) {
     if (count == 0) return;
     uint8_t *p = (uint8_t *)buf;
-    while (count-- > 0) {
-      SPDR = *p++;
-      while (!(SPSR & _BV(SPIF))) ;
+    SPDR = *p;
+    while (--count > 0) {
+      uint8_t out = *(p++ + 1); // ugly but somehow results in a speedup!
+      while (!(SPSR & _BV(SPIF))) ; // last SPI transfer is over?
+      SPDR = out;
     }
+    while (!(SPSR & _BV(SPIF))) ; // last SPI transfer is over?
   }
   // After performing a group of transfers and releasing the chip select
   // signal, this function allows others to access the SPI bus
