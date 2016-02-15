@@ -266,7 +266,7 @@ public:
    */ 
   inline static void transfer_out(const void *buf, size_t count) {
     if (count == 0) return;
-    uint8_t *p = (uint8_t *)buf;
+    const uint8_t *p = (uint8_t *)buf;
     SPDR = *p;
     while (--count > 0) {
       uint8_t out = *(p++ + 1); // ugly but somehow results in a speedup!
