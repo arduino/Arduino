@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       ccfgread.h
-*  Revised:        2015-08-04 11:44:20 +0200 (Tue, 04 Aug 2015)
-*  Revision:       44329
+*  Revised:        2016-01-07 20:08:22 +0100 (Thu, 07 Jan 2016)
+*  Revision:       45400
 *
 *  Description:    API for reading CCFG.
 *
@@ -80,21 +80,6 @@ extern "C"
 
 //*****************************************************************************
 //
-//! \brief Read EXT_LF_CLK_DIO from CCFG.
-//!
-//! \return Value of CCFG field CCFG_EXT_LF_CLK_DIO
-//
-//*****************************************************************************
-__STATIC_INLINE bool
-CCFGRead_EXT_LF_CLK_DIO( void )
-{
-    return (( HWREG( CCFG_BASE + CCFG_O_EXT_LF_CLK ) &
-        CCFG_EXT_LF_CLK_DIO_M ) >>
-        CCFG_EXT_LF_CLK_DIO_S ) ;
-}
-
-//*****************************************************************************
-//
 //! \brief Read DIS_GPRAM from CCFG.
 //!
 //! \return Value of CCFG field CCFG_SIZE_AND_DIS_FLAGS_DIS_GPRAM
@@ -110,24 +95,39 @@ CCFGRead_DIS_GPRAM( void )
 
 //*****************************************************************************
 //
+//! \brief Read EXT_LF_CLK_DIO from CCFG.
+//!
+//! \return Value of CCFG field CCFG_EXT_LF_CLK_DIO
+//
+//*****************************************************************************
+__STATIC_INLINE bool
+CCFGRead_EXT_LF_CLK_DIO( void )
+{
+    return (( HWREG( CCFG_BASE + CCFG_O_EXT_LF_CLK ) &
+        CCFG_EXT_LF_CLK_DIO_M ) >>
+        CCFG_EXT_LF_CLK_DIO_S ) ;
+}
+
+//*****************************************************************************
+//
 // Defines the possible values returned from CCFGRead_SCLK_LF_OPTION()
 //
 //*****************************************************************************
-#define SCLK_LF_OPTION_XOSC_HF_DLF     0
-#define SCLK_LF_OPTION_EXTERNAL        1
-#define SCLK_LF_OPTION_XOSC_LF         2
-#define SCLK_LF_OPTION_RCOSC_LF        3
+#define CCFGREAD_SCLK_LF_OPTION_XOSC_HF_DLF ( CCFG_MODE_CONF_SCLK_LF_OPTION_XOSC_HF_DLF >> CCFG_MODE_CONF_SCLK_LF_OPTION_S )
+#define CCFGREAD_SCLK_LF_OPTION_EXTERNAL_LF ( CCFG_MODE_CONF_SCLK_LF_OPTION_EXTERNAL_LF >> CCFG_MODE_CONF_SCLK_LF_OPTION_S )
+#define CCFGREAD_SCLK_LF_OPTION_XOSC_LF     ( CCFG_MODE_CONF_SCLK_LF_OPTION_XOSC_LF     >> CCFG_MODE_CONF_SCLK_LF_OPTION_S )
+#define CCFGREAD_SCLK_LF_OPTION_RCOSC_LF    ( CCFG_MODE_CONF_SCLK_LF_OPTION_RCOSC_LF    >> CCFG_MODE_CONF_SCLK_LF_OPTION_S )
 
 //*****************************************************************************
 //
 //! \brief Read SCLK_LF_OPTION from CCFG.
 //!
-//! \return Value of CCFG field CCFG_MODE_CONF_SCLK_LF_OPTION.
+//! \return Returns the value of the CCFG field CCFG_MODE_CONF_SCLK_LF_OPTION field.
 //! Returns one of the following:
-//! - \ref SCLK_LF_OPTION_XOSC_HF_DLF
-//! - \ref SCLK_LF_OPTION_EXTERNAL
-//! - \ref SCLK_LF_OPTION_XOSC_LF
-//! - \ref SCLK_LF_OPTION_RCOSC_LF
+//! - \ref CCFGREAD_SCLK_LF_OPTION_XOSC_HF_DLF
+//! - \ref CCFGREAD_SCLK_LF_OPTION_EXTERNAL_LF
+//! - \ref CCFGREAD_SCLK_LF_OPTION_XOSC_LF
+//! - \ref CCFGREAD_SCLK_LF_OPTION_RCOSC_LF
 //
 //*****************************************************************************
 __STATIC_INLINE uint32_t
@@ -136,6 +136,35 @@ CCFGRead_SCLK_LF_OPTION( void )
     return (( HWREG( CCFG_BASE + CCFG_O_MODE_CONF ) &
         CCFG_MODE_CONF_SCLK_LF_OPTION_M ) >>
         CCFG_MODE_CONF_SCLK_LF_OPTION_S ) ;
+}
+
+//*****************************************************************************
+//
+// Defines the possible values returned from CCFGRead_XOSC_FREQ()
+//
+//*****************************************************************************
+#define CCFGREAD_XOSC_FREQ_24M   ( CCFG_MODE_CONF_XOSC_FREQ_24M   >> CCFG_MODE_CONF_XOSC_FREQ_S )
+#define CCFGREAD_XOSC_FREQ_48M   ( CCFG_MODE_CONF_XOSC_FREQ_48M   >> CCFG_MODE_CONF_XOSC_FREQ_S )
+#define CCFGREAD_XOSC_FREQ_HPOSC ( CCFG_MODE_CONF_XOSC_FREQ_HPOSC >> CCFG_MODE_CONF_XOSC_FREQ_S )
+
+//*****************************************************************************
+//
+//! \brief Read XOSC_FREQ setting CCFG.
+//!
+//! \return Returns the value of the CCFG_MODE_CONF_XOSC_FREQ field.
+//! Returns one of the following:
+//! - \ref CCFGREAD_XOSC_FREQ_24M
+//! - \ref CCFGREAD_XOSC_FREQ_48M
+//! - \ref CCFGREAD_XOSC_FREQ_HPOSC
+//!
+//
+//*****************************************************************************
+__STATIC_INLINE uint32_t
+CCFGRead_XOSC_FREQ( void )
+{
+    return (( HWREG( CCFG_BASE + CCFG_O_MODE_CONF ) &
+        CCFG_MODE_CONF_XOSC_FREQ_M ) >>
+        CCFG_MODE_CONF_XOSC_FREQ_S ) ;
 }
 
 //*****************************************************************************

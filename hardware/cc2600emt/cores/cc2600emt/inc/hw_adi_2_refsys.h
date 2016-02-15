@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_2_refsys_h
-*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45056
+*  Revised:        2015-12-03 09:20:10 +0100 (Thu, 03 Dec 2015)
+*  Revision:       45256
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -193,7 +193,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_2_REFSYS_SOCLDOCTL4_BIAS_DIS                            0x00000002
-#define ADI_2_REFSYS_SOCLDOCTL4_BIAS_DIS_BITN                                1
 #define ADI_2_REFSYS_SOCLDOCTL4_BIAS_DIS_M                          0x00000002
 #define ADI_2_REFSYS_SOCLDOCTL4_BIAS_DIS_S                                   1
 
@@ -204,7 +203,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_2_REFSYS_SOCLDOCTL4_UDIG_LDO_EN                         0x00000001
-#define ADI_2_REFSYS_SOCLDOCTL4_UDIG_LDO_EN_BITN                             0
 #define ADI_2_REFSYS_SOCLDOCTL4_UDIG_LDO_EN_M                       0x00000001
 #define ADI_2_REFSYS_SOCLDOCTL4_UDIG_LDO_EN_S                                0
 #define ADI_2_REFSYS_SOCLDOCTL4_UDIG_LDO_EN_EN                      0x00000001
@@ -219,7 +217,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_2_REFSYS_SOCLDOCTL5_IMON_ITEST_EN                       0x00000008
-#define ADI_2_REFSYS_SOCLDOCTL5_IMON_ITEST_EN_BITN                           3
 #define ADI_2_REFSYS_SOCLDOCTL5_IMON_ITEST_EN_M                     0x00000008
 #define ADI_2_REFSYS_SOCLDOCTL5_IMON_ITEST_EN_S                              3
 
@@ -250,7 +247,6 @@
 //
 // Enable 1 kHz low pass filter  in the HPOSC bias.
 #define ADI_2_REFSYS_HPOSCCTL0_FILTER_EN                            0x00000080
-#define ADI_2_REFSYS_HPOSCCTL0_FILTER_EN_BITN                                7
 #define ADI_2_REFSYS_HPOSCCTL0_FILTER_EN_M                          0x00000080
 #define ADI_2_REFSYS_HPOSCCTL0_FILTER_EN_S                                   7
 
@@ -307,7 +303,6 @@
 // HPOSC_2520MHZ            Divide by 17.5 for use with 2520 MHz HPOSC
 // HPOSC_840MHZ             Divide by 52.5 for use with 840 MHz HPOSC
 #define ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS                          0x00000001
-#define ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_BITN                              0
 #define ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_M                        0x00000001
 #define ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_S                                 0
 #define ADI_2_REFSYS_HPOSCCTL0_DIV3_BYPASS_HPOSC_2520MHZ            0x00000001
@@ -325,7 +320,6 @@
 // 0: Dummy bias current on (Default)
 // 1: Dummy bias current off
 #define ADI_2_REFSYS_HPOSCCTL1_BIAS_DIS                             0x00000020
-#define ADI_2_REFSYS_HPOSCCTL1_BIAS_DIS_BITN                                 5
 #define ADI_2_REFSYS_HPOSCCTL1_BIAS_DIS_M                           0x00000020
 #define ADI_2_REFSYS_HPOSCCTL1_BIAS_DIS_S                                    5
 
@@ -339,7 +333,6 @@
 // When enabled, Power detector VMAX and VMIN referred to in
 // HPOSCCTL2.ATEST_SEL can be selected.
 #define ADI_2_REFSYS_HPOSCCTL1_PWRDET_EN                            0x00000010
-#define ADI_2_REFSYS_HPOSCCTL1_PWRDET_EN_BITN                                4
 #define ADI_2_REFSYS_HPOSCCTL1_PWRDET_EN_M                          0x00000010
 #define ADI_2_REFSYS_HPOSCCTL1_PWRDET_EN_S                                   4
 
@@ -368,7 +361,6 @@
 // 0: Disabled hold mode
 // 1: Enabled hold mode
 #define ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN                    0x00000080
-#define ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN_BITN                        7
 #define ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN_M                  0x00000080
 #define ADI_2_REFSYS_HPOSCCTL2_BIAS_HOLD_MODE_EN_S                           7
 
@@ -379,7 +371,6 @@
 // 0:  HPOSC test mux disabled.
 // 1:  HPOSC test mux enabled.
 #define ADI_2_REFSYS_HPOSCCTL2_TESTMUX_EN                           0x00000040
-#define ADI_2_REFSYS_HPOSCCTL2_TESTMUX_EN_BITN                               6
 #define ADI_2_REFSYS_HPOSCCTL2_TESTMUX_EN_M                         0x00000040
 #define ADI_2_REFSYS_HPOSCCTL2_TESTMUX_EN_S                                  6
 

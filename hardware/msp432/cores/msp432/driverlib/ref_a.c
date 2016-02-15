@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,76 +41,76 @@ void REF_A_setReferenceVoltage(uint_fast8_t referenceVoltageSelect)
 {
     ASSERT(referenceVoltageSelect <= REF_A_VREF2_5V);
 
-    REF_A->rCTL0.r = (REF_A->rCTL0.r &  ~REFVSEL_3) | referenceVoltageSelect;
+    REF_A->CTL0 = (REF_A->CTL0 &  ~REF_A_CTL0_VSEL_3) | referenceVoltageSelect;
 }
 
 void REF_A_disableTempSensor(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFTCOFF_OFS) = 1;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_TCOFF_OFS) = 1;
 }
 
 void REF_A_enableTempSensor(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFTCOFF_OFS) = 0;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_TCOFF_OFS) = 0;
 }
 
 void REF_A_enableReferenceVoltageOutput(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFOUT_OFS) = 1;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_OUT_OFS) = 1;
 }
 
 void REF_A_disableReferenceVoltageOutput(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFOUT_OFS) = 0;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_OUT_OFS) = 0;
 }
 
 void REF_A_enableReferenceVoltage(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFON_OFS) = 1;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_ON_OFS) = 1;
 }
 
 void REF_A_disableReferenceVoltage(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFON_OFS) = 0;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_ON_OFS) = 0;
 }
 
 uint_fast8_t REF_A_getBandgapMode(void)
 {
-    return (REF_A->rCTL0.r & BGMODE);
+    return (REF_A->CTL0 & REF_A_CTL0_BGMODE);
 }
 
 bool REF_A_isBandgapActive(void)
 {
-    return BITBAND_PERI(REF_A->rCTL0.r,REFBGACT_OFS);
+    return BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_BGACT_OFS);
 }
 
 bool REF_A_isRefGenBusy(void)
 {
-    return BITBAND_PERI(REF_A->rCTL0.r,REFGENBUSY_OFS);
+    return BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_GENBUSY_OFS);
 }
 
 bool REF_A_isRefGenActive(void)
 {
-    return BITBAND_PERI(REF_A->rCTL0.r,REFGENACT_OFS);
+    return BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_GENACT_OFS);
 }
 
 bool REF_A_getBufferedBandgapVoltageStatus(void)
 {
-    return BITBAND_PERI(REF_A->rCTL0.r,REFBGRDY_OFS);
+    return BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_BGRDY_OFS);
 }
 
 bool REF_A_getVariableReferenceVoltageStatus(void)
 {
-    return BITBAND_PERI(REF_A->rCTL0.r,REFGENRDY_OFS);
+    return BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_GENRDY_OFS);
 }
 
 void REF_A_setReferenceVoltageOneTimeTrigger(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFGENOT_OFS) = 1;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_GENOT_OFS) = 1;
 }
 
 void REF_A_setBufferedBandgapVoltageOneTimeTrigger(void)
 {
-    BITBAND_PERI(REF_A->rCTL0.r,REFBGOT_OFS) = 1;
+    BITBAND_PERI(REF_A->CTL0,REF_A_CTL0_BGOT_OFS) = 1;
 }
 

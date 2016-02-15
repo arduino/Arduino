@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,21 +36,22 @@
  * --/COPYRIGHT--*/
 #include <debug.h>
 #include <pmap.h>
+#include <hw_memmap.h>
 
 void PMAP_configurePorts(const uint8_t *portMapping, uint8_t pxMAPy,
         uint8_t numberOfPorts, uint8_t portMapReconfigure)
 {
-	  uint16_t i;
+    uint_fast16_t i;
 
     ASSERT(
             (portMapReconfigure == PMAP_ENABLE_RECONFIGURATION)
                     || (portMapReconfigure == PMAP_DISABLE_RECONFIGURATION));
 
     //Get write-access to port mapping registers:
-    PMAP->rKEYID = PMAP_KEYID_VAL;
+    PMAP->KEYID = PMAP_KEYID_VAL;
 
     //Enable/Disable reconfiguration during runtime
-    PMAP->rCTL.r = (PMAP->rCTL.r & ~PMAPRECFG) | portMapReconfigure;
+    PMAP->CTL = (PMAP->CTL & ~PMAP_CTL_PRECFG) | portMapReconfigure;
 
     //Configure Port Mapping:
     
@@ -60,6 +61,6 @@ void PMAP_configurePorts(const uint8_t *portMapping, uint8_t pxMAPy,
     }
 
     //Disable write-access to port mapping registers:
-    PMAP->rKEYID = 0;
+    PMAP->KEYID = 0;
 }
 

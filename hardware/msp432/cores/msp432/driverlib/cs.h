@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,21 +64,21 @@ extern "C"
 // Control specific variables
 //
 //*****************************************************************************
-#define CS_CLOCK_DIVIDER_1 DIVS_0
-#define CS_CLOCK_DIVIDER_2 DIVS_1
-#define CS_CLOCK_DIVIDER_4 DIVS_2
-#define CS_CLOCK_DIVIDER_8 DIVS_3
-#define CS_CLOCK_DIVIDER_16 DIVS_4
-#define CS_CLOCK_DIVIDER_32 DIVS_5
-#define CS_CLOCK_DIVIDER_64 DIVS_6
-#define CS_CLOCK_DIVIDER_128 DIVS_7
+#define CS_CLOCK_DIVIDER_1 CS_CTL1_DIVS_0
+#define CS_CLOCK_DIVIDER_2 CS_CTL1_DIVS_1
+#define CS_CLOCK_DIVIDER_4 CS_CTL1_DIVS_2
+#define CS_CLOCK_DIVIDER_8 CS_CTL1_DIVS_3
+#define CS_CLOCK_DIVIDER_16 CS_CTL1_DIVS_4
+#define CS_CLOCK_DIVIDER_32 CS_CTL1_DIVS_5
+#define CS_CLOCK_DIVIDER_64 CS_CTL1_DIVS_6
+#define CS_CLOCK_DIVIDER_128 CS_CTL1_DIVS_7
 
-#define CS_LFXTCLK_SELECT   SELM_0
-#define CS_HFXTCLK_SELECT   SELM_5
-#define CS_VLOCLK_SELECT    SELM_1
-#define CS_REFOCLK_SELECT   SELM_2
-#define CS_DCOCLK_SELECT    SELM_3
-#define CS_MODOSC_SELECT    SELM_4
+#define CS_LFXTCLK_SELECT   CS_CTL1_SELM_0
+#define CS_HFXTCLK_SELECT   CS_CTL1_SELM_5
+#define CS_VLOCLK_SELECT    CS_CTL1_SELM_1
+#define CS_REFOCLK_SELECT   CS_CTL1_SELM_2
+#define CS_DCOCLK_SELECT    CS_CTL1_SELM_3
+#define CS_MODOSC_SELECT    CS_CTL1_SELM_4
 
 #define CS_KEY 0x695A
 
@@ -103,33 +103,29 @@ extern "C"
 #define CS_MODCLK_FREQUENCY 24000000
 
 /* Interrupts */
-#define CS_LFXT_FAULT   LFXTIE
-#define CS_HFXT_FAULT   HFXTIE
-#define CS_DCOMIN_FAULT   DCOMINIE
-#define CS_DCOMAX_FAULT   DCOMAXIE
-#define CS_DCORESISTOR_FAULT   DCORIE
-#define CS_STARTCOUNT_LFXT_FAULT   FCNTLFIE
-#define CS_STARTCOUNT_HFXT_FAULT   FCNTHFIE
-#define CS_PLL_OUTOFLOCK   PLLOOLIE
-#define CS_PLL_OUTOFSIGNAL   PLLLOSIE
-#define CS_PLL_OUTOFRANGE   PLLOORIE
-#define CS_REFCNT_PERIOD_COUNTER   CALIE
+#define CS_LFXT_FAULT   CS_IE_LFXTIE
+#define CS_HFXT_FAULT   CS_IE_HFXTIE
+#define CS_DCO_OPEN_FAULT   CS_IE_DCOR_OPNIE
+#define CS_STARTCOUNT_LFXT_FAULT   CS_IE_FCNTLFIE
+#define CS_STARTCOUNT_HFXT_FAULT   CS_IE_FCNTHFIE
+#define CS_DCO_SHORT_FAULT   CS_IFG_DCOR_SHTIFG
 
-#define CS_HFXT_DRIVE0 CS_CTL2_HFXTDRIVE_0
-#define CS_HFXT_DRIVE1 CS_CTL2_HFXTDRIVE_1
+//#define CS_HFXT_DRIVE0 CS_CTL2_HFXTDRIVE_0
+//#define CS_HFXT_DRIVE1 CS_CTL2_HFXTDRIVE_1
+#define CS_HFXT_DRIVE CS_CTL2_HFXTDRIVE
 #define CS_HFXT_BYPASS CS_CTL2_HFXTBYPASS
 
-#define CS_LFXT_DRIVE0 LFXTDRIVE_0
-#define CS_LFXT_DRIVE1 LFXTDRIVE_1
-#define CS_LFXT_DRIVE2 LFXTDRIVE_2
-#define CS_LFXT_DRIVE3 LFXTDRIVE_3
-#define CS_LFXT_BYPASS LFXTBYPASS
+#define CS_LFXT_DRIVE0 CS_CTL2_LFXTDRIVE_0
+#define CS_LFXT_DRIVE1 CS_CTL2_LFXTDRIVE_1
+#define CS_LFXT_DRIVE2 CS_CTL2_LFXTDRIVE_2
+#define CS_LFXT_DRIVE3 CS_CTL2_LFXTDRIVE_3
+#define CS_LFXT_BYPASS CS_CTL2_LFXTBYPASS
 
-#define CS_ACLK ACLK_EN
-#define CS_MCLK MCLK_EN
-#define CS_SMCLK SMCLK_EN
-#define CS_HSMCLK HSMCLK_EN
-#define CS_BCLK BCLK_READY
+#define CS_ACLK CS_CLKEN_ACLK_EN
+#define CS_MCLK CS_CLKEN_MCLK_EN
+#define CS_SMCLK CS_CLKEN_SMCLK_EN
+#define CS_HSMCLK CS_CLKEN_HSMCLK_EN
+#define CS_BCLK CS_STAT_BCLK_READY
 
 #define CS_LFXTCLK  0x01
 
@@ -146,20 +142,25 @@ extern "C"
 #define CS_40MHZ 40000000
 #define CS_48MHZ 48000000
 
-#define CS_DCO_FREQUENCY_1_5 DCORSEL_0
-#define CS_DCO_FREQUENCY_3 DCORSEL_1
-#define CS_DCO_FREQUENCY_6 DCORSEL_2
-#define CS_DCO_FREQUENCY_12 DCORSEL_3
-#define CS_DCO_FREQUENCY_24 DCORSEL_4
-#define CS_DCO_FREQUENCY_48 DCORSEL_5
+#define CS_DCO_FREQUENCY_1_5 CS_CTL0_DCORSEL_0
+#define CS_DCO_FREQUENCY_3 CS_CTL0_DCORSEL_1
+#define CS_DCO_FREQUENCY_6 CS_CTL0_DCORSEL_2
+#define CS_DCO_FREQUENCY_12 CS_CTL0_DCORSEL_3
+#define CS_DCO_FREQUENCY_24 CS_CTL0_DCORSEL_4
+#define CS_DCO_FREQUENCY_48 CS_CTL0_DCORSEL_5
 
 #define CS_HFXT_FAULT_COUNTER 0x01
 #define CS_LFXT_FAULT_COUNTER 0x02
 
-#define CS_FAULT_COUNTER_4096_CYCLES FCNTLF_0
-#define CS_FAULT_COUNTER_8192_CYCLES FCNTLF_1
-#define CS_FAULT_COUNTER_16384_CYCLES FCNTLF_2
-#define CS_FAULT_COUNTER_32768_CYCLES FCNTLF_3
+#define CS_FAULT_COUNTER_4096_CYCLES CS_CTL3_FCNTLF_0
+#define CS_FAULT_COUNTER_8192_CYCLES CS_CTL3_FCNTLF_1
+#define CS_FAULT_COUNTER_16384_CYCLES CS_CTL3_FCNTLF_2
+#define CS_FAULT_COUNTER_32768_CYCLES CS_CTL3_FCNTLF_3
+
+#define CS_OVER32MHZ    0x01
+#define CS_UNDER32MHZ   0x02
+
+#define DEVICE_PG1_1    0x42
 
 //******************************************************************************
 //
@@ -188,7 +189,11 @@ extern void CS_setExternalClockSourceFrequency(uint32_t lfxt_XT_CLK_frequency,
 //!
 //! Note that this function is blocking and will wait on the appropriate bit
 //! to be set in the CSSTAT READY register to be set before setting the clock
-//! source
+//! source.
+//!
+//! Also note that when HSMCLK and SMCLK share the same clock signal. If you
+//! change the clock signal for HSMCLK, the clock signal for SMCLK will change
+//! also (and vice-versa).
 //!
 //! HFXTCLK is not available for BCLK or ACLK.
 //!
@@ -235,11 +240,10 @@ extern void CS_initClockSignal(uint32_t selectedClockSignal,
 //! \param bypassMode When this variable is set, the oscillator will start
 //! in bypass mode and the signal can be generated by a digital square wave.
 //!
-//!
-//! \return NONE
+//! \return true if started correctly, false otherwise
 //
 //******************************************************************************
-extern void CS_startHFXT(bool bypassMode);
+extern bool CS_startHFXT(bool bypassMode);
 
 //******************************************************************************
 //
@@ -257,10 +261,10 @@ extern void CS_startHFXT(bool bypassMode);
 //! \param timeout is the count value that gets decremented every time the loop
 //!         that clears oscillator fault flags gets executed.
 //!
-//! \return NONE
+//! \return true if started correctly, false otherwise
 //
 //******************************************************************************
-extern void CS_startHFXTWithTimeout(bool bypassMode, uint32_t timeout);
+extern bool CS_startHFXTWithTimeout(bool bypassMode, uint32_t timeout);
 
 //******************************************************************************
 //
@@ -283,11 +287,10 @@ extern void CS_startHFXTWithTimeout(bool bypassMode, uint32_t timeout);
 //! \note When CS_LFXT_BYPASS is passed as a parameter the oscillator will start
 //! in bypass mode and the signal can be generated by a digital square wave.
 //!
-//!
-//! \return NONE
+//! \return true if started correctly, false otherwise
 //
 //******************************************************************************
-extern void CS_startLFXT(uint32_t xtDrive);
+extern bool CS_startLFXT(uint32_t xtDrive);
 
 //******************************************************************************
 //
@@ -315,10 +318,10 @@ extern void CS_startLFXT(uint32_t xtDrive);
 //! \param timeout is the count value that gets decremented every time the loop
 //!         that clears oscillator fault flags gets executed.
 //!
-//! \return NONE
+//! \return true if started correctly, false otherwise
 //
 //******************************************************************************
-extern void CS_startLFXTWithTimeout(uint32_t xtDrive, uint32_t timeout);
+extern bool CS_startLFXTWithTimeout(uint32_t xtDrive, uint32_t timeout);
 
 //******************************************************************************
 //
@@ -524,12 +527,17 @@ extern void CS_disableDCOExternalResistor(void);
 //! default, the value in the CS module is populated by the calibration
 //! data of the suggested external resistor (see device datasheet).
 //!
-//! \param uiCalData is the calibration data constant for the external resistor.
+//! \param calData is the calibration data constant for the external resistor.
+//!
+//! \param freqRange is the range of the DCO to set the external calibration
+//!             for. Frequencies above 32MHZ have a different calibration value
+//!             than frequencies below 32MHZ.
 //!
 //! \return None
 //
 //******************************************************************************
-extern void CS_setDCOExternalResistorCalibration(uint_fast8_t uiCalData);
+extern void CS_setDCOExternalResistorCalibration(uint_fast8_t uiCalData,
+                                                 uint_fast8_t freqRange);
 
 //******************************************************************************
 //
@@ -647,13 +655,9 @@ extern void CS_startFaultCounter(uint_fast8_t counterSelect,
 //!                     - \b CS_HFXT_FAULT,
 //!                     - \b CS_DCOMIN_FAULT,
 //!                     - \b CS_DCOMAX_FAULT,
-//!                     - \b CS_DCORESISTOR_FAULT,
+//!                     - \b CS_DCO_OPEN_FAULT,
 //!                     - \b CS_STARTCOUNT_LFXT_FAULT,
 //!                     - \b CS_STARTCOUNT_HFXT_FAULT,
-//!                     - \b CS_PLL_OUTOFLOCK,
-//!                     - \b CS_PLL_OUTOFSIGNAL,
-//!                     - \b CS_PLL_OUTOFRANGE,
-//!                     - \b CS_REFCNT_PERIOD_COUNTER
 //!
 //! This function enables the indicated clock system interrupt sources.  Only
 //! the sources that are enabled can be reflected to the processor interrupt;
@@ -678,13 +682,9 @@ extern void CS_enableInterrupt(uint32_t flags);
 //!                     - \b CS_HFXT_FAULT,
 //!                     - \b CS_DCOMIN_FAULT,
 //!                     - \b CS_DCOMAX_FAULT,
-//!                     - \b CS_DCORESISTOR_FAULT,
+//!                     - \b CS_DCO_OPEN_FAULT,
 //!                     - \b CS_STARTCOUNT_LFXT_FAULT,
 //!                     - \b CS_STARTCOUNT_HFXT_FAULT,
-//!                     - \b CS_PLL_OUTOFLOCK,
-//!                     - \b CS_PLL_OUTOFSIGNAL,
-//!                     - \b CS_PLL_OUTOFRANGE,
-//!                     - \b CS_REFCNT_PERIOD_COUNTER
 //!
 //! \note The interrupt sources vary based on the part in use.
 //! Please consult the data sheet for the part you are using to determine
@@ -704,15 +704,10 @@ extern void CS_disableInterrupt(uint32_t flags);
 //! \return The current interrupt status, enumerated as a bit field of
 //!                     - \b CS_LFXT_FAULT,
 //!                     - \b CS_HFXT_FAULT,
-//!                     - \b CS_DCOMIN_FAULT,
-//!                     - \b CS_DCOMAX_FAULT,
-//!                     - \b CS_DCORESISTOR_FAULT,
+//!                     - \b CS_DCO_OPEN_FAULT,
+//!                     - \b CS_DCO_SHORT_FAULT,
 //!                     - \b CS_STARTCOUNT_LFXT_FAULT,
 //!                     - \b CS_STARTCOUNT_HFXT_FAULT,
-//!                     - \b CS_PLL_OUTOFLOCK,
-//!                     - \b CS_PLL_OUTOFSIGNAL,
-//!                     - \b CS_PLL_OUTOFRANGE,
-//!                     - \b CS_REFCNT_PERIOD_COUNTER
 //!
 //! \note The interrupt sources vary based on the part in use.
 //! Please consult the data sheet for the part you are using to determine
@@ -728,15 +723,10 @@ extern uint32_t CS_getEnabledInterruptStatus(void);
 //! \return The current interrupt status, enumerated as a bit field of:
 //!                     - \b CS_LFXT_FAULT,
 //!                     - \b CS_HFXT_FAULT,
-//!                     - \b CS_DCOMIN_FAULT,
-//!                     - \b CS_DCOMAX_FAULT,
-//!                     - \b CS_DCORESISTOR_FAULT,
+//!                     - \b CS_DCO_OPEN_FAULT,
+//!                     - \b CS_DCO_SHORT_FAULT,
 //!                     - \b CS_STARTCOUNT_LFXT_FAULT,
 //!                     - \b CS_STARTCOUNT_HFXT_FAULT,
-//!                     - \b CS_PLL_OUTOFLOCK,
-//!                     - \b CS_PLL_OUTOFSIGNAL,
-//!                     - \b CS_PLL_OUTOFRANGE,
-//!                     - \b CS_REFCNT_PERIOD_COUNTER
 //!
 //! \note The interrupt sources vary based on the part in use.
 //! Please consult the data sheet for the part you are using to determine
@@ -753,15 +743,9 @@ extern uint32_t CS_getInterruptStatus(void);
 //! be a logical OR of:
 //!                     - \b CS_LFXT_FAULT,
 //!                     - \b CS_HFXT_FAULT,
-//!                     - \b CS_DCOMIN_FAULT,
-//!                     - \b CS_DCOMAX_FAULT,
-//!                     - \b CS_DCORESISTOR_FAULT,
+//!                     - \b CS_DCO_OPEN_FAULT,
 //!                     - \b CS_STARTCOUNT_LFXT_FAULT,
 //!                     - \b CS_STARTCOUNT_HFXT_FAULT,
-//!                     - \b CS_PLL_OUTOFLOCK,
-//!                     - \b CS_PLL_OUTOFSIGNAL,
-//!                     - \b CS_PLL_OUTOFRANGE,
-//!                     - \b CS_REFCNT_PERIOD_COUNTER
 //!
 //! The specified clock system interrupt sources are cleared, so that they no
 //! longer assert.  This function must be called in the interrupt handler to

@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ extern "C"
 //as the portMapReconfigure parameter.
 //
 //*****************************************************************************
-#define PMAP_ENABLE_RECONFIGURATION     PMAPRECFG
+#define PMAP_ENABLE_RECONFIGURATION     PMAP_CTL_PRECFG
 #define PMAP_DISABLE_RECONFIGURATION    0x00
 
 //*****************************************************************************
@@ -73,13 +73,13 @@ extern "C"
 //as the portMapReconfigure parameter.
 //
 //*****************************************************************************
-#define P1MAP OFS_P1MAP01
-#define P2MAP OFS_P2MAP01
-#define P3MAP OFS_P3MAP01
-#define P4MAP OFS_P4MAP01
-#define P5MAP OFS_P5MAP01
-#define P6MAP OFS_P6MAP01
-#define P7MAP OFS_P7MAP01
+#define PMAP_P1MAP ((uint32_t)P1MAP - PMAP_BASE)
+#define PMAP_P2MAP ((uint32_t)P2MAP - PMAP_BASE)
+#define PMAP_P3MAP ((uint32_t)P3MAP - PMAP_BASE)
+#define PMAP_P4MAP ((uint32_t)P4MAP - PMAP_BASE)
+#define PMAP_P5MAP ((uint32_t)P5MAP - PMAP_BASE)
+#define PMAP_P6MAP ((uint32_t)P6MAP - PMAP_BASE)
+#define PMAP_P7MAP ((uint32_t)P7MAP - PMAP_BASE)
 
 
 //*****************************************************************************

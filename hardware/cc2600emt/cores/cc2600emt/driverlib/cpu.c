@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       cpu.c
-*  Revised:        2015-11-03 19:58:00 +0100 (Tue, 03 Nov 2015)
-*  Revision:       44946
+*  Revised:        2016-01-06 15:55:48 +0100 (Wed, 06 Jan 2016)
+*  Revision:       45385
 *
 *  Description:    Instruction wrappers for special CPU instructions needed by
 *                  the drivers.
@@ -63,7 +63,7 @@
 //! Disable all external interrupts
 //
 //*****************************************************************************
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+#if defined(__IAR_SYSTEMS_ICC__)
 uint32_t
 CPUcpsid(void)
 {
@@ -92,7 +92,7 @@ CPUcpsid(void)
     cpsid   i;
     bx      lr
 }
-#elif defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__) || defined(DOXYGEN)
 uint32_t
 CPUcpsid(void)
 {
@@ -141,7 +141,7 @@ CPUcpsid(void)
 //! Get the current interrupt state
 //
 //*****************************************************************************
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+#if defined(__IAR_SYSTEMS_ICC__)
 uint32_t
 CPUprimask(void)
 {
@@ -168,7 +168,7 @@ CPUprimask(void)
     mrs     r0, PRIMASK;
     bx      lr
 }
-#elif defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__) || defined(DOXYGEN)
 uint32_t
 CPUprimask(void)
 {
@@ -215,7 +215,7 @@ CPUprimask(void)
 //! Enable all external interrupts
 //
 //*****************************************************************************
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+#if defined(__IAR_SYSTEMS_ICC__)
 uint32_t
 CPUcpsie(void)
 {
@@ -244,7 +244,7 @@ CPUcpsie(void)
     cpsie   i;
     bx      lr
 }
-#elif defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__) || defined(DOXYGEN)
 uint32_t
 CPUcpsie(void)
 {
@@ -293,7 +293,7 @@ CPUcpsie(void)
 //! Get the interrupt priority disable level
 //
 //*****************************************************************************
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+#if defined(__IAR_SYSTEMS_ICC__)
 uint32_t
 CPUbasepriGet(void)
 {
@@ -320,7 +320,7 @@ CPUbasepriGet(void)
     mrs     r0, BASEPRI;
     bx      lr
 }
-#elif defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__) || defined(DOXYGEN)
 uint32_t
 CPUbasepriGet(void)
 {
@@ -367,7 +367,7 @@ CPUbasepriGet(void)
 //! Provide a small delay
 //
 //*****************************************************************************
-#if defined(__IAR_SYSTEMS_ICC__) || defined(DOXYGEN)
+#if defined(__IAR_SYSTEMS_ICC__)
 void
 CPUdelay(uint32_t ui32Count)
 {
@@ -393,7 +393,7 @@ CPUdel
     bne     CPUdel;
     bx      lr;
 }
-#elif defined(__TI_COMPILER_VERSION__)
+#elif defined(__TI_COMPILER_VERSION__) || defined(DOXYGEN)
 //
 // For CCS implement this function in pure assembly. This prevents the TI
 // compiler from doing funny things with the optimizer.

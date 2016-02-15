@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,9 +65,9 @@ extern "C"
 //in the referenceVoltageSelect parameter.
 //
 //*****************************************************************************
-#define REF_A_VREF1_2V  REFVSEL_0
-#define REF_A_VREF1_45V REFVSEL_1
-#define REF_A_VREF2_5V  REFVSEL_3
+#define REF_A_VREF1_2V  REF_A_CTL0_VSEL_0
+#define REF_A_VREF1_45V REF_A_CTL0_VSEL_1
+#define REF_A_VREF2_5V  REF_A_CTL0_VSEL_3
 
 //*****************************************************************************
 //
@@ -75,7 +75,7 @@ extern "C"
 //
 //*****************************************************************************
 #define REF_A_STATICMODE 0x0
-#define REF_A_SAMPLEMODE BGMODE
+#define REF_A_SAMPLEMODE REF_A_CTL0_BGMODE
 
 //*****************************************************************************
 //

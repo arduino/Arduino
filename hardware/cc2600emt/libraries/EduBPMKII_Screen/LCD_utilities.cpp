@@ -17,6 +17,8 @@
 // See LCD_utilities.h and ReadMe.txt for references
 //
 
+#include <stdio.h>
+
 // Library header
 #include "LCD_utilities.h"
 

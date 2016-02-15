@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       chipinfo.c
-*  Revised:        2015-10-28 11:48:13 +0100 (Wed, 28 Oct 2015)
-*  Revision:       44860
+*  Revised:        2015-12-09 13:11:01 +0100 (Wed, 09 Dec 2015)
+*  Revision:       45286
 *
 *  Description:    Collection of functions returning chip information.
 *
@@ -40,15 +40,6 @@
 
 //*****************************************************************************
 //
-// Internal macros
-//
-//*****************************************************************************
-
-#define BV( x )   ( 1 << ( x ))
-
-
-//*****************************************************************************
-//
 // ChipInfo_GetSupportedProtocol_BV()
 //
 //*****************************************************************************
@@ -72,8 +63,8 @@ ChipInfo_GetPackageType( void )
                           FCFG1_USER_ID_PKG_M ) >>
                           FCFG1_USER_ID_PKG_S ) ;
 
-   if (( packType < PACKAGE_4x4 ) ||
-       ( packType > PACKAGE_7x7 )    )
+   if (( packType < PACKAGE_4x4  ) ||
+       ( packType > PACKAGE_WCSP )    )
    {
       packType = PACKAGE_Unknown;
    }
@@ -97,10 +88,15 @@ ChipInfo_GetChipFamily( void )
                            FCFG1_ICEPICK_DEVICE_ID_WAFER_ID_M ) >>
                            FCFG1_ICEPICK_DEVICE_ID_WAFER_ID_S ) ;
 
-   if (      waferId == 0xB99A )  chipFam = FAMILY_CC26xx       ;
-   else if ( waferId == 0xB9BE )  chipFam = FAMILY_CC13xx       ;
-   else if ( waferId == 0xBB20 )  chipFam = FAMILY_CC26xxLizard ;
-   else if ( waferId == 0xBB41 )  chipFam = FAMILY_CC26xxAgama  ;
+   if ( waferId == 0xB99A ) {
+      if ( ChipInfo_GetDeviceIdHwRevCode() == 0xB ) {
+                                    chipFam = FAMILY_CC26xxR2     ;
+      } else {
+                                    chipFam = FAMILY_CC26xx       ;
+      }
+   } else if ( waferId == 0xB9BE )  chipFam = FAMILY_CC13xx       ;
+   else if (   waferId == 0xBB41 )  chipFam = FAMILY_CC26xxAgama  ;
+   else if (   waferId == 0xBB20 )  chipFam = FAMILY_CC26xxLizard ;
 
    return ( chipFam );
 }
@@ -152,6 +148,9 @@ ChipInfo_GetHwRevision( void )
          hwRev = (HwRevision_t)(((uint32_t)HWREV_1_0 ) + minorHwRev );
          break;
       }
+      break;
+   case FAMILY_CC26xxR2     :
+      hwRev = (HwRevision_t)(((uint32_t)HWREV_1_0 ) + minorHwRev );
       break;
    default :
       // GCC gives warning if not handling all options explicitly in a "switch" on a variable of type "enum"

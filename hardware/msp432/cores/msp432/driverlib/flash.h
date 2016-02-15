@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,7 @@ extern "C"
 #define FLASH_MARGIN0B_READ_MODE          FLCTL_BANK0_RDCTL_RD_MODE_9
 #define FLASH_MARGIN1B_READ_MODE          FLCTL_BANK0_RDCTL_RD_MODE_10
 
-#define FLASH_PRGBRSTCTLSTAT_BURSTSTATUS_COMPLETE 0x70000
+#define FLASH_PRGBRSTCTLSTAT_BURSTSTATUS_COMPLETE FLCTL_PRGBRST_CTLSTAT_BURST_STATUS_7
 
 #define FLASH_BANK0                 0x00
 #define FLASH_BANK1                 0x01
@@ -146,13 +146,8 @@ extern "C"
 #define FLASH_COLLATED_WRITE_MODE  0x01
 #define FLASH_IMMEDIATE_WRITE_MODE 0x02
 
-#define FlashInternal_eraseSector                                              \
-        ((bool (*)(uint32_t addr,                                              \
-                   bool verify))ROM_FLASHCTLTABLE[9])
-
-#define FlashInternal_performMassErase                                         \
-        ((bool (*)(bool verify))ROM_FLASHCTLTABLE[8])
-
+#define __INFO_FLASH_TECH_START__  0x00200000
+#define __INFO_FLASH_TECH_MIDDLE__ 0x00202000
 
 
 //*****************************************************************************
@@ -160,6 +155,32 @@ extern "C"
 // Prototypes for the APIs.
 //
 //*****************************************************************************
+
+//*****************************************************************************
+//
+//! Calculates the flash bank and sector number given an address. Stores the 
+//! results into the two pointers given as parameters. The user must provide
+//! a valid memory address (an address in SRAM for example will give an invalid
+//! result).
+//!
+//! \param addr Address to calculate the bank/sector information for
+//!
+//! \param sectorNum The sector number will be stored in here after the function
+//!                     completes.
+//!
+//! \param sectorNum The bank number will be stored in here after the function
+//!                     completes.
+//!
+//! \note For simplicity, this API only works with address in MAIN flash memory.
+//!        For calculating the sector/bank number of an address in info memory,
+//!         please refer to your device datasheet/
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void FlashCtl_getMemoryInfo(uint32_t addr, uint32_t *sectorNum, 
+                                uint32_t *bankNum);
+
 //*****************************************************************************
 //
 //! Enables read buffering on accesses to a specified bank of flash memory
@@ -251,6 +272,11 @@ extern void FlashCtl_disableReadBuffering(uint_fast8_t memoryBank,
 //!  depending on the specific device. Also, for INFO memory space, only sectors
 //!  \b FLASH_SECTOR0 and \b FLASH_SECTOR1 will exist.
 //!
+//! \note Not all devices will contain a dedicated INFO memory. Please check the
+//!  device datasheet to see if your device has INFO memory available for use.
+//!  For devices without INFO memory, any operation related to the INFO memory 
+//!  will be ignored by the hardware.
+//!
 //! \return true if sector protection disabled false otherwise.
 //
 //*****************************************************************************
@@ -308,6 +334,11 @@ extern bool FlashCtl_unprotectSector(uint_fast8_t memorySpace,
 //!  depending on the specific device. Also, for INFO memory space, only sectors
 //!  \b FLASH_SECTOR0 and \b FLASH_SECTOR1 will exist.
 //!
+//! \note Not all devices will contain a dedicated INFO memory. Please check the
+//!  device datasheet to see if your device has INFO memory available for use.
+//!  For devices without INFO memory, any operation related to the INFO memory 
+//!  will be ignored by the hardware.
+//!
 //! \return true if sector protection enabled false otherwise.
 //
 //*****************************************************************************
@@ -364,6 +395,11 @@ extern bool FlashCtl_protectSector(uint_fast8_t memorySpace,
 //!  depending on the specific device. Also, for INFO memory space, only sectors
 //!  FLASH_SECTOR0 and FLASH_SECTOR1 will exist.
 //!
+//! \note Not all devices will contain a dedicated INFO memory. Please check the
+//!  device datasheet to see if your device has INFO memory available for use.
+//!  For devices without INFO memory, any operation related to the INFO memory 
+//!  will be ignored by the hardware.
+//!
 //! \return true if sector protection enabled false otherwise.
 //
 //*****************************************************************************
@@ -384,13 +420,25 @@ extern bool FlashCtl_isSectorProtected(uint_fast8_t memorySpace,
 //!  of 32 zeros, or a high pattern (each register will be checked versus a
 //!  pattern of 32 ones). Valid values are: FLASH_0_PATTERN, FLASH_1_PATTERN
 //!
-//!  Note that there are no sector/boundary restrictions for this function,
+//!  \note There are no sector/boundary restrictions for this function,
 //!  however it is encouraged to proved a start address aligned on 32-bit
 //!  boundaries.  Providing an unaligned address will result in unaligned data
 //!  accesses and detriment efficiency.
 //!
-//! Note that this function is blocking and will not exit until operation has
-//! either completed or failed due to an error.
+//!  \note This function is blocking and will not exit until operation has
+//!  either completed or failed due to an error. Furthermore, given the
+//!  complex verification requirements of the flash controller, master
+//!  interrupts are disabled throughout execution of this function. The original
+//!  interrupt context is saved at the start of execution and restored prior
+//!  to exit of the API.
+//!
+//!  \note Due to the hardware limitations of the flash controller, this
+//!  function cannot verify a memory adress in the same flash bank that it
+//!  is executing from. If using the ROM version of this API (by using the
+//!  (ROM_ or MAP_ prefixes) this is a don't care, however if this API resides
+//!  in flash then special care needs to be taken to ensure no code execution
+//!  or reads happen in the flash bank being programmed while this API is
+//!  being executed.
 //!
 //! \return true if memory verification is successful, false otherwise.
 //
@@ -403,13 +451,37 @@ extern bool FlashCtl_verifyMemory(void* verifyAddr, uint32_t length,
 //!  Performs a mass erase on all unprotected flash sectors. Protected sectors
 //!  are ignored.
 //!
-//! \note This function is blocking and will not exit until operation has
-//! either completed or failed due to an error.
+//!  \note This function is blocking and will not exit until operation has
+//!  either completed or failed due to an error. Furthermore, given the
+//!  complex verification requirements of the flash controller, master
+//!  interrupts are disabled throughout execution of this function. The original
+//!  interrupt context is saved at the start of execution and restored prior
+//!  to exit of the API.
+//!
+//!  \note Due to the hardware limitations of the flash controller, this
+//!  function cannot erase a memory adress in the same flash bank that it
+//!  is executing from. If using the ROM version of this API (by using the
+//!  (ROM_ or MAP_ prefixes) this is a don't care, however if this API resides
+//!  in flash then special care needs to be taken to ensure no code execution
+//!  or reads happen in the flash bank being programmed while this API is
+//!  being executed.
 //!
 //! \return true if mass erase completes successfully, false otherwise
 //
 //*****************************************************************************
 extern bool FlashCtl_performMassErase(void);
+
+//*****************************************************************************
+//
+//!  Initiates a mass erase and returns control back to the program. This is a
+//!  non-blocking function, however it is the user's responsibility to perform
+//!  the necessary verification requirements after the interrupt is set to
+//!  signify completion. 
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void FlashCtl_initiateMassErase(void);
 
 //*****************************************************************************
 //
@@ -421,8 +493,20 @@ extern bool FlashCtl_performMassErase(void);
 //!         this function which is not on a 4KB boundary, the entire sector
 //!         will still be erased.
 //!
-//! Note that this function is blocking and will not exit until operation has
-//! either completed or failed due to an error.
+//!  \note This function is blocking and will not exit until operation has
+//!  either completed or failed due to an error. Furthermore, given the
+//!  complex verification requirements of the flash controller, master
+//!  interrupts are disabled throughout execution of this function. The original
+//!  interrupt context is saved at the start of execution and restored prior
+//!  to exit of the API.
+//!
+//!  \note Due to the hardware limitations of the flash controller, this
+//!  function cannot erase a memory adress in the same flash bank that it
+//!  is executing from. If using the ROM version of this API (by using the
+//!  (ROM_ or MAP_ prefixes) this is a don't care, however if this API resides
+//!  in flash then special care needs to be taken to ensure no code execution
+//!  or reads happen in the flash bank being programmed while this API is
+//!  being executed.
 //!
 //! \return true if sector erase is successful, false otherwise.
 //
@@ -444,8 +528,20 @@ extern bool FlashCtl_eraseSector(uint32_t addr);
 //!  boundaries.  Providing an unaligned address will result in unaligned data
 //!  accesses and detriment efficiency.
 //!
-//! Note that this function is blocking and will not exit until operation has
-//! either completed or failed due to an error.
+//!  \note This function is blocking and will not exit until operation has
+//!  either completed or failed due to an error. Furthermore, given the
+//!  complex verification requirements of the flash controller, master
+//!  interrupts are disabled throughout execution of this function. The original
+//!  interrupt context is saved at the start of execution and restored prior
+//!  to exit of the API.
+//!
+//!  \note Due to the hardware limitations of the flash controller, this
+//!  function cannot program a memory adress in the same flash bank that it
+//!  is executing from. If using the ROM version of this API (by using the
+//!  (ROM_ or MAP_ prefixes) this is a don't care, however if this API resides
+//!  in flash then special care needs to be taken to ensure no code execution
+//!  or reads happen in the flash bank being programmed while this API is
+//!  being executed.
 //!
 //! \return Whether or not the program succeeded
 //
@@ -793,6 +889,40 @@ extern void FlashCtl_registerInterrupt(void (*intHandler)(void));
 //
 //*****************************************************************************
 extern void FlashCtl_unregisterInterrupt(void);
+
+
+//*****************************************************************************
+//
+//! Initiates a sector erase of MAIN or INFO flash memory. Note that this 
+//! function simply initaites the sector erase, but does no verification
+//! which is required by the flash controller. The user must manually set
+//! and enable interrupts on the flash controller to fire on erase completion
+//! and then use the FlashCtl_verifyMemory function to verify that the sector
+//! was actually erased
+//!
+//! \param addr The start of the sector to erase. Note that with flash,
+//!         the minimum allowed size that can be erased is a flash sector
+//!         (which is 4KB on the MSP432 family). If an address is provided to
+//!         this function which is not on a 4KB boundary, the entire sector
+//!         will still be erased.
+//!
+//! \return None
+//
+//*****************************************************************************
+extern void FlashCtl_initiateSectorErase(uint32_t addr);
+
+
+/* The following functions are advanced functions that are used by the flash
+ * driver to remask a failed bit in the event of a post or pre verification
+ * failure. They are meant to be advanced functions and should not be used
+ * by the majority of users (unless you are writing your own flash driver).
+ */
+extern uint8_t __FlashCtl_remaskData8Post(uint8_t data, uint32_t addr);
+extern uint8_t __FlashCtl_remaskData8Pre(uint8_t data, uint32_t addr);
+extern uint32_t __FlashCtl_remaskData32Post(uint32_t data, uint32_t addr);
+extern uint32_t __FlashCtl_remaskData32Pre(uint32_t data, uint32_t addr);
+extern void __FlashCtl_remaskBurstDataPost(uint32_t addr, uint32_t size);
+extern void __FlashCtl_remaskBurstDataPre(uint32_t addr, uint32_t size);
 
 //*****************************************************************************
 //

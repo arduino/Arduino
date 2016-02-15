@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -82,18 +82,18 @@ typedef struct _RTC_C_Calendar
 //The following are values that can be passed to RTC_setCalibrationData()
 //
 //*****************************************************************************
-#define RTC_C_CALIBRATIONFREQ_OFF   (RTCCALF_0)
-#define RTC_C_CALIBRATIONFREQ_512HZ (RTCCALF_1)
-#define RTC_C_CALIBRATIONFREQ_256HZ (RTCCALF_2)
-#define RTC_C_CALIBRATIONFREQ_1HZ   (RTCCALF_3)
+#define RTC_C_CALIBRATIONFREQ_OFF   (RTC_C_CTL13_CALF_0)
+#define RTC_C_CALIBRATIONFREQ_512HZ (RTC_C_CTL13_CALF_1)
+#define RTC_C_CALIBRATIONFREQ_256HZ (RTC_C_CTL13_CALF_2)
+#define RTC_C_CALIBRATIONFREQ_1HZ   (RTC_C_CTL13_CALF_3)
 
 //*****************************************************************************
 //
 //The following are values that can be passed to RTC_setCalibrationData()
 //
 //*****************************************************************************
-#define RTC_C_CALIBRATION_DOWN1PPM  ( !(RTCOCALS) )
-#define RTC_C_CALIBRATION_UP1PPM    (RTCOCALS)
+#define RTC_C_CALIBRATION_DOWN1PPM  ( !(RTC_C_OCAL_OCALS) )
+#define RTC_C_CALIBRATION_UP1PPM    (RTC_C_OCAL_OCALS)
 
 //*****************************************************************************
 //
@@ -101,16 +101,16 @@ typedef struct _RTC_C_Calendar
 //RTC_setTemperatureCompensation()
 //
 //*****************************************************************************
-#define RTC_C_COMPENSATION_DOWN1PPM  ( !(RTCTCMPS) )
-#define RTC_C_COMPENSATION_UP1PPM    (RTCTCMPS)
+#define RTC_C_COMPENSATION_DOWN1PPM  ( !(RTC_C_TCMP_TCMPS) )
+#define RTC_C_COMPENSATION_UP1PPM    (RTC_C_TCMP_TCMPS)
 
 //*****************************************************************************
 //
 //The following are values that can be passed to RTC_iniRTC_Calendar()
 //
 //*****************************************************************************
-#define RTC_C_FORMAT_BINARY  ( !(RTCBCD) )
-#define RTC_C_FORMAT_BCD     (RTCBCD)
+#define RTC_C_FORMAT_BINARY  ( !(RTC_C_CTL13_BCD) )
+#define RTC_C_FORMAT_BCD     (RTC_C_CTL13_BCD)
 
 //*****************************************************************************
 //
@@ -125,10 +125,10 @@ typedef struct _RTC_C_Calendar
 //in the eventSelect parameter.
 //
 //*****************************************************************************
-#define RTC_C_CALENDAREVENT_MINUTECHANGE  (RTCTEV_0)
-#define RTC_C_CALENDAREVENT_HOURCHANGE    (RTCTEV_1)
-#define RTC_C_CALENDAREVENT_NOON          (RTCTEV_2)
-#define RTC_C_CALENDAREVENT_MIDNIGHT      (RTCTEV_3)
+#define RTC_C_CALENDAREVENT_MINUTECHANGE  (RTC_C_CTL13_TEV_0)
+#define RTC_C_CALENDAREVENT_HOURCHANGE    (RTC_C_CTL13_TEV_1)
+#define RTC_C_CALENDAREVENT_NOON          (RTC_C_CTL13_TEV_2)
+#define RTC_C_CALENDAREVENT_MIDNIGHT      (RTC_C_CTL13_TEV_3)
 
 //*****************************************************************************
 //
@@ -144,24 +144,24 @@ typedef struct _RTC_C_Calendar
 //in the prescaleEventDivider parameter.
 //
 //*****************************************************************************
-#define RTC_C_PSEVENTDIVIDER_2   (RT0IP_0)
-#define RTC_C_PSEVENTDIVIDER_4   (RT0IP_1)
-#define RTC_C_PSEVENTDIVIDER_8   (RT0IP_2)
-#define RTC_C_PSEVENTDIVIDER_16  (RT0IP_3)
-#define RTC_C_PSEVENTDIVIDER_32  (RT0IP_4)
-#define RTC_C_PSEVENTDIVIDER_64  (RT0IP_5)
-#define RTC_C_PSEVENTDIVIDER_128 (RT0IP_6)
-#define RTC_C_PSEVENTDIVIDER_256 (RT0IP_7)
+#define RTC_C_PSEVENTDIVIDER_2   (RTC_C_PS0CTL_RT0IP_0)
+#define RTC_C_PSEVENTDIVIDER_4   (RTC_C_PS0CTL_RT0IP_1)
+#define RTC_C_PSEVENTDIVIDER_8   (RTC_C_PS0CTL_RT0IP_2)
+#define RTC_C_PSEVENTDIVIDER_16  (RTC_C_PS0CTL_RT0IP_3)
+#define RTC_C_PSEVENTDIVIDER_32  (RTC_C_PS0CTL_RT0IP_4)
+#define RTC_C_PSEVENTDIVIDER_64  (RTC_C_PS0CTL_RT0IP_5)
+#define RTC_C_PSEVENTDIVIDER_128 (RTC_C_PS0CTL_RT0IP_6)
+#define RTC_C_PSEVENTDIVIDER_256 (RTC_C_PS0CTL_RT0IP_7)
 
 //*****************************************************************************
 //
 //The following are values that can be passed to the interrupt functions
 //
 //*****************************************************************************
-#define RTC_C_OSCILLATOR_FAULT_INTERRUPT  RTCOFIE
-#define RTC_C_TIME_EVENT_INTERRUPT        RTCTEVIE
-#define RTC_C_CLOCK_ALARM_INTERRUPT       RTCAIE
-#define RTC_C_CLOCK_READ_READY_INTERRUPT  RTCRDYIE
+#define RTC_C_OSCILLATOR_FAULT_INTERRUPT  RTC_C_CTL0_OFIE
+#define RTC_C_TIME_EVENT_INTERRUPT        RTC_C_CTL0_TEVIE
+#define RTC_C_CLOCK_ALARM_INTERRUPT       RTC_C_CTL0_AIE
+#define RTC_C_CLOCK_READ_READY_INTERRUPT  RTC_C_CTL0_RDYIE
 #define RTC_C_PRESCALE_TIMER0_INTERRUPT   0x02
 #define RTC_C_PRESCALE_TIMER1_INTERRUPT   0x01
 

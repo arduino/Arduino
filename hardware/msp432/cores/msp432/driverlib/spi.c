@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,12 +41,12 @@
 
 static bool is_A_Module(uint32_t module)
 {
-    if (module == EUSCI_A0_MODULE || module == EUSCI_A1_MODULE
-#ifdef EUSCI_A2_MODULE
-            || module == EUSCI_A2_MODULE
+    if (module == EUSCI_A0_BASE || module == EUSCI_A1_BASE
+#ifdef EUSCI_A2_BASE
+            || module == EUSCI_A2_BASE
 #endif
-#ifdef EUSCI_A3_MODULE
-            || module == EUSCI_A3_MODULE
+#ifdef EUSCI_A3_BASE
+            || module == EUSCI_A3_BASE
 #endif
     )
         return true;
@@ -56,6 +56,13 @@ static bool is_A_Module(uint32_t module)
 
 bool SPI_initMaster(uint32_t moduleInstance, const eUSCI_SPI_MasterConfig *config)
 {
+    /* Returning false if we are not divisible */
+    if((config->clockSourceFrequency
+                % config->desiredSpiClock) != 0)
+    {
+        return false;
+    }
+    
     if (is_A_Module(moduleInstance))
     {
         ASSERT(
@@ -85,31 +92,31 @@ bool SPI_initMaster(uint32_t moduleInstance, const eUSCI_SPI_MasterConfig *confi
                         == config->spiMode)
                 || (EUSCI_A_SPI_4PIN_UCxSTE_ACTIVE_LOW
                         == config->spiMode));
-
+                        
         //Disable the USCI Module
-        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r, UCSWRST_OFS) = 1;
+        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
         /*
          * Configure as SPI master mode.
          * Clock phase select, polarity, msb
-         * UCMST = Master mode
-         * UCSYNC = Synchronous mode
+         * EUSCI_A_CTLW0_MST = Master mode
+         * EUSCI_A_CTLW0_SYNC = Synchronous mode
          * UCMODE_0 = 3-pin SPI
          */
-        EUSCI_A_CMSIS(moduleInstance)->rCTLW0.r =
-                (EUSCI_A_CMSIS(moduleInstance)->rCTLW0.r
-                        & ~(UCSSEL_3 + UCCKPH + UCCKPL + UC7BIT + UCMSB + UCMST
-                                + UCMODE_3 + UCSYNC))
+        EUSCI_A_CMSIS(moduleInstance)->CTLW0 =
+                (EUSCI_A_CMSIS(moduleInstance)->CTLW0
+                        & ~(EUSCI_A_CTLW0_SSEL_MASK + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_MST
+                                + EUSCI_A_CTLW0_MODE_3 + EUSCI_A_CTLW0_SYNC))
                         | (config->selectClockSource + config->msbFirst
                                 + config->clockPhase + config->clockPolarity
-                                + UCMST + UCSYNC + config->spiMode);
-
-        EUSCI_A_CMSIS(moduleInstance)->rBRW =
+                                + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_SYNC + config->spiMode);
+        
+        EUSCI_A_CMSIS(moduleInstance)->BRW =
                 (uint16_t) (config->clockSourceFrequency
                         / config->desiredSpiClock);
 
         //No modulation
-        EUSCI_A_CMSIS(moduleInstance)->rMCTLW.r = 0;
+        EUSCI_A_CMSIS(moduleInstance)->MCTLW = 0;
 
         return true;
     } else
@@ -143,24 +150,24 @@ bool SPI_initMaster(uint32_t moduleInstance, const eUSCI_SPI_MasterConfig *confi
                         == config->spiMode));
 
         //Disable the USCI Module
-        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r, UCSWRST_OFS) = 1;
+        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
         /*
          * Configure as SPI master mode.
          * Clock phase select, polarity, msb
-         * UCMST = Master mode
-         * UCSYNC = Synchronous mode
+         * EUSCI_A_CTLW0_MST = Master mode
+         * EUSCI_A_CTLW0_SYNC = Synchronous mode
          * UCMODE_0 = 3-pin SPI
          */
-        EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r =
-                (EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r
-                        & ~(UCSSEL_3 + UCCKPH + UCCKPL + UC7BIT + UCMSB + UCMST
-                                + UCMODE_3 + UCSYNC))
+        EUSCI_B_CMSIS(moduleInstance)->CTLW0 =
+                (EUSCI_B_CMSIS(moduleInstance)->CTLW0
+                        & ~(EUSCI_A_CTLW0_SSEL_MASK + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_MST
+                                + EUSCI_A_CTLW0_MODE_3 + EUSCI_A_CTLW0_SYNC))
                         | (config->selectClockSource + config->msbFirst
                                 + config->clockPhase + config->clockPolarity
-                                + UCMST + UCSYNC + config->spiMode);
+                                + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_SYNC + config->spiMode);
 
-        EUSCI_B_CMSIS(moduleInstance)->rBRW =
+        EUSCI_B_CMSIS(moduleInstance)->BRW =
                 (uint16_t) (config->clockSourceFrequency
                         / config->desiredSpiClock);
 
@@ -227,14 +234,14 @@ bool SPI_initSlave(uint32_t moduleInstance, const eUSCI_SPI_SlaveConfig *config)
                         == config->spiMode));
 
         //Disable USCI Module
-        BITBAND_PERI(EUSCI_A_CMSIS(moduleInstance)->rCTLW0.r, UCSWRST_OFS) = 1;
+        BITBAND_PERI(EUSCI_A_CMSIS(moduleInstance)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
         //Reset OFS_UCAxCTLW0 register
-        EUSCI_A_CMSIS(moduleInstance)->rCTLW0.r =
-                (EUSCI_A_CMSIS(moduleInstance)->rCTLW0.r
-                        & ~(UCMSB + UC7BIT + UCMST + UCCKPL + UCCKPH + UCMODE_3))
+        EUSCI_A_CMSIS(moduleInstance)->CTLW0 =
+                (EUSCI_A_CMSIS(moduleInstance)->CTLW0
+                        & ~(EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_MODE_3))
                         | (config->clockPhase + config->clockPolarity
-                                + config->msbFirst + UCSYNC + config->spiMode);
+                                + config->msbFirst + EUSCI_A_CTLW0_SYNC + config->spiMode);
 
         return true;
     } else
@@ -263,14 +270,14 @@ bool SPI_initSlave(uint32_t moduleInstance, const eUSCI_SPI_SlaveConfig *config)
                         == config->spiMode));
 
         //Disable USCI Module
-        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r, UCSWRST_OFS) = 1;
+        BITBAND_PERI(EUSCI_B_CMSIS(moduleInstance)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
         //Reset OFS_UCBxCTLW0 register
-        EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r =
-                (EUSCI_B_CMSIS(moduleInstance)->rCTLW0.r
-                        & ~(UCMSB + UC7BIT + UCMST + UCCKPL + UCCKPH + UCMODE_3))
+        EUSCI_B_CMSIS(moduleInstance)->CTLW0 =
+                (EUSCI_B_CMSIS(moduleInstance)->CTLW0
+                        & ~(EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_MODE_3))
                         | (config->clockPhase + config->clockPolarity
-                                + config->msbFirst + UCSYNC + config->spiMode);
+                                + config->msbFirst + EUSCI_A_CTLW0_SYNC + config->spiMode);
 
         return true;
     }
@@ -418,12 +425,13 @@ uint_fast8_t SPI_getEnabledInterruptStatus(uint32_t moduleInstance)
     {
         return SPI_getInterruptStatus(moduleInstance,
                 EUSCI_SPI_TRANSMIT_INTERRUPT | EUSCI_SPI_RECEIVE_INTERRUPT)
-                & HWREG16(moduleInstance + OFS_UCA0IE);
+                & EUSCI_A_CMSIS(moduleInstance)->IE;
+
     } else
     {
         return SPI_getInterruptStatus(moduleInstance,
                 EUSCI_SPI_TRANSMIT_INTERRUPT | EUSCI_SPI_RECEIVE_INTERRUPT)
-                & HWREG16(moduleInstance + OFS_UCB0IE);
+                & EUSCI_B_CMSIS(moduleInstance)->IE;
 
     }
 }
@@ -444,42 +452,42 @@ void SPI_registerInterrupt(uint32_t moduleInstance, void (*intHandler)(void))
 {
     switch (moduleInstance)
     {
-    case EUSCI_A0_MODULE:
+    case EUSCI_A0_BASE:
         Interrupt_registerInterrupt(INT_EUSCIA0, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIA0);
         break;
-    case EUSCI_A1_MODULE:
+    case EUSCI_A1_BASE:
         Interrupt_registerInterrupt(INT_EUSCIA1, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIA1);
         break;
-#ifdef EUSCI_A2_MODULE
-    case EUSCI_A2_MODULE:
+#ifdef EUSCI_A2_BASE
+    case EUSCI_A2_BASE:
         Interrupt_registerInterrupt(INT_EUSCIA2, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIA2);
         break;
 #endif
-#ifdef EUSCI_A3_MODULE
-    case EUSCI_A3_MODULE:
+#ifdef EUSCI_A3_BASE
+    case EUSCI_A3_BASE:
         Interrupt_registerInterrupt(INT_EUSCIA3, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIA3);
         break;
 #endif
-    case EUSCI_B0_MODULE:
+    case EUSCI_B0_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB0, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB0);
         break;
-    case EUSCI_B1_MODULE:
+    case EUSCI_B1_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB1, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB1);
         break;
-#ifdef EUSCI_B2_MODULE
-    case EUSCI_B2_MODULE:
+#ifdef EUSCI_B2_BASE
+    case EUSCI_B2_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB2, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB2);
         break;
 #endif
-#ifdef EUSCI_B3_MODULE
-    case EUSCI_B3_MODULE:
+#ifdef EUSCI_B3_BASE
+    case EUSCI_B3_BASE:
         Interrupt_registerInterrupt(INT_EUSCIB3, intHandler);
         Interrupt_enableInterrupt(INT_EUSCIB3);
         break;
@@ -493,42 +501,42 @@ void SPI_unregisterInterrupt(uint32_t moduleInstance)
 {
     switch (moduleInstance)
     {
-    case EUSCI_A0_MODULE:
+    case EUSCI_A0_BASE:
         Interrupt_disableInterrupt(INT_EUSCIA0);
         Interrupt_unregisterInterrupt(INT_EUSCIA0);
         break;
-    case EUSCI_A1_MODULE:
+    case EUSCI_A1_BASE:
         Interrupt_disableInterrupt(INT_EUSCIA1);
         Interrupt_unregisterInterrupt(INT_EUSCIA1);
         break;
-#ifdef EUSCI_A2_MODULE
-    case EUSCI_A2_MODULE:
+#ifdef EUSCI_A2_BASE
+    case EUSCI_A2_BASE:
         Interrupt_disableInterrupt(INT_EUSCIA2);
         Interrupt_unregisterInterrupt(INT_EUSCIA2);
         break;
 #endif
-#ifdef EUSCI_A3_MODULE
-    case EUSCI_A3_MODULE:
+#ifdef EUSCI_A3_BASE
+    case EUSCI_A3_BASE:
         Interrupt_disableInterrupt(INT_EUSCIA3);
         Interrupt_unregisterInterrupt(INT_EUSCIA3);
         break;
 #endif
-    case EUSCI_B0_MODULE:
+    case EUSCI_B0_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB0);
         Interrupt_unregisterInterrupt(INT_EUSCIB0);
         break;
-    case EUSCI_B1_MODULE:
+    case EUSCI_B1_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB1);
         Interrupt_unregisterInterrupt(INT_EUSCIB1);
         break;
-#ifdef EUSCI_B2_MODULE
-    case EUSCI_B2_MODULE:
+#ifdef EUSCI_B2_BASE
+    case EUSCI_B2_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB2);
         Interrupt_unregisterInterrupt(INT_EUSCIB2);
         break;
 #endif
-#ifdef EUSCI_B3_MODULE
-    case EUSCI_B3_MODULE:
+#ifdef EUSCI_B3_BASE
+    case EUSCI_B3_BASE:
         Interrupt_disableInterrupt(INT_EUSCIB3);
         Interrupt_unregisterInterrupt(INT_EUSCIB3);
         break;
@@ -568,8 +576,8 @@ void EUSCI_B_SPI_select4PinFunctionality(uint32_t baseAddress,
             || (EUSCI_B_SPI_ENABLE_SIGNAL_FOR_4WIRE_SLAVE
                     == select4PinFunctionality));
 
-    EUSCI_B_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_B_CMSIS(baseAddress)->rCTLW0.r
-            & ~UCSTEM) | select4PinFunctionality;
+    EUSCI_B_CMSIS(baseAddress)->CTLW0 = (EUSCI_B_CMSIS(baseAddress)->CTLW0
+            & ~EUSCI_B_CTLW0_STEM) | select4PinFunctionality;
 }
 
 //*****************************************************************************
@@ -590,13 +598,13 @@ void EUSCI_B_SPI_masterChangeClock(uint32_t baseAddress,
         uint32_t clockSourceFrequency, uint32_t desiredSpiClock)
 {
     //Disable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
-    EUSCI_B_CMSIS(baseAddress)->rBRW = (uint16_t) (clockSourceFrequency
+    EUSCI_B_CMSIS(baseAddress)->BRW = (uint16_t) (clockSourceFrequency
             / desiredSpiClock);
 
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -628,7 +636,7 @@ void EUSCI_B_SPI_masterChangeClock(uint32_t baseAddress,
 //!        - \b EUSCI_B_SPI_4PIN_UCxSTE_ACTIVE_HIGH
 //!        - \b EUSCI_B_SPI_4PIN_UCxSTE_ACTIVE_LOW
 //!
-//! Modified bits are \b UCMSB, \b UCMST, \b UC7BIT, \b UCCKPL, \b UCCKPH, \b
+//! Modified bits are \b EUSCI_A_CTLW0_MSB, \b EUSCI_A_CTLW0_MST, \b EUSCI_A_CTLW0_SEVENBIT, \b EUSCI_A_CTLW0_CKPL, \b EUSCI_A_CTLW0_CKPH, \b
 //! UCMODE and \b UCSWRST of \b UCAxCTLW0 register.
 //!
 //! \return STATUS_SUCCESS
@@ -658,12 +666,12 @@ bool EUSCI_B_SPI_slaveInit(uint32_t baseAddress, uint16_t msbFirst,
             || (EUSCI_B_SPI_4PIN_UCxSTE_ACTIVE_LOW == spiMode));
 
     //Disable USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
     //Reset OFS_UCBxCTLW0 register
-    EUSCI_B_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_B_CMSIS(baseAddress)->rCTLW0.r
-            & ~(UCMSB + UC7BIT + UCMST + UCCKPL + UCCKPH + UCMODE_3))
-            | (clockPhase + clockPolarity + msbFirst + UCSYNC + spiMode);
+    EUSCI_B_CMSIS(baseAddress)->CTLW0 = (EUSCI_B_CMSIS(baseAddress)->CTLW0
+            & ~(EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_MODE_3))
+            | (clockPhase + clockPolarity + msbFirst + EUSCI_A_CTLW0_SYNC + spiMode);
 
     return true;
 }
@@ -684,7 +692,7 @@ bool EUSCI_B_SPI_slaveInit(uint32_t baseAddress, uint16_t msbFirst,
 //!        - \b EUSCI_B_SPI_CLOCKPOLARITY_INACTIVITY_HIGH
 //!        - \b EUSCI_B_SPI_CLOCKPOLARITY_INACTIVITY_LOW [Default]
 //!
-//! Modified bits are \b UCCKPL, \b UCCKPH and \b UCSWRST of \b UCAxCTLW0
+//! Modified bits are \b EUSCI_A_CTLW0_CKPL, \b EUSCI_A_CTLW0_CKPH and \b UCSWRST of \b UCAxCTLW0
 //! register.
 //!
 //! \return None
@@ -706,13 +714,13 @@ void EUSCI_B_SPI_changeClockPhasePolarity(uint32_t baseAddress,
                     == clockPhase));
 
     //Disable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
-    EUSCI_B_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_B_CMSIS(baseAddress)->rCTLW0.r
-            & ~(UCCKPH + UCCKPL)) | (clockPhase + clockPolarity);
+    EUSCI_B_CMSIS(baseAddress)->CTLW0 = (EUSCI_B_CMSIS(baseAddress)->CTLW0
+            & ~(EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_CKPL)) | (clockPhase + clockPolarity);
 
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -730,7 +738,7 @@ void EUSCI_B_SPI_changeClockPhasePolarity(uint32_t baseAddress,
 //*****************************************************************************
 void EUSCI_B_SPI_transmitData(uint32_t baseAddress, uint8_t transmitData)
 {
-    EUSCI_B_CMSIS(baseAddress)->rTXBUF.r = transmitData;
+    EUSCI_B_CMSIS(baseAddress)->TXBUF = transmitData;
 }
 
 //*****************************************************************************
@@ -747,7 +755,7 @@ void EUSCI_B_SPI_transmitData(uint32_t baseAddress, uint8_t transmitData)
 //*****************************************************************************
 uint8_t EUSCI_B_SPI_receiveData(uint32_t baseAddress)
 {
-    return EUSCI_B_CMSIS(baseAddress)->rRXBUF.r;
+    return EUSCI_B_CMSIS(baseAddress)->RXBUF;
 }
 
 //*****************************************************************************
@@ -776,7 +784,7 @@ void EUSCI_B_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_B_SPI_RECEIVE_INTERRUPT
                             | EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_B_CMSIS(baseAddress)->rIE.r |= mask;
+    EUSCI_B_CMSIS(baseAddress)->IE |= mask;
 }
 
 //*****************************************************************************
@@ -805,7 +813,7 @@ void EUSCI_B_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_B_SPI_RECEIVE_INTERRUPT
                             | EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_B_CMSIS(baseAddress)->rIE.r &= ~mask;
+    EUSCI_B_CMSIS(baseAddress)->IE &= ~mask;
 }
 
 //*****************************************************************************
@@ -834,7 +842,7 @@ uint8_t EUSCI_B_SPI_getInterruptStatus(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_B_SPI_RECEIVE_INTERRUPT
                             | EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
 
-    return EUSCI_B_CMSIS(baseAddress)->rIFG.r & mask;
+    return EUSCI_B_CMSIS(baseAddress)->IFG & mask;
 }
 
 //*****************************************************************************
@@ -859,7 +867,7 @@ void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_B_SPI_RECEIVE_INTERRUPT
                             | EUSCI_B_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_B_CMSIS(baseAddress)->rIFG.r &= ~mask;
+    EUSCI_B_CMSIS(baseAddress)->IFG &= ~mask;
 }
 
 //*****************************************************************************
@@ -878,7 +886,7 @@ void EUSCI_B_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
 void EUSCI_B_SPI_enable(uint32_t baseAddress)
 {
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -897,7 +905,7 @@ void EUSCI_B_SPI_enable(uint32_t baseAddress)
 void EUSCI_B_SPI_disable(uint32_t baseAddress)
 {
     //Set the UCSWRST bit to disable the USCI Module
-    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 }
 
 //*****************************************************************************
@@ -914,7 +922,7 @@ void EUSCI_B_SPI_disable(uint32_t baseAddress)
 //*****************************************************************************
 uint32_t EUSCI_B_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress)
 {
-    return baseAddress + OFS_UCB0RXBUF;
+    return ((uint32_t)(&EUSCI_B_CMSIS(baseAddress)->RXBUF));
 }
 
 //*****************************************************************************
@@ -931,7 +939,7 @@ uint32_t EUSCI_B_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress)
 //*****************************************************************************
 uint32_t EUSCI_B_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 {
-    return baseAddress + OFS_UCB0TXBUF;
+    return ((uint32_t)(&EUSCI_B_CMSIS(baseAddress)->TXBUF));
 }
 
 //*****************************************************************************
@@ -949,7 +957,7 @@ uint32_t EUSCI_B_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 bool EUSCI_B_SPI_isBusy(uint32_t baseAddress)
 {
     //Return the bus busy status.
-    return BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->rSTATW.r, UCBBUSY_OFS);
+    return BITBAND_PERI(EUSCI_B_CMSIS(baseAddress)->STATW, EUSCI_B_STATW_BBUSY_OFS);
 }
 
 //*****************************************************************************
@@ -979,8 +987,8 @@ void EUSCI_A_SPI_select4PinFunctionality(uint32_t baseAddress,
             || (EUSCI_A_SPI_ENABLE_SIGNAL_FOR_4WIRE_SLAVE
                     == select4PinFunctionality));
 
-    EUSCI_A_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_A_CMSIS(baseAddress)->rCTLW0.r
-            & ~UCSTEM) | select4PinFunctionality;
+    EUSCI_A_CMSIS(baseAddress)->CTLW0 = (EUSCI_A_CMSIS(baseAddress)->CTLW0
+            & ~EUSCI_A_CTLW0_STEM) | select4PinFunctionality;
 }
 
 //*****************************************************************************
@@ -1001,13 +1009,13 @@ void EUSCI_A_SPI_masterChangeClock(uint32_t baseAddress,
         uint32_t clockSourceFrequency, uint32_t desiredSpiClock)
 {
     //Disable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
-    EUSCI_A_CMSIS(baseAddress)->rBRW = (uint16_t) (clockSourceFrequency
+    EUSCI_A_CMSIS(baseAddress)->BRW = (uint16_t) (clockSourceFrequency
             / desiredSpiClock);
 
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -1039,7 +1047,7 @@ void EUSCI_A_SPI_masterChangeClock(uint32_t baseAddress,
 //!        - \b EUSCI_A_SPI_4PIN_UCxSTE_ACTIVE_HIGH
 //!        - \b EUSCI_A_SPI_4PIN_UCxSTE_ACTIVE_LOW
 //!
-//! Modified bits are \b UCMSB, \b UCMST, \b UC7BIT, \b UCCKPL, \b UCCKPH, \b
+//! Modified bits are \b EUSCI_A_CTLW0_MSB, \b EUSCI_A_CTLW0_MST, \b EUSCI_A_CTLW0_SEVENBIT, \b EUSCI_A_CTLW0_CKPL, \b EUSCI_A_CTLW0_CKPH, \b
 //! UCMODE and \b UCSWRST of \b UCAxCTLW0 register.
 //!
 //! \return STATUS_SUCCESS
@@ -1069,12 +1077,12 @@ bool EUSCI_A_SPI_slaveInit(uint32_t baseAddress, uint16_t msbFirst,
             || (EUSCI_A_SPI_4PIN_UCxSTE_ACTIVE_LOW == spiMode));
 
     //Disable USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
     //Reset OFS_UCAxCTLW0 register
-    EUSCI_A_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_A_CMSIS(baseAddress)->rCTLW0.r
-            & ~(UCMSB + UC7BIT + UCMST + UCCKPL + UCCKPH + UCMODE_3))
-            | (clockPhase + clockPolarity + msbFirst + UCSYNC + spiMode);
+    EUSCI_A_CMSIS(baseAddress)->CTLW0 = (EUSCI_A_CMSIS(baseAddress)->CTLW0
+            & ~(EUSCI_A_CTLW0_MSB + EUSCI_A_CTLW0_SEVENBIT + EUSCI_A_CTLW0_MST + EUSCI_A_CTLW0_CKPL + EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_MODE_3))
+            | (clockPhase + clockPolarity + msbFirst + EUSCI_A_CTLW0_SYNC + spiMode);
 
     return true;
 }
@@ -1095,7 +1103,7 @@ bool EUSCI_A_SPI_slaveInit(uint32_t baseAddress, uint16_t msbFirst,
 //!        - \b EUSCI_A_SPI_CLOCKPOLARITY_INACTIVITY_HIGH
 //!        - \b EUSCI_A_SPI_CLOCKPOLARITY_INACTIVITY_LOW [Default]
 //!
-//! Modified bits are \b UCCKPL, \b UCCKPH and \b UCSWRST of \b UCAxCTLW0
+//! Modified bits are \b EUSCI_A_CTLW0_CKPL, \b EUSCI_A_CTLW0_CKPH and \b UCSWRST of \b UCAxCTLW0
 //! register.
 //!
 //! \return None
@@ -1117,13 +1125,13 @@ void EUSCI_A_SPI_changeClockPhasePolarity(uint32_t baseAddress,
                     == clockPhase));
 
     //Disable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 
-    EUSCI_A_CMSIS(baseAddress)->rCTLW0.r = (EUSCI_A_CMSIS(baseAddress)->rCTLW0.r
-            & ~(UCCKPH + UCCKPL)) | (clockPhase + clockPolarity);
+    EUSCI_A_CMSIS(baseAddress)->CTLW0 = (EUSCI_A_CMSIS(baseAddress)->CTLW0
+            & ~(EUSCI_A_CTLW0_CKPH + EUSCI_A_CTLW0_CKPL)) | (clockPhase + clockPolarity);
 
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -1141,7 +1149,7 @@ void EUSCI_A_SPI_changeClockPhasePolarity(uint32_t baseAddress,
 //*****************************************************************************
 void EUSCI_A_SPI_transmitData(uint32_t baseAddress, uint8_t transmitData)
 {
-    EUSCI_A_CMSIS(baseAddress)->rTXBUF.r = transmitData;
+    EUSCI_A_CMSIS(baseAddress)->TXBUF = transmitData;
 }
 
 //*****************************************************************************
@@ -1158,7 +1166,7 @@ void EUSCI_A_SPI_transmitData(uint32_t baseAddress, uint8_t transmitData)
 //*****************************************************************************
 uint8_t EUSCI_A_SPI_receiveData(uint32_t baseAddress)
 {
-    return EUSCI_A_CMSIS(baseAddress)->rRXBUF.r;
+    return EUSCI_A_CMSIS(baseAddress)->RXBUF;
 }
 
 //*****************************************************************************
@@ -1187,7 +1195,7 @@ void EUSCI_A_SPI_enableInterrupt(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_A_SPI_RECEIVE_INTERRUPT
                             | EUSCI_A_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_A_CMSIS(baseAddress)->rIE.r |= mask;
+    EUSCI_A_CMSIS(baseAddress)->IE |= mask;
 }
 
 //*****************************************************************************
@@ -1216,7 +1224,7 @@ void EUSCI_A_SPI_disableInterrupt(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_A_SPI_RECEIVE_INTERRUPT
                             | EUSCI_A_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_A_CMSIS(baseAddress)->rIE.r &= ~mask;
+    EUSCI_A_CMSIS(baseAddress)->IE &= ~mask;
 }
 
 //*****************************************************************************
@@ -1245,7 +1253,7 @@ uint8_t EUSCI_A_SPI_getInterruptStatus(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_A_SPI_RECEIVE_INTERRUPT
                             | EUSCI_A_SPI_TRANSMIT_INTERRUPT)));
 
-    return EUSCI_A_CMSIS(baseAddress)->rIFG.r & mask;
+    return EUSCI_A_CMSIS(baseAddress)->IFG & mask;
 }
 
 //*****************************************************************************
@@ -1270,7 +1278,7 @@ void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
                     & ~(EUSCI_A_SPI_RECEIVE_INTERRUPT
                             | EUSCI_A_SPI_TRANSMIT_INTERRUPT)));
 
-    EUSCI_A_CMSIS(baseAddress)->rIFG.r &= ~mask;
+    EUSCI_A_CMSIS(baseAddress)->IFG &= ~mask;
 }
 
 //*****************************************************************************
@@ -1289,7 +1297,7 @@ void EUSCI_A_SPI_clearInterruptFlag(uint32_t baseAddress, uint8_t mask)
 void EUSCI_A_SPI_enable(uint32_t baseAddress)
 {
     //Reset the UCSWRST bit to enable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 0;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 0;
 }
 
 //*****************************************************************************
@@ -1308,7 +1316,7 @@ void EUSCI_A_SPI_enable(uint32_t baseAddress)
 void EUSCI_A_SPI_disable(uint32_t baseAddress)
 {
     //Set the UCSWRST bit to disable the USCI Module
-    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rCTLW0.r, UCSWRST_OFS) = 1;
+    BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->CTLW0, EUSCI_A_CTLW0_SWRST_OFS) = 1;
 }
 
 //*****************************************************************************
@@ -1325,7 +1333,7 @@ void EUSCI_A_SPI_disable(uint32_t baseAddress)
 //*****************************************************************************
 uint32_t EUSCI_A_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress)
 {
-    return baseAddress + OFS_UCA0RXBUF;
+    return (uint32_t)&EUSCI_A_CMSIS(baseAddress)->RXBUF;
 }
 
 //*****************************************************************************
@@ -1342,7 +1350,7 @@ uint32_t EUSCI_A_SPI_getReceiveBufferAddressForDMA(uint32_t baseAddress)
 //*****************************************************************************
 uint32_t EUSCI_A_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 {
-    return baseAddress + OFS_UCA0TXBUF;
+    return (uint32_t)&EUSCI_A_CMSIS(baseAddress)->TXBUF;
 }
 
 //*****************************************************************************
@@ -1359,5 +1367,5 @@ uint32_t EUSCI_A_SPI_getTransmitBufferAddressForDMA(uint32_t baseAddress)
 bool EUSCI_A_SPI_isBusy(uint32_t baseAddress)
 {
     //Return the bus busy status.
-    return BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->rSTATW.r, UCBBUSY_OFS);
+    return BITBAND_PERI(EUSCI_A_CMSIS(baseAddress)->STATW, EUSCI_B_STATW_BBUSY_OFS);
 }

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_fcfg1_h
-*  Revised:        2015-11-17 15:22:29 +0100 (Tue, 17 Nov 2015)
-*  Revision:       45119
+*  Revised:        2015-12-07 09:51:56 +0100 (Mon, 07 Dec 2015)
+*  Revision:       45264
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -1937,7 +1937,7 @@
 //*****************************************************************************
 // Field:   [6:0] GPIO_CNT
 //
-// This value is written to IOC:CFG.GPIO_CNT by boot FW while in safezone.
+// Number of available DIOs.
 #define FCFG1_IOCONF_GPIO_CNT_W                                              7
 #define FCFG1_IOCONF_GPIO_CNT_M                                     0x0000007F
 #define FCFG1_IOCONF_GPIO_CNT_S                                              0

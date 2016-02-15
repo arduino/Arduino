@@ -178,7 +178,7 @@ endif
 
 driverlib:
 ifeq ($(BUILD_DRVLIB),true)
-	#$(MAKE) -C $(ARCH_CORE_PATH)/driverlib clean
+#$(MAKE) -C $(ARCH_CORE_PATH)/driverlib clean
 	$(MAKE) -C $(ARCH_CORE_PATH)/driverlib
 endif
 

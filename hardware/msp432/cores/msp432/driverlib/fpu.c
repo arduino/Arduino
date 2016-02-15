@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,8 @@ void FPU_enableModule(void)
     //
     // Enable the coprocessors used by the floating-point unit.
     //
-    SCB->CPACR = ((SCB->CPACR & ~(SCB_CPACR_CP11_M | SCB_CPACR_CP10_M))
-            | SCB_CPACR_CP11_M | SCB_CPACR_CP10_M);
+    SCB->CPACR = ((SCB->CPACR & ~(SCB_CPACR_CP11_MASK | SCB_CPACR_CP10_MASK))
+            | SCB_CPACR_CP11_MASK | SCB_CPACR_CP10_MASK);
 }
 
 void FPU_disableModule(void)
@@ -50,7 +50,7 @@ void FPU_disableModule(void)
     //
     // Disable the coprocessors used by the floating-point unit.
     //
-    SCB->CPACR = ((SCB->CPACR & ~(SCB_CPACR_CP10_M | SCB_CPACR_CP11_M)));
+    SCB->CPACR = ((SCB->CPACR & ~(SCB_CPACR_CP10_MASK | SCB_CPACR_CP11_MASK)));
 }
 
 void FPU_enableStacking(void)
@@ -60,7 +60,7 @@ void FPU_enableStacking(void)
     // disable lazy state preservation (meaning that the floating-point state
     // is always stacked when floating-point instructions are used).
     //
-    FPU->FPCCR = (FPU->FPCCR & ~FPU_FPCCR_LSPEN) | FPU_FPCCR_ASPEN;
+    FPU->FPCCR = (FPU->FPCCR & ~FPU_FPCCR_LSPEN_Msk) | FPU_FPCCR_ASPEN_Msk;
 }
 
 void FPU_enableLazyStacking(void)
@@ -69,7 +69,7 @@ void FPU_enableLazyStacking(void)
     // Enable automatic and lazy state preservation for the floating-point
     // unit.
     //
-    FPU->FPCCR |= FPU_FPCCR_ASPEN | FPU_FPCCR_LSPEN;
+    FPU->FPCCR |= FPU_FPCCR_ASPEN_Msk | FPU_FPCCR_LSPEN_Msk;
 }
 
 void FPU_disableStacking(void)
@@ -78,7 +78,7 @@ void FPU_disableStacking(void)
     // Disable automatic and lazy state preservation for the floating-point
     // unit.
     //
-    FPU->FPCCR &= ~(FPU_FPCCR_ASPEN | FPU_FPCCR_LSPEN);
+    FPU->FPCCR &= ~(FPU_FPCCR_ASPEN_Msk | FPU_FPCCR_LSPEN_Msk);
 }
 
 void FPU_setHalfPrecisionMode(uint32_t mode)

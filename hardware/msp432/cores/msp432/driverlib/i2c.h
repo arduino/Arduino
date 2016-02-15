@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,15 +60,17 @@ extern "C"
 #include <msp.h>
 #include "eusci.h"
 
-#define EUSCI_B_I2C_NO_AUTO_STOP                                       UCASTP_0
-#define EUSCI_B_I2C_SET_BYTECOUNT_THRESHOLD_FLAG                       UCASTP_1
-#define EUSCI_B_I2C_SEND_STOP_AUTOMATICALLY_ON_BYTECOUNT_THRESHOLD     UCASTP_2
+#define EUSCI_B_I2C_NO_AUTO_STOP                           EUSCI_B_CTLW1_ASTP_0
+#define EUSCI_B_I2C_SET_BYTECOUNT_THRESHOLD_FLAG           EUSCI_B_CTLW1_ASTP_1
+#define EUSCI_B_I2C_SEND_STOP_AUTOMATICALLY_ON_BYTECOUNT_THRESHOLD  \
+	                                                       EUSCI_B_CTLW1_ASTP_2
 
+#define EUSCI_B_I2C_SET_DATA_RATE_1MBPS                                 1000000
 #define EUSCI_B_I2C_SET_DATA_RATE_400KBPS                                400000
 #define EUSCI_B_I2C_SET_DATA_RATE_100KBPS                                100000
 
-#define EUSCI_B_I2C_CLOCKSOURCE_ACLK                               UCSSEL__ACLK
-#define EUSCI_B_I2C_CLOCKSOURCE_SMCLK                             UCSSEL__SMCLK
+#define EUSCI_B_I2C_CLOCKSOURCE_ACLK                   EUSCI_B_CTLW0_SSEL__ACLK
+#define EUSCI_B_I2C_CLOCKSOURCE_SMCLK                 EUSCI_B_CTLW0_SSEL__SMCLK
 
 #define EUSCI_B_I2C_OWN_ADDRESS_OFFSET0                                    0x00
 #define EUSCI_B_I2C_OWN_ADDRESS_OFFSET1                                    0x02
@@ -76,39 +78,39 @@ extern "C"
 #define EUSCI_B_I2C_OWN_ADDRESS_OFFSET3                                    0x06
 
 #define EUSCI_B_I2C_OWN_ADDRESS_DISABLE                                    0x00
-#define EUSCI_B_I2C_OWN_ADDRESS_ENABLE                                   UCOAEN
+#define EUSCI_B_I2C_OWN_ADDRESS_ENABLE                      EUSCI_B_I2COA0_OAEN
 
-#define EUSCI_B_I2C_TRANSMIT_MODE                                          UCTR
+#define EUSCI_B_I2C_TRANSMIT_MODE                              EUSCI_B_CTLW0_TR
 #define EUSCI_B_I2C_RECEIVE_MODE                                           0x00
 
-#define EUSCI_B_I2C_NAK_INTERRUPT                                      UCNACKIE
-#define EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT                            UCALIE
-#define EUSCI_B_I2C_STOP_INTERRUPT                                      UCSTPIE
-#define EUSCI_B_I2C_START_INTERRUPT                                     UCSTTIE
-#define EUSCI_B_I2C_TRANSMIT_INTERRUPT0                                 UCTXIE0
-#define EUSCI_B_I2C_TRANSMIT_INTERRUPT1                                 UCTXIE1
-#define EUSCI_B_I2C_TRANSMIT_INTERRUPT2                                 UCTXIE2
-#define EUSCI_B_I2C_TRANSMIT_INTERRUPT3                                 UCTXIE3
-#define EUSCI_B_I2C_RECEIVE_INTERRUPT0                                  UCRXIE0
-#define EUSCI_B_I2C_RECEIVE_INTERRUPT1                                  UCRXIE1
-#define EUSCI_B_I2C_RECEIVE_INTERRUPT2                                  UCRXIE2
-#define EUSCI_B_I2C_RECEIVE_INTERRUPT3                                  UCRXIE3
-#define EUSCI_B_I2C_BIT9_POSITION_INTERRUPT                            UCBIT9IE
-#define EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT                        UCCLTOIE
-#define EUSCI_B_I2C_BYTE_COUNTER_INTERRUPT                             UCBCNTIE
+#define EUSCI_B_I2C_NAK_INTERRUPT                             EUSCI_B_IE_NACKIE
+#define EUSCI_B_I2C_ARBITRATIONLOST_INTERRUPT                   EUSCI_B_IE_ALIE
+#define EUSCI_B_I2C_STOP_INTERRUPT                             EUSCI_B_IE_STPIE
+#define EUSCI_B_I2C_START_INTERRUPT                            EUSCI_B_IE_STTIE
+#define EUSCI_B_I2C_TRANSMIT_INTERRUPT0                        EUSCI_B_IE_TXIE0
+#define EUSCI_B_I2C_TRANSMIT_INTERRUPT1                        EUSCI_B_IE_TXIE1
+#define EUSCI_B_I2C_TRANSMIT_INTERRUPT2                        EUSCI_B_IE_TXIE2
+#define EUSCI_B_I2C_TRANSMIT_INTERRUPT3                        EUSCI_B_IE_TXIE3
+#define EUSCI_B_I2C_RECEIVE_INTERRUPT0                         EUSCI_B_IE_RXIE0
+#define EUSCI_B_I2C_RECEIVE_INTERRUPT1                         EUSCI_B_IE_RXIE1
+#define EUSCI_B_I2C_RECEIVE_INTERRUPT2                         EUSCI_B_IE_RXIE2
+#define EUSCI_B_I2C_RECEIVE_INTERRUPT3                         EUSCI_B_IE_RXIE3
+#define EUSCI_B_I2C_BIT9_POSITION_INTERRUPT                   EUSCI_B_IE_BIT9IE
+#define EUSCI_B_I2C_CLOCK_LOW_TIMEOUT_INTERRUPT               EUSCI_B_IE_CLTOIE
+#define EUSCI_B_I2C_BYTE_COUNTER_INTERRUPT                    EUSCI_B_IE_BCNTIE
 
-#define EUSCI_B_I2C_BUS_BUSY                                            UCBBUSY
+#define EUSCI_B_I2C_BUS_BUSY                                EUSCI_B_STATW_BBUSY
 #define EUSCI_B_I2C_BUS_NOT_BUSY                                           0x00
 
 #define EUSCI_B_I2C_STOP_SEND_COMPLETE                                     0x00
-#define EUSCI_B_I2C_SENDING_STOP                                        UCTXSTP
+#define EUSCI_B_I2C_SENDING_STOP                            EUSCI_B_CTLW0_TXSTP
 
 #define EUSCI_B_I2C_START_SEND_COMPLETE                                    0x00
-#define EUSCI_B_I2C_SENDING_START                                       UCTXSTT
+#define EUSCI_B_I2C_SENDING_START                           EUSCI_B_CTLW0_TXSTT
 
 //*****************************************************************************
 //
-//! \typedef eUSCI_I2C_MasterConfig
+//!     ypedef eUSCI_I2C_MasterConfig
 //! \brief Type definition for \link _eUSCI_I2C_MasterConfig \endlink structure
 //!
 //! \struct _eUSCI_I2C_MasterConfig
@@ -132,10 +134,10 @@ typedef struct
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -154,6 +156,7 @@ typedef struct
 //!                     selectClockSource).
 //! \param dataRate set up for selecting data transfer rate.
 //!         Valid values are
+//!         - \b EUSCI_B_I2C_SET_DATA_RATE_1MBPS
 //!         - \b EUSCI_B_I2C_SET_DATA_RATE_400KBPS
 //!         - \b EUSCI_B_I2C_SET_DATA_RATE_100KBPS
 //! \param byteCounterThreshold sets threshold for automatic STOP or UCSTPIFG
@@ -167,10 +170,6 @@ typedef struct
 //! successful initialization of the I2C block, this function will have set the
 //! bus speed for the master; however I2C module is still disabled till
 //! I2C_enableModule is invoked
-//!
-//! If the parameter \e dataRate is EUSCI_B_I2C_SET_DATA_RATE_400KBPS, then the
-//! master block will be set up to transfer data at 400 kbps; otherwise, it will
-//! be set up to transfer data at 100 kbps.
 //!
 //! Modified bits are \b UCMST,UCMODE_3,\b UCSYNC of \b UCBxCTL0 register
 //!                   \b UCSSELx, \b UCSWRST, of \b UCBxCTL1 register
@@ -187,15 +186,15 @@ extern void I2C_initMaster(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
 //!
-//! \param slaveAddress 7-bit slave address
+//! \param slaveAddress 7-bit or 10-bit slave address 
 //! \param slaveAddressOffset Own address Offset referred to- 'x' value of
 //!     UCBxI2COAx. Valid values are:
 //!                  - \b EUSCI_B_I2C_OWN_ADDRESS_OFFSET0,
@@ -231,10 +230,10 @@ extern void I2C_initSlave(uint32_t moduleInstance, uint_fast16_t slaveAddress,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -253,10 +252,10 @@ extern void I2C_enableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -275,15 +274,15 @@ extern void I2C_disableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
 //!
-//! \param slaveAddress 7-bit slave address
+//! \param slaveAddress 7-bit or 10-bit slave address
 //!
 //! This function will set the address that the I2C Master will place on the
 //! bus when initiating a transaction.
@@ -301,10 +300,10 @@ extern void I2C_setSlaveAddress(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -328,10 +327,10 @@ extern void I2C_setMode(uint32_t moduleInstance, uint_fast8_t mode);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -353,10 +352,10 @@ extern uint_fast8_t I2C_getMode(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -378,10 +377,10 @@ extern void I2C_slavePutData(uint32_t moduleInstance, uint8_t transmitData);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -401,10 +400,10 @@ extern uint8_t I2C_slaveGetData(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -426,10 +425,10 @@ extern uint8_t I2C_isBusBusy(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -456,10 +455,10 @@ extern void I2C_masterSendSingleByte(uint32_t moduleInstance, uint8_t txData);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -488,10 +487,10 @@ extern bool I2C_masterSendSingleByteWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -518,10 +517,10 @@ extern void I2C_masterSendMultiByteStart(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -549,10 +548,10 @@ extern bool I2C_masterSendMultiByteStartWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -577,10 +576,10 @@ extern void I2C_masterSendMultiByteNext(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -607,10 +606,10 @@ extern bool I2C_masterSendMultiByteNextWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -637,10 +636,10 @@ extern void I2C_masterSendMultiByteFinish(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -668,10 +667,10 @@ extern bool I2C_masterSendMultiByteFinishWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -696,10 +695,10 @@ extern void I2C_masterSendMultiByteStop(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -725,10 +724,10 @@ extern bool I2C_masterSendMultiByteStopWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -750,10 +749,10 @@ extern void I2C_masterReceiveStart(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -775,10 +774,10 @@ extern uint8_t I2C_masterReceiveMultiByteNext(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -802,10 +801,10 @@ extern uint8_t I2C_masterReceiveMultiByteFinish(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -833,10 +832,10 @@ extern bool I2C_masterReceiveMultiByteFinishWithTimeout(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -857,10 +856,10 @@ extern void I2C_masterReceiveMultiByteStop(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -885,10 +884,10 @@ extern uint8_t I2C_masterReceiveSingleByte(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -908,10 +907,10 @@ extern uint8_t I2C_masterReceiveSingle(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -931,10 +930,10 @@ extern uint32_t I2C_getReceiveBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -954,10 +953,10 @@ extern uint32_t I2C_getTransmitBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -979,10 +978,10 @@ extern uint8_t I2C_masterIsStopSent(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1003,10 +1002,10 @@ extern bool I2C_masterIsStartSent(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1027,10 +1026,10 @@ extern void I2C_masterSendStart(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1053,10 +1052,10 @@ extern void I2C_enableMultiMasterMode(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1079,10 +1078,10 @@ extern void I2C_disableMultiMasterMode(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1126,10 +1125,10 @@ extern void I2C_enableInterrupt(uint32_t moduleInstance, uint_fast16_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1173,10 +1172,10 @@ extern void I2C_disableInterrupt(uint32_t moduleInstance, uint_fast16_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1203,10 +1202,10 @@ extern void I2C_clearInterruptFlag(uint32_t moduleInstance, uint_fast16_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1250,7 +1249,7 @@ extern void I2C_clearInterruptFlag(uint32_t moduleInstance, uint_fast16_t mask);
 //! - \b EUSCI_B_I2C_BYTE_COUNTER_INTERRUPT - Byte counter interrupt enable
 //
 //*****************************************************************************
-uint_fast16_t I2C_getInterruptStatus(uint32_t moduleInstance, uint16_t mask);
+extern uint_fast16_t I2C_getInterruptStatus(uint32_t moduleInstance, uint16_t mask);
 
 //*****************************************************************************
 //
@@ -1260,10 +1259,10 @@ uint_fast16_t I2C_getInterruptStatus(uint32_t moduleInstance, uint16_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1295,10 +1294,10 @@ extern uint_fast16_t I2C_getEnabledInterruptStatus(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1327,10 +1326,10 @@ extern void I2C_registerInterrupt(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  <br>It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -1346,6 +1345,26 @@ extern void I2C_registerInterrupt(uint32_t moduleInstance,
 //
 //*****************************************************************************
 extern void I2C_unregisterInterrupt(uint32_t moduleInstance);
+
+
+//*****************************************************************************
+//
+//! This function is used by the slave to send a NAK out over the I2C line
+//!
+//! \param moduleInstance is the instance of the eUSCI B (I2C) module. Valid
+//! parameters vary from part to part, but can include:
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
+//!  <br>It is important to note that for eUSCI modules, only "B" modules such as
+//!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
+//!  I2C mode.
+//!
+//! \return None.
+//
+//*****************************************************************************
+extern void I2C_slaveSendNAK(uint32_t moduleInstance);
 
 /* Backwards Compatibility Layer */
 #define EUSCI_B_I2C_slaveInit I2C_initSlave

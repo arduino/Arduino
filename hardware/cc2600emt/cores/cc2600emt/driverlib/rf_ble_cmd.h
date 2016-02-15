@@ -668,7 +668,7 @@ struct rfCoreHal_bleInitiatorPar_s {
 
 //! \addtogroup bleGenericRxPar
 //! @{
-struct rfCoreHal_bleGenericRxPar_t{
+struct rfCoreHal_bleGenericRxPar_s{
    dataQueue_t* pRxQ;
    struct {
       uint8_t bAutoFlushIgnored:1;
@@ -684,6 +684,12 @@ struct rfCoreHal_bleGenericRxPar_t{
    uint16_t __dummy0;
    uint32_t accessAddress;
    uint32_t crcInit;
+   struct {
+      uint8_t triggerType:4;
+      uint8_t bEnaCmd:1;
+      uint8_t triggerNo:2;
+      uint8_t pastTrig:1;
+   } endTrigger;
    ratmr_t endTime;
 };
 

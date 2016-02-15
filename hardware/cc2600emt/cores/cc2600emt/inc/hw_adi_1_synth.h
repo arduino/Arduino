@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_1_synth_h
-*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45056
+*  Revised:        2015-12-03 09:20:10 +0100 (Thu, 03 Dec 2015)
+*  Revision:       45256
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -79,7 +79,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL0_ATEST_V_EN                           0x00000010
-#define ADI_1_SYNTH_VCOLDOCTL0_ATEST_V_EN_BITN                               4
 #define ADI_1_SYNTH_VCOLDOCTL0_ATEST_V_EN_M                         0x00000010
 #define ADI_1_SYNTH_VCOLDOCTL0_ATEST_V_EN_S                                  4
 
@@ -87,7 +86,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL0_BYPASS_REG_EN                        0x00000008
-#define ADI_1_SYNTH_VCOLDOCTL0_BYPASS_REG_EN_BITN                            3
 #define ADI_1_SYNTH_VCOLDOCTL0_BYPASS_REG_EN_M                      0x00000008
 #define ADI_1_SYNTH_VCOLDOCTL0_BYPASS_REG_EN_S                               3
 
@@ -95,7 +93,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL0_RDY_EN                               0x00000004
-#define ADI_1_SYNTH_VCOLDOCTL0_RDY_EN_BITN                                   2
 #define ADI_1_SYNTH_VCOLDOCTL0_RDY_EN_M                             0x00000004
 #define ADI_1_SYNTH_VCOLDOCTL0_RDY_EN_S                                      2
 
@@ -103,7 +100,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL0_BIAS_DIS                             0x00000002
-#define ADI_1_SYNTH_VCOLDOCTL0_BIAS_DIS_BITN                                 1
 #define ADI_1_SYNTH_VCOLDOCTL0_BIAS_DIS_M                           0x00000002
 #define ADI_1_SYNTH_VCOLDOCTL0_BIAS_DIS_S                                    1
 
@@ -111,7 +107,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL0_EN                                   0x00000001
-#define ADI_1_SYNTH_VCOLDOCTL0_EN_BITN                                       0
 #define ADI_1_SYNTH_VCOLDOCTL0_EN_M                                 0x00000001
 #define ADI_1_SYNTH_VCOLDOCTL0_EN_S                                          0
 
@@ -124,7 +119,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCTL1_ATEST_I_EN                           0x00000040
-#define ADI_1_SYNTH_VCOLDOCTL1_ATEST_I_EN_BITN                               6
 #define ADI_1_SYNTH_VCOLDOCTL1_ATEST_I_EN_M                         0x00000040
 #define ADI_1_SYNTH_VCOLDOCTL1_ATEST_I_EN_S                                  6
 
@@ -144,7 +138,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_VCOLDOCFG_DIV_BIAS_DIS                          0x00000040
-#define ADI_1_SYNTH_VCOLDOCFG_DIV_BIAS_DIS_BITN                              6
 #define ADI_1_SYNTH_VCOLDOCFG_DIV_BIAS_DIS_M                        0x00000040
 #define ADI_1_SYNTH_VCOLDOCFG_DIV_BIAS_DIS_S                                 6
 
@@ -171,7 +164,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_COMP_CAP                               0x00000040
-#define ADI_1_SYNTH_SLDOCTL0_COMP_CAP_BITN                                   6
 #define ADI_1_SYNTH_SLDOCTL0_COMP_CAP_M                             0x00000040
 #define ADI_1_SYNTH_SLDOCTL0_COMP_CAP_S                                      6
 
@@ -179,7 +171,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_I_EN                             0x00000020
-#define ADI_1_SYNTH_SLDOCTL0_ATEST_I_EN_BITN                                 5
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_I_EN_M                           0x00000020
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_I_EN_S                                    5
 
@@ -187,7 +178,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_V_EN                             0x00000010
-#define ADI_1_SYNTH_SLDOCTL0_ATEST_V_EN_BITN                                 4
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_V_EN_M                           0x00000010
 #define ADI_1_SYNTH_SLDOCTL0_ATEST_V_EN_S                                    4
 
@@ -195,7 +185,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_RDY_EN                                 0x00000004
-#define ADI_1_SYNTH_SLDOCTL0_RDY_EN_BITN                                     2
 #define ADI_1_SYNTH_SLDOCTL0_RDY_EN_M                               0x00000004
 #define ADI_1_SYNTH_SLDOCTL0_RDY_EN_S                                        2
 
@@ -203,7 +192,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_BIAS_DIS                               0x00000002
-#define ADI_1_SYNTH_SLDOCTL0_BIAS_DIS_BITN                                   1
 #define ADI_1_SYNTH_SLDOCTL0_BIAS_DIS_M                             0x00000002
 #define ADI_1_SYNTH_SLDOCTL0_BIAS_DIS_S                                      1
 
@@ -211,7 +199,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SLDOCTL0_EN                                     0x00000001
-#define ADI_1_SYNTH_SLDOCTL0_EN_BITN                                         0
 #define ADI_1_SYNTH_SLDOCTL0_EN_M                                   0x00000001
 #define ADI_1_SYNTH_SLDOCTL0_EN_S                                            0
 
@@ -236,7 +223,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SYNTHCTLINIT_CLK_EN                             0x00000002
-#define ADI_1_SYNTH_SYNTHCTLINIT_CLK_EN_BITN                                 1
 #define ADI_1_SYNTH_SYNTHCTLINIT_CLK_EN_M                           0x00000002
 #define ADI_1_SYNTH_SYNTHCTLINIT_CLK_EN_S                                    1
 
@@ -244,7 +230,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_SYNTHCTLINIT_DDI_RESET_N                        0x00000001
-#define ADI_1_SYNTH_SYNTHCTLINIT_DDI_RESET_N_BITN                            0
 #define ADI_1_SYNTH_SYNTHCTLINIT_DDI_RESET_N_M                      0x00000001
 #define ADI_1_SYNTH_SYNTHCTLINIT_DDI_RESET_N_S                               0
 
@@ -314,7 +299,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_STAT_SYNTH_TUNE_ACK                             0x00000004
-#define ADI_1_SYNTH_STAT_SYNTH_TUNE_ACK_BITN                                 2
 #define ADI_1_SYNTH_STAT_SYNTH_TUNE_ACK_M                           0x00000004
 #define ADI_1_SYNTH_STAT_SYNTH_TUNE_ACK_S                                    2
 
@@ -322,7 +306,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_STAT_SLDO_RDY                                   0x00000002
-#define ADI_1_SYNTH_STAT_SLDO_RDY_BITN                                       1
 #define ADI_1_SYNTH_STAT_SLDO_RDY_M                                 0x00000002
 #define ADI_1_SYNTH_STAT_SLDO_RDY_S                                          1
 
@@ -330,7 +313,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_1_SYNTH_STAT_LDOVCO_RDY                                 0x00000001
-#define ADI_1_SYNTH_STAT_LDOVCO_RDY_BITN                                     0
 #define ADI_1_SYNTH_STAT_LDOVCO_RDY_M                               0x00000001
 #define ADI_1_SYNTH_STAT_LDOVCO_RDY_S                                        0
 

@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,11 +86,10 @@ extern "C"
 
 #define RESET_VCCDET    RSTCTL_PSSRESET_CLR_BGREF
 #define RESET_SVSH_TRIP RSTCTL_PSSRESET_CLR_SVSMH
-#define RESET_SVSL_TRIP RSTCTL_PSSRESET_CLR_SVSL
 #define RESET_BGREF_BAD RSTCTL_PSSRESET_CLR_BGREF
 
-#define RESET_SD0   RSTCTL_PCMRESET_CLR_LPM35
-#define RESET_SD1   RSTCTL_PCMRESET_CLR_LPM45
+#define RESET_LPM35   RSTCTL_PCMRESET_CLR_LPM35
+#define RESET_LPM45   RSTCTL_PCMRESET_CLR_LPM45
 
 //*****************************************************************************
 //
@@ -291,7 +290,6 @@ extern void ResetCtl_clearHardResetSource(uint32_t mask);
 //! \return  Bitwise OR of any of the following values:
 //!                 - RESET_VCCDET,
 //!                 - RESET_SVSH_TRIP,
-//!                 - RESET_SVSL_TRIP,
 //!                 - RESET_BGREF_BAD
 //
 //*****************************************************************************
@@ -311,8 +309,8 @@ extern void ResetCtl_clearPSSFlags(void);
 //! Indicates the last cause of a power-on reset (POR) due to PCM operation.
 //!
 //! \return  Bitwise OR of any of the following values:
-//!                 - RESET_SD0,
-//!                 - RESET_SD1
+//!                 - RESET_LPM35,
+//!                 - RESET_LPM45
 //
 //*****************************************************************************
 extern uint32_t ResetCtl_getPCMSource(void);

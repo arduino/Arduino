@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_3_refsys_h
-*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45056
+*  Revised:        2015-12-03 09:20:10 +0100 (Thu, 03 Dec 2015)
+*  Revision:       45256
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -204,7 +204,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_REFSYSCTL1_BATMON_COMP_TEST_EN                 0x00000004
-#define ADI_3_REFSYS_REFSYSCTL1_BATMON_COMP_TEST_EN_BITN                     2
 #define ADI_3_REFSYS_REFSYSCTL1_BATMON_COMP_TEST_EN_M               0x00000004
 #define ADI_3_REFSYS_REFSYSCTL1_BATMON_COMP_TEST_EN_S                        2
 #define ADI_3_REFSYS_REFSYSCTL1_BATMON_COMP_TEST_EN_EN              0x00000004
@@ -252,7 +251,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_REFSYSCTL3_BOD_BG_TRIM_EN                      0x00000080
-#define ADI_3_REFSYS_REFSYSCTL3_BOD_BG_TRIM_EN_BITN                          7
 #define ADI_3_REFSYS_REFSYSCTL3_BOD_BG_TRIM_EN_M                    0x00000080
 #define ADI_3_REFSYS_REFSYSCTL3_BOD_BG_TRIM_EN_S                             7
 
@@ -263,7 +261,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_REFSYSCTL3_VTEMP_EN                            0x00000040
-#define ADI_3_REFSYS_REFSYSCTL3_VTEMP_EN_BITN                                6
 #define ADI_3_REFSYS_REFSYSCTL3_VTEMP_EN_M                          0x00000040
 #define ADI_3_REFSYS_REFSYSCTL3_VTEMP_EN_S                                   6
 #define ADI_3_REFSYS_REFSYSCTL3_VTEMP_EN_EN                         0x00000040
@@ -335,7 +332,6 @@
 // 0: Hysteresis = 60mV
 // 1: Hysteresis = 70mV
 #define ADI_3_REFSYS_DCDCCTL1_VDDR_OK_HYST                          0x00000020
-#define ADI_3_REFSYS_DCDCCTL1_VDDR_OK_HYST_BITN                              5
 #define ADI_3_REFSYS_DCDCCTL1_VDDR_OK_HYST_M                        0x00000020
 #define ADI_3_REFSYS_DCDCCTL1_VDDR_OK_HYST_S                                 5
 
@@ -368,7 +364,6 @@
 // 0: Erroramp Off (Default)
 // 1: Erroramp On. Turns on GLDO error amp switch.
 #define ADI_3_REFSYS_DCDCCTL2_TURNON_EA_SW                          0x00000040
-#define ADI_3_REFSYS_DCDCCTL2_TURNON_EA_SW_BITN                              6
 #define ADI_3_REFSYS_DCDCCTL2_TURNON_EA_SW_M                        0x00000040
 #define ADI_3_REFSYS_DCDCCTL2_TURNON_EA_SW_S                                 6
 
@@ -381,7 +376,6 @@
 //
 // Set TESTSEL = 0x0 first before setting this bit.
 #define ADI_3_REFSYS_DCDCCTL2_TEST_VDDR                             0x00000020
-#define ADI_3_REFSYS_DCDCCTL2_TEST_VDDR_BITN                                 5
 #define ADI_3_REFSYS_DCDCCTL2_TEST_VDDR_M                           0x00000020
 #define ADI_3_REFSYS_DCDCCTL2_TEST_VDDR_S                                    5
 
@@ -392,7 +386,6 @@
 // 0: Dummy bias current on (Default)
 // 1: Dummy bias current off
 #define ADI_3_REFSYS_DCDCCTL2_BIAS_DIS                              0x00000010
-#define ADI_3_REFSYS_DCDCCTL2_BIAS_DIS_BITN                                  4
 #define ADI_3_REFSYS_DCDCCTL2_BIAS_DIS_M                            0x00000010
 #define ADI_3_REFSYS_DCDCCTL2_BIAS_DIS_S                                     4
 
@@ -455,7 +448,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_DCDCCTL5_TESTN                                 0x00000020
-#define ADI_3_REFSYS_DCDCCTL5_TESTN_BITN                                     5
 #define ADI_3_REFSYS_DCDCCTL5_TESTN_M                               0x00000020
 #define ADI_3_REFSYS_DCDCCTL5_TESTN_S                                        5
 
@@ -463,7 +455,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_DCDCCTL5_TESTP                                 0x00000010
-#define ADI_3_REFSYS_DCDCCTL5_TESTP_BITN                                     4
 #define ADI_3_REFSYS_DCDCCTL5_TESTP_M                               0x00000010
 #define ADI_3_REFSYS_DCDCCTL5_TESTP_S                                        4
 
@@ -474,7 +465,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_3_REFSYS_DCDCCTL5_DITHER_EN                             0x00000008
-#define ADI_3_REFSYS_DCDCCTL5_DITHER_EN_BITN                                 3
 #define ADI_3_REFSYS_DCDCCTL5_DITHER_EN_M                           0x00000008
 #define ADI_3_REFSYS_DCDCCTL5_DITHER_EN_S                                    3
 #define ADI_3_REFSYS_DCDCCTL5_DITHER_EN_EN                          0x00000008

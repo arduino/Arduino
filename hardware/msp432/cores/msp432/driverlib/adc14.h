@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,57 +71,57 @@ extern "C"
 //The following are values that can be passed to ADC14_initModule
 //
 //*****************************************************************************
-#define ADC_CLOCKSOURCE_ADCOSC   (ADC14SSEL_0)
-#define ADC_CLOCKSOURCE_SYSOSC   (ADC14SSEL_1)
-#define ADC_CLOCKSOURCE_ACLK     (ADC14SSEL_2)
-#define ADC_CLOCKSOURCE_MCLK     (ADC14SSEL_3)
-#define ADC_CLOCKSOURCE_SMCLK    (ADC14SSEL_4)
-#define ADC_CLOCKSOURCE_HSMCLK   (ADC14SSEL_5)
+#define ADC_CLOCKSOURCE_ADCOSC   (ADC14_CTL0_SSEL_0)
+#define ADC_CLOCKSOURCE_SYSOSC   (ADC14_CTL0_SSEL_1)
+#define ADC_CLOCKSOURCE_ACLK     (ADC14_CTL0_SSEL_2)
+#define ADC_CLOCKSOURCE_MCLK     (ADC14_CTL0_SSEL_3)
+#define ADC_CLOCKSOURCE_SMCLK    (ADC14_CTL0_SSEL_4)
+#define ADC_CLOCKSOURCE_HSMCLK   (ADC14_CTL0_SSEL_5)
 
-#define ADC_PREDIVIDER_1         (ADC14PDIV_0)
-#define ADC_PREDIVIDER_4         (ADC14PDIV_1)
-#define ADC_PREDIVIDER_32        (ADC14PDIV_2)
-#define ADC_PREDIVIDER_64        (ADC14PDIV_3)
+#define ADC_PREDIVIDER_1         (ADC14_CTL0_PDIV_0)
+#define ADC_PREDIVIDER_4         (ADC14_CTL0_PDIV_1)
+#define ADC_PREDIVIDER_32        (ADC14_CTL0_PDIV_2)
+#define ADC_PREDIVIDER_64        (ADC14_CTL0_PDIV_3)
 
-#define ADC_DIVIDER_1            (ADC14DIV_0)
-#define ADC_DIVIDER_2            (ADC14DIV_1)
-#define ADC_DIVIDER_3            (ADC14DIV_2)
-#define ADC_DIVIDER_4            (ADC14DIV_3)
-#define ADC_DIVIDER_5            (ADC14DIV_4)
-#define ADC_DIVIDER_6            (ADC14DIV_5)
-#define ADC_DIVIDER_7            (ADC14DIV_6)
-#define ADC_DIVIDER_8            (ADC14DIV_7)
+#define ADC_DIVIDER_1            (ADC14_CTL0_DIV_0)
+#define ADC_DIVIDER_2            (ADC14_CTL0_DIV_1)
+#define ADC_DIVIDER_3            (ADC14_CTL0_DIV_2)
+#define ADC_DIVIDER_4            (ADC14_CTL0_DIV_3)
+#define ADC_DIVIDER_5            (ADC14_CTL0_DIV_4)
+#define ADC_DIVIDER_6            (ADC14_CTL0_DIV_5)
+#define ADC_DIVIDER_7            (ADC14_CTL0_DIV_6)
+#define ADC_DIVIDER_8            (ADC14_CTL0_DIV_7)
 
-#define ADC_MAPINTCH3            (ADC14CH3MAP)
-#define ADC_MAPINTCH2            (ADC14CH2MAP)
-#define ADC_MAPINTCH1            (ADC14CH1MAP)
-#define ADC_MAPINTCH0            (ADC14CH0MAP)
-#define ADC_TEMPSENSEMAP         (ADC14TCMAP)
-#define ADC_BATTMAP              (ADC14BATMAP)
+#define ADC_MAPINTCH3            (ADC14_CTL1_CH3MAP)
+#define ADC_MAPINTCH2            (ADC14_CTL1_CH2MAP)
+#define ADC_MAPINTCH1            (ADC14_CTL1_CH1MAP)
+#define ADC_MAPINTCH0            (ADC14_CTL1_CH0MAP)
+#define ADC_TEMPSENSEMAP         (ADC14_CTL1_TCMAP)
+#define ADC_BATTMAP              (ADC14_CTL1_BATMAP)
 #define ADC_NOROUTE               0
 
-#define ADC_8BIT                 ADC14RES_0
-#define ADC_10BIT                ADC14RES_1
-#define ADC_12BIT                ADC14RES_2
-#define ADC_14BIT                ADC14RES_3
+#define ADC_8BIT                 ADC14_CTL1_RES_0
+#define ADC_10BIT                ADC14_CTL1_RES_1
+#define ADC_12BIT                ADC14_CTL1_RES_2
+#define ADC_14BIT                ADC14_CTL1_RES_3
 
-#define ADC_TRIGGER_ADCSC        ADC14SHS_0
-#define ADC_TRIGGER_SOURCE1      ADC14SHS_1
-#define ADC_TRIGGER_SOURCE2      ADC14SHS_2
-#define ADC_TRIGGER_SOURCE3      ADC14SHS_3
-#define ADC_TRIGGER_SOURCE4      ADC14SHS_4
-#define ADC_TRIGGER_SOURCE5      ADC14SHS_5
-#define ADC_TRIGGER_SOURCE6      ADC14SHS_6
-#define ADC_TRIGGER_SOURCE7      ADC14SHS_7
+#define ADC_TRIGGER_ADCSC        ADC14_CTL0_SHS_0
+#define ADC_TRIGGER_SOURCE1      ADC14_CTL0_SHS_1
+#define ADC_TRIGGER_SOURCE2      ADC14_CTL0_SHS_2
+#define ADC_TRIGGER_SOURCE3      ADC14_CTL0_SHS_3
+#define ADC_TRIGGER_SOURCE4      ADC14_CTL0_SHS_4
+#define ADC_TRIGGER_SOURCE5      ADC14_CTL0_SHS_5
+#define ADC_TRIGGER_SOURCE6      ADC14_CTL0_SHS_6
+#define ADC_TRIGGER_SOURCE7      ADC14_CTL0_SHS_7
 
-#define ADC_PULSE_WIDTH_4        ADC14SHT1_0
-#define ADC_PULSE_WIDTH_8        ADC14SHT1_1
-#define ADC_PULSE_WIDTH_16       ADC14SHT1_2
-#define ADC_PULSE_WIDTH_32       ADC14SHT1_3
-#define ADC_PULSE_WIDTH_64       ADC14SHT1_4
-#define ADC_PULSE_WIDTH_96       ADC14SHT1_5
-#define ADC_PULSE_WIDTH_128      ADC14SHT1_6
-#define ADC_PULSE_WIDTH_192      ADC14SHT1_7
+#define ADC_PULSE_WIDTH_4        ADC14_CTL0_SHT1_0
+#define ADC_PULSE_WIDTH_8        ADC14_CTL0_SHT1_1
+#define ADC_PULSE_WIDTH_16       ADC14_CTL0_SHT1_2
+#define ADC_PULSE_WIDTH_32       ADC14_CTL0_SHT1_3
+#define ADC_PULSE_WIDTH_64       ADC14_CTL0_SHT1_4
+#define ADC_PULSE_WIDTH_96       ADC14_CTL0_SHT1_5
+#define ADC_PULSE_WIDTH_128      ADC14_CTL0_SHT1_6
+#define ADC_PULSE_WIDTH_192      ADC14_CTL0_SHT1_7
 
 #define ADC_NONDIFFERENTIAL_INPUTS false
 #define ADC_DIFFERENTIAL_INPUTS true
@@ -159,43 +159,43 @@ extern "C"
 #define ADC_MEM30                0x40000000
 #define ADC_MEM31                0x80000000
 
-#define ADC_VREFPOS_AVCC_VREFNEG_VSS       (ADC14VRSEL_0)
-#define ADC_VREFPOS_INTBUF_VREFNEG_VSS     (ADC14VRSEL_1)
-#define ADC_VREFPOS_EXTPOS_VREFNEG_EXTNEG  (ADC14VRSEL_14)
-#define ADC_VREFPOS_EXTBUF_VREFNEG_EXTNEG  (ADC14VRSEL_15)
+#define ADC_VREFPOS_AVCC_VREFNEG_VSS       (ADC14_MCTLN_VRSEL_0)
+#define ADC_VREFPOS_INTBUF_VREFNEG_VSS     (ADC14_MCTLN_VRSEL_1)
+#define ADC_VREFPOS_EXTPOS_VREFNEG_EXTNEG  (ADC14_MCTLN_VRSEL_14)
+#define ADC_VREFPOS_EXTBUF_VREFNEG_EXTNEG  (ADC14_MCTLN_VRSEL_15)
 
-#define ADC_INPUT_A0              (ADC14INCH_0)
-#define ADC_INPUT_A1              (ADC14INCH_1)
-#define ADC_INPUT_A2              (ADC14INCH_2)
-#define ADC_INPUT_A3              (ADC14INCH_3)
-#define ADC_INPUT_A4              (ADC14INCH_4)
-#define ADC_INPUT_A5              (ADC14INCH_5)
-#define ADC_INPUT_A6              (ADC14INCH_6)
-#define ADC_INPUT_A7              (ADC14INCH_7)
-#define ADC_INPUT_A8              (ADC14INCH_8)
-#define ADC_INPUT_A9              (ADC14INCH_9)
-#define ADC_INPUT_A10             (ADC14INCH_10)
-#define ADC_INPUT_A11             (ADC14INCH_11)
-#define ADC_INPUT_A12             (ADC14INCH_12)
-#define ADC_INPUT_A13             (ADC14INCH_13)
-#define ADC_INPUT_A14             (ADC14INCH_14)
-#define ADC_INPUT_A15             (ADC14INCH_15)
-#define ADC_INPUT_A16             (ADC14INCH_16)
-#define ADC_INPUT_A17             (ADC14INCH_17)
-#define ADC_INPUT_A18             (ADC14INCH_18)
-#define ADC_INPUT_A19             (ADC14INCH_19)
-#define ADC_INPUT_A20             (ADC14INCH_20)
-#define ADC_INPUT_A21             (ADC14INCH_21)
-#define ADC_INPUT_A22             (ADC14INCH_22)
-#define ADC_INPUT_A23             (ADC14INCH_23)
-#define ADC_INPUT_A24             (ADC14INCH_24)
-#define ADC_INPUT_A25             (ADC14INCH_25)
-#define ADC_INPUT_A26             (ADC14INCH_26)
-#define ADC_INPUT_A27             (ADC14INCH_27)
-#define ADC_INPUT_A28             (ADC14INCH_28)
-#define ADC_INPUT_A29             (ADC14INCH_29)
-#define ADC_INPUT_A30             (ADC14INCH_30)
-#define ADC_INPUT_A31             (ADC14INCH_31)
+#define ADC_INPUT_A0              (ADC14_MCTLN_INCH_0)
+#define ADC_INPUT_A1              (ADC14_MCTLN_INCH_1)
+#define ADC_INPUT_A2              (ADC14_MCTLN_INCH_2)
+#define ADC_INPUT_A3              (ADC14_MCTLN_INCH_3)
+#define ADC_INPUT_A4              (ADC14_MCTLN_INCH_4)
+#define ADC_INPUT_A5              (ADC14_MCTLN_INCH_5)
+#define ADC_INPUT_A6              (ADC14_MCTLN_INCH_6)
+#define ADC_INPUT_A7              (ADC14_MCTLN_INCH_7)
+#define ADC_INPUT_A8              (ADC14_MCTLN_INCH_8)
+#define ADC_INPUT_A9              (ADC14_MCTLN_INCH_9)
+#define ADC_INPUT_A10             (ADC14_MCTLN_INCH_10)
+#define ADC_INPUT_A11             (ADC14_MCTLN_INCH_11)
+#define ADC_INPUT_A12             (ADC14_MCTLN_INCH_12)
+#define ADC_INPUT_A13             (ADC14_MCTLN_INCH_13)
+#define ADC_INPUT_A14             (ADC14_MCTLN_INCH_14)
+#define ADC_INPUT_A15             (ADC14_MCTLN_INCH_15)
+#define ADC_INPUT_A16             (ADC14_MCTLN_INCH_16)
+#define ADC_INPUT_A17             (ADC14_MCTLN_INCH_17)
+#define ADC_INPUT_A18             (ADC14_MCTLN_INCH_18)
+#define ADC_INPUT_A19             (ADC14_MCTLN_INCH_19)
+#define ADC_INPUT_A20             (ADC14_MCTLN_INCH_20)
+#define ADC_INPUT_A21             (ADC14_MCTLN_INCH_21)
+#define ADC_INPUT_A22             (ADC14_MCTLN_INCH_22)
+#define ADC_INPUT_A23             (ADC14_MCTLN_INCH_23)
+#define ADC_INPUT_A24             (ADC14_MCTLN_INCH_24)
+#define ADC_INPUT_A25             (ADC14_MCTLN_INCH_25)
+#define ADC_INPUT_A26             (ADC14_MCTLN_INCH_26)
+#define ADC_INPUT_A27             (ADC14_MCTLN_INCH_27)
+#define ADC_INPUT_A28             (ADC14_MCTLN_INCH_28)
+#define ADC_INPUT_A29             (ADC14_MCTLN_INCH_29)
+#define ADC_INPUT_A30             (ADC14_MCTLN_INCH_30)
+#define ADC_INPUT_A31             (ADC14_MCTLN_INCH_31)
 
 #define ADC_COMP_WINDOW0          0x00
 #define ADC_COMP_WINDOW1          0x01
@@ -204,44 +204,44 @@ extern "C"
 #define ADC_UNSIGNED_BINARY       0x01
 
 #define ADC_MANUAL_ITERATION       0x00
-#define ADC_AUTOMATIC_ITERATION    ADC14MSC
+#define ADC_AUTOMATIC_ITERATION    ADC14_CTL0_MSC
 
-#define ADC_UNRESTRICTED_POWER_MODE   ADC14PWRMD_0
-#define ADC_ULTRA_LOW_POWER_MODE      ADC14PWRMD_2
+#define ADC_UNRESTRICTED_POWER_MODE   ADC14_CTL1_PWRMD_0
+#define ADC_ULTRA_LOW_POWER_MODE      ADC14_CTL1_PWRMD_2
 
 
-#define ADC_INT0 ADC14IE0
-#define ADC_INT1 ADC14IE1
-#define ADC_INT2 ADC14IE2
-#define ADC_INT3 ADC14IE3
-#define ADC_INT4 ADC14IE4
-#define ADC_INT5 ADC14IE5
-#define ADC_INT6 ADC14IE6
-#define ADC_INT7 ADC14IE7
-#define ADC_INT8 ADC14IE8
-#define ADC_INT9 ADC14IE9
-#define ADC_INT10 ADC14IE10
-#define ADC_INT11 ADC14IE11
-#define ADC_INT12 ADC14IE12
-#define ADC_INT13 ADC14IE13
-#define ADC_INT14 ADC14IE14
-#define ADC_INT15 ADC14IE15
-#define ADC_INT16 ADC14IE16
-#define ADC_INT17 ADC14IE17
-#define ADC_INT18 ADC14IE18
-#define ADC_INT19 ADC14IE19
-#define ADC_INT20 ADC14IE20
-#define ADC_INT21 ADC14IE21
-#define ADC_INT22 ADC14IE22
-#define ADC_INT23 ADC14IE23
-#define ADC_INT24 ADC14IE24
-#define ADC_INT25 ADC14IE25
-#define ADC_INT26 ADC14IE26
-#define ADC_INT27 ADC14IE27
-#define ADC_INT28 ADC14IE28
-#define ADC_INT29 ADC14IE29
-#define ADC_INT30 ADC14IE30
-#define ADC_INT31 ADC14IE31
+#define ADC_INT0 ADC14_IER0_IE0
+#define ADC_INT1 ADC14_IER0_IE1
+#define ADC_INT2 ADC14_IER0_IE2
+#define ADC_INT3 ADC14_IER0_IE3
+#define ADC_INT4 ADC14_IER0_IE4
+#define ADC_INT5 ADC14_IER0_IE5
+#define ADC_INT6 ADC14_IER0_IE6
+#define ADC_INT7 ADC14_IER0_IE7
+#define ADC_INT8 ADC14_IER0_IE8
+#define ADC_INT9 ADC14_IER0_IE9
+#define ADC_INT10 ADC14_IER0_IE10
+#define ADC_INT11 ADC14_IER0_IE11
+#define ADC_INT12 ADC14_IER0_IE12
+#define ADC_INT13 ADC14_IER0_IE13
+#define ADC_INT14 ADC14_IER0_IE14
+#define ADC_INT15 ADC14_IER0_IE15
+#define ADC_INT16 ADC14_IER0_IE16
+#define ADC_INT17 ADC14_IER0_IE17
+#define ADC_INT18 ADC14_IER0_IE18
+#define ADC_INT19 ADC14_IER0_IE19
+#define ADC_INT20 ADC14_IER0_IE20
+#define ADC_INT21 ADC14_IER0_IE21
+#define ADC_INT22 ADC14_IER0_IE22
+#define ADC_INT23 ADC14_IER0_IE23
+#define ADC_INT24 ADC14_IER0_IE24
+#define ADC_INT25 ADC14_IER0_IE25
+#define ADC_INT26 ADC14_IER0_IE26
+#define ADC_INT27 ADC14_IER0_IE27
+#define ADC_INT28 ADC14_IER0_IE28
+#define ADC_INT29 ADC14_IER0_IE29
+#define ADC_INT30 ADC14_IER0_IE30
+#define ADC_INT31 ADC14_IER0_IE31
 #define ADC_IN_INT 0x0000000200000000
 #define ADC_LO_INT 0x0000000400000000
 #define ADC_HI_INT 0x0000000800000000
@@ -541,9 +541,6 @@ extern bool ADC14_toggleConversionTrigger(void);
 //
 //!
 //! Returns a boolean value that tells if a conversion/sample is in progress
-//!
-//! Originally a public function, but moved to static. External customers should
-//! use the ADC14_isBusy function.
 //!
 //! \return true if conversion is active, false otherwise
 //
@@ -1026,8 +1023,8 @@ extern void ADC14_unregisterInterrupt(void);
 #define ADC14_enableModuleMultipleInstance(a) ADC14_enableModule()
 #define ADC14_disableModuleMultipleInstance(a) ADC14_disableModule()
 #define ADC14_initModuleMultipleInstance(a,b,c,d,e) ADC14_initModule(b,c,d,e)
-#define ADC14_setResolutionMutlipleInstance(a,b) ADC14_setResolution(b)
-#define ADC14_getResolutionMutlipleInstance(a) ADC14_getResolution()
+#define ADC14_setResolutionMultipleInstance(a,b) ADC14_setResolution(b)
+#define ADC14_getResolutionMultipleInstance(a) ADC14_getResolution()
 #define ADC14_setSampleHoldTriggerMultipleInstance(a,b,c) ADC14_setSampleHoldTrigger(b,c)
 #define ADC14_setSampleHoldTimeMultipleInstance(a,b,c) ADC14_setSampleHoldTime(b,c)
 #define ADC14_configureMultiSequenceModeMultipleInstance(a,b,c,d) ADC14_configureMultiSequenceMode(b,c,d)
@@ -1036,7 +1033,7 @@ extern void ADC14_unregisterInterrupt(void);
 #define ADC14_disableConversionMultipleInstance(a) ADC14_disableConversion()
 #define ADC14_toggleConversionTriggerMultipleInstance(a) ADC14_toggleConversionTrigger()
 #define ADC14_isBusyMultipleInstance(a) ADC14_isBusy()
-#define ADC14_configureConversionMemoryMultipleInstance(a,b,c,d,e) ADC14_enableModule(b,c,d,e)
+#define ADC14_configureConversionMemoryMultipleInstance(a,b,c,d,e) ADC14_configureConversionMemory(b,c,d,e)
 #define ADC14_enableComparatorWindowMultipleInstance(a,b,c) ADC14_enableComparatorWindow(b,c)
 #define ADC14_disableComparatorWindowMultipleInstance(a,b) ADC14_disableComparatorWindow(b)
 #define ADC14_setComparatorWindowValueMultipleInstance(a,b,c,d) ADC14_setComparatorWindowValue(b,c,d)

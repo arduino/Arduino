@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,8 +68,14 @@ extern "C"
 #define GPIO_PORT_P8                                                          8
 #define GPIO_PORT_P9                                                          9
 #define GPIO_PORT_P10                                                         10
-#define GPIO_PORT_PJ                                                         11
+#define GPIO_PORT_PA                                                           1
+#define GPIO_PORT_PB                                                           3
+#define GPIO_PORT_PC                                                           5
+#define GPIO_PORT_PD                                                           7
+#define GPIO_PORT_PE                                                           9
+#define GPIO_PORT_PJ                                                          11
 
+ 
 #define GPIO_PIN0                                                      (0x0001)
 #define GPIO_PIN1                                                      (0x0002)
 #define GPIO_PIN2                                                      (0x0004)
@@ -405,8 +411,6 @@ extern void GPIO_setOutputHighOnPin(uint_fast8_t selectedPort,
 //!        - \b GPIO_PIN13
 //!        - \b GPIO_PIN14
 //!        - \b GPIO_PIN15
-//!
-//! Modified bits of \b PxOUT register.
 //!
 //! \return None
 //
@@ -998,7 +1002,11 @@ extern void GPIO_setDriveStrengthHigh(uint_fast8_t selectedPort,
 //*****************************************************************************
 extern void GPIO_setDriveStrengthLow(uint_fast8_t selectedPort,
         uint_fast8_t selectedPins);
-
+        
+/* Backwards Compatibility Layer */
+#define  GPIO_selectInterruptEdge       GPIO_interruptEdgeSelect
+#define  GPIO_clearInterrupt            GPIO_clearInterruptFlag
+  
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
