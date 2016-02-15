@@ -145,7 +145,7 @@ void HardwareSerial::begin(unsigned long baud)
 	delay(10);
 
 	*(&(UCAxCTL1) + uartOffset) = UCSWRST;
-	*(&(UCAxCTL1) + uartOffset) = UCSSEL_2;                                // SMCLK
+	*(&(UCAxCTL1) + uartOffset) |= UCSSEL_2;                                // SMCLK
 	*(&(UCAxCTL0) + uartOffset) = 0;
 	*(&(UCAxABCTL) + uartOffset) = 0;
 #if defined(__MSP430_HAS_EUSCI_A0__) || defined(__MSP430_HAS_EUSCI_A1__)
