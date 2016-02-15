@@ -31,89 +31,37 @@ package cc.arduino.packages.discoverers;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
-import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
-import cc.arduino.packages.discoverers.network.NetworkChecker;
-import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
-import processing.app.zeroconf.jmdns.ArduinoDNSTaskStarter;
 
 import javax.jmdns.*;
-import javax.jmdns.impl.DNSTaskStarter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
 
-public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.packages.discoverers.network.NetworkTopologyListener {
+import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
+
+public class NetworkDiscovery implements Discovery, ServiceListener {
 
   private static final int MAX_TIME_AWAITING_FOR_PACKAGES = 5000;
 
-  private final List<BoardPort> boardPortsDiscoveredWithJmDNS;
-  private final Map<InetAddress, JmDNS> mappedJmDNSs;
-  private Timer networkCheckerTimer;
-  private Timer boardReachabilityFilterTimer;
-  private final List<BoardPort> reachableBoardPorts;
+  private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
+  private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
+  private final Timer reachabilityTimer = new Timer();
 
-  public NetworkDiscovery() {
-    DNSTaskStarter.Factory.setClassDelegate(new ArduinoDNSTaskStarter());
-    this.boardPortsDiscoveredWithJmDNS = new LinkedList<>();
-    this.mappedJmDNSs = new Hashtable<>();
-    this.reachableBoardPorts = new LinkedList<>();
-  }
-
-  @Override
-  public List<BoardPort> listDiscoveredBoards() {
-    synchronized (reachableBoardPorts) {
-      return new LinkedList<>(reachableBoardPorts);
-    }
-  }
-
-  @Override
-  public List<BoardPort> listDiscoveredBoards(boolean complete) {
-    synchronized (reachableBoardPorts) {
-      return new LinkedList<>(reachableBoardPorts);
-    }
-  }
-
-  public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
-    synchronized (reachableBoardPorts) {
-      this.reachableBoardPorts.clear();
-      this.reachableBoardPorts.addAll(newReachableBoardPorts);
-    }
-  }
-
-  public List<BoardPort> getBoardPortsDiscoveredWithJmDNS() {
+  private void removeDuplicateBoards(BoardPort newBoard) {
     synchronized (boardPortsDiscoveredWithJmDNS) {
-      return new LinkedList<>(boardPortsDiscoveredWithJmDNS);
+      Iterator<BoardPort> iterator = boardPortsDiscoveredWithJmDNS.iterator();
+      while (iterator.hasNext()) {
+        BoardPort board = iterator.next();
+        if (newBoard.getAddress().equals(board.getAddress())) {
+          iterator.remove();
+        }
+      }
     }
-  }
-
-  @Override
-  public void start() throws IOException {
-    this.networkCheckerTimer = new Timer(NetworkChecker.class.getName());
-    new NetworkChecker(this, NetworkTopologyDiscovery.Factory.getInstance()).start(networkCheckerTimer);
-    this.boardReachabilityFilterTimer = new Timer(BoardReachabilityFilter.class.getName());
-    new BoardReachabilityFilter(this).start(boardReachabilityFilterTimer);
-  }
-
-  @Override
-  public void stop() throws IOException {
-    this.networkCheckerTimer.purge();
-    this.boardReachabilityFilterTimer.purge();
-    // we don't close each JmDNS instance as it's too slow
   }
 
   @Override
   public void serviceAdded(ServiceEvent serviceEvent) {
-    String type = serviceEvent.getType();
-    String name = serviceEvent.getName();
-
-    JmDNS dns = serviceEvent.getDNS();
-
-    dns.requestServiceInfo(type, name);
-    ServiceInfo serviceInfo = dns.getServiceInfo(type, name);
-    if (serviceInfo != null) {
-      dns.requestServiceInfo(type, name);
-    }
   }
 
   @Override
@@ -126,11 +74,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
 
   @Override
   public void serviceResolved(ServiceEvent serviceEvent) {
-    int sleptFor = 0;
-    while (BaseNoGui.packages == null && sleptFor <= MAX_TIME_AWAITING_FOR_PACKAGES) {
+    while (BaseNoGui.packages == null) {
       try {
         Thread.sleep(1000);
-        sleptFor += 1000;
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -151,7 +97,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
         port.getPrefs().put("board", board);
         port.getPrefs().put("distro_version", info.getPropertyString("distro_version"));
         port.getPrefs().put("port", "" + info.getPort());
-        
+
         //Add additional fields to permit generic ota updates
         //and make sure we do not intefere with Arduino boards
         // define "ssh_upload=no" TXT property to use generic uploader
@@ -190,35 +136,50 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
     }
   }
 
-  private void removeDuplicateBoards(BoardPort newBoard) {
-    synchronized (boardPortsDiscoveredWithJmDNS) {
-      Iterator<BoardPort> iterator = boardPortsDiscoveredWithJmDNS.iterator();
-      while (iterator.hasNext()) {
-        BoardPort board = iterator.next();
-        if (newBoard.getAddress().equals(board.getAddress())) {
-          iterator.remove();
-        }
-      }
-    }
-  }
-
-  @Override
-  public void inetAddressAdded(InetAddress address) {
-    if (mappedJmDNSs.containsKey(address)) {
-      return;
-    }
+  public NetworkDiscovery() {
+    final JmDNS jmdns;
     try {
-      JmDNS jmDNS = JmDNS.create(address);
-      jmDNS.addServiceListener("_arduino._tcp.local.", this);
-      mappedJmDNSs.put(address, jmDNS);
-    } catch (Exception e) {
+      jmdns = JmDNS.create();
+      jmdns.addServiceListener("_arduino._tcp.local.", this);
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   @Override
-  public void inetAddressRemoved(InetAddress address) {
-    JmDNS jmDNS = mappedJmDNSs.remove(address);
-    IOUtils.closeQuietly(jmDNS);
+  public void start() {
+    new BoardReachabilityFilter(this).start(reachabilityTimer);
+  }
+
+  @Override
+  public void stop() {
+    reachabilityTimer.cancel();
+  }
+
+  @Override
+  public List<BoardPort> listDiscoveredBoards() {
+      synchronized (reachableBoardPorts) {
+      return new LinkedList<>(reachableBoardPorts);
+    }
+  }
+
+  @Override
+  public List<BoardPort> listDiscoveredBoards(boolean complete) {
+    synchronized (reachableBoardPorts) {
+      return new LinkedList<>(reachableBoardPorts);
+    }
+  }
+
+  public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
+    synchronized (reachableBoardPorts) {
+      this.reachableBoardPorts.clear();
+      this.reachableBoardPorts.addAll(newReachableBoardPorts);
+    }
+  }
+
+  public List<BoardPort> getBoardPortsDiscoveredWithJmDNS() {
+    synchronized (boardPortsDiscoveredWithJmDNS) {
+      return new LinkedList<>(boardPortsDiscoveredWithJmDNS);
+    }
   }
 }
