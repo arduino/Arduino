@@ -34,23 +34,28 @@ import cc.arduino.packages.discoverers.NetworkDiscovery;
 import processing.app.helpers.NetUtils;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.net.UnknownHostException;
 import java.util.*;
 
 public class BoardReachabilityFilter extends TimerTask {
 
   private final NetworkDiscovery networkDiscovery;
+  private Enumeration<NetworkInterface> staticNetworkInterfaces;
+  private final List<String> staticNetworkInterfacesList = new LinkedList<>();
 
   public BoardReachabilityFilter(NetworkDiscovery networkDiscovery) {
     this.networkDiscovery = networkDiscovery;
   }
 
   public void start(Timer timer) {
-    timer.schedule(this, 0, 3000);
+    timer.schedule(this, 0, 5000);
   }
 
   @Override
   public void run() {
+
     List<BoardPort> boardPorts = networkDiscovery.getBoardPortsDiscoveredWithJmDNS();
 
     Iterator<BoardPort> boardPortIterator = boardPorts.iterator();
