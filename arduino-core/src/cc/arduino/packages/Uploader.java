@@ -85,7 +85,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   private void init(boolean nup) {
-    this.error = null;
+    this.error = "";
     this.notFoundError = false;
     this.noUploadPort = nup;
   }
