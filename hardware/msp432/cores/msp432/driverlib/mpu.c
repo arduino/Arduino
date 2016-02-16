@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ void MPU_enableModule(uint32_t mpuConfig)
     // Set the MPU control bits according to the flags passed by the user,
     // and also set the enable bit.
     //
-    MPU->CTRL = mpuConfig | MPU_CTRL_ENABLE;
+    MPU->CTRL = mpuConfig | MPU_CTRL_ENABLE_Msk;
 }
 
 void MPU_disableModule(void)
@@ -57,7 +57,7 @@ void MPU_disableModule(void)
     //
     // Turn off the MPU enable bit.
     //
-    MPU->CTRL &= ~MPU_CTRL_ENABLE;
+    MPU->CTRL &= ~MPU_CTRL_ENABLE_Msk;
 
 }
 
@@ -67,7 +67,7 @@ uint32_t MPU_getRegionCount(void)
     // Read the DREGION field of the MPU type register and mask off
     // the bits of interest to get the count of regions.
     //
-    return ((MPU->TYPE & MPU_TYPE_DREGION_M) >> NVIC_MPU_TYPE_DREGION_S);
+    return ((MPU->TYPE & MPU_TYPE_DREGION_Msk) >> NVIC_MPU_TYPE_DREGION_S);
 }
 
 void MPU_enableRegion(uint32_t region)
@@ -85,7 +85,7 @@ void MPU_enableRegion(uint32_t region)
     //
     // Modify the enable bit in the region attributes.
     //
-    MPU->RASR |= MPU_RASR_ENABLE;
+    MPU->RASR |= MPU_RASR_ENABLE_Msk;
 }
 
 void MPU_disableRegion(uint32_t region)
@@ -103,7 +103,7 @@ void MPU_disableRegion(uint32_t region)
     //
     // Modify the enable bit in the region attributes.
     //
-    MPU->RASR &= ~MPU_RASR_ENABLE;
+    MPU->RASR &= ~MPU_RASR_ENABLE_Msk;
 }
 
 void MPU_setRegion(uint32_t region, uint32_t addr, uint32_t flags)
@@ -117,15 +117,15 @@ void MPU_setRegion(uint32_t region, uint32_t addr, uint32_t flags)
     // Program the base address, use the region field to select the
     // region at the same time.
     //
-    MPU->RBAR = addr | region | MPU_RBAR_VALID;
+    MPU->RBAR = addr | region | MPU_RBAR_VALID_Msk;
 
     //
     // Program the region attributes.  Set the TEX field and the S, C,
     // and B bits to fixed values that are suitable for all Stellaris
     // memory.
     //
-    MPU->RASR = (flags & ~(MPU_RASR_TEX_M | MPU_RASR_C)) | MPU_RASR_S
-            | MPU_RASR_B;
+    MPU->RASR = (flags & ~(MPU_RASR_TEX_Msk | MPU_RASR_C_Msk)) | MPU_RASR_S_Msk
+            | MPU_RASR_B_Msk;
 }
 
 void MPU_getRegion(uint32_t region, uint32_t *addr, uint32_t *pflags)
@@ -145,7 +145,7 @@ void MPU_getRegion(uint32_t region, uint32_t *addr, uint32_t *pflags)
     //
     // Read and store the base address for the region.
     //
-    *addr = MPU->RBAR & MPU_RBAR_ADDR_M;
+    *addr = MPU->RBAR & MPU_RBAR_ADDR_Msk;
 
     //
     // Read and store the region attributes.

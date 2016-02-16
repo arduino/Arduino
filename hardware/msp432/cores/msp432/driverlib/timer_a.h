@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,14 +63,14 @@ extern "C"
 // Timer_A Specific Parameters
 //
 //*****************************************************************************
-#define TIMER_A_CMSIS(x) ((TIMER_A0_Type *) x)
+#define TIMER_A_CMSIS(x) ((Timer_A_Type *) x)
 
 #define TIMER_A_CCR0_INTERRUPT              0x00
 #define TIMER_A_CCRX_AND_OVERFLOW_INTERRUPT 0x01
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_ContinuousModeConfig
+//!     ypedef Timer_A_ContinuousModeConfig
 //! \brief Type definition for \link _Timer_A_ContinuousModeConfig \endlink
 //!     structure
 //!
@@ -90,7 +90,7 @@ typedef struct _Timer_A_ContinuousModeConfig
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_UpModeConfig
+//!     ypedef Timer_A_UpModeConfig
 //! \brief Type definition for \link _Timer_A_UpModeConfig \endlink
 //!     structure
 //!
@@ -112,7 +112,7 @@ typedef struct _Timer_A_UpModeConfig
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_UpDownModeConfig
+//!     ypedef Timer_A_UpDownModeConfig
 //! \brief Type definition for \link _Timer_A_UpDownModeConfig \endlink
 //!     structure
 //!
@@ -134,7 +134,7 @@ typedef struct _Timer_A_UpDownModeConfig
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_CaptureModeConfig
+//!     ypedef Timer_A_CaptureModeConfig
 //! \brief Type definition for \link _Timer_A_CaptureModeConfig \endlink
 //!     structure
 //!
@@ -156,7 +156,7 @@ typedef struct _Timer_A_CaptureModeConfig
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_CompareModeConfig
+//!     ypedef Timer_A_CompareModeConfig
 //! \brief Type definition for \link _Timer_A_CompareModeConfig \endlink
 //!     structure
 //!
@@ -176,7 +176,7 @@ typedef struct _Timer_A_CompareModeConfig
 
 //*****************************************************************************
 //
-//! \typedef Timer_A_PWMConfig
+//!     ypedef Timer_A_PWMConfig
 //! \brief Type definition for \link _Timer_A_PWMConfig \endlink
 //!     structure
 //!
@@ -237,17 +237,17 @@ typedef struct _Timer_A_PWMConfig
 // The following are values that can be passed to the timerMode parameter
 //
 //*****************************************************************************
-#define TIMER_A_STOP_MODE                                                  MC_0
-#define TIMER_A_UP_MODE                                                    MC_1
-#define TIMER_A_CONTINUOUS_MODE                                            MC_2
-#define TIMER_A_UPDOWN_MODE                                                MC_3
+#define TIMER_A_STOP_MODE                                                  TIMER_A_CTL_MC_0
+#define TIMER_A_UP_MODE                                                    TIMER_A_CTL_MC_1
+#define TIMER_A_CONTINUOUS_MODE                                            TIMER_A_CTL_MC_2
+#define TIMER_A_UPDOWN_MODE                                                TIMER_A_CTL_MC_3
 
 //*****************************************************************************
 //
 // The following are values that can be passed to the timerClear parameter
 //
 //*****************************************************************************
-#define TIMER_A_DO_CLEAR                                                  TACLR
+#define TIMER_A_DO_CLEAR                                                  TIMER_A_CTL_CLR
 #define TIMER_A_SKIP_CLEAR                                                 0x00
 
 //*****************************************************************************
@@ -255,10 +255,10 @@ typedef struct _Timer_A_PWMConfig
 // The following are values that can be passed to the clockSource parameter
 //
 //*****************************************************************************
-#define TIMER_A_CLOCKSOURCE_EXTERNAL_TXCLK                        TASSEL__TACLK
-#define TIMER_A_CLOCKSOURCE_ACLK                                   TASSEL__ACLK
-#define TIMER_A_CLOCKSOURCE_SMCLK                                 TASSEL__SMCLK
-#define TIMER_A_CLOCKSOURCE_INVERTED_EXTERNAL_TXCLK               TASSEL__INCLK
+#define TIMER_A_CLOCKSOURCE_EXTERNAL_TXCLK                        TIMER_A_CTL_SSEL__TACLK
+#define TIMER_A_CLOCKSOURCE_ACLK                                  TIMER_A_CTL_SSEL__ACLK
+#define TIMER_A_CLOCKSOURCE_SMCLK                                 TIMER_A_CTL_SSEL__SMCLK
+#define TIMER_A_CLOCKSOURCE_INVERTED_EXTERNAL_TXCLK               TIMER_A_CTL_SSEL__INCLK
 
 //*****************************************************************************
 //
@@ -266,7 +266,7 @@ typedef struct _Timer_A_PWMConfig
 // parameter
 //
 //*****************************************************************************
-#define TIMER_A_TAIE_INTERRUPT_ENABLE                                      TAIE
+#define TIMER_A_TAIE_INTERRUPT_ENABLE                                      TIMER_A_CTL_IE
 #define TIMER_A_TAIE_INTERRUPT_DISABLE                                     0x00
 
 //*****************************************************************************
@@ -275,7 +275,7 @@ typedef struct _Timer_A_PWMConfig
 // captureCompareInterruptEnable_CCR0_CCIE parameter
 //
 //*****************************************************************************
-#define TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE                                 CCIE
+#define TIMER_A_CCIE_CCR0_INTERRUPT_ENABLE                                 TIMER_A_CCTLN_CCIE
 #define TIMER_A_CCIE_CCR0_INTERRUPT_DISABLE                                0x00
 
 //*****************************************************************************
@@ -285,7 +285,7 @@ typedef struct _Timer_A_PWMConfig
 //
 //*****************************************************************************
 #define TIMER_A_CAPTURECOMPARE_INTERRUPT_DISABLE                           0x00
-#define TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE                            CCIE
+#define TIMER_A_CAPTURECOMPARE_INTERRUPT_ENABLE                            TIMER_A_CCTLN_CCIE
 
 //*****************************************************************************
 //
@@ -293,10 +293,10 @@ typedef struct _Timer_A_PWMConfig
 // parameter
 //
 //*****************************************************************************
-#define TIMER_A_CAPTURE_INPUTSELECT_CCIxA                                CCIS_0
-#define TIMER_A_CAPTURE_INPUTSELECT_CCIxB                                CCIS_1
-#define TIMER_A_CAPTURE_INPUTSELECT_GND                                  CCIS_2
-#define TIMER_A_CAPTURE_INPUTSELECT_Vcc                                  CCIS_3
+#define TIMER_A_CAPTURE_INPUTSELECT_CCIxA                                TIMER_A_CCTLN_CCIS_0
+#define TIMER_A_CAPTURE_INPUTSELECT_CCIxB                                TIMER_A_CCTLN_CCIS_1
+#define TIMER_A_CAPTURE_INPUTSELECT_GND                                  TIMER_A_CCTLN_CCIS_2
+#define TIMER_A_CAPTURE_INPUTSELECT_Vcc                                  TIMER_A_CCTLN_CCIS_3
 
 //*****************************************************************************
 //
@@ -304,14 +304,14 @@ typedef struct _Timer_A_PWMConfig
 // parameter
 //
 //*****************************************************************************
-#define TIMER_A_OUTPUTMODE_OUTBITVALUE                                 OUTMOD_0
-#define TIMER_A_OUTPUTMODE_SET                                         OUTMOD_1
-#define TIMER_A_OUTPUTMODE_TOGGLE_RESET                                OUTMOD_2
-#define TIMER_A_OUTPUTMODE_SET_RESET                                   OUTMOD_3
-#define TIMER_A_OUTPUTMODE_TOGGLE                                      OUTMOD_4
-#define TIMER_A_OUTPUTMODE_RESET                                       OUTMOD_5
-#define TIMER_A_OUTPUTMODE_TOGGLE_SET                                  OUTMOD_6
-#define TIMER_A_OUTPUTMODE_RESET_SET                                   OUTMOD_7
+#define TIMER_A_OUTPUTMODE_OUTBITVALUE                                 TIMER_A_CCTLN_OUTMOD_0
+#define TIMER_A_OUTPUTMODE_SET                                         TIMER_A_CCTLN_OUTMOD_1
+#define TIMER_A_OUTPUTMODE_TOGGLE_RESET                                TIMER_A_CCTLN_OUTMOD_2
+#define TIMER_A_OUTPUTMODE_SET_RESET                                   TIMER_A_CCTLN_OUTMOD_3
+#define TIMER_A_OUTPUTMODE_TOGGLE                                      TIMER_A_CCTLN_OUTMOD_4
+#define TIMER_A_OUTPUTMODE_RESET                                       TIMER_A_CCTLN_OUTMOD_5
+#define TIMER_A_OUTPUTMODE_TOGGLE_SET                                  TIMER_A_CCTLN_OUTMOD_6
+#define TIMER_A_OUTPUTMODE_RESET_SET                                   TIMER_A_CCTLN_OUTMOD_7
 
 //*****************************************************************************
 //
@@ -331,10 +331,10 @@ typedef struct _Timer_A_PWMConfig
 // The following are values that can be passed to the captureMode parameter
 //
 //*****************************************************************************
-#define TIMER_A_CAPTUREMODE_NO_CAPTURE                                     CM_0
-#define TIMER_A_CAPTUREMODE_RISING_EDGE                                    CM_1
-#define TIMER_A_CAPTUREMODE_FALLING_EDGE                                   CM_2
-#define TIMER_A_CAPTUREMODE_RISING_AND_FALLING_EDGE                        CM_3
+#define TIMER_A_CAPTUREMODE_NO_CAPTURE                                     TIMER_A_CCTLN_CM_0
+#define TIMER_A_CAPTUREMODE_RISING_EDGE                                    TIMER_A_CCTLN_CM_1
+#define TIMER_A_CAPTUREMODE_FALLING_EDGE                                   TIMER_A_CCTLN_CM_2
+#define TIMER_A_CAPTUREMODE_RISING_AND_FALLING_EDGE                        TIMER_A_CCTLN_CM_3
 
 //*****************************************************************************
 //
@@ -343,23 +343,23 @@ typedef struct _Timer_A_PWMConfig
 //
 //*****************************************************************************
 #define TIMER_A_CAPTURE_ASYNCHRONOUS                                       0x00
-#define TIMER_A_CAPTURE_SYNCHRONOUS                                         SCS
+#define TIMER_A_CAPTURE_SYNCHRONOUS                                        TIMER_A_CCTLN_SCS
 
 //*****************************************************************************
 //
 // The following are values that can be passed to the mask parameter
 //
 //*****************************************************************************
-#define TIMER_A_CAPTURE_OVERFLOW                                            COV
-#define TIMER_A_CAPTURECOMPARE_INTERRUPT_FLAG                             CCIFG
+#define TIMER_A_CAPTURE_OVERFLOW                                          TIMER_A_CCTLN_COV
+#define TIMER_A_CAPTURECOMPARE_INTERRUPT_FLAG                             TIMER_A_CCTLN_CCIFG
 
 //*****************************************************************************
 //
 // The following are values that can be passed to the synchronized parameter
 //
 //*****************************************************************************
-#define TIMER_A_READ_SYNCHRONIZED_CAPTURECOMPAREINPUT                      SCCI
-#define TIMER_A_READ_CAPTURE_COMPARE_INPUT                                  CCI
+#define TIMER_A_READ_SYNCHRONIZED_CAPTURECOMPAREINPUT                      TIMER_A_CCTLN_SCCI
+#define TIMER_A_READ_CAPTURE_COMPARE_INPUT                                 TIMER_A_CCTLN_CCI
 
 
 #define TIMER_A_CAPTURECOMPARE_INPUT_HIGH                                  0x01
@@ -371,7 +371,7 @@ typedef struct _Timer_A_PWMConfig
 // parameter
 //
 //*****************************************************************************
-#define TIMER_A_OUTPUTMODE_OUTBITVALUE_HIGH                                 OUT
+#define TIMER_A_OUTPUTMODE_OUTBITVALUE_HIGH                                TIMER_A_CCTLN_OUT
 #define TIMER_A_OUTPUTMODE_OUTBITVALUE_LOW                                 0x00
 
 //*****************************************************************************
@@ -400,10 +400,10 @@ typedef struct _Timer_A_PWMConfig
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param timerMode selects Clock source. Valid values are
 //!       - \b TIMER_A_CONTINUOUS_MODE [Default value]
 //!       - \b TIMER_A_UPDOWN_MODE
@@ -424,10 +424,10 @@ extern void Timer_A_startCounter(uint32_t timer, uint_fast16_t timerMode);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A continuous mode
 //!
 //! <hr>
@@ -486,10 +486,10 @@ extern void Timer_A_configureContinuousMode(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A Up mode
 //!
 //! <hr>
@@ -553,10 +553,10 @@ extern void Timer_A_configureUpMode(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A UpDown mode
 //!
 //! <hr>
@@ -620,10 +620,10 @@ extern void Timer_A_configureUpDownMode(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A capture mode
 //!
 //! <hr>
@@ -682,10 +682,10 @@ extern void Timer_A_initCapture(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A compare mode
 //!
 //! <hr>
@@ -730,10 +730,10 @@ extern void Timer_A_initCompare(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \returns None
 //
@@ -746,10 +746,10 @@ extern void Timer_A_clearTimer(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister selects the Capture register being used.
 //!     Valid values are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -780,10 +780,10 @@ extern uint_fast8_t Timer_A_getSynchronizedCaptureCompareInput(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister selects the Capture register being used.
 //!     Valid values are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -809,10 +809,10 @@ extern uint_fast8_t Timer_A_getOutputForOutputModeOutBitValue(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister selects the Capture register being used.
 //!     Valid values are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -837,10 +837,10 @@ extern uint_fast16_t Timer_A_getCaptureCompareCount(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister selects the Capture register being used.
 //!     are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -870,10 +870,10 @@ extern void Timer_A_setOutputForOutputModeOutBitValue(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param config Configuration structure for Timer_A PWM mode
 //!
 //! <hr>
@@ -942,10 +942,10 @@ extern void Timer_A_generatePWM(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \returns None
 //
@@ -958,10 +958,10 @@ extern void Timer_A_stopTimer(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param compareRegister selects the Capture register being used. Valid
 //!     values are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -993,10 +993,10 @@ extern void Timer_A_setCompareValue(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \returns The value of the specified timer
 //
@@ -1009,10 +1009,10 @@ extern uint16_t Timer_A_getCounterValue(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \return None
 //
@@ -1025,10 +1025,10 @@ extern void Timer_A_clearInterruptFlag(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister selects the Capture-compare register being
 //! used. Valid values are
 //!   - \b TIMER_A_CAPTURECOMPARE_REGISTER_0
@@ -1053,10 +1053,10 @@ extern void Timer_A_clearCaptureCompareInterrupt(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \return None
 //
@@ -1069,10 +1069,10 @@ extern void Timer_A_enableInterrupt(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \return None
 //
@@ -1085,10 +1085,10 @@ extern void Timer_A_disableInterrupt(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \return uint32_t. Return interrupt status. Valid values are
 //!       - \b TIMER_A_INTERRUPT_PENDING
@@ -1106,10 +1106,10 @@ extern uint32_t Timer_A_getInterruptStatus(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \return uint32_t. Return interrupt status. Valid values are
 //!       - \b TIMER_A_INTERRUPT_PENDING
@@ -1124,10 +1124,10 @@ extern uint32_t Timer_A_getEnabledInterruptStatus(uint32_t timer);
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister is the selected capture compare register
 //!
 //! \return None
@@ -1142,10 +1142,10 @@ extern void Timer_A_enableCaptureCompareInterrupt(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister is the selected capture compare register
 //!
 //! \return None
@@ -1160,10 +1160,10 @@ extern void Timer_A_disableCaptureCompareInterrupt(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister is the selected capture compare register
 //!
 //! \param mask is the mask for the interrupt status
@@ -1177,7 +1177,7 @@ extern void Timer_A_disableCaptureCompareInterrupt(uint32_t timer,
 //!       - \b TIMER_A_CAPTURECOMPARE_INTERRUPT_FLAG
 //
 //*****************************************************************************
-uint32_t Timer_A_getCaptureCompareInterruptStatus(uint32_t timer,
+extern uint32_t Timer_A_getCaptureCompareInterruptStatus(uint32_t timer,
         uint_fast16_t captureCompareRegister, uint_fast16_t mask);
 
 //*****************************************************************************
@@ -1189,10 +1189,10 @@ uint32_t Timer_A_getCaptureCompareInterruptStatus(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //! \param captureCompareRegister is the selected capture compare register
 //!
 //! \returns uint32_t. The mask of the set flags.
@@ -1210,10 +1210,10 @@ extern uint32_t Timer_A_getCaptureCompareEnabledInterruptStatus(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \param interruptSelect Selects which timer interrupt handler to
 //! register. For the timer module, there are two separate interrupt handlers
@@ -1244,10 +1244,10 @@ extern void Timer_A_registerInterrupt(uint32_t timer,
 //!
 //! \param timer is the instance of the Timer_A module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b TIMER_A0_MODULE
-//!         - \b TIMER_A1_MODULE
-//!         - \b TIMER_A2_MODULE
-//!         - \b TIMER_A3_MODULE
+//!         - \b TIMER_A0_BASE
+//!         - \b TIMER_A1_BASE
+//!         - \b TIMER_A2_BASE
+//!         - \b TIMER_A3_BASE
 //!
 //! \param interruptSelect Selects which timer interrupt handler to
 //! register. For the timer module, there are two separate interrupt handlers
@@ -1270,22 +1270,15 @@ extern void Timer_A_unregisterInterrupt(uint32_t timer,
         uint_fast8_t interruptSelect);
 
 /* Backwards Compatibility Layer */
-#define TIMER_A_startCounter Timer_A_startCounter
-#define TIMER_A_clearTimerInterruptFlag Timer_A_clearInterruptFlag
-#define TIMER_A_clearCaptureCompareInterruptFlag Timer_A_clearCaptureCompareInterrupt
-#define TIMER_A_getCounterValue Timer_A_getCounterValue
-#define TIMER_A_setCompareValue Timer_A_setCompareValue
-#define TIMER_A_stop Timer_A_stopTimer
-#define TIMER_A_setOutputForOutputModeOutBitValue Timer_A_setOutputForOutputModeOutBitValue
-#define TIMER_A_enableInterrupt Timer_A_enableInterrupt
-#define TIMER_A_disableInterrupt Timer_A_disableInterrupt
-#define TIMER_A_getInterruptStatus Timer_A_getInterruptStatus
-#define TIMER_A_enableCaptureCompareInterrupt Timer_A_enableCaptureCompareInterrupt
-#define TIMER_A_disableCaptureCompareInterrupt Timer_A_disableCaptureCompareInterrupt
-#define TIMER_A_getCaptureCompareInterruptStatus Timer_A_getCaptureCompareInterruptStatus
-#define TIMER_A_clear Timer_A_clearTimer
-#define TIMER_A_getSynchronizedCaptureCompareInput Timer_A_getSynchronizedCaptureCompareInput
-#define TIMER_A_getCaptureCompareCount  Timer_A_getCaptureCompareCount
+#define Timer_A_clearTimerInterrupt Timer_A_clearInterruptFlag
+#define Timer_A_clear Timer_A_clearTimer
+#define Timer_A_initCaptureMode Timer_A_initCapture
+#define Timer_A_initCompareMode Timer_A_initCompare
+#define Timer_A_initContinuousMode Timer_A_configureContinuousMode
+#define Timer_A_initUpDownMode Timer_A_configureUpDownMode
+#define Timer_A_initUpMode Timer_A_configureUpMode
+#define Timer_A_outputPWM Timer_A_generatePWM
+#define Timer_A_stop Timer_A_stopTimer
 
 //*****************************************************************************
 //

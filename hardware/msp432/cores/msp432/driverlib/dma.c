@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ void DMA_enableModule(void)
     //
     // Set the master enable bit in the config register.
     //
-    DMA->rCFG.r = DMA_CFG_;
+	DMA_Control->CFG = DMA_CFG_MASTEN;
 }
 
 void DMA_disableModule(void)
@@ -53,7 +53,7 @@ void DMA_disableModule(void)
     //
     // Clear the master enable bit in the config register.
     //
-    DMA->rCFG.r = 0;
+	DMA_Control->CFG = 0;
 }
 
 uint32_t DMA_getErrorStatus(void)
@@ -61,7 +61,7 @@ uint32_t DMA_getErrorStatus(void)
     //
     // Return the DMA error status.
     //
-    return DMA->rERRCLR.r;
+    return DMA_Control->ERRCLR;
 }
 
 void DMA_clearErrorStatus(void)
@@ -69,7 +69,7 @@ void DMA_clearErrorStatus(void)
     //
     // Clear the DMA error interrupt.
     //
-    DMA->rERRCLR.r = 1;
+	DMA_Control->ERRCLR = 1;
 }
 
 void DMA_enableChannel(uint32_t channelNum)
@@ -82,7 +82,7 @@ void DMA_enableChannel(uint32_t channelNum)
     //
     // Set the bit for this channel in the enable set register.
     //
-    DMA->rENASET = 1 << (channelNum & 0x0F);
+    DMA_Control->ENASET = 1 << (channelNum & 0x0F);
 }
 
 void DMA_disableChannel(uint32_t channelNum)
@@ -95,7 +95,7 @@ void DMA_disableChannel(uint32_t channelNum)
     //
     // Set the bit for this channel in the enable clear register.
     //
-    DMA->rENACLR = 1 << (channelNum & 0x0F);
+    DMA_Control->ENACLR = 1 << (channelNum & 0x0F);
 }
 
 bool DMA_isChannelEnabled(uint32_t channelNum)
@@ -109,7 +109,7 @@ bool DMA_isChannelEnabled(uint32_t channelNum)
     // AND the specified channel bit with the enable register and return the
     // result.
     //
-    return ((DMA->rENASET & (1 << (channelNum & 0x0F))) ? true : false);
+    return ((DMA_Control->ENASET & (1 << (channelNum & 0x0F))) ? true : false);
 }
 
 void DMA_setControlBase(void *controlTable)
@@ -123,7 +123,7 @@ void DMA_setControlBase(void *controlTable)
     //
     // Program the base address into the register.
     //
-    DMA->rCTLBASE.r = (uint32_t) controlTable;
+    DMA_Control->CTLBASE = (uint32_t) controlTable;
 }
 
 void* DMA_getControlBase(void)
@@ -132,7 +132,7 @@ void* DMA_getControlBase(void)
     // Read the current value of the control base register and return it to
     // the caller.
     //
-    return ((void *) DMA->rCTLBASE.r);
+    return ((void *) DMA_Control->CTLBASE);
 }
 
 void* DMA_getControlAlternateBase(void)
@@ -141,7 +141,7 @@ void* DMA_getControlAlternateBase(void)
     // Read the current value of the control base register and return it to
     // the caller.
     //
-    return ((void *) DMA->rATLBASE);
+    return ((void *) DMA_Control->ATLBASE);
 }
 
 void DMA_requestChannel(uint32_t channelNum)
@@ -154,7 +154,7 @@ void DMA_requestChannel(uint32_t channelNum)
     //
     // Set the bit for this channel in the software DMA request register.
     //
-    DMA->rSWREQ = 1 << (channelNum & 0x0F);
+    DMA_Control->SWREQ = 1 << (channelNum & 0x0F);
 }
 
 void DMA_enableChannelAttribute(uint32_t channelNum, uint32_t attr)
@@ -181,7 +181,7 @@ void DMA_enableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_USEBURST)
     {
-        DMA->rUSEBURSTSET = 1 << channelNum;
+    	DMA_Control->USEBURSTSET = 1 << channelNum;
     }
 
     //
@@ -190,7 +190,7 @@ void DMA_enableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_ALTSELECT)
     {
-        DMA->rALTSET = 1 << channelNum;
+    	DMA_Control->ALTSET = 1 << channelNum;
     }
 
     //
@@ -198,7 +198,7 @@ void DMA_enableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_HIGH_PRIORITY)
     {
-        DMA->rPRIOSET = 1 << channelNum;
+    	DMA_Control->PRIOSET = 1 << channelNum;
     }
 
     //
@@ -206,7 +206,7 @@ void DMA_enableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_REQMASK)
     {
-        DMA->rREQMASKSET = 1 << channelNum;
+    	DMA_Control->REQMASKSET = 1 << channelNum;
     }
 }
 
@@ -234,7 +234,7 @@ void DMA_disableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_USEBURST)
     {
-        DMA->rUSEBURSTCLR = 1 << channelNum;
+    	DMA_Control->USEBURSTCLR = 1 << channelNum;
     }
 
     //
@@ -243,7 +243,7 @@ void DMA_disableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_ALTSELECT)
     {
-        DMA->rALTCLR = 1 << channelNum;
+    	DMA_Control->ALTCLR = 1 << channelNum;
     }
 
     //
@@ -251,7 +251,7 @@ void DMA_disableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_HIGH_PRIORITY)
     {
-        DMA->rPRIOCLR = 1 << channelNum;
+    	DMA_Control->PRIOCLR = 1 << channelNum;
     }
 
     //
@@ -259,7 +259,7 @@ void DMA_disableChannelAttribute(uint32_t channelNum, uint32_t attr)
     //
     if (attr & UDMA_ATTR_REQMASK)
     {
-        DMA->rREQMASKCLR = 1 << channelNum;
+    	DMA_Control->REQMASKCLR = 1 << channelNum;
     }
 }
 
@@ -282,7 +282,7 @@ uint32_t DMA_getChannelAttribute(uint32_t channelNum)
     //
     // Check to see if useburst bit is set for this channel.
     //
-    if (DMA->rUSEBURSTSET & (1 << channelNum))
+    if (DMA_Control->USEBURSTSET & (1 << channelNum))
     {
         attr |= UDMA_ATTR_USEBURST;
     }
@@ -290,7 +290,7 @@ uint32_t DMA_getChannelAttribute(uint32_t channelNum)
     //
     // Check to see if the alternate control bit is set for this channel.
     //
-    if (DMA->rALTSET & (1 << channelNum))
+    if (DMA_Control->ALTSET & (1 << channelNum))
     {
         attr |= UDMA_ATTR_ALTSELECT;
     }
@@ -298,7 +298,7 @@ uint32_t DMA_getChannelAttribute(uint32_t channelNum)
     //
     // Check to see if the high priority bit is set for this channel.
     //
-    if (DMA->rPRIOSET & (1 << channelNum))
+    if (DMA_Control->PRIOSET & (1 << channelNum))
     {
         attr |= UDMA_ATTR_HIGH_PRIORITY;
     }
@@ -306,7 +306,7 @@ uint32_t DMA_getChannelAttribute(uint32_t channelNum)
     //
     // Check to see if the request mask bit is set for this channel.
     //
-    if (DMA->rREQMASKSET & (1 << channelNum))
+    if (DMA_Control->REQMASKSET & (1 << channelNum))
     {
         attr |= UDMA_ATTR_REQMASK;
     }
@@ -325,7 +325,7 @@ void DMA_setChannelControl(uint32_t channelStructIndex, uint32_t control)
     // Check the arguments.
     //
     ASSERT((channelStructIndex & 0xffff) < 64);
-    ASSERT(DMA->rCTLBASE != 0);
+    ASSERT(DMA_Control->CTLBASE != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
@@ -337,7 +337,7 @@ void DMA_setChannelControl(uint32_t channelStructIndex, uint32_t control)
     //
     // Get the base address of the control table.
     //
-    pCtl = (DMA_ControlTable *) DMA->rCTLBASE.r;
+    pCtl = (DMA_ControlTable *) DMA_Control->CTLBASE;
 
     //
     // Get the current control word value and mask off the fields to be
@@ -361,7 +361,7 @@ void DMA_setChannelTransfer(uint32_t channelStructIndex, uint32_t mode,
     // Check the arguments.
     //
     ASSERT((channelStructIndex & 0xffff) < 64);
-    ASSERT(DMA->rCTLBASE != 0);
+    ASSERT(DMA->CTLBASE != 0);
     ASSERT(mode <= UDMA_MODE_PER_SCATTER_GATHER);
     ASSERT((transferSize != 0) && (transferSize <= 1024));
 
@@ -375,7 +375,7 @@ void DMA_setChannelTransfer(uint32_t channelStructIndex, uint32_t mode,
     //
     // Get the base address of the control table.
     //
-    controlTable = (DMA_ControlTable *) DMA->rCTLBASE.r;
+    controlTable = (DMA_ControlTable *) DMA_Control->CTLBASE;
 
     //
     // Get the current control word value and mask off the mode and size
@@ -481,7 +481,7 @@ void DMA_setChannelScatterGather(uint32_t channelNum, uint32_t taskCount,
     // Check the parameters
     //
     ASSERT((channelNum & 0xffff) < 8);
-    ASSERT(DMA->rCTLBASE != 0);
+    ASSERT(DMA->CTLBASE != 0);
     ASSERT(taskList != 0);
     ASSERT(taskCount <= 1024);
     ASSERT(taskCount != 0);
@@ -496,7 +496,7 @@ void DMA_setChannelScatterGather(uint32_t channelNum, uint32_t taskCount,
     //
     // Get the base address of the control table.
     //
-    controlTable = (DMA_ControlTable *) DMA->rCTLBASE.r;
+    controlTable = (DMA_ControlTable *) DMA_Control->CTLBASE;
 
     //
     // Get a handy pointer to the task list
@@ -537,7 +537,7 @@ void DMA_setChannelScatterGather(uint32_t channelNum, uint32_t taskCount,
     // alt bit here to ensure that it is always cleared before a new SG
     // transfer is started.
     //
-    DMA->rALTCLR = 1 << channelNum;
+    DMA_Control->ALTCLR = 1 << channelNum;
 }
 
 uint32_t DMA_getChannelSize(uint32_t channelStructIndex)
@@ -549,7 +549,7 @@ uint32_t DMA_getChannelSize(uint32_t channelStructIndex)
     // Check the arguments.
     //
     ASSERT((channelStructIndex & 0xffff) < 16);
-    ASSERT(DMA->rCTLBASE != 0);
+    ASSERT(DMA->CTLBASE != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
@@ -561,7 +561,7 @@ uint32_t DMA_getChannelSize(uint32_t channelStructIndex)
     //
     // Get the base address of the control table.
     //
-    controlTable = (DMA_ControlTable *) DMA->rCTLBASE.r;
+    controlTable = (DMA_ControlTable *) DMA_Control->CTLBASE;
 
     //
     // Get the current control word value and mask off all but the size field
@@ -601,7 +601,7 @@ uint32_t DMA_getChannelMode(uint32_t channelStructIndex)
     // Check the arguments.
     //
     ASSERT((channelStructIndex & 0xffff) < 64);
-    ASSERT(DMA->rCTLBASE != 0);
+    ASSERT(DMA->CTLBASE != 0);
 
     //
     // In case a channel selector macro (like UDMA_CH0_USB0EP1RX) was
@@ -613,7 +613,7 @@ uint32_t DMA_getChannelMode(uint32_t channelStructIndex)
     //
     // Get the base address of the control table.
     //
-    controlTable = (DMA_ControlTable *) DMA->rCTLBASE.r;
+    controlTable = (DMA_ControlTable *) DMA_Control->CTLBASE;
 
     //
     // Get the current control word value and mask off all but the mode field.
@@ -649,7 +649,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH0_EUSCIB1TX3:
     case DMA_CH0_TIMERA0CCR0:
     case DMA_CH0_AESTRIGGER0:
-        DMA->rCH0_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[0] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH1_RESERVED0:
     case DMA_CH1_EUSCIA0RX:
@@ -659,7 +659,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH1_EUSCIB1RX3:
     case DMA_CH1_TIMERA0CCR2:
     case DMA_CH1_AESTRIGGER1:
-        DMA->rCH1_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[1] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH2_RESERVED0:
     case DMA_CH2_EUSCIA1TX:
@@ -669,7 +669,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH2_EUSCIB2TX3:
     case DMA_CH2_TIMERA1CCR0:
     case DMA_CH2_AESTRIGGER2:
-        DMA->rCH2_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[2] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH3_RESERVED0:
     case DMA_CH3_EUSCIA1RX:
@@ -679,7 +679,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH3_EUSCIB2RX3:
     case DMA_CH3_TIMERA1CCR2:
     case DMA_CH3_RESERVED1:
-        DMA->rCH3_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[3] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH4_RESERVED0:
     case DMA_CH4_EUSCIA2TX:
@@ -689,7 +689,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH4_EUSCIB3TX3:
     case DMA_CH4_TIMERA2CCR0:
     case DMA_CH4_RESERVED1:
-        DMA->rCH4_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[4] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH5_RESERVED0:
     case DMA_CH5_EUSCIA2RX:
@@ -699,7 +699,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH5_EUSCIB3RX3:
     case DMA_CH5_TIMERA2CCR2:
     case DMA_CH5_RESERVED1:
-        DMA->rCH5_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[5] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH6_RESERVED0:
     case DMA_CH6_EUSCIA3TX:
@@ -709,7 +709,7 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH6_EUSCIB0TX3:
     case DMA_CH6_TIMERA3CCR0:
     case DMA_CH6_EXTERNALPIN:
-        DMA->rCH6_SRCCFG.r = (mapping >> 24) & 0x1F;
+    	DMA_Channel->CH_SRCCFG[6] = (mapping >> 24) & 0x1F;
         break;
     case DMA_CH7_RESERVED0:
     case DMA_CH7_EUSCIA3RX:
@@ -718,8 +718,8 @@ void DMA_assignChannel(uint32_t mapping)
     case DMA_CH7_EUSCIB1RX2:
     case DMA_CH7_EUSCIB0RX3:
     case DMA_CH7_TIMERA3CCR2:
-    case DMA_CH7_ADC12C:
-        DMA->rCH7_SRCCFG.r = (mapping >> 24) & 0x1F;
+    case DMA_CH7_ADC14:
+    	DMA_Channel->CH_SRCCFG[7] = (mapping >> 24) & 0x1F;
         break;
     default:
         ASSERT(false);
@@ -735,16 +735,16 @@ void DMA_assignInterrupt(uint32_t interruptNumber, uint32_t channel)
 
     if (interruptNumber == DMA_INT1)
     {
-        DMA->rINT1_SRCCFG.r = (DMA->rINT1_SRCCFG.r & ~DMA_INT1_SRCCFG_INT_SRC_M)
-                | channel;
+    	DMA_Channel->INT1_SRCCFG = (DMA_Channel->INT1_SRCCFG
+    			& ~DMA_INT1_SRCCFG_INT_SRC_MASK) | channel;
     } else if (interruptNumber == DMA_INT2)
     {
-        DMA->rINT2_SRCCFG.r = (DMA->rINT2_SRCCFG.r & ~DMA_INT1_SRCCFG_INT_SRC_M)
-                | channel;
+    	DMA_Channel->INT2_SRCCFG = (DMA_Channel->INT2_SRCCFG
+    			& ~DMA_INT1_SRCCFG_INT_SRC_MASK) | channel;
     } else if (interruptNumber == DMA_INT3)
     {
-        DMA->rINT3_SRCCFG.r = (DMA->rINT3_SRCCFG.r & ~DMA_INT1_SRCCFG_INT_SRC_M)
-                | channel;
+    	DMA_Channel->INT3_SRCCFG = (DMA_Channel->INT3_SRCCFG
+    			& ~DMA_INT1_SRCCFG_INT_SRC_MASK) | channel;
     }
 
     /* Enabling the assigned interrupt */
@@ -753,17 +753,17 @@ void DMA_assignInterrupt(uint32_t interruptNumber, uint32_t channel)
 
 void DMA_requestSoftwareTransfer(uint32_t channel)
 {
-    DMA->rSW_CHTRIG.r |= (1 << channel);
+	DMA_Channel->SW_CHTRIG |= (1 << channel);
 }
 
 uint32_t DMA_getInterruptStatus(void)
 {
-    return DMA->rINT0_SRCFLG.r;
+    return DMA_Channel->INT0_SRCFLG;
 }
 
 void DMA_clearInterruptFlag(uint32_t channel)
 {
-    DMA->rINT0_CLRFLG.r |= (1 << channel);
+	DMA_Channel->INT0_CLRFLG |= (1 << channel);
 }
 
 void DMA_enableInterrupt(uint32_t interruptNumber)
@@ -775,13 +775,13 @@ void DMA_enableInterrupt(uint32_t interruptNumber)
 
     if (interruptNumber == DMA_INT1)
     {
-        DMA->rINT1_SRCCFG.r |= DMA_INT1_SRCCFG_EN;
+    	DMA_Channel->INT1_SRCCFG |= DMA_INT1_SRCCFG_EN;
     } else if (interruptNumber == DMA_INT2)
     {
-        DMA->rINT2_SRCCFG.r |= DMA_INT2_SRCCFG_EN;
+    	DMA_Channel->INT2_SRCCFG |= DMA_INT2_SRCCFG_EN;
     } else if (interruptNumber == DMA_INT3)
     {
-        DMA->rINT3_SRCCFG.r |= DMA_INT3_SRCCFG_EN;
+    	DMA_Channel->INT3_SRCCFG |= DMA_INT3_SRCCFG_EN;
     }
 
 }
@@ -795,13 +795,13 @@ void DMA_disableInterrupt(uint32_t interruptNumber)
 
     if (interruptNumber == DMA_INT1)
     {
-        DMA->rINT1_SRCCFG.r &= ~DMA_INT1_SRCCFG_EN;
+    	DMA_Channel->INT1_SRCCFG &= ~DMA_INT1_SRCCFG_EN;
     } else if (interruptNumber == DMA_INT2)
     {
-        DMA->rINT2_SRCCFG.r &= ~DMA_INT2_SRCCFG_EN;
+    	DMA_Channel->INT2_SRCCFG &= ~DMA_INT2_SRCCFG_EN;
     } else if (interruptNumber == DMA_INT3)
     {
-        DMA->rINT3_SRCCFG.r &= ~DMA_INT3_SRCCFG_EN;
+    	DMA_Channel->INT3_SRCCFG &= ~DMA_INT3_SRCCFG_EN;
     }
 }
 

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       gpio.h
-*  Revised:        2015-11-19 16:24:40 +0100 (Thu, 19 Nov 2015)
-*  Revision:       45170
+*  Revised:        2015-12-07 16:22:56 +0100 (Mon, 07 Dec 2015)
+*  Revision:       45269
 *
 *  Description:    Defines and prototypes for the GPIO.
 *
@@ -71,12 +71,26 @@ extern "C"
 //
 //*****************************************************************************
 #ifdef DRIVERLIB_DEBUG
+#include <inc/hw_fcfg1.h>
+#include <driverlib/chipinfo.h>
+
 static bool
 dioNumberLegal( uint32_t dioNumber )
 {
-    return ( dioNumber < (( HWREG( FCFG_BASE + FCFG1_O_IOCONF ) &
-        FCFG1_IOCONF_GPIO_CNT_M ) >>
-        FCFG1_IOCONF_GPIO_CNT_S ) );
+    uint32_t ioCount =
+        (( HWREG( FCFG1_BASE + FCFG1_O_IOCONF ) &
+            FCFG1_IOCONF_GPIO_CNT_M ) >>
+            FCFG1_IOCONF_GPIO_CNT_S ) ;
+
+    //
+    // Special handling of CC13xx 7x7, where IO_CNT = 30 and legal range is 1..30
+    // for all other chips legal range is 0..(dioNumber-1)
+    //
+    if (( ioCount == 30 ) && ChipInfo_ChipFamilyIsCC13xx() ) {
+        return (( dioNumber > 0 ) && ( dioNumber <= ioCount ));
+    } else {
+        return ( dioNumber < ioCount );
+    }
 }
 #endif
 

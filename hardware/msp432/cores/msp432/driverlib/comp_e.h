@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,13 +60,13 @@ extern "C"
 #include <msp.h>
 
 /* Module defines for Comp */
-#define COMP_E_CMSIS(x) ((COMP_E0_Type *) x)
+#define COMP_E_CMSIS(x) ((COMP_E_Type *) x)
 
 #define COMP_E_FILTEROUTPUT_OFF                                            0x00
-#define COMP_E_FILTEROUTPUT_DLYLVL1                            (CEF + CEFDLY_0)
-#define COMP_E_FILTEROUTPUT_DLYLVL2                            (CEF + CEFDLY_1)
-#define COMP_E_FILTEROUTPUT_DLYLVL3                            (CEF + CEFDLY_2)
-#define COMP_E_FILTEROUTPUT_DLYLVL4                            (CEF + CEFDLY_3)
+#define COMP_E_FILTEROUTPUT_DLYLVL1         (COMP_E_CTL1_F + COMP_E_CTL1_FDLY_0)
+#define COMP_E_FILTEROUTPUT_DLYLVL2         (COMP_E_CTL1_F + COMP_E_CTL1_FDLY_1)
+#define COMP_E_FILTEROUTPUT_DLYLVL3         (COMP_E_CTL1_F + COMP_E_CTL1_FDLY_2)
+#define COMP_E_FILTEROUTPUT_DLYLVL4         (COMP_E_CTL1_F + COMP_E_CTL1_FDLY_3)
 
 #define COMP_E_INPUT0                                                    (0x01)
 #define COMP_E_INPUT1                                                    (0x02)
@@ -86,38 +86,38 @@ extern "C"
 #define COMP_E_INPUT15                                                 (0x8000)
 #define COMP_E_VREF                                                      (0x9F)
 
-#define COMP_E_NORMALOUTPUTPOLARITY                               (!(CEOUTPOL))
-#define COMP_E_INVERTEDOUTPUTPOLARITY                                (CEOUTPOL)
+#define COMP_E_NORMALOUTPUTPOLARITY                      (!(COMP_E_CTL1_OUTPOL))
+#define COMP_E_INVERTEDOUTPUTPOLARITY                       (COMP_E_CTL1_OUTPOL)
 
-#define COMP_E_REFERENCE_AMPLIFIER_DISABLED                          (CEREFL_0)
-#define COMP_E_VREFBASE1_2V                                          (CEREFL_1)
-#define COMP_E_VREFBASE2_0V                                          (CEREFL_2)
-#define COMP_E_VREFBASE2_5V                                          (CEREFL_3)
+#define COMP_E_REFERENCE_AMPLIFIER_DISABLED               (COMP_E_CTL2_CEREFL_0)
+#define COMP_E_VREFBASE1_2V                               (COMP_E_CTL2_CEREFL_1)
+#define COMP_E_VREFBASE2_0V                               (COMP_E_CTL2_CEREFL_2)
+#define COMP_E_VREFBASE2_5V                               (COMP_E_CTL2_CEREFL_3)
 
-#define COMP_E_ACCURACY_STATIC                                      (!CEREFACC)
-#define COMP_E_ACCURACY_CLOCKED                                      (CEREFACC)
+#define COMP_E_ACCURACY_STATIC                             (!COMP_E_CTL2_REFACC)
+#define COMP_E_ACCURACY_CLOCKED                             (COMP_E_CTL2_REFACC)
 
-#define COMP_E_HIGH_SPEED_MODE                                      (CEPWRMD_0)
-#define COMP_E_NORMAL_MODE                                          (CEPWRMD_1)
-#define COMP_E_ULTRA_LOW_POWER_MODE                                 (CEPWRMD_2)
+#define COMP_E_HIGH_SPEED_MODE                             (COMP_E_CTL1_PWRMD_0)
+#define COMP_E_NORMAL_MODE                                 (COMP_E_CTL1_PWRMD_1)
+#define COMP_E_ULTRA_LOW_POWER_MODE                        (COMP_E_CTL1_PWRMD_2)
 
-#define COMP_E_OUTPUT_INTERRUPT                                          (CEIE)
-#define COMP_E_INVERTED_POLARITY_INTERRUPT                              (CEIIE)
-#define COMP_E_READY_INTERRUPT                                        (CERDYIE)
+#define COMP_E_OUTPUT_INTERRUPT                                  (COMP_E_INT_IE)
+#define COMP_E_INVERTED_POLARITY_INTERRUPT                      (COMP_E_INT_IIE)
+#define COMP_E_READY_INTERRUPT                                (COMP_E_INT_RDYIE)
 
-#define COMP_E_OUTPUT_INTERRUPT_FLAG                                    (CEIFG)
-#define COMP_E_INTERRUPT_FLAG_INVERTED_POLARITY                        (CEIIFG)
-#define COMP_E_INTERRUPT_FLAG_READY                                  (CERDYIFG)
+#define COMP_E_OUTPUT_INTERRUPT_FLAG                            (COMP_E_INT_IFG)
+#define COMP_E_INTERRUPT_FLAG_INVERTED_POLARITY                (COMP_E_INT_IIFG)
+#define COMP_E_INTERRUPT_FLAG_READY                          (COMP_E_INT_RDYIFG)
 
-#define COMP_E_FALLINGEDGE                                           (!(CEIES))
-#define COMP_E_RISINGEDGE                                               (CEIES)
+#define COMP_E_FALLINGEDGE                                  (!(COMP_E_CTL1_IES))
+#define COMP_E_RISINGEDGE                                      (COMP_E_CTL1_IES)
 
-#define COMP_E_LOW                                                        (0x0)
-#define COMP_E_HIGH                                                     (CEOUT)
+#define COMP_E_LOW                                                         (0x0)
+#define COMP_E_HIGH                                            (COMP_E_CTL1_OUT)
 
 //*****************************************************************************
 //
-//! \typedef COMP_E_Config
+//!     ypedef COMP_E_Config
 //! \brief Type definition for \link _COMP_E_Config \endlink structure
 //!
 //! \struct _COMP_E_Config
@@ -140,8 +140,8 @@ typedef struct _COMP_E_Config
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param config Configuration structure for the Comparator module
 //!
 //! <hr>
@@ -230,8 +230,8 @@ extern bool COMP_E_initModule(uint32_t comparator, const COMP_E_Config *config);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param supplyVoltageReferenceBase decides the source and max amount of
 //!       Voltage that can be used as a reference.
 //!        Valid values are
@@ -267,8 +267,8 @@ extern void COMP_E_setReferenceVoltage(uint32_t comparator,
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param referenceAccuracy is the reference accuracy setting of the
 //!      comparator. Clocked is for low power/low accuracy.
 //!      Valid values are
@@ -291,8 +291,8 @@ extern void COMP_E_setReferenceAccuracy(uint32_t comparator,
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param powerMode decides the power mode
 //!        Valid values are
 //!        - \b COMP_E_HIGH_SPEED_MODE
@@ -311,8 +311,8 @@ extern void COMP_E_setPowerMode(uint32_t comparator, uint_fast16_t powerMode);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function sets the bit that enables the operation of the
 //! Comparator module.
@@ -328,8 +328,8 @@ extern void COMP_E_enableModule(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function clears the CEON bit disabling the operation of the Comparator
 //! module, saving from excess power consumption.
@@ -346,8 +346,8 @@ extern void COMP_E_disableModule(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function sets the bit that shorts the devices attached to the input
 //! pins chosen from the initialization of the comparator.
@@ -364,8 +364,8 @@ extern void COMP_E_shortInputs(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function clears the bit that shorts the devices attached to the input
 //! pins chosen from the initialization of the comparator.
@@ -383,8 +383,8 @@ extern void COMP_E_unshortInputs(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         -  \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param inputPort is the port in which the input buffer will be disabled.
 //!        Valid values are a logical OR of the following:
 //!        - \b COMP_E_INPUT0 [Default]
@@ -425,8 +425,8 @@ extern void COMP_E_disableInputBuffer(uint32_t comparator,
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param inputPort is the port in which the input buffer will be enabled.
 //!        Valid values are a logical OR of the following:
 //!        - \b COMP_E_INPUT0 [Default]
@@ -484,8 +484,8 @@ extern void COMP_E_swapIO(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid parameters
 //! vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! Returns the output value of the Comparator module.
 //!
@@ -501,8 +501,8 @@ extern uint8_t COMP_E_outputValue(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param mask is the bit mask of the interrupt sources to be enabled.
 //!        Mask value is the logical OR of any of the following
 //!        - \b COMP_E_OUTPUT_INTERRUPT - Output interrupt
@@ -527,8 +527,8 @@ extern void COMP_E_enableInterrupt(uint32_t comparator, uint_fast16_t mask);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param mask is the bit mask of the interrupt sources to be disabled.
 //!        Mask value is the logical OR of any of the following
 //!        - \b COMP_E_OUTPUT_INTERRUPT - Output interrupt
@@ -551,8 +551,8 @@ extern void COMP_E_disableInterrupt(uint32_t comparator, uint_fast16_t mask);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param mask is a bit mask of the interrupt sources to be cleared.
 //!        Mask value is the logical OR of any of the following
 //!        - \b COMP_E_INTERRUPT_FLAG - Output interrupt flag
@@ -575,8 +575,8 @@ extern void COMP_E_clearInterruptFlag(uint32_t comparator, uint_fast16_t mask);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This returns the interrupt status for the Comparator module based on which
 //! flag is passed.
@@ -595,8 +595,8 @@ extern uint_fast16_t COMP_E_getInterruptStatus(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! Enables the indicated Comparator interrupt sources.  Only the sources that
 //! are enabled can be reflected to the processor interrupt; disabled sources
@@ -615,8 +615,8 @@ extern uint_fast16_t COMP_E_getEnabledInterruptStatus(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //! \param edgeDirection determines which direction the edge would have to go
 //!       to generate an interrupt based on the non-inverted interrupt flag.
 //!        Valid values are
@@ -646,8 +646,8 @@ extern void COMP_E_setInterruptEdgeDirection(uint32_t comparator,
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function will toggle which direction the output will have to go,
 //! whether rising or falling, to generate an interrupt based on a non-inverted
@@ -670,8 +670,8 @@ extern void COMP_E_toggleInterruptEdgeDirection(uint32_t comparator);
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function registers the handler to be called when a Comparator
 //! interrupt occurs. This function enables the global interrupt in the
@@ -691,8 +691,8 @@ extern void COMP_E_registerInterrupt(uint32_t comparator,
 //!
 //! \param comparator is the instance of the Comparator module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b COMP_E0
-//!         - \b COMP_E1
+//!         - \b COMP_E0_BASE
+//!         - \b COMP_E1_BASE
 //!
 //! This function unregisters the handler to be called when Comparator E
 //! interrupt occurs.  This function also masks off the interrupt in the

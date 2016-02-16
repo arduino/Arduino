@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@
 // on entry.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 uint32_t __attribute__((naked)) CPU_cpsid(void)
 {
     uint32_t ret;
@@ -66,7 +66,7 @@ uint32_t __attribute__((naked)) CPU_cpsid(void)
     return(ret);
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 uint32_t CPU_cpsid(void)
 {
     //
@@ -84,7 +84,7 @@ uint32_t CPU_cpsid(void)
 }
 #pragma diag_default=Pe940
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm uint32_t CPU_cpsid(void)
 {
     //
@@ -95,7 +95,7 @@ __asm uint32_t CPU_cpsid(void)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 uint32_t CPU_cpsid(void)
 {
     //
@@ -122,7 +122,7 @@ uint32_t CPU_cpsid(void)
 // interrupts are enabled or disabled).
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 uint32_t __attribute__((naked)) CPU_primask(void)
 {
     uint32_t ret;
@@ -143,7 +143,7 @@ uint32_t __attribute__((naked)) CPU_primask(void)
     return(ret);
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 uint32_t CPU_primask(void)
 {
     //
@@ -160,7 +160,7 @@ uint32_t CPU_primask(void)
 }
 #pragma diag_default=Pe940
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm uint32_t CPU_primask(void)
 {
     //
@@ -170,7 +170,7 @@ __asm uint32_t CPU_primask(void)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 uint32_t CPU_primask(void)
 {
     //
@@ -196,7 +196,7 @@ uint32_t CPU_primask(void)
 // on entry.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 uint32_t __attribute__((naked)) CPU_cpsie(void)
 {
     uint32_t ret;
@@ -218,7 +218,7 @@ uint32_t __attribute__((naked)) CPU_cpsie(void)
     return(ret);
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 uint32_t CPU_cpsie(void)
 {
     //
@@ -236,7 +236,7 @@ uint32_t CPU_cpsie(void)
 }
 #pragma diag_default=Pe940
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm uint32_t CPU_cpsie(void)
 {
     //
@@ -247,7 +247,7 @@ __asm uint32_t CPU_cpsie(void)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 uint32_t CPU_cpsie(void)
 {
     //
@@ -273,7 +273,7 @@ uint32_t CPU_cpsie(void)
 // Wrapper function for the CPUWFI instruction.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 void __attribute__((naked)) CPU_wfi(void)
 {
     //
@@ -283,7 +283,7 @@ void __attribute__((naked)) CPU_wfi(void)
             "    bx      lr\n");
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 void CPU_wfi(void)
 {
     //
@@ -292,7 +292,7 @@ void CPU_wfi(void)
     __asm("    wfi\n");
 }
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm void CPU_wfi(void)
 {
     //
@@ -302,7 +302,7 @@ __asm void CPU_wfi(void)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 void CPU_wfi(void)
 {
     //
@@ -317,7 +317,7 @@ void CPU_wfi(void)
 // Wrapper function for writing the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 void __attribute__((naked)) CPU_basepriSet(uint32_t newBasepri)
 {
     //
@@ -327,7 +327,7 @@ void __attribute__((naked)) CPU_basepriSet(uint32_t newBasepri)
             "    bx      lr\n");
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 void CPU_basepriSet(uint32_t newBasepri)
 {
     //
@@ -336,7 +336,7 @@ void CPU_basepriSet(uint32_t newBasepri)
     __asm("    msr     BASEPRI, r0\n");
 }
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm void CPU_basepriSet(uint32_t newBasepri)
 {
     //
@@ -346,7 +346,7 @@ __asm void CPU_basepriSet(uint32_t newBasepri)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 void CPU_basepriSet(uint32_t newBasepri)
 {
     //
@@ -361,7 +361,7 @@ void CPU_basepriSet(uint32_t newBasepri)
 // Wrapper function for reading the BASEPRI register.
 //
 //*****************************************************************************
-#if defined(gcc)
+#if defined(__GNUC__)
 uint32_t __attribute__((naked)) CPU_basepriGet(void)
 {
     uint32_t ret;
@@ -382,7 +382,7 @@ uint32_t __attribute__((naked)) CPU_basepriGet(void)
     return(ret);
 }
 #endif
-#if defined(ewarm)
+#if defined(__ICCARM__)
 uint32_t CPU_basepriGet(void)
 {
     //
@@ -399,7 +399,7 @@ uint32_t CPU_basepriGet(void)
 }
 #pragma diag_default=Pe940
 #endif
-#if defined(keil)
+#if defined(__CC_ARM)
 __asm uint32_t CPU_basepriGet(void)
 {
     //
@@ -409,7 +409,7 @@ __asm uint32_t CPU_basepriGet(void)
     bx lr
 }
 #endif
-#if defined(ccs)
+#if defined(__TI_ARM__)
 uint32_t CPU_basepriGet(void)
 {
     //

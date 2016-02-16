@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,12 +45,32 @@
 
 static void __PSSUnlock()
 {
-    PSS->rKEY.r = PSS_KEY_VALUE;
+    PSS->KEY = PSS_KEY_VALUE;
 }
 
 static void __PSSLock()
 {
-    PSS->rKEY.r = 0;
+    PSS->KEY = 0;
+}
+
+
+void PSS_enableForcedDCDCOperation(void)
+{
+    __PSSUnlock();
+
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_DCDC_FORCE_OFS) = 1;
+
+    __PSSLock();
+}
+
+void PSS_disableForcedDCDCOperation(void)
+{
+    __PSSUnlock();
+
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_DCDC_FORCE_OFS) = 0;
+
+    __PSSLock();
+
 }
 
 void PSS_enableHighSidePinToggle(bool activeLow)
@@ -58,11 +78,11 @@ void PSS_enableHighSidePinToggle(bool activeLow)
     __PSSUnlock();
 
     if (activeLow)
-        PSS->rCTL0.r |= (SVMHOE | SVMHOUTPOLAL);
+        PSS->CTL0 |= (PSS_CTL0_SVMHOE | PSS_CTL0_SVMHOUTPOLAL);
     else
     {
-        BITBAND_PERI(PSS->rCTL0.r, SVMHOUTPOLAL_OFS) = 0;
-        BITBAND_PERI(PSS->rCTL0.r, SVMHOE_OFS) = 1;
+        BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVMHOUTPOLAL_OFS) = 0;
+        BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVMHOE_OFS) = 1;
     }
 
     __PSSLock();
@@ -72,7 +92,7 @@ void PSS_disableHighSidePinToggle(void)
 {
     __PSSUnlock();
 
-    BITBAND_PERI(PSS->rCTL0.r, SVMHOE_OFS) = 0;
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVMHOE_OFS) = 0;
 
     __PSSLock();
 }
@@ -81,7 +101,7 @@ void PSS_enableHighSide(void)
 {
     __PSSUnlock();
 
-    BITBAND_PERI(PSS->rCTL0.r, SVSMHOFF_OFS) = 0;
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHOFF_OFS) = 0;
 
     __PSSLock();
 }
@@ -90,7 +110,7 @@ void PSS_disableHighSide(void)
 {
     __PSSUnlock();
 
-    BITBAND_PERI(PSS->rCTL0.r, SVSMHOFF_OFS) = 1;
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHOFF_OFS) = 1;
 
     __PSSLock();
 }
@@ -100,16 +120,16 @@ void PSS_setHighSidePerformanceMode(uint_fast8_t powerMode)
     __PSSUnlock();
 
     if (powerMode == PSS_FULL_PERFORMANCE_MODE)
-        BITBAND_PERI(PSS->rCTL0.r, SVSMHLP_OFS) = 0;
+        BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHLP_OFS) = 0;
     else
-        BITBAND_PERI(PSS->rCTL0.r, SVSMHLP_OFS) = 1;
+        BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHLP_OFS) = 1;
 
     __PSSLock();
 }
 
 uint_fast8_t PSS_getHighSidePerformanceMode(void)
 {
-    if (BITBAND_PERI(PSS->rCTL0.r, SVSMHLP_OFS))
+    if (BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHLP_OFS))
         return PSS_NORMAL_PERFORMANCE_MODE;
     else
         return PSS_FULL_PERFORMANCE_MODE;
@@ -119,7 +139,7 @@ void PSS_enableHighSideMonitor(void)
 {
     __PSSUnlock();
 
-    BITBAND_PERI(PSS->rCTL0.r, SVSMHS_OFS) = 1;
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHS_OFS) = 1;
 
     __PSSLock();
 }
@@ -128,7 +148,7 @@ void PSS_disableHighSideMonitor(void)
 {
     __PSSUnlock();
 
-    BITBAND_PERI(PSS->rCTL0.r, SVSMHS_OFS) = 0;
+    BITBAND_PERI(PSS->CTL0, PSS_CTL0_SVSMHS_OFS) = 0;
 
     __PSSLock();
 }
@@ -139,80 +159,41 @@ void PSS_setHighSideVoltageTrigger(uint_fast8_t triggerVoltage)
 
     ASSERT(!(triggerVoltage & 0xF8))
 
-    PSS->rCTL0.b.bSVSMHTH = triggerVoltage & 0x07;
+    PSS->CTL0 &= ~PSS_CTL0_SVSMHTH_MASK;
+    PSS->CTL0 |= (triggerVoltage & 0x07) << PSS_CTL0_SVSMHTH_OFS;
 
     __PSSLock();
 }
 
 uint_fast8_t PSS_getHighSideVoltageTrigger(void)
 {
-    return PSS->rCTL0.b.bSVSMHTH;
+    return (uint_fast8_t)((PSS->CTL0 & PSS_CTL0_SVSMHTH_MASK)
+    		>> PSS_CTL0_SVSMHTH_OFS);
 }
-
-
-void PSS_enableLowSide(void)
-{
-    __PSSUnlock();
-
-    BITBAND_PERI(PSS->rCTL0.r, SVSLOFF_OFS) = 0;
-
-    __PSSLock();
-}
-
-void PSS_disableLowSide(void)
-{
-    __PSSUnlock();
-
-    BITBAND_PERI(PSS->rCTL0.r, SVSLOFF_OFS) = 1;
-
-    __PSSLock();
-}
-
-
-void PSS_setLowSidePerformanceMode(uint_fast8_t ui8PowerMode)
-{
-    __PSSUnlock();
-
-    if (ui8PowerMode == PSS_FULL_PERFORMANCE_MODE)
-        BITBAND_PERI(PSS->rCTL0.r, SVSLLP_OFS) = 0;
-    else
-        BITBAND_PERI(PSS->rCTL0.r, SVSLLP_OFS) = 1;
-
-    __PSSLock();
-}
-
-uint_fast8_t PSS_getLowSidePerformanceMode(void)
-{
-    if (BITBAND_PERI(PSS->rCTL0.r, SVSLLP_OFS))
-        return PSS_NORMAL_PERFORMANCE_MODE;
-    else
-        return PSS_FULL_PERFORMANCE_MODE;
-}
-
 
 void PSS_enableInterrupt(void)
 {
     __PSSUnlock();
-    BITBAND_PERI(PSS->rIE.r,SVSMHIE_OFS) = 1;
+    BITBAND_PERI(PSS->IE,PSS_IE_SVSMHIE_OFS) = 1;
     __PSSLock();
 }
 
 void PSS_disableInterrupt(void)
 {
     __PSSUnlock();
-    BITBAND_PERI(PSS->rIE.r,SVSMHIE_OFS) = 0;
+    BITBAND_PERI(PSS->IE,PSS_IE_SVSMHIE_OFS) = 0;
     __PSSLock();
 }
 
 uint32_t PSS_getInterruptStatus(void)
 {
-    return PSS->rIFG.r;
+    return PSS->IFG;
 }
 
 void PSS_clearInterruptFlag(void)
 {
     __PSSUnlock();
-    BITBAND_PERI(PSS->rCLRIFG.r,CLRSVSMHIFG_OFS) = 0;
+    BITBAND_PERI(PSS->CLRIFG,PSS_CLRIFG_CLRSVSMHIFG_OFS) = 0;
     __PSSLock();
 }
 

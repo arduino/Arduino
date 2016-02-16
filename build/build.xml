@@ -142,6 +142,7 @@
     <copy todir="${target.path}/hardware">
       <fileset dir="../hardware">
       	<exclude name="**/arduino/" />
+      	<exclude name="**/cc3200emt/libraries/WiFi/" />
       </fileset>
     </copy>
 
@@ -178,6 +179,11 @@
 
     <!-- download and unzip TI-RTOS closure -->
     <antcall target="unzip-closure"/>
+
+    <move todir="${target.path}/hardware/cc3200emt/libraries/WiFi">
+      <fileset dir="${target.path}/hardware/emt/ti/runtime/wiring/cc3200/libraries/WiFi">
+      </fileset>
+    </move>
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">

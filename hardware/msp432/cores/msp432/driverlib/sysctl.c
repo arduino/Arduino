@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -83,29 +83,70 @@ static bool SysCtlPeripheralIsValid (uint16_t hwPeripheral)
 }
 #endif
 
+void SysCtl_getTLVInfo(uint_fast8_t tag, uint_fast8_t instance,
+        uint_fast8_t *length, uint32_t **data_address)
+{
+    /* TLV Structure Start Address */
+    uint32_t *TLV_address = (uint32_t *) TLV_START;
+
+    while (((*TLV_address != tag)) // check for tag and instance
+            && (*TLV_address != TLV_TAGEND))         // do range check first
+    {
+        if (*TLV_address == tag)
+        {
+            if(instance == 0)
+            {
+                break;
+            }
+
+            /* Repeat until requested instance is reached */
+            instance--;
+        }
+
+        TLV_address += (*(TLV_address + 1)) + 2;
+    }
+
+    /* Check if Tag match happened... */
+    if (*TLV_address == tag)
+    {
+        /* Return length = Address + 1 */
+        *length = (*(TLV_address + 1))*4;
+        /* Return address of first data/value info = Address + 2 */
+        *data_address = (uint32_t *) (TLV_address + 2);
+    }
+    // If there was no tag match and the end of TLV structure was reached..
+    else
+    {
+        // Return 0 for TAG not found
+        *length = 0;
+        // Return 0 for TAG not found
+        *data_address = 0;
+    }
+}
+
 uint_least32_t SysCtl_getSRAMSize(void)
 {
-    return SYSCTL->rSRAM_SIZE;
+    return SYSCTL->SRAM_SIZE;
 }
 
 uint_least32_t SysCtl_getFlashSize(void)
 {
-    return SYSCTL->rFLASH_SIZE;
+    return SYSCTL->FLASH_SIZE;
 }
 
 void SysCtl_disableNMISource(uint_fast8_t flags)
 {
-    SYSCTL->rNMI_CTLSTAT.r &= ~(flags);
+    SYSCTL->NMI_CTLSTAT &= ~(flags);
 }
 
 void SysCtl_enableNMISource(uint_fast8_t flags)
 {
-    SYSCTL->rNMI_CTLSTAT.r |= flags;
+    SYSCTL->NMI_CTLSTAT |= flags;
 }
 
 uint_fast8_t SysCtl_getNMISourceStatus(void)
 {
-    return SYSCTL->rNMI_CTLSTAT.r;
+    return SYSCTL->NMI_CTLSTAT;
 }
 
 void SysCtl_enableSRAMBank(uint_fast8_t sramBank)
@@ -113,10 +154,10 @@ void SysCtl_enableSRAMBank(uint_fast8_t sramBank)
     ASSERT(SysCtlSRAMBankValid(sramBank));
 
     /* Waiting for SRAM Ready Bit to be set */
-    while (!SYSCTL->rSRAM_BANKEN.b.bSRAM_RDY)
+    while (!(SYSCTL->SRAM_BANKEN & SYSCTL_SRAM_BANKEN_SRAM_RDY))
         ;
 
-    SYSCTL->rSRAM_BANKEN.r = (sramBank | SYSCTL_SRAM_BANKEN_BNK0_EN);
+    SYSCTL->SRAM_BANKEN = (sramBank | SYSCTL_SRAM_BANKEN_BNK0_EN);
 }
 
 void SysCtl_disableSRAMBank(uint_fast8_t sramBank)
@@ -124,8 +165,8 @@ void SysCtl_disableSRAMBank(uint_fast8_t sramBank)
     ASSERT(SysCtlSRAMBankValid(sramBank));
 
     /* Waiting for SRAM Ready Bit to be set */
-    while (!SYSCTL->rSRAM_BANKEN.b.bSRAM_RDY)
-        ;      
+    while (!(SYSCTL->SRAM_BANKEN & SYSCTL_SRAM_BANKEN_SRAM_RDY))
+       ;
 
     switch (sramBank)
     {
@@ -160,7 +201,7 @@ void SysCtl_disableSRAMBank(uint_fast8_t sramBank)
         return;
     }
 
-    SYSCTL->rSRAM_BANKEN.r = (sramBank | SYSCTL_SRAM_BANKEN_BNK0_EN);
+    SYSCTL->SRAM_BANKEN = (sramBank | SYSCTL_SRAM_BANKEN_BNK0_EN);
 }
 
 void SysCtl_enableSRAMBankRetention(uint_fast8_t sramBank)
@@ -168,10 +209,10 @@ void SysCtl_enableSRAMBankRetention(uint_fast8_t sramBank)
     ASSERT(SysCtlSRAMBankValidRet(sramBank));
 
     /* Waiting for SRAM Ready Bit to be set */
-    while (!SYSCTL->rSRAM_BANKRET.b.bSRAM_RDY)
-        ;
+    while (!(SYSCTL->SRAM_BANKRET & SYSCTL_SRAM_BANKRET_SRAM_RDY))
+            ;
 
-    SYSCTL->rSRAM_BANKRET.r |= sramBank;
+    SYSCTL->SRAM_BANKRET |= sramBank;
 }
 
 void SysCtl_disableSRAMBankRetention(uint_fast8_t sramBank)
@@ -179,36 +220,36 @@ void SysCtl_disableSRAMBankRetention(uint_fast8_t sramBank)
     ASSERT(SysCtlSRAMBankValidRet(sramBank));
 
     /* Waiting for SRAM Ready Bit to be set */
-    while (!SYSCTL->rSRAM_BANKRET.b.bSRAM_RDY)
-        ;
+    while (!(SYSCTL->SRAM_BANKRET & SYSCTL_SRAM_BANKRET_SRAM_RDY))
+            ;
 
-    SYSCTL->rSRAM_BANKRET.r &= ~sramBank;
+    SYSCTL->SRAM_BANKRET &= ~sramBank;
 }
 
 void SysCtl_rebootDevice(void)
 {
-    SYSCTL->rREBOOT_CTL.r = (SYSCTL_REBOOT_CTL_REBOOT | SYSCTL_REBOOT_KEY);
+    SYSCTL->REBOOT_CTL = (SYSCTL_REBOOT_CTL_REBOOT | SYSCTL_REBOOT_KEY);
 }
 
 void SysCtl_enablePeripheralAtCPUHalt(uint_fast16_t devices)
 {
     ASSERT(SysCtlPeripheralIsValid(devices));
-    SYSCTL->rPERIHALT_CTL.r &= ~devices;
+    SYSCTL->PERIHALT_CTL &= ~devices;
 }
 
 void SysCtl_disablePeripheralAtCPUHalt(uint_fast16_t devices)
 {
     ASSERT(SysCtlPeripheralIsValid(devices));
-    SYSCTL->rPERIHALT_CTL.r |= devices;
+    SYSCTL->PERIHALT_CTL |= devices;
 }
 
 void SysCtl_setWDTTimeoutResetType(uint_fast8_t resetType)
 {
     if (resetType)
-        SYSCTL->rWDTRESET_CTL.r |=
+        SYSCTL->WDTRESET_CTL |=
                 SYSCTL_WDTRESET_CTL_TIMEOUT;
     else
-        SYSCTL->rWDTRESET_CTL.r &= ~SYSCTL_WDTRESET_CTL_TIMEOUT;
+        SYSCTL->WDTRESET_CTL &= ~SYSCTL_WDTRESET_CTL_TIMEOUT;
 }
 
 void SysCtl_setWDTPasswordViolationResetType(uint_fast8_t resetType)
@@ -216,20 +257,20 @@ void SysCtl_setWDTPasswordViolationResetType(uint_fast8_t resetType)
     ASSERT(resetType <= SYSCTL_HARD_RESET);
 
     if (resetType)
-        SYSCTL->rWDTRESET_CTL.r |=
+        SYSCTL->WDTRESET_CTL |=
                 SYSCTL_WDTRESET_CTL_VIOLATION;
     else
-        SYSCTL->rWDTRESET_CTL.r &= ~SYSCTL_WDTRESET_CTL_VIOLATION;
+        SYSCTL->WDTRESET_CTL &= ~SYSCTL_WDTRESET_CTL_VIOLATION;
 }
 
 void SysCtl_enableGlitchFilter(void)
 {
-    SYSCTL->rDIO_GLTFLT_CTL.r |= SYSCTL_DIO_GLTFLT_CTL_GLTCH_EN;
+    SYSCTL->DIO_GLTFLT_CTL |= SYSCTL_DIO_GLTFLT_CTL_GLTCH_EN;
 }
 
 void SysCtl_disableGlitchFilter(void)
 {
-    SYSCTL->rDIO_GLTFLT_CTL.r &= ~SYSCTL_DIO_GLTFLT_CTL_GLTCH_EN;
+    SYSCTL->DIO_GLTFLT_CTL &= ~SYSCTL_DIO_GLTFLT_CTL_GLTCH_EN;
 }
 
 uint_fast16_t SysCtl_getTempCalibrationConstant(uint32_t refVoltage,

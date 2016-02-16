@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,61 +39,61 @@
 
 void ResetCtl_initiateSoftReset(void)
 {
-    RSTCTL->rRESET_REQ.r |= (RESET_KEY | RESET_SOFT_RESET);
+    RSTCTL->RESET_REQ |= (RESET_KEY | RESET_SOFT_RESET);
 }
 
 void ResetCtl_initiateSoftResetWithSource(uint32_t source)
 {
-    RSTCTL->rSOFTRESET_SET.r |= (source);
+    RSTCTL->SOFTRESET_SET |= (source);
 }
 
 uint32_t ResetCtl_getSoftResetSource(void)
 {
-    return RSTCTL->rSOFTRESET_STAT.r;
+    return RSTCTL->SOFTRESET_STAT;
 }
 
 void ResetCtl_clearSoftResetSource(uint32_t mask)
 {
-    RSTCTL->rSOFTRESET_CLR.r |= mask;
+    RSTCTL->SOFTRESET_CLR |= mask;
 }
 
 void ResetCtl_initiateHardReset(void)
 {
-    RSTCTL->rRESET_REQ.r |= (RESET_KEY | RESET_HARD_RESET);
+    RSTCTL->RESET_REQ |= (RESET_KEY | RESET_HARD_RESET);
 }
 
 void ResetCtl_initiateHardResetWithSource(uint32_t source)
 {
-    RSTCTL->rHARDRESET_SET.r |= (source);
+    RSTCTL->HARDRESET_SET |= (source);
 }
 
 uint32_t ResetCtl_getHardResetSource(void)
 {
-    return RSTCTL->rHARDRESET_STAT.r;
+    return RSTCTL->HARDRESET_STAT;
 }
 
 void ResetCtl_clearHardResetSource(uint32_t mask)
 {
-    RSTCTL->rHARDRESET_CLR.r |= mask;
+    RSTCTL->HARDRESET_CLR |= mask;
 }
 
 uint32_t ResetCtl_getPSSSource(void)
 {
-    return RSTCTL->rPSSRESET_STAT.r;
+    return RSTCTL->PSSRESET_STAT;
 }
 
 void ResetCtl_clearPSSFlags(void)
 {
-    RSTCTL->rPSSRESET_CLR.r |= RSTCTL_PSSRESET_CLR_CLR;
+    RSTCTL->PSSRESET_CLR |= RSTCTL_PSSRESET_CLR_CLR;
 }
 
 uint32_t ResetCtl_getPCMSource(void)
 {
-    return RSTCTL->rPCMRESET_STAT.r;
+    return RSTCTL->PCMRESET_STAT;
 }
 
 void ResetCtl_clearPCMFlags(void)
 {
-    RSTCTL->rPCMRESET_CLR.r |= RSTCTL_PCMRESET_CLR_CLR;
+    RSTCTL->PCMRESET_CLR |= RSTCTL_PCMRESET_CLR_CLR;
 }
 

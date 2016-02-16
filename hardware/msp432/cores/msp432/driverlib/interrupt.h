@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,6 +60,64 @@ extern "C"
 #include <stdbool.h>
 #include <msp.h>
 
+/******************************************************************************
+* NVIC interrupts                                                             *
+******************************************************************************/
+/* System exceptions */
+#define FAULT_NMI                                       ( 2) /* NMI fault */
+#define FAULT_HARD                                      ( 3) /* Hard fault */
+#define FAULT_MPU                                       ( 4) /* MPU fault */
+#define FAULT_BUS                                       ( 5) /* Bus fault */
+#define FAULT_USAGE                                     ( 6) /* Usage fault */
+#define FAULT_SVCALL                                    (11) /* SVCall */
+#define FAULT_DEBUG                                     (12) /* Debug monitor */
+#define FAULT_PENDSV                                    (14) /* PendSV */
+#define FAULT_SYSTICK                                   (15) /* System Tick */
+
+/* External interrupts */
+#define INT_PSS                                         (16) /* PSS IRQ */
+#define INT_CS                                          (17) /* CS IRQ */
+#define INT_PCM                                         (18) /* PCM IRQ */
+#define INT_WDT_A                                       (19) /* WDT_A IRQ */
+#define INT_FPU                                         (20) /* FPU IRQ */
+#define INT_FLCTL                                       (21) /* FLCTL IRQ */
+#define INT_COMP_E0                                     (22) /* COMP_E0 IRQ */
+#define INT_COMP_E1                                     (23) /* COMP_E1 IRQ */
+#define INT_TA0_0                                       (24) /* TA0_0 IRQ */
+#define INT_TA0_N                                       (25) /* TA0_N IRQ */
+#define INT_TA1_0                                       (26) /* TA1_0 IRQ */
+#define INT_TA1_N                                       (27) /* TA1_N IRQ */
+#define INT_TA2_0                                       (28) /* TA2_0 IRQ */
+#define INT_TA2_N                                       (29) /* TA2_N IRQ */
+#define INT_TA3_0                                       (30) /* TA3_0 IRQ */
+#define INT_TA3_N                                       (31) /* TA3_N IRQ */
+#define INT_EUSCIA0                                     (32) /* EUSCIA0 IRQ */
+#define INT_EUSCIA1                                     (33) /* EUSCIA1 IRQ */
+#define INT_EUSCIA2                                     (34) /* EUSCIA2 IRQ */
+#define INT_EUSCIA3                                     (35) /* EUSCIA3 IRQ */
+#define INT_EUSCIB0                                     (36) /* EUSCIB0 IRQ */
+#define INT_EUSCIB1                                     (37) /* EUSCIB1 IRQ */
+#define INT_EUSCIB2                                     (38) /* EUSCIB2 IRQ */
+#define INT_EUSCIB3                                     (39) /* EUSCIB3 IRQ */
+#define INT_ADC14                                       (40) /* ADC14 IRQ */
+#define INT_T32_INT1                                    (41) /* T32_INT1 IRQ */
+#define INT_T32_INT2                                    (42) /* T32_INT2 IRQ */
+#define INT_T32_INTC                                    (43) /* T32_INTC IRQ */
+#define INT_AES256                                      (44) /* AES256 IRQ */
+#define INT_RTC_C                                       (45) /* RTC_C IRQ */
+#define INT_DMA_ERR                                     (46) /* DMA_ERR IRQ */
+#define INT_DMA_INT3                                    (47) /* DMA_INT3 IRQ */
+#define INT_DMA_INT2                                    (48) /* DMA_INT2 IRQ */
+#define INT_DMA_INT1                                    (49) /* DMA_INT1 IRQ */
+#define INT_DMA_INT0                                    (50) /* DMA_INT0 IRQ */
+#define INT_PORT1                                       (51) /* PORT1 IRQ */
+#define INT_PORT2                                       (52) /* PORT2 IRQ */
+#define INT_PORT3                                       (53) /* PORT3 IRQ */
+#define INT_PORT4                                       (54) /* PORT4 IRQ */
+#define INT_PORT5                                       (55) /* PORT5 IRQ */
+#define INT_PORT6                                       (56) /* PORT6 IRQ */
+
+#define NUM_INTERRUPTS                                  (56)
 //*****************************************************************************
 //
 // Macro to generate an interrupt priority mask based on the number of bits
@@ -156,6 +214,11 @@ extern bool Interrupt_disableMaster(void);
 //! Normally, the SRAM vector table is so placed via the use of linker scripts.
 //! See the discussion of compile-time versus run-time interrupt handler
 //! registration in the introduction to this chapter.
+//!
+//! \note This function is only used if the customer wants to specify the 
+//!  interrupt handler at run time. In most cases, this is done through means
+//!  of the user setting the ISR function pointer in the startup file. Refer
+//!  Refer to the Module Operation section for more details.
 //!
 //! See \link Interrupt_enableInterrupt \endlink for details about the interrupt
 //! parameter
@@ -484,18 +547,16 @@ extern uint32_t Interrupt_getVectorTableAddress(void);
 //! this is ideal as power cycles are not wasted with the processing required
 //! for waking up from an ISR and going back to sleep.
 //!
-//! \return Address of the vector table.
+//! \return None
 //
 //*****************************************************************************
 extern void Interrupt_enableSleepOnIsrExit(void);
 
 //*****************************************************************************
 //
-//! Enables the processor to sleep when exiting an ISR. For low power operation,
-//! this is ideal as power cycles are not wasted with the processing required
-//! for waking up from an ISR and going back to sleep.
+//! Disables the processor to sleep when exiting an ISR.
 //!
-//! \return Address of the vector table.
+//! \return None
 //
 //*****************************************************************************
 extern void Interrupt_disableSleepOnIsrExit(void);

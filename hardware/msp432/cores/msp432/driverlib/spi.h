@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,34 +61,34 @@ extern "C"
 #include "eusci.h"
 
 /* Configuration Defines */
-#define EUSCI_SPI_CLOCKSOURCE_ACLK    UCSSEL__ACLK
-#define EUSCI_SPI_CLOCKSOURCE_SMCLK   UCSSEL__SMCLK
+#define EUSCI_SPI_CLOCKSOURCE_ACLK    EUSCI_B_CTLW0_SSEL__ACLK
+#define EUSCI_SPI_CLOCKSOURCE_SMCLK   EUSCI_B_CTLW0_SSEL__SMCLK
 
-#define EUSCI_SPI_MSB_FIRST    UCMSB
+#define EUSCI_SPI_MSB_FIRST    EUSCI_B_CTLW0_MSB
 #define EUSCI_SPI_LSB_FIRST    0x00
 
-#define EUSCI_SPI_BUSY        UCBUSY
+#define EUSCI_SPI_BUSY        EUSCI_A_STATW_BUSY
 #define EUSCI_SPI_NOT_BUSY    0x00
 
 #define EUSCI_SPI_PHASE_DATA_CHANGED_ONFIRST_CAPTURED_ON_NEXT    0x00
-#define EUSCI_SPI_PHASE_DATA_CAPTURED_ONFIRST_CHANGED_ON_NEXT    UCCKPH
+#define EUSCI_SPI_PHASE_DATA_CAPTURED_ONFIRST_CHANGED_ON_NEXT    EUSCI_B_CTLW0_CKPH
 
-#define EUSCI_SPI_3PIN                      UCMODE_0
-#define EUSCI_SPI_4PIN_UCxSTE_ACTIVE_HIGH   UCMODE_1
-#define EUSCI_SPI_4PIN_UCxSTE_ACTIVE_LOW    UCMODE_2
+#define EUSCI_SPI_3PIN                      EUSCI_B_CTLW0_MODE_0
+#define EUSCI_SPI_4PIN_UCxSTE_ACTIVE_HIGH   EUSCI_B_CTLW0_MODE_1
+#define EUSCI_SPI_4PIN_UCxSTE_ACTIVE_LOW    EUSCI_B_CTLW0_MODE_2
 
-#define EUSCI_SPI_CLOCKPOLARITY_INACTIVITY_HIGH    UCCKPL
+#define EUSCI_SPI_CLOCKPOLARITY_INACTIVITY_HIGH    EUSCI_B_CTLW0_CKPL
 #define EUSCI_SPI_CLOCKPOLARITY_INACTIVITY_LOW     0x00
 
-#define EUSCI_SPI_TRANSMIT_INTERRUPT    UCTXIE
-#define EUSCI_SPI_RECEIVE_INTERRUPT     UCRXIE
+#define EUSCI_SPI_TRANSMIT_INTERRUPT    EUSCI_B__TXIE
+#define EUSCI_SPI_RECEIVE_INTERRUPT     EUSCI_B__RXIE
 
-#define EUSCI_SPI_ENABLE_SIGNAL_FOR_4WIRE_SLAVE           UCSTEM
+#define EUSCI_SPI_ENABLE_SIGNAL_FOR_4WIRE_SLAVE           EUSCI_B_CTLW0_STEM
 #define EUSCI_SPI_PREVENT_CONFLICTS_WITH_OTHER_MASTERS    0x00
 
 //*****************************************************************************
 //
-//! \typedef eUSCI_SPI_MasterConfig
+//!     ypedef eUSCI_SPI_MasterConfig
 //! \brief Type definition for \link _eUSCI_SPI_MasterConfig \endlink structure
 //!
 //! \struct _eUSCI_SPI_MasterConfig
@@ -109,7 +109,7 @@ typedef struct _eUSCI_SPI_MasterConfig
 
 //*****************************************************************************
 //
-//! \typedef eUSCI_SPI_SlaveConfig
+//!     ypedef eUSCI_SPI_SlaveConfig
 //! \brief Type definition for \link _eUSCI_SPI_SlaveConfig \endlink structure
 //!
 //! \struct _eUSCI_SPI_SlaveConfig
@@ -131,14 +131,14 @@ typedef struct _eUSCI_SPI_SlaveConfig
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //! \param config Configuration structure for SPI master mode
 //!
 //! <hr>
@@ -187,14 +187,14 @@ extern bool SPI_initMaster(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param select4PinFunctionality selects Clock source. Valid values are
 //!         - \b EUSCI_SPI_PREVENT_CONFLICTS_WITH_OTHER_MASTERS
@@ -217,14 +217,14 @@ extern void SPI_selectFourPinFunctionality(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param clockSourceFrequency is the frequency of the selected clock source
 //! \param desiredSpiClock is the desired clock rate for SPI communication.
@@ -244,14 +244,14 @@ extern void SPI_changeMasterClock(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //! \param config Configuration structure for SPI slave mode
 //!
 //! <hr>
@@ -295,14 +295,14 @@ extern bool SPI_initSlave(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param clockPhase is clock phase select.
 //!         Valid values are:
@@ -329,14 +329,14 @@ extern void SPI_changeClockPhasePolarity(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param transmitData data to be transmitted from the SPI module
 //!
@@ -357,14 +357,14 @@ extern void SPI_transmitData(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! This function reads a byte of data from the SPI receive data Register.
@@ -381,14 +381,14 @@ extern uint8_t SPI_receiveData(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! This will enable operation of the SPI block.
@@ -405,14 +405,14 @@ extern void SPI_enableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! This will disable operation of the SPI block.
@@ -430,14 +430,14 @@ extern void SPI_disableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! Returns the address of the SPI RX Buffer. This can be used in conjunction
@@ -454,14 +454,14 @@ extern uint32_t SPI_getReceiveBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! Returns the address of the SPI TX Buffer. This can be used in conjunction
@@ -478,14 +478,14 @@ extern uint32_t SPI_getTransmitBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //!
 //! This function returns an indication of whether or not the SPI bus is
@@ -503,14 +503,14 @@ extern uint_fast8_t SPI_isBusy(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param mask is the bit mask of the interrupt sources to be enabled.
 //!
@@ -535,14 +535,14 @@ extern void SPI_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param mask is the bit mask of the interrupt sources to be
 //! disabled.
@@ -568,14 +568,14 @@ extern void SPI_disableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //! \param mask Mask of interrupt to filter. This can include:
 //!          - \b EUSCI_SPI_RECEIVE_INTERRUPT -Receive interrupt
 //!          - \b EUSCI_SPI_TRANSMIT_INTERRUPT - Transmit interrupt
@@ -600,14 +600,14 @@ extern uint_fast8_t SPI_getInterruptStatus(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! Modified registers are \b UCAxIFG.
 //!
@@ -625,14 +625,14 @@ extern uint_fast8_t SPI_getEnabledInterruptStatus(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! \param mask is the masked interrupt flag to be cleared.
 //!
@@ -652,14 +652,14 @@ extern void SPI_clearInterruptFlag(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI (SPI) module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!  It is important to note that for eUSCI modules, only "B" modules such as
 //!  EUSCI_B0 can be used. "A" modules such as EUSCI_A0 do not support the
 //!  I2C mode.
@@ -685,14 +685,14 @@ extern void SPI_registerInterrupt(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A/B module. Valid
 //! parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
-//!         - \b EUSCI_B0_MODULE
-//!         - \b EUSCI_B1_MODULE
-//!         - \b EUSCI_B2_MODULE
-//!         - \b EUSCI_B3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
+//!         - \b EUSCI_B0_BASE
+//!         - \b EUSCI_B1_BASE
+//!         - \b EUSCI_B2_BASE
+//!         - \b EUSCI_B3_BASE
 //!
 //! This function unregisters the handler to be called when timer
 //! interrupt occurs.  This function also masks off the interrupt in the

@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@
 
 #include <msp.h>
 
-#define EUSCI_A_CMSIS(x) ((EUSCI_A0_Type *) x)
-#define EUSCI_B_CMSIS(x) ((EUSCI_B0_Type *) x)
+#define EUSCI_A_CMSIS(x) ((EUSCI_A_Type *) x)
+#define EUSCI_B_CMSIS(x) ((EUSCI_B_Type *) x)
 
 #endif /* EUSCI_H_ */

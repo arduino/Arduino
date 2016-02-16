@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,60 +61,60 @@ extern "C"
 #include <msp.h>
 #include "eusci.h"
 
-#define DEFAULT_SYNC                                                       0x00
-#define EUSCI_A_UART_AUTOMATICBAUDRATE_SYNC                                0x55
+#define DEFAULT_SYNC									0x00
+#define EUSCI_A_UART_AUTOMATICBAUDRATE_SYNC             0x55
 
-#define EUSCI_A_UART_NO_PARITY                                             0x00
-#define EUSCI_A_UART_ODD_PARITY                                            0x01
-#define EUSCI_A_UART_EVEN_PARITY                                           0x02
+#define EUSCI_A_UART_NO_PARITY                          0x00
+#define EUSCI_A_UART_ODD_PARITY                         0x01
+#define EUSCI_A_UART_EVEN_PARITY                        0x02
 
-#define EUSCI_A_UART_MSB_FIRST                                            UCMSB
-#define EUSCI_A_UART_LSB_FIRST                                             0x00
+#define EUSCI_A_UART_MSB_FIRST                          EUSCI_A_CTLW0_MSB
+#define EUSCI_A_UART_LSB_FIRST                          0x00
 
-#define EUSCI_A_UART_MODE                                              UCMODE_0
-#define EUSCI_A_UART_IDLE_LINE_MULTI_PROCESSOR_MODE                    UCMODE_1
-#define EUSCI_A_UART_ADDRESS_BIT_MULTI_PROCESSOR_MODE                  UCMODE_2
-#define EUSCI_A_UART_AUTOMATIC_BAUDRATE_DETECTION_MODE                 UCMODE_3
+#define EUSCI_A_UART_MODE                               EUSCI_A_CTLW0_MODE_0
+#define EUSCI_A_UART_IDLE_LINE_MULTI_PROCESSOR_MODE		EUSCI_A_CTLW0_MODE_1
+#define EUSCI_A_UART_ADDRESS_BIT_MULTI_PROCESSOR_MODE   EUSCI_A_CTLW0_MODE_2
+#define EUSCI_A_UART_AUTOMATIC_BAUDRATE_DETECTION_MODE  EUSCI_A_CTLW0_MODE_3
 
-#define EUSCI_A_UART_CLOCKSOURCE_SMCLK                            UCSSEL__SMCLK
-#define EUSCI_A_UART_CLOCKSOURCE_ACLK                              UCSSEL__ACLK
+#define EUSCI_A_UART_CLOCKSOURCE_SMCLK                  EUSCI_A_CTLW0_SSEL__SMCLK
+#define EUSCI_A_UART_CLOCKSOURCE_ACLK                   EUSCI_A_CTLW0_SSEL__ACLK
 
-#define EUSCI_A_UART_ONE_STOP_BIT                                          0x00
-#define EUSCI_A_UART_TWO_STOP_BITS                                        UCSPB
+#define EUSCI_A_UART_ONE_STOP_BIT                       0x00
+#define EUSCI_A_UART_TWO_STOP_BITS                      EUSCI_A_CTLW0_SPB
 
-#define EUSCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION                      0x01
-#define EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION                     0x00
+#define EUSCI_A_UART_OVERSAMPLING_BAUDRATE_GENERATION   0x01
+#define EUSCI_A_UART_LOW_FREQUENCY_BAUDRATE_GENERATION  0x00
 
-#define EUSCI_A_UART_RECEIVE_INTERRUPT                                   UCRXIE
-#define EUSCI_A_UART_TRANSMIT_INTERRUPT                                  UCTXIE
-#define EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT                    UCRXEIE
-#define EUSCI_A_UART_BREAKCHAR_INTERRUPT                                UCBRKIE
-#define EUSCI_A_UART_STARTBIT_INTERRUPT                                 UCSTTIE
-#define EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT                      UCTXCPTIE
+#define EUSCI_A_UART_RECEIVE_INTERRUPT                  EUSCI_A_IE_RXIE
+#define EUSCI_A_UART_TRANSMIT_INTERRUPT                 EUSCI_A_IE_TXIE
+#define EUSCI_A_UART_RECEIVE_ERRONEOUSCHAR_INTERRUPT    EUSCI_A_CTLW0_RXEIE
+#define EUSCI_A_UART_BREAKCHAR_INTERRUPT                EUSCI_A_CTLW0_BRKIE
+#define EUSCI_A_UART_STARTBIT_INTERRUPT                 EUSCI_A_IE_STTIE
+#define EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT        EUSCI_B_IE_STPIE
 
-#define EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG                             UCRXIFG
-#define EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG                            UCTXIFG
-#define EUSCI_A_UART_STARTBIT_INTERRUPT_FLAG                           UCSTTIFG
-#define EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG                UCTXCPTIFG
+#define EUSCI_A_UART_RECEIVE_INTERRUPT_FLAG             EUSCI_A_IFG_RXIFG
+#define EUSCI_A_UART_TRANSMIT_INTERRUPT_FLAG            EUSCI_A_IFG_TXIFG
+#define EUSCI_A_UART_STARTBIT_INTERRUPT_FLAG            EUSCI_A_IFG_STTIFG
+#define EUSCI_A_UART_TRANSMIT_COMPLETE_INTERRUPT_FLAG   EUSCI_A_IFG_TXCPTIFG
 
-#define EUSCI_A_UART_LISTEN_ENABLE                                     UCLISTEN
-#define EUSCI_A_UART_FRAMING_ERROR                                         UCFE
-#define EUSCI_A_UART_OVERRUN_ERROR                                         UCOE
-#define EUSCI_A_UART_PARITY_ERROR                                          UCPE
-#define EUSCI_A_UART_BREAK_DETECT                                         UCBRK
-#define EUSCI_A_UART_RECEIVE_ERROR                                      UCRXERR
-#define EUSCI_A_UART_ADDRESS_RECEIVED                                    UCADDR
-#define EUSCI_A_UART_IDLELINE                                            UCIDLE
-#define EUSCI_A_UART_BUSY                                                UCBUSY
+#define EUSCI_A_UART_LISTEN_ENABLE                      EUSCI_A_STATW_LISTEN
+#define EUSCI_A_UART_FRAMING_ERROR                      EUSCI_A_STATW_FE
+#define EUSCI_A_UART_OVERRUN_ERROR                      EUSCI_A_STATW_OE
+#define EUSCI_A_UART_PARITY_ERROR                       EUSCI_A_STATW_PE
+#define EUSCI_A_UART_BREAK_DETECT                       EUSCI_A_STATW_BRK
+#define EUSCI_A_UART_RECEIVE_ERROR                      EUSCI_A_STATW_RXERR
+#define EUSCI_A_UART_ADDRESS_RECEIVED                   EUSCI_A_STATW_ADDR_IDLE
+#define EUSCI_A_UART_IDLELINE                           EUSCI_A_STATW_ADDR_IDLE
+#define EUSCI_A_UART_BUSY                               EUSCI_A_STATW_BUSY
 
-#define EUSCI_A_UART_DEGLITCH_TIME_2ns                                     0x00
-#define EUSCI_A_UART_DEGLITCH_TIME_50ns                                 0x0001
-#define EUSCI_A_UART_DEGLITCH_TIME_100ns                                0x0002
-#define EUSCI_A_UART_DEGLITCH_TIME_200ns                    (0x0001 + 0x0002)
+#define EUSCI_A_UART_DEGLITCH_TIME_2ns                  0x00
+#define EUSCI_A_UART_DEGLITCH_TIME_50ns                 0x0001
+#define EUSCI_A_UART_DEGLITCH_TIME_100ns                0x0002
+#define EUSCI_A_UART_DEGLITCH_TIME_200ns                (0x0001 + 0x0002)
 
 //*****************************************************************************
 //
-//! \typedef eUSCI_eUSCI_UART_Config
+//!     ypedef eUSCI_eUSCI_UART_Config
 //! \brief Type definition for \link _eUSCI_UART_Config \endlink
 //!     structure
 //!
@@ -145,10 +145,10 @@ typedef struct _eUSCI_eUSCI_UART_Config
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //! \param config Configuration structure for the UART module
 //!
 //! <hr>
@@ -218,10 +218,10 @@ extern bool UART_initModule(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -243,10 +243,10 @@ extern void UART_transmitData(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as  EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -267,10 +267,10 @@ extern uint8_t UART_receiveData(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -290,10 +290,10 @@ extern void UART_enableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -313,10 +313,10 @@ extern void UART_disableModule(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -349,10 +349,10 @@ extern uint_fast8_t UART_queryStatusFlags(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -375,10 +375,10 @@ extern void UART_setDormant(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -399,10 +399,10 @@ extern void UART_resetDormant(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -427,10 +427,10 @@ extern void UART_transmitAddress(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  asEUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -448,10 +448,10 @@ extern void UART_transmitBreak(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -470,10 +470,10 @@ extern uint32_t UART_getReceiveBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -492,10 +492,10 @@ extern uint32_t UART_getTransmitBufferAddressForDMA(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -522,10 +522,10 @@ extern void UART_selectDeglitchTime(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -557,10 +557,10 @@ extern void UART_enableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -591,10 +591,10 @@ extern void UART_disableInterrupt(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -624,10 +624,10 @@ extern uint_fast8_t UART_getInterruptStatus(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -645,10 +645,10 @@ extern uint_fast8_t UART_getEnabledInterruptStatus(uint32_t moduleInstance);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode
@@ -674,10 +674,10 @@ extern void UART_clearInterruptFlag(uint32_t moduleInstance, uint_fast8_t mask);
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode.
@@ -703,10 +703,10 @@ extern void UART_registerInterrupt(uint32_t moduleInstance,
 //!
 //! \param moduleInstance is the instance of the eUSCI A (UART) module.
 //! Valid parameters vary from part to part, but can include:
-//!         - \b EUSCI_A0_MODULE
-//!         - \b EUSCI_A1_MODULE
-//!         - \b EUSCI_A2_MODULE
-//!         - \b EUSCI_A3_MODULE
+//!         - \b EUSCI_A0_BASE
+//!         - \b EUSCI_A1_BASE
+//!         - \b EUSCI_A2_BASE
+//!         - \b EUSCI_A3_BASE
 //!  <br> It is important to note that for eUSCI modules, only "A" modules such
 //!  as EUSCI_A0 can be used. "B" modules such as EUSCI_B0 do not support the
 //!  UART mode.

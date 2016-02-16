@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,10 +68,11 @@ extern "C"
 // functions: WDT_A_watchdogTimerInit(), and WDT_A_intervalTimerInit().
 //
 //*****************************************************************************
-#define WDT_A_CLOCKSOURCE_SMCLK                                     (WDTSSEL_0)
-#define WDT_A_CLOCKSOURCE_ACLK                                      (WDTSSEL_1)
-#define WDT_A_CLOCKSOURCE_VLOCLK                                    (WDTSSEL_2)
-#define WDT_A_CLOCKSOURCE_XCLK                                      (WDTSSEL_3)
+#define WDT_A_CLOCKSOURCE_SMCLK                                     (WDT_A_CTL_SSEL_0)
+#define WDT_A_CLOCKSOURCE_ACLK                                      (WDT_A_CTL_SSEL_1)
+#define WDT_A_CLOCKSOURCE_VLOCLK                                    (WDT_A_CTL_SSEL_2)
+#define WDT_A_CLOCKSOURCE_XCLK                                      (WDT_A_CTL_SSEL_3)
+#define WDT_A_CLOCKSOURCE_BCLK                                      (WDT_A_CTL_SSEL_4)
 
 //*****************************************************************************
 //
@@ -79,14 +80,14 @@ extern "C"
 // for functions: WDT_A_watchdogTimerInit(), and WDT_A_intervalTimerInit().
 //
 //*****************************************************************************
-#define WDT_A_CLOCKDIVIDER_2G                                         (WDTIS_0)
-#define WDT_A_CLOCKDIVIDER_128M                                       (WDTIS_1)
-#define WDT_A_CLOCKDIVIDER_8192K                                      (WDTIS_2)
-#define WDT_A_CLOCKDIVIDER_512K                                       (WDTIS_3)
-#define WDT_A_CLOCKDIVIDER_32K                                        (WDTIS_4)
-#define WDT_A_CLOCKDIVIDER_8192                                       (WDTIS_5)
-#define WDT_A_CLOCKDIVIDER_512                                        (WDTIS_6)
-#define WDT_A_CLOCKDIVIDER_64                                         (WDTIS_7)
+#define WDT_A_CLOCKDIVIDER_2G                                         (WDT_A_CTL_IS_0)
+#define WDT_A_CLOCKDIVIDER_128M                                       (WDT_A_CTL_IS_1)
+#define WDT_A_CLOCKDIVIDER_8192K                                      (WDT_A_CTL_IS_2)
+#define WDT_A_CLOCKDIVIDER_512K                                       (WDT_A_CTL_IS_3)
+#define WDT_A_CLOCKDIVIDER_32K                                        (WDT_A_CTL_IS_4)
+#define WDT_A_CLOCKDIVIDER_8192                                       (WDT_A_CTL_IS_5)
+#define WDT_A_CLOCKDIVIDER_512                                        (WDT_A_CTL_IS_6)
+#define WDT_A_CLOCKDIVIDER_64                                         (WDT_A_CTL_IS_7)
 #define WDT_A_CLOCKITERATIONS_2G    WDT_A_CLOCKDIVIDER_2G
 #define WDT_A_CLOCKITERATIONS_128M  WDT_A_CLOCKDIVIDER_128M
 #define WDT_A_CLOCKITERATIONS_8192K WDT_A_CLOCKDIVIDER_8192K
@@ -146,7 +147,7 @@ extern void WDT_A_clearTimer(void);
 //!        - \b WDT_A_CLOCKSOURCE_SMCLK [Default]
 //!        - \b WDT_A_CLOCKSOURCE_ACLK
 //!        - \b WDT_A_CLOCKSOURCE_VLOCLK
-//!        - \b WDT_A_CLOCKSOURCE_XCLK
+//!        - \b WDT_A_CLOCKSOURCE_BCLK
 //! \param clockIterations is the number of clock iterations for a watchdog
 //!         timeout.
 //!        Valid values are
@@ -178,7 +179,7 @@ extern void WDT_A_initWatchdogTimer(uint_fast8_t clockSelect,
 //!        - \b WDT_A_CLOCKSOURCE_SMCLK [Default]
 //!        - \b WDT_A_CLOCKSOURCE_ACLK
 //!        - \b WDT_A_CLOCKSOURCE_VLOCLK
-//!        - \b WDT_A_CLOCKSOURCE_XCLK
+//!        - \b WDT_A_CLOCKSOURCE_BCLK
 //! \param clockIterations is the number of clock iterations for a watchdog
 //!         interval.
 //!        Valid values are
@@ -264,7 +265,7 @@ extern void WDT_A_setTimeoutReset(uint_fast8_t resetType);
 /* Defines for future devices that might have multiple instances */
 #define WDT_A_holdTimerMultipleTimer(a)  WDT_A_holdTimer()
 #define WDT_A_startTimerMultipleTimer(a) WDT_A_startTimer()
-#define WDT_A_resetTimerMultipleTimer(a) WDT_A_resetTimer()
+#define WDT_A_resetTimerMultipleTimer(a) WDT_A_clearTimer()
 #define WDT_A_initWatchdogTimerMultipleTimer(a,b,c) WDT_A_initWatchdogTimer(b,c)
 #define WDT_A_initIntervalTimerMultipleTimer(a,b,c) WDT_A_initIntervalTimer(b,c)
 #define WDT_A_registerInterruptMultipleTimer(a,b) WDT_A_registerInterrupt(b)

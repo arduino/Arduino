@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_adi_0_rf_h
-*  Revised:        2015-11-12 13:07:02 +0100 (Thu, 12 Nov 2015)
-*  Revision:       45056
+*  Revised:        2015-12-03 09:20:10 +0100 (Thu, 03 Dec 2015)
+*  Revision:       45256
 *
 * Copyright (c) 2015, Texas Instruments Incorporated
 * All rights reserved.
@@ -161,7 +161,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_LNACTL0_BIAS_DIS                                   0x00000002
-#define ADI_0_RF_LNACTL0_BIAS_DIS_BITN                                       1
 #define ADI_0_RF_LNACTL0_BIAS_DIS_M                                 0x00000002
 #define ADI_0_RF_LNACTL0_BIAS_DIS_S                                          1
 
@@ -172,7 +171,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_LNACTL0_EN                                         0x00000001
-#define ADI_0_RF_LNACTL0_EN_BITN                                             0
 #define ADI_0_RF_LNACTL0_EN_M                                       0x00000001
 #define ADI_0_RF_LNACTL0_EN_S                                                0
 #define ADI_0_RF_LNACTL0_EN_EN                                      0x00000001
@@ -224,7 +222,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_LNACTL2_EXT_BIAS                                   0x00000010
-#define ADI_0_RF_LNACTL2_EXT_BIAS_BITN                                       4
 #define ADI_0_RF_LNACTL2_EXT_BIAS_M                                 0x00000010
 #define ADI_0_RF_LNACTL2_EXT_BIAS_S                                          4
 
@@ -251,7 +248,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFAMPCTL0_BIAS_DIS                                 0x00000004
-#define ADI_0_RF_IFAMPCTL0_BIAS_DIS_BITN                                     2
 #define ADI_0_RF_IFAMPCTL0_BIAS_DIS_M                               0x00000004
 #define ADI_0_RF_IFAMPCTL0_BIAS_DIS_S                                        2
 
@@ -262,7 +258,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFAMPCTL0_EN_Q                                     0x00000002
-#define ADI_0_RF_IFAMPCTL0_EN_Q_BITN                                         1
 #define ADI_0_RF_IFAMPCTL0_EN_Q_M                                   0x00000002
 #define ADI_0_RF_IFAMPCTL0_EN_Q_S                                            1
 #define ADI_0_RF_IFAMPCTL0_EN_Q_EN                                  0x00000002
@@ -275,7 +270,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFAMPCTL0_EN_I                                     0x00000001
-#define ADI_0_RF_IFAMPCTL0_EN_I_BITN                                         0
 #define ADI_0_RF_IFAMPCTL0_EN_I_M                                   0x00000001
 #define ADI_0_RF_IFAMPCTL0_EN_I_S                                            0
 #define ADI_0_RF_IFAMPCTL0_EN_I_EN                                  0x00000001
@@ -356,7 +350,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_PACTL0_PEAKDET_EN                                  0x00000004
-#define ADI_0_RF_PACTL0_PEAKDET_EN_BITN                                      2
 #define ADI_0_RF_PACTL0_PEAKDET_EN_M                                0x00000004
 #define ADI_0_RF_PACTL0_PEAKDET_EN_S                                         2
 #define ADI_0_RF_PACTL0_PEAKDET_EN_EN                               0x00000004
@@ -366,7 +359,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_PACTL0_BIAS_DIS                                    0x00000002
-#define ADI_0_RF_PACTL0_BIAS_DIS_BITN                                        1
 #define ADI_0_RF_PACTL0_BIAS_DIS_M                                  0x00000002
 #define ADI_0_RF_PACTL0_BIAS_DIS_S                                           1
 
@@ -377,7 +369,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_PACTL0_EN                                          0x00000001
-#define ADI_0_RF_PACTL0_EN_BITN                                              0
 #define ADI_0_RF_PACTL0_EN_M                                        0x00000001
 #define ADI_0_RF_PACTL0_EN_S                                                 0
 #define ADI_0_RF_PACTL0_EN_EN                                       0x00000001
@@ -437,7 +428,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_ATEST_I_EN                                  0x00000020
-#define ADI_0_RF_RFLDO0_ATEST_I_EN_BITN                                      5
 #define ADI_0_RF_RFLDO0_ATEST_I_EN_M                                0x00000020
 #define ADI_0_RF_RFLDO0_ATEST_I_EN_S                                         5
 
@@ -445,7 +435,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_ATEST_V_EN                                  0x00000010
-#define ADI_0_RF_RFLDO0_ATEST_V_EN_BITN                                      4
 #define ADI_0_RF_RFLDO0_ATEST_V_EN_M                                0x00000010
 #define ADI_0_RF_RFLDO0_ATEST_V_EN_S                                         4
 
@@ -453,7 +442,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_BYPASS_REG_EN                               0x00000008
-#define ADI_0_RF_RFLDO0_BYPASS_REG_EN_BITN                                   3
 #define ADI_0_RF_RFLDO0_BYPASS_REG_EN_M                             0x00000008
 #define ADI_0_RF_RFLDO0_BYPASS_REG_EN_S                                      3
 
@@ -464,7 +452,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_RDY_EN                                      0x00000004
-#define ADI_0_RF_RFLDO0_RDY_EN_BITN                                          2
 #define ADI_0_RF_RFLDO0_RDY_EN_M                                    0x00000004
 #define ADI_0_RF_RFLDO0_RDY_EN_S                                             2
 #define ADI_0_RF_RFLDO0_RDY_EN_EN                                   0x00000004
@@ -477,7 +464,6 @@
 // DIS                      Internal. Only to be used through TI provided API.
 // EN                       Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_BIAS_DIS                                    0x00000002
-#define ADI_0_RF_RFLDO0_BIAS_DIS_BITN                                        1
 #define ADI_0_RF_RFLDO0_BIAS_DIS_M                                  0x00000002
 #define ADI_0_RF_RFLDO0_BIAS_DIS_S                                           1
 #define ADI_0_RF_RFLDO0_BIAS_DIS_DIS                                0x00000002
@@ -490,7 +476,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_RFLDO0_EN                                          0x00000001
-#define ADI_0_RF_RFLDO0_EN_BITN                                              0
 #define ADI_0_RF_RFLDO0_EN_M                                        0x00000001
 #define ADI_0_RF_RFLDO0_EN_S                                                 0
 #define ADI_0_RF_RFLDO0_EN_EN                                       0x00000001
@@ -553,7 +538,6 @@
 // DIS                      Internal. Only to be used through TI provided API.
 // EN                       Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL0_BIAS_DIS                                 0x00000002
-#define ADI_0_RF_IFADCCTL0_BIAS_DIS_BITN                                     1
 #define ADI_0_RF_IFADCCTL0_BIAS_DIS_M                               0x00000002
 #define ADI_0_RF_IFADCCTL0_BIAS_DIS_S                                        1
 #define ADI_0_RF_IFADCCTL0_BIAS_DIS_DIS                             0x00000002
@@ -609,7 +593,6 @@
 // RTZ                      Internal. Only to be used through TI provided API.
 // NRTZ                     Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCDAC_MODE                                      0x00000080
-#define ADI_0_RF_IFADCDAC_MODE_BITN                                          7
 #define ADI_0_RF_IFADCDAC_MODE_M                                    0x00000080
 #define ADI_0_RF_IFADCDAC_MODE_S                                             7
 #define ADI_0_RF_IFADCDAC_MODE_RTZ                                  0x00000080
@@ -631,7 +614,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCQUANT0_AUTOCAL_EN                             0x00000008
-#define ADI_0_RF_IFADCQUANT0_AUTOCAL_EN_BITN                                 3
 #define ADI_0_RF_IFADCQUANT0_AUTOCAL_EN_M                           0x00000008
 #define ADI_0_RF_IFADCQUANT0_AUTOCAL_EN_S                                    3
 
@@ -661,7 +643,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL1_ADCIEN                                   0x00000010
-#define ADI_0_RF_IFADCCTL1_ADCIEN_BITN                                       4
 #define ADI_0_RF_IFADCCTL1_ADCIEN_M                                 0x00000010
 #define ADI_0_RF_IFADCCTL1_ADCIEN_S                                          4
 #define ADI_0_RF_IFADCCTL1_ADCIEN_EN                                0x00000010
@@ -674,7 +655,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL1_ADCQEN                                   0x00000008
-#define ADI_0_RF_IFADCCTL1_ADCQEN_BITN                                       3
 #define ADI_0_RF_IFADCCTL1_ADCQEN_M                                 0x00000008
 #define ADI_0_RF_IFADCCTL1_ADCQEN_S                                          3
 #define ADI_0_RF_IFADCCTL1_ADCQEN_EN                                0x00000008
@@ -708,7 +688,6 @@
 // DIS                      Internal. Only to be used through TI provided API.
 // EN                       Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL2_RESETN                                   0x00000080
-#define ADI_0_RF_IFADCCTL2_RESETN_BITN                                       7
 #define ADI_0_RF_IFADCCTL2_RESETN_M                                 0x00000080
 #define ADI_0_RF_IFADCCTL2_RESETN_S                                          7
 #define ADI_0_RF_IFADCCTL2_RESETN_DIS                               0x00000080
@@ -721,7 +700,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL2_CLKGENEN                                 0x00000040
-#define ADI_0_RF_IFADCCTL2_CLKGENEN_BITN                                     6
 #define ADI_0_RF_IFADCCTL2_CLKGENEN_M                               0x00000040
 #define ADI_0_RF_IFADCCTL2_CLKGENEN_S                                        6
 #define ADI_0_RF_IFADCCTL2_CLKGENEN_EN                              0x00000040
@@ -734,7 +712,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL2_ADCDIGCLKEN                              0x00000020
-#define ADI_0_RF_IFADCCTL2_ADCDIGCLKEN_BITN                                  5
 #define ADI_0_RF_IFADCCTL2_ADCDIGCLKEN_M                            0x00000020
 #define ADI_0_RF_IFADCCTL2_ADCDIGCLKEN_S                                     5
 #define ADI_0_RF_IFADCCTL2_ADCDIGCLKEN_EN                           0x00000020
@@ -747,7 +724,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFADCCTL2_INVCLKOUT                                0x00000002
-#define ADI_0_RF_IFADCCTL2_INVCLKOUT_BITN                                    1
 #define ADI_0_RF_IFADCCTL2_INVCLKOUT_M                              0x00000002
 #define ADI_0_RF_IFADCCTL2_INVCLKOUT_S                                       1
 #define ADI_0_RF_IFADCCTL2_INVCLKOUT_EN                             0x00000002
@@ -765,7 +741,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO1_ERR_AMP_ZERO_EN                            0x00000010
-#define ADI_0_RF_IFALDO1_ERR_AMP_ZERO_EN_BITN                                4
 #define ADI_0_RF_IFALDO1_ERR_AMP_ZERO_EN_M                          0x00000010
 #define ADI_0_RF_IFALDO1_ERR_AMP_ZERO_EN_S                                   4
 #define ADI_0_RF_IFALDO1_ERR_AMP_ZERO_EN_EN                         0x00000010
@@ -775,7 +750,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO1_BYPASS_REG_EN                              0x00000008
-#define ADI_0_RF_IFALDO1_BYPASS_REG_EN_BITN                                  3
 #define ADI_0_RF_IFALDO1_BYPASS_REG_EN_M                            0x00000008
 #define ADI_0_RF_IFALDO1_BYPASS_REG_EN_S                                     3
 
@@ -786,7 +760,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO1_RDY_EN                                     0x00000004
-#define ADI_0_RF_IFALDO1_RDY_EN_BITN                                         2
 #define ADI_0_RF_IFALDO1_RDY_EN_M                                   0x00000004
 #define ADI_0_RF_IFALDO1_RDY_EN_S                                            2
 #define ADI_0_RF_IFALDO1_RDY_EN_EN                                  0x00000004
@@ -799,7 +772,6 @@
 // DIS                      Internal. Only to be used through TI provided API.
 // EN                       Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO1_BIAS_DIS                                   0x00000002
-#define ADI_0_RF_IFALDO1_BIAS_DIS_BITN                                       1
 #define ADI_0_RF_IFALDO1_BIAS_DIS_M                                 0x00000002
 #define ADI_0_RF_IFALDO1_BIAS_DIS_S                                          1
 #define ADI_0_RF_IFALDO1_BIAS_DIS_DIS                               0x00000002
@@ -812,7 +784,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO1_EN                                         0x00000001
-#define ADI_0_RF_IFALDO1_EN_BITN                                             0
 #define ADI_0_RF_IFALDO1_EN_M                                       0x00000001
 #define ADI_0_RF_IFALDO1_EN_S                                                0
 #define ADI_0_RF_IFALDO1_EN_EN                                      0x00000001
@@ -846,7 +817,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO3_ATEST_V_EN                                 0x00000010
-#define ADI_0_RF_IFALDO3_ATEST_V_EN_BITN                                     4
 #define ADI_0_RF_IFALDO3_ATEST_V_EN_M                               0x00000010
 #define ADI_0_RF_IFALDO3_ATEST_V_EN_S                                        4
 
@@ -854,7 +824,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFALDO3_ATEST_I_EN                                 0x00000008
-#define ADI_0_RF_IFALDO3_ATEST_I_EN_BITN                                     3
 #define ADI_0_RF_IFALDO3_ATEST_I_EN_M                               0x00000008
 #define ADI_0_RF_IFALDO3_ATEST_I_EN_S                                        3
 
@@ -877,7 +846,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO1_BYPASS_REG_EN                              0x00000008
-#define ADI_0_RF_IFDLDO1_BYPASS_REG_EN_BITN                                  3
 #define ADI_0_RF_IFDLDO1_BYPASS_REG_EN_M                            0x00000008
 #define ADI_0_RF_IFDLDO1_BYPASS_REG_EN_S                                     3
 #define ADI_0_RF_IFDLDO1_BYPASS_REG_EN_EN                           0x00000008
@@ -890,7 +858,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO1_RDY_EN                                     0x00000004
-#define ADI_0_RF_IFDLDO1_RDY_EN_BITN                                         2
 #define ADI_0_RF_IFDLDO1_RDY_EN_M                                   0x00000004
 #define ADI_0_RF_IFDLDO1_RDY_EN_S                                            2
 #define ADI_0_RF_IFDLDO1_RDY_EN_EN                                  0x00000004
@@ -903,7 +870,6 @@
 // DIS                      Internal. Only to be used through TI provided API.
 // EN                       Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO1_BIAS_DIS                                   0x00000002
-#define ADI_0_RF_IFDLDO1_BIAS_DIS_BITN                                       1
 #define ADI_0_RF_IFDLDO1_BIAS_DIS_M                                 0x00000002
 #define ADI_0_RF_IFDLDO1_BIAS_DIS_S                                          1
 #define ADI_0_RF_IFDLDO1_BIAS_DIS_DIS                               0x00000002
@@ -916,7 +882,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO1_EN                                         0x00000001
-#define ADI_0_RF_IFDLDO1_EN_BITN                                             0
 #define ADI_0_RF_IFDLDO1_EN_M                                       0x00000001
 #define ADI_0_RF_IFDLDO1_EN_S                                                0
 #define ADI_0_RF_IFDLDO1_EN_EN                                      0x00000001
@@ -953,7 +918,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO3_ATEST_V_EN                                 0x00000010
-#define ADI_0_RF_IFDLDO3_ATEST_V_EN_BITN                                     4
 #define ADI_0_RF_IFDLDO3_ATEST_V_EN_M                               0x00000010
 #define ADI_0_RF_IFDLDO3_ATEST_V_EN_S                                        4
 #define ADI_0_RF_IFDLDO3_ATEST_V_EN_EN                              0x00000010
@@ -966,7 +930,6 @@
 // EN                       Internal. Only to be used through TI provided API.
 // DIS                      Internal. Only to be used through TI provided API.
 #define ADI_0_RF_IFDLDO3_ATEST_I_EN                                 0x00000008
-#define ADI_0_RF_IFDLDO3_ATEST_I_EN_BITN                                     3
 #define ADI_0_RF_IFDLDO3_ATEST_I_EN_M                               0x00000008
 #define ADI_0_RF_IFDLDO3_ATEST_I_EN_S                                        3
 #define ADI_0_RF_IFDLDO3_ATEST_I_EN_EN                              0x00000008
@@ -1014,7 +977,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_STAT_IFADC_CALDONE                                 0x00000004
-#define ADI_0_RF_STAT_IFADC_CALDONE_BITN                                     2
 #define ADI_0_RF_STAT_IFADC_CALDONE_M                               0x00000004
 #define ADI_0_RF_STAT_IFADC_CALDONE_S                                        2
 
@@ -1022,7 +984,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_STAT_IFLDOS_RDY                                    0x00000002
-#define ADI_0_RF_STAT_IFLDOS_RDY_BITN                                        1
 #define ADI_0_RF_STAT_IFLDOS_RDY_M                                  0x00000002
 #define ADI_0_RF_STAT_IFLDOS_RDY_S                                           1
 
@@ -1030,7 +991,6 @@
 //
 // Internal. Only to be used through TI provided API.
 #define ADI_0_RF_STAT_RF_LDO                                        0x00000001
-#define ADI_0_RF_STAT_RF_LDO_BITN                                            0
 #define ADI_0_RF_STAT_RF_LDO_M                                      0x00000001
 #define ADI_0_RF_STAT_RF_LDO_S                                               0
 

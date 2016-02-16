@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       rfc.h
-*  Revised:        2015-11-17 12:03:08 +0100 (Tue, 17 Nov 2015)
-*  Revision:       45108
+*  Revised:        2016-01-28 11:10:16 +0100 (Thu, 28 Jan 2016)
+*  Revision:       45566
 *
 *  Description:    Defines and prototypes for the RF Core.
 *
@@ -80,6 +80,7 @@ extern "C"
 #if !defined(DOXYGEN)
     #define RFCCpeIntGetAndClear            NOROM_RFCCpeIntGetAndClear
     #define RFCDoorbellSendTo               NOROM_RFCDoorbellSendTo
+    #define RFCSynthPowerDown               NOROM_RFCSynthPowerDown
 #endif
 
 //*****************************************************************************
@@ -232,14 +233,6 @@ RFCCpeIntDisable(uint32_t ui32Mask)
   //  Disable the masked interrupts
   //
   HWREG( RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIEN ) &= ~ui32Mask;
-
-  do
-  {
-    //
-    // Clear any pending interrupts.
-    //
-    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) = 0x0;
-  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != 0x0);
 }
 
 
@@ -255,11 +248,6 @@ RFCHwIntDisable(uint32_t ui32Mask)
   //  Disable the masked interrupts
   //
   HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIEN) &= ~ui32Mask;
-
-  //
-  // Clear any pending interrupts.
-  //
-  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) = 0x0;
 }
 
 
@@ -284,8 +272,8 @@ RFCCpeIntClear(uint32_t ui32Mask)
     //
     // Clear interrupts that may now be pending
     //
-    HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) &= ~ui32Mask;
-  }while(HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFCPEIFG) != ~ui32Mask);
+    HWREG(RFC_DBELL_BASE+RFC_DBELL_O_RFCPEIFG) = ~ui32Mask;
+  }while (HWREG(RFC_DBELL_BASE+RFC_DBELL_O_RFCPEIFG) & ui32Mask);
 }
 
 
@@ -300,7 +288,7 @@ RFCHwIntClear(uint32_t ui32Mask)
   //
   // Clear pending interrupts.
   //
-  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) &= ~ui32Mask;
+  HWREG(RFC_DBELL_BASE + RFC_DBELL_O_RFHWIFG) = ~ui32Mask;
 }
 
 
@@ -329,6 +317,14 @@ extern uint32_t RFCDoorbellSendTo(uint32_t pOp);
 
 //*****************************************************************************
 //
+//! Turn off synth, NOTE: Radio will no longer respond to commands!
+//
+//*****************************************************************************
+extern void RFCSynthPowerDown(void);
+
+
+//*****************************************************************************
+//
 // Support for DriverLib in ROM:
 // Redirect to implementation in ROM when available.
 //
@@ -342,6 +338,10 @@ extern uint32_t RFCDoorbellSendTo(uint32_t pOp);
     #ifdef ROM_RFCDoorbellSendTo
         #undef  RFCDoorbellSendTo
         #define RFCDoorbellSendTo               ROM_RFCDoorbellSendTo
+    #endif
+    #ifdef ROM_RFCSynthPowerDown
+        #undef  RFCSynthPowerDown
+        #define RFCSynthPowerDown               ROM_RFCSynthPowerDown
     #endif
 #endif
 

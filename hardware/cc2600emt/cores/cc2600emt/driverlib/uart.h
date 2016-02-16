@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       uart.h
-*  Revised:        2015-09-21 15:19:36 +0200 (Mon, 21 Sep 2015)
-*  Revision:       44629
+*  Revised:        2015-11-26 13:48:57 +0100 (Thu, 26 Nov 2015)
+*  Revision:       45216
 *
 *  Description:    Defines and prototypes for the UART.
 *
@@ -376,6 +376,8 @@ extern void UARTFIFOLevelGet(uint32_t ui32Base, uint32_t *pui32TxLevel,
 //! \param ui32Base is the base address of the UART port.
 //! \param ui32UARTClk is the rate of the clock supplied to the UART module.
 //! \param ui32Baud is the desired baud rate.
+//! - Minimum baud rate: ui32Baud >= ceil(ui32UARTClk / 1,048,559.875)
+//! - Maximum baud rate: ui32Baud <= floor(ui32UARTClk / 15.875)
 //! \param ui32Config is the data format for the port.
 //! The parameter is the bitwise OR of three values:
 //! - Number of data bits

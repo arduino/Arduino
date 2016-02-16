@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,23 +41,23 @@
 bool AES256_setCipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
         uint_fast16_t keyLength)
 {
-    uint8_t i;
+    uint_fast8_t i;
     uint16_t sCipherKey;
 
-    AES256_CMSIS(moduleInstance)->rCTL0.r |= 0;
+    AES256_CMSIS(moduleInstance)->CTL0 |= 0;
 
     switch (keyLength)
     {
     case AES256_KEYLENGTH_128BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__128BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__128BIT;
         break;
 
     case AES256_KEYLENGTH_192BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__192BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__192BIT;
         break;
 
     case AES256_KEYLENGTH_256BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__256BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__256BIT;
         break;
     default:
         return false;
@@ -69,11 +69,11 @@ bool AES256_setCipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
     {
         sCipherKey = (uint16_t) (cipherKey[i]);
         sCipherKey = sCipherKey | ((uint16_t) (cipherKey[i + 1]) << 8);
-        AES256_CMSIS(moduleInstance)->rKEY.r = sCipherKey;
+        AES256_CMSIS(moduleInstance)->KEY = sCipherKey;
     }
 
     // Wait until key is written
-    while (!BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESKEYWR_OFS))
+    while (!BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_KEYWR_OFS))
         ;
 
     return true;
@@ -82,33 +82,33 @@ bool AES256_setCipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
 void AES256_encryptData(uint32_t moduleInstance, const uint8_t * data,
         uint8_t * encryptedData)
 {
-    uint8_t i;
+    uint_fast8_t i;
     uint16_t tempData = 0;
     uint16_t tempVariable = 0;
 
     // Set module to encrypt mode
-    AES256_CMSIS(moduleInstance)->rCTL0.r &= ~AESOP_M;
+    AES256_CMSIS(moduleInstance)->CTL0 &= ~AES256_CTL0_OP_MASK;
 
     // Write data to encrypt to module
     for (i = 0; i < 16; i = i + 2)
     {
         tempVariable = (uint16_t) (data[i]);
         tempVariable = tempVariable | ((uint16_t) (data[i + 1]) << 8);
-        AES256_CMSIS(moduleInstance)->rDIN.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->DIN = tempVariable;
     }
 
     // Key that is already written shall be used
-    // Encryption is initialized by setting AESKEYWR to 1
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESKEYWR_OFS) = 1;
+    // Encryption is initialized by setting AES256_STAT_KEYWR to 1
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_KEYWR_OFS) = 1;
 
     // Wait unit finished ~167 MCLK
-    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESBUSY_OFS))
+    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_BUSY_OFS))
         ;
 
     // Write encrypted data back to variable
     for (i = 0; i < 16; i = i + 2)
     {
-        tempData = AES256_CMSIS(moduleInstance)->rDOUT.r;
+        tempData = AES256_CMSIS(moduleInstance)->DOUT;
         *(encryptedData + i) = (uint8_t) tempData;
         *(encryptedData + i + 1) = (uint8_t) (tempData >> 8);
     }
@@ -117,33 +117,33 @@ void AES256_encryptData(uint32_t moduleInstance, const uint8_t * data,
 void AES256_decryptData(uint32_t moduleInstance, const uint8_t * data,
         uint8_t * decryptedData)
 {
-    uint8_t i;
+    uint_fast8_t i;
     uint16_t tempData = 0;
     uint16_t tempVariable = 0;
 
     // Set module to decrypt mode
-    AES256_CMSIS(moduleInstance)->rCTL0.r |= (AESOP_3);
+    AES256_CMSIS(moduleInstance)->CTL0 |= (AES256_CTL0_OP_3);
 
     // Write data to decrypt to module
     for (i = 0; i < 16; i = i + 2)
     {
         tempVariable = (uint16_t) (data[i + 1] << 8);
         tempVariable = tempVariable | ((uint16_t) (data[i]));
-        AES256_CMSIS(moduleInstance)->rDIN.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->DIN = tempVariable;
     }
 
     // Key that is already written shall be used
     // Now decryption starts
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESKEYWR_OFS) = 1;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_KEYWR_OFS) = 1;
 
     // Wait unit finished ~167 MCLK
-    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESBUSY_OFS))
+    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_BUSY_OFS))
         ;
 
     // Write encrypted data back to variable
     for (i = 0; i < 16; i = i + 2)
     {
-        tempData = AES256_CMSIS(moduleInstance)->rDOUT.r;
+        tempData = AES256_CMSIS(moduleInstance)->DOUT;
         *(decryptedData + i) = (uint8_t) tempData;
         *(decryptedData + i + 1) = (uint8_t) (tempData >> 8);
     }
@@ -156,21 +156,21 @@ bool AES256_setDecipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
     uint16_t tempVariable = 0;
 
     // Set module to decrypt mode
-    AES256_CMSIS(moduleInstance)->rCTL0.r =
-            (AES256_CMSIS(moduleInstance)->rCTL0.r & ~AESOP_M) | AESOP1;
+    AES256_CMSIS(moduleInstance)->CTL0 =
+            (AES256_CMSIS(moduleInstance)->CTL0 & ~AES256_CTL0_OP_MASK) | AES256_CTL0_OP1;
 
     switch (keyLength)
     {
     case AES256_KEYLENGTH_128BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__128BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__128BIT;
         break;
 
     case AES256_KEYLENGTH_192BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__192BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__192BIT;
         break;
 
     case AES256_KEYLENGTH_256BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__256BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__256BIT;
         break;
 
     default:
@@ -184,11 +184,11 @@ bool AES256_setDecipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
     {
         tempVariable = (uint16_t) (cipherKey[i]);
         tempVariable = tempVariable | ((uint16_t) (cipherKey[i + 1]) << 8);
-        AES256_CMSIS(moduleInstance)->rKEY.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->KEY = tempVariable;
     }
 
     // Wait until key is processed ~52 MCLK
-    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESBUSY_OFS))
+    while (BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_BUSY_OFS))
         ;
 
     return true;
@@ -196,27 +196,27 @@ bool AES256_setDecipherKey(uint32_t moduleInstance, const uint8_t * cipherKey,
 
 void AES256_clearInterruptFlag(uint32_t moduleInstance)
 {
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r,AESRDYIFG_OFS) = 0;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0,AES256_CTL0_RDYIFG_OFS) = 0;
 }
 
 uint32_t AES256_getInterruptFlagStatus(uint32_t moduleInstance)
 {
-    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r, AESRDYIFG_OFS);
+    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0, AES256_CTL0_RDYIFG_OFS);
 }
 
 void AES256_enableInterrupt(uint32_t moduleInstance)
 {
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r,AESRDYIE_OFS) = 1;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0,AES256_CTL0_RDYIE_OFS) = 1;
 }
 
 void AES256_disableInterrupt(uint32_t moduleInstance)
 {
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r,AESRDYIE_OFS) = 0;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0,AES256_CTL0_RDYIE_OFS) = 0;
 }
 
 void AES256_reset(uint32_t moduleInstance)
 {
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r,AESSWRST_OFS) = 1;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0,AES256_CTL0_SWRST_OFS) = 1;
 }
 
 void AES256_startEncryptData(uint32_t moduleInstance, const uint8_t * data)
@@ -225,63 +225,63 @@ void AES256_startEncryptData(uint32_t moduleInstance, const uint8_t * data)
     uint16_t tempVariable = 0;
 
     // Set module to encrypt mode
-    AES256_CMSIS(moduleInstance)->rCTL0.r &= ~AESOP_M;
+    AES256_CMSIS(moduleInstance)->CTL0 &= ~AES256_CTL0_OP_MASK;
 
     // Write data to encrypt to module
     for (i = 0; i < 16; i = i + 2)
     {
         tempVariable = (uint16_t) (data[i]);
         tempVariable = tempVariable | ((uint16_t) (data[i + 1]) << 8);
-        AES256_CMSIS(moduleInstance)->rDIN.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->DIN = tempVariable;
     }
 
     // Key that is already written shall be used
-    // Encryption is initialized by setting AESKEYWR to 1
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESKEYWR_OFS) = 1;
+    // Encryption is initialized by setting AES256_STAT_KEYWR to 1
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_KEYWR_OFS) = 1;
 }
 
 void AES256_startDecryptData(uint32_t moduleInstance, const uint8_t * data)
 {
-    uint8_t i;
+    uint_fast8_t i;
     uint16_t tempVariable = 0;
 
     // Set module to decrypt mode
-    AES256_CMSIS(moduleInstance)->rCTL0.r |= (AESOP_3);
+    AES256_CMSIS(moduleInstance)->CTL0 |= (AES256_CTL0_OP_3);
 
     // Write data to decrypt to module
     for (i = 0; i < 16; i = i + 2)
     {
         tempVariable = (uint16_t) (data[i + 1] << 8);
         tempVariable = tempVariable | ((uint16_t) (data[i]));
-        AES256_CMSIS(moduleInstance)->rDIN.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->DIN = tempVariable;
     }
 
     // Key that is already written shall be used
     // Now decryption starts
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESKEYWR_OFS) = 1;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_KEYWR_OFS) = 1;
 }
 
 bool AES256_startSetDecipherKey(uint32_t moduleInstance,
         const uint8_t * cipherKey, uint_fast16_t keyLength)
 {
-    uint8_t i;
+    uint_fast8_t i;
     uint16_t tempVariable = 0;
 
-    AES256_CMSIS(moduleInstance)->rCTL0.r =
-            (AES256_CMSIS(moduleInstance)->rCTL0.r & ~AESOP_M) | AESOP1;
+    AES256_CMSIS(moduleInstance)->CTL0 =
+            (AES256_CMSIS(moduleInstance)->CTL0 & ~AES256_CTL0_OP_MASK) | AES256_CTL0_OP1;
 
     switch (keyLength)
     {
     case AES256_KEYLENGTH_128BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__128BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__128BIT;
         break;
 
     case AES256_KEYLENGTH_192BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__192BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__192BIT;
         break;
 
     case AES256_KEYLENGTH_256BIT:
-        AES256_CMSIS(moduleInstance)->rCTL0.r |= AESKL__256BIT;
+        AES256_CMSIS(moduleInstance)->CTL0 |= AES256_CTL0_KL__256BIT;
         break;
 
     default:
@@ -295,7 +295,7 @@ bool AES256_startSetDecipherKey(uint32_t moduleInstance,
     {
         tempVariable = (uint16_t) (cipherKey[i]);
         tempVariable = tempVariable | ((uint16_t) (cipherKey[i + 1]) << 8);
-        AES256_CMSIS(moduleInstance)->rKEY.r = tempVariable;
+        AES256_CMSIS(moduleInstance)->KEY = tempVariable;
     }
 
     return true;
@@ -307,13 +307,13 @@ bool AES256_getDataOut(uint32_t moduleInstance, uint8_t *outputData)
     uint16_t tempData = 0;
 
     // If module is busy, exit and return failure
-    if (BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESBUSY_OFS))
+    if (BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_BUSY_OFS))
         return false;
 
     // Write encrypted data back to variable
     for (i = 0; i < 16; i = i + 2)
     {
-        tempData = AES256_CMSIS(moduleInstance)->rDOUT.r;
+        tempData = AES256_CMSIS(moduleInstance)->DOUT;
         *(outputData + i) = (uint8_t) tempData;
         *(outputData + i + 1) = (uint8_t) (tempData >> 8);
     }
@@ -323,17 +323,17 @@ bool AES256_getDataOut(uint32_t moduleInstance, uint8_t *outputData)
 
 bool AES256_isBusy(uint32_t moduleInstance)
 {
-    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->rSTAT.r, AESBUSY_OFS);
+    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->STAT, AES256_STAT_BUSY_OFS);
 }
 
 void AES256_clearErrorFlag(uint32_t moduleInstance)
 {
-    BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r, AESERRFG_OFS) = 0;
+    BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0, AES256_CTL0_ERRFG_OFS) = 0;
 }
 
 uint32_t AES256_getErrorFlagStatus(uint32_t moduleInstance)
 {
-    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->rCTL0.r, AESERRFG_OFS);
+    return BITBAND_PERI(AES256_CMSIS(moduleInstance)->CTL0, AES256_CTL0_ERRFG_OFS);
 }
 
 void AES256_registerInterrupt(uint32_t moduleInstance, void (*intHandler)(void))

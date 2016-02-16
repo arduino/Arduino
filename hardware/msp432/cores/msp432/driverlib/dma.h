@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -348,7 +348,7 @@ typedef struct _DMA_ControlTable
 #define DMA_CH7_EUSCIB1RX2         0x04000007
 #define DMA_CH7_EUSCIB0RX3         0x05000007
 #define DMA_CH7_TIMERA3CCR2        0x06000007
-#define DMA_CH7_ADC12C             0x07000007
+#define DMA_CH7_ADC14              0x07000007
 
 //
 //  Different interrupt handlers to pass into DMA_registerInterrupt and

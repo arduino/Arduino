@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       aon_rtc.h
-*  Revised:        2015-07-16 12:12:04 +0200 (Thu, 16 Jul 2015)
-*  Revision:       44151
+*  Revised:        2016-01-04 14:40:17 +0100 (Mon, 04 Jan 2016)
+*  Revision:       45350
 *
 *  Description:    Defines and prototypes for the AON RTC
 *
@@ -368,17 +368,17 @@ AONRTCEventClear(uint32_t ui32Channel)
 
     if(ui32Channel & AON_RTC_CH0)
     {
-        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH0_BITN) = 1;
+        HWREG(AON_RTC_BASE + AON_RTC_O_EVFLAGS) = AON_RTC_EVFLAGS_CH0;
     }
 
     if(ui32Channel & AON_RTC_CH1)
     {
-        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH1_BITN) = 1;
+        HWREG(AON_RTC_BASE + AON_RTC_O_EVFLAGS) = AON_RTC_EVFLAGS_CH1;
     }
 
     if(ui32Channel & AON_RTC_CH2)
     {
-        HWREGBITW(AON_RTC_BASE + AON_RTC_O_EVFLAGS, AON_RTC_EVFLAGS_CH2_BITN) = 1;
+        HWREG(AON_RTC_BASE + AON_RTC_O_EVFLAGS) = AON_RTC_EVFLAGS_CH2;
     }
 }
 

@@ -1,10 +1,10 @@
 /*
  * -------------------------------------------
- *    MSP432 DriverLib - v01_04_00_18 
+ *    MSP432 DriverLib - v3_10_00_09 
  * -------------------------------------------
  *
  * --COPYRIGHT--,BSD,BSD
- * Copyright (c) 2015, Texas Instruments Incorporated
+ * Copyright (c) 2014, Texas Instruments Incorporated
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,16 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * --/COPYRIGHT--*/
+//*****************************************************************************
+//
+// rom.h - Macros to facilitate calling functions in the ROM.
+//
+// Copyright (c) 2013 Texas Instruments Incorporated.  All rights reserved.
+// TI Information - Selective Disclosure
+//
+//*****************************************************************************
+//
+
 #ifndef __ROM_H__
 #define __ROM_H__
 
@@ -1631,8 +1641,9 @@
 #endif
 #if defined(TARGET_IS_MSP432P4XX)
 #define ROM_Timer_A_getCaptureCompareInterruptStatus                          \
-        (( (*)(,                                                              \
-              ))ROM_TIMER_ATABLE[22])
+        ((uint32_t (*)(uint32_t timer,                                        \
+                       uint_fast16_t captureCompareRegister,                  \
+                       uint_fast16_t mask))ROM_TIMER_ATABLE[22])
 #endif
 #if defined(TARGET_IS_MSP432P4XX)
 #define ROM_Timer_A_getCaptureCompareEnabledInterruptStatus                   \

@@ -1,7 +1,7 @@
 /******************************************************************************
 *  Filename:       hw_types.h
-*  Revised:        2015-06-25 09:45:13 +0200 (Thu, 25 Jun 2015)
-*  Revision:       44027
+*  Revised:        2015-12-15 10:40:56 +0100 (Tue, 15 Dec 2015)
+*  Revision:       45307
 *
 *  Description:    Common types and macros.
 *
@@ -48,6 +48,7 @@
 // Common driverlib types
 //
 //*****************************************************************************
+typedef void (* FPTR_VOID_VOID_T) (void);
 typedef void (* FPTR_VOID_UINT8_T) (uint8_t);
 
 //*****************************************************************************
