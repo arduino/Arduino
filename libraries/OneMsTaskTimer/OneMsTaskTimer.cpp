@@ -279,12 +279,13 @@ void OneMsTaskTimer::start(uint32_t timer_index) {
     Error_Block eb;
     Error_init(&eb);
 
-    Clock_Params_init(&clockParams);
-    clockParams.period = 1;
-    clockParams.startFlag = TRUE;
-    clockParams.arg = (UArg)0x5555;
     if (myClock == NULL){
-		myClock = Clock_create(OneMsTaskTimer_int, 1, &clockParams, &eb);
+        Clock_Params_init(&clockParams);
+        clockParams.period = (uint32_t)1000 / (uint64_t)Clock_tickPeriod;
+        clockParams.startFlag = FALSE;
+        clockParams.arg = (UArg)0x5555;
+
+		myClock = Clock_create(OneMsTaskTimer_int, clockParams.period, &clockParams, &eb);
 	}
     Clock_start(myClock);
 }
