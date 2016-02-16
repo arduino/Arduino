@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LIBRARIES="Adafruit_TMP006 OneWire CogLCD aJson PubNub Temboo MQTTClient PubSubClient OPT3001 M2XStreamClient OneMsTaskTimer LCD_SharpBoosterPack_SPI"
+LIBRARIES="Adafruit_TMP007 Adafruit_TMP006 OneWire CogLCD aJson PubNub Temboo MQTTClient PubSubClient OPT3001 M2XStreamClient OneMsTaskTimer LCD_SharpBoosterPack_SPI"
 ARCHES="cc2600emt msp430 lm4f cc3200 msp432 cc3200emt"
 OSTYPE=`uname`
 
