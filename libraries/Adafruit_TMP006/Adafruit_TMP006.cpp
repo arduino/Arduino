@@ -155,7 +155,6 @@ uint16_t Adafruit_TMP006::read16(uint8_t a) {
 #endif
   Wire.endTransmission(); // end transmission
   
-  Wire.beginTransmission(_addr); // start transmission to device 
   Wire.requestFrom(_addr, (uint8_t)2);// send data n-bytes read
 #if (ARDUINO >= 100)
   ret = Wire.read(); // receive DATA
@@ -166,7 +165,6 @@ uint16_t Adafruit_TMP006::read16(uint8_t a) {
   ret <<= 8;
   ret |= Wire.receive(); // receive DATA
 #endif
-  Wire.endTransmission(); // end transmission
 
   return ret;
 }
