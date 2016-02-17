@@ -76,7 +76,12 @@ void Adafruit_ST7735::writecommand(uint8_t c) {
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, LOW);
+#else
   *rsport &= ~rspinmask;
+#endif
   *csport &= ~cspinmask;
 
   //Serial.print("C ");
@@ -93,7 +98,12 @@ void Adafruit_ST7735::writedata(uint8_t c) {
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
     
   //Serial.print("D ");
@@ -432,7 +442,12 @@ void Adafruit_ST7735::pushColor(uint16_t color) {
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
 
   if (tabcolor == INITR_BLACKTAB)   color = swapcolor(color);
@@ -454,7 +469,12 @@ void Adafruit_ST7735::drawPixel(int16_t x, int16_t y, uint16_t color) {
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
 
   if (tabcolor == INITR_BLACKTAB)   color = swapcolor(color);
@@ -483,7 +503,12 @@ void Adafruit_ST7735::drawFastVLine(int16_t x, int16_t y, int16_t h,
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
   while (h--) {
     spiwrite(hi);
@@ -510,7 +535,12 @@ void Adafruit_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w,
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
   while (w--) {
     spiwrite(hi);
@@ -547,7 +577,12 @@ void Adafruit_ST7735::fillRect(int16_t x, int16_t y, int16_t w, int16_t h,
 #ifdef SPI_HAS_TRANSACTION
   if (hwSPI) SPI.beginTransaction(spisettings);
 #endif
+
+#ifdef __ARDUINO_ARC__
+  digitalWrite(_rs, HIGH);
+#else
   *rsport |=  rspinmask;
+#endif
   *csport &= ~cspinmask;
   for(y=h; y>0; y--) {
     for(x=w; x>0; x--) {
