@@ -246,13 +246,14 @@ ISR(PCINT3_vect, ISR_ALIASOF(PCINT0_vect));
 //
 // Constructor
 //
-SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic /* = false */) : 
+SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic /* = false */, bool full_duplex /* = true */) : 
   _rx_delay_centering(0),
   _rx_delay_intrabit(0),
   _rx_delay_stopbit(0),
   _tx_delay(0),
   _buffer_overflow(false),
-  _inverse_logic(inverse_logic)
+  _inverse_logic(inverse_logic),
+  _full_duplex(full_duplex)
 {
   setTX(transmitPin);
   setRX(receivePin);
@@ -273,7 +274,11 @@ void SoftwareSerial::setTX(uint8_t tx)
   // output hihg. Now, it is input with pullup for a short while, which
   // is fine. With inverse logic, either order is fine.
   digitalWrite(tx, _inverse_logic ? LOW : HIGH);
-  pinMode(tx, OUTPUT);
+  if(_full_duplex) 
+    pinMode(tx, OUTPUT);
+  else
+    pinMode(tx, INPUT);
+  _transmitPin = tx;
   _transmitBitMask = digitalPinToBitMask(tx);
   uint8_t port = digitalPinToPort(tx);
   _transmitPortRegister = portOutputRegister(port);
@@ -418,6 +423,9 @@ size_t SoftwareSerial::write(uint8_t b)
     setWriteError();
     return 0;
   }
+  
+  if(!_full_duplex)
+    pinMode(_transmitPin, OUTPUT);
 
   // By declaring these as local variables, the compiler will put them
   // in registers _before_ disabling interrupts and entering the
@@ -461,6 +469,11 @@ size_t SoftwareSerial::write(uint8_t b)
   else
     *reg |= reg_mask;
 
+  if(!_full_duplex){ 
+    pinMode(_transmitPin, INPUT);
+    *reg |= reg_mask; // send 1 
+  }
+  
   SREG = oldSREG; // turn interrupts back on
   tunedDelay(_tx_delay);
   
