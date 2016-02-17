@@ -344,6 +344,10 @@ private:
       inline static void setSS()     { PORTB &= ~_BV(2); };
       inline static void resetSS()   { PORTB |=  _BV(2); };
     #endif
+  #elif defined(__ARDUINO_ARC__)
+	inline static void initSS() { pinMode(10, OUTPUT); };
+	inline static void setSS() { digitalWrite(10, LOW); };
+	inline static void resetSS() { digitalWrite(10, HIGH); };
   #else
     inline static void initSS() {
       *portModeRegister(digitalPinToPort(ETHERNET_SHIELD_SPI_CS)) |= digitalPinToBitMask(ETHERNET_SHIELD_SPI_CS);
