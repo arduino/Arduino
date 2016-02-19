@@ -1,7 +1,7 @@
 #FUNCTIONS COLOR 			#D35400 - ORANGE			KEYWORD1
 #FUNCTIONS COLOR			#D35400 - ORANGE			KEYWORD2
-#STRUCTURE COLORS 			#5E6D03 - GREEN			KEYWORD3
-#VARIABLES COLOR 				#00979C - BLUE				LITERAL1
+#STRUCTURE COLORS 			#728E00 - GREEN			KEYWORD3
+#VARIABLES COLOR 				#00979C - BLUE				LITERAL2
 
 #ERROR COLOR					#A61717 - RED
 #COMMENTS // COLOR			#95A5A6 - LIGHT GREY
@@ -17,7 +17,6 @@ status.edit.bgcolor = #F1B500
 status.font = SansSerif,plain,12
 
 # GUI - TABS
-# settings for the tabs at the top
 # (tab images are stored in the lib/theme folder)
 header.bgcolor = #17A1A5
 header.text.selected.color = #005B5B
