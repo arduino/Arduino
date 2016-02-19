@@ -46,7 +46,8 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
-  private final Timer reachabilityTimer = new Timer();
+  private Timer reachabilityTimer;
+  private JmDNS jmdns = null;
 
   private void removeDuplicateBoards(BoardPort newBoard) {
     synchronized (boardPortsDiscoveredWithJmDNS) {
@@ -137,23 +138,31 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
   }
 
   public NetworkDiscovery() {
-    final JmDNS jmdns;
+
+  }
+
+  @Override
+  public void start() {
     try {
       jmdns = JmDNS.create();
       jmdns.addServiceListener("_arduino._tcp.local.", this);
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-  @Override
-  public void start() {
+    reachabilityTimer =  new Timer();
     new BoardReachabilityFilter(this).start(reachabilityTimer);
   }
 
   @Override
   public void stop() {
+    jmdns.unregisterAllServices();
+    try {
+      jmdns.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     reachabilityTimer.cancel();
+    start();
   }
 
   @Override
