@@ -131,12 +131,14 @@ int WiFiClient::read(uint8_t* buf, size_t size) {
 }
 
 int WiFiClient::peek() {
-	  uint8_t b;
-	  if (!available())
-	    return -1;
+  uint8_t b;
+  if (!available())
+    return -1;
 
-	  ServerDrv::getData(_sock, &b, 1);
-	  return b;
+  if (!ServerDrv::getData(_sock, &b, 1))
+    return -1;
+
+  return b;
 }
 
 void WiFiClient::flush() {
