@@ -292,19 +292,38 @@ public class PdePreprocessor {
 
   // Write the pde program to the cpp file
   protected void writeProgram(PrintStream out, String program, List<String> prototypes) {
+    /* find appropriate location for the setup/loop declarations */
     int prototypeInsertionPoint = firstStatement(program);
   
+    /* output everything up to that point */
     out.print(program.substring(0, prototypeInsertionPoint));
+
+    /* insert standard #include's */
     String arch = Base.getArch();
-    if(arch == "msp430") out.print("#include \"Energia.h\"\n");    
+    if (arch == "msp430") out.print("#include \"Energia.h\"\n");    
     else out.print("#include \"Arduino.h\"\n");    
     
-    // print user defined prototypes
+    /* insert user defined prototypes */
     for (int i = 0; i < prototypes.size(); i++) {
       out.print(prototypes.get(i) + "\n");
     }
+
+    /* count # of lines between last "#line 1 " and insertion point */
     String[] lines = program.substring(0, prototypeInsertionPoint).split("\n", -1);
-    out.println("#line " + (lines.length - 1));
+    int line = 1;
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith("#line 1 ")) {
+        line = 1;
+      }
+      else {
+        line++;
+      }
+    }
+    
+    /* output a #line directive to ignore the lines inserted above */
+    out.println("#line " + (line - 1));
+
+    /* output the remainder of program */
     out.print(program.substring(prototypeInsertionPoint));
   }
 
