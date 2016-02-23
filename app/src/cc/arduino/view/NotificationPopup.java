@@ -61,7 +61,7 @@ public class NotificationPopup extends JDialog {
     super(parent, false);
     setLayout(new FlowLayout());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    setAlwaysOnTop(true);
+    //setAlwaysOnTop(true);
     setUndecorated(true);
     setResizable(false);
 
