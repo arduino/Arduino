@@ -2442,13 +2442,14 @@ public class Editor extends JFrame implements RunnerListener {
         }
       }
       try {
-        if (serialMonitor != null)
+        if (serialMonitor != null) {
           serialMonitor.resume(boardPort);
-        if (boardPort == null) {
-          serialMonitor.close();
-          handleSerial();
-        } else {
-          serialMonitor.resume(boardPort);
+          if (boardPort == null) {
+            serialMonitor.close();
+            handleSerial();
+          } else {
+            serialMonitor.resume(boardPort);
+          }
         }
       } catch (Exception e) {
         statusError(e);
