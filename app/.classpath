@@ -38,7 +38,7 @@
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/jmdns-3.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/jmdns-3.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.5.8.1+arduino.jar"/>
