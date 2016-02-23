@@ -145,6 +145,7 @@ public class Main
     {
         String output = null;
         String root = null;
+        String aSketchName = null;
         int start = 0;
         boolean ppOnly = false;
         
@@ -176,6 +177,11 @@ public class Main
                         case 'T': templates.add(args[start]);
                             break;
                     }
+                    break;
+                }
+                case 'n': {
+                    start += 1;
+                    aSketchName = args[start];
                     break;
                 }
                 case 'E': {
@@ -270,7 +276,7 @@ public class Main
         }
 
         /* run the preprocessor to generate *.cpp files */
-        String name = ino2cpp(output, sketch, target, ppOnly);
+        String name = ino2cpp(output, sketch, aSketchName, target, ppOnly);
 
         if (verbose > 0) {
             System.out.println("generated: " + name);
@@ -295,15 +301,17 @@ public class Main
 
     /*
      *  ======== ino2cpp ========
-     *  buildPath  - path to the build directory (where main.cpp
-     *               and <sketch>.cpp are generated and built)
-     *  sketchPath - path to the directory containing user's sketch files
-     *  target     - name of the target (cc3200emt, msp432, ...)
+     *  buildPath   - path to the build directory (where main.cpp
+     *                and <sketch>.cpp are generated and built)
+     *  sketchPath  - path to the directory containing user's sketch files
+     *  aSketchName - alternative Sketch name. The final output of the 
+                      the PdePreprocessor will be this <aSketchName>.ino.cpp
+     *  target      - name of the target (cc3200emt, msp432, ...)
      *
      *  Returns null on a failure; otherwise, the basename of the
      *          generated <sketch>.cpp file
      */
-    private static String ino2cpp(String buildPath, String sketchPath,
+    private static String ino2cpp(String buildPath, String sketchPath, String aSketchName,
                                   String target, boolean ppOnly)
     {
         File dir = new File(sketchPath);
@@ -398,7 +406,7 @@ public class Main
                  */
                 PdePreprocessor preproc = new PdePreprocessor();
                 String main = preproc.generate(buildPath,
-                                               code, sketchName, true);
+                                               code, sketchName, aSketchName, true);
                 Preferences.set("build.mainsketch", main);
                 return (main);
             }

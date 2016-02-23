@@ -365,8 +365,23 @@ public class PdePreprocessor {
    *  sketchName - the name of the sketch project
    *  isEMT      - generate code to support multiple setup/loop pairs
    */
+
   public String generate(String buildPath, ArrayList<InoCode> code,
                          String sketchName, boolean isEMT)
+  {
+    String primaryClassName = null;
+    try {
+        primaryClassName = generate(buildPath, code, sketchName, null, isEMT);
+    }
+    catch (Exception e) {
+          System.err.println(e);
+          e.printStackTrace();
+    }
+    return primaryClassName;
+  }
+
+  public String generate(String buildPath, ArrayList<InoCode> code,
+                         String sketchName, String aSketchName, boolean isEMT)
       throws Exception
   {
       // 0. sort code into canonical order
@@ -424,6 +439,8 @@ public class PdePreprocessor {
       // 2. generate main.cpp and the first part of the sketch.cpp;
       //    i.e., up to the concatenated *.ino content
       int prefixLen = 0;
+      sketchName = aSketchName == null ? sketchName:aSketchName;
+
       try {
           prefixLen = writePrefix(bigCode.toString(),
                                    buildPath,
