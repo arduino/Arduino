@@ -23,7 +23,7 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  stringOne = String("stringThree = ");
+  stringOne = String("You added ");
   stringTwo = String("this string");
   stringThree = String();
   // send an intro:
@@ -34,11 +34,11 @@ void setup() {
 void loop() {
   // adding a constant integer to a string:
   stringThree =  stringOne + 123;
-  Serial.println(stringThree);    // prints "stringThree = 123"
+  Serial.println(stringThree);    // prints "You added 123"
 
   // adding a constant long interger to a string:
   stringThree = stringOne + 123456789;
-  Serial.println(stringThree);    // prints " You added 123456789"
+  Serial.println(stringThree);    // prints "You added 123456789"
 
   // adding a constant character to a string:
   stringThree =  stringOne + 'A';
