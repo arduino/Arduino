@@ -34,36 +34,36 @@
    
    <!-- Syntax tokens. -->
    <tokenStyles>
-      <style token="IDENTIFIER" fg="000000"/>
-      <style token="DATA_TYPE" fg="008080" bold="true"/>
-      <style token="FUNCTION" fg="cc6600"/>
-      <style token="VARIABLE" fg="cc6600" bold="true"/>
-      <style token="RESERVED_WORD" fg="024f8b" bold="true"/>
-      <style token="RESERVED_WORD_2" fg="008080" bold="false"/>
-      <style token="PREPROCESSOR" fg="000000" bold="false"/>
+      <style token="IDENTIFIER" fg="D35400" bold="true"/>
+      <style token="DATA_TYPE" fg="00979D" bold="false"/>
+      <style token="FUNCTION" fg="728E00" bold="false"/>
+      <style token="VARIABLE" fg="cc6600" bold="false"/>
+      <style token="RESERVED_WORD" fg="D35400" bold="false"/>
+      <style token="RESERVED_WORD_2" fg="00979D" bold="false"/>
+      <style token="PREPROCESSOR" fg="660033" bold="false"/>
 
-      <style token="ANNOTATION" fg="808080"/>
-      <style token="COMMENT_DOCUMENTATION" fg="7e7e7e"/>
-      <style token="COMMENT_EOL" fg="7e7e7e"/>
-      <style token="COMMENT_MULTILINE" fg="7e7e7e"/>
+      <style token="ANNOTATION" fg="434f54" bold="false"/>
+      <style token="COMMENT_DOCUMENTATION" fg="E2E2E2" bold="false"/>
+      <style token="COMMENT_EOL" fg="7e7e7e" bold="false"/>
+      <style token="COMMENT_MULTILINE" fg="7e7e7e" bold="false"/>
       <style token="COMMENT_KEYWORD" fg="7F9FBF" bold="true"/>
-      <style token="COMMENT_MARKUP" fg="7f7f9f"/>
-      <style token="LITERAL_BOOLEAN" fg="000000" bold="false"/>
-      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="000000"/>
-      <style token="LITERAL_NUMBER_FLOAT" fg="000000"/>
-      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="000000"/>
-      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="006699"/>
-      <style token="LITERAL_CHAR" fg="006699"/>
-      <style token="LITERAL_BACKQUOTE" fg="000000"/>
+      <style token="COMMENT_MARKUP" fg="7f7f9f" bold="false"/>
+      <style token="LITERAL_BOOLEAN" fg="00979D" bold="false"/>
+      <style token="LITERAL_NUMBER_DECIMAL_INT" fg="706443" bold="false"/>
+      <style token="LITERAL_NUMBER_FLOAT" fg="706443" bold="false"/>
+      <style token="LITERAL_NUMBER_HEXADECIMAL" fg="706443" bold="false"/>
+      <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="006699" bold="false"/>
+      <style token="LITERAL_CHAR" fg="006699" bold="false"/>
+      <style token="LITERAL_BACKQUOTE" fg="8A7B52" bold="false"/>
 
-      <style token="OPERATOR" fg="804040"/>
-      <style token="REGEX" fg="008040"/>
-      <style token="SEPARATOR" fg="000000" />
-      <style token="WHITESPACE" fg="000000"/>
-      <style token="ERROR_IDENTIFIER" fg="000000" />
-      <style token="ERROR_NUMBER_FORMAT" fg="000000" />
-      <style token="ERROR_STRING_DOUBLE" fg="000000" />
-      <style token="ERROR_CHAR" fg="000000" />
+      <style token="OPERATOR" fg="728E00" bold="false"/>
+      <style token="REGEX" fg="006699" bold="false"/>
+      <style token="SEPARATOR" fg="000000" bold="false"/>
+      <style token="WHITESPACE" fg="000000" bold="false"/>
+      <style token="ERROR_IDENTIFIER" fg="000000" bold="false"/>
+      <style token="ERROR_NUMBER_FORMAT" fg="000000" bold="false"/>
+      <style token="ERROR_STRING_DOUBLE" fg="000000" bold="false"/>
+      <style token="ERROR_CHAR" fg="000000" bold="false"/>    
    </tokenStyles>
 
 </RSyntaxTheme>

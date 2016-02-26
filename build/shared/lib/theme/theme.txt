@@ -1,13 +1,3 @@
-#FUNCTIONS COLOR 			#D35400 - ORANGE			KEYWORD1
-#FUNCTIONS COLOR			#D35400 - ORANGE			KEYWORD2
-#STRUCTURE COLORS 			#728E00 - GREEN			KEYWORD3
-#CONSTANTS COLOR 				#00979C - BLUE				LITERAL1
-#VARIABLES COLOR 				#00979C - BLUE				LITERAL2
-
-#ERROR COLOR					#A61717 - RED
-#COMMENTS // COLOR			#95A5A6 - LIGHT GREY
-#COMMENTS /**/ COLOR		#434F54	- DARK GREY
-
 # GUI - STATUS
 status.notice.fgcolor = #002325
 status.notice.bgcolor = #17A1A5
@@ -82,46 +72,13 @@ editor.brackethighlight = true
 editor.brackethighlight.color = #006699
 
 
-# TEXT - KEYWORDS
-
-# FUNCTIONS
-editor.keyword1.style = #d35400,bold
-editor.data_type.style = #d35400,bold
-
-# METHODS
-editor.keyword2.style = #D35400,plain
-editor.function.style = #d35400,plain
-
-# STRUCTURES
-editor.keyword3.style = #5E6D03,plain
-editor.reserved_word.style = #5E6D03,plain
-
-
-# TEXT - LITERALS
-editor.literal1.style = #00979C,plain
-editor.literal2.style = #00979C,plain
-editor.variable.style = #00979C,plain
-editor.reserved_word_2.style = #00979C,plain
-editor.literal_boolean.style = #00979C,plain
-editor.literal_char.style = #00979C,plain
-editor.literal_string_double_quote.style = #005C5F,plain
-editor.preprocessor.style = #5E6D03,plain
-
 # http://www.arduino.cc/
 editor.url.style = #0000ff,underlined
-
-# e.g. + - = /
-editor.operator.style = #434f54,plain
 
 
 # ?? maybe this is for words followed by a colon
 # like in case statements or goto
 editor.label.style = #7e7e7e,bold
-
-
-# TEXT - COMMENTS
-editor.comment1.style = #434F54,plain
-editor.comment2.style = #95a5a6,plain
 
 
 # LINE STATUS - editor line number status bar at the bottom of the screen

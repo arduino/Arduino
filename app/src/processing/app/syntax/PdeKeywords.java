@@ -147,9 +147,37 @@ public class PdeKeywords {
       String keyword = oldTokenEntry.getKey();
       if (!keywordTokenTypeAsString.containsKey(keyword)) {
         if ("KEYWORD1".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("DATA_TYPE", keyword);
-        } else {
+          parseRSyntaxTextAreaTokenType("IDENTIFIER", keyword);
+        } 
+        else if ("KEYWORD2".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("RESERVED_WORD", keyword);
+        }
+        else if ("KEYWORD3".equals(oldTokenEntry.getValue())) {
           parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
+        }
+        else if ("LITERAL1".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_BOOLEAN", keyword);
+        }
+        else if ("LITERAL2".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_DECIMAL_INT", keyword);
+        }
+        else if ("LITERAL3".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_FLOAT", keyword);
+        }
+        else if ("LITERAL4".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_HEXADECIMAL", keyword);
+        }
+        else if ("LITERAL5".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_STRING_DOUBLE_QUOTE", keyword);
+        }
+        else if ("LITERAL6".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_CHAR", keyword);
+        }
+        else if ("LITERAL7".equals(oldTokenEntry.getValue())) {
+          parseRSyntaxTextAreaTokenType("LITERAL_BACKQUOTE", keyword);
+        }
+        else{
+          parseRSyntaxTextAreaTokenType("IDENTIFIER", keyword);
         }
       }
     }

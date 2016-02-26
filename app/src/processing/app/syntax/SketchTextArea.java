@@ -108,7 +108,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     setMatchedBracketBorderColor(processing.app.Theme.getColor("editor.brackethighlight.color"));
     setHyperlinkForeground((Color) processing.app.Theme.getStyledFont("url", getFont()).get("color"));
 
-    setSyntaxTheme(TokenTypes.DATA_TYPE, "data_type");
+    /*setSyntaxTheme(TokenTypes.DATA_TYPE, "data_type");
     setSyntaxTheme(TokenTypes.FUNCTION, "function");
     setSyntaxTheme(TokenTypes.RESERVED_WORD, "reserved_word");
     setSyntaxTheme(TokenTypes.RESERVED_WORD_2, "reserved_word_2");
@@ -122,7 +122,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     setSyntaxTheme(TokenTypes.LITERAL_BOOLEAN, "literal_boolean");
     setSyntaxTheme(TokenTypes.LITERAL_CHAR, "literal_char");
     setSyntaxTheme(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE, "literal_string_double_quote");
-    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");
+    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");*/
 
     setColorForToken(TokenTypes.IDENTIFIER, "editor.fgcolor");
     setColorForToken(TokenTypes.WHITESPACE, "editor.eolmarkers.color");
