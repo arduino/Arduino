@@ -246,7 +246,9 @@ ISR(PCINT3_vect, ISR_ALIASOF(PCINT0_vect));
 //
 // Constructor
 //
-SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inverse_logic /* = false */) : 
+SoftwareSerial::SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic /* = false */) : 
+  _receivePin(receivePin),
+  _transmitPin(transmitPin),
   _rx_delay_centering(0),
   _rx_delay_intrabit(0),
   _rx_delay_stopbit(0),
@@ -254,8 +256,6 @@ SoftwareSerial::SoftwareSerial(uint8_t receivePin, uint8_t transmitPin, bool inv
   _buffer_overflow(false),
   _inverse_logic(inverse_logic)
 {
-  setTX(transmitPin);
-  setRX(receivePin);
 }
 
 //
@@ -266,27 +266,26 @@ SoftwareSerial::~SoftwareSerial()
   end();
 }
 
-void SoftwareSerial::setTX(uint8_t tx)
+void SoftwareSerial::setupTX()
 {
   // First write, then set output. If we do this the other way around,
   // the pin would be output low for a short while before switching to
   // output hihg. Now, it is input with pullup for a short while, which
   // is fine. With inverse logic, either order is fine.
-  digitalWrite(tx, _inverse_logic ? LOW : HIGH);
-  pinMode(tx, OUTPUT);
-  _transmitBitMask = digitalPinToBitMask(tx);
-  uint8_t port = digitalPinToPort(tx);
+  digitalWrite(_transmitPin, _inverse_logic ? LOW : HIGH);
+  pinMode(_transmitPin, OUTPUT);
+  _transmitBitMask = digitalPinToBitMask(_transmitPin);
+  uint8_t port = digitalPinToPort(_transmitPin);
   _transmitPortRegister = portOutputRegister(port);
 }
 
-void SoftwareSerial::setRX(uint8_t rx)
+void SoftwareSerial::setupRX()
 {
-  pinMode(rx, INPUT);
+  pinMode(_receivePin, INPUT);
   if (!_inverse_logic)
-    digitalWrite(rx, HIGH);  // pullup for normal logic!
-  _receivePin = rx;
-  _receiveBitMask = digitalPinToBitMask(rx);
-  uint8_t port = digitalPinToPort(rx);
+    digitalWrite(_receivePin, HIGH);  // pullup for normal logic!
+  _receiveBitMask = digitalPinToBitMask(_receivePin);
+  uint8_t port = digitalPinToPort(_receivePin);
   _receivePortRegister = portInputRegister(port);
 }
 
@@ -303,6 +302,9 @@ uint16_t SoftwareSerial::subtract_cap(uint16_t num, uint16_t sub) {
 
 void SoftwareSerial::begin(long speed)
 {
+  setupTX();
+  setupRX();
+
   _rx_delay_centering = _rx_delay_intrabit = _rx_delay_stopbit = _tx_delay = 0;
 
   // Precalculate the various delays, in number of 4-cycle delays
