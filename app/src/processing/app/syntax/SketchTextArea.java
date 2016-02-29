@@ -108,24 +108,34 @@ public class SketchTextArea extends RSyntaxTextArea {
     setMatchedBracketBorderColor(processing.app.Theme.getColor("editor.brackethighlight.color"));
     setHyperlinkForeground((Color) processing.app.Theme.getStyledFont("url", getFont()).get("color"));
 
-    /*setSyntaxTheme(TokenTypes.DATA_TYPE, "data_type");
+    setSyntaxTheme(TokenTypes.IDENTIFIER, "identifier");
+    setSyntaxTheme(TokenTypes.DATA_TYPE, "data_type"
     setSyntaxTheme(TokenTypes.FUNCTION, "function");
+    setSyntaxTheme(TokenTypes.VARIABLE, "variable");
     setSyntaxTheme(TokenTypes.RESERVED_WORD, "reserved_word");
     setSyntaxTheme(TokenTypes.RESERVED_WORD_2, "reserved_word_2");
-    setSyntaxTheme(TokenTypes.VARIABLE, "variable");
-    setSyntaxTheme(TokenTypes.OPERATOR, "operator");
-    setSyntaxTheme(TokenTypes.COMMENT_DOCUMENTATION, "comment1");
-    setSyntaxTheme(TokenTypes.COMMENT_EOL, "comment1");
-    setSyntaxTheme(TokenTypes.COMMENT_KEYWORD, "comment1");
-    setSyntaxTheme(TokenTypes.COMMENT_MARKUP, "comment1");
-    setSyntaxTheme(TokenTypes.COMMENT_MULTILINE, "comment2");
+    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");
+    setSyntaxTheme(TokenTypes.ANNOTATION, "annotation");
+    setSyntaxTheme(TokenTypes.COMMENT_DOCUMENTATION, "comment_documentation");
+    setSyntaxTheme(TokenTypes.COMMENT_EOL, "comment_eol");
+    setSyntaxTheme(TokenTypes.COMMENT_MULTILINE, "comment_multiline");
+    setSyntaxTheme(TokenTypes.COMMENT_KEYWORD, "comment_keyword");
+    setSyntaxTheme(TokenTypes.COMMENT_MARKUP, "comment_markup");
     setSyntaxTheme(TokenTypes.LITERAL_BOOLEAN, "literal_boolean");
-    setSyntaxTheme(TokenTypes.LITERAL_CHAR, "literal_char");
+    setSyntaxTheme(TokenTypes.LITERAL_NUMBER_DECIMAL_INT, "literal_number_decimal_int");
+    setSyntaxTheme(TokenTypes.LITERAL_NUMBER_FLOAT, "literal_number_float");
+    setSyntaxTheme(TokenTypes.LITERAL_NUMBER_HEXADECIMAL, "literal_number_hexadecimal");
     setSyntaxTheme(TokenTypes.LITERAL_STRING_DOUBLE_QUOTE, "literal_string_double_quote");
-    setSyntaxTheme(TokenTypes.PREPROCESSOR, "preprocessor");*/
-
-    setColorForToken(TokenTypes.IDENTIFIER, "editor.fgcolor");
-    setColorForToken(TokenTypes.WHITESPACE, "editor.eolmarkers.color");
+    setSyntaxTheme(TokenTypes.LITERAL_CHAR, "literal_char");
+    setSyntaxTheme(TokenTypes.LITERAL_BACKQUOTE, "literal_backquote");
+    setSyntaxTheme(TokenTypes.OPERATOR, "operator");
+    setSyntaxTheme(TokenTypes.REGEX, "regex");
+    setSyntaxTheme(TokenTypes.SEPARATOR, "separator");
+    setSyntaxTheme(TokenTypes.WHITESPACE, "whitespace");
+    setSyntaxTheme(TokenTypes.ERROR_IDENTIFIER, "error_identifier");
+    setSyntaxTheme(TokenTypes.ERROR_NUMBER_FORMAT, "error_number_format");
+    setSyntaxTheme(TokenTypes.ERROR_STRING_DOUBLE, "error_string_double");
+    setSyntaxTheme(TokenTypes.ERROR_CHAR, "error_char");
   }
 
   private void setColorForToken(int tokenType, String colorKeyFromTheme) {

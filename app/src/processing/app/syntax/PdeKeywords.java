@@ -48,14 +48,34 @@ public class PdeKeywords {
   private static final Pattern ALPHA = Pattern.compile("\\w");
 
   static {
+    KNOWN_TOKEN_TYPES.put("IDENTIFIER", TokenTypes.IDENTIFIER);
+    KNOWN_TOKEN_TYPES.put("DATA_TYPE", TokenTypes.DATA_TYPE);
+    KNOWN_TOKEN_TYPES.put("FUNCTION", TokenTypes.FUNCTION);
+    KNOWN_TOKEN_TYPES.put("VARIABLE", TokenTypes.VARIABLE);
     KNOWN_TOKEN_TYPES.put("RESERVED_WORD", TokenTypes.RESERVED_WORD);
     KNOWN_TOKEN_TYPES.put("RESERVED_WORD_2", TokenTypes.RESERVED_WORD_2);
-    KNOWN_TOKEN_TYPES.put("VARIABLE", TokenTypes.VARIABLE);
-    KNOWN_TOKEN_TYPES.put("OPERATOR", TokenTypes.OPERATOR);
-    KNOWN_TOKEN_TYPES.put("DATA_TYPE", TokenTypes.DATA_TYPE);
-    KNOWN_TOKEN_TYPES.put("LITERAL_BOOLEAN", TokenTypes.LITERAL_BOOLEAN);
-    KNOWN_TOKEN_TYPES.put("LITERAL_CHAR", TokenTypes.LITERAL_CHAR);
     KNOWN_TOKEN_TYPES.put("PREPROCESSOR", TokenTypes.PREPROCESSOR);
+    KNOWN_TOKEN_TYPES.put("ANNOTATION", TokenTypes.ANNOTATION);
+    KNOWN_TOKEN_TYPES.put("COMMENT_DOCUMENTATION", TokenTypes.COMMENT_DOCUMENTATION);
+    KNOWN_TOKEN_TYPES.put("COMMENT_EOL", TokenTypes.COMMENT_EOL);
+    KNOWN_TOKEN_TYPES.put("COMMENT_MULTILINE", TokenTypes.COMMENT_MULTILINE);
+    KNOWN_TOKEN_TYPES.put("COMMENT_KEYWORD", TokenTypes.COMMENT_KEYWORD);
+    KNOWN_TOKEN_TYPES.put("COMMENT_MARKUP", TokenTypes.COMMENT_MARKUP);
+    KNOWN_TOKEN_TYPES.put("LITERAL_BOOLEAN", TokenTypes.LITERAL_BOOLEAN);
+    KNOWN_TOKEN_TYPES.put("LITERAL_NUMBER_DECIMAL_INT", TokenTypes.LITERAL_NUMBER_DECIMAL_INT);
+    KNOWN_TOKEN_TYPES.put("LITERAL_NUMBER_FLOAT", TokenTypes.LITERAL_NUMBER_FLOAT);
+    KNOWN_TOKEN_TYPES.put("LITERAL_NUMBER_HEXADECIMAL", TokenTypes.LITERAL_NUMBER_HEXADECIMAL);
+    KNOWN_TOKEN_TYPES.put("LITERAL_STRING_DOUBLE_QUOTE", TokenTypes.LITERAL_STRING_DOUBLE_QUOTE);
+    KNOWN_TOKEN_TYPES.put("LITERAL_CHAR", TokenTypes.LITERAL_CHAR);
+    KNOWN_TOKEN_TYPES.put("LITERAL_BACKQUOTE", TokenTypes.LITERAL_BACKQUOTE);
+    KNOWN_TOKEN_TYPES.put("OPERATOR", TokenTypes.OPERATOR);
+    KNOWN_TOKEN_TYPES.put("REGEX", TokenTypes.REGEX);
+    KNOWN_TOKEN_TYPES.put("SEPARATOR", TokenTypes.SEPARATOR);
+    KNOWN_TOKEN_TYPES.put("WHITESPACE", TokenTypes.WHITESPACE);
+    KNOWN_TOKEN_TYPES.put("ERROR_IDENTIFIER", TokenTypes.ERROR_IDENTIFIER);
+    KNOWN_TOKEN_TYPES.put("ERROR_NUMBER_FORMAT", TokenTypes.ERROR_NUMBER_FORMAT);
+    KNOWN_TOKEN_TYPES.put("ERROR_STRING_DOUBLE", TokenTypes.ERROR_STRING_DOUBLE);
+    KNOWN_TOKEN_TYPES.put("ERROR_CHAR", TokenTypes.ERROR_CHAR);
   }
 
   // lookup table for the TokenMarker subclass, handles coloring
@@ -150,34 +170,16 @@ public class PdeKeywords {
           parseRSyntaxTextAreaTokenType("IDENTIFIER", keyword);
         } 
         else if ("KEYWORD2".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("RESERVED_WORD", keyword);
+          parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
         }
         else if ("KEYWORD3".equals(oldTokenEntry.getValue())) {
           parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
         }
         else if ("LITERAL1".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_BOOLEAN", keyword);
-        }
-        else if ("LITERAL2".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_DECIMAL_INT", keyword);
-        }
-        else if ("LITERAL3".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_FLOAT", keyword);
-        }
-        else if ("LITERAL4".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_NUMBER_HEXADECIMAL", keyword);
-        }
-        else if ("LITERAL5".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_STRING_DOUBLE_QUOTE", keyword);
-        }
-        else if ("LITERAL6".equals(oldTokenEntry.getValue())) {
           parseRSyntaxTextAreaTokenType("LITERAL_CHAR", keyword);
         }
-        else if ("LITERAL7".equals(oldTokenEntry.getValue())) {
-          parseRSyntaxTextAreaTokenType("LITERAL_BACKQUOTE", keyword);
-        }
-        else{
-          parseRSyntaxTextAreaTokenType("IDENTIFIER", keyword);
+        else {
+          parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
         }
       }
     }
