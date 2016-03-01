@@ -1,6 +1,7 @@
 #FUNCTIONS COLOR 			#D35400 - ORANGE			KEYWORD1
 #FUNCTIONS COLOR			#D35400 - ORANGE			KEYWORD2
 #STRUCTURE COLORS 			#728E00 - GREEN			KEYWORD3
+#CONSTANTS COLOR 				#00979C - BLUE				LITERAL1
 #VARIABLES COLOR 				#00979C - BLUE				LITERAL2
 
 #ERROR COLOR					#A61717 - RED
@@ -97,17 +98,13 @@ editor.reserved_word.style = #5E6D03,plain
 
 
 # TEXT - LITERALS
-
-# constants & datatypes
-editor.literal1.style = #006699,plain
-
-# p5 built in variables: e.g. mouseX, width, pixels
+editor.literal1.style = #00979C,plain
 editor.literal2.style = #00979C,plain
 editor.variable.style = #00979C,plain
 editor.reserved_word_2.style = #00979C,plain
 editor.literal_boolean.style = #00979C,plain
 editor.literal_char.style = #00979C,plain
-editor.literal_string_double_quote.style = #00979C,plain
+editor.literal_string_double_quote.style = #005C5F,plain
 editor.preprocessor.style = #5E6D03,plain
 
 # http://www.arduino.cc/
