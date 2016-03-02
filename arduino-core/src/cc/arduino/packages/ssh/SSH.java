@@ -58,6 +58,9 @@ public class SSH {
     try {
       channel = session.openChannel("exec");
       ((ChannelExec) channel).setCommand(command);
+      ((ChannelExec) channel).setAgentForwarding(true);
+      ((ChannelExec) channel).setPty(true);
+      ((ChannelExec) channel).setPtyType( "xterm" );
 
       channel.setInputStream(null);
 
