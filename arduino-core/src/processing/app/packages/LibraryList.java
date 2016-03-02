@@ -50,29 +50,29 @@ public class LibraryList extends LinkedList<UserLibrary> {
     super(ideLibs);
   }
 
-  public UserLibrary getByName(String name) {
+  public synchronized UserLibrary getByName(String name) {
     for (UserLibrary l : this)
       if (l.getName().equals(name))
         return l;
     return null;
   }
 
-  public void addOrReplace(UserLibrary lib) {
+  public synchronized void addOrReplace(UserLibrary lib) {
     remove(lib);
     add(lib);
   }
   
-  public void remove(UserLibrary lib) {
+  public synchronized void remove(UserLibrary lib) {
     UserLibrary l = getByName(lib.getName());
     if (l != null)
       super.remove(l);
   }
 
-  public void sort() {
+  public synchronized void sort() {
     Collections.sort(this, UserLibrary.CASE_INSENSITIVE_ORDER);
   }
 
-  public LibraryList filterLibrariesInSubfolder(File subFolder) {
+  public synchronized LibraryList filterLibrariesInSubfolder(File subFolder) {
     LibraryList res = new LibraryList();
     for (UserLibrary lib : this) {
       if (FileUtils.isSubDirectory(subFolder, lib.getInstalledFolder())) {
@@ -82,7 +82,7 @@ public class LibraryList extends LinkedList<UserLibrary> {
     return res;
   }
 
-  public boolean hasLibrary(UserLibrary lib) {
+  public synchronized boolean hasLibrary(UserLibrary lib) {
     for (UserLibrary l : this)
       if (l == lib) return true;
     return false;
