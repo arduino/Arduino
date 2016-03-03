@@ -26,13 +26,15 @@
 #include "wiring_private.h"
 #include "pins_arduino.h"
 
+#define PIN_MAX (sizeof digital_pin_to_port_PGM / sizeof *digital_pin_to_port_PGM)
+
 void pinMode(uint8_t pin, uint8_t mode)
 {
-	uint8_t bit = digitalPinToBitMask(pin);
-	uint8_t port = digitalPinToPort(pin);
+	if (pin >= PIN_MAX) return;
+	
+	uint8_t bit = digitalPinToBitMask(pin); // bit mask, or 0 for invalid pins
+	uint8_t port = digitalPinToPort(pin); // must be a valid port (even for invalid pins)
 	volatile uint8_t *reg, *out;
-
-	if (port == NOT_A_PIN) return;
 
 	// JWS: can I let the optimizer do this?
 	reg = portModeRegister(port);
@@ -137,12 +139,12 @@ static void turnOffPWM(uint8_t timer)
 
 void digitalWrite(uint8_t pin, uint8_t val)
 {
+	if (pin >= PIN_MAX) return;
+	
 	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
 	volatile uint8_t *out;
-
-	if (port == NOT_A_PIN) return;
 
 	// If the pin that support PWM output, we need to turn it off
 	// before doing a digital write.
@@ -164,11 +166,11 @@ void digitalWrite(uint8_t pin, uint8_t val)
 
 int digitalRead(uint8_t pin)
 {
+	if (pin >= PIN_MAX) return LOW;
+	
 	uint8_t timer = digitalPinToTimer(pin);
 	uint8_t bit = digitalPinToBitMask(pin);
 	uint8_t port = digitalPinToPort(pin);
-
-	if (port == NOT_A_PIN) return LOW;
 
 	// If the pin that support PWM output, we need to turn it off
 	// before getting a digital reading.
