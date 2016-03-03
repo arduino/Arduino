@@ -2766,6 +2766,7 @@ public class Editor extends JFrame implements RunnerListener {
     String vid = "";
     String pid = "";
     String iserial = "";
+    String protocol = "";
     boolean found = false;
 
     for (BoardPort port : ports) {
@@ -2774,6 +2775,7 @@ public class Editor extends JFrame implements RunnerListener {
         vid = port.getVID();
         pid = port.getPID();
         iserial = port.getISerial();
+        protocol = port.getProtocol();
         found = true;
         break;
       }
@@ -2781,6 +2783,11 @@ public class Editor extends JFrame implements RunnerListener {
 
     if (!found) {
       statusNotice(tr("Please select a port to obtain board info"));
+      return;
+    }
+
+    if (protocol.equals("network")) {
+      statusNotice(tr("Network port, can't obtain info"));
       return;
     }
 
