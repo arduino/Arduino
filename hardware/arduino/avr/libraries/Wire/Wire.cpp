@@ -53,6 +53,18 @@ TwoWire::TwoWire()
 
 void TwoWire::begin(void)
 {
+/*make sure all slaves can finish their messages started before a reset*/
+  pinMode(SCL, OUTPUT);
+  for (int i = 0; i < 8; i++)
+    {
+      digitalWrite(SCL, HIGH);
+      delayMicroseconds(3);
+      digitalWrite(SCL, LOW);
+      delayMicroseconds(3);
+    }
+  pinMode(SCL, INPUT);
+/*End of: make sure all slaves can finish their messages started before a reset*/
+
   rxBufferIndex = 0;
   rxBufferLength = 0;
 
@@ -67,7 +79,13 @@ void TwoWire::begin(uint8_t address)
   twi_setAddress(address);
   twi_attachSlaveTxEvent(onRequestService);
   twi_attachSlaveRxEvent(onReceiveService);
-  begin();
+  rxBufferIndex = 0;
+  rxBufferLength = 0;
+
+  txBufferIndex = 0;
+  txBufferLength = 0;
+
+  twi_init();
 }
 
 void TwoWire::begin(int address)
