@@ -234,8 +234,46 @@
   <!-- - - - - - - - - -->
   <!-- Revision check  -->
   <!-- - - - - - - - - -->
-  <target name="revision-check">
-    <!-- figure out the revision number -->
+  <target name="revision-check" depends="package-library-index-json-bundle">
+
+    <!-- figure out the AVR core version number in platform.txt -->
+    <loadfile srcfile="../hardware/arduino/avr/platform.txt" property="revision.avr.platform">
+      <filterchain>
+        <tokenfilter>
+          <linetokenizer />
+          <containsregex pattern="version="/>
+          <replaceregex pattern="version=(.*)" flags="g" replace="\1"/>
+        </tokenfilter>
+      </filterchain>
+    </loadfile>
+
+    <!-- figure out the latest AVR core version number in package_index.json -->
+    <loadfile srcfile="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json" property="revision.avr.index">
+      <filterchain>
+        <tokenfilter>
+          <linetokenizer />
+          <containsregex pattern="archiveFileName.*avr-......tar.bz2"/>
+          <replaceregex pattern=".*avr-(.*).tar.bz2.*" flags="g" replace="\1"/>
+        </tokenfilter>
+        <tailfilter lines="1"/>
+      </filterchain>
+    </loadfile>
+
+    <echo message="AVR Arduino core version in platform.txt is: ${revision.avr.platform}" />
+    <echo message="                    latest in index.json is: ${revision.avr.index}" />
+    <condition property="revision.avr.ok">
+      <or>
+        <!-- fail build if -Drevision.check=enforce is set -->
+        <not><equals arg1="${revision.check}" arg2="enforce"/></not>
+        <equals arg1="${revision.avr.index}" arg2="${revision.avr.platform}"/>
+      </or>
+    </condition>
+    <fail unless="revision.avr.ok">
+      Mismatching versions for bundled AVR core and package_index.json.
+      Please check your platform.txt and package_index.json.
+    </fail>
+
+    <!-- figure out the IDE version number -->
     <loadfile srcfile="shared/revisions.txt" property="revision">
       <filterchain>
         <ignoreblank />
@@ -251,9 +289,8 @@
         </tokenfilter>
       </filterchain>
     </loadfile>
-    <echo message="Latest revision detected in shared/revision.txt is: ${revision}" />
 
-    <!-- figure out the revision number in base.java -->
+    <!-- figure out the IDE version number in base.java -->
     <loadfile srcfile="../arduino-core/src/processing/app/BaseNoGui.java"
 	      property="revision.base">
       <filterchain>
@@ -264,6 +301,7 @@
         </tokenfilter>
       </filterchain>
     </loadfile>
+    <echo message="Latest revision detected in shared/revision.txt is: ${revision}" />
     <echo message="                     Revision in BaseNoGui.java is: ${revision.base}" />
   </target>
 
