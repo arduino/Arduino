@@ -12,6 +12,8 @@ ARDUINO 1.6.8
 * Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
 * Serial plotter now correctly resize graphs with negative values. Thanks @vicnevicne
 * Improved sketch preprocessor when handling C++11 keywords. Thanks @matthijskooijman @igrr
+* Updates to keyword pigmentation updates to match Create
+* Fixed display of LITERAL1 keywords
 
 [core]
 * avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
@@ -19,6 +21,7 @@ ARDUINO 1.6.8
 * sam: fixed USB descriptor length
 * avr: reduced boiler-plate for ISR declarations. Thanks @paulo-raca
 * avr: added Timer3 support for atmega1284/1284p. Thanks @feilipu
+* sam: added USB CDC send break support and readBreak API
 
 [libraries]
 * Added support for Arduino/Genuino 101 to: TFT, Ethernet, SD
