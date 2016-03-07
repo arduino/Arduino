@@ -10,7 +10,8 @@
 # Translators:
 # Translators:
 # Translators:
-# benewfy <benewfy@gmail.com>, 2015
+# Translators:
+# benewfy <benewfy@gmail.com>, 2015-2016
 # Federico Fissore <f.fissore@arduino.cc>, 2015
 # Jáni Mátyás <jani.matyas@gmail.com>, 2015
 # Melinda <ghostgirl1983@gmail.com>, 2014
@@ -20,8 +21,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-14 10:17+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2016-02-11 07:51+0000\n"
+"Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -306,11 +307,11 @@ msgstr "Jogosultság szükséges"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr "Automatikus Formázás"
+msgstr "Automatikus formázás"
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr "Automatikus Formázás befejeződött."
+msgstr "Automatikus formázás befejeződött."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
@@ -397,7 +398,7 @@ msgstr "Build beállítások megváltoztak, teljes újraépítés szükséges"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr "Beépített Példák"
+msgstr "Beépített példák"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -512,7 +513,7 @@ msgstr "Hibaüzenetek másolása"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
-msgstr "Másolás Fórumra"
+msgstr "Másolás fórumra"
 
 #: Sketch.java:1089
 #, java-format
@@ -669,7 +670,7 @@ msgstr "Adattárolás"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
-msgstr "Behúzás Csökkentése"
+msgstr "Behúzás csökkentése"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
@@ -949,11 +950,11 @@ msgstr "Példák"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr "Példák Egyéni Könyvtárakból"
+msgstr "Példák egyéni könyvtárakból"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr "Példák Könyvtárakból"
+msgstr "Példák könyvtárakból"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1011,7 +1012,7 @@ msgstr "Finn"
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
-msgstr "Kódolás Javítása & Újratöltés"
+msgstr "Kódolás javítása & újratöltés"
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1042,7 +1043,7 @@ msgstr "Galíciai (Spanyolország)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
-msgstr "Galileo Súgó"
+msgstr "Galileo súgó"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1054,7 +1055,7 @@ msgstr "Német"
 
 #: Editor.java:1054
 msgid "Getting Started"
-msgstr "Kezdetek"
+msgstr "Kezdés"
 
 #: ../../../processing/app/Sketch.java:1646
 #, java-format
@@ -1135,7 +1136,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr ""
+msgstr "Könyvtár tartalmazása"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
@@ -1144,7 +1145,7 @@ msgstr "Helytelen IDE telepítési mappa"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
-msgstr "Behúzás Növelése"
+msgstr "Behúzás növelése"
 
 #: Preferences.java:101
 msgid "Indonesian"
@@ -1440,11 +1441,11 @@ msgstr "Megnyitás"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr "Legújabb Megnyitása"
+msgstr "Legutóbbi megnyitása"
 
 #: Editor.java:2688
 msgid "Open URL"
-msgstr "URL Megnyitása"
+msgstr "URL megnyitása"
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
@@ -1460,7 +1461,7 @@ msgstr ""
 
 #: Editor.java:563
 msgid "Page Setup"
-msgstr ""
+msgstr "Oldalbeállítás"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
@@ -1576,8 +1577,9 @@ msgstr "A keretrendszer konfigurálása során hiba lépett fel"
 msgid "Problem accessing board folder /www/sd"
 msgstr ""
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
 msgstr ""
 
 #: Base.java:1673
@@ -1621,11 +1623,11 @@ msgstr "Ajánlott"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
-msgstr ""
+msgstr "Ismét"
 
 #: Editor.java:1078
 msgid "Reference"
-msgstr ""
+msgstr "Hivatkozás"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
@@ -1655,7 +1657,7 @@ msgstr ""
 
 #: FindReplace.java:120 FindReplace.java:131
 msgid "Replace All"
-msgstr "Összes Lecserélése"
+msgstr "Összes lecserélése"
 
 #: Sketch.java:1043
 #, java-format
@@ -1665,6 +1667,10 @@ msgstr ""
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "Lecserélés ezzel:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1724,7 +1730,7 @@ msgstr "Válasszon (vagy hozzon létre) mappát a vázlatoknak..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
-msgstr "Összes Kiválasztása"
+msgstr "Összes kijelölése"
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
@@ -1765,11 +1771,11 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
-msgstr "Soros Monitor"
+msgstr "Soros monitor"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr "Soros Plotter"
+msgstr "Soros plotter"
 
 #: Serial.java:194
 #, java-format
@@ -1804,11 +1810,7 @@ msgstr "Kimenetek beállítása"
 
 #: Editor.java:641
 msgid "Show Sketch Folder"
-msgstr "Vázlat Mappa Mutatása"
-
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr ""
+msgstr "Vázlat mappa mutatása"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1929,6 +1931,10 @@ msgstr "Talossan"
 msgid "Tamil"
 msgstr "Tamil"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr ""
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "A 'BYTE' kulcsszó nem támogatott."
@@ -2042,8 +2048,11 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
 msgstr ""
 
 #: Base.java:535
@@ -2159,7 +2168,7 @@ msgstr "Frissítés"
 
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "Vázlat fájlok frissítés új kiterjesztésre mentésnél (.pde -> .ino)"
+msgstr "Vázlat fájlok frissítése új kiterjesztésre mentésnél (.pde -> .ino)"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
@@ -2171,7 +2180,7 @@ msgstr "Feltöltés"
 
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
-msgstr "Feltöltés Programozót Használva"
+msgstr "Feltöltés programozót használva"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2219,7 +2228,7 @@ msgstr "Előzőleg fordított fájl használata: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr "Ellenőriz"
+msgstr "Ellenőrzés"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
@@ -2418,13 +2427,13 @@ msgstr "A Zip nem tartalmaz egy könyvtárat"
 msgid "\".{0}\" is not a valid extension."
 msgstr " \".{0}\" nem megfelelő kiterjesztés."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr ""
 
 #: debug/Compiler.java:409
@@ -2494,10 +2503,6 @@ msgstr "csatlakoztatva!"
 msgid "createNewFile() returned false"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
 msgstr "http://www.arduino.cc/"
@@ -2536,7 +2541,7 @@ msgstr "ismeretlen opció: {0}"
 
 #: Preferences.java:391
 msgid "upload"
-msgstr "feltöltéskor"
+msgstr "feltöltés"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
 #, java-format
@@ -2572,6 +2577,11 @@ msgstr "{0} könyvtár"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78

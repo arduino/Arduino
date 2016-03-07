@@ -10,6 +10,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # corneliu.e <corneliueva@yahoo.com>, 2013-2014
 # kobalt <kobalt_mstr@yahoo.it>, 2012
 # Liviu Roman, 2015
@@ -22,8 +23,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-25 08:28+0000\n"
-"Last-Translator: Pop Gheorghe <office@roroid.ro>\n"
+"PO-Revision-Date: 2016-01-05 11:36+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1578,9 +1579,10 @@ msgstr "Probleme la iniţializarea platformei de dezvoltare"
 msgid "Problem accessing board folder /www/sd"
 msgstr "Nu se poate accesa folderul /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "Problemă la accesarea fişierelor din folder"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1667,6 +1669,10 @@ msgstr "Înlocuieşte versiunea curenta pentru {0}?"
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "Înlocuire cu:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1808,10 +1814,6 @@ msgstr "Probleme la setări"
 msgid "Show Sketch Folder"
 msgstr "Deschide directorul schiţei"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "Detaliază informaţiile de ieşire a compilatorului:"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Detaliază informaţiile de ieşire a compilatorului:"
@@ -1931,6 +1933,10 @@ msgstr "Talossan"
 msgid "Tamil"
 msgstr "Tamilă"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr ""
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "Nu mai puteţi folosi cuvântul cheie 'BYTE'."
@@ -2044,9 +2050,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "Această bibliotecă nu este listat în managerul de bibliotecă. Nu veți putea să-l reinstalați de aici.\nEști sigur că dorești să-l ștergi?"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "Acest raport ar avea mai multe informații cu"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr ""
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2420,14 +2429,14 @@ msgstr "Fişierul arhivă nu conţine o bibliotecă"
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" nu este o extensie acceptata."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr "\"{0}\" conţine caractere necunoscute. Dacă acest cod a fost realizat într-o versiune mai veche, încearcă sa foloseşti Instrumente-> Corectare codare & reiniţializează pentru a modifica schiţa şi a folosi codarea UTF-8. În caz contrar e nevoie să ştergi caracterele necunoscute pentru a înlătura acest avertisment."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr ""
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2495,10 +2504,6 @@ msgstr "conectat!"
 #: Sketch.java:540
 msgid "createNewFile() returned false"
 msgstr "createNewFile() a returnat fals"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "Activat în Fişier > Preferinţe."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2575,6 +2580,11 @@ msgstr "{0} Biblioteci"
 #, java-format
 msgid "{0} must be a folder"
 msgstr "{0} trebuie să fie un director"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

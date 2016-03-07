@@ -10,11 +10,12 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
-# AlexL <loginov.alex.valer@gmail.com>, 2015
+# AlexL <loginov.alex.valer@gmail.com>, 2015-2016
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
-# Egor Makarenko <72egor@gmail.com>, 2015
-# Egor Makarenko <72egor@gmail.com>, 2015
+# Егор Макаренко, 2015
+# Егор Макаренко, 2015
 # Alexandr Kropochev <Kropochev.a@gmail.com>, 2012
 # Mikhail Lebedev <mihaleb@ya.ru>, 2015
 # Oleg Ekhlakov <subspam@mail.ru>, 2014
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-14 12:42+0000\n"
+"PO-Revision-Date: 2016-01-05 20:51+0000\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -1584,9 +1585,10 @@ msgstr "Ошибка настройки платформы"
 msgid "Problem accessing board folder /www/sd"
 msgstr "Ошибка доступа к папке /www/sd платы"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "Проблема с доступом к файлам в папке"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "Проблема с доступом к файлам в папке \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1673,6 +1675,10 @@ msgstr "Заменить существующую версию {0}?"
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "Чем:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Выбыт"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1814,10 +1820,6 @@ msgstr "Проблемы в настройках"
 msgid "Show Sketch Folder"
 msgstr "Показать папку скетча"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "Отображать вывод во время компиляции"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Показать подробный вывод:"
@@ -1937,6 +1939,10 @@ msgstr "Талосский"
 msgid "Tamil"
 msgstr "Тамильский"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Тайский"
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "Ключевое слово 'BYTE' больше не поддерживается."
@@ -2050,9 +2056,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "Эта библиотека не известна Менеджеру Библиотек. Вы не сможете переустановить ее отсюда.\nВы уверены что хотите удалить ее?"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "Это сообщение будет содержать больше информации чем"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "Этот отчёт будет иметь больше информации с\nвключенной опцией Файл -> Настройки ->\n\"Показать подробный вывод во время компиляции\"\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2426,13 +2435,13 @@ msgstr "В этом ZIP-архиве нет библиотек"
 msgid "\".{0}\" is not a valid extension."
 msgstr "Файлы с расширением \".{0}\" не поддерживаются."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr "\"{0}\" содержит неизвестные символы. Если этот код был создан в более старой версии Arduino IDE, попробуйте использовать Инструменты -> Исправить кодировку и перезагрузить, чтобы преобразовать скетч в кодировку UTF-8. В случае неудачи  потребуется удалить неизвестные символы вручную, чтобы избавиться от этого предупреждения."
 
 #: debug/Compiler.java:409
@@ -2501,10 +2510,6 @@ msgstr "соединено!"
 #: Sketch.java:540
 msgid "createNewFile() returned false"
 msgstr "createNewFile() вернула false"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "включено в Файл > Настройки"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2581,6 +2586,11 @@ msgstr "{0} библиотек"
 #, java-format
 msgid "{0} must be a folder"
 msgstr "{0} должно быть папкой"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} на {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

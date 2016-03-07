@@ -10,8 +10,9 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
-# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015
+# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2016
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
 # shibaboy <shibaboy@gmail.com>, 2014
 msgid ""
@@ -19,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-19 03:13+0000\n"
+"PO-Revision-Date: 2016-01-24 15:49+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -1060,7 +1061,7 @@ msgstr "시작하기"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "전역 변수는 ({2}%%)의 동적 메모리중 {0}바이트를 사용, {3}바이트의 지역변수가 남은. 최대는 {1} 바이트. "
+msgstr "전역 변수는 동적 메모리 {0}바이트({2}%%)를 사용, {3}바이트의 지역변수가 남음.  최대는 {1} 바이트. "
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
@@ -1575,9 +1576,10 @@ msgstr "플랫폼 설정 문제"
 msgid "Problem accessing board folder /www/sd"
 msgstr "보드 폴더 /www/sd 접근시 문제"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "폴더내 파일 접근시 문제"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "\"{0}\" 폴더내 파일 접근시 문제"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1664,6 +1666,10 @@ msgstr "{0}의 기존 버전을 교체하시겠습니까?"
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "다음 내용으로 바꾸기:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Retired"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1805,10 +1811,6 @@ msgstr "설정 문제"
 msgid "Show Sketch Folder"
 msgstr "스케치 폴더 보이기"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "컴파일하는 동안 상세 출력 보이기"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "다음 동작중 자세한  출력 보이기: "
@@ -1852,7 +1854,7 @@ msgstr "스케치가 너무 큼; 이것을 줄이기 위해 다음을 참고하�
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr "스케치는 프로그램 저장 공간 ({2}%%) 중 {0} 바이트를 사용. 최대 {1} 바이트."
+msgstr "스케치는 프로그램 저장 공간 {0} 바이트({2}%%)를 사용. 최대 {1} 바이트."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1927,6 +1929,10 @@ msgstr "탈로사어"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "타밀어"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Thai"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -2041,9 +2047,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "이 라이브러리는 라이브러리 매니저에 있지 않습니다.  다시 설치 할 수 없습니다.\n삭제 하시겠습니까?"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "이 리포트는 많은 정보를 포함합니다"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "이 리포트는 파일 -> 환경설정에 \"컴파일중 자세한 출력보이기\"를\n활성화하여 더 많은 정보를\n보이게 할 수 있습니다.\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2417,14 +2426,14 @@ msgstr "Zip 파일이 라이브러리를 포함하고 있지않습니다"
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" 는 확장자로 사용할 수 없습니다."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr "\"{0}\"에 인식할 수 없는 문자가 포함되어 있습니다. 만약 이 코드가 이전 버전의 아두이노로 만들어졌다면, 툴 -> 인코딩 수정 & 다시 로드 로 UTF-8 인코딩으로 업데이트 할 수 있습니다.아니면 잘못된 문자를 삭제하여 이 경고를 제거할 수 있습니다."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "\"{0}\"에 인식할 수 없는 문자가 포함되어 있습니다. 만약 이 코드가 이전 버전의 아두이노로 만들어졌다면, 툴 -> 인코딩 수정 & 다시 로드 로 UTF-8 인코딩으로 업데이트 할 수 있습니다.아니면 잘못된 문자를 삭제하여 이 경고를 제거할 수 있습니다"
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2492,10 +2501,6 @@ msgstr "연결!"
 #: Sketch.java:540
 msgid "createNewFile() returned false"
 msgstr "createNewFile()가 false를 반환했습니다"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "파일 > 설정에 사용가능하게 됨"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2572,6 +2577,11 @@ msgstr "{0} 라이브러리"
 #, java-format
 msgid "{0} must be a folder"
 msgstr "{0} 는 폴더이어야 합니다"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} on {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

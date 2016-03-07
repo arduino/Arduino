@@ -10,6 +10,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2013
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012-2013
@@ -21,8 +22,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2016-01-05 11:36+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1577,9 +1578,10 @@ msgstr "შეცდომა პლატფორმის მინიჭე�
 msgid "Problem accessing board folder /www/sd"
 msgstr "შეფერხდა წვდომა დაფის საქაღალდისთვის /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "შეფერხდა საქაღალდის ფაილებისთვის წვდომა"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1666,6 +1668,10 @@ msgstr "გსურთ  {0}-ის არსებულ ვერსიაზ�
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "ჩანაცვლება:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1807,10 +1813,6 @@ msgstr "მომართვის დაბრკოლება"
 msgid "Show Sketch Folder"
 msgstr "ალბომის საქაღალდის გახსნა"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "დაკომპილების დროს სიტყვამრავალი გამომავალი"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "დაწვრილებითი გამომავალის ჩვენება:"
@@ -1930,6 +1932,10 @@ msgstr ""
 msgid "Tamil"
 msgstr "ტამილური"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr ""
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "საკვანძო სიტყვა 'BYTE' აღარ არის მხარდაჭერილი."
@@ -2043,8 +2049,11 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
 msgstr ""
 
 #: Base.java:535
@@ -2419,13 +2428,13 @@ msgstr "Zip  არქივი არ შეიცავს ბიბლიო�
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" არ არის სწორი გაფართოება."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr ""
 
 #: debug/Compiler.java:409
@@ -2494,10 +2503,6 @@ msgstr "კავშირი დამყარდა!"
 #: Sketch.java:540
 msgid "createNewFile() returned false"
 msgstr "createNewFile() დააბრუნა უარყოფა"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "ჩართულია მენიუში ფაილი > პარამეტრები."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2573,6 +2578,11 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
