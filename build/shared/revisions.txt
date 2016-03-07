@@ -16,6 +16,13 @@ ARDUINO 1.6.8
 [core]
 * avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
 * avr: fixed yield() usage inside delay(). Thanks @vbextreme
+* sam: fixed USB descriptor length
+* avr: reduced boiler-plate for ISR declarations. Thanks @paulo-raca
+* avr: added Timer3 support for atmega1284/1284p. Thanks @feilipu
+
+[libraries]
+* Added support for Arduino/Genuino 101 to: TFT, Ethernet, SD
+* SD: the library is now board-agnostic. Thanks @feilipu
 
 ARDUINO 1.6.7 - 2015.12.17
 
