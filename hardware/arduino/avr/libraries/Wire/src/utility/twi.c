@@ -119,6 +119,22 @@ void twi_setAddress(uint8_t address)
 }
 
 /* 
+ * Function twi_setClock
+ * Desc     sets twi bit rate
+ * Input    Clock Frequency
+ * Output   none
+ */
+void twi_setFrequency(uint32_t frequency)
+{
+  TWBR = ((F_CPU / frequency) - 16) / 2;
+  
+  /* twi bit rate formula from atmega128 manual pg 204
+  SCL Frequency = CPU Clock Frequency / (16 + (2 * TWBR))
+  note: TWBR should be 10 or higher for master mode
+  It is 72 for a 16mhz Wiring board with 100kHz TWI */
+}
+
+/* 
  * Function twi_readFrom
  * Desc     attempts to become twi bus master and read a
  *          series of bytes from a device on the bus
