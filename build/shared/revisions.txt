@@ -14,6 +14,7 @@ ARDUINO 1.6.8
 * Improved sketch preprocessor when handling C++11 keywords. Thanks @matthijskooijman @igrr
 * Updates to keyword pigmentation to match Create
 * Fixed display of LITERAL1 keywords
+* Added target board information when "Error compiling" message is displayed. Thanks @PaulStoffregen
 
 [core]
 * avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood

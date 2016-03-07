@@ -269,7 +269,7 @@ public class Compiler implements MessageConsumer {
     }
 
     if (result != 0) {
-      RunnerException re = new RunnerException(tr("Error compiling."));
+      RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
       re.hideStackTrace();
       throw re;
     }
