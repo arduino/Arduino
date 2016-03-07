@@ -12,7 +12,7 @@ ARDUINO 1.6.8
 * Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
 * Serial plotter now correctly resize graphs with negative values. Thanks @vicnevicne
 * Improved sketch preprocessor when handling C++11 keywords. Thanks @matthijskooijman @igrr
-* Updates to keyword pigmentation updates to match Create
+* Updates to keyword pigmentation to match Create
 * Fixed display of LITERAL1 keywords
 
 [core]
