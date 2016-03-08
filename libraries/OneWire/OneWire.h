@@ -104,25 +104,31 @@ static const uint32_t GPIO_PORT_TO_BASE[] =
 };
 
 #include <ti/drivers/gpio/GPIOMSP432.h>
+#include <driverlib/gpio.h>
 extern const GPIOMSP432_Config GPIOMSP432_config;
-#define PIN_TO_PORT(pin) GPIO_PORT_TO_BASE[(GPIOMSP432_config.pinConfigs[pin] & 0xff00) >> 8]
+#define PIN_TO_PORT(pin) (GPIOMSP432_config.pinConfigs[pin] & 0xff00) >> 8
 #define PIN_TO_BASEREG(pin) ((volatile uint32_t*)(GPIO_PORT_TO_BASE[(GPIOMSP432_config.pinConfigs[pin] & 0xff00) >> 8]))
 #define PIN_TO_BITMASK(pin) (GPIOMSP432_config.pinConfigs[pin] & 0xff)
 #define IO_REG_TYPE uint32_t
+#define IO_REG_ASM
+#define DIRECT_READ(base, mask)         (HWREG((uint32_t)base) & (mask) ? 1 : 0)
+#define DIRECT_MODE_INPUT(base, mask)   (HWREG((uint32_t)base+4) &= ~(mask))
+#define DIRECT_MODE_OUTPUT(base, mask)  (HWREG((uint32_t)base+4) |= (mask))
+#define DIRECT_WRITE_LOW(base, mask)    (HWREG((uint32_t)base+2) &= ~(mask))
+#define DIRECT_WRITE_HIGH(base, mask)   (HWREG((uint32_t)base+2) |= (mask))
 #else
 #define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
 #define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
 #define IO_REG_TYPE uint8_t
-#endif
 #define IO_REG_ASM
 #define DIRECT_READ(base, mask)         (((*(base)) & (mask)) ? 1 : 0)
 #define DIRECT_MODE_INPUT(base, mask)   ((*(base+4)) &= ~(mask))
 #define DIRECT_MODE_OUTPUT(base, mask)  ((*(base+4)) |= (mask))
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+2)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+2)) |= (mask))
+#endif
 
-
-#elif defined(__LM4F120H5QR__)
+#elif defined(__LM4F120H5QR__) || defined(__TM4C1294NCPDT__)
 
 // Launchpad Stellaris
 #define PIN_TO_BASEREG(pin)             (portBASERegister(digitalPinToPort(pin)))
