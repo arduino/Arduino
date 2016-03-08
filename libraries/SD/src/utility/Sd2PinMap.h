@@ -491,6 +491,21 @@ static inline __attribute__((always_inline))
 }
 #endif  // Sd2PinMap_h
 
+#elif defined (__CPU_ARC__)
+
+#if defined (__ARDUINO_ARC__)
+// Two Wire (aka I2C) ports
+uint8_t const SDA_PIN = 18;
+uint8_t const SCL_PIN = 19;
+
+// SPI port
+uint8_t const SS_PIN = 10;
+uint8_t const MOSI_PIN = 11;
+uint8_t const MISO_PIN = 12;
+uint8_t const SCK_PIN = 13;
+
+#endif	// Arduino ARC
+
 #else
 #error Architecture or board not supported.
 #endif

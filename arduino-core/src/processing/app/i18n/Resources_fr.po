@@ -10,6 +10,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 #   Alexis Morin <mail@alexismorin.com>, 2012
 # AntoineM <antoine.meillet+transifex@gmail.com>, 2012
 # Armel FAUVEAU <armel.fauveau@globalis-ms.com>, 2015
@@ -18,7 +19,7 @@
 # dbarbier <bouzim@gmail.com>, 2012
 # dbarbier <bouzim@gmail.com>, 2012
 # Simon <eskimon@outlook.com>, 2012
-# Lucas Mascaro <mascaro.lucas@yahoo.fr>, 2015
+# Lucas Mascaro <mascaro.lucas@yahoo.fr>, 2015-2016
 # matime <max.duron@free.fr>, 2014
 #   Philippe Rivet <philipe.rivet at gmail.com>, 2012
 # R D <rdoume@gmail.com>, 2012
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-12 21:26+0000\n"
+"PO-Revision-Date: 2016-01-27 21:17+0000\n"
 "Last-Translator: Lucas Mascaro <mascaro.lucas@yahoo.fr>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -1585,9 +1586,10 @@ msgstr "Problème à configurer la plate-forme"
 msgid "Problem accessing board folder /www/sd"
 msgstr "Problème lors de l'accès au dossier des cartes /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "Problème lors de l'accès aux fichiers du dossier "
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "Un problème est survenu lors de l'accès au dossier \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1674,6 +1676,10 @@ msgstr "Remplacer la version existante de {0} ?"
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "Remplacer par :"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1815,10 +1821,6 @@ msgstr "Problèmes de paramètres"
 msgid "Show Sketch Folder"
 msgstr "Afficher le dossier des croquis"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "Montrer les informations de sortie pendant la compilation"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Afficher les résultats détaillés pendant : "
@@ -1938,6 +1940,10 @@ msgstr "Talossan"
 msgid "Tamil"
 msgstr "tamoul"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Thai"
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "Le mot-clé « BYTE » n'est plus pris en charge."
@@ -2051,9 +2057,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "Cette bibliothèque n'est pas listé dans le gestionnaire de bibliothèque. Vous ne pourrez plus la réinstaller.\nEtes-vous sur de la supprimer?"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "Ce rapport contiendrait plus d'informations si l'option"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "Ce rapport pourrait être plus détaillé avec\nl'option \"Afficher les résultats détaillés de la compilation\"\nactivée dans Fichier -> Préférences.\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2427,14 +2436,14 @@ msgstr "Le fichier Zip ne contient pas de bibliothèque"
 msgid "\".{0}\" is not a valid extension."
 msgstr "« .{0} » n''est pas une extension valide."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr "\"{0}\" contient des caractères non reconnus. Si ce code a été écrit sur une ancienne version d'Arduino, il se peut que vous ayez à cliquer sur \"Outils > Réparer l'encodage et recharger\" pour passer à l'encodage UTF-8. Si ça ne marche pas, la suppression des caractères problématiques peut régler ce problème."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "\"{0}\" contient des caractères inconnus. Si ce code a été créé avec une ancienne version d'Arduino, vous devriez utiliser Outils -> Corriger l'encodage & recharger pour mettre a jour le croquis afin qu'il utilise l'encodage UTF-8. Sinon vous pouvez supprimer les mauvais caractères pour ne plus afficher cet avertissement."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2502,10 +2511,6 @@ msgstr "connecté !"
 #: Sketch.java:540
 msgid "createNewFile() returned false"
 msgstr "createNewFile() a renvoyé false"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "était activée dans Fichier > Préférences."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2582,6 +2587,11 @@ msgstr "{0} bibliothèques"
 #, java-format
 msgid "{0} must be a folder"
 msgstr "{0} doit être un dossier"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} sur {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

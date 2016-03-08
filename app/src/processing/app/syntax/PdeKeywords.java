@@ -148,7 +148,11 @@ public class PdeKeywords {
       if (!keywordTokenTypeAsString.containsKey(keyword)) {
         if ("KEYWORD1".equals(oldTokenEntry.getValue())) {
           parseRSyntaxTextAreaTokenType("DATA_TYPE", keyword);
-        } else {
+        }
+        else if ("LITERAL1".equals(oldTokenEntry.getValue())) {      
+          parseRSyntaxTextAreaTokenType("RESERVED_WORD_2", keyword);
+        }
+        else {
           parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
         }
       }

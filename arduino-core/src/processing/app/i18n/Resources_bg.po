@@ -10,15 +10,16 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anton Stoychev <antitoxic@gmail.com>, 2013
 # Ivaylo Malinov <mals@mail.bg>, 2015
-# Valentin Laskov <laskov@festa.bg>, 2012-2015
+# Valentin Laskov <laskov@festa.bg>, 2012-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-10 21:08+0000\n"
+"PO-Revision-Date: 2016-01-13 15:53+0000\n"
 "Last-Translator: Valentin Laskov <laskov@festa.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -148,11 +149,11 @@ msgstr "Добавяне на файл..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "URL-и към допълнителни мениджъри на платки"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "URL-и към допълнителни мениджъри на платки:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -470,7 +471,7 @@ msgstr "Китайски (Тайван) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Цъкнете за списък URL-и към неофициално поддържани платки"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -792,7 +793,7 @@ msgstr "Език на редактора:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "Разреши скриване на кода (Code Folding)"
 
 #: Preferences.java:92
 msgid "English"
@@ -959,7 +960,7 @@ msgstr "Експортирането прекратено, промените п
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
-msgstr ""
+msgstr "Експорт на компилирано binary"
 
 #: ../../../processing/app/Base.java:416
 #, java-format
@@ -1574,9 +1575,10 @@ msgstr "Проблем при установяването на платформ
 msgid "Problem accessing board folder /www/sd"
 msgstr "Проблем при достъп до папка /www/sd на платката"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "Проблем при достъп до файлове в папка "
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "Проблем при достъп до файлове в папка \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1611,7 +1613,7 @@ msgstr "Изход"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "ИЗТЕГЛЕНО ОТ УПОТРЕБА"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
@@ -1664,6 +1666,10 @@ msgstr "Да заменя ли съществуващата версия на {0
 msgid "Replace with:"
 msgstr "Замени с:"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Изтеглено от употреба"
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Румънски"
@@ -1676,7 +1682,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Изпълнение: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1747,11 +1753,11 @@ msgstr "Избраната платка изисква '{0}' ядро (не е �
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr ""
+msgstr "Избраната платка не е налична"
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
-msgstr ""
+msgstr "Избраната библиотека не е налична"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1803,10 +1809,6 @@ msgstr "Въпроси, свързани с настройките"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Покажи папката на скицата"
-
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "Показвай подробна информация при компилиране"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1927,6 +1929,10 @@ msgstr "Talossan"
 msgid "Tamil"
 msgstr "Тамилски"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr ""
+
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
 msgstr "Ключовата дума 'BYTE' вече не се поддържа."
@@ -2040,9 +2046,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "Този доклад ще има повече информация с"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr ""
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2093,33 +2102,33 @@ msgstr "Украински"
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr "Свързването невъзможно: използва ли скицата bridge-а?"
+msgstr "Не мога да се свържа: скицата използва ли бриджа?"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
-msgstr "Свързването неуспешно: опитвам отново"
+msgstr "Не мога да се свържа: опитвам отново"
 
 #: ../../../processing/app/Editor.java:2526
 msgid "Unable to connect: wrong password?"
-msgstr "Свързването невъзможно: грешна парола?"
+msgstr "Не мога да се свържа: грешна парола?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "Не мога да намеря {0} в {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr "Невъзможно отварянето на сериен монитор"
+msgstr "Не мога да отворя сериен монитор"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "Не мога да отворя серийния плотер"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
-msgstr ""
+msgstr "Не мога да достигна до Arduino.cc вероятно поради проблем в мрежата."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
@@ -2416,14 +2425,14 @@ msgstr "Zip файлът не съдържа библиотека"
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" е невалидно разширение."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr "\"{0}\" съдържа непознати символи. Ако този код е създаден с по-стара версия на Arduino, може да е нужно да ползвате Инструменти -> Корекция на кодирането & Презареждане, за да обновите скицата с използване на UTF-8 кодиране. Ако не, може да е нужно да изтриете грешните символи, за да се избавите от това предупреждение."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr ""
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2492,10 +2501,6 @@ msgstr "свързан!"
 msgid "createNewFile() returned false"
 msgstr "createNewFile() върна false"
 
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "разрешено във Файл > Предпочитания."
-
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
 msgstr "http://www.arduino.cc/"
@@ -2550,12 +2555,12 @@ msgstr "{0} - {1} | Arduino {2}"
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
 #, java-format
 msgid "{0} file signature verification failed"
-msgstr ""
+msgstr "{0} проверката на сигнатурата на файла не успя"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
 msgid "{0} file signature verification failed. File ignored."
-msgstr ""
+msgstr "{0} проверката на сигнатурата на файла не успя. Файлът игнориран."
 
 #: Editor.java:380
 #, java-format
@@ -2571,6 +2576,11 @@ msgstr "{0} библиотеки"
 #, java-format
 msgid "{0} must be a folder"
 msgstr "{0} трябва да е папка"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
