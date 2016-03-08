@@ -134,7 +134,11 @@ public abstract class Uploader implements MessageConsumer {
       if (!process.waitFor(2, TimeUnit.MINUTES)) {
         process.destroyForcibly();
       }
-      result = process.exitValue();
+      if (!process.isAlive()) {
+        result = process.exitValue();
+      } else {
+        result = 0;
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
