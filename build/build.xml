@@ -8,6 +8,10 @@
     <format property="BUILD_DATE" pattern="yyyy/MM/dd hh:mm"/>
   </tstamp>
 
+  <!-- Main url for boards and libraries repository -->
+  <property name="library_index_url" value="http://downloads.arduino.cc/libraries/library_index.json" />
+  <property name="package_index_url" value="http://downloads.arduino.cc/packages/package_index.json" />
+
   <!-- Sets properties for macosx/windows/linux depending on current system -->
   <condition property="platform" value="macosx-old">
     <and>
@@ -1081,14 +1085,22 @@
   <target name="package-library-index-json-bundle">
     <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
 
-    <get src="http://downloads.arduino.cc/packages/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
-    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
+    <get src="${package_index_url}.gz"
+         dest="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz"
+         verbose="true" skipexisting="false" />
+    <gunzip src ="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz"
+            dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
     <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz"/>
 
-    <get src="http://downloads.arduino.cc/packages/package_index.json.sig" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
+    <get src="${package_index_url}.sig"
+         dest="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.sig"
+         verbose="true" skipexisting="false" />
 
-    <get src="http://downloads.arduino.cc/libraries/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
-    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
+    <get src="${library_index_url}.gz"
+         dest="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"
+         verbose="true" skipexisting="false" />
+    <gunzip src ="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"
+            dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
     <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
