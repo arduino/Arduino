@@ -181,7 +181,7 @@ public class Platform {
     return list;
   }
 
-  public Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
+  public synchronized Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
     String vid_pid_iSerial = resolveDeviceAttachedToNative(serial);
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
