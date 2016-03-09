@@ -11,6 +11,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anıl Özbek <ozbekanil@gmail.com>, 2013
 # Ayse Gokce Bor <aysegokcebor@gmail.com>, 2012
 # b <burakguelsen@gmail.com>, 2015
@@ -20,6 +21,7 @@
 # YUSUF CAKIR, 2014
 # Caner Gural <cgural@gmail.com>, 2015
 # Coşkun Taşdemir <coskuntasdemir@gmail.com>, 2013
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Koray Al <hecatomber@gmail.com>, 2012
 # Huseyin Sozen <lordsauronrw@windowslive.com>, 2015
 # Kaan CEYHAN <kaanceyhan@gmail.com>, 2013
@@ -40,7 +42,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-01-05 11:36+0000\n"
+"PO-Revision-Date: 2016-03-08 21:33+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Turkish (http://www.transifex.com/mbanzi/arduino-ide-15/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -101,22 +103,6 @@ msgstr "--verbose, --verbose-upload ve --verbose-build yalnızca --verify ya da 
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr "<br/>Bazı {0}devre kartların{1} için güncelleme mevcut"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr "<br/>Bazı {0}devre kartların{1} ve {2}kütüphanelerin{3} için güncelleme mevcut"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr "<br/>Bazı {0}kütüphanelerin{1} için güncelleme mevcut"
 
 #: Editor.java:2053
 msgid ""
@@ -336,6 +322,10 @@ msgstr "Otomatik biçimlendirme tamamlandı."
 msgid "Auto-detect proxy settings"
 msgstr "Vekil sunucu ayarlarını otomatik algıla"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
 msgstr "Otomatik vekil sunucu yapılandırma URL'i:"
@@ -365,6 +355,12 @@ msgstr "Belarusça"
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "Kart"
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -847,6 +843,11 @@ msgstr "Hata"
 msgid "Error adding file"
 msgstr "Dosya ekleme sırasında hata oluştu."
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr ""
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "Derleme sırasında hata oluştu."
@@ -991,6 +992,11 @@ msgstr "Taslak çalışma açılamadı : \"{0}\""
 #: Editor.java:491
 msgid "File"
 msgstr "Dosya"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr ""
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1209,6 +1215,10 @@ msgstr "Araçlar kuruluyor ({0}/{1})..."
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
 msgstr "Kuruluyor..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr ""
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1528,6 +1538,10 @@ msgstr "Lütfen Program > İçeri Aktar menüsünü kullanarak Wire kütüphanes
 msgid "Please select a programmer from Tools->Programmer menu"
 msgstr "Lütfen Araçlar->Programlayıcı Menüsü'nden bir programlayıcı seçin"
 
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr ""
+
 #: Preferences.java:110
 msgid "Polish"
 msgstr "Polonyaca"
@@ -1795,6 +1809,10 @@ msgstr "Seri Port Ekranı"
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
 msgstr "Seri Çizici"
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr ""
 
 #: Serial.java:194
 #, java-format
@@ -2120,6 +2138,11 @@ msgstr "Yeni çalışmayı yüklemek için kart şifresini yazınız"
 msgid "Ukrainian"
 msgstr "Ukraynaca"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr ""
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2188,6 +2211,21 @@ msgstr "Güncelle"
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "Kayıt sırasında taslak dosyalarını yeni uzantıya güncelle (.pde-> .ino)"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "Bazı {0}devre kartların{1} için güncelleme mevcut"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "Bazı {0}devre kartların{1} ve {2}kütüphanelerin{3} için güncelleme mevcut"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "Bazı {0}kütüphanelerin{1} için güncelleme mevcut"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"

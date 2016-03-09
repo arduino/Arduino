@@ -11,6 +11,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Besiana Bici <besianabici@gmail.com>, 2014
 # Elio Qoshi <ping@elioqoshi.me>, 2014
 # Florian Tani <floriantani@gmail.com>, 2014
@@ -23,7 +24,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-01-05 11:36+0000\n"
+"PO-Revision-Date: 2016-03-07 18:40+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Albanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -84,22 +85,6 @@ msgstr ""
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -319,6 +304,10 @@ msgstr "Formatimi automatik perfundoi."
 msgid "Auto-detect proxy settings"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
 msgstr ""
@@ -348,6 +337,12 @@ msgstr "Bjellorus"
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "Bord"
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -830,6 +825,11 @@ msgstr "Gabim"
 msgid "Error adding file"
 msgstr "Gabim gjate shtimit te skedarit"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr ""
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "Gabim gjate kompiliminit."
@@ -974,6 +974,11 @@ msgstr "Deshtoi per te hapur skicen: \"{0}\""
 #: Editor.java:491
 msgid "File"
 msgstr "Dokument"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr ""
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1191,6 +1196,10 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
 msgstr ""
 
 #: ../../../processing/app/Base.java:1204
@@ -1511,6 +1520,10 @@ msgstr "Ju lutem importoni librarine Wire nga menuja Sketch > Import Library."
 msgid "Please select a programmer from Tools->Programmer menu"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr ""
+
 #: Preferences.java:110
 msgid "Polish"
 msgstr "Polonisht"
@@ -1777,6 +1790,10 @@ msgstr "Monitor serial"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
 msgstr ""
 
 #: Serial.java:194
@@ -2103,6 +2120,11 @@ msgstr "Jepni fjalekalimin e bordit dhe ngarkoni nje skice te re"
 msgid "Ukrainian"
 msgstr "Ukrainisht"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr ""
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2171,6 +2193,21 @@ msgstr "Perditeso"
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "Perditeso dosjet e skices ne formatin e ri dhe ruaj (.pde -->.ino)"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"

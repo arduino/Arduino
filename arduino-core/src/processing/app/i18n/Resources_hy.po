@@ -11,6 +11,8 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
 # zepyur <jrvezh@yahoo.com>, 2012
 # Levon <deimusmeister@gmail.com>, 2015
 msgid ""
@@ -18,7 +20,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-01-05 11:36+0000\n"
+"PO-Revision-Date: 2016-03-08 17:52+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Armenian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hy/)\n"
 "MIME-Version: 1.0\n"
@@ -79,22 +81,6 @@ msgstr "--verbose, --verbose-upload եւ --verbose-build կարող կիրառվ
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}հարթակների համար{1}"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}հարթակների{1} եւ {2}գրադարանների համար{3}"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr "<br/>Թարմացում է հասանելի ձեր որոշ {0}գրադարանների համար{1}"
 
 #: Editor.java:2053
 msgid ""
@@ -314,6 +300,10 @@ msgstr "Ավտոֆորմատավորումը ավարտված է:"
 msgid "Auto-detect proxy settings"
 msgstr "Պրոքսի պարամետրերի ավտոմատ ճանաչում"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
 msgstr "Ավտոմատ պրոքսի կոնֆիգուրացիայի URL:"
@@ -343,6 +333,12 @@ msgstr "Բելառուսերեն"
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "Հարթակ"
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -825,6 +821,11 @@ msgstr "Սխալ"
 msgid "Error adding file"
 msgstr "Ֆայլի ավելացման սխալ"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr ""
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "Կոմպիլիացիայի սխալ:"
@@ -969,6 +970,11 @@ msgstr "Ձախողվեց բացել գծագիրը: \"{0}\""
 #: Editor.java:491
 msgid "File"
 msgstr "Նիշք"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr ""
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1187,6 +1193,10 @@ msgstr "Տեղադրվում են գործիքները ({0}/{1})..."
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
 msgstr "Տեղադրվում է..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr ""
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1506,6 +1516,10 @@ msgstr "Խնդրում ենք ներմուծեք Wire գրադարանը Գծա�
 msgid "Please select a programmer from Tools->Programmer menu"
 msgstr "Խնդրում ենք նշել ծրագրավորողը Գործիքներ->Ծրագրավորող մենյուից"
 
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr ""
+
 #: Preferences.java:110
 msgid "Polish"
 msgstr "Լեհերեն"
@@ -1773,6 +1787,10 @@ msgstr "Սերիալ Մոնիտոր"
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
 msgstr "Սերիալ Արտապատկերիչ"
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr ""
 
 #: Serial.java:194
 #, java-format
@@ -2098,6 +2116,11 @@ msgstr "Հավաքեք հարթակի գաղտնաբառը գծագիրը վեր
 msgid "Ukrainian"
 msgstr "Ուկրաիներեն"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr ""
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2166,6 +2189,21 @@ msgstr "Թարմացում"
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "Պայման ժամական թարմացնել գծագրերի ֆայլերը նոր ընդլայնմամբ (.pde -> .ino)"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "Թարմացում է հասանելի ձեր որոշ {0}հարթակների համար{1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "Թարմացում է հասանելի ձեր որոշ {0}հարթակների{1} եւ {2}գրադարանների համար{3}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "Թարմացում է հասանելի ձեր որոշ {0}գրադարանների համար{1}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
