@@ -482,5 +482,5 @@ int SoftwareSerial::peek()
     return -1;
 
   // Read from "head"
-  return _receive_buffer[_receive_buffer_head];
+  return (uint8_t)_receive_buffer[_receive_buffer_head];
 }
