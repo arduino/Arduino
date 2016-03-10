@@ -136,12 +136,11 @@ public class SerialUploader extends Uploader {
           // it happened within 250 ms. So we wait until the reset should
           // have already occured before we start scanning.
           actualUploadPort = waitForUploadPort(userSelectedUploadPort, before);
-          
-          if (OSUtils.isMacOS()) {
-        	  // on OS X, if the port is opened too quickly after it is detected,
-        	  // a "Resource busy" error occurs, add a delay to workaround this
-        	  Thread.sleep(250);
-          }
+
+    	  // on OS X, if the port is opened too quickly after it is detected,
+    	  // a "Resource busy" error occurs, add a delay to workaround this,
+          // apply to other platforms as well.
+    	  Thread.sleep(250);
         }
       } catch (SerialException e) {
         throw new RunnerException(e);
