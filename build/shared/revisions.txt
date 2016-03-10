@@ -1,4 +1,10 @@
-ARDUINO 1.6.8
+ARDUINO 1.6.9
+
+[ide]
+[core]
+[libraries]
+
+ARDUINO 1.6.8 - 2016.03.09
 
 [ide]
 * Added support for GUI interface scaling for UHD monitors.
