@@ -210,12 +210,12 @@ extern const PinDescription g_APinDescription[] ;
 
 // USB Device
 #ifndef USB_VID
-#define USB_VID            0x2341 // arduino LLC vid
+#define USB_VID 0x2341 // arduino LLC vid
 #endif
 
-#define USB_PID_LEONARDO   0x0034
-#define USB_PID_MICRO      0x0035
-#define USB_PID_DUE        0x003E
+#ifndef USB_PID
+#define USB_PID 0x003E // arduino Due pid
+#endif
 
 #include "USB/USBDesc.h"
 #include "USB/USBCore.h"
