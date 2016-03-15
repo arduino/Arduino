@@ -29,6 +29,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
+import cc.arduino.view.git.GitCommit;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -189,6 +190,7 @@ public class Editor extends JFrame implements RunnerListener {
   protected RedoAction redoAction;
 
   private FindReplace find;
+  private GitCommit gitCommit;
 
   Runnable runHandler;
   Runnable presentHandler;
@@ -1501,6 +1503,14 @@ public class Editor extends JFrame implements RunnerListener {
       }
     });
     menu.add(findPreviousItem);
+
+    JMenuItem commitItem = newJMenuItem(tr("Commit..."), 'C');
+    commitItem.addActionListener(e -> {
+      gitCommit = new GitCommit(Editor.this, Collections.emptyMap());
+      gitCommit.setLocationRelativeTo(Editor.this);
+      gitCommit.setVisible(true);
+    });
+    menu.add(commitItem);
 
     if (OSUtils.isMacOS()) {
       JMenuItem useSelectionForFindItem = newJMenuItem(tr("Use Selection For Find"), 'E');
