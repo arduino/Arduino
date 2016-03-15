@@ -9,7 +9,7 @@ name=Arduino AVR Boards
 version=1.6.10
 
 # AVR compile variables
-# --------------------- 
+# ---------------------
 
 compiler.warning_flags=-w
 compiler.warning_flags.none=-w
@@ -17,12 +17,10 @@ compiler.warning_flags.default=
 compiler.warning_flags.more=-Wall
 compiler.warning_flags.all=-Wall -Wextra
 
-# Default "compiler.path" is correct, change only if you want to overidde the initial value
+# Default "compiler.path" is correct, change only if you want to override the initial value
 compiler.path={runtime.tools.avr-gcc.path}/bin/
 compiler.c.cmd=avr-gcc
 compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -MMD
-# -w flag added to avoid printing a wrong warning http://gcc.gnu.org/bugzilla/show_bug.cgi?id=59396
-# This is fixed in gcc 4.8.3 and will be removed as soon as we update the toolchain
 compiler.c.elf.flags={compiler.warning_flags} -Os -Wl,--gc-sections
 compiler.c.elf.cmd=avr-gcc
 compiler.S.flags=-c -g -x assembler-with-cpp
@@ -37,7 +35,7 @@ compiler.elf2hex.cmd=avr-objcopy
 compiler.ldflags=
 compiler.size.cmd=avr-size
 
-# This can be overriden in boards.txt
+# This can be overridden in boards.txt
 build.extra_flags=
 
 # These can be overridden in platform.local.txt
@@ -113,7 +111,7 @@ tools.avrdude.bootloader.pattern="{cmd.path}" "-C{config.path}" {bootloader.verb
 
 
 # USB Default Flags
-# Default blank usb manufacturer will be filled it at compile time
+# Default blank usb manufacturer will be filled in at compile time
 # - from numeric vendor ID, set to Unknown otherwise
 build.usb_manufacturer="Unknown"
 build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'
