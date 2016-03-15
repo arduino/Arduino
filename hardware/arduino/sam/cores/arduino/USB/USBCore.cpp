@@ -66,27 +66,16 @@ const uint16_t STRING_LANGUAGE[2] = {
 };
 
 #ifndef USB_PRODUCT
-// Use a hardcoded product name if none is provided
-#if USB_PID == USB_PID_DUE
 #define USB_PRODUCT "Arduino Due"
-#else
-#define USB_PRODUCT "USB IO Board"
-#endif
 #endif
 
 const uint8_t STRING_PRODUCT[] = USB_PRODUCT;
 
-#if USB_VID == 0x2341
-#  if defined(USB_MANUFACTURER)
-#    undef USB_MANUFACTURER
-#  endif
-#  define USB_MANUFACTURER "Arduino LLC"
-#elif !defined(USB_MANUFACTURER)
-// Fall through to unknown if no manufacturer name was provided in a macro
-#  define USB_MANUFACTURER "Unknown"
+#ifndef USB_MANUFACTURER
+#define USB_MANUFACTURER "Arduino LLC"
 #endif
 
-const uint8_t STRING_MANUFACTURER[12] = USB_MANUFACTURER;
+const uint8_t STRING_MANUFACTURER[] = USB_MANUFACTURER;
 
 #ifdef CDC_ENABLED
 #define DEVICE_CLASS 0x02
