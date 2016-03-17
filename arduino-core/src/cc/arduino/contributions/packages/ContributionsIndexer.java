@@ -93,8 +93,8 @@ public class ContributionsIndexer {
 	      ContributionsIndex contributionsIndex = parseIndex(indexFile);
 	      mergeContributions(contributionsIndex, indexFile);
       } catch (JsonProcessingException e) {
-    	  System.err.println(I18n.format("Skipping contributed index file {0}, parsing error occured:", indexFile));
-    	  System.err.println(e);
+        System.err.println(I18n.format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
+        System.err.println(e);
       }
     }
 
