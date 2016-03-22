@@ -222,15 +222,15 @@ public class Base {
     INSTANCE = new Base(args);
   }
 
-  
+
   static public void initLogger() {
     Handler consoleHandler = new ConsoleLogger();
     consoleHandler.setLevel(Level.ALL);
     consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
-    
+
     Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
     globalLogger.setLevel(consoleHandler.getLevel());
-    
+
     // Remove default
     Handler[] handlers = globalLogger.getHandlers();
     for(Handler handler : handlers) {
@@ -241,13 +241,13 @@ public class Base {
     for(Handler handler : handlers) {
       root.removeHandler(handler);
     }
-    
+
     globalLogger.addHandler(consoleHandler);
-    
+
     Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
     Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
     Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
-    
+
   }
 
 
@@ -1751,7 +1751,7 @@ public class Base {
 
         Font f = new Font("SansSerif", Font.PLAIN, Theme.scale(11));
         g.setFont(f);
-        g.setColor(Color.white);
+        g.setColor(new Color(0,151,156));
         g.drawString(BaseNoGui.VERSION_NAME_LONG, Theme.scale(33), Theme.scale(20));
       }
     };
@@ -1949,7 +1949,7 @@ public class Base {
     File referenceFile = new File(referenceFolder, filename);
     if (!referenceFile.exists())
       referenceFile = new File(referenceFolder, filename + ".html");
-    
+
     if(referenceFile.exists()){
       openURL(referenceFile.getAbsolutePath());
     }else{
