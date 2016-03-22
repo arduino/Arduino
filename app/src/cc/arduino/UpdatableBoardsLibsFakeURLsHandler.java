@@ -53,22 +53,28 @@ public class UpdatableBoardsLibsFakeURLsHandler implements HyperlinkListener {
     }
 
     URL url = event.getURL();
+    openBoardLibManager(url);
+  }
 
+  public void openBoardLibManager(URL url) {
     if (BOARDSMANAGER.equals(url.getHost())) {
       try {
-        base.openBoardsManager("", "DropdownUpdatableCoresItem");
+        base.openBoardsManager(url.getRef() == null ? "": url.getRef() , url.getPath() == null ? "" : url.getPath().replace("/", ""));
       } catch (Exception e) {
         e.printStackTrace();
       }
       return;
     }
 
+    System.out.println(url.getRef() + " " + url.getHost() + " " + url.getPath());
+
     if (LIBRARYMANAGER.equals(url.getHost())) {
-      base.openLibraryManager("DropdownUpdatableLibrariesItem");
+      base.openLibraryManager(url.getRef() == null ? "": url.getRef() , url.getPath() == null ? "" : url.getPath().replace("/", ""));
       return;
     }
 
     throw new IllegalArgumentException(url.getHost() + " is invalid");
+
   }
 
 }
