@@ -1135,7 +1135,7 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
-    menu.addActionListener(e -> openLibraryManager(""));
+    menu.addActionListener(e -> openLibraryManager("", ""));
     importMenu.add(menu);
     importMenu.addSeparator();
 
@@ -1264,7 +1264,7 @@ public class Base {
     }
   }
 
-  public void openLibraryManager(String dropdownItem) {
+  public void openLibraryManager(final String filterText, String dropdownItem) {
     if (contributionsSelfCheck != null) {
       contributionsSelfCheck.cancel();
     }
@@ -1279,6 +1279,9 @@ public class Base {
         updateUI();
         if (StringUtils.isNotEmpty(dropdownItem)) {
           selectDropdownItemByClassName(dropdownItem);
+        }
+        if (StringUtils.isNotEmpty(filterText)) {
+          setFilterText(filterText);
         }
       }
     };

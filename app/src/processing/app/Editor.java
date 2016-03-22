@@ -29,6 +29,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
+import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -1015,9 +1016,15 @@ public class Editor extends JFrame implements RunnerListener {
     textArea.setTabSize(PreferencesData.getInteger("editor.tabs.size"));
     textArea.addHyperlinkListener(evt -> {
       try {
-        platform.openURL(sketch.getFolder(), evt.getURL().toExternalForm());
-      } catch (Exception e) {
-        Base.showWarning(e.getMessage(), e.getMessage(), e);
+        UpdatableBoardsLibsFakeURLsHandler boardLibHandler = new UpdatableBoardsLibsFakeURLsHandler(base);
+        boardLibHandler.openBoardLibManager(evt.getURL());
+      }
+      catch (Exception e) {
+        try {
+          platform.openURL(sketch.getFolder(), evt.getURL().toExternalForm());
+        } catch (Exception f) {
+          Base.showWarning(f.getMessage(), f.getMessage(), f);
+        }
       }
     });
     textArea.addCaretListener(e -> {
