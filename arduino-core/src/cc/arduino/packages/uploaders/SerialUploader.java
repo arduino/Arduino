@@ -93,6 +93,11 @@ public class SerialUploader extends Uploader {
       else
         prefs.put("upload.verbose", prefs.getOrExcept("upload.params.quiet"));
 
+      if (verifyUpload)
+        prefs.put("upload.verify", prefs.get("upload.params.verify", ""));
+      else
+        prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
+	
       boolean uploadResult;
       try {
         String pattern = prefs.getOrExcept("upload.pattern");
@@ -167,6 +172,11 @@ public class SerialUploader extends Uploader {
     } else {
       prefs.put("upload.verbose", prefs.getOrExcept("upload.params.quiet"));
     }
+
+    if (verifyUpload)
+      prefs.put("upload.verify", prefs.get("upload.params.verify", ""));
+    else
+      prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
     boolean uploadResult;
     try {
@@ -291,6 +301,11 @@ public class SerialUploader extends Uploader {
       prefs.put("program.verbose", prefs.getOrExcept("program.params.verbose"));
     else
       prefs.put("program.verbose", prefs.getOrExcept("program.params.quiet"));
+
+    if (verifyUpload)
+      prefs.put("program.verify", prefs.get("program.params.verify", ""));
+    else
+      prefs.put("program.verify", prefs.get("program.params.noverify", ""));
 
     try {
       // if (prefs.get("program.disable_flushing") == null
