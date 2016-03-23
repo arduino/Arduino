@@ -293,7 +293,9 @@ public class Editor extends JFrame implements RunnerListener {
 
     // RTextScrollPane
     scrollPane = new RTextScrollPane(textarea, true);
-    scrollPane.setBorder(new MatteBorder(0, 6, 0, 0, Theme.getColor("editor.bgcolor")));
+
+    scrollPane.setBorder(setMargin());
+        
     scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
     scrollPane.setLineNumbersEnabled(PreferencesData.getBoolean("editor.linenumbers"));
     scrollPane.setIconRowHeaderEnabled(false);
@@ -475,8 +477,12 @@ public class Editor extends JFrame implements RunnerListener {
     saveAsMenuItem.setEnabled(!external);
 
     textarea.setCodeFoldingEnabled(PreferencesData.getBoolean("editor.code_folding"));
+ 
+    scrollPane.setBorder(setMargin());
+
     scrollPane.setFoldIndicatorEnabled(PreferencesData.getBoolean("editor.code_folding"));
     scrollPane.setLineNumbersEnabled(PreferencesData.getBoolean("editor.linenumbers"));
+   
 
     if (external) {
       // disable line highlight and turn off the caret when disabling
@@ -504,6 +510,37 @@ public class Editor extends JFrame implements RunnerListener {
     // For 0126, moved into Base, which will notify all editors.
     //base.rebuildMenusAsync();
 
+  }
+
+  private MatteBorder setMargin()
+  {
+    int defaultMargin = 29;
+    int marginwithNumbers = 6;
+    int marginWithFoldingCode = 17;
+    int marginWithBoth = 1;
+
+    MatteBorder formatedMargin;
+    if(PreferencesData.getBoolean("editor.linenumbers") && PreferencesData.getBoolean("editor.code_folding"))
+    {
+      
+      formatedMargin = new MatteBorder(0, marginWithBoth, 0, 0, Theme.getColor("editor.bgcolor"));
+    }
+    else if(PreferencesData.getBoolean("editor.linenumbers"))
+    {
+      
+      formatedMargin = new MatteBorder(0, marginwithNumbers, 0, 0, Theme.getColor("editor.bgcolor"));
+    }
+    else if(PreferencesData.getBoolean("editor.code_folding"))
+    {
+      
+      formatedMargin = new MatteBorder(0, marginWithFoldingCode, 0, 0, Theme.getColor("editor.bgcolor"));
+    }  
+    else
+    {
+      formatedMargin = new MatteBorder(0, defaultMargin, 0, 0, Theme.getColor("editor.bgcolor"));
+    }
+
+    return formatedMargin;
   }
 
 
@@ -740,13 +777,13 @@ public class Editor extends JFrame implements RunnerListener {
       });
     sketchMenu.add(item);
 
-//    item = new JMenuItem("Stop");
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleStop();
-//        }
-//      });
-//    sketchMenu.add(item);
+  //    item = new JMenuItem("Stop");
+  //    item.addActionListener(new ActionListener() {
+  //        public void actionPerformed(ActionEvent e) {
+  //          handleStop();
+  //        }
+  //      });
+  //    sketchMenu.add(item);
 
     sketchMenu.addSeparator();
 
@@ -1390,11 +1427,11 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
     copyForumItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
+    //          SwingUtilities.invokeLater(new Runnable() {
+    //              public void run() {
           new DiscourseFormat(Editor.this, false).show();
-//              }
-//            });
+    //              }
+    //            });
         }
       });
     menu.add(copyForumItem);
@@ -1402,11 +1439,11 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyHTMLItem = newJMenuItemAlt(tr("Copy as HTML"), 'C');
     copyHTMLItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
+    //          SwingUtilities.invokeLater(new Runnable() {
+    //              public void run() {
           new DiscourseFormat(Editor.this, true).show();
-//              }
-//            });
+    //              }
+    //            });
         }
       });
     menu.add(copyHTMLItem);
@@ -1688,18 +1725,18 @@ public class Editor extends JFrame implements RunnerListener {
    * Called to update the text but not switch to a different set of code
    * (which would affect the undo manager).
    */
-//  public void setText2(String what, int start, int stop) {
-//    beginCompoundEdit();
-//    textarea.setText(what);
-//    endCompoundEdit();
-//
-//    // make sure that a tool isn't asking for a bad location
-//    start = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    stop = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    textarea.select(start, stop);
-//
-//    textarea.requestFocus();  // get the caret blinking
-//  }
+  //  public void setText2(String what, int start, int stop) {
+  //    beginCompoundEdit();
+  //    textarea.setText(what);
+  //    endCompoundEdit();
+  //
+  //    // make sure that a tool isn't asking for a bad location
+  //    start = Math.max(0, Math.min(start, textarea.getDocumentLength()));
+  //    stop = Math.max(0, Math.min(start, textarea.getDocumentLength()));
+  //    textarea.select(start, stop);
+  //
+  //    textarea.requestFocus();  // get the caret blinking
+  //  }
 
 
   public String getSelectedText() {
@@ -1770,7 +1807,7 @@ public class Editor extends JFrame implements RunnerListener {
         bl.printStackTrace();
       }
       // set up this guy's own undo manager
-//      code.undo = new UndoManager();
+  //      code.undo = new UndoManager();
       
       codeDoc.setDocument(document);
     }
@@ -1996,12 +2033,12 @@ public class Editor extends JFrame implements RunnerListener {
    * Implements Sketch &rarr; Stop, or pressing Stop on the toolbar.
    */
   private void handleStop() {  // called by menu or buttons
-//    toolbar.activate(EditorToolbar.STOP);
+  //    toolbar.activate(EditorToolbar.STOP);
 
     internalCloseRunner();
 
     toolbar.deactivateRun();
-//    toolbar.deactivate(EditorToolbar.STOP);
+  //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
     toFront();
@@ -2787,10 +2824,10 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void statusError(Exception e) {
     e.printStackTrace();
-//    if (e == null) {
-//      System.err.println("Editor.statusError() was passed a null exception.");
-//      return;
-//    }
+  //    if (e == null) {
+  //      System.err.println("Editor.statusError() was passed a null exception.");
+  //      return;
+  //    }
 
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
@@ -2836,7 +2873,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
       statusError(mess);
     }
-//    e.printStackTrace();
+  //    e.printStackTrace();
   }
 
 
