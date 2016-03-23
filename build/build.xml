@@ -42,7 +42,7 @@
   </fileset>
 
   <property name="version.suffix" value=""/>
-  <property name="closure-version" value="emt-a61"/>
+  <property name="closure-version" value="emt-b07"/>
   <target name="check-closure">
     <condition property="closure.exists">
       <available file="${build-dir}/closure-${closure-version}.tar.gz"/>
