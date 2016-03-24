@@ -36,7 +36,7 @@ compiler.ldflags=
 compiler.size.cmd=arm-none-eabi-size
 compiler.define=-DARDUINO=
 
-# this can be overriden in boards.txt
+# This can be overridden in boards.txt
 build.extra_flags=
 
 # These can be overridden in platform.local.txt

@@ -5,14 +5,17 @@
  It looks for an ASCII string of comma-separated values.
  It parses them into ints, and uses those to fade an RGB LED.
 
- Circuit: Common-anode RGB LED wired like so:
- * Red cathode: digital pin 3
- * Green cathode: digital pin 5
- * blue cathode: digital pin 6
- * anode: +5V
+ Circuit: Common-Cathode RGB LED wired like so:
+ * Red anode: digital pin 3
+ * Green anode: digital pin 5
+ * Blue anode: digital pin 6
+ * Cathode : GND
 
  created 13 Apr 2012
  by Tom Igoe
+ 
+ modified 14 Mar 2016
+ by Arturo Guadalupi
 
  This example code is in the public domain.
  */
