@@ -75,12 +75,14 @@ public class SerialDiscovery implements Discovery {
   }
 
   public void forceRefresh() {
-    serialBoardsLister.retriggerDiscovery();
+    serialBoardsLister.retriggerDiscovery(false);
   }
 
   public void setUploadInProgress(boolean param) {
     serialBoardsLister.uploadInProgress = param;
   }
+
+  public void pausePolling(boolean param) { serialBoardsLister.pausePolling = param;}
 
   @Override
   public void start() {
