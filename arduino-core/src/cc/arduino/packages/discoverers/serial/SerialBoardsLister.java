@@ -54,7 +54,7 @@ public class SerialBoardsLister extends TimerTask {
     timer.schedule(this, 0, 1000);
   }
 
-  public void retriggerDiscovery() {
+  public synchronized void retriggerDiscovery() {
     while (BaseNoGui.packages == null) {
       try {
         Thread.sleep(1000);
