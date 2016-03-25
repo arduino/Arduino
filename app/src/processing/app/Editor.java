@@ -2547,7 +2547,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
-    serialMonitor.setIconImage(getIconImage());
+    base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
     // enabled when done uploading)
@@ -2643,7 +2643,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialPlotter = new SerialPlotter(port);
-    serialPlotter.setIconImage(getIconImage());
+    base.setIcon(serialPlotter);
 
     // If currently uploading, disable the plotter (it will be later
     // enabled when done uploading)
