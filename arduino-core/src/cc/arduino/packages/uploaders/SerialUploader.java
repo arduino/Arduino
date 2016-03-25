@@ -91,6 +91,8 @@ public class SerialUploader extends Uploader {
       return uploadUsingProgrammer(buildPath, className);
     }
 
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(true);
+
     if (noUploadPort)
     {
       prefs.put("build.path", buildPath);
@@ -108,6 +110,8 @@ public class SerialUploader extends Uploader {
         uploadResult = executeUploadCommand(cmd);
       } catch (Exception e) {
         throw new RunnerException(e);
+      } finally {
+        BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
       }
       return uploadResult;
     }
@@ -154,6 +158,8 @@ public class SerialUploader extends Uploader {
         throw new RunnerException(e);
       } catch (InterruptedException e) {
         throw new RunnerException(e.getMessage());
+      } finally {
+        BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
       }
       if (actualUploadPort == null) {
         actualUploadPort = userSelectedUploadPort;
@@ -191,9 +197,12 @@ public class SerialUploader extends Uploader {
       throw e;
     } catch (Exception e) {
       throw new RunnerException(e);
+    } finally {
+      BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
     }
 
     BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
 
     String finalUploadPort = null;
     if (uploadResult && doTouch) {

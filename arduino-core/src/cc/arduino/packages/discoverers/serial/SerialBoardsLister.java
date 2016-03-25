@@ -44,6 +44,7 @@ public class SerialBoardsLister extends TimerTask {
   private final List<BoardPort> boardPorts = new LinkedList<>();
   private List<String> oldPorts = new LinkedList<>();
   public boolean uploadInProgress = false;
+  public boolean pausePolling = false;
   private BoardPort oldUploadBoardPort = null;
 
   public SerialBoardsLister(SerialDiscovery serialDiscovery) {
@@ -54,7 +55,7 @@ public class SerialBoardsLister extends TimerTask {
     timer.schedule(this, 0, 1000);
   }
 
-  public synchronized void retriggerDiscovery() {
+  public synchronized void retriggerDiscovery(boolean polled) {
     while (BaseNoGui.packages == null) {
       try {
         Thread.sleep(1000);
@@ -64,6 +65,10 @@ public class SerialBoardsLister extends TimerTask {
     }
     Platform platform = BaseNoGui.getPlatform();
     if (platform == null) {
+      return;
+    }
+
+    if (polled && pausePolling) {
       return;
     }
 
@@ -163,6 +168,6 @@ public class SerialBoardsLister extends TimerTask {
 
   @Override
   public void run() {
-     retriggerDiscovery();
+     retriggerDiscovery(true);
   }
 }
