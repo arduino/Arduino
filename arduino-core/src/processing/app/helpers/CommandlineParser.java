@@ -16,7 +16,7 @@ import static processing.app.I18n.tr;
 public class CommandlineParser {
 
   private enum ACTION {
-    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
+    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library"), HELP("--help");
 
     private final String value;
 
@@ -52,6 +52,7 @@ public class CommandlineParser {
     actions.put("--get-pref", ACTION.GET_PREF);
     actions.put("--install-boards", ACTION.INSTALL_BOARD);
     actions.put("--install-library", ACTION.INSTALL_LIBRARY);
+    actions.put("--help", ACTION.HELP);
   }
 
   public void parseArgumentsPhase1() {
@@ -83,6 +84,14 @@ public class CommandlineParser {
             BaseNoGui.showError(null, I18n.format(tr("Argument required for {0}"), a.value), 3);
           }
           libraryToInstall = args[i];
+        }
+        if (a == ACTION.HELP) {
+          Set<String> strings = actions.keySet();
+          String[] valid = strings.toArray(new String[strings.size()]);
+          String actions = PApplet.join(valid, "\n");
+          String actionFilemame = "FILE.ino";
+          String mess = I18n.format(tr("Actions:\n{0}\n{1}"), actionFilemame, actions);
+          BaseNoGui.showError(null, mess, 3);
         }
         action = a;
         continue;
@@ -185,7 +194,7 @@ public class CommandlineParser {
         continue;
       }
       if (args[i].startsWith("--"))
-        BaseNoGui.showError(null, I18n.format(tr("unknown option: {0}"), args[i]), 3);
+        BaseNoGui.showError(null, I18n.format(tr("unknown action/option: {0}, use --help"), args[i]), 3);
 
       filenames.add(args[i]);
     }
