@@ -36,10 +36,14 @@ import cc.arduino.contributions.packages.filters.UpdatablePlatformPredicate;
 import cc.arduino.view.NotificationPopup;
 import processing.app.Base;
 import processing.app.BaseNoGui;
+import processing.app.Editor;
 import processing.app.I18n;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.TimerTask;
 
 import static processing.app.I18n.tr;
@@ -95,8 +99,30 @@ public class ContributionsSelfCheck extends TimerTask {
     }
 
     SwingUtilities.invokeLater(() -> {
-      notificationPopup = new NotificationPopup(base.getActiveEditor(), hyperlinkListener, text);
-      notificationPopup.setVisible(true);
+      Editor ed = base.getActiveEditor();
+      notificationPopup = new NotificationPopup(ed, hyperlinkListener, text);
+      if (ed.isFocused()) {
+        notificationPopup.setVisible(true);
+        return;
+      }
+
+      // If the IDE is not focused wait until it is focused again to
+      // display the notification, this avoids the annoying side effect
+      // to "steal" the focus from another application.
+      WindowFocusListener wfl = new WindowFocusListener() {
+        @Override
+        public void windowLostFocus(WindowEvent evt) {
+        }
+
+        @Override
+        public void windowGainedFocus(WindowEvent evt) {
+          notificationPopup.setVisible(true);
+          for (Editor e : base.getEditors())
+            e.removeWindowFocusListener(this);
+        }
+      };
+      for (Editor e : base.getEditors())
+        e.addWindowFocusListener(wfl);
     });
   }
 
