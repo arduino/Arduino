@@ -1,7 +1,13 @@
 ARDUINO 1.6.9
 
 [ide]
+* Catch and report errors during parsing contributed index files
+* Fixed IDE version color on about dialog box. Thanks @ivanebernal
+
 [core]
+* sam: Allow 3rd party boards that depend on SAM core to use their own
+       USB vid/pid and manufacturer/product strings. Thanks @philmanofsky.
+
 [libraries]
 
 ARDUINO 1.6.8 - 2016.03.09

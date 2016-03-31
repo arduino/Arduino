@@ -36,6 +36,8 @@ import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
@@ -87,8 +89,13 @@ public class ContributionsIndexer {
     File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
     for (File indexFile : indexFiles) {
-      ContributionsIndex contributionsIndex = parseIndex(indexFile);
-      mergeContributions(contributionsIndex, indexFile);
+      try {
+	      ContributionsIndex contributionsIndex = parseIndex(indexFile);
+	      mergeContributions(contributionsIndex, indexFile);
+      } catch (JsonProcessingException e) {
+        System.err.println(I18n.format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
+        System.err.println(e);
+      }
     }
 
     List<ContributedPackage> packages = index.getPackages();
