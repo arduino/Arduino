@@ -66,8 +66,6 @@ public class UpdatableBoardsLibsFakeURLsHandler implements HyperlinkListener {
       return;
     }
 
-    System.out.println(url.getRef() + " " + url.getHost() + " " + url.getPath());
-
     if (LIBRARYMANAGER.equals(url.getHost())) {
       base.openLibraryManager(url.getRef() == null ? "": url.getRef() , url.getPath() == null ? "" : url.getPath().replace("/", ""));
       return;
