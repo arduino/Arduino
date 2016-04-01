@@ -78,6 +78,7 @@
   <property name="portable" value="false" />
 
   <property name="ARDUINO-BUILDER-VERSION" value="1.3.15" />
+  <property name="LIBLISTSERIAL-VERSION" value="1.1.0" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -436,12 +437,12 @@
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="macosx/liblistSerials-1.0.5/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
+    <copy file="macosx/liblistSerials-${LIBLISTSERIAL-VERSION}/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
 
     <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
@@ -639,12 +640,12 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="linux/liblistSerials-1.0.5/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
+    <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
 
   </target>
@@ -908,12 +909,12 @@
     <copy file="windows/msvcr100.dll" todir="windows/work" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="windows/liblistSerials-1.0.5/windows/listSerialsj.dll" todir="windows/work/lib/" />
+    <copy file="windows/liblistSerials-${LIBLISTSERIAL-VERSION}/windows/listSerialsj.dll" todir="windows/work/lib/" />
     <chmod perm="755" file="windows/work/lib/listSerialsj.dll" />
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
