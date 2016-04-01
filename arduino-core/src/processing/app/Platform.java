@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static processing.app.I18n.tr;
 
@@ -160,13 +162,26 @@ public class Platform {
     }
   }
 
-  public native String resolveDeviceAttachedToNative(String serial);
+  private native String resolveDeviceAttachedToNative(String serial);
+  private native String[] listSerialsNative();
 
   public String preListAllCandidateDevices() {
     return null;
   }
 
-  public Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+  public  List<String> listSerials(){
+    return new  ArrayList(Arrays.asList(this.listSerialsNative()));
+  }
+
+  public  List<String> listSerialsNames(){
+    List<String> list = new LinkedList<>();
+    for (String port : this.listSerialsNative()) {
+      list.add(port.split("_")[0]);
+    }
+    return list;
+  }
+
+  public synchronized Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
     String vid_pid_iSerial = resolveDeviceAttachedToNative(serial);
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {

@@ -33,6 +33,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cc.arduino.packages.BoardPort;
+
 import static processing.app.I18n.tr;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
@@ -857,6 +859,10 @@ public class BaseNoGui {
       }
       PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
       PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+      for (String userArch : tool.ugetUserArchitectures()) {
+        PreferencesData.set(prefix + tool.getName() + ".path." + userArch, absolutePath);
+        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path." + userArch, absolutePath);
+      }
     }
   }
 
@@ -1119,6 +1125,10 @@ public class BaseNoGui {
 
   public static void selectSerialPort(String port) {
     PreferencesData.set("serial.port", port);
+    BoardPort boardPort = getDiscoveryManager().find(port, true);
+    if (boardPort != null) {
+      PreferencesData.set("serial.port.iserial", boardPort.getPrefs().get("iserial"));
+    }
     String portFile = port;
     if (port.startsWith("/dev/")) {
       portFile = portFile.substring(5);

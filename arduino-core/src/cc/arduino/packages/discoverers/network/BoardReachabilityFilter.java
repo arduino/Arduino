@@ -34,23 +34,51 @@ import cc.arduino.packages.discoverers.NetworkDiscovery;
 import processing.app.helpers.NetUtils;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 import java.net.UnknownHostException;
 import java.util.*;
 
 public class BoardReachabilityFilter extends TimerTask {
 
   private final NetworkDiscovery networkDiscovery;
+  private Enumeration<NetworkInterface> staticNetworkInterfaces;
+  private final List<String> staticNetworkInterfacesList = new LinkedList<>();
 
   public BoardReachabilityFilter(NetworkDiscovery networkDiscovery) {
     this.networkDiscovery = networkDiscovery;
   }
 
   public void start(Timer timer) {
-    timer.schedule(this, 0, 3000);
+    try {
+      staticNetworkInterfaces = NetworkInterface.getNetworkInterfaces();
+      while (staticNetworkInterfaces.hasMoreElements()) {
+        staticNetworkInterfacesList.add(staticNetworkInterfaces.nextElement().getInterfaceAddresses().toString());
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    timer.schedule(this, 0, 5000);
   }
 
   @Override
   public void run() {
+
+    try {
+      Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+      while (networkInterfaces.hasMoreElements()) {
+        if (!staticNetworkInterfacesList.contains(networkInterfaces.nextElement().getInterfaceAddresses().toString())) {
+          networkDiscovery.stop();
+          staticNetworkInterfacesList.clear();
+          System.out.println("IP changed, restarting jmdns");
+          return;
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     List<BoardPort> boardPorts = networkDiscovery.getBoardPortsDiscoveredWithJmDNS();
 
     Iterator<BoardPort> boardPortIterator = boardPorts.iterator();

@@ -54,7 +54,8 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
     }
     List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(libraryName);
     return libraries.stream()
-      .filter(library -> versionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion()))
+      .filter(library -> versionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion())
+        && library.getArchitectures().containsAll(installed.getArchitectures()))
       .count() > 0;
   }
 }

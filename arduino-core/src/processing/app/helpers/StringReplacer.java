@@ -29,12 +29,17 @@ public class StringReplacer {
 
   public static String[] formatAndSplit(String src, Map<String, String> dict,
                                         boolean recursive) throws Exception {
+    return formatAndSplit(src, dict, "", recursive);
+  }
+
+  public static String[] formatAndSplit(String src, Map<String, String> dict, String arch,
+                                        boolean recursive) throws Exception {
     String res;
 
     // Recursive replace with a max depth of 10 levels.
     for (int i = 0; i < 10; i++) {
       // Do a replace with dictionary
-      res = StringReplacer.replaceFromMapping(src, dict);
+      res = StringReplacer.replaceFromMapping(src, dict, arch);
       if (!recursive)
         break;
       if (res.equals(src))
@@ -85,16 +90,32 @@ public class StringReplacer {
     return res.toArray(new String[0]);
   }
 
+  public static String replaceFromMapping(String src, Map<String, String> map, String arch) {
+    return replaceFromMapping(src, map, "{", "}", arch);
+  }
+
   public static String replaceFromMapping(String src, Map<String, String> map) {
-    return replaceFromMapping(src, map, "{", "}");
+    return replaceFromMapping(src, map, "{", "}", "");
   }
 
   public static String replaceFromMapping(String src, Map<String, String> map,
                                           String leftDelimiter,
-                                          String rightDelimiter) {
+                                          String rightDelimiter,
+                                          String footer) {
     for (Map.Entry<String, String> entry : map.entrySet()) {
       String keyword = leftDelimiter + entry.getKey() + rightDelimiter;
-      src = src.replace(keyword, entry.getValue());
+      String value = null;
+
+      // if {entry.getKey()+"."+footer} key exists, use it instead
+      if (map.containsKey(entry.getKey()+"."+footer)) {
+          value = map.get(entry.getKey()+"."+footer);
+      } else {
+          value = entry.getValue();
+      }
+
+      if (value != null && keyword != null) {
+          src = src.replace(keyword, entry.getValue());
+      }
     }
     return src;
   }

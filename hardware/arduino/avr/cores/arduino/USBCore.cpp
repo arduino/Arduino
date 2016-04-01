@@ -35,6 +35,7 @@ extern const u8 STRING_PRODUCT[] PROGMEM;
 extern const u8 STRING_MANUFACTURER[] PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptor PROGMEM;
 extern const DeviceDescriptor USB_DeviceDescriptorB PROGMEM;
+extern bool _updatedLUFAbootloader;
 
 const u16 STRING_LANGUAGE[2] = {
 	(3<<8) | (2+2),
@@ -115,16 +116,10 @@ static inline void Recv(volatile u8* data, u8 count)
 {
 	while (count--)
 		*data++ = UEDATX;
-	
-	RXLED1;					// light the RX LED
-	RxLEDPulse = TX_RX_LED_PULSE_MS;	
 }
 
 static inline u8 Recv8()
 {
-	RXLED1;					// light the RX LED
-	RxLEDPulse = TX_RX_LED_PULSE_MS;
-
 	return UEDATX;	
 }
 
@@ -226,6 +221,9 @@ int USB_Recv(u8 ep, void* d, int len)
 	if (!_usbConfiguration || len < 0)
 		return -1;
 	
+	RXLED1;					// light the RX LED
+	RxLEDPulse = TX_RX_LED_PULSE_MS;
+
 	LockEP lock(ep);
 	u8 n = FifoByteCount();
 	len = min(n,len);
@@ -806,6 +804,12 @@ void USBDevice_::attach()
 	UDIEN = (1<<EORSTE) | (1<<SOFE) | (1<<SUSPE);	// Enable interrupts for EOR (End of Reset), SOF (start of frame) and SUSPEND
 	
 	TX_RX_LED_INIT;
+
+#if MAGIC_KEY_POS != (RAMEND-1)
+	if (pgm_read_word(FLASHEND - 1) == NEW_LUFA_SIGNATURE) {
+		_updatedLUFAbootloader = true;
+	}
+#endif
 }
 
 void USBDevice_::detach()
