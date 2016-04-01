@@ -38,6 +38,8 @@ import processing.app.debug.TargetBoard;
 
 import java.util.*;
 
+import static processing.app.helpers.OSUtils.isWindows;
+
 public class SerialBoardsLister extends TimerTask {
 
   private final SerialDiscovery serialDiscovery;
@@ -52,17 +54,15 @@ public class SerialBoardsLister extends TimerTask {
   }
 
   public void start(Timer timer) {
-    timer.schedule(this, 0, 1000);
+
+    if (isWindows()) {
+      timer.schedule(this, 0, 3000);
+    } else {
+      timer.schedule(this, 0, 1000);
+    }
   }
 
   public synchronized void retriggerDiscovery(boolean polled) {
-    while (BaseNoGui.packages == null) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        // noop
-      }
-    }
     Platform platform = BaseNoGui.getPlatform();
     if (platform == null) {
       return;
@@ -102,6 +102,11 @@ public class SerialBoardsLister extends TimerTask {
 
       String[] parts = newPort.split("_");
       String port = parts[0];
+
+      if (parts.length != 3) {
+        // something went horribly wrong
+        continue;
+      }
 
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
@@ -168,6 +173,9 @@ public class SerialBoardsLister extends TimerTask {
 
   @Override
   public void run() {
+     if (BaseNoGui.packages == null) {
+        return;
+     }
      retriggerDiscovery(true);
   }
 }
