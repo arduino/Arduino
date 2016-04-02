@@ -123,11 +123,10 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems;
 
   static public void main(String args[]) throws Exception {
+
     System.setProperty("awt.useSystemAAFontSettings", "on");
     System.setProperty("swing.aatext", "true");
     System.setProperty("java.net.useSystemProxies", "true");
-
-    splashScreenHelper.splashText(tr("Loading configuration..."));
 
     if (OSUtils.isMacOS()) {
       ThinkDifferent.init();
@@ -146,6 +145,8 @@ public class Base {
     deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
     Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
 
+
+
     BaseNoGui.initLogger();
 
     initLogger();
@@ -158,7 +159,10 @@ public class Base {
 
     BaseNoGui.initParameters(args);
 
+    splashScreenHelper.splashText(tr("Loading configuration..."));
+
     BaseNoGui.initVersion();
+
 
 //    if (System.getProperty("mrj.version") != null) {
 //      //String jv = System.getProperty("java.version");
@@ -275,6 +279,7 @@ public class Base {
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
 
+
     BaseNoGui.checkInstallationFolder();
 
     String sketchbookPath = BaseNoGui.getSketchbookPath();
@@ -290,6 +295,11 @@ public class Base {
         defaultFolder.mkdirs();
       }
     }
+
+
+
+
+
 
     splashScreenHelper.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
