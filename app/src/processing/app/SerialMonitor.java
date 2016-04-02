@@ -24,8 +24,6 @@ import processing.app.legacy.PApplet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.Charset;
 
 import static processing.app.I18n.tr;

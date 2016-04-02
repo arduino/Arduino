@@ -30,7 +30,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.io.UnsupportedEncodingException;
 
 import static processing.app.I18n.tr;
 

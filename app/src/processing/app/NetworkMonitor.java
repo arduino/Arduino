@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 
 import static processing.app.I18n.tr;
 
@@ -119,6 +120,11 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
   }
 
   @Override
+  public synchronized void message(String msg) {
+	  message(msg.getBytes((Charset)rxCharsets.getSelectedItem()));
+  }
+  
+  @Override
   public synchronized void message(byte[] msg) {
 	String s = new String(msg);  
 	  
@@ -149,7 +155,7 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
         s = "\n" + tr("Unable to connect: is the sketch using the bridge?");
       }
     }
-    super.message(s);
+    super.message(msg);
   }
 
   @Override

@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
