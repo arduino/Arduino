@@ -127,8 +127,6 @@ public class Base {
     System.setProperty("swing.aatext", "true");
     System.setProperty("java.net.useSystemProxies", "true");
 
-    splashScreenHelper.splashText(tr("Loading configuration..."));
-
     if (OSUtils.isMacOS()) {
       ThinkDifferent.init();
     }
@@ -157,6 +155,8 @@ public class Base {
     BaseNoGui.initPortableFolder();
 
     BaseNoGui.initParameters(args);
+
+    splashScreenHelper.splashText(tr("Loading configuration..."));
 
     BaseNoGui.initVersion();
 
