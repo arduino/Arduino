@@ -145,8 +145,6 @@ public class Base {
     deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
     Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
 
-
-
     BaseNoGui.initLogger();
 
     initLogger();
@@ -279,7 +277,6 @@ public class Base {
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
 
-
     BaseNoGui.checkInstallationFolder();
 
     String sketchbookPath = BaseNoGui.getSketchbookPath();
@@ -295,12 +292,7 @@ public class Base {
         defaultFolder.mkdirs();
       }
     }
-
-
-
-
-
-
+    
     splashScreenHelper.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
     splashScreenHelper.splashText(tr("Preparing boards..."));
