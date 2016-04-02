@@ -119,7 +119,9 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
   }
 
   @Override
-  public synchronized void message(String s) {
+  public synchronized void message(byte[] msg) {
+	String s = new String(msg);  
+	  
     if (s.contains("can't connect")) {
       while (!channel.isClosed()) {
         try {

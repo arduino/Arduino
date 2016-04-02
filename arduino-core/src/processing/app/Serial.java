@@ -153,9 +153,7 @@ public class Serial implements SerialPortEventListener {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
         if (buf.length > 0) {
-          String msg = new String(buf);
-          char[] chars = msg.toCharArray();
-          message(chars, chars.length);
+          message(buf, buf.length);
         }
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
@@ -164,8 +162,27 @@ public class Serial implements SerialPortEventListener {
   }
 
   /**
-   * This method is intented to be extended to receive messages
+   * This method is intended to be overridden to receive messages
    * coming from serial port.
+   * 
+   * For backward compatibility, the default implementation decodes 
+   * the incoming bytes using the default charset, and calls 
+   * message(char[], int). 
+   */
+  protected void message(byte[] bytes, int length) {
+    String msg = new String(bytes, 0, length);
+    char chars[] = msg.toCharArray();
+    message(chars, chars.length);
+  }
+
+  /**
+   * This method is intended to be overridden to receive messages
+   * coming from serial port.
+   * 
+   * This method is deprecated. You should override message(byte[], int)
+   * and handle decoding explicitly.
+   * 
+   * @deprecated override message(byte[], int)
    */
   protected void message(char[] chars, int length) {
     // Empty
@@ -184,9 +201,9 @@ public class Serial implements SerialPortEventListener {
   }
 
 
-  private void write(byte bytes[]) {
+  public void write(byte what[]) {
     try {
-      port.writeBytes(bytes);
+      port.writeBytes(what);
     } catch (SerialPortException e) {
       errorMessage("write", e);
     }
@@ -203,10 +220,15 @@ public class Serial implements SerialPortEventListener {
    * <p>
    * If you want to move Unicode data, you can first convert the
    * String to a byte stream in the representation of your choice
-   * (i.e. UTF8 or two-byte Unicode data), and send it as a byte array.
+   * (i.e. UTF8 or two-byte Unicode data), and use write(byte[]).
+   * 
+   * @deprecated use write(byte[])
    */
   public void write(String what) {
-    write(what.getBytes());
+	byte[] buf = new byte[what.length()];
+	for(int i = 0; i<what.length();i++)
+		buf[i] = (byte) (what.charAt(i) & 0xff);
+    write(buf);
   }
 
   public void setDTR(boolean state) {

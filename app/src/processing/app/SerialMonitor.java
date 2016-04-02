@@ -24,6 +24,9 @@ import processing.app.legacy.PApplet;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 import static processing.app.I18n.tr;
 
@@ -65,23 +68,14 @@ public class SerialMonitor extends AbstractTextMonitor {
   }
 
   private void send(String s) {
+	
     if (serial != null) {
-      switch (lineEndings.getSelectedIndex()) {
-        case 1:
-          s += "\n";
-          break;
-        case 2:
-          s += "\r";
-          break;
-        case 3:
-          s += "\r\n";
-          break;
-      }
+	  serial.write(s.getBytes((Charset)txCharsets.getSelectedItem()));
+      serial.write(lineEndingSelection[lineEndings.getSelectedIndex()]);
       if ("".equals(s) && lineEndings.getSelectedIndex() == 0 && !PreferencesData.has("runtime.line.ending.alert.notified")) {
         noLineEndingAlert.setForeground(Color.RED);
         PreferencesData.set("runtime.line.ending.alert.notified", "true");
       }
-      serial.write(s);
     }
   }
 
@@ -92,8 +86,8 @@ public class SerialMonitor extends AbstractTextMonitor {
 
     serial = new Serial(getBoardPort().getAddress(), serialRate) {
       @Override
-      protected void message(char buff[], int n) {
-        addToUpdateBuffer(buff, n);
+      protected void message(byte[] bytes, int length) {
+        addToUpdateBuffer(bytes, length);
       }
     };
   }
