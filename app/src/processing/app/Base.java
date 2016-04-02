@@ -123,7 +123,6 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems;
 
   static public void main(String args[]) throws Exception {
-
     System.setProperty("awt.useSystemAAFontSettings", "on");
     System.setProperty("swing.aatext", "true");
     System.setProperty("java.net.useSystemProxies", "true");
@@ -160,7 +159,6 @@ public class Base {
     splashScreenHelper.splashText(tr("Loading configuration..."));
 
     BaseNoGui.initVersion();
-
 
 //    if (System.getProperty("mrj.version") != null) {
 //      //String jv = System.getProperty("java.version");
