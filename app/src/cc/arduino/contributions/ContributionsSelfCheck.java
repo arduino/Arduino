@@ -87,7 +87,7 @@ public class ContributionsSelfCheck extends TimerTask {
     } else if (updatableLibraries <= 0 && updatablePlatforms > 0) {
       text = I18n.format(tr("Updates available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>");
     } else {
-      text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager\">", "</a>", "<a href=\"http://librarymanager\">", "</a>");
+      text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>", "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
     }
 
     if (cancelled) {
