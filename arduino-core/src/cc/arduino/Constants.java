@@ -44,7 +44,7 @@ public class Constants {
   public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
 
   public static final long BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD = 60000;
-  public static final int NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
+  public static final long NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
 
   public static final String PROXY_TYPE_NONE = "none";
   public static final String PROXY_TYPE_AUTO = "auto";
