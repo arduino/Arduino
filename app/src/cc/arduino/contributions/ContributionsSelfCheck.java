@@ -102,7 +102,7 @@ public class ContributionsSelfCheck extends TimerTask {
       Editor ed = base.getActiveEditor();
       notificationPopup = new NotificationPopup(ed, hyperlinkListener, text);
       if (ed.isFocused()) {
-        notificationPopup.setVisible(true);
+        notificationPopup.begin();
         return;
       }
 
@@ -116,7 +116,7 @@ public class ContributionsSelfCheck extends TimerTask {
 
         @Override
         public void windowGainedFocus(WindowEvent evt) {
-          notificationPopup.setVisible(true);
+          notificationPopup.begin();
           for (Editor e : base.getEditors())
             e.removeWindowFocusListener(this);
         }
