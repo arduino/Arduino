@@ -290,7 +290,7 @@ public class Base {
         defaultFolder.mkdirs();
       }
     }
-
+    
     splashScreenHelper.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
     splashScreenHelper.splashText(tr("Preparing boards..."));
