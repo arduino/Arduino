@@ -30,6 +30,8 @@
 
 package processing.app.syntax;
 
+import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.Token;
@@ -72,6 +74,7 @@ public class SketchTextArea extends RSyntaxTextArea {
   public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
     this.pdeKeywords = pdeKeywords;
     installFeatures();
+    fixCtrlDeleteBehavior();
   }
 
   public void setKeywords(PdeKeywords keywords) {
@@ -388,5 +391,11 @@ public class SketchTextArea extends RSyntaxTextArea {
   @Override
   protected RTextAreaUI createRTextAreaUI() {
     return new SketchTextAreaUI(this);
+  }
+
+  private void fixCtrlDeleteBehavior() {
+    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,
+      Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    getInputMap().put(keyStroke, SketchTextAreaEditorKit.rtaDeleteNextWordAction);
   }
 }
