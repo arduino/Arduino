@@ -51,4 +51,7 @@
 	<classpathentry kind="lib" path="test-lib/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
+  <classpathentry kind="lib" path="../app/lib/slf4j-simple-1.7.20.jar"/>
+  <classpathentry kind="lib" path="../app/lib/slf4j-api-1.7.20.jar"/>
+  <classpathentry kind="lib" path="../app/lib/org.eclipse.jgit-4.2.0.201601211800-r.jar"/>
 </classpath>

@@ -78,9 +78,15 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.eclipse.jgit.revwalk.*;
+
 
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
+
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -198,11 +204,17 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportHandler;
   private Runnable exportAppHandler;
 
+  private File dirToGit = null;
+  private GitManager git = new GitManager();
+  private String x = "comete";
+
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
     this.platform = platform;
+    dirToGit = file.getParentFile();
+    String dirTempPattern = "^/tmp/(.)$";
 
     Base.setIcon(this);
 
@@ -355,7 +367,14 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
-    if (!loaded) sketch = null;
+    if (!loaded) {
+      sketch = null;
+    }
+    else
+    {
+      git.gitInit(dirToGit);
+    }
+
   }
 
 
@@ -424,6 +443,7 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   private void setPlacement(int[] storedLocation, int[] defaultLocation) {
+
     if (storedLocation.length > 5 && storedLocation[5] != 0) {
       setExtendedState(storedLocation[5]);
       setPlacement(defaultLocation);
@@ -466,7 +486,6 @@ public class Editor extends JFrame implements RunnerListener {
    * with things in the Preferences window.
    */
   public void applyPreferences() {
-
     // apply the setting for 'use external editor'
     boolean external = PreferencesData.getBoolean("editor.external");
 
@@ -569,9 +588,94 @@ public class Editor extends JFrame implements RunnerListener {
     menubar.add(toolsMenu);
 
     menubar.add(buildHelpMenu());
+
+    menubar.add(buildGitMenu());
+
     setJMenuBar(menubar);
   }
 
+  private JMenu buildGitMenu()
+  {
+    JMenu gitMenu = new JMenu("Git");
+
+    JMenuItem commitItem = newJMenuItem("Commit", 'C');
+    commitItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(!validationUntitled()){
+          JFrame frame = new JFrame("InputDialog Example #1");
+          String commitTitle = JOptionPane.showInputDialog(frame,"Commit Label");
+          String result = "Commit aborted";
+          String whites = "^\\s*$";
+
+          if(commitTitle != null && !matchRegex(whites,commitTitle)){
+            result = git.gitCommit(commitTitle, dirToGit.listFiles());
+          }
+          System.out.println(result);
+        }
+      }
+    });
+
+    JMenuItem logItem = newJMenuItem("Show Log", 'L');
+    logItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if(!validationUntitled()){
+          printGitLog(git.gitLog());
+        }
+
+
+      }
+    });
+
+    JMenuItem testItem = newJMenuItem("test", 'T');
+    testItem.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+
+        System.out.println(x);
+        System.out.println(dirToGit);
+        System.out.println(untitled);
+
+      }
+    });
+
+    gitMenu.add(testItem);
+    gitMenu.add(commitItem);
+    gitMenu.add(logItem);
+
+
+    return gitMenu;
+  }
+
+  private boolean validationUntitled(){
+    if(untitled){
+      System.out.println("the Files must be saved to use Git");
+    }
+    return untitled;
+  }
+
+  private void printGitLog(Iterable<RevCommit> logs){
+    System.out.println("\nLog:");
+
+    for (RevCommit log : logs)
+    {
+      System.out.println(log.toString());
+      System.out.println(log.getAuthorIdent());
+      System.out.println(log.getFullMessage());
+      System.out.println("\n");
+    }
+
+  }
+
+  private  boolean matchRegex(String pattern, String line)
+  {
+    Pattern patternObj = Pattern.compile(pattern);
+    Matcher matchObj = patternObj.matcher(line);
+
+
+    return matchObj.find();
+  }
 
   private JMenu buildFileMenu() {
     JMenuItem item;
@@ -692,7 +796,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
     return fileMenu;
   }
-
+  ///limite
   public void rebuildRecentSketchesMenu() {
     recentSketchesMenu.removeAll();
     for (JMenuItem recentSketchMenuItem  : base.getRecentSketchesMenuItems()) {
@@ -740,13 +844,13 @@ public class Editor extends JFrame implements RunnerListener {
       });
     sketchMenu.add(item);
 
-//    item = new JMenuItem("Stop");
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleStop();
-//        }
-//      });
-//    sketchMenu.add(item);
+  //    item = new JMenuItem("Stop");
+  //    item.addActionListener(new ActionListener() {
+  //        public void actionPerformed(ActionEvent e) {
+  //          handleStop();
+  //        }
+  //      });
+  //    sketchMenu.add(item);
 
     sketchMenu.addSeparator();
 
@@ -1390,11 +1494,11 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
     copyForumItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
+  //          SwingUtilities.invokeLater(new Runnable() {
+  //              public void run() {
           new DiscourseFormat(Editor.this, false).show();
-//              }
-//            });
+  //              }
+  //            });
         }
       });
     menu.add(copyForumItem);
@@ -1402,11 +1506,11 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyHTMLItem = newJMenuItemAlt(tr("Copy as HTML"), 'C');
     copyHTMLItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-//          SwingUtilities.invokeLater(new Runnable() {
-//              public void run() {
+  //          SwingUtilities.invokeLater(new Runnable() {
+  //              public void run() {
           new DiscourseFormat(Editor.this, true).show();
-//              }
-//            });
+  //              }
+  //            });
         }
       });
     menu.add(copyHTMLItem);
@@ -1688,18 +1792,18 @@ public class Editor extends JFrame implements RunnerListener {
    * Called to update the text but not switch to a different set of code
    * (which would affect the undo manager).
    */
-//  public void setText2(String what, int start, int stop) {
-//    beginCompoundEdit();
-//    textarea.setText(what);
-//    endCompoundEdit();
-//
-//    // make sure that a tool isn't asking for a bad location
-//    start = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    stop = Math.max(0, Math.min(start, textarea.getDocumentLength()));
-//    textarea.select(start, stop);
-//
-//    textarea.requestFocus();  // get the caret blinking
-//  }
+  //  public void setText2(String what, int start, int stop) {
+  //    beginCompoundEdit();
+  //    textarea.setText(what);
+  //    endCompoundEdit();
+  //
+  //    // make sure that a tool isn't asking for a bad location
+  //    start = Math.max(0, Math.min(start, textarea.getDocumentLength()));
+  //    stop = Math.max(0, Math.min(start, textarea.getDocumentLength()));
+  //    textarea.select(start, stop);
+  //
+  //    textarea.requestFocus();  // get the caret blinking
+  //  }
 
 
   public String getSelectedText() {
@@ -1770,7 +1874,7 @@ public class Editor extends JFrame implements RunnerListener {
         bl.printStackTrace();
       }
       // set up this guy's own undo manager
-//      code.undo = new UndoManager();
+  //      code.undo = new UndoManager();
       
       codeDoc.setDocument(document);
     }
@@ -1996,12 +2100,12 @@ public class Editor extends JFrame implements RunnerListener {
    * Implements Sketch &rarr; Stop, or pressing Stop on the toolbar.
    */
   private void handleStop() {  // called by menu or buttons
-//    toolbar.activate(EditorToolbar.STOP);
+  //    toolbar.activate(EditorToolbar.STOP);
 
     internalCloseRunner();
 
     toolbar.deactivateRun();
-//    toolbar.deactivate(EditorToolbar.STOP);
+  //    toolbar.deactivate(EditorToolbar.STOP);
 
     // focus the PDE again after quitting presentation mode [toxi 030903]
     toFront();
@@ -2787,10 +2891,10 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void statusError(Exception e) {
     e.printStackTrace();
-//    if (e == null) {
-//      System.err.println("Editor.statusError() was passed a null exception.");
-//      return;
-//    }
+  //    if (e == null) {
+  //      System.err.println("Editor.statusError() was passed a null exception.");
+  //      return;
+  //    }
 
     if (e instanceof RunnerException) {
       RunnerException re = (RunnerException) e;
@@ -2836,7 +2940,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
       statusError(mess);
     }
-//    e.printStackTrace();
+  //    e.printStackTrace();
   }
 
 
