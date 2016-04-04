@@ -13,8 +13,8 @@
 
  The circuit:
  Two devices which communicate serially are needed.
- * First serial device's TX attached to digital pin 2, RX to pin 3
- * Second serial device's TX attached to digital pin 4, RX to pin 5
+ * First serial device's TX attached to digital pin 10(RX), RX to pin 11(TX)
+ * Second serial device's TX attached to digital pin 8(RX), RX to pin 9(TX)
 
  Note:
  Not all pins on the Mega and Mega 2560 support change interrupts,
@@ -26,7 +26,7 @@
  8, 9, 10, 11, 14 (MISO), 15 (SCK), 16 (MOSI).
 
  created 18 Apr. 2011
- modified 25 May 2012
+ modified 19 March 2016
  by Tom Igoe
  based on Mikal Hart's twoPortRXExample
 
@@ -35,10 +35,10 @@
  */
 
 #include <SoftwareSerial.h>
-// software serial #1: TX = digital pin 10, RX = digital pin 11
+// software serial #1: RX = digital pin 10, TX = digital pin 11
 SoftwareSerial portOne(10, 11);
 
-// software serial #2: TX = digital pin 8, RX = digital pin 9
+// software serial #2: RX = digital pin 8, TX = digital pin 9
 // on the Mega, use other pins instead, since 8 and 9 don't work on the Mega
 SoftwareSerial portTwo(8, 9);
 
