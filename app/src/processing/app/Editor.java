@@ -597,14 +597,15 @@ public class Editor extends JFrame implements RunnerListener {
   private JMenu buildGitMenu()
   {
     JMenu gitMenu = new JMenu("Git");
+    gitMenu.setMnemonic(KeyEvent.VK_G);
 
-    JMenuItem commitItem = newJMenuItem("Commit", 'C');
+    JMenuItem commitItem = newJMenuItem("Commit", 'i');
     commitItem.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         if(!validationUntitled()){
-          JFrame frame = new JFrame("InputDialog Example #1");
-          String commitTitle = JOptionPane.showInputDialog(frame,"Commit Label");
+
+          String commitTitle = JOptionPane.showInputDialog(new JFrame(),"Commit Label","Commit",1);
           String result = "Commit aborted";
           String whites = "^\\s*$";
 
@@ -616,7 +617,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
     });
 
-    JMenuItem logItem = newJMenuItem("Show Log", 'L');
+    JMenuItem logItem = newJMenuItem("Show Log", 'g');
     logItem.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
