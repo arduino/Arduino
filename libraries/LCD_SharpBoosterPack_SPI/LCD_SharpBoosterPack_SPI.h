@@ -52,6 +52,7 @@ class LCD_SharpBoosterPack_SPI : public Print {
 public:
     ///
     /// @brief	Constructor
+    /// @note   For BoosterPack
     ///
     LCD_SharpBoosterPack_SPI();
 
@@ -60,6 +61,11 @@ public:
     /// @param	pinChipSelect SPI chip select
     /// @param	pinDISP Display pin
     /// @param	pinVCC VCC pin
+    ///
+    /// @note   For SensorTag CC2650
+    /// @code
+    ///     LCD_SharpBoosterPack_SPI myScreen(7, 10, 1);
+    /// @endcode
     ///
     LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_t pinDISP, uint8_t pinVCC);
     LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_t pinDISP, uint8_t pinVCC, bool autoVCOM);
