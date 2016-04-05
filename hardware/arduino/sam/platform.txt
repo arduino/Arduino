@@ -105,3 +105,4 @@ tools.bossac.upload.params.quiet=
 tools.bossac.upload.params.verify=-v
 tools.bossac.upload.pattern="{path}/{cmd}" {upload.verbose} --port={serial.port.file} -U {upload.native_usb} -e -w {upload.verify} -b "{build.path}/{build.project_name}.bin" -R
 
+tools.bossac_remote.upload.pattern=/usr/bin/run-bossac {upload.verbose} --port=ttyATH0 -U {upload.native_usb} -e -w -v -b /tmp/sketch.bin -R
