@@ -214,7 +214,6 @@ public class SerialUploader extends Uploader {
             }
             Thread.sleep(250);
           }
-          finalUploadPort = actualUploadPort;
         }
       } catch (InterruptedException ex) {
         // noop
