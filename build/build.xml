@@ -180,10 +180,15 @@
     <!-- download and unzip TI-RTOS closure -->
     <antcall target="unzip-closure"/>
 
+    <!-- get WiFi library from emt closure, but get examples from Energia -->
     <move todir="${target.path}/hardware/cc3200emt/libraries/WiFi">
       <fileset dir="${target.path}/hardware/emt/ti/runtime/wiring/cc3200/libraries/WiFi">
       </fileset>
     </move>
+    <copy todir="${target.path}/hardware/cc3200emt/libraries/WiFi/examples">
+      <fileset dir="../hardware/cc3200emt/libraries/WiFi/examples">
+      </fileset>
+    </copy>
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
