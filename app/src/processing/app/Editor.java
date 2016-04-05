@@ -207,7 +207,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private File dirToGit = null;
   private GitManager git = new GitManager();
-  private String x = "comete";
+
 
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
@@ -215,7 +215,6 @@ public class Editor extends JFrame implements RunnerListener {
     this.base = ibase;
     this.platform = platform;
     dirToGit = file.getParentFile();
-    String dirTempPattern = "^/tmp/(.)$";
 
     Base.setIcon(this);
 
@@ -629,19 +628,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
     });
 
-    JMenuItem testItem = newJMenuItem("test", 'T');
-    testItem.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
 
-        System.out.println(x);
-        System.out.println(dirToGit);
-        System.out.println(untitled);
-
-      }
-    });
-
-    gitMenu.add(testItem);
     gitMenu.add(commitItem);
     gitMenu.add(logItem);
 
@@ -659,13 +646,19 @@ public class Editor extends JFrame implements RunnerListener {
   private void printGitLog(Iterable<RevCommit> logs){
     System.out.println("\nLog:");
 
-    for (RevCommit log : logs)
+    try{
+      for (RevCommit log : logs)
+      {
+        System.out.println(log.toString());
+        System.out.println(log.getAuthorIdent());
+        System.out.println(log.getFullMessage());
+        System.out.println("\n");
+      }
+    }catch (NullPointerException ex)
     {
-      System.out.println(log.toString());
-      System.out.println(log.getAuthorIdent());
-      System.out.println(log.getFullMessage());
-      System.out.println("\n");
+      System.out.println("There is no log to show");
     }
+
 
   }
 
@@ -2403,6 +2396,8 @@ public class Editor extends JFrame implements RunnerListener {
         // the Save As method of the Sketch object, since that's the
         // only one who knows whether something was renamed.
         //sketchbook.rebuildMenusAsync();
+        dirToGit = sketch.getData().getDataFolder().getParentFile();
+        git.gitInit(dirToGit);
       } else {
         statusNotice(tr("Save Canceled."));
         return false;

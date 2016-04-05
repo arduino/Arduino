@@ -745,6 +745,7 @@ public class Sketch {
     // Make sure that it's not an untitled sketch
     setUntitled(false);
 
+
     // let Editor know that the save was successful
     return true;
   }
@@ -1415,5 +1416,7 @@ public class Sketch {
     return newName;
   }
 
-
+  public SketchData getData() {
+    return data;
+  }
 }
