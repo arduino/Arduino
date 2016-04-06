@@ -56,13 +56,6 @@ public class SerialBoardsLister extends TimerTask {
   }
 
   public synchronized void retriggerDiscovery(boolean polled) {
-    while (BaseNoGui.packages == null) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        // noop
-      }
-    }
     Platform platform = BaseNoGui.getPlatform();
     if (platform == null) {
       return;
@@ -102,6 +95,11 @@ public class SerialBoardsLister extends TimerTask {
 
       String[] parts = newPort.split("_");
       String port = parts[0];
+
+      if (parts.length != 3) {
+        // something went horribly wrong
+        continue;
+      }
 
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
@@ -168,6 +166,9 @@ public class SerialBoardsLister extends TimerTask {
 
   @Override
   public void run() {
+     if (BaseNoGui.packages == null) {
+        return;
+     }
      retriggerDiscovery(true);
   }
 }
