@@ -366,4 +366,22 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 // Alias SerialUSB to Serial
 #define SerialUSB SERIAL_PORT_USBVIRTUAL
 
+// Bootloader related fields
+// Old Caterian bootloader places the MAGIC key into unsafe RAM locations (it can be rewritten
+// by the running sketch before to actual reboot).
+// Newer bootloaders, recognizable by the LUFA "signature" at the end of the flash, can handle both
+// the usafe and the safe location. Check once (in USBCore.cpp) if the bootloader in new, then set the global
+// _updatedLUFAbootloader variable to true/false and place the magic key consequently
+#ifndef MAGIC_KEY
+#define MAGIC_KEY 0x7777
+#endif
+
+#ifndef MAGIC_KEY_POS
+#define MAGIC_KEY_POS 0x0800
+#endif
+
+#ifndef NEW_LUFA_SIGNATURE
+#define NEW_LUFA_SIGNATURE 0xDCFB
+#endif
+
 #endif /* Pins_Arduino_h */
