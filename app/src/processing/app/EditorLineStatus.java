@@ -52,6 +52,7 @@ public class EditorLineStatus extends JComponent {
   String text = "";
   String name = "";
   String serialport = "";
+  String serialnumber = "";
 
   public EditorLineStatus() {
     background = Theme.getColor("linestatus.bgcolor");
@@ -127,6 +128,10 @@ public class EditorLineStatus extends JComponent {
 
   public void setSerialPort(String serialport) {
     this.serialport = serialport;
+  }
+
+  public void setSerialNumber(String serialnumber) {
+    this.serialnumber = serialnumber;
   }
 
   public Dimension getPreferredSize() {
