@@ -1376,8 +1376,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    // TODO "cut" and "copy" should really only be enabled
-    // if some text is currently selected
     JMenuItem cutItem = newJMenuItem(tr("Cut"), 'X');
     cutItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -1521,6 +1519,21 @@ public class Editor extends JFrame implements RunnerListener {
       });
       menu.add(useSelectionForFindItem);
     }
+
+    menu.addMenuListener(new MenuListener() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        boolean enabled = textarea.getSelectedText() != null;
+        cutItem.setEnabled(enabled);
+        copyItem.setEnabled(enabled);
+      }
+
+      @Override
+      public void menuDeselected(MenuEvent e) {}
+
+      @Override
+      public void menuCanceled(MenuEvent e) {}
+    });
 
     return menu;
   }
