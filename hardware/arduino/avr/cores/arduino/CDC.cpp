@@ -102,21 +102,43 @@ bool CDC_Setup(USBSetup& setup)
 #ifndef MAGIC_KEY
 #define MAGIC_KEY 0x7777
 #endif
+
+// Legacy magic key position. Looks for old and new boot key position.
+// Use RAMEND-1 as MAGIC_KEY_POS to save a few bytes of flash and force the new bootloader.
 #ifndef MAGIC_KEY_POS
 #define MAGIC_KEY_POS 0x0800
+#endif
+
+#ifndef NEW_LUFA_SIGNATURE
+#define NEW_LUFA_SIGNATURE 0xDCFB
+#endif
+
+			uint16_t magic_key_pos = MAGIC_KEY_POS;
+
+// If we don't use the new RAMEND directly, check manually if we have a newer bootloader.
+// This is used to keep compatible with the old leonardo bootloaders.
+// You are still able to set the magic key position manually to RAMEND-1 to save a few bytes for this check.
+#if MAGIC_KEY_POS != (RAMEND-1)
+			// For future boards save the key in the inproblematic RAMEND
+			// Which is reserved for the main() return value (which will never return)
+			if (pgm_read_word(FLASHEND - 1) == NEW_LUFA_SIGNATURE) {
+				// horray, we got a new bootloader!
+				magic_key_pos = (RAMEND-1);
+			}
 #endif
 
 			// We check DTR state to determine if host port is open (bit 0 of lineState).
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
 #if MAGIC_KEY_POS != (RAMEND-1)
-				*(uint16_t *)(RAMEND-1) = *(uint16_t *)MAGIC_KEY_POS;
-				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
-#else
-				// for future boards save the key in the inproblematic RAMEND
-				// which is reserved for the main() return value (which will never return)
-				*(uint16_t *)MAGIC_KEY_POS = MAGIC_KEY;
+				// Backup ram value if its not a newer bootloader.
+				// This should avoid memory corruption at least a bit, not fully
+				if (magic_key_pos != (RAMEND-1)) {
+					*(uint16_t *)(RAMEND-1) = *(uint16_t *)magic_key_pos;
+				}
 #endif
+				// Store boot key
+				*(uint16_t *)magic_key_pos = MAGIC_KEY;
 				wdt_enable(WDTO_120MS);
 			}
 			else
@@ -129,10 +151,14 @@ bool CDC_Setup(USBSetup& setup)
 				wdt_disable();
 				wdt_reset();
 #if MAGIC_KEY_POS != (RAMEND-1)
-				*(uint16_t *)MAGIC_KEY_POS = *(uint16_t *)(RAMEND-1);
-#else
-				*(uint16_t *)MAGIC_KEY_POS = 0x0000;
+				// Restore backed up (old bootloader) magic key data
+				if (magic_key_pos != (RAMEND-1)) {
+					*(uint16_t *)magic_key_pos = *(uint16_t *)(RAMEND-1);
+				} else {
 #endif
+				// Clean up RAMEND key
+					*(uint16_t *)magic_key_pos = 0x0000;
+				}
 			}
 		}
 		return true;
