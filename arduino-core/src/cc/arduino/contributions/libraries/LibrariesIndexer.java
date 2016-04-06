@@ -187,11 +187,11 @@ public class LibrariesIndexer {
     if (headers.length == 0) {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
     }
-    installedLibraries.addOrReplace(lib);
+    installedLibraries.addOrReplaceArchAware(lib);
     if (isSketchbook) {
       installedLibrariesWithDuplicates.add(lib);
     } else {
-      installedLibrariesWithDuplicates.addOrReplace(lib);
+      installedLibrariesWithDuplicates.addOrReplaceArchAware(lib);
     }
 
     // Check if we can find the same library in the index
