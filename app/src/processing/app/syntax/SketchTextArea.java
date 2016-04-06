@@ -30,6 +30,7 @@
 
 package processing.app.syntax;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 import org.apache.commons.compress.utils.IOUtils;
@@ -58,6 +59,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Logger;
+import processing.app.helpers.OSUtils;
 
 /**
  * Arduino Sketch code editor based on RSyntaxTextArea (http://fifesoft.com/rsyntaxtextarea)
@@ -394,8 +396,8 @@ public class SketchTextArea extends RSyntaxTextArea {
   }
 
   private void fixCtrlDeleteBehavior() {
-    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,
-      Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    int modifier = OSUtils.isMacOS()? InputEvent.ALT_MASK : InputEvent.CTRL_MASK;
+    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, modifier);
     getInputMap().put(keyStroke, SketchTextAreaEditorKit.rtaDeleteNextWordAction);
   }
 }
