@@ -33,6 +33,8 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import  cc.arduino.contributions.VersionComparator;
+
 import static processing.app.I18n.tr;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
@@ -855,8 +857,21 @@ public class BaseNoGui {
       } else {
         absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
       }
-      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
+
       PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+
+      // Check if the tool has another source with different version number
+      // and keep the (semver) latest as the versionless key
+      String toolPath = PreferencesData.get(prefix + tool.getName() + ".path");
+      if (toolPath != null) {
+        VersionComparator versionComparator = new VersionComparator();
+        // Keep the original key if the tool version is older than the saved one
+        // Terminate the check early if the old one is __REMOVE__
+        if (toolPath != Constants.PREF_REMOVE_PLACEHOLDER && versionComparator.compare(tool.getVersion(), new File(toolPath).getName()) < 0) {
+          absolutePath = toolPath;
+        }
+      }
+      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
     }
   }
 
