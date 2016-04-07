@@ -14,6 +14,7 @@ ARDUINO 1.6.9
 * Make http://librarymanager and http://boardmanager links clickable from the editor window
 * Cut/Copy actions are disable when there is no text selected. Thanks @avargas-nearsoft
 * Added more OSX native (emacs-like) keybindings. Thanks @nopdotcom
+* Fixed Ctrl+Del: now deletes the word behind the cursor instead of the entire line. Thanks @avargas-nearsoft
 
 [core]
 * sam: Allow 3rd party boards that depend on SAM core to use their own
