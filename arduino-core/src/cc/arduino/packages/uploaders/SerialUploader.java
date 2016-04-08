@@ -177,6 +177,13 @@ public class SerialUploader extends Uploader {
       Thread.sleep(100);
     }
 
+    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+    try {
+      prefs.put("serial.port.iserial", boardPort.getPrefs().getOrExcept("iserial"));
+    } catch (Exception e) {
+      // if serial port does not contain an iserial field
+    }
+
     prefs.put("build.path", buildPath);
     prefs.put("build.project_name", className);
     if (verbose) {
