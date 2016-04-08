@@ -1,3 +1,53 @@
+Arduino IDE for ARM
+===================
+
+![Header](header.png)
+
+This repository contains patches and precompiled binaries of the Arduino IDE for ARM.
+The binaries were compiled on a raspberry pi or an x64 linux machine via cross compilation.
+
+Compatible Devices
+==================
+
+Tested devices are:
+
+* Raspberry Pi2
+* [Open a ticket if your device works](https://github.com/NicoHood/Arduino/issues)
+
+Download + Installation
+=======================
+
+Please refere to the [releases page](https://github.com/NicoHood/Arduino/releases)
+to get the latest working IDE. I will try to tag each version that compiles fine for me.
+**The current git state might not work, please refere to the tags of the releases!**
+
+To install the software just extract the package with `tar -xf arduino-1.x.x.tar.xz`.
+You can also run the `install.sh` script to install the IDE on your ARM device.
+
+Special Thanks
+==============
+
+The Arduino IDE for ARM would not be possible with a lot of work from other people.
+In this section I want to give credit for them and provide some additional resources.
+Thanks a lot for all the help and work you've done!
+
+* https://github.com/arduino/Arduino/pull/4457
+* https://github.com/arduino/Arduino/pull/3549
+* https://github.com/ShorTie8/Arduino_IDE
+* https://www.raspberrypi.org/forums/viewtopic.php?f=66&t=92662
+
+[Contact me.](http://www.NicoHood.de)
+
+Changelog
+=========
+
+```
+1.6.8-rc1 Release (29.01.2015)
+* Release of the first working Arduino IDE compilation
+* Last upstream commit was: fa0d5808462a435c7178121585f90668223e017d
+* libserials is actually version 1.0.7 not 1.0.5
+```
+
 Arduino
 ========
 
