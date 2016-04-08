@@ -674,12 +674,12 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="linux/liblistSerials-1.0.5/arm/liblistSerialsj.so" todir="linux/work/lib/" />
+    <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/arm/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
 
   </target>
