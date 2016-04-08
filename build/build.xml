@@ -712,9 +712,9 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-armhf-pc-linux-gnu-glibc2.13.tar.bz2"/>
       <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-armhf-pc-linux-gnu-glibc2.13.tar.bz2"/>
       <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
 
