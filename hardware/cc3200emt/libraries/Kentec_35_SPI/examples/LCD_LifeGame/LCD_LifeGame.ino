@@ -63,6 +63,13 @@
 // Screen selection
 #define K35_SPI // HX8353E K35_SPI
 
+#include <LCD_screen.h>
+#include <LCD_screen_font.h>
+#include <LCD_utilities.h>
+#include <Terminal12e.h>
+#include <Terminal6e.h>
+#include <Terminal8e.h>
+
 #if defined(K35_SPI)
 #include "Screen_K35_SPI.h"
 Screen_K35_SPI myScreen;
