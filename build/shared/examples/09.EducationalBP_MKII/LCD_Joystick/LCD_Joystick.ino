@@ -71,6 +71,8 @@ uint32_t z;
 // Add setup code
 void setup()
 {
+    Serial.begin(9600); // for LCD debug output
+
     // By default MSP432 has analogRead() set to 10 bits. 
     // This Sketch assumes 12 bits. Uncomment to line below to set analogRead()
     // to 12 bit resolution for MSP432.
@@ -79,7 +81,6 @@ void setup()
     myScreen.begin();
     x00 = 0;
     y00 = 0;
-    
 }
 
 // Add loop code
