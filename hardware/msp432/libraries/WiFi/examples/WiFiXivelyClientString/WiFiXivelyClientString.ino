@@ -56,6 +56,8 @@ boolean lastConnected = false;                 // state of the connection last t
 const unsigned long postingInterval = 10*1000;  //delay between updates to xively.com
 
 void setup() {
+  Serial.begin(9600);
+
   // attempt to connect to Wifi network:
   Serial.print("Attempting to connect to Network named: ");
   // print the network name (SSID);

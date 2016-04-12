@@ -10,7 +10,7 @@
 /// @date		Oct 05, 2013
 /// @version	104
 ///
-/// @copyright	(c) Rei VILO, 2013
+/// @copyright	(c) Rei VILO, 2013-2016 - SPECIAL EDITION FOR ENERGIA
 /// @copyright	CC = BY SA NC
 ///
 /// @see		ReadMe.txt for references
@@ -43,54 +43,15 @@
 #include "SPI.h"
 
 // Screen selection
-#define HX8353E // HX8353E K35 HI32 W32 ILI9225B HY28A ST7735 PicasoSPE PicasoSGC
+#define HX8353E // HX8353E K35_SPI
 
-#if defined(ILI9225B)
-#include "screen_ILI9225B.h"
-Screen_ILI9225B myScreen;
+#if defined(K35_SPI)
+#include "Screen_K35_SPI.h"
+Screen_K35_SPI myScreen;
 
 #elif defined(HX8353E)
 #include "Screen_HX8353E.h"
 Screen_HX8353E myScreen;
-
-#elif defined(W32)
-#include "screen_W32.h"
-Screen_W32 myScreen;
-
-#elif defined(K35)
-#include "screen_K35.h"
-Screen_K35 myScreen;
-
-#elif defined(HY28A)
-#include "screen_HY28A.h"
-Screen_HY28A myScreen;
-
-#elif defined(HI32)
-#include "screen_HI32.h"
-Screen_HI32 myScreen;
-
-#elif defined(ST7735)
-#include "screen_ST7735.h"
-Screen_ST7735 myScreen(ST7735R_RED_TAB);
-
-#elif defined(PicasoSPE)
-#include "screen_PicasoSPE.h"
-
-#if defined(__LM4F120H5QR__)
-//#include "SoftwareSerial.h"
-//SoftwareSerial mySerial(PB_0, PB_1);
-#define mySerial Serial1
-
-Screen_PicasoSPE myScreen(PA_2, &mySerial);
-#else
-#define mySerial Serial1
-Screen_PicasoSPE myScreen(4, &mySerial);
-#endif
-
-#elif defined(PicasoSGC)
-#include "screen_PicasoSGC.h"
-#define mySerial Serial1
-Screen_PicasoSGC myScreen(20, &mySerial);
 
 #else
 #error Unknown screen
@@ -311,21 +272,11 @@ void setup()
     Serial.println("*** LCD_protocol");
     Serial.println("(All times in ms)");
     
-#if defined(PicasoSPE)
-    mySerial.begin(9600);
-#endif;
-    
     myScreen.begin();
     Serial.println(myScreen.WhoAmI());
     Serial.print(myScreen.screenSizeX(), DEC);
     Serial.print("x");
     Serial.println(myScreen.screenSizeY(), DEC);
-    
-#if defined(PicasoSPE)
-    myScreen.setSpeed((uint32_t) 38400); // 38400 ok, 57600 ok, 115200 nok, 256000 nok
-    mySerial.begin((uint32_t) 38400);
-    Serial.println((uint32_t) 38400, DEC);
-#endif;
     
     myScreen.setFontSize(myScreen.fontMax());
     myScreen.clear(darkGrayColour);

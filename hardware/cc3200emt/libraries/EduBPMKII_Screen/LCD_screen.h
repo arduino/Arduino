@@ -11,8 +11,8 @@
 /// @date       Dec 10, 2013
 /// @version114
 ///
-/// @copyright (c) Rei VILO, 2010-2013
-/// @copyrightAll rights reserved
+/// @copyright (c) Rei VILO, 2013-2016 - SPECIAL EDITION FOR ENERGIA
+/// @copyright  All rights reserved
 /// @n          http://embeddedcomputing.weebly.com/lcd_screen-library-suite
 ///
 /// @n  Dual license:

@@ -132,7 +132,7 @@ void loop() {
 //
 //a way to check if one array ends with another array
 //
-boolean endsWith(char* inString, char* compString) {
+boolean endsWith(char* inString, const char* compString) {
   int compLength = strlen(compString);
   int strLength = strlen(inString);
   

@@ -103,6 +103,16 @@ public class PdePreprocessor {
           return (file.getName());
       }
 
+      public String getFullPath()
+      {
+          try {
+              return (file.getCanonicalPath());
+          }
+          catch (Exception e) {
+              return (file.getAbsolutePath());
+          }
+      }
+
       public int getLineCount()
       {
           return (lineCount);
@@ -413,7 +423,7 @@ public class PdePreprocessor {
                   bigCode.append("#define setup setup" +  inoName + "\n");
                   bigCode.append("#define loop loop" +  inoName + "\n");
               }
-              bigCode.append("#line 1 \"" + isc.getFileName() + "\"\n");
+              bigCode.append("#line 1 \"" + isc.getFullPath() + "\"\n");
           }
       
           bigCode.append(in);
