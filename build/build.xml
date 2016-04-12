@@ -180,10 +180,15 @@
     <!-- download and unzip TI-RTOS closure -->
     <antcall target="unzip-closure"/>
 
+    <!-- get WiFi library from emt closure, but get examples from Energia -->
     <move todir="${target.path}/hardware/cc3200emt/libraries/WiFi">
       <fileset dir="${target.path}/hardware/emt/ti/runtime/wiring/cc3200/libraries/WiFi">
       </fileset>
     </move>
+    <copy todir="${target.path}/hardware/cc3200emt/libraries/WiFi/examples">
+      <fileset dir="../hardware/cc3200emt/libraries/WiFi/examples">
+      </fileset>
+    </copy>
 
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
@@ -325,7 +330,7 @@
 
    <mkdir dir="macosx/work/Energia.app/Contents/Resources/Java/hardware/tools"/>
    <!-- Unzip msp430 tools -->
-    <exec executable="unzip">
+    <exec executable="unzip" failonerror="true">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
@@ -334,7 +339,7 @@
     </exec>
 
     <!-- Unzip arm tools -->
-    <exec executable="unzip">
+    <exec executable="unzip" failonerror="true">
       <arg value="-q" />
       <arg value="-n" />
       <arg value="-d" />
@@ -503,12 +508,12 @@
   <target name="linux32-build" depends="linux-build, check.deps.linux" description="Build linux (32-bit) version">
 <echo>${user.dir}</echo>
     <!-- Unzip msp430 tools -->
-    <exec executable="tar" dir="linux/work/hardware/tools">
+    <exec executable="tar" dir="linux/work/hardware/tools" failonerror="true">
       <arg value="-xjf"/>
       <arg value="${user.dir}/linux/msp430_tools_linux32_05_2015.tar.bz2"/>
     </exec>
     <!-- Unzip lm4f tools -->
-    <exec executable="tar" dir="linux/work/hardware/tools">
+    <exec executable="tar" dir="linux/work/hardware/tools" failonerror="true">
       <arg value="-xjf"/>
       <arg value="${user.dir}/linux/arm_tools_linux32.tar.bz2"/>
     </exec>
@@ -539,13 +544,13 @@
 
   <target name="linux64-build" depends="linux-build, check.deps.linux64" description="Build linux (64-bit) version">
     <copy tofile="linux/work/lib/librxtxSerial.so" file="linux/dist/lib/librxtxSerial64.so" overwrite="true" />
-    <exec executable="tar" dir="linux/work/hardware/tools">
+    <exec executable="tar" dir="linux/work/hardware/tools" failonerror="true">
       <arg value="-xjf"/>
       <arg value="${user.dir}/linux/msp430_tools_linux64_05_2015.tar.bz2"/>
     </exec>
 
     <!-- Unzip lm4f tools -->
-    <exec executable="tar" dir="linux/work/hardware/tools">
+    <exec executable="tar" dir="linux/work/hardware/tools" failonerror="true">
       <arg value="-xjf"/>
       <arg value="${user.dir}/linux/arm_tools_linux64.tar.bz2"/>
     </exec>
