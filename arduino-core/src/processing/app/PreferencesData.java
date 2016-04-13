@@ -120,7 +120,7 @@ public class PreferencesData {
       String[] keys = prefs.keySet().toArray(new String[0]);
       Arrays.sort(keys);
       for (String key : keys) {
-        if (key.startsWith("runtime.") || key.startsWith("build_properties_custom."))
+        if (key.startsWith("runtime."))
           continue;
         writer.println(key + "=" + prefs.get(key));
       }
