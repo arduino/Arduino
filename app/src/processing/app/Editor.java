@@ -39,6 +39,7 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.git.GitManager;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
@@ -201,6 +202,10 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportHandler;
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
+
+  private GitManager gitManager = new GitManager();
+
+
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -572,6 +577,7 @@ public class Editor extends JFrame implements RunnerListener {
     menubar.add(toolsMenu);
 
     menubar.add(buildHelpMenu());
+    menubar.add(buildGitMenu());
     setJMenuBar(menubar);
   }
 
@@ -694,6 +700,32 @@ public class Editor extends JFrame implements RunnerListener {
       fileMenu.add(item);
     }
     return fileMenu;
+  }
+
+  private JMenu buildGitMenu() {
+    JMenu gitMenu = new JMenu(tr("Git"));
+    gitMenu.setMnemonic(KeyEvent.VK_G);
+
+    JMenuItem item = newJMenuItem(tr("Init"), 'I');
+    item.addActionListener(e -> gitManager
+      .init(sketch.getFolder())
+    );
+    gitMenu.add(item);
+
+    item = newJMenuItem(tr("Commit"), 'C');
+    item.addActionListener(e -> {
+        String commitMessage = JOptionPane.showInputDialog("Commit message:");
+        gitManager.commit(sketch.getFolder(), commitMessage);
+    });
+    gitMenu.add(item);
+
+    item = newJMenuItem(tr("Log"), 'L');
+    item.addActionListener(e ->
+      gitManager.log(sketch.getFolder())
+    );
+    gitMenu.add(item);
+
+    return gitMenu;
   }
 
   public void rebuildRecentSketchesMenu() {
