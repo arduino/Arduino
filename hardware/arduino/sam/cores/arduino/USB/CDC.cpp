@@ -191,7 +191,6 @@ void Serial_::accept(void)
 	// current location of the tail), we're about to overflow the buffer
 	// and so we don't write the character or advance the head.
 	while (i != buffer->tail) {
-		uint32_t c;
 		if (!USBD_Available(CDC_RX)) {
 			udd_ack_fifocon(CDC_RX);
 			break;
