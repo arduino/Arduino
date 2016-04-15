@@ -94,12 +94,22 @@ public class SerialBoardsLister extends TimerTask {
     for (String newPort : ports) {
 
       String[] parts = newPort.split("_");
-      String port = parts[0];
 
-      if (parts.length != 3) {
+      if (parts.length < 3) {
         // something went horribly wrong
         continue;
       }
+
+      if (parts.length > 3) {
+        // port name with _ in it (like CP2102 on OSX)
+        for (int i = 1; i < (parts.length-2); i++) {
+          parts[0] += "_" + parts[i];
+        }
+        parts[1] = parts[parts.length-2];
+        parts[2] = parts[parts.length-1];
+      }
+
+      String port = parts[0];
 
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
