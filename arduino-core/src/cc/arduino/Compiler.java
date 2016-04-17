@@ -228,7 +228,7 @@ public class Compiler implements MessageConsumer {
     commandLine.addArgument("-warnings=" + PreferencesData.get("compiler.warning_level"), false);
 
     PreferencesData.getMap()
-      .subTree("build_properties_custom")
+      .subTree("runtime.build_properties_custom")
       .entrySet()
       .stream()
       .forEach(kv -> commandLine.addArgument("-prefs=\"" + kv.getKey() + "=" + kv.getValue() + "\"", false));

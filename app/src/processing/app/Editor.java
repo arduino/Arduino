@@ -146,6 +146,8 @@ public class Editor extends JFrame implements RunnerListener {
 
   private int numTools = 0;
 
+  public boolean avoidMultipleOperations = false;
+
   private final EditorToolbar toolbar;
   // these menus are shared so that they needn't be rebuilt for all windows
   // each time a sketch is created, renamed, or moved.
@@ -198,7 +200,7 @@ public class Editor extends JFrame implements RunnerListener {
   private Runnable stopHandler;
   Runnable exportHandler;
   private Runnable exportAppHandler;
-
+  private Runnable timeoutUploadHandler;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -812,6 +814,9 @@ public class Editor extends JFrame implements RunnerListener {
       portMenu = new JMenu(tr("Port"));
     populatePortMenu();
     toolsMenu.add(portMenu);
+    item = new JMenuItem(tr("Get Board Info"));
+    item.addActionListener(e -> handleBoardInfo());
+    toolsMenu.add(item);
     toolsMenu.addSeparator();
 
     base.rebuildProgrammerMenu();
@@ -1376,8 +1381,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    // TODO "cut" and "copy" should really only be enabled
-    // if some text is currently selected
     JMenuItem cutItem = newJMenuItem(tr("Cut"), 'X');
     cutItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -1522,6 +1525,21 @@ public class Editor extends JFrame implements RunnerListener {
       menu.add(useSelectionForFindItem);
     }
 
+    menu.addMenuListener(new MenuListener() {
+      @Override
+      public void menuSelected(MenuEvent e) {
+        boolean enabled = textarea.getSelectedText() != null;
+        cutItem.setEnabled(enabled);
+        copyItem.setEnabled(enabled);
+      }
+
+      @Override
+      public void menuDeselected(MenuEvent e) {}
+
+      @Override
+      public void menuCanceled(MenuEvent e) {}
+    });
+
     return menu;
   }
 
@@ -1648,6 +1666,7 @@ public class Editor extends JFrame implements RunnerListener {
     stopHandler = new DefaultStopHandler();
     exportHandler = new DefaultExportHandler();
     exportAppHandler = new DefaultExportAppHandler();
+    timeoutUploadHandler = new TimeoutUploadHandler();
   }
 
 
@@ -1979,6 +1998,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       status.unprogress();
       toolbar.deactivateRun();
+      avoidMultipleOperations = false;
     }
   }
 
@@ -2367,6 +2387,7 @@ public class Editor extends JFrame implements RunnerListener {
     console.clear();
     status.progress(tr("Uploading to I/O Board..."));
 
+    new Thread(timeoutUploadHandler).start();
     new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
   }
 
@@ -2406,6 +2427,7 @@ public class Editor extends JFrame implements RunnerListener {
         e.printStackTrace();
       } finally {
         populatePortMenu();
+        avoidMultipleOperations = false;
       }
       status.unprogress();
       uploading = false;
@@ -2433,13 +2455,14 @@ public class Editor extends JFrame implements RunnerListener {
         }
       }
       try {
-        if (serialMonitor != null)
+        if (serialMonitor != null) {
           serialMonitor.resume(boardPort);
-        if (boardPort == null) {
-          serialMonitor.close();
-          handleSerial();
-        } else {
-          serialMonitor.resume(boardPort);
+          if (boardPort == null) {
+            serialMonitor.close();
+            handleSerial();
+          } else {
+            serialMonitor.resume(boardPort);
+          }
         }
       } catch (Exception e) {
         statusError(e);
@@ -2500,6 +2523,7 @@ public class Editor extends JFrame implements RunnerListener {
       } catch (Exception e) {
         e.printStackTrace();
       } finally {
+        avoidMultipleOperations = false;
         populatePortMenu();
       }
       status.unprogress();
@@ -2514,6 +2538,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  class TimeoutUploadHandler implements Runnable {
+
+    public void run() {
+      try {
+        //10 seconds, than reactivate upload functionality and let the programmer pid being killed
+        Thread.sleep(1000 * 10);
+        if (uploading) {
+          avoidMultipleOperations = false;
+        }
+      } catch (InterruptedException e) {
+          // noop
+      }
+    }
+  }
 
   public void handleSerial() {
     if(serialPlotter != null) {
@@ -2558,7 +2596,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     // If currently uploading, disable the monitor (it will be later
     // enabled when done uploading)
-    if (uploading) {
+    if (uploading || avoidMultipleOperations) {
       try {
         serialMonitor.suspend();
       } catch (Exception e) {
@@ -2582,8 +2620,10 @@ public class Editor extends JFrame implements RunnerListener {
       }
 
       try {
-        serialMonitor.open();
         serialMonitor.setVisible(true);
+        if (!avoidMultipleOperations) {
+          serialMonitor.open();
+        }
         success = true;
       } catch (ConnectException e) {
         statusError(tr("Unable to connect: is the sketch using the bridge?"));
@@ -2730,6 +2770,59 @@ public class Editor extends JFrame implements RunnerListener {
     }).start();
   }
 
+  private void handleBoardInfo() {
+    console.clear();
+
+    String selectedPort = PreferencesData.get("serial.port");
+    List<BoardPort> ports = Base.getDiscoveryManager().discovery();
+
+    String label = "";
+    String vid = "";
+    String pid = "";
+    String iserial = "";
+    String protocol = "";
+    boolean found = false;
+
+    for (BoardPort port : ports) {
+      if (port.getAddress().equals(selectedPort)) {
+        label = port.getBoardName();
+        vid = port.getVID();
+        pid = port.getPID();
+        iserial = port.getISerial();
+        protocol = port.getProtocol();
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      statusNotice(tr("Please select a port to obtain board info"));
+      return;
+    }
+
+    if (protocol.equals("network")) {
+      statusNotice(tr("Network port, can't obtain info"));
+      return;
+    }
+
+    if (vid == null || vid.equals("") || vid.equals("0000")) {
+      statusNotice(tr("Native serial port, can't obtain info"));
+      return;
+    }
+
+    if (iserial == null || iserial.equals("")) {
+      iserial = tr("Upload any sketch to obtain it");
+    }
+
+    if (label == null) {
+      label = tr("Unknown board");
+    }
+
+    String infos = I18n.format("BN: {0}\nVID: {1}\nPID: {2}\nSN: {3}", label, vid, pid, iserial);
+    JTextArea textArea = new JTextArea(infos);
+
+    JOptionPane.showMessageDialog(this, textArea, tr("Board Info"), JOptionPane.PLAIN_MESSAGE);
+  }
 
   /**
    * Handler for File &rarr; Page Setup.

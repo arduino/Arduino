@@ -44,6 +44,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static processing.app.I18n.tr;
 
@@ -102,6 +103,9 @@ public abstract class Uploader implements MessageConsumer {
     return null;
   }
 
+  // static field for last executed programmer process ID
+  static protected Process programmerPid;
+
   protected boolean executeUploadCommand(Collection<String> command) throws Exception {
     return executeUploadCommand(command.toArray(new String[command.size()]));
   }
@@ -121,11 +125,20 @@ public abstract class Uploader implements MessageConsumer {
         System.out.println();
       }
       Process process = ProcessUtils.exec(command);
+      programmerPid = process;
       new MessageSiphon(process.getInputStream(), this, 100);
       new MessageSiphon(process.getErrorStream(), this, 100);
 
-      // wait for the process to finish.
-      result = process.waitFor();
+      // wait for the process to finish, but not forever
+      // kill the flasher process after 2 minutes to avoid 100% cpu spinning
+      if (!process.waitFor(2, TimeUnit.MINUTES)) {
+        process.destroyForcibly();
+      }
+      if (!process.isAlive()) {
+        result = process.exitValue();
+      } else {
+        result = 0;
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
