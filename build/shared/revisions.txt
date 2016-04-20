@@ -17,6 +17,7 @@ ARDUINO 1.6.9
 * Fixed Ctrl+Del: now deletes the word behind the cursor instead of the entire line. Thanks @avargas-nearsoft
 
 [core]
+* String class now supports iterators. Thanks @Chris--A
 * sam: Allow 3rd party boards that depend on SAM core to use their own
        USB vid/pid and manufacturer/product strings. Thanks @philmanofsky.
 * avr: Check at runtime if 32u4 boards are shipped with new bootloader; if so
