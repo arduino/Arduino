@@ -128,11 +128,14 @@ String::~String()
 /*  Memory Management                        */
 /*********************************************/
 
+unsigned char String::defaultReservePercentage = 0;
+
 inline void String::init(void)
 {
 	buffer = NULL;
 	capacity = 0;
 	len = 0;
+  reservePercentage = defaultReservePercentage;
 }
 
 void String::invalidate(void)
@@ -145,11 +148,18 @@ void String::invalidate(void)
 unsigned char String::reserve(unsigned int size)
 {
 	if (buffer && capacity >= size) return 1;
+  unsigned int minNewSize = capacity * (1.0 + (float)reservePercentage / 100.0);
+  if (size < minNewSize) size = minNewSize;
 	if (changeBuffer(size)) {
 		if (len == 0) buffer[0] = 0;
 		return 1;
 	}
 	return 0;
+}
+
+void String::setReservePercentage (unsigned char percentage)
+{
+  reservePercentage = percentage;
 }
 
 unsigned char String::changeBuffer(unsigned int maxStrLen)
@@ -161,6 +171,11 @@ unsigned char String::changeBuffer(unsigned int maxStrLen)
 		return 1;
 	}
 	return 0;
+}
+
+void String::setDefaultReservePercentage (unsigned char percentage)
+{
+  defaultReservePercentage = percentage;
 }
 
 /*********************************************/

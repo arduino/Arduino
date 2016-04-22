@@ -78,7 +78,10 @@ public:
 	// is left unchanged).  reserve(0), if successful, will validate an
 	// invalid string (i.e., "if (s)" will be true afterwards)
 	unsigned char reserve(unsigned int size);
+  void setReservePercentage (unsigned char percentage);
 	inline unsigned int length(void) const {return len;}
+
+  static void setDefaultReservePercentage (unsigned char percentage);
 
 	// creates a copy of the assigned value.  if the value is null or
 	// invalid, or if the memory allocation fails, the string will be
@@ -246,9 +249,13 @@ public:
 	float toFloat(void) const;
 
 protected:
+public:
 	char *buffer;	        // the actual char array
 	unsigned int capacity;  // the array length minus one (for the '\0')
 	unsigned int len;       // the String length (not counting the '\0')
+  unsigned char reservePercentage = 0;  // the percentage of reserved buffer when creating or resizing a String
+  static unsigned char defaultReservePercentage;  // the default value of reservePercentage
+
 protected:
 	void init(void);
 	void invalidate(void);
