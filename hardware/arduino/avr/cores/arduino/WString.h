@@ -176,14 +176,70 @@ public:
 	String substring( unsigned int beginIndex ) const { return substring(beginIndex, len); };
 	String substring( unsigned int beginIndex, unsigned int endIndex ) const;
 
-	// modification
-	void replace(char find, char replace);
-	void replace(const String& find, const String& replace);
-	void remove(unsigned int index);
-	void remove(unsigned int index, unsigned int count);
-	void toLowerCase(void);
-	void toUpperCase(void);
-	void trim(void);
+  // modification
+  // notice:  void    function  (...) operates on           the object and returns void
+  //          String  functionC (...) operates on a copy of the object and returns the copy (C=Copy)
+  //          String* functionS (...) operates on           the object and returns a pointer to the object (S=Self)
+  void    replace (char find, char replace);
+  String  replaceC(char find, char replace);
+  String* replaceS(char find, char replace);
+  void    replace (const String& find, const String& replace);
+  String  replaceC(const String& find, const String& replace);
+  String* replaceS(const String& find, const String& replace);
+  void    remove (unsigned int index);
+  String  removeC(unsigned int index);
+  String* removeS(unsigned int index);
+  void    remove (unsigned int index, unsigned int count);
+  String  removeC(unsigned int index, unsigned int count);
+  String* removeS(unsigned int index, unsigned int count);
+  void    toLowerCase (void);
+  String  toLowerCaseC(void);
+  String* toLowerCaseS(void);
+  void    toUpperCase (void);
+  String  toUpperCaseC(void);
+  String* toUpperCaseS(void);
+  void    trim (void);
+  String  trimC(void);
+  String* trimS(void);
+  void    trim (char remove);
+  String  trimC(char remove);
+  String* trimS(char remove);
+  void    trimStart (void);
+  String  trimStartC(void);
+  String* trimStartS(void);
+  void    trimStart (char remove);
+  String  trimStartC(char remove);
+  String* trimStartS(char remove);
+  void    trimEnd (void);
+  String  trimEndC(void);
+  String* trimEndS(void);
+  void    trimEnd (char remove);
+  String  trimEndC(char remove);
+  String* trimEndS(char remove);
+  void    padLeft (unsigned int newlength);
+  String  padLeftC(unsigned int newlength);
+  String* padLeftS(unsigned int newlength);
+  void    padLeft (unsigned int newlength, char add);
+  String  padLeftC(unsigned int newlength, char add);
+  String* padLeftS(unsigned int newlength, char add);
+  void    padRight (unsigned int newlength);
+  String  padRightC(unsigned int newlength);
+  String* padRightS(unsigned int newlength);
+  void    padRight (unsigned int newlength, char add);
+  String  padRightC(unsigned int newlength, char add);
+  String* padRightS(unsigned int newlength, char add);
+  void    cropLeft (unsigned int count);
+  String  cropLeftC(unsigned int count);
+  String* cropLeftS(unsigned int count);
+  void    cropRight (unsigned int count);
+  String  cropRightC(unsigned int count);
+  String* cropRightS(unsigned int count);
+  void    keepLeft (unsigned int count);
+  String  keepLeftC(unsigned int count);
+  String* keepLeftS(unsigned int count);
+  void    keepRight (unsigned int count);
+  String  keepRightC(unsigned int count);
+  String* keepRightS(unsigned int count);
 
 	// parsing/conversion
 	long toInt(void) const;

@@ -214,10 +214,10 @@ void String::move(String &rhs)
 String & String::operator = (const String &rhs)
 {
 	if (this == &rhs) return *this;
-	
+
 	if (rhs.buffer) copy(rhs.buffer, rhs.len);
 	else invalidate();
-	
+
 	return *this;
 }
 
@@ -239,7 +239,7 @@ String & String::operator = (const char *cstr)
 {
 	if (cstr) copy(cstr, strlen(cstr));
 	else invalidate();
-	
+
 	return *this;
 }
 
@@ -482,7 +482,7 @@ unsigned char String::equalsIgnoreCase( const String &s2 ) const
 	const char *p2 = s2.buffer;
 	while (*p1) {
 		if (tolower(*p1++) != tolower(*p2++)) return 0;
-	} 
+	}
 	return 1;
 }
 
@@ -513,7 +513,7 @@ char String::charAt(unsigned int loc) const
 	return operator[](loc);
 }
 
-void String::setCharAt(unsigned int loc, char c) 
+void String::setCharAt(unsigned int loc, char c)
 {
 	if (loc < len) buffer[loc] = c;
 }
@@ -622,7 +622,7 @@ String String::substring(unsigned int left, unsigned int right) const
 	if (left >= len) return out;
 	if (right > len) right = len;
 	char temp = buffer[right];  // save the replaced character
-	buffer[right] = '\0';	
+	buffer[right] = '\0';
 	out = buffer + left;  // pointer arithmetic
 	buffer[right] = temp;  //restore character
 	return out;
@@ -632,26 +632,51 @@ String String::substring(unsigned int left, unsigned int right) const
 /*  Modification                             */
 /*********************************************/
 
-void String::replace(char find, char replace)
+//----------------------------------------
+// replace (char, char)
+//----------------------------------------
+void String::replace (char find, char replacement)
 {
 	if (!buffer) return;
 	for (char *p = buffer; *p; p++) {
-		if (*p == find) *p = replace;
+		if (*p == find) *p = replacement;
 	}
 }
 
-void String::replace(const String& find, const String& replace)
+//----------------------------------------
+String String::replaceC (char find, char replacement)
+{
+  String str (*this);
+  str.replace (find, replacement);
+  return str;
+}
+
+//----------------------------------------
+String* String::replaceS (char find, char replacement)
+{
+  replace (find, replacement);
+  return this;
+}
+
+//----------------------------------------
+// replace (const String&, const String&)
+//----------------------------------------
+void String::replace (const String& find, const String& replace)
 {
 	if (len == 0 || find.len == 0) return;
 	int diff = replace.len - find.len;
 	char *readFrom = buffer;
 	char *foundAt;
-	if (diff == 0) {
+
+	if (diff == 0)
+  {
 		while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
 			memcpy(foundAt, replace.buffer, replace.len);
 			readFrom = foundAt + replace.len;
 		}
-	} else if (diff < 0) {
+	}
+  else if (diff < 0)
+  {
 		char *writeTo = buffer;
 		while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
 			unsigned int n = foundAt - readFrom;
@@ -663,7 +688,9 @@ void String::replace(const String& find, const String& replace)
 			len += diff;
 		}
 		strcpy(writeTo, readFrom);
-	} else {
+	}
+  else
+  {
 		unsigned int size = len; // compute size needed for result
 		while ((foundAt = strstr(readFrom, find.buffer)) != NULL) {
 			readFrom = foundAt + find.len;
@@ -683,24 +710,80 @@ void String::replace(const String& find, const String& replace)
 	}
 }
 
-void String::remove(unsigned int index){
+//----------------------------------------
+String String::replaceC (const String& find, const String& replacement)
+{
+  String str (*this);
+  str.replace (find, replacement);
+  return str;
+}
+
+//----------------------------------------
+String* String::replaceS (const String& find, const String& replacement)
+{
+  replace (find, replacement);
+  return this;
+}
+
+//----------------------------------------
+// remove (unsigned int)
+//----------------------------------------
+void String::remove (unsigned int index)
+{
 	// Pass the biggest integer as the count. The remove method
 	// below will take care of truncating it at the end of the
 	// string.
-	remove(index, (unsigned int)-1);
+	remove (index, (unsigned int)-1);
 }
 
-void String::remove(unsigned int index, unsigned int count){
-	if (index >= len) { return; }
-	if (count <= 0) { return; }
-	if (count > len - index) { count = len - index; }
+//----------------------------------------
+String String::removeC (unsigned int index)
+{
+  String str (*this);
+  str.remove (index);
+  return str;
+}
+
+//----------------------------------------
+String* String::removeS (unsigned int index)
+{
+  remove (index);
+  return this;
+}
+
+//----------------------------------------
+// remove (unsigned int, unsigned int)
+//----------------------------------------
+void String::remove (unsigned int index, unsigned int count)
+{
+	if (index >= len) return;
+	if (count <= 0) return;
+	if (count > len - index) count = len - index;
 	char *writeTo = buffer + index;
 	len = len - count;
-	strncpy(writeTo, buffer + index + count,len - index);
+	strncpy(writeTo, buffer + index + count, len - index);
 	buffer[len] = 0;
 }
 
-void String::toLowerCase(void)
+//----------------------------------------
+String String::removeC (unsigned int index, unsigned int count)
+{
+  String str (*this);
+  str.remove (index, count);
+  return str;
+}
+
+//----------------------------------------
+String* String::removeS (unsigned int index, unsigned int count)
+{
+  remove (index, count);
+  return this;
+}
+
+//----------------------------------------
+// toLowerCase ()
+//----------------------------------------
+void String::toLowerCase (void)
 {
 	if (!buffer) return;
 	for (char *p = buffer; *p; p++) {
@@ -708,7 +791,25 @@ void String::toLowerCase(void)
 	}
 }
 
-void String::toUpperCase(void)
+//----------------------------------------
+String String::toLowerCaseC (void)
+{
+  String str (*this);
+  str.toLowerCase ();
+  return str;
+}
+
+//----------------------------------------
+String* String::toLowerCaseS (void)
+{
+  toLowerCase ();
+  return this;
+}
+
+//----------------------------------------
+// toUpperCase ()
+//----------------------------------------
+void String::toUpperCase (void)
 {
 	if (!buffer) return;
 	for (char *p = buffer; *p; p++) {
@@ -716,16 +817,373 @@ void String::toUpperCase(void)
 	}
 }
 
-void String::trim(void)
+//----------------------------------------
+String String::toUpperCaseC (void)
 {
-	if (!buffer || len == 0) return;
-	char *begin = buffer;
-	while (isspace(*begin)) begin++;
-	char *end = buffer + len - 1;
-	while (isspace(*end) && end >= begin) end--;
-	len = end + 1 - begin;
-	if (begin > buffer) memcpy(buffer, begin, len);
-	buffer[len] = 0;
+  String str (*this);
+  str.toUpperCase ();
+  return str;
+}
+
+//----------------------------------------
+String* String::toUpperCaseS (void)
+{
+  toUpperCase ();
+  return this;
+}
+
+//----------------------------------------
+// trim ()
+//----------------------------------------
+void String::trim (void)
+{
+  trim (0x20);
+}
+
+//----------------------------------------
+String String::trimC (void)
+{
+  String str (*this);
+  str.trim();
+  return str;
+}
+
+//----------------------------------------
+String* String::trimS (void)
+{
+  trim ();
+  return this;
+}
+
+//----------------------------------------
+// trim (char)
+//----------------------------------------
+void String::trim (char remove)
+{
+  trimStart (remove);
+  trimEnd   (remove);
+}
+
+//----------------------------------------
+String String::trimC (char remove)
+{
+  String str (*this);
+  str.trim (remove);
+  return str;
+}
+
+//----------------------------------------
+String* String::trimS (char remove)
+{
+  trim (remove);
+  return this;
+}
+
+//----------------------------------------
+// trimStart ()
+//----------------------------------------
+void String::trimStart (void)
+{
+  trimStart (0x20);
+}
+
+//----------------------------------------
+String String::trimStartC (void)
+{
+  String str (*this);
+  str.trimStart ();
+  return str;
+}
+
+//----------------------------------------
+String* String::trimStartS (void)
+{
+  trimStart ();
+  return this;
+}
+
+//----------------------------------------
+// trimStart (char)
+//----------------------------------------
+void String::trimStart (char remove)
+{
+  if (!buffer || len == 0 || remove == 0) return;
+  char *begin = buffer;
+  while ((*begin) == remove) begin++;
+  len = buffer + len - begin;
+  if (begin > buffer) memmove (buffer, begin, len);
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::trimStartC (char remove)
+{
+  String str (*this);
+  str.trimStart (remove);
+  return str;
+}
+
+//----------------------------------------
+String* String::trimStartS (char remove)
+{
+  trimStart (remove);
+  return this;
+}
+
+//----------------------------------------
+// trimEnd ()
+//----------------------------------------
+void String::trimEnd (void)
+{
+  trimEnd(0x20);
+}
+
+//----------------------------------------
+String String::trimEndC (void)
+{
+  String str (*this);
+  str.trimEnd ();
+  return str;
+}
+
+//----------------------------------------
+String* String::trimEndS (void)
+{
+  trimEnd();
+  return this;
+}
+
+//----------------------------------------
+// trimEnd (char)
+//----------------------------------------
+void String::trimEnd (char remove)
+{
+  if (!buffer || len == 0 || remove == 0) return;
+  char *end = buffer + len - 1;
+  while ((*end) == remove && end >= buffer) end--;
+  len = end + 1 - buffer;
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::trimEndC (char remove)
+{
+  String str (*this);
+  str.trimEnd (remove);
+  return str;
+}
+
+//----------------------------------------
+String* String::trimEndS (char remove)
+{
+  trimEnd(remove);
+  return this;
+}
+
+//----------------------------------------
+// padLeft (unsigned int)
+//----------------------------------------
+void String::padLeft (unsigned int newlength)
+{
+  padLeft(newlength, 0x20);
+}
+
+//----------------------------------------
+String String::padLeftC (unsigned int newlength)
+{
+  String str (*this);
+  str.padLeft (newlength);
+  return str;
+}
+
+//----------------------------------------
+String* String::padLeftS (unsigned int newlength)
+{
+  padLeft (newlength);
+  return this;
+}
+
+//----------------------------------------
+// padLeft (unsigned int, char)
+//----------------------------------------
+void String::padLeft (unsigned int newlength, char add)
+{
+  if (newlength < len) newlength = len;
+  if (!reserve(newlength)) return;
+  unsigned int lenAdd = newlength - len;
+  char *begin = buffer + lenAdd;
+  memmove (begin, buffer, len);
+  memset (buffer, add, lenAdd);
+  len = newlength;
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::padLeftC (unsigned int newlength, char add)
+{
+  String str (*this);
+  str.padLeft (newlength, add);
+  return str;
+}
+
+//----------------------------------------
+String* String::padLeftS (unsigned int newlength, char add)
+{
+  padLeft (newlength, add);
+  return this;
+}
+
+//----------------------------------------
+// padRight (unsigned int)
+//----------------------------------------
+void String::padRight (unsigned int newlength)
+{
+  padRight (newlength, 0x20);
+}
+
+//----------------------------------------
+String String::padRightC (unsigned int newlength)
+{
+  String str (*this);
+  str.padRight (newlength);
+  return str;
+}
+
+//----------------------------------------
+String* String::padRightS (unsigned int newlength)
+{
+  padRight (newlength);
+  return this;
+}
+
+//----------------------------------------
+// padRight (unsigned int, char)
+//----------------------------------------
+void String::padRight (unsigned int newlength, char add)
+{
+  if (newlength < len) newlength = len;
+  if (!reserve(newlength)) return;
+  unsigned int lenAdd = newlength - len;
+  char *begin = buffer + len;
+  memset (begin, add, lenAdd);
+  len = newlength;
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::padRightC (unsigned int newlength, char add)
+{
+  String str (*this);
+  str.padRight (newlength, add);
+  return str;
+}
+
+//----------------------------------------
+String* String::padRightS (unsigned int newlength, char add)
+{
+  padRight (newlength, add);
+  return this;
+}
+
+//----------------------------------------
+// cropLeft (unsigned int)
+//----------------------------------------
+void String::cropLeft (unsigned int count)
+{
+  unsigned int lenKeep = len - count;
+  keepRight (lenKeep);
+}
+
+//----------------------------------------
+String String::cropLeftC (unsigned int count)
+{
+  String str (*this);
+  str.cropLeft (count);
+  return str;
+}
+
+//----------------------------------------
+String* String::cropLeftS (unsigned int count)
+{
+  cropLeft (count);
+  return this;
+}
+
+//----------------------------------------
+// cropRight (unsigned int)
+//----------------------------------------
+void String::cropRight (unsigned int count)
+{
+  unsigned int lenKeep = len - count;
+  keepLeft (lenKeep);
+}
+
+//----------------------------------------
+String String::cropRightC (unsigned int count)
+{
+  String str (*this);
+  str.cropRight (count);
+  return str;
+}
+
+//----------------------------------------
+String* String::cropRightS (unsigned int count)
+{
+  cropRight (count);
+  return this;
+}
+
+//----------------------------------------
+// keepLeft (unsigned int)
+//----------------------------------------
+void String::keepLeft (unsigned int count)
+{
+  if (!buffer || len == 0) return;
+  if (count <= len) len = count;
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::keepLeftC (unsigned int count)
+{
+  String str (*this);
+  str.keepLeft (count);
+  return str;
+}
+
+//----------------------------------------
+String* String::keepLeftS (unsigned int count)
+{
+  keepLeft (count);
+  return this;
+}
+
+//----------------------------------------
+// keepRight (unsigned int)
+//----------------------------------------
+void String::keepRight (unsigned int count)
+{
+  if (!buffer || len == 0) return;
+  if (count > len) count = len;
+  char *begin = buffer + len - count;
+  len = count;
+  if (begin > buffer) memmove (buffer, begin, len);
+  buffer[len] = 0;
+}
+
+//----------------------------------------
+String String::keepRightC (unsigned int count)
+{
+  String str (*this);
+  str.keepRight (count);
+  return str;
+}
+
+//----------------------------------------
+String* String::keepRightS (unsigned int count)
+{
+  keepRight (count);
+  return this;
 }
 
 /*********************************************/
