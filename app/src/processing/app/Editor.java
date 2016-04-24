@@ -161,7 +161,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static volatile AbstractMonitor serialMonitor;
   static AbstractMonitor serialPlotter;
-  
+
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
@@ -257,7 +257,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
-    
+
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -305,7 +305,7 @@ public class Editor extends JFrame implements RunnerListener {
     scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
     scrollPane.setLineNumbersEnabled(PreferencesData.getBoolean("editor.linenumbers"));
     scrollPane.setIconRowHeaderEnabled(false);
-    
+
     Gutter gutter = scrollPane.getGutter();
     gutter.setBookmarkingEnabled(false);
     //gutter.setBookmarkIcon(CompletionsRenderer.getIcon(CompletionType.TEMPLATE));
@@ -714,8 +714,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     item = newJMenuItem(tr("Commit"), 'C');
     item.addActionListener(e -> {
-        String commitMessage = JOptionPane.showInputDialog("Commit message:");
-        gitManager.commit(sketch.getFolder(), commitMessage);
+      String commitMessage = JOptionPane.showInputDialog("Commit message:");
+      gitManager.commit(sketch.getFolder(), commitMessage);
     });
     gitMenu.add(item);
 
@@ -723,6 +723,33 @@ public class Editor extends JFrame implements RunnerListener {
     item.addActionListener(e ->
       gitManager.log(sketch.getFolder())
     );
+    gitMenu.add(item);
+
+    item = newJMenuItem(tr("Diff"), 'D');
+    item.addActionListener(e -> {
+      gitManager.diff(sketch.getFolder());
+    });
+    gitMenu.add(item);
+
+    item = newJMenuItem(tr("Reset"), 'R');
+    item.addActionListener(e -> {
+      int i = JOptionPane.showConfirmDialog(
+        null,
+        tr("This is revert all changes.\n Are you sure?"),
+        tr("alert"),
+        JOptionPane.OK_CANCEL_OPTION
+      );
+      if (i == JOptionPane.OK_OPTION) {
+        gitManager.reset(sketch.getFolder(), sketch.getCurrentCode().getFile());
+      }
+      // Update the currently visible program with its code
+      try {
+        sketch.load(true);
+        textarea.setText(sketch.getCurrentCode().getProgram());
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+    });
     gitMenu.add(item);
 
     return gitMenu;
@@ -1630,7 +1657,7 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     protected void updateUndoState() {
-      
+
       UndoManager undo = textarea.getUndoManager();
 
       if (undo.canUndo()) {
@@ -1666,7 +1693,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     protected void updateRedoState() {
       UndoManager undo = textarea.getUndoManager();
-      
+
       if (undo.canRedo()) {
         redoItem.setEnabled(true);
         redoItem.setText(undo.getRedoPresentationName());
@@ -1829,7 +1856,7 @@ public class Editor extends JFrame implements RunnerListener {
       }
       // set up this guy's own undo manager
 //      code.undo = new UndoManager();
-      
+
       codeDoc.setDocument(document);
     }
 
@@ -1837,17 +1864,17 @@ public class Editor extends JFrame implements RunnerListener {
       codeDoc.setUndo(new LastUndoableEditAwareUndoManager(textarea, this));
       document.addUndoableEditListener(codeDoc.getUndo());
 		}
-    
+
     // Update the document object that's in use
     textarea.switchDocument(document, codeDoc.getUndo());
-    
+
     // HACK multiple tabs: for update Listeners of Gutter, forcin call: Gutter.setTextArea(RTextArea)
     // BUG: https://github.com/bobbylight/RSyntaxTextArea/issues/84
     scrollPane.setViewportView(textarea);
-    
+
     textarea.select(codeDoc.getSelectionStart(), codeDoc.getSelectionStop());
     textarea.requestFocus();  // get the caret blinking
-     
+
     final int position = codeDoc.getScrollPosition();
 
     // invokeLater: Expect the document to be rendered correctly to set the new position
@@ -2594,7 +2621,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialMonitor != null) {
       // The serial monitor already exists
 
@@ -2683,7 +2710,7 @@ public class Editor extends JFrame implements RunnerListener {
     } while (serialMonitor.requiresAuthorization() && !success);
 
   }
-  
+
   public void handlePlotter() {
     if(serialMonitor != null) {
       if(serialMonitor.isClosed()) {
@@ -2693,7 +2720,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialPlotter != null) {
       // The serial plotter already exists
 
@@ -3014,7 +3041,7 @@ public class Editor extends JFrame implements RunnerListener {
     item.setName("menuToolsAutoFormat");
 
     menu.add(item);
-    
+
     item = newJMenuItem(tr("Comment/Uncomment"), '/');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -3058,7 +3085,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     final JMenuItem referenceItem = new JMenuItem(tr("Find in Reference"));
     referenceItem.addActionListener(this::handleFindReference);
-    menu.add(referenceItem);  
+    menu.add(referenceItem);
 
     final JMenuItem openURLItem = new JMenuItem(tr("Open URL"));
     openURLItem.addActionListener(new ActionListener() {
@@ -3066,15 +3093,15 @@ public class Editor extends JFrame implements RunnerListener {
         Base.openURL(e.getActionCommand());
       }
     });
-    menu.add(openURLItem);   
-    
+    menu.add(openURLItem);
+
     menu.addPopupMenuListener(new PopupMenuListener() {
 
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             String referenceFile = base.getPdeKeywords().getReference(getCurrentKeyword());
             referenceItem.setEnabled(referenceFile != null);
-    
+
             int offset = textarea.getCaretPosition();
             org.fife.ui.rsyntaxtextarea.Token token = RSyntaxUtilities.getTokenAtOffset(textarea, offset);
             if (token != null && token.isHyperlink()) {
@@ -3106,5 +3133,7 @@ public class Editor extends JFrame implements RunnerListener {
       //ignore
     }
   }
+
+
 
 }

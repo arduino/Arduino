@@ -3,13 +3,25 @@ package processing.app.git;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.FileTreeIterator;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -20,6 +32,62 @@ public class GitManager {
       System.out.println("Having repository: " + git.getRepository().getDirectory());
     } catch (GitAPIException e) {
       e.printStackTrace();
+    }
+  }
+
+  public void reset(File repoDir, File file) {
+    Consumer<Git> resetCommand = git -> {
+      try {
+        // We need get relative repository path
+        Path pathAbsolute = Paths.get(file.getPath());
+        Path pathBase = Paths.get(repoDir.getPath());
+        Path pathRelative = pathBase.relativize(pathAbsolute);
+
+        git.checkout().addPath(pathRelative.toString()).call();
+
+        System.out.println("Reset file " + file.getName());
+      } catch (GitAPIException e) {
+        e.printStackTrace();
+      }
+    };
+    runGitCommand(repoDir, resetCommand);
+  }
+
+  public void diff(File repoDir) {
+    Consumer<Git> commitCommand = git -> {
+      try {
+        DiffFormatter diffFormatter = new DiffFormatter(System.out);
+        diffFormatter.setRepository(git.getRepository());
+        AbstractTreeIterator commitTreeIterator = prepareTreeParser(git.getRepository(), Constants.HEAD);
+        FileTreeIterator workTreeIterator = new FileTreeIterator(git.getRepository());
+        List<DiffEntry> diffEntries = diffFormatter.scan(commitTreeIterator, workTreeIterator);
+
+        for (DiffEntry entry : diffEntries) {
+          System.out.printf("Entry: %s, from: %s, to: %s%n", entry, entry.getOldId(), entry.getNewId());
+          diffFormatter.format(entry);
+        }
+        System.out.println("Diff in " + repoDir);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    };
+    runGitCommand(repoDir, commitCommand);
+  }
+
+  private AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
+    // from the commit we can build the tree which allows us to construct the TreeParser
+    try (RevWalk walk = new RevWalk(repository)) {
+      RevCommit commit = walk.parseCommit(repository.resolve(objectId));
+      RevTree tree = walk.parseTree(commit.getTree().getId());
+
+      CanonicalTreeParser oldTreeParser = new CanonicalTreeParser();
+      try (ObjectReader oldReader = repository.newObjectReader()) {
+        oldTreeParser.reset(oldReader, tree.getId());
+      }
+
+      walk.dispose();
+
+      return oldTreeParser;
     }
   }
 
