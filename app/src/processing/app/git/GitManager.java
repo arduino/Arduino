@@ -1,5 +1,6 @@
 package processing.app.git;
 
+import cc.arduino.view.git.GitDiffForm;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
@@ -16,9 +17,9 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -39,11 +40,9 @@ public class GitManager {
     Consumer<Git> resetCommand = git -> {
       try {
         // We need get relative repository path
-        Path pathAbsolute = Paths.get(file.getPath());
-        Path pathBase = Paths.get(repoDir.getPath());
-        Path pathRelative = pathBase.relativize(pathAbsolute);
-
-        git.checkout().addPath(pathRelative.toString()).call();
+        git.checkout().addPath(
+          getRelativePath(repoDir, file)
+        ).call();
 
         System.out.println("Reset file " + file.getName());
       } catch (GitAPIException e) {
@@ -53,20 +52,36 @@ public class GitManager {
     runGitCommand(repoDir, resetCommand);
   }
 
-  public void diff(File repoDir) {
+  private String getRelativePath(File repoDir, File file) {
+    Path pathAbsolute = Paths.get(file.getPath());
+    Path pathBase = Paths.get(repoDir.getPath());
+    Path pathRelative = pathBase.relativize(pathAbsolute);
+    return pathRelative.toString();
+  }
+
+  public void diff(File repoDir, File file) {
     Consumer<Git> commitCommand = git -> {
-      try {
-        DiffFormatter diffFormatter = new DiffFormatter(System.out);
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+      try (DiffFormatter diffFormatter = new DiffFormatter(outputStream)) {
+        diffFormatter.setContext(20);
         diffFormatter.setRepository(git.getRepository());
+        diffFormatter.setPathFilter(PathFilter.create(
+          getRelativePath(repoDir, file)
+        ));
+
         AbstractTreeIterator commitTreeIterator = prepareTreeParser(git.getRepository(), Constants.HEAD);
         FileTreeIterator workTreeIterator = new FileTreeIterator(git.getRepository());
-        List<DiffEntry> diffEntries = diffFormatter.scan(commitTreeIterator, workTreeIterator);
 
-        for (DiffEntry entry : diffEntries) {
-          System.out.printf("Entry: %s, from: %s, to: %s%n", entry, entry.getOldId(), entry.getNewId());
-          diffFormatter.format(entry);
-        }
-        System.out.println("Diff in " + repoDir);
+        List<DiffEntry> diffEntries = diffFormatter.scan(commitTreeIterator, workTreeIterator);
+        diffFormatter.format(diffEntries);
+
+        GitOutputParser parser = new GitOutputParser();
+        GitOutputParser.ParserResult result = parser.diffParser(new ByteArrayInputStream(outputStream.toByteArray()));
+
+        GitDiffForm gitDiffForm = new GitDiffForm(result);
+        gitDiffForm.setVisible(true);
+
       } catch (IOException e) {
         e.printStackTrace();
       }

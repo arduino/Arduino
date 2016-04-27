@@ -727,7 +727,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     item = newJMenuItem(tr("Diff"), 'D');
     item.addActionListener(e -> {
-      gitManager.diff(sketch.getFolder());
+      gitManager.diff(sketch.getFolder(), sketch.getCurrentCode().getFile());
     });
     gitMenu.add(item);
 
