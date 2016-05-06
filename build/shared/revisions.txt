@@ -15,6 +15,7 @@ ARDUINO 1.6.9
 * Cut/Copy actions are disable when there is no text selected. Thanks @avargas-nearsoft
 * Added more OSX native (emacs-like) keybindings. Thanks @nopdotcom
 * Fixed Ctrl+Del: now deletes the word behind the cursor instead of the entire line. Thanks @avargas-nearsoft
+* Fixed "Verify code after upload" option in preferences. Thanks @gh-megabit
 
 [core]
 * String class now supports iterators. Thanks @Chris--A

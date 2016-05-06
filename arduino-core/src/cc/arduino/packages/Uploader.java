@@ -70,6 +70,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   protected final boolean verbose;
+  protected final boolean verifyUpload;
 
   private String error;
   protected boolean notFoundError;
@@ -77,11 +78,13 @@ public abstract class Uploader implements MessageConsumer {
 
   protected Uploader() {
     this.verbose = PreferencesData.getBoolean("upload.verbose");
+    this.verifyUpload = PreferencesData.getBoolean("upload.verify");
     init(false);
   }
 
   protected Uploader(boolean nup) {
     this.verbose = PreferencesData.getBoolean("upload.verbose");
+    this.verifyUpload = PreferencesData.getBoolean("upload.verify");
     init(nup);
   }
 
