@@ -367,7 +367,7 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 #define SerialUSB SERIAL_PORT_USBVIRTUAL
 
 // Bootloader related fields
-// Old Caterian bootloader places the MAGIC key into unsafe RAM locations (it can be rewritten
+// Old Caterina bootloader places the MAGIC key into unsafe RAM locations (it can be rewritten
 // by the running sketch before to actual reboot).
 // Newer bootloaders, recognizable by the LUFA "signature" at the end of the flash, can handle both
 // the usafe and the safe location. Check once (in USBCore.cpp) if the bootloader in new, then set the global
