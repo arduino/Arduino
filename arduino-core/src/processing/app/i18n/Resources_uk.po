@@ -14,14 +14,15 @@
 # Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # netavek <netavek.translate@gmail.com>, 2015
+# Volodymyr Buberenko <v.buberenko@gmail.com>, 2016
 # Яков Маслов <jan.s.maslov@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 21:57+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-04-08 21:26+0000\n"
+"Last-Translator: Volodymyr Buberenko <v.buberenko@gmail.com>\n"
 "Language-Team: Ukrainian (http://www.transifex.com/mbanzi/arduino-ide-15/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1196,7 +1197,7 @@ msgstr "Встановлення..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Масштаб інтерфейсу:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1268,7 +1269,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Ручне налаштування проксі"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1289,7 +1290,7 @@ msgstr "Режим не підтримується"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
-msgstr ""
+msgstr "Більше"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1306,7 +1307,7 @@ msgstr "Декілька файлів не підтримуються"
 #: ../../../processing/app/debug/Compiler.java:520
 #, java-format
 msgid "Multiple libraries were found for \"{0}\""
-msgstr ""
+msgstr "Декілька бібліотек було знайдено для \"{0}\""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
@@ -1322,11 +1323,11 @@ msgstr "непальська"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
-msgstr ""
+msgstr "Мережа"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Мережеві порти"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
@@ -1417,7 +1418,7 @@ msgstr "Не знайдено дійсних апаратних налаштув
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
-msgstr ""
+msgstr "Ніякий"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1448,7 +1449,7 @@ msgstr "Відкрити"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr ""
+msgstr "Відкрити Нещодавні"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1464,7 +1465,7 @@ msgstr "Відкрити..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Інше"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1472,7 +1473,7 @@ msgstr "Параметри сторінки"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Партнер"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1501,7 +1502,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid "Please confirm library deletion"
-msgstr ""
+msgstr "Будь-ласка підтвердіть видалення бібліотеки"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1530,7 +1531,7 @@ msgstr "Порт"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Номер порту:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1591,7 +1592,7 @@ msgstr "Проблема доступу до теки плати /www/sd"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
 #, java-format
 msgid "Problem accessing files in folder \"{0}\""
-msgstr ""
+msgstr "Проблема з доступом до файлів в папці \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1618,7 +1619,7 @@ msgstr "Програматор"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Прогрес {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1642,7 +1643,7 @@ msgstr "Зміст"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
-msgstr ""
+msgstr "Видалити"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
 #, java-format
@@ -1652,7 +1653,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr ""
+msgstr "Видалення..."
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -1758,7 +1759,7 @@ msgstr "Виберіть нове розташування теки зі ске�
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
 msgid "Select version"
-msgstr ""
+msgstr "Обрати версію"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
@@ -1808,7 +1809,7 @@ msgstr "Послідовний порт {0} не знайдено.\nПовтор
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Серійні порти"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
@@ -1817,7 +1818,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1924,7 +1925,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr ""
+msgstr "Старт..."
 
 #: Base.java:540
 msgid "Sunshine"
@@ -2207,7 +2208,7 @@ msgstr "Є оновлення для деяких ваших  {0}бібліот�
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
-msgstr ""
+msgstr "Оновлення списку встановлених бібліотек"
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
@@ -2244,7 +2245,7 @@ msgstr "Використовувати зовнішній редактор"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "Ім'я користувача:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
@@ -2288,11 +2289,11 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
 msgid "Version <b>{0}</b>"
-msgstr ""
+msgstr "Версія <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr ""
+msgstr "Версія невідома"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format

@@ -13,6 +13,7 @@
 # Translators:
 # Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
+# Grzegorz Wielgoszewski <translations@wielgoszewski.pl>, 2016
 # Jan Bielak <sharkie103@gmail.com>, 2013-2014
 # Krzysztof Zbudniewek <krzysztof.zbudniewek@gmail.com>, 2015
 # Maciej Wójciga <eadrom@gmail.com>, 2016
@@ -27,8 +28,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 17:32+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-04-11 10:38+0000\n"
+"Last-Translator: Tomasz Pudło <wptom@wp.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,7 +44,7 @@ msgstr "(wymagany restart Arduino)"
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr "Nie wykorzystane: {0}"
+msgstr "Niewykorzystane: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
@@ -149,11 +150,11 @@ msgstr "Dodatkowe adresy URL do menedżera płytek:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr "Afrykański"
+msgstr "afrikaans"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr "Albański"
+msgstr "albański"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
@@ -194,11 +195,11 @@ msgstr "Wystąpił nieznany błąd podczas próby wgrania\nkodu specyficznego dl
 
 #: Preferences.java:85
 msgid "Arabic"
-msgstr "Arabski"
+msgstr "arabski"
 
 #: Preferences.java:86
 msgid "Aragonese"
-msgstr "Aragoński"
+msgstr "aragoński"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
@@ -285,11 +286,11 @@ msgstr "Wymagany argument dla {0}"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr "Armeński"
+msgstr "ormiański"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr "Asturii"
+msgstr "asturyjski"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
@@ -309,7 +310,7 @@ msgstr "Automatyczne wykrycie ustawień pośrednika"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "automatyczne"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -330,11 +331,11 @@ msgstr "Wybrano zły plik"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr "Baskijski"
+msgstr "baskijski"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr "Białoruski"
+msgstr "białoruski"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
@@ -345,7 +346,7 @@ msgstr "Płytka"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Płytka na porcie {0} jest niedostępna."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -382,7 +383,7 @@ msgstr "Podany nieistniejący plik programu rozruchowego: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr "Bośniacki"
+msgstr "bośniacki"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
@@ -402,11 +403,11 @@ msgstr "Wbudowane przykłady"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
-msgstr "Bułgarski"
+msgstr "bułgarski"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr "Birmy (Myanmar)"
+msgstr "birmański"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -432,7 +433,7 @@ msgstr "Nie można znaleźć szkicu we wskazanej ścieżce"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr "Kanadyjski Francuski"
+msgstr "francuski (Kanada)"
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
@@ -453,7 +454,7 @@ msgstr "powrót Karetki"
 
 #: Preferences.java:87
 msgid "Catalan"
-msgstr "Kataloński"
+msgstr "kataloński"
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
@@ -461,15 +462,15 @@ msgstr "Sprawdź aktualizację przy starcie"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr "Chiński (Chiny)"
+msgstr "chiński (Chiny)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr "Chiński (Tajwan)"
+msgstr "chiński (Tajwan)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr "Chiński (Tajwan)(Big5)"
+msgstr "chiński (Tajwan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -509,7 +510,7 @@ msgstr "Kopia jako HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr "Błąd kopiowania"
+msgstr "Kopiuj opis błędów"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -646,7 +647,7 @@ msgstr "Nie można znaleźć płytki na wybranym porcie. Sprawdź czy wybrałeś
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
-msgstr "Chorwacki"
+msgstr "chorwacki"
 
 #: Editor.java:1149 Editor.java:2699
 msgid "Cut"
@@ -654,11 +655,11 @@ msgstr "Wytnij"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr "Czeski (Republika Czeska)"
+msgstr "czeski (Republika Czeska)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr "Duński (Dania)"
+msgstr "duński (Dania)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
@@ -771,11 +772,11 @@ msgstr "Pobieranie narzędzi ({0}/{1})."
 
 #: Preferences.java:91
 msgid "Dutch"
-msgstr "Holenderski"
+msgstr "holenderski"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr "Holenderski (Holandia)"
+msgstr "holenderski (Holandia)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
@@ -791,7 +792,7 @@ msgstr "Rozmiar czcionki edytora:"
 
 #: Preferences.java:353
 msgid "Editor language: "
-msgstr "Edytor języka:"
+msgstr "Język edytora:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
@@ -799,11 +800,11 @@ msgstr "Włącz zawijanie tekstu"
 
 #: Preferences.java:92
 msgid "English"
-msgstr "Angielski"
+msgstr "angielski"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr "Angielski (Wielka Brytania)"
+msgstr "angielski (Wielka Brytania)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
@@ -831,7 +832,7 @@ msgstr "Błąd przy dodawaniu pliku"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Błąd kompilacji dla płytki {0}."
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -861,7 +862,7 @@ msgstr "Błąd ładowania {0}"
 #: Serial.java:181
 #, java-format
 msgid "Error opening serial port ''{0}''."
-msgstr "Błąd otwarcie porti szeregowego  ''{0}''."
+msgstr "Błąd otwarcia portu szeregowego ''{0}''."
 
 #: ../../../processing/app/Serial.java:119
 #, java-format
@@ -943,11 +944,11 @@ msgstr "Błąd przy weryfikacji/wgrywaniu"
 
 #: Preferences.java:93
 msgid "Estonian"
-msgstr "Estoński"
+msgstr "estoński"
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr "Estoński (Estonia)"
+msgstr "estoński (Estonia)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -981,11 +982,11 @@ msgstr "Plik"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Nieprawidłowa nazwa pliku: {0}; zignorowano."
 
 #: Preferences.java:94
 msgid "Filipino"
-msgstr "Filipiński"
+msgstr "filipiński"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
@@ -1017,12 +1018,12 @@ msgstr "Szukaj:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr "Fiński"
+msgstr "fiński"
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
-msgstr "Popraw kodowanie i Przeładuj"
+msgstr "Popraw kodowanie i przeładuj"
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1037,7 +1038,7 @@ msgstr "Wymuszam reset używając 1200bps otwórz/zamknij na porcie {0}"
 
 #: Preferences.java:95
 msgid "French"
-msgstr "Francuski"
+msgstr "francuski"
 
 #: Editor.java:1097
 msgid "Frequently Asked Questions"
@@ -1045,11 +1046,11 @@ msgstr "Często zadawane pytania"
 
 #: Preferences.java:96
 msgid "Galician"
-msgstr "Galicyjski"
+msgstr "galicyjski"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr "Galicyjski (Hiszpania)"
+msgstr "galicyjski (Hiszpania)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
@@ -1057,11 +1058,11 @@ msgstr "Pomoc Galileo"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
-msgstr "Gruziński"
+msgstr "gruziński"
 
 #: Preferences.java:97
 msgid "German"
-msgstr "Niemiecki"
+msgstr "niemiecki"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1072,7 +1073,7 @@ msgstr "Samouczek"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "Globalne zmienne używają {0} bajtów z ({2}%%) dynamicznej pamięci, pozostawiając {3} bajtów dla lokalnych zmiennch. Maksimum to  {1} bajtów."
+msgstr "Globalne zmienne używają {0} bajtów ({2}%%) dynamicznej pamięci, pozostawiając {3} bajtów dla lokalnych zmiennych. Maksimum to  {1} bajtów."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
@@ -1089,11 +1090,11 @@ msgstr "Idź do linii..."
 
 #: Preferences.java:98
 msgid "Greek"
-msgstr "Grecki"
+msgstr "grecki"
 
 #: ../../../processing/app/Preferences.java:95
 msgid "Hebrew"
-msgstr "Hebrajski"
+msgstr "hebrajski"
 
 #: Editor.java:1015
 msgid "Help"
@@ -1101,7 +1102,7 @@ msgstr "Pomoc"
 
 #: Preferences.java:99
 msgid "Hindi"
-msgstr "Hindi"
+msgstr "hindi"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
@@ -1119,7 +1120,7 @@ msgstr "Jesteś na kompletnie złej drodze"
 
 #: Preferences.java:100
 msgid "Hungarian"
-msgstr "Węgierski"
+msgstr "węgierski"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1159,7 +1160,7 @@ msgstr "Powiększ wcięcie"
 
 #: Preferences.java:101
 msgid "Indonesian"
-msgstr "Indonezyjski"
+msgstr "indonezyjski"
 
 #: ../../../../../app/src/processing/app/Base.java:295
 msgid "Initializing packages..."
@@ -1203,7 +1204,7 @@ msgstr "Instalowanie..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Powiększenie interfejsu"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1217,19 +1218,19 @@ msgstr "Nieprawidłowe cytowanie: nie znaleziono zamykającego znaku [{0}]."
 
 #: Preferences.java:102
 msgid "Italian"
-msgstr "Włoski"
+msgstr "włoski"
 
 #: Preferences.java:103
 msgid "Japanese"
-msgstr "Japoński"
+msgstr "japoński"
 
 #: Preferences.java:104
 msgid "Korean"
-msgstr "Koreański"
+msgstr "koreański"
 
 #: Preferences.java:105
 msgid "Latvian"
-msgstr "Łotewski"
+msgstr "łotewski"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
@@ -1254,7 +1255,7 @@ msgstr "Numer linii:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
-msgstr "Litewski"
+msgstr "litewski"
 
 #: ../../../../../app/src/processing/app/Base.java:132
 msgid "Loading configuration..."
@@ -1267,7 +1268,7 @@ msgstr "Poszukiwanie przepisów typu {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr "Niski poziom dostępnej pamięci, mogą wystąpić problemy z stabilnością."
+msgstr "Niski poziom dostępnej pamięci, mogą wystąpić problemy ze stabilnością."
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
@@ -1279,7 +1280,7 @@ msgstr "Ręczna konfiguracji pośrednika"
 
 #: Preferences.java:107
 msgid "Marathi"
-msgstr "Marathi"
+msgstr "marathi"
 
 #: Base.java:2112
 msgid "Message"
@@ -1325,7 +1326,7 @@ msgstr "Nazwa dla nowego pliku:"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr "Nepalski"
+msgstr "nepalski"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
@@ -1428,7 +1429,7 @@ msgstr "Brak"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr "Norweski Bokmål"
+msgstr "norweski bokmål"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1491,11 +1492,11 @@ msgstr "Wklej"
 
 #: Preferences.java:109
 msgid "Persian"
-msgstr "Perski"
+msgstr "perski"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr "Perski (Iran)"
+msgstr "perski (Iran)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
@@ -1525,11 +1526,11 @@ msgstr "Wybierz programator z Narzędzia -> Menu programatora"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Kreślarka jest niedostępna, gdy monitor szeregowy jest już otwarty"
 
 #: Preferences.java:110
 msgid "Polish"
-msgstr "Polski"
+msgstr "polski"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
@@ -1541,15 +1542,15 @@ msgstr "Numer portu:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr "Portugalski"
+msgstr "portugalski"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr "Portugalski (Brazylia)"
+msgstr "portugalski (Brazylia)"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr "Portugalski (Portugalia)"
+msgstr "portugalski (Portugalia)"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1692,7 +1693,7 @@ msgstr "Wycofane"
 
 #: Preferences.java:113
 msgid "Romanian"
-msgstr "Rumuński"
+msgstr "rumuński"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
@@ -1706,7 +1707,7 @@ msgstr "Uruchomiony: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
-msgstr "Rosyjski"
+msgstr "rosyjski"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:529
 #: Editor.java:2064 Editor.java:2468
@@ -1797,7 +1798,7 @@ msgstr "Monitor portu szeregowego"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Monitor szeregowy jest niedostępny, gdy kreślarka pracuje"
 
 #: Serial.java:194
 #, java-format
@@ -1815,7 +1816,7 @@ msgstr "Port szeregowy {0} nie znaleziony.\nPonowić wgrywanie z innym portem ?"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr "Porty seryjne"
+msgstr "Porty szeregowe"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
@@ -1877,7 +1878,7 @@ msgstr "Szkic za duży, zobacz porady na http://www.arduino.cc/en/Guide/Troubles
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr "Szkic używa {0} bajtów z ({2}%%) pamięci programu. Maksimum to {1} bajtów."
+msgstr "Szkic używa {0} bajtów ({2}%%) pamięci programu. Maksimum to {1} bajtów."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1897,11 +1898,11 @@ msgstr "Ścieżka szkicownika nie znaleziona"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr "Słowacki"
+msgstr "słowacki"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr "Słoweński"
+msgstr "słoweński"
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
@@ -1923,7 +1924,7 @@ msgstr "Sorki, szkic (lub folder) nazwany \"{0}\" już istnieje."
 
 #: Preferences.java:115
 msgid "Spanish"
-msgstr "Hiszpański"
+msgstr "hiszpański"
 
 #: ../../../../../app/src/processing/app/Base.java:2333
 msgid "Specified folder/zip file does not contain a valid library"
@@ -1939,7 +1940,7 @@ msgstr "Słoneczko"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr "Szwedzki"
+msgstr "szwedzki"
 
 #: Preferences.java:84
 msgid "System Default"
@@ -1947,11 +1948,11 @@ msgstr "Domyślne systemu"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr "Talossiański"
+msgstr "taloski"
 
 #: Preferences.java:116
 msgid "Tamil"
-msgstr "Tamilski"
+msgstr "tamilski"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2104,7 +2105,7 @@ msgstr "Problemy"
 
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
-msgstr "Turecki"
+msgstr "turecki"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
@@ -2121,12 +2122,12 @@ msgstr "Wpisz hasło płytki w celu wgrawnia nowego szkicu"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
-msgstr "Ukraiński"
+msgstr "ukraiński"
 
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "Nie można połączyć z {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2148,7 +2149,7 @@ msgstr "Nie można znaleźć {0} w {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr "Nie można otworzyć szeregowego monitora"
+msgstr "Nie można otworzyć monitora szeregowego"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
@@ -2246,7 +2247,7 @@ msgstr "Użyj zaznaczenia do szukania"
 
 #: Preferences.java:409
 msgid "Use external editor"
-msgstr "Użyj zewnętrzengo edytora"
+msgstr "Użyj zewnętrznego edytora"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
@@ -2308,7 +2309,7 @@ msgstr "Wersja {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr "Wietnamski"
+msgstr "wietnamski"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
@@ -2375,7 +2376,7 @@ msgstr "Uwaga: platform.txt z rdzenia '{0}' ma brakującą własność '{1}', u�
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr "Wschodni fryzyjski"
+msgstr "zachodniofryzyjski"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -2476,7 +2477,7 @@ msgid ""
 "older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
 " to update the sketch to use UTF-8 encoding. If not, you may need to delete "
 "the bad characters to get rid of this warning."
-msgstr "\"{0}\" zawiera nierozpoznane znaki. Jeśli kod został utworzony w starszej wersji Arduino, może być wymagane użycie Narzędzia -> Popraw kodowanie i Przeładuj do przeładowania szkicu, aby użyć kodowania UTF-8. W innym przypadku możesz potrzebować usunąć złe znaki, aby pozbyć się ostrzeżenia."
+msgstr "\"{0}\" zawiera nierozpoznane znaki. Jeśli kod został utworzony w starszej wersji Arduino, może być wymagane użycie Narzędzia -> Popraw kodowanie i przeładuj do przeładowania szkicu z zastosowaniem kodowania UTF-8. W innym przypadku możesz potrzebować usunąć nieprawidłowe znaki, aby pozbyć się tego ostrzeżenia."
 
 #: debug/Compiler.java:409
 msgid ""

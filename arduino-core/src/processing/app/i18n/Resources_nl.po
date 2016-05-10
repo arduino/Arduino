@@ -19,13 +19,14 @@
 # Jan Verheijen <jmm.verheijen@kpnmail.nl>, 2014
 # jkf <inactive+jkf@transifex.com>, 2012
 # Robin van der Vliet <info@robinvandervliet.nl>, 2015
+# Wesley Deblaere <wesley.deblaere.100@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 21:36+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-04-05 14:33+0000\n"
+"Last-Translator: Wesley Deblaere <wesley.deblaere.100@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/mbanzi/arduino-ide-15/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,12 +52,12 @@ msgstr "Gebruikt: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' niet gevonden. Bevindt de lijn '#include <Keyboard.h>' zich in uw schets?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' niet gevonden. Bevindt de lijn '#include <Mouse.h>' zich in uw schets?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -217,7 +218,7 @@ msgstr "Het archiveren van de schets is geannuleerd, omdat\nde schets niet goed 
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -306,7 +307,7 @@ msgstr "Instellingen van de proxy automatisch detecteren"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Automatisch"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -342,7 +343,7 @@ msgstr "Board"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Bord {0} is niet beschikbaar."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -442,7 +443,7 @@ msgstr "Hernoemen mislukt"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Kan geen enkele schets specificeren"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -482,7 +483,7 @@ msgstr "Opmerking maken/opmerking wissen"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Communicatie"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -494,7 +495,7 @@ msgstr "Bezig met het compileren van de schets..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Bijgedragen"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -663,7 +664,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Data opslag"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -679,7 +680,7 @@ msgstr "Verwijderen"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Aparaat besturen"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -693,7 +694,7 @@ msgstr "Alle wijzigingen annuleren en schets opnieuw laden?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Weergeven"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -828,7 +829,7 @@ msgstr "Fout bij het toevoegen van het bestand"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Fout bij het compileren van board {0}"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -917,7 +918,7 @@ msgstr "Fout bij het afdrukken."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Fout tijdens het aanpassen van de parameters van de seriële poort: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -978,7 +979,7 @@ msgstr "Bestand"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Het bestand {0} is niet beschikbaar: genegeerd"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1078,11 +1079,11 @@ msgstr "Globale variabelen gebruiken {0} bytes van het dynamisch geheugen."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "ga naar lijn"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Ga naar lijn..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1160,7 +1161,7 @@ msgstr "Indonesisch"
 
 #: ../../../../../app/src/processing/app/Base.java:295
 msgid "Initializing packages..."
-msgstr ""
+msgstr "Laden van de packages..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
@@ -1200,7 +1201,7 @@ msgstr "Installeren..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Interface schaal:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1238,7 +1239,7 @@ msgstr "Bibliotheek toegevoegd aan uw bibliotheken. Controleer het menu 'Bibliot
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "Bibliotheek kan niet beide 'scr' en 'utility' mappen gebruiken. Controleer dubbel {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1247,7 +1248,7 @@ msgstr "De bibliotheek is reeds geïnstalleerd: {0} versie {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Lijn nummer:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1468,7 +1469,7 @@ msgstr "Openen..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Anders"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1476,7 +1477,7 @@ msgstr "Pagina-instelling"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1522,7 +1523,7 @@ msgstr "Kies een programmer in het menu Hulpmiddelen->Programmer"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "De plotter is niet beschikbaar wanneer de seriële monitor open is"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1685,7 +1686,7 @@ msgstr "Vervangen door:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr ""
+msgstr "Verouderd"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1782,7 +1783,7 @@ msgstr "Verzenden"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Sensors"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1794,7 +1795,7 @@ msgstr "Seriële Plotter"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Seriële monitor is niet beschikbaar wanneer de plotter open is"
 
 #: Serial.java:194
 #, java-format
@@ -1837,7 +1838,7 @@ msgstr "Uitgebreide uitvoer weergeven tijdens:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Signaal Input/Output"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1952,7 +1953,7 @@ msgstr "Tamil"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
-msgstr ""
+msgstr "Thais"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -2080,7 +2081,7 @@ msgstr "Tijd voor een pauze"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Timing"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2123,7 +2124,7 @@ msgstr "Oekraïens"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "Onmogelijk om te verbinden met {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2158,7 +2159,7 @@ msgstr "Kan Arduino.cc niet bereiken, mogelijk door problemen met het netwerk."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Geen categorie"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2621,7 +2622,7 @@ msgstr "{0} moet een map zijn"
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr ""
+msgstr "{0} op {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

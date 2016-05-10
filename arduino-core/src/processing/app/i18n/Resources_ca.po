@@ -12,19 +12,20 @@
 # Translators:
 # Translators:
 # Translators:
-# Francesc <kiski97@gmail.com>, 2015
+# Francesc Famadas <kiski97@gmail.com>, 2015
 # Marc Giralt <marc.giralt.butjosa@gmail.com>, 2016
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
 # Sergi  Pérez Labernia <rndrnd@gmail.com>, 2014
 # shacawine <shacawine@gmail.com>, 2012
+# Xavier Romero Aguadé <xromeva@gmail.com>, 2016
 # Xavier Romero Aguadé <xromeva@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-07 18:40+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-03-16 18:31+0000\n"
+"Last-Translator: Xavier Romero Aguadé <xromeva@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/mbanzi/arduino-ide-15/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,12 +51,12 @@ msgstr "fet servir:{0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Teclat' no trobat. El vostre sketch inclou la línia '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Ratolí' no trobat. El vostre sketch inclou la línia '#include <Mouse.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -96,7 +97,7 @@ msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" 
 #: Sketch.java:398
 #, java-format
 msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Ja existeix un fitxer amb el nom \"{0}\" a \"{1}\""
+msgstr "El fitxer anomenat \"{0}\" ja existeix en \"{1}\""
 
 #: Editor.java:2169
 #, java-format
@@ -129,7 +130,7 @@ msgstr "Quant a Arduino"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr "Afegir llibreria .ZIP ..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -166,7 +167,7 @@ msgstr "Un error ha succeït provant d'arreglar la codificació del fitxer.\nNo 
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "S´ha produït un error mentre s'actualitzava l'index de les llibreries!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -216,7 +217,7 @@ msgstr "L'arxivament del programari ha estat cancel·lat per què\nel programari
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino:"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -277,7 +278,7 @@ msgstr "Es requereix un argument per --preferences-file"
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "Es requereix un argument per {0}"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -301,15 +302,15 @@ msgstr "Format automàtic finalitzat."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Auto-detecció dels paràmetres del proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Automàtic"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "URL de configuració del proxy automàtic:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -341,7 +342,7 @@ msgstr "Tarja"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Tarja al {0} no es troba disponible"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -361,11 +362,11 @@ msgstr "Tarja: "
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Gestor targes"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Gestor targes"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
@@ -414,7 +415,7 @@ msgstr "La carrega del bootloader a la I/O placa (pot durar uns minuts)..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
 msgid "CRC doesn't match. File is corrupted."
-msgstr ""
+msgstr "No coincideix el CRC. Fitxer corromput."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -469,7 +470,7 @@ msgstr "Xinès (Taiwan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Clica per llista les targes no oficials que suporten URLs"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -481,11 +482,11 @@ msgstr "Comenta/Descomenta"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Comunicació"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "Alertes compilador:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."

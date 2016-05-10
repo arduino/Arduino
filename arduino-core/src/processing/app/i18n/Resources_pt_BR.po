@@ -22,13 +22,14 @@
 # Philipe Rabelo <philipe_elvis_preslei@hotmail.com>, 2013
 # Rafael H L Moretti <rafael.moretti@gmail.com>, 2014
 # Tiago Goto Sala, 2014
+# Walter Souza <wsouza@zipmail.com.br>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 17:48+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-03-14 00:41+0000\n"
+"Last-Translator: Walter Souza <wsouza@zipmail.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/mbanzi/arduino-ide-15/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +55,7 @@ msgstr "Usado: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr "'Keyboard' não encontrado. Existe a linha '#include <Keyboard.h>' no seu sketch?"
+msgstr "'Teclado' não encontrado. Existe a linha '#include <Keyboard.h>' no seu sketch?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
@@ -69,7 +70,7 @@ msgstr "A pasta 'arch' não é mais suportada! Para mais informações, acesse h
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(editar apenas quando o Arduino não estiver rodando)"
+msgstr "(editar apenas quando o Arduino não estiver em execução)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
@@ -95,7 +96,7 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Você deseja salvar as alterações para este sketch<BR> antes de fechar?</b><p>Se você não salvar, suas alterações serão perdidas."
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Você deseja gravar as alterações para este sketch<BR> antes de fechar?</b><p>Se você não gravar, suas alterações serão perdidas."
 
 #: Sketch.java:398
 #, java-format
@@ -116,7 +117,7 @@ msgstr "Uma biblioteca chamada {0} já existe"
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr "Uma nova versão de Arduino está disponível, \\n você gostaria de visitar a página de Download?"
+msgstr "Uma nova versão do Arduino está disponível,\nvocê gostaria de abrir a página de Download?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
@@ -309,7 +310,7 @@ msgstr "Detectar automaticamente definições de proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Automático"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -345,7 +346,7 @@ msgstr "Placa"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Placa em {0} não está disponível."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -831,7 +832,7 @@ msgstr "Erro ao adicionar arquivo"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Erro compilando para a placa {0}"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -981,7 +982,7 @@ msgstr "Arquivo"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Nome de arquivo {0} não é válido: ignorando"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1203,7 +1204,7 @@ msgstr "Instalando..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Escala de interface:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1525,7 +1526,7 @@ msgstr "Por favor selecione um programador no menu Ferramentas->Programador"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Plotter não está disponível enquanto o monitor serial estiver aberto"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1797,7 +1798,7 @@ msgstr "Plotter serial"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Monitor serial não disponível enquanto a plotter está aberta"
 
 #: Serial.java:194
 #, java-format
@@ -2075,7 +2076,7 @@ msgid ""
 "This report would have more information with\n"
 "\"Show verbose output during compilation\"\n"
 "option enabled in File -> Preferences.\n"
-msgstr ""
+msgstr "Este relatório teria mais informações com\n\"Mostrar a saida detalhada durante a compilação\"\nopção pode ser ativada em \"Arquivo -> Preferências\"\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2126,7 +2127,7 @@ msgstr "Ucraniano"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "Incapaz de conectar em {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
