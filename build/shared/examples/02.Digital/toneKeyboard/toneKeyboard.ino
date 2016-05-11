@@ -27,7 +27,6 @@ int notes[] = {
   NOTE_A4, NOTE_B4,NOTE_C3 };
 
 void setup() {
-
 }
 
 void loop() {
@@ -41,5 +40,4 @@ void loop() {
       tone(8, notes[thisSensor], 20);
     } 
   }
-  Serial.println();
 }

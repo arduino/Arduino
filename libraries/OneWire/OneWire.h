@@ -85,8 +85,38 @@
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+1)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+1)) |= (mask))
 
-#elif defined(__MSP430F5529__) || defined(__MSP430FR5969__) || defined(__MSP430FR4133__) || defined(__MSP430FR6989__) || defined(__MSP430FR5739__)
+#elif defined (__MSP432P401R__) || defined(__MSP430F5529__) || defined(__MSP430FR5969__) || defined(__MSP430FR4133__) || defined(__MSP430FR6989__) || defined(__MSP430FR5739__)
 // Newer Launchpads
+#if defined(ti_sysbios_BIOS___VERS)
+static const uint32_t GPIO_PORT_TO_BASE[] =
+{   0x00,
+    0x40004C00,
+    0x40004C01,
+    0x40004C20,
+    0x40004C21,
+    0x40004C40,
+    0x40004C41,
+    0x40004C60,
+    0x40004C61,
+    0x40004C80,
+    0x40004C81,
+    0x40004D20
+};
+
+#include <ti/drivers/gpio/GPIOMSP432.h>
+#include <driverlib/gpio.h>
+extern const GPIOMSP432_Config GPIOMSP432_config;
+#define PIN_TO_PORT(pin) (GPIOMSP432_config.pinConfigs[pin] & 0xff00) >> 8
+#define PIN_TO_BASEREG(pin) ((volatile uint32_t*)(GPIO_PORT_TO_BASE[(GPIOMSP432_config.pinConfigs[pin] & 0xff00) >> 8]))
+#define PIN_TO_BITMASK(pin) (GPIOMSP432_config.pinConfigs[pin] & 0xff)
+#define IO_REG_TYPE uint32_t
+#define IO_REG_ASM
+#define DIRECT_READ(base, mask)         (HWREG((uint32_t)base) & (mask) ? 1 : 0)
+#define DIRECT_MODE_INPUT(base, mask)   (HWREG((uint32_t)base+4) &= ~(mask))
+#define DIRECT_MODE_OUTPUT(base, mask)  (HWREG((uint32_t)base+4) |= (mask))
+#define DIRECT_WRITE_LOW(base, mask)    (HWREG((uint32_t)base+2) &= ~(mask))
+#define DIRECT_WRITE_HIGH(base, mask)   (HWREG((uint32_t)base+2) |= (mask))
+#else
 #define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
 #define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
 #define IO_REG_TYPE uint8_t
@@ -96,9 +126,9 @@
 #define DIRECT_MODE_OUTPUT(base, mask)  ((*(base+4)) |= (mask))
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+2)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+2)) |= (mask))
+#endif
 
-
-#elif defined(__LM4F120H5QR__)
+#elif defined(__LM4F120H5QR__) || defined(__TM4C1294NCPDT__)
 
 // Launchpad Stellaris
 #define PIN_TO_BASEREG(pin)             (portBASERegister(digitalPinToPort(pin)))
@@ -111,11 +141,20 @@
 #define DIRECT_WRITE_LOW(base, mask)    ((*(base+0x0FF)) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((*(base+0x0FF)) |= (mask))
 
-#elif defined(__CC3200R1M1RGC__)
-#include <inc/hw_gpio.h>
 // CC3200 Launchpad
+#elif defined(__CC3200R1M1RGC__) || defined(__CC3200R1MXRGCR__)
+#include <inc/hw_gpio.h>
+#include <inc/hw_types.h>
+// TI-RTOS
+#if defined(ti_sysbios_BIOS___VERS)
+#include <ti/drivers/gpio/GPIOCC3200.h>
+extern const GPIOCC3200_Config GPIOCC3200_config;
+#define PIN_TO_BASEREG(pin) ((volatile uint32_t*)(0x40004000 + ((GPIOCC3200_config.pinConfigs[pin] & 0xff00) << 4)))
+#define PIN_TO_BITMASK(pin) (GPIOCC3200_config.pinConfigs[pin] & 0xff)
+#else
 #define PIN_TO_BASEREG(pin)             (portBASERegister(digitalPinToPort(pin)))
 #define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
+#endif // TI-RTOS
 #define IO_REG_TYPE uint32_t
 #define IO_REG_ASM
 #define DIRECT_READ(base, mask)         (HWREG((uint32_t)base + (GPIO_O_GPIO_DATA + (mask << 2))) & mask ? 1 : 0)
@@ -123,6 +162,7 @@
 #define DIRECT_MODE_OUTPUT(base, mask)  ((HWREG((uint32_t)base + GPIO_O_GPIO_DIR)) |= (mask))
 #define DIRECT_WRITE_LOW(base, mask)    ((HWREG((uint32_t)base + (GPIO_O_GPIO_DATA + (mask << 2)))) &= ~(mask))
 #define DIRECT_WRITE_HIGH(base, mask)   ((HWREG((uint32_t)base + (GPIO_O_GPIO_DATA + (mask << 2)))) |= (mask))
+
 #else
 #error "Please define I/O register types here"
 #endif

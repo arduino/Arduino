@@ -133,6 +133,8 @@ void new_game() {
 
 
 void setup() {
+    Serial.begin(9600); // for LCD debug output
+
     // No need for INPUT_PULLUP
     pinMode(StopButton, INPUT);
     pinMode(NewGameButton, INPUT);
