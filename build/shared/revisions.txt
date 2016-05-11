@@ -1,4 +1,10 @@
-ARDUINO 1.6.9 2016.05.10
+ARDUINO 1.6.10
+
+[ide]
+[core]
+[libraries]
+
+ARDUINO 1.6.9 - 2016.05.10
 
 [ide]
 * Catch and report errors during parsing contributed index files
