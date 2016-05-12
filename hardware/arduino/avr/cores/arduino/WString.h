@@ -160,9 +160,9 @@ public:
 	void getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index=0) const;
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
 		{getBytes((unsigned char *)buf, bufsize, index);}
-	const char * c_str() const { return buffer; }
-	const char* begin() { return c_str(); }
-	const char* end() { return c_str() + length(); }
+	const char* c_str() const { return buffer; }
+	const char* begin() const { return c_str(); }
+	const char* end() const { return c_str() + length(); }
 
 	// search
 	int indexOf( char ch ) const;
