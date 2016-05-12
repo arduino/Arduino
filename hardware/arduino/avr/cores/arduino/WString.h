@@ -159,8 +159,10 @@ public:
 	char& operator [] (unsigned int index);
 	void getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index=0) const;
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
-		{getBytes((unsigned char *)buf, bufsize, index);}
+		{ getBytes((unsigned char *)buf, bufsize, index); }
 	const char* c_str() const { return buffer; }
+	char* begin() { return buffer; }
+	char* end() { return buffer + length(); }
 	const char* begin() const { return c_str(); }
 	const char* end() const { return c_str() + length(); }
 
