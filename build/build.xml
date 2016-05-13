@@ -269,7 +269,7 @@
       <filterchain>
         <tokenfilter>
           <linetokenizer />
-          <containsregex pattern="archiveFileName.*avr-.......?tar.bz2"/>
+          <containsregex pattern="archiveFileName.*&quot;avr-.......?tar.bz2"/>
           <replaceregex pattern=".*avr-(.*).tar.bz2.*" flags="g" replace="\1"/>
         </tokenfilter>
         <tailfilter lines="1"/>
