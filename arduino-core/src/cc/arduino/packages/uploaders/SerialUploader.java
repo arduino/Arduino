@@ -107,6 +107,12 @@ public class SerialUploader extends Uploader {
       else
         prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
+      File f = new File(buildPath,className+".eep");
+      if (f.exists() && !f.isDirectory()) 
+        prefs.put("upload.uploadeep", prefs.get("upload.params.uploadeep", ""));
+      else
+        prefs.put("upload.uploadeep", prefs.get("upload.params.nouploadeep", ""));
+
       boolean uploadResult;
       try {
         String pattern = prefs.getOrExcept("upload.pattern");
@@ -201,6 +207,12 @@ public class SerialUploader extends Uploader {
       prefs.put("upload.verify", prefs.get("upload.params.verify", ""));
     else
       prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
+
+    File f = new File(buildPath,className+".eep");
+    if (f.exists() && !f.isDirectory()) 
+      prefs.put("upload.uploadeep", prefs.get("upload.params.uploadeep", ""));
+    else
+      prefs.put("upload.uploadeep", prefs.get("upload.params.nouploadeep", ""));
 
     boolean uploadResult;
     try {
@@ -332,6 +344,12 @@ public class SerialUploader extends Uploader {
       prefs.put("program.verify", prefs.get("program.params.verify", ""));
     else
       prefs.put("program.verify", prefs.get("program.params.noverify", ""));
+
+    File f = new File(buildPath,className+".eep");
+    if (f.exists() && !f.isDirectory()) 
+      prefs.put("program.uploadeep", prefs.get("program.params.uploadeep", ""));
+    else
+      prefs.put("program.uploadeep", prefs.get("program.params.nouploadeep", ""));
 
     try {
       // if (prefs.get("program.disable_flushing") == null
