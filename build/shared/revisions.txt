@@ -1,7 +1,11 @@
 ARDUINO 1.6.10
 
 [ide]
+
 [core]
+* fixed a small bug that caused a compile error on some 3rd party derivatives
+  boards based on Leonardo
+
 [libraries]
 
 ARDUINO 1.6.9 - 2016.05.10
