@@ -108,7 +108,7 @@ public class SerialUploader extends Uploader {
         prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
       File f = new File(buildPath,className+".eep");
-      if (f.exists() && !f.isDirectory()) 
+      if (f.exists() && !f.isDirectory() && (13<f.length())) // file is created at any time, but emty file mean 13B only
         prefs.put("upload.uploadeep", prefs.get("upload.params.uploadeep", ""));
       else
         prefs.put("upload.uploadeep", prefs.get("upload.params.nouploadeep", ""));
@@ -209,7 +209,7 @@ public class SerialUploader extends Uploader {
       prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
     File f = new File(buildPath,className+".eep");
-    if (f.exists() && !f.isDirectory()) 
+    if (f.exists() && !f.isDirectory() && (13<f.length())) // file is created at any time, but emty file mean 13B only 
       prefs.put("upload.uploadeep", prefs.get("upload.params.uploadeep", ""));
     else
       prefs.put("upload.uploadeep", prefs.get("upload.params.nouploadeep", ""));
@@ -346,7 +346,7 @@ public class SerialUploader extends Uploader {
       prefs.put("program.verify", prefs.get("program.params.noverify", ""));
 
     File f = new File(buildPath,className+".eep");
-    if (f.exists() && !f.isDirectory()) 
+    if (f.exists() && !f.isDirectory() && (13<f.length())) // file is created at any time, but emty file mean 13B only 
       prefs.put("program.uploadeep", prefs.get("program.params.uploadeep", ""));
     else
       prefs.put("program.uploadeep", prefs.get("program.params.nouploadeep", ""));
