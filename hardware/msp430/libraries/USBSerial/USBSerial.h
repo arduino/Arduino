@@ -43,6 +43,7 @@ public:
   ~USBSerial();
   void begin();
   void end();
+  void end(uint8_t disableXTAL);
   virtual int available(void);
   virtual int peek();
   virtual size_t write(uint8_t byte);

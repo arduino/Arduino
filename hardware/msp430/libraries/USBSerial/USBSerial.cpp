@@ -122,9 +122,26 @@ void USBSerial::begin()
     __enable_interrupt();                           //Enable interrupts globally
 }
 
-void USBSerial::end()
+void USBSerial::end(uint8_t disableXTAL)
 {
   USB_disable();
+  if (disableXTAL){
+    if (USB_PLL_XT == 2){
+		XT2_Stop();
+    } else {
+		XT1_Stop();
+    }
+  }
+}
+
+void USBSerial::end()
+{
+	USB_disable();
+	if (USB_PLL_XT == 2){
+		XT2_Stop();
+	} else {
+		XT1_Stop();
+	}
 }
 
 
