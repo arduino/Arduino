@@ -21,7 +21,7 @@ ARDUINO 1.6.9 - 2016.05.10
 * Rework serial port discovery to be faster, less cpu intensive and FTDI friendly
 * Avoid launching multiple concurrent compile and upload operation
 * Use hi-res icons for Serial monitor and plotter
-* Make http://librarymanager and http://boardmanager links clickable from the editor window
+* Make http://librarymanager and http://boardsmanager links clickable from the editor window
 * Cut/Copy actions are disable when there is no text selected. Thanks @avargas-nearsoft
 * Added more OSX native (emacs-like) keybindings. Thanks @nopdotcom
 * Fixed Ctrl+Del: now deletes the word behind the cursor instead of the entire line. Thanks @avargas-nearsoft
