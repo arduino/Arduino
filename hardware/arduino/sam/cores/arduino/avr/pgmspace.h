@@ -97,6 +97,7 @@ typedef const void* uint_farptr_t;
 #define memcmp_PF(s1, s2, n) memcmp((s1), (s2), (n))
 
 #define sprintf_P(s, f, ...) sprintf((s), (f), __VA_ARGS__)
+#define snprintf_P(s, f, ...) snprintf((s), (f), __VA_ARGS__)
 
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 #define pgm_read_word(addr) (*(const unsigned short *)(addr))
