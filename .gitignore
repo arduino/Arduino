@@ -18,6 +18,7 @@ build/*.tar.bz2
 build/windows/work/
 build/windows/*.zip
 build/windows/*.tgz
+build/windows/*.tar.bz2
 build/windows/libastylej*
 build/windows/arduino-*.zip
 build/windows/dist/*.tar.gz

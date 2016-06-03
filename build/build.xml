@@ -91,6 +91,8 @@
 
   <property name="ARDUINO-BUILDER-VERSION" value="1.3.19" />
   <property name="LIBLISTSERIAL-VERSION" value="1.1.3" />
+  <property name="AVRGCC-VERSION" value="4.9.2-arduino" />
+  <property name="AVRDUDE-VERSION" value="6.3-arduino" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -490,10 +492,10 @@
   <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-r2-i386-apple-darwin11.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i386-apple-darwin11.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <chmod perm="+x">
@@ -720,10 +722,10 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-armhf-pc-linux-gnu-glibc2.13.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-armhf-pc-linux-gnu-glibc2.13.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -752,10 +754,10 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -784,10 +786,10 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -1071,11 +1073,11 @@
 
   <target name="windows-build-avr-toolchain">
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="unzip"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-mingw32.zip"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-mingw32.zip"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="unpack_target" value="untar"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-mingw32.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -1164,7 +1166,7 @@
     </antcall>
 
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
-    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
+    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
     <antcall target="macosx-fix-bundled-toolchain-missing-symlinks"/>
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
