@@ -304,7 +304,7 @@ uint8_t twi_transmit(const uint8_t* data, uint8_t length)
   uint8_t i;
 
   // ensure data will fit into buffer
-  if(TWI_BUFFER_LENGTH < length){
+  if(TWI_BUFFER_LENGTH < (twi_txBufferLength+length)){
     return 1;
   }
   
@@ -314,10 +314,10 @@ uint8_t twi_transmit(const uint8_t* data, uint8_t length)
   }
   
   // set length and copy data into tx buffer
-  twi_txBufferLength = length;
   for(i = 0; i < length; ++i){
-    twi_txBuffer[i] = data[i];
+    twi_txBuffer[twi_txBufferLength+i] = data[i];
   }
+  twi_txBufferLength += length;
   
   return 0;
 }
