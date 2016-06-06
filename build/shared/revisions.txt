@@ -6,6 +6,7 @@ ARDUINO 1.6.10
 * fixed a small bug that caused a compile error on some 3rd party derivatives
   boards based on Leonardo
 * sam: added snprintf_P to avr/pgmspace.h stub. Thanks @jantje
+* avr: Fix TX buffer being overwritten by multiple Wire.write(...) calls in slave mode. Thanks @kellerkindt
 
 [libraries]
 
