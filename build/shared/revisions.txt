@@ -12,6 +12,9 @@ ARDUINO 1.6.10
 * Solved a bug that crashed the IDE with some exotic serial devices
 
 [core]
+* avr: toolchain updated to latest Atmel release 3.5.2 http://distribute.atmel.no/tools/opensource/Atmel-AVR-GNU-Toolchain/3.5.2/
+  The updated tools are now binutils-2.26, gcc-4.9.2, avr-libc-2.0.0, gdb-7.8
+* avr: avrdude updated to version 6.3
 * fixed a small bug that caused a compile error on some 3rd party derivatives boards based on Leonardo
 * sam: added snprintf_P to avr/pgmspace.h stub. Thanks @jantje
 * avr: Fix TX buffer being overwritten by multiple Wire.write(...) calls in slave mode. Thanks @kellerkindt
