@@ -1199,11 +1199,11 @@
 
   <target name="macosx-fix-bundled-toolchain-missing-symlinks" if="macosx">
     <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb.dylib"/>
+      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude/lib/libusb.dylib"/>
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
     </exec>
     <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb-1.0.dylib"/>
+      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude/lib/libusb-1.0.dylib"/>
       <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
     </exec>
   </target>
