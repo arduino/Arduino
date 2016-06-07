@@ -270,9 +270,6 @@ void initClocks(void)
 #else
         #warning No Suitable Frequency found!
 #endif
-	/* SMCLK = DCO / DIVS = nMHz */
-	BCSCTL2 &= ~(DIVS_0);
-	enableXtal();
 #endif
 
 #if defined(__MSP430_HAS_CS__) && defined(__MSP430_HAS_FRAM_FR5XX__)
