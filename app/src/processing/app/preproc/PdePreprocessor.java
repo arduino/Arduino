@@ -438,7 +438,7 @@ public class PdePreprocessor {
                   bigCode.append("#define setup setup" +  inoName + "\n");
                   bigCode.append("#define loop loop" +  inoName + "\n");
               }
-              bigCode.append("#line 1 \"" + isc.getFullPath() + "\"\n");
+              bigCode.append("#line 1 \"" + isc.getFullPath().replace("\\", "\\\\") + "\"\n");
           }
       
           bigCode.append(in);
