@@ -1162,7 +1162,6 @@
 
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
-    <antcall target="macosx-fix-bundled-toolchain-missing-symlinks"/>
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
@@ -1190,17 +1189,6 @@
     <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
-  </target>
-
-  <target name="macosx-fix-bundled-toolchain-missing-symlinks" if="macosx">
-    <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude/lib/libusb.dylib"/>
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
-    </exec>
-    <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude/lib/libusb-1.0.dylib"/>
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
-    </exec>
   </target>
 
   <target name="generate-hourly-build-txt" if="hourly">
