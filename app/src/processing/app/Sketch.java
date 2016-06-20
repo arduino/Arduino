@@ -917,20 +917,20 @@ public class Sketch {
   }
 
 
-  public void importLibrary(UserLibrary lib) throws IOException {
-    importLibrary(lib.getSrcFolder());
-  }
-
   /**
-   * Add import statements to the current tab for all of packages inside
-   * the specified jar file.
+   * Add import statements to the current tab for the specified library
    */
-  private void importLibrary(File jarPath) throws IOException {
+  public void importLibrary(UserLibrary lib) throws IOException {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    String list[] = Base.headerListFromIncludePath(jarPath);
-    if (list == null || list.length == 0) {
+    List<String> list = lib.getIncludes();
+    if (list == null) {
+      File srcFolder = lib.getSrcFolder();
+      String[] headers = Base.headerListFromIncludePath(srcFolder);
+      list = Arrays.asList(headers);
+    }
+    if (list.isEmpty()) {
       return;
     }
 
