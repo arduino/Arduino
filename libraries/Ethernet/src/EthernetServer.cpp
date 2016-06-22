@@ -24,9 +24,7 @@ void EthernetServer::begin(uint16_t port)
   }  
 }
 
-void EthernetServer::begin() {
-  begin(80);
-}
+void EthernetServer::begin() {}
 
 void EthernetServer::accept()
 {
