@@ -8,6 +8,11 @@ extern "C" {
 #include "EthernetClient.h"
 #include "EthernetServer.h"
 
+EthernetServer::EthernetServer(uint16_t port)
+{
+  _port = port;
+}
+
 EthernetServer::EthernetServer() {}
 
 void EthernetServer::begin(uint16_t port)
