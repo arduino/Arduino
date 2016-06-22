@@ -8,13 +8,11 @@ extern "C" {
 #include "EthernetClient.h"
 #include "EthernetServer.h"
 
-EthernetServer::EthernetServer(uint16_t port)
-{
-  _port = port;
-}
+EthernetServer::EthernetServer() {}
 
-void EthernetServer::begin()
+void EthernetServer::begin(uint16_t port)
 {
+   _port = port;
   for (int sock = 0; sock < MAX_SOCK_NUM; sock++) {
     EthernetClient client(sock);
     if (client.status() == SnSR::CLOSED) {
@@ -24,6 +22,10 @@ void EthernetServer::begin()
       break;
     }
   }  
+}
+
+void EthernetServer::begin() {
+  begin(80);
 }
 
 void EthernetServer::accept()
