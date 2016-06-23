@@ -11,6 +11,7 @@ private:
   uint16_t _port;
   void accept();
 public:
+  EthernetServer(uint16_t);
   EthernetServer();
   EthernetClient available();
   virtual void begin(uint16_t);
