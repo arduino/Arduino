@@ -7,6 +7,7 @@ ARDUINO 1.6.10
   boards based on Leonardo
 * sam: added snprintf_P to avr/pgmspace.h stub. Thanks @jantje
 * avr: Fix TX buffer being overwritten by multiple Wire.write(...) calls in slave mode. Thanks @kellerkindt
+* Another small fix to String iterators. Thanks @Ivan-Perez @Chris--A
 
 [libraries]
 
