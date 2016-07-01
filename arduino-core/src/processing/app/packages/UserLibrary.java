@@ -56,6 +56,7 @@ public class UserLibrary extends ContributedLibrary {
   private List<String> types;
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
+  private List<String> includes;
 
   public static UserLibrary create(File libFolder) throws IOException {
     // Parse metadata
@@ -131,6 +132,13 @@ public class UserLibrary extends ContributedLibrary {
       typesList.add(type.trim());
     }
 
+    List<String> includes = null;
+    if (properties.containsKey("includes")) {
+      includes = new ArrayList<>();
+      for (String i : properties.get("includes").split(","))
+        includes.add(i.trim());
+    }
+
     UserLibrary res = new UserLibrary();
     res.setInstalledFolder(libFolder);
     res.setInstalled(true);
@@ -147,6 +155,7 @@ public class UserLibrary extends ContributedLibrary {
     res.layout = layout;
     res.declaredTypes = typesList;
     res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
+    res.includes = includes;
     return res;
   }
 
@@ -247,6 +256,10 @@ public class UserLibrary extends ContributedLibrary {
     return onGoingDevelopment;
   }
 
+  public List<String> getIncludes() {
+    return includes;
+  }
+
   protected enum LibraryLayout {
     FLAT, RECURSIVE
   }
@@ -278,6 +291,8 @@ public class UserLibrary extends ContributedLibrary {
     res += "         (paragraph=" + paragraph + ")\n";
     res += "         (url=" + website + ")\n";
     res += "         (architectures=" + architectures + ")\n";
+    if (includes != null)
+      res += "         (includes=" + includes + ")\n";
     return res;
   }
 

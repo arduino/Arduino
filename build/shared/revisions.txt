@@ -3,6 +3,10 @@ ARDUINO 1.6.10
 [ide]
 * A lot of bugfixes to builder:
   https://github.com/arduino/arduino-builder/issues?q=milestone%3A1.3.19+is%3Aclosed
+* Libraries can now define the property "includes" in the library.properties to
+  tell the IDE which `#include <...>` lines should be added to the sketch when
+  the "Include library" command is used. See:
+  https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification#libraryproperties-file-format
 
 [core]
 * fixed a small bug that caused a compile error on some 3rd party derivatives
