@@ -1,6 +1,8 @@
 ARDUINO 1.6.10
 
 [ide]
+* A lot of bugfixes to builder:
+  https://github.com/arduino/arduino-builder/issues?q=milestone%3A1.3.19+is%3Aclosed
 
 [core]
 * fixed a small bug that caused a compile error on some 3rd party derivatives
