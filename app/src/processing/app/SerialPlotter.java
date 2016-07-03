@@ -218,8 +218,8 @@ public class SerialPlotter extends AbstractMonitor {
     serialRates.addActionListener(listener);
   }
 
-  public void message(final String s) {
-    messageBuffer.append(s);
+  public void message(final byte[] buf) {
+    messageBuffer.append(new String(buf));
     while (true) {
       int linebreak = messageBuffer.indexOf("\n");
       if (linebreak == -1) {
@@ -260,7 +260,7 @@ public class SerialPlotter extends AbstractMonitor {
 
     serial = new Serial(getBoardPort().getAddress(), serialRate) {
       @Override
-      protected void message(char buff[], int n) {
+      protected void message(byte buff[], int n) {
         addToUpdateBuffer(buff, n);
       }
     };

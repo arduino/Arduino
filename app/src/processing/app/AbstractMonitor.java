@@ -9,13 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   private boolean closed;
 
-  private StringBuffer updateBuffer;
+  private ByteArrayOutputStream updateBuffer;
+  
   private Timer updateTimer;
 
   private BoardPort boardPort;
@@ -73,13 +75,14 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
       }
     }
 
-    updateBuffer = new StringBuffer(1048576);
+    updateBuffer = new ByteArrayOutputStream(1048576);
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
 
     closed = false;
   }
 
+  
   protected abstract void onCreateWindow(Container mainPane);
 
   public void enableWindow(boolean enable) {
@@ -127,7 +130,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     return location;
   }
 
-  public abstract void message(final String s);
+  public abstract void message(final byte[] buf);
 
   public boolean requiresAuthorization() {
     return false;
@@ -161,19 +164,19 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     this.boardPort = boardPort;
   }
 
-  public synchronized void addToUpdateBuffer(char buff[], int n) {
-    updateBuffer.append(buff, 0, n);
+  public synchronized void addToUpdateBuffer(byte buff[], int n) {
+    updateBuffer.write(buff, 0, n);
   }
 
-  private synchronized String consumeUpdateBuffer() {
-    String s = updateBuffer.toString();
-    updateBuffer.setLength(0);
-    return s;
+  private synchronized byte[] consumeUpdateBuffer() {
+	byte[] contents = updateBuffer.toByteArray();
+	updateBuffer.reset();
+    return contents;
   }
 
   public void actionPerformed(ActionEvent e) {
-    String s = consumeUpdateBuffer();
-    if (s.isEmpty()) {
+    byte[] s = consumeUpdateBuffer();
+    if (s.length == 0) {
       return;
     } else {
       message(s);
