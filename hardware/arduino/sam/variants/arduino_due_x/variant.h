@@ -154,6 +154,11 @@ static const uint8_t SCK  = PIN_SPI_SCK;
 #define WIRE1_ISR_HANDLER    TWI0_Handler
 #define WIRE1_ISR_ID         TWI0_IRQn
 
+static const uint8_t SDA  = PIN_WIRE_SDA;
+static const uint8_t SCL  = PIN_WIRE_SCL;
+static const uint8_t SDA1 = PIN_WIRE1_SDA;
+static const uint8_t SCL1 = PIN_WIRE1_SCL;
+
 /*
  * UART/USART Interfaces
  */
