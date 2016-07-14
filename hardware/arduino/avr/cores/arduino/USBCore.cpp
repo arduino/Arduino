@@ -1,6 +1,7 @@
 
 
-/* Copyright (c) 2010, Peter Barrett  
+/* Copyright (c) 2010, Peter Barrett
+** Sleep/Wakeup support added by Michael Dreher
 **  
 ** Permission to use, copy, modify, and/or distribute this software for  
 ** any purpose with or without fee is hereby granted, provided that the  
@@ -265,6 +266,11 @@ int USB_Send(u8 ep, const void* d, int len)
 {
 	if (!_usbConfiguration)
 		return -1;
+
+	if (_usbSuspendState & (1<<SUSPI)) {
+		//send a remote wakeup
+		UDCON |= (1 << RMWKUP);
+	}
 
 	int r = len;
 	const u8* data = (const u8*)d;
