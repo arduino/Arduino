@@ -249,7 +249,7 @@ size_t Print::printFloat(double number, uint8_t digits)
   while (digits-- > 0)
   {
     remainder *= 10.0;
-    int toPrint = int(remainder);
+    unsigned int toPrint = (unsigned int)remainder;
     n += print(toPrint);
     remainder -= toPrint; 
   } 
