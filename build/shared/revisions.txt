@@ -7,6 +7,7 @@ ARDUINO 1.6.10
   tell the IDE which `#include <...>` lines should be added to the sketch when
   the "Include library" command is used. See:
   https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification#libraryproperties-file-format
+* Examples are now filtered by architecture
 
 [core]
 * fixed a small bug that caused a compile error on some 3rd party derivatives
