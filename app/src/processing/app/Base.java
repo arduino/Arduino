@@ -82,6 +82,7 @@ public class Base {
 
   public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
   public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
+  public static final Predicate<UserLibrary> COMPATIBLE = library -> library.getArchitectures() != null && (library.getArchitectures().contains("*") || library.getArchitectures().contains(BaseNoGui.getTargetPlatform().getId()));
 
   private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
@@ -1104,6 +1105,7 @@ public class Base {
     List<UserLibrary> libs = installedLibraries.stream()
       .filter(CONTRIBUTED.negate())
       .filter(RETIRED.negate())
+      .filter(COMPATIBLE)
       .collect(Collectors.toList());
     return new LibraryList(libs);
   }

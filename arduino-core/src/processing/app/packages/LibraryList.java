@@ -57,15 +57,25 @@ public class LibraryList extends LinkedList<UserLibrary> {
     return null;
   }
 
+  public synchronized void addOrReplaceArchAware(UserLibrary lib) {
+    addOrReplace(lib, true);
+  }
+
   public synchronized void addOrReplace(UserLibrary lib) {
-    remove(lib);
+    addOrReplace(lib, false);
+  }
+
+  public synchronized void addOrReplace(UserLibrary lib, boolean archAware) {
+    remove(lib, archAware);
     add(lib);
   }
-  
-  public synchronized void remove(UserLibrary lib) {
+
+  public synchronized void remove(UserLibrary lib, boolean archAware) {
     UserLibrary l = getByName(lib.getName());
-    if (l != null)
-      super.remove(l);
+    if (l != null) {
+      if (!archAware || lib.getArchitectures().contains("*") || lib.getArchitectures().containsAll(l.getArchitectures()))
+        super.remove(l);
+    }
   }
 
   public synchronized void sort() {
