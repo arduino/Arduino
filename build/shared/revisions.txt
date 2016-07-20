@@ -8,6 +8,7 @@ ARDUINO 1.6.10
   the "Include library" command is used. See:
   https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification#libraryproperties-file-format
 * Examples are now filtered by architecture
+* Added more graceful handling of upload failures
 
 [core]
 * fixed a small bug that caused a compile error on some 3rd party derivatives
