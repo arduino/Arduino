@@ -1164,7 +1164,8 @@ public class Sketch {
 
   private boolean upload(String buildPath, String suggestedClassName, boolean usingProgrammer) throws Exception {
 
-    Uploader uploader = new UploaderUtils().getUploaderByPreferences(false);
+    UploaderUtils uploaderInstance = new UploaderUtils();
+    Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
 
     boolean success = false;
     do {
@@ -1183,7 +1184,7 @@ public class Sketch {
 
       List<String> warningsAccumulator = new LinkedList<>();
       try {
-        success = new UploaderUtils().upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
+        success = uploaderInstance.upload(data, uploader, buildPath, suggestedClassName, usingProgrammer, false, warningsAccumulator);
       } finally {
         if (uploader.requiresAuthorization() && !success) {
           PreferencesData.remove(uploader.getAuthorizationKey());
@@ -1197,6 +1198,14 @@ public class Sketch {
       }
 
     } while (uploader.requiresAuthorization() && !success);
+
+    if (!success) {
+      String errorMessage = uploader.getFailureMessage();
+      if (errorMessage.equals("")) {
+        errorMessage = tr("An error occurred while uploading the sketch");
+      }
+      editor.statusError(errorMessage);
+    }
 
     return success;
   }
