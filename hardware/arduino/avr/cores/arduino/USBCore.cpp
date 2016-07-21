@@ -117,16 +117,10 @@ static inline void Recv(volatile u8* data, u8 count)
 {
 	while (count--)
 		*data++ = UEDATX;
-	
-	RXLED1;					// light the RX LED
-	RxLEDPulse = TX_RX_LED_PULSE_MS;	
 }
 
 static inline u8 Recv8()
 {
-	RXLED1;					// light the RX LED
-	RxLEDPulse = TX_RX_LED_PULSE_MS;
-
 	return UEDATX;	
 }
 
@@ -228,6 +222,9 @@ int USB_Recv(u8 ep, void* d, int len)
 	if (!_usbConfiguration || len < 0)
 		return -1;
 	
+	RXLED1;					// light the RX LED
+	RxLEDPulse = TX_RX_LED_PULSE_MS;
+
 	LockEP lock(ep);
 	u8 n = FifoByteCount();
 	len = min(n,len);
