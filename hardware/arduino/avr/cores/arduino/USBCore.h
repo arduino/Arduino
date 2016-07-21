@@ -130,7 +130,7 @@
 typedef struct {
 	u8 len;				// 18
 	u8 dtype;			// 1 USB_DEVICE_DESCRIPTOR_TYPE
-	u16 usbVersion;		// 0x200
+	u16 usbVersion;		// 0x210
 	u8	deviceClass;
 	u8	deviceSubClass;
 	u8	deviceProtocol;
@@ -260,7 +260,7 @@ typedef struct
 
 
 #define D_DEVICE(_class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs) \
-	{ 18, 1, 0x200, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
+	{ 18, 1, 0x210, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
 
 #define D_CONFIG(_totalLength,_interfaces) \
 	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED | USB_CONFIG_REMOTE_WAKEUP, USB_CONFIG_POWER_MA(500) }
