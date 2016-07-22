@@ -9,14 +9,18 @@ ARDUINO 1.6.10
   https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification#libraryproperties-file-format
 * Examples are now filtered by architecture
 * Added more graceful handling of upload failures
+* Solved a bug that crashed the IDE with some exotic serial devices
 
 [core]
-* fixed a small bug that caused a compile error on some 3rd party derivatives
-  boards based on Leonardo
+* fixed a small bug that caused a compile error on some 3rd party derivatives boards based on Leonardo
 * sam: added snprintf_P to avr/pgmspace.h stub. Thanks @jantje
 * avr: Fix TX buffer being overwritten by multiple Wire.write(...) calls in slave mode. Thanks @kellerkindt
 * Another small fix to String iterators. Thanks @Ivan-Perez @Chris--A
 * Added getTimeout() method to Stream. Thanks @mattb5906
+* avr: Fixed USB wakeup event handling, this solves some rare lockups of serial port on some linux distributions
+* Speed and size improvement on Print::printFloat(..). Thanks @bblanchon
+* avr: Added Serial.availableForWrite() for USB-CDC serial ports
+* avr: Added PIN_* defines to all board variants
 
 [libraries]
 
