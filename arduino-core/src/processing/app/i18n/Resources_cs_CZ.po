@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-16 18:19+0000\n"
+"PO-Revision-Date: 2016-05-31 14:40+0000\n"
 "Last-Translator: Zdeno Sekerák <etrsek@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/mbanzi/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "'arch' adresář již není podporován! Podívej se http://goo.gl/gfFJz
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(editujte pouze když program Arduino není spuštěn)\nPřekládal: Zdenko Sekerák"
+msgstr "(editujte pouze když program Arduino není spuštěn)\n\\nPreložil: Zdenko Sekerák"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"

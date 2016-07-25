@@ -24,7 +24,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-17 04:22+0000\n"
+"PO-Revision-Date: 2016-06-05 13:48+0000\n"
 "Last-Translator: Shigeru Kobayashi <mayfair@iamas.ac.jp>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -2621,7 +2621,7 @@ msgstr "{0} フォルダでなくてはなりません"
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr "{1}上の{0}"
+msgstr "{1}の{0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

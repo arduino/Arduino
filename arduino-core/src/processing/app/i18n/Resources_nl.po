@@ -14,6 +14,7 @@
 # Translators:
 # MrWhammy <brecht@yperman.eu>, 2013,2015
 # MrWhammy <brecht@yperman.eu>, 2012
+# Chris van Marle <qistoph@gmail.com>, 2016
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # devMaeb <devmaeb@gmail.com>, 2014
 # Jan Verheijen <jmm.verheijen@kpnmail.nl>, 2014
@@ -25,8 +26,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-04-05 14:33+0000\n"
-"Last-Translator: Wesley Deblaere <wesley.deblaere.100@gmail.com>\n"
+"PO-Revision-Date: 2016-05-11 14:32+0000\n"
+"Last-Translator: Chris van Marle <qistoph@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/mbanzi/arduino-ide-15/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -660,7 +661,7 @@ msgstr "Deens (Denemarken)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Gegevens verwerking"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
@@ -953,11 +954,11 @@ msgstr "Voorbeelden"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Voorbeelden van Custom Libraries"
 
 #: ../../../../../app/src/processing/app/Base.java:1222
 msgid "Examples from Libraries"
-msgstr ""
+msgstr "Voorbeelden van Libraries"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1031,7 +1032,7 @@ msgstr "Ga naar http://www.arduino.cc/en/Guide/Libraries voor meer informatie ov
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Een reset wordt geforceerd (met 1200bps openen/sluiten) op poort {0}"
 
 #: Preferences.java:95
 msgid "French"
@@ -1498,7 +1499,7 @@ msgstr "Perzisch (Iran)"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "Bord {0} (package {1}) onbekend"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
@@ -1596,7 +1597,7 @@ msgstr "Probleem met het openen van de board-map /www/sd"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
 #, java-format
 msgid "Problem accessing files in folder \"{0}\""
-msgstr ""
+msgstr "Probleem met het openen van bestanden in de map \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1635,7 +1636,7 @@ msgstr "AFGESCHREVEN"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Aanbevolen"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -2173,7 +2174,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr "Ongekende extensie voor schetsbestand: {0}"
+msgstr "Onbekende extensie voor schetsbestand: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2297,7 +2298,7 @@ msgstr "Versie <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr "Versie ongekend"
+msgstr "Versie onbekend"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
