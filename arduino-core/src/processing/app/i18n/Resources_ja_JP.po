@@ -338,6 +338,10 @@ msgstr "ベラルーシ語"
 msgid "Board"
 msgstr "ボード"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
@@ -1060,6 +1064,10 @@ msgstr "グルジア語"
 msgid "German"
 msgstr "ドイツ語"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "初心者向けガイド"
@@ -1320,6 +1328,10 @@ msgstr "スケッチファイルは1つだけ指定してください"
 msgid "Name for new file:"
 msgstr "新規ファイルの名前："
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "ネパール語"
@@ -1327,6 +1339,10 @@ msgstr "ネパール語"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "ネットワーク"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1514,6 +1530,10 @@ msgstr "「スケッチ」メニューの「ライブラリを使用」で、SPI
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "「スケッチ」メニューの「ライブラリを使用」で、Wireライブラリを読み込んでください。"
+
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1892,6 +1912,11 @@ msgstr "スケッチブックの保存場所："
 msgid "Sketchbook path not defined"
 msgstr "スケッチブックのパスが定義されていません"
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "スロバキア語"
@@ -2169,6 +2194,10 @@ msgstr "元に戻す"
 msgid "Unhandled type {0} in context key {1}"
 msgstr "コンテクストキー{1}のタイプ{0}は未処理です"
 
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
@@ -2220,6 +2249,10 @@ msgstr "マイコンボードに書き込む"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "書込装置を使って書き込む"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."

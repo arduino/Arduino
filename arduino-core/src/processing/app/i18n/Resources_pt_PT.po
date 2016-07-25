@@ -343,6 +343,10 @@ msgstr "Bielorrusso"
 msgid "Board"
 msgstr "Placa"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
@@ -1065,6 +1069,10 @@ msgstr "Georgiano"
 msgid "German"
 msgstr "Alemão"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "Primeiros passos"
@@ -1325,6 +1333,10 @@ msgstr "Deve especificar exatamente um ficheiro de rascunho"
 msgid "Name for new file:"
 msgstr "Nome para o novo ficheiro:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Nepalês"
@@ -1332,6 +1344,10 @@ msgstr "Nepalês"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "Rede"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1519,6 +1535,10 @@ msgstr "Por favor importe a biblioteca SPI no menu Rascunho > Importar Bibliotec
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Por favor importe a biblioteca Wire do menu Rascunho > Importar Biblioteca."
+
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1897,6 +1917,11 @@ msgstr "Localização do bloco de rascunhos:"
 msgid "Sketchbook path not defined"
 msgstr "Caminho do bloco de rascunhos não está definido"
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "Eslovaco"
@@ -2174,6 +2199,10 @@ msgstr "Anular"
 msgid "Unhandled type {0} in context key {1}"
 msgstr "Tipo por tratar {0} na chave de contexto {1}"
 
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
@@ -2225,6 +2254,10 @@ msgstr "Envio"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "Envio Usando o Programador"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
