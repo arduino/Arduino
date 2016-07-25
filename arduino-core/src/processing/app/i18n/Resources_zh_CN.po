@@ -22,14 +22,15 @@
 # Jacques S, 2015-2016
 # Wong Min <alpha080@gmail.com>, 2013
 # Zhuo Liu <lzhskywalker@gmail.com>, 2015
+# 天悦 任 <godners@163.com>, 2016
 # 陈吕洲 <clz@clz.me>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-10 04:18+0000\n"
-"Last-Translator: Jacques S\n"
+"PO-Revision-Date: 2016-06-11 04:59+0000\n"
+"Last-Translator: 天悦 任 <godners@163.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +75,7 @@ msgstr "（只能在 Arduino 未运行时进行编辑）"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr "(legacy)"
+msgstr "(继承)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -1128,7 +1129,7 @@ msgstr "忽略大小写"
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr "忽略糟糕的库名称"
+msgstr "忽略错误的库名称"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1264,7 +1265,7 @@ msgstr "正在加载配置..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "寻找与{0}*{1}类似的方法"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1284,7 +1285,7 @@ msgstr "马拉地语"
 
 #: Base.java:2112
 msgid "Message"
-msgstr "信息"
+msgstr "消息"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
@@ -1468,7 +1469,7 @@ msgstr "打开Arduino项目"
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
-msgstr "打开"
+msgstr "打开..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
@@ -1609,7 +1610,7 @@ msgstr "取得资料文件夹时出现问题"
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "上传出错。查看页面 http://www.arduino.cc/en/Guide/Troubleshooting#upload 获取建议。"
+msgstr "上传出错。查看http://www.arduino.cc/en/Guide/Troubleshooting#upload 获取建议。"
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1634,7 +1635,7 @@ msgstr "关闭"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr "已淘汰"
+msgstr "已弃用"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
@@ -1698,7 +1699,7 @@ msgstr "罗马尼亚语"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "运行方法：{0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format

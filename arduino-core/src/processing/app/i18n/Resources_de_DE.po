@@ -13,7 +13,7 @@
 # Translators:
 # Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2016
-# Lukas Bestle <lukas@lu-x.me>, 2013,2015-2016
+# Lukas Bestle, 2013,2015-2016
 # Dr. Mathias Wilhelm <mathias.wilhelm@freenet.de>, 2012
 msgid ""
 msgstr ""

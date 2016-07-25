@@ -14,8 +14,8 @@
 # Translators:
 # Anton Ryberg <anton.ryberg@kontinuitet.se>, 2015
 # Daniel Jansson <daniel@threepercentdone.com>, 2012
-# Dan West <acc@dnw.st>, 2013
-# Dan West <acc@dnw.st>, 2013
+# Dan Berg <sjbrg@protonmail.com>, 2013
+# Dan Berg <sjbrg@protonmail.com>, 2013
 # GregerA <greger.andersson@electrokit.se>, 2014
 # GudenTorson, 2015
 # Jonas Bengtsson <jonas.b@gmail.com>, 2013
@@ -26,7 +26,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-05-07 07:42+0000\n"
+"PO-Revision-Date: 2016-06-01 10:52+0000\n"
 "Last-Translator: Jonatan Nyberg <jonatan@autistici.org>\n"
 "Language-Team: Swedish (http://www.transifex.com/mbanzi/arduino-ide-15/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr ""
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "\"Arch\" katalog stöds inte längre! Se http://goo.gl/gfFJzU för mer information"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -72,11 +72,11 @@ msgstr "(ändra endast när Arduino inte körs)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(arv)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir stöds inte längre"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
@@ -397,7 +397,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Inbyggda exempel"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"

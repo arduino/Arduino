@@ -25,8 +25,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 17:51+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-05-17 01:55+0000\n"
+"Last-Translator: yehnan <yehnan174@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -307,7 +307,7 @@ msgstr "自動偵測代理伺服器組態設定"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "自動化的"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -343,7 +343,7 @@ msgstr "板子"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "找不到在{0}的板子"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -829,7 +829,7 @@ msgstr "加入檔案時發生錯誤"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "板子{0}編譯錯誤"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -979,7 +979,7 @@ msgstr "檔案"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "非法檔名{0}：忽略"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1201,7 +1201,7 @@ msgstr "安裝中..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "介面縮放率："
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1523,7 +1523,7 @@ msgstr "請從選單「工具->燒錄器」選擇燒錄器"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "當序列埠監控視窗開啟時，不能使用繪圖家"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1686,7 +1686,7 @@ msgstr "置換為:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr ""
+msgstr "已退役"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1795,7 +1795,7 @@ msgstr "序列繪圖家"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "當繪圖家開啟時，不能使用序列埠監控視窗"
 
 #: Serial.java:194
 #, java-format
@@ -1953,7 +1953,7 @@ msgstr "泰米爾語"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
-msgstr ""
+msgstr "泰語"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -2124,7 +2124,7 @@ msgstr "烏克蘭語"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "無法連接{0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2254,7 +2254,7 @@ msgstr "使用者名稱："
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr ""
+msgstr "使用程式庫{0}、版本{1}，位於資料夾：{2}{3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2346,12 +2346,12 @@ msgstr "警告：檔案{0}連結到絕對路徑{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "警告：強迫信任不可靠的貢獻"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "警告：強迫執行不可靠的腳本碼({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
