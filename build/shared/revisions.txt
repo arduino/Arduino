@@ -1,4 +1,4 @@
-ARDUINO 1.6.10
+ARDUINO 1.6.10 - 2016.07.26
 
 [ide]
 * A lot of bugfixes to builder:
