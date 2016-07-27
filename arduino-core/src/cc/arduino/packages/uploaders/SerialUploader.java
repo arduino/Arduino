@@ -110,7 +110,8 @@ public class SerialUploader extends Uploader {
       boolean uploadResult;
       try {
         String pattern = prefs.getOrExcept("upload.pattern");
-        String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+        String arch = targetPlatform.getContainerPackage().getId()+"."+targetPlatform.getId();
+        String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, arch, true);
         uploadResult = executeUploadCommand(cmd);
       } catch (Exception e) {
         throw new RunnerException(e);
@@ -204,8 +205,10 @@ public class SerialUploader extends Uploader {
 
     boolean uploadResult;
     try {
+      // Architecture field formatted as "arduino.avr" to prepend runtime vars
       String pattern = prefs.getOrExcept("upload.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+      String arch = targetPlatform.getContainerPackage().getId()+"."+targetPlatform.getId();
+      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, arch, true);
       uploadResult = executeUploadCommand(cmd);
     } catch (RunnerException e) {
       throw e;
@@ -341,7 +344,8 @@ public class SerialUploader extends Uploader {
       // }
 
       String pattern = prefs.getOrExcept("program.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+      String arch = targetPlatform.getContainerPackage().getId()+"."+targetPlatform.getId();
+      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, arch, true);
       return executeUploadCommand(cmd);
     } catch (RunnerException e) {
       throw e;
@@ -404,12 +408,13 @@ public class SerialUploader extends Uploader {
     new LoadVIDPIDSpecificPreferences().load(prefs);
 
     String pattern = prefs.getOrExcept("erase.pattern");
-    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+    String arch = targetPlatform.getContainerPackage().getId()+"."+targetPlatform.getId();
+    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, arch, true);
     if (!executeUploadCommand(cmd))
       return false;
 
     pattern = prefs.getOrExcept("bootloader.pattern");
-    cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+    cmd = StringReplacer.formatAndSplit(pattern, prefs, arch, true);
     return executeUploadCommand(cmd);
   }
 }

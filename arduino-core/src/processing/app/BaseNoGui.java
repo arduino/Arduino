@@ -862,6 +862,10 @@ public class BaseNoGui {
       }
       PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
       PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+      for (String userArch : tool.ugetUserArchitectures()) {
+        PreferencesData.set(prefix + tool.getName() + ".path." + userArch, absolutePath);
+        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path." + userArch, absolutePath);
+      }
     }
   }
 

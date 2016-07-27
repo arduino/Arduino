@@ -80,6 +80,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
       } else {
+        tool.usetUserArchitecture(this.getParentPackage().getName()+"."+this.getArchitecture());
         resolvedToolReferences.put(dep, tool);
       }
     }
