@@ -3,6 +3,7 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UploaderUtils;
+import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -853,15 +854,18 @@ public class BaseNoGui {
     }
 
     for (ContributedTool tool : installedTools) {
-      File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
-      String absolutePath;
-      if (installedFolder != null) {
-        absolutePath = installedFolder.getAbsolutePath();
-      } else {
-        absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
+      DownloadableContribution dlContrib = tool.getDownloadableContribution(getPlatform());
+      if (dlContrib != null) {
+        File installedFolder = dlContrib.getInstalledFolder();
+        String absolutePath;
+        if (installedFolder != null) {
+          absolutePath = installedFolder.getAbsolutePath();
+        } else {
+          absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
+        }
+        PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
+        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
       }
-      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
-      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
     }
   }
 
