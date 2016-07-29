@@ -66,7 +66,7 @@ uno.upload.speed=115200
 uno.bootloader.tool=avrdude
 uno.bootloader.low_fuses=0xFF
 uno.bootloader.high_fuses=0xDE
-uno.bootloader.extended_fuses=0x05
+uno.bootloader.extended_fuses=0xFD
 uno.bootloader.unlock_bits=0x3F
 uno.bootloader.lock_bits=0x0F
 uno.bootloader.file=optiboot/optiboot_atmega328.hex
@@ -103,7 +103,7 @@ diecimila.menu.cpu.atmega328.upload.maximum_data_size=2048
 diecimila.menu.cpu.atmega328.upload.speed=57600
 
 diecimila.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-diecimila.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+diecimila.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 diecimila.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 diecimila.menu.cpu.atmega328.build.mcu=atmega328p
@@ -117,7 +117,7 @@ diecimila.menu.cpu.atmega168.upload.maximum_data_size=1024
 diecimila.menu.cpu.atmega168.upload.speed=19200
 
 diecimila.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-diecimila.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+diecimila.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 diecimila.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 diecimila.menu.cpu.atmega168.build.mcu=atmega168
@@ -148,7 +148,7 @@ nano.menu.cpu.atmega328.upload.speed=57600
 
 nano.menu.cpu.atmega328.bootloader.low_fuses=0xFF
 nano.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-nano.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+nano.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 nano.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 nano.menu.cpu.atmega328.build.mcu=atmega328p
@@ -163,7 +163,7 @@ nano.menu.cpu.atmega168.upload.speed=19200
 
 nano.menu.cpu.atmega168.bootloader.low_fuses=0xff
 nano.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-nano.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+nano.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 nano.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 nano.menu.cpu.atmega168.build.mcu=atmega168
@@ -459,7 +459,7 @@ mini.menu.cpu.atmega328.upload.maximum_data_size=2048
 mini.menu.cpu.atmega328.upload.speed=115200
 
 mini.menu.cpu.atmega328.bootloader.high_fuses=0xd8
-mini.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+mini.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 mini.menu.cpu.atmega328.bootloader.file=optiboot/optiboot_atmega328-Mini.hex
 
 mini.menu.cpu.atmega328.build.mcu=atmega328p
@@ -473,7 +473,7 @@ mini.menu.cpu.atmega168.upload.maximum_data_size=1024
 mini.menu.cpu.atmega168.upload.speed=19200
 
 mini.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-mini.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+mini.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 mini.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
 
 mini.menu.cpu.atmega168.build.mcu=atmega168
@@ -515,7 +515,7 @@ fio.upload.speed=57600
 fio.bootloader.tool=avrdude
 fio.bootloader.low_fuses=0xFF
 fio.bootloader.high_fuses=0xDA
-fio.bootloader.extended_fuses=0x05
+fio.bootloader.extended_fuses=0xFD
 fio.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 fio.bootloader.unlock_bits=0x3F
 fio.bootloader.lock_bits=0x0F
@@ -552,7 +552,7 @@ bt.menu.cpu.atmega328.upload.maximum_size=28672
 bt.menu.cpu.atmega328.upload.maximum_data_size=2048
 
 bt.menu.cpu.atmega328.bootloader.high_fuses=0xd8
-bt.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+bt.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 bt.menu.cpu.atmega328.bootloader.file=bt/ATmegaBOOT_168_atmega328_bt.hex
 
 bt.menu.cpu.atmega328.build.mcu=atmega328p
@@ -564,7 +564,7 @@ bt.menu.cpu.atmega168.upload.maximum_size=14336
 bt.menu.cpu.atmega168.upload.maximum_data_size=1024
 
 bt.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-bt.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+bt.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 bt.menu.cpu.atmega168.bootloader.file=bt/ATmegaBOOT_168.hex
 
 bt.menu.cpu.atmega168.build.mcu=atmega168
@@ -630,7 +630,7 @@ lilypad.menu.cpu.atmega328.upload.speed=57600
 
 lilypad.menu.cpu.atmega328.bootloader.low_fuses=0xFF
 lilypad.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-lilypad.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+lilypad.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 lilypad.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 
 lilypad.menu.cpu.atmega328.build.mcu=atmega328p
@@ -645,7 +645,7 @@ lilypad.menu.cpu.atmega168.upload.speed=19200
 
 lilypad.menu.cpu.atmega168.bootloader.low_fuses=0xe2
 lilypad.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-lilypad.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+lilypad.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 lilypad.menu.cpu.atmega168.bootloader.file=lilypad/LilyPadBOOT_168.hex
 
 lilypad.menu.cpu.atmega168.build.mcu=atmega168
@@ -675,7 +675,7 @@ pro.menu.cpu.16MHzatmega328.upload.speed=57600
 
 pro.menu.cpu.16MHzatmega328.bootloader.low_fuses=0xFF
 pro.menu.cpu.16MHzatmega328.bootloader.high_fuses=0xDA
-pro.menu.cpu.16MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.16MHzatmega328.bootloader.extended_fuses=0xFD
 pro.menu.cpu.16MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 pro.menu.cpu.16MHzatmega328.build.mcu=atmega328p
@@ -691,7 +691,7 @@ pro.menu.cpu.8MHzatmega328.upload.speed=57600
 
 pro.menu.cpu.8MHzatmega328.bootloader.low_fuses=0xFF
 pro.menu.cpu.8MHzatmega328.bootloader.high_fuses=0xDA
-pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0xFD
 pro.menu.cpu.8MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 
 pro.menu.cpu.8MHzatmega328.build.mcu=atmega328p
@@ -707,7 +707,7 @@ pro.menu.cpu.16MHzatmega168.upload.speed=19200
 
 pro.menu.cpu.16MHzatmega168.bootloader.low_fuses=0xff
 pro.menu.cpu.16MHzatmega168.bootloader.high_fuses=0xdd
-pro.menu.cpu.16MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.16MHzatmega168.bootloader.extended_fuses=0xF8
 pro.menu.cpu.16MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 pro.menu.cpu.16MHzatmega168.build.mcu=atmega168
@@ -723,7 +723,7 @@ pro.menu.cpu.8MHzatmega168.upload.speed=19200
 
 pro.menu.cpu.8MHzatmega168.bootloader.low_fuses=0xc6
 pro.menu.cpu.8MHzatmega168.bootloader.high_fuses=0xdd
-pro.menu.cpu.8MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.8MHzatmega168.bootloader.extended_fuses=0xF8
 pro.menu.cpu.8MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_pro_8MHz.hex
 
 pro.menu.cpu.8MHzatmega168.build.mcu=atmega168
@@ -756,7 +756,7 @@ atmegang.menu.cpu.atmega168.upload.maximum_data_size=1024
 
 atmegang.menu.cpu.atmega168.bootloader.low_fuses=0xff
 atmegang.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-atmegang.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+atmegang.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 atmegang.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
 
 atmegang.menu.cpu.atmega168.build.mcu=atmega168
