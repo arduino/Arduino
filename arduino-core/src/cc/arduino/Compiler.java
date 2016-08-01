@@ -202,6 +202,13 @@ public class Compiler implements MessageConsumer {
         }
       });
 
+    commandLine.addArgument("-package-index", false);
+    commandLine.addArgument("\"" + BaseNoGui.getSettingsFolder() + "\"", false);
+
+    commandLine.addArgument("-prefs", false);
+    commandLine.addArgument("\"" + Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS + "=" +
+      "package_index.json," + PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "") + "\"", false);
+
     Stream.of(BaseNoGui.getContentFile("tools-builder").getAbsolutePath(), Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toAbsolutePath().toString(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath())
       .forEach(p -> {
         if (Files.exists(Paths.get(p))) {
