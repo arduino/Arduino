@@ -164,16 +164,20 @@ public class BaseNoGui {
     prefs.put("name", extendedName);
 
     // Resolve tools needed for this board
+    List<ContributedTool> requiredTools = new ArrayList<>();
+
+    // Add all tools dependencies specified in package index
     ContributedPlatform platform = indexer.getContributedPlaform(getTargetPlatform());
-    if (platform != null) {
-      String prefix = "runtime.tools.";
-      for (ContributedTool tool : platform.getResolvedTools()) {
-        File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
-        String toolPath = folder.getAbsolutePath();
-        prefs.put(prefix + tool.getName() + ".path", toolPath);
-        PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
-        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
-      }
+    if (platform != null)
+      requiredTools.addAll(platform.getResolvedTools());
+
+    String prefix = "runtime.tools.";
+    for (ContributedTool tool : requiredTools) {
+      File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      String toolPath = folder.getAbsolutePath();
+      prefs.put(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
     }
     return prefs;
   }
