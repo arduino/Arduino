@@ -171,6 +171,16 @@ public class BaseNoGui {
     if (platform != null)
       requiredTools.addAll(platform.getResolvedTools());
 
+    // Add all tools dependencies from the (possibily) referenced core
+    String core = prefs.get("build.core");
+    if (core.contains(":")) {
+      String split[] = core.split(":");
+      TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
+      if (referencedPlatform != null)
+        requiredTools.addAll(referencedPlatform.getResolvedTools());
+    }
+
     String prefix = "runtime.tools.";
     for (ContributedTool tool : requiredTools) {
       File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
