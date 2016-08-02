@@ -1261,8 +1261,8 @@ public class Base {
     }
 
     // Add examples from libraries
-    ideLibs.sort();
     if (!ideLibs.isEmpty()) {
+      ideLibs.sort();
       label = new JMenuItem(tr("Examples from Built-in Libraries"));
       label.setEnabled(false);
       menu.add(label);
