@@ -867,14 +867,16 @@ public class BaseNoGui {
 
     for (ContributedTool tool : installedTools) {
       File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
-      String absolutePath;
+      String toolPath;
       if (installedFolder != null) {
-        absolutePath = installedFolder.getAbsolutePath();
+        toolPath = installedFolder.getAbsolutePath();
       } else {
-        absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
+        toolPath = Constants.PREF_REMOVE_PLACEHOLDER;
       }
-      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
-      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+      PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getPackager() + "-" + tool.getName() + "-" + tool.getVersion() + ".path",
+          toolPath);
     }
   }
 
