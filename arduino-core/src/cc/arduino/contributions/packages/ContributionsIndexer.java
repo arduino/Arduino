@@ -439,4 +439,12 @@ public class ContributionsIndexer {
 
     return platformOptional.orElse(null);
   }
+
+  public ContributedPlatform getContributedPlaform(TargetPlatform targetPlatform) {
+    for (ContributedPlatform plat : getInstalledPlatforms()) {
+      if (plat.getInstalledFolder().equals(targetPlatform.getFolder()))
+        return plat;
+    }
+    return null;
+  }
 }

@@ -6,6 +6,7 @@ import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
+import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.files.DeleteFilesOnShutdown;
@@ -160,6 +161,18 @@ public class BaseNoGui {
       }
     }
     prefs.put("name", extendedName);
+
+    // Resolve tools needed for this board
+    ContributedPlatform platform = indexer.getContributedPlaform(getTargetPlatform());
+    if (platform != null) {
+      String prefix = "runtime.tools.";
+      for (ContributedTool tool : platform.getResolvedTools()) {
+        File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+        String toolPath = folder.getAbsolutePath();
+        PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
+        PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
+      }
+    }
     return prefs;
   }
 
