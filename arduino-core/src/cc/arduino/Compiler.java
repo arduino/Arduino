@@ -51,6 +51,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -234,6 +235,12 @@ public class Compiler implements MessageConsumer {
       .forEach(kv -> commandLine.addArgument("-prefs=\"" + kv.getKey() + "=" + kv.getValue() + "\"", false));
 
     commandLine.addArgument("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
+
+    for (Map.Entry<String, String> entry : BaseNoGui.getBoardPreferences().entrySet()) {
+        if (entry.getKey().startsWith("runtime.tools")) {
+          commandLine.addArgument("-prefs=" + entry.getKey() + "=" + entry.getValue());
+        }
+    }
 
     //commandLine.addArgument("-debug-level=10", false);
 
