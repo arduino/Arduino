@@ -184,6 +184,9 @@ public class BaseNoGui {
     String prefix = "runtime.tools.";
     for (ContributedTool tool : requiredTools) {
       File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      if (folder == null) {
+        continue;
+      }
       String toolPath = folder.getAbsolutePath();
       prefs.put(prefix + tool.getName() + ".path", toolPath);
       PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
