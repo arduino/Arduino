@@ -93,6 +93,7 @@
   <property name="LIBLISTSERIAL-VERSION" value="1.1.4" />
   <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.3-arduino2" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino3" />
+  <property name="AVRDUDE-VERSION-FAKE" value="6.3.0-arduino2" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -495,7 +496,7 @@
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i386-apple-darwin11.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
-      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION-FAKE}"/>
     </antcall>
 
     <chmod perm="+x">
@@ -720,7 +721,7 @@
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION-FAKE}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -752,7 +753,7 @@
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION-FAKE}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -784,7 +785,7 @@
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION-FAKE}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
@@ -1072,7 +1073,7 @@
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-mingw32.zip"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.zip"/>
-      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION-FAKE}"/>
     </antcall>
 
     <antcall target="package-library-index-json-bundle"/>
