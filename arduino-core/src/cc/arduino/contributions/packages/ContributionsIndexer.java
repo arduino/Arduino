@@ -104,6 +104,11 @@ public class ContributionsIndexer {
       .collect(Collectors.toList());
 
     for (ContributedPackage pack : packages) {
+      // Fill references to package in tools
+      for (ContributedTool tool : pack.getTools()) {
+        tool.setPackage(pack);
+      }
+
       for (ContributedPlatform platform : pack.getPlatforms()) {
         // Set a reference to parent packages
         platform.setParentPackage(pack);
@@ -433,5 +438,13 @@ public class ContributionsIndexer {
     }).findFirst();
 
     return platformOptional.orElse(null);
+  }
+
+  public ContributedPlatform getContributedPlaform(TargetPlatform targetPlatform) {
+    for (ContributedPlatform plat : getInstalledPlatforms()) {
+      if (plat.getInstalledFolder().equals(targetPlatform.getFolder()))
+        return plat;
+    }
+    return null;
   }
 }

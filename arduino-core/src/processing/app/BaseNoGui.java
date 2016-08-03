@@ -5,7 +5,9 @@ import cc.arduino.Constants;
 import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
+import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
+import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.files.DeleteFilesOnShutdown;
@@ -160,6 +162,33 @@ public class BaseNoGui {
       }
     }
     prefs.put("name", extendedName);
+
+    // Resolve tools needed for this board
+    List<ContributedTool> requiredTools = new ArrayList<>();
+
+    // Add all tools dependencies specified in package index
+    ContributedPlatform platform = indexer.getContributedPlaform(getTargetPlatform());
+    if (platform != null)
+      requiredTools.addAll(platform.getResolvedTools());
+
+    // Add all tools dependencies from the (possibily) referenced core
+    String core = prefs.get("build.core");
+    if (core.contains(":")) {
+      String split[] = core.split(":");
+      TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
+      if (referencedPlatform != null)
+        requiredTools.addAll(referencedPlatform.getResolvedTools());
+    }
+
+    String prefix = "runtime.tools.";
+    for (ContributedTool tool : requiredTools) {
+      File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      String toolPath = folder.getAbsolutePath();
+      prefs.put(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
+    }
     return prefs;
   }
 
@@ -852,16 +881,25 @@ public class BaseNoGui {
       PreferencesData.removeAllKeysWithPrefix(prefix);
     }
 
+    Map<String, String> latestVersions = new HashMap<>();
+    VersionComparator comparator = new VersionComparator();
     for (ContributedTool tool : installedTools) {
       File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
-      String absolutePath;
+      String toolPath;
       if (installedFolder != null) {
-        absolutePath = installedFolder.getAbsolutePath();
+        toolPath = installedFolder.getAbsolutePath();
       } else {
-        absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
+        toolPath = Constants.PREF_REMOVE_PLACEHOLDER;
       }
-      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
-      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+      String toolName = tool.getName();
+      String toolVersion = tool.getVersion();
+      PreferencesData.set(prefix + toolName + "-" + toolVersion + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getPackager() + "-" + toolName + "-" + toolVersion + ".path", toolPath);
+      // In the generic tool property put the path of the latest version if more are available
+      if (!latestVersions.containsKey(toolName) || comparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
+        latestVersions.put(toolName, toolVersion);
+        PreferencesData.set(prefix + toolName + ".path", toolPath);
+      }
     }
   }
 
