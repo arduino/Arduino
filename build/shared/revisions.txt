@@ -1,3 +1,8 @@
+ARDUINO 1.6.11
+
+[ide]
+* Fixed a serious bug that prevented some 3rd party boards, installed trough external index.json URL, to work correctly.
+
 ARDUINO 1.6.10 - 2016.07.26
 
 [ide]
