@@ -39,6 +39,7 @@ import processing.app.*;
 import processing.app.debug.*;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringReplacer;
 import processing.app.legacy.PApplet;
 import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
@@ -141,7 +142,7 @@ public class Compiler implements MessageConsumer {
     MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListener), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
-    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, new PumpStreamHandler(out, err));
+    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);
 
     out.flush();
     err.flush();
@@ -179,7 +180,7 @@ public class Compiler implements MessageConsumer {
     ByteArrayOutputStream stderr = new ByteArrayOutputStream();
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(new PrintStream(stderr), Compiler.this), "\n");
     try {
-      callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.DUMP_PREFS, new PumpStreamHandler(stdout, err));
+      callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.DUMP_PREFS, stdout, err);
     } catch (RunnerException e) {
       System.err.println(new String(stderr.toByteArray()));
       throw e;
@@ -189,90 +190,101 @@ public class Compiler implements MessageConsumer {
     return prefs;
   }
 
-  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, PumpStreamHandler streamHandler) throws RunnerException {
-    File executable = BaseNoGui.getContentFile("arduino-builder");
-    CommandLine commandLine = new CommandLine(executable);
-    commandLine.addArgument(action.value, false);
-    commandLine.addArgument("-logger=machine", false);
+  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
+    List<String> cmd = new ArrayList<>();
+    cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
+    cmd.add(action.value);
+    cmd.add("-logger=machine");
 
     Stream.of(BaseNoGui.getHardwarePath(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath(), BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath())
       .forEach(p -> {
         if (Files.exists(Paths.get(p))) {
-          commandLine.addArgument("-hardware", false);
-          commandLine.addArgument("\"" + p + "\"", false);
+          cmd.add("-hardware");
+          cmd.add(p);
         }
       });
 
     Stream.of(BaseNoGui.getContentFile("tools-builder").getAbsolutePath(), Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toAbsolutePath().toString(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath())
       .forEach(p -> {
         if (Files.exists(Paths.get(p))) {
-          commandLine.addArgument("-tools", false);
-          commandLine.addArgument("\"" + p + "\"", false);
+          cmd.add("-tools");
+          cmd.add(p);
         }
       });
 
-    commandLine.addArgument("-built-in-libraries", false);
-    commandLine.addArgument("\"" + BaseNoGui.getContentFile("libraries").getAbsolutePath() + "\"", false);
-    commandLine.addArgument("-libraries", false);
-    commandLine.addArgument("\"" + BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath() + "\"", false);
+    cmd.add("-built-in-libraries");
+    cmd.add(BaseNoGui.getContentFile("libraries").getAbsolutePath());
+    cmd.add("-libraries");
+    cmd.add(BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath());
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
-    commandLine.addArgument("-fqbn=" + fqbn, false);
+    cmd.add("-fqbn=" + fqbn);
 
     if (!"".equals(vidpid)) {
-      commandLine.addArgument("-vid-pid=" + vidpid, false);
+      cmd.add("-vid-pid=" + vidpid);
     }
 
-    commandLine.addArgument("-ide-version=" + BaseNoGui.REVISION, false);
-    commandLine.addArgument("-build-path", false);
-    commandLine.addArgument("\"" + buildPath + "\"", false);
-    commandLine.addArgument("-warnings=" + PreferencesData.get("compiler.warning_level"), false);
+    cmd.add("-ide-version=" + BaseNoGui.REVISION);
+    cmd.add("-build-path");
+    cmd.add(buildPath);
+    cmd.add("-warnings=" + PreferencesData.get("compiler.warning_level"));
 
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
       .entrySet()
       .stream()
-      .forEach(kv -> commandLine.addArgument("-prefs=\"" + kv.getKey() + "=" + kv.getValue() + "\"", false));
+      .forEach(kv -> cmd.add("-prefs=" + kv.getKey() + "=" + kv.getValue()));
 
-    commandLine.addArgument("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
+    cmd.add("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
 
     for (Map.Entry<String, String> entry : BaseNoGui.getBoardPreferences().entrySet()) {
         if (entry.getKey().startsWith("runtime.tools")) {
-          commandLine.addArgument("-prefs=" + entry.getKey() + "=" + entry.getValue());
+          cmd.add("-prefs=" + entry.getKey() + "=" + entry.getValue());
         }
     }
 
     //commandLine.addArgument("-debug-level=10", false);
 
     if (verbose) {
-      commandLine.addArgument("-verbose", false);
+      cmd.add("-verbose");
     }
 
-    commandLine.addArgument("\"" + pathToSketch + "\"", false);
+    cmd.add(pathToSketch);
 
     if (verbose) {
-      System.out.println(commandLine);
+      System.out.println(StringUtils.join(cmd, ' '));
     }
-
-    DefaultExecutor executor = new DefaultExecutor();
-    executor.setStreamHandler(streamHandler);
 
     int result;
-    executor.setExitValues(null);
     try {
-      result = executor.execute(commandLine);
-    } catch (IOException e) {
-      RunnerException re = new RunnerException(e.getMessage());
-      re.hideStackTrace();
-      throw re;
+      Process proc = ProcessUtils.exec(cmd.toArray(new String[0]));
+      MessageSiphon in = new MessageSiphon(proc.getInputStream(), (msg) -> {
+        try {
+          outStream.write(msg.getBytes());
+        } catch (Exception e) {
+          exception = new RunnerException(e);
+        }
+      });
+      MessageSiphon err = new MessageSiphon(proc.getErrorStream(), (msg) -> {
+        try {
+          errStream.write(msg.getBytes());
+        } catch (Exception e) {
+          exception = new RunnerException(e);
+        }
+      });
+
+      in.join();
+      err.join();
+      result = proc.waitFor();
+    } catch (Exception e) {
+      throw new RunnerException(e);
     }
-    executor.setExitValues(new int[0]);
 
     if (exception != null)
       throw exception;
 
     if (result > 1) {
-      System.err.println(I18n.format(tr("{0} returned {1}"), executable.getName(), result));
+      System.err.println(I18n.format(tr("{0} returned {1}"), cmd.get(0), result));
     }
 
     if (result != 0) {
