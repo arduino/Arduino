@@ -1,7 +1,9 @@
 ARDUINO 1.6.11
 
 [ide]
-* Fixed a serious bug that prevented some 3rd party boards, installed trough external index.json URL, to work correctly.
+* Fixed a serious bug that prevented some 3rd party boards, installed through external index.json URL, to work correctly.
+* builder: fixed regression about inclusion of files in subfolders of the sketch
+  (see https://github.com/arduino/Arduino/issues/5186 for details)
 
 ARDUINO 1.6.10 - 2016.07.26
 
