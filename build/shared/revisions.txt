@@ -4,6 +4,8 @@ ARDUINO 1.6.11
 * Fixed a serious bug that prevented some 3rd party boards, installed through external index.json URL, to work correctly.
 * builder: fixed regression about inclusion of files in subfolders of the sketch
   (see https://github.com/arduino/Arduino/issues/5186 for details)
+* avrdude: reverted to version 6.0.1, until all discovered regressions are solved
+  (see https://github.com/arduino/Arduino/issues?q=is%3Aissue+is%3Aopen+label%3A%22Component%3A+Avrdude+6.3%22 for details)
 
 ARDUINO 1.6.10 - 2016.07.26
 
