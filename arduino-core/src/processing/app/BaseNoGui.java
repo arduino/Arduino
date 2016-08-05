@@ -899,9 +899,13 @@ public class BaseNoGui {
       PreferencesData.set(prefix + toolName + "-" + toolVersion + ".path", toolPath);
       PreferencesData.set(prefix + tool.getPackager() + "-" + toolName + "-" + toolVersion + ".path", toolPath);
       // In the generic tool property put the path of the latest version if more are available
-      if (!latestVersions.containsKey(toolName) || comparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
-        latestVersions.put(toolName, toolVersion);
-        PreferencesData.set(prefix + toolName + ".path", toolPath);
+      try {
+        if (!latestVersions.containsKey(toolName) || comparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
+          latestVersions.put(toolName, toolVersion);
+          PreferencesData.set(prefix + toolName + ".path", toolPath);
+        }
+      } catch (Exception e) {
+        // Ignore invalid versions
       }
     }
   }
