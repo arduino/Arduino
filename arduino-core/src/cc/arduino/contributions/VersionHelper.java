@@ -38,6 +38,10 @@ public class VersionHelper {
       return null;
     }
     try {
+      if (ver.contains("-")) {
+        // Strip snapshot info
+        ver = ver.split("-")[0];
+      }
       String[] verParts = ver.split("\\.");
       if (verParts.length < 3) {
         if (verParts.length == 2) {
