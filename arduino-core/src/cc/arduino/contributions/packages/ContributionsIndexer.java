@@ -82,12 +82,21 @@ public class ContributionsIndexer {
 
   public void parseIndex() throws Exception {
     File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+    File bundledIndexFile = new File(builtInHardwareFolder, Constants.BUNDLED_INDEX_FILE_NAME);
+
+    // Check main index signature
     if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
       throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
     }
-    index = parseIndex(defaultIndexFile);
-    index.setTrusted();
 
+    // Read bundled index and overlay the default index
+    index = parseIndex(bundledIndexFile);
+    mergeContributions(parseIndex(defaultIndexFile), defaultIndexFile);
+
+    // Set main and bundled indexes as trusted
+    index.getPackages().forEach(pack -> pack.setTrusted(true));
+
+    // Overlay 3rd party indexes
     File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
     for (File indexFile : indexFiles) {
@@ -100,6 +109,7 @@ public class ContributionsIndexer {
       }
     }
 
+    // Fill tools and toolsDependency cross references
     List<ContributedPackage> packages = index.getPackages();
     Collection<ContributedPackage> packagesWithTools = packages.stream()
       .filter(input -> input.getTools() != null && !input.getTools().isEmpty())

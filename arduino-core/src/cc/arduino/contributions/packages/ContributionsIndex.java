@@ -141,8 +141,4 @@ public abstract class ContributionsIndex {
       res += pack + "\n";
     return res;
   }
-
-  public void setTrusted() {
-    getPackages().stream().forEach(pack -> pack.setTrusted(true));
-  }
 }
