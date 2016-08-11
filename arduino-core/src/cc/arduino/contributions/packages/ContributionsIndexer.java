@@ -233,7 +233,9 @@ public class ContributionsIndexer {
         PreferencesMap toolsVersion = new PreferencesMap(versionsFile).subTree(pack.getName());
         for (String name : toolsVersion.keySet()) {
           String version = toolsVersion.get(name);
-          syncToolWithFilesystem(pack, toolFolder, name, version);
+          DownloadableContribution tool = syncToolWithFilesystem(pack, toolFolder, name, version);
+          if (tool != null)
+            tool.setReadOnly(true);
         }
       }
     }
@@ -292,21 +294,23 @@ public class ContributionsIndexer {
     }
   }
 
-  private void syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
+  private DownloadableContribution syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
     ContributedTool tool = pack.findTool(toolName, version);
     if (tool == null) {
       tool = pack.findResolvedTool(toolName, version);
     }
     if (tool == null) {
-      return;
+      return null;
     }
     DownloadableContribution contrib = tool.getDownloadableContribution(platform);
     if (contrib == null) {
       System.err.println(tool + " seems to have no downloadable contributions for your operating system, but it is installed in\n" + installationFolder);
-      return;
+      return null;
     }
     contrib.setInstalled(true);
     contrib.setInstalledFolder(installationFolder);
+    contrib.setReadOnly(false);
+    return contrib;
   }
 
   private ContributedPlatform syncHardwareWithFilesystem(ContributedPackage pack, File installationFolder, String architecture, String version) {

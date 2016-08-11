@@ -249,11 +249,16 @@ public class ContributionInstaller {
 
     // Check if the tools are no longer needed
     for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
-      if (BaseNoGui.indexer.isContributedToolUsed(contributedPlatform, tool)) {
+      // Do not remove used tools
+      if (BaseNoGui.indexer.isContributedToolUsed(contributedPlatform, tool))
         continue;
-      }
 
+      // Do not remove built-in tools
       DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
+      if (toolContrib.isReadOnly())
+        continue;
+
+      // Ok, delete the tool
       File destFolder = toolContrib.getInstalledFolder();
       FileUtils.recursiveDelete(destFolder);
       toolContrib.setInstalled(false);
