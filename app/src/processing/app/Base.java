@@ -463,6 +463,9 @@ public class Base {
 
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
 
+      // Check for boards which need an additional core
+      new Thread(new NewBoardListener(this)).start();
+
       // Check for updates
       if (PreferencesData.getBoolean("update.check")) {
         new UpdateCheck(this);

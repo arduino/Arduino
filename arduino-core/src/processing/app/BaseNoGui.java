@@ -25,6 +25,8 @@ import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -86,6 +88,8 @@ public class BaseNoGui {
 
   public static ContributionsIndexer indexer;
   public static LibrariesIndexer librariesIndexer;
+
+  private static String boardManagerLink = "";
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
@@ -396,6 +400,21 @@ public class BaseNoGui {
   static public LibraryList getUserLibs() {
     LibraryList libs = BaseNoGui.librariesIndexer.getInstalledLibraries();
     return libs.filterLibrariesInSubfolder(getSketchbookFolder());
+  }
+
+  static public String getBoardManagerLink() {
+	  return boardManagerLink;
+  }
+
+  protected static PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(BaseNoGui.class);;
+
+  public static void setBoardManagerLink(String temp) {
+	  boardManagerLink = temp;
+	  propertyChangeSupport.firePropertyChange("boardManagerLink", "", boardManagerLink);
+  }
+
+  public static void addPropertyChangeListener(PropertyChangeListener listener) {
+	  propertyChangeSupport.addPropertyChangeListener(listener);
   }
 
   /**

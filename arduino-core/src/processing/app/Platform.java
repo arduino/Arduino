@@ -38,6 +38,13 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import java.io.InputStream;
+
 import static processing.app.I18n.tr;
 
 
@@ -179,6 +186,46 @@ public class Platform {
       list.add(port.split("_")[0]);
     }
     return list;
+  }
+
+  public static class BoardCloudAPIid {
+    public BoardCloudAPIid() {   }
+    private String name;
+    private String architecture;
+    private String id;
+    public String getName() { return name; }
+    public String getArchitecture() { return architecture; }
+    public String getId() { return id; }
+    public void setName(String tmp) { name = tmp; }
+    public void setArchitecture(String tmp) { architecture = tmp; }
+    public void setId(String tmp) { id = tmp; }
+  }
+
+  public synchronized void getBoardWithMatchingVidPidFromCloud(String vid, String pid) {
+    // this method is less useful in Windows < WIN10 since you need drivers to be already installed
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    URLConnection con;
+    try {
+      URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/boards/0x"+vid+"/0x"+pid);
+      URLConnection connection = jsonUrl.openConnection();
+      connection.connect();
+      HttpURLConnection httpConnection = (HttpURLConnection) connection;
+      int code = httpConnection.getResponseCode();
+      if (code == 404) {
+        return;
+      }
+      InputStream is = httpConnection.getInputStream();
+      BoardCloudAPIid board = mapper.readValue(is, BoardCloudAPIid.class);
+      // Launch a popup with a link to boardmanager#board.getName()
+      // replace spaces with &
+      String boardNameReplaced = board.getName().replaceAll(" ", "&");
+      String message = I18n.format(tr("{0}Install{1} the package to use your {2}"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", board.getName());
+      BaseNoGui.setBoardManagerLink(message);
+    } catch (Exception e) {
+      // No connection no problem, fail silently
+      //e.printStackTrace();
+    }
   }
 
   public synchronized Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
