@@ -79,16 +79,15 @@ public class ContributionInstaller {
     }
 
     // Do not download already installed tools
-    List<ContributedTool> tools = new LinkedList<>(contributedPlatform.getResolvedTools());
-    Iterator<ContributedTool> toolsIterator = tools.iterator();
-    while (toolsIterator.hasNext()) {
-      ContributedTool tool = toolsIterator.next();
+    List<ContributedTool> tools = new ArrayList<>();
+    for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
       DownloadableContribution downloadable = tool.getDownloadableContribution(platform);
       if (downloadable == null) {
         throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
-      if (downloadable.isInstalled()) {
-        toolsIterator.remove();
+      // Download the tool if it's not installed or it's a built-in tool
+      if (!downloadable.isInstalled() || downloadable.isReadOnly()) {
+        tools.add(tool);
       }
     }
 
@@ -125,9 +124,9 @@ public class ContributionInstaller {
 
     List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform.getResolvedToolReferences().entrySet()
       .stream()
-      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled())
+      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled()
+          || entry.getValue().getDownloadableContribution(platform).isReadOnly())
       .collect(Collectors.toList());
-
 
     int i = 1;
     for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {

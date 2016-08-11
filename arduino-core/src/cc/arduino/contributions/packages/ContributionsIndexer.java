@@ -374,7 +374,7 @@ public class ContributionsIndexer {
         if (platformToIgnore.equals(platform)) {
           continue;
         }
-        if (!platform.isInstalled()) {
+        if (!platform.isInstalled() || platform.isReadOnly()) {
           continue;
         }
         for (ContributedTool requiredTool : platform.getResolvedTools()) {
