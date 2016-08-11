@@ -66,12 +66,14 @@ public class ContributionsIndexer {
   private final File packagesFolder;
   private final File stagingFolder;
   private final File preferencesFolder;
+  private final File builtInHardwareFolder;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
   private ContributionsIndex index;
 
-  public ContributionsIndexer(File preferencesFolder, Platform platform, SignatureVerifier signatureVerifier) {
+  public ContributionsIndexer(File preferencesFolder, File builtInHardwareFolder, Platform platform, SignatureVerifier signatureVerifier) {
     this.preferencesFolder = preferencesFolder;
+    this.builtInHardwareFolder = builtInHardwareFolder;
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
     packagesFolder = new File(preferencesFolder, "packages");
@@ -188,22 +190,22 @@ public class ContributionsIndexer {
     }
   }
 
-  public void syncWithFilesystem(File hardwareFolder) throws IOException {
-    syncBuiltInHardwareFolder(hardwareFolder);
+  public void syncWithFilesystem() throws IOException {
+    syncBuiltInHardware();
 
-    syncLocalPackagesFolder();
+    syncLocalPackages();
   }
 
-  private void syncBuiltInHardwareFolder(File hardwareFolder) throws IOException {
+  private void syncBuiltInHardware() throws IOException {
     if (index == null) {
       return;
     }
-    for (File folder : hardwareFolder.listFiles(ONLY_DIRS)) {
+    for (File folder : builtInHardwareFolder.listFiles(ONLY_DIRS)) {
       ContributedPackage pack = index.findPackage(folder.getName());
       if (pack != null) {
         syncBuiltInPackageWithFilesystem(pack, folder);
 
-        File toolsFolder = new File(hardwareFolder, "tools");
+        File toolsFolder = new File(builtInHardwareFolder, "tools");
         if (toolsFolder.isDirectory()) {
           for (File toolFolder : toolsFolder.listFiles(ONLY_DIRS)) {
             File builtInToolsMetadata = new File(toolFolder, "builtin_tools_versions.txt");
@@ -231,7 +233,7 @@ public class ContributionsIndexer {
     }
   }
 
-  private void syncLocalPackagesFolder() {
+  private void syncLocalPackages() {
     if (!packagesFolder.isDirectory()) {
       return;
     }

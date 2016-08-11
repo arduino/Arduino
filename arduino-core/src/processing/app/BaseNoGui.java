@@ -608,7 +608,8 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
-    indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+    indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
+        new GPGDetachedSignatureVerifier());
     File indexFile = indexer.getIndexFile("package_index.json");
     File defaultPackageJsonFile = new File(getContentFile("dist"), "package_index.json");
     if (!indexFile.isFile() || (defaultPackageJsonFile.isFile() && defaultPackageJsonFile.lastModified() > indexFile.lastModified())) {
@@ -637,7 +638,7 @@ public class BaseNoGui {
       FileUtils.deleteIfExists(indexSignatureFile);
       throw e;
     }
-    indexer.syncWithFilesystem(getHardwareFolder());
+    indexer.syncWithFilesystem();
 
     packages = new LinkedHashMap<String, TargetPackage>();
     loadHardware(getHardwareFolder());

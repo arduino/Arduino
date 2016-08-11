@@ -344,13 +344,15 @@ public class Base {
     PreferencesData.save();
 
     if (parser.isInstallBoard()) {
-      ContributionsIndexer indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+      ContributionsIndexer indexer = new ContributionsIndexer(
+          BaseNoGui.getSettingsFolder(), BaseNoGui.getHardwareFolder(),
+          BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
       ProgressListener progressListener = new ConsoleProgressListener();
 
       List<String> downloadedPackageIndexFiles = contributionInstaller.updateIndex(progressListener);
       contributionInstaller.deleteUnknownFiles(downloadedPackageIndexFiles);
       indexer.parseIndex();
-      indexer.syncWithFilesystem(BaseNoGui.getHardwareFolder());
+      indexer.syncWithFilesystem();
 
       String[] boardToInstallParts = parser.getBoardToInstall().split(":");
 
