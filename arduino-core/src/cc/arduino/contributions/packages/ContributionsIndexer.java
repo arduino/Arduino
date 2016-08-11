@@ -212,20 +212,28 @@ public class ContributionsIndexer {
     }
     for (File folder : builtInHardwareFolder.listFiles(ONLY_DIRS)) {
       ContributedPackage pack = index.findPackage(folder.getName());
-      if (pack != null) {
-        syncBuiltInPackageWithFilesystem(pack, folder);
+      if (pack == null)
+        continue;
+      syncBuiltInPackageWithFilesystem(pack, folder);
 
-        File toolsFolder = new File(builtInHardwareFolder, "tools");
-        if (toolsFolder.isDirectory()) {
-          for (File toolFolder : toolsFolder.listFiles(ONLY_DIRS)) {
-            File builtInToolsMetadata = new File(toolFolder, "builtin_tools_versions.txt");
-            if (builtInToolsMetadata.isFile()) {
-              PreferencesMap toolsMetadata = new PreferencesMap(builtInToolsMetadata).subTree(pack.getName());
-              for (Map.Entry<String, String> toolMetadata : toolsMetadata.entrySet()) {
-                syncToolWithFilesystem(pack, toolFolder, toolMetadata.getKey(), toolMetadata.getValue());
-              }
-            }
-          }
+      File toolsFolder = new File(builtInHardwareFolder, "tools");
+      if (!toolsFolder.isDirectory())
+        continue;
+
+      for (File toolFolder : toolsFolder.listFiles(ONLY_DIRS)) {
+
+        // builtin_tools_versions.txt contains tools versions in the format:
+        // "PACKAGER.TOOL_NAME=TOOL_VERSION"
+        // for example:
+        // "arduino.avrdude=6.0.1-arduino5"
+
+        File versionsFile = new File(toolFolder, "builtin_tools_versions.txt");
+        if (!versionsFile.isFile())
+          continue;
+        PreferencesMap toolsVersion = new PreferencesMap(versionsFile).subTree(pack.getName());
+        for (String name : toolsVersion.keySet()) {
+          String version = toolsVersion.get(name);
+          syncToolWithFilesystem(pack, toolFolder, name, version);
         }
       }
     }
