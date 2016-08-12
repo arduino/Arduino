@@ -205,9 +205,8 @@ public class Platform {
     // this method is less useful in Windows < WIN10 since you need drivers to be already installed
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    URLConnection con;
     try {
-      URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/boards/0x"+vid+"/0x"+pid);
+      URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/v1/boards/0x"+vid+"/0x"+pid);
       URLConnection connection = jsonUrl.openConnection();
       connection.connect();
       HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -219,8 +218,9 @@ public class Platform {
       BoardCloudAPIid board = mapper.readValue(is, BoardCloudAPIid.class);
       // Launch a popup with a link to boardmanager#board.getName()
       // replace spaces with &
-      String boardNameReplaced = board.getName().replaceAll(" ", "&");
-      String message = I18n.format(tr("{0}Install{1} the package to use your {2}"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", board.getName());
+      String realBoardName = board.getName().replaceAll("\\(.*?\\)", "").trim();
+      String boardNameReplaced = realBoardName.replaceAll(" ", "&");
+      String message = I18n.format(tr("{0}Install{1} the package to use your {2}"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", realBoardName);
       BaseNoGui.setBoardManagerLink(message);
     } catch (Exception e) {
       // No connection no problem, fail silently
