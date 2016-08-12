@@ -610,30 +610,12 @@ public class BaseNoGui {
   static public void initPackages() throws Exception {
     indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
         new GPGDetachedSignatureVerifier());
-    File indexFile = indexer.getIndexFile("package_index.json");
-    File defaultPackageJsonFile = new File(getContentFile("dist"), "package_index.json");
-    if (!indexFile.isFile() || (defaultPackageJsonFile.isFile() && defaultPackageJsonFile.lastModified() > indexFile.lastModified())) {
-      FileUtils.copyFile(defaultPackageJsonFile, indexFile);
-    } else if (!indexFile.isFile()) {
-      // Otherwise create an empty packages index
-      FileOutputStream out = null;
-      try {
-        out = new FileOutputStream(indexFile);
-        out.write("{ \"packages\" : [ ] }".getBytes());
-      } finally {
-        IOUtils.closeQuietly(out);
-      }
-    }
-
-    File indexSignatureFile = indexer.getIndexFile("package_index.json.sig");
-    File defaultPackageJsonSignatureFile = new File(getContentFile("dist"), "package_index.json.sig");
-    if (!indexSignatureFile.isFile() || (defaultPackageJsonSignatureFile.isFile() && defaultPackageJsonSignatureFile.lastModified() > indexSignatureFile.lastModified())) {
-      FileUtils.copyFile(defaultPackageJsonSignatureFile, indexSignatureFile);
-    }
 
     try {
       indexer.parseIndex();
     } catch (JsonProcessingException | SignatureVerificationFailedException e) {
+      File indexFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+      File indexSignatureFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME + ".sig");
       FileUtils.deleteIfExists(indexFile);
       FileUtils.deleteIfExists(indexSignatureFile);
       throw e;

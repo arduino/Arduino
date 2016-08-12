@@ -81,17 +81,20 @@ public class ContributionsIndexer {
   }
 
   public void parseIndex() throws Exception {
-    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+    // Read bundled index...
     File bundledIndexFile = new File(builtInHardwareFolder, Constants.BUNDLED_INDEX_FILE_NAME);
-
-    // Check main index signature
-    if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
-      throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
-    }
-
-    // Read bundled index and overlay the default index
     index = parseIndex(bundledIndexFile);
-    mergeContributions(parseIndex(defaultIndexFile), defaultIndexFile);
+
+    // ...and overlay the default index if present
+    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+    if (defaultIndexFile.exists()) {
+      // Check main index signature
+      if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
+        throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
+      }
+
+      mergeContributions(parseIndex(defaultIndexFile), defaultIndexFile);
+    }
 
     // Set main and bundled indexes as trusted
     index.getPackages().forEach(pack -> pack.setTrusted(true));
