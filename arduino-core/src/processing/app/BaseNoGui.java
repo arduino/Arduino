@@ -628,35 +628,12 @@ public class BaseNoGui {
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
-    File librariesIndexFile = librariesIndexer.getIndexFile();
-    copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+    librariesIndexer = new LibrariesIndexer(getSettingsFolder());
     try {
       librariesIndexer.parseIndex();
     } catch (JsonProcessingException e) {
+      File librariesIndexFile = librariesIndexer.getIndexFile();
       FileUtils.deleteIfExists(librariesIndexFile);
-      copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
-      librariesIndexer.parseIndex();
-    }
-  }
-
-  private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
-    File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
-    if (!librariesIndexFile.isFile() || (defaultLibraryJsonFile.isFile() && defaultLibraryJsonFile.lastModified() > librariesIndexFile.lastModified())) {
-      if (defaultLibraryJsonFile.isFile()) {
-        FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
-      } else {
-        FileOutputStream out = null;
-        try {
-          // Otherwise create an empty packages index
-          out = new FileOutputStream(librariesIndexFile);
-          out.write("{ \"libraries\" : [ ] }".getBytes());
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          IOUtils.closeQuietly(out);
-        }
-      }
     }
   }
 

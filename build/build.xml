@@ -8,9 +8,6 @@
     <format property="BUILD_DATE" pattern="yyyy/MM/dd hh:mm"/>
   </tstamp>
 
-  <!-- Main url for boards and libraries repository -->
-  <property name="library_index_url" value="http://downloads.arduino.cc/libraries/library_index.json" />
-
   <!-- Sets properties for macosx/windows/linux depending on current system -->
   <condition property="platform" value="macosx-old">
     <and>
@@ -259,7 +256,7 @@
   <!-- - - - - - - - - -->
   <!-- Revision check  -->
   <!-- - - - - - - - - -->
-  <target name="revision-check" depends="package-library-index-json-bundle">
+  <target name="revision-check">
 
     <!-- figure out the AVR core version number in platform.txt -->
     <loadfile srcfile="../hardware/arduino/avr/platform.txt" property="revision.avr.platform">
@@ -273,7 +270,7 @@
     </loadfile>
 
     <!-- figure out the latest AVR core version number in package_index.json -->
-    <loadfile srcfile="${staging_folder}/work/${staging_hardware_folder}/package_index_bundled.json" property="revision.avr.index">
+    <loadfile srcfile="../hardware/package_index_bundled.json" property="revision.avr.index">
       <filterchain>
         <tokenfilter>
           <linetokenizer />
@@ -438,8 +435,6 @@
     <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
 
     <antcall target="macosx-build-avr-toolchain" />
-
-    <antcall target="package-library-index-json-bundle"/>
 
     <antcall target="assemble">
       <param name="target.path" value="${staging_folder}/work/${staging_hardware_folder}/.." />
@@ -720,8 +715,6 @@
       <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-armhf-pc-linux-gnu-glibc2.13.tar.bz2"/>
       <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="linux32-build" depends="linux-libastyle-x86" description="Build linux (32-bit) version">
@@ -752,8 +745,6 @@
       <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="linux64-build" depends="linux-libastyle-x86" description="Build linux (64-bit) version">
@@ -784,8 +775,6 @@
       <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="linux-jvm-noop"/>
@@ -1072,8 +1061,6 @@
       <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-mingw32.zip"/>
       <param name="avrdude_version" value="6.0.1-arduino5"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="windows-run" depends="build,start"/>
@@ -1164,19 +1151,6 @@
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
-  </target>
-
-  <target name="package-library-index-json-bundle">
-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}"/>
-    <copy file="../hardware/package_index_bundled.json" tofile="${staging_folder}/work/${staging_hardware_folder}/package_index_bundled.json"/>
-
-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
-    <get src="${library_index_url}.gz"
-         dest="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"
-         verbose="true" skipexisting="false" />
-    <gunzip src ="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"
-            dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
-    <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
   </target>
