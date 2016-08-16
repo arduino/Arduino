@@ -133,6 +133,10 @@ msgstr "Uma subpasta do seu bloco de rascunhos não é uma biblioteca válida"
 msgid "About Arduino"
 msgstr "Acerca do Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Adicionar Biblioteca .ZIP…"
@@ -1247,6 +1251,10 @@ msgstr "Italiano"
 msgid "Japanese"
 msgstr "Japonês"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Coreano"
@@ -1993,6 +2001,10 @@ msgstr "Talossano"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tâmil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

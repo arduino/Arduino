@@ -129,6 +129,10 @@ msgstr "Un subdirector de schițe nu este o bibliotecă validă"
 msgid "About Arduino"
 msgstr "Despre Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Adaugă bibliotecă .zip"
@@ -1243,6 +1247,10 @@ msgstr "Italiană"
 msgid "Japanese"
 msgstr "Japoneză"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Coreană"
@@ -1989,6 +1997,10 @@ msgstr "Talossan"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamilă"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

@@ -138,6 +138,10 @@ msgstr "Un sous-dossier de votre carnet de croquis n'est pas une bibliothèque v
 msgid "About Arduino"
 msgstr "À propos d'Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Ajouter la bibliothèque .ZIP..."
@@ -1252,6 +1256,10 @@ msgstr "italien"
 msgid "Japanese"
 msgstr "japonais"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "coréen"
@@ -1998,6 +2006,10 @@ msgstr "Talossan"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "tamoul"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

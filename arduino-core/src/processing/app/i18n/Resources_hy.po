@@ -124,6 +124,10 @@ msgstr "Ձեր գծագրի ենթապանակը արդի գրադարան չէ"
 msgid "About Arduino"
 msgstr "Արդուինոյի մասին"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Ավելացնել .ZIP գրադարան..."
@@ -1238,6 +1242,10 @@ msgstr "Իտալերեն"
 msgid "Japanese"
 msgstr "Ճապոներեն"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Կորեերեն"
@@ -1984,6 +1992,10 @@ msgstr "Թալոսերեն"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Թամիլ"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

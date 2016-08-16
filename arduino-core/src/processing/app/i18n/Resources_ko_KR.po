@@ -126,6 +126,10 @@ msgstr "스케치북의 하위 폴더가 유효한 라이브러리가 아닙니�
 msgid "About Arduino"
 msgstr "아두이노 정보"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr ".ZIP 라이브러리 추가..."
@@ -1240,6 +1244,10 @@ msgstr "이탈리아어"
 msgid "Japanese"
 msgstr "일본어"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "한국어"
@@ -1986,6 +1994,10 @@ msgstr "탈로사어"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "타밀어"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

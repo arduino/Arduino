@@ -126,6 +126,10 @@ msgstr ""
 msgid "About Arduino"
 msgstr "Arduinori buruz"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr ""
@@ -1240,6 +1244,10 @@ msgstr "Italiera"
 msgid "Japanese"
 msgstr "Japoniera"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Koreera"
@@ -1986,6 +1994,10 @@ msgstr ""
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamilera"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

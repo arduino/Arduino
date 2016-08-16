@@ -12,80 +12,72 @@
 # Translators:
 # Translators:
 # Translators:
-# Amit BC <amitbc123@walla.com>, 2014
-# Cristian Maglie <c.maglie@arduino.cc>, 2016
-# eli.ganem <eli.ganem@gmail.com>, 2012
-# Eyal Halfon <logme3@gmail.com>, 2013
-# Itay Asayag <mirpaa.itay@gmail.com>, 2015-2016
-# Eyal Halfon <logme3@gmail.com>, 2012
-# Roy Zahor <roy.zahor@gmail.com>, 2015
-# saarsa <saarsabo1919@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-09 08:56+0000\n"
+"PO-Revision-Date: 2012-10-31 15:17+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
-"Language-Team: Hebrew (http://www.transifex.com/mbanzi/arduino-ide-15/language/he/)\n"
+"Language-Team: Acoli (http://www.transifex.com/mbanzi/arduino-ide-15/language/ach/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: he\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ach\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr "(דורש אתחול ל-ארדואינו)"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr "לא בשימוש: {0}"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr "בשימוש: {0}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr "'Keyboard' לא נמצא. האם הקוד שלך כולל את השורה '#include <Keyboard.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr "'Mouse' לא נמצא. האם הקוד שלך מכיל את השורה '#include <Mouse.h>'?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr "תיקיית 'arch' אינה נתמכת יותר! ראה http://goo.gl/gfFJzU למידע נוסף"
+msgstr ""
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(ערוך רק כשארדואינו אינו במצב ריצה)"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr "(ישן)"
+msgstr ""
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr "--curdir לא נתמך יותר"
+msgstr ""
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr "ניתן להשתמש ב --verbose, --verbose-upload ו- --verbose-build רק לצד --verify או --upload"
+msgstr ""
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
-msgstr ".pde -> .ino"
+msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -93,41 +85,41 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b> האם ברצונך לשמור את השינויים לסקיצה הזו <BR> לפני הסגירה? </b><p> אם אינך רוצה לשמור  כל השינויים יימחקו."
+msgstr ""
 
 #: Sketch.java:398
 #, java-format
 msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "קובץ בשם \"{0}\" כבר קיים ב- \"{1}\""
+msgstr ""
 
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "ספריה בשם \"{0}\" כבר קיימת. לא ניתן לפתוח את הסקיצה."
+msgstr ""
 
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr "ספריה בשם {0} כבר קיימת"
+msgstr ""
 
 #: UpdateCheck.java:103
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr "גרסא חדשה של ארדואינו זמינה להורדה, האם תרצה לבקר באתר ההורדות של ארדואינו?"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr "חבילה חדשה יותר {0} זמינה"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr "תת-תיקיה של ספר הקוד שלך אינה תקינה"
+msgstr ""
 
 #: Editor.java:1116
 msgid "About Arduino"
-msgstr "מידע על ארדואינו"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
@@ -135,179 +127,179 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "הוסף תיקיית .ZIP..."
+msgstr ""
 
 #: Editor.java:650
 msgid "Add File..."
-msgstr "הוסף קובץ..."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr "כתובות מנהל הלוחות הנוספים"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr "כתובות מנהל הלוחות הנוספים:"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr "אפריקנס"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr "אלבנית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr "הכל"
+msgstr ""
 
 #: tools/FixEncoding.java:77
 msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
-msgstr "התרחשה שגאיה בנסיון לתקן את קידוד הקובץ.\nלא לנסות לשמור את הסקיצה היא יכולה לדרוס\nאת הגרסא הישנה. נא להשתמש ב- פתח כדי לפתוח מחדש את הסקיצה ולנסות שוב.\n"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr "שגיאה הופיעה בזמן עדכון אינדקס הספריות!"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr "שגיאה במהלך העלאת סקיצה"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr "שגיאה במהלך אימות הסקיצה"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr "שגיאה במהלך אימות/העלאת הסקיצה"
+msgstr ""
 
 #: Base.java:228
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr "ארעה שגיאה לא ידועה במהלך ניסיון לטעון\nקוד למכשיר שלך."
+msgstr ""
 
 #: Preferences.java:85
 msgid "Arabic"
-msgstr "ערבית"
+msgstr ""
 
 #: Preferences.java:86
 msgid "Aragonese"
-msgstr "ארגונית"
+msgstr ""
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
-msgstr "הכנס סקיצה לארכיון"
+msgstr ""
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr "הכנס סקיצה לארכיון בשם:"
+msgstr ""
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
-msgstr "הכנסת סקיצה לארכיון בוטלה."
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
-msgstr "הכנסת הסקיצה לארכיון בוטלה בגלל שלא ניתן לשמור את הסקיצה כראוי."
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr "ארדואינו"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr "לוחות ARM ארדווינו (32 - סיביות)"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr "לוחות ארדווינו AVR"
+msgstr ""
 
 #: Editor.java:2137
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr "ארדואינו יכול לפתוח רק קטעי קוד\nוקבצים אחרים המסתיימים ב .ino או .pde"
+msgstr ""
 
 #: Base.java:1682
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr "הארדואינו לא יכול לרוץ מפני שלא ניתן\nלייצר ספריה לשמירת ההגדרות שלך."
+msgstr ""
 
 #: Base.java:1889
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "הארדואינו לא יכול לרוץ מפני שלא ניתן\nלייצר ספריה לשמירת ספר הסקיצות שלך."
+msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr "ארדואינו:"
+msgstr ""
 
 #: Sketch.java:588
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr "האם אתה בטוח שאתה רוצה למחוק את \"{0}\"?"
+msgstr ""
 
 #: Sketch.java:587
 msgid "Are you sure you want to delete this sketch?"
-msgstr "האם אתה בטוח שאתה רוצה למחוק את הסקיצה הזו?"
+msgstr ""
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr "ארגומנט דרוש עבור --board"
+msgstr ""
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr "ארגומנט דרוש עבור --port"
+msgstr ""
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr "ארגומנט דרוש עבור --pref"
+msgstr ""
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr "ארגומנט דרוש עבור --prereferences-files"
+msgstr ""
 
 #: ../../../processing/app/helpers/CommandlineParser.java:76
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr "ארגונמט דרוש ל-{0}"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr "ארמנית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr "אוסטרית"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr "הרשאה נדרשת"
+msgstr ""
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr "עיצוב אוטומטי"
+msgstr ""
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr "עיצוב אוטומטי הסתיים."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr "זהה הגדרות פרוקסי באופן אוטומטי"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
@@ -315,35 +307,35 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr "כתובת להגדרת פרוקסי אוטומטית:"
+msgstr ""
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
-msgstr "גלילה אוטומטית"
+msgstr ""
 
 #: Editor.java:2619
 #, java-format
 msgid "Bad error line: {0}"
-msgstr "שגיאה חמורה בשורה: {0}"
+msgstr ""
 
 #: Editor.java:2136
 msgid "Bad file selected"
-msgstr "נבחר קובץ לא תקין"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr "באסקית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr "בלארוסית"
+msgstr ""
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr "לוח"
+msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2824
+#: ../../../../../app/src/processing/app/Editor.java:2824
 msgid "Board Info"
 msgstr ""
 
@@ -356,483 +348,483 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr "לוח {0} (פלטפורמה {1}, חבילה {2}) אינו מוכר"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr "לוח {0}:{1}:{2} אינו מסוגל להגדיר את העדפת \"build.board\". שונה-אוטומטית ל: {3}"
+msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "לוח:"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr "מנהל הלוחות"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr "מנהל הלוחות..."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr "לוחות הכלולים בחבילה זו:"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr "קובץ Bootloader ניתן, אך חסר: {0}"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr "בוסנית"
+msgstr ""
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr "תחילת שורה ומעבר לשורה חדשה"
+msgstr ""
 
 #: Preferences.java:81
 msgid "Browse"
-msgstr "חפש"
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr "אפשרויות בנייה השתנו, בונה מחדש"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr "דוגמאות מובנות"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
-msgstr "בולגרית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr "ב"
+msgstr ""
 
 #: Editor.java:708
 msgid "Burn Bootloader"
-msgstr "צריבת תוכנת הפעלה."
+msgstr ""
 
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
-msgstr "צורב תוכנת הפעלה ללוח I\\O (זה יימשך כדקה)..."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
 msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC אינו מתאים. הקובץ פגום."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr "יכול לאפשר רק אחד מ-{0}"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr "לא יכול למצוא את קטע הקוד בנתיב שניתן"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr "צרפת הקנדית"
+msgstr ""
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
-msgstr "בטל"
+msgstr ""
 
 #: Sketch.java:455
 msgid "Cannot Rename"
-msgstr "אין אפשרות לשנות שם"
+msgstr ""
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr "לא יכול לציין קובצי קוד"
+msgstr ""
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
-msgstr "תחילת שורה"
+msgstr ""
 
 #: Preferences.java:87
 msgid "Catalan"
-msgstr "קטלונית"
+msgstr ""
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
-msgstr "בדוק עדכונים בהפעלה"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr "סינית (סין(מנדרינית))"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr "סינית (טאיוואן (מִין))"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr "סין (טיוואן) (Big5)"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr "לחץ למעבר לרשימה של כתובות לתמיכה ללוחות לא רשמיים"
+msgstr ""
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
-msgstr "סגור"
+msgstr ""
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr "הערות/הסר הערות"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr "תקשורת"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr "הזהרות המהדר:"
+msgstr ""
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr "מבצע קומפילציה לסקיצה..."
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr "תרם"
+msgstr ""
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
-msgstr "העתק"
+msgstr ""
 
 #: Editor.java:1177 Editor.java:2723
 msgid "Copy as HTML"
-msgstr "העתק כ HTML"
+msgstr ""
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr "העתק הודעות שגיאה"
+msgstr ""
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
-msgstr "העתק כדי לפרסם בפורום"
+msgstr ""
 
 #: Sketch.java:1089
 #, java-format
 msgid "Could not add ''{0}'' to the sketch."
-msgstr "אי אפשר להוסיף {0} לסקיצה."
+msgstr ""
 
 #: Editor.java:2188
 msgid "Could not copy to a proper location."
-msgstr "לא ניתן להעתיק למקום ראוי."
+msgstr ""
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
-msgstr "לא ניתן לצור את ספריית הסקיצות."
+msgstr ""
 
 #: Editor.java:2206
 msgid "Could not create the sketch."
-msgstr "לא ניתן ליצור את הסקיצה."
+msgstr ""
 
 #: Sketch.java:617
 #, java-format
 msgid "Could not delete \"{0}\"."
-msgstr "לא ניתן למחוק \"{0}\"."
+msgstr ""
 
 #: Sketch.java:1066
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
-msgstr "אין אפשרות למחוק את הקובץ הקיים \"{0}\"."
+msgstr ""
 
 #: Base.java:2533 Base.java:2556
 #, java-format
 msgid "Could not delete {0}"
-msgstr "לא ניתן למחוק את {0}"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
 msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
-msgstr "לא ניתן למצוא את  boards.txt ב{0}. Is it pre-1.5?"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
 msgid "Could not find tool {0}"
-msgstr "לא ניתן למצוא את הכלי {0}"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
 #, java-format
 msgid "Could not find tool {0} from package {1}"
-msgstr "לא ניתן למצוא את הכלי {0} מחבילה {1}"
+msgstr ""
 
 #: Base.java:1934
 #, java-format
 msgid ""
 "Could not open the URL\n"
 "{0}"
-msgstr "בעיה בפתיחת ה-URL\n{0}"
+msgstr ""
 
 #: Base.java:1958
 #, java-format
 msgid ""
 "Could not open the folder\n"
 "{0}"
-msgstr "בעיה בפתיחת הספריה\n{0}"
+msgstr ""
 
 #: Sketch.java:1769
 msgid ""
 "Could not properly re-save the sketch. You may be in trouble at this point,\n"
 "and it might be time to copy and paste your code to another text editor."
-msgstr "לא ניתן לשמור מחדש את הסקיצה. ייתכן שאתה בבעיה עכשיו\nוכדאי שתעתיק את הקוד שלך לעורך טקסט אחר."
+msgstr ""
 
 #: Sketch.java:1768
 msgid "Could not re-save sketch"
-msgstr "לא ניתן לשמור מחדש את הסקיצה"
+msgstr ""
 
 #: Theme.java:52
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "לא יכול לקרוא הגדרות ערכת נושא של צבע.\nיש להתקין מחדש את ארדואינו."
+msgstr ""
 
 #: Preferences.java:219
 msgid ""
 "Could not read default settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "ארעה שגיאה בקריאת הגדרות ברירת המחדל.\nאנא התקן מחדש את הארדואינו."
+msgstr ""
 
 #: Base.java:2482
 #, java-format
 msgid "Could not remove old version of {0}"
-msgstr "לא ניתן להסיר גירסה ישנה של {0}"
+msgstr ""
 
 #: Sketch.java:483 Sketch.java:528
 #, java-format
 msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "אין אפשרות לשנות את \"{0}\" ל \"{1}\""
+msgstr ""
 
 #: Sketch.java:475
 msgid "Could not rename the sketch. (0)"
-msgstr "לא ניתן לשנות את השם של הסקיצה. {0}"
+msgstr ""
 
 #: Sketch.java:496
 msgid "Could not rename the sketch. (1)"
-msgstr "אין אפשרות לשנות את שם הסקיצה. (1)"
+msgstr ""
 
 #: Sketch.java:503
 msgid "Could not rename the sketch. (2)"
-msgstr "אין אפשרות לשנות את שם הסקיצה. (2)"
+msgstr ""
 
 #: Base.java:2492
 #, java-format
 msgid "Could not replace {0}"
-msgstr "לא ניתן להחליף את {0}"
+msgstr ""
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
-msgstr "לא ניתן להכניס את הסקיצה לארכיון"
+msgstr ""
 
 #: Sketch.java:1647
 msgid "Couldn't determine program size: {0}"
-msgstr "לא ניתן לקבוע את גודל התוכנה: {0}"
+msgstr ""
 
 #: Sketch.java:616
 msgid "Couldn't do it"
-msgstr "איני יכול לבצע"
+msgstr ""
 
 #: debug/BasicUploader.java:209
 msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr "לא מצליח למצוא לוח בפורט שנבחר. יש לבדוק שנבחר הפורט הנכון. אם נבחר הפורט הנכון, יש לנסות ללחוץ על כפתור הריסט בלוח אחרי שמבצעים העלאה."
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
-msgstr "קרואטיה"
+msgstr ""
 
 #: Editor.java:1149 Editor.java:2699
 msgid "Cut"
-msgstr "גזור"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr "צ'כית (הרפובליקה הצ'כית)"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr "דנית (דנמרק)"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr "עיבוד מידע"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr "אחסון מידע"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
-msgstr "הקטן הזחה"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr "ברירת מחדל"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
-msgstr "מחק"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr "שליטה במכשירים"
+msgstr ""
 
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
 "the board right before exporting"
-msgstr "ההתקן אינו מגיב, יש לבצע בדיקה שבחרת את הפורט הנכון, לחילופין יש לבצע אתחול ללוח רגע לפני הייצוא"
+msgstr ""
 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
-msgstr "להתעלם מכל השינויים ולטעון מחדש את הסקיצה?"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr "תצוגה"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr "הצג מספור שורות"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 #, java-format
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr "האם ברצונך להסיר {0}?\nאם כן, לא יהי ניתן להשתמש ב-{0} יותר."
+msgstr ""
 
 #: Editor.java:2064
 msgid "Don't Save"
-msgstr "אל תשמור"
+msgstr ""
 
 #: Editor.java:2275 Editor.java:2311
 msgid "Done Saving."
-msgstr "שמירה בוצעה."
+msgstr ""
 
 #: Editor.java:2510
 msgid "Done burning bootloader."
-msgstr "צריבת תוכנת הפעלה הסתיימה."
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr "קומפילציה הסתיימה."
+msgstr ""
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
-msgstr "קומפילציה הסתיימה."
+msgstr ""
 
 #: Editor.java:2564
 msgid "Done printing."
-msgstr "ההדפסה הסתיימה."
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr "העלאה הסתיימה."
+msgstr ""
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
-msgstr "העלאה הסתיימה."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr "הורדו {0}Kb מתוןך {1}Kb."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr "מוריד הגדרות לוחות."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr "מוריד אינדקס ספריות..."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
 msgid "Downloading library: {0}"
-msgstr "מוריד ספרייה: {0}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr "מוריד אינדקס פלטופרמות..."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr "מוריד כלים ({0}/{1})"
+msgstr ""
 
 #: Preferences.java:91
 msgid "Dutch"
-msgstr "הולנדית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr "נורבגית (נורבגיה)"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
-msgstr "עזרת אדיסון"
+msgstr ""
 
 #: Editor.java:1130
 msgid "Edit"
-msgstr "ערוך"
+msgstr ""
 
 #: Preferences.java:370
 msgid "Editor font size: "
-msgstr "גודל הפונט בעורך:"
+msgstr ""
 
 #: Preferences.java:353
 msgid "Editor language: "
-msgstr "שפת העורך:"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr "אפשר קיפול קוד"
+msgstr ""
 
 #: Preferences.java:92
 msgid "English"
-msgstr "אנגלית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr "אנגלית (הממלכה המאוחדת)"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr "הזן רשימת כתובות URL המופרדות בפסיק."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr "הזן כתובות URL נוספות, אחת לכל שורה."
+msgstr ""
 
 #: Editor.java:1062
 msgid "Environment"
-msgstr "סביבה"
+msgstr ""
 
 #: Base.java:2147 Preferences.java:256 Sketch.java:475 Sketch.java:481
 #: Sketch.java:496 Sketch.java:503 Sketch.java:526 Sketch.java:543
 #: Editor.java:2167 Editor.java:2178 Editor.java:2188 Editor.java:2206
 msgid "Error"
-msgstr "שגיאה"
+msgstr ""
 
 #: Sketch.java:1065 Sketch.java:1088
 msgid "Error adding file"
-msgstr "שגיאה בהוספת הקובץ"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
@@ -841,87 +833,87 @@ msgstr ""
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
-msgstr "שגיאת קומפילציה."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr "שגיאה בהורדת {0}"
+msgstr ""
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
-msgstr "שגיאה בקריאת ספריית המידע של הארדואינו."
+msgstr ""
 
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr "שגיאה בסיריאל. {0}()"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr "שגיאה בטעינה {0}"
+msgstr ""
 
 #: Serial.java:181
 #, java-format
 msgid "Error opening serial port ''{0}''."
-msgstr "שגיאה בפתיחת פורט סיריאלי \"{0}\"."
+msgstr ""
 
 #: ../../../processing/app/Serial.java:119
 #, java-format
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr "שגיאה בפתיחת פורט סיריאלי ''{0}''. נסו להתייעץ בתיעוד בכתובת http://playground.arduino.cc/Linux/All#Permission "
+msgstr ""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
-msgstr "שגיאה בקריאת העדפות"
+msgstr ""
 
 #: Preferences.java:279
 #, java-format
 msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
-msgstr "ארעה שגיאה בקריאת קובץ ההעדפות.\nאנא מחק (או הזז) את {0} ואתחל את הארדואינו."
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
 msgid "Error running post install script"
-msgstr "שגיאה בהפעלת תוכנית לאחר התקנה"
+msgstr ""
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr "שגיאה בהתחלת הליך גילוי:"
+msgstr ""
 
 #: Serial.java:125
 #, java-format
 msgid "Error touching serial port ''{0}''."
-msgstr "שגיאה בהגעה לפורט סיריאלי \"{0}\"."
+msgstr ""
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
-msgstr "שגיאה אירעה בעת צריבת תוכנת הפעלה."
+msgstr ""
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr "שגיאה במהלך צריבת bootloader: פרמטר הגדרות '{0}' חסר"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr "שגיאה בהידור: חסר '{0}' בפרמטר ההגדרות"
+msgstr ""
 
 #: SketchCode.java:83
 #, java-format
 msgid "Error while loading code {0}"
-msgstr "שגיאה בזמן טעינת הקוד {0}"
+msgstr ""
 
 #: Editor.java:2567
 msgid "Error while printing."
-msgstr "שגיאה בתהליך ההדפסה."
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
@@ -930,34 +922,34 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr "שגיאה במהלך העלאת תוכנית"
+msgstr ""
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr "שגיאה במהלך העלאת תכנית: פרמטר הגדרות '{0}' חסר"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr "שגיאה בתהליך האימות"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr "שגיאה במהלך אימות/הידור"
+msgstr ""
 
 #: Preferences.java:93
 msgid "Estonian"
-msgstr "אסטונית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr "אסטונית (אסטוניה)"
+msgstr ""
 
 #: Editor.java:516
 msgid "Examples"
-msgstr "דוגמאות"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
@@ -988,11 +980,11 @@ msgstr ""
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr "לא הצליח לפתוח את הסקיצה: \"{0}\""
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
-msgstr "קובץ"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
@@ -1001,7 +993,7 @@ msgstr ""
 
 #: Preferences.java:94
 msgid "Filipino"
-msgstr "פיליפינית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
@@ -1009,36 +1001,36 @@ msgstr ""
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
-msgstr "מצא"
+msgstr ""
 
 #: Editor.java:1249
 msgid "Find Next"
-msgstr "חפש הבא"
+msgstr ""
 
 #: Editor.java:1259
 msgid "Find Previous"
-msgstr "חפש את הקודם"
+msgstr ""
 
 #: Editor.java:1086 Editor.java:2775
 msgid "Find in Reference"
-msgstr "חפש במשתנה ייחוס"
+msgstr ""
 
 #: Editor.java:1234
 msgid "Find..."
-msgstr "חפש..."
+msgstr ""
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr "חפש:"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr "פינית"
+msgstr ""
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
-msgstr "תקן בעיות קידוד וטען מחדש"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
@@ -1053,15 +1045,15 @@ msgstr ""
 
 #: Preferences.java:95
 msgid "French"
-msgstr "צרפתית"
+msgstr ""
 
 #: Editor.java:1097
 msgid "Frequently Asked Questions"
-msgstr "שאלות נפוצות"
+msgstr ""
 
 #: Preferences.java:96
 msgid "Galician"
-msgstr "גאלית"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
@@ -1073,31 +1065,31 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
-msgstr "גרגוריאנית"
+msgstr ""
 
 #: Preferences.java:97
 msgid "German"
-msgstr "גרמנית"
+msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:817
+#: ../../../../../app/src/processing/app/Editor.java:817
 msgid "Get Board Info"
 msgstr ""
 
 #: Editor.java:1054
 msgid "Getting Started"
-msgstr "מתחילים"
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1646
 #, java-format
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "משתנים גלובלים משתמשים ב-{0} בייט ({2}%%) של זיכרון דינמי, משאיר {3} בייט לאחסון משתנים מקומיים. מרב המקום הוא {1} בייטים."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr "משתמשים גלובלים משתמשים ב{0} בייט של זכרון דינמי."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
@@ -1109,19 +1101,19 @@ msgstr ""
 
 #: Preferences.java:98
 msgid "Greek"
-msgstr "יוונית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:95
 msgid "Hebrew"
-msgstr "עברית"
+msgstr ""
 
 #: Editor.java:1015
 msgid "Help"
-msgstr "עזרה"
+msgstr ""
 
 #: Preferences.java:99
 msgid "Hindi"
-msgstr "הודית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
@@ -1131,15 +1123,15 @@ msgstr ""
 msgid ""
 "How about saving the sketch first \n"
 "before trying to rename it?"
-msgstr "מה לגבי לשמור את הסקיצה קודם, לפני הנסיון לשנות את שמה?"
+msgstr ""
 
 #: Sketch.java:882
 msgid "How very Borges of you"
-msgstr "כמה מחוכם מצידך."
+msgstr ""
 
 #: Preferences.java:100
 msgid "Hungarian"
-msgstr "הונגרית"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
@@ -1147,15 +1139,15 @@ msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
-msgstr "התעלם מאותיות קטנות/גדולות"
+msgstr ""
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr "מתעלם משם ספריה לא חוקי"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr "מתעלם מסקיצה עם שם לא חוקי"
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1166,7 +1158,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr "בארדואינו גרסה 1.0, סיומת הקובץ לברירת המחדל השתנתה\nמסיומת .pde לסיומת .ino. סקיצות חדשות (כולל אלו שנוצרו ע\"י\nלחיצה על \"שמירה בשם\") ישתמשו בסיומת החדשה. הסיומת של\nקבצים ישנים תעודכן במהלך שמירה, אולם ניתן לבטל אפשרות זו\nבחלון ההעדפות.\n\nלשמור סקיצה זו ולעדכן את הסיומת שלה?"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
@@ -1179,11 +1171,11 @@ msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
-msgstr "הגדל הזחה"
+msgstr ""
 
 #: Preferences.java:101
 msgid "Indonesian"
-msgstr "אינדונזית"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:295
 msgid "Initializing packages..."
@@ -1232,7 +1224,7 @@ msgstr ""
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr "ספרייה לא קבילה נמצאה ב{0}: {1}"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
@@ -1241,11 +1233,11 @@ msgstr ""
 
 #: Preferences.java:102
 msgid "Italian"
-msgstr "איטלקית"
+msgstr ""
 
 #: Preferences.java:103
 msgid "Japanese"
-msgstr "יפנית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
@@ -1253,11 +1245,11 @@ msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
-msgstr "קוריאנית"
+msgstr ""
 
 #: Preferences.java:105
 msgid "Latvian"
-msgstr "לטבית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
@@ -1282,7 +1274,7 @@ msgstr ""
 
 #: Preferences.java:106
 msgid "Lithuaninan"
-msgstr "ליטאית"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:132
 msgid "Loading configuration..."
@@ -1307,11 +1299,11 @@ msgstr ""
 
 #: Preferences.java:107
 msgid "Marathi"
-msgstr "מארית"
+msgstr ""
 
 #: Base.java:2112
 msgid "Message"
-msgstr "הודעה"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
@@ -1328,11 +1320,11 @@ msgstr ""
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
-msgstr "העדפות נוספות ניתנות לעריכה ישירות בתוך הקובץ"
+msgstr ""
 
 #: Editor.java:2156
 msgid "Moving"
-msgstr "מעביר"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
@@ -1345,25 +1337,25 @@ msgstr ""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr "עליך לציין קובץ סקיצה אחד בלבד"
+msgstr ""
 
 #: Sketch.java:282
 msgid "Name for new file:"
-msgstr "שם קובץ חדש:"
+msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2809
+#: ../../../../../app/src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
 msgstr ""
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr "נפאלית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2804
+#: ../../../../../app/src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
 msgstr ""
 
@@ -1373,27 +1365,27 @@ msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr "העלאת רשת בשימוש דרך (?) אינה נתמכת."
+msgstr ""
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
-msgstr "חדש"
+msgstr ""
 
 #: EditorHeader.java:292
 msgid "New Tab"
-msgstr "לשונית חדשה"
+msgstr ""
 
 #: SerialMonitor.java:112
 msgid "Newline"
-msgstr "שורה חדשה"
+msgstr ""
 
 #: EditorHeader.java:340
 msgid "Next Tab"
-msgstr "לשונית הבאה"
+msgstr ""
 
 #: Preferences.java:78 UpdateCheck.java:108
 msgid "No"
-msgstr "לא"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
@@ -1401,7 +1393,7 @@ msgstr ""
 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
-msgstr "אין שינויים שמצריכים עיצוב אוטומטי."
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
@@ -1413,15 +1405,15 @@ msgstr ""
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
-msgstr "לא התווספו קבצים חדשים לסקיצה."
+msgstr ""
 
 #: Platform.java:167
 msgid "No launcher available"
-msgstr "אין תוכנת הפעלה זמינה"
+msgstr ""
 
 #: SerialMonitor.java:112
 msgid "No line ending"
-msgstr "אין סוף שורה"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
@@ -1433,12 +1425,12 @@ msgstr ""
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
-msgstr "לא, באמת, הגיע הזמן לנשום קצת אוויר נקי."
+msgstr ""
 
 #: Editor.java:1872
 #, java-format
 msgid "No reference available for \"{0}\""
-msgstr "אין ייחוס זמין ל \"{0}\""
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -1451,7 +1443,7 @@ msgstr ""
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
-msgstr "קבצי קוד קבילים לא נמצאו"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
@@ -1464,7 +1456,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr "נרווגית"
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1475,11 +1467,11 @@ msgstr ""
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
 msgid "OK"
-msgstr "אשר"
+msgstr ""
 
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
-msgstr "קובץ אחד התווסף לסקיצה"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
@@ -1487,7 +1479,7 @@ msgstr ""
 
 #: EditorToolbar.java:41
 msgid "Open"
-msgstr "פתח"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
@@ -1495,15 +1487,15 @@ msgstr ""
 
 #: Editor.java:2688
 msgid "Open URL"
-msgstr "פתח קישור"
+msgstr ""
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr "פתח סקיצת ארדואינו..."
+msgstr ""
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
-msgstr "פתח..."
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
@@ -1511,7 +1503,7 @@ msgstr ""
 
 #: Editor.java:563
 msgid "Page Setup"
-msgstr "הגדרות עמוד"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
@@ -1519,19 +1511,19 @@ msgstr ""
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr "סיסמה:"
+msgstr ""
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
-msgstr "הדבק"
+msgstr ""
 
 #: Preferences.java:109
 msgid "Persian"
-msgstr "פרסית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr "פרסית (איראן)"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
@@ -1548,13 +1540,13 @@ msgstr ""
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
-msgstr "אנא ייבא את ספריית ה-SPI מתפריט סקיצה -> ייבא ספריה."
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2799
+#: ../../../../../app/src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr ""
 
@@ -1569,11 +1561,11 @@ msgstr ""
 
 #: Preferences.java:110
 msgid "Polish"
-msgstr "פולנית"
+msgstr ""
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr "פורט"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
@@ -1581,19 +1573,19 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr "פורטוגזית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr "פורטוגזית (ברזיל)"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr "פורטוגזית (פורטוגל)"
+msgstr ""
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
-msgstr "העדפות"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
@@ -1601,35 +1593,35 @@ msgstr ""
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
-msgstr "הקודם"
+msgstr ""
 
 #: EditorHeader.java:326
 msgid "Previous Tab"
-msgstr "לשונית קודמת"
+msgstr ""
 
 #: Editor.java:571
 msgid "Print"
-msgstr "הדפסה"
+msgstr ""
 
 #: Editor.java:2571
 msgid "Printing canceled."
-msgstr "ההדפסה בוטלה."
+msgstr ""
 
 #: Editor.java:2547
 msgid "Printing..."
-msgstr "מדפיס..."
+msgstr ""
 
 #: Base.java:1957
 msgid "Problem Opening Folder"
-msgstr "בעיה בפתיחת ספריה"
+msgstr ""
 
 #: Base.java:1933
 msgid "Problem Opening URL"
-msgstr "בעיה בפתיחת ה-URL"
+msgstr ""
 
 #: Base.java:227
 msgid "Problem Setting the Platform"
-msgstr "בעיה בהגדרת הפלטפורמה"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
@@ -1642,25 +1634,25 @@ msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
-msgstr "שגיאה בקריאת ספריית המידע"
+msgstr ""
 
 #: debug/Uploader.java:209
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "בעיה בטעינה ללוח בקר ב: http://www.arduino.cc/en/Guide/Troubleshooting#upload לקבלת עצות."
+msgstr ""
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
-msgstr "בעיה בשינוי שם"
+msgstr ""
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
-msgstr "מעבד"
+msgstr ""
 
 #: Editor.java:704
 msgid "Programmer"
-msgstr "מתכנת"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
@@ -1669,7 +1661,7 @@ msgstr ""
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
-msgstr "יציאה"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
@@ -1681,11 +1673,11 @@ msgstr ""
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
-msgstr "חזור על פעולה שבוטלה"
+msgstr ""
 
 #: Editor.java:1078
 msgid "Reference"
-msgstr "משתנה ייחוס"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
@@ -1703,28 +1695,28 @@ msgstr ""
 
 #: EditorHeader.java:300
 msgid "Rename"
-msgstr "שנה שם"
+msgstr ""
 
 #: FindReplace.java:121 FindReplace.java:130 Sketch.java:1046
 msgid "Replace"
-msgstr "החלף"
+msgstr ""
 
 #: FindReplace.java:122 FindReplace.java:129
 msgid "Replace & Find"
-msgstr "החלף ומצא"
+msgstr ""
 
 #: FindReplace.java:120 FindReplace.java:131
 msgid "Replace All"
-msgstr "החלף הכל"
+msgstr ""
 
 #: Sketch.java:1043
 #, java-format
 msgid "Replace the existing version of {0}?"
-msgstr "להחליף את הגרסא הקיימת של {0}?"
+msgstr ""
 
 #: FindReplace.java:81
 msgid "Replace with:"
-msgstr "החלף עם:"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
@@ -1732,7 +1724,7 @@ msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
-msgstr "רומנית"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
@@ -1746,29 +1738,29 @@ msgstr ""
 
 #: Preferences.java:114
 msgid "Russian"
-msgstr "רוסית"
+msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:529
 #: Editor.java:2064 Editor.java:2468
 msgid "Save"
-msgstr "שמור"
+msgstr ""
 
 #: Editor.java:537
 msgid "Save As..."
-msgstr "שמור בשם..."
+msgstr ""
 
 #: Editor.java:2317
 msgid "Save Canceled."
-msgstr "שמירה בוטלה."
+msgstr ""
 
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
-msgstr "שמור שינויים ל \"{0}\"?"
+msgstr ""
 
 #: Sketch.java:825
 msgid "Save sketch folder as..."
-msgstr "שמור את תיקיית הסקיצה ב..."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
@@ -1776,7 +1768,7 @@ msgstr ""
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
-msgstr "שומר..."
+msgstr ""
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
@@ -1784,23 +1776,23 @@ msgstr ""
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr "בחר ספריה לסקיצות (או ייצר חדשה)..."
+msgstr ""
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
-msgstr "בחר הכל"
+msgstr ""
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
-msgstr "בחר קובץ ZIP או ספריה שמכילה את הקבצים אותם תרצה להוסיף"
+msgstr ""
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
-msgstr "בחר תמונה או קובץ נתונים להעתיק לסקיצה שלך"
+msgstr ""
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
-msgstr "בחר מיקום לחוברת הסקיצות החדשה"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
@@ -1821,7 +1813,7 @@ msgstr ""
 
 #: SerialMonitor.java:93
 msgid "Send"
-msgstr "שלח"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
@@ -1829,7 +1821,7 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
-msgstr "מסך סיריאלי"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
@@ -1844,14 +1836,14 @@ msgstr ""
 msgid ""
 "Serial port ''{0}'' not found. Did you select the right one from the Tools >"
 " Serial Port menu?"
-msgstr "פורט סיריאלי \"{0}\" לא נמצא. האם בחרת את הפורט הנכון בתפריט כלים > פורט סיריאלי ?"
+msgstr ""
 
 #: Editor.java:2343
 #, java-format
 msgid ""
 "Serial port {0} not found.\n"
 "Retry the upload with another serial port?"
-msgstr "פורט סיריאלי {0} לא נמצא.\nלנסות להעלות עם פורט סיריאלי אחר?"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1868,15 +1860,15 @@ msgstr ""
 
 #: Base.java:1681
 msgid "Settings issues"
-msgstr "בעיה בהגדרות"
+msgstr ""
 
 #: Editor.java:641
 msgid "Show Sketch Folder"
-msgstr "הצג את תיקיית הסקיצה"
+msgstr ""
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr "הראה פלט מפורט במהלך:"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
@@ -1884,33 +1876,33 @@ msgstr ""
 
 #: Editor.java:607
 msgid "Sketch"
-msgstr "סקיצה"
+msgstr ""
 
 #: Sketch.java:1754
 msgid "Sketch Disappeared"
-msgstr "הסקיצה נעלמה"
+msgstr ""
 
 #: Base.java:1411
 msgid "Sketch Does Not Exist"
-msgstr "סקיצה לא קיימת"
+msgstr ""
 
 #: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
 msgid "Sketch is Read-Only"
-msgstr "הסקיצה במצב קריאה בלבד"
+msgstr ""
 
 #: Sketch.java:294
 msgid "Sketch is Untitled"
-msgstr "לסקיצה אין שם"
+msgstr ""
 
 #: Sketch.java:720
 msgid "Sketch is read-only"
-msgstr "הסקיצה במצב קריאה בלבד"
+msgstr ""
 
 #: Sketch.java:1653
 msgid ""
 "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
 "tips on reducing it."
-msgstr "הסקיצה גדולה מידי; בקר ב http://www.arduino.cc/en/Guide/Troubleshooting#size\nלקבלת טיפים להקטנת הסקיצה."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
@@ -1921,54 +1913,54 @@ msgstr ""
 
 #: Editor.java:510
 msgid "Sketchbook"
-msgstr "חוברת סקיצות"
+msgstr ""
 
 #: Base.java:258
 msgid "Sketchbook folder disappeared"
-msgstr "הספריה של ספר הסקיצות נעלמה"
+msgstr ""
 
 #: Preferences.java:315
 msgid "Sketchbook location:"
-msgstr "מיקום חוברת הסקיצות:"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
 msgstr ""
 
-#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:110
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr "סלובקית"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr "סלובנית"
+msgstr ""
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
 "Some files are marked \"read-only\", so you'll\n"
 "need to re-save the sketch in another location,\n"
 "and try again."
-msgstr "חלק מהקבצים מסומנים במצב \"קריאה-בלבד\", צריך לבצע שמירה מחדש לסקיצה בנתיב אחר, ואז לנסות שוב."
+msgstr ""
 
 #: Sketch.java:721
 msgid ""
 "Some files are marked \"read-only\", so you'll\n"
 "need to re-save this sketch to another location."
-msgstr "חלק מהקבצים מסומנים כ\"קריאה בלבד\", לכן תצטרך\nלשמור את הסקיצה הזאת במיקום שונה."
+msgstr ""
 
 #: Sketch.java:457
 #, java-format
 msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "סקיצה (או ספריה) עם השם {0} קיימת כבר."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
-msgstr "ספרדית"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2333
 msgid "Specified folder/zip file does not contain a valid library"
@@ -1976,19 +1968,19 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr "מתחיל..."
+msgstr ""
 
 #: Base.java:540
 msgid "Sunshine"
-msgstr "אור שמש"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr "שבדית"
+msgstr ""
 
 #: Preferences.java:84
 msgid "System Default"
-msgstr "ברירת מחדל של המערכת"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
@@ -1996,7 +1988,7 @@ msgstr ""
 
 #: Preferences.java:116
 msgid "Tamil"
-msgstr "טאמילית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
@@ -2008,7 +2000,7 @@ msgstr ""
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
-msgstr "המילה 'BYTE' אינה נתמכת יותר."
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
@@ -2016,7 +2008,7 @@ msgstr ""
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
-msgstr "המחלקה Client שונתה ל EthernetClient."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
@@ -2027,11 +2019,11 @@ msgstr ""
 
 #: debug/Compiler.java:420
 msgid "The Server class has been renamed EthernetServer."
-msgstr "המחלקה Server שונתה ל EthernetServer."
+msgstr ""
 
 #: debug/Compiler.java:432
 msgid "The Udp class has been renamed EthernetUdp."
-msgstr "המחלקה Udp שונתה ל EthernetUdp."
+msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -2039,7 +2031,7 @@ msgid ""
 "The file \"{0}\" needs to be inside\n"
 "a sketch folder named \"{1}\".\n"
 "Create this folder, move the file, and continue?"
-msgstr "הקובץ \"{0}\" צריך להיות בתוך\nספריית סקיצות בשם: \"{1}\".\nהאם תרצה לצור את הספריה, להזיז את הקובץ ולהמשיך?"
+msgstr ""
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2047,25 +2039,25 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
-msgstr "הספריה \"{0}\" לא ניתנת לשימוש.\nשמות ספריות חייבות להכיל רק אותיות בסיסיות ומספרים.\n(ASCII בלבד, ללא רווחים ולא ניתן להתחיל בספרה)"
+msgstr ""
 
 #: Sketch.java:374
 msgid ""
 "The main file can't use an extension.\n"
 "(It may be time for your to graduate to a\n"
 "\"real\" programming environment)"
-msgstr "הקובץ הראשי לא יכול להשתמש בסיומת.\n(אולי הגיע הזמן שתשתדרג\nלסביבת פיתוח \"אמיתית\")"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
-msgstr "השם אינו יכול להתחיל בנקודה"
+msgstr ""
 
 #: Base.java:1412
 msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr "הסקיצה הנבחרת לא קיימת יותר.\nייתכן שתצטרך לאתחל את הארדואינו שלך כדי לעדכן\nאת תפריט ספר הסקיצות."
+msgstr ""
 
 #: Base.java:1430
 #, java-format
@@ -2075,14 +2067,14 @@ msgid ""
 "(ASCII-only with no spaces, and it cannot start with a number).\n"
 "To get rid of this message, remove the sketch from\n"
 "{1}"
-msgstr "הסקיצה \"{0}\" לא ניתנת לשימוש.\nשמות סקיצות חייבות להכיל רק אותיות בסיסיות ומספרים.\n(ASCII בלבד, ללא רווחים ולא ניתן להתחיל בספרה)\nכדי להיפטר מהודעה זו, הסר את הסקיצה מ-\n{1}"
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
 "The sketch folder has disappeared.\n"
 " Will attempt to re-save in the same location,\n"
 "but anything besides the code will be lost."
-msgstr "תיקיית הסקיצה נעלמה. יבוצע ניסיון לשמור מחדש באותו מיקום, אבל כל הדברים מלבד הקוד יימחקו."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:2028
 msgid ""
@@ -2098,7 +2090,7 @@ msgid ""
 "location, and create a new sketchbook folder if\n"
 "necessary. Arduino will then stop talking about\n"
 "himself in the third person."
-msgstr "הספריה של ספר הסקיצות לא קיימת יותר.\nהארדואינו ישתמש במיקום ברירת המחדל של ספר הסקיצות ויצור ספריה חדשה לפי הצורך.\nהארדואינו יפסיק לדבר על עצמו בגוף שלישי."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
 msgid ""
@@ -2111,7 +2103,7 @@ msgid ""
 "This file has already been copied to the\n"
 "location from which where you're trying to add it.\n"
 "I ain't not doin nuthin'."
-msgstr "הקובץ כבר הועתק למקום אליו\nאתה מנסה להוסיף אותו.\nלא עושה שום שינוי."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2128,7 +2120,7 @@ msgstr ""
 
 #: Base.java:535
 msgid "Time for a Break"
-msgstr "הגיע הזמן להפסקה"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
@@ -2141,24 +2133,24 @@ msgstr ""
 
 #: Editor.java:663
 msgid "Tools"
-msgstr "כלים"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr "נושא"
+msgstr ""
 
 #: Editor.java:1070
 msgid "Troubleshooting"
-msgstr "פתרון בעיות"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:117
 msgid "Turkish"
-msgstr "טורקית"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr "סוג"
+msgstr ""
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -2170,7 +2162,7 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
-msgstr "אוקראינית"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
@@ -2214,14 +2206,14 @@ msgstr ""
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
-msgstr "בטל פעולה אחרונה"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
 msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2818
+#: ../../../../../app/src/processing/app/Editor.java:2818
 msgid "Unknown board"
 msgstr ""
 
@@ -2235,7 +2227,7 @@ msgid ""
 "Unspecified platform, no launcher available.\n"
 "To enable opening URLs or folders, add a \n"
 "\"launcher=/path/to/app\" line to preferences.txt"
-msgstr "פלטפורמה לא מוכרת, אין תוכנת הפעלה זמינה.\nכדי לאפשר פתיחה של לינקים או תיקיות הוסף את השורה \n\"launcher=/path/to/app\"\nלקובץ preferences.txt"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
@@ -2244,26 +2236,26 @@ msgstr ""
 
 #: UpdateCheck.java:111
 msgid "Update"
-msgstr "עדכן"
+msgstr ""
 
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "העלה קבצי סקיצה עם סיומת חדשה בעת השמירה (.pde -> .ino)"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
-msgstr "עדכון זמין לאחד מ-{0} לוחות שלך {1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
 #, java-format
 msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr "עדכון זמין לאחד מה {0}לוחות{1} וה{2}ספריות{3}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
 #, java-format
 msgid "Updates available for some of your {0}libraries{1}"
-msgstr "עדכון זמין לאחת מה{0}ספריות{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
@@ -2271,39 +2263,39 @@ msgstr ""
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
-msgstr "העלאה"
+msgstr ""
 
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
-msgstr "העלה בעזרת המתכנת"
+msgstr ""
 
-#: ../../../../../app//src/processing/app/Editor.java:2814
+#: ../../../../../app/src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
 msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
-msgstr "העלאה בוטלה."
+msgstr ""
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr "העלאה בוטלה"
+msgstr ""
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "מעלה ללוח I/O"
+msgstr ""
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr "מעלה..."
+msgstr ""
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
-msgstr "השתמש בבחירה לצורכי חיפוש"
+msgstr ""
 
 #: Preferences.java:409
 msgid "Use external editor"
-msgstr "השתמש בעורך חיצוני"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
@@ -2327,15 +2319,15 @@ msgstr ""
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
-msgstr "בצע אימות"
+msgstr ""
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr "אמת את הקוד בסיום ההעלאה"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr "בצע אימות/קומפילציה"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2347,7 +2339,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr "מאמת..."
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
@@ -2361,15 +2353,15 @@ msgstr ""
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
 msgid "Version {0}"
-msgstr "גירסה {0}"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr "וויאטנאמית"
+msgstr ""
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
-msgstr "בקר ב Arduino.cc"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
@@ -2390,7 +2382,7 @@ msgstr ""
 
 #: Base.java:2128
 msgid "Warning"
-msgstr "אזהרה"
+msgstr ""
 
 #: ../../../processing/app/debug/Compiler.java:1295
 msgid ""
@@ -2436,33 +2428,33 @@ msgstr ""
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
-msgstr "()Wire.receive שונתה ל ()Wire.read."
+msgstr ""
 
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
-msgstr "()Wire.send שונה ל ()Wire.write."
+msgstr ""
 
 #: FindReplace.java:105
 msgid "Wrap Around"
-msgstr "הורד שורה"
+msgstr ""
 
 #: debug/Uploader.java:213
 msgid ""
 "Wrong microcontroller found.  Did you select the right board from the Tools "
 "> Board menu?"
-msgstr "נמצא מיקרו קונטרולר שגוי, האם בחרת את הלוח הנכון בתפריט כלים > לוחות ?"
+msgstr ""
 
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
-msgstr "כן"
+msgstr ""
 
 #: Sketch.java:1074
 msgid "You can't fool me"
-msgstr "אתה לא יכול לעבוד עליי"
+msgstr ""
 
 #: Sketch.java:411
 msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "לא ניתן לתת שם לקובץ cpp. שזהה לשם של הסקיצה."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
@@ -2472,7 +2464,7 @@ msgstr ""
 msgid ""
 "You can't rename the sketch to \"{0}\"\n"
 "because the sketch already has a .cpp file with that name."
-msgstr "אינך יכול לשנות את שם הסקיצה ל \"{0}\" משום שיש כבר קובץ cpp. עם השם הזה."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Sketch.java:659
 msgid ""
@@ -2484,11 +2476,11 @@ msgstr ""
 msgid ""
 "You cannot save the sketch into a folder\n"
 "inside itself. This would go on forever."
-msgstr "אינך יכול לשמור את הסקיצה לתיקייה בתוך תיקיית הסקיצה, זה יימשך לעולם."
+msgstr ""
 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
-msgstr "שכחת את ספר הסקיצות שלך"
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2499,7 +2491,7 @@ msgstr ""
 msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
-msgstr "הגעת למקסימום היומי של שמות אוטומטיים לסקיצות חדשות.\nאולי תצא להליכה במקום?"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:768
 msgid ""
@@ -2515,16 +2507,16 @@ msgstr ""
 
 #: Base.java:2638
 msgid "ZIP files or folders"
-msgstr "קבצי ZIP או ספריה"
+msgstr ""
 
 #: Base.java:2661
 msgid "Zip doesn't contain a library"
-msgstr "קובץ ה-ZIP לא מכיל ספריה"
+msgstr ""
 
 #: Sketch.java:364
 #, java-format
 msgid "\".{0}\" is not a valid extension."
-msgstr "\".{0}\" היא לא סיומת חוקית"
+msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
@@ -2541,7 +2533,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\nהחל מארדואינו 0019, ספריית ה-Ethernet תלויה בספריית ה-SPI.\nנראה שאתה משתמש בה או בספריה אחרת שתלויה בספריית ה-SPI.\n"
+msgstr ""
 
 #: debug/Compiler.java:415
 msgid ""
@@ -2549,58 +2541,58 @@ msgid ""
 "As of Arduino 1.0, the 'BYTE' keyword is no longer supported.\n"
 "Please use Serial.write() instead.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0 המילה השמורה 'BYTE' כבר לא נתמכת.\nאנא השתמש ב- Serial.write() במקום.\n"
+msgstr ""
 
 #: debug/Compiler.java:427
 msgid ""
 "\n"
 "As of Arduino 1.0, the Client class in the Ethernet library has been renamed to EthernetClient.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0, המחלקה Client בספריית ה-Ethernet שינתה את שנה ל- EthernetClient.\n"
+msgstr ""
 
 #: debug/Compiler.java:421
 msgid ""
 "\n"
 "As of Arduino 1.0, the Server class in the Ethernet library has been renamed to EthernetServer.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0, המחלקה Server בספריית ה-Ethernet שינתה את שנה ל- EthernetServer.\n"
+msgstr ""
 
 #: debug/Compiler.java:433
 msgid ""
 "\n"
 "As of Arduino 1.0, the Udp class in the Ethernet library has been renamed to EthernetUdp.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0, המחלקה Udp בספריית ה-Ethernet שינתה את שמה ל- EthernetUdp.\n"
+msgstr ""
 
 #: debug/Compiler.java:445
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0, הפונקציה ()Wire.receive שונתה ל ()Wire.read לצורך התאמה למחלקות אחרות. \n"
+msgstr ""
 
 #: debug/Compiler.java:439
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.send() function was renamed to Wire.write() for consistency with other libraries.\n"
 "\n"
-msgstr "\nהחל מארדואינו 1.0, הפונקציה ()Wire.send שונתה ל ()Wire.read לצורך התאמה למחלקות אחרות. \n\n"
+msgstr ""
 
 #: SerialMonitor.java:130 SerialMonitor.java:133
 msgid "baud"
-msgstr "שידור"
+msgstr ""
 
 #: Preferences.java:389
 msgid "compilation "
-msgstr "קומפילציה"
+msgstr ""
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr "מחובר!"
+msgstr ""
 
 #: Sketch.java:540
 msgid "createNewFile() returned false"
-msgstr "createNewFile() החזיר ערך שלילי"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2608,30 +2600,30 @@ msgstr ""
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
-msgstr "http://www.arduino.cc/en/Main/Software"
+msgstr ""
 
 #: UpdateCheck.java:53
 msgid "http://www.arduino.cc/latest.txt"
-msgstr "http://www.arduino.cc/latest.txt"
+msgstr ""
 
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
-msgstr "מתעלם מגודל פונט לא חוקי {0}"
+msgstr ""
 
 #: Editor.java:936 Editor.java:943
 msgid "name is null"
-msgstr "השם ריק"
+msgstr ""
 
 #: Editor.java:932
 msgid "serialMenu is null"
-msgstr "תפריט סיריאלי ריק"
+msgstr ""
 
 #: debug/Uploader.java:195
 #, java-format
 msgid ""
 "the selected serial port {0} does not exist or your board is not connected"
-msgstr "הפורט הסיריאלי שנבחר {0} אינו קיים או שהלוח אינו מחובר"
+msgstr ""
 
 #: ../../../processing/app/Base.java:389
 #, java-format
@@ -2640,12 +2632,12 @@ msgstr ""
 
 #: Preferences.java:391
 msgid "upload"
-msgstr "העלאה"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
 #, java-format
 msgid "version <b>{0}</b>"
-msgstr "גרסה <b>{0}</b>"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
@@ -2666,12 +2658,12 @@ msgstr ""
 #: Editor.java:380
 #, java-format
 msgid "{0} files added to the sketch."
-msgstr "{0} קבצים התווספו לסקיצה."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr "{0} ספריות"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
@@ -2691,12 +2683,12 @@ msgstr ""
 #: debug/Compiler.java:365
 #, java-format
 msgid "{0} returned {1}"
-msgstr "{0} החזיר {1}"
+msgstr ""
 
 #: Editor.java:2213
 #, java-format
 msgid "{0} | Arduino {1}"
-msgstr "{0} | ארדואינו {1}"
+msgstr ""
 
 #: ../../../processing/app/Base.java:519
 #, java-format
@@ -2728,14 +2720,14 @@ msgstr ""
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr "{0}: ארכיטקטורה לא ידועה"
+msgstr ""
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr "{0}: לוח לא יודע"
+msgstr ""
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr "{0}: חבילה לא ידועה"
+msgstr ""

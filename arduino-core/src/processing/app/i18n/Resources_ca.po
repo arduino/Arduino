@@ -129,6 +129,10 @@ msgstr "Una sub-carpeta del teu bloc de programaris no és una llibreria vàlida
 msgid "About Arduino"
 msgstr "Quant a Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Afegir llibreria .ZIP ..."
@@ -1243,6 +1247,10 @@ msgstr "Italià"
 msgid "Japanese"
 msgstr "Japonès"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Coreà"
@@ -1989,6 +1997,10 @@ msgstr "Tolanés"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tàmil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

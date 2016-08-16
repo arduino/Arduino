@@ -127,6 +127,10 @@ msgstr "Ένας υποφάκελος του sketchbook σας δεν είναι
 msgid "About Arduino"
 msgstr "Περί του Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Προσθήκη βιβλιοθήκης ZIP..."
@@ -1241,6 +1245,10 @@ msgstr "Ιταλικά"
 msgid "Japanese"
 msgstr "Γιαπωνέζικα"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Κορεάτικα"
@@ -1987,6 +1995,10 @@ msgstr "Talossan"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Ταμίλ"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

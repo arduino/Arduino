@@ -127,6 +127,10 @@ msgstr "En underkatalog av skisseboken er ikke et gyldig bibliotek"
 msgid "About Arduino"
 msgstr "Om Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Legg til .ZIP Bibliotek..."
@@ -1241,6 +1245,10 @@ msgstr "Italiensk"
 msgid "Japanese"
 msgstr "Japansk"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Koreansk"
@@ -1987,6 +1995,10 @@ msgstr ""
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamilsk"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

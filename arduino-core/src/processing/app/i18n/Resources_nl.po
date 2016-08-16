@@ -130,6 +130,10 @@ msgstr "Een submap van je schetsboek is geen geldige bibliotheek"
 msgid "About Arduino"
 msgstr "Over Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr ".ZIP Bibliotheek toevoegen..."
@@ -1244,6 +1248,10 @@ msgstr "Italiaans"
 msgid "Japanese"
 msgstr "Japans"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Koreaans"
@@ -1990,6 +1998,10 @@ msgstr "Talossaans"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

@@ -133,6 +133,10 @@ msgstr "项目文件夹中的子文件夹不是有效的库"
 msgid "About Arduino"
 msgstr "关于 Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "添加一个 .ZIP 库..."
@@ -1247,6 +1251,10 @@ msgstr "意大利语"
 msgid "Japanese"
 msgstr "日语"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "韩语"
@@ -1993,6 +2001,10 @@ msgstr "塔罗萨语"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "泰米尔语"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

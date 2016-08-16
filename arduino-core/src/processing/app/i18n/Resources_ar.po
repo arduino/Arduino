@@ -129,6 +129,10 @@ msgstr "الملف الفرعي من كراسة الرسم الخاصة بك ل�
 msgid "About Arduino"
 msgstr "عن الاردوينو"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "اضف مكتبة .ZIP ..."
@@ -1243,6 +1247,10 @@ msgstr "Italiano"
 msgid "Japanese"
 msgstr "Japanese"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Korean"
@@ -1989,6 +1997,10 @@ msgstr "تالوسان"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

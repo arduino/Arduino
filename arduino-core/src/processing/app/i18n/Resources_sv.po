@@ -130,6 +130,10 @@ msgstr "En undermapp i din skissbok är inte ett giltigt bibliotek"
 msgid "About Arduino"
 msgstr "Om Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Lägg till .ZIP bibliotek..."
@@ -1244,6 +1248,10 @@ msgstr "Italienska"
 msgid "Japanese"
 msgstr "Japanska"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Koreanska"
@@ -1990,6 +1998,10 @@ msgstr ""
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"

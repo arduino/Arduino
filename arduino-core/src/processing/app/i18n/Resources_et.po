@@ -127,6 +127,10 @@ msgstr "Su visandite kausta alamkaust pole korrektne teek."
 msgid "About Arduino"
 msgstr "Arduino info"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Lisa .ZIP teek ..."
@@ -1241,6 +1245,10 @@ msgstr "Itaalia"
 msgid "Japanese"
 msgstr "Jaapani"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Korea"
@@ -1987,6 +1995,10 @@ msgstr "Talossan"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamili"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
