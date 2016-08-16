@@ -12,12 +12,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-07 18:40+0000\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: English (http://www.transifex.com/mbanzi/arduino-ide-15/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -123,7 +124,7 @@ msgstr "About Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -337,7 +338,7 @@ msgstr "Board"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Board Info"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -953,7 +954,7 @@ msgstr "Examples"
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
-msgstr ""
+msgstr "Examples from Built-in Libraries"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -961,13 +962,13 @@ msgstr "Examples from Custom Libraries"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Examples from Other Libraries"
 
 #: ../../../../../app/src/processing/app/Base.java:1287
 #: ../../../../../app/src/processing/app/Base.java:1298
 #, java-format
 msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "Examples from {0} Libraries"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1073,7 +1074,7 @@ msgstr "German"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Get Board Info"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1135,7 +1136,7 @@ msgstr "Hungarian"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "INCOMPATIBLE"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1241,7 +1242,7 @@ msgstr "Japanese"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1345,7 +1346,7 @@ msgstr "Name for new file:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Native serial port, can't obtain info"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1357,7 +1358,7 @@ msgstr "Network"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Network port, can't obtain info"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1548,7 +1549,7 @@ msgstr "Please import the Wire library from the Sketch > Import Library menu."
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Please select a port to obtain board info"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1930,7 +1931,7 @@ msgstr "Sketchbook path not defined"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Skipping contributed index file {0}, parsing error occured:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1992,7 +1993,7 @@ msgstr "Tamil"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2215,7 +2216,7 @@ msgstr "Unhandled type {0} in context key {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Unknown board"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2271,7 +2272,7 @@ msgstr "Upload Using Programmer"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Upload any sketch to obtain it"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."

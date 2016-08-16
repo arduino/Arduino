@@ -12,9 +12,10 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Grzegorz Wielgoszewski <translations@wielgoszewski.pl>, 2016
-# Jan Bielak <sharkie103@gmail.com>, 2013-2014
+# Jan Bielak <sharkie103@gmail.com>, 2013-2014,2016
 # Krzysztof Zbudniewek <krzysztof.zbudniewek@gmail.com>, 2015
 # Maciej Wójciga <eadrom@gmail.com>, 2016
 # thedead4fun <matizochol@gmail.com>, 2015
@@ -28,8 +29,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-07-19 08:35+0000\n"
-"Last-Translator: Grzegorz Wielgoszewski <translations@wielgoszewski.pl>\n"
+"PO-Revision-Date: 2016-08-16 18:19+0000\n"
+"Last-Translator: Jan Bielak <sharkie103@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +56,7 @@ msgstr "Wykorzystane: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr "Nie znaleziono 'Keyboard'. Czy twój szkic zawiera linię '#include <Keyboard.h>' ?"
+msgstr "Nie znalezione 'Keyboard'. Czy twój szkic zawiera linię '#include <Keyboard.h>' ?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
@@ -122,11 +123,11 @@ msgstr "Nowa wersja Arduino jest dostępna,\nczy chciałbyś odwiedzić stronę 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr "Nowsza wersja paczki {0} jest dostępna"
+msgstr "Nowsza wersja pakietu {0} jest dostępna"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr "Folder w twoim szkicowniku nie jest właściwą biblioteką"
+msgstr "Folder w twoim szkicowniku nie jest prawidłową biblioteką"
 
 #: Editor.java:1116
 msgid "About Arduino"
@@ -134,11 +135,11 @@ msgstr "O Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "aczoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "Dodaj bibliotekę .ZIP"
+msgstr "Dodaj bibliotekę .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -348,7 +349,7 @@ msgstr "Płytka"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Informacja o płytce"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -395,7 +396,7 @@ msgstr "bośniacki"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr "Zarówno NL jak i CR"
+msgstr "Zarówno NL, jak i CR"
 
 #: Preferences.java:81
 msgid "Browse"
@@ -458,7 +459,7 @@ msgstr "Nie można określić żadnego pliku szkicu"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
-msgstr "powrót Karetki"
+msgstr "powrót karetki"
 
 #: Preferences.java:87
 msgid "Catalan"
@@ -788,7 +789,7 @@ msgstr "holenderski (Holandia)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
-msgstr "Pomoc Edison"
+msgstr "Pomoc dla Edisona"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -964,7 +965,7 @@ msgstr "Przykłady"
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
-msgstr ""
+msgstr "Przykłady z bibliotek podstawowych"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -972,13 +973,13 @@ msgstr "Przykłady z niestandardowych bibliotek"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Przykłady z innych bibliotek"
 
 #: ../../../../../app/src/processing/app/Base.java:1287
 #: ../../../../../app/src/processing/app/Base.java:1298
 #, java-format
 msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "Przykłady z bibliotek {0}"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1072,7 +1073,7 @@ msgstr "galicyjski (Hiszpania)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
-msgstr "Pomoc Galileo"
+msgstr "Pomoc dla Galileo"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1084,7 +1085,7 @@ msgstr "niemiecki"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Pobierz informacje o płytce"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1095,12 +1096,12 @@ msgstr "Samouczek"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "Globalne zmienne używają {0} bajtów ({2}%%) dynamicznej pamięci, pozostawiając {3} bajtów dla lokalnych zmiennych. Maksimum to  {1} bajtów."
+msgstr "Zmienne globalne używają {0} bajtów ({2}%%) pamięci dynamicznej, pozostawiając {3} bajtów dla zmiennych lokalnych. Maksimum to {1} bajtów."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr "Globalne zmienne używają {0} bajtów  dynamicznej pamięci."
+msgstr "Zmienne globalne używają {0} bajtów pamięci dynamicznej."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
@@ -1146,7 +1147,7 @@ msgstr "węgierski"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "NIEZGODNY"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1169,7 +1170,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr "W Arduino 1.0 domyślne rozszerzenie pliku się zmieniło\nz .pde na .ino. Nowe szkice (wliczając te stworzone przy\npomocy \"Zapisz jako\") będą używać nowego rozszerzenia. Rozszerzenie istniejących szkiców będzie uaktualnione przy  zapisie, ale możesz\nwyłączyć to w Preferencjach.\n\nZapisać szkic i zaktualizować rozszerzenie?"
+msgstr "W Arduino 1.0 domyślne rozszerzenie pliku zmieniło się\nz .pde na .ino. Nowe szkice (włącznie z tymi utworzonymi przy\npomocy \"Zapisz jako\") będą używać nowego rozszerzenia. Rozszerzenie istniejących szkiców będzie uaktualnione przy zapisie, ale możesz\nwyłączyć to w Preferencjach.\n\nZapisać szkic i zaktualizować rozszerzenie?"
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
@@ -1252,7 +1253,7 @@ msgstr "japoński"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "kazachski"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1264,7 +1265,7 @@ msgstr "łotewski"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr "Zarządca biblioteki"
+msgstr "Menedżer bibliotek"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1302,7 +1303,7 @@ msgstr "Niski poziom dostępnej pamięci, mogą wystąpić problemy ze stabilno�
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
-msgstr "Zarządzaj bibliotekami"
+msgstr "Zarządzaj bibliotekami..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
@@ -1356,7 +1357,7 @@ msgstr "Nazwa dla nowego pliku:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Natywny port szeregowy, nie można uzyskać informacji"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1368,7 +1369,7 @@ msgstr "Sieć"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Port sieciowy, nie można uzyskać informacji"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1486,7 +1487,7 @@ msgstr "Jeden plik dodany do szkicu."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr "Wpierane jest tylko --verify, --upload i --get-pref"
+msgstr "Wspierane jest tylko --verify, --upload i --get-pref"
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1551,15 +1552,15 @@ msgstr "Proszę potwierdź usunięcie biblioteki"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
-msgstr "Proszę zaimportować bilbiotekę SPI z Szkic > Importuj bibliotekę"
+msgstr "Proszę dołączyć bibliotekę SPI z menu Szkic > Dołącz bibliotekę."
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr "Proszę zaimportować Bibliotekę Przewodów z Szkic > Zaimportu bibliotekę menu."
+msgstr "Proszę dołączyć bibliotekę Wire z menu Szkic > Dołącz bibliotekę."
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Aby uzyskać informacje o płytce, proszę wybrać port"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1723,7 +1724,7 @@ msgstr "Zastąp wszystykie"
 #: Sketch.java:1043
 #, java-format
 msgid "Replace the existing version of {0}?"
-msgstr "Zastąpić istniejąca wersję przy pomocy {0}?"
+msgstr "Zastąpić istniejąca wersję {0}?"
 
 #: FindReplace.java:81
 msgid "Replace with:"
@@ -1787,7 +1788,7 @@ msgstr "Przeszukaj szkice"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr "Wybierz (lub utwórz nowy) folder dla szkiców..,."
+msgstr "Wybierz (lub utwórz nowy) folder dla szkiców..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
@@ -1795,7 +1796,7 @@ msgstr "Zaznacz wszystko"
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
-msgstr "Wybierz plik zip lub folder zawierający biblotekę którą chciałbyś dodać"
+msgstr "Wybierz plik zip lub folder zawierający bibliotekę, którą chciałbyś dodać"
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
@@ -1941,7 +1942,7 @@ msgstr "Ścieżka szkicownika nie znaleziona"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Niestandardowy plik indeksu {0} został pominięty, wystąpił błąd parsera:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -2003,7 +2004,7 @@ msgstr "tamilski"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2050,7 +2051,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
-msgstr "Biblioteka \"{0}\" nie może być użyta.\nNazwy bibliotek mogą zawierać tylko podstawowe litery i numery.\n(tylko ASCII bez spacji, oraz nie może zaczynać się od liczby)"
+msgstr "Biblioteka \"{0}\" nie może być użyta.\nNazwy bibliotek mogą zawierać tylko podstawowe litery i cyfry.\n(Tylko ASCII bez spacji, ponadto nie może zaczynać się cyfrą)."
 
 #: Sketch.java:374
 msgid ""
@@ -2120,7 +2121,7 @@ msgstr "Ten plik został już skopiowany do \nlokalizacji z której próbowałe�
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr "Ta biblioteka nie figuruje w Zarządcy Bibliotek. Nie będziesz mógł jej stąd przeinstalować.\nCzy na pewno chcesz ją usunąć?"
+msgstr "Ta biblioteka nie jest widoczna w menedżerze bibliotek. Nie będziesz mógł jej stąd przeinstalować.\nCzy na pewno chcesz ją usunąć?"
 
 #: ../../../../../app/src/processing/app/EditorStatus.java:349
 msgid ""
@@ -2226,7 +2227,7 @@ msgstr "Nieobsługiwany typ {0} w kontekście klucza {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Nieznana płytka"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2282,7 +2283,7 @@ msgstr "Wgraj używając programatora"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "[Wgraj najpierw jakikolwiek szkic]"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2316,7 +2317,7 @@ msgstr "Nazwa użytkownika:"
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr "Użycie biblioteki {0} w wersji {1} w folderze: {2} {3}"
+msgstr "Użycie biblioteki {0} w wersji {1} z folderu: {2} {3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2389,7 +2390,7 @@ msgstr "UWAGA: Błędny folder {0} w bibliotece '{1}'"
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr "UWAGA: biblioteka {0} działa na architekturze(/architekturach) {1} i może nie być kompatybilna z obecną płytką która działa na {2} architekturze(/architekturach) ."
+msgstr "UWAGA: biblioteka {0} działa na architekturze(/architekturach) {1} i może nie być kompatybilna z obecną płytką która działa na architekturze(/architekturach) {2}."
 
 #: Base.java:2128
 msgid "Warning"
@@ -2544,7 +2545,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\nOd 0019 Arduino biblioteka Ethernet-owa zależy od biblioteki SPI .\nWydaje się że jej używasz lub używasz innej biblioteki zależnej od SPI.\n\n"
+msgstr "\nOd Arduino 0019 biblioteka Ethernet wymaga biblioteki SPI.\nWydaje się, że jej używasz lub że używasz innej biblioteki zależnej od SPI.\n\n"
 
 #: debug/Compiler.java:415
 msgid ""
@@ -2559,35 +2560,35 @@ msgid ""
 "\n"
 "As of Arduino 1.0, the Client class in the Ethernet library has been renamed to EthernetClient.\n"
 "\n"
-msgstr "\nOd Arduino 1.0 klasa Client w bibliotece Ethernet została zmieniona na EthernetClient.\n\n"
+msgstr "\nOd Arduino 1.0 nazwa klasy Client w bibliotece Ethernet jest zmieniona na EthernetClient.\n\n"
 
 #: debug/Compiler.java:421
 msgid ""
 "\n"
 "As of Arduino 1.0, the Server class in the Ethernet library has been renamed to EthernetServer.\n"
 "\n"
-msgstr "\nOd Arduino 1.0 klasa Server w bibliotece Ethernet została zmieniona na EthernetServer.\n\n"
+msgstr "\nOd Arduino 1.0 nazwa klasy Server w bibliotece Ethernet jest zmieniona na EthernetServer.\n\n"
 
 #: debug/Compiler.java:433
 msgid ""
 "\n"
 "As of Arduino 1.0, the Udp class in the Ethernet library has been renamed to EthernetUdp.\n"
 "\n"
-msgstr "\nOd Arduino 1.0 klasa Udp w bibliotece Ethernet została zmieniona na EthernetUdp.\n\n"
+msgstr "\nOd Arduino 1.0 nazwa klasa Udp w bibliotece Ethernet jest zmieniona na EthernetUdp.\n\n"
 
 #: debug/Compiler.java:445
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
 "\n"
-msgstr "\nOd Arduino 1.0 fukcja Wire.receive() została przemianowana na Wire.read() dla zachowania poprawności z innymi bibliotekami.\n\n"
+msgstr "\nOd Arduino 1.0 funkcja Wire.receive() została przemianowana na Wire.read() dla zachowania spójności z innymi bibliotekami.\n\n"
 
 #: debug/Compiler.java:439
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.send() function was renamed to Wire.write() for consistency with other libraries.\n"
 "\n"
-msgstr "\nOd Arduino 1.0 fukcja Wire.send() została przemianowana na Wire.write() dla zachowania poprawności z innymi bibliotekami.\n\n"
+msgstr "\nOd Arduino 1.0 funkcja Wire.send() została przemianowana na Wire.write() dla zachowania spójności z innymi bibliotekami.\n\n"
 
 #: SerialMonitor.java:130 SerialMonitor.java:133
 msgid "baud"
@@ -2674,7 +2675,7 @@ msgstr "{0} plików dodanych do szkicu."
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr "{0} bibliotek"
+msgstr "Biblioteki {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format

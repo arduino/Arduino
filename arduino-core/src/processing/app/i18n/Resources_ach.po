@@ -12,12 +12,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2012-10-31 15:17+0000\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Acoli (http://www.transifex.com/mbanzi/arduino-ide-15/language/ach/)\n"
 "MIME-Version: 1.0\n"
@@ -335,7 +336,7 @@ msgstr ""
 msgid "Board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2824
+#: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
 msgstr ""
 
@@ -1071,7 +1072,7 @@ msgstr ""
 msgid "German"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:817
+#: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
 msgstr ""
 
@@ -1343,7 +1344,7 @@ msgstr ""
 msgid "Name for new file:"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2809
+#: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
 msgstr ""
 
@@ -1355,7 +1356,7 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2804
+#: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
 msgstr ""
 
@@ -1546,7 +1547,7 @@ msgstr ""
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2799
+#: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr ""
 
@@ -1927,7 +1928,7 @@ msgstr ""
 msgid "Sketchbook path not defined"
 msgstr ""
 
-#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:110
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
 msgstr ""
@@ -2213,7 +2214,7 @@ msgstr ""
 msgid "Unhandled type {0} in context key {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2818
+#: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
 msgstr ""
 
@@ -2269,7 +2270,7 @@ msgstr ""
 msgid "Upload Using Programmer"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Editor.java:2814
+#: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
 msgstr ""
 

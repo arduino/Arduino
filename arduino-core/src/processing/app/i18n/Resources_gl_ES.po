@@ -12,6 +12,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Onyrosgaming <laxetas@gmail.com>, 2016
 # Xurxo Guerra Perez <xguerrap@gmail.com>, 2015
 msgid ""
@@ -19,8 +20,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-07-21 09:54+0000\n"
-"Last-Translator: Onyrosgaming <laxetas@gmail.com>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -849,7 +850,7 @@ msgstr "Erro ao obter o cartafol de datos de Arduino."
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr ""
+msgstr "Erro dentro do Serie.{0}()"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -868,7 +869,7 @@ msgstr "Produciuse un erro ao abrir o porto serie \"{0}\"."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "Erro abrindo porto serie \"{0}\". Tenta consultar a documentación en http://playground.arduino.cc/Linux/All#Permission"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -885,7 +886,7 @@ msgstr "Produciuse un erro lendo o ficheiro de preferencias, por favor\nelimina 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
 msgid "Error running post install script"
-msgstr ""
+msgstr "Erro executando script post-instalación"
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
@@ -894,7 +895,7 @@ msgstr "Produciuse un erro no método de descubrimento:"
 #: Serial.java:125
 #, java-format
 msgid "Error touching serial port ''{0}''."
-msgstr ""
+msgstr "Erro ao tocar o porto serie ''{0}''."
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
@@ -920,7 +921,7 @@ msgstr "Erro na impresión."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Erro ao axustar os parámetros do porto serie: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -959,7 +960,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Exemplos de Librerías Personalizadas"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
@@ -973,11 +974,11 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Exportación cancelada, os cambios deben gardarse primeiro."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
-msgstr ""
+msgstr "Exportar binario compilado"
 
 #: ../../../processing/app/Base.java:416
 #, java-format
@@ -991,7 +992,7 @@ msgstr "Ficheiro"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Nome do arquivo {0} é inválido: ignorado"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1032,18 +1033,18 @@ msgstr "Finés"
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
 msgid "Fix Encoding & Reload"
-msgstr ""
+msgstr "Arranxa codificación & recarga"
 
 #: ../../../processing/app/BaseNoGui.java:318
 msgid ""
 "For information on installing libraries, see: "
 "http://www.arduino.cc/en/Guide/Libraries\n"
-msgstr ""
+msgstr "Para información sobre instalación das librerías, olla: http://www.arduino.cc/en/Guide/Libraries\n"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Forzando reseteo usando 1200bps de apertura/peche en porto {0}"
 
 #: Preferences.java:95
 msgid "French"
@@ -1063,7 +1064,7 @@ msgstr "Galego (España)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
-msgstr ""
+msgstr "Axuda Galileo"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1125,11 +1126,11 @@ msgstr "Nome da máquina:"
 msgid ""
 "How about saving the sketch first \n"
 "before trying to rename it?"
-msgstr ""
+msgstr "Qué tal se gardas o skecth primeiro\nantes de tentar renomealo?"
 
 #: Sketch.java:882
 msgid "How very Borges of you"
-msgstr ""
+msgstr "Qué diría Borges disto?"
 
 #: Preferences.java:100
 msgid "Hungarian"
@@ -1149,7 +1150,7 @@ msgstr "Ignorar os nomes de biblioteca non válidos"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr ""
+msgstr "Ignorando sketch con nome erróneo"
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1160,7 +1161,7 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr ""
+msgstr "En Arduino 1.0, a extensión por defecto do arquivo cambiou\nde .pde a .ino. Os novos sketches (incluíndo aqueles creados\npor \"Gardar Como\") usarán a nova extensión. A extensión\ndos sketches existentes actulizarase ao gardar, pero podes\ndeshabilitar isto no diálogo de Preferencias.\n\nGardar sketch e actualizar a súa extensión?"
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
@@ -1173,7 +1174,7 @@ msgstr "Cartafol de instalación do IDE incorrecto"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
-msgstr ""
+msgstr "Aumenta indentación"
 
 #: Preferences.java:101
 msgid "Indonesian"
@@ -1221,7 +1222,7 @@ msgstr "Instalando..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Escala do interface:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
