@@ -40,11 +40,8 @@ import processing.app.*;
 import cc.arduino.packages.BoardPort;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
-import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.StringReplacer;
-
-import cc.arduino.packages.discoverers.SerialDiscovery;
 
 import java.io.File;
 import java.util.ArrayList;

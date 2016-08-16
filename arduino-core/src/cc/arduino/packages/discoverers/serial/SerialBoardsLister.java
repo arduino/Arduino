@@ -31,7 +31,6 @@ package cc.arduino.packages.discoverers.serial;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.discoverers.SerialDiscovery;
-import cc.arduino.packages.uploaders.SerialUploader;
 import processing.app.BaseNoGui;
 import processing.app.Platform;
 import processing.app.debug.TargetBoard;

@@ -27,7 +27,6 @@ import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;

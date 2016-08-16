@@ -169,13 +169,13 @@ public class Platform {
     return null;
   }
 
-  public  List<String> listSerials(){
-    return new  ArrayList(Arrays.asList(this.listSerialsNative()));
+  public List<String> listSerials() {
+    return new ArrayList<String>(Arrays.asList(listSerialsNative()));
   }
 
   public  List<String> listSerialsNames(){
     List<String> list = new LinkedList<>();
-    for (String port : this.listSerialsNative()) {
+    for (String port : listSerialsNative()) {
       list.add(port.split("_")[0]);
     }
     return list;

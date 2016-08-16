@@ -36,7 +36,6 @@ import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.debug.MessageConsumer;
 import processing.app.debug.MessageSiphon;
-import processing.app.debug.RunnerException;
 import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringUtils;
 
