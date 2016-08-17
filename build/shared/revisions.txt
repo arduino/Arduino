@@ -1,4 +1,4 @@
-ARDUINO 1.6.11
+ARDUINO 1.6.11 - 2016.08.17
 
 [ide]
 * Fixed a serious bug that prevented some 3rd party boards, installed through external index.json URL, to work correctly.
