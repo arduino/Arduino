@@ -32,7 +32,7 @@ void setup()
 
   // Create a file "/storage/mine.txt", max size 512 bytes.
   if (SerFlash.open("/storage/mine.txt",
-      FS_MODE_OPEN_CREATE(512, _FS_FILE_OPEN_FLAG_COMMIT)) == false) {
+      FS_MODE_OPEN_CREATE(512, _FS_FILE_OPEN_FLAG_COMMIT)) != SL_FS_OK) {
     Serial.print("ERROR creating /storage/mine.txt!  Error code: ");
     Serial.println(SerFlash.lastErrorString());  // Report meaning of last SLFS API failure
 
@@ -53,7 +53,7 @@ void setup()
 void loop()
 {
   // Open "/storage/mine.txt" and read its contents to the serial monitor.
-  if (SerFlash.open("/storage/mine.txt", FS_MODE_OPEN_READ) == false) {
+  if (SerFlash.open("/storage/mine.txt", FS_MODE_OPEN_READ) != SL_FS_OK) {
     // Some sort of error occurred!
     Serial.print("ERROR opening /storage/mine.txt!  Error code: ");
     Serial.println(SerFlash.lastErrorString());
