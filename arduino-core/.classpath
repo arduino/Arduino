@@ -29,7 +29,7 @@
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/jna-platform-4.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
