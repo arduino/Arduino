@@ -22,8 +22,7 @@
 
 package processing.app.windows;
 
-import cc.arduino.os.windows.FolderFinderInWindowsEnvVar;
-import cc.arduino.os.windows.FolderFinderInWindowsRegistry;
+import cc.arduino.os.windows.Win32KnownFolders;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -50,28 +49,18 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Local AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
-
-    Path path = findInShellFolders.find();
-    this.settingsFolder = path.resolve("Arduino15").toFile();
+    Path path = Win32KnownFolders.getLocalAppDataFolder().toPath();
+    settingsFolder = path.resolve("Arduino15").toFile();
   }
 
   private Path recoverOldSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
-
-    Path path = findInShellFolders.find();
+    Path path = Win32KnownFolders.getRoamingAppDataFolder().toPath();
     return path.resolve("Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() throws Exception {
-    FolderFinderInWindowsEnvVar findInUserProfile = new FolderFinderInWindowsEnvVar(null, "Documents", "USERPROFILE");
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(findInUserProfile, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Personal");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
-
-    Path path = findInShellFolders.find();
-    this.defaultSketchbookFolder = path.resolve("Arduino").toFile();
+    Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+    defaultSketchbookFolder = path.resolve("Arduino").toFile();
   }
 
   /**
