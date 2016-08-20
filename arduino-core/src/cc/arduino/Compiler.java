@@ -190,27 +190,28 @@ public class Compiler implements MessageConsumer {
     return prefs;
   }
 
+  private void addPathFlagIfPathExists(List<String> cmd, String flag, File folder) {
+    if (folder.exists()) {
+      cmd.add(flag);
+      cmd.add(folder.getAbsolutePath());
+    }
+  }
+
   private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
     List<String> cmd = new ArrayList<>();
     cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
     cmd.add(action.value);
     cmd.add("-logger=machine");
 
-    Stream.of(BaseNoGui.getHardwarePath(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath(), BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath())
-      .forEach(p -> {
-        if (Files.exists(Paths.get(p))) {
-          cmd.add("-hardware");
-          cmd.add(p);
-        }
-      });
+    File installedPackagesFolder = new File(BaseNoGui.getSettingsFolder(), "packages");
 
-    Stream.of(BaseNoGui.getContentFile("tools-builder").getAbsolutePath(), Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toAbsolutePath().toString(), new File(BaseNoGui.getSettingsFolder(), "packages").getAbsolutePath())
-      .forEach(p -> {
-        if (Files.exists(Paths.get(p))) {
-          cmd.add("-tools");
-          cmd.add(p);
-        }
-      });
+    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getHardwareFolder());
+    addPathFlagIfPathExists(cmd, "-hardware", installedPackagesFolder);
+    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getSketchbookHardwareFolder());
+
+    addPathFlagIfPathExists(cmd, "-tools", BaseNoGui.getContentFile("tools-builder"));
+    addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
+    addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
     cmd.add("-built-in-libraries");
     cmd.add(BaseNoGui.getContentFile("libraries").getAbsolutePath());
