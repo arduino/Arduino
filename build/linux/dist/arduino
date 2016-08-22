@@ -27,7 +27,8 @@ fi
 # Collect options to java in an array, to properly handle whitespace in options
 JAVA_OPTIONS=("-DAPP_DIR=$APPDIR" "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 
-if [[ "$@" != *"--upload"* && "$@" != *"--verify"* && "$@" != *"--get-pref"* && "$@" != *"--install-board"* && "$@" != *"--install-library"* ]] ; then
+# Only show the splash screen when no options are present
+if [[ "$@" != *"--"* ]] ; then
 	JAVA_OPTIONS+=("-splash:$APPDIR/lib/splash.png")
 fi
 
