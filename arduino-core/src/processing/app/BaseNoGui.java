@@ -66,7 +66,7 @@ public class BaseNoGui {
   }
 
   private static DiscoveryManager discoveryManager = new DiscoveryManager();
-  
+
   // these are static because they're used by Sketch
   static private File examplesFolder;
   static private File toolsFolder;
@@ -130,7 +130,8 @@ public class BaseNoGui {
       buildFolder = absoluteFile(PreferencesData.get("build.path"));
       Files.createDirectories(buildFolder.toPath());
     } else {
-      buildFolder = FileUtils.createTempFolder("build", DigestUtils.md5Hex(data.getMainFilePath()) + ".tmp");
+      PreferencesMap targetBoardPrefs = getTargetBoard().getPreferences();
+      buildFolder = FileUtils.createTempFolder("build", DigestUtils.md5Hex(data.getMainFilePath() + targetBoardPrefs.get("build.arch") + targetBoardPrefs.get("build.board")) + ".tmp");
       DeleteFilesOnShutdown.add(buildFolder);
     }
     return buildFolder;
@@ -141,7 +142,7 @@ public class BaseNoGui {
     if (board == null)
       return null;
     String boardId = board.getId();
-    
+
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
 
     String extendedName = prefs.get("name");
@@ -430,7 +431,7 @@ public class BaseNoGui {
     parser.parseArgumentsPhase1();
 
     String sketchbookPath = getSketchbookPath();
-  
+
     // If no path is set, get the default sketchbook folder for this platform
     if (sketchbookPath == null) {
       if (BaseNoGui.getPortableFolder() != null)
@@ -452,7 +453,7 @@ public class BaseNoGui {
     for (String path: parser.getFilenames()) {
       // Correctly resolve relative paths
       File file = absoluteFile(path);
-  
+
       // Fix a problem with systems that use a non-ASCII languages. Paths are
       // being passed in with 8.3 syntax, which makes the sketch loader code
       // unhappy, since the sketch folder naming doesn't match up correctly.
@@ -476,7 +477,7 @@ public class BaseNoGui {
         showError(null, mess, 2);
       }
     }
-  
+
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
@@ -762,7 +763,7 @@ public class BaseNoGui {
     getPlatform().init();
 
     initPortableFolder();
-    
+
     initParameters(args);
 
     checkInstallationFolder();
