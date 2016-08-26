@@ -1425,7 +1425,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.addMenuListener(new MenuListener() {
       @Override
       public void menuSelected(MenuEvent e) {
-        boolean enabled = textarea.getSelectedText() != null;
+        boolean enabled = getCurrentTab().getSelectedText() != null;
         cutItem.setEnabled(enabled);
         copyItem.setEnabled(enabled);
       }
