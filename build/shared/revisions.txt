@@ -1,3 +1,10 @@
+ARDUINO 1.6.12
+
+[ide]
+* Refactor Editor code, solving some long standing bugs and cleaning up everything. Thanks @matthijskooijman
+* Add initial Cloud API integration. When plugging a new board, if an additional core is needed, the user will be prompted to install it
+
+
 ARDUINO 1.6.11 - 2016.08.17
 
 [ide]
