@@ -323,6 +323,8 @@ public class FindReplace extends javax.swing.JFrame {
       }
     }
 
+    editor.getCurrentTab().getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
+
     if (nextIndex == -1) {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
