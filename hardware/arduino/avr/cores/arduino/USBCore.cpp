@@ -399,7 +399,7 @@ bool SendControl(u8 d)
 	}
 	_cmark++;
 	return true;
-};
+}
 
 //	Clipped by _cmark/_cend
 int USB_SendControl(u8 flags, const void* d, int len)
