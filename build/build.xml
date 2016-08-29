@@ -196,6 +196,10 @@
       <param name="dest_folder" value="${target.path}/reference/" />
     </antcall>
 
+    <!-- Fix wrong permissions from zip file root folder -->
+    <chmod perm="755" dir="${target.path}/reference/Galileo_help_files" />
+    <chmod perm="755" dir="${target.path}/reference/Edison_help_files" />
+
     <!-- Write the revision file! -->
     <echo file="${target.path}/lib/version.txt" message="${version}" />
 
