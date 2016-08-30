@@ -21,6 +21,9 @@
  by Limor Fried
  modified 28 Dec 2012
  by Mike Walters
+ modified 30 Aug 2016
+ by Arturo Guadalupi
+
 
  This example code is in the public domain.
 
@@ -39,8 +42,8 @@ int lastButtonState = LOW;   // the previous reading from the input pin
 
 // the following variables are long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can be stored in an int.
-long lastDebounceTime = 0;  // the last time the output pin was toggled
-long debounceDelay = 50;    // the debounce time; increase if the output flickers
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
 
 void setup() {
   pinMode(buttonPin, INPUT);
