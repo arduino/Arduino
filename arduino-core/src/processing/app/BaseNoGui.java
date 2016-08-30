@@ -65,8 +65,8 @@ public class BaseNoGui {
     VERSION_NAME_LONG = versionNameLong;
   }
 
-  private static DiscoveryManager discoveryManager = new DiscoveryManager();
-  
+  private static DiscoveryManager discoveryManager;
+
   // these are static because they're used by Sketch
   static private File examplesFolder;
   static private File toolsFolder;
@@ -446,12 +446,6 @@ public class BaseNoGui {
 
     BaseNoGui.initPackages();
 
-    // refresh the serial port names after loading all packages
-    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().forceRefresh();
-
-    // Setup board-dependent variables.
-    onBoardOrPortChange();
-
     parser.parseArgumentsPhase2();
 
     for (String path: parser.getFilenames()) {
@@ -481,7 +475,10 @@ public class BaseNoGui {
         showError(null, mess, 2);
       }
     }
-  
+
+    // Setup board-dependent variables.
+    onBoardOrPortChange();
+
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
@@ -608,6 +605,9 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
+
+    discoveryManager = new DiscoveryManager();
+
     indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
         new GPGDetachedSignatureVerifier());
 
