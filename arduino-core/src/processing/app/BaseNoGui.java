@@ -605,9 +605,6 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
-
-    discoveryManager = new DiscoveryManager();
-
     indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
         new GPGDetachedSignatureVerifier());
 
@@ -635,6 +632,8 @@ public class BaseNoGui {
       File librariesIndexFile = librariesIndexer.getIndexFile();
       FileUtils.deleteIfExists(librariesIndexFile);
     }
+
+    discoveryManager = new DiscoveryManager();
   }
 
   static protected void initPlatform() {
