@@ -28,8 +28,13 @@ const int xPin = 2;		// X output of the accelerometer
 const int yPin = 3;		// Y output of the accelerometer
 
 void setup() {
-  // initialize serial communications:
+  // initialize serial communication:
   Serial.begin(9600);
+  // wait for Serial port to connect.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
   // initialize the pins connected to the accelerometer
   // as inputs:
   pinMode(xPin, INPUT);

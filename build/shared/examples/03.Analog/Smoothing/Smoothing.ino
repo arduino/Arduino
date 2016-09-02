@@ -37,6 +37,11 @@ int inputPin = A0;
 void setup() {
   // initialize serial communication with computer:
   Serial.begin(9600);
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
   // initialize all the readings to 0:
   for (int thisReading = 0; thisReading < numReadings; thisReading++) {
     readings[thisReading] = 0;

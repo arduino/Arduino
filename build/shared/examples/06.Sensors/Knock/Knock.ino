@@ -35,6 +35,11 @@ int ledState = LOW;         // variable used to store the last LED status, to to
 void setup() {
   pinMode(ledPin, OUTPUT); // declare the ledPin as as OUTPUT
   Serial.begin(9600);       // use the serial port
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
 }
 
 void loop() {

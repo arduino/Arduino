@@ -26,6 +26,11 @@
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
+  // wait for Serial and Serial1 ports initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial && !Serial1) ;
 }
 
 void loop() {

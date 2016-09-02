@@ -30,6 +30,11 @@ int outputValue = 0;        // value output to the PWM (analog out)
 void setup() {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
 }
 
 void loop() {

@@ -12,6 +12,11 @@ int pushButton = 2;
 void setup() {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
   // make the pushbutton's pin an input:
   pinMode(pushButton, INPUT);
 }

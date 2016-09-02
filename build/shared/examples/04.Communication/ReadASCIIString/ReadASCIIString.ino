@@ -26,8 +26,13 @@ const int greenPin = 5;
 const int bluePin = 6;
 
 void setup() {
-  // initialize serial:
+  // start serial comunication
   Serial.begin(9600);
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
   // make the pins outputs:
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
