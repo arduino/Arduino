@@ -29,6 +29,8 @@ SYNOPSIS
 
 *arduino* [*--get-pref* [__preference__]]
 
+*arduino* [*--get-build*]
+
 *arduino* [*--install-boards* __package name__:__platform architecture__[:__version__]]
 
 *arduino* [*--install-library* __library name__[:__version__][,__library name__[:__version__],__library name__[:__version__]]
@@ -75,6 +77,10 @@ ACTIONS
 	stream. When the value does not exist, nothing is printed and
 	the exit status is set (see EXIT STATUS below).
 	If no preference is given as parameter, it prints all preferences.
+
+*--get-build*::
+	Prints all architecture/platform and board properties for the
+	selected board.
 
 *--install-boards* __package name__:__platform architecture__[:__version__]::
 	Fetches available board support (platform) list and install the specified one, along with its related tools. If __version__ is omitted, the latest is installed. If a platform with the same version is already installed, nothing is installed and program exits with exit code 1. If a platform with a different version is already installed, it's replaced.

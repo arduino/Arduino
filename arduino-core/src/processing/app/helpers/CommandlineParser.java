@@ -16,7 +16,7 @@ import static processing.app.I18n.tr;
 public class CommandlineParser {
 
   private enum ACTION {
-    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
+    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), GET_BUILD("--get-build"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
 
     private final String value;
 
@@ -50,6 +50,7 @@ public class CommandlineParser {
     actions.put("--verify", ACTION.VERIFY);
     actions.put("--upload", ACTION.UPLOAD);
     actions.put("--get-pref", ACTION.GET_PREF);
+    actions.put("--get-build", ACTION.GET_BUILD);
     actions.put("--install-boards", ACTION.INSTALL_BOARD);
     actions.put("--install-library", ACTION.INSTALL_LIBRARY);
   }
@@ -212,7 +213,7 @@ public class CommandlineParser {
     if ((action == ACTION.UPLOAD || action == ACTION.VERIFY) && filenames.size() != 1)
       BaseNoGui.showError(null, tr("Must specify exactly one sketch file"), 3);
 
-    if ((action == ACTION.NOOP || action == ACTION.GET_PREF) && filenames.size() != 0)
+    if ((action == ACTION.NOOP || action == ACTION.GET_PREF || action == ACTION.GET_BUILD) && filenames.size() != 0)
       BaseNoGui.showError(null, tr("Cannot specify any sketch files"), 3);
 
     if ((action != ACTION.UPLOAD && action != ACTION.VERIFY) && (doVerboseBuild || doVerboseUpload))
@@ -302,6 +303,10 @@ public class CommandlineParser {
 
   public boolean isGetPrefMode() {
     return action == ACTION.GET_PREF;
+  }
+
+  public boolean isGetBuildMode() {
+    return action == ACTION.GET_BUILD;
   }
 
   public boolean isGuiMode() {

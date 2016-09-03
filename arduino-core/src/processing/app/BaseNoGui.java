@@ -464,8 +464,8 @@ public class BaseNoGui {
         }
       }
 
-      if (!parser.isVerifyOrUploadMode() && !parser.isGetPrefMode())
-        showError(tr("Mode not supported"), tr("Only --verify, --upload or --get-pref are supported"), null);
+      if (!parser.isVerifyOrUploadMode() && !parser.isGetPrefMode() && !parser.isGetBuildMode())
+        showError(tr("Mode not supported"), tr("Only --verify, --upload, --get-pref or --get-build are supported"), null);
 
       if (!parser.isForceSavePrefs())
         PreferencesData.setDoSave(false);
@@ -577,6 +577,8 @@ public class BaseNoGui {
     }
     else if (parser.isGetPrefMode()) {
       dumpPrefs(parser);
+    } else if (parser.isGetBuildMode()) {
+      dumpBuild(parser);
     }
   }
 
@@ -597,6 +599,27 @@ public class BaseNoGui {
       }
       System.exit(0);
     }
+  }
+
+  protected static void dumpBuild(CommandlineParser parser) {
+    System.out.println("#BUILDDUMP#");
+    try {
+      File minimal = new File(getContentFile("examples"), "01.Basics" + File.separator + "BareMinimum" + File.separator + "BareMinimum.ino");
+      Sketch data = new Sketch(minimal);
+      Compiler compiler	= new Compiler(data);
+      PreferencesMap prefs = compiler.getBuildPreferences();
+
+      for (Map.Entry<String, String> entry : prefs.entrySet()) {
+	if (!entry.getKey().isEmpty()) {
+	  System.out.println(entry.getKey() + "=" + entry.getValue());
+	}
+      }
+    } catch (Exception e) {
+      showError(tr("Error while getting build information"),
+		tr("An error occurred while retrieving build platform information"),
+		e);
+    }
+    System.exit(0);
   }
 
   static public void initLogger() {

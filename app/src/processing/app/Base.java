@@ -479,6 +479,8 @@ public class Base {
       System.exit(0);
     } else if (parser.isGetPrefMode()) {
       BaseNoGui.dumpPrefs(parser);
+    } else if (parser.isGetBuildMode()) {
+      BaseNoGui.dumpBuild(parser);
     }
   }
 

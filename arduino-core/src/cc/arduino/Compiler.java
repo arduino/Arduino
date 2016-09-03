@@ -161,6 +161,21 @@ public class Compiler implements MessageConsumer {
     return sketch.getPrimaryFile().getFileName();
   }
 
+  public PreferencesMap getBuildPreferences() throws RunnerException, IOException {
+    this.buildPath = sketch.getBuildPath().getAbsolutePath();
+
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    if (board == null) {
+      throw new RunnerException("Board is not selected");
+    }
+
+    TargetPlatform platform = board.getContainerPlatform();
+    TargetPackage aPackage = platform.getContainerPackage();
+    String vidpid = VIDPID();
+
+    return loadPreferences(board, platform, aPackage, vidpid);
+  }
+
   private String VIDPID() {
     BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
     if (boardPort == null) {
