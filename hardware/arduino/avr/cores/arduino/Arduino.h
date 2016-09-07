@@ -68,11 +68,11 @@ void yield(void);
   #define INTERNAL INTERNAL1V1
 #elif defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
   #define DEFAULT 0
-  #define EXTERNAL 1
-  #define INTERNAL1V1 2
+  #define EXTERNAL 4
+  #define INTERNAL1V1 8
   #define INTERNAL INTERNAL1V1
-  #define INTERNAL2V56 6
-  #define INTERNAL2V56_EXTCAP 7
+  #define INTERNAL2V56 9
+  #define INTERNAL2V56_EXTCAP 13
 #else  
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__) || defined(__AVR_ATmega644__) || defined(__AVR_ATmega644A__) || defined(__AVR_ATmega644P__) || defined(__AVR_ATmega644PA__)
 #define INTERNAL1V1 2
