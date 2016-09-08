@@ -8,7 +8,7 @@ This file is part of the GSM3 communications library for Arduino
 -- TCP/IP connections
 -- HTTP basic clients
 
-This library has been developed by Telefónica Digital - PDI -
+This library has been developed by TelefÃ³nica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
 Arduino and the Open Hardware Community. 
 
@@ -180,7 +180,7 @@ class GSM3ShieldV1ModemCore : public GSM3SoftSerialMgr, public Print
 			@param string2		Second substring expected in response
 			@return true if parsed correctly
 		 */		
-		bool genericParse_rsp(bool& rsp, char* string=0, char* string2=0);
+		bool genericParse_rsp(bool& rsp, const char* string=0, const char* string2=0);
 		
 		/** Generates a generic AT command request from PROGMEM buffer
 			@param str			Buffer with AT command
