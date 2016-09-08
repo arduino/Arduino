@@ -64,7 +64,11 @@ int analogRead(uint8_t pin)
 	// channel (low 4 bits).  this also sets ADLAR (left-adjust result)
 	// to 0 (the default).
 #if defined(ADMUX)
+#if defined(__AVR_ATtiny25__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__)
+	ADMUX = (analog_reference << 4) | (pin & 0x07);
+#else
 	ADMUX = (analog_reference << 6) | (pin & 0x07);
+#endif
 #endif
 
 	// without a delay, we seem to read from the wrong channel
