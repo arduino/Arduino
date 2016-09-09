@@ -1,7 +1,7 @@
 # English translations for PACKAGE package.
 # Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Translators:
 # Translators:
@@ -111,7 +111,7 @@ msgstr "Ya existe una carpeta con el nombre \"{0}\". No se puede abrir."
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr "La libreria con nombre {0} ya existe"
+msgstr "La librería con nombre {0} ya existe"
 
 #: UpdateCheck.java:103
 msgid ""
@@ -138,7 +138,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "Añadir libreria .ZIP..."
+msgstr "Añadir librería .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -968,7 +968,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr "Ejemplos de Liberías Personalizadas"
+msgstr "Ejemplos de Librerías Personalizadas"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
@@ -1235,7 +1235,7 @@ msgstr "Escala Interfaz:"
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr "Libreria invalidad encontrada en {0}: {1}"
+msgstr "Librería invalidad encontrada en {0}: {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
@@ -1264,7 +1264,7 @@ msgstr "Letón"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr "Gestor de Liberías"
+msgstr "Gestor de Librerías"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1555,7 +1555,7 @@ msgstr "Por favor, importe la librería SPI del menú Programa > Importar Librer
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr "Por favor, importe la libreria Wire desde el menú Proyecto > Improtar Librería."
+msgstr "Por favor, importe la librería Wire desde el menú Proyecto > Improtar Librería."
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2120,7 +2120,7 @@ msgstr "Ese fichero ya se había copiado a la ubicación\ndesde la que lo querí
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr "Esta libreria no está listada en el Gestor de Librerías. No te será posible reinstalarla desde aquí.\n¿Estás seguro que quieres borrarla?"
+msgstr "Esta librería no está listada en el Gestor de Librerías. No te será posible reinstalarla desde aquí.\n¿Estás seguro que quieres borrarla?"
 
 #: ../../../../../app/src/processing/app/EditorStatus.java:349
 msgid ""
@@ -2544,7 +2544,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\nComo en Arduino 0019, la librería Ethernet depende de la librería SPI.\nParece que la estas usando u otra librería que depende de la libreria SPI.\n\n"
+msgstr "\nComo en Arduino 0019, la librería Ethernet depende de la librería SPI.\nParece que la estas usando u otra librería que depende de la librería SPI.\n\n"
 
 #: debug/Compiler.java:415
 msgid ""
