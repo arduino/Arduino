@@ -9,15 +9,6 @@
   the Technical Specs of your board  at https://www.arduino.cc/en/Main/Products
   
   This example code is in the public domain.
-
-  modified 8 May 2014
-  by Scott Fitzgerald
-  
-  modified 2 Sep 2016
-  by Arturo Guadalupi
-  
-  modified 8 Sep 2016
-  by Colby Newman
 */
 
 
