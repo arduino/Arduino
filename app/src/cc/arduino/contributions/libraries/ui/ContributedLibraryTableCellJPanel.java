@@ -221,6 +221,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       StyleSheet s = html.getStyleSheet();
       s.addRule("body { margin: 0; padding: 0;"
                 + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+                + "color: black;"
                 + "font-size: " + 10 * Theme.getScale() / 100 + "; }");
     }
     description.setOpaque(false);
