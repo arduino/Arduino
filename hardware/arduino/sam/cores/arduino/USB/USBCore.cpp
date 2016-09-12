@@ -66,27 +66,16 @@ const uint16_t STRING_LANGUAGE[2] = {
 };
 
 #ifndef USB_PRODUCT
-// Use a hardcoded product name if none is provided
-#if USB_PID == USB_PID_DUE
 #define USB_PRODUCT "Arduino Due"
-#else
-#define USB_PRODUCT "USB IO Board"
-#endif
 #endif
 
 const uint8_t STRING_PRODUCT[] = USB_PRODUCT;
 
-#if USB_VID == 0x2341
-#  if defined(USB_MANUFACTURER)
-#    undef USB_MANUFACTURER
-#  endif
-#  define USB_MANUFACTURER "Arduino LLC"
-#elif !defined(USB_MANUFACTURER)
-// Fall through to unknown if no manufacturer name was provided in a macro
-#  define USB_MANUFACTURER "Unknown"
+#ifndef USB_MANUFACTURER
+#define USB_MANUFACTURER "Arduino LLC"
 #endif
 
-const uint8_t STRING_MANUFACTURER[12] = USB_MANUFACTURER;
+const uint8_t STRING_MANUFACTURER[] = USB_MANUFACTURER;
 
 #ifdef CDC_ENABLED
 #define DEVICE_CLASS 0x02
@@ -258,15 +247,21 @@ int USBD_SendControl(uint8_t flags __attribute__ ((unused)), const void* d, uint
 // plain ASCII string but is sent out as UTF-16 with the
 // correct 2-byte prefix
 static bool USB_SendStringDescriptor(const uint8_t *string, int wLength) {
-	uint16_t buff[64];
-	int l = 1;
-	wLength-=2;
-	while (*string && wLength>0) {
-		buff[l++] = (uint8_t)(*string++);
-		wLength-=2;
+	if (wLength < 2)
+		return false;
+
+	uint8_t buffer[wLength];
+	buffer[0] = strlen((const char*)string) * 2 + 2;
+	buffer[1] = 0x03;
+
+	uint8_t i;
+	for (i = 2; i < wLength && *string; i++) {
+		buffer[i++] = *string++;
+		if (i == wLength) break;
+		buffer[i] = 0;
 	}
-	buff[0] = (3<<8) | (l*2);
-	return USBD_SendControl(0, (uint8_t*)buff, l*2);
+
+	return USBD_SendControl(0, (uint8_t*)buffer, i);
 }
 
 //	Does not timeout or cross fifo boundaries

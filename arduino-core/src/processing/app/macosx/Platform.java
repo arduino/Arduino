@@ -29,7 +29,6 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.lang3.StringUtils;
-import processing.app.debug.TargetPackage;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -41,7 +40,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 
 /**

@@ -38,8 +38,6 @@ import processing.app.helpers.StringReplacer;
 import java.io.File;
 import java.util.List;
 
-import static processing.app.I18n.tr;
-
 public class GenericNetworkUploader extends Uploader {
 
   private final BoardPort port;

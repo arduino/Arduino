@@ -36,7 +36,6 @@ import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.debug.MessageConsumer;
 import processing.app.debug.MessageSiphon;
-import processing.app.debug.RunnerException;
 import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringUtils;
 
@@ -44,6 +43,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static processing.app.I18n.tr;
 
@@ -69,6 +69,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   protected final boolean verbose;
+  protected final boolean verifyUpload;
 
   private String error;
   protected boolean notFoundError;
@@ -76,16 +77,18 @@ public abstract class Uploader implements MessageConsumer {
 
   protected Uploader() {
     this.verbose = PreferencesData.getBoolean("upload.verbose");
+    this.verifyUpload = PreferencesData.getBoolean("upload.verify");
     init(false);
   }
 
   protected Uploader(boolean nup) {
     this.verbose = PreferencesData.getBoolean("upload.verbose");
+    this.verifyUpload = PreferencesData.getBoolean("upload.verify");
     init(nup);
   }
 
   private void init(boolean nup) {
-    this.error = null;
+    this.error = "";
     this.notFoundError = false;
     this.noUploadPort = nup;
   }
@@ -101,6 +104,9 @@ public abstract class Uploader implements MessageConsumer {
   public String getAuthorizationKey() {
     return null;
   }
+
+  // static field for last executed programmer process ID
+  static protected Process programmerPid;
 
   protected boolean executeUploadCommand(Collection<String> command) throws Exception {
     return executeUploadCommand(command.toArray(new String[command.size()]));
@@ -121,22 +127,29 @@ public abstract class Uploader implements MessageConsumer {
         System.out.println();
       }
       Process process = ProcessUtils.exec(command);
+      programmerPid = process;
       new MessageSiphon(process.getInputStream(), this, 100);
       new MessageSiphon(process.getErrorStream(), this, 100);
 
-      // wait for the process to finish.
-      result = process.waitFor();
+      // wait for the process to finish, but not forever
+      // kill the flasher process after 2 minutes to avoid 100% cpu spinning
+      if (!process.waitFor(2, TimeUnit.MINUTES)) {
+        process.destroyForcibly();
+      }
+      if (!process.isAlive()) {
+        result = process.exitValue();
+      } else {
+        result = 0;
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    if (error != null) {
-      RunnerException exception = new RunnerException(error);
-      exception.hideStackTrace();
-      throw exception;
-    }
-
     return result == 0;
+  }
+
+  public String getFailureMessage() {
+    return error;
   }
 
   public void message(String s) {
@@ -148,8 +161,9 @@ public abstract class Uploader implements MessageConsumer {
     System.err.print(s);
 
     // ignore cautions
-    if (s.contains("Error")) {
+    if (s.toLowerCase().contains("error")) {
       notFoundError = true;
+      error = s;
       return;
     }
     if (notFoundError) {

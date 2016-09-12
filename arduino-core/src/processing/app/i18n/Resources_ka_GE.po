@@ -10,19 +10,22 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2013
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012-2013
 # George Machitidze <giomac@gmail.com>, 2013
-# Giorgi Maghlakelidze <acidlabz@gmail.com>, 2013-2014
+# Giorgi Maghlakelidze <acidlabz@gmail.com>, 2013-2014,2016
 # Zurab Japaridze <zjaparidze@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,29 +40,29 @@ msgstr "(მოითხოვს გარემოს ხელახლა �
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "გამოუყენებელი: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr " გამოყენებული: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' არ მოიძებნა. თქვენს ჩანახატში ჩასმულია სტრიქონი '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' არ მოიძებნა. თქვენს ჩანახატში ჩასმულია სტრიქონი '#include <Mouse.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "'arch' საქაღალდე აღარ არის მხარდაჭერილი! დამატებითი ცნობისთვის http://goo.gl/gfFJzU იხილეთ"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -67,37 +70,21 @@ msgstr "(ჩაასწორეთ მხოლოდ როცა Arduino გ
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(დაძველებული)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir აღარ არის მხარდაჭერილი"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload და --verbose-build გამოიყენება მხოლოდ პარამეტრებთან --verify ან --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -131,19 +118,23 @@ msgstr "ხელმისაწვდომია Arduino-ს ახალი �
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "ხელმისაწვდომია განახლებული {0} პაკეტი"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "თქვენი ალბომის ქვესაქაღალდე არ წარმოადგენს მართებულ ბიბლიოთეკას"
 
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "Arduino-ს შესახებ"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr ".ZIP ბიბლიოთეკის დამატება..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -151,15 +142,15 @@ msgstr "ფაილის დამატება..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "დამატებითი დაფების მმართველის URL მისამართი"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "დამატებითი დაფების მმართველის URL მისამართი:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "აფრიკაანსი"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -169,7 +160,7 @@ msgstr "ალბანური"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "ყველა"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -180,21 +171,21 @@ msgstr "შეცდომა ფაილის კოდირების შ
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "წარმოიშვა შეცდომა ბიბლიოთეკათა სიის განახლებისას!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "წარმოიშვა შეცდომა ჩანახატის ატვირთვისას"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "წარმოიშვა შეცდომა ჩანახატის გადამოწმებისას"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "წარმოიშვა შეცდომა ჩანახატის გადამოწმება/ატვირთვისას"
 
 #: Base.java:228
 msgid ""
@@ -230,7 +221,7 @@ msgstr "ჩანახატის არქივში გადატან�
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -244,7 +235,7 @@ msgstr "Arduino-ის AVR დაფები"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino-ს შეუძლია გახსნას მხოლოს საკუთარი ჩანახატები\nდა სხვა ფაილები გაფართოებით .ino ან .pde"
 
 #: Base.java:1682
 msgid ""
@@ -291,7 +282,7 @@ msgstr "ბრძანება --preferences-file მოითხოვს ა
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "ბრძანება {0} მოითხოვს არგუმენტს"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
@@ -303,7 +294,7 @@ msgstr "ავსტრიული"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "საჭიროა ავტორიზება"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -315,11 +306,15 @@ msgstr "ავტო-ფორმატირება დასრულებ�
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "პროქსის ავტომატურად მომართვა "
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "ავტომატური"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "პროქსის ავტომატური მომართვის URL მისამართი:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -347,10 +342,20 @@ msgstr "ბელარუსული"
 msgid "Board"
 msgstr "დაფა"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "დაფა მისამართზე {0} მიუწვდომელია"
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "დაფა {0} (პლატფორმა {1}, პაკეტი {2}) უცნობია"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
@@ -365,20 +370,20 @@ msgstr "დაფა:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "დაფების მმართველი"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "დაფების მმართველი..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "პაკეტში შესული დაფები:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr ""
+msgstr "ჩამტვირთველი ფაილი მითითებულია, მაგრამ ვერ მოიძებნა: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
@@ -398,7 +403,7 @@ msgstr "აწყობის მომართვა შეიცვალა;
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "ჩაშენებული მაგალითები"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -418,17 +423,17 @@ msgstr "ჩამტვირთველის ჩაწერა I/O დაფ
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
 msgid "CRC doesn't match. File is corrupted."
-msgstr ""
+msgstr "საკონტროლო ჯამი არ ემთხვევა. ფაილი დაზიანებულია."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "დაკმყოფილებული მხოლოდ ერთი: {0}-დან"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "მითითებულ მისამართზე ჩანახატი არ მოიძებნა"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -445,7 +450,7 @@ msgstr "გადარქმევა შეუძლებელია"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "ჩანახატის ფაილების მითითება ვერ ხერხდება."
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -473,7 +478,7 @@ msgstr "ჩინური (ტაივანი) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "დაწკაპეთ არაოფიციალური დაფების მხარდაჭრის URL მისამართისთვის"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -485,11 +490,11 @@ msgstr "კომენტარის გადართვა"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "კავშირგაბმულობა"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "მაკომპილებლის გაფრთხილებები:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
@@ -497,7 +502,7 @@ msgstr "ჩანახატის დაკომპილება..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "შემოწირული"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -590,7 +595,7 @@ msgstr "ჩანახატის ხელახლა შენახვა 
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "ფერთა სქემის ამოკითხვა ვერ მოხერხდა.\nგთხოვთ გადააყენოთ Arduino."
 
 #: Preferences.java:219
 msgid ""
@@ -654,19 +659,19 @@ msgstr "ამოჭრა"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "ჩეხური (ჩეხეთის რესპუბლიკა)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "დანიური (დანია)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "მონაცემთა დამუშავება"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "მონაცემთა შენახვა"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -674,7 +679,7 @@ msgstr "დაშორების შემცირება"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr ""
+msgstr "ნაგულისხმები"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -682,7 +687,7 @@ msgstr "წაშლა"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "მოწყობილობის მართვა"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -696,7 +701,7 @@ msgstr "გსურთ ცვლილებების უკუგდებ�
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "ჩვენება"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -707,7 +712,7 @@ msgstr "სტრიქონების ნომრების ჩვენ�
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "ნამდვილად გსურთ მოაშოროთ {0}?\nთუ მოაშორებთ, {0}-ს გამოყენებას ვეღარ შეძლებთ."
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -724,7 +729,7 @@ msgstr "ჩამტვირთველის ჩაწერა დასრ�
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "დაკომპილება დასრულდა"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -736,7 +741,7 @@ msgstr "ბეჭდვა დასრულდა"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "ატვირთვა დასრულდა"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -745,29 +750,29 @@ msgstr "ატვირთვა დასრულდა."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "გადმოტვირთულია {0}kb / {1}kb-დან."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "მიმდინარეობს დაფების განსაზღვრების გადმოტვირთვა."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr ""
+msgstr "მიმდინარეობს ბიბლიოთეკათა სიის გადმოტვირთვა."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
 msgid "Downloading library: {0}"
-msgstr ""
+msgstr "მიმდინარეობს {0} ბიბლიოთეკის გადმოტვირთვა."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr ""
+msgstr "მიმდინარეობს პლატფორმათა სიის გადმოტვირთვა."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr ""
+msgstr "მიმდინარეობს ხელსაწყოების გადმოტვირთვა ({0} / {1}-დან)."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -779,7 +784,7 @@ msgstr "ჰოლანდიური (ნიდერლანდები)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
-msgstr ""
+msgstr "Edison დახმარება"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -795,7 +800,7 @@ msgstr "რედაქტორის ენა:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "კოდის დაკეცვის ჩართვა"
 
 #: Preferences.java:92
 msgid "English"
@@ -808,11 +813,11 @@ msgstr "ინგლისური (გაერთიანებული ს
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr ""
+msgstr "შეიყვანეთ მძიმით გამოყოფილი URL მისამართები"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr ""
+msgstr "შეიყვანეთ დამატებითი URL მისამართები, ერთი თითო სტრიქონისთვის"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -828,6 +833,11 @@ msgstr "შეცდომა"
 msgid "Error adding file"
 msgstr "შეცდომა ფაილის დამატებისას"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "შეცდომა დაკომპილებისას დაფისთვის {0}."
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "შეცდომა დაკომპილებისას."
@@ -835,7 +845,7 @@ msgstr "შეცდომა დაკომპილებისას."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "შეცდომა {0}-ის გადმოტვირთვისას"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -863,7 +873,7 @@ msgstr "შეცდომა \"{0}\" სერიული პორტის �
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "შეცდომა ''{0}'' სერიული პორტის გახსნისას. იხილეთ დოკუმენტაცია მისამართზე http://playground.arduino.cc/Linux/All#Permission"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -901,7 +911,7 @@ msgstr "შეცდომა ჩამტვირთველის ჩაწ�
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "შეცდომა დაკომპილებისას: ვერ მოიძებნა კონფიგურაციის პარამეტრი '{0}'"
 
 #: SketchCode.java:83
 #, java-format
@@ -915,11 +925,11 @@ msgstr "შეცდომა ბეჭდვისას."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "შეცდომა სერიული პორტის პარამეტრების დაყენებისას: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "შეცდომა ატვირთვისას."
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -930,11 +940,11 @@ msgstr "შეცდომა ატვირთვისას: ვერ მ�
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "შეცდომა გადამოწმებისას"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "შეცდომა გადამოწმება/ატვირთვისას"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -948,12 +958,22 @@ msgstr "ესტონური (ესტონეთი)"
 msgid "Examples"
 msgstr "მაგალითები"
 
+#: ../../../../../app/src/processing/app/Base.java:1267
+msgid "Examples from Built-in Libraries"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1287
+#: ../../../../../app/src/processing/app/Base.java:1298
+#, java-format
+msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -973,13 +993,18 @@ msgstr "ვერ მოხერხდა ჩანახატის გახ
 msgid "File"
 msgstr "ფაილი"
 
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "ფაილის სახელი {0} უმართებულოა: უგულვებელყოფილი"
+
 #: Preferences.java:94
 msgid "Filipino"
 msgstr "ფილიპინური"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "ძიების გაფილტრვა:"
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -1039,11 +1064,11 @@ msgstr "გალისიური"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "გალისიური (ესპანეთი)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
-msgstr ""
+msgstr "Galileo დახმარება"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1052,6 +1077,10 @@ msgstr "ქართული"
 #: Preferences.java:97
 msgid "German"
 msgstr "გერმანული"
+
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1071,11 +1100,11 @@ msgstr "გლობალური ცვლადები იყენებ�
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "გადასვლა სტრიქონზე"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "გადასვლა სტრიქონზე:"
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1095,7 +1124,7 @@ msgstr "ინდური"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
-msgstr ""
+msgstr "ჰოსტის სახელი:"
 
 #: Sketch.java:295
 msgid ""
@@ -1110,6 +1139,10 @@ msgstr "ბორხესის ვინ ხართ?"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "უნგრული"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1136,12 +1169,12 @@ msgstr "არდუინო 1.0 ვერსიაში, ფაილთა �
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr ""
+msgstr "ბიბლიოთეკის ჩართვა"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
-msgstr ""
+msgstr "IDE გარემოს საინსტალაციო საქაღალდე არასწორია"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1191,6 +1224,10 @@ msgstr ""
 msgid "Installing..."
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr ""
+
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
@@ -1208,6 +1245,10 @@ msgstr "იტალიური"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "იაპონური"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1309,12 +1350,20 @@ msgstr "უნდა მიუთითოთ ჩანახატის მხ
 msgid "Name for new file:"
 msgstr "ახალი ფაილის სახელი:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "ნეპალური"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
+msgstr ""
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
@@ -1504,9 +1553,17 @@ msgstr "შემოიტანეთ SPI ბიბლიოთეკა მე
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "შემოიტანეთ Wire ბიბლიოთეკა მენიუდან 'ჩანახატი' -> 'ბიბლიოთეკის შემოტანა'"
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
 msgstr ""
 
 #: Preferences.java:110
@@ -1577,9 +1634,10 @@ msgstr "შეცდომა პლატფორმის მინიჭე�
 msgid "Problem accessing board folder /www/sd"
 msgstr "შეფერხდა წვდომა დაფის საქაღალდისთვის /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "შეფერხდა საქაღალდის ფაილებისთვის წვდომა"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1666,6 +1724,10 @@ msgstr "გსურთ  {0}-ის არსებულ ვერსიაზ�
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "ჩანაცვლება:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1772,6 +1834,10 @@ msgstr "მიმდევრობითი პორტის მონიტ�
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr ""
+
 #: Serial.java:194
 #, java-format
 msgid ""
@@ -1788,7 +1854,7 @@ msgstr "მიმდეცრობითი პორტი {0} ვერ მ�
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "სერიული პორტები"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
@@ -1797,7 +1863,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "მომართვა"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1807,17 +1873,13 @@ msgstr "მომართვის დაბრკოლება"
 msgid "Show Sketch Folder"
 msgstr "ალბომის საქაღალდის გახსნა"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "დაკომპილების დროს სიტყვამრავალი გამომავალი"
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "დაწვრილებითი გამომავალის ჩვენება:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "სიგნალის შეყვანა/გაყვანა"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1870,11 +1932,16 @@ msgstr "ალბომის მდებარეობა:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
+msgstr "ალბომის მისამართი განუსაზღვრელია"
+
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "სლოვაკური"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1904,7 +1971,7 @@ msgstr "ესპანური"
 
 #: ../../../../../app/src/processing/app/Base.java:2333
 msgid "Specified folder/zip file does not contain a valid library"
-msgstr ""
+msgstr "მითითებული საქაღალდე/არქივი არ შეიცავს მართებულ ბიბლიოთეკას"
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
@@ -1924,11 +1991,19 @@ msgstr "სისტემის ნაგულისხმები"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "ტალოსური"
 
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "ტამილური"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "ტაილანდური"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1936,7 +2011,7 @@ msgstr "საკვანძო სიტყვა 'BYTE' აღარ არ�
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "ბრძანება --upload მხარს უჭერს მხოლოდ ერთი ფაილის მითითებას"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -2043,8 +2118,11 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
 msgstr ""
 
 #: Base.java:535
@@ -2053,12 +2131,12 @@ msgstr "შესვენების დროა"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "დრო"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
-msgstr ""
+msgstr "ხელსაწყო {0} მიუწვდომელია თქვენი საოპერაციო სისტემისთვის."
 
 #: Editor.java:663
 msgid "Tools"
@@ -2066,7 +2144,7 @@ msgstr "ხელსაწყოები"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "საკითხი"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -2079,7 +2157,7 @@ msgstr "თურქული"
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr ""
+msgstr "სახეობა"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -2092,6 +2170,11 @@ msgstr "ჩანახატის ატვირთვისთვის შ�
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
 msgstr "უკრაინული"
+
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr ""
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2126,7 +2209,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "უკატეგორიო"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2135,6 +2218,10 @@ msgstr "დაბრუნება"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
+msgstr ""
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
@@ -2152,7 +2239,7 @@ msgstr "ამოუცნობი პლატფორმა, გამშვ
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "განახლებადი"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2161,6 +2248,21 @@ msgstr "განახლება"
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "შენახვისას, ჩანახატის ძველი გაფართოების შეცვლა ახლით (.pde -> .ino)"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
@@ -2173,6 +2275,10 @@ msgstr "ატვირთვა"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "ატვირთვა პრგრამატორის გამოყენებით"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2201,12 +2307,12 @@ msgstr "გარე რედაქტორის გამოყენებ�
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "მეტსახელი:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr ""
+msgstr "გამოიყენება ბიბლიოთეკა {0} ვერსიით {1}, საქაღალდეში: {2} {3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2228,33 +2334,33 @@ msgstr "კოდის შემოწმება ატვირთვის 
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "შემოწმება / დაკომპილება"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
-msgstr ""
+msgstr "მიმდინარეობს გადამოწმება და ატვირთვა..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
 msgid "Verifying archive integrity..."
-msgstr ""
+msgstr "მოწმდება არქივის მთლიანობა..."
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr ""
+msgstr "მოწმდება..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
 msgid "Version <b>{0}</b>"
-msgstr ""
+msgstr "ვერსია <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr ""
+msgstr "ვერსია უცნობია"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
 msgid "Version {0}"
-msgstr ""
+msgstr "ვერსია {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
@@ -2325,7 +2431,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "დასავლეთ ფრიზული"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -2359,7 +2465,7 @@ msgstr "არ შეიძლება .cpp ფაილის სახელ�
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
+msgstr "არ შეგიძლიათ შემოიტანოთ საქაღალდე, რომელშიც შენახულია თქვენი ალბომი"
 
 #: Sketch.java:421
 msgid ""
@@ -2371,7 +2477,7 @@ msgstr "შეუძლებელია დაარქვათ ჩანა�
 msgid ""
 "You can't save the sketch as \"{0}\"\n"
 "because the sketch already has a file with that name."
-msgstr ""
+msgstr "არ შეგიძლიათ შეინახოთ ჩანახატი როგორც \"{0}\"\nრადგან ჩანახატს უკვე აქვს ასეთი სახელის ფაილი."
 
 #: Sketch.java:883
 msgid ""
@@ -2419,13 +2525,13 @@ msgstr "Zip  არქივი არ შეიცავს ბიბლიო�
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" არ არის სწორი გაფართოება."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr ""
 
 #: debug/Compiler.java:409
@@ -2495,13 +2601,9 @@ msgstr "კავშირი დამყარდა!"
 msgid "createNewFile() returned false"
 msgstr "createNewFile() დააბრუნა უარყოფა"
 
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "ჩართულია მენიუში ფაილი > პარამეტრები."
-
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
-msgstr ""
+msgstr "http://www.arduino.cc/"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -2573,6 +2675,11 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78

@@ -35,6 +35,8 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
+import processing.app.Theme;
+
 public class SplashScreenHelper {
 
   private static final int X_OFFSET = 0;
@@ -96,7 +98,7 @@ public class SplashScreenHelper {
   private void prepareTextAreaAndGraphics() {
     splashTextArea = new Rectangle2D.Double(X_OFFSET, Y_OFFSET, TEXTAREA_WIDTH, TEXTAREA_HEIGHT);
 
-    splashGraphics = splash.createGraphics();
+    splashGraphics = Theme.setupGraphics2D(splash.createGraphics());
 
     if (desktopHints != null) {
       splashGraphics.addRenderingHints(desktopHints);

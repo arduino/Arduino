@@ -1,12 +1,12 @@
 #FUNCTIONS COLOR 			#D35400 - ORANGE			KEYWORD1
 #FUNCTIONS COLOR			#D35400 - ORANGE			KEYWORD2
-#STRUCTURE COLORS 			#5E6D03 - GREEN			KEYWORD3
-#VARIABLES COLOR 				#00979C - BLUE				LITERAL1
+#STRUCTURE COLORS 			#728E00 - GREEN			KEYWORD3
+#CONSTANTS COLOR 				#00979C - BLUE				LITERAL1
+#VARIABLES COLOR 				#00979C - BLUE				LITERAL2
 
 #ERROR COLOR					#A61717 - RED
 #COMMENTS // COLOR			#95A5A6 - LIGHT GREY
 #COMMENTS /**/ COLOR		#434F54	- DARK GREY
-
 
 # GUI - STATUS
 status.notice.fgcolor = #002325
@@ -18,7 +18,6 @@ status.edit.bgcolor = #F1B500
 status.font = SansSerif,plain,12
 
 # GUI - TABS
-# settings for the tabs at the top
 # (tab images are stored in the lib/theme folder)
 header.bgcolor = #17A1A5
 header.text.selected.color = #005B5B
@@ -99,17 +98,13 @@ editor.reserved_word.style = #5E6D03,plain
 
 
 # TEXT - LITERALS
-
-# constants & datatypes
-editor.literal1.style = #006699,plain
-
-# p5 built in variables: e.g. mouseX, width, pixels
+editor.literal1.style = #00979C,plain
 editor.literal2.style = #00979C,plain
 editor.variable.style = #00979C,plain
 editor.reserved_word_2.style = #00979C,plain
 editor.literal_boolean.style = #00979C,plain
 editor.literal_char.style = #00979C,plain
-editor.literal_string_double_quote.style = #00979C,plain
+editor.literal_string_double_quote.style = #005C5F,plain
 editor.preprocessor.style = #5E6D03,plain
 
 # http://www.arduino.cc/

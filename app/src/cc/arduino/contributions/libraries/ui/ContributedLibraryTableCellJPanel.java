@@ -26,6 +26,7 @@ import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.Theme;
 
 public class ContributedLibraryTableCellJPanel extends JPanel {
 
@@ -39,7 +40,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
   final JLabel statusLabel;
 
   public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
-                                     boolean isSelected) {
+                                           boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -217,10 +218,10 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     Document doc = description.getDocument();
     if (doc instanceof HTMLDocument) {
       HTMLDocument html = (HTMLDocument) doc;
-      StyleSheet stylesheet = html.getStyleSheet();
-      stylesheet.addRule("body { margin: 0; padding: 0;"
-                         + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
-                         + "font-size: 100%;" + "font-size: 0.95em; }");
+      StyleSheet s = html.getStyleSheet();
+      s.addRule("body { margin: 0; padding: 0;"
+                + "font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;"
+                + "font-size: " + 10 * Theme.getScale() / 100 + "; }");
     }
     description.setOpaque(false);
     description.setBorder(new EmptyBorder(4, 7, 7, 7));

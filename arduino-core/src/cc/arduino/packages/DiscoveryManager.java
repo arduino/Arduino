@@ -40,11 +40,13 @@ import static processing.app.I18n.tr;
 public class DiscoveryManager {
 
   private final List<Discovery> discoverers;
+  private final SerialDiscovery serialDiscoverer = new SerialDiscovery();
+  private final NetworkDiscovery networkDiscoverer = new NetworkDiscovery();
 
   public DiscoveryManager() {
     discoverers = new ArrayList<Discovery>();
-    discoverers.add(new SerialDiscovery());
-    discoverers.add(new NetworkDiscovery());
+    discoverers.add(serialDiscoverer);
+    discoverers.add(networkDiscoverer);
 
     // Start all discoverers
     for (Discovery d : discoverers) {
@@ -69,6 +71,10 @@ public class DiscoveryManager {
     Runtime.getRuntime().addShutdownHook(closeHook);
   }
 
+  public SerialDiscovery getSerialDiscoverer() {
+    return serialDiscoverer;
+  }
+
   public List<BoardPort> discovery() {
     List<BoardPort> res = new ArrayList<BoardPort>();
     for (Discovery d : discoverers) {
@@ -77,8 +83,25 @@ public class DiscoveryManager {
     return res;
   }
 
+  public List<BoardPort> discovery(boolean complete) {
+    List<BoardPort> res = new ArrayList<BoardPort>();
+    for (Discovery d : discoverers) {
+      res.addAll(d.listDiscoveredBoards(complete));
+    }
+    return res;
+  }
+
   public BoardPort find(String address) {
     for (BoardPort boardPort : discovery()) {
+      if (boardPort.getAddress().equals(address)) {
+        return boardPort;
+      }
+    }
+    return null;
+  }
+
+  public BoardPort find(String address, boolean complete) {
+    for (BoardPort boardPort : discovery(complete)) {
       if (boardPort.getAddress().equals(address)) {
         return boardPort;
       }

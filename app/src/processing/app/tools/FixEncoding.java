@@ -66,13 +66,9 @@ public class FixEncoding implements Tool {
     }
     try {
       for (int i = 0; i < sketch.getCodeCount(); i++) {
-        SketchCode code = sketch.getCode(i);
-        code.setProgram(loadWithLocalEncoding(code.getFile()));
-        code.setModified(true);  // yes, because we want them to save this
+        SketchFile file = sketch.getFile(i);
+        editor.findTab(file).setText(loadWithLocalEncoding(file.getFile()));
       }
-      // Update the currently visible program with its code
-      editor.setText(sketch.getCurrentCode().getProgram());
-      
     } catch (IOException e) {
       String msg = 
         tr("An error occurred while trying to fix the file encoding.\nDo not attempt to save this sketch as it may overwrite\nthe old version. Use Open to re-open the sketch and try again.\n") +

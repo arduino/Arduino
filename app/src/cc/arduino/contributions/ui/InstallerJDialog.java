@@ -30,6 +30,7 @@
 package cc.arduino.contributions.ui;
 
 import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -122,6 +123,10 @@ public abstract class InstallerJDialog<T> extends JDialog {
             contribTable.getCellEditor().stopCellEditing();
           }
           updateIndexFilter(filters, categoryFilter);
+          if (contribModel.getRowCount() == 1) {
+            // TODO: understand why it doesn't work
+            //contribTable.addRowSelectionInterval(0, 0);
+          }
         }
       };
 
@@ -227,7 +232,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
     }
     setProgressVisible(false, "");
 
-    setMinimumSize(new Dimension(800, 450));
+    setMinimumSize(scale(new Dimension(800, 450)));
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 

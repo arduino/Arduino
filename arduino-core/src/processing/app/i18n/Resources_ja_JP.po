@@ -10,18 +10,23 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Masanori Ohgita <mp@ohgita.info>, 2013,2015
 # Shigeru Kanemoto <sgk@switch-science.com>, 2015
 # Shigeru Kobayashi <mayfair@iamas.ac.jp>, 2015
 # Shigeru Kobayashi <mayfair@iamas.ac.jp>, 2016
 # Shinichi Ohki <auxin.one@gmail.com>, 2015
+# Takumi Funada <taku-f@taf.co.jp>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-01-02 11:22+0000\n"
-"Last-Translator: Shigeru Kobayashi <mayfair@iamas.ac.jp>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,22 +87,6 @@ msgstr "「--verbose」「--verbose-upload」「--verbose-build」は、「--ver
 msgid ".pde -> .ino"
 msgstr ".pdeから.inoへ"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr "<br/>{0}ボード{1}にアップデートがあります"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr "<br/>{0}ボード{1}と{2}ライブラリ{3}にアップデートがあります"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr "<br/>{0}ライブラリ{1}にアップデートがあります"
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -139,6 +128,10 @@ msgstr "スケッチブックのサブフォルダは有効なライブラリで
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "Arduinoについて..."
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -316,6 +309,10 @@ msgstr "自動整形が完了しました。"
 msgid "Auto-detect proxy settings"
 msgstr "プロキシ設定を自動検出"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "自動"
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
 msgstr "自動プロキシ構成のURL："
@@ -344,7 +341,17 @@ msgstr "ベラルーシ語"
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr "マイコンボード"
+msgstr "ボード"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "ボード{0}は利用できません"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -360,7 +367,7 @@ msgstr "ボード{0}：{1}：{2}は「build.board」の設定を定義しませ�
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "マイコンボード："
+msgstr "ボード："
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -641,7 +648,7 @@ msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr "指定されたポートには、マイコンボードが接続されていません。正しいポートを選んである事を確認してください。もしも正しいポートを選んである場合には、書き込みを開始した直後にマイコンボードのリセットボタンを押してみてください。"
+msgstr "指定されたポートには、ボードが接続されていません。正しいポートを選んである事を確認してください。もしも正しいポートを選んである場合には、書き込みを開始した直後にボードのリセットボタンを押してみてください。"
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
@@ -687,7 +694,7 @@ msgstr "デバイス制御"
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
 "the board right before exporting"
-msgstr "マイコンボードが応答しません。シリアルポートが正しく選択されている事を確認してください。また、書き込みの直前にマイコンボードのリセットボタンを押してみてください。"
+msgstr "デバイスが応答しません。シリアルポートが正しく選択されている事を確認してください。また、書き込みの直前にボードのリセットボタンを押してみてください。"
 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
@@ -735,11 +742,11 @@ msgstr "印刷が完了しました。"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr "マイコンボードへの書き込みが完了しました。"
+msgstr "ボードへの書き込みが完了しました。"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
-msgstr "マイコンボードへの書き込みが完了しました。"
+msgstr "ボードへの書き込みが完了しました。"
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
@@ -811,7 +818,7 @@ msgstr "カンマ区切りでurlのリストを入力"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr "列ごとに追加のURLを入力"
+msgstr "追加のURLを1行ずつ入力"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -827,6 +834,11 @@ msgstr "エラー"
 msgid "Error adding file"
 msgstr "ファイルを追加する際にエラーが発生しました。"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "ボード{0}に対するコンパイル時にエラーが発生しました。"
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "コンパイル時にエラーが発生しました。"
@@ -834,7 +846,7 @@ msgstr "コンパイル時にエラーが発生しました。"
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr "{0}のダウンロードする際にエラーが発生しました"
+msgstr "{0}のダウンロード時にエラーが発生しました"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -947,13 +959,23 @@ msgstr "エストニア語（エストニア）"
 msgid "Examples"
 msgstr "スケッチの例"
 
+#: ../../../../../app/src/processing/app/Base.java:1267
+msgid "Examples from Built-in Libraries"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr "カスタムライブラリのスケッチ例"
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
-msgstr "ライブラリのスケッチ例"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1287
+#: ../../../../../app/src/processing/app/Base.java:1298
+#, java-format
+msgid "Examples from {0} Libraries"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -971,6 +993,11 @@ msgstr "スケッチ「{0}」を開けませんでした。"
 #: Editor.java:491
 msgid "File"
 msgstr "ファイル"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "ファイル名{0}は無効です：無視しました"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1052,6 +1079,10 @@ msgstr "グルジア語"
 msgid "German"
 msgstr "ドイツ語"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "初心者向けガイド"
@@ -1109,6 +1140,10 @@ msgstr "それはムリです"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "ハンガリー語"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1190,6 +1225,10 @@ msgstr "ツールをインストール中 ({0}/{1})..."
 msgid "Installing..."
 msgstr "インストール中…"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "インタフェースのスケール："
+
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
@@ -1207,6 +1246,10 @@ msgstr "イタリア語"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "日本語"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1308,6 +1351,10 @@ msgstr "スケッチファイルは1つだけ指定してください"
 msgid "Name for new file:"
 msgstr "新規ファイルの名前："
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "ネパール語"
@@ -1315,6 +1362,10 @@ msgstr "ネパール語"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "ネットワーク"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1346,7 +1397,7 @@ msgstr "いいえ"
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
-msgstr "承認データが見つかりません"
+msgstr "認証データが見つかりません"
 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
@@ -1503,10 +1554,18 @@ msgstr "「スケッチ」メニューの「ライブラリを使用」で、SPI
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "「スケッチ」メニューの「ライブラリを使用」で、Wireライブラリを読み込んでください。"
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
 msgstr "「ツール」メニューの「書込装置」から、書込装置を選んでください。"
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr "シリアルモニタを開いている間はプロッタを利用できません"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1576,9 +1635,10 @@ msgstr "プラットフォームを設定する際に問題が発生しました
 msgid "Problem accessing board folder /www/sd"
 msgstr "マイコンボードのフォルダ「/www/sd」にアクセスできません。"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "フォルダ内のファイルにアクセスできません。"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "フォルダ「{0}」内のファイルにアクセスできません"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1665,6 +1725,10 @@ msgstr "すでに同じ「{0}」という名前のファイルがスケッチの
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "置換テキスト："
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "廃止済"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1771,6 +1835,10 @@ msgstr "シリアルモニタ"
 msgid "Serial Plotter"
 msgstr "シリアルプロッタ"
 
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr "プロッタを開いている間はシリアルモニタを利用できません"
+
 #: Serial.java:194
 #, java-format
 msgid ""
@@ -1805,10 +1873,6 @@ msgstr "設定に関する問題"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "スケッチのフォルダを表示"
-
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "コンパイル中に詳細な出力を表示する"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1871,6 +1935,11 @@ msgstr "スケッチブックの保存場所："
 msgid "Sketchbook path not defined"
 msgstr "スケッチブックのパスが定義されていません"
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "スロバキア語"
@@ -1928,6 +1997,14 @@ msgstr "タロッサ語"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "タミル語"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "タイ語"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -2042,9 +2119,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "このライブラリはライブラリマネージャにありません。ここから再インストールすることはできません。\n本当に削除しますか？"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "以下の設定を行うとさらに詳しい情報を得られます。"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "「ファイル」メニューの「環境設定」から\n「より詳細な情報を表示する：コンパイル」を有効にすると\nより詳しい情報が表示されます。\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2092,6 +2172,11 @@ msgstr "スケッチを書き込むために、マイコンボードのパスワ
 msgid "Ukrainian"
 msgstr "ウクライナ語"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "{0}に接続できません"
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2108,7 +2193,7 @@ msgstr "接続できません：パスワードが間違っていませんか？
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr "{1}には{0}が見つかりません"
+msgstr "{1}の{0}が見つかりません"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2121,7 +2206,7 @@ msgstr "シリアルプロッタを開けません"
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
-msgstr "ネットワーク問題の可能性があるためArduino.ccにアクセスできません"
+msgstr "Arduino.ccにアクセスできません。ネットワークの問題かもしれません。"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
@@ -2135,6 +2220,10 @@ msgstr "元に戻す"
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
 msgstr "コンテクストキー{1}のタイプ{0}は未処理です"
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2161,6 +2250,21 @@ msgstr "更新"
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "スケッチを保存する際に、拡張子を.pdeから.inoに変更する"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "{0}ボード{1}にアップデートがあります"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "{0}ボード{1}と{2}ライブラリ{3}にアップデートがあります"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "{0}ライブラリ{1}にアップデートがあります"
+
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
 msgstr "インストールされたライブラリのリストをアップデート中"
@@ -2173,6 +2277,10 @@ msgstr "マイコンボードに書き込む"
 msgid "Upload Using Programmer"
 msgstr "書込装置を使って書き込む"
 
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
+
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
 msgstr "書き込みを中止しました。"
@@ -2183,7 +2291,7 @@ msgstr "書き込みを中止しました。"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "マイコンボードに書き込んでいます..."
+msgstr "ボードに書き込んでいます..."
 
 #: Sketch.java:1622
 msgid "Uploading..."
@@ -2297,17 +2405,17 @@ msgstr "警告：ファイル{0}は絶対パス{1}にリンクしています"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr "警告：信頼できないコントリビューションを信頼しようとしています"
+msgstr "警告：信頼されていないコントリビューションを信頼しようとしています"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr "警告：信頼できないスクリプト({0})を実行しようとしています"
+msgstr "警告：信頼されていないスクリプト({0})を実行しようとしています"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr "警告：信頼できないコントリビューションです。スクリプトの実行をスキップしています({0})"
+msgstr "警告：信頼されていないコントリビューションです。スクリプトの実行をスキップしています({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
@@ -2342,7 +2450,7 @@ msgstr "行末を折り曲げる"
 msgid ""
 "Wrong microcontroller found.  Did you select the right board from the Tools "
 "> Board menu?"
-msgstr "マイコンボードと通信したところ、選択と異なるマイコンチップが応答しました。「ツール」メニューの「マイコンボード」の選択肢から、正しいマイコンボードを選んでください。"
+msgstr "選択と異なるマイクロコントローラが見つかりました。ツール>ボードメニューから正しいボードを選んでください。"
 
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
@@ -2418,14 +2526,14 @@ msgstr "指定されたZIPファイルにはライブラリが含まれていま
 msgid "\".{0}\" is not a valid extension."
 msgstr "拡張子「.{0}」は、使えません。"
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr "「{0}」は正当に認められていない文字を含んでいます。もしこのコードがArduinoの古いバージョンで作成されたものであれば、「ツール」メニューの「エンコーディングを修正」を使ってスケッチをUTF-8エンコーディングに更新してください。もしそうでないなら、この警告を取り除くために問題の文字を削除する必要があるかもしれません。"
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "「{0}」には認識できない文字が含まれています。もし、このコードがArduinoの古いバージョンで作成されたものであれば「ツール」メニューの「エンコーディングを修正」でスケッチをUTF-8エンコーディングに更新してください。そうでないと、この警告を取り除くために問題の文字を削除する必要があるかもしれません。"
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2494,10 +2602,6 @@ msgstr "接続されました！"
 msgid "createNewFile() returned false"
 msgstr "createNewFile()がfalseを返しました。"
 
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "この設定は「ファイル」メニューの「環境設定」（Mac OS Xの場合は「Arduino」メニューの「Preferences...」）で表示される画面で有効にできます。"
-
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
 msgstr "http://www.arduino.cc/"
@@ -2527,7 +2631,7 @@ msgstr "serialMenuがnullです"
 #, java-format
 msgid ""
 "the selected serial port {0} does not exist or your board is not connected"
-msgstr "シリアルポート「{0}」が選択されていますが、そのポートは存在しないか、マイコンボードが接続されていません。"
+msgstr "シリアルポート「{0}」が選択されていますが、そのポートは存在しないか、ボードが接続されていません。"
 
 #: ../../../processing/app/Base.java:389
 #, java-format
@@ -2574,6 +2678,11 @@ msgstr "{0} ライブラリ"
 msgid "{0} must be a folder"
 msgstr "{0} フォルダでなくてはなりません"
 
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{1}の{0}"
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
@@ -2592,41 +2701,41 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr "{0}: 「--pref」への引数が不正です。「pref=value」の形式を取る必要があります。"
+msgstr "{0}：「--pref」への引数が不正です。「pref=value」の形式を取る必要があります。"
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr "{0}: ボード名が不正です。「package:arch:board」または「package:arch:board:options」の形式を取る必要があります。"
+msgstr "{0}：ボード名が不正です。「package:arch:board」または「package:arch:board:options」の形式を取る必要があります。"
 
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: ボード「{2}」に対するオプション「{1}」は無効です"
+msgstr "{0}：ボード「{2}」に対するオプション「{1}」は無効です"
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr "{0}: ボード「{1}」に対する不正なオプションです"
+msgstr "{0}：ボード「{1}」に対する不正なオプションです"
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr "{0}: 不正なオプションです。「name=value」の形式を取る必要があります。"
+msgstr "{0}：不正なオプションです。「name=value」の形式を取る必要があります。"
 
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr "{0}: 不明なアーキテクチャ"
+msgstr "{0}：不明なアーキテクチャ"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr "{0}: 不明なボード"
+msgstr "{0}：不明なボード"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
-msgstr "{0}: 不明なパッケージ"
+msgstr "{0}：不明なパッケージ"

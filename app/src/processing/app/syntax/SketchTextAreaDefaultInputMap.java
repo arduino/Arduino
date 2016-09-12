@@ -67,8 +67,14 @@ public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMa
 
       put(KeyStroke.getKeyStroke(KeyEvent.VK_A, ctrl), DefaultEditorKit.beginLineAction);
       put(KeyStroke.getKeyStroke(KeyEvent.VK_E, ctrl), DefaultEditorKit.endLineAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_N, ctrl), DefaultEditorKit.downAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_P, ctrl), DefaultEditorKit.upAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_B, ctrl), DefaultEditorKit.backwardAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_F, ctrl), DefaultEditorKit.forwardAction);
+      put(KeyStroke.getKeyStroke(KeyEvent.VK_D, ctrl), DefaultEditorKit.deleteNextCharAction);
     }
 
+    // VK_DIVIDE is the keypad; should this be added to VK_SLASH as well?
     put(KeyStroke.getKeyStroke(KeyEvent.VK_DIVIDE, defaultModifier), RSyntaxTextAreaEditorKit.rstaToggleCommentAction);
 
     put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0), DefaultEditorKit.backwardAction);

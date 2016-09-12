@@ -94,7 +94,9 @@ public class StringReplacer {
                                           String rightDelimiter) {
     for (Map.Entry<String, String> entry : map.entrySet()) {
       String keyword = leftDelimiter + entry.getKey() + rightDelimiter;
-      src = src.replace(keyword, entry.getValue());
+      if (entry.getValue() != null && keyword != null) {
+          src = src.replace(keyword, entry.getValue());
+      }
     }
     return src;
   }

@@ -68,6 +68,7 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
     SSHClientSetupChainRing sshClientSetupChain = new SSHConfigFileSetup(new SSHPwdSetup());
     session = sshClientSetupChain.setup(getBoardPort(), jSch);
 
+    session.setConfig("PreferredAuthentications", "publickey,keyboard-interactive,password");
     session.setUserInfo(new NoInteractionUserInfo(PreferencesData.get(getAuthorizationKey())));
     session.connect(30000);
 

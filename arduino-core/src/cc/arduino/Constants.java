@@ -39,12 +39,13 @@ public class Constants {
   public static final String PREF_CONTRIBUTIONS_TRUST_ALL = "contributions.trust.all";
 
   public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
+  public static final String BUNDLED_INDEX_FILE_NAME = "package_index_bundled.json";
   public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
 
   public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
 
   public static final long BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD = 60000;
-  public static final int NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
+  public static final long NOTIFICATION_POPUP_AUTOCLOSE_DELAY = 10000;
 
   public static final String PROXY_TYPE_NONE = "none";
   public static final String PROXY_TYPE_AUTO = "auto";

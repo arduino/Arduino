@@ -77,7 +77,6 @@ void loop() {
   sendNTPpacket(timeServer); // send an NTP packet to a time server
   // wait to see if a reply is available
   delay(1000);
-  Serial.println(Udp.parsePacket());
   if (Udp.parsePacket()) {
     Serial.println("packet received");
     // We've received a packet, read the data from it
