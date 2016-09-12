@@ -745,6 +745,6 @@ float String::toFloat(void) const
 
 double String::toDouble(void) const
 {
-    if (buffer) return atof(buffer);
-    return 0;
+	if (buffer) return atof(buffer);
+	return 0;
 }
