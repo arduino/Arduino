@@ -23,6 +23,7 @@
 package processing.app.windows;
 
 import cc.arduino.os.windows.Win32KnownFolders;
+import processing.app.PreferencesData;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -49,8 +50,15 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws Exception {
-    Path path = Win32KnownFolders.getLocalAppDataFolder().toPath();
-    settingsFolder = path.resolve("Arduino15").toFile();
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app")) {
+      // LocalAppData is restricted for Windows Store Apps.
+      // We are forced to use a document folder to store tools.
+      Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+      settingsFolder = path.resolve("ArduinoData").toFile();
+    } else {
+      Path path = Win32KnownFolders.getLocalAppDataFolder().toPath();
+      settingsFolder = path.resolve("Arduino15").toFile();
+    }
   }
 
   private Path recoverOldSettingsFolderPath() throws Exception {
@@ -192,6 +200,9 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public void fixSettingsLocation() throws Exception {
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app"))
+      return;
+
     Path oldSettingsFolder = recoverOldSettingsFolderPath();
     if (!Files.exists(oldSettingsFolder)) {
       return;
