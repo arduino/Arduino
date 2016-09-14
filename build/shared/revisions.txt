@@ -6,6 +6,7 @@ ARDUINO 1.6.12
 
 [core]
 * avr: Add support for internal 2.56V and 2.56V ext. cap analog references on the ATtiny25/45/85. Thanks @mischnic
+* Added String::toDouble(). Thanks @Ivan-Perez
 
 ARDUINO 1.6.11 - 2016.08.17
 
