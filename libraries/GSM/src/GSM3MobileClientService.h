@@ -55,13 +55,13 @@ class GSM3MobileClientService : public Client
 		/** Constructor
 			@param synch		Sync mode
 		 */
-		GSM3MobileClientService(bool synch=true);
+		GSM3MobileClientService(const bool synch=true);
 		
 		/** Constructor
 			@param socket		Socket
 			@param synch		Sync mode
 		 */
-		GSM3MobileClientService(int socket, bool synch);
+		GSM3MobileClientService(const int socket, const bool synch);
 		
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
@@ -75,25 +75,25 @@ class GSM3MobileClientService : public Client
 			@param (uint16_t)
 			@return returns 0 if last command is still executing, 1 success, 2 if there are no resources
 		 */
-		inline int connect(IPAddress, uint16_t);
+		inline int connect(const IPAddress, const uint16_t);
 
 		/** Connect to server by hostname
 			@param host			Hostname
 			@param port			Port
 			@return returns 0 if last command is still executing, 1 success, 2 if there are no resources
 		 */
-		int connect(const char *host, uint16_t port);
+		int connect(const char *host, const uint16_t port);
 		
 		/** Initialize write in request
 			@param sync			Sync mode
 		 */
-		void beginWrite(bool sync=false);
+		void beginWrite(const bool sync = false);
 		
 		/** Write a character in request
 			@param c			Character
 			@return size
 		 */
-		size_t write(uint8_t c);
+		size_t write(const uint8_t c);
 		
 		/** Write a characters buffer in request
 			@param buf			Buffer
@@ -111,7 +111,7 @@ class GSM3MobileClientService : public Client
 		/** Finish write request
 			@param sync			Sync mode
 		 */
-		void endWrite(bool sync=false);
+		void endWrite(const bool sync = false);
 		
 		/** Check if connected to server
 			@return 1 if connected
@@ -125,7 +125,7 @@ class GSM3MobileClientService : public Client
 			@param size			Buffer size
 			@return bytes read
 		 */
-		int read(uint8_t *buf, size_t size);
+		int read(const uint8_t *buf, const size_t size);
 		
 		/** Read a character from response buffer
 			@return character
