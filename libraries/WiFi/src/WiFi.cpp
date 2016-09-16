@@ -68,7 +68,7 @@ int WiFiClass::begin(char* ssid)
 		   delay(WL_DELAY_START_CONNECTION);
 		   status = WiFiDrv::getConnectionStatus();
 	   }
-	   while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   while ((( status == WL_IDLE_STATUS) || (status == WL_SCAN_COMPLETED)) && (--attempts > 0));
    }else
    {
 	   status = WL_CONNECT_FAILED;
@@ -88,7 +88,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, const char *key)
 	   {
 		   delay(WL_DELAY_START_CONNECTION);
 		   status = WiFiDrv::getConnectionStatus();
-	   }while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   }while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED)) && (--attempts > 0));
    }else{
 	   status = WL_CONNECT_FAILED;
    }
@@ -108,7 +108,7 @@ int WiFiClass::begin(char* ssid, const char *passphrase)
  		   delay(WL_DELAY_START_CONNECTION);
  		   status = WiFiDrv::getConnectionStatus();
  	   }
-	   while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   while ((( status == WL_IDLE_STATUS) || (status == WL_SCAN_COMPLETED)) && (--attempts>0));
     }else{
     	status = WL_CONNECT_FAILED;
     }

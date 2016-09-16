@@ -64,7 +64,7 @@ public:
   virtual int read(unsigned char* buffer, size_t len);
   // Read up to len characters from the current packet and place them into buffer
   // Returns the number of characters read, or 0 if none are available
-  virtual int read(char* buffer, size_t len) { return read((unsigned char*)buffer, len); };
+  virtual int read(char* buffer, size_t len) { return read((unsigned char*)buffer, len); }
   // Return the next byte from the current packet without moving on to the next byte
   virtual int peek();
   virtual void flush();	// Finish reading the current packet
