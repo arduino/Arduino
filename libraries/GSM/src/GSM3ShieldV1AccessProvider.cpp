@@ -148,7 +148,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 	// 7: Wait Calling Line Id OK and Echo off
 	// 8: Wait for OK and COLP command for connecting line identification.
 	// 9: Wait for OK.
-	int ct = theGSM3ShieldV1ModemCore.getCommandCounter();
+	const int ct = theGSM3ShieldV1ModemCore.getCommandCounter();
 	if(ct == 1)
 	{
 		// Launch AT	
