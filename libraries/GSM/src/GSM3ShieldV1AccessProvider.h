@@ -97,12 +97,12 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 		/** Returns 0 if last command is still executing
 			@return 1 if success, >1 if error 
 		*/
-		int ready(){return GSM3ShieldV1BaseProvider::ready();};
+		int ready(){return GSM3ShieldV1BaseProvider::ready();}
 		
 		/** Returns modem status
 			@return modem network status 
 		*/
-		inline GSM3_NetworkStatus_t getStatus(){return theGSM3ShieldV1ModemCore.getStatus();};
+		inline GSM3_NetworkStatus_t getStatus(){return theGSM3ShieldV1ModemCore.getStatus();}
 
 		void manageResponse(byte from, byte to);
 
