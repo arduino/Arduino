@@ -83,23 +83,23 @@
 class Stepper {
   public:
     // constructors:
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4,
-                                 int motor_pin_5);
+	Stepper(const int number_of_steps, const int motor_pin_1, const int motor_pin_2);
+	Stepper(const int number_of_steps, const int motor_pin_1, const int motor_pin_2,
+								 const int motor_pin_3, const int motor_pin_4);
+	Stepper(const int number_of_steps, const int motor_pin_1, const int motor_pin_2,
+								 const int motor_pin_3, const int motor_pin_4,
+								 const int motor_pin_5);
 
     // speed setter method:
-    void setSpeed(long whatSpeed);
+	void setSpeed(const long whatSpeed);
 
     // mover method:
-    void step(int number_of_steps);
+	void step(const int number_of_steps);
 
     int version(void);
 
   private:
-    void stepMotor(int this_step);
+	void stepMotor(const int this_step);
 
     int direction;            // Direction of rotation
     unsigned long step_delay; // delay between steps, in ms, based on speed

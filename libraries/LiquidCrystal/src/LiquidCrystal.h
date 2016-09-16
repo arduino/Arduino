@@ -44,22 +44,22 @@
 
 class LiquidCrystal : public Print {
 public:
-  LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-  LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-		uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
-  LiquidCrystal(uint8_t rs, uint8_t rw, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
-  LiquidCrystal(uint8_t rs, uint8_t enable,
-		uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3);
+  LiquidCrystal(const uint8_t rs, const uint8_t enable,
+		const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3,
+		const uint8_t d4, const uint8_t d5, const uint8_t d6, const uint8_t d7);
+  LiquidCrystal(const uint8_t rs, const uint8_t rw, const uint8_t enable,
+		const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3,
+		const uint8_t d4, const uint8_t d5, const uint8_t d6, const uint8_t d7);
+  LiquidCrystal(const uint8_t rs, const uint8_t rw, const uint8_t enable,
+		const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3);
+  LiquidCrystal(const uint8_t rs, const uint8_t enable,
+		const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3);
 
-  void init(uint8_t fourbitmode, uint8_t rs, uint8_t rw, uint8_t enable,
-	    uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3,
-	    uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7);
+  void init(const uint8_t fourbitmode, const uint8_t rs, const uint8_t rw, uint8_t enable,
+		const uint8_t d0, const uint8_t d1, const uint8_t d2, const uint8_t d3,
+		const uint8_t d4, const uint8_t d5, const uint8_t d6, const uint8_t d7);
     
-  void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
+  void begin(const uint8_t cols, const uint8_t rows, const uint8_t charsize = LCD_5x8DOTS);
 
   void clear();
   void home();
@@ -77,17 +77,17 @@ public:
   void autoscroll();
   void noAutoscroll();
 
-  void setRowOffsets(int row1, int row2, int row3, int row4);
+  void setRowOffsets(const int row1, const int row2, const int row3, const int row4);
   void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t, uint8_t); 
+  void setCursor(const uint8_t, const uint8_t);
   virtual size_t write(uint8_t);
-  void command(uint8_t);
+  void command(const uint8_t);
   
   using Print::write;
 private:
-  void send(uint8_t, uint8_t);
-  void write4bits(uint8_t);
-  void write8bits(uint8_t);
+  void send(const uint8_t, const uint8_t);
+  void write4bits(const uint8_t);
+  void write8bits(const uint8_t);
   void pulseEnable();
 
   uint8_t _rs_pin; // LOW: command.  HIGH: character.
