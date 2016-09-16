@@ -44,7 +44,7 @@ class GSM3MobileVoiceProvider
 			@param
 			@return void
 		*/
-		virtual void initialize(){};
+		virtual void initialize(){}
 		
 		/** Launch a voice call
 			@param number	 	Phone number to be called

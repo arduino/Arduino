@@ -46,7 +46,7 @@ class GSM3MobileClientProvider
 	public:
 
 		/** Constructor */
-		GSM3MobileClientProvider(){};
+		GSM3MobileClientProvider(){}
 		
 		/** Minimum socket
 			@return socket

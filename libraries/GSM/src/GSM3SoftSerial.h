@@ -141,7 +141,7 @@ class GSM3SoftSerial : public GSM3CircularBufferManager
 		/** Register serial manager
 			@param manager		Serial manager
 		 */
-		inline void registerMgr(GSM3SoftSerialMgr* manager){mgr=manager;};
+		inline void registerMgr(GSM3SoftSerialMgr* manager){mgr=manager;}
 		
 		/** If there is spaceAvailable in the buffer, lets send a XON
 		 */

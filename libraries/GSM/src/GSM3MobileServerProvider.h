@@ -66,7 +66,7 @@ class GSM3MobileServerProvider
 		virtual int ready()=0;
 		
 		/** Constructor */
-		GSM3MobileServerProvider(){};
+		GSM3MobileServerProvider(){}
 						
 		/** Connect server to TCP port
 			@param port			TCP port

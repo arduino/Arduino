@@ -43,18 +43,18 @@ int GSM3ShieldV1BaseProvider::ready()
 	theGSM3ShieldV1ModemCore.manageReceivedData();
 
 	return theGSM3ShieldV1ModemCore.getCommandError();
-};
+}
 
 void GSM3ShieldV1BaseProvider::prepareAuxLocate(PGM_P str, char auxLocate[])
 {
-	int i=0;
+	int i = 0;
 	char c;
 
 	do
 	{	
-		c=pgm_read_byte_near(str + i); 
-		auxLocate[i]=c;
-		i++;
-	} while (c!=0);
+		c = pgm_read_byte_near(str + i);
+		auxLocate[i] = c;
+		++i;
+	} while (c != 0);
 }
 

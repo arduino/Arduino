@@ -107,11 +107,11 @@ int GSM3SMSService::waitForAnswerIfNeeded(int returnvalue)
 		unsigned long m;
 		m=millis();
 		// Wait for __TOUT__
-		while(((millis()-m)< __TOUT__ )&&(ready()==0)) 
+		while(((millis() - m) < __TOUT__ ) && (ready() == 0))
 			delay(100);
 		// If everything was OK, return 1
 		// else (timeout or error codes) return 0;
-		if(ready()==1)
+		if(ready() == 1)
 			return 1;
 		else
 			return 0;

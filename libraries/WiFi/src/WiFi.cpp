@@ -68,7 +68,7 @@ int WiFiClass::begin(char* ssid)
 		   delay(WL_DELAY_START_CONNECTION);
 		   status = WiFiDrv::getConnectionStatus();
 	   }
-	   while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   while ((( status == WL_IDLE_STATUS) || (status == WL_SCAN_COMPLETED)) && (--attempts > 0));
    }else
    {
 	   status = WL_CONNECT_FAILED;
@@ -76,7 +76,7 @@ int WiFiClass::begin(char* ssid)
    return status;
 }
 
-int WiFiClass::begin(char* ssid, uint8_t key_idx, const char *key)
+int WiFiClass::begin(char* ssid, const uint8_t key_idx, const char *key)
 {
 	uint8_t status = WL_IDLE_STATUS;
 	uint8_t attempts = WL_MAX_ATTEMPT_CONNECTION;
@@ -88,7 +88,7 @@ int WiFiClass::begin(char* ssid, uint8_t key_idx, const char *key)
 	   {
 		   delay(WL_DELAY_START_CONNECTION);
 		   status = WiFiDrv::getConnectionStatus();
-	   }while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   }while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED)) && (--attempts > 0));
    }else{
 	   status = WL_CONNECT_FAILED;
    }
@@ -108,42 +108,42 @@ int WiFiClass::begin(char* ssid, const char *passphrase)
  		   delay(WL_DELAY_START_CONNECTION);
  		   status = WiFiDrv::getConnectionStatus();
  	   }
-	   while ((( status == WL_IDLE_STATUS)||(status == WL_SCAN_COMPLETED))&&(--attempts>0));
+	   while ((( status == WL_IDLE_STATUS) || (status == WL_SCAN_COMPLETED)) && (--attempts>0));
     }else{
     	status = WL_CONNECT_FAILED;
     }
     return status;
 }
 
-void WiFiClass::config(IPAddress local_ip)
+void WiFiClass::config(const IPAddress local_ip)
 {
 	WiFiDrv::config(1, (uint32_t)local_ip, 0, 0);
 }
 
-void WiFiClass::config(IPAddress local_ip, IPAddress dns_server)
+void WiFiClass::config(const IPAddress local_ip, const IPAddress dns_server)
 {
 	WiFiDrv::config(1, (uint32_t)local_ip, 0, 0);
 	WiFiDrv::setDNS(1, (uint32_t)dns_server, 0);
 }
 
-void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway)
+void WiFiClass::config(const IPAddress local_ip, const IPAddress dns_server, const IPAddress gateway)
 {
 	WiFiDrv::config(2, (uint32_t)local_ip, (uint32_t)gateway, 0);
 	WiFiDrv::setDNS(1, (uint32_t)dns_server, 0);
 }
 
-void WiFiClass::config(IPAddress local_ip, IPAddress dns_server, IPAddress gateway, IPAddress subnet)
+void WiFiClass::config(const IPAddress local_ip, const IPAddress dns_server, const IPAddress gateway, const IPAddress subnet)
 {
 	WiFiDrv::config(3, (uint32_t)local_ip, (uint32_t)gateway, (uint32_t)subnet);
 	WiFiDrv::setDNS(1, (uint32_t)dns_server, 0);
 }
 
-void WiFiClass::setDNS(IPAddress dns_server1)
+void WiFiClass::setDNS(const IPAddress dns_server1)
 {
 	WiFiDrv::setDNS(1, (uint32_t)dns_server1, 0);
 }
 
-void WiFiClass::setDNS(IPAddress dns_server1, IPAddress dns_server2)
+void WiFiClass::setDNS(const IPAddress dns_server1, const IPAddress dns_server2)
 {
 	WiFiDrv::setDNS(2, (uint32_t)dns_server1, (uint32_t)dns_server2);
 }
@@ -220,17 +220,17 @@ int8_t WiFiClass::scanNetworks()
 	return numOfNetworks;
 }
 
-char* WiFiClass::SSID(uint8_t networkItem)
+char* WiFiClass::SSID(const uint8_t networkItem)
 {
 	return WiFiDrv::getSSIDNetoworks(networkItem);
 }
 
-int32_t WiFiClass::RSSI(uint8_t networkItem)
+int32_t WiFiClass::RSSI(const uint8_t networkItem)
 {
 	return WiFiDrv::getRSSINetoworks(networkItem);
 }
 
-uint8_t WiFiClass::encryptionType(uint8_t networkItem)
+uint8_t WiFiClass::encryptionType(const uint8_t networkItem)
 {
     return WiFiDrv::getEncTypeNetowrks(networkItem);
 }

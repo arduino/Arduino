@@ -84,7 +84,7 @@ class GSM3ShieldV1VoiceProvider : public GSM3MobileVoiceProvider, public GSM3Shi
 		/** Get last command status
 			@return Returns 0 if last command is still executing, 1 success, >1 error
 		 */
-		int ready(){return GSM3ShieldV1BaseProvider::ready();};
+		int ready(){return GSM3ShieldV1BaseProvider::ready();}
 		
 		/** Recognize URC
 			@param oldTail		
@@ -95,12 +95,12 @@ class GSM3ShieldV1VoiceProvider : public GSM3MobileVoiceProvider, public GSM3Shi
 		/** Returns voice call status
 			@return voice call status
 		 */
-		GSM3_voiceCall_st getvoiceCallStatus(){ready(); return _voiceCallstatus;};
+		GSM3_voiceCall_st getvoiceCallStatus(){ready(); return _voiceCallstatus;}
 		
 		/**	Set voice call status
 			@param status		New status for voice call
 		 */
-		void setvoiceCallStatus(GSM3_voiceCall_st status) { _voiceCallstatus = status; };
+		void setvoiceCallStatus(GSM3_voiceCall_st status) { _voiceCallstatus = status; }
 
 		
 	private:

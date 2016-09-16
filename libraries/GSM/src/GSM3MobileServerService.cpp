@@ -46,7 +46,7 @@ https://github.com/BlueVia/Official-Arduino
 GSM3ShieldV1ServerProvider theShieldV1ServerProvider;
 
 
-GSM3MobileServerService::GSM3MobileServerService(uint8_t port, bool synch)
+GSM3MobileServerService::GSM3MobileServerService(uint8_t port, const bool synch)
 {
 	mySocket=0;
 	_port=port;
@@ -81,7 +81,7 @@ GSM3MobileClientService GSM3MobileServerService::available(bool synch)
 	// In case we are debugging, we'll need to force a look at the buffer
 	ready();
 	
-	newSocket=theGSM3MobileServerProvider->getNewOccupiedSocketAsServer();
+	newSocket = theGSM3MobileServerProvider->getNewOccupiedSocketAsServer();
 	
 	// Instatiate new client. If we are synch, the client is synchronous/blocking
 	GSM3MobileClientService client((uint8_t)(newSocket), (flags & GSM3MOBILESERVERSERVICE_SYNCH));
@@ -141,17 +141,17 @@ void GSM3MobileServerService::stop()
 int GSM3MobileServerService::waitForAnswer()
 {
 	unsigned long m;
-	m=millis();
+	m = millis();
 	int res;
 	
-	while(((millis()-m)< __TOUTSERVER__ )&&(ready()==0)) 
+	while(((millis() - m) < __TOUTSERVER__ ) && (ready() == 0))
 		delay(10);
 	
-	res=ready();
+	res = ready();
 
 	// If we get something different from a 1, we are having a problem
-	if(res!=1)
-		res=0;
+	if(res != 1)
+		res = 0;
 
 	return res;
 }

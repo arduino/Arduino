@@ -39,8 +39,8 @@ public:
   virtual int peek();
   virtual int available();
   virtual void flush();
-  int read(void *buf, uint16_t nbyte);
-  boolean seek(uint32_t pos);
+  int read(void *buf, const uint16_t nbyte);
+  boolean seek(const uint32_t pos);
   uint32_t position();
   uint32_t size();
   void close();

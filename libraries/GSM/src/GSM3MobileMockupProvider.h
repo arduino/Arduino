@@ -43,7 +43,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		// Introducing this status is quite "heavy". But something like this should
 		// be added to ShieldV1. Or not. 
 		// Note, in ShieldV1 there is no "RECEIVINGSMS" status.
-		enum GSM3_modemlinest_e { IDLE, WAITINGANSWER, SENDINGSMS};
+		enum class GSM3_modemlinest_e  :  { IDLE, WAITINGANSWER, SENDINGSMS};
 		GSM3_modemlinest_e lineStatus;
 		char* msgExample;
 		int msgIndex;
@@ -53,12 +53,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Minimum socket
 			@return 1
 		 */
-		inline int minSocket(){return 1;};
+		inline int minSocket(){return 1;}
 		
 		/** Maximum socket
 			@return 8
 		 */
-		inline int maxSocket(){return 8;};
+		inline int maxSocket(){return 8;}
 
 		/** Constructor */
 		GSM3MobileMockupProvider();
@@ -66,18 +66,18 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Get network status
 			@return network status
 		 */
-		inline GSM3_NetworkStatus_t getStatus(){return ERROR;};
+		inline GSM3_NetworkStatus_t getStatus(){return ERROR;}
 		
 		/** Get voice call status
 			@return call status
 		 */
-		inline GSM3_voiceCall_st getvoiceCallStatus(){return IDLE_CALL;};
+		inline GSM3_voiceCall_st getvoiceCallStatus(){return IDLE_CALL;}
 		
 		/** Get last command status
 			@return Returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		int ready();
-		inline void closeCommand(int code){};
+		inline void closeCommand(int code){}
 		
 		//Configuration functions.
 		
@@ -90,12 +90,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Check if is modem alive
 			@return 0
 		 */
-		inline int isModemAlive(){return 0;};
+		inline int isModemAlive(){return 0;}
 		
 		/** Shutdown the modem (power off really)
 			@return true if successful
 		 */
-		inline bool shutdown(){return false;};
+		inline bool shutdown(){return false;}
 		
 		//Call functions
 		
@@ -103,24 +103,24 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param number	 	Phone number to be called
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int voiceCall(const char* number){return 0;};
+		inline int voiceCall(const char* number){return 0;}
 		
 		/** Answer a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int answerCall(){return 0;};
+		inline int answerCall(){return 0;f}
 		
 		/** Hang a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int hangCall(){return 0;};
+		inline int hangCall(){return 0;}
 		
 		/** Retrieve phone number of caller
 			@param buffer		Buffer for copy phone number
 			@param bufsize		Buffer size
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int retrieveCallingNumber(char* buffer, int*& bufsize){return 0;};
+		inline int retrieveCallingNumber(char* buffer, int*& bufsize){return 0;}
 		
 		// SMS functions
 		
@@ -154,7 +154,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param nlength		Buffer length
 			@return 1 success, >1 error
 		 */
-		int remoteSMSNumber(char* number, int nlength); 
+		int remoteSMSNumber(char* number, const int nlength);
 		
 		/** Read one char for SMS buffer (advance circular buffer)
 			@return character
@@ -164,7 +164,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Write a SMS character by character
 			@param c			Character
 		 */
-		void writeSMS(char c);
+		void writeSMS(char character);
 		
 		// Socket functions
 		
@@ -174,7 +174,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param id_socket	Local socket number
 			@return 0 if command running, 1 if success, otherwise error
 		*/
-		int connectTCPClient(const char* server, int port, int id_socket);
+		int connectTCPClient(const char* server, const int port, const int id_socket);
 		
 		// Attention to parameter rewriting in ShieldV1
 		/** Write buffer information into a socket
@@ -182,7 +182,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param size			Buffer size
 			@param idsocket		Socket
 		 */
-		void writeSocket(const uint8_t *buf, size_t size, int idsocket);
+		void writeSocket(const uint8_t *buf, const size_t size, int idsocket);
 		
 		// ShieldV1 will have two reading mechanisms:
 		// Mechanism 1: Call AT+QIRD for size bytes. Put them in the circular buffer,
@@ -217,12 +217,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param advance		Determines if advance the buffer head
 			@return character
 		 */
-		int readSocket(int idsocket, bool advance=true);
+		int readSocket(int idsocket, const bool advance = true);
 		
 		/** Flush socket
 			@param idsocket		Socket
 		 */
-		void flushSocket(int idsocket);
+		void flushSocket(const int idsocket);
 		
 		// This is the same in ShieldV1
 		/** Close a socket

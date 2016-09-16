@@ -28,7 +28,7 @@ uint8_t  SdVolume::cacheDirty_ = 0;  // cacheFlush() will write block if true
 uint32_t SdVolume::cacheMirrorBlock_ = 0;  // mirror  block for second FAT
 //------------------------------------------------------------------------------
 // find a contiguous group of clusters
-uint8_t SdVolume::allocContiguous(uint32_t count, uint32_t* curCluster) {
+uint8_t SdVolume::allocContiguous(const uint32_t count, uint32_t* curCluster) {
   // start of group
   uint32_t bgnCluster;
 
@@ -53,7 +53,7 @@ uint8_t SdVolume::allocContiguous(uint32_t count, uint32_t* curCluster) {
   uint32_t endCluster = bgnCluster;
 
   // last cluster of FAT
-  uint32_t fatEnd = clusterCount_ + 1;
+  const uint32_t fatEnd = clusterCount_ + 1;
 
   // search the FAT for free clusters
   for (uint32_t n = 0;; n++, endCluster++) {
@@ -113,7 +113,7 @@ uint8_t SdVolume::cacheFlush(void) {
   return true;
 }
 //------------------------------------------------------------------------------
-uint8_t SdVolume::cacheRawBlock(uint32_t blockNumber, uint8_t action) {
+uint8_t SdVolume::cacheRawBlock(const uint32_t blockNumber, const uint8_t action) {
   if (cacheBlockNumber_ != blockNumber) {
     if (!cacheFlush()) return false;
     if (!sdCard_->readBlock(blockNumber, cacheBuffer_.data)) return false;
@@ -124,7 +124,7 @@ uint8_t SdVolume::cacheRawBlock(uint32_t blockNumber, uint8_t action) {
 }
 //------------------------------------------------------------------------------
 // cache a zero block for blockNumber
-uint8_t SdVolume::cacheZeroBlock(uint32_t blockNumber) {
+uint8_t SdVolume::cacheZeroBlock(const uint32_t blockNumber) {
   if (!cacheFlush()) return false;
 
   // loop take less flash than memset(cacheBuffer_.data, 0, 512);
@@ -148,7 +148,7 @@ uint8_t SdVolume::chainSize(uint32_t cluster, uint32_t* size) const {
 }
 //------------------------------------------------------------------------------
 // Fetch a FAT entry
-uint8_t SdVolume::fatGet(uint32_t cluster, uint32_t* value) const {
+uint8_t SdVolume::fatGet(const uint32_t cluster, uint32_t* value) const {
   if (cluster > (clusterCount_ + 1)) return false;
   uint32_t lba = fatStartBlock_;
   lba += fatType_ == 16 ? cluster >> 8 : cluster >> 7;
@@ -164,7 +164,7 @@ uint8_t SdVolume::fatGet(uint32_t cluster, uint32_t* value) const {
 }
 //------------------------------------------------------------------------------
 // Store a FAT entry
-uint8_t SdVolume::fatPut(uint32_t cluster, uint32_t value) {
+uint8_t SdVolume::fatPut(const uint32_t cluster, const uint32_t value) {
   // error if reserved cluster
   if (cluster < 2) return false;
 
@@ -192,7 +192,7 @@ uint8_t SdVolume::fatPut(uint32_t cluster, uint32_t value) {
 }
 //------------------------------------------------------------------------------
 // free a cluster chain
-uint8_t SdVolume::freeChain(uint32_t cluster) {
+uint8_t SdVolume::freeChain(const uint32_t cluster) {
   // clear free cluster location
   allocSearchStart_ = 2;
 
@@ -224,7 +224,7 @@ uint8_t SdVolume::freeChain(uint32_t cluster) {
  * failure include not finding a valid partition, not finding a valid
  * FAT file system in the specified partition or an I/O error.
  */
-uint8_t SdVolume::init(Sd2Card* dev, uint8_t part) {
+uint8_t SdVolume::init(Sd2Card* dev, const uint8_t part) {
   uint32_t volumeStartBlock = 0;
   sdCard_ = dev;
   // if part == 0 assume super floppy with FAT boot sector in block zero

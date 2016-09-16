@@ -63,7 +63,7 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 			@param debug		Determines debug mode
 		 */
 		
-		GSM3ShieldV1AccessProvider(bool debug=false);
+		GSM3ShieldV1AccessProvider(const bool debug = false);
 		
 		/** Start the GSM/GPRS modem, attaching to the GSM network
 			@param pin 			SIM PIN number (4 digits in a string, example: "1234"). If 
@@ -77,7 +77,7 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 								to call repeatedly ready() until you get a result. Default is TRUE.
 			@return If synchronous, GSM3_NetworkStatus_t. If asynchronous, returns 0.
 		*/
-		GSM3_NetworkStatus_t begin(char* pin=0,bool restart=true, bool synchronous=true);
+		GSM3_NetworkStatus_t begin(char* pin=0, const bool restart = true, const bool synchronous = true);
 		
 		/** Check network access status
 			@return 1 if Alive, 0 if down
@@ -97,12 +97,12 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 		/** Returns 0 if last command is still executing
 			@return 1 if success, >1 if error 
 		*/
-		int ready(){return GSM3ShieldV1BaseProvider::ready();};
+		int ready(){return GSM3ShieldV1BaseProvider::ready();}
 		
 		/** Returns modem status
 			@return modem network status 
 		*/
-		inline GSM3_NetworkStatus_t getStatus(){return theGSM3ShieldV1ModemCore.getStatus();};
+		inline GSM3_NetworkStatus_t getStatus(){return theGSM3ShieldV1ModemCore.getStatus();}
 
 		void manageResponse(byte from, byte to);
 

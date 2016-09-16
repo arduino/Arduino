@@ -129,7 +129,7 @@ uint8_t SdFile::contiguousRange(uint32_t* bgnBlock, uint32_t* endBlock) {
  *
  */
 uint8_t SdFile::createContiguous(SdFile* dirFile,
-        const char* fileName, uint32_t size) {
+		const char* fileName, const uint32_t size) {
   // don't allow zero length file
   if (size == 0) return false;
   if (!open(dirFile, fileName, O_CREAT | O_EXCL | O_RDWR)) return false;
@@ -200,7 +200,7 @@ void SdFile::dirName(const dir_t& dir, char* name) {
  * \param[in] indent Amount of space before file name. Used for recursive
  * list to indicate subdirectory level.
  */
-void SdFile::ls(uint8_t flags, uint8_t indent) {
+void SdFile::ls(const uint8_t flags, const uint8_t indent) {
   dir_t* p;
 
   rewind();
@@ -389,7 +389,7 @@ uint8_t SdFile::makeDir(SdFile* dir, const char* dirName) {
  * a directory, \a fileName is invalid, the file does not exist
  * or can't be opened in the access mode specified by oflag.
  */
-uint8_t SdFile::open(SdFile* dirFile, const char* fileName, uint8_t oflag) {
+uint8_t SdFile::open(SdFile* dirFile, const char* fileName, const uint8_t oflag) {
   uint8_t dname[11];
   dir_t* p;
 
@@ -481,7 +481,7 @@ uint8_t SdFile::open(SdFile* dirFile, const char* fileName, uint8_t oflag) {
  * See open() by fileName for definition of flags and return values.
  *
  */
-uint8_t SdFile::open(SdFile* dirFile, uint16_t index, uint8_t oflag) {
+uint8_t SdFile::open(SdFile* dirFile, const uint16_t index, const uint8_t oflag) {
   // error if already open
   if (isOpen())return false;
 
@@ -617,7 +617,7 @@ void SdFile::printDirName(const dir_t& dir, uint8_t width) {
  *
  * \param[in] fatDate The date field from a directory entry.
  */
-void SdFile::printFatDate(uint16_t fatDate) {
+void SdFile::printFatDate(const uint16_t fatDate) {
   Serial.print(FAT_YEAR(fatDate));
   Serial.print('-');
   printTwoDigits(FAT_MONTH(fatDate));
@@ -631,7 +631,7 @@ void SdFile::printFatDate(uint16_t fatDate) {
  *
  * \param[in] fatTime The time field from a directory entry.
  */
-void SdFile::printFatTime(uint16_t fatTime) {
+void SdFile::printFatTime(const uint16_t fatTime) {
   printTwoDigits(FAT_HOUR(fatTime));
   Serial.print(':');
   printTwoDigits(FAT_MINUTE(fatTime));
@@ -643,7 +643,7 @@ void SdFile::printFatTime(uint16_t fatTime) {
  *
  * \param[in] v Value to be printed, 0 <= \a v <= 99
  */
-void SdFile::printTwoDigits(uint8_t v) {
+void SdFile::printTwoDigits(const uint8_t v) {
   char str[3];
   str[0] = '0' + v/10;
   str[1] = '0' + v % 10;
@@ -665,7 +665,7 @@ void SdFile::printTwoDigits(uint8_t v) {
  * read() called before a file has been opened, corrupt file system
  * or an I/O error occurred.
  */
-int16_t SdFile::read(void* buf, uint16_t nbyte) {
+int16_t SdFile::read(void* buf, const uint16_t nbyte) {
   uint8_t* dst = reinterpret_cast<uint8_t*>(buf);
 
   // error if not open or write only
@@ -921,7 +921,7 @@ uint8_t SdFile::rmRfStar(void) {
  * \return The value one, true, is returned for success and
  * the value zero, false, is returned for failure.
  */
-uint8_t SdFile::seekSet(uint32_t pos) {
+uint8_t SdFile::seekSet(const uint32_t pos) {
   // error if file not open or seek past end of file
   if (!isOpen() || pos > fileSize_) return false;
 
@@ -1022,8 +1022,8 @@ uint8_t SdFile::sync(void) {
  * \return The value one, true, is returned for success and
  * the value zero, false, is returned for failure.
  */
-uint8_t SdFile::timestamp(uint8_t flags, uint16_t year, uint8_t month,
-         uint8_t day, uint8_t hour, uint8_t minute, uint8_t second) {
+uint8_t SdFile::timestamp(const uint8_t flags, uint16_t year, const uint8_t month,
+		 const uint8_t day, const uint8_t hour, const uint8_t minute, const uint8_t second) {
   if (!isOpen()
     || year < 1980
     || year > 2107
@@ -1070,7 +1070,7 @@ uint8_t SdFile::timestamp(uint8_t flags, uint16_t year, uint8_t month,
  * Reasons for failure include file is read only, file is a directory,
  * \a length is greater than the current file size or an I/O error occurs.
  */
-uint8_t SdFile::truncate(uint32_t length) {
+uint8_t SdFile::truncate(const uint32_t length) {
 // error if not a normal file or read-only
   if (!isFile() || !(flags_ & O_WRITE)) return false;
 
@@ -1129,7 +1129,7 @@ uint8_t SdFile::truncate(uint32_t length) {
  * for a read-only file, device is full, a corrupt file system or an I/O error.
  *
  */
-size_t SdFile::write(const void* buf, uint16_t nbyte) {
+size_t SdFile::write(const void* buf, const uint16_t nbyte) {
   // convert void* to uint8_t*  -  must be before goto statements
   const uint8_t* src = reinterpret_cast<const uint8_t*>(buf);
 

@@ -38,14 +38,12 @@ https://github.com/BlueVia/Official-Arduino
 #include <inttypes.h>
 #include <stddef.h>
 
-#ifndef byte
-#define byte uint8_t
-#endif
+typedef uint8_t byte;
 
 // These values have to be interrelated
 // To-Do: may we have just one? (BUFFERMASK)
-#define __BUFFERSIZE__ 128
-#define __BUFFERMASK__ 0x7F
+const byte __BUFFERSIZE__ = 128;
+const byte __BUFFERMASK__ = 0x7F;
 
 class GSM3CircularBufferManager
 {
@@ -82,7 +80,7 @@ class GSM3CircularBuffer
 			@param to			Final byte position
 			@return true if exists, in otherwise return false
 		 */
-		bool locate(const char* reference, byte thishead, byte thistail, byte* from=0, byte* to=0);
+		bool locate(const char* reference, const byte thishead, byte thistail, byte* from=0, byte* to=0);
 		
 	public:
 	
@@ -96,12 +94,12 @@ class GSM3CircularBuffer
 		/** Get available bytes in circular buffer
 			@return available bytes
 		 */
-		inline byte availableBytes(){ return ((head-(tail+1))&__BUFFERMASK__);};
+		inline byte availableBytes(){ return ((head-(tail+1))&__BUFFERMASK__);}
 		
 		/** Stored bytes in circular buffer
 			@return stored bytes
 		 */
-		inline byte storedBytes(){ return ((tail-head)&__BUFFERMASK__);};
+		inline byte storedBytes(){ return ((tail-head)&__BUFFERMASK__);}
 
 		/** Write a character in circular buffer
 			@param c			Character
@@ -118,12 +116,12 @@ class GSM3CircularBuffer
 			@param increment	Increment
 			@return character
 		 */
-		char peek(int increment);
+		char peek(const int increment) const;
 		
 		/** Returns a pointer to the head of the buffer
 			@return buffer with pointer in head
 		*/
-		inline char* firstString(){return (char*)theBuffer+head;};
+		inline char* firstString(){return (char*)theBuffer+head;}
 		
 		/** Go forward one string
 			@return buffer with one string advance
@@ -137,18 +135,18 @@ class GSM3CircularBuffer
 		/** Get tail
 			@return tail
 		 */
-		inline byte getTail(){return tail;};
+		inline byte getTail(){return tail;}
 		
 		/** Get head
 			@return head
 		 */
-		inline byte getHead(){return head;};
+		inline byte getHead(){return head;}
 		
 		// Only can be executed from the interrupt!
 		/** Delete circular buffer to the end
 			@param from			Initial byte position
 		 */
-		inline void deleteToTheEnd(byte from){tail=from;};
+		inline void deleteToTheEnd(byte from){tail=from;}
 		
 		/** Checks if a substring exists in the buffer
 			move=0, dont move, =1,put head at the beginning of the string, =2, put head at the end
@@ -163,7 +161,7 @@ class GSM3CircularBuffer
 			@param head
 			@return true if successful
 		 */
-		bool chopUntil(const char* reference, bool movetotheend, bool head=true);
+		bool chopUntil(const char* reference, const bool movetotheend, const bool head = true);
 		
 		/** Reads an integer from the head. Stops with first non blank, non number character
 			@return integer from the head
@@ -187,7 +185,7 @@ class GSM3CircularBuffer
 			@param SizeWritten
 			@return true if successful
 		 */
-		bool retrieveBuffer(char* buffer, int bufsize, int& SizeWritten);
+		bool retrieveBuffer(const char* buffer, const int bufsize, int& SizeWritten);
 		
 		/** Debug function to print the buffer after receiving data from the modem.
 		 */
@@ -196,7 +194,7 @@ class GSM3CircularBuffer
 		/** Utility: dump character if printable, else, put in %x%
 			@param c			Character
 		 */
-		static void printCharDebug(uint8_t c);
+		static void printCharDebug(const uint8_t character);
 		
 		
 };

@@ -38,7 +38,7 @@ public:
   
   // Start building up a packet to send to the remote host specific in ip and port
   // Returns 1 if successful, 0 if there was a problem with the supplied IP address or port
-  virtual int beginPacket(IPAddress ip, uint16_t port);
+  virtual int beginPacket(const IPAddress ip, const uint16_t port);
   // Start building up a packet to send to the remote host specific in host and port
   // Returns 1 if successful, 0 if there was a problem resolving the hostname or port
   virtual int beginPacket(const char *host, uint16_t port);
@@ -48,7 +48,7 @@ public:
   // Write a single byte into the packet
   virtual size_t write(uint8_t);
   // Write size bytes from buffer into the packet
-  virtual size_t write(const uint8_t *buffer, size_t size);
+  virtual size_t write(const uint8_t *buffer, const size_t size);
   
   using Print::write;
 
@@ -64,7 +64,7 @@ public:
   virtual int read(unsigned char* buffer, size_t len);
   // Read up to len characters from the current packet and place them into buffer
   // Returns the number of characters read, or 0 if none are available
-  virtual int read(char* buffer, size_t len) { return read((unsigned char*)buffer, len); };
+  virtual int read(char* buffer, size_t len) { return read((unsigned char*)buffer, len); }
   // Return the next byte from the current packet without moving on to the next byte
   virtual int peek();
   virtual void flush();	// Finish reading the current packet

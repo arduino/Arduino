@@ -44,18 +44,18 @@ GSM3ShieldV1ClientProvider theShieldV1ClientProvider;
 #define GSM3MOBILECLIENTSERVICE_WRITING 0x02 // 1: TRUE 0: FALSE
 #define GSM3MOBILECLIENTSERVICE_SYNCH 0x04 // 1: TRUE, compatible with other clients 0: FALSE
 
-#define __TOUTBEGINWRITE__ 10000
+const unsigned long __TOUTBEGINWRITE__ = 10000;
 
 
-GSM3MobileClientService::GSM3MobileClientService(bool synch)
+GSM3MobileClientService::GSM3MobileClientService(const bool synch)
 {
 	flags = GSM3MOBILECLIENTSERVICE_CLIENT;
 	if(synch)
 		flags |= GSM3MOBILECLIENTSERVICE_SYNCH;
-	mySocket=255;
+	mySocket = 255;
 }
 
-GSM3MobileClientService::GSM3MobileClientService(int socket, bool synch)
+GSM3MobileClientService::GSM3MobileClientService(const int socket, const bool synch)
 {
 	// We are creating a socket on an existing, occupied one.
 	flags=0;
@@ -74,38 +74,38 @@ int GSM3MobileClientService::ready()
 	return theGSM3MobileClientProvider->ready();
 }
 
-int GSM3MobileClientService::connect(IPAddress add, uint16_t port) 
+int GSM3MobileClientService::connect(const IPAddress add, const uint16_t port)
 {
-	if(theGSM3MobileClientProvider==0)
+	if(theGSM3MobileClientProvider == 0)
 		return 2;
 		
 	// TODO: ask for the socket id
-	mySocket=theGSM3MobileClientProvider->getSocket();
+	mySocket = theGSM3MobileClientProvider->getSocket();
 
 	if(mySocket<0)
 		return 2;
 	
-	int res=theGSM3MobileClientProvider->connectTCPClient(add, port, mySocket);
+	int res = theGSM3MobileClientProvider->connectTCPClient(add, port, mySocket);
 	if(flags & GSM3MOBILECLIENTSERVICE_SYNCH)
-		res=waitForAnswer();
+		res = waitForAnswer();
 	
 	return res;
-};
+}
 
-int GSM3MobileClientService::connect(const char *host, uint16_t port)
+int GSM3MobileClientService::connect(const char *host, const uint16_t port)
 {
 
-	if(theGSM3MobileClientProvider==0)
+	if(theGSM3MobileClientProvider == 0)
 		return 2;		
 	// TODO: ask for the socket id
-	mySocket=theGSM3MobileClientProvider->getSocket();
+	mySocket = theGSM3MobileClientProvider->getSocket();
 
 	if(mySocket<0)
 		return 2;
 	
-	int res=theGSM3MobileClientProvider->connectTCPClient(host, port, mySocket);
+	int res = theGSM3MobileClientProvider->connectTCPClient(host, port, mySocket);
 	if(flags & GSM3MOBILECLIENTSERVICE_SYNCH)
-		res=waitForAnswer();
+		res = waitForAnswer();
 		
 	return res;
 }
@@ -113,22 +113,22 @@ int GSM3MobileClientService::connect(const char *host, uint16_t port)
 int GSM3MobileClientService::waitForAnswer()
 {
 	unsigned long m;
-	m=millis();
-	int res;
+	m = millis();
+	int result;
 	
-	while(((millis()-m)< __TOUTBEGINWRITE__ )&&(ready()==0)) 
+	while(((millis() - m) < __TOUTBEGINWRITE__ ) && (ready() == 0))
 		delay(100);
 	
-	res=ready();
+	result = ready();
 
 	// If we get something different from a 1, we are having a problem
-	if(res!=1)
-		res=0;
+	if(result != 1)
+		result = 0;
 
-	return res;
+	return result;
 }
 
-void GSM3MobileClientService::beginWrite(bool sync)
+void GSM3MobileClientService::beginWrite(const bool sync)
 {
 	flags |= GSM3MOBILECLIENTSERVICE_WRITING;
 	theGSM3MobileClientProvider->beginWriteSocket(flags & GSM3MOBILECLIENTSERVICE_CLIENT, mySocket);
@@ -136,7 +136,7 @@ void GSM3MobileClientService::beginWrite(bool sync)
 		waitForAnswer();
 }
 
-size_t GSM3MobileClientService::write(uint8_t c)
+size_t GSM3MobileClientService::write(const uint8_t c)
 {	
 	if(!(flags & GSM3MOBILECLIENTSERVICE_WRITING))
 		beginWrite(true);
@@ -148,20 +148,20 @@ size_t GSM3MobileClientService::write(const uint8_t* buf)
 {
 	if(!(flags & GSM3MOBILECLIENTSERVICE_WRITING))
 		beginWrite(true);
-	theGSM3MobileClientProvider->writeSocket((const char*)(buf));
-	return strlen((const char*)buf);
+	theGSM3MobileClientProvider->writeSocket(static_cast<const char*>(buf));
+	return strlen(static_cast<const char*>(buf));
 }
 
 size_t GSM3MobileClientService::write(const uint8_t* buf, size_t sz)
 {
 	if(!(flags & GSM3MOBILECLIENTSERVICE_WRITING))
 		beginWrite(true);
-	for(int i=0;i<sz;i++)
+	for(int i = 0; i < sz; i++)
 		theGSM3MobileClientProvider->writeSocket(buf[i]);
 	return sz;
 }
 
-void GSM3MobileClientService::endWrite(bool sync)
+void GSM3MobileClientService::endWrite(const bool sync)
 {
 	flags ^= GSM3MOBILECLIENTSERVICE_WRITING;
 	theGSM3MobileClientProvider->endWriteSocket();
@@ -178,36 +178,36 @@ uint8_t GSM3MobileClientService::connected()
 
 GSM3MobileClientService::operator bool()
 {
-	return connected()==1;
+	return connected() == 1;
 };
 
 int GSM3MobileClientService::available()
 {
-	int res;
+	int result;
 
 	// Even if not connected, we are looking for available data
 	
 	if(flags & GSM3MOBILECLIENTSERVICE_WRITING)
 		endWrite(true);
 
-	res=theGSM3MobileClientProvider->availableSocket(flags & GSM3MOBILECLIENTSERVICE_CLIENT,mySocket);
+	result = theGSM3MobileClientProvider->availableSocket(flags & GSM3MOBILECLIENTSERVICE_CLIENT, mySocket);
 	if(flags & GSM3MOBILECLIENTSERVICE_SYNCH)
-		res=waitForAnswer();
+		result = waitForAnswer();
 
-	return res;
+	return result;
 }
 
-int GSM3MobileClientService::read(uint8_t *buf, size_t size)
+int GSM3MobileClientService::read(const uint8_t *buf, const size_t size)
 {
 	int i;
-	uint8_t c;
+	uint8_t current;
 	
-	for(i=0;i<size;i++)
+	for(i = 0; i < size; ++i)
 	{
-		c=read();
-		if(c==0)
+		current = read();
+		if (current == 0)
 			break;
-		buf[i]=c;
+		buf[i] = current;
 	}
 	
 	return i;
@@ -226,8 +226,8 @@ int GSM3MobileClientService::read()
 {
 	if(flags & GSM3MOBILECLIENTSERVICE_WRITING)
 		endWrite(true);
-	int c=theGSM3MobileClientProvider->readSocket();
-	return c;
+	int character = theGSM3MobileClientProvider->readSocket();
+	return character;
 }
 
 int GSM3MobileClientService::peek()

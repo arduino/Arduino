@@ -154,7 +154,7 @@ class SdFile : public Print {
   uint8_t close(void);
   uint8_t contiguousRange(uint32_t* bgnBlock, uint32_t* endBlock);
   uint8_t createContiguous(SdFile* dirFile,
-          const char* fileName, uint32_t size);
+		  const char* fileName, const uint32_t size);
   /** \return The current cluster number for a file or directory. */
   uint32_t curCluster(void) const {return curCluster_;}
   /** \return The current position for a file or directory. */
@@ -220,16 +220,16 @@ class SdFile : public Print {
   uint8_t isRoot(void) const {
     return type_ == FAT_FILE_TYPE_ROOT16 || type_ == FAT_FILE_TYPE_ROOT32;
   }
-  void ls(uint8_t flags = 0, uint8_t indent = 0);
+  void ls(const uint8_t flags = 0, const uint8_t indent = 0);
   uint8_t makeDir(SdFile* dir, const char* dirName);
-  uint8_t open(SdFile* dirFile, uint16_t index, uint8_t oflag);
+  uint8_t open(SdFile* dirFile, const uint16_t index, const uint8_t oflag);
   uint8_t open(SdFile* dirFile, const char* fileName, uint8_t oflag);
 
   uint8_t openRoot(SdVolume* vol);
   static void printDirName(const dir_t& dir, uint8_t width);
-  static void printFatDate(uint16_t fatDate);
-  static void printFatTime(uint16_t fatTime);
-  static void printTwoDigits(uint8_t v);
+  static void printFatDate(const uint16_t fatDate);
+  static void printFatTime(const uint16_t fatTime);
+  static void printTwoDigits(const uint8_t v);
   /**
    * Read the next byte from a file.
    *
@@ -240,7 +240,7 @@ class SdFile : public Print {
     uint8_t b;
     return read(&b, 1) == 1 ? b : -1;
   }
-  int16_t read(void* buf, uint16_t nbyte);
+  int16_t read(void* buf, const uint16_t nbyte);
   int8_t readDir(dir_t* dir);
   static uint8_t remove(SdFile* dirFile, const char* fileName);
   uint8_t remove(void);
@@ -259,7 +259,7 @@ class SdFile : public Print {
    *  a file for append. See seekSet().
    */
   uint8_t seekEnd(void) {return seekSet(fileSize_);}
-  uint8_t seekSet(uint32_t pos);
+  uint8_t seekSet(const uint32_t pos);
   /**
    * Use unbuffered reads to access this file.  Used with Wave
    * Shield ISR.  Used with Sd2Card::partialBlockRead() in WaveRP.
@@ -269,8 +269,8 @@ class SdFile : public Print {
   void setUnbufferedRead(void) {
     if (isFile()) flags_ |= F_FILE_UNBUFFERED_READ;
   }
-  uint8_t timestamp(uint8_t flag, uint16_t year, uint8_t month, uint8_t day,
-          uint8_t hour, uint8_t minute, uint8_t second);
+  uint8_t timestamp(const uint8_t flag, const uint16_t year, const uint8_t month, const uint8_t day,
+		  const uint8_t hour, const uint8_t minute, const uint8_t second);
   uint8_t sync(void);
   /** Type of this SdFile.  You should use isFile() or isDir() instead of type()
    * if possible.
@@ -278,7 +278,7 @@ class SdFile : public Print {
    * \return The file or directory type.
    */
   uint8_t type(void) const {return type_;}
-  uint8_t truncate(uint32_t size);
+  uint8_t truncate(const uint32_t size);
   /** \return Unbuffered read flag. */
   uint8_t unbufferedRead(void) const {
     return flags_ & F_FILE_UNBUFFERED_READ;
@@ -286,7 +286,7 @@ class SdFile : public Print {
   /** \return SdVolume that contains this file. */
   SdVolume* volume(void) const {return vol_;}
   size_t write(uint8_t b);
-  size_t write(const void* buf, uint16_t nbyte);
+  size_t write(const void* buf, const uint16_t nbyte);
   size_t write(const char* str);
 #ifdef __AVR__
   void write_P(PGM_P str);
@@ -452,7 +452,7 @@ class SdVolume {
    * FAT file system or an I/O error.
    */
   uint8_t init(Sd2Card* dev) { return init(dev, 1) ? true : init(dev, 0);}
-  uint8_t init(Sd2Card* dev, uint8_t part);
+  uint8_t init(Sd2Card* dev, const uint8_t part);
 
   // inline functions that return volume info
   /** \return The volume's cluster size in blocks. */
@@ -517,7 +517,7 @@ class SdVolume {
   uint16_t rootDirEntryCount_;  // number of entries in FAT16 root dir
   uint32_t rootDirStart_;       // root start block for FAT16, cluster for FAT32
   //----------------------------------------------------------------------------
-  uint8_t allocContiguous(uint32_t count, uint32_t* curCluster);
+  uint8_t allocContiguous(const uint32_t count, uint32_t* curCluster);
   uint8_t blockOfCluster(uint32_t position) const {
           return (position >> 9) & (blocksPerCluster_ - 1);}
   uint32_t clusterStartBlock(uint32_t cluster) const {
@@ -525,16 +525,16 @@ class SdVolume {
   uint32_t blockNumber(uint32_t cluster, uint32_t position) const {
            return clusterStartBlock(cluster) + blockOfCluster(position);}
   static uint8_t cacheFlush(void);
-  static uint8_t cacheRawBlock(uint32_t blockNumber, uint8_t action);
+  static uint8_t cacheRawBlock(const uint32_t blockNumber, const uint8_t action);
   static void cacheSetDirty(void) {cacheDirty_ |= CACHE_FOR_WRITE;}
-  static uint8_t cacheZeroBlock(uint32_t blockNumber);
+  static uint8_t cacheZeroBlock(const uint32_t blockNumber);
   uint8_t chainSize(uint32_t beginCluster, uint32_t* size) const;
-  uint8_t fatGet(uint32_t cluster, uint32_t* value) const;
-  uint8_t fatPut(uint32_t cluster, uint32_t value);
+  uint8_t fatGet(const uint32_t cluster, uint32_t* value) const;
+  uint8_t fatPut(const uint32_t cluster, const uint32_t value);
   uint8_t fatPutEOC(uint32_t cluster) {
     return fatPut(cluster, 0x0FFFFFFF);
   }
-  uint8_t freeChain(uint32_t cluster);
+  uint8_t freeChain(const uint32_t cluster);
   uint8_t isEOC(uint32_t cluster) const {
     return  cluster >= (fatType_ == 16 ? FAT16EOC_MIN : FAT32EOC_MIN);
   }
