@@ -149,7 +149,7 @@ int GSM3SoftSerial::begin(long speed)
 {
   _rx_delay_centering = _rx_delay_intrabit = _rx_delay_stopbit = _tx_delay = 0;
 
-  for (unsigned i=0; i<sizeof(table)/sizeof(table[0]); ++i)
+  for (unsigned i = 0; i < sizeof(table) / sizeof(table[0]); ++i)
   {
     long baud = pgm_read_dword(&table[i].baud);
     if (baud == speed)
@@ -187,19 +187,19 @@ size_t GSM3SoftSerial::write(uint8_t c)
 		return 0;
 
 	// Characters to be escaped under XON/XOFF control with Quectel
-	if(c==0x11)
+	if(c == 0x11)
 	{
 		this->finalWrite(0x77);
 		return this->finalWrite(0xEE);
 	}
 
-	if(c==0x13)
+	if(c == 0x13)
 	{
 		this->finalWrite(0x77);
 		return this->finalWrite(0xEC);
 	}
 
-	if(c==0x77)
+	if(c == 0x77)
 	{
 		this->finalWrite(0x77);
 		return this->finalWrite(0x88);
@@ -333,11 +333,11 @@ void GSM3SoftSerial::recv()
   {
 	do
 	{
-		oldTail=cb.getTail();
+		oldTail = cb.getTail();
 		// Wait approximately 1/2 of a bit width to "center" the sample
 		tunedDelay(_rx_delay_centering);
 		
-		fullbuffer=(cb.availableBytes()<6);
+		fullbuffer = (cb.availableBytes() < 6);
 
 		
 		if(fullbuffer&&(!capturado_fullbuffer))
@@ -345,7 +345,7 @@ void GSM3SoftSerial::recv()
 
 		
 		// Read each of the 8 bits
-		for (uint8_t i=0x1; i; i <<= 1)
+		for (uint8_t i = 0x1; i; i <<= 1)
 		{
 			tunedDelay(_rx_delay_intrabit);
 			uint8_t noti = ~i;
@@ -354,7 +354,7 @@ void GSM3SoftSerial::recv()
 			else // else clause added to ensure function timing is ~balanced
 				d &= noti;
 			
-			if(fullbuffer&&(!capturado_fullbuffer))
+			if(fullbuffer && (!capturado_fullbuffer))
 			{
 			  if((uint8_t)__XOFF__ & i)
 				tx_pin_write(HIGH);
@@ -372,7 +372,7 @@ void GSM3SoftSerial::recv()
 		// So, we know the buffer is full, and we have sent a XOFF
 		if (fullbuffer) 
 		{
-			capturado_fullbuffer =1;
+			capturado_fullbuffer = 1;
 			_flags |=_GSMSOFTSERIALFLAGS_SENTXOFF_;
 		}
 
@@ -385,8 +385,8 @@ void GSM3SoftSerial::recv()
 			cb.write(d);
 			if(firstByte)
 			{
-				firstByte=false;
-				thisHead=cb.getTail();
+				firstByte = false;
+				thisHead = cb.getTail();
 			}
 		}
 		
@@ -397,12 +397,12 @@ void GSM3SoftSerial::recv()
 		// This active waiting avoids drifting
 		morebytes=false;
 		// TO-DO. This PARAGRAPHGUARD is empyric. We should test it for every speed
-		for(i=0;i<__PARAGRAPHGUARD__;i++)
+		for(i = 0;i < __PARAGRAPHGUARD__; i++)
 		{	
 			tunedDelay(1);
 			if(!rx_pin_read())
 			{
-				morebytes=true;
+				morebytes = true;
 				break;
 			}
 		}
@@ -416,13 +416,13 @@ void GSM3SoftSerial::recv()
 		if(mgr)
 			mgr->manageMsg(thisHead, cb.getTail());
 	}
-	else if(d==10)
+	else if(d == 10)
 	{
 		// And... go handle it!
 		if(mgr)
 			mgr->manageMsg(thisHead, cb.getTail());
 	}
-	else if (d==32)
+	else if (d == 32)
 	{
 		// And... go handle it!
 		if(mgr)
@@ -451,14 +451,14 @@ bool GSM3SoftSerial::keepThisChar(uint8_t* c)
 	// Horrible things for Quectel XON/XOFF
 	// 255 is the answer to a XOFF
 	// It comes just once
-	if((*c==255)&&(_flags & _GSMSOFTSERIALFLAGS_SENTXOFF_))
+	if((*c == 255) && (_flags & _GSMSOFTSERIALFLAGS_SENTXOFF_))
 	{
 		_flags ^= _GSMSOFTSERIALFLAGS_SENTXOFF_;
 		return false;
 	}
 
 	// 0x77, w, is the escape character
-	if(*c==0x77)
+	if(*c == 0x77)
 	{
 		_flags |= _GSMSOFTSERIALFLAGS_ESCAPED_;
 		return false;
@@ -489,7 +489,7 @@ void GSM3SoftSerial::spaceAvailable()
 
 
 // This is here to avoid problems with Arduino compiler
-void GSM3SoftSerialMgr::manageMsg(byte from, byte to){};
+void GSM3SoftSerialMgr::manageMsg(byte from, byte to){}
 
 //#define PCINT1_vect _VECTOR(2)
 //#undef PCINT1_vect

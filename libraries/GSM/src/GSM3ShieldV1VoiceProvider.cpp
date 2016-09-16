@@ -36,7 +36,7 @@ https://github.com/BlueVia/Official-Arduino
 
 GSM3ShieldV1VoiceProvider::GSM3ShieldV1VoiceProvider()
  {
-	phonelength=0;
+	phonelength = 0;
 	theGSM3MobileVoiceProvider = this;
  }
  
