@@ -53,12 +53,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Minimum socket
 			@return 1
 		 */
-		inline int minSocket(){return 1;};
+		inline int minSocket(){return 1;}
 		
 		/** Maximum socket
 			@return 8
 		 */
-		inline int maxSocket(){return 8;};
+		inline int maxSocket(){return 8;}
 
 		/** Constructor */
 		GSM3MobileMockupProvider();
@@ -66,12 +66,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Get network status
 			@return network status
 		 */
-		inline GSM3_NetworkStatus_t getStatus(){return ERROR;};
+		inline GSM3_NetworkStatus_t getStatus(){return ERROR;}
 		
 		/** Get voice call status
 			@return call status
 		 */
-		inline GSM3_voiceCall_st getvoiceCallStatus(){return IDLE_CALL;};
+		inline GSM3_voiceCall_st getvoiceCallStatus(){return IDLE_CALL;}
 		
 		/** Get last command status
 			@return Returns 0 if last command is still executing, 1 success, >1 error
@@ -90,12 +90,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Check if is modem alive
 			@return 0
 		 */
-		inline int isModemAlive(){return 0;};
+		inline int isModemAlive(){return 0;}
 		
 		/** Shutdown the modem (power off really)
 			@return true if successful
 		 */
-		inline bool shutdown(){return false;};
+		inline bool shutdown(){return false;}
 		
 		//Call functions
 		
@@ -103,7 +103,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param number	 	Phone number to be called
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int voiceCall(const char* number){return 0;};
+		inline int voiceCall(const char* number){return 0;}
 		
 		/** Answer a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
@@ -113,14 +113,14 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Hang a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int hangCall(){return 0;};
+		inline int hangCall(){return 0;}
 		
 		/** Retrieve phone number of caller
 			@param buffer		Buffer for copy phone number
 			@param bufsize		Buffer size
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int retrieveCallingNumber(char* buffer, int*& bufsize){return 0;};
+		inline int retrieveCallingNumber(char* buffer, int*& bufsize){return 0;}
 		
 		// SMS functions
 		

@@ -182,7 +182,7 @@ int GSM3MobileMockupProvider::connectTCPServer(int port, char* localIP, int* loc
 	if((localIP!=0)&&(*localIPlength>12))
 		strcpy("192.168.1.1", localIP);
 	return 1;
-};
+}
 
 bool GSM3MobileMockupProvider::getSocketModemStatus(uint8_t s)
 {
