@@ -26,11 +26,11 @@
 #include "WiFiUdp.h"
 
 // Key index length
-#define KEY_IDX_LEN     1
+const uint8_t KEY_IDX_LEN = 1;
 // 5 secs of delay to have the connection established
-#define WL_DELAY_START_CONNECTION 5000
+#define WL_DELAY_START_CONNECTION 5000;
 // firmware version string length
-#define WL_FW_VER_LENGTH 6
+#define WL_FW_VER_LENGTH 6;
 
 class WiFiDrv
 {
