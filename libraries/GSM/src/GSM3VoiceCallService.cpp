@@ -39,13 +39,11 @@ GSM3ShieldV1VoiceProvider theShieldV1VoiceProvider;
 
 // While there is only a shield (ShieldV1) we will include it by default
 
-#define GSM3VOICECALLSERVICE_SYNCH 0x01 // 1: synchronous 0: asynchronous
-#define __TOUT__ 10000
+const uint8_t GSM3VOICECALLSERVICE_SYNCH = 0x01; // 1: synchronous 0: asynchronous
+const unsigned long __TOUT__ = 10000;
 
 
-
-
-GSM3VoiceCallService::GSM3VoiceCallService(bool synch)
+GSM3VoiceCallService::GSM3VoiceCallService(const bool synch)
 {
 	if(synch)
 		flags |= GSM3VOICECALLSERVICE_SYNCH;
@@ -68,7 +66,7 @@ int GSM3VoiceCallService::ready()
 	return theGSM3MobileVoiceProvider->ready();
 }
 
-int GSM3VoiceCallService::voiceCall(const char* to, unsigned long timeout)
+int GSM3VoiceCallService::voiceCall(const char* to, const unsigned long timeout)
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
@@ -79,7 +77,7 @@ int GSM3VoiceCallService::voiceCall(const char* to, unsigned long timeout)
 		unsigned long m;
 		m = millis();
 		// Wait an answer for timeout
-		while(((millis() - m)< timeout )&&(getvoiceCallStatus()==CALLING))
+		while(((millis() - m)< timeout )&&(getvoiceCallStatus() == CALLING))
 			delay(100);
 		
 		if(getvoiceCallStatus() == TALKING)
@@ -110,7 +108,7 @@ int GSM3VoiceCallService::hangCall()
 	return waitForAnswerIfNeeded(theGSM3MobileVoiceProvider->hangCall());
 }
 
-int GSM3VoiceCallService::retrieveCallingNumber(char* buffer, int bufsize)
+int GSM3VoiceCallService::retrieveCallingNumber(char* buffer, const int bufsize)
 {
 	if(theGSM3MobileVoiceProvider==0)
 		return 0;
@@ -123,8 +121,7 @@ int GSM3VoiceCallService::waitForAnswerIfNeeded(int returnvalue)
 	// If synchronous
 	if(flags & GSM3VOICECALLSERVICE_SYNCH )
 	{
-		unsigned long m;
-		m = millis();
+		unsigned long m = millis();
 		// Wait for __TOUT__
 		while(((millis() - m) < __TOUT__ ) && (ready() == 0))
 			delay(100);
