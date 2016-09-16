@@ -130,14 +130,14 @@ bool GSM3CircularBuffer::chopUntil(const char* reference, const bool movetotheen
 		if(usehead)
 		{
 			if(movetotheend)
-				head=(to+1) & __BUFFERMASK__;
+				head=(to + 1) & __BUFFERMASK__;
 			else
 				head=from;
 		}
 		else
 		{
 			if(movetotheend)
-				tail=(to+1) & __BUFFERMASK__;
+				tail=(to + 1) & __BUFFERMASK__;
 			else
 				tail=from;
 		}
@@ -159,7 +159,7 @@ bool GSM3CircularBuffer::locate(const char* reference, const byte thishead, byte
 	if(reference[0] == 0)
 		return true;
 
-	for(byte b1 = thishead; b1 != thistail; b1 = (b1+1) & __BUFFERMASK__)
+	for(byte b1 = thishead; b1 != thistail; b1 = (b1 + 1) & __BUFFERMASK__)
 	{
 		possible = 1;
 		b2 = b1;
