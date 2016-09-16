@@ -83,7 +83,7 @@ int WiFiUDP::beginPacket(const char *host, uint16_t port)
 	return ret;
 }
 
-int WiFiUDP::beginPacket(IPAddress ip, uint16_t port)
+int WiFiUDP::beginPacket(const IPAddress ip, const uint16_t port)
 {
   if (_sock == NO_SOCKET_AVAIL)
 	  _sock = WiFiClass::getSocket();
@@ -106,7 +106,7 @@ size_t WiFiUDP::write(uint8_t byte)
   return write(&byte, 1);
 }
 
-size_t WiFiUDP::write(const uint8_t *buffer, size_t size)
+size_t WiFiUDP::write(const uint8_t *buffer, const size_t size)
 {
 	ServerDrv::insertDataBuf(_sock, buffer, size);
 	return size;
@@ -174,7 +174,7 @@ uint16_t  WiFiUDP::remotePort()
 	uint8_t _remotePort[2] = {0};
 
 	WiFiDrv::getRemoteData(_sock, _remoteIp, _remotePort);
-	uint16_t port = (_remotePort[0]<<8)+_remotePort[1];
+	const uint16_t port = (_remotePort[0] << 8) + _remotePort[1];
 	return port;
 }
 

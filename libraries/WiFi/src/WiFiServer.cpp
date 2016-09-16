@@ -57,11 +57,11 @@ WiFiClient WiFiServer::available(byte* status)
             uint8_t _status = client.status();
             uint8_t _ser_status = this->status();
 
-            if (status != NULL)
+			if (status != nullptr)
             	*status = _status;
 
             //server not in listen state, restart it
-            if ((_ser_status == 0)&&(cycle_server_down++ > TH_SERVER_DOWN))
+			if ((_ser_status == 0) && (cycle_server_down++ > TH_SERVER_DOWN))
             {
             	ServerDrv::startServer(_port, sock);
             	cycle_server_down = 0;
@@ -100,7 +100,7 @@ size_t WiFiServer::write(const uint8_t *buffer, size_t size)
             if (WiFiClass::_server_port[sock] == _port &&
                 client.status() == ESTABLISHED)
             {                
-                n+=client.write(buffer, size);
+				n += client.write(buffer, size);
             }
         }
     }

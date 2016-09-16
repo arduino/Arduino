@@ -38,8 +38,8 @@ WiFiClient::WiFiClient() : _sock(MAX_SOCK_NUM) {
 WiFiClient::WiFiClient(uint8_t sock) : _sock(sock) {
 }
 
-int WiFiClient::connect(const char* host, uint16_t port) {
-	IPAddress remote_addr;
+int WiFiClient::connect(const char* host, const uint16_t port) {
+	const IPAddress remote_addr;
 	if (WiFi.hostByName(host, remote_addr))
 	{
 		return connect(remote_addr, port);
@@ -47,14 +47,14 @@ int WiFiClient::connect(const char* host, uint16_t port) {
 	return 0;
 }
 
-int WiFiClient::connect(IPAddress ip, uint16_t port) {
+int WiFiClient::connect(const IPAddress ip, const uint16_t port) {
     _sock = getFirstSocket();
     if (_sock != NO_SOCKET_AVAIL)
     {
     	ServerDrv::startClient(uint32_t(ip), port, _sock);
     	WiFiClass::_state[_sock] = _sock;
 
-    	unsigned long start = millis();
+		const unsigned long start = millis();
 
     	// wait 4 second for the connection to close
     	while (!connected() && millis() - start < 10000)
@@ -75,7 +75,7 @@ size_t WiFiClient::write(uint8_t b) {
 	  return write(&b, 1);
 }
 
-size_t WiFiClient::write(const uint8_t *buf, size_t size) {
+size_t WiFiClient::write(const uint8_t *buf, const size_t size) {
   if (_sock >= MAX_SOCK_NUM)
   {
 	  setWriteError();
