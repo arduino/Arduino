@@ -153,7 +153,7 @@ class GSM3MobileClientService : public Client
 		/** Get socket
 			@return socket
 		 */
-		inline int getSocket(){return (int)mySocket;};
+		inline int getSocket(){return (int)mySocket;}
 
 		
 };
