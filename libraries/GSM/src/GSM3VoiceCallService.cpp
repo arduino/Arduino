@@ -74,8 +74,7 @@ int GSM3VoiceCallService::voiceCall(const char* to, const unsigned long timeout)
 	if(flags & GSM3VOICECALLSERVICE_SYNCH )
 	{
 		theGSM3MobileVoiceProvider->voiceCall(to);
-		unsigned long m;
-		m = millis();
+		const unsigned long m = millis();
 		// Wait an answer for timeout
 		while(((millis() - m)< timeout )&&(getvoiceCallStatus() == CALLING))
 			delay(100);
@@ -110,7 +109,7 @@ int GSM3VoiceCallService::hangCall()
 
 int GSM3VoiceCallService::retrieveCallingNumber(char* buffer, const int bufsize)
 {
-	if(theGSM3MobileVoiceProvider==0)
+	if(theGSM3MobileVoiceProvider == 0)
 		return 0;
 	
 	return waitForAnswerIfNeeded(theGSM3MobileVoiceProvider->retrieveCallingNumber(buffer, bufsize));
@@ -121,7 +120,7 @@ int GSM3VoiceCallService::waitForAnswerIfNeeded(int returnvalue)
 	// If synchronous
 	if(flags & GSM3VOICECALLSERVICE_SYNCH )
 	{
-		unsigned long m = millis();
+		const unsigned long m = millis();
 		// Wait for __TOUT__
 		while(((millis() - m) < __TOUT__ ) && (ready() == 0))
 			delay(100);
