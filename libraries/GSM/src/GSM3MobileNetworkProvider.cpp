@@ -37,14 +37,13 @@ GSM3MobileNetworkProvider* theProvider;
 
 GSM3MobileNetworkProvider::GSM3MobileNetworkProvider()
 {
-	socketsAsServer=0x0000;
-};
+	socketsAsServer = 0x0000;
+}
 
 
 int GSM3MobileNetworkProvider::getNewOccupiedSocketAsServer()
 {
-	int i;
-	for(i = minSocketAsServer(); i <= maxSocketAsServer(); i++)
+	for(int i = minSocketAsServer(); i <= maxSocketAsServer(); ++i)
 	{
 		if ((!(socketsAsServer & (0x0001 << i))) && getSocketAsServerModemStatus(i))
 		{
@@ -64,7 +63,7 @@ bool GSM3MobileNetworkProvider::getStatusSocketAsServer(uint8_t socket)
 		return 1;
 	else
 		return 0;
-};
+}
 
 
 
