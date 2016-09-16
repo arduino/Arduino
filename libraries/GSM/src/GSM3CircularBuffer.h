@@ -38,14 +38,12 @@ https://github.com/BlueVia/Official-Arduino
 #include <inttypes.h>
 #include <stddef.h>
 
-#ifndef byte
-#define byte uint8_t
-#endif
+typedef uint8_t byte;
 
 // These values have to be interrelated
 // To-Do: may we have just one? (BUFFERMASK)
-#define __BUFFERSIZE__ 128
-#define __BUFFERMASK__ 0x7F
+const byte __BUFFERSIZE__ = 128;
+const byte __BUFFERMASK__ = 0x7F;
 
 class GSM3CircularBufferManager
 {
