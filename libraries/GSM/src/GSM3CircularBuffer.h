@@ -96,12 +96,12 @@ class GSM3CircularBuffer
 		/** Get available bytes in circular buffer
 			@return available bytes
 		 */
-		inline byte availableBytes(){ return ((head-(tail+1))&__BUFFERMASK__);};
+		inline byte availableBytes(){ return ((head-(tail+1))&__BUFFERMASK__);}
 		
 		/** Stored bytes in circular buffer
 			@return stored bytes
 		 */
-		inline byte storedBytes(){ return ((tail-head)&__BUFFERMASK__);};
+		inline byte storedBytes(){ return ((tail-head)&__BUFFERMASK__);}
 
 		/** Write a character in circular buffer
 			@param c			Character
@@ -123,7 +123,7 @@ class GSM3CircularBuffer
 		/** Returns a pointer to the head of the buffer
 			@return buffer with pointer in head
 		*/
-		inline char* firstString(){return (char*)theBuffer+head;};
+		inline char* firstString(){return (char*)theBuffer+head;}
 		
 		/** Go forward one string
 			@return buffer with one string advance
@@ -137,18 +137,18 @@ class GSM3CircularBuffer
 		/** Get tail
 			@return tail
 		 */
-		inline byte getTail(){return tail;};
+		inline byte getTail(){return tail;}
 		
 		/** Get head
 			@return head
 		 */
-		inline byte getHead(){return head;};
+		inline byte getHead(){return head;}
 		
 		// Only can be executed from the interrupt!
 		/** Delete circular buffer to the end
 			@param from			Initial byte position
 		 */
-		inline void deleteToTheEnd(byte from){tail=from;};
+		inline void deleteToTheEnd(byte from){tail=from;}
 		
 		/** Checks if a substring exists in the buffer
 			move=0, dont move, =1,put head at the beginning of the string, =2, put head at the end

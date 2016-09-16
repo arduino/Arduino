@@ -8,9 +8,9 @@ This file is part of the GSM3 communications library for Arduino
 -- TCP/IP connections
 -- HTTP basic clients
 
-This library has been developed by Telefónica Digital - PDI -
+This library has been developed by Telef?nica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -67,7 +67,7 @@ char GSM3CircularBuffer::read()
 		//if(cbm)
 		//	cbm->spaceAvailable();
 		return res;
-	}	
+	}
 	else
 	{
 		return 0;
@@ -78,15 +78,15 @@ char GSM3CircularBuffer::peek(int increment)
 {
 	char res;
 	byte num_aux;
-	
+
 	if (tail>head) num_aux = tail-head;
 	else num_aux = 128 - head + tail;
-	
+
 	if(increment < num_aux)
 	{
 		res=theBuffer[head];
 		return res;
-	}	
+	}
 	else
 	{
 		return 0;
@@ -155,27 +155,27 @@ bool GSM3CircularBuffer::locate(const char* reference, byte thishead, byte thist
 	bool into=false;
 	byte b2, binit;
 	bool possible=1;
-	
+
 	if(reference[0]==0)
 		return true;
-		
+
 	for(byte b1=thishead; b1!=thistail;b1=(b1+1)& __BUFFERMASK__)
 	{
 		possible = 1;
 		b2 = b1;
 		while (possible&&(b2!=thistail))
-		{	
+		{
 			if(theBuffer[b2]==reference[refcursor])
 			{
-				if(!into)	
+				if(!into)
 					binit=b2;
 				into=true;
 				refcursor++;
 				if(reference[refcursor]==0)
 				{
-					if(from) 
+					if(from)
 						*from=binit;
-					if(to)	
+					if(to)
 						*to=b2;
 					return true;
 				}
@@ -198,22 +198,22 @@ bool GSM3CircularBuffer::extractSubstring(const char* from, const char* to, char
 	byte h2;
 	byte b;
 	int i;
-	
+
 //DEBUG
 //Serial.println("Beginning extractSubstring");
 //Serial.print("head,tail=");Serial.print(int(head));Serial.print(",");Serial.println(int(tail));
-	
+
 	if(!locate(from, head, tail, 0, &t1))
 		return false;
-		
+
 //DEBUG
 //Serial.println("Located chain from.");
 
 	t1++; //To point the next.
 	if(!locate(to, t1, tail, &h2, 0))
 		return false;
-		
-//DEBUG		
+
+//DEBUG
 //Serial.println("Located chain to.");
 /*Serial.print("t1=");Serial.println(int(t1));
 Serial.print("h2=");Serial.println(int(h2));*/
@@ -223,11 +223,11 @@ Serial.print("h2=");Serial.println(int(h2));*/
 		buffer[i]=theBuffer[b];
 	buffer[i]=0;
 
-//DEBUG		
+//DEBUG
 //Serial.println("");
-//Serial.println("Finishing extractSubstring");	
-	
-	return true;	
+//Serial.println("Finishing extractSubstring");
+
+	return true;
 }
 
 int GSM3CircularBuffer::readInt()
@@ -292,7 +292,7 @@ bool GSM3CircularBuffer::retrieveBuffer(char* buffer, int bufsize, int& SizeWrit
 {
 	byte b;
 	int i;
-	
+
 	/*for(i=0,b=head;i<bufsize, b!=tail; i++, b=(b+1)& __BUFFERMASK__)
 		{
 			buffer[i]=theBuffer[b];
@@ -310,9 +310,9 @@ bool GSM3CircularBuffer::retrieveBuffer(char* buffer, int bufsize, int& SizeWrit
 					SizeWritten = i + 1;
 				}
 		}
-	
-	
-	return true;	
+
+
+	return true;
 }
 
 
