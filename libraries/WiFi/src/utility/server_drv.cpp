@@ -155,7 +155,7 @@ uint16_t ServerDrv::availableData(const uint8_t sock)
     uint8_t _dataLen = 0;
 	uint16_t len = 0;
 
-	SpiDrv::waitResponseCmd(AVAIL_DATA_TCP_CMD, PARAM_NUMS_1, (uint8_t*) &len,  &_dataLen);
+	SpiDrv::waitResponseCmd(AVAIL_DATA_TCP_CMD, PARAM_NUMS_1, static_cast<uint8_t*>(&len),  &_dataLen);
 
     SpiDrv::spiSlaveDeselect();
 
@@ -270,7 +270,7 @@ bool ServerDrv::sendData(const uint8_t sock, const uint8_t *data, const uint16_t
     // Send Command
     SpiDrv::sendCmd(SEND_DATA_TCP_CMD, PARAM_NUMS_2);
     SpiDrv::sendBuffer(&sock, sizeof(sock));
-    SpiDrv::sendBuffer((uint8_t *)data, len, LAST_PARAM);
+	SpiDrv::sendBuffer(static_cast<uint8_t *>(data), len, LAST_PARAM);
 
     //Wait the reply elaboration
     SpiDrv::waitForSlaveReady();
