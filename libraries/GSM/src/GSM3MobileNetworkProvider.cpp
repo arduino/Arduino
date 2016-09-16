@@ -44,11 +44,11 @@ GSM3MobileNetworkProvider::GSM3MobileNetworkProvider()
 int GSM3MobileNetworkProvider::getNewOccupiedSocketAsServer()
 {
 	int i;
-	for(i=minSocketAsServer(); i<=maxSocketAsServer(); i++)
+	for(i = minSocketAsServer(); i <= maxSocketAsServer(); i++)
 	{
-		if ((!(socketsAsServer&(0x0001<<i))) && getSocketAsServerModemStatus(i))
+		if ((!(socketsAsServer & (0x0001 << i))) && getSocketAsServerModemStatus(i))
 		{
-			socketsAsServer|=((0x0001)<<i);	
+			socketsAsServer |= ((0x0001) << i);
 			//Serial.print("New occupied=");Serial.println(i);
 			return i;
 		}
@@ -60,7 +60,7 @@ int GSM3MobileNetworkProvider::getNewOccupiedSocketAsServer()
 
 bool GSM3MobileNetworkProvider::getStatusSocketAsServer(uint8_t socket)
 {
-	if(socketsAsServer&(0x0001<<socket))
+	if(socketsAsServer&(0x0001 << socket))
 		return 1;
 	else
 		return 0;
