@@ -40,9 +40,9 @@ class GSM3MobileCellManagement
 {
 	public:
 		
-		virtual inline int getLocation() {return 0;};
+		virtual inline int getLocation() {return 0;}
 		
-		virtual inline int getICCID() {return 0;};
+		virtual inline int getICCID() {return 0;}
 		
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
