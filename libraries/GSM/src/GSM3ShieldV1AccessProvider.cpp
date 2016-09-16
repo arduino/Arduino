@@ -43,7 +43,7 @@ const char _command_AT[] PROGMEM = "AT";
 const char _command_CGREG[] PROGMEM = "AT+CGREG?";
 
 
-GSM3ShieldV1AccessProvider::GSM3ShieldV1AccessProvider(bool debug)
+GSM3ShieldV1AccessProvider::GSM3ShieldV1AccessProvider(const bool debug)
 {
 	theGSM3ShieldV1ModemCore.setDebug(debug);
 

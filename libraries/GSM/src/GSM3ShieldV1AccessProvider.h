@@ -63,7 +63,7 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 			@param debug		Determines debug mode
 		 */
 		
-		GSM3ShieldV1AccessProvider(bool debug=false);
+		GSM3ShieldV1AccessProvider(const bool debug = false);
 		
 		/** Start the GSM/GPRS modem, attaching to the GSM network
 			@param pin 			SIM PIN number (4 digits in a string, example: "1234"). If 
