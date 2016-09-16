@@ -89,7 +89,7 @@ int File::read() {
 }
 
 // buffered read for more efficient, high speed reading
-int File::read(void *buf, uint16_t nbyte) {
+int File::read(void *buf, const uint16_t nbyte) {
   if (_file) 
     return _file->read(buf, nbyte);
   return 0;
@@ -108,7 +108,7 @@ void File::flush() {
     _file->sync();
 }
 
-boolean File::seek(uint32_t pos) {
+boolean File::seek(const uint32_t pos) {
   if (! _file) return false;
 
   return _file->seekSet(pos);
