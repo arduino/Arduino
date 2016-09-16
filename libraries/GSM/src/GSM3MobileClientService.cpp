@@ -44,7 +44,7 @@ GSM3ShieldV1ClientProvider theShieldV1ClientProvider;
 #define GSM3MOBILECLIENTSERVICE_WRITING 0x02 // 1: TRUE 0: FALSE
 #define GSM3MOBILECLIENTSERVICE_SYNCH 0x04 // 1: TRUE, compatible with other clients 0: FALSE
 
-#define __TOUTBEGINWRITE__ 10000
+const unsigned long __TOUTBEGINWRITE__ = 10000;
 
 
 GSM3MobileClientService::GSM3MobileClientService(bool synch)
