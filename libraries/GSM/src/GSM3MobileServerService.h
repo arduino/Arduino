@@ -58,7 +58,7 @@ class GSM3MobileServerService : public Server
 			@param port			Port
 			@param synch		True if the server acts synchronously
 		 */
-		GSM3MobileServerService(uint8_t port, bool synch=true);
+		GSM3MobileServerService(uint8_t port, bool synch = true);
 		
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error

@@ -115,7 +115,7 @@ class GSM3MobileNetworkProvider
 			@param socket			Socket to get status
 			@return socket status
 		 */
-		bool getStatusSocketAsServer(uint8_t socket);
+		bool getStatusSocketAsServer(const uint8_t socket);
 		
 		/** Close a socket
 			@param client1Server0	1 if modem acts as client, 0 if acts as server

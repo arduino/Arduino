@@ -144,14 +144,14 @@ int GSM3MobileServerService::waitForAnswer()
 	m=millis();
 	int res;
 	
-	while(((millis()-m)< __TOUTSERVER__ )&&(ready()==0)) 
+	while(((millis() - m) < __TOUTSERVER__ ) && (ready() == 0))
 		delay(10);
 	
-	res=ready();
+	res = ready();
 
 	// If we get something different from a 1, we are having a problem
-	if(res!=1)
-		res=0;
+	if(res != 1)
+		res = 0;
 
 	return res;
 }

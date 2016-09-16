@@ -57,7 +57,7 @@ int GSM3MobileNetworkProvider::getNewOccupiedSocketAsServer()
 }
 
 
-bool GSM3MobileNetworkProvider::getStatusSocketAsServer(uint8_t socket)
+bool GSM3MobileNetworkProvider::getStatusSocketAsServer(const uint8_t socket)
 {
 	if(socketsAsServer&(0x0001 << socket))
 		return 1;

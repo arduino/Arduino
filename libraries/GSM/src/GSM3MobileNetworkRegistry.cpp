@@ -40,7 +40,7 @@ GSM3MobileNetworkRegistry::GSM3MobileNetworkRegistry()
 
 void GSM3MobileNetworkRegistry::registerMobileNetworkProvider(GSM3MobileNetworkProvider* provider)
 {
-	theProvider=provider;
+	theProvider = provider;
 }
 
 GSM3MobileNetworkProvider* GSM3MobileNetworkRegistry::getMobileNetworkProvider()
