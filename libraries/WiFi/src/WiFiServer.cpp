@@ -49,7 +49,7 @@ WiFiClient WiFiServer::available(byte* status)
 	static int cycle_server_down = 0;
 	const int TH_SERVER_DOWN = 50;
 
-    for (int sock = 0; sock < MAX_SOCK_NUM; sock++)
+	for (int sock = 0; sock < MAX_SOCK_NUM; ++sock)
     {
         if (WiFiClass::_server_port[sock] == _port)
         {
@@ -91,7 +91,7 @@ size_t WiFiServer::write(const uint8_t *buffer, size_t size)
 {
 	size_t n = 0;
 
-    for (int sock = 0; sock < MAX_SOCK_NUM; sock++)
+	for (int sock = 0; sock < MAX_SOCK_NUM; ++sock)
     {
         if (WiFiClass::_server_port[sock] != 0)
         {

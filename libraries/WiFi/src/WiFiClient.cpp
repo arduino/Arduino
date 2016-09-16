@@ -81,7 +81,7 @@ size_t WiFiClient::write(const uint8_t *buf, size_t size) {
 	  setWriteError();
 	  return 0;
   }
-  if (size==0)
+  if (size == 0)
   {
 	  setWriteError();
       return 0;
@@ -168,7 +168,7 @@ uint8_t WiFiClient::connected() {
 
     return !(s == LISTEN || s == CLOSED || s == FIN_WAIT_1 ||
     		s == FIN_WAIT_2 || s == TIME_WAIT ||
-    		s == SYN_SENT || s== SYN_RCVD ||
+			s == SYN_SENT || s == SYN_RCVD ||
     		(s == CLOSE_WAIT));
   }
 }
@@ -188,7 +188,7 @@ WiFiClient::operator bool() {
 // Private Methods
 uint8_t WiFiClient::getFirstSocket()
 {
-    for (int i = 0; i < MAX_SOCK_NUM; i++) {
+	for (int i = 0; i < MAX_SOCK_NUM; ++i) {
       if (WiFiClass::_state[i] == NA_STATE)
       {
           return i;
