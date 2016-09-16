@@ -63,9 +63,9 @@ int GSM3MobileMockupProvider::beginSMS(const char* number)
 	return 0;
 }
 
-void GSM3MobileMockupProvider::writeSMS(char c)
+void GSM3MobileMockupProvider::writeSMS(char character)
 {
-	Serial.print(c);
+	Serial.print(character);
 }
 
 int GSM3MobileMockupProvider::endSMS()
@@ -81,10 +81,10 @@ int GSM3MobileMockupProvider::availableSMS()
 
 int GSM3MobileMockupProvider::peek()
 {
-	return (int)'H';
+	return static_cast<int>('H');
 }
 
-int GSM3MobileMockupProvider::remoteSMSNumber(char* number, int nlength)
+int GSM3MobileMockupProvider::remoteSMSNumber(char* number, const int nlength)
 {
 	if(nlength >= 13)
 		strcpy(number, "+34630538546");
@@ -111,7 +111,7 @@ int GSM3MobileMockupProvider::readSMS()
 	};
 }
 
-int GSM3MobileMockupProvider::connectTCPClient(const char* server, int port, int id_socket)
+int GSM3MobileMockupProvider::connectTCPClient(const char* server, const int port, const int id_socket)
 {
 	Serial.println("GSM3MobileMockupProvider::connectTCPClient()");
 	Serial.print(server);
@@ -121,7 +121,7 @@ int GSM3MobileMockupProvider::connectTCPClient(const char* server, int port, int
 	Serial.println(id_socket);
 }
 
-void GSM3MobileMockupProvider::writeSocket(const uint8_t *buf, size_t size, int id_socket)
+void GSM3MobileMockupProvider::writeSocket(const uint8_t *buf, const size_t size, int id_socket)
 {
 	int i;
 	for(i=0; i< size; i++)
@@ -152,24 +152,24 @@ int GSM3MobileMockupProvider::availableSocket(int idsocket)
 	return 1;
 };
 
-int GSM3MobileMockupProvider::readSocket(int idsocket, bool advance)
+int GSM3MobileMockupProvider::readSocket(int idsocket, const bool advance)
 {
-	char c;
+	char character;
 	if(msgExample[msgIndex] == 0)
 	{
-		msgIndex=0;
+		msgIndex = 0;
 		return 0;
 	}
 	else
 	{
-		c = msgExample[msgIndex];
+		character = msgExample[msgIndex];
 		if(advance)
 			msgIndex++;
 	};
-	return c;
+	return character;
 }
 
-void GSM3MobileMockupProvider::flushSocket(int idsocket)
+void GSM3MobileMockupProvider::flushSocket(const int idsocket)
 {
 	while(readSocket(idsocket));
 }

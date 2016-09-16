@@ -77,7 +77,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@return Returns 0 if last command is still executing, 1 success, >1 error
 		 */
 		int ready();
-		inline void closeCommand(int code){};
+		inline void closeCommand(int code){}
 		
 		//Configuration functions.
 		
@@ -108,7 +108,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Answer a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
 		 */
-		inline int answerCall(){return 0;};
+		inline int answerCall(){return 0;f}
 		
 		/** Hang a voice call
 			@return If asynchronous, returns 0. If synchronous, 1 if success, other if error
@@ -154,7 +154,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param nlength		Buffer length
 			@return 1 success, >1 error
 		 */
-		int remoteSMSNumber(char* number, int nlength); 
+		int remoteSMSNumber(char* number, const int nlength);
 		
 		/** Read one char for SMS buffer (advance circular buffer)
 			@return character
@@ -164,7 +164,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		/** Write a SMS character by character
 			@param c			Character
 		 */
-		void writeSMS(char c);
+		void writeSMS(char character);
 		
 		// Socket functions
 		
@@ -174,7 +174,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param id_socket	Local socket number
 			@return 0 if command running, 1 if success, otherwise error
 		*/
-		int connectTCPClient(const char* server, int port, int id_socket);
+		int connectTCPClient(const char* server, const int port, const int id_socket);
 		
 		// Attention to parameter rewriting in ShieldV1
 		/** Write buffer information into a socket
@@ -182,7 +182,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param size			Buffer size
 			@param idsocket		Socket
 		 */
-		void writeSocket(const uint8_t *buf, size_t size, int idsocket);
+		void writeSocket(const uint8_t *buf, const size_t size, int idsocket);
 		
 		// ShieldV1 will have two reading mechanisms:
 		// Mechanism 1: Call AT+QIRD for size bytes. Put them in the circular buffer,
@@ -217,12 +217,12 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 			@param advance		Determines if advance the buffer head
 			@return character
 		 */
-		int readSocket(int idsocket, bool advance=true);
+		int readSocket(int idsocket, const bool advance = true);
 		
 		/** Flush socket
 			@param idsocket		Socket
 		 */
-		void flushSocket(int idsocket);
+		void flushSocket(const int idsocket);
 		
 		// This is the same in ShieldV1
 		/** Close a socket
