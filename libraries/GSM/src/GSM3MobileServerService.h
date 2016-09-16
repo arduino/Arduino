@@ -74,7 +74,7 @@ class GSM3MobileServerService : public Server
 								blocking.
 		  @return Client if successful, else error
 		*/
-		GSM3MobileClientService available(bool synch=true);
+		GSM3MobileClientService available(const bool synch = true);
 		
 		// Just to keep in line with Ethernet.
 		// Write to every open socket...
