@@ -77,7 +77,7 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 								to call repeatedly ready() until you get a result. Default is TRUE.
 			@return If synchronous, GSM3_NetworkStatus_t. If asynchronous, returns 0.
 		*/
-		GSM3_NetworkStatus_t begin(char* pin=0,bool restart=true, bool synchronous=true);
+		GSM3_NetworkStatus_t begin(char* pin=0, const bool restart = true, const bool synchronous = true);
 		
 		/** Check network access status
 			@return 1 if Alive, 0 if down
