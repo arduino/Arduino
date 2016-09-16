@@ -47,7 +47,7 @@ int GSM3ShieldV1BaseProvider::ready()
 
 void GSM3ShieldV1BaseProvider::prepareAuxLocate(PGM_P str, char auxLocate[])
 {
-	int i=0;
+	int i = 0;
 	char c;
 
 	do

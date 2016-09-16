@@ -37,7 +37,7 @@ https://github.com/BlueVia/Official-Arduino
 GSM3ShieldV1VoiceProvider::GSM3ShieldV1VoiceProvider()
  {
 	phonelength=0;
-	theGSM3MobileVoiceProvider=this;
+	theGSM3MobileVoiceProvider = this;
  }
  
  void GSM3ShieldV1VoiceProvider::initialize()
@@ -48,7 +48,7 @@ GSM3ShieldV1VoiceProvider::GSM3ShieldV1VoiceProvider()
 //Voice Call main function.
 int GSM3ShieldV1VoiceProvider::voiceCall(const char* to)
 {
-	theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("ATD"),false);
+	theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("ATD"), false);
 	theGSM3ShieldV1ModemCore.print(to);
 	theGSM3ShieldV1ModemCore.print(";\r");
 	setvoiceCallStatus(CALLING);
