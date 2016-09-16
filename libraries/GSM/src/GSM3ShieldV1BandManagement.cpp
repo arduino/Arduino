@@ -78,13 +78,13 @@ bool GSM3ShieldV1BandManagement::setBand(String band)
 	bool found=false;
 
 	command="AT+QBAND=";
-	for(GSM3GSMBand i=EGSM_MODE;((i<=GSM850_EGSM_DCS_PCS_MODE)&&(!found));i=(GSM3GSMBand)((int)i+1))
+	for(GSM3GSMBand i = EGSM_MODE; ((i <= GSM850_EGSM_DCS_PCS_MODE) && (!found)); i=(GSM3GSMBand)(static_cast<int>(i+1))
 	{
-		String aux=quectelStrings[i];
-		if(aux.indexOf(band)>=0)
+		String aux = quectelStrings[i];
+		if(aux.indexOf(band) >= 0)
 		{
-		    command+=aux;
-			found=true;
+			command += aux;
+			found = true;
 		}
 	}
 	
@@ -93,7 +93,7 @@ bool GSM3ShieldV1BandManagement::setBand(String band)
 	// Quad-band takes an awful lot of time
     modemResponse=modem.writeModemCommand(command, 15000);
 	
-	if(modemResponse.indexOf("QBAND")>=0)
+	if(modemResponse.indexOf("QBAND") >= 0)
       return true;
 	else
 		return false;
