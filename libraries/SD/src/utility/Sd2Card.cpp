@@ -59,7 +59,7 @@ uint8_t spiRec(void) {
   // output pin high - like sending 0XFF
   fastDigitalWrite(SPI_MOSI_PIN, HIGH);
 
-  for (uint8_t i = 0; i < 8; i++) {
+  for (uint8_t i = 0; i < 8; ++i) {
     fastDigitalWrite(SPI_SCK_PIN, HIGH);
 
     // adjust so SCK is nice
@@ -81,7 +81,7 @@ uint8_t spiRec(void) {
 void spiSend(uint8_t data) {
   // no interrupts during byte send - about 8 us
   cli();
-  for (uint8_t i = 0; i < 8; i++) {
+  for (uint8_t i = 0; i < 8; ++i) {
     fastDigitalWrite(SPI_SCK_PIN, LOW);
 
     fastDigitalWrite(SPI_MOSI_PIN, data & 0X80);
@@ -293,7 +293,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
     type(SD_CARD_TYPE_SD1);
   } else {
     // only need last byte of r7 response
-    for (uint8_t i = 0; i < 4; i++) status_ = spiRec();
+	for (uint8_t i = 0; i < 4; ++i) status_ = spiRec();
     if (status_ != 0XAA) {
       error(SD_CARD_ERROR_CMD8);
       goto fail;
@@ -318,7 +318,7 @@ uint8_t Sd2Card::init(uint8_t sckRateID, uint8_t chipSelectPin) {
     }
     if ((spiRec() & 0XC0) == 0XC0) type(SD_CARD_TYPE_SDHC);
     // discard rest of ocr - contains allowed voltage range
-    for (uint8_t i = 0; i < 3; i++) spiRec();
+	for (uint8_t i = 0; i < 3; ++i) spiRec();
   }
   chipSelectHigh();
 
@@ -401,14 +401,14 @@ uint8_t Sd2Card::readData(uint32_t block,
   SPDR = 0XFF;
 
   // skip data before offset
-  for (;offset_ < offset; offset_++) {
+  for (;offset_ < offset; ++offset_) {
     while (!(SPSR & (1 << SPIF)))
       ;
     SPDR = 0XFF;
   }
   // transfer data
   n = count - 1;
-  for (uint16_t i = 0; i < n; i++) {
+  for (uint16_t i = 0; i < n; ++i) {
     while (!(SPSR & (1 << SPIF)))
       ;
     dst[i] = SPDR;
@@ -422,11 +422,11 @@ uint8_t Sd2Card::readData(uint32_t block,
 #else  // OPTIMIZE_HARDWARE_SPI
 
   // skip data before offset
-  for (;offset_ < offset; offset_++) {
+  for (;offset_ < offset; ++offset_) {
     spiRec();
   }
   // transfer data
-  for (uint16_t i = 0; i < count; i++) {
+  for (uint16_t i = 0; i < count; ++i) {
     dst[i] = spiRec();
   }
 #endif  // OPTIMIZE_HARDWARE_SPI
@@ -634,7 +634,7 @@ uint8_t Sd2Card::writeData(uint8_t token, const uint8_t* src) {
 
 #else  // OPTIMIZE_HARDWARE_SPI
   spiSend(token);
-  for (uint16_t i = 0; i < 512; i++) {
+  for (uint16_t i = 0; i < 512; ++i) {
     spiSend(src[i]);
   }
 #endif  // OPTIMIZE_HARDWARE_SPI
