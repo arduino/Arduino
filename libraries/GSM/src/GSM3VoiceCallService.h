@@ -52,7 +52,7 @@ class GSM3VoiceCallService
 		/** Service creation
 			@param synch		If true, the service calls are synchronois
 		*/
-		GSM3VoiceCallService(bool synch=true);
+		GSM3VoiceCallService(const bool synch = true);
 
 		/** Voice call status
 			@return Status of the voice call, as described in GSM3MobileVoiceProvider.h
@@ -75,7 +75,7 @@ class GSM3VoiceCallService
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the call is placed, 0 if not.
 		*/		
-		int voiceCall(const char* to, unsigned long timeout=30000);
+		int voiceCall(const char* to, const unsigned long timeout=30000);
 		
 		/** Accept an incoming voice call
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
@@ -95,7 +95,7 @@ class GSM3VoiceCallService
 			@return In asynchronous mode returns 0 if last command is still executing, 1 success, >1 error
 					In synchronous mode returns 1 if the number is correcty taken 0 if not
 		*/		
-		int retrieveCallingNumber(char* buffer, int bufsize);
+		int retrieveCallingNumber(char* buffer, const int bufsize);
 };
 
 
