@@ -54,19 +54,19 @@ class GSM3MobileNetworkProvider
 			@param s			Socket
 			@return modem status (true if connected)
 		 */
-		virtual inline bool getSocketAsServerModemStatus(int s){return false;};
+		virtual inline bool getSocketAsServerModemStatus(int s){return false;}
 		
 	public:
 		
 		/** minSocketAsServer
 			@return 0
 		 */
-		virtual inline int minSocketAsServer(){return 0;};
+		virtual inline int minSocketAsServer(){return 0;}
 		
 		/** maxSocketAsServer
 			@return 0
 		 */
-		virtual inline int maxSocketAsServer(){return 0;};
+		virtual inline int maxSocketAsServer(){return 0;}
 		
 		/** Get last command status
 			@return returns 0 if last command is still executing, 1 success, >1 error
@@ -79,7 +79,7 @@ class GSM3MobileNetworkProvider
 		/** Get network status
 			@return network status
 		 */
-		virtual inline GSM3_NetworkStatus_t getStatus(){return ERROR;};
+		virtual inline GSM3_NetworkStatus_t getStatus(){return ERROR;}
 		
 		/** Get socket client status
 			@param socket		Socket
@@ -90,7 +90,7 @@ class GSM3MobileNetworkProvider
 		/** Close a AT command
 			@param code			Close code
 		 */
-		virtual inline void closeCommand(int code){};
+		virtual inline void closeCommand(int code){}
 		
 		/** Establish a TCP connection
 			@param port				Port
@@ -98,13 +98,13 @@ class GSM3MobileNetworkProvider
 			@param localIPlength	IP address size in characters
 			@return	command error if exists
 		 */
-		virtual inline int connectTCPServer(int port, char* localIP, int localIPlength){return 0;};
+		virtual inline int connectTCPServer(int port, char* localIP, int localIPlength){return 0;}
 		
 		/** Get local IP address
 			@param LocalIP			Buffer for save IP address
 			@param LocalIPlength	Buffer size
 		 */
-		virtual inline int getIP(char* LocalIP, int LocalIPlength){return 0;};
+		virtual inline int getIP(char* LocalIP, int LocalIPlength){return 0;}
 			
 		/** Get new occupied socket
 			@return -1 if no new socket has been occupied
@@ -122,12 +122,12 @@ class GSM3MobileNetworkProvider
 			@param id_socket		Local socket number
 			@return 0 if command running, 1 if success, otherwise error
 		 */
-		int disconnectTCP(bool client1Server0, int idsocket){return 1;};
+		int disconnectTCP(bool client1Server0, int idsocket){return 1;}
 		
 		/** Release socket
 			@param socket		Socket
 		 */
-		void releaseSocket(int socket){};
+		void releaseSocket(int socket){}
 
 };
 
