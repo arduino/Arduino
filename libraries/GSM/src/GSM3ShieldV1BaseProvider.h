@@ -66,7 +66,7 @@ class GSM3ShieldV1BaseProvider
 		@param from		
 		@return true if successful (default: false)
 	*/		
-	virtual bool recognizeUnsolicitedEvent(byte from){return false;};
+	virtual bool recognizeUnsolicitedEvent(byte from){return false;}
 
 };
 
