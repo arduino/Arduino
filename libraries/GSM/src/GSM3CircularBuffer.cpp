@@ -74,9 +74,9 @@ char GSM3CircularBuffer::read()
 	}
 }
 
-char GSM3CircularBuffer::peek(int increment)
+char GSM3CircularBuffer::peek(const int increment) const
 {
-	char res;
+	char result;
 	byte num_aux;
 
 	if (tail > head) num_aux = tail - head;
@@ -84,8 +84,8 @@ char GSM3CircularBuffer::peek(int increment)
 
 	if(increment < num_aux)
 	{
-		res = theBuffer[head];
-		return res;
+		result = theBuffer[head];
+		return result;
 	}
 	else
 	{
@@ -93,22 +93,22 @@ char GSM3CircularBuffer::peek(int increment)
 	}
 }
 
-void GSM3CircularBufferManager::spaceAvailable(){return;}
+void GSM3CircularBufferManager::spaceAvailable(){}
 
 void GSM3CircularBuffer::flush()
 {
-	head=tail;
+	head = tail;
 }
 
 char* GSM3CircularBuffer::nextString()
 {
-	while(head!=tail)
+	while(head != tail)
 	{
-		head=(head+1) & __BUFFERMASK__;
-		if(theBuffer[head]==0)
+		head = (head + 1) & __BUFFERMASK__;
+		if(theBuffer[head] == 0)
 		{
 			head = (head + 1) & __BUFFERMASK__;
-			return (char*) theBuffer + head;
+			return static_cast<char *>(theBuffer + head);
 		}
 	}
 	return 0;
@@ -121,7 +121,7 @@ bool GSM3CircularBuffer::locate(const char* reference)
 	return locate(reference, head, tail, 0, 0);
 }
 
-bool GSM3CircularBuffer::chopUntil(const char* reference, bool movetotheend, bool usehead)
+bool GSM3CircularBuffer::chopUntil(const char* reference, const bool movetotheend, const bool usehead)
 {
 	byte from, to;
 
@@ -149,7 +149,7 @@ bool GSM3CircularBuffer::chopUntil(const char* reference, bool movetotheend, boo
 	}
 }
 
-bool GSM3CircularBuffer::locate(const char* reference, byte thishead, byte thistail, byte* from, byte* to)
+bool GSM3CircularBuffer::locate(const char* reference, const byte thishead, byte thistail, byte* from, byte* to)
 {
 	int refcursor = 0;
 	bool into = false;
@@ -186,7 +186,7 @@ bool GSM3CircularBuffer::locate(const char* reference, byte thishead, byte thist
 				into = false;
 				refcursor = 0;
 			}
-			b2 = (b2+1) & __BUFFERMASK__;
+			b2 = (b2 + 1) & __BUFFERMASK__;
 		}
 	}
 	return false;
@@ -209,7 +209,7 @@ bool GSM3CircularBuffer::extractSubstring(const char* from, const char* to, char
 //DEBUG
 //Serial.println("Located chain from.");
 
-	t1++; //To point the next.
+	++t1; //To point the next.
 	if(!locate(to, t1, tail, &h2, 0))
 		return false;
 
@@ -219,7 +219,7 @@ bool GSM3CircularBuffer::extractSubstring(const char* from, const char* to, char
 Serial.print("h2=");Serial.println(int(h2));*/
 
 
-	for(i = 0,b = t1; i < bufsize, b != ((h2) & __BUFFERMASK__); i++, b = (b+1) & __BUFFERMASK__)
+	for(i = 0, b = t1; i < bufsize, b != ((h2) & __BUFFERMASK__); ++i, b = (b + 1) & __BUFFERMASK__)
 		buffer[i] = theBuffer[b];
 	buffer[i] = 0;
 
@@ -233,32 +233,32 @@ Serial.print("h2=");Serial.println(int(h2));*/
 int GSM3CircularBuffer::readInt()
 {
 	int res = 0;
-	byte c;
+	byte charakter;
 	bool anyfound = false;
 	bool negative = false;
-	for(byte b = head + 1; b != tail; b = (b+1) & __BUFFERMASK__)
+	for(byte index = head + 1; index != tail; index = (index + 1) & __BUFFERMASK__)
 	{
-		c=theBuffer[b];
-		if((c == ' ' ) && (!anyfound))
+		charakter = theBuffer[index];
+		if((charakter == ' ' ) && (!anyfound))
 		{
-		} else if((c == '-' ) && (!anyfound))
+		} else if((charakter == '-' ) && (!anyfound))
 		{
 			negative = true;
 			anyfound = true;  // Don't admit blanks after -
-		} else if((c>='0')&&(c<='9'))
+		} else if((charakter >= '0') && (charakter <= '9'))
 		{
 			anyfound = true;
-			res = (res * 10) + static_cast<int>(c) - 48;
+			res = (res * 10) + static_cast<int>(charakter) - 48;
 		}
 		else
 			{
 				if(negative)
-					res= (-1) * res;
+					res = (-1) * res;
 				return res;
 			}
 	}
 	if(negative)
-		res=(-1) * res;
+		res = (-1) * res;
 	return res;
 }
 
@@ -276,19 +276,19 @@ void GSM3CircularBuffer::debugBuffer()
 	Serial.println();
 }
 
-void GSM3CircularBuffer::printCharDebug(uint8_t c)
+void GSM3CircularBuffer::printCharDebug(const uint8_t character)
 {
-	if((c > 31) && (c < 127))
-		Serial.print((char)c);
+	if((character > static_cast<uint8_t>(31)) && (character < static_cast<uint8_t>(127)))
+		Serial.print((char)character);
 	else
 	{
 		Serial.print('%');
-		Serial.print(c);
+		Serial.print(character);
 		Serial.print('%');
 	}
 }
 
-bool GSM3CircularBuffer::retrieveBuffer(char* buffer, int bufsize, int& SizeWritten)
+bool GSM3CircularBuffer::retrieveBuffer(const char* buffer, const int bufsize, int& SizeWritten)
 {
 	byte b;
 	int i;
@@ -299,14 +299,14 @@ bool GSM3CircularBuffer::retrieveBuffer(char* buffer, int bufsize, int& SizeWrit
 		}
 	buffer[i]=0;
 	SizeWritten = i;*/
-	b=head;
-	for(i = 0 ;i < bufsize; i++)
+	b = head;
+	for(i = 0 ; i < bufsize; ++i)
 		{
 			if (b != tail)
 				{
 					buffer[i] = theBuffer[b];
-					buffer[i+1] = 0;
-					b = (b+1) & __BUFFERMASK__;
+					buffer[i + 1] = 0;
+					b = (b + 1) & __BUFFERMASK__;
 					SizeWritten = i + 1;
 				}
 		}

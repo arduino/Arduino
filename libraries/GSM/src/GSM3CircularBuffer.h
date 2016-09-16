@@ -80,7 +80,7 @@ class GSM3CircularBuffer
 			@param to			Final byte position
 			@return true if exists, in otherwise return false
 		 */
-		bool locate(const char* reference, byte thishead, byte thistail, byte* from=0, byte* to=0);
+		bool locate(const char* reference, const byte thishead, byte thistail, byte* from=0, byte* to=0);
 		
 	public:
 	
@@ -116,7 +116,7 @@ class GSM3CircularBuffer
 			@param increment	Increment
 			@return character
 		 */
-		char peek(int increment);
+		char peek(const int increment) const;
 		
 		/** Returns a pointer to the head of the buffer
 			@return buffer with pointer in head
@@ -161,7 +161,7 @@ class GSM3CircularBuffer
 			@param head
 			@return true if successful
 		 */
-		bool chopUntil(const char* reference, bool movetotheend, bool head=true);
+		bool chopUntil(const char* reference, const bool movetotheend, const bool head = true);
 		
 		/** Reads an integer from the head. Stops with first non blank, non number character
 			@return integer from the head
@@ -185,7 +185,7 @@ class GSM3CircularBuffer
 			@param SizeWritten
 			@return true if successful
 		 */
-		bool retrieveBuffer(char* buffer, int bufsize, int& SizeWritten);
+		bool retrieveBuffer(const char* buffer, const int bufsize, int& SizeWritten);
 		
 		/** Debug function to print the buffer after receiving data from the modem.
 		 */
@@ -194,7 +194,7 @@ class GSM3CircularBuffer
 		/** Utility: dump character if printable, else, put in %x%
 			@param c			Character
 		 */
-		static void printCharDebug(uint8_t c);
+		static void printCharDebug(const uint8_t character);
 		
 		
 };
