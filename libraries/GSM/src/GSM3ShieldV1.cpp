@@ -69,7 +69,7 @@ void GSM3ShieldV1::manageResponse(byte from, byte to)
 //Function for 2 sec delay inside an interruption.
 void GSM3ShieldV1::delayInsideInterrupt2seg()
 {
-	for (int k=0;k<40;k++)  theGSM3ShieldV1ModemCore.gss.tunedDelay(50000); 
+	for (int k = 0; k < 40; k++)  theGSM3ShieldV1ModemCore.gss.tunedDelay(50000);
 } 
 
 ///////////////////////////////////////////////////////UNSOLICITED RESULT CODE (URC) FUNCTIONS///////////////////////////////////////////////////////////////////
