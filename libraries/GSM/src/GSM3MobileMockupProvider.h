@@ -43,7 +43,7 @@ class GSM3MobileMockupProvider: public GSM3MobileNetworkProvider
 		// Introducing this status is quite "heavy". But something like this should
 		// be added to ShieldV1. Or not. 
 		// Note, in ShieldV1 there is no "RECEIVINGSMS" status.
-		enum GSM3_modemlinest_e { IDLE, WAITINGANSWER, SENDINGSMS};
+		enum class GSM3_modemlinest_e  :  { IDLE, WAITINGANSWER, SENDINGSMS};
 		GSM3_modemlinest_e lineStatus;
 		char* msgExample;
 		int msgIndex;
