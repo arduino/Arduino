@@ -345,12 +345,12 @@ public class FindReplace extends javax.swing.JFrame {
             }
 
             if (backwards) {
-              editor.selectNextTab();
+              editor.selectPrevTab();
               this.setVisible(true);
               int l = editor.getCurrentTab().getText().length() - 1;
               editor.getCurrentTab().setSelection(l, l);
             } else {
-              editor.selectPrevTab();
+              editor.selectNextTab();
               this.setVisible(true);
               editor.getCurrentTab().setSelection(0, 0);
             }
