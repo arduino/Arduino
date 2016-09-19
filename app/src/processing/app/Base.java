@@ -1137,11 +1137,13 @@ public class Base {
     File platformLibraryPath = null;
     File referencedPlatformLibraryPath = null;
     String platformName = null;
+    String boardId = null;
     String referencedPlatformName = null;
     String myArch = null;
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     if (targetPlatform != null) {
       myArch = targetPlatform.getId();
+      boardId = BaseNoGui.getTargetBoard().getName();
       platformName = targetPlatform.getPreferences().get("name");
       platformLibraryPath = new File(targetPlatform.getFolder(), "libraries");
       String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
@@ -1216,7 +1218,7 @@ public class Base {
     // Add examples from libraries
     if (!ideLibs.isEmpty()) {
       ideLibs.sort();
-      label = new JMenuItem(tr("Examples from Built-in Libraries"));
+      label = new JMenuItem(tr("Examples for any board"));
       label.setEnabled(false);
       menu.add(label);
     }
@@ -1236,7 +1238,7 @@ public class Base {
     if (!platformLibs.isEmpty()) {
       menu.addSeparator();
       platformLibs.sort();
-      label = new JMenuItem(I18n.format(tr("Examples from {0} Libraries"), platformName));
+      label = new JMenuItem(I18n.format(tr("Examples for {0}"), boardId));
       label.setEnabled(false);
       menu.add(label);
       for (UserLibrary lib : platformLibs) {
@@ -1247,7 +1249,7 @@ public class Base {
     if (!referencedPlatformLibs.isEmpty()) {
       menu.addSeparator();
       referencedPlatformLibs.sort();
-      label = new JMenuItem(I18n.format(tr("Examples from {0} Libraries"), referencedPlatformName));
+      label = new JMenuItem(I18n.format(tr("Examples for {0}"), referencedPlatformName));
       label.setEnabled(false);
       menu.add(label);
       for (UserLibrary lib : referencedPlatformLibs) {
