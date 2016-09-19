@@ -1205,7 +1205,13 @@ public class Base {
       // Sketchbook Libraries (including incompatible)
       } else if (libraryLocation.equals(sketchbookLibraryPath)) {
         if (compatible) {
-          sketchbookLibs.add(lib);
+          // libraries promoted from sketchbook (behave as builtin)
+          if (lib.getTypes() != null && lib.getTypes().contains("Arduino")
+              && lib.getArchitectures().contains("*")) {
+            ideLibs.add(lib);
+          } else {
+            sketchbookLibs.add(lib);
+          }
         } else {
           sketchbookIncompatibleLibs.add(lib);
         }
