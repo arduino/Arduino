@@ -31,6 +31,7 @@ package cc.arduino.view.findreplace;
 
 import processing.app.Base;
 import processing.app.Editor;
+import processing.app.EditorTab;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
@@ -284,7 +285,6 @@ public class FindReplace extends javax.swing.JFrame {
   // End of variables declaration//GEN-END:variables
 
   private boolean find(boolean wrap, boolean backwards, boolean searchTabs, int originTab) {
-    boolean wrapNeeded = false;
     String search = findField.getText();
 
     if (search.length() == 0) {
@@ -304,10 +304,6 @@ public class FindReplace extends javax.swing.JFrame {
       int selectionEnd = editor.getCurrentTab().getSelectionStop();
 
       nextIndex = text.indexOf(search, selectionEnd);
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from beginning
-        wrapNeeded = true;
-      }
     } else {
       // int selectionStart = editor.textarea.getSelectionStart();
       int selectionStart = editor.getCurrentTab().getSelectionStart() - 1;
@@ -317,13 +313,7 @@ public class FindReplace extends javax.swing.JFrame {
       } else {
         nextIndex = -1;
       }
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from the end
-        wrapNeeded = true;
-      }
     }
-
-    editor.getCurrentTab().getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
 
     if (nextIndex == -1) {
       // Nothing found on this tab: Search other tabs if required
@@ -345,12 +335,12 @@ public class FindReplace extends javax.swing.JFrame {
             }
 
             if (backwards) {
-              editor.selectNextTab();
+              editor.selectPrevTab();
               this.setVisible(true);
               int l = editor.getCurrentTab().getText().length() - 1;
               editor.getCurrentTab().setSelection(l, l);
             } else {
-              editor.selectPrevTab();
+              editor.selectNextTab();
               this.setVisible(true);
               editor.getCurrentTab().setSelection(0, 0);
             }
@@ -360,13 +350,16 @@ public class FindReplace extends javax.swing.JFrame {
         }
       }
 
-      if (wrapNeeded) {
+      if (wrap) {
         nextIndex = backwards ? text.lastIndexOf(search) : text.indexOf(search, 0);
       }
     }
 
     if (nextIndex != -1) {
-      editor.getCurrentTab().setSelection(nextIndex, nextIndex + search.length());
+      EditorTab currentTab = editor.getCurrentTab();
+      currentTab.getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
+      currentTab.setSelection(nextIndex, nextIndex + search.length());
+      currentTab.getTextArea().getCaret().setSelectionVisible(true);
       return true;
     }
 

@@ -175,7 +175,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
 
       editor.lineStatus.set(lineStart, lineEnd);
     });
-
     ToolTipManager.sharedInstance().registerComponent(textArea);
 
     configurePopupMenu(textArea);
