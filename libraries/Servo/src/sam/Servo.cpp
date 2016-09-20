@@ -279,5 +279,13 @@ bool Servo::attached()
   return servos[this->servoIndex].Pin.isActive;
 }
 
+int Servo::getAttachedPin()
+{
+  if (this->servoIndex != INVALID_SERVO)
+    return servos[this->servoIndex].Pin.nbr;
+  else
+    return 0;
+}
+
 #endif // ARDUINO_ARCH_SAM
 
