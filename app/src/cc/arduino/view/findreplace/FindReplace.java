@@ -31,6 +31,7 @@ package cc.arduino.view.findreplace;
 
 import processing.app.Base;
 import processing.app.Editor;
+import processing.app.EditorTab;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
@@ -355,8 +356,10 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     if (nextIndex != -1) {
-      editor.getCurrentTab().getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
-      editor.getCurrentTab().setSelection(nextIndex, nextIndex + search.length());
+      EditorTab currentTab = editor.getCurrentTab();
+      currentTab.getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
+      currentTab.setSelection(nextIndex, nextIndex + search.length());
+      currentTab.getTextArea().getCaret().setSelectionVisible(true);
       return true;
     }
 
