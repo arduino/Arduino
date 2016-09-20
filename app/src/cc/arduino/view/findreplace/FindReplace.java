@@ -314,12 +314,6 @@ public class FindReplace extends javax.swing.JFrame {
       }
     }
 
-    boolean wrapNeeded = false;
-    if (wrap && nextIndex == -1) {
-      // if wrapping, a second chance is ok, start from the end
-      wrapNeeded = true;
-    }
-
     if (nextIndex == -1) {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
@@ -355,7 +349,7 @@ public class FindReplace extends javax.swing.JFrame {
         }
       }
 
-      if (wrapNeeded) {
+      if (wrap) {
         nextIndex = backwards ? text.lastIndexOf(search) : text.indexOf(search, 0);
       }
     }
