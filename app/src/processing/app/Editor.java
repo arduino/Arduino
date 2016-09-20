@@ -2090,6 +2090,9 @@ public class Editor extends JFrame implements RunnerListener {
     } finally {
       // make sure the toolbar button deactivates
       toolbar.deactivateSave();
+
+      // Update editor window title in case of "Save as..."
+      updateTitle();
     }
 
     return true;
