@@ -150,7 +150,7 @@ public class SketchController {
     if (split.extension.equals(""))
       split.extension = Sketch.DEFAULT_SKETCH_EXTENSION;
 
-    if (!Sketch.EXTENSIONS.contains(split.extension)) {
+    if (!Sketch.EXTENSIONS.contains(split.extension.toLowerCase())) {
       String msg = I18n.format(tr("\".{0}\" is not a valid extension."),
                                split.extension);
       Base.showWarning(tr("Problem with rename"), msg, null);
