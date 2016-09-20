@@ -284,7 +284,6 @@ public class FindReplace extends javax.swing.JFrame {
   // End of variables declaration//GEN-END:variables
 
   private boolean find(boolean wrap, boolean backwards, boolean searchTabs, int originTab) {
-    boolean wrapNeeded = false;
     String search = findField.getText();
 
     if (search.length() == 0) {
@@ -304,10 +303,6 @@ public class FindReplace extends javax.swing.JFrame {
       int selectionEnd = editor.getCurrentTab().getSelectionStop();
 
       nextIndex = text.indexOf(search, selectionEnd);
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from beginning
-        wrapNeeded = true;
-      }
     } else {
       // int selectionStart = editor.textarea.getSelectionStart();
       int selectionStart = editor.getCurrentTab().getSelectionStart() - 1;
@@ -317,10 +312,12 @@ public class FindReplace extends javax.swing.JFrame {
       } else {
         nextIndex = -1;
       }
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from the end
-        wrapNeeded = true;
-      }
+    }
+
+    boolean wrapNeeded = false;
+    if (wrap && nextIndex == -1) {
+      // if wrapping, a second chance is ok, start from the end
+      wrapNeeded = true;
     }
 
     if (nextIndex == -1) {
