@@ -221,7 +221,7 @@
     </copy>
 
     <download-library name="Firmata" version="2.5.3"/>
-    <download-library name="Bridge" version="1.6.2"/>
+    <download-library name="Bridge" version="1.6.3"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
