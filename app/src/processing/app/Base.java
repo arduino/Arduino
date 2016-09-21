@@ -80,10 +80,6 @@ import static processing.app.I18n.tr;
  */
 public class Base {
 
-  public static final Predicate<UserLibrary> CONTRIBUTED = library -> library.getTypes() == null || library.getTypes().isEmpty() || library.getTypes().contains("Contributed");
-  public static final Predicate<UserLibrary> RETIRED = library -> library.getTypes() != null && library.getTypes().contains("Retired");
-  public static final Predicate<UserLibrary> COMPATIBLE = library -> library.getArchitectures() != null && (library.getArchitectures().contains("*") || library.getArchitectures().contains(BaseNoGui.getTargetPlatform().getId()));
-
   private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
   private static boolean commandLine;
@@ -1053,30 +1049,6 @@ public class Base {
     }
   }
 
-  public LibraryList getIDELibs() {
-    LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = installedLibraries.stream()
-      .filter(CONTRIBUTED.negate())
-      .filter(RETIRED.negate())
-      .filter(COMPATIBLE)
-      .collect(Collectors.toList());
-    return new LibraryList(libs);
-  }
-
-  public LibraryList getIDERetiredLibs() {
-    LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = installedLibraries.stream()
-      .filter(RETIRED)
-      .collect(Collectors.toList());
-    return new LibraryList(libs);
-  }
-
-  public LibraryList getUserLibs() {
-    LibraryList installedLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    List<UserLibrary> libs = installedLibraries.stream().filter(CONTRIBUTED).collect(Collectors.toList());
-    return new LibraryList(libs);
-  }
-
   private List<ContributedLibrary> getSortedLibraries() {
     List<ContributedLibrary> installedLibraries = new LinkedList<ContributedLibrary>(BaseNoGui.librariesIndexer.getInstalledLibraries());
     Collections.sort(installedLibraries, new LibraryByTypeComparator());
@@ -1159,11 +1131,100 @@ public class Base {
       menu.addSeparator();
     }
 
+    // Libraries can come from 4 locations: collect info about all four
+    File ideLibraryPath = BaseNoGui.getContentFile("libraries");
+    File sketchbookLibraryPath = BaseNoGui.getSketchbookLibrariesFolder();
+    File platformLibraryPath = null;
+    File referencedPlatformLibraryPath = null;
+    String platformName = null;
+    String boardId = null;
+    String referencedPlatformName = null;
+    String myArch = null;
+    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    if (targetPlatform != null) {
+      myArch = targetPlatform.getId();
+      boardId = BaseNoGui.getTargetBoard().getName();
+      platformName = targetPlatform.getPreferences().get("name");
+      platformLibraryPath = new File(targetPlatform.getFolder(), "libraries");
+      String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
+      if (core.contains(":")) {
+        String refcore = core.split(":")[0];
+        TargetPlatform referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
+        if (referencedPlatform != null) {
+          referencedPlatformName = referencedPlatform.getPreferences().get("name");
+          referencedPlatformLibraryPath = new File(referencedPlatform.getFolder(), "libraries");
+        }
+      }
+    }
+
+    // Divide the libraries into 7 lists, corresponding to the 4 locations
+    // with the retired IDE libs further divided into their own list, and
+    // any incompatible sketchbook libs further divided into their own list.
+    // The 7th list of "other" libraries should always be empty, but serves
+    // as a safety feature to prevent any library from vanishing.
+    LibraryList allLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    LibraryList ideLibs = new LibraryList();
+    LibraryList retiredIdeLibs = new LibraryList();
+    LibraryList platformLibs = new LibraryList();
+    LibraryList referencedPlatformLibs = new LibraryList();
+    LibraryList sketchbookLibs = new LibraryList();
+    LibraryList sketchbookIncompatibleLibs = new LibraryList();
+    LibraryList otherLibs = new LibraryList();
+    for (UserLibrary lib : allLibraries) {
+      // Get the library's location - used for sorting into categories
+      File libraryLocation = lib.getInstalledFolder().getParentFile();
+      // Is this library compatible?
+      List<String> arch = lib.getArchitectures();
+      boolean compatible;
+      if (myArch == null || arch == null || arch.contains("*")) {
+        compatible = true;
+      } else {
+        compatible = arch.contains(myArch);
+      }
+      // IDE Libaries (including retired)
+      if (libraryLocation.equals(ideLibraryPath)) {
+        if (compatible) {
+          // only compatible IDE libs are shown
+          boolean retired = false;
+          List<String> types = lib.getTypes();
+          if (types != null) retired = types.contains("Retired");
+          if (retired) {
+            retiredIdeLibs.add(lib);
+          } else {
+            ideLibs.add(lib);
+          }
+        }
+      // Platform Libraries
+      } else if (libraryLocation.equals(platformLibraryPath)) {
+        // all platform libs are assumed to be compatible
+        platformLibs.add(lib);
+      // Referenced Platform Libraries
+      } else if (libraryLocation.equals(referencedPlatformLibraryPath)) {
+        // all referenced platform libs are assumed to be compatible
+        referencedPlatformLibs.add(lib);
+      // Sketchbook Libraries (including incompatible)
+      } else if (libraryLocation.equals(sketchbookLibraryPath)) {
+        if (compatible) {
+          // libraries promoted from sketchbook (behave as builtin)
+          if (lib.getTypes() != null && lib.getTypes().contains("Arduino")
+              && lib.getArchitectures().contains("*")) {
+            ideLibs.add(lib);
+          } else {
+            sketchbookLibs.add(lib);
+          }
+        } else {
+          sketchbookIncompatibleLibs.add(lib);
+        }
+      // Other libraries of unknown type (should never occur)
+      } else {
+        otherLibs.add(lib);
+      }
+    }
+
     // Add examples from libraries
-    LibraryList ideLibs = getIDELibs();
-    ideLibs.sort();
     if (!ideLibs.isEmpty()) {
-      label = new JMenuItem(tr("Examples from Libraries"));
+      ideLibs.sort();
+      label = new JMenuItem(tr("Examples for any board"));
       label.setEnabled(false);
       menu.add(label);
     }
@@ -1171,9 +1232,8 @@ public class Base {
       addSketchesSubmenu(menu, lib);
     }
 
-    LibraryList retiredIdeLibs = getIDERetiredLibs();
-    retiredIdeLibs.sort();
     if (!retiredIdeLibs.isEmpty()) {
+      retiredIdeLibs.sort();
       JMenu retired = new JMenu(tr("RETIRED"));
       menu.add(retired);
       for (UserLibrary lib : retiredIdeLibs) {
@@ -1181,14 +1241,55 @@ public class Base {
       }
     }
 
-    LibraryList userLibs = getUserLibs();
-    if (userLibs.size() > 0) {
+    if (!platformLibs.isEmpty()) {
       menu.addSeparator();
-      userLibs.sort();
+      platformLibs.sort();
+      label = new JMenuItem(I18n.format(tr("Examples for {0}"), boardId));
+      label.setEnabled(false);
+      menu.add(label);
+      for (UserLibrary lib : platformLibs) {
+        addSketchesSubmenu(menu, lib);
+      }
+    }
+
+    if (!referencedPlatformLibs.isEmpty()) {
+      menu.addSeparator();
+      referencedPlatformLibs.sort();
+      label = new JMenuItem(I18n.format(tr("Examples for {0}"), referencedPlatformName));
+      label.setEnabled(false);
+      menu.add(label);
+      for (UserLibrary lib : referencedPlatformLibs) {
+        addSketchesSubmenu(menu, lib);
+      }
+    }
+
+    if (!sketchbookLibs.isEmpty()) {
+      menu.addSeparator();
+      sketchbookLibs.sort();
       label = new JMenuItem(tr("Examples from Custom Libraries"));
       label.setEnabled(false);
       menu.add(label);
-      for (UserLibrary lib : userLibs) {
+      for (UserLibrary lib : sketchbookLibs) {
+        addSketchesSubmenu(menu, lib);
+      }
+    }
+
+    if (!sketchbookIncompatibleLibs.isEmpty()) {
+      sketchbookIncompatibleLibs.sort();
+      JMenu incompatible = new JMenu(tr("INCOMPATIBLE"));
+      menu.add(incompatible);
+      for (UserLibrary lib : sketchbookIncompatibleLibs) {
+        addSketchesSubmenu(incompatible, lib);
+      }
+    }
+
+    if (!otherLibs.isEmpty()) {
+      menu.addSeparator();
+      otherLibs.sort();
+      label = new JMenuItem(tr("Examples from Other Libraries"));
+      label.setEnabled(false);
+      menu.add(label);
+      for (UserLibrary lib : otherLibs) {
         addSketchesSubmenu(menu, lib);
       }
     }
