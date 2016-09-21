@@ -22,6 +22,7 @@
 # hanchao <hanchao0123@hotmail.com>, 2013
 # Jacques S, 2015-2016
 # Wong Min <alpha080@gmail.com>, 2013
+# Yung Wei <oscarwei1988@gmail.com>, 2016
 # Zhuo Liu <lzhskywalker@gmail.com>, 2015
 # 天悦 任 <godners@163.com>, 2016
 # 陈吕洲 <clz@clz.me>, 2015
@@ -30,8 +31,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-30 13:18+0000\n"
+"Last-Translator: Yung Wei <oscarwei1988@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -350,7 +351,7 @@ msgstr "开发板"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "开发板信息"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -966,7 +967,7 @@ msgstr "示例"
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
-msgstr ""
+msgstr "内建库示例"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -974,13 +975,13 @@ msgstr "第三方库示例"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "其他库示例"
 
 #: ../../../../../app/src/processing/app/Base.java:1287
 #: ../../../../../app/src/processing/app/Base.java:1298
 #, java-format
 msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "{0}库示例"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1086,7 +1087,7 @@ msgstr "德语"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "取得开发板信息"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1148,7 +1149,7 @@ msgstr "匈牙利语"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "不相容"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -2228,7 +2229,7 @@ msgstr "上下文关键词 {1} 中未处理类型 {0} "
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "未知的开发板"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format

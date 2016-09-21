@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-23 02:52+0000\n"
+"Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,7 +129,7 @@ msgstr "아두이노 정보"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -343,7 +343,7 @@ msgstr "보드"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "보드 정보"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -959,7 +959,7 @@ msgstr "예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
-msgstr ""
+msgstr "내장된 라이브러리 예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -967,13 +967,13 @@ msgstr "사용자 지정 라이브러리의 예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "다른 라이브러리 예제"
 
 #: ../../../../../app/src/processing/app/Base.java:1287
 #: ../../../../../app/src/processing/app/Base.java:1298
 #, java-format
 msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "{0} 라이브러리의 예제"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1079,7 +1079,7 @@ msgstr "독일어"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "보드 정보 얻기"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1141,7 +1141,7 @@ msgstr "헝가리어"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "호환되지 않음"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1247,7 +1247,7 @@ msgstr "일본어"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1351,7 +1351,7 @@ msgstr "새로운 파일을 위한 이름:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "시리얼 포트에서 정보를 얻을 수 없음"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1363,7 +1363,7 @@ msgstr "네트워크"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "네트워크 포트에서 정보를 얻을 수 없음"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1554,7 +1554,7 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 �
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "보드 정보를 얻기위해 포트를 선택하세요"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1936,7 +1936,7 @@ msgstr "스케치북 경로가 지정되지 않음"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "인덱스 파일 {0}을 건너 뜀, 구문 분석 오류가 발생했습니다:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1998,7 +1998,7 @@ msgstr "타밀어"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2221,7 +2221,7 @@ msgstr "컨텍스트 키 {1} 에서 처리되지 않은 타입 {0} "
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "알 수 없는 보드"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2277,7 +2277,7 @@ msgstr "프로그래머를 이용해 업로드"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "스케치 업로드"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."

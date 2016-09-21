@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-17 15:40+0000\n"
+"Last-Translator: Onyrosgaming <laxetas@gmail.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -340,7 +340,7 @@ msgstr "Placa"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Información da Placa"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -956,7 +956,7 @@ msgstr "Exemplos"
 
 #: ../../../../../app/src/processing/app/Base.java:1267
 msgid "Examples from Built-in Libraries"
-msgstr ""
+msgstr "Exemplos das librarías incorporadas"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -964,13 +964,13 @@ msgstr "Exemplos de Librerías Personalizadas"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Exemplos doutras librrías"
 
 #: ../../../../../app/src/processing/app/Base.java:1287
 #: ../../../../../app/src/processing/app/Base.java:1298
 #, java-format
 msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "Exemplos de {0} librarías"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1138,7 +1138,7 @@ msgstr "Húngaro"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "INCOMPATIBLE"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1260,11 +1260,11 @@ msgstr "Xestor da biblioteca"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
-msgstr ""
+msgstr "Libraría engadia ás túas librarías. Olla o menú \"Include libraría\""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "A libraría non pode usar os cartafois 'src' nin 'utility'. Chequea outra vez {0}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
@@ -1286,7 +1286,7 @@ msgstr "Cargando a configuración..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "Buscando recetas como {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1298,7 +1298,7 @@ msgstr "Xestionar bibliotecas..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Configuración manual do proxy"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1311,7 +1311,7 @@ msgstr "Mensaxe"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "Falta '{0}' da libraría en {1}"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
@@ -1323,7 +1323,7 @@ msgstr "Máis"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
-msgstr ""
+msgstr "Pódense editar máis preferencias directamente no arquivo"
 
 #: Editor.java:2156
 msgid "Moving"
@@ -1331,16 +1331,16 @@ msgstr "Movendo"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "Múltiples arquivos non soportados"
 
 #: ../../../processing/app/debug/Compiler.java:520
 #, java-format
 msgid "Multiple libraries were found for \"{0}\""
-msgstr ""
+msgstr "Múltiples librarías foron atopadas por \"{0}\""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr ""
+msgstr "Debes especificar exactamente un arquivo sketch"
 
 #: Sketch.java:282
 msgid "Name for new file:"
@@ -1348,7 +1348,7 @@ msgstr "Nome do novo ficheiro:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Porto serie nativo, non se pode obter información"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1360,7 +1360,7 @@ msgstr "Rede"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Porto de rede, non se pode obter información"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1368,7 +1368,7 @@ msgstr "Portos de rede"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr ""
+msgstr "Subida á rede usando o programador non soportada"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -1380,7 +1380,7 @@ msgstr "Nova lapela"
 
 #: SerialMonitor.java:112
 msgid "Newline"
-msgstr ""
+msgstr "Nova liña"
 
 #: EditorHeader.java:340
 msgid "Next Tab"
@@ -1392,19 +1392,19 @@ msgstr "Non"
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
-msgstr ""
+msgstr "Non atopados datos de autorización"
 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
-msgstr ""
+msgstr "Non son necesarios cambios para Auto Format."
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
-msgstr ""
+msgstr "Non se atoparon parámetros de liña de comando"
 
 #: ../../../processing/app/debug/Compiler.java:200
 msgid "No compiled sketch found"
-msgstr ""
+msgstr "Non se atopou skecth compilado"
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1416,7 +1416,7 @@ msgstr "Sen lanzador dispoñíbel"
 
 #: SerialMonitor.java:112
 msgid "No line ending"
-msgstr ""
+msgstr "Falta final de liña"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
@@ -1424,16 +1424,16 @@ msgstr "Sen parámetros"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
-msgstr ""
+msgstr "Falta proxy"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
-msgstr ""
+msgstr "Realmente non, é hora de que tomes un pouco o fresco"
 
 #: Editor.java:1872
 #, java-format
 msgid "No reference available for \"{0}\""
-msgstr ""
+msgstr "Falta referencia dispoñible para \"{0}\""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -1446,16 +1446,16 @@ msgstr "Sen sketchbook"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
-msgstr ""
+msgstr "Non se atoparon arquivos de código válido"
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
-msgstr ""
+msgstr "Non se atoparon definicións de hardware válidas no cartafol {0}."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
-msgstr ""
+msgstr "Ningún"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1486,7 +1486,7 @@ msgstr "Abrir"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr ""
+msgstr "Abrir recente"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1502,7 +1502,7 @@ msgstr "Abrir..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Outros"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1510,7 +1510,7 @@ msgstr "Configuración da páxina"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Colaborador"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1535,11 +1535,11 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
-msgstr ""
+msgstr "Por favor, confirma o borrado das placas"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid "Please confirm library deletion"
-msgstr ""
+msgstr "Por favor confirma o borrado da libraría"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
@@ -1551,12 +1551,12 @@ msgstr "Por favor importa a biblioteca Wire dende Sketch > menú Importar biblio
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Por favor, selecciona un porto para obter a información da placa"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "Por favor selecciona un programador do menú Ferramentas->Programador"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
@@ -1572,7 +1572,7 @@ msgstr "Porto"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Porto número:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1592,7 +1592,7 @@ msgstr "Preferencias"
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
-msgstr ""
+msgstr "Preparando placas..."
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1624,20 +1624,20 @@ msgstr "Problema abrindo o URL"
 
 #: Base.java:227
 msgid "Problem Setting the Platform"
-msgstr ""
+msgstr "Problema axustando a plataforma"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr ""
+msgstr "Problema accedendo ao cartafol da placa /www/sd"
 
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
 #, java-format
 msgid "Problem accessing files in folder \"{0}\""
-msgstr ""
+msgstr "Problema accedendo aos arquivos no cartafol \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
-msgstr ""
+msgstr "Problema obtendo os datos do cartafol"
 
 #: debug/Uploader.java:209
 msgid ""
@@ -1647,7 +1647,7 @@ msgstr ""
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
-msgstr ""
+msgstr "Problema ao renomear"
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
@@ -1660,7 +1660,7 @@ msgstr "Programador"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Progreso {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1668,11 +1668,11 @@ msgstr "Saír"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "RETIRADO"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Recomendado"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1684,17 +1684,17 @@ msgstr "Referencia"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
-msgstr ""
+msgstr "Quitar"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
 #, java-format
 msgid "Removing library: {0}"
-msgstr ""
+msgstr "Quitando libraría: {0}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr ""
+msgstr "Quitando..."
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -1723,7 +1723,7 @@ msgstr "Substituír con:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr ""
+msgstr "Retirado"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1732,12 +1732,12 @@ msgstr "Romanés"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "Executando receta: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Executando: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1775,7 +1775,7 @@ msgstr "Gardando..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "Busca todos os separadores de Sketch"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1791,28 +1791,28 @@ msgstr "Selecciona o ficheiro zip ou o cartafol que contén a biblioteca que que
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
-msgstr ""
+msgstr "Selecciona unha imaxe ou outro arquivo de datos para copiar o teu sketch"
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
-msgstr ""
+msgstr "Selecciona a nova localización do libro de sketch"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
 msgid "Select version"
-msgstr ""
+msgstr "Selecciona versión"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "A placa seleccionada depende do núcleo '{0}' (non instalado)."
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr ""
+msgstr "A placa seleccionada non está dispoñible"
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
-msgstr ""
+msgstr "A libraría seleccionada non está dispoñible"
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1820,19 +1820,19 @@ msgstr "Enviar"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Sensores"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
-msgstr ""
+msgstr "Monitor serie"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "Plotter serie"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Monitor serie non dispoñible mentras o plotter está aberto"
 
 #: Serial.java:194
 #, java-format
@@ -1859,23 +1859,23 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Axustes"
 
 #: Base.java:1681
 msgid "Settings issues"
-msgstr ""
+msgstr "Axustando asuntos"
 
 #: Editor.java:641
 msgid "Show Sketch Folder"
-msgstr ""
+msgstr "Mostra cartafol sketch"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr ""
+msgstr " "
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Sinal de Entrada/Saída"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1883,7 +1883,7 @@ msgstr "Sketch"
 
 #: Sketch.java:1754
 msgid "Sketch Disappeared"
-msgstr ""
+msgstr "O sketch desapareceu"
 
 #: Base.java:1411
 msgid "Sketch Does Not Exist"
@@ -1928,7 +1928,7 @@ msgstr "Localización do sketchbook:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr ""
+msgstr "A ruta do libro sketch non está definida"
 
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
@@ -1971,7 +1971,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr ""
+msgstr "Comezando..."
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1983,7 +1983,7 @@ msgstr "Sueco"
 
 #: Preferences.java:84
 msgid "System Default"
-msgstr ""
+msgstr "Sistema por defecto"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
