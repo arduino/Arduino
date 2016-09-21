@@ -17,7 +17,7 @@
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.6.13.tar.bz2",
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.14.tar.bz2",
           "archiveFileName": "avr-1.6.14.tar.bz2",
           "checksum": "SHA-256:a5f7d66c83e3d4722f4c8dab42bdbcf5af98c611ffca1802ef3d1957b894bd92",
           "size": "4993455",
