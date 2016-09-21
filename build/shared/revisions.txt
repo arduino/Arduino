@@ -1,13 +1,15 @@
-ARDUINO 1.6.12
+ARDUINO 1.6.12 - 2016.09.21
 
 [ide]
 * Refactor Editor code, solving some long standing bugs and cleaning up everything. Thanks @matthijskooijman
 * Add initial Cloud API integration. When plugging a new board, if an additional core is needed, the user will be prompted to install it
 * Improved examples menu organization. Thanks @PaulStoffregen
+* Recompiled arduino-builder with Go 1.7.1 to avoid crash on OSX Sierra
 
 [core]
 * avr: Add support for internal 2.56V and 2.56V ext. cap analog references on the ATtiny25/45/85. Thanks @mischnic
 * Added String::toDouble(). Thanks @Ivan-Perez
+* Update to avrdude 6.3 with patch to ignore unused fuses (burn bootloader works also wih outdated cores)
 
 ARDUINO 1.6.11 - 2016.08.17
 
