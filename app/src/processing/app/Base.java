@@ -1135,7 +1135,6 @@ public class Base {
     File sketchbookLibraryPath = BaseNoGui.getSketchbookLibrariesFolder();
     File platformLibraryPath = null;
     File referencedPlatformLibraryPath = null;
-    String platformName = null;
     String boardId = null;
     String referencedPlatformName = null;
     String myArch = null;
@@ -1143,7 +1142,6 @@ public class Base {
     if (targetPlatform != null) {
       myArch = targetPlatform.getId();
       boardId = BaseNoGui.getTargetBoard().getName();
-      platformName = targetPlatform.getPreferences().get("name");
       platformLibraryPath = new File(targetPlatform.getFolder(), "libraries");
       String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
       if (core.contains(":")) {
