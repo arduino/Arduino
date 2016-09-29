@@ -101,7 +101,7 @@ public class Compiler implements MessageConsumer {
   enum BuilderAction {
     COMPILE("-compile"), DUMP_PREFS("-dump-prefs");
 
-    private final String value;
+    final String value;
 
     BuilderAction(String value) {
       this.value = value;

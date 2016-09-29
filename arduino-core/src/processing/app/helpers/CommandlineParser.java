@@ -18,7 +18,7 @@ public class CommandlineParser {
   private enum ACTION {
     GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
 
-    private final String value;
+    final String value;
 
     ACTION() {
       this.value = null;
