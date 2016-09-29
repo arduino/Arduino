@@ -75,6 +75,7 @@ public class RunnerException extends Exception {
    * Override getMessage() in Throwable, so that I can set 
    * the message text outside the constructor.
    */
+  @Override
   public String getMessage() {
     return message;
   }
@@ -151,6 +152,7 @@ public class RunnerException extends Exception {
   */
 
 
+  @Override
   public void printStackTrace() {
     if (showStackTrace) {
       super.printStackTrace();

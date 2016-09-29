@@ -152,6 +152,7 @@ public abstract class Uploader implements MessageConsumer {
     return error;
   }
 
+  @Override
   public void message(String s) {
     // selectively suppress a bunch of avrdude output for AVR109/Caterina that should already be quelled but isn't
     if (!verbose && StringUtils.stringContainsOneOf(s, STRINGS_TO_SUPPRESS)) {

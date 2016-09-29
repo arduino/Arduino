@@ -148,6 +148,7 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
+  @Override
   public synchronized void serialEvent(SerialPortEvent serialEvent) {
     if (serialEvent.isRXCHAR()) {
       try {

@@ -43,6 +43,7 @@ public class SSHConfigFileSetup implements SSHClientSetupChainRing {
     this.nextChainRing = nextChainRing;
   }
 
+  @Override
   public Session setup(BoardPort port, JSch jSch) throws JSchException, IOException {
     String ipAddress = port.getAddress();
     String hostname = port.getBoardName().contains(".local") ? port.getBoardName() : port.getBoardName() + ".local";

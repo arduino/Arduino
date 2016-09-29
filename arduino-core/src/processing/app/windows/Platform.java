@@ -41,6 +41,7 @@ public class Platform extends processing.app.Platform {
   private File settingsFolder;
   private File defaultSketchbookFolder;
 
+  @Override
   public void init() throws Exception {
     super.init();
 
@@ -108,15 +109,18 @@ public class Platform extends processing.app.Platform {
     }
   }
 
+  @Override
   public File getSettingsFolder() {
     return settingsFolder;
   }
 
 
+  @Override
   public File getDefaultSketchbookFolder() throws Exception {
     return defaultSketchbookFolder;
   }
 
+  @Override
   public void openURL(String url) throws Exception {
     // this is not guaranteed to work, because who knows if the
     // path will always be c:\progra~1 et al. also if the user has
@@ -148,11 +152,13 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public boolean openFolderAvailable() {
     return true;
   }
 
 
+  @Override
   public void openFolder(File file) throws Exception {
     String folder = file.getAbsolutePath();
 
@@ -180,12 +186,14 @@ public class Platform extends processing.app.Platform {
     //noop
   }
 
+  @Override
   public List<File> postInstallScripts(File folder) {
     List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "post_install.bat"));
     return scripts;
   }
 
+  @Override
   public List<File> preUninstallScripts(File folder) {
     List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "pre_uninstall.bat"));
@@ -195,9 +203,11 @@ public class Platform extends processing.app.Platform {
   public void symlink(File something, File somewhere) throws IOException, InterruptedException {
   }
 
+  @Override
   public void link(File something, File somewhere) throws IOException, InterruptedException {
   }
 
+  @Override
   public void chmod(File file, int mode) throws IOException, InterruptedException {
   }
 

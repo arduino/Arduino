@@ -242,6 +242,7 @@ public class SketchFile {
     return false;
   }
 
+  @Override
   public boolean equals(Object o) {
     return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
   }

@@ -63,6 +63,7 @@ public class SSHUploader extends Uploader {
     this.port = port;
   }
 
+  @Override
   public boolean requiresAuthorization() {
     return true;
   }

@@ -52,6 +52,7 @@ public class SerialDiscovery implements Discovery {
     return getSerialBoardPorts(false);
   }
 
+  @Override
   public List<BoardPort> listDiscoveredBoards(boolean complete) {
     return getSerialBoardPorts(complete);
   }

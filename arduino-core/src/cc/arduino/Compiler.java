@@ -516,6 +516,7 @@ public class Compiler implements MessageConsumer {
    * out from the compiler. The errors are parsed for their contents
    * and line number, which is then reported back to Editor.
    */
+  @Override
   public void message(String s) {
     int i;
 

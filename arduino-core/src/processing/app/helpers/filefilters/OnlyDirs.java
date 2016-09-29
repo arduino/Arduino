@@ -32,6 +32,7 @@ import java.io.FilenameFilter;
  */
 public class OnlyDirs implements FilenameFilter {
 
+  @Override
   public boolean accept(File dir, String name) {
     if (name.charAt(0) == '.')
       return false;

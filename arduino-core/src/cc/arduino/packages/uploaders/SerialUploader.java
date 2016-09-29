@@ -61,6 +61,7 @@ public class SerialUploader extends Uploader {
     super(noUploadPort);
   }
 
+  @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
     // FIXME: Preferences should be reorganized
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
@@ -347,6 +348,7 @@ public class SerialUploader extends Uploader {
     }
   }
 
+  @Override
   public boolean burnBootloader() throws Exception {
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
 
