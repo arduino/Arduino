@@ -480,7 +480,7 @@ public class PApplet {
     }
     String[][] matches = new String[results.size()][count];
     for (int i = 0; i < matches.length; i++) {
-      matches[i] = (String[]) results.get(i);
+      matches[i] = results.get(i);
     }
     return matches;
   }
