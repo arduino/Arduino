@@ -70,7 +70,7 @@ public class UploaderUtils {
 
     boolean useNewWarningsAccumulator = false;
     if (warningsAccumulator == null) {
-      warningsAccumulator = new LinkedList<String>();
+      warningsAccumulator = new LinkedList<>();
       useNewWarningsAccumulator = true;
     }
 

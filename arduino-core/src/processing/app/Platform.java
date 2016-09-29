@@ -177,7 +177,7 @@ public class Platform {
   }
 
   public List<String> listSerials() {
-    return new ArrayList<String>(Arrays.asList(listSerialsNative()));
+    return new ArrayList<>(Arrays.asList(listSerialsNative()));
   }
 
   public  List<String> listSerialsNames(){
@@ -233,13 +233,13 @@ public class Platform {
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
-          List<String> vids = new LinkedList<String>(board.getPreferences().subTree("vid", 1).values());
+          List<String> vids = new LinkedList<>(board.getPreferences().subTree("vid", 1).values());
           if (!vids.isEmpty()) {
-            List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid", 1).values());
+            List<String> pids = new LinkedList<>(board.getPreferences().subTree("pid", 1).values());
             for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
               if (vid_pid_iSerial.toUpperCase().contains(vidPid.toUpperCase())) {
-                Map<String, Object> boardData = new HashMap<String, Object>();
+                Map<String, Object> boardData = new HashMap<>();
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
@@ -286,7 +286,7 @@ public class Platform {
   }
 
   public List<BoardPort> filterPorts(List<BoardPort> ports, boolean aBoolean) {
-    return new LinkedList<BoardPort>(ports);
+    return new LinkedList<>(ports);
   }
 
   public void fixPrefsFilePermissions(File prefsFile) throws IOException, InterruptedException {

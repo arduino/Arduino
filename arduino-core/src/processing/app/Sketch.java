@@ -27,7 +27,7 @@ public class Sketch {
    */
   private File folder;
 
-  private List<SketchFile> files = new ArrayList<SketchFile>();
+  private List<SketchFile> files = new ArrayList<>();
 
   private File buildPath;
 

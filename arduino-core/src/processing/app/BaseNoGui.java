@@ -500,7 +500,7 @@ public class BaseNoGui {
           showError(tr("Multiple files not supported"), tr("The --upload option supports only one file at a time"), null);
         }
 
-        List<String> warningsAccumulator = new LinkedList<String>();
+        List<String> warningsAccumulator = new LinkedList<>();
         boolean success = false;
         try {
           // Editor constructor loads the sketch with handleOpenInternal() that
@@ -619,7 +619,7 @@ public class BaseNoGui {
     }
     indexer.syncWithFilesystem();
 
-    packages = new LinkedHashMap<String, TargetPackage>();
+    packages = new LinkedHashMap<>();
     loadHardware(getHardwareFolder());
     loadContributedHardware(indexer);
     loadHardware(getSketchbookHardwareFolder());
@@ -794,7 +794,7 @@ public class BaseNoGui {
   static public void onBoardOrPortChange() {
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-    librariesFolders = new ArrayList<File>();
+    librariesFolders = new ArrayList<>();
 
     // Add IDE libraries folder
     librariesFolders.add(getContentFile("libraries"));
@@ -874,7 +874,7 @@ public class BaseNoGui {
     // a list of libraries. Compiler.java will use only the first
     // library on each list. The others are used only to advise
     // user of ambiguously matched and duplicate libraries.
-    importToLibraryTable = new HashMap<String, LibraryList>();
+    importToLibraryTable = new HashMap<>();
     for (UserLibrary lib : librariesIndexer.getInstalledLibraries()) {
       try {
         String headers[] = headerListFromIncludePath(lib.getSrcFolder());

@@ -230,7 +230,7 @@ public class Editor extends JFrame implements RunnerListener {
         public void windowDeactivated(WindowEvent e) {
           fileMenu.remove(sketchbookMenu);
           fileMenu.remove(examplesMenu);
-          List<Component> toolsMenuItemsToRemove = new LinkedList<Component>();
+          List<Component> toolsMenuItemsToRemove = new LinkedList<>();
           for (Component menuItem : toolsMenu.getMenuComponents()) {
             if (menuItem instanceof JComponent) {
               Object removeOnWindowDeactivation = ((JComponent) menuItem).getClientProperty("removeOnWindowDeactivation");
@@ -816,7 +816,7 @@ public class Editor extends JFrame implements RunnerListener {
     if (sourceFolder == null)
       return;
 
-    Map<String, JMenuItem> toolItems = new HashMap<String, JMenuItem>();
+    Map<String, JMenuItem> toolItems = new HashMap<>();
 
     File[] folders = sourceFolder.listFiles(new FileFilter() {
       public boolean accept(File folder) {
@@ -906,7 +906,7 @@ public class Editor extends JFrame implements RunnerListener {
         e.printStackTrace();
       }
     }
-    ArrayList<String> toolList = new ArrayList<String>(toolItems.keySet());
+    ArrayList<String> toolList = new ArrayList<>(toolItems.keySet());
     if (toolList.size() == 0) return;
 
     menu.addSeparator();

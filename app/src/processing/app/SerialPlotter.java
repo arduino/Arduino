@@ -185,7 +185,7 @@ public class SerialPlotter extends AbstractMonitor {
     });
 
     messageBuffer = new StringBuffer();
-    graphs = new ArrayList<Graph>();
+    graphs = new ArrayList<>();
   }
 
   protected void onCreateWindow(Container mainPane) {

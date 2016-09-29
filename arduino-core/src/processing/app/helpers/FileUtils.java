@@ -210,7 +210,7 @@ public class FileUtils {
   }
 
   public static List<String> readFileToListOfStrings(File file) throws IOException {
-    List<String> strings = new LinkedList<String>();
+    List<String> strings = new LinkedList<>();
     BufferedReader reader = null;
     try {
       reader = new BufferedReader(new FileReader(file));
@@ -343,7 +343,7 @@ public class FileUtils {
 
   public static List<File> listFiles(File folder, boolean recursive,
                                      List<String> extensions) {
-    List<File> result = new ArrayList<File>();
+    List<File> result = new ArrayList<>();
 
     for (File file : folder.listFiles()) {
       if (isSCCSOrHiddenFile(file))

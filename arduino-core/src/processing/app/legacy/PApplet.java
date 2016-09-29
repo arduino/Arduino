@@ -466,7 +466,7 @@ public class PApplet {
   static public String[][] matchAll(String what, String regexp) {
     Pattern p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
     Matcher m = p.matcher(what);
-    ArrayList<String[]> results = new ArrayList<String[]>();
+    ArrayList<String[]> results = new ArrayList<>();
     int count = m.groupCount() + 1;
     while (m.find()) {
       String[] groups = new String[count];

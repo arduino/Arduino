@@ -85,7 +85,7 @@ public class Base {
   public static volatile Base INSTANCE;
 
   public static SplashScreenHelper splashScreenHelper = new SplashScreenHelper(SplashScreen.getSplashScreen());
-  public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<String, Object>();
+  public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
   private final LibraryInstaller libraryInstaller;
   private ContributionsSelfCheck contributionsSelfCheck;
@@ -266,7 +266,7 @@ public class Base {
 
   public Base(String[] args) throws Exception {
     BaseNoGui.notifier = new GUIUserNotifier(this);
-    this.recentSketchesMenuItems = new LinkedList<JMenuItem>();
+    this.recentSketchesMenuItems = new LinkedList<>();
 
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
@@ -584,7 +584,7 @@ public class Base {
       return;
     }
 
-    Set<String> sketches = new LinkedHashSet<String>();
+    Set<String> sketches = new LinkedHashSet<>();
     sketches.add(sketch.getSketch().getMainFilePath());
     sketches.addAll(PreferencesData.getCollection("recent.sketches"));
 
@@ -592,7 +592,7 @@ public class Base {
   }
 
   protected void removeRecentSketchPath(String path) {
-    Collection<String> sketches = new LinkedList<String>(PreferencesData.getCollection("recent.sketches"));
+    Collection<String> sketches = new LinkedList<>(PreferencesData.getCollection("recent.sketches"));
     sketches.remove(path);
     PreferencesData.setCollection("recent.sketches", sketches);
   }
@@ -1049,7 +1049,7 @@ public class Base {
   }
 
   private List<ContributedLibrary> getSortedLibraries() {
-    List<ContributedLibrary> installedLibraries = new LinkedList<ContributedLibrary>(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    List<ContributedLibrary> installedLibraries = new LinkedList<>(BaseNoGui.librariesIndexer.getInstalledLibraries());
     Collections.sort(installedLibraries, new LibraryByTypeComparator());
     Collections.sort(installedLibraries, new LibraryOfSameTypeComparator());
     return installedLibraries;
@@ -1415,7 +1415,7 @@ public class Base {
     boardMenu.add(new JSeparator());
 
     // Generate custom menus for all platforms
-    Set<String> customMenusTitles = new HashSet<String>();
+    Set<String> customMenusTitles = new HashSet<>();
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
         customMenusTitles.addAll(targetPlatform.getCustomMenus().values());
@@ -1427,10 +1427,10 @@ public class Base {
       boardsCustomMenus.add(customMenu);
     }
 
-    List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<JMenuItem>();
+    List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<>();
 
     ButtonGroup boardsButtonGroup = new ButtonGroup();
-    Map<String, ButtonGroup> buttonGroupsMap = new HashMap<String, ButtonGroup>();
+    Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
 
     // Cycle through all packages
     boolean first = true;
@@ -2129,7 +2129,7 @@ public class Base {
    * that are separated by = and ignore comments with #.
    */
   static public HashMap<String, String> readSettings(File inputFile) {
-    HashMap<String, String> outgoing = new HashMap<String, String>();
+    HashMap<String, String> outgoing = new HashMap<>();
     if (!inputFile.exists()) return outgoing;  // return empty hash
 
     String lines[] = PApplet.loadStrings(inputFile);
