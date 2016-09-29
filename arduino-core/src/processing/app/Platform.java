@@ -155,7 +155,7 @@ public class Platform {
 
   static {
     loadLib(new File(BaseNoGui.getContentFile("lib"), System.mapLibraryName("listSerialsj")));
-  };
+  }
 
   private static void loadLib(File lib) {
     try {

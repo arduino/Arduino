@@ -41,7 +41,7 @@ public class SerialDiscovery implements Discovery {
 
   private Timer serialBoardsListerTimer;
   private final List<BoardPort> serialBoardPorts;
-  private SerialBoardsLister serialBoardsLister = new SerialBoardsLister(this);;
+  private SerialBoardsLister serialBoardsLister = new SerialBoardsLister(this);
 
   public SerialDiscovery() {
     this.serialBoardPorts = new LinkedList<>();

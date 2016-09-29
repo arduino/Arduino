@@ -406,7 +406,7 @@ public class BaseNoGui {
 	  return boardManagerLink;
   }
 
-  protected static PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(BaseNoGui.class);;
+  protected static PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(BaseNoGui.class);
 
   public static void setBoardManagerLink(String temp) {
 	  boardManagerLink = temp;
