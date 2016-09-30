@@ -87,8 +87,10 @@ public class SerialPlotter extends AbstractMonitor {
       minY = Double.POSITIVE_INFINITY;
       maxY = Double.NEGATIVE_INFINITY;
       for(Graph g : graphs) {
-        minY = Math.min(g.buffer.min(), minY);
-        maxY = Math.max(g.buffer.max(), maxY);
+        if (!g.buffer.isEmpty()) {
+          minY = Math.min(g.buffer.min(), minY);
+          maxY = Math.max(g.buffer.max(), maxY);
+        }
       }
 
       final double MIN_DELTA = 10.0;
