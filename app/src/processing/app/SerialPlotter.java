@@ -241,7 +241,7 @@ public class SerialPlotter extends AbstractMonitor {
       for(int i = 0; i < parts.length; ++i) {
         try {          
           double value = Double.valueOf(parts[i]);
-          if(i >= graphs.size()) {
+          if(validParts >= graphs.size()) {
             graphs.add(new Graph(validParts));
           }
           graphs.get(validParts).buffer.add(value);
