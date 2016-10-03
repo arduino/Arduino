@@ -210,6 +210,9 @@ public class BaseNoGui {
   }
 
   public static DiscoveryManager getDiscoveryManager() {
+    if (discoveryManager == null) {
+      discoveryManager = new DiscoveryManager();
+    }
     return discoveryManager;
   }
 
@@ -633,7 +636,9 @@ public class BaseNoGui {
       FileUtils.deleteIfExists(librariesIndexFile);
     }
 
-    discoveryManager = new DiscoveryManager();
+    if (discoveryManager == null) {
+      discoveryManager = new DiscoveryManager();
+    }
   }
 
   static protected void initPlatform() {
