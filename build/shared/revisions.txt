@@ -1,6 +1,8 @@
 ARDUINO 1.6.13
 
 [ide]
+* Improved robustness of Serial Plotter while dealing with malformed or partial data. Thanks @xloem.
+* Fixed regression on command line upload.
 
 [core]
 
