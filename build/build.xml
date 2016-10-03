@@ -220,7 +220,8 @@
   </target>
 
   <!-- copy library folder -->
-  <target name="assemble-libraries" unless="light_bundle">
+  <target name="assemble-libraries" depends="assemble-libraries-full, assemble-libraries-light" />
+  <target name="assemble-libraries-full" unless="light_bundle">
     <copy todir="${target.path}/libraries">
       <fileset dir="../libraries"/>
     </copy>
@@ -235,6 +236,9 @@
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.1"/>
+  </target>
+  <target name="assemble-libraries-light" if="light_bundle">
+    <mkdir dir="${target.path}/libraries" />
   </target>
 
   <macrodef name="download-library">
@@ -254,12 +258,16 @@
   </macrodef>
 
   <!-- copy hardware folder -->
-  <target name="assemble-hardware" unless="light_bundle">
+  <target name="assemble-hardware" depends="assemble-hardware-full, assemble-hardware-light" />
+  <target name="assemble-hardware-full" unless="light_bundle">
     <copy todir="${target.path}/hardware">
       <fileset dir="../hardware">
         <exclude name="arduino/sam/**"/>
       </fileset>
     </copy>
+  </target>
+  <target name="assemble-hardware-light" if="light_bundle">
+    <copy file="../hardware/package_index_bundled.json" todir="${target.path}/hardware" />
   </target>
 
   <!-- - - - - - - - - -->
