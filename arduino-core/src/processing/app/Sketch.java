@@ -106,7 +106,7 @@ public class Sketch {
   private List<SketchFile> listSketchFiles(boolean showWarnings) throws IOException {
     Set<SketchFile> result = new TreeSet<>(CODE_DOCS_COMPARATOR);
     for (File file : FileUtils.listFiles(folder, false, EXTENSIONS)) {
-      if (BaseNoGui.isSanitaryName(file.getName())) {
+      if (BaseNoGui.isSanitaryName(FileUtils.splitFilename(file).basename)) {
         result.add(new SketchFile(this, file));
       } else if (showWarnings) {
         System.err.println(I18n.format(tr("File name {0} is invalid: ignored"), file.getName()));
