@@ -834,7 +834,20 @@
 
   <!-- Retrieve tool -->
   <target name="untar-unzip-download" depends="untar-unzip-check" unless="${archive_file}_available">
+      <antcall target="untar-unzip-download-web" />
+      <antcall target="untar-unzip-download-local" />
+  </target>
+  <target name="untar-unzip-download-web" unless="local_sources">
     <get src="${archive_url}" dest="${archive_file}" verbose="true" ignoreerrors="true" />
+  </target>
+  <target name="untar-unzip-download-local" if="local_sources">
+    <basename file="${archive_file}" property="basename" />
+    <echo>Skipping download of ${archive_url}, using makepkg downloaded ${basename}</echo>
+    <exec executable="ln" failonerror="true">
+        <arg value="-s" />
+        <arg value="${basedir}/../../${basename}" />
+        <arg value="${archive_file}" />
+    </exec>
   </target>
 
   <target name="untar-unzip-checksum" depends="untar-unzip-download">
