@@ -38,7 +38,7 @@ public class SerialPlotter extends AbstractMonitor {
   private final StringBuffer messageBuffer;
   private JComboBox<String> serialRates;
   private Serial serial;
-  private int serialRate;
+  private int serialRate, xCount;
 
   private ArrayList<Graph> graphs;
   private final static int BUFFER_CAPACITY = 500;
@@ -73,14 +73,16 @@ public class SerialPlotter extends AbstractMonitor {
   private class GraphPanel extends JPanel {
     private double minY, maxY, rangeY;
     private Rectangle bounds;
-    private int xOffset;
+    private int xOffset, xPadding;
     private final Font font;
     private final Color bgColor;
+    private final Color gridColor = new Color(245, 245, 245, 245);
 
     public GraphPanel() {
       font = Theme.getFont("console.font");
       bgColor = Theme.getColor("plotting.bgcolor");
       xOffset = 20;
+      xPadding = 20;
     }
 
     private Ticks computeBounds() {
@@ -100,7 +102,7 @@ public class SerialPlotter extends AbstractMonitor {
         minY = mid - MIN_DELTA / 2;
       }
 
-      Ticks ticks = new Ticks(minY, maxY, 3);
+      Ticks ticks = new Ticks(minY, maxY, 5);
       minY = Math.min(minY, ticks.getTick(0));
       maxY = Math.max(maxY, ticks.getTick(ticks.getTickCount() - 1));
       rangeY = maxY - minY;
@@ -132,16 +134,58 @@ public class SerialPlotter extends AbstractMonitor {
         Rectangle2D fRect = fm.getStringBounds(String.valueOf(tick), g);
         xOffset = Math.max(xOffset, (int) fRect.getWidth() + 15);
 
+        g.setColor(Color.BLACK);
         // draw tick
         g.drawLine(xOffset - 5, (int) transformY(tick), xOffset + 2, (int) transformY(tick));
         // draw tick label
         g.drawString(String.valueOf(tick), xOffset - (int) fRect.getWidth() - 10, transformY(tick) - (float) fRect.getHeight() * 0.5f + fm.getAscent());
+        // draw horizontal grid lines
+        g.setColor(gridColor);
+        g.drawLine(xOffset + 3, (int) transformY(tick), bounds.width - xPadding, (int) transformY(tick));
       }
 
-      g.drawLine(bounds.x + xOffset, bounds.y + 5, bounds.x + xOffset, bounds.y + bounds.height - 10);
+      //g.drawLine(bounds.x + xOffset, bounds.y + 5, bounds.x + xOffset, bounds.y + bounds.height - 10);
 
+      // handle data count
+      int cnt = xCount - BUFFER_CAPACITY;
+      if (xCount < BUFFER_CAPACITY) cnt = 0;
+        
+      double zeroTick = ticks.getTick(0);
+      double lastTick = ticks.getTick(ticks.getTickCount() - 1);
+      double xTickRange = BUFFER_CAPACITY / ticks.getTickCount();
+        
+      for (int i = 0; i < ticks.getTickCount() + 1; i++) {
+          String s;
+          int xValue;
+          int sWidth;
+          Rectangle2D fBounds;
+          if  (i == 0) {
+              s = String.valueOf(cnt);
+              fBounds = fm.getStringBounds(s, g);
+              sWidth = (int)fBounds.getWidth()/2;
+              xValue = xOffset;
+          } else {
+              s = String.valueOf((int)(xTickRange * i)+cnt);
+              fBounds = fm.getStringBounds(s, g);
+              sWidth = (int)fBounds.getWidth()/2;
+              xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / BUFFER_CAPACITY) + xOffset);
+          }
+          // draw graph x axis ticks and labels
+          g.setColor(Color.BLACK);
+          g.drawString(s, xValue - sWidth, (int) bounds.y + (int) transformY(zeroTick) + 15);
+          g.drawLine(xValue, (int)transformY(zeroTick) - 2, xValue, bounds.y + (int)transformY(zeroTick) + 5);
+          // draw vertical grid lines
+          g.setColor(gridColor);
+          g.drawLine(xValue, (int)transformY(zeroTick) - 3, xValue, bounds.y + (int)transformY(lastTick));
+      }
+      g.setColor(Color.BLACK);
+      // draw major y axis
+      g.drawLine(bounds.x + xOffset, (int) transformY(lastTick) - 5, bounds.x + xOffset, bounds.y + (int) transformY(zeroTick) + 5);
+      // draw major x axis
+      g.drawLine(xOffset, (int) transformY(zeroTick), bounds.width - xPadding, (int)transformY(zeroTick));
+        
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
-      float xstep = (float) (bounds.width - xOffset) / (float) BUFFER_CAPACITY;
+      float xstep = (float) (bounds.width - xOffset - xPadding) / (float) BUFFER_CAPACITY;
       int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
 
       for(int i = 0; i < graphs.size(); ++i) {
@@ -206,6 +250,7 @@ public class SerialPlotter extends AbstractMonitor {
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());
 
+    pane.add(Box.createHorizontalGlue());
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
 
@@ -227,7 +272,7 @@ public class SerialPlotter extends AbstractMonitor {
       if (linebreak == -1) {
         break;
       }
-
+      xCount++;
       String line = messageBuffer.substring(0, linebreak);
       messageBuffer.delete(0, linebreak + 1);
 
