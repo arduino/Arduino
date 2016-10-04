@@ -379,13 +379,15 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isInstallLibrary()) {
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
-      ProgressListener progressListener = new ConsoleProgressListener();
-      indexer.parseIndex();
       BaseNoGui.onBoardOrPortChange();
+
+      ProgressListener progressListener = new ConsoleProgressListener();
+      libraryInstaller.updateIndex(progressListener);
+
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
+      indexer.parseIndex();
       indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
-      libraryInstaller.updateIndex(progressListener);
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
