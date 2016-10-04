@@ -3,6 +3,8 @@ ARDUINO 1.6.13
 [ide]
 * Improved robustness of Serial Plotter while dealing with malformed or partial data. Thanks @xloem.
 * Fixed regression on command line upload.
+* Bugifx installing libraries from command line: the IDE tries to update the libraries index but it
+  didn't use it straight away (this caused issues mainly on CI environments)
 
 [core]
 
