@@ -7,6 +7,7 @@ ARDUINO 1.6.13
   didn't use it straight away (this caused issues mainly on CI environments)
 
 [core]
+* avr: set default values for "upload.verify" and "program.verify" (allows compatibility with older IDE). Thanks @per1234
 
 ARDUINO 1.6.12 - 2016.09.21
 
