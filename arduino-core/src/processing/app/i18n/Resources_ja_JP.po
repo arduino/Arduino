@@ -95,11 +95,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>閉じる前にスケッチに加えた変更内容を保存しますか？</b><p>保存しないと、変更内容は失われます。"
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "「{0}」というファイルは、すでにフォルダ「{1}」内に存在します。"
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -422,9 +417,11 @@ msgstr "ブートローダを書き込む"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "マイコンボードにブートローダを書き込んでいます..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRCが一致しません。ファイルが破損しています。"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -444,10 +441,6 @@ msgstr "フランス語（カナダ）"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "キャンセル"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "名前を変更できません。"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -530,6 +523,11 @@ msgstr "ファイル「{0}」をスケッチに加えることができません
 msgid "Could not copy to a proper location."
 msgstr "コピーするべきフォルダにファイルをコピーできませんでした。"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "スケッチフォルダを作成できません。"
@@ -547,11 +545,6 @@ msgstr "「{0}」を削除できませんでした。"
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "既存の「{0}」というファイルを削除できませんでした。"
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "「{0}」を削除できませんでした。"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -608,23 +601,6 @@ msgstr "既定の設定を読み込むことができませんでした。\nArdu
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "「{0}」の古いバージョンを削除できませんでした。"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "「{0}」の名前を「{1}」に変更できませんでした。"
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "スケッチの名前を変更できませんでした。(0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "スケッチの名前を変更できませんでした。(1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "スケッチの名前を変更できませんでした。(2)"
 
 #: Base.java:2492
 #, java-format
@@ -914,11 +890,6 @@ msgstr "ブートローダの書き込み中にエラーが発生ました：設
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "コンパイル中にエラーが発生ました：設定パラメータの「{0}」がありません。"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "「{0}」からコードを読み込む際にエラーが発生しました。"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "印刷中にエラーが発生しました。"
@@ -959,9 +930,15 @@ msgstr "エストニア語（エストニア）"
 msgid "Examples"
 msgstr "スケッチの例"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
-msgstr "ビルトインライブラリのスケッチ例"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -970,12 +947,6 @@ msgstr "カスタムライブラリのスケッチ例"
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
 msgstr "その他のライブラリのスケッチ例"
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
-msgstr "{0}ライブラリのスケッチ例"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -989,6 +960,15 @@ msgstr "コンパイルしたバイナリを出力"
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "スケッチ「{0}」を開けませんでした。"
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1961,10 +1941,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "書き込み先の場所には、書き込み禁止のファイルがあります。このため、このスケッチは別の場所に保存し直してください。"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "すでに「{0}」という名前のスケッチまたはフォルダが存在します。"
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2049,12 +2029,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "「{0}」という名前のライブラリは使用できません。\nライブラリ名には半角文字と数字のみが使用可能です。\n（ASCII文字のみ、スペースを除きます。数字で始まる名前は使えません。）"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "スケッチのメインのファイルには、拡張子を指定できません。"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2076,6 +2053,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "「{0}」という名前をスケッチに付けることはできません。\nスケッチ名には半角文字と数字のみが使用可能です。\n（ASCII文字のみ、スペースを除きます。数字で始まる名前は使えません。）\nこのメッセージを表示しないようにするには、「{1}」からスケッチを削除\nして下さい。"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2460,25 +2442,9 @@ msgstr "はい"
 msgid "You can't fool me"
 msgstr "ヘンなことしちゃだめです"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "スケッチと同じ名前の.cppファイルは使えません。"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "スケッチブックを含むフォルダをインポートすることはできません"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "このスケッチには、すでにその名前の.cppファイルが存在するため、スケッチの名前を「{0}」に変更する事ができません。"
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "スケッチを「{0}」として保存することはできません\nなぜなら、そのスケッチにはその名前のファイルが既にあるからです。"
 
 #: Sketch.java:883
 msgid ""
@@ -2597,10 +2563,6 @@ msgstr "コンパイル "
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "接続されました！"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile()がfalseを返しました。"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2739,3 +2701,8 @@ msgstr "{0}：不明なボード"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}：不明なパッケージ"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
+msgstr ""

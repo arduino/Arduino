@@ -102,11 +102,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Хотите ли вы сохранить изменения в скетче<BR> перед закрытием?</b><p>Если вы не сохраните скетч, изменения будут утеряны."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Файл \"{0}\" уже есть в \"{1}\""
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -429,9 +424,11 @@ msgstr "Записать Загрузчик"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Запись Загрузчика в плату (это может занять пару минут)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC не совпадает. Файл повреждён."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -451,10 +448,6 @@ msgstr "Канадский Французский"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Отмена"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Невозможно переименовать"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -537,6 +530,11 @@ msgstr "Невозможно добавить ''{0}'' в скетч."
 msgid "Could not copy to a proper location."
 msgstr "Невозможно скопировать в правильное место"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Невозможно создать папку для скетчей."
@@ -554,11 +552,6 @@ msgstr "Невозможно удалить \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Невозможно удалить существующий файл \"{0}\"."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Невозможно удалить {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -615,23 +608,6 @@ msgstr "Невозможно прочитать настройки по умол
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Старая версия {0} не удаляется"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "\"{0}\" в \"{1}\" не переименовывается"
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Невозможно переименовать скетч. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Невозможно переименовать скетч. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Невозможно переименовать скетч. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -921,11 +897,6 @@ msgstr "Ошибка при записи загрузчика: пропущен 
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Ошибка при компиляции: пропущен параметр конфигурации '{0}'"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Ошибка при загрузке кода {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Ошибка печати."
@@ -966,8 +937,14 @@ msgstr "Эстонский (Эстония)"
 msgid "Examples"
 msgstr "Примеры"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -976,12 +953,6 @@ msgstr "Примеры из пользовательских библиотек"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -996,6 +967,15 @@ msgstr "Экспорт бинарного файла"
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Ошибка при открытии скетча: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1968,10 +1948,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Некоторые файлы помечены \"только для чтения\", сохраните этот скетч в другое место."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Простите, но скетч (или папка) \"{0}\" уже есть."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2056,12 +2036,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Библиотека \"{0}\" не может быть использована. \nИмена библиотек должны содержать только буквы и цифры. \n(только ASCII без пробелов) и не могут начинаться с цифры"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Основной файл не может использовать расширение. (Возможно вам настало время, перейти к \"реальной\" среде программирования)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2083,6 +2060,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Скетч \"{0}\" не может быть использован. Название скетча должно содержать только буквы и цифры (только ASCII без пробелов, и не может начинаться с цифры). Чтобы избавиться от этого сообщения, удалите скетч из {1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2467,25 +2449,9 @@ msgstr "Да"
 msgid "You can't fool me"
 msgstr "Вы меня не обманете"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Имя скетча не должно совпадать с именем файла .cpp"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Вы не можете импортировать папку, которая содержит вашу папку со скетчами"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Вы не можете переименовать скетч в \"{0}\", \nпотому что уже есть .cpp файл с таким именем."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "Вы не можете сохранить скетч как \"{0}\", \nпотому что уже есть файл с таким именем."
 
 #: Sketch.java:883
 msgid ""
@@ -2604,10 +2570,6 @@ msgstr "Компиляция"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "соединено!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() вернула false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2746,3 +2708,8 @@ msgstr "{0}: Неизвестная плата"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Неизвестный пакет"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
+msgstr ""

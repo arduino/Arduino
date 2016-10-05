@@ -95,11 +95,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Kas soovid muudatused enne sulgemist salvestada?</b><p>Salvestamata muudatused lähevad kaotsi."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "„{1}“ kaustas on „{0}“ nimeline fail juba olemas."
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -422,9 +417,11 @@ msgstr "Kirjuta alglaadur"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Alglaaduri I/O plaadile kirjutamine (see võib võtta mõne minuti) ..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC ei kattu. Fail on rikutud."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -444,10 +441,6 @@ msgstr "Prantsuse (Kanada)"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Loobu"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Ümbernimetamine pole võimalik"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -530,6 +523,11 @@ msgstr "„{0}“ ei saa visandisse lisada."
 msgid "Could not copy to a proper location."
 msgstr "Ettenähtud kohta ei saa kopeerida."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Visandi kausta pole võimalik luua."
@@ -547,11 +545,6 @@ msgstr "„{0}“ pole võimalik kustutada."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Olemasolevat faili „{0}“ ei saa kustutada."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "„{0}“ pole võimalik kustutada."
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -608,23 +601,6 @@ msgstr "Vaikeseadeid pole võimalik avada.\nSa pead Arduino uuesti paigaldama."
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "„{0}“ vana versiooni ei saanud eemaldada"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "„{0}“ pole võimalik „{1}“-ks ümber nimetada."
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Visandi ümbernimetamine ebaõnnestus. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Visandi ümbernimetamine ebaõnnestus. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Visandi ümbernimetamine ebaõnnestus. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -914,11 +890,6 @@ msgstr "Viga alglaaduri kirjutamisel: „{0}“ konfiguratsiooniparameeter puudu
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Viga kompileerimisel: „{0}“ konfiguratsiooniparameeter puudub"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Viga koodi „{0}“ laadimisel."
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Viga trükkimisel."
@@ -959,8 +930,14 @@ msgstr "Eesti (Eesti)"
 msgid "Examples"
 msgstr "Näited"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -969,12 +946,6 @@ msgstr "Ise paigaldatud teekide näited"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -989,6 +960,15 @@ msgstr "Ekspordi kompileeritud binaar"
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Visandi avamine ebaõnnestus: „{0}“"
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1961,10 +1941,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Mõned failid on kirjutuskaitsega.\nPead salvestama visandi kuhugi mujale."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Kahjuks on „{0}“ nimega visand või kaust juba olemas."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2049,12 +2029,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Teeki „{0}“ ei saa kasutada.\nTeekide nimed tohivad sisaldada ainult ASCII tähti ja\nnumbreid ning peavad algama tähega."
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Põhifail ei tohi kasutada laiendit."
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2076,6 +2053,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Visandit „{0}“ ei saa kasutada.\nVisandite nimed nimed tohivad sisaldada ainult ASCII tähti\nja numbreid ning peavad algama tähega.\nSellest teatest lahti saamiseks eemalda visand\n„{1}“ kaustast."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2460,25 +2442,9 @@ msgstr "Jah"
 msgid "You can't fool me"
 msgstr "Mind sa ei lollita"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr ".cpp faili nimi ei saa olla sama, mis visandil."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Kausta, mis sisaldab su visandeid, importida ei saa."
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Visandit ei saa nimetada \"{0}\" sest\nsellise nimega .cpp fail on juba olemas."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "Visandit ei saa salvestada nime alla „{0}“,\\n\nsest visandis on juba sellise nimega fail olemas."
 
 #: Sketch.java:883
 msgid ""
@@ -2597,10 +2563,6 @@ msgstr "kopileerimise ajal"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "ühendus loodud."
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() ebaõnnestus"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2739,3 +2701,8 @@ msgstr "{0}: Tundmatu plaat"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Tundmatu pakk"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
+msgstr ""

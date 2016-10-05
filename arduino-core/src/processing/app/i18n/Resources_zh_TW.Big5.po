@@ -92,11 +92,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>您想要關閉前儲存變更到草稿碼裡嗎？<BR></b><p>若不儲存，所有變更將會遺失。"
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "名為\"{0}\"已經存在於\"{1}\""
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -419,8 +414,10 @@ msgstr "燒錄Bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "燒錄bootloader到板子裡（可能需要幾分鐘）..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
@@ -441,10 +438,6 @@ msgstr "加拿大法語"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "取消"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "無法重新命名"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -527,6 +520,11 @@ msgstr "無法加入''{0}''到草稿碼裡。"
 msgid "Could not copy to a proper location."
 msgstr "無法複製到適當的位置。"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "無法建立草稿碼資料夾。"
@@ -544,11 +542,6 @@ msgstr "無法刪除\"{0}\"。"
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "無法刪除''{0}''檔"
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "無法刪除{0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -605,23 +598,6 @@ msgstr "無法讀取預設設定。\n你必須重新安裝Arduino。"
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "無法移除{0}的舊版本"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "無法將\"{0}\"重新命名為\"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "無法重新命名草稿碼。(0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "無法重新命名草稿碼。(1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "無法重新命名草稿碼。(2)"
 
 #: Base.java:2492
 #, java-format
@@ -911,11 +887,6 @@ msgstr ""
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "載入程式碼{0}時發生錯誤"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "列印時發生錯誤。"
@@ -956,8 +927,14 @@ msgstr "愛沙尼亞語(愛沙尼亞)"
 msgid "Examples"
 msgstr "範例"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -966,12 +943,6 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -986,6 +957,15 @@ msgstr ""
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "無法開啟草稿: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1958,10 +1938,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "有些檔案為「唯讀」，所以你需要\n另行儲存草稿碼到別的位置。"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "抱歉，已經存在名為\"{0}\"的草稿碼（或資料夾）。"
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2046,12 +2026,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "無法使用程式庫\"{0}\"。\n程式庫的名稱只能含有基本字母與數字。\n（只能是ASCII，不能有空白字元，也不能以數字開頭）"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "主檔不能使用副檔名。\n（或許該是時候開始使用\n「真正」的程式開發環境了）"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2073,6 +2050,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "無法使用草稿碼\"{0}\"。\n草稿碼的名稱只能含有基本字母與數字\n（只能是ASCII，不能含有空白字元，也不能以數字開頭）。\n若不想看到此訊息，請從{1}移除該草稿碼。"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2457,24 +2439,8 @@ msgstr "是"
 msgid "You can't fool me"
 msgstr "你騙不了我"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "你不能讓一支.cpp檔擁有與草稿碼相同的名字。"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "你不能將草稿碼重新命名為\"{0}\"\n因為草稿碼裡已經有個擁有該名的.cpp檔。"
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2594,10 +2560,6 @@ msgstr "編譯"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "已連接!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile()回傳false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2735,4 +2697,9 @@ msgstr ""
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
 msgstr ""

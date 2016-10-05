@@ -95,11 +95,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Doni ti ruani ndrryshimet tek kjo skice<BR> perpara se ta mbyllni?</b><p>Ne qoftese nuk do ti ruani ndrryshimet ato do te zhduken."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Nje skedar i emertuar \"{0}\" tashme ekziston ne \"{1}\""
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -422,8 +417,10 @@ msgstr "Digj bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Duke djegur bootloaderin tek bordi I/O (kjo mund te zgjasi nje minute)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
@@ -444,10 +441,6 @@ msgstr "Franceze Kadaneze"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Anullo"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Nuk mund te ri emertoj"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -530,6 +523,11 @@ msgstr "Nuk mund te shtoj \"{0}\" tek skica."
 msgid "Could not copy to a proper location."
 msgstr "Nuk mund te kopjohet ne vendodhjen e zgjedhur."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Nuk mund te krijohet folderi i skicave"
@@ -547,11 +545,6 @@ msgstr "Nuk mund ta fshije {0}"
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Nuk mund ta heqesh skedarin ekzistues \"{0}\""
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Nuk mund ta fshije {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -608,23 +601,6 @@ msgstr "Nuk mund ti lexoje te dhenat e parapercaktuara .\nJu nevojitet qe te ins
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Nuk mund te fshihet versioni me i vjeter i  {0}"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Nuk mund te ri emertoj \"{0}\" tek \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Nuk mund te ri emertoj skicen. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Nuk mund te ri emertoj skicen. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Nuk mund te ri emertoj skicen. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -914,11 +890,6 @@ msgstr "Gabim ndersa ndizet ngarkuesi i nisjes : mungon parametri konfigurues  '
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Gabim gjate ngarkimit te kodit {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Gabim gjate printimit."
@@ -959,8 +930,14 @@ msgstr "Estonez (Estonia)"
 msgid "Examples"
 msgstr "Shembuj"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -969,12 +946,6 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -989,6 +960,15 @@ msgstr ""
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Deshtoi per te hapur skicen: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1961,10 +1941,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Disa skedare jane te shenuara si \"vetem te lexueshme\" keshtu qe ju \nduhet qe te ruani perseri kete skice ne nje vendodhje tjeter"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Na vjen keq, nje skice (apo folder) i quajtur \"{0}\" ekziston."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2049,12 +2029,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Libraria \"{0}\" nuk mund te perdoret.\nEmrat e librarive duhet te kene vetem shkronja dhe numra normal.\n(Vetem ASCI dhe jo hapesira, dhe nuk mund te filloje me nje numer)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Skedari kryesor nuk mund te perdore shtesa.\n(Mund te jete koha per ty qe te rritesh ne nje\nmjedis te vertete programimi)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2076,6 +2053,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Skica \"{0}\" nuk mund te perdoret\nEmertimet e skicave duhet te permbajne vetem germa dhe numra\n(ASCII dhe pa hapesire , dhe nuk mund te fillojne me nje numer).\nPer te hequr qafe kete mesazh, hiqni skicen nga\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2460,24 +2442,8 @@ msgstr "Po"
 msgid "You can't fool me"
 msgstr "Ti nuk mund te me genjesh mua"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Ju nuk mund te keni nje skedar .cpp me emer te njejte si nje skice"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Ju nuk mund te ruani skicen si \"{0}\"\nsepse skica ekziston njehere si nje skedar .cpp me ate emertim"
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2597,10 +2563,6 @@ msgstr "kompilim"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "lidhur!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() riktheu false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2739,3 +2701,8 @@ msgstr "{0}: Bord i panjohur"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Pakete e panjohur"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
+msgstr ""
