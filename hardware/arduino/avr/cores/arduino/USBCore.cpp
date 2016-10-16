@@ -34,8 +34,7 @@ volatile u8 RxLEDPulse; /**< Milliseconds remaining for data Rx LED pulse */
 extern const u16 STRING_LANGUAGE[] PROGMEM;
 extern const u8 STRING_PRODUCT[] PROGMEM;
 extern const u8 STRING_MANUFACTURER[] PROGMEM;
-extern const DeviceDescriptor USB_DeviceDescriptor PROGMEM;
-extern const DeviceDescriptor USB_DeviceDescriptorB PROGMEM;
+extern const DeviceDescriptor USB_DeviceDescriptorIAD PROGMEM;
 extern bool _updatedLUFAbootloader;
 
 const u16 STRING_LANGUAGE[2] = {
@@ -71,10 +70,7 @@ const u8 STRING_MANUFACTURER[] PROGMEM = USB_MANUFACTURER;
 #define DEVICE_CLASS 0x02
 
 //	DEVICE DESCRIPTOR
-const DeviceDescriptor USB_DeviceDescriptor =
-	D_DEVICE(0x00,0x00,0x00,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,ISERIAL,1);
-
-const DeviceDescriptor USB_DeviceDescriptorB =
+const DeviceDescriptor USB_DeviceDescriptorIAD =
 	D_DEVICE(0xEF,0x02,0x01,64,USB_VID,USB_PID,0x100,IMANUFACTURER,IPRODUCT,ISERIAL,1);
 
 //==================================================================
@@ -519,9 +515,7 @@ bool SendDescriptor(USBSetup& setup)
 	const u8* desc_addr = 0;
 	if (USB_DEVICE_DESCRIPTOR_TYPE == t)
 	{
-		if (setup.wLength == 8)
-			_cdcComposite = 1;
-		desc_addr = _cdcComposite ?  (const u8*)&USB_DeviceDescriptorB : (const u8*)&USB_DeviceDescriptor;
+		desc_addr = (const u8*)&USB_DeviceDescriptorIAD;
 	}
 	else if (USB_STRING_DESCRIPTOR_TYPE == t)
 	{
