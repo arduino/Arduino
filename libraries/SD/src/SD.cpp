@@ -352,8 +352,10 @@ boolean SDClass::begin(uint8_t csPin) {
 // this little helper is used to traverse paths
 SdFile SDClass::getParentDir(const char *filepath, int *index) {
   // get parent directory
-  SdFile d1 = root; // start with the mostparent, root!
+  SdFile d1;
   SdFile d2;
+
+  d1.openRoot(volume); // start with the mostparent, root!
 
   // we'll use the pointers to swap between the two objects
   SdFile *parent = &d1;
@@ -450,20 +452,11 @@ File SDClass::open(const char *filepath, uint8_t mode) {
   if (!parentdir.isOpen())
     return File();
 
-  // there is a special case for the Root directory since its a static dir
-  if (parentdir.isRoot()) {
-    if ( ! file.open(root, filepath, mode)) {
-      // failed to open the file :(
-      return File();
-    }
-    // dont close the root!
-  } else {
-    if ( ! file.open(parentdir, filepath, mode)) {
-      return File();
-    }
-    // close the parent
-    parentdir.close();
+  if ( ! file.open(parentdir, filepath, mode)) {
+    return File();
   }
+  // close the parent
+  parentdir.close();
 
   if (mode & (O_APPEND | O_WRITE)) 
     file.seekSet(file.fileSize());
