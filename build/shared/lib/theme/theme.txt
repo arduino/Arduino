@@ -40,6 +40,8 @@ buttons.status.color = #ffffff
 # color cycle created via colorbrewer2.org
 plotting.bgcolor = #ffffff
 plotting.color = #ffffff
+plotting.gridcolor = #f0f0f0
+plotting.boundscolor = #000000
 plotting.graphcolor.size = 4
 plotting.graphcolor.00 = #2c7bb6
 plotting.graphcolor.01 = #fdae61

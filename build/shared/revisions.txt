@@ -7,6 +7,7 @@ ARDUINO 1.6.13
   didn't use it straight away (this caused issues mainly on CI environments)
 * Libraries and Boards Managers: if a download error happens (CRC error) the IDE tries to download the file again
   without the need to remove the corrupted file manually.
+* Improved serial plotter with horizontal axis and grid. Thanks @duff2013
 
 [core]
 * avr: set default values for "upload.verify" and "program.verify" (allows compatibility with older IDE). Thanks @per1234
