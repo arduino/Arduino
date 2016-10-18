@@ -75,12 +75,13 @@ public class SerialPlotter extends AbstractMonitor {
     private Rectangle bounds;
     private int xOffset, xPadding;
     private final Font font;
-    private final Color bgColor;
-    private final Color gridColor = new Color(245, 245, 245, 245);
+    private final Color bgColor, gridColor, boundsColor;
 
     public GraphPanel() {
       font = Theme.getFont("console.font");
       bgColor = Theme.getColor("plotting.bgcolor");
+      gridColor = Theme.getColor("plotting.gridcolor");
+      boundsColor = Theme.getColor("plotting.boundscolor");
       xOffset = 20;
       xPadding = 20;
     }
@@ -134,7 +135,7 @@ public class SerialPlotter extends AbstractMonitor {
         Rectangle2D fRect = fm.getStringBounds(String.valueOf(tick), g);
         xOffset = Math.max(xOffset, (int) fRect.getWidth() + 15);
 
-        g.setColor(Color.BLACK);
+        g.setColor(boundsColor);
         // draw tick
         g.drawLine(xOffset - 5, (int) transformY(tick), xOffset + 2, (int) transformY(tick));
         // draw tick label
@@ -143,8 +144,6 @@ public class SerialPlotter extends AbstractMonitor {
         g.setColor(gridColor);
         g.drawLine(xOffset + 3, (int) transformY(tick), bounds.width - xPadding, (int) transformY(tick));
       }
-
-      //g.drawLine(bounds.x + xOffset, bounds.y + 5, bounds.x + xOffset, bounds.y + bounds.height - 10);
 
       // handle data count
       int cnt = xCount - BUFFER_CAPACITY;
@@ -170,15 +169,15 @@ public class SerialPlotter extends AbstractMonitor {
               sWidth = (int)fBounds.getWidth()/2;
               xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / BUFFER_CAPACITY) + xOffset);
           }
-          // draw graph x axis ticks and labels
-          g.setColor(Color.BLACK);
+          // draw graph x axis, ticks and labels
+          g.setColor(boundsColor);
           g.drawString(s, xValue - sWidth, (int) bounds.y + (int) transformY(zeroTick) + 15);
           g.drawLine(xValue, (int)transformY(zeroTick) - 2, xValue, bounds.y + (int)transformY(zeroTick) + 5);
           // draw vertical grid lines
           g.setColor(gridColor);
           g.drawLine(xValue, (int)transformY(zeroTick) - 3, xValue, bounds.y + (int)transformY(lastTick));
       }
-      g.setColor(Color.BLACK);
+      g.setColor(boundsColor);
       // draw major y axis
       g.drawLine(bounds.x + xOffset, (int) transformY(lastTick) - 5, bounds.x + xOffset, bounds.y + (int) transformY(zeroTick) + 5);
       // draw major x axis
