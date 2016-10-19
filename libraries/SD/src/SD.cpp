@@ -465,7 +465,7 @@ File SDClass::open(const char *filepath, uint8_t mode) {
     parentdir.close();
   }
 
-  if (mode & (O_APPEND | O_WRITE)) 
+  if ((mode & (O_APPEND | O_WRITE)) == (O_APPEND | O_WRITE))
     file.seekSet(file.fileSize());
   return File(file, filepath);
 }
