@@ -162,12 +162,14 @@ public class BaseNoGui {
 
     // Add all tools dependencies from the (possibily) referenced core
     String core = prefs.get("build.core");
-    if (core.contains(":")) {
+    if (core != null && core.contains(":")) {
       String split[] = core.split(":");
       TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
-      ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
-      if (referencedPlatform != null)
-        requiredTools.addAll(referencedPlatform.getResolvedTools());
+      if (referenced != null) {
+        ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
+        if (referencedPlatform != null)
+          requiredTools.addAll(referencedPlatform.getResolvedTools());
+      }
     }
 
     String prefix = "runtime.tools.";
