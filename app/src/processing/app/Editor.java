@@ -1706,6 +1706,11 @@ public class Editor extends JFrame implements RunnerListener {
     tabs.add(tab);
   }
 
+  protected void removeTab(SketchFile file) throws IOException {
+    int index = findTabIndex(file);
+    tabs.remove(index);
+  }
+
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   void handleFindReference(ActionEvent e) {
