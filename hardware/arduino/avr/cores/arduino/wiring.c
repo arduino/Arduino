@@ -39,12 +39,8 @@ volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
 
-//SRO______Legt einen Funktionszeiger an______________________________
-
+//SRO______Timer0 extension
 void (*int0Extender)();
-
-//__________________________________________________________________
-
 
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
@@ -69,7 +65,7 @@ ISR(TIMER0_OVF_vect)
 	timer0_millis = m;
 	timer0_overflow_count++;
 	
-		//SRO_______Timer 0 um eigene Funktion in Arduino erweitern_____
+		//SRO______ Call Timer0 extension if exists
 
 	if(int0Extender)
 		int0Extender();
@@ -80,7 +76,7 @@ ISR(TIMER0_OVF_vect)
 
 
 
-//SRO______________ meine Timer0 Ergänzung_________________________
+//SRO new Timer0 extension
 
 void attachTimerInt0Extension(void (*myISR)())
 {
