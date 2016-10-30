@@ -35,6 +35,14 @@
 extern "C"{
 #endif
 
+
+//SRO ________attachTimerInt0Extension___________________________
+// Funktion zum setzen der Interrupt-Funktion aus dem Hauptprogramm heraus
+
+void attachTimerInt0Extension(void (*myISR)());
+
+//______
+
 void yield(void);
 
 #define HIGH 0x1
