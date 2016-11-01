@@ -25,6 +25,13 @@ uint8_t SPIClass::inTransactionFlag = 0;
 
 void SPIClass::begin()
 {
+  begin(HIGH);  
+}
+
+// slaveSelectDefault can be set LOW instead of the default HIGH if all
+// of your devices use inverted logic on slave select pin. 
+void SPIClass::begin(int slaveSelectDefault)
+{
   uint8_t sreg = SREG;
   noInterrupts(); // Protect from a scheduler and prevent transactionBegin
   if (!initialized) {
@@ -36,7 +43,7 @@ void SPIClass::begin()
     // if the SS pin is not already configured as an output
     // then set it high (to enable the internal pull-up resistor)
     if(!(*reg & bit)){
-      digitalWrite(SS, HIGH);
+      digitalWrite(SS, slaveSelectDefault);
     }
 
     // When the SS pin is set as OUTPUT, it can be used as
