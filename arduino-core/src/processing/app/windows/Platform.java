@@ -119,6 +119,18 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public void openURL(String url) throws Exception {
+    if (!url.startsWith("http") && !url.startsWith("file:")) {
+      // Check if we are trying to open a local file
+      File file = new File(url);
+      if (file.exists()) {
+        // in this case convert the path to a "file:" url
+        url = file.toURI().toString();
+
+        // this allows to open the file on Windows 10 that
+        // has a more strict permission policy for cmd.exe
+      }
+    }
+
     // this is not guaranteed to work, because who knows if the
     // path will always be c:\progra~1 et al. also if the user has
     // a different browser set as their default (which would
