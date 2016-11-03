@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2016 Arduino LLC (http://www.arduino.cc/)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,37 +29,38 @@
 
 package cc.arduino.os.windows;
 
-import java.nio.file.Path;
+import static com.sun.jna.platform.win32.KnownFolders.FOLDERID_Documents;
+import static com.sun.jna.platform.win32.KnownFolders.FOLDERID_LocalAppData;
+import static com.sun.jna.platform.win32.KnownFolders.FOLDERID_RoamingAppData;
 
-public abstract class FolderFinder {
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 
-  private final FolderFinder next;
-  protected final String folderName;
+import com.sun.jna.platform.win32.Shell32Util;
 
-  protected FolderFinder(FolderFinder next, String folderName) {
-    this.next = next;
-    this.folderName = folderName;
+import processing.app.PreferencesData;
+
+public class Win32KnownFolders {
+
+  public static File getLocalAppDataFolder() {
+    return new File(Shell32Util.getKnownFolderPath(FOLDERID_LocalAppData));
   }
 
-  protected abstract Path findInternal() throws Exception;
+  public static File getRoamingAppDataFolder() {
+    return new File(Shell32Util.getKnownFolderPath(FOLDERID_RoamingAppData));
+  }
 
-  public Path find() throws Exception {
-    try {
-      Path value = findInternal();
-      if (value != null) {
-        return value;
-      }
-      if (next != null) {
-        return next.find();
-      }
-      throw new IllegalStateException("Unable to find your " + folderName + " folder");
-    } catch (Exception e) {
-      if (next != null) {
-        return next.find();
-      }
-      throw e;
+  public static File getDocumentsFolder() {
+    return new File(Shell32Util.getKnownFolderPath(FOLDERID_Documents));
+  }
+
+  public static File getLocalCacheFolder() throws FileNotFoundException {
+    if (!PreferencesData.getBoolean("runtime.is-windows-store-app")) {
+      throw new FileNotFoundException();
     }
-
+    String localAppData = Shell32Util.getKnownFolderPath(FOLDERID_LocalAppData);
+    String appId = PreferencesData.get("runtime.windows-store-app.id");
+    return Paths.get(localAppData, "Packages", appId, "LocalCache").toFile();
   }
-
 }

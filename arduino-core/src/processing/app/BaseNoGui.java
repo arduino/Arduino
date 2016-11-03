@@ -62,6 +62,19 @@ public class BaseNoGui {
         //noop
       }
     }
+
+    File windowsStoreConfig = new File(getContentFile("lib"), "windowsStore.txt");
+    if (windowsStoreConfig.exists()) {
+      try {
+        PreferencesMap conf = new PreferencesMap(windowsStoreConfig);
+        PreferencesData.setBoolean("runtime.is-windows-store-app", true);
+        PreferencesData.set("runtime.windows-store-app.id", conf.get("appid"));
+        versionNameLong += " (Windows Store " + conf.get("version") + ")";
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+    }
+
     VERSION_NAME_LONG = versionNameLong;
   }
 
