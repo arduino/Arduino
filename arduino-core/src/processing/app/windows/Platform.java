@@ -35,6 +35,9 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sun.jna.Native;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
 
 public class Platform extends processing.app.Platform {
 
@@ -239,5 +242,23 @@ public class Platform extends processing.app.Platform {
     }
 
     Files.move(oldSettingsFolder, settingsFolder.toPath());
+  }
+
+  // Need to extend com.sun.jna.platform.win32.User32 to access
+  // Win32 function GetDpiForSystem()
+  interface ExtUser32 extends StdCallLibrary, com.sun.jna.platform.win32.User32 {
+    ExtUser32 INSTANCE = (ExtUser32) Native.loadLibrary("user32", ExtUser32.class, W32APIOptions.DEFAULT_OPTIONS);
+
+    public int GetDpiForSystem();
+  }
+
+  @Override
+  public int getSystemDPI() {
+    try {
+      return ExtUser32.INSTANCE.GetDpiForSystem();
+    } catch (Throwable e) {
+      // DPI detection failed, fall back with default
+      return super.getSystemDPI();
+    }
   }
 }
