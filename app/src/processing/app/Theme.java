@@ -122,7 +122,7 @@ public class Theme {
         return scale;
     } catch (NumberFormatException ignore) {
     }
-    return 100;
+    return BaseNoGui.getPlatform().getSystemDPI() * 100 / 96;
   }
 
   static public int scale(int size) {
