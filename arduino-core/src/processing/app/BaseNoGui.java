@@ -1061,11 +1061,22 @@ public class BaseNoGui {
   }
 
   /**
-   * Spew the contents of a String object out to a file.
+   * Save the content of a String into a file
+   * - Save the content into a temp file
+   * - Find the canonical path of the file (if it's a symlink, follow it)
+   * - Remove the original file
+   * - Move temp file to original path
+   * This ensures that the file is not getting truncated if the disk is full
    */
   static public void saveFile(String str, File file) throws IOException {
     File temp = File.createTempFile(file.getName(), null, file.getParentFile());
     PApplet.saveStrings(temp, new String[] { str });
+
+    try {
+      file = file.getCanonicalFile();
+    } catch (IOException e) {
+    }
+
     if (file.exists()) {
       boolean result = file.delete();
       if (!result) {
