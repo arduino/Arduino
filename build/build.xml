@@ -1026,7 +1026,7 @@
 
     <copy todir="windows/work">
       <fileset dir="windows/launcher"
-	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini"/>
+	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini, wrapper-manifest.xml"/>
     </copy>
     <launch4j configFile="windows/work/config.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
     <launch4j configFile="windows/work/config_debug.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
