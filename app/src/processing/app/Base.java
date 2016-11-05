@@ -156,49 +156,11 @@ public class Base {
 
     BaseNoGui.initVersion();
 
-//    if (System.getProperty("mrj.version") != null) {
-//      //String jv = System.getProperty("java.version");
-//      String ov = System.getProperty("os.version");
-//      if (ov.startsWith("10.5")) {
-//        System.setProperty("apple.laf.useScreenMenuBar", "true");
-//      }
-//    }
-
-    /*
-    commandLine = false;
-    if (args.length >= 2) {
-      if (args[0].startsWith("--")) {
-        commandLine = true;
-      }
-    }
-
-    if (PApplet.javaVersion < 1.5f) {
-      //System.err.println("no way man");
-      Base.showError("Need to install Java 1.5",
-                     "This version of Processing requires    \n" +
-                     "Java 1.5 or later to run properly.\n" +
-                     "Please visit java.com to upgrade.", null);
-    }
-    */
-
-//    // Set the look and feel before opening the window
-//    try {
-//      platform.setLookAndFeel();
-//    } catch (Exception e) {
-//      System.err.println("Non-fatal error while setting the Look & Feel.");
-//      System.err.println("The error message follows, however Processing should run fine.");
-//      System.err.println(e.getMessage());
-//      //e.printStackTrace();
-//    }
-
     // Use native popups so they don't look so crappy on osx
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
     // Don't put anything above this line that might make GUI,
     // because the platform has to be inited properly first.
-
-    // Make sure a full JDK is installed
-    //initRequirements();
 
     // setup the theme coloring fun
     Theme.init();

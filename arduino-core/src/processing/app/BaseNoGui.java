@@ -130,15 +130,6 @@ public class BaseNoGui {
     return count;
   }
 
-  static public String getAvrBasePath() {
-    String path = getHardwarePath() + File.separator + "tools" +
-                  File.separator + "avr" + File.separator + "bin" + File.separator;
-    if (OSUtils.isLinux() && !(new File(path)).exists()) {
-      return "";  // use distribution provided avr tools if bundled tools missing
-    }
-    return path;
-  }
-
   static public PreferencesMap getBoardPreferences() {
     TargetBoard board = getTargetBoard();
     if (board == null)
