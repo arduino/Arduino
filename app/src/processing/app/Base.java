@@ -116,7 +116,7 @@ public class Base {
   private List<JMenuItem> programmerMenus;
 
   private PdeKeywords pdeKeywords;
-  private final List<JMenuItem> recentSketchesMenuItems;
+  private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
 
   static public void main(String args[]) throws Exception {
     System.setProperty("awt.useSystemAAFontSettings", "on");
@@ -228,17 +228,14 @@ public class Base {
 
   public Base(String[] args) throws Exception {
     BaseNoGui.notifier = new GUIUserNotifier(this);
-    this.recentSketchesMenuItems = new LinkedList<>();
 
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
 
     BaseNoGui.checkInstallationFolder();
 
-    String sketchbookPath = BaseNoGui.getSketchbookPath();
-
     // If no path is set, get the default sketchbook folder for this platform
-    if (sketchbookPath == null) {
+    if (BaseNoGui.getSketchbookPath() == null) {
       File defaultFolder = getDefaultSketchbookFolderOrPromptForIt();
       if (BaseNoGui.getPortableFolder() != null)
         PreferencesData.set("sketchbook.path", BaseNoGui.getPortableSketchbookFolder());
@@ -258,8 +255,8 @@ public class Base {
     // Setup board-dependent variables.
     onBoardOrPortChange();
 
-    this.pdeKeywords = new PdeKeywords();
-    this.pdeKeywords.reload();
+    pdeKeywords = new PdeKeywords();
+    pdeKeywords.reload();
 
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
     libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
