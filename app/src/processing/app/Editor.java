@@ -1711,6 +1711,7 @@ public class Editor extends JFrame implements RunnerListener {
   protected void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tabs.add(tab);
+    reorderTabs();
   }
 
   protected void removeTab(SketchFile file) throws IOException {

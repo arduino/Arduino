@@ -323,7 +323,6 @@ public class EditorHeader extends JComponent {
     if (sketch != null) {
       menu.addSeparator();
 
-      editor.reorderTabs();
       int i = 0;
       for (EditorTab tab : editor.getTabs()) {
         SketchFile file = tab.getSketchFile();
