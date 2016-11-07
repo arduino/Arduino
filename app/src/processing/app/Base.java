@@ -264,35 +264,6 @@ public class Base {
 
     parser.parseArgumentsPhase2();
 
-    for (String path : parser.getFilenames()) {
-      // Correctly resolve relative paths
-      File file = absoluteFile(path);
-
-      // Fix a problem with systems that use a non-ASCII languages. Paths are
-      // being passed in with 8.3 syntax, which makes the sketch loader code
-      // unhappy, since the sketch folder naming doesn't match up correctly.
-      // http://dev.processing.org/bugs/show_bug.cgi?id=1089
-      if (OSUtils.isWindows()) {
-        try {
-          file = file.getCanonicalFile();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-
-      boolean showEditor = parser.isGuiMode();
-      if (!parser.isForceSavePrefs())
-        PreferencesData.setDoSave(showEditor);
-      if (handleOpen(file, retrieveSketchLocation(".default"), showEditor, false) == null) {
-        String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
-        // Open failure is fatal in upload/verify mode
-        if (parser.isVerifyOrUploadMode())
-          showError(null, mess, 2);
-        else
-          showWarning(null, mess, null);
-      }
-    }
-
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
@@ -407,6 +378,35 @@ public class Base {
       System.exit(0);
     } else if (parser.isGuiMode()) {
       splash.splashText(tr("Starting..."));
+
+      for (String path : parser.getFilenames()) {
+        // Correctly resolve relative paths
+        File file = absoluteFile(path);
+
+        // Fix a problem with systems that use a non-ASCII languages. Paths are
+        // being passed in with 8.3 syntax, which makes the sketch loader code
+        // unhappy, since the sketch folder naming doesn't match up correctly.
+        // http://dev.processing.org/bugs/show_bug.cgi?id=1089
+        if (OSUtils.isWindows()) {
+          try {
+            file = file.getCanonicalFile();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+
+        boolean showEditor = parser.isGuiMode();
+        if (!parser.isForceSavePrefs())
+          PreferencesData.setDoSave(showEditor);
+        if (handleOpen(file, retrieveSketchLocation(".default"), showEditor, false) == null) {
+          String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
+          // Open failure is fatal in upload/verify mode
+          if (parser.isVerifyOrUploadMode())
+            showError(null, mess, 2);
+          else
+            showWarning(null, mess, null);
+        }
+      }
 
       installKeyboardInputMap();
 
