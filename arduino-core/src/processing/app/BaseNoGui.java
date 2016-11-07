@@ -169,6 +169,9 @@ public class BaseNoGui {
         ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
         if (referencedPlatform != null)
           requiredTools.addAll(referencedPlatform.getResolvedTools());
+      } else {
+        String msg = tr("The current selected board needs the core '{0}' that is not installed.");
+        System.out.println(I18n.format(msg, core));
       }
     }
 
