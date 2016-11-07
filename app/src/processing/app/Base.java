@@ -1807,10 +1807,9 @@ public class Base {
   }
 
   public File getDefaultSketchbookFolderOrPromptForIt() {
-
     File sketchbookFolder = BaseNoGui.getDefaultSketchbookFolder();
 
-    if (sketchbookFolder == null) {
+    if (sketchbookFolder == null && !isCommandLine()) {
       sketchbookFolder = promptSketchbookLocation();
     }
 
