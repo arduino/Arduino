@@ -25,6 +25,7 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
@@ -377,13 +378,29 @@ public class Base {
       }
 
       if (parser.isUploadMode()) {
-        splash.splashText(tr("Verifying and uploading..."));
-        // XXX: TODO
-        //editor.exportHandler.run();
-        // Error during upload
-        //if (editor.status.isErr()) {
-        //  System.exit(1);
-        //}
+        // Upload
+        splash.splashText(tr("Uploading..."));
+
+        try {
+          List<String> warnings = new ArrayList<>();
+          UploaderUtils uploader = new UploaderUtils();
+          boolean res = uploader.upload(sketch, null, outputFile,
+                                        parser.isDoUseProgrammer(),
+                                        parser.isNoUploadPort(), warnings);
+          for (String warning : warnings) {
+            System.out.println(tr("Warning") + ": " + warning);
+          }
+          if (!res) {
+            throw new Exception();
+          }
+        } catch (Exception e) {
+          // Error during upload
+          System.out.flush();
+          System.err.flush();
+          System.err
+              .println(tr("An error occurred while uploading the sketch"));
+          System.exit(1);
+        }
       }
 
       // No errors exit gracefully
