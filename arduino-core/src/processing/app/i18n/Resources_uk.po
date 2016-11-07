@@ -2010,6 +2010,10 @@ msgstr "Клас Server був перейменований в EternetServer"
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Клас Udp був перейменований в EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""

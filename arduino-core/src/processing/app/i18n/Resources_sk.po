@@ -2007,6 +2007,10 @@ msgstr "Trieda Server bola premenovaná na EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Trieda Udp bola premenovaná na EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
