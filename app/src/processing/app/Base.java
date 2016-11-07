@@ -202,7 +202,23 @@ public class Base {
 
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
+      // Setup all notification widgets
       splash = new SplashScreenHelper(SplashScreen.getSplashScreen());
+      BaseNoGui.notifier = new GUIUserNotifier(this);
+
+      // Setup the theme coloring fun
+      Theme.init();
+      System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
+
+      // Set the look and feel before opening the window
+      try {
+        BaseNoGui.getPlatform().setLookAndFeel();
+      } catch (Exception e) {
+        // ignore
+      }
+
+      // Use native popups so they don't look so crappy on osx
+      JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     } else {
       splash = new SplashScreenHelper(null);
     }
@@ -211,28 +227,12 @@ public class Base {
 
     BaseNoGui.initVersion();
 
-    // Use native popups so they don't look so crappy on osx
-    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
     // Don't put anything above this line that might make GUI,
     // because the platform has to be inited properly first.
-
-    // setup the theme coloring fun
-    Theme.init();
-    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
-
-    // Set the look and feel before opening the window
-    try {
-      BaseNoGui.getPlatform().setLookAndFeel();
-    } catch (Exception e) {
-      // ignore
-    }
 
     // Create a location for untitled sketches
     untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
-
-    BaseNoGui.notifier = new GUIUserNotifier(this);
 
     BaseNoGui.checkInstallationFolder();
 
