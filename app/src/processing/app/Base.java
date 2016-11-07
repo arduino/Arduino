@@ -161,12 +161,6 @@ public class Base {
 
   }
 
-
-  static protected void setCommandLine() {
-    commandLine = true;
-  }
-
-
   static protected boolean isCommandLine() {
     return commandLine;
   }
@@ -199,6 +193,7 @@ public class Base {
 
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
+    commandLine = !parser.isGuiMode();
 
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
