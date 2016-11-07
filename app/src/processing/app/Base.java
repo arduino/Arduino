@@ -84,7 +84,6 @@ public class Base {
   private static boolean commandLine;
   public static volatile Base INSTANCE;
 
-  public static SplashScreenHelper splashScreenHelper = new SplashScreenHelper(SplashScreen.getSplashScreen());
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
   private final LibraryInstaller libraryInstaller;
@@ -195,9 +194,20 @@ public class Base {
 
     BaseNoGui.initPortableFolder();
 
+    // Look for a possible "--preferences-file" parameter and load preferences
     BaseNoGui.initParameters(args);
 
-    splashScreenHelper.splashText(tr("Loading configuration..."));
+    CommandlineParser parser = new CommandlineParser(args);
+    parser.parseArgumentsPhase1();
+
+    SplashScreenHelper splash;
+    if (parser.isGuiMode()) {
+      splash = new SplashScreenHelper(SplashScreen.getSplashScreen());
+    } else {
+      splash = new SplashScreenHelper(null);
+    }
+
+    splash.splashText(tr("Loading configuration..."));
 
     BaseNoGui.initVersion();
 
@@ -224,9 +234,6 @@ public class Base {
 
     BaseNoGui.notifier = new GUIUserNotifier(this);
 
-    CommandlineParser parser = new CommandlineParser(args);
-    parser.parseArgumentsPhase1();
-
     BaseNoGui.checkInstallationFolder();
 
     // If no path is set, get the default sketchbook folder for this platform
@@ -241,9 +248,9 @@ public class Base {
       }
     }
 
-    splashScreenHelper.splashText(tr("Initializing packages..."));
+    splash.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
-    splashScreenHelper.splashText(tr("Preparing boards..."));
+    splash.splashText(tr("Preparing boards..."));
     rebuildBoardsMenu();
     rebuildProgrammerMenu();
 
@@ -372,7 +379,7 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isVerifyOrUploadMode()) {
-      splashScreenHelper.close();
+      splash.close();
       // Set verbosity for command line build
       PreferencesData.set("build.verbose", "" + parser.isDoVerboseBuild());
       PreferencesData.set("upload.verbose", "" + parser.isDoVerboseUpload());
@@ -385,10 +392,10 @@ public class Base {
       Editor editor = editors.get(0);
 
       if (parser.isUploadMode()) {
-        splashScreenHelper.splashText(tr("Verifying and uploading..."));
+        splash.splashText(tr("Verifying and uploading..."));
         editor.exportHandler.run();
       } else {
-        splashScreenHelper.splashText(tr("Verifying..."));
+        splash.splashText(tr("Verifying..."));
         editor.runHandler.run();
       }
 
@@ -400,7 +407,7 @@ public class Base {
       // No errors exit gracefully
       System.exit(0);
     } else if (parser.isGuiMode()) {
-      splashScreenHelper.splashText(tr("Starting..."));
+      splash.splashText(tr("Starting..."));
 
       installKeyboardInputMap();
 
