@@ -245,9 +245,13 @@ public class Base {
 
     splash.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
+
     splash.splashText(tr("Preparing boards..."));
-    rebuildBoardsMenu();
-    rebuildProgrammerMenu();
+
+    if (!isCommandLine()) {
+      rebuildBoardsMenu();
+      rebuildProgrammerMenu();
+    }
 
     // Setup board-dependent variables.
     onBoardOrPortChange();
