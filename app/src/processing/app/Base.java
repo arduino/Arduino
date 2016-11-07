@@ -128,58 +128,12 @@ public class Base {
     }
 
     try {
-      guardedMain(args);
+      INSTANCE = new Base(args);
     } catch (Throwable e) {
       e.printStackTrace(System.err);
       System.exit(255);
     }
   }
-
-  static public void guardedMain(String args[]) throws Exception {
-    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
-    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
-    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
-
-    BaseNoGui.initLogger();
-
-    initLogger();
-
-    BaseNoGui.initPlatform();
-
-    BaseNoGui.getPlatform().init();
-
-    BaseNoGui.initPortableFolder();
-
-    BaseNoGui.initParameters(args);
-
-    splashScreenHelper.splashText(tr("Loading configuration..."));
-
-    BaseNoGui.initVersion();
-
-    // Use native popups so they don't look so crappy on osx
-    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-    // Don't put anything above this line that might make GUI,
-    // because the platform has to be inited properly first.
-
-    // setup the theme coloring fun
-    Theme.init();
-    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
-
-    // Set the look and feel before opening the window
-    try {
-      BaseNoGui.getPlatform().setLookAndFeel();
-    } catch (Exception e) {
-      // ignore
-    }
-
-    // Create a location for untitled sketches
-    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
-    DeleteFilesOnShutdown.add(untitledFolder);
-
-    INSTANCE = new Base(args);
-  }
-
 
   static public void initLogger() {
     Handler consoleHandler = new ConsoleLogger();
@@ -227,6 +181,47 @@ public class Base {
   }
 
   public Base(String[] args) throws Exception {
+    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
+    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
+    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
+
+    BaseNoGui.initLogger();
+
+    initLogger();
+
+    BaseNoGui.initPlatform();
+
+    BaseNoGui.getPlatform().init();
+
+    BaseNoGui.initPortableFolder();
+
+    BaseNoGui.initParameters(args);
+
+    splashScreenHelper.splashText(tr("Loading configuration..."));
+
+    BaseNoGui.initVersion();
+
+    // Use native popups so they don't look so crappy on osx
+    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+    // Don't put anything above this line that might make GUI,
+    // because the platform has to be inited properly first.
+
+    // setup the theme coloring fun
+    Theme.init();
+    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
+
+    // Set the look and feel before opening the window
+    try {
+      BaseNoGui.getPlatform().setLookAndFeel();
+    } catch (Exception e) {
+      // ignore
+    }
+
+    // Create a location for untitled sketches
+    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
+    DeleteFilesOnShutdown.add(untitledFolder);
+
     BaseNoGui.notifier = new GUIUserNotifier(this);
 
     CommandlineParser parser = new CommandlineParser(args);
