@@ -31,7 +31,7 @@ public class Sketch {
 
   private File buildPath;
 
-  private static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
+  public static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
     @Override
     public int compare(SketchFile x, SketchFile y) {
       if (x.isPrimary() && !y.isPrimary())

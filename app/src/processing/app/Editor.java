@@ -1691,22 +1691,11 @@ public class Editor extends JFrame implements RunnerListener {
     selectTab(0);
   }
 
-  private static final Comparator<EditorTab> CODE_DOCS_COMPARATOR = new Comparator<EditorTab>() {
-    @Override
-    public int compare(EditorTab x, EditorTab y) {
-      if (x.getSketchFile().isPrimary() && !y.getSketchFile().isPrimary())
-        return -1;
-      if (y.getSketchFile().isPrimary() && !x.getSketchFile().isPrimary())
-        return 1;
-      return x.getSketchFile().getFileName().compareTo(y.getSketchFile().getFileName());
-    }
-  };
-
   /**
    * Reorders tabs as per current sketch's files order
    */
   public void reorderTabs() {
-    Collections.sort(tabs, CODE_DOCS_COMPARATOR);
+    Collections.sort(tabs, (x, y) -> Sketch.CODE_DOCS_COMPARATOR.compare(x.getSketchFile(), y.getSketchFile()));
   }
 
   /**
