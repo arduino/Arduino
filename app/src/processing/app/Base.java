@@ -22,6 +22,7 @@
 
 package processing.app;
 
+import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.contributions.*;
@@ -349,29 +350,40 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isVerifyOrUploadMode()) {
-      splash.close();
       // Set verbosity for command line build
       PreferencesData.setBoolean("build.verbose", parser.isDoVerboseBuild());
       PreferencesData.setBoolean("upload.verbose", parser.isDoVerboseUpload());
+
+      // Set preserve-temp flag
       PreferencesData.setBoolean("runtime.preserve.temp.files", parser.isPreserveTempFiles());
 
-      // Make sure these verbosity preferences are only for the
-      // current session
+      // Make sure these verbosity preferences are only for the current session
       PreferencesData.setDoSave(false);
 
-      Editor editor = editors.get(0);
+      Sketch sketch = null;
+      String outputFile = null;
+
+      try {
+        // Build
+        splash.splashText(tr("Verifying..."));
+
+        File sketchFile = new File(parser.getFilenames().get(0));
+        sketch = new Sketch(sketchFile);
+
+        outputFile = new Compiler(sketch).build(progress -> {}, false);
+      } catch (Exception e) {
+        // Error during build
+        System.exit(1);
+      }
 
       if (parser.isUploadMode()) {
         splash.splashText(tr("Verifying and uploading..."));
-        editor.exportHandler.run();
-      } else {
-        splash.splashText(tr("Verifying..."));
-        editor.runHandler.run();
-      }
-
-      // Error during build or upload
-      if (editor.status.isErr()) {
-        System.exit(1);
+        // XXX: TODO
+        //editor.exportHandler.run();
+        // Error during upload
+        //if (editor.status.isErr()) {
+        //  System.exit(1);
+        //}
       }
 
       // No errors exit gracefully
