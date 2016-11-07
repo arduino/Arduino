@@ -424,10 +424,9 @@ public class Base {
           }
         }
 
-        boolean showEditor = parser.isGuiMode();
         if (!parser.isForceSavePrefs())
-          PreferencesData.setDoSave(showEditor);
-        if (handleOpen(file, retrieveSketchLocation(".default"), showEditor, false) == null) {
+          PreferencesData.setDoSave(true);
+        if (handleOpen(file, retrieveSketchLocation(".default"), false) == null) {
           String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
           // Open failure is fatal in upload/verify mode
           if (parser.isVerifyOrUploadMode())
@@ -502,7 +501,7 @@ public class Base {
       }
       int[] location = retrieveSketchLocation("" + i);
       // If file did not exist, null will be returned for the Editor
-      if (handleOpen(new File(path), location, nextEditorLocation(), true, false, false) != null) {
+      if (handleOpen(new File(path), location, nextEditorLocation(), false, false) != null) {
         opened++;
       }
     }
@@ -794,14 +793,14 @@ public class Base {
   }
 
   public Editor handleOpen(File file, boolean untitled) throws Exception {
-    return handleOpen(file, nextEditorLocation(), true, untitled);
+    return handleOpen(file, nextEditorLocation(), untitled);
   }
 
-  protected Editor handleOpen(File file, int[] location, boolean showEditor, boolean untitled) throws Exception {
-    return handleOpen(file, location, location, showEditor, true, untitled);
+  protected Editor handleOpen(File file, int[] location, boolean untitled) throws Exception {
+    return handleOpen(file, location, location, true, untitled);
   }
 
-  protected Editor handleOpen(File file, int[] storedLocation, int[] defaultLocation, boolean showEditor, boolean storeOpenedSketches, boolean untitled) throws Exception {
+  protected Editor handleOpen(File file, int[] storedLocation, int[] defaultLocation, boolean storeOpenedSketches, boolean untitled) throws Exception {
     if (!file.exists()) return null;
 
     // Cycle through open windows to make sure that it's not already open.
@@ -834,9 +833,7 @@ public class Base {
 
     // now that we're ready, show the window
     // (don't do earlier, cuz we might move it based on a window being closed)
-    if (showEditor) {
-      SwingUtilities.invokeLater(() -> editor.setVisible(true));
-    }
+    SwingUtilities.invokeLater(() -> editor.setVisible(true));
 
     return editor;
   }
