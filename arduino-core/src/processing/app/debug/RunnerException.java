@@ -23,6 +23,7 @@
 
 package processing.app.debug;
 
+import processing.app.SketchFile;
 
 /**
  * An exception with a line number attached that occurs
@@ -31,7 +32,7 @@ package processing.app.debug;
 @SuppressWarnings("serial")
 public class RunnerException extends Exception {
   protected String message;
-  protected int codeIndex;
+  protected SketchFile codeFile;
   protected int codeLine;
   protected int codeColumn;
   protected boolean showStackTrace;
@@ -42,23 +43,23 @@ public class RunnerException extends Exception {
   }
 
   public RunnerException(String message, boolean showStackTrace) {
-    this(message, -1, -1, -1, showStackTrace);
+    this(message, null, -1, -1, showStackTrace);
   }
 
-  public RunnerException(String message, int file, int line) {
+  public RunnerException(String message, SketchFile file, int line) {
     this(message, file, line, -1, true);
   }
 
   
-  public RunnerException(String message, int file, int line, int column) {
+  public RunnerException(String message, SketchFile file, int line, int column) {
     this(message, file, line, column, true);
   }
   
   
-  public RunnerException(String message, int file, int line, int column, 
+  public RunnerException(String message, SketchFile file, int line, int column, 
                          boolean showStackTrace) {
     this.message = message;
-    this.codeIndex = file;
+    this.codeFile = file;
     this.codeLine = line;
     this.codeColumn = column;
     this.showStackTrace = showStackTrace;
@@ -74,6 +75,7 @@ public class RunnerException extends Exception {
    * Override getMessage() in Throwable, so that I can set 
    * the message text outside the constructor.
    */
+  @Override
   public String getMessage() {
     return message;
   }
@@ -84,18 +86,17 @@ public class RunnerException extends Exception {
   }
   
   
-  public int getCodeIndex() {
-    return codeIndex;
+  public SketchFile getCodeFile() {
+    return codeFile;
   }
   
   
-  public void setCodeIndex(int index) {
-    codeIndex = index;
+  public void setCodeFile(SketchFile file) {
+    codeFile = file;
   }
-  
-  
-  public boolean hasCodeIndex() {
-    return codeIndex != -1;
+
+  public boolean hasCodeFile() {
+    return codeFile != null;
   }
   
   
@@ -107,8 +108,7 @@ public class RunnerException extends Exception {
   public void setCodeLine(int line) {
     this.codeLine = line;
   }
-  
-  
+
   public boolean hasCodeLine() {
     return codeLine != -1;
   }
@@ -117,8 +117,7 @@ public class RunnerException extends Exception {
   public void setCodeColumn(int column) {
     this.codeColumn = column;
   }
-  
-  
+
   public int getCodeColumn() {
     return codeColumn;
   }
@@ -153,6 +152,7 @@ public class RunnerException extends Exception {
   */
 
 
+  @Override
   public void printStackTrace() {
     if (showStackTrace) {
       super.printStackTrace();

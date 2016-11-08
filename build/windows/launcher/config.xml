@@ -42,8 +42,8 @@
     <cp>%EXEDIR%/lib/jackson-module-mrbean-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
     <cp>%EXEDIR%/lib/jmdns-3.4.1.jar</cp>
-    <cp>%EXEDIR%/lib/jna-4.1.0.jar</cp>
-    <cp>%EXEDIR%/lib/jna-platform-4.1.0.jar</cp>
+    <cp>%EXEDIR%/lib/jna-4.2.2.jar</cp>
+    <cp>%EXEDIR%/lib/jna-platform-4.2.2.jar</cp>
     <cp>%EXEDIR%/lib/jsch-0.1.50.jar</cp>
     <cp>%EXEDIR%/lib/jssc-2.8.0.jar</cp>
     <cp>%EXEDIR%/lib/pde.jar</cp>
@@ -57,6 +57,7 @@
     <runtimeBits>32</runtimeBits>
     <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
+    <opt>-Djna.nosys=true</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
   <versionInfo>

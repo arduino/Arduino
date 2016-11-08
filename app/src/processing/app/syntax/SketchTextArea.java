@@ -30,12 +30,14 @@
 
 package processing.app.syntax;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.KeyStroke;
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.Token;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
-import org.fife.ui.rtextarea.RUndoManager;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
@@ -44,9 +46,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.Segment;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -56,6 +56,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Logger;
+import processing.app.helpers.OSUtils;
 
 /**
  * Arduino Sketch code editor based on RSyntaxTextArea (http://fifesoft.com/rsyntaxtextarea)
@@ -69,9 +70,11 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private PdeKeywords pdeKeywords;
 
-  public SketchTextArea(PdeKeywords pdeKeywords) throws IOException {
+  public SketchTextArea(RSyntaxDocument document, PdeKeywords pdeKeywords) throws IOException {
+    super(document);
     this.pdeKeywords = pdeKeywords;
     installFeatures();
+    fixCtrlDeleteBehavior();
   }
 
   public void setKeywords(PdeKeywords keywords) {
@@ -146,25 +149,6 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   public boolean isSelectionActive() {
     return this.getSelectedText() != null;
-  }
-
-  public void switchDocument(Document document, UndoManager newUndo) {
-
-    // HACK: Dont discard changes on curret UndoManager.
-    // BUG: https://github.com/bobbylight/RSyntaxTextArea/issues/84
-    setUndoManager(null); // bypass reset current undo manager...
-
-    super.setDocument(document);
-
-    setUndoManager((RUndoManager) newUndo);
-
-    // HACK: Complement previous hack (hide code folding on switch) | Drawback: Lose folding state
-//  if(sketch.getCodeCount() > 1 && textarea.isCodeFoldingEnabled()){
-//    textarea.setCodeFoldingEnabled(false);
-//    textarea.setCodeFoldingEnabled(true);
-//  }
-
-
   }
 
   @Override
@@ -388,5 +372,11 @@ public class SketchTextArea extends RSyntaxTextArea {
   @Override
   protected RTextAreaUI createRTextAreaUI() {
     return new SketchTextAreaUI(this);
+  }
+
+  private void fixCtrlDeleteBehavior() {
+    int modifier = OSUtils.isMacOS()? InputEvent.ALT_MASK : InputEvent.CTRL_MASK;
+    KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, modifier);
+    getInputMap().put(keyStroke, SketchTextAreaEditorKit.rtaDeleteNextWordAction);
   }
 }

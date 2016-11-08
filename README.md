@@ -1,16 +1,16 @@
 Arduino
 ========
 
-* Arduino is an open-source physical computing platform based on a simple i/o
+* Arduino is an open-source physical computing platform based on a simple I/O
 board and a development environment that implements the Processing/Wiring
 language. Arduino can be used to develop stand-alone interactive objects or
-can be connected to software on your computer (e.g. Flash, Processing, MaxMSP).
+can be connected to software on your computer (e.g. Flash, Processing and MaxMSP).
 The boards can be assembled by hand or purchased preassembled; the open-source
 IDE can be downloaded for free at http://www.arduino.cc/en/Main/Software
 
 * For more information, see the website at: http://www.arduino.cc/
 or the forums at: http://www.arduino.cc/forum/  
-You can also follow Arduino on twitter at: https://twitter.com/arduino or
+You can also follow Arduino on Twitter at: https://twitter.com/arduino or
 like Arduino on Facebook at: https://www.facebook.com/official.arduino
 
 * To report a *bug* in the software or to request *a simple enhancement* go to:

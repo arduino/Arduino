@@ -137,10 +137,13 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     String thisVersion = getParsedVersion();
     String otherVersion = ((ContributedLibrary) obj).getParsedVersion();
 
-    // Important: for legacy libs, versions are null.  Two legacy libs must
+    boolean versionEquals = (thisVersion != null && otherVersion != null
+                             && thisVersion.equals(otherVersion));
+
+    // Important: for legacy libs, versions are null. Two legacy libs must
     // always pass this test.
-    boolean versionEquals = thisVersion == otherVersion ||
-      (thisVersion != null && otherVersion != null && thisVersion.equals(otherVersion));
+    if (thisVersion == null && otherVersion == null)
+      versionEquals = true;
 
     String thisName = getName();
     String otherName = ((ContributedLibrary) obj).getName();

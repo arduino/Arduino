@@ -25,6 +25,7 @@ package processing.app.tools;
 
 import org.fife.ui.rsyntaxtextarea.Token;
 import processing.app.Editor;
+import processing.app.EditorTab;
 import processing.app.syntax.SketchTextArea;
 
 import javax.swing.text.BadLocationException;
@@ -65,9 +66,9 @@ public class DiscourseFormat {
    * from the actual Processing Tab ready to send to the processing discourse
    * web (copy & paste)
    */
-  public DiscourseFormat(Editor editor, boolean html) {
+  public DiscourseFormat(Editor editor, EditorTab tab, boolean html) {
     this.editor = editor;
-    this.textarea = editor.getTextArea();
+    this.textarea = tab.getTextArea();
     this.html = html;
   }
 

@@ -133,6 +133,10 @@ OPTIONS
 	This option is only valid together with *--verify* or
 	*--upload*.
 
+*--useprogrammer*::
+	Upload using a programmer. Set if you're using an external programmer, or
+	using the Arduino as ISP.
+
 *--verbose-upload*::
 	Enable verbose mode during upload. If this option is not given,
 	verbose mode during upload is *disabled* regardless of the current

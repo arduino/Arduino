@@ -39,7 +39,7 @@ public class Event extends ActionEvent {
 
   public Event(Object source, int id, String command) {
     super(source, id, command);
-    this.payload = new HashMap<String, Object>();
+    this.payload = new HashMap<>();
   }
 
   public Map<String, Object> getPayload() {

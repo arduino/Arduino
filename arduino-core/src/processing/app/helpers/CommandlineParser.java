@@ -18,7 +18,7 @@ public class CommandlineParser {
   private enum ACTION {
     GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
 
-    private final String value;
+    final String value;
 
     ACTION() {
       this.value = null;
@@ -277,7 +277,7 @@ public class CommandlineParser {
       BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid argument to --pref, should be of the form \"pref=value\""), arg), 3);
 
     PreferencesData.set(split[0], split[1]);
-    PreferencesData.set("build_properties_custom." + split[0], split[1]);
+    PreferencesData.set("runtime.build_properties_custom." + split[0], split[1]);
   }
 
   public boolean isDoVerboseBuild() {

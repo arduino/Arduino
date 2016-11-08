@@ -39,31 +39,56 @@
 #define D8 TK4
 #define D7 TK3
 
-static const uint8_t RX  = 0;
-static const uint8_t TX  = 1;
-static const uint8_t SDA = 2;
-static const uint8_t SCL = 3;
+#define PIN_SERIAL_RX       (0)
+#define PIN_SERIAL_TX       (1)
+
+static const uint8_t RX  = PIN_SERIAL_RX;
+static const uint8_t TX  = PIN_SERIAL_TX;
+
+#define PIN_WIRE_SDA        (2)
+#define PIN_WIRE_SCL        (3)
+
+static const uint8_t SDA = PIN_WIRE_SDA;
+static const uint8_t SCL = PIN_WIRE_SCL;
 
 // Map SPI port to 'new' pins D14..D17
-static const uint8_t SS   = 17;
-static const uint8_t MOSI = 16;
-static const uint8_t MISO = 14;
-static const uint8_t SCK  = 15;
+#define PIN_SPI_SS    (17)
+#define PIN_SPI_MOSI  (16)
+#define PIN_SPI_MISO  (14)
+#define PIN_SPI_SCK   (15)
+
+static const uint8_t SS   = PIN_SPI_SS;
+static const uint8_t MOSI = PIN_SPI_MOSI;
+static const uint8_t MISO = PIN_SPI_MISO;
+static const uint8_t SCK  = PIN_SPI_SCK;
 
 // Mapping of analog pins as digital I/O
 // A6-A11 share with digital pins
-static const uint8_t A0 = 18;
-static const uint8_t A1 = 19;
-static const uint8_t A2 = 20;
-static const uint8_t A3 = 21;
-static const uint8_t A4 = 22;
-static const uint8_t A5 = 23;
-static const uint8_t A6 = 24;	// D4
-static const uint8_t A7 = 25;	// D6
-static const uint8_t A8 = 26;	// D8
-static const uint8_t A9 = 27;	// D9
-static const uint8_t A10 = 28;	// D10
-static const uint8_t A11 = 29;	// D12
+#define PIN_A0   (18)
+#define PIN_A1   (19)
+#define PIN_A2   (20)
+#define PIN_A3   (21)
+#define PIN_A4   (22)
+#define PIN_A5   (23)
+#define PIN_A6   (24)
+#define PIN_A7   (25)
+#define PIN_A8   (26)
+#define PIN_A9   (27)
+#define PIN_A10  (28)
+#define PIN_A11  (29)
+
+static const uint8_t A0 = PIN_A0;
+static const uint8_t A1 = PIN_A1;
+static const uint8_t A2 = PIN_A2;
+static const uint8_t A3 = PIN_A3;
+static const uint8_t A4 = PIN_A4;
+static const uint8_t A5 = PIN_A5;
+static const uint8_t A6 = PIN_A6;	// D4
+static const uint8_t A7 = PIN_A7;	// D6
+static const uint8_t A8 = PIN_A8;	// D8
+static const uint8_t A9 = PIN_A9;	// D9
+static const uint8_t A10 = PIN_A10;	// D10
+static const uint8_t A11 = PIN_A11;	// D12
 
 // Specific Mapping for the Motor Board
 static const uint8_t MUX_IN = 20;  	// A2

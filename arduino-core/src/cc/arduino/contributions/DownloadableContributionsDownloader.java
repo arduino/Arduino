@@ -62,20 +62,38 @@ public class DownloadableContributionsDownloader {
       Files.delete(outputFile);
     }
 
-    // Need to download or resume downloading?
-    if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
-      download(url, outputFile.toFile(), progress, statusText, progressListener);
-    }
-
-    // Test checksum
-    progress.setStatus(tr("Verifying archive integrity..."));
-    progressListener.onProgress(progress);
-    String checksum = contribution.getChecksum();
-    if (hasChecksum(contribution)) {
-      String algo = checksum.split(":")[0];
-      if (!FileHash.hash(outputFile.toFile(), algo).equalsIgnoreCase(checksum)) {
-        throw new Exception(tr("CRC doesn't match. File is corrupted."));
+    boolean downloaded = false;
+    while (true) {
+      // Need to download or resume downloading?
+      if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
+        download(url, outputFile.toFile(), progress, statusText, progressListener);
+        downloaded = true;
       }
+
+      // Test checksum
+      progress.setStatus(tr("Verifying archive integrity..."));
+      progressListener.onProgress(progress);
+      if (hasChecksum(contribution)) {
+        String checksum = contribution.getChecksum();
+        String algo = checksum.split(":")[0];
+        String crc = FileHash.hash(outputFile.toFile(), algo);
+        if (!crc.equalsIgnoreCase(checksum)) {
+          // If the file has not been downloaded it may be a leftover of
+          // a previous download that failed. In this case delete it and
+          // try to download it again.
+          if (!downloaded) {
+            Files.delete(outputFile);
+            downloaded = true; // Redundant to avoid loops in case delete fails
+            continue;
+          }
+
+          // Otherwise throw the error.
+          throw new Exception(tr("CRC doesn't match, file is corrupted. It may be a temporary problem, please retry later."));
+        }
+      }
+
+      // Download completed successfully
+      break;
     }
 
     contribution.setDownloaded(true);

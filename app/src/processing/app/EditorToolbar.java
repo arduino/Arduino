@@ -27,7 +27,6 @@ import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
 import static processing.app.I18n.tr;
@@ -36,7 +35,7 @@ import static processing.app.Theme.scale;
 /**
  * run/stop/etc buttons for the ide
  */
-public class EditorToolbar extends JComponent implements MouseInputListener, KeyListener {
+public class EditorToolbar extends JComponent implements MouseInputListener, KeyEventDispatcher {
 
   /**
    * Rollover titles for each button.
@@ -136,6 +135,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     addMouseListener(this);
     addMouseMotionListener(this);
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
   }
 
   private void loadButtons() {
@@ -341,7 +341,10 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     switch (sel) {
       case RUN:
-        editor.handleRun(false, editor.presentHandler, editor.runHandler);
+        if (!editor.avoidMultipleOperations) {
+          editor.handleRun(false, editor.presentHandler, editor.runHandler);
+          editor.avoidMultipleOperations = true;
+        }
         break;
 
 //    case STOP:
@@ -370,7 +373,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         break;
 
       case EXPORT:
-        editor.handleExport(e.isShiftDown());
+        // launch a timeout timer which can reenable to upload button functionality an
+        if (!editor.avoidMultipleOperations) {
+          editor.handleExport(e.isShiftDown());
+          editor.avoidMultipleOperations = true;
+        }
         break;
 
       case SERIAL:
@@ -444,24 +451,12 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     return new Dimension(scale(3000), BUTTON_HEIGHT);
   }
 
-
-  public void keyPressed(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-      shiftPressed = true;
+  public boolean dispatchKeyEvent(final KeyEvent e) {
+    if (shiftPressed != e.isShiftDown()) {
+      shiftPressed = !shiftPressed;
       repaint();
     }
+    // Return false to continue processing this keyEvent
+    return false;
   }
-
-
-  public void keyReleased(KeyEvent e) {
-    if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-      shiftPressed = false;
-      repaint();
-    }
-  }
-
-
-  public void keyTyped(KeyEvent e) {
-  }
-
 }

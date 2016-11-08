@@ -68,12 +68,16 @@ public class LibrariesIndexer {
   private final List<String> badLibNotified = new ArrayList<>();
 
   public LibrariesIndexer(File preferencesFolder) {
-    this.indexFile = new File(preferencesFolder, "library_index.json");
-    this.stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
+    indexFile = new File(preferencesFolder, "library_index.json");
+    stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
   }
 
   public void parseIndex() throws IOException {
-    parseIndex(indexFile);
+    if (!indexFile.exists()) {
+      index = new EmptyLibrariesIndex();
+    } else {
+      parseIndex(indexFile);
+    }
     // TODO: resolve libraries inner references
   }
 
@@ -187,11 +191,11 @@ public class LibrariesIndexer {
     if (headers.length == 0) {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
     }
-    installedLibraries.addOrReplace(lib);
+    installedLibraries.addOrReplaceArchAware(lib);
     if (isSketchbook) {
       installedLibrariesWithDuplicates.add(lib);
     } else {
-      installedLibrariesWithDuplicates.addOrReplace(lib);
+      installedLibrariesWithDuplicates.addOrReplaceArchAware(lib);
     }
 
     // Check if we can find the same library in the index

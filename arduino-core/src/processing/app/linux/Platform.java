@@ -36,17 +36,20 @@ public class Platform extends processing.app.Platform {
 
   // TODO Need to be smarter here since KDE people ain't gonna like that GTK.
   //      It may even throw a weird exception at 'em for their trouble.
+  @Override
   public void setLookAndFeel() throws Exception {
     GTKLookAndFeelFixer.installGtkPopupBugWorkaround();
   }
 
 
+  @Override
   public File getDefaultSketchbookFolder() throws Exception {
     File home = new File(System.getProperty("user.home"));
     return new File(home, "Arduino");
   }
 
 
+  @Override
   public void openURL(String url) throws Exception {
     if (openFolderAvailable()) {
       String launcher = PreferencesData.get("launcher");
@@ -57,6 +60,7 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public boolean openFolderAvailable() {
     if (PreferencesData.get("launcher") != null) {
       return true;
@@ -91,6 +95,7 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public void openFolder(File file) throws Exception {
     if (openFolderAvailable()) {
       String launcher = PreferencesData.get("launcher");

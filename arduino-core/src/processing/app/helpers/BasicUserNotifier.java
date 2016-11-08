@@ -9,6 +9,7 @@ public class BasicUserNotifier extends UserNotifier {
    * This is an error that can't be recovered. Use showWarning()
    * for errors that allow P5 to continue running.
    */
+  @Override
   public void showError(String title, String message, Throwable e, int exit_code) {
     if (title == null) title = tr("Error");
 
@@ -18,6 +19,7 @@ public class BasicUserNotifier extends UserNotifier {
     System.exit(exit_code);
   }
 
+  @Override
   public void showMessage(String title, String message) {
     if (title == null) title = tr("Message");
 
@@ -27,6 +29,7 @@ public class BasicUserNotifier extends UserNotifier {
   /**
    * Non-fatal error message with optional stack trace side dish.
    */
+  @Override
   public void showWarning(String title, String message, Exception e) {
     if (title == null) title = tr("Warning");
 

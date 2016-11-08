@@ -67,6 +67,13 @@ public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.
     }
   }
 
+  @Override
+  public List<BoardPort> listDiscoveredBoards(boolean complete) {
+    synchronized (reachableBoardPorts) {
+      return new LinkedList<>(reachableBoardPorts);
+    }
+  }
+
   public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
     synchronized (reachableBoardPorts) {
       this.reachableBoardPorts.clear();

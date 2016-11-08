@@ -10,16 +10,20 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
+# Bao Phan <baophan94@icloud.com>, 2016
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/mbanzi/arduino-ide-15/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,29 +38,29 @@ msgstr "(yêu cầu khởi động lại Arduino)"
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "Chưa dùng đến: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "Đã sử dụng: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Keyboard' không tìm thấy. Có thể bạn đã chưa khai báo '#include <Keyboard.h>'."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Mouse' không tìm thấy. Có thể bạn đã chưa khai báo '#include < Mouse.h>'."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "thư mục 'arch' bây giờ đã không còn được hỗ trợ! Truy cập http://goo.gl/gfFJzU để biết thêm thông tin"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -68,33 +72,17 @@ msgstr ""
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir không còn được hỗ trợ"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload và --verbose-build chỉ có thể dùng chung với --verify hoặc --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -103,11 +91,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Bạn có muốn lưu lại các thay đổi với sketch này<BR> trước khi đóng lại không?</b><p>Nếu bạn không lưu, mọi thay đổi bạn vừa tác động sẽ không được áp dụng."
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Một tập tin có tên \"{0}\" không tồn tại trong \"{1}\""
 
 #: Editor.java:2169
 #, java-format
@@ -128,19 +111,23 @@ msgstr "Một phiên bản mới của Arduino vừa được phát hành,\nbạ
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "Có {0} gói cập nhật mới"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "Thư mục con trong tập phác thảo của bạn không phải là thư viện hợp lệ"
 
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "Translated by PA"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr "Nhập thư viện bằng tập tin .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -148,25 +135,25 @@ msgstr "Thêm tập tin.."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "Địa chỉ URLs nhận về các thư viện bổ sung"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "Địa chỉ URLs nhận về các thư viện bổ sung:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Tiếng Nam Phi"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Tiếng Albanian"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "Tất cả"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -177,21 +164,21 @@ msgstr "Xảy ra lỗi khi sửa lỗi việc mã hóa tập tin.\nKhông nên c
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "Lỗi xảy ra trong khi cập nhật danh sách thư viện!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "Lỗi xảy ra không lúc nạp bản phác thảo"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Lỗi xảy ra trong lúc kiểm tra bản phác thảo"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Lỗi xảy ra trong lúc kiểm tra/nạp bản phác thảo"
 
 #: Base.java:228
 msgid ""
@@ -227,7 +214,7 @@ msgstr "Việc lưu trữ sketch đã bị hủy bỏ vì\nsketch không thể �
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -312,11 +299,15 @@ msgstr "Đã hoàn tất Định Dạng Tự Động"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
+msgstr "Thiết lập tự động nhận dạng proxy"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "Đường dẫn URL cấu hình tự động proxy:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -344,6 +335,16 @@ msgstr "Belarusian"
 msgid "Board"
 msgstr "Bo mạch"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
@@ -362,20 +363,20 @@ msgstr "Bo mạch:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Quản Lý Các Board"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Quản Lý Board..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "Những board được thêm vào trong gói package này:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr ""
+msgstr "Tập tin Bootloader đã được khai báo, nhưng bị thiếu: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
@@ -391,11 +392,11 @@ msgstr "Duyệt tìm"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Đã thay đổi tuỳ chọn biên dịch, đang biên dịch lại tất cả"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Các ví dụ có sẵn"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -413,8 +414,10 @@ msgstr "Burn Bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Burning bootloader vào Bo Mạc I/O (quá trình này có thể kéo dài một phút)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
@@ -425,7 +428,7 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Không tìm thấy bảng phác thảo với đường dẫn đã chỉ định"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -436,13 +439,9 @@ msgstr "Canadian French"
 msgid "Cancel"
 msgstr "Hủy bỏ"
 
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Không thể đổi tên"
-
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Không thể chỉ định bất kỳ tập tin phác thảo nào"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -470,7 +469,7 @@ msgstr "Chinese (Taiwan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Click vào để hiển thị danh sách URLs hỗ trợ các board không chính thức"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -482,11 +481,11 @@ msgstr "Bình luận/Không bình luận"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Cộng đồng"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "Cảnh báo từ trình biên dịch:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
@@ -494,7 +493,7 @@ msgstr "Đang biên dịch sketch..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Đã đóng góp"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -521,6 +520,11 @@ msgstr "Không thể thêm \"{0}\" vào sketch."
 msgid "Could not copy to a proper location."
 msgstr "Không thể sao chép đến một vị trí có bậc cao hơn."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Không thể tạo thư mục sketch."
@@ -538,11 +542,6 @@ msgstr "Không thể xóa \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Không thể xóa tập tin \"{0}\" sẵn có."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Không thể xóa {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -587,7 +586,7 @@ msgstr "Không thể lưu lại sketch lần nữa"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "Không thể đọc được thiết lập màu sắc giao diện.\nBạn nên cài đặt lại Arduino."
 
 #: Preferences.java:219
 msgid ""
@@ -599,23 +598,6 @@ msgstr "Không thể tải thiết lập mặc định.\nBạn cần cài đặt
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Không thể loại bỏ phiên bản cũ của {0}"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Không thể đổi tên từ \"{0}\" thành \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Không thể đổi tên sketch. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Không thể đổi tên sketch. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Không thể đổi tên sketch. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -659,11 +641,11 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Xử Lý Dữ Liệu"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Dung Lượng Bộ Nhớ"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -671,7 +653,7 @@ msgstr "Giảm khoảng cách"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr ""
+msgstr "Mặc định"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -679,7 +661,7 @@ msgstr "Xóa"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Điều khiển thiết bị"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -693,7 +675,7 @@ msgstr "Hủy bỏ tất cả các thay đổi và tải lại sketch?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Hiển thị"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -704,7 +686,7 @@ msgstr "Hiển thị số thứ tự cho từng dòng"
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "Bạn có muốn gở bỏ {0}?\nNếu bạn muốn gỡ bỏ, bạn sẽ không còn được phép sử dụng {0} nữa."
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -721,7 +703,7 @@ msgstr "Đã hoàn tất quá trình burning bootloader."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Hoàn tất biên dịch"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -733,7 +715,7 @@ msgstr "Đã hoàn tất việc in."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Hoàn tất nạp mạch"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -742,29 +724,29 @@ msgstr "Đã hoàn tất việc tải dữ liệu."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "Đã tải về {0}kb trong tổng số {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "Đang tải về các định nghĩa board"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr ""
+msgstr "Đang tải về danh sách thư viện..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
 msgid "Downloading library: {0}"
-msgstr ""
+msgstr "Đang tải về thư viện: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr ""
+msgstr "Đang tải về danh sách các nền tảng..."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr ""
+msgstr "Đang tải về công cụ ({0}/{1})."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -792,7 +774,7 @@ msgstr "Ngôn ngữ soạn thảo:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "Bật chế độ gộp các câu lệnh theo dấu ngoặc nhọn"
 
 #: Preferences.java:92
 msgid "English"
@@ -805,11 +787,11 @@ msgstr "English (United Kingdom)"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr ""
+msgstr "Các đường dẫn urls phân cách nhau bởi dấu phẩy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr ""
+msgstr "Nhập vào các URL bổ sung, phân cách nhau bằng xuống hàng"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -825,6 +807,11 @@ msgstr "Lỗi"
 msgid "Error adding file"
 msgstr "Lỗi khi thêm tập tin"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr ""
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "Lỗi khi đang biên dịch."
@@ -832,7 +819,7 @@ msgstr "Lỗi khi đang biên dịch."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "Lỗi tải về {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -900,11 +887,6 @@ msgstr "Lỗi trong khi đang ghi dữ liệu phần nạp khởi động: thi�
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Lỗi khi tải mã lập trình {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Lỗi trong khi in."
@@ -945,12 +927,22 @@ msgstr "Estonian (Estonia)"
 msgid "Examples"
 msgstr "Ví dụ"
 
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -966,9 +958,23 @@ msgstr ""
 msgid "Failed to open sketch: \"{0}\""
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
+
 #: Editor.java:491
 msgid "File"
 msgstr "Tập tin"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr ""
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1050,6 +1056,10 @@ msgstr "Georgian"
 msgid "German"
 msgstr "German"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "Trước khi bắt đầu"
@@ -1107,6 +1117,10 @@ msgstr "Bạn rất tuyệt"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "Hungarian"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1188,6 +1202,10 @@ msgstr ""
 msgid "Installing..."
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr ""
+
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
@@ -1205,6 +1223,10 @@ msgstr "Italian"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "Japanese"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1306,12 +1328,20 @@ msgstr ""
 msgid "Name for new file:"
 msgstr "Tên cho tập tin mới:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Nepali"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
+msgstr ""
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
@@ -1501,9 +1531,17 @@ msgstr "Nhập địa chỉ SPI từ Sketch > Nhập thư viện ở menu."
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr ""
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
 msgstr ""
 
 #: Preferences.java:110
@@ -1574,9 +1612,10 @@ msgstr "Lỗi xảy ra khi Thiết lập nền tảng"
 msgid "Problem accessing board folder /www/sd"
 msgstr "Xảy ra lỗi khi kết nối đến thư mục bảng mạch /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "Xảy ra lỗi khi truy cập các tập tin trong thư mục"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr ""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1663,6 +1702,10 @@ msgstr "Thay thế phiên bản sẵn có của {0}?"
 #: FindReplace.java:81
 msgid "Replace with:"
 msgstr "Thay thế với:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1769,6 +1812,10 @@ msgstr "Serial Monitor"
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr ""
+
 #: Serial.java:194
 #, java-format
 msgid ""
@@ -1803,10 +1850,6 @@ msgstr "Các vấn đề về thiết lập"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Hiển thị thư mục Sketch"
-
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "Hiển thị phần xuất dữ liệu verbose trong suốt quá trình biên dịch"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1869,6 +1912,11 @@ msgstr "Địa điểm Sketchbook;"
 msgid "Sketchbook path not defined"
 msgstr ""
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr ""
@@ -1890,10 +1938,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Một số tập tin được đánh dấu \"chỉ đọc\", bởi thế bạn sẽ\ncần phải lưu lại sketch này ở một địa chỉ khác."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Xin lỗi, một sketch (hoặc một thư mục) có tên \"{0}\" đã tồn tại."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1926,6 +1974,14 @@ msgstr ""
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr ""
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1970,12 +2026,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Thư viện \"{0}\" không thể được sử dụng.\nTên thư viện chỉ được chứa các chữ cái cơ bản và số kèm theo.\n(chỉ bao gồm các ký tự ASCII viết liền nhau không cách khoảng, không được bắt đầu bằng số)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Tập tin chính không được tồn tại dưới dạng một phần bổ sung.\n(Bạn nên xem lại kiến thức về lập trinh)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -1997,6 +2050,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Sketch \"{0}\" không thể được sử dụng.\nTên của Sketch chỉ bao gồm các ký tự cơ bản và số kèm theo\n(chỉ dùng các ký tự ASCII và không có khoảng trắng, không được bắt đầu bằng số).\nĐể không hiển thị thông báo này nữa, hãy loại bỏ sketch từ\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2040,9 +2098,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr ""
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "Báo cáo này sẽ có thêm nhiều thông tin với"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr ""
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2090,6 +2151,11 @@ msgstr "Loại mật khẩu bo mạch để tải lên một sketch mới"
 msgid "Ukrainian"
 msgstr "Ukrainian"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr ""
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2134,6 +2200,10 @@ msgstr "Hủy thao tác"
 msgid "Unhandled type {0} in context key {1}"
 msgstr ""
 
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
@@ -2159,6 +2229,21 @@ msgstr "Cập nhật"
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "Cập nhật tập tin sketch đối với các định dạng mới khi lưu (.pde->ino)"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr ""
+
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
 msgstr ""
@@ -2170,6 +2255,10 @@ msgstr "Tải lên"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "Đang tải sử dụng dưới dạng người lập trình"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2350,24 +2439,8 @@ msgstr "Đồng ý"
 msgid "You can't fool me"
 msgstr "Giỡn chơi hoài cha nội"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Bạn không thể đặt tên cho một tập tin có định dạng .cpp trùng tên với sketch."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Bạn không thể đổi tên sketch thành \"{0}\"\nbởi vì sketch đã có một tập tin có định dạng .cpp có trùng tên như thế."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2416,13 +2489,13 @@ msgstr "Tập tin nén không chứa bất kỳ thư viện nào"
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" không phải là một định dạng hợp lệ."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr ""
 
 #: debug/Compiler.java:409
@@ -2487,14 +2560,6 @@ msgstr "biên dịch"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "đã kết nối!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() trả về giá trị sai"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "được bật trong Tập tin > Tùy Biến."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2565,11 +2630,16 @@ msgstr "{0} tập tin được thêm vào sketch."
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr ""
+msgstr "{0} thư viện"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
+msgstr "{0} phải là một thư mục"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
@@ -2617,14 +2687,19 @@ msgstr ""
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: Kiến trúc không xác định"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr ""
+msgstr "{0}: Board không xác định"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
+msgstr "{0}: Gói không xác định"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
 msgstr ""

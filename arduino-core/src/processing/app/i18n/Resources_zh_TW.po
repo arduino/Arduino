@@ -10,20 +10,24 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Ethan <ethan42411@gmail.com>, 2014
 # Federico Fissore <f.fissore@arduino.cc>, 2015
 # Hank Lu <hankbox@gmail.com>, 2013
 # james58899 <james59988@gmail.com>, 2014
 # james58899 <james59988@gmail.com>, 2014
 # Jordan_Fung <jordanfung2002@gmail.com>, 2014
-# yehnan <yehnan174@gmail.com>, 2013,2015
+# yehnan <yehnan174@gmail.com>, 2013,2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-12-20 15:05+0000\n"
-"Last-Translator: yehnan <yehnan174@gmail.com>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,22 +88,6 @@ msgstr "--verbose、--verbose-upload與--verbose-build只能與--verify或--uplo
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
 
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr "<br/>你的{0}boards{1}其中部分可更新"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr "<br/>你的{0}boards{1}與{2}libraries{3}其中部分可更新"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr "<br/>你的{0}libraries{1}其中部分可更新"
-
 #: Editor.java:2053
 msgid ""
 "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
@@ -107,11 +95,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>您想要關閉前儲存變更到草稿碼裡嗎？<BR></b><p>若不儲存，所有變更將會遺失。"
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "名為\"{0}\"已經存在於\"{1}\""
 
 #: Editor.java:2169
 #, java-format
@@ -141,6 +124,10 @@ msgstr "你的草稿碼簿裡有個子目錄不是合法的程式庫"
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "關於Arduino"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -177,7 +164,7 @@ msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
-msgstr "試著修正檔案編碼時發生錯誤。\n請不要視圖儲存此草稿碼，因為可能會蓋掉\n舊版本，請以「開啟」重新開啟草稿碼然後再試一次\n"
+msgstr "試著修正檔案編碼時發生錯誤。\n請不要試圖儲存這份草稿碼，因為可能會蓋掉\n舊版本，請以「開啟」重新開啟草稿碼然後再試一次\n"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
@@ -318,6 +305,10 @@ msgstr "自動格式化完畢。"
 msgid "Auto-detect proxy settings"
 msgstr "自動偵測代理伺服器組態設定"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "自動化的"
+
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
 msgstr "自動型代理伺服器組態網址："
@@ -347,6 +338,16 @@ msgstr "白俄羅斯語"
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "板子"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "找不到在{0}的板子"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -395,7 +396,7 @@ msgstr "瀏覽"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr "建置選項已變更，重建所有"
+msgstr "建置選項已變更，重新建置"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
@@ -417,9 +418,11 @@ msgstr "燒錄Bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "燒錄bootloader到板子裡（可能要花上幾分鐘）..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC校對錯誤。檔案已毀損。"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -439,10 +442,6 @@ msgstr "加拿大法語"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "取消"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "無法重新命名"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -525,6 +524,11 @@ msgstr "無法加入''{0}''到草稿碼裡。"
 msgid "Could not copy to a proper location."
 msgstr "無法複製到適當的位置。"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "無法建立草稿碼資料夾。"
@@ -542,11 +546,6 @@ msgstr "無法刪除\"{0}\"。"
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "無法刪除''{0}''檔"
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "無法刪除{0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -603,23 +602,6 @@ msgstr "無法讀取預設設定。\n你必須重新安裝Arduino。"
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "無法移除{0}的舊版本"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "無法將\"{0}\"重新命名為\"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "無法重新命名草稿碼。(0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "無法重新命名草稿碼。(1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "無法重新命名草稿碼。(2)"
 
 #: Base.java:2492
 #, java-format
@@ -796,7 +778,7 @@ msgstr "編輯器語言："
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr "啟用程式碼摺疊"
+msgstr "啟用程式碼摺疊功能"
 
 #: Preferences.java:92
 msgid "English"
@@ -828,6 +810,11 @@ msgstr "錯誤"
 #: Sketch.java:1065 Sketch.java:1088
 msgid "Error adding file"
 msgstr "加入檔案時發生錯誤"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "板子{0}編譯錯誤"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -904,11 +891,6 @@ msgstr "燒錄bootloader時發生錯誤：缺少配置參數 '{0}'"
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "編譯時發生錯誤：沒有組態參數'{0}'"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "載入程式碼{0}時發生錯誤"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "列印時發生錯誤。"
@@ -949,13 +931,23 @@ msgstr "愛沙尼亞語(愛沙尼亞)"
 msgid "Examples"
 msgstr "範例"
 
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr "第三方程式庫的範例"
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
-msgstr "程式庫的範例"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -970,9 +962,23 @@ msgstr "匯出已編譯的二進位檔"
 msgid "Failed to open sketch: \"{0}\""
 msgstr "無法開啟草稿碼: \"{0}\""
 
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
+
 #: Editor.java:491
 msgid "File"
 msgstr "檔案"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "非法檔名{0}：忽略"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1054,6 +1060,10 @@ msgstr "喬治亞語"
 msgid "German"
 msgstr "德語"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "入門手冊"
@@ -1063,12 +1073,12 @@ msgstr "入門手冊"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr "全域變數使用了 {0} bytes ({2}%%) 的動態記憶體，剩餘 {3} bytes 供局部變數。最大值為 {1} bytes 。"
+msgstr "全域變數使用了 {0} bytes ({2}%%) 的動態記憶體，剩餘 {3} bytes 給區域變數。上限為 {1} bytes 。"
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr "全域變數使用了 {0} bytes 動態內存。"
+msgstr "全域變數使用了 {0} bytes 的動態記憶體。"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
@@ -1111,6 +1121,10 @@ msgstr "誰人比你更癲狂"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "匈牙利語"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1192,6 +1206,10 @@ msgstr "安裝工具（{0} / {1}）..."
 msgid "Installing..."
 msgstr "安裝中..."
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "介面縮放率："
+
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
@@ -1209,6 +1227,10 @@ msgstr "義大利語"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "日語"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1310,6 +1332,10 @@ msgstr "必須指定一個草稿碼文件"
 msgid "Name for new file:"
 msgstr "新檔案的名字："
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "尼泊爾語"
@@ -1317,6 +1343,10 @@ msgstr "尼泊爾語"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "網路"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1505,10 +1535,18 @@ msgstr "請從選單「草稿碼>匯入程式庫」匯入SPI程式庫。"
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "請導入Wire從 草稿碼>導入函式庫。"
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
 msgstr "請從選單「工具->燒錄器」選擇燒錄器"
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr "當序列埠監控視窗開啟時，不能使用繪圖家"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1578,9 +1616,10 @@ msgstr "設定平台時發生問題"
 msgid "Problem accessing board folder /www/sd"
 msgstr "存取板子的資料夾/www/sd時發生問題"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "存取資料夾中的文件時發生問題"
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "存取資料夾\"{0}\"的檔案時發生問題"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1668,6 +1707,10 @@ msgstr "取代{0}的現存版本？"
 msgid "Replace with:"
 msgstr "置換為:"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "已退役"
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "羅馬尼亞語"
@@ -1710,7 +1753,7 @@ msgstr "儲存草稿碼資料夾為..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr "驗證或上傳時儲存"
+msgstr "驗證或上傳時先存檔"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1773,6 +1816,10 @@ msgstr "序列埠監控視窗"
 msgid "Serial Plotter"
 msgstr "序列繪圖家"
 
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr "當繪圖家開啟時，不能使用序列埠監控視窗"
+
 #: Serial.java:194
 #, java-format
 msgid ""
@@ -1807,10 +1854,6 @@ msgstr "設定值相關問題"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "顯示草稿碼資料夾"
-
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr "編譯時顯示詳細輸出資訊"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -1855,7 +1898,7 @@ msgstr "草稿碼太大；請見http://www.arduino.cc/en/Guide/Troubleshooting#s
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr "草稿碼使用了 {0} bytes ({2}%%) 的程式存儲空間。最大值為 {1} bytes。"
+msgstr "草稿碼使用了 {0} bytes ({2}%%) 的程式儲存空間。上限為 {1} bytes。"
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1872,6 +1915,11 @@ msgstr "草稿碼簿的位置："
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
 msgstr "沒有定義草稿碼簿的路徑"
+
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1894,10 +1942,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "有些檔案為「唯讀」，所以你需要\n另行儲存草稿碼到別的位置。"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "抱歉，已經存在名為\"{0}\"的草稿碼（或資料夾）。"
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1930,6 +1978,14 @@ msgstr "塔羅薩語"
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "泰米爾語"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "泰語"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1974,12 +2030,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "無法使用程式庫\"{0}\"。\n程式庫的名稱只能含有基本字母與數字。\n（只能是ASCII，不能有空白字元，也不能以數字開頭）"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "主檔不能使用副檔名。\n（或許該是時候開始使用\n「真正」的程式開發環境了）"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2001,6 +2054,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "無法使用草稿碼\"{0}\"。\n草稿碼的名稱只能含有基本字母與數字\n（只能是ASCII，不能含有空白字元，也不能以數字開頭）。\n若不想看到此訊息，請從{1}移除該草稿碼。"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2044,9 +2102,12 @@ msgid ""
 "Are you sure you want to delete it?"
 msgstr "程式庫管理員並未列出這個程式庫，你將無法在此重新安裝它。\n你確定想要刪除它嗎？"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr "這份報告的詳情將會在"
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr ""
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2094,6 +2155,11 @@ msgstr "輸入板子的密碼以上傳新的草稿碼"
 msgid "Ukrainian"
 msgstr "烏克蘭語"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "無法連接{0}"
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
@@ -2138,6 +2204,10 @@ msgstr "復原"
 msgid "Unhandled type {0} in context key {1}"
 msgstr ""
 
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
@@ -2163,6 +2233,21 @@ msgstr "更新"
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "儲存時更新草稿碼檔案的副檔名（.pde -> .ino）"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "你的{0}boards{1}其中部分可更新"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "你的{0}boards{1}與{2}libraries{3}其中部分可更新"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "你的{0}libraries{1}其中部分可更新"
+
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
 msgstr "更新已安裝程式庫的清單"
@@ -2175,6 +2260,10 @@ msgstr "上傳"
 msgid "Upload Using Programmer"
 msgstr "以燒錄器上傳"
 
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
+
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
 msgstr "上傳動作已取消。"
@@ -2185,7 +2274,7 @@ msgstr "上傳已取消"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "上傳到板子中..."
+msgstr "上傳到板子..."
 
 #: Sketch.java:1622
 msgid "Uploading..."
@@ -2207,7 +2296,7 @@ msgstr "使用者名稱："
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr ""
+msgstr "使用程式庫{0}、版本{1}，位於資料夾：{2}{3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2233,7 +2322,7 @@ msgstr "驗證／編譯"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
-msgstr "驗證並上傳..."
+msgstr "驗證並上傳中..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
 msgid "Verifying archive integrity..."
@@ -2299,12 +2388,12 @@ msgstr "警告：檔案{0}連結到絕對路徑{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "警告：強迫信任不可靠的貢獻"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "警告：強迫執行不可靠的腳本碼({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
@@ -2354,25 +2443,9 @@ msgstr "是"
 msgid "You can't fool me"
 msgstr "你騙不了我"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "你不能讓一支.cpp檔擁有與草稿碼相同的名字。"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "不能匯入含有你草稿碼簿的資料夾"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "你不能將草稿碼重新命名為\"{0}\"\n因為草稿碼裡已經有個擁有該名的.cpp檔。"
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr ""
 
 #: Sketch.java:883
 msgid ""
@@ -2399,13 +2472,13 @@ msgstr "你已經達到一天內可自動命名新草稿碼的限制了，\n何�
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "你的IDE安裝在設定資料夾的子資料夾裡。\n請把IDE搬移到別的資料夾。"
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "你的IDE安裝在草稿碼簿的子資料夾裡。\n請把IDE搬移到別的資料夾。"
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2420,13 +2493,13 @@ msgstr "Zip並不含有程式庫"
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\"不是合法的副檔名。"
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
 msgstr ""
 
 #: debug/Compiler.java:409
@@ -2491,14 +2564,6 @@ msgstr "編譯"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "已連接!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile()回傳false"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "在檔案 > 偏好設定裡啟用。"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2576,10 +2641,15 @@ msgstr "{0}程式庫"
 msgid "{0} must be a folder"
 msgstr "{0}必須是個目錄"
 
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0}樣式遺失"
 
 #: debug/Compiler.java:365
 #, java-format
@@ -2632,3 +2702,8 @@ msgstr "{0}：不明的板子"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}：不明的套件"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
+msgstr ""

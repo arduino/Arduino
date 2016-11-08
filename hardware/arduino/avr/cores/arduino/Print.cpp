@@ -200,7 +200,8 @@ size_t Print::println(const Printable& x)
 
 // Private Methods /////////////////////////////////////////////////////////////
 
-size_t Print::printNumber(unsigned long n, uint8_t base) {
+size_t Print::printNumber(unsigned long n, uint8_t base)
+{
   char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
   char *str = &buf[sizeof(buf) - 1];
 
@@ -210,9 +211,9 @@ size_t Print::printNumber(unsigned long n, uint8_t base) {
   if (base < 2) base = 10;
 
   do {
-    unsigned long m = n;
+    char c = n % base;
     n /= base;
-    char c = m - base * n;
+
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
 
@@ -256,7 +257,7 @@ size_t Print::printFloat(double number, uint8_t digits)
   while (digits-- > 0)
   {
     remainder *= 10.0;
-    int toPrint = int(remainder);
+    unsigned int toPrint = (unsigned int)(remainder);
     n += print(toPrint);
     remainder -= toPrint; 
   } 

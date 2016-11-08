@@ -42,6 +42,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -52,16 +54,25 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkListener;
 
+import cc.arduino.Constants;
 import processing.app.Theme;
 
 public class NotificationPopup extends JDialog {
 
+  private Timer autoCloseTimer = new Timer(false);
+  private boolean autoClose = true;
+
   public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
                            String message) {
+    this(parent, hyperlinkListener, message, true);
+  }
+
+  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+                           String message, boolean _autoClose) {
     super(parent, false);
+    autoClose = _autoClose;
     setLayout(new FlowLayout());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    setAlwaysOnTop(true);
     setUndecorated(true);
     setResizable(false);
 
@@ -131,6 +142,21 @@ public class NotificationPopup extends JDialog {
   }
 
   public void close() {
+    if (autoClose) {
+      autoCloseTimer.cancel();
+    }
     dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+  }
+
+  public void begin() {
+    if (autoClose) {
+      autoCloseTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          close();
+        }
+      }, Constants.NOTIFICATION_POPUP_AUTOCLOSE_DELAY);
+    }
+    setVisible(true);
   }
 }

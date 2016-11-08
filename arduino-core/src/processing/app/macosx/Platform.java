@@ -49,6 +49,7 @@ public class Platform extends processing.app.Platform {
 
   private String osArch;
 
+  @Override
   public void setLookAndFeel() throws Exception {
   }
 
@@ -58,6 +59,7 @@ public class Platform extends processing.app.Platform {
     Toolkit.getDefaultToolkit();
   }
 
+  @Override
   public void init() throws Exception {
     super.init();
 
@@ -76,11 +78,13 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public File getSettingsFolder() throws Exception {
     return new File(getLibraryFolder(), "Arduino15");
   }
 
 
+  @Override
   public File getDefaultSketchbookFolder() throws Exception {
     return new File(getDocumentsFolder(), "Arduino");
     /*
@@ -98,6 +102,7 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public void openURL(String url) throws Exception {
     Desktop desktop = Desktop.getDesktop();
     if (url.startsWith("http") || url.startsWith("file:")) {
@@ -108,11 +113,13 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public boolean openFolderAvailable() {
     return true;
   }
 
 
+  @Override
   public void openFolder(File file) throws Exception {
     //openURL(file.getAbsolutePath());  // handles char replacement, etc
     PApplet.open(file.getAbsolutePath());
@@ -168,7 +175,7 @@ public class Platform extends processing.app.Platform {
       return super.filterPorts(ports, true);
     }
 
-    List<BoardPort> filteredPorts = new LinkedList<BoardPort>();
+    List<BoardPort> filteredPorts = new LinkedList<>();
     for (BoardPort port : ports) {
       if (!port.getAddress().startsWith("/dev/tty.")) {
         filteredPorts.add(port);

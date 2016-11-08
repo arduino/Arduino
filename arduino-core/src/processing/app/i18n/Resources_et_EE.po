@@ -10,16 +10,22 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
 # Cougar <cougar@random.ee>, 2012
+# Cristian Maglie <c.maglie@arduino.cc>, 2016
+# Georg, 2014
 # Georg, 2014
 # Lauri Võsandi <lauri.vosandi@gmail.com>, 2015
+# Triin Taveter <taveter@ut.ee>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-11-18 16:15+0000\n"
-"Last-Translator: Federico Fissore <f.fissore@arduino.cc>\n"
+"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,67 +40,51 @@ msgstr "  (vajab Arduino taaskäivitamist)"
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr " Kasutamata: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr " Kasutusel: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "‘Keyboard’ definitsiooni ei leitud. Kas su visandis on rida ‘#include <Keyboard.h>’?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "‘Mouse’ definitsiooni ei leitud. Kas su visandis on rida ‘#include <Mouse.h>’?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "Kataloog „arch“ pole enam toetatud. Lisainfo saamiseks vaata http://goo.gl/gfFJzU ."
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(Arduino ei tohi muutmise ajal käia)"
+msgstr "(Arduino ei tohi selle faili muutmise ajal käia.)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(iganenud)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir võti pole enam toetatud"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload ja --verbose-build võtmeid saab kasutada ainult koos --verify või --upload võtmetega."
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:64
-#, java-format
-msgid "<br/>Update available for some of your {0}boards{1}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:66
-#, java-format
-msgid ""
-"<br/>Update available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
-
-#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:62
-#, java-format
-msgid "<br/>Update available for some of your {0}libraries{1}"
-msgstr ""
 
 #: Editor.java:2053
 msgid ""
@@ -102,96 +92,95 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Kas sa soovid muudatused enne sulgemist salvestada?</b><p>salvestamata muudatused lähevad kaduma"
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "\"{1}\" kasutas on fail nimega \"{0}\" juba olemas"
+msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Kas soovid muudatused enne sulgemist salvestada?</b><p>Salvestamata muudatused lähevad kaotsi."
 
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "Kaust \"{0}\" on juba olemas. Ei saa visandit avada."
+msgstr "Kaust „{0}“ on juba olemas. Visandit ei saa avada."
 
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr "Teek \"{0}\" on juba olemas"
+msgstr "Teek „{0}“ on juba olemas."
 
 #: UpdateCheck.java:103
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr "Saadaval on uuem versioon Arduinost.\nKas soovid allalaadimislehte külastada?"
+msgstr "Arduino uuem versioon on saadaval.\nSoovid sa allalaadimise lehe avada?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "Pakist {0} on uus versioon saadaval"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "Su visandite kausta alamkaust pole korrektne teek."
 
 #: Editor.java:1116
 msgid "About Arduino"
-msgstr "Arduinost"
+msgstr "Arduino info"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr "Lisa .ZIP teek ..."
 
 #: Editor.java:650
 msgid "Add File..."
-msgstr "Lisa fail..."
+msgstr "Lisa fail ..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "Lisa URL-id plaatide halduseks"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "Lisa URL-id plaatide halduseks: "
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr ""
+msgstr "Afrikaani"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Albaania"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "Kõik"
 
 #: tools/FixEncoding.java:77
 msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
-msgstr "Faili kooditabeli muutmisel tekkis viga. Ära proovi\nseda visandit salvestada kuna see võib olemasoleva\nüle kirjutada. Ava visand uuesti ning proovi uuesti.\n"
+msgstr "Viga faili kodeeringu parandamise katsel. Ära proovi\nseda visandit salvestada kuna see võib olemasoleva\nüle kirjutada. Ava visand uuesti ning proovi siis uuesti.\n"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "Viga teekide indeksi uuendamisel."
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "Viga visandi üleslaadimisel"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "Viga visandi kontrollimisel"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "Viga visandi kontrollimisel/üleslaadimisel"
 
 #: Base.java:228
 msgid ""
@@ -213,7 +202,7 @@ msgstr "Arhiveeri visand"
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr "Arhiveeri visand uue nimega:"
+msgstr "Visandi arhiveerimine"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
@@ -227,7 +216,7 @@ msgstr "Visandi arhiveerimine ebaõnnestus kuna seda\nei saanud korralikult salv
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -241,66 +230,66 @@ msgstr "Arduino AVR plaadid"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino saab avada ainult oma visandeid\nja teisi .ino või .pde laiendiga faile."
 
 #: Base.java:1682
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr "Ei saa Arduinot käivitada kuna seadete kausta\nloomine ei õnnestunud."
+msgstr "Arduinot ei saa käivitada kuna seadete kausta\nloomine ei õnnestunud."
 
 #: Base.java:1889
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr "Ei saa Arduinot käivitada kuna visandite kausta\nloomine ei õnnestunud."
+msgstr "Arduinot ei saa käivitada kuna visandite kausta\nloomine ei õnnestunud."
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr ""
+msgstr "Arduino: "
 
 #: Sketch.java:588
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr "Oled kindel, et soovid kustutada \"{0}\"?"
+msgstr "Oled kindel, et soovid „{0}“ kustutada?"
 
 #: Sketch.java:587
 msgid "Are you sure you want to delete this sketch?"
-msgstr "Oled kindel, et soovid kustutada selle visandi?"
+msgstr "Oled kindel, et soovid selle visandi kustutada?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "--board võti vajab argumenti"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "--port võti vajab argumenti"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "--pref võti vajab argumenti"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "--preferences-file võti vajab argumenti"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:76
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "{0} vajab argumenti"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "Armeenia"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr ""
+msgstr "Astuuria"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "Autoriseerimine on vajalik"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
@@ -312,15 +301,19 @@ msgstr "Automaatvormindus tehtud."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Proxy seadete automaatne tuvastus"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "Automaatne"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "Proxy automaatse seadistamise URL:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
-msgstr "Isekerimine"
+msgstr "Automaatne kerimine"
 
 #: Editor.java:2619
 #, java-format
@@ -333,53 +326,63 @@ msgstr "Vigane fail valitud"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "Baski"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "Valgevene"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "Plaat"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "Plaat kohas {0} ei ole saadaval"
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "Plaat {0} (platvorm {1}, pakk {2}) on tundmatu"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "Plaat {0}:{1}:{2} ei määra „build.board“ eelistust. See seatakse väärtusele: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "Plaat:"
+msgstr "Plaat: "
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Plaatide haldus"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Plaatide haldus ..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "Selles pakis olevad plaadid:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr ""
+msgstr "Alglaadur on määratud, kuid see puudub: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnia"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
@@ -391,11 +394,11 @@ msgstr "Sirvi"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "Kompileerimise seaded on muutunud, kõik kompileeritakse ringi."
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Kaasasolevad näited"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -403,7 +406,7 @@ msgstr "Bulgaaria"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "Birma (Myanmar)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
@@ -411,21 +414,23 @@ msgstr "Kirjuta alglaadur"
 
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
-msgstr "Alglaaduri I/O plaadile kirjutamine (see võib kesta mõni minut)..."
+msgstr "Alglaaduri I/O plaadile kirjutamine (see võib võtta mõne minuti) ..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "Ainult üht neist saab korraga kasutada: {0}"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "Määratud asukohast ei leitud visandit."
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -436,13 +441,9 @@ msgstr "Prantsuse (Kanada)"
 msgid "Cancel"
 msgstr "Loobu"
 
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Ümbernimetamine nurjus"
-
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "Ühtegi visandi faili ei tohi määrata"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -454,23 +455,23 @@ msgstr "Katalaani"
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
-msgstr "Käivitamisel kontrolli uuendusi"
+msgstr "Uuenduste kontroll käivitamisel"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Hiina (Hiina)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Hiina (Taiwan)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "Hiina (Taiwan) (Big5)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Mitteametlik plaatide toe URL-ide nimekiri"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -478,23 +479,23 @@ msgstr "Sulge"
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr "Kommentaari lisamine/eemaldamine"
+msgstr "Lisa/eemalda kommentaar"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Side"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "Kompilaatori hoiatused: "
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr "Visandi kompileerimine..."
+msgstr "Visandi kompileerimine ..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Kaastööd"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -515,56 +516,56 @@ msgstr "Kopeeri foorumi jaoks"
 #: Sketch.java:1089
 #, java-format
 msgid "Could not add ''{0}'' to the sketch."
-msgstr "''{0}'' ei saa visandisse lisada."
+msgstr "„{0}“ ei saa visandisse lisada."
 
 #: Editor.java:2188
 msgid "Could not copy to a proper location."
 msgstr "Ettenähtud kohta ei saa kopeerida."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
-msgstr "Visandi kausta pole võimalik luua"
+msgstr "Visandi kausta pole võimalik luua."
 
 #: Editor.java:2206
 msgid "Could not create the sketch."
-msgstr "Visandi loomine nurjus."
+msgstr "Visandit ei saa luua."
 
 #: Sketch.java:617
 #, java-format
 msgid "Could not delete \"{0}\"."
-msgstr "\"{0}\" pole võimalik kustutada."
+msgstr "„{0}“ pole võimalik kustutada."
 
 #: Sketch.java:1066
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
-msgstr "Ei saa kustutada olemasolevat faili \"{0}\"."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "{0} pole võimalik kustutada."
+msgstr "Olemasolevat faili „{0}“ ei saa kustutada."
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
 msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
-msgstr ""
+msgstr "„{0}“ kaustast ei leitud boards.txt faili. On see pärit 1.5 eelsest ajast?"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
 msgid "Could not find tool {0}"
-msgstr ""
+msgstr "Töövahendit {0} ei leitud"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
 #, java-format
 msgid "Could not find tool {0} from package {1}"
-msgstr ""
+msgstr "Pakist {1} ei leitud töövahendit {0}"
 
 #: Base.java:1934
 #, java-format
 msgid ""
 "Could not open the URL\n"
 "{0}"
-msgstr "URL avamine ebaõnnestus\n{0}"
+msgstr "URL-i avamine ebaõnnestus\n{0}"
 
 #: Base.java:1958
 #, java-format
@@ -577,7 +578,7 @@ msgstr "Kausta avamine ebaõnnestus\n{0}"
 msgid ""
 "Could not properly re-save the sketch. You may be in trouble at this point,\n"
 "and it might be time to copy and paste your code to another text editor."
-msgstr "Visandi uuesti salvestamine nurjus. Siin on tegemist tõsise probleemiga.\nProovi lõigata ning kleepida oma kood mõnda teisse tekstiredaktorisse."
+msgstr "Visandi uuesti salvestamine ebaõnnestus. Siin on tegemist tõsise probleemiga.\nProovi kopeerida oma kood mõnda teisse tekstiredaktorisse."
 
 #: Sketch.java:1768
 msgid "Could not re-save sketch"
@@ -587,35 +588,18 @@ msgstr "Visandi uuesti salvestamine ebaõnnestus"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "Värviteema seadeid pole võimalik lugeda.\nSa pead Arduino uuesti paigaldama."
 
 #: Preferences.java:219
 msgid ""
 "Could not read default settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "Ei saa avada vaikimisi seadeid.\nArduino tuleb uuesti paigaldada."
+msgstr "Vaikeseadeid pole võimalik avada.\nSa pead Arduino uuesti paigaldama."
 
 #: Base.java:2482
 #, java-format
 msgid "Could not remove old version of {0}"
-msgstr "Ei saanud {0} vana versiooni eemaldada"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "\"{0}\" pole võimalik \"{1}\"-ks ümber nimetada."
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Visandi ümbernimetamine nurjus. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Visandi ümbernimetamine nurjus. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Visandi ümbernimetamine nurjus. (2)"
+msgstr "„{0}“ vana versiooni ei saanud eemaldada"
 
 #: Base.java:2492
 #, java-format
@@ -639,7 +623,7 @@ msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr "Ei leia plaati valitud pordi küljest. Konrolli, et valitud oleks õige port. Kui port on õige, proovi vajutada plaadi RESET nuppu kohe peale üleslaadimise alustamist."
+msgstr "Valitud pordist plaati ei leitud. Kontrolli, et valitud oleks õige port. Kui port on õige, proovi kohe pärast üleslaadimise alustamist plaadi RESET nuppu vajutada."
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
@@ -651,19 +635,19 @@ msgstr "Lõika"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Tšehhi (Tšehhi Vabariik)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Taani (Taani)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Andmetöötlus"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Andmete säilitamine"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -671,7 +655,7 @@ msgstr "Vähenda taanet"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr ""
+msgstr "Vaikeväärtus"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -679,7 +663,7 @@ msgstr "Kustuta"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Seadmete juhtimine"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -693,18 +677,18 @@ msgstr "Unusta kõik muudatused ning laadi uuesti?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Ekraanid"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr ""
+msgstr "Reanumbrite näitamine"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 #, java-format
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "Soovid sa {0} eemaldada?\nKui sa seda teed, ei saa sa {0} enam kasutada."
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -712,7 +696,7 @@ msgstr "Ära salvesta"
 
 #: Editor.java:2275 Editor.java:2311
 msgid "Done Saving."
-msgstr "Salvestatud."
+msgstr "Salvestamine lõpetatud."
 
 #: Editor.java:2510
 msgid "Done burning bootloader."
@@ -721,50 +705,50 @@ msgstr "Alglaadur edukalt kirjutatud."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Kompileerimine lõpetatud"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
-msgstr "Kompileeritud."
+msgstr "Kompileerimine lõpetatud."
 
 #: Editor.java:2564
 msgid "Done printing."
-msgstr "Trükitud."
+msgstr "Trükkimine lõpetatud."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Üleslaadimine lõpetatud"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
-msgstr "Laadimine lõpetatud"
+msgstr "Üleslaadimine lõpetatud."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "Alla on laaditud {0}kb kokku {1}kb-st."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "Plaatide definitsioonide allalaadimine."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr ""
+msgstr "Teekide indeksi allalaadimine ..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
 msgid "Downloading library: {0}"
-msgstr ""
+msgstr "Teegi allalaadimine: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr ""
+msgstr "Platvormide indeksi allalaadimine ..."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr ""
+msgstr "Tööriistade allalaadimine ({0}/{1})."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -772,27 +756,27 @@ msgstr "Hollandi"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "Hollandi (Holland)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
-msgstr ""
+msgstr "Edisoni abiinfo"
 
 #: Editor.java:1130
 msgid "Edit"
-msgstr "Redigeeri"
+msgstr "Redigeerimine"
 
 #: Preferences.java:370
 msgid "Editor font size: "
-msgstr "Tekstiredaktori kirja suurus:"
+msgstr "Fondi suurus redaktoris:"
 
 #: Preferences.java:353
 msgid "Editor language: "
-msgstr "Tekstiredaktori keel:"
+msgstr "Rakenduse keel:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "Koodi kokkuvoltimine"
 
 #: Preferences.java:92
 msgid "English"
@@ -800,16 +784,16 @@ msgstr "Inglise"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "Inglise (Suurbritannia)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr ""
+msgstr "Sisesta komaga eraldatud URL-ide nimekiri."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr ""
+msgstr "Lisa URL-id sisesta igaüks omale reale"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -825,42 +809,47 @@ msgstr "Viga"
 msgid "Error adding file"
 msgstr "Viga faili lisamisel"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr "Viga plaadi {0} jaoks kompilleerimisel."
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
-msgstr "Kompileerimise viga."
+msgstr "Viga kompileerimisel."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "Viga „{0}“ allalaadimisel."
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
-msgstr "Arduino andmekausta nime leidmise viga."
+msgstr "Viga Arduino andmekausta leidmisel."
 
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr "Viga Serial.{0}() sees"
+msgstr "Viga Serial.{0}() sees."
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr ""
+msgstr "Viga „{0}“ laadimisel."
 
 #: Serial.java:181
 #, java-format
 msgid "Error opening serial port ''{0}''."
-msgstr "Viga jadapordi {0} avamisel"
+msgstr "Viga jadapordi „{0}“ avamisel."
 
 #: ../../../processing/app/Serial.java:119
 #, java-format
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "Viga jadapordi „{0}“ avamisel. Proovi abi otsida dokumentatsioonist aadressil http://playground.arduino.cc/Linux/All#Permission"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -871,39 +860,34 @@ msgstr "Viga eelistuste lugemisel"
 msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
-msgstr "Viga eelistuste faili lugemisel. Palun kustuta (või tõsta\nmujale) {0} ning käivita Arduino uuesti."
+msgstr "Viga eelistuste faili lugemisel. Palun kustuta „{0}“ (või tõsta\nsee mujale) ning käivita Arduino uuesti."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
 msgid "Error running post install script"
-msgstr ""
+msgstr "Viga paigaldusjärgse skripti jooksutamisel."
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "Viga avastusmeetodi käivitamisel: "
 
 #: Serial.java:125
 #, java-format
 msgid "Error touching serial port ''{0}''."
-msgstr "Viga jadapordi {0} avamisel"
+msgstr "Viga jadapordi „{0}“ avamisel."
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
-msgstr "Alglaaduri kirjutamisel tekkis viga."
+msgstr "Viga alglaaduri kirjutamisel."
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Viga alglaaduri kirjutamisel: „{0}“ konfiguratsiooniparameeter puudub"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
-
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Koodi laadimise viga {0}"
+msgstr "Viga kompileerimisel: „{0}“ konfiguratsiooniparameeter puudub"
 
 #: Editor.java:2567
 msgid "Error while printing."
@@ -912,26 +896,26 @@ msgstr "Viga trükkimisel."
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "Viga jadapordi parameetrite seadmisel: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "Viga üleslaadimisel"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "Viga üleslaadimisel: „{0}“ konfiguratsiooniparameeter puudub"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "Viga kontrollimisel"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "Viga kontrollimisel/üleslaadimisel"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -939,36 +923,60 @@ msgstr "Eesti"
 
 #: ../../../processing/app/Preferences.java:146
 msgid "Estonian (Estonia)"
-msgstr ""
+msgstr "Eesti (Eesti)"
 
 #: Editor.java:516
 msgid "Examples"
 msgstr "Näited"
 
-#: ../../../../../app/src/processing/app/Base.java:1244
-msgid "Examples from Custom Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1226
+msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1246
+#: ../../../../../app/src/processing/app/Base.java:1257
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1244
+msgid "Examples from Custom Libraries"
+msgstr "Ise paigaldatud teekide näited"
+
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr ""
+msgstr "Eksport katkestatud, muudatused tuleb kõigepealt salvestada."
 
 #: ../../../../../app/src/processing/app/Editor.java:750
 msgid "Export compiled Binary"
-msgstr ""
+msgstr "Ekspordi kompileeritud binaar"
 
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
+msgstr "Visandi avamine ebaõnnestus: „{0}“"
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
 msgstr ""
 
 #: Editor.java:491
 msgid "File"
 msgstr "Fail"
+
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "Faili nimi {0} on kehtetu: ignoreeritakse"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -976,7 +984,7 @@ msgstr "Filipiini"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "Otsingu filtreerimine ..."
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -984,27 +992,27 @@ msgstr "Otsi"
 
 #: Editor.java:1249
 msgid "Find Next"
-msgstr "Otsi järgmine"
+msgstr "Otsi järgmist"
 
 #: Editor.java:1259
 msgid "Find Previous"
-msgstr "Otsi eelmine"
+msgstr "Otsi eelmist"
 
 #: Editor.java:1086 Editor.java:2775
 msgid "Find in Reference"
-msgstr "Registriviide"
+msgstr "Otsi dokumentatsioonist"
 
 #: Editor.java:1234
 msgid "Find..."
-msgstr "Otsi..."
+msgstr "Otsi ..."
 
 #: FindReplace.java:80
 msgid "Find:"
-msgstr "Otsi:"
+msgstr "Otsitav:"
 
 #: ../../../processing/app/Preferences.java:147
 msgid "Finnish"
-msgstr ""
+msgstr "Soome"
 
 #: tools/FixEncoding.java:41 tools/FixEncoding.java:58
 #: tools/FixEncoding.java:79
@@ -1015,12 +1023,12 @@ msgstr "Paranda kooditabel ning laadi uuesti"
 msgid ""
 "For information on installing libraries, see: "
 "http://www.arduino.cc/en/Guide/Libraries\n"
-msgstr ""
+msgstr "Teekide paigaldamise kohta leiad infot aadressilt http://www.arduino.cc/en/Guide/Libraries\n"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "Plaadi lähtestamine pordi {0} 1200bps kiirusega avamise/sulgemisega."
 
 #: Preferences.java:95
 msgid "French"
@@ -1036,11 +1044,11 @@ msgstr "Galeegi"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galeegi (Hispaania)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
-msgstr ""
+msgstr "Galileo abiinfo"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -1050,29 +1058,33 @@ msgstr "Gruusia"
 msgid "German"
 msgstr "Saksa"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
-msgstr "Alustamine"
+msgstr "Sissejuhatus"
 
 #: ../../../processing/app/Sketch.java:1646
 #, java-format
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "Globaalsed muutujad kasutavad {0} baiti ({2}%%) dünaamilisest mälust, jättes {3} baiti lokaalse skoobiga muutujatele. Maksimaalne on {1} baiti."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr ""
+msgstr "Globaalsed muutujad kasutavad {0} baiti dünaamilisest mälust."
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Liikumine reale"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Liigu reale ..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1092,7 +1104,7 @@ msgstr "Hindi"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
-msgstr ""
+msgstr "Hosti nimi:"
 
 #: Sketch.java:295
 msgid ""
@@ -1108,9 +1120,13 @@ msgstr "Maakera sees on maakera"
 msgid "Hungarian"
 msgstr "Ungari"
 
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
+
 #: FindReplace.java:96
 msgid "Ignore Case"
-msgstr "Ignoreeri tähesuurust"
+msgstr "Tähesuuruse ignoreerimine"
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
@@ -1118,7 +1134,7 @@ msgstr "Vigase nimega teegi eiramine"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
-msgstr "Vigase nimega visandi eriamine"
+msgstr "Vigase nimega visandi eiramine"
 
 #: ../../../processing/app/Sketch.java:736
 msgid ""
@@ -1129,16 +1145,16 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr ""
+msgstr "Arduino 1.0 versioonis muutus failide vaikelaiend – .pde\n-> .ino. Uued visandid (kaasa arvatud need, mida sa\nsalvestad „Salvesta kui“ käsuga) kasutavad uuemat laiendit.\nOlemasolevate visandite laiendit uuendatakse salvestamisel,\nkui selle saad eelistustes ka välja lülitada.\n\nKas salvestada visand ja uuendada selle laiendit?"
 
 #: ../../../../../app/src/processing/app/Editor.java:778
 msgid "Include Library"
-msgstr ""
+msgstr "Lisa teek"
 
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
-msgstr ""
+msgstr "Vigane IDE paigalduskataloog"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1150,7 +1166,7 @@ msgstr "Indoneesia"
 
 #: ../../../../../app/src/processing/app/Base.java:295
 msgid "Initializing packages..."
-msgstr ""
+msgstr "Pakkide initsialiseerimine ..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
@@ -1159,44 +1175,48 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
 msgid "Install"
-msgstr ""
+msgstr "Paigalda"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
-msgstr ""
+msgstr "Paigaldamine lõpetatud."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
 msgid "Installed"
-msgstr ""
+msgstr "Paigaldatud"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr ""
+msgstr "Plaatide paigaldamine ..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
 msgid "Installing library: {0}"
-msgstr ""
+msgstr "Teegi paigaldamine: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
 msgid "Installing tools ({0}/{1})..."
-msgstr ""
+msgstr "Tööriistade paigaldamine ({0}/{1}) ..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
-msgstr ""
+msgstr "Paigaldamine ..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "Liidese skaala:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr ""
+msgstr "„{0}“ kataloogist leiti vigane teek: {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
-msgstr ""
+msgstr "Vigane jutumärkide/ülakomade kasutamine: sulgevat [{0}] märki ei lietud."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1205,6 +1225,10 @@ msgstr "Itaalia"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "Jaapani"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1216,24 +1240,24 @@ msgstr "Läti"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Teekide haldus"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
-msgstr ""
+msgstr "Teek lisati su teekide hulka. Kontrolli „Lisa teek“ menüüd."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "Teek ei saa kasutada korraga „src“ ja „utility“ kaustu. Kontrolli üle {0}."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
 #, java-format
 msgid "Library is already installed: {0} version {1}"
-msgstr ""
+msgstr "Teek on juba paigaldatud: {0} versioon {1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Reanumber:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1241,24 +1265,24 @@ msgstr "Leedu"
 
 #: ../../../../../app/src/processing/app/Base.java:132
 msgid "Loading configuration..."
-msgstr ""
+msgstr "Seadete laadimine ..."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "Retseptide nagu {0}*{1} otsimine"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
-msgstr ""
+msgstr "Mälu on väga vähe, võivad tekkida probleemid stabiilsusega."
 
 #: ../../../../../app/src/processing/app/Base.java:1168
 msgid "Manage Libraries..."
-msgstr ""
+msgstr "Halda teeke ..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
 msgid "Manual proxy configuration"
-msgstr ""
+msgstr "Käsitsi seadistamine"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1271,19 +1295,19 @@ msgstr "Teade"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
 msgid "Missing '{0}' from library in {1}"
-msgstr ""
+msgstr "Teegis „{1}“ puudub '{0}'"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "Režiim pole toetatud"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
 msgid "More"
-msgstr ""
+msgstr "Rohkem kui vaikeväärtus"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
-msgstr "Rohkemate eelistuste muutmiseks muuda neid otse failis"
+msgstr "Rohkem seadeid saad muuta otse failis"
 
 #: Editor.java:2156
 msgid "Moving"
@@ -1291,36 +1315,44 @@ msgstr "Liigutamine"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "Mitu faili pole toetatud."
 
 #: ../../../processing/app/debug/Compiler.java:520
 #, java-format
 msgid "Multiple libraries were found for \"{0}\""
-msgstr ""
+msgstr "„{0}“ jaoks leiti mitu teeki"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr ""
+msgstr "Määratud peab olema täpselt ühe visandi fail"
 
 #: Sketch.java:282
 msgid "Name for new file:"
 msgstr "Uue faili nimi:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
-msgstr ""
+msgstr "Nepali"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
+msgstr "Võrk"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "Võrgupordid"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr ""
+msgstr "Programmaatoriga üle võrgu üles laadimine pole toetatud."
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -1344,7 +1376,7 @@ msgstr "Ei"
 
 #: ../../../processing/app/debug/Compiler.java:158
 msgid "No authorization data found"
-msgstr ""
+msgstr "Autoriseerimise infot ei leitud"
 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
@@ -1352,11 +1384,11 @@ msgstr "Automaatvormindus ei vaja muudatusi."
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
-msgstr ""
+msgstr "Ühtegi käsurea parameetrit ei leitud"
 
 #: ../../../processing/app/debug/Compiler.java:200
 msgid "No compiled sketch found"
-msgstr ""
+msgstr "Ühtegi kompileeritud visandit ei leitud"
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1372,11 +1404,11 @@ msgstr "Reavahetust ei lisa"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "Parameetreid pole"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
 msgid "No proxy"
-msgstr ""
+msgstr "Proxyt ei kasutata"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1385,29 +1417,29 @@ msgstr "Tõesti oleks aeg natuke värsket õhku hingata."
 #: Editor.java:1872
 #, java-format
 msgid "No reference available for \"{0}\""
-msgstr "\"{0}\" kohta juhend puudub"
+msgstr "„{0}“ kohta juhend puudub"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "Visandit pole"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr ""
+msgstr "Visandite kausta pole"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
-msgstr ""
+msgstr "Ühtegi korrektset koodifaili ei leitud"
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
-msgstr ""
+msgstr "Kasutast „{0}“ ei leitud ühtegi korrektset riistvara definitsiooni."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
 msgid "None"
-msgstr ""
+msgstr "Üldse mitte"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
@@ -1417,12 +1449,12 @@ msgstr "Norra (Bokmål)"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr ""
+msgstr "Pole piisavalt mälu. Mälukasutuse vähendamise nippe leiad aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
 msgid "OK"
-msgstr "Olgu"
+msgstr "OK"
 
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
@@ -1430,7 +1462,7 @@ msgstr "Visandisse on lisatud üks fail."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr "Ainult --verify, --upload või --get-pref on toetatud."
 
 #: EditorToolbar.java:41
 msgid "Open"
@@ -1438,7 +1470,7 @@ msgstr "Ava"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr ""
+msgstr "Ava viimati kasutatud"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1446,27 +1478,27 @@ msgstr "Ava URL"
 
 #: Base.java:636
 msgid "Open an Arduino sketch..."
-msgstr "Ava Arduino visand..."
+msgstr "Arduino visandi avamine"
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
-msgstr "Ava..."
+msgstr "Ava ..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Muud"
 
 #: Editor.java:563
 msgid "Page Setup"
-msgstr "Lehekülje sätted"
+msgstr "Lehekülje seaded"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Partnerid"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
-msgstr ""
+msgstr "Parool:"
 
 #: Editor.java:1189 Editor.java:2731
 msgid "Paste"
@@ -1478,33 +1510,41 @@ msgstr "Pärsia"
 
 #: ../../../processing/app/Preferences.java:161
 msgid "Persian (Iran)"
-msgstr ""
+msgstr "Pärsia (Iraan)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
 #, java-format
 msgid "Platform {0} (package {1}) is unknown"
-msgstr ""
+msgstr "Platvorm {0} ({1} pakis) on tunmatu"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 msgid "Please confirm boards deletion"
-msgstr ""
+msgstr "Palun kinnitust plaadi kustutamisele"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid "Please confirm library deletion"
-msgstr ""
+msgstr "Palun kinnitust teegi kustutamisele"
 
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
-msgstr "Laadi SPI teek menüüst Visand > Laadi teek"
+msgstr "Laadi SPI teek menüüst Visand -> Laadi teek."
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
+msgstr "Laadi Wire teek menüüst Visand -> Laadi teek."
+
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
 msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
-msgstr ""
+msgstr "Vali programmaator menüüst Tööriistad -> Programmaator."
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
+msgstr "Plotterit ei saa kasutada, kui jadapordi monitor on avatud"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1512,23 +1552,23 @@ msgstr "Poola"
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Pordi number:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
-msgstr ""
+msgstr "Portugali"
 
 #: ../../../processing/app/Preferences.java:127
 msgid "Portuguese (Brazil)"
-msgstr ""
+msgstr "Portugali (Brasiilia)"
 
 #: ../../../processing/app/Preferences.java:128
 msgid "Portuguese (Portugal)"
-msgstr ""
+msgstr "Portugali (Portugal)"
 
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
@@ -1536,7 +1576,7 @@ msgstr "Eelistused"
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
-msgstr ""
+msgstr "Plaatide ettevalmistamine ..."
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1556,37 +1596,38 @@ msgstr "Trükkimine katkestati."
 
 #: Editor.java:2547
 msgid "Printing..."
-msgstr "Trükkimine..."
+msgstr "Trükkimine ..."
 
 #: Base.java:1957
 msgid "Problem Opening Folder"
-msgstr "Kausta avamine ebaõnnestus"
+msgstr "Probleem kausta avamisel"
 
 #: Base.java:1933
 msgid "Problem Opening URL"
-msgstr "URL avamine ebaõnnestus"
+msgstr "Probleem URL-i avamisel"
 
 #: Base.java:227
 msgid "Problem Setting the Platform"
-msgstr "Platvormi valimise viga"
+msgstr "Probleem platvormi valimisel"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr ""
+msgstr "Probleem plaadi kaustale /www/sd ligipääsuga"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr ""
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "Probleem kaustas „{0}“ failidele ligipääsuga"
 
 #: Base.java:1673
 msgid "Problem getting data folder"
-msgstr "Probleem andmekausta nime leidmisega"
+msgstr "Probleem andmekausta leidmisega"
 
 #: debug/Uploader.java:209
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "Probleem plaadile üleslaadimisega. http://www.arduino.cc/en/Guide/Troubleshooting#upload leiad soovitusi probleemi lahendamiseks."
+msgstr "Probleem plaadile üleslaadimisega. Aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#upload leiad soovitusi probleemi lahendamiseks."
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1594,7 +1635,7 @@ msgstr "Probleem nime muutmisega"
 
 #: ../../../processing/app/I18n.java:86
 msgid "Processor"
-msgstr "Processor"
+msgstr "Protsessor"
 
 #: Editor.java:704
 msgid "Programmer"
@@ -1603,7 +1644,7 @@ msgstr "Programmaator"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Edenemine {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1611,11 +1652,11 @@ msgstr "Välju"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr ""
+msgstr "VANANENUD"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Soovituslikud"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1623,21 +1664,21 @@ msgstr "Tee uuesti"
 
 #: Editor.java:1078
 msgid "Reference"
-msgstr "Seletused"
+msgstr "Baasdokumentatsioon"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
-msgstr ""
+msgstr "Eemalda"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
 #, java-format
 msgid "Removing library: {0}"
-msgstr ""
+msgstr "Teegi eemaldamine: {0}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr ""
+msgstr "Eemaldamine ..."
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -1658,11 +1699,15 @@ msgstr "Asenda kõik"
 #: Sketch.java:1043
 #, java-format
 msgid "Replace the existing version of {0}?"
-msgstr "Kas vahetada {0} olemasolev versioon?"
+msgstr "Kas asendada paigaldatud {0} versioon?"
 
 #: FindReplace.java:81
 msgid "Replace with:"
-msgstr "Asenda järgnevaga:"
+msgstr "Asendus:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr "Vananenud"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1671,12 +1716,12 @@ msgstr "Rumeenia"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "Retsepti käivitamine: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr ""
+msgstr "Käivitamine: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1689,7 +1734,7 @@ msgstr "Salvesta"
 
 #: Editor.java:537
 msgid "Save As..."
-msgstr "Salvesta kui..."
+msgstr "Salvesta kui ..."
 
 #: Editor.java:2317
 msgid "Save Canceled."
@@ -1698,27 +1743,27 @@ msgstr "Salvestamine katkestatud."
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
-msgstr "Salvesta muudatused faili \"{0}\""
+msgstr "Kas salvestada „{0}“ muudatused?"
 
 #: Sketch.java:825
 msgid "Save sketch folder as..."
-msgstr "Salvesta visand uude kausta..."
+msgstr "Visandi salvestamine uude kausta"
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "Salvestamine kontrollimisel või üleslaadimisel"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
-msgstr "Salvestamine..."
+msgstr "Salvestamine ..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "Otsing visandi kõigist kaarditest"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
-msgstr "Vali (või loo uus) kaust visandite jaoks..."
+msgstr "Vali (või loo uus) kaust visandite jaoks ..."
 
 #: Editor.java:1198 Editor.java:2739
 msgid "Select All"
@@ -1726,11 +1771,11 @@ msgstr "Vali kõik"
 
 #: Base.java:2636
 msgid "Select a zip file or a folder containing the library you'd like to add"
-msgstr "Vali teeki sisaldav kataloog või ZIP fail"
+msgstr "Vali lisamiseks teeki sisaldav kataloog või ZIP fail"
 
 #: Sketch.java:975
 msgid "Select an image or other data file to copy to your sketch"
-msgstr "Vali pilt või muu andmefail visandi juurde kopeerimiseks"
+msgstr "Vali visandi juurde kopeerimiseks pilt või muu andmefail"
 
 #: Preferences.java:330
 msgid "Select new sketchbook location"
@@ -1739,19 +1784,19 @@ msgstr "Vali uus visandite kaust"
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
 msgid "Select version"
-msgstr ""
+msgstr "Vali versioon"
 
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "Valitud plaat vajab „{0}“ baaspakki (seda pole paigaldatud)."
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr ""
+msgstr "Valitud plaati pole saadaval."
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
-msgstr ""
+msgstr "Valitud teeki pole saadaval."
 
 #: SerialMonitor.java:93
 msgid "Send"
@@ -1759,7 +1804,7 @@ msgstr "Saada"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Sensorid"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1767,34 +1812,38 @@ msgstr "Jadapordi monitor"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "Jadapordi plotter"
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr "Jadapordi monitori ei saa kasutada, kui plotter on avatud"
 
 #: Serial.java:194
 #, java-format
 msgid ""
 "Serial port ''{0}'' not found. Did you select the right one from the Tools >"
 " Serial Port menu?"
-msgstr "Jadaport {0} puudub. Vali õige port menüüst Tööriistad -> Jadaport"
+msgstr "Jadaporti „{0}“ ei leitud. Kas menüüs Tööriistad -> Jadaport on valitud õige port?"
 
 #: Editor.java:2343
 #, java-format
 msgid ""
 "Serial port {0} not found.\n"
 "Retry the upload with another serial port?"
-msgstr "Jadaport {0} puudub.\nProovin mõnda teist porti?"
+msgstr "Jadaport „{0}“ puudub.\nKas proovime mõnda teist porti?"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
-msgstr ""
+msgstr "Jadapordid"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "Kompileerimise asukoha seadmine väärtusele {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Seaded"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1804,17 +1853,13 @@ msgstr "Probleem seadetega"
 msgid "Show Sketch Folder"
 msgstr "Näita visandite kausta"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr ""
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr "Näita detailsemat väljundit:"
+msgstr "Detailsem väljund:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Signaali sisend/väljund"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1826,7 +1871,7 @@ msgstr "Visand on haihtunud"
 
 #: Base.java:1411
 msgid "Sketch Does Not Exist"
-msgstr "Visandit ei ole olemas"
+msgstr "Visandit pole olemas"
 
 #: Sketch.java:274 Sketch.java:303 Sketch.java:577 Sketch.java:966
 msgid "Sketch is Read-Only"
@@ -1844,14 +1889,14 @@ msgstr "Visand on kirjutuskaitsega"
 msgid ""
 "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
 "tips on reducing it."
-msgstr "Visand on liiga suur. Vaata http://www.arduino.cc/en/Guide/Troubleshooting#size lehelt näpunäiteid selle vähendamiseks."
+msgstr "Visand on liiga suur. Aadressilt http://www.arduino.cc/en/Guide/Troubleshooting#size leiad näpunäiteid selle vähendamiseks."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "Visand kasutab programmi salvestamise ruumist {0} baiti ({2}%%). Maksimum on {1} baiti."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1867,22 +1912,27 @@ msgstr "Visandite asukoht:"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
+msgstr "Visandite asukoht on määramata"
+
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "Slovaki"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
-msgstr ""
+msgstr "Sloveeni"
 
 #: Sketch.java:275 Sketch.java:304 Sketch.java:578 Sketch.java:967
 msgid ""
 "Some files are marked \"read-only\", so you'll\n"
 "need to re-save the sketch in another location,\n"
 "and try again."
-msgstr "Mõned failid on kirjutuskaitsega. Proovi uuesti\nsalvestades visand kuhugi mujale."
+msgstr "Vähemalt mõned visandi failid on kirjutuskaitsega.\nSalvesta visand kuhugi mujale ja proovi siis uuesti."
 
 #: Sketch.java:721
 msgid ""
@@ -1890,10 +1940,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Mõned failid on kirjutuskaitsega.\nPead salvestama visandi kuhugi mujale."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Kahjuks on \"{0}\" nimega visand või kaust juba olemas."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1901,11 +1951,11 @@ msgstr "Hispaania"
 
 #: ../../../../../app/src/processing/app/Base.java:2333
 msgid "Specified folder/zip file does not contain a valid library"
-msgstr ""
+msgstr "Valitud kaustas või zip failis pole korrektset teeki."
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr ""
+msgstr "Käivitamine ..."
 
 #: Base.java:540
 msgid "Sunshine"
@@ -1913,19 +1963,27 @@ msgstr "Särasilm"
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
-msgstr ""
+msgstr "Rootsi"
 
 #: Preferences.java:84
 msgid "System Default"
-msgstr "Süsteemi vaikimisi keel"
+msgstr "Süsteemi vaikekeel"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "Talossan"
 
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamili"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "Tai"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1933,7 +1991,7 @@ msgstr "\"BYTE\" võtmesõna pole enam toetatud."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "--upload võti toetab ainult üht faili korraga"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
@@ -1944,7 +2002,7 @@ msgstr "Klass Client on nüüd EthernetClient."
 msgid ""
 "The IDE includes an updated {0} package, but you're using an older one.\n"
 "Do you want to upgrade {0}?"
-msgstr ""
+msgstr "IDE-s on uuendatud „{0}“ pakk, kuid sina kasutad vanemat.\nSoovid sa „{0}“ uuendada?"
 
 #: debug/Compiler.java:420
 msgid "The Server class has been renamed EthernetServer."
@@ -1968,25 +2026,22 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library names must contain only basic letters and numbers.\n"
 "(ASCII only and no spaces, and it cannot start with a number)"
-msgstr "Teeki \"{0}\" ei saa kasutada.\nTeekide nimed tohivad sisaldada ainult ASCII tähti ja\nnumbreid ning peavad algama tähega."
+msgstr "Teeki „{0}“ ei saa kasutada.\nTeekide nimed tohivad sisaldada ainult ASCII tähti ja\nnumbreid ning peavad algama tähega."
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Põhifail ei tohi kasutada laiendit."
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
-msgstr "Nimi ei või alata puntiga."
+msgstr "Nimi ei tohi alata punktiga."
 
 #: Base.java:1412
 msgid ""
 "The selected sketch no longer exists.\n"
 "You may need to restart Arduino to update\n"
 "the sketchbook menu."
-msgstr "Valitud visandit ei ole enam.\nVisandite menüü uuendamiseks\nkäivita Arduino uuesti."
+msgstr "Valitud visandit pole enam.\nVisandite kausta menüü uuendamiseks\nkäivita Arduino uuesti."
 
 #: Base.java:1430
 #, java-format
@@ -1996,7 +2051,12 @@ msgid ""
 "(ASCII-only with no spaces, and it cannot start with a number).\n"
 "To get rid of this message, remove the sketch from\n"
 "{1}"
-msgstr "Visandit \"{0}\" ei saa kasutada.\nVisandite nimed nimed tohivad sisaldada ainult ASCII tähti\nja numbreid ning peavad algama tähega.\nSellest teatest saab lahti ainult \"{1}\" kaustast\nvisandi kustutamisega."
+msgstr "Visandit „{0}“ ei saa kasutada.\nVisandite nimed nimed tohivad sisaldada ainult ASCII tähti\nja numbreid ning peavad algama tähega.\nSellest teatest lahti saamiseks eemalda visand\n„{1}“ kaustast."
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2010,7 +2070,7 @@ msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
 "of ASCII characters and numbers (but cannot start with a number).\n"
 "They should also be less than 64 characters long."
-msgstr ""
+msgstr "Visandi nimi on vaja ära muuta. Visandi nimes saavad olla ainult\nASCII tähed ja numbrid, kuid need ei saa alata numbriga. Samuti\npeavad need olema lühemad kui 64 sümbolit."
 
 #: Base.java:259
 msgid ""
@@ -2025,7 +2085,7 @@ msgstr "Visandite kausta pole enam.\nArduino hakkab kasutama vaikimisi kausta ni
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr ""
+msgstr "Valitud visandite kaustas on su IDE koopia.\nPalun vali oma visandite hoidmiseks mõni teine kaust."
 
 #: Sketch.java:1075
 msgid ""
@@ -2038,11 +2098,14 @@ msgstr "See fail on juba kopeeritud kohta, kust sa seda\nkopeerida üritad. Seeg
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr ""
+msgstr "Seda teeki teekide halduris pole ja sealt seda uuesti paigaldada ei saa.\nOled sa kindel, et soovid selle teegi kustutada?"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr ""
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "Siin oleks rohkem infot kui „Detailsem väljund:\nkompileerimise ajal“ oleks rakenduse eelistustes\nsisse lülitatud (Fail -> Eelistused).\n"
 
 #: Base.java:535
 msgid "Time for a Break"
@@ -2050,12 +2113,12 @@ msgstr "Aeg puhata"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Aeg"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
-msgstr ""
+msgstr "Töövahendit {0} sinu operatsioonisüsteemile pole."
 
 #: Editor.java:663
 msgid "Tools"
@@ -2063,7 +2126,7 @@ msgstr "Tööriistad"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "Valdkond"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -2076,54 +2139,59 @@ msgstr "Türgi"
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr ""
+msgstr "Konsoolile ligipääsuks sisesta plaadi parool."
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr ""
+msgstr "Uue visandi üleslaadimiseks sisesta plaadi parool."
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
 msgstr "Ukraina"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "Ei saa ühendust seadme/võrguga {0}"
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "Ühenduse loomine ei õnnestu: kas visand kasutab silda?"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
-msgstr ""
+msgstr "Ühendust ei õnnestu luua, proovime uuesti."
 
 #: ../../../processing/app/Editor.java:2526
 msgid "Unable to connect: wrong password?"
-msgstr ""
+msgstr "Ühendust ei õnnestu luua, vale parool?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr ""
+msgstr "Ei õnnestu leida {0} kohast {1}"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
-msgstr ""
+msgstr "Jadapordi monitori pole võimalik avada."
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "Jadapordi plotterit pole võimalik avada."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
-msgstr ""
+msgstr "Võimalike võrguprobleemide tõttu pole Arduino.cc kättesaadav."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Kategoriseerimata"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2132,12 +2200,16 @@ msgstr "Võta tagasi"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
+msgstr "Käsitlemata tüüp {0} konteksi võtmes {1}"
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
 msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
-msgstr ""
+msgstr "Tundmatu visandi faili laiend: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -2149,7 +2221,7 @@ msgstr "Tundmatu platvorm, veebilehitseja puudub.\nVeebiaadresside avamiseks lis
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "Uuendatav"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2157,11 +2229,26 @@ msgstr "Uuenda"
 
 #: Preferences.java:428
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
-msgstr "Salvestamisel uuenda visandite laiendit (.pde -> .ino)"
+msgstr "Visandi laiendi uuendamine (.pde -> .ino) salvestamisel"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "Mõnele su {0}plaadile{1} on olemas uuendus."
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "Mõnele su {0}plaadile{1} ja {2}teegile{3} on olemas uuendus."
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "Mõnele su {0}teegile{1} on olemas uuendus."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
-msgstr ""
+msgstr "Paigaldatud teekide nimekirja uuendamine."
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
@@ -2171,49 +2258,53 @@ msgstr "Laadi üles"
 msgid "Upload Using Programmer"
 msgstr "Laadi üles programmaatori kaudu"
 
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
+
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
-msgstr "Laadimine katkestati"
+msgstr "Üleslaadimine on katkestatud."
 
 #: ../../../processing/app/Sketch.java:1678
 msgid "Upload cancelled"
-msgstr ""
+msgstr "Üleslaadimine on katkestatud."
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "I/O plaadile laadimine..."
+msgstr "I/O plaadile laadimine ..."
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr "Üleslaadimine..."
+msgstr "Üleslaadimine ..."
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
-msgstr "Kasuta otsimiseks valikut"
+msgstr "Valitud teksti otsimine"
 
 #: Preferences.java:409
 msgid "Use external editor"
-msgstr "Kasuta välist redaktorit"
+msgstr "Välise redaktori kasutamine"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
 msgid "Username:"
-msgstr ""
+msgstr "Kasutajanimi:"
 
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr ""
+msgstr "Kasutatakse {0} teegi versiooni {1} kaustast: {2} {3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
 msgid "Using library {0} in folder: {1} {2}"
-msgstr ""
+msgstr "Kasutatakse {0} teeki kaustast: {1} {2}"
 
 #: ../../../processing/app/debug/Compiler.java:320
 #, java-format
 msgid "Using previously compiled file: {0}"
-msgstr ""
+msgstr "Kasutatakse eelnevalt kompileeritud faili: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
@@ -2221,62 +2312,62 @@ msgstr "Kontrolli"
 
 #: Preferences.java:400
 msgid "Verify code after upload"
-msgstr "Kontrolli koodi peale üleslaadimist"
+msgstr "Koodi kontrollimine pärast üleslaadimist"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Kontrolli/kompileeri"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
-msgstr ""
+msgstr "Kontrollimine ja üleslaadimine ..."
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
 msgid "Verifying archive integrity..."
-msgstr ""
+msgstr "Arhiivi terviklikkuse kontrollimine ..."
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr ""
+msgstr "Kontrollimine ..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
 msgid "Version <b>{0}</b>"
-msgstr ""
+msgstr "Versioon <b>{0}</b>"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
 msgid "Version unknown"
-msgstr ""
+msgstr "Tundmatu versioon"
 
 #: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
 #, java-format
 msgid "Version {0}"
-msgstr ""
+msgstr "Versioon {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
-msgstr ""
+msgstr "Vietnami"
 
 #: Editor.java:1105
 msgid "Visit Arduino.cc"
-msgstr "Külasta Arduino.cc"
+msgstr "Külasta Arduino.cc lehte"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "HOIATUS: Kategooria '{0}' teegis {1} pole korrektne. See seatakse väärtusele '{2}'"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "HOIATUS: Vigane {0} kataloog '{1}' teegis"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr ""
+msgstr "HOIATUS: Teek {0} väidab ennast olevat {1} arhitektuuri(de)le ja võib sinu kasutatava plaadiga, mis on {2} arhitektuuri(de)ga, mitte kokku sobida."
 
 #: Base.java:2128
 msgid "Warning"
@@ -2286,61 +2377,61 @@ msgstr "Hoiatus"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr ""
+msgstr "Hoiatus: See baaspakk ei toeta visandite eksportimist. Kaalu selle uuendamist või võta ühendust paki autoriga."
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
 msgid "Warning: file {0} links to an absolute path {1}"
-msgstr ""
+msgstr "Hoiatus: fail {0} viitab täielikule asukohale {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "Hoiatus: mitteusaldusväärseid kaastöid sunnitud usaldamine"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "Hoiatus: mitteusaldusväärse skripti ({0}) sunnitud käivitamine"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr ""
+msgstr "Hoiatus: kaastöö pole usaldusväärne, skripte ei käivitata ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
 " converted to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Hoiatus: '{0}' baaspaki platform.txt fail sisaldab aegunud koodi: {1}, mis konverditakse automaatselt koodiks {2}. Kaalu selle baaspaki uuendamist."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "Hoiatus: „{0}“ baaspaki platform.txt failis pole määratud „{1}“ väärtust, kasutatakse vaikeväärtust „{2}“. Kaalu selle baaspaki uuendamist."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "Lääne Friisi"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
-msgstr "Wire.receive() on muudetud Wire.read()."
+msgstr "Wire.receive() on ümber nimetatud – Wire.read()."
 
 #: debug/Compiler.java:438
 msgid "Wire.send() has been renamed Wire.write()."
-msgstr "Wire.send() on muudetud Wire.write()."
+msgstr "Wire.send() on ümber nimetatud – Wire.write()."
 
 #: FindReplace.java:105
 msgid "Wrap Around"
-msgstr "Jätkatakse algusest"
+msgstr "Jätkamine algusest"
 
 #: debug/Uploader.java:213
 msgid ""
 "Wrong microcontroller found.  Did you select the right board from the Tools "
 "> Board menu?"
-msgstr "Mikrokontroller on vale tüüpi. Kas sa valisid Tööriistad > Plaat alt õige plaadi?"
+msgstr "Mikrokontroller on vale tüüpi. Kas sa valisid Tööriistad > Plaat menüüst õige plaadi?"
 
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
@@ -2350,25 +2441,9 @@ msgstr "Jah"
 msgid "You can't fool me"
 msgstr "Mind sa ei lollita"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Sama nimega visand on juba olemas. .cpp faili nimi peab olema erinev."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Visandit ei saa nimetada \"{0}\" sest\nsellise nimega .cpp fail on juba olemas."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr ""
+msgstr "Kausta, mis sisaldab su visandeid, importida ei saa."
 
 #: Sketch.java:883
 msgid ""
@@ -2383,7 +2458,7 @@ msgstr "Sa unustasid oma visandid"
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
-msgstr ""
+msgstr "Sa vajutasid „{0}“, kuid midagi ei saadetud. Peaksid äkki realõpu vormingu valima?"
 
 #: Base.java:536
 msgid ""
@@ -2395,13 +2470,13 @@ msgstr "Sa oled saavutanud ühel päeval loodavate automaatsete\nnimede piiri. K
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Su seadete kausta alamkausta on paigaldatud su IDE koopia.\nPalun liiguta IDE kuhugi mujale."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Su visandite kausta alamkausta on paigaldatud su IDE koopia.\nPalun liiguta IDE kuhugi mujale."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2414,16 +2489,16 @@ msgstr "ZIP failis pole teeki"
 #: Sketch.java:364
 #, java-format
 msgid "\".{0}\" is not a valid extension."
-msgstr "\".{0}\" pole lubatud laiend."
+msgstr "„.{0}“ pole lubatud laiend."
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr ""
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "Failis „{0}“ on tuvastamatuid sümboleid. Kui see kood on kirjutatud Arduino vanema versiooniga, võid visandi UTF-8 kooditabelisse teisendamiseks kasutada menüükäsku „Tööriistad -> Paranda kooditabel ja laadi uuesti“. Kui ei, pead sellest hoiatusest lahti saamiseks vigased sümbolid kustutama."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2431,7 +2506,7 @@ msgid ""
 "As of Arduino 0019, the Ethernet library depends on the SPI library.\n"
 "You appear to be using it or another library that depends on the SPI library.\n"
 "\n"
-msgstr "\nAlates Arduino 0019 on Etherneti teegi kasutamiseks vaja SPI teeki.\nPaistab, et sa kasutad seda või mõnda muud teeki, mis sõltub SPI teegist.\n\n"
+msgstr "\nAlates Arduino versioonis 0019 on Etherneti teegi kasutamiseks vaja SPI teeki.\nPaistab, et sa kasutad seda või mõnda muud teeki, mis SPI teegist sõltub.\n\n"
 
 #: debug/Compiler.java:415
 msgid ""
@@ -2439,46 +2514,46 @@ msgid ""
 "As of Arduino 1.0, the 'BYTE' keyword is no longer supported.\n"
 "Please use Serial.write() instead.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 ei kasutata enam võtmesõna \"BYTE\".\nPalun kasuta Serial.write() selle asemel.\n\n"
+msgstr "\nAlates Arduino versioonist 1.0 ei kasutata enam võtmesõna „BYTE“.\nPalun kasuta selle asemel Serial.write() funktsiooni.\n\n"
 
 #: debug/Compiler.java:427
 msgid ""
 "\n"
 "As of Arduino 1.0, the Client class in the Ethernet library has been renamed to EthernetClient.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 on Etherneti teegis olev klass Client nimetatud ümber EthernetClient.\n\n"
+msgstr "\nAlates Arduino versioonist 1.0 on Etherneti teegis olev klass Client nimetatud ümber EthernetClient klassiks.\n\n"
 
 #: debug/Compiler.java:421
 msgid ""
 "\n"
 "As of Arduino 1.0, the Server class in the Ethernet library has been renamed to EthernetServer.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 on Etherneti teegis olev klass Server nimetatud ümber EthernetServer.\n\n"
+msgstr "\nAlates Arduino versioonist 1.0 on Etherneti teegis olev klass Server nimetatud ümber EthernetServer klassiks.\n\n"
 
 #: debug/Compiler.java:433
 msgid ""
 "\n"
 "As of Arduino 1.0, the Udp class in the Ethernet library has been renamed to EthernetUdp.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 on Etherneti teegis olev klass Udp nimetatud ümber EthernetUdp.\n\n"
+msgstr "\nAlates Arduino versioonist 1.0 on Etherneti teegis olev klass Udp nimetatud ümber EthernetUdp klassiks.\n\n"
 
 #: debug/Compiler.java:445
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 on Wire.receive() nimetatud ümber Wire.read() tagamaks sarnase nimetamise teiste teekidega.\n\n"
+msgstr "\nTeiste teekidega ühtlustamiseks on alates Arduino versioonist 1.0 muutunud Wire.receive() nimi – nüüd on see Wire.read().\n\n"
 
 #: debug/Compiler.java:439
 msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.send() function was renamed to Wire.write() for consistency with other libraries.\n"
 "\n"
-msgstr "\nAlates Arduino 1.0 on Wire.send() nimetatud ümber Wire.write() tagamaks sarnase nimetamise teiste teekidega.\n\n"
+msgstr "\nTeiste teekidega ühtlustamiseks on alates Arduino versioonist 1.0 muutunud Wire.send() nimi – nüüd on see Wire.write().\n\n"
 
 #: SerialMonitor.java:130 SerialMonitor.java:133
 msgid "baud"
-msgstr " boodi"
+msgstr "boodi"
 
 #: Preferences.java:389
 msgid "compilation "
@@ -2486,19 +2561,11 @@ msgstr "kopileerimise ajal"
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() ebaõnnestus"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr ""
+msgstr "ühendus loodud."
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
-msgstr ""
+msgstr "http://www.arduino.cc/"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -2511,7 +2578,7 @@ msgstr "http://www.arduino.cc/latest.txt"
 #: Preferences.java:625
 #, java-format
 msgid "ignoring invalid font size {0}"
-msgstr "vigase fondi suuruse \"{0}\" eiramine"
+msgstr "vigase fondi suuruse „{0}“ eiramine"
 
 #: Editor.java:936 Editor.java:943
 msgid "name is null"
@@ -2530,7 +2597,7 @@ msgstr "valitud jadaporti {0} ei eksisteeri või plaat on ühendamata"
 #: ../../../processing/app/Base.java:389
 #, java-format
 msgid "unknown option: {0}"
-msgstr ""
+msgstr "tundmatu valikparameeteer: {0}"
 
 #: Preferences.java:391
 msgid "upload"
@@ -2539,23 +2606,23 @@ msgstr "üleslaadimise ajal"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
 #, java-format
 msgid "version <b>{0}</b>"
-msgstr ""
+msgstr "versioon <b>{0}</b>"
 
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
-msgstr ""
+msgstr "{0} - {1} | Arduino {2}"
 
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
 #, java-format
 msgid "{0} file signature verification failed"
-msgstr ""
+msgstr "{0} faili signatuuri kontrollimine ebaõnnestus"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
 #, java-format
 msgid "{0} file signature verification failed. File ignored."
-msgstr ""
+msgstr "{0} faili signatuuri kontrollimine ebaõnnestus. Faili ignoreeritakse."
 
 #: Editor.java:380
 #, java-format
@@ -2565,17 +2632,22 @@ msgstr "Visandisse on lisatud {0} faili."
 #: ../../../../../app/src/processing/app/Base.java:1201
 #, java-format
 msgid "{0} libraries"
-msgstr ""
+msgstr "{0} teegid"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} peab olema kaust"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} pordis {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "{0} muster puudub"
 
 #: debug/Compiler.java:365
 #, java-format
@@ -2590,41 +2662,46 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr ""
+msgstr "{0}: Vigane argument --pref võtmele, see peaks olema vormingus „pref=value“."
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: Vigane plaadi nimi. See peab olema vormingus „pakk:arhitektuur:plaat“ või „pakk:arhitektuur:plaat:valikparameetrid“"
 
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
+msgstr "{0}: Vigane parameeter plaadi „{2}“ valikparameetrile „{1}“"
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: Plaadi „{1}“ jaoks vigane valikparameeter"
 
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: Vigane valikparameeter, see peab olema vormingus „nimi=väärtus“"
 
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: Tundmatu arhitektuur"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr ""
+msgstr "{0}: Tundmatu plaat"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
+msgstr "{0}: Tundmatu pakk"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install{1} the package to use your {2}"
 msgstr ""

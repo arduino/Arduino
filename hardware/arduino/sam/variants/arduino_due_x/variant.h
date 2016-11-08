@@ -56,8 +56,9 @@ extern "C"{
 
 // Number of pins defined in PinDescription array
 #define PINS_COUNT           (79u)
-#define NUM_DIGITAL_PINS     (54u)
+#define NUM_DIGITAL_PINS     (66u)
 #define NUM_ANALOG_INPUTS    (12u)
+#define analogInputToDigitalPin(p)  ((p < 12u) ? (p) + 54u : -1)
 
 #define digitalPinToPort(P)        ( g_APinDescription[P].pPort )
 #define digitalPinToBitMask(P)     ( g_APinDescription[P].ulPin )
@@ -152,6 +153,11 @@ static const uint8_t SCK  = PIN_SPI_SCK;
 #define WIRE1_INTERFACE_ID   ID_TWI0
 #define WIRE1_ISR_HANDLER    TWI0_Handler
 #define WIRE1_ISR_ID         TWI0_IRQn
+
+static const uint8_t SDA  = PIN_WIRE_SDA;
+static const uint8_t SCL  = PIN_WIRE_SCL;
+static const uint8_t SDA1 = PIN_WIRE1_SDA;
+static const uint8_t SCL1 = PIN_WIRE1_SCL;
 
 /*
  * UART/USART Interfaces

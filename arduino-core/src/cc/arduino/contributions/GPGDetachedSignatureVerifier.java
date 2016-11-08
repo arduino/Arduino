@@ -49,6 +49,7 @@ public class GPGDetachedSignatureVerifier extends SignatureVerifier {
     this.keyId = keyId;
   }
 
+  @Override
   protected boolean verify(File signedFile, File signature, File publicKey) throws IOException {
     FileInputStream signatureInputStream = null;
     FileInputStream signedFileInputStream = null;

@@ -59,7 +59,7 @@ public class PresentMode {
     devices = environment.getScreenDevices();
     GraphicsDevice defaultDevice = environment.getDefaultScreenDevice();
 
-    Vector<String> names = new Vector<String>();
+    Vector<String> names = new Vector<>();
     for (int i = 0; i < devices.length; i++) {
       String name = String.valueOf(i + 1);
       if (devices[i] == defaultDevice) {

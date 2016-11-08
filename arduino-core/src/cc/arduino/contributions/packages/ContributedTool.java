@@ -42,6 +42,20 @@ public abstract class ContributedTool {
 
   public abstract List<HostDependentDownloadableContribution> getSystems();
 
+  private ContributedPackage contributedPackage;
+
+  public ContributedPackage getPackage() {
+    return contributedPackage;
+  }
+
+  public void setPackage(ContributedPackage pack) {
+    contributedPackage = pack;
+  }
+
+  public String getPackager() {
+    return contributedPackage.getName();
+  }
+
   public DownloadableContribution getDownloadableContribution(Platform platform) {
     for (HostDependentDownloadableContribution c : getSystems()) {
       if (c.isCompatible(platform))

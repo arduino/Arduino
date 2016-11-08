@@ -148,6 +148,7 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
+  @Override
   public synchronized void serialEvent(SerialPortEvent serialEvent) {
     if (serialEvent.isRXCHAR()) {
       try {
@@ -184,7 +185,7 @@ public class Serial implements SerialPortEventListener {
   }
 
 
-  private void write(byte bytes[]) {
+  public void write(byte bytes[]) {
     try {
       port.writeBytes(bytes);
     } catch (SerialPortException e) {

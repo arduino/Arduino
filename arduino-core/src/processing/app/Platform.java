@@ -35,6 +35,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.HttpURLConnection;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import java.io.InputStream;
 
 import static processing.app.I18n.tr;
 
@@ -146,7 +155,7 @@ public class Platform {
 
   static {
     loadLib(new File(BaseNoGui.getContentFile("lib"), System.mapLibraryName("listSerialsj")));
-  };
+  }
 
   private static void loadLib(File lib) {
     try {
@@ -160,24 +169,77 @@ public class Platform {
     }
   }
 
-  public native String resolveDeviceAttachedToNative(String serial);
+  private native String resolveDeviceAttachedToNative(String serial);
+  private native String[] listSerialsNative();
 
   public String preListAllCandidateDevices() {
     return null;
   }
 
-  public Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
+  public List<String> listSerials() {
+    return new ArrayList<>(Arrays.asList(listSerialsNative()));
+  }
+
+  public  List<String> listSerialsNames(){
+    List<String> list = new LinkedList<>();
+    for (String port : listSerialsNative()) {
+      list.add(port.split("_")[0]);
+    }
+    return list;
+  }
+
+  public static class BoardCloudAPIid {
+    public BoardCloudAPIid() {   }
+    private String name;
+    private String architecture;
+    private String id;
+    public String getName() { return name; }
+    public String getArchitecture() { return architecture; }
+    public String getId() { return id; }
+    public void setName(String tmp) { name = tmp; }
+    public void setArchitecture(String tmp) { architecture = tmp; }
+    public void setId(String tmp) { id = tmp; }
+  }
+
+  public synchronized void getBoardWithMatchingVidPidFromCloud(String vid, String pid) {
+    // this method is less useful in Windows < WIN10 since you need drivers to be already installed
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    try {
+      URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/v1/boards/0x"+vid+"/0x"+pid);
+      URLConnection connection = jsonUrl.openConnection();
+      connection.connect();
+      HttpURLConnection httpConnection = (HttpURLConnection) connection;
+      int code = httpConnection.getResponseCode();
+      if (code == 404) {
+        return;
+      }
+      InputStream is = httpConnection.getInputStream();
+      BoardCloudAPIid board = mapper.readValue(is, BoardCloudAPIid.class);
+      // Launch a popup with a link to boardmanager#board.getName()
+      // replace spaces with &
+      String realBoardName = board.getName().replaceAll("\\(.*?\\)", "").trim();
+      String boardNameReplaced = realBoardName.replaceAll(" ", "&");
+      String message = I18n.format(tr("{0}Install{1} the package to use your {2}"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", realBoardName);
+      BaseNoGui.setBoardManagerLink(message);
+    } catch (Exception e) {
+      // No connection no problem, fail silently
+      //e.printStackTrace();
+    }
+  }
+
+  public synchronized Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
     String vid_pid_iSerial = resolveDeviceAttachedToNative(serial);
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
-          List<String> vids = new LinkedList<String>(board.getPreferences().subTree("vid", 1).values());
+          List<String> vids = new LinkedList<>(board.getPreferences().subTree("vid", 1).values());
           if (!vids.isEmpty()) {
-            List<String> pids = new LinkedList<String>(board.getPreferences().subTree("pid", 1).values());
+            List<String> pids = new LinkedList<>(board.getPreferences().subTree("pid", 1).values());
             for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
               if (vid_pid_iSerial.toUpperCase().contains(vidPid.toUpperCase())) {
-                Map<String, Object> boardData = new HashMap<String, Object>();
+                Map<String, Object> boardData = new HashMap<>();
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
@@ -224,7 +286,7 @@ public class Platform {
   }
 
   public List<BoardPort> filterPorts(List<BoardPort> ports, boolean aBoolean) {
-    return new LinkedList<BoardPort>(ports);
+    return new LinkedList<>(ports);
   }
 
   public void fixPrefsFilePermissions(File prefsFile) throws IOException, InterruptedException {

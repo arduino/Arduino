@@ -32,6 +32,8 @@ package cc.arduino.utils.network;
 import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
+
+import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 
 import java.io.File;
@@ -66,12 +68,15 @@ public class FileDownloader extends Observable {
   private final File outputFile;
   private InputStream stream = null;
   private Exception error;
+  private String userAgent;
 
   public FileDownloader(URL url, File file) {
     downloadUrl = url;
     outputFile = file;
     downloaded = 0;
     initialSize = 0;
+    userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
+                + System.getProperty("java.version");
   }
 
   public long getInitialSize() {
@@ -151,7 +156,7 @@ public class FileDownloader extends Observable {
       }
 
       HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
-
+      connection.setRequestProperty("User-agent", userAgent);
       if (downloadUrl.getUserInfo() != null) {
         String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
         connection.setRequestProperty("Authorization", auth);
@@ -172,6 +177,7 @@ public class FileDownloader extends Observable {
 
         // open the new connnection again
         connection = (HttpURLConnection) newUrl.openConnection(proxy);
+        connection.setRequestProperty("User-agent", userAgent);
         if (downloadUrl.getUserInfo() != null) {
           String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
           connection.setRequestProperty("Authorization", auth);

@@ -31,7 +31,7 @@ package cc.arduino.view.findreplace;
 
 import processing.app.Base;
 import processing.app.Editor;
-import processing.app.Sketch;
+import processing.app.EditorTab;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
@@ -285,14 +285,13 @@ public class FindReplace extends javax.swing.JFrame {
   // End of variables declaration//GEN-END:variables
 
   private boolean find(boolean wrap, boolean backwards, boolean searchTabs, int originTab) {
-    boolean wrapNeeded = false;
     String search = findField.getText();
 
     if (search.length() == 0) {
       return false;
     }
 
-    String text = editor.getText();
+    String text = editor.getCurrentTab().getText();
 
     if (ignoreCaseBox.isSelected()) {
       search = search.toLowerCase();
@@ -302,35 +301,26 @@ public class FindReplace extends javax.swing.JFrame {
     int nextIndex;
     if (!backwards) {
       // int selectionStart = editor.textarea.getSelectionStart();
-      int selectionEnd = editor.getSelectionStop();
+      int selectionEnd = editor.getCurrentTab().getSelectionStop();
 
       nextIndex = text.indexOf(search, selectionEnd);
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from beginning
-        wrapNeeded = true;
-      }
     } else {
       // int selectionStart = editor.textarea.getSelectionStart();
-      int selectionStart = editor.getSelectionStart() - 1;
+      int selectionStart = editor.getCurrentTab().getSelectionStart() - 1;
 
       if (selectionStart >= 0) {
         nextIndex = text.lastIndexOf(search, selectionStart);
       } else {
         nextIndex = -1;
       }
-      if (wrap && nextIndex == -1) {
-        // if wrapping, a second chance is ok, start from the end
-        wrapNeeded = true;
-      }
     }
 
     if (nextIndex == -1) {
       // Nothing found on this tab: Search other tabs if required
       if (searchTabs) {
-        // editor.
-        Sketch sketch = editor.getSketch();
-        if (sketch.getCodeCount() > 1) {
-          int realCurrentTab = sketch.getCodeIndex(sketch.getCurrentCode());
+        int numTabs = editor.getTabs().size();
+        if (numTabs > 1) {
+          int realCurrentTab = editor.getCurrentTabIndex();
 
           if (originTab != realCurrentTab) {
             if (originTab < 0) {
@@ -338,20 +328,21 @@ public class FindReplace extends javax.swing.JFrame {
             }
 
             if (!wrap) {
-              if ((!backwards && realCurrentTab + 1 >= sketch.getCodeCount()) || (backwards && realCurrentTab - 1 < 0)) {
+              if ((!backwards && realCurrentTab + 1 >= numTabs)
+                  || (backwards && realCurrentTab - 1 < 0)) {
                 return false; // Can't continue without wrap
               }
             }
 
             if (backwards) {
-              sketch.handlePrevCode();
+              editor.selectPrevTab();
               this.setVisible(true);
-              int l = editor.getText().length() - 1;
-              editor.setSelection(l, l);
+              int l = editor.getCurrentTab().getText().length() - 1;
+              editor.getCurrentTab().setSelection(l, l);
             } else {
-              sketch.handleNextCode();
+              editor.selectNextTab();
               this.setVisible(true);
-              editor.setSelection(0, 0);
+              editor.getCurrentTab().setSelection(0, 0);
             }
 
             return find(wrap, backwards, true, originTab);
@@ -359,13 +350,16 @@ public class FindReplace extends javax.swing.JFrame {
         }
       }
 
-      if (wrapNeeded) {
+      if (wrap) {
         nextIndex = backwards ? text.lastIndexOf(search) : text.indexOf(search, 0);
       }
     }
 
     if (nextIndex != -1) {
-      editor.setSelection(nextIndex, nextIndex + search.length());
+      EditorTab currentTab = editor.getCurrentTab();
+      currentTab.getTextArea().getFoldManager().ensureOffsetNotInClosedFold(nextIndex);
+      currentTab.setSelection(nextIndex, nextIndex + search.length());
+      currentTab.getTextArea().getCaret().setSelectionVisible(true);
       return true;
     }
 
@@ -381,18 +375,17 @@ public class FindReplace extends javax.swing.JFrame {
       return;
     }
 
-    int newpos = editor.getSelectionStart() - findField.getText().length();
+    int newpos = editor.getCurrentTab().getSelectionStart() - findField.getText().length();
     if (newpos < 0) {
       newpos = 0;
     }
-    editor.setSelection(newpos, newpos);
+    editor.getCurrentTab().setSelection(newpos, newpos);
 
     boolean foundAtLeastOne = false;
 
     if (find(false, false, searchAllFilesBox.isSelected(), -1)) {
       foundAtLeastOne = true;
-      editor.setSelectedText(replaceField.getText());
-      editor.getSketch().setModified(true); // TODO is this necessary?
+      editor.getCurrentTab().setSelectedText(replaceField.getText());
     }
 
     if (!foundAtLeastOne) {
@@ -420,17 +413,16 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     if (searchAllFilesBox.isSelected()) {
-      editor.getSketch().setCurrentCode(0); // select the first tab
+      editor.selectTab(0); // select the first tab
     }
 
-    editor.setSelection(0, 0); // move to the beginning
+    editor.getCurrentTab().setSelection(0, 0); // move to the beginning
 
     boolean foundAtLeastOne = false;
     while (true) {
       if (find(false, false, searchAllFilesBox.isSelected(), -1)) {
         foundAtLeastOne = true;
-        editor.setSelectedText(replaceField.getText());
-        editor.getSketch().setModified(true); // TODO is this necessary?
+        editor.getCurrentTab().setSelectedText(replaceField.getText());
       } else {
         break;
       }

@@ -44,6 +44,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract String getArchitecture();
 
+  @Override
   public abstract String getChecksum();
 
   public abstract List<ContributedToolReference> getToolsDependencies();

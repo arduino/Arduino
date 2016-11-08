@@ -22,6 +22,7 @@
   <condition property="platform" value="windows"><os family="windows" /></condition>
   <condition property="platform" value="linux32"><os family="unix" arch="i386" /></condition>
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
+  <condition property="platform" value="linuxarm"><os family="unix" arch="arm" /></condition>
 
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="windows"><equals arg1="${platform}" arg2="windows" /></condition>
@@ -29,19 +30,25 @@
   <condition property="linux64"><equals arg1="${platform}" arg2="linux64" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="linux"><equals arg1="${platform}" arg2="linuxarm" /></condition>
 
   <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_folder" value="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linuxarm" /></condition>
 
   <condition property="staging_hardware_folder" value="Arduino.app/Contents/Java/hardware"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
+  <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linuxarm" /></condition>
 
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
+  </condition>
+  <condition property="arch-bits" value="32">
+    <equals arg1="${platform}" arg2="linuxarm"/>
   </condition>
   <condition property="arch-bits" value="64">
     <equals arg1="${platform}" arg2="linux64"/>
@@ -54,10 +61,12 @@
   <property name="WINDOWS_BUNDLED_JVM" value="${java.home}"/>
   <property name="LINUX32_BUNDLED_JVM" value="none"/>
   <property name="LINUX64_BUNDLED_JVM" value="none"/>
+  <property name="LINUXARM_BUNDLED_JVM" value="none"/>
   <condition property="linux-bundle-jvm-task" value="noop">
     <and>
       <equals arg1="${LINUX32_BUNDLED_JVM}" arg2="none"/>
       <equals arg1="${LINUX64_BUNDLED_JVM}" arg2="none"/>
+      <equals arg1="${LINUXARM_BUNDLED_JVM}" arg2="none"/>
     </and>
   </condition>
   <condition property="linux-bundle-jvm-task" value="bundle">
@@ -68,12 +77,18 @@
       <not>
         <equals arg1="${LINUX64_BUNDLED_JVM}" arg2="none"/>
       </not>
+      <not>
+        <equals arg1="${LINUXARM_BUNDLED_JVM}" arg2="none"/>
+      </not>
     </or>
   </condition>
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.11" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.21_r1" />
+  <property name="LIBLISTSERIAL-VERSION" value="1.2.0" />
+  <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.3-arduino2" />
+  <property name="AVRDUDE-VERSION" value="6.3.0-arduino6" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -182,10 +197,22 @@
       <param name="dest_folder" value="${target.path}/reference/" />
     </antcall>
 
+    <!-- Fix wrong permissions from zip file root folder -->
+    <chmod perm="755" dir="${target.path}/reference/Galileo_help_files" />
+    <chmod perm="755" dir="${target.path}/reference/Edison_help_files" />
+
     <!-- Write the revision file! -->
     <echo file="${target.path}/lib/version.txt" message="${version}" />
 
     <antcall target="assemble-libraries" />
+
+    <!-- Add WiFi101 updater tool -->
+    <antcall target="unzip">
+      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.8.1.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.8.1/WiFi101-Updater-ArduinoIDE-Plugin-0.8.1.zip" />
+      <param name="final_folder" value="${target.path}/tools/WiFi101" />
+      <param name="dest_folder" value="${target.path}/tools/" />
+    </antcall>
   </target>
 
   <!-- copy library folder -->
@@ -194,16 +221,17 @@
       <fileset dir="../libraries"/>
     </copy>
 
-    <download-library name="Firmata" version="2.5.0"/>
-    <download-library name="Bridge" version="1.6.0"/>
+    <download-library name="Firmata" version="2.5.3"/>
+    <download-library name="Bridge" version="1.6.3"/>
     <download-library name="Robot_Control" version="1.0.2"/>
     <download-library name="Robot_Motor" version="1.0.2"/>
     <download-library name="RobotIRremote" version="1.0.2"/>
-    <download-library name="SpacebrewYun" version="1.0.0"/>
-    <download-library name="Temboo" version="1.1.4"/>
+    <download-library name="SpacebrewYun" version="1.0.1"/>
+    <download-library name="Temboo" version="1.1.7"/>
     <download-library name="Esplora" version="1.0.4"/>
-    <download-library name="Mouse" version="1.0.0"/>
-    <download-library name="Keyboard" version="1.0.0"/>
+    <download-library name="Mouse" version="1.0.1"/>
+    <download-library name="Keyboard" version="1.0.1"/>
+    <download-library name="SD" version="1.0.8"/>
   </target>
 
   <macrodef name="download-library">
@@ -235,7 +263,45 @@
   <!-- Revision check  -->
   <!-- - - - - - - - - -->
   <target name="revision-check">
-    <!-- figure out the revision number -->
+
+    <!-- figure out the AVR core version number in platform.txt -->
+    <loadfile srcfile="../hardware/arduino/avr/platform.txt" property="revision.avr.platform">
+      <filterchain>
+        <tokenfilter>
+          <linetokenizer />
+          <containsregex pattern="version="/>
+          <replaceregex pattern="version=(.*)" flags="g" replace="\1"/>
+        </tokenfilter>
+      </filterchain>
+    </loadfile>
+
+    <!-- figure out the latest AVR core version number in package_index.json -->
+    <loadfile srcfile="../hardware/package_index_bundled.json" property="revision.avr.index">
+      <filterchain>
+        <tokenfilter>
+          <linetokenizer />
+          <containsregex pattern="archiveFileName.*&quot;avr-.......?tar.bz2"/>
+          <replaceregex pattern=".*avr-(.*).tar.bz2.*" flags="g" replace="\1"/>
+        </tokenfilter>
+        <tailfilter lines="1"/>
+      </filterchain>
+    </loadfile>
+
+    <echo message="AVR Arduino core version in platform.txt is: ${revision.avr.platform}" />
+    <echo message="    latest in package_index_bundled.json is: ${revision.avr.index}" />
+    <condition property="revision.avr.ok">
+      <or>
+        <!-- fail build if -Drevision.check=enforce is set -->
+        <not><equals arg1="${revision.check}" arg2="enforce"/></not>
+        <equals arg1="${revision.avr.index}" arg2="${revision.avr.platform}"/>
+      </or>
+    </condition>
+    <fail unless="revision.avr.ok">
+      Mismatching versions for bundled AVR core and package_index_bundled.json.
+      Please check your platform.txt and package_index_bundled.json.
+    </fail>
+
+    <!-- figure out the IDE version number -->
     <loadfile srcfile="shared/revisions.txt" property="revision">
       <filterchain>
         <ignoreblank />
@@ -251,9 +317,8 @@
         </tokenfilter>
       </filterchain>
     </loadfile>
-    <echo message="Latest revision detected in shared/revision.txt is: ${revision}" />
 
-    <!-- figure out the revision number in base.java -->
+    <!-- figure out the IDE version number in base.java -->
     <loadfile srcfile="../arduino-core/src/processing/app/BaseNoGui.java"
 	      property="revision.base">
       <filterchain>
@@ -264,6 +329,7 @@
         </tokenfilter>
       </filterchain>
     </loadfile>
+    <echo message="Latest revision detected in shared/revision.txt is: ${revision}" />
     <echo message="                     Revision in BaseNoGui.java is: ${revision.base}" />
   </target>
 
@@ -376,15 +442,13 @@
 
     <antcall target="macosx-build-avr-toolchain" />
 
-    <antcall target="package-library-index-json-bundle"/>
-
     <antcall target="assemble">
       <param name="target.path" value="${staging_folder}/work/${staging_hardware_folder}/.." />
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -394,12 +458,12 @@
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="macosx/liblistSerials-1.0.5/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
+    <copy file="macosx/liblistSerials-${LIBLISTSERIAL-VERSION}/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
 
     <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
@@ -427,20 +491,15 @@
   <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-r2-i386-apple-darwin11.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i386-apple-darwin11.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
 
     <chmod perm="+x">
       <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/*"/>
       <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/libexec/gcc/avr/4.8.1/*"/>
-    </chmod>
-
-    <!-- macosx gatekeeper workaround. See https://github.com/arduino/Arduino/issues/3468 -->
-    <chmod perm="-x">
-      <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/avrdude_bin" />
     </chmod>
   </target>
 
@@ -582,10 +641,12 @@
         <fileset dir="linux/work" includes="arduino" />
         <fileset dir="linux/work" includes="**/*.sh" />
     </chmod>
+  </target>
 
+  <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -597,17 +658,72 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="linux/liblistSerials-1.0.5/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
+    <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
 
   </target>
 
-  <target name="linux32-build" depends="linux-build" description="Build linux (32-bit) version">
+  <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
+    <antcall target="unzip">
+      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
+      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/libastylej-2.05.1/libastylej_arm.so" tofile="linux/work/lib/libastylej.so" />
+    <chmod perm="755" file="linux/work/lib/libastylej.so" />
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="linux/work" />
+    </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/arm/liblistSerialsj.so" todir="linux/work/lib/" />
+    <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+
+  </target>
+
+  <target name="linuxarm-build" depends="linux-libastyle-arm" description="Build linux (32-bit) version">
+    <antcall target="linux-jvm-${linux-bundle-jvm-task}">
+      <param name="JVM" value="${LINUXARM_BUNDLED_JVM}"/>
+    </antcall>
+
+    <delete dir="${staging_folder}/arduino-builder-arm" includeemptydirs="true"/>
+    <mkdir dir="${staging_folder}/arduino-builder-arm"/>
+    <antcall target="untar">
+      <param name="archive_file" value="./arduino-builder-arm-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-arm-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+      <param name="final_folder" value="${staging_folder}/arduino-builder-arm/arduino-builder" />
+      <param name="dest_folder" value="${staging_folder}/arduino-builder-arm" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-builder-arm/arduino-builder" tofile="linux/work/arduino-builder" />
+    <chmod perm="755" file="linux/work/arduino-builder" />
+    <move file="${staging_folder}/arduino-builder-arm/tools" tofile="linux/work/tools-builder"/>
+    <copy todir="linux/work/hardware" overwrite="true">
+      <fileset dir="${staging_folder}/arduino-builder-arm/hardware" includes="*.txt"/>
+    </copy>
+    <delete dir="${staging_folder}/arduino-builder-arm" includeemptydirs="true"/>
+
+    <antcall target="avr-toolchain-bundle">
+      <param name="unpack_target" value="untar"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+    </antcall>
+  </target>
+
+  <target name="linux32-build" depends="linux-libastyle-x86" description="Build linux (32-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX32_BUNDLED_JVM}"/>
     </antcall>
@@ -630,16 +746,14 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
-  <target name="linux64-build" depends="linux-build" description="Build linux (64-bit) version">
+  <target name="linux64-build" depends="linux-libastyle-x86" description="Build linux (64-bit) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
       <param name="JVM" value="${LINUX64_BUNDLED_JVM}"/>
     </antcall>
@@ -662,13 +776,11 @@
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="linux-jvm-noop"/>
@@ -687,11 +799,17 @@
 
   <target name="linux64-run" depends="build,start"/>
 
+  <target name="linuxarm-run" depends="build,start"/>
+
   <target name="linux32-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
   <target name="linux64-start">
+    <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
+  </target>
+
+  <target name="linuxarm-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
@@ -774,10 +892,13 @@
   </target>
 
   <target name="linux32-dist" depends="linux-dist"
-	  description="Build .tar.xz of linux version" />
+	  description="Build .tar.xz of linux x86_32 version" />
 
   <target name="linux64-dist" depends="linux-dist"
-	  description="Build .tar.xz of linux version" />
+	  description="Build .tar.xz of linux x86_64 version" />
+
+  <target name="linuxarm-dist" depends="linux-dist"
+	  description="Build .tar.xz of linux armhf version" />
 
   <!-- - - - - - - - -->
   <!-- Windows       -->
@@ -856,8 +977,8 @@
     <antcall target="windows-build-avr-toolchain" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -866,12 +987,12 @@
     <copy file="windows/msvcr100.dll" todir="windows/work" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./liblistSerials-1.0.5.zip" />
-      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-1.0.5.zip" />
-      <param name="final_folder" value="${staging_folder}/liblistSerials-1.0.5" />
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="archive_url" value="http://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
-    <copy file="windows/liblistSerials-1.0.5/windows/listSerialsj.dll" todir="windows/work/lib/" />
+    <copy file="windows/liblistSerials-${LIBLISTSERIAL-VERSION}/windows/listSerialsj.dll" todir="windows/work/lib/" />
     <chmod perm="755" file="windows/work/lib/listSerialsj.dll" />
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
@@ -885,7 +1006,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino7/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino10/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
@@ -941,13 +1062,11 @@
   <target name="windows-build-avr-toolchain">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="unzip"/>
-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-mingw32.zip"/>
-      <param name="gcc_version" value="4.8.1-arduino5"/>
-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-mingw32.zip"/>
-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-mingw32.zip"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.zip"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
     </antcall>
-
-    <antcall target="package-library-index-json-bundle"/>
   </target>
 
   <target name="windows-run" depends="build,start"/>
@@ -1033,38 +1152,12 @@
     </antcall>
 
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
-    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
-    <antcall target="macosx-fix-bundled-toolchain-missing-symlinks"/>
+    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
-  </target>
-
-  <target name="package-library-index-json-bundle">
-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
-
-    <get src="http://downloads.arduino.cc/packages/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
-    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
-    <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/package_index.json.gz"/>
-
-    <get src="http://downloads.arduino.cc/packages/package_index.json.sig" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
-
-    <get src="http://downloads.arduino.cc/libraries/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/" verbose="true" skipexisting="false" />
-    <gunzip src="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz" dest="${staging_folder}/work/${staging_hardware_folder}/../dist/"/>
-    <delete file="${staging_folder}/work/${staging_hardware_folder}/../dist/library_index.json.gz"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
-  </target>
-
-  <target name="macosx-fix-bundled-toolchain-missing-symlinks" if="macosx">
-    <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb.dylib"/>
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
-    </exec>
-    <exec executable="mv" failonerror="true">
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb-1.0.dylib"/>
-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
-    </exec>
   </target>
 
   <target name="generate-hourly-build-txt" if="hourly">

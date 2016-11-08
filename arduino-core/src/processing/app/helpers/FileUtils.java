@@ -210,7 +210,7 @@ public class FileUtils {
   }
 
   public static List<String> readFileToListOfStrings(File file) throws IOException {
-    List<String> strings = new LinkedList<String>();
+    List<String> strings = new LinkedList<>();
     BufferedReader reader = null;
     try {
       reader = new BufferedReader(new FileReader(file));
@@ -246,6 +246,44 @@ public class FileUtils {
   }
 
   /**
+   * Returns the given filename with the extension replaced by the one
+   * given. If the filename does not have an extension yet, one is
+   * added.
+   */
+  public static String replaceExtension(String filename, String extension) {
+    SplitFile split = splitFilename(filename);
+    split.extension = extension;
+    return split.join();
+  }
+
+  /**
+   * Returns the given filename with the extension replaced by the one
+   * given. If the filename does not have an extension yet, one is
+   * added.
+   */
+  public static File replaceExtension(File file, String extension) {
+    return new File(file.getParentFile(), replaceExtension(file.getName(), extension));
+  }
+
+  /**
+   * Adds an extension to the given filename. If it already contains
+   * one, an additional extension is added. If the extension is the
+   * empty string, the file is returned unmodified.
+   */
+  public static String addExtension(String filename, String extension) {
+    return extension.equals("") ? filename : (filename + "." + extension);
+  }
+
+  /**
+   * Adds an extension to the given filename. If it already contains
+   * one, an additional extension is added. If the extension is the
+   * empty string, the file is returned unmodified.
+   */
+  public static File addExtension(File file, String extension) {
+    return new File(file.getParentFile(), addExtension(file.getName(), extension));
+  }
+
+  /**
    * The result of a splitFilename call.
    */
   public static class SplitFile {
@@ -256,6 +294,10 @@ public class FileUtils {
 
     public String basename;
     public String extension;
+
+    public String join() {
+      return addExtension(basename, extension);
+    }
   }
 
   /**
@@ -301,7 +343,7 @@ public class FileUtils {
 
   public static List<File> listFiles(File folder, boolean recursive,
                                      List<String> extensions) {
-    List<File> result = new ArrayList<File>();
+    List<File> result = new ArrayList<>();
 
     for (File file : folder.listFiles()) {
       if (isSCCSOrHiddenFile(file))

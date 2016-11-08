@@ -22,8 +22,8 @@
 
 package processing.app.windows;
 
-import cc.arduino.os.windows.FolderFinderInWindowsEnvVar;
-import cc.arduino.os.windows.FolderFinderInWindowsRegistry;
+import cc.arduino.os.windows.Win32KnownFolders;
+import processing.app.PreferencesData;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -41,6 +41,7 @@ public class Platform extends processing.app.Platform {
   private File settingsFolder;
   private File defaultSketchbookFolder;
 
+  @Override
   public void init() throws Exception {
     super.init();
 
@@ -50,28 +51,25 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Local AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
-
-    Path path = findInShellFolders.find();
-    this.settingsFolder = path.resolve("Arduino15").toFile();
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app")) {
+      // LocalAppData is restricted for Windows Store Apps.
+      // We are forced to use a document folder to store tools.
+      Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+      settingsFolder = path.resolve("ArduinoData").toFile();
+    } else {
+      Path path = Win32KnownFolders.getLocalAppDataFolder().toPath();
+      settingsFolder = path.resolve("Arduino15").toFile();
+    }
   }
 
   private Path recoverOldSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
-
-    Path path = findInShellFolders.find();
+    Path path = Win32KnownFolders.getRoamingAppDataFolder().toPath();
     return path.resolve("Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() throws Exception {
-    FolderFinderInWindowsEnvVar findInUserProfile = new FolderFinderInWindowsEnvVar(null, "Documents", "USERPROFILE");
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(findInUserProfile, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Personal");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
-
-    Path path = findInShellFolders.find();
-    this.defaultSketchbookFolder = path.resolve("Arduino").toFile();
+    Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+    defaultSketchbookFolder = path.resolve("Arduino").toFile();
   }
 
   /**
@@ -108,16 +106,31 @@ public class Platform extends processing.app.Platform {
     }
   }
 
+  @Override
   public File getSettingsFolder() {
     return settingsFolder;
   }
 
 
+  @Override
   public File getDefaultSketchbookFolder() throws Exception {
     return defaultSketchbookFolder;
   }
 
+  @Override
   public void openURL(String url) throws Exception {
+    if (!url.startsWith("http") && !url.startsWith("file:")) {
+      // Check if we are trying to open a local file
+      File file = new File(url);
+      if (file.exists()) {
+        // in this case convert the path to a "file:" url
+        url = file.toURI().toString();
+
+        // this allows to open the file on Windows 10 that
+        // has a more strict permission policy for cmd.exe
+      }
+    }
+
     // this is not guaranteed to work, because who knows if the
     // path will always be c:\progra~1 et al. also if the user has
     // a different browser set as their default (which would
@@ -148,11 +161,13 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public boolean openFolderAvailable() {
     return true;
   }
 
 
+  @Override
   public void openFolder(File file) throws Exception {
     String folder = file.getAbsolutePath();
 
@@ -180,12 +195,14 @@ public class Platform extends processing.app.Platform {
     //noop
   }
 
+  @Override
   public List<File> postInstallScripts(File folder) {
     List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "post_install.bat"));
     return scripts;
   }
 
+  @Override
   public List<File> preUninstallScripts(File folder) {
     List<File> scripts = new LinkedList<>();
     scripts.add(new File(folder, "pre_uninstall.bat"));
@@ -195,14 +212,19 @@ public class Platform extends processing.app.Platform {
   public void symlink(File something, File somewhere) throws IOException, InterruptedException {
   }
 
+  @Override
   public void link(File something, File somewhere) throws IOException, InterruptedException {
   }
 
+  @Override
   public void chmod(File file, int mode) throws IOException, InterruptedException {
   }
 
   @Override
   public void fixSettingsLocation() throws Exception {
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app"))
+      return;
+
     Path oldSettingsFolder = recoverOldSettingsFolderPath();
     if (!Files.exists(oldSettingsFolder)) {
       return;

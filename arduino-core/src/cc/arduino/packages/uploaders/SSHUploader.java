@@ -63,6 +63,7 @@ public class SSHUploader extends Uploader {
     this.port = port;
   }
 
+  @Override
   public boolean requiresAuthorization() {
     return true;
   }
@@ -135,7 +136,7 @@ public class SSHUploader extends Uploader {
       return runUploadTool(ssh, prefs);
     } catch (JSchException e) {
       String message = e.getMessage();
-      if ("Auth cancel".equals(message) || "Auth fail".equals(message)) {
+      if (message.contains("Auth cancel") || message.contains("Auth fail") || message.contains("authentication fail")) {
         return false;
       }
       if (e.getMessage().contains("Connection refused")) {

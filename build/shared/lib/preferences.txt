@@ -274,3 +274,10 @@ serial.debug_rate=9600
 
 # default chosen language (none for none)
 editor.languages.current = 
+
+# Debugging/Development Preferences
+# ---------------------------------
+
+# Disable signature check on packages_index.json, use only for
+# development/debugging purposes. Do not enable in production.
+#allow_insecure_packages=true
