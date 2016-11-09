@@ -1692,6 +1692,13 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   /**
+   * Reorders tabs as per current sketch's files order
+   */
+  public void reorderTabs() {
+    Collections.sort(tabs, (x, y) -> Sketch.CODE_DOCS_COMPARATOR.compare(x.getSketchFile(), y.getSketchFile()));
+  }
+
+  /**
    * Add a new tab.
    *
    * @param file
@@ -1704,6 +1711,12 @@ public class Editor extends JFrame implements RunnerListener {
   protected void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tabs.add(tab);
+    reorderTabs();
+  }
+
+  protected void removeTab(SketchFile file) throws IOException {
+    int index = findTabIndex(file);
+    tabs.remove(index);
   }
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

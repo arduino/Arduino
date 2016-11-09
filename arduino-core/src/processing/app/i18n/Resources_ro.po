@@ -2014,6 +2014,10 @@ msgstr "Clasa Server a fost redenumită în EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Clasa Udp a fost redenumită în EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""

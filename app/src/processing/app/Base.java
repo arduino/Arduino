@@ -1254,6 +1254,7 @@ public class Base {
   }
 
   private static String priorPlatformFolder;
+  private static boolean newLibraryImported;
 
   public void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
@@ -1262,10 +1263,11 @@ public class Base {
     TargetPlatform tp = BaseNoGui.getTargetPlatform();
     if (tp != null) {
       String platformFolder = tp.getFolder().getAbsolutePath();
-      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder)) {
+      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder) || newLibraryImported) {
         pdeKeywords = new PdeKeywords();
         pdeKeywords.reload();
         priorPlatformFolder = platformFolder;
+        newLibraryImported = false;
         for (Editor editor : editors) {
           editor.updateKeywords(pdeKeywords);
         }
@@ -1305,6 +1307,7 @@ public class Base {
     // Manager dialog is modal, waits here until closed
 
     //handleAddLibrary();
+    newLibraryImported = true;
     onBoardOrPortChange();
     rebuildImportMenu(Editor.importMenu);
     rebuildExamplesMenu(Editor.examplesMenu);
@@ -2262,6 +2265,7 @@ public class Base {
       // FIXME error when importing. ignoring :(
     } finally {
       // delete zip created temp folder, if exists
+      newLibraryImported = true;
       FileUtils.recursiveDelete(tmpFolder);
     }
   }
