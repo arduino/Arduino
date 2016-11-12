@@ -238,7 +238,10 @@ void delayMicroseconds(unsigned int us)
 	// return = 4 cycles
 }
 
-void init()
+//http://www.atmel.com/webdoc/AVRLibcReferenceManual/mem_sections_1sec_dot_init.html
+// init5 is after .data, but before C++ initialization - perfect for hardware setup
+void _do_setup(void) __attribute__ ((naked, used, section (".init5")));
+void _do_setup()
 {
 	// this needs to be called before setup() or some functions won't
 	// work there
@@ -390,3 +393,6 @@ void init()
 	UCSR0B = 0;
 #endif
 }
+
+// for backwards compatibility
+void init() {}
