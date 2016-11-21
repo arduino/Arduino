@@ -277,20 +277,13 @@ public class Platform extends processing.app.Platform {
 
   public static int detectSystemDPI() {
     try {
-      int res = ExtUser32.INSTANCE.SetProcessDpiAwareness(ExtUser32.DPI_AWARENESS_SYSTEM_AWARE);
-      System.out.println("SetProcessDpiAwareness returned " + res);
+      ExtUser32.INSTANCE.SetProcessDpiAwareness(ExtUser32.DPI_AWARENESS_SYSTEM_AWARE);
     } catch (Throwable e) {
-      System.out.println("SetProcessDpiAwareness failed!");
       // Ignore error
     }
     try {
-      System.out.println("before any SetThreadDpiAwarenessContext(...) -> dpi " + ExtUser32.INSTANCE.GetDpiForSystem());
-      ExtUser32.INSTANCE.SetThreadDpiAwarenessContext(ExtUser32.DPI_AWARENESS_CONTEXT_UNAWARE);
-      System.out.println("SetThreadDpiAwarenessContext(UNAWARE) -> dpi " + ExtUser32.INSTANCE.GetDpiForSystem());
       ExtUser32.INSTANCE.SetThreadDpiAwarenessContext(ExtUser32.DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
-      System.out.println("SetThreadDpiAwarenessContext(SYSTEM) -> dpi " + ExtUser32.INSTANCE.GetDpiForSystem());
     } catch (Throwable e) {
-      System.out.println("SetThreadDpiAwarenessContext failed!");
       // Ignore error (call valid only on Windows 10)
     }
     try {
