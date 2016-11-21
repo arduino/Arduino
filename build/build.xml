@@ -926,8 +926,8 @@
 
   <target name="download-launch4j-windows">
     <antcall target="unzip-with-ant-task">
-      <param name="archive_file" value="windows/launch4j-3.8-win32.zip"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.8/launch4j-3.8-win32.zip"/>
+      <param name="archive_file" value="windows/launch4j-3.9-win32.zip"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-win32.zip"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -935,8 +935,8 @@
 
   <target name="download-launch4j-linux">
     <antcall target="untar">
-      <param name="archive_file" value="windows/launch4j-3.8-linux.tgz"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.8/launch4j-3.8-linux.tgz"/>
+      <param name="archive_file" value="windows/launch4j-3.9-linux.tgz"/>
+      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -1026,7 +1026,7 @@
 
     <copy todir="windows/work">
       <fileset dir="windows/launcher"
-	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini"/>
+	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini, wrapper-manifest.xml"/>
     </copy>
     <launch4j configFile="windows/work/config.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
     <launch4j configFile="windows/work/config_debug.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>

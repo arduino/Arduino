@@ -333,4 +333,9 @@ public class Platform {
   public void fixSettingsLocation() throws Exception {
     //noop
   }
+
+  public int getSystemDPI() {
+    return 96;
+  }
+
 }
