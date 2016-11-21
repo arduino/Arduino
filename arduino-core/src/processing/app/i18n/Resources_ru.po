@@ -13,6 +13,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2016
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
@@ -23,6 +24,7 @@
 # Oleg Ekhlakov <subspam@mail.ru>, 2014
 # Petr Beklemishev <pbekl@bk.ru>, 2014-2015
 # Petr Beklemishev <pbekl@bk.ru>, 2015
+# Александр Волков <allxxx@mail.ru>, 2016
 # Егор Макаренко, 2016
 # Михаил Турусов <god_mihail@mail.ru>, 2015
 # Руслан <nasretdinov.r.r@ya.ru>, 2013
@@ -32,7 +34,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -133,7 +135,7 @@ msgstr "Об Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Ачоли"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -347,7 +349,7 @@ msgstr "Плата"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Информация о плате"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -937,12 +939,12 @@ msgstr "Эстонский (Эстония)"
 msgid "Examples"
 msgstr "Примеры"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -953,7 +955,7 @@ msgstr "Примеры из пользовательских библиотек"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Примеры из других библиотек"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1068,7 +1070,7 @@ msgstr "Немецкий"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Получить информацию о плате"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1130,7 +1132,7 @@ msgstr "Венгерский"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "НЕСОВМЕСТИМЫЙ"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1236,7 +1238,7 @@ msgstr "Японский"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Казахский"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1340,7 +1342,7 @@ msgstr "Имя для нового файла:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Собственный последовательный порт, не может получить информацию"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1352,7 +1354,7 @@ msgstr "Сеть"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Сетевой порт, не может получить информацию"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1543,7 +1545,7 @@ msgstr "Пожалуйста, импортируйте библиотеку Wire
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Пожалуйста, выберите порт для получения информации о плате "
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1925,7 +1927,7 @@ msgstr "Размещение папки скетчей не задано"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Пропуская подключенный индексный файл {0}, произошли следующие ошибки:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1987,7 +1989,7 @@ msgstr "Тамильский"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Телугу"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2020,7 +2022,7 @@ msgstr "Класс Server переименован в EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Класс Udp переименован в EthernetUdp."
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2216,7 +2218,7 @@ msgstr "Необработанный тип {0} в контекстном клю
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Неизвестная плата"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2272,7 +2274,7 @@ msgstr "Загрузить через программатор"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Загрузить любой скетч, для использования"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2715,5 +2717,5 @@ msgstr "{0}: Неизвестный пакет"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

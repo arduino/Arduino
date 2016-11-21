@@ -13,6 +13,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Ethan <ethan42411@gmail.com>, 2014
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -21,12 +22,13 @@
 # james58899 <james59988@gmail.com>, 2014
 # Jordan_Fung <jordanfung2002@gmail.com>, 2014
 # yehnan <yehnan174@gmail.com>, 2013,2015-2016
+# 洪嘉鴻 <jerry9030@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -37,7 +39,7 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr "（需要重新啟動Arduino）"
+msgstr "（需要重新啟動 Arduino）"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
@@ -123,7 +125,7 @@ msgstr "你的草稿碼簿裡有個子目錄不是合法的程式庫"
 
 #: Editor.java:1116
 msgid "About Arduino"
-msgstr "關於Arduino"
+msgstr "關於 Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
@@ -139,11 +141,11 @@ msgstr "加入檔案..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr "額外的板子管理員網址"
+msgstr "額外的開發板管理員網址"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr "額外的板子管理員網址："
+msgstr "額外的開發板管理員網址："
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -226,7 +228,7 @@ msgstr "Arduino ARM（32位元）板"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr "Arduino AVR板"
+msgstr "Arduino AVR 板"
 
 #: Editor.java:2137
 msgid ""
@@ -307,11 +309,11 @@ msgstr "自動偵測代理伺服器組態設定"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr "自動化的"
+msgstr "自動"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr "自動型代理伺服器組態網址："
+msgstr "自動代理伺服器組態網址:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -337,11 +339,11 @@ msgstr "白俄羅斯語"
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr "板子"
+msgstr "開發板"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "開發板資訊"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -363,24 +365,24 @@ msgstr "板子{0}:{1}:{2}並沒有定義''build.board\"偏好設定值，自動�
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "板子："
+msgstr "開發板:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr "板子管理員"
+msgstr "開發板管理員"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr "板子管理員..."
+msgstr "開發板管理員..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr "此套件包含的板子："
+msgstr "此套件包含的開發板:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr "指定了bootloader檔案但卻找不到：{0}"
+msgstr "所指定的 bootloader 檔案已遺失: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
@@ -814,7 +816,7 @@ msgstr "加入檔案時發生錯誤"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr "板子{0}編譯錯誤"
+msgstr "開發板 {0} 編譯錯誤。"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -931,12 +933,12 @@ msgstr "愛沙尼亞語(愛沙尼亞)"
 msgid "Examples"
 msgstr "範例"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -1062,7 +1064,7 @@ msgstr "德語"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "取得開發板資訊"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1189,7 +1191,7 @@ msgstr "已安裝"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr "安裝板子..."
+msgstr "正在安裝開發板..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
@@ -1330,7 +1332,7 @@ msgstr "必須指定一個草稿碼文件"
 
 #: Sketch.java:282
 msgid "Name for new file:"
-msgstr "新檔案的名字："
+msgstr "新檔案名稱:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
@@ -1456,7 +1458,7 @@ msgstr "記憶體不足；請見http://www.arduino.cc/en/Guide/Troubleshooting#s
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
 msgid "OK"
-msgstr "好"
+msgstr "確定"
 
 #: Sketch.java:992 Editor.java:376
 msgid "One file added to the sketch."
@@ -1578,7 +1580,7 @@ msgstr "偏好設定"
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
-msgstr "準備板子..."
+msgstr "正在準備開發板..."
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1614,7 +1616,7 @@ msgstr "設定平台時發生問題"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr "存取板子的資料夾/www/sd時發生問題"
+msgstr "存取開發板資料夾 /www/sd 時發生問題"
 
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
 #, java-format
@@ -1794,7 +1796,7 @@ msgstr "根據'{0}'核心（並未安裝）所選擇的板子。"
 
 #: ../../../../../app/src/processing/app/Base.java:374
 msgid "Selected board is not available"
-msgstr "沒有選定的板子"
+msgstr "開發板尚未選定"
 
 #: ../../../../../app/src/processing/app/Base.java:423
 msgid "Selected library is not available"
@@ -2014,7 +2016,7 @@ msgstr "類別Server已改名為EthernetServer。"
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "類別Udp已改名為EthernetUdp。"
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2149,11 +2151,11 @@ msgstr "類型"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr "輸入板子的密碼以訪問其控制台"
+msgstr "輸入開發板密碼以存取其控制台"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr "輸入板子的密碼以上傳新的草稿碼"
+msgstr "輸入開發板密碼以上傳新的草稿碼"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
@@ -2210,7 +2212,7 @@ msgstr ""
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "未知的開發板"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2278,7 +2280,7 @@ msgstr "上傳已取消"
 
 #: Editor.java:2378
 msgid "Uploading to I/O Board..."
-msgstr "上傳到板子..."
+msgstr "上傳至開發板..."
 
 #: Sketch.java:1622
 msgid "Uploading..."
@@ -2648,7 +2650,7 @@ msgstr "{0}必須是個目錄"
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr ""
+msgstr "{0} 於 {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
@@ -2680,12 +2682,12 @@ msgstr "{0}：無效的版子名稱，格式應該是 \"package:arch:board\" 或
 #: ../../../processing/app/Base.java:509
 #, java-format
 msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}：無效的選項 “{1}” 於板子 “{2}”"
+msgstr "{0}：無效的選項 \"{1}\" 於開發板 \"{2}\""
 
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr "{0}：無效的選項於板子 “{1}”"
+msgstr "{0}：無效的選項於開發板 \"{1}\""
 
 #: ../../../processing/app/Base.java:502
 #, java-format
@@ -2700,7 +2702,7 @@ msgstr "{0}：不明的架構"
 #: ../../../processing/app/Base.java:491
 #, java-format
 msgid "{0}: Unknown board"
-msgstr "{0}：不明的板子"
+msgstr "{0}：未知的開發板"
 
 #: ../../../processing/app/Base.java:481
 #, java-format
@@ -2709,5 +2711,5 @@ msgstr "{0}：不明的套件"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

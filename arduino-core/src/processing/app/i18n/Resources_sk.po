@@ -13,13 +13,14 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Zdeno Sekerák <etrsek@gmail.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Slovak (http://www.transifex.com/mbanzi/arduino-ide-15/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +62,7 @@ msgstr "'arch' adresár už nieje podporovaný! Viac informácií na http://goo.
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(editovať iba v prípade že Arduino nebeží)\n\\nPreložil: Zdenko Sekerák"
+msgstr "(editovať iba v prípade že Arduino nebeží)\nIDE preložil: Zdenko Sekerák"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
@@ -120,7 +121,7 @@ msgstr "O Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli - Uganda"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -334,7 +335,7 @@ msgstr "Doska"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Informácie o doske"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -924,12 +925,12 @@ msgstr "Estónština (Estónsko)"
 msgid "Examples"
 msgstr "Príklady"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -940,7 +941,7 @@ msgstr "Príklady z Vlastných Knižníc"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Príklady z Externých knižníc"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -1055,7 +1056,7 @@ msgstr "Nemčina"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Získať informácie o Doske"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1117,7 +1118,7 @@ msgstr "Maďarština"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "NEKOMPAKTIBILNÝ"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1223,7 +1224,7 @@ msgstr "Japončina"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazašsky"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1327,7 +1328,7 @@ msgstr "Názov pre nový súbor:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Nemôžem získať informácie zo zabudovaného sériového portu"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1339,7 +1340,7 @@ msgstr "Sieť"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Nemôžem získať informácie zo sieťového portu"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1530,7 +1531,7 @@ msgstr "Prosím importujte Wire knižnicu z menu Projekty > Import Knižnice (Li
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Prosím vyber port z ktorého mám získať informácie o doske"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1912,7 +1913,7 @@ msgstr "Adresár ku knižnici projektov nieje definovaný"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Vynechávam indexový súbor {0}, došlo k chybe pri analýze:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1974,7 +1975,7 @@ msgstr "Tamilština"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu - India"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2007,7 +2008,7 @@ msgstr "Trieda Server bola premenovaná na EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Trieda Udp bola premenovaná na EthernetUdp."
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2203,7 +2204,7 @@ msgstr "Neošetrený typ {0} v zozname kľúčov {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Neznáma doska"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2259,7 +2260,7 @@ msgstr "Nahrať Pomocou Programátora"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Nahraj neaký projekt k získaniu"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2702,5 +2703,5 @@ msgstr "{0}: Neznámy rozširujúci balík"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

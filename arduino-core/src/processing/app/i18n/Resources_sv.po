@@ -13,10 +13,11 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anton Ryberg <anton.ryberg@kontinuitet.se>, 2015
 # Daniel Jansson <daniel@threepercentdone.com>, 2012
-# Dan Berg <sjbrg@protonmail.com>, 2013
-# Dan Berg <sjbrg@protonmail.com>, 2013
+# Daniel Sjöberg <sjbrg@protonmail.com>, 2013
+# Daniel Sjöberg <sjbrg@protonmail.com>, 2013
 # GregerA <greger.andersson@electrokit.se>, 2014
 # GudenTorson, 2015
 # Jonas Bengtsson <jonas.b@gmail.com>, 2013
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Swedish (http://www.transifex.com/mbanzi/arduino-ide-15/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -932,12 +933,12 @@ msgstr "Estniska (Estland)"
 msgid "Examples"
 msgstr "Exempel"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -2015,7 +2016,7 @@ msgstr "Serverklassen har bytt namn till EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Klassen Udp har döpts om till EthernetUdp."
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2710,5 +2711,5 @@ msgstr "Okänt paket"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

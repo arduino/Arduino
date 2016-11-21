@@ -13,10 +13,12 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # andre graes <andregraes@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Erick Simões <erick.simoes@yahoo.com.br>, 2014-2015
 # Everton Leite <etcholeite@gmail.com>, 2015-2016
+# Gabriel Luiz Bastos de Oliveira <gabriel.bastos.oliveira@gmail.com>, 2016
 # Gustavo Bertoli, 2015
 # Henrique P. Machado <zehrique@gmail.com>, 2013
 # Lucas Pierin <lucasmp95@yahoo.com.br>, 2016
@@ -30,8 +32,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-22 04:27+0000\n"
-"Last-Translator: Marcelo Bitencourt <mwbit@hotmail.com>\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/mbanzi/arduino-ide-15/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -131,7 +133,7 @@ msgstr "Sobre Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acholi"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -345,7 +347,7 @@ msgstr "Placa"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Informações da Placa"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -657,7 +659,7 @@ msgstr "Armazenamento de Dados"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
-msgstr "Diminuir identação"
+msgstr "Diminuir indentação"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
@@ -935,12 +937,12 @@ msgstr "Estoniano (Estônia)"
 msgid "Examples"
 msgstr "Exemplos"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -1066,7 +1068,7 @@ msgstr "Alemão"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Obter informações da Placa"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1128,7 +1130,7 @@ msgstr "Húngaro"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "IMCOMPATÍVEL"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1164,7 +1166,7 @@ msgstr "Pasta de instalação da IDE incorreta"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
-msgstr "Aumentar identação"
+msgstr "Aumentar indentação"
 
 #: Preferences.java:101
 msgid "Indonesian"
@@ -1234,7 +1236,7 @@ msgstr "Japonês"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Cazaque"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1338,7 +1340,7 @@ msgstr "Nome para o novo arquivo:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Porta serial nativa, não é possível obter informações"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1350,7 +1352,7 @@ msgstr "Rede"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Porta de rede, não é possível obter informações"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1541,7 +1543,7 @@ msgstr "Favor importar a biblioteca Wire a partir do menu Sketch > Importar bibl
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Por favor selecione uma porta para obter informações da placa"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1985,7 +1987,7 @@ msgstr "Tâmil"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2018,7 +2020,7 @@ msgstr "A classe Server foi renomeada para EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "A classe Udp foi renomeada para EthernetUdp."
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2214,7 +2216,7 @@ msgstr "Tipo {0} não tratado na chave de contexto {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Placa não identificada"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2270,7 +2272,7 @@ msgstr "Carregar usando programador"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Envie qualquer sketch para obter"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2713,5 +2715,5 @@ msgstr "{0}: Pacote não identificado"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

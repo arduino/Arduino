@@ -13,6 +13,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Besiana Bici <besianabici@gmail.com>, 2014
 # Elio Qoshi <ping@elioqoshi.me>, 2014
 # Florian Tani <floriantani@gmail.com>, 2014
@@ -25,7 +26,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Albanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/sq/)\n"
 "MIME-Version: 1.0\n"
@@ -930,12 +931,12 @@ msgstr "Estonez (Estonia)"
 msgid "Examples"
 msgstr "Shembuj"
 
-#: ../../../../../app/src/processing/app/Base.java:1226
+#: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:1246
-#: ../../../../../app/src/processing/app/Base.java:1257
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
 msgstr ""
@@ -2013,7 +2014,7 @@ msgstr "Klasa e serverit eshte riemeruar EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Klasa Udp eshte riemeruar ne EthernetUdp."
 
-#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:173
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
 msgstr ""
 
@@ -2708,5 +2709,5 @@ msgstr "{0}: Pakete e panjohur"
 
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
-msgid "{0}Install{1} the package to use your {2}"
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""
