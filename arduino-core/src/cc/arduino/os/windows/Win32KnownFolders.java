@@ -38,21 +38,37 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 import com.sun.jna.platform.win32.Shell32Util;
+import com.sun.jna.platform.win32.ShlObj;
 
 import processing.app.PreferencesData;
 
 public class Win32KnownFolders {
 
   public static File getLocalAppDataFolder() {
-    return new File(Shell32Util.getKnownFolderPath(FOLDERID_LocalAppData));
+    try {
+      return new File(Shell32Util.getKnownFolderPath(FOLDERID_LocalAppData));
+    } catch (Throwable t) {
+      // Ignore error if API call is not available
+    }
+    return new File(Shell32Util.getFolderPath(ShlObj.CSIDL_LOCAL_APPDATA));
   }
 
   public static File getRoamingAppDataFolder() {
-    return new File(Shell32Util.getKnownFolderPath(FOLDERID_RoamingAppData));
+    try {
+      return new File(Shell32Util.getKnownFolderPath(FOLDERID_RoamingAppData));
+    } catch (Throwable t) {
+      // Ignore error if API call is not available
+    }
+    return new File(Shell32Util.getFolderPath(ShlObj.CSIDL_APPDATA));
   }
 
   public static File getDocumentsFolder() {
+    try {
     return new File(Shell32Util.getKnownFolderPath(FOLDERID_Documents));
+    } catch (Throwable t) {
+      // Ignore error if API call is not available
+    }
+    return new File(Shell32Util.getFolderPath(ShlObj.CSIDL_MYDOCUMENTS));
   }
 
   public static File getLocalCacheFolder() throws FileNotFoundException {
