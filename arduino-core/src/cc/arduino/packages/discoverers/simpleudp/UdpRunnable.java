@@ -100,10 +100,11 @@ public class UdpRunnable implements Runnable {
 					
 					// msg typ 1
 					if (lines[0].equals("1")) {
-						if (hasip(senderip.toString())==-1) {
+						int portexists = hasip(senderip.toString().substring(1));
+						if (portexists==-1) {
                           BoardPort port = new BoardPort();
 	
-                          port.setAddress(senderip.toString());
+                          port.setAddress(senderip.toString().substring(1));
                           port.setProtocol("network");
                           port.setOnlineStatus(true);
                           port.setLabel(lines[1]+" at "+senderip.toString());
@@ -144,9 +145,8 @@ public class UdpRunnable implements Runnable {
 	
 	1 - id of this message type
 	    future protocols can choose different numbers to implement more details
-	
 
-	Use Collections.synchronizedList().
+    BoardPort needs lastseen-time-thing for removing not anymore pinging boards.		
 	
 	
 */
