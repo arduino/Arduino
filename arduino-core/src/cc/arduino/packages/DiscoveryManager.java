@@ -31,6 +31,7 @@ package cc.arduino.packages;
 
 import cc.arduino.packages.discoverers.NetworkDiscovery;
 import cc.arduino.packages.discoverers.SerialDiscovery;
+import cc.arduino.packages.discoverers.SimpleUDPDiscovery; 
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +43,13 @@ public class DiscoveryManager {
   private final List<Discovery> discoverers;
   private final SerialDiscovery serialDiscoverer = new SerialDiscovery();
   private final NetworkDiscovery networkDiscoverer = new NetworkDiscovery();
+  private final SimpleUDPDiscovery udpworkDiscoverer = new SimpleUDPDiscovery();
 
   public DiscoveryManager() {
     discoverers = new ArrayList<>();
     discoverers.add(serialDiscoverer);
     discoverers.add(networkDiscoverer);
+    discoverers.add(udpworkDiscoverer);
 
     // Start all discoverers
     for (Discovery d : discoverers) {
