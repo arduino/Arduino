@@ -155,7 +155,7 @@ public class UdpRunnable implements Runnable {
 /*
 	even more simple device discovery protocol 
 	
-	send a broadcase to port 8531
+	send a broadcast to port 8531
 	
 	message format
 	
@@ -165,6 +165,8 @@ public class UdpRunnable implements Runnable {
 	    1\ndisplayname\nuploadport\n
 		
 		creates a menu entry "displayname" assigned to the senders ip, sets the upload port to "uploadport"
+		
+		if an entry is already attached to that sender ip the data is updated
 		
 	2 - set optional parameters
 	    2\nA:B&C:D&E:F 
@@ -177,5 +179,17 @@ public class UdpRunnable implements Runnable {
 			port.getPrefs().put("C", "D");
 			port.getPrefs().put("F", "F");
         
-        multiple messages can be send		
+        multiple messages can be send, any number of pairs can be send
+		
+		so this is ok
+		   2\nA:B&C:D&E:F
+		  or 
+           2\nA:B&C:D		
+           2\nE:F		
+		  or 
+           2\nA:B
+           2\nC:D		
+           2\nE:F		
+		
 */
+
