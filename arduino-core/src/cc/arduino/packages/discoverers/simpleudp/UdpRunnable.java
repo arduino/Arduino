@@ -190,6 +190,30 @@ public class UdpRunnable implements Runnable {
            2\nA:B
            2\nC:D		
            2\nE:F		
-		
+
+
+Basic example:
+==============
+		   
+call this in loop():		   
+
+void PostMyself(void) {
+  static unsigned long ticker = 0;
+
+  if (millis() - ticker > 15000) {
+    IPAddress broadcastIp(WiFi.localIP() | ( ~WiFi.subnetMask()));
+
+    WiFiUDP udp;
+    udp.begin(8765);
+    udp.beginPacket(broadcastIp, 8531);
+    udp.print("1\nesp8266 " + initmsg1 + "\n8266\n");
+    udp.endPacket();
+    delay(1);
+
+    ticker = millis();
+  }
+}
+
+		   
 */
 
