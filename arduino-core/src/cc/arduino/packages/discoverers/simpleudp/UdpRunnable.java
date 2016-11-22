@@ -85,7 +85,6 @@ public class UdpRunnable implements Runnable {
 //System.out.print(packet.getLength());
 //System.out.print(" Data received from ");
 					
-                    String board = null;
 					InetAddress senderip = packet.getAddress();
 //System.out.println(senderip);
 					
@@ -100,37 +99,28 @@ public class UdpRunnable implements Runnable {
 					
 					// msg typ 1
 					if (lines[0].equals("1")) {
-						// check the IP has an entry, if not, create new one
+						// check the IP has an entry, if not, create new one, else use exsting one
+                        BoardPort port;
 						int portexists = hasip(senderip.toString().substring(1));
 						if (portexists == -1) {
 						  // new port	
-                          BoardPort port = new BoardPort();
-	
-                          port.setAddress(senderip.toString().substring(1));
-                          port.setProtocol("network");
-                          port.setOnlineStatus(true);
-                          port.setLabel(lines[1]+" at "+senderip.toString().substring(1));
-						  port.setLastseen(System.currentTimeMillis());
-
-						  port.getPrefs().put("port", lines[2]);
-/*						  
-						  ServiceInfo info = serviceEvent.getInfo();
-						  if (info.hasData()) {
-						    port.getPrefs().put("distro_version", info.getPropertyString("distro_version"));
-						  }
-*/						  
-
-						  port.getPrefs().put("board", board);
-						  port.getPrefs().put("ssh_upload", "no");
-						  port.getPrefs().put("tcp_check", "no");
-						  port.getPrefs().put("auth_upload", "no");
-	
+                          port = new BoardPort();
                           udpBoardPorts.add(port);
 						} else {
-                          // only update 
-                          BoardPort port = udpBoardPorts.get(portexists);
-						  port.setLastseen(System.currentTimeMillis());				
+                          port = udpBoardPorts.get(portexists);
 						}
+						
+                        port.setAddress(senderip.toString().substring(1));
+                        port.setProtocol("network");
+                        port.setOnlineStatus(true);
+                        port.setLabel(lines[1]+" at "+senderip.toString().substring(1));
+                        port.setLastseen(System.currentTimeMillis());
+
+						port.getPrefs().put("port", lines[2]);
+						port.getPrefs().put("board", "");
+						port.getPrefs().put("ssh_upload", "no");
+						port.getPrefs().put("tcp_check", "no");
+						port.getPrefs().put("auth_upload", "no");
 					}
 				}
 			}
@@ -159,7 +149,7 @@ public class UdpRunnable implements Runnable {
 	
 	message format
 	
-	1\Ndisplayname\N
+	1\Ndisplayname\Nuploadport\N
 	
 	1 - id of this message type
 	    future protocols can choose different numbers to implement more details
