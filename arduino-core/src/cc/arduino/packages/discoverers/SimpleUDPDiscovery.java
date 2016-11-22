@@ -30,6 +30,7 @@
 package cc.arduino.packages.discoverers;
 
 import cc.arduino.packages.BoardPort;
+import processing.app.BaseNoGui;
 import cc.arduino.packages.Discovery;
 import cc.arduino.packages.discoverers.simpleudp.UdpRunnable;
 
@@ -60,6 +61,9 @@ public class SimpleUDPDiscovery implements Discovery {
   }
 
   private List<BoardPort> getudpBoardPorts(boolean complete) {
+	  
+	  zapLongNotSeen();
+	  
       if (complete) {
         return new LinkedList<>(udpBoardPorts);
       }
@@ -77,8 +81,17 @@ public class SimpleUDPDiscovery implements Discovery {
       udpBoardPorts.addAll(newudpBoardPorts);
   }
 
-  public void forceRefresh() {
-      runner.udpBoardPorts.clear();
+  public void zapLongNotSeen() {
+      long jetzt = System.currentTimeMillis();
+	  long alt = jetzt - 60000;    // 60 sekunden nicht gesehen? Alt
+
+      List<BoardPort> timeouts = new LinkedList<>();
+      for (BoardPort port : runner.udpBoardPorts) {
+        if (port.getLastseen() < alt) {
+          timeouts.add(port);
+        }
+      }
+      udpBoardPorts.removeAll(timeouts);
   }
 
   public void setUploadInProgress(boolean param) {
@@ -96,8 +109,6 @@ public class SimpleUDPDiscovery implements Discovery {
     runner = new UdpRunnable();
 	thread = new Thread(runner);
     thread.start();
-	
-	forceRefresh();
   }
 
   @Override
