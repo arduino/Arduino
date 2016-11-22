@@ -231,7 +231,7 @@
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.1"/>
-    <download-library name="SD" version="1.0.8"/>
+    <download-library name="SD" version="1.0.9"/>
   </target>
 
   <macrodef name="download-library">
