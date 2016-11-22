@@ -44,7 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
 
- 
+
 import java.util.*;
 
 
@@ -53,22 +53,22 @@ public class UdpRunnable implements Runnable {
 
 	private boolean running = true;
 	// local, thread save list
-    public final List<BoardPort> udpBoardPorts = Collections.synchronizedList(new LinkedList<>());
+	public final List<BoardPort> udpBoardPorts = Collections.synchronizedList(new LinkedList<>());
 	
 	private int hasip(String ip) {
 		int i = 0;
-        for (BoardPort port : udpBoardPorts) {
-          if (port.getAddress().equals(ip)) {
-      		return i;
-          }
-		  i++;
-        }
+		for (BoardPort port : udpBoardPorts) {
+			if (port.getAddress().equals(ip)) {
+				return i;
+			}
+			i++;
+		}
 		
 		return -1;
 	}
 	
 	public void run(){
-//System.out.println("MyRunnable running");
+		//System.out.println("MyRunnable running");
 		
 		while (running) 
 		{
@@ -76,45 +76,45 @@ public class UdpRunnable implements Runnable {
 			{
 				DatagramSocket socket = new DatagramSocket(8531, InetAddress.getByName("0.0.0.0"));
 				socket.setBroadcast(true);
-//System.out.println("Listen on " + socket.getLocalAddress() + " from " + socket.getInetAddress() + " port " + socket.getBroadcast());
+				//System.out.println("Listen on " + socket.getLocalAddress() + " from " + socket.getInetAddress() + " port " + socket.getBroadcast());
 				byte[] buf = new byte[512];
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				while (true) {
-//System.out.println("Waiting for data");
+					//System.out.println("Waiting for data");
 					socket.receive(packet);
-//System.out.print(packet.getLength());
-//System.out.print(" Data received from ");
+					//System.out.print(packet.getLength());
+					//System.out.print(" Data received from ");
 					
 					InetAddress senderip = packet.getAddress();
-//System.out.println(senderip);
+					//System.out.println(senderip);
 					
 					String msg = new String(packet.getData());
-                    String[] lines = msg.split("\\n");
+					String[] lines = msg.split("\\n");
 					
-//System.out.println("");
+					//System.out.println("");
 					
-//System.out.print(">>>");
-//System.out.print(lines[0]);
-//System.out.println("<<<<");
+					//System.out.print(">>>");
+					//System.out.print(lines[0]);
+					//System.out.println("<<<<");
 					
 					// msg typ 1
 					if (lines[0].equals("1")) {
 						// check the IP has an entry, if not, create new one, else use exsting one
-                        BoardPort port;
+						BoardPort port;
 						int portexists = hasip(senderip.toString().substring(1));
 						if (portexists == -1) {
-						  // new port	
-                          port = new BoardPort();
-                          udpBoardPorts.add(port);
+							// new port	
+							port = new BoardPort();
+							udpBoardPorts.add(port);
 						} else {
-                          port = udpBoardPorts.get(portexists);
+							port = udpBoardPorts.get(portexists);
 						}
 						
-                        port.setAddress(senderip.toString().substring(1));
-                        port.setProtocol("network");
-                        port.setOnlineStatus(true);
-                        port.setLabel(lines[1]+" at "+senderip.toString().substring(1));
-                        port.setLastseen(System.currentTimeMillis());
+						port.setAddress(senderip.toString().substring(1));
+						port.setProtocol("network");
+						port.setOnlineStatus(true);
+						port.setLabel(lines[1]+" at "+senderip.toString().substring(1));
+						port.setLastseen(System.currentTimeMillis());
 
 						port.getPrefs().put("port", lines[2]);
 						port.getPrefs().put("board", "");
@@ -124,8 +124,8 @@ public class UdpRunnable implements Runnable {
 					}
 				}
 			}
-            catch (UnknownHostException e) {
-                e.printStackTrace();
+			catch (UnknownHostException e) {
+				e.printStackTrace();
 			}
 			catch ( Exception e )
 			{
@@ -143,7 +143,7 @@ public class UdpRunnable implements Runnable {
 }
 
 /*
-    even more simple device discovery protocol 
+	even more simple device discovery protocol 
 	
 	send a broadcase to port 8531
 	
@@ -152,6 +152,6 @@ public class UdpRunnable implements Runnable {
 	1\Ndisplayname\Nuploadport\N
 	
 	1 - id of this message type
-	    future protocols can choose different numbers to implement more details
+		future protocols can choose different numbers to implement more details
 	
 */
