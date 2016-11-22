@@ -68,7 +68,7 @@ public class UdpRunnable implements Runnable {
 	}
 	
 	public void run(){
-		System.out.println("MyRunnable running");
+//System.out.println("MyRunnable running");
 		
 		while (running) 
 		{
@@ -76,44 +76,63 @@ public class UdpRunnable implements Runnable {
 			{
 				DatagramSocket socket = new DatagramSocket(8531, InetAddress.getByName("0.0.0.0"));
 				socket.setBroadcast(true);
-				System.out.println("Listen on " + socket.getLocalAddress() + " from " + socket.getInetAddress() + " port " + socket.getBroadcast());
+//System.out.println("Listen on " + socket.getLocalAddress() + " from " + socket.getInetAddress() + " port " + socket.getBroadcast());
 				byte[] buf = new byte[512];
 				DatagramPacket packet = new DatagramPacket(buf, buf.length);
 				while (true) {
-					System.out.println("Waiting for data");
+//System.out.println("Waiting for data");
 					socket.receive(packet);
-					System.out.print(packet.getLength());
-     				System.out.print(" Data received from ");
+//System.out.print(packet.getLength());
+//System.out.print(" Data received from ");
 					
                     String board = null;
 					InetAddress senderip = packet.getAddress();
-     				System.out.println(senderip);
+//System.out.println(senderip);
 					
 					String msg = new String(packet.getData());
                     String[] lines = msg.split("\\n");
 					
-     				System.out.println("");
+//System.out.println("");
 					
-     				System.out.print(">>>");
-     				System.out.print(lines[0]);
-     				System.out.println("<<<<");
+//System.out.print(">>>");
+//System.out.print(lines[0]);
+//System.out.println("<<<<");
 					
 					// msg typ 1
 					if (lines[0].equals("1")) {
+						// check the IP has an entry, if not, create new one
 						int portexists = hasip(senderip.toString().substring(1));
-						if (portexists==-1) {
+						if (portexists == -1) {
+						  // new port	
                           BoardPort port = new BoardPort();
 	
                           port.setAddress(senderip.toString().substring(1));
                           port.setProtocol("network");
                           port.setOnlineStatus(true);
-                          port.setLabel(lines[1]+" at "+senderip.toString());
+                          port.setLabel(lines[1]+" at "+senderip.toString().substring(1));
+						  port.setLastseen(System.currentTimeMillis());
+
+						  port.getPrefs().put("port", lines[2]);
+/*						  
+						  ServiceInfo info = serviceEvent.getInfo();
+						  if (info.hasData()) {
+						    port.getPrefs().put("distro_version", info.getPropertyString("distro_version"));
+						  }
+*/						  
+
+						  port.getPrefs().put("board", board);
+						  port.getPrefs().put("ssh_upload", "no");
+						  port.getPrefs().put("tcp_check", "no");
+						  port.getPrefs().put("auth_upload", "no");
 	
                           udpBoardPorts.add(port);
+						} else {
+                          // only update 
+                          BoardPort port = udpBoardPorts.get(portexists);
+						  port.setLastseen(System.currentTimeMillis());				
 						}
 					}
 				}
-
 			}
             catch (UnknownHostException e) {
                 e.printStackTrace();
@@ -123,7 +142,6 @@ public class UdpRunnable implements Runnable {
 				running=false;
 			}
 		}
-		
 	}
 	
 	public void terminate()
@@ -145,24 +163,5 @@ public class UdpRunnable implements Runnable {
 	
 	1 - id of this message type
 	    future protocols can choose different numbers to implement more details
-
-    BoardPort needs lastseen-time-thing for removing not anymore pinging boards.		
-	
 	
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
