@@ -44,7 +44,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
 
-
 import java.util.*;
 
 
@@ -121,6 +120,19 @@ public class UdpRunnable implements Runnable {
 						port.getPrefs().put("ssh_upload", "no");
 						port.getPrefs().put("tcp_check", "no");
 						port.getPrefs().put("auth_upload", "no");
+					} else
+					// msg typ 2
+					if (lines[0].equals("2")) {
+						int portexists = hasip(senderip.toString().substring(1));
+						if (portexists != -1) {
+							BoardPort port = udpBoardPorts.get(portexists);
+							String[] pairs = msg.split("&");
+							for (String pair : pairs)
+							{
+								String[] params = pair.split(":");
+								port.getPrefs().put(params[0],params[1]);
+							}
+						}
 					}
 				}
 			}
@@ -129,7 +141,7 @@ public class UdpRunnable implements Runnable {
 			}
 			catch ( Exception e )
 			{
-				running=false;
+				running = false;
 			}
 		}
 	}
@@ -138,8 +150,6 @@ public class UdpRunnable implements Runnable {
 	{
 		running = false;
 	}
-	
-	
 }
 
 /*
@@ -149,9 +159,23 @@ public class UdpRunnable implements Runnable {
 	
 	message format
 	
-	1\Ndisplayname\Nuploadport\N
+	1\nsomethinginascci.
 	
-	1 - id of this message type
-		future protocols can choose different numbers to implement more details
-	
+	1 - simple menu setup
+	    1\ndisplayname\nuploadport\n
+		
+		creates a menu entry "displayname" assigned to the senders ip, sets the upload port to "uploadport"
+		
+	2 - set optional parameters
+	    2\nA:B&C:D&E:F 
+		can set optional parameters 
+		
+		Message looks like 2\nA:B&C:D&E:F
+		
+		will set
+			port.getPrefs().put("A", "B");
+			port.getPrefs().put("C", "D");
+			port.getPrefs().put("F", "F");
+        
+        multiple messages can be send		
 */
