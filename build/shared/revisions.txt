@@ -10,6 +10,7 @@ ARDUINO 1.6.13 - 2016.11.22
 * Improved serial plotter with horizontal axis and grid. Thanks @duff2013
 * Windows: Improved DPI detection
 * Fixed a bunch of small bugs in the editor.
+* WiFi101 Firmware Updater: fixed certificates download from websites usign SNI (handshake_failed error)
 
 [core]
 * avr: set default values for "upload.verify" and "program.verify" (allows compatibility with older IDE). Thanks @per1234
