@@ -42,6 +42,7 @@ public class BoardPort {
   private String label;
   private final PreferencesMap prefs;
   private boolean online;
+  private long lastseen;
 
   public BoardPort() {
     this.prefs = new PreferencesMap();
@@ -115,4 +116,14 @@ public class BoardPort {
   public String toString() {
     return this.address+"_"+this.vid+"_"+this.pid;
   }
+  
+  
+  public void setLastseen(long lastseen) {
+    this.lastseen = lastseen;
+  }
+
+  public long getLastseen() {
+    return lastseen;
+  }
+  
 }
