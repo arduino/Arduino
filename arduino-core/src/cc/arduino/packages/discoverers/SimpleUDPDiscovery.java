@@ -41,13 +41,11 @@ import java.util.Timer;
 public class SimpleUDPDiscovery implements Discovery {
 
   private Timer udpBoardsListerTimer;
-  private final List<BoardPort> udpBoardPorts;
   private Thread thread;
   private UdpRunnable runner;
   //private SerialBoardsLister serialBoardsLister = new SerialBoardsLister((SerialBoardsLister)this);
 
   public SimpleUDPDiscovery() {
-    this.udpBoardPorts = new LinkedList<>();
   }
 
   @Override
@@ -65,7 +63,7 @@ public class SimpleUDPDiscovery implements Discovery {
 	  zapLongNotSeen();
 	  
       if (complete) {
-        return new LinkedList<>(udpBoardPorts);
+        return new LinkedList<>(runner.udpBoardPorts);
       }
       List<BoardPort> onlineBoardPorts = new LinkedList<>();
       for (BoardPort port : runner.udpBoardPorts) {
@@ -77,11 +75,11 @@ public class SimpleUDPDiscovery implements Discovery {
   }
 
   public void setudpBoardPorts(List<BoardPort> newudpBoardPorts) {
-      udpBoardPorts.clear();
-      udpBoardPorts.addAll(newudpBoardPorts);
   }
 
   public void zapLongNotSeen() {
+//System.out.println("zap");
+	  
       long jetzt = System.currentTimeMillis();
 	  long alt = jetzt - 60000;    // 60 sekunden nicht gesehen? Alt
 
@@ -89,9 +87,10 @@ public class SimpleUDPDiscovery implements Discovery {
       for (BoardPort port : runner.udpBoardPorts) {
         if (port.getLastseen() < alt) {
           timeouts.add(port);
+//System.out.println("Alt!");
         }
       }
-      udpBoardPorts.removeAll(timeouts);
+      runner.udpBoardPorts.removeAll(timeouts);
   }
 
   public void setUploadInProgress(boolean param) {
