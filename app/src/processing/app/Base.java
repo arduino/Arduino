@@ -351,9 +351,9 @@ public class Base {
     } else if (parser.isVerifyOrUploadMode()) {
       splash.close();
       // Set verbosity for command line build
-      PreferencesData.set("build.verbose", "" + parser.isDoVerboseBuild());
-      PreferencesData.set("upload.verbose", "" + parser.isDoVerboseUpload());
-      PreferencesData.set("runtime.preserve.temp.files", Boolean.toString(parser.isPreserveTempFiles()));
+      PreferencesData.setBoolean("build.verbose", parser.isDoVerboseBuild());
+      PreferencesData.setBoolean("upload.verbose", parser.isDoVerboseUpload());
+      PreferencesData.setBoolean("runtime.preserve.temp.files", parser.isPreserveTempFiles());
 
       // Make sure these verbosity preferences are only for the
       // current session
