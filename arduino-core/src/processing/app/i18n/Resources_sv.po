@@ -13,10 +13,11 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anton Ryberg <anton.ryberg@kontinuitet.se>, 2015
 # Daniel Jansson <daniel@threepercentdone.com>, 2012
-# Dan Berg <sjbrg@protonmail.com>, 2013
-# Dan Berg <sjbrg@protonmail.com>, 2013
+# Daniel Sjöberg <sjbrg@protonmail.com>, 2013
+# Daniel Sjöberg <sjbrg@protonmail.com>, 2013
 # GregerA <greger.andersson@electrokit.se>, 2014
 # GudenTorson, 2015
 # Jonas Bengtsson <jonas.b@gmail.com>, 2013
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Swedish (http://www.transifex.com/mbanzi/arduino-ide-15/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -96,11 +97,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr ""
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "En fil vid namn \"{0}\" existerar redan i \"{1}\""
 
 #: Editor.java:2169
 #, java-format
@@ -424,8 +420,10 @@ msgstr "Bränn bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Bränner bootloader till I/O kortet (detta kan ta en stund)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
@@ -446,10 +444,6 @@ msgstr "Franska (Kanada)"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Avbryt"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Kan ej byta namn"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -532,6 +526,11 @@ msgstr "Kunde ej lägga till \"{0}\" till skissen."
 msgid "Could not copy to a proper location."
 msgstr "Kunde inte kopiera till en giltig plats."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Kan ej skapa skissmappen."
@@ -549,11 +548,6 @@ msgstr "Kunde ej ta bort \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Kunde ej ta bort den existerande filen \"{0}\"."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Kunde ej ta bort {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -610,23 +604,6 @@ msgstr "Kunde ej läsa standardinställningarna.\nDu måste installera om Arduin
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Kunde ej ta bort gammal version av {0}"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Kunde ej byta namn på \"{0}\" till \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Kunde ej byta namn på skissen. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Kunde ej byta namn på skissen. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Kunde ej byta namn på skissen. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -916,11 +893,6 @@ msgstr ""
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Fel vid laddning av kod {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Fel vid utskrift."
@@ -961,8 +933,14 @@ msgstr "Estniska (Estland)"
 msgid "Examples"
 msgstr "Exempel"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -971,12 +949,6 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -990,6 +962,15 @@ msgstr "Exportera kompilerad binärfil"
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
 msgstr ""
 
 #: Editor.java:491
@@ -1963,10 +1944,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr ""
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Tyvärr, en skiss (eller mapp) med namnet \"{0}\" existerar redan."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2035,6 +2016,10 @@ msgstr "Serverklassen har bytt namn till EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Klassen Udp har döpts om till EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -2051,12 +2036,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Biblioteket \"{0}\" kan ej användas.\nBiblioteksnamn får bara innehålla vanliga bokstäver och nummer.\n(endast ASCII och inga mellanslag och kan ej börja med ett nummer)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Huvudfilen kan inte använda en filändelse.\n(Det kan vara dags för dig att gå vidare till ett \"riktigt\" programmeringsspråk)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2077,6 +2059,11 @@ msgid ""
 "(ASCII-only with no spaces, and it cannot start with a number).\n"
 "To get rid of this message, remove the sketch from\n"
 "{1}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
 msgstr ""
 
 #: Sketch.java:1755
@@ -2462,24 +2449,8 @@ msgstr "Ja"
 msgid "You can't fool me"
 msgstr "Du kan inte lura mig"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Du kan inte ha en .cpp-fil med samma namn som din skiss"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Du kan inte byta namn på skissen till \"{0}\"\neftersom att skissen redan har en .cpp-fil med det namnet."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2599,10 +2570,6 @@ msgstr "Kompilation"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "ansluten!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() returnerade false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2741,3 +2708,8 @@ msgstr ""
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "Okänt paket"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

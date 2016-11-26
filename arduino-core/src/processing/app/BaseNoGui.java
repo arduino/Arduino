@@ -1,8 +1,6 @@
 package processing.app;
 
-import cc.arduino.Compiler;
 import cc.arduino.Constants;
-import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.VersionComparator;
@@ -10,9 +8,7 @@ import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.contributions.packages.ContributionsIndexer;
-import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
-import cc.arduino.packages.Uploader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
@@ -42,9 +38,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10613;
+  public static final int REVISION = 10614;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.6.13";
+  public static final String VERSION_NAME = "1.6.14";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -62,6 +58,19 @@ public class BaseNoGui {
         //noop
       }
     }
+
+    File windowsStoreConfig = new File(getContentFile("lib"), "windowsStore.txt");
+    if (windowsStoreConfig.exists()) {
+      try {
+        PreferencesMap conf = new PreferencesMap(windowsStoreConfig);
+        PreferencesData.setBoolean("runtime.is-windows-store-app", true);
+        PreferencesData.set("runtime.windows-store-app.id", conf.get("appid"));
+        versionNameLong += " (Windows Store " + conf.get("version") + ")";
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+    }
+
     VERSION_NAME_LONG = versionNameLong;
   }
 
@@ -117,15 +126,6 @@ public class BaseNoGui {
     return count;
   }
 
-  static public String getAvrBasePath() {
-    String path = getHardwarePath() + File.separator + "tools" +
-                  File.separator + "avr" + File.separator + "bin" + File.separator;
-    if (OSUtils.isLinux() && !(new File(path)).exists()) {
-      return "";  // use distribution provided avr tools if bundled tools missing
-    }
-    return path;
-  }
-
   static public PreferencesMap getBoardPreferences() {
     TargetBoard board = getTargetBoard();
     if (board == null)
@@ -162,12 +162,17 @@ public class BaseNoGui {
 
     // Add all tools dependencies from the (possibily) referenced core
     String core = prefs.get("build.core");
-    if (core.contains(":")) {
+    if (core != null && core.contains(":")) {
       String split[] = core.split(":");
       TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
-      ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
-      if (referencedPlatform != null)
-        requiredTools.addAll(referencedPlatform.getResolvedTools());
+      if (referenced != null) {
+        ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
+        if (referencedPlatform != null)
+          requiredTools.addAll(referencedPlatform.getResolvedTools());
+      } else {
+        String msg = tr("The current selected board needs the core '{0}' that is not installed.");
+        System.out.println(I18n.format(msg, core));
+      }
     }
 
     String prefix = "runtime.tools.";
@@ -433,156 +438,6 @@ public class BaseNoGui {
     return list;
   }
 
-  static public void init(String[] args) throws Exception {
-    CommandlineParser parser = new CommandlineParser(args);
-    parser.parseArgumentsPhase1();
-
-    String sketchbookPath = getSketchbookPath();
-  
-    // If no path is set, get the default sketchbook folder for this platform
-    if (sketchbookPath == null) {
-      if (BaseNoGui.getPortableFolder() != null)
-        PreferencesData.set("sketchbook.path", getPortableSketchbookFolder());
-      else
-        showError(tr("No sketchbook"), tr("Sketchbook path not defined"), null);
-    }
-
-    BaseNoGui.initPackages();
-
-    parser.parseArgumentsPhase2();
-
-    for (String path: parser.getFilenames()) {
-      // Correctly resolve relative paths
-      File file = absoluteFile(path);
-  
-      // Fix a problem with systems that use a non-ASCII languages. Paths are
-      // being passed in with 8.3 syntax, which makes the sketch loader code
-      // unhappy, since the sketch folder naming doesn't match up correctly.
-      // http://dev.processing.org/bugs/show_bug.cgi?id=1089
-      if (OSUtils.isWindows()) {
-        try {
-          file = file.getCanonicalFile();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-
-      if (!parser.isVerifyOrUploadMode() && !parser.isGetPrefMode())
-        showError(tr("Mode not supported"), tr("Only --verify, --upload or --get-pref are supported"), null);
-
-      if (!parser.isForceSavePrefs())
-        PreferencesData.setDoSave(false);
-      if (!file.exists()) {
-        String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
-        // Open failure is fatal in upload/verify mode
-        showError(null, mess, 2);
-      }
-    }
-
-    // Setup board-dependent variables.
-    onBoardOrPortChange();
-
-    // Save the preferences. For GUI mode, this happens in the quit
-    // handler, but for other modes we should also make sure to save
-    // them.
-    PreferencesData.save();
-
-    if (parser.isVerifyOrUploadMode()) {
-      // Set verbosity for command line build
-      PreferencesData.set("build.verbose", "" + parser.isDoVerboseBuild());
-      PreferencesData.set("upload.verbose", "" + parser.isDoVerboseUpload());
-
-      // Make sure these verbosity preferences are only for the
-      // current session
-      PreferencesData.setDoSave(false);
-
-      if (parser.isUploadMode()) {
-
-        if (parser.getFilenames().size() != 1)
-        {
-          showError(tr("Multiple files not supported"), tr("The --upload option supports only one file at a time"), null);
-        }
-
-        List<String> warningsAccumulator = new LinkedList<>();
-        boolean success = false;
-        try {
-          // Editor constructor loads the sketch with handleOpenInternal() that
-          // creates a new Sketch that, in turn, builds a SketchData
-          // inside its constructor.
-          // This translates here as:
-          //   SketchData data = new SketchData(file);
-          //   File tempBuildFolder = getBuildFolder();
-          Sketch data = new Sketch(absoluteFile(parser.getFilenames().get(0)));
-
-          // Sketch.exportApplet()
-          //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
-          //  - calls Sketch.build(verbose=false) that calls Sketch.ensureExistence(), set progressListener and calls Compiler.build()
-          //  - calls Sketch.upload() (see later...)
-          if (!data.getFolder().exists()) {
-            showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-          }
-          String suggestedClassName = new Compiler(data).build(null, false);
-          if (suggestedClassName == null) {
-            showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
-          }
-          showMessage(tr("Done compiling"), tr("Done compiling"));
-
-          Uploader uploader = new UploaderUtils().getUploaderByPreferences(parser.isNoUploadPort());
-          if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
-          try {
-            success = new UploaderUtils().upload(data, uploader, suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
-            showMessage(tr("Done uploading"), tr("Done uploading"));
-          } finally {
-            if (uploader.requiresAuthorization() && !success) {
-              PreferencesData.remove(uploader.getAuthorizationKey());
-            }
-          }
-        } catch (Exception e) {
-          showError(tr("Error while verifying/uploading"), tr("An error occurred while verifying/uploading the sketch"), e);
-        }
-        for (String warning : warningsAccumulator) {
-          System.out.print(tr("Warning"));
-          System.out.print(": ");
-          System.out.println(warning);
-        }
-        if (!success) showError(tr("Error while uploading"), tr("An error occurred while uploading the sketch"), null);
-      } else {
-
-        for (String path : parser.getFilenames())
-        {
-          try {
-            // Editor constructor loads sketch with handleOpenInternal() that
-            // creates a new Sketch that calls load() in its constructor
-            // This translates here as:
-            //   SketchData data = new SketchData(file);
-            //   File tempBuildFolder = getBuildFolder();
-            //   data.load();
-            Sketch data = new Sketch(absoluteFile(path));
-
-            // Sketch.prepare() calls Sketch.ensureExistence()
-            // Sketch.build(verbose) calls Sketch.ensureExistence() and set progressListener and, finally, calls Compiler.build()
-            // This translates here as:
-            //    if (!data.getFolder().exists()) showError(...);
-            //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
-            if (!data.getFolder().exists()) showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = new Compiler(data).build(null, false);
-            if (suggestedClassName == null) showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
-            showMessage(tr("Done compiling"), tr("Done compiling"));
-          } catch (Exception e) {
-            showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), e);
-          }
-        }
-
-      }
-
-      // No errors exit gracefully
-      System.exit(0);
-    }
-    else if (parser.isGetPrefMode()) {
-      dumpPrefs(parser);
-    }
-  }
-
   protected static void dumpPrefs(CommandlineParser parser) {
     if (parser.getGetPref() != null) {
       String value = PreferencesData.get(parser.getGetPref(), null);
@@ -752,29 +607,6 @@ public class BaseNoGui {
     return PApplet.join(contents, "\n");
   }
 
-  static public void main(String args[]) throws Exception {
-    if (args.length == 0) {
-      showError(tr("No parameters"), tr("No command line parameters found"), null);
-    }
-    System.setProperty("java.net.useSystemProxies", "true");
-
-    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
-    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
-    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
-
-    initPlatform();
-
-    getPlatform().init();
-
-    initPortableFolder();
-    
-    initParameters(args);
-
-    checkInstallationFolder();
-
-    init(args);
-  }
-
   public static void checkInstallationFolder() {
     if (isIDEInstalledIntoSettingsFolder()) {
       showError(tr("Incorrect IDE installation folder"), tr("Your copy of the IDE is installed in a subfolder of your settings folder.\nPlease move the IDE to another folder."), 10);
@@ -829,9 +661,9 @@ public class BaseNoGui {
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    BaseNoGui.librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    BaseNoGui.librariesIndexer.setLibrariesFolders(librariesFolders);
-    BaseNoGui.librariesIndexer.rescanLibraries();
+    librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
+    librariesIndexer.setLibrariesFolders(librariesFolders);
+    librariesIndexer.rescanLibraries();
 
     populateImportToLibraryTable();
   }

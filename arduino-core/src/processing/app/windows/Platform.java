@@ -22,8 +22,8 @@
 
 package processing.app.windows;
 
-import cc.arduino.os.windows.FolderFinderInWindowsEnvVar;
-import cc.arduino.os.windows.FolderFinderInWindowsRegistry;
+import cc.arduino.os.windows.Win32KnownFolders;
+import processing.app.PreferencesData;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
 
@@ -35,6 +35,10 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APIOptions;
 
 public class Platform extends processing.app.Platform {
 
@@ -51,28 +55,25 @@ public class Platform extends processing.app.Platform {
   }
 
   private void recoverSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Local AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Local AppData");
-
-    Path path = findInShellFolders.find();
-    this.settingsFolder = path.resolve("Arduino15").toFile();
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app")) {
+      // LocalAppData is restricted for Windows Store Apps.
+      // We are forced to use a document folder to store tools.
+      Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+      settingsFolder = path.resolve("ArduinoData").toFile();
+    } else {
+      Path path = Win32KnownFolders.getLocalAppDataFolder().toPath();
+      settingsFolder = path.resolve("Arduino15").toFile();
+    }
   }
 
   private Path recoverOldSettingsFolderPath() throws Exception {
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(null, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "AppData");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData");
-
-    Path path = findInShellFolders.find();
+    Path path = Win32KnownFolders.getRoamingAppDataFolder().toPath();
     return path.resolve("Arduino15");
   }
 
   private void recoverDefaultSketchbookFolder() throws Exception {
-    FolderFinderInWindowsEnvVar findInUserProfile = new FolderFinderInWindowsEnvVar(null, "Documents", "USERPROFILE");
-    FolderFinderInWindowsRegistry findInUserShellFolders = new FolderFinderInWindowsRegistry(findInUserProfile, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\User Shell Folders", "Personal");
-    FolderFinderInWindowsRegistry findInShellFolders = new FolderFinderInWindowsRegistry(findInUserShellFolders, "Documents", "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal");
-
-    Path path = findInShellFolders.find();
-    this.defaultSketchbookFolder = path.resolve("Arduino").toFile();
+    Path path = Win32KnownFolders.getDocumentsFolder().toPath();
+    defaultSketchbookFolder = path.resolve("Arduino").toFile();
   }
 
   /**
@@ -122,6 +123,18 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public void openURL(String url) throws Exception {
+    if (!url.startsWith("http") && !url.startsWith("file:")) {
+      // Check if we are trying to open a local file
+      File file = new File(url);
+      if (file.exists()) {
+        // in this case convert the path to a "file:" url
+        url = file.toURI().toString();
+
+        // this allows to open the file on Windows 10 that
+        // has a more strict permission policy for cmd.exe
+      }
+    }
+
     // this is not guaranteed to work, because who knows if the
     // path will always be c:\progra~1 et al. also if the user has
     // a different browser set as their default (which would
@@ -213,6 +226,9 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public void fixSettingsLocation() throws Exception {
+    if (PreferencesData.getBoolean("runtime.is-windows-store-app"))
+      return;
+
     Path oldSettingsFolder = recoverOldSettingsFolderPath();
     if (!Files.exists(oldSettingsFolder)) {
       return;
@@ -227,5 +243,55 @@ public class Platform extends processing.app.Platform {
     }
 
     Files.move(oldSettingsFolder, settingsFolder.toPath());
+  }
+
+  // Need to extend com.sun.jna.platform.win32.User32 to access
+  // Win32 function GetDpiForSystem()
+  interface ExtUser32 extends StdCallLibrary, com.sun.jna.platform.win32.User32 {
+    ExtUser32 INSTANCE = (ExtUser32) Native.loadLibrary("user32", ExtUser32.class, W32APIOptions.DEFAULT_OPTIONS);
+
+    public int GetDpiForSystem();
+
+    public int SetProcessDpiAwareness(int value);
+
+    public final int DPI_AWARENESS_INVALID = -1;
+    public final int DPI_AWARENESS_UNAWARE = 0;
+    public final int DPI_AWARENESS_SYSTEM_AWARE = 1;
+    public final int DPI_AWARENESS_PER_MONITOR_AWARE = 2;
+
+    public Pointer SetThreadDpiAwarenessContext(Pointer dpiContext);
+
+    public final Pointer DPI_AWARENESS_CONTEXT_UNAWARE = new Pointer(-1);
+    public final Pointer DPI_AWARENESS_CONTEXT_SYSTEM_AWARE = new Pointer(-2);
+    public final Pointer DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE = new Pointer(-3);
+  }
+
+  private static int detected = detectSystemDPI();
+
+  @Override
+  public int getSystemDPI() {
+    if (detected == -1)
+      return super.getSystemDPI();
+    return detected;
+  }
+
+  public static int detectSystemDPI() {
+    try {
+      ExtUser32.INSTANCE.SetProcessDpiAwareness(ExtUser32.DPI_AWARENESS_SYSTEM_AWARE);
+    } catch (Throwable e) {
+      // Ignore error
+    }
+    try {
+      ExtUser32.INSTANCE.SetThreadDpiAwarenessContext(ExtUser32.DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+    } catch (Throwable e) {
+      // Ignore error (call valid only on Windows 10)
+    }
+    try {
+      return ExtUser32.INSTANCE.GetDpiForSystem();
+    } catch (Throwable e) {
+      // DPI detection failed, fall back with default
+      System.out.println("DPI detection failed, fallback to 96 dpi");
+      return -1;
+    }
   }
 }

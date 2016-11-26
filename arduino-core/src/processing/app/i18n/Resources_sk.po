@@ -13,13 +13,14 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Zdeno Sekerák <etrsek@gmail.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Slovak (http://www.transifex.com/mbanzi/arduino-ide-15/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -61,7 +62,7 @@ msgstr "'arch' adresár už nieje podporovaný! Viac informácií na http://goo.
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(editovať iba v prípade že Arduino nebeží)\n\\nPreložil: Zdenko Sekerák"
+msgstr "(editovať iba v prípade že Arduino nebeží)\nIDE preložil: Zdenko Sekerák"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
@@ -88,11 +89,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Chceš uložiť zmeny do tohoto projektu<BR> pred zatvorením?</b><p>Ak ich neuložíš tvoje zmeny budú stratené."
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Súbor \"{0}\" už existuje v \"{1}\""
 
 #: Editor.java:2169
 #, java-format
@@ -125,7 +121,7 @@ msgstr "O Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli - Uganda"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -339,7 +335,7 @@ msgstr "Doska"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Informácie o doske"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -416,9 +412,11 @@ msgstr "Vypáliť zavádzač (bootloader)"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Vypaľujem zavádzač do I/O Board /vývojovej dosky/ (chviľku to potrvá)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC je nesprávny. Súbor je poškodený."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -438,10 +436,6 @@ msgstr "Kanadská Francúzština"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Storno"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Nieje možné premenovať"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -524,6 +518,11 @@ msgstr "Nemôžem pridať ''{0}'' do projektu."
 msgid "Could not copy to a proper location."
 msgstr "Nemôžem kopírovať do správneho umiestnenia."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Nemôžem vytvoriť adresár pre projekty."
@@ -541,11 +540,6 @@ msgstr "Nemôžem vymazať \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Nemôžem vymazať existujúci súbor ''{0}'."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Nemôžem vymazať {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -602,23 +596,6 @@ msgstr "Nieje možné načítať systémové nastavenia.\nBude nutné reinštalo
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Nemôžem vymazať starú verziu {0}"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Nemôžem premenovať \"{0}\" na \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Nemôžem premenovať projekt. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Nemôžem premenovať projekt. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Nemôžem premenovať projekt. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -908,11 +885,6 @@ msgstr "Chyba pri vypaľovaní bootloaderu: chýba konfiguračný parameter '{0}
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Nastala chyba pri kompilácii: chýba konfiguračný parameter '{0}'"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Nastala chyba pri nahrávaní kódu {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Nastala chyba pri tlači."
@@ -953,8 +925,14 @@ msgstr "Estónština (Estónsko)"
 msgid "Examples"
 msgstr "Príklady"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -963,13 +941,7 @@ msgstr "Príklady z Vlastných Knižníc"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
-msgstr ""
+msgstr "Príklady z Externých knižníc"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -983,6 +955,15 @@ msgstr "Export kompilovaného Binárneho tvaru"
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Nepodarilo sa otvoriť projekt: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1075,7 +1056,7 @@ msgstr "Nemčina"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Získať informácie o Doske"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1137,7 +1118,7 @@ msgstr "Maďarština"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "NEKOMPAKTIBILNÝ"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1243,7 +1224,7 @@ msgstr "Japončina"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazašsky"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1347,7 +1328,7 @@ msgstr "Názov pre nový súbor:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Nemôžem získať informácie zo zabudovaného sériového portu"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1359,7 +1340,7 @@ msgstr "Sieť"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Nemôžem získať informácie zo sieťového portu"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1550,7 +1531,7 @@ msgstr "Prosím importujte Wire knižnicu z menu Projekty > Import Knižnice (Li
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Prosím vyber port z ktorého mám získať informácie o doske"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1932,7 +1913,7 @@ msgstr "Adresár ku knižnici projektov nieje definovaný"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Vynechávam indexový súbor {0}, došlo k chybe pri analýze:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1955,10 +1936,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Niektoré súbory sú označené \"Len pre čítanie\", preto \nuložte projekt na iné miesto."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Prepáč ale projekt (alebo adresár) s menom \"{0}\" už existuje."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1994,7 +1975,7 @@ msgstr "Tamilština"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu - India"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2027,6 +2008,10 @@ msgstr "Trieda Server bola premenovaná na EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Trieda Udp bola premenovaná na EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -2043,12 +2028,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Knižnica \"{0}\" nemôže byť použitá.\nNázov knižnice musí obsahovať iba písmená bez diakritiky a číslice.\n(ASCII znaky, bez medzier, a nemôže začínať číslom)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Hlavný súbor nemôže použiť rozšírenie.\n(Možno nastal čas začať používať\n\"skutočné\" vývojové prostredie)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2070,6 +2052,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Názov projektu \"{0}\" nieje možné použiť.\nNázov projektu môže obsahovať len základné písmena a čísla\n(teda iba ASCII znaky, bez medzier, názov nesmie začínať číslom).\nAby sa vám tato správa nezobrazovala zmažte projekt z\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2217,7 +2204,7 @@ msgstr "Neošetrený typ {0} v zozname kľúčov {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Neznáma doska"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2273,7 +2260,7 @@ msgstr "Nahrať Pomocou Programátora"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Nahraj neaký projekt k získaniu"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2454,25 +2441,9 @@ msgstr "Áno"
 msgid "You can't fool me"
 msgstr "Mňa neprekabátiš"
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Súbor s príponou .cpp nesmie mať rovnaké meno ako projekt."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Nemožno importovať zložku, ktorá obsahuje tvoj projekt"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Nejde prejmenovať projekt na \"{0}\"\npretože súbor s rovnakým menom avšak s príponou .cpp už existuje."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "Nemožeš uložiť projekt ako \"{0}\"\npretože iný projekt už má súbor s týmto menom."
 
 #: Sketch.java:883
 msgid ""
@@ -2591,10 +2562,6 @@ msgstr "kompilácia"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "pripojené!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() vrátil false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2733,3 +2700,8 @@ msgstr "{0}: Neznáma doska"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Neznámy rozširujúci balík"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

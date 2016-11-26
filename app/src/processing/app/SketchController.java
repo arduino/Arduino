@@ -260,6 +260,8 @@ public class SketchController {
           return;
         }
 
+        editor.removeTab(current);
+
         // just set current tab to the main tab
         editor.selectTab(0);
 

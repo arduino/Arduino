@@ -1,10 +1,24 @@
-ARDUINO 1.6.13
+ARDUINO 1.6.14
+[ide]
+
+[core]
+
+ARDUINO 1.6.13 - 2016.11.22
 
 [ide]
 * Improved robustness of Serial Plotter while dealing with malformed or partial data. Thanks @xloem.
 * Fixed regression on command line upload.
+* Bugifx installing libraries from command line: the IDE tries to update the libraries index but it
+  didn't use it straight away (this caused issues mainly on CI environments)
+* Libraries and Boards Managers: if a download error happens (CRC error) the IDE tries to download the file again
+  without the need to remove the corrupted file manually.
+* Improved serial plotter with horizontal axis and grid. Thanks @duff2013
+* Windows: Improved DPI detection
+* Fixed a bunch of small bugs in the editor.
+* WiFi101 Firmware Updater: fixed certificates download from websites usign SNI (handshake_failed error)
 
 [core]
+* avr: set default values for "upload.verify" and "program.verify" (allows compatibility with older IDE). Thanks @per1234
 
 ARDUINO 1.6.12 - 2016.09.21
 

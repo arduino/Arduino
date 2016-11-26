@@ -13,6 +13,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # benewfy <benewfy@gmail.com>, 2015-2016
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -24,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-08-16 11:24+0000\n"
+"PO-Revision-Date: 2016-11-21 17:09+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -93,11 +94,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Szeretné menteni a változtatásokat ezen a vázlaton<BR> mielött bezárná?</b><p>Ha nem menti el, a változtatások elvesznek."
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "A \"{0}\" file már létezik a \"{1}\" mappában!"
 
 #: Editor.java:2169
 #, java-format
@@ -421,9 +417,11 @@ msgstr "Bootloader égetése"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Bootloader égetése I/O Alaplapra (ez eltarthat egy percig)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC nem egyezik. A fájl sérült."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -443,10 +441,6 @@ msgstr "Kanadai francia"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Mégse"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Nem lehet Átnevezni"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -529,6 +523,11 @@ msgstr "Nem sikerült hozzáadni ''{0}''-t a vázlathoz."
 msgid "Could not copy to a proper location."
 msgstr "Nem sikerült másolni a megfelelő helyre."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Nem sikerült létrehozni a vázlat mappát."
@@ -546,11 +545,6 @@ msgstr "Nem sikerült törölni \"{0}\"-t."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Nem sikerült törölni a létező ''{0}'' fájlt."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Nem sikerült törölni: {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -607,23 +601,6 @@ msgstr "Az alapértelezett beállítások nem olvashatóak\\nAz Arduino újratel
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Nem törölhető a {0} régi verziója"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Nem sikerült átnevezni a(z) \"{0}\"-t erre: \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Nem sikerült átnevezni a vázlatot. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Nem sikerült átnevezni a vázlatot. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Nem sikerült átnevezni a vázlatot. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -913,11 +890,6 @@ msgstr ""
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Hiba a(z) {0} kód betöltésekor"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Hiba a nyomtatás közben."
@@ -958,8 +930,14 @@ msgstr "Észt (Észtország)"
 msgid "Examples"
 msgstr "Példák"
 
-#: ../../../../../app/src/processing/app/Base.java:1267
-msgid "Examples from Built-in Libraries"
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1244
@@ -968,12 +946,6 @@ msgstr "Példák egyéni könyvtárakból"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Base.java:1287
-#: ../../../../../app/src/processing/app/Base.java:1298
-#, java-format
-msgid "Examples from {0} Libraries"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
@@ -988,6 +960,15 @@ msgstr "Lefordított bináris exportálása"
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Nem sikerült megnyitni vázlatot: \"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
@@ -1960,9 +1941,9 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr ""
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
+msgid "Sorry, the folder \"{0}\" already exists."
 msgstr ""
 
 #: Preferences.java:115
@@ -2032,6 +2013,10 @@ msgstr "A Server függvényosztály EthernetServer névre hallgat."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Az Udp osztály új neve: EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -2048,12 +2033,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "A \"{0}\" könyvtár nem használható.\\nA neve az angol abc betűit és számokat tartalmazhat\\n(szóköz nem lehet benne és nem kezdődhet számmal)."
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "A fő-file nem tartalmazhat kiterjesztést.\\n(Talán itt az idő, hogy megismerje a\\n\"valódi\" programozási környezetet)\""
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2075,6 +2057,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "A \"{0}\" vázlat nem használható.\nA vázlatok neve csak angol abc betűit és számokat tartalmazhat\n(csak ASCII szóköz nélkül és nem kezdődhet számmal). Ahhoz,\nhogy megszabaduljon ettől az üzenettőt, távolítsa el a vázlatot innen:\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2459,24 +2446,8 @@ msgstr "Igen"
 msgid "You can't fool me"
 msgstr ""
 
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr ""
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr ""
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2596,10 +2567,6 @@ msgstr "fordítás"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "csatlakoztatva!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2738,3 +2705,8 @@ msgstr "{0}: Ismeretlen alaplap"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Ismeretlen csomag"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

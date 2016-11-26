@@ -220,7 +220,7 @@ public class Platform {
       // replace spaces with &
       String realBoardName = board.getName().replaceAll("\\(.*?\\)", "").trim();
       String boardNameReplaced = realBoardName.replaceAll(" ", "&");
-      String message = I18n.format(tr("{0}Install{1} the package to use your {2}"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", realBoardName);
+      String message = I18n.format(tr("{0}Install this package{1} to use your {2} board"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", realBoardName);
       BaseNoGui.setBoardManagerLink(message);
     } catch (Exception e) {
       // No connection no problem, fail silently
@@ -333,4 +333,9 @@ public class Platform {
   public void fixSettingsLocation() throws Exception {
     //noop
   }
+
+  public int getSystemDPI() {
+    return 96;
+  }
+
 }

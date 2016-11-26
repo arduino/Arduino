@@ -112,6 +112,8 @@
       <classpath>
         <pathelement location="bin"/>
         <pathelement location="test-bin"/>
+        <pathelement location="${work.dir}/lib/jna-4.2.2.jar"/>
+        <pathelement location="${work.dir}/lib/jna-platform-4.2.2.jar"/>
         <path refid="class.path.test"/>
       </classpath>
 
