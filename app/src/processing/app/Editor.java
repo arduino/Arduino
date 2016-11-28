@@ -2106,6 +2106,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       // Update editor window title in case of "Save as..."
       updateTitle();
+      header.rebuild();
     }
 
     return true;
