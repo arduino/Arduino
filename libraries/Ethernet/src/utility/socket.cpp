@@ -362,7 +362,7 @@ uint16_t recvfrom(SOCKET s, uint8_t *buf, uint16_t len, uint8_t *addr, uint16_t 
 /**
  * @brief	Wait for buffered transmission to complete.
  */
-void flush(SOCKET s) {
+void flush(SOCKET /* s */) {
   // TODO
 }
 
