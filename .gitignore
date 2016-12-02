@@ -66,3 +66,6 @@ avr-toolchain-*.zip
 manifest.mf
 nbbuild.xml
 nbproject
+.project
+listSerialC
+liblistSerials-1.2.0.zip
