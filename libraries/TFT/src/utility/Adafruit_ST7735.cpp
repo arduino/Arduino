@@ -492,6 +492,9 @@ void Adafruit_ST7735::drawPixel(int16_t x, int16_t y, uint16_t color) {
 void Adafruit_ST7735::drawFastVLine(int16_t x, int16_t y, int16_t h,
  uint16_t color) {
 
+  // Needed to achieve correct line length
+  h++;
+
   // Rudimentary clipping
   if((x >= _width) || (y >= _height)) return;
   if((y+h-1) >= _height) h = _height-y;
@@ -523,6 +526,9 @@ void Adafruit_ST7735::drawFastVLine(int16_t x, int16_t y, int16_t h,
 
 void Adafruit_ST7735::drawFastHLine(int16_t x, int16_t y, int16_t w,
   uint16_t color) {
+
+  // Needed to achieve correct line length
+  w++;
 
   // Rudimentary clipping
   if((x >= _width) || (y >= _height)) return;
