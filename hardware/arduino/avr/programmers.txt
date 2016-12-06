@@ -51,18 +51,6 @@ usbGemma.program.tool=avrdude
 usbGemma.program.extra_params=
 usbGemma.config.path={runtime.platform.path}/bootloaders/gemma/avrdude.conf
 
-# STK500 firmware version v1 and v2 use different serial protocols.
-# Using the 'stk500' protocol tells avrdude to try and autodetect the
-# firmware version. If this leads to problems, we might need to add
-# stk500v1 and stk500v2 entries to allow explicitely selecting the
-# firmware version.
-stk500.name=Atmel STK500 development board
-stk500.communication=serial
-stk500.protocol=stk500
-stk500.program.protocol=stk500
-stk500.program.tool=avrdude
-stk500.program.extra_params=-P{serial.port}
-
 ## Notes about Dangerous Prototypes Bus Pirate as ISP
 ## Bus Pirate V3 need Firmware v5.10 or later
 ## Bus Pirate V4 need Firmware v6.3-r2151 or later
@@ -76,3 +64,56 @@ buspirate.program.protocol=buspirate
 buspirate.program.tool=avrdude
 buspirate.program.extra_params=-P{serial.port}
 
+# STK500 firmware version v1 and v2 use different serial protocols.
+# Using the 'stk500' protocol tells avrdude to try and autodetect the
+# firmware version. If this leads to problems, we might need to add
+# stk500v1 and stk500v2 entries to allow explicitely selecting the
+# firmware version.
+stk500.name=Atmel STK500 development board
+stk500.communication=serial
+stk500.protocol=stk500
+stk500.program.protocol=stk500
+stk500.program.tool=avrdude
+stk500.program.extra_params=-P{serial.port}
+
+# Note that until https://savannah.nongnu.org/bugs/?21954 and
+# https://savannah.nongnu.org/bugs/?42267 are fixed, burning a
+# bootloader does not work.
+# As a workaround, you can add -V to disable verification and modify
+# boards.txt to set all unused lock bits to 1 instead of 0.
+jtag3isp.name=Atmel JTAGICE3 (ISP mode, for chips at or above 4Mhz)
+jtag3isp.communication=usb
+jtag3isp.protocol=jtag3isp
+jtag3isp.program.protocol=jtag3isp
+jtag3isp.program.tool=avrdude
+# Set a bitclock of 1us (the fastest supported value). This works for
+# microcontrollers running at 4Mhz and above.
+jtag3isp.program.extra_params=-B1
+
+# Note that until https://savannah.nongnu.org/bugs/?21954 and
+# https://savannah.nongnu.org/bugs/?42267 are fixed, burning a
+# bootloader does not work.
+# As a workaround, you can add -V to disable verification and modify
+# boards.txt to set all unused lock bits to 1 instead of 0.
+jtag3ispslow.name=Atmel JTAGICE3 (ISP mode, for chips below 4Mhz)
+jtag3ispslow.communication=usb
+jtag3ispslow.protocol=jtag3isp
+jtag3ispslow.program.protocol=jtag3isp
+jtag3ispslow.program.tool=avrdude
+# Set a bitclock of 125us (the slowest supported value). This works for
+# microcontrollers running at 8kHz and above.
+jtag3ispslow.program.extra_params=-B125
+
+# Note that until https://savannah.nongnu.org/bugs/?21954 is fixed,
+# burning a bootloader does not work.
+# As a workaround, you can modify boards.txt to set all unused lock bits
+# to 1 instead of 0.
+jtag3.name=Atmel JTAGICE3 (JTAG mode)
+jtag3.communication=usb
+jtag3.protocol=jtag3
+jtag3.program.protocol=jtag3
+jtag3.program.tool=avrdude
+# Set a bitclock of 0.1us (the fastest supported value). This should
+# work regardless of the crystal used, since JTAG doesn't use the MCU
+# clock but dictates its own clock.
+jtag3.program.extra_params=-B0.1
