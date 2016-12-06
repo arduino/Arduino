@@ -1,5 +1,5 @@
 /*
-  pins_arduino.h - Pin definition functions for Arduino Robot Control Board
+  pins_arduino.h - Pin definition functions for Arduino Robot Motor Board
   Part of Arduino - http://www.arduino.cc/
 
   Copyright (c) 2913 D. Cuartielles, X. Yang (Arduino Verkstad)
@@ -25,6 +25,9 @@
 #define Pins_Arduino_h
 
 #include <avr/pgmspace.h>
+
+#define NUM_DIGITAL_PINS  30
+#define NUM_ANALOG_INPUTS 12
 
 #define ARDUINO_MODEL_USB_PID	0x0039
 

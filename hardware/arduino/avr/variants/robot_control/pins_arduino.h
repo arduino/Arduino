@@ -26,6 +26,9 @@
 
 #include <avr/pgmspace.h>
 
+#define NUM_DIGITAL_PINS  30
+#define NUM_ANALOG_INPUTS 12
+
 #define ARDUINO_MODEL_USB_PID	0x0038
 
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
