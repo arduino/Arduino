@@ -637,9 +637,10 @@ int main(void)
 
 	delay_ms(100);
 #endif
-
+	int header_1b = 0; //debug
 	while (boot_state==0)
 	{
+		boot_timer = 0;
 		while ((!(Serial_Available())) && (boot_state == 0))		// wait for data
 		{
 			_delay_ms(0.001);
@@ -656,6 +657,15 @@ int main(void)
 			}
 		#endif
 		}
+		
+		if(Serial_Available()){
+			unsigned char readonebyte = recchar();
+			if(readonebyte != 0x1b)
+				boot_state++;
+			else
+				header_1b = 1;
+		}
+		
 		boot_state++; // ( if boot_state=1 bootloader received byte from UART, enter bootloader mode)
 	}
 
@@ -674,7 +684,11 @@ int main(void)
 				if (boot_state==1)
 				{
 					boot_state	=	0;
-					c			=	UART_DATA_REG;
+					//c			=	UART_DATA_REG;
+					if(header_1b == 1){
+						header_1b = 0;
+						c = 0x1b;
+					}
 				}
 				else
 				{
