@@ -32,7 +32,7 @@ public:
   IPAddress subnetMask();
   IPAddress gatewayIP();
   IPAddress dnsServerIP();
-  char* hostname();
+  const char* hostname() const;
 
   friend class EthernetClient;
   friend class EthernetServer;

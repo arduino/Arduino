@@ -138,7 +138,7 @@ IPAddress EthernetClass::dnsServerIP()
   return _dnsServerAddress;
 }
 
-char* EthernetClass::hostname()
+const char* EthernetClass::hostname() const
 {
   return _dhcp ? _dhcp->getHostname() : "";
 }

@@ -171,7 +171,7 @@ public:
   IPAddress getGatewayIp();
   IPAddress getDhcpServerIp();
   IPAddress getDnsServerIp();
-  char* getHostname();
+  const char* getHostname() const;
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int beginWithDHCP(uint8_t *, const char *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
