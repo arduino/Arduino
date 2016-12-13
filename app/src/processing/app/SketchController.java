@@ -627,11 +627,12 @@ public class SketchController {
    */
   public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     // run the preprocessor
-    editor.status.progressUpdate(20);
+    for (CompilerProgressListener progressListener : editor.status.getCompilerProgressListeners()){
+      progressListener.progress(20);
+    }
 
     ensureExistence();
-
-    CompilerProgressListener progressListener = editor.status::progressUpdate;
+       
 
     boolean deleteTemp = false;
     File pathToSketch = sketch.getPrimaryFile().getFile();
@@ -643,7 +644,7 @@ public class SketchController {
     }
 
     try {
-      return new Compiler(pathToSketch, sketch).build(progressListener, save);
+      return new Compiler(pathToSketch, sketch).build(editor.status.getCompilerProgressListeners(), save);
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
