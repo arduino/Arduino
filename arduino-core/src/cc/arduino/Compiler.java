@@ -127,6 +127,12 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+    ArrayList<CompilerProgressListener> listeners = new ArrayList<CompilerProgressListener>();
+    listeners.add(progListener);
+    return this.build(listeners, exportHex);
+  }
+  
+  public String build(ArrayList<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
 
     TargetBoard board = BaseNoGui.getTargetBoard();
@@ -140,7 +146,7 @@ public class Compiler implements MessageConsumer {
 
     PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
 
-    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListener), "\n");
+    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
     callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);

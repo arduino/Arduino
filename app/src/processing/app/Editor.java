@@ -29,6 +29,7 @@ import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
+import cc.arduino.CompilerProgressListener;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
@@ -66,6 +67,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.ArrayList;
 
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
@@ -2748,5 +2750,8 @@ public class Editor extends JFrame implements RunnerListener {
     lineStatus.repaint();
   }
 
+  public void addCompilerProgressListener(CompilerProgressListener listener){
+    this.status.addCompilerProgressListener(listener);
+  }
 
 }
