@@ -30,6 +30,8 @@ static servo_t servos[MAX_SERVOS];                          // static array of s
 
 uint8_t ServoCount = 0;                                     // the total number of attached servos
 
+static uint16_t refreshInterval = usToTicks(DEFAULT_REFRESH_INTERVAL); // timer tics to elapse before refreshing servos
+
 static volatile int8_t Channel[_Nbr_16timers ];             // counter for the servo being pulsed for each timer (or -1 if refresh interval)
 
 // convenience macros
@@ -94,11 +96,11 @@ void Servo_Handler(timer16_Sequence_t timer, Tc *tc, uint8_t channel)
     }
     else {
         // finished all channels so wait for the refresh period to expire before starting over
-        if( (tc->TC_CHANNEL[channel].TC_CV) + 4 < usToTicks(REFRESH_INTERVAL) ) { // allow a few ticks to ensure the next OCR1A not missed
-            tc->TC_CHANNEL[channel].TC_RA = (unsigned int)usToTicks(REFRESH_INTERVAL);
+        if( (tc->TC_CHANNEL[channel].TC_CV) + 4 < refreshInterval ) { // allow a few ticks to ensure the next OCR1A not missed
+            tc->TC_CHANNEL[channel].TC_RA = refreshInterval;
         }
         else {
-            tc->TC_CHANNEL[channel].TC_RA = tc->TC_CHANNEL[channel].TC_CV + 4;  // at least REFRESH_INTERVAL has elapsed
+            tc->TC_CHANNEL[channel].TC_RA = tc->TC_CHANNEL[channel].TC_CV + 4;  // at least refreshInterval has elapsed
         }
         Channel[timer] = -1; // this will get incremented at the end of the refresh period to start again at the first channel
     }
@@ -277,6 +279,12 @@ int Servo::readMicroseconds()
 bool Servo::attached()
 {
   return servos[this->servoIndex].Pin.isActive;
+}
+
+void Servo::setRefreshInterval(unsigned int microseconds)
+{
+  if(microseconds < MINIMUM_REFRESH_INTERVAL) return;
+  refreshInterval = usToTicks(microseconds);
 }
 
 #endif // ARDUINO_ARCH_SAM

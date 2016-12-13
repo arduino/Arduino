@@ -74,7 +74,9 @@
 #define MIN_PULSE_WIDTH       544     // the shortest pulse sent to a servo  
 #define MAX_PULSE_WIDTH      2400     // the longest pulse sent to a servo 
 #define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
-#define REFRESH_INTERVAL    20000     // minumim time to refresh servos in microseconds 
+
+#define DEFAULT_REFRESH_INTERVAL    20000     // minumim time to refresh servos in microseconds
+#define MINIMUM_REFRESH_INTERVAL     3000     // minumim valid refresh interval ~ MIN+MAX pulse width
 
 #define SERVOS_PER_TIMER       12     // the maximum number of servos controlled by one timer 
 #define MAX_SERVOS   (_Nbr_16timers  * SERVOS_PER_TIMER)
@@ -103,6 +105,7 @@ public:
   int read();                        // returns current pulse width as an angle between 0 and 180 degrees
   int readMicroseconds();            // returns current pulse width in microseconds for this servo (was read_us() in first release)
   bool attached();                   // return true if this servo is attached, otherwise false 
+  static void setRefreshInterval(unsigned int microseconds); // change output refresh frequency
 private:
    uint8_t servoIndex;               // index into the channel data for this servo
    int8_t min;                       // minimum is this value times 4 added to MIN_PULSE_WIDTH    

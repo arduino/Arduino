@@ -37,6 +37,7 @@ static volatile int8_t Channel[_Nbr_16timers ];             // counter for the s
 
 uint8_t ServoCount = 0;                                     // the total number of attached servos
 
+static uint16_t refreshInterval = usToTicks(DEFAULT_REFRESH_INTERVAL); // timer tics to elapse before refreshing servos
 
 // convenience macros
 #define SERVO_INDEX_TO_TIMER(_servo_nbr) ((timer16_Sequence_t)(_servo_nbr / SERVOS_PER_TIMER)) // returns the timer controlling this servo
@@ -66,10 +67,10 @@ static inline void handle_interrupts(timer16_Sequence_t timer, volatile uint16_t
   }
   else {
     // finished all channels so wait for the refresh period to expire before starting over
-    if( ((unsigned)*TCNTn) + 4 < usToTicks(REFRESH_INTERVAL) )  // allow a few ticks to ensure the next OCR1A not missed
-      *OCRnA = (unsigned int)usToTicks(REFRESH_INTERVAL);
+    if( ((unsigned)*TCNTn) + 4 < refreshInterval )  // allow a few ticks to ensure the next OCR1A not missed
+      *OCRnA = refreshInterval;
     else
-      *OCRnA = *TCNTn + 4;  // at least REFRESH_INTERVAL has elapsed
+      *OCRnA = *TCNTn + 4;  // at least refreshInterval has elapsed
     Channel[timer] = -1; // this will get incremented at the end of the refresh period to start again at the first channel
   }
 }
@@ -311,6 +312,12 @@ int Servo::readMicroseconds()
 bool Servo::attached()
 {
   return servos[this->servoIndex].Pin.isActive ;
+}
+
+void Servo::setRefreshInterval(unsigned int microseconds)
+{
+  if(microseconds < MINIMUM_REFRESH_INTERVAL) return;
+  refreshInterval = usToTicks(microseconds);
 }
 
 #endif // ARDUINO_ARCH_AVR
