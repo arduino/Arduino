@@ -841,3 +841,33 @@ gemma.build.board=AVR_GEMMA
 gemma.upload.tool=avrdude
 gemma.upload.maximum_size=5310
 
+##############################################################
+
+# Adafruit Circuit Playground 32u4 w/Caterina Configuration
+circuitplay32u4cat.name=Adafruit Circuit Playground
+circuitplay32u4cat.bootloader.low_fuses=0xff
+circuitplay32u4cat.bootloader.high_fuses=0xd8
+circuitplay32u4cat.bootloader.extended_fuses=0xcb
+circuitplay32u4cat.bootloader.file=caterina/Caterina-Circuitplay32u4.hex
+circuitplay32u4cat.bootloader.unlock_bits=0x3F
+circuitplay32u4cat.bootloader.lock_bits=0x2F
+circuitplay32u4cat.bootloader.tool=arduino:avrdude
+circuitplay32u4cat.build.mcu=atmega32u4
+circuitplay32u4cat.build.f_cpu=8000000L
+circuitplay32u4cat.build.vid=0x239A
+circuitplay32u4cat.build.pid=0x8011
+circuitplay32u4cat.build.core=arduino:arduino
+circuitplay32u4cat.build.variant=circuitplay32u4
+circuitplay32u4cat.build.board=AVR_CIRCUITPLAY
+circuitplay32u4cat.build.usb_product="Circuit Playground"
+circuitplay32u4cat.build.usb_manufacturer="Adafruit"
+circuitplay32u4cat.build.extra_flags={build.usb_flags}
+circuitplay32u4cat.upload.protocol=avr109
+circuitplay32u4cat.upload.maximum_size=28672
+circuitplay32u4cat.upload.speed=57600
+circuitplay32u4cat.upload.disable_flushing=true
+circuitplay32u4cat.upload.use_1200bps_touch=true
+circuitplay32u4cat.upload.wait_for_upload_port=true
+circuitplay32u4cat.upload.tool=arduino:avrdude
+circuitplay32u4cat.vid.0=0x239A
+circuitplay32u4cat.pid.0=0x8011
