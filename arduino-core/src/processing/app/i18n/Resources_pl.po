@@ -13,7 +13,7 @@
 # Translators:
 # Translators:
 # Translators:
-# Translators:
+# Jacek Czarnecki, <jacek@interago.pl>, 2016
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Grzegorz Wielgoszewski <translations@wielgoszewski.pl>, 2016
 # Jan Bielak <sharkie103@gmail.com>, 2013-2014,2016
@@ -1550,7 +1550,7 @@ msgstr "Wybierz programator z Narzędzia -> Menu programatora"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr "Kreślarka jest niedostępna, gdy monitor portu szeregowego jest już otwarty"
+msgstr "Ploter jest niedostępny, gdy monitor portu szeregowego jest już otwarty"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1818,11 +1818,11 @@ msgstr "Monitor portu szeregowego"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr "Kreślarka"
+msgstr "Ploter portu szeregowego"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr "Monitor portu szeregowego jest niedostępny, gdy kreślarka pracuje"
+msgstr "Monitor portu szeregowego jest niedostępny, gdy ploter jest otwarty"
 
 #: Serial.java:194
 #, java-format
@@ -2714,4 +2714,4 @@ msgstr "{0}: Nieznany pakiet"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "{0}Zainstaluj ten pakiet{1} żeby użyć twoją {2} płytkę"
