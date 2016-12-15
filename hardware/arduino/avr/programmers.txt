@@ -22,6 +22,11 @@ arduinoisp.protocol=arduinoisp
 arduinoisp.program.tool=avrdude
 arduinoisp.program.extra_params=
 
+arduinoisporg.name=ArduinoISP.org
+arduinoisporg.protocol=arduinoisporg
+arduinoisporg.program.tool=avrdude
+arduinoisporg.program.extra_params=
+
 usbasp.name=USBasp
 usbasp.communication=usb
 usbasp.protocol=usbasp
