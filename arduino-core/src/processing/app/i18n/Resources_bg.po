@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-11-22 12:33+0000\n"
+"Last-Translator: Valentin Laskov <laskov@festa.bg>\n"
 "Language-Team: Bulgarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -419,7 +419,7 @@ msgstr "Записвам буутлоудъра на I/O платка (може 
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr ""
+msgstr "CRC не съвпадна, файлът е повреден. Може проблемът да е временен. Моля, пробвайте по-късно."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -524,7 +524,7 @@ msgstr "Не можах да копирам на подходящото мяст
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "Не мога да създам директория \"{0}\""
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
@@ -930,13 +930,13 @@ msgstr "Примери"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "Примери за всякакви платки"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
-msgstr ""
+msgstr "Примери за {0}"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -962,11 +962,11 @@ msgstr "Провали се отварянето на скица: \"{0}\""
 #: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
 #, java-format
 msgid "Failed to rename \"{0}\" to \"{1}\""
-msgstr ""
+msgstr "Провали се преименуването от \"{0}\" на \"{1}\""
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:298
 msgid "Failed to rename sketch folder"
-msgstr ""
+msgstr "Провали се преименуването на папката на скицата"
 
 #: Editor.java:491
 msgid "File"
@@ -1205,7 +1205,7 @@ msgstr "Инсталиране..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Мащаб на интерфейса:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1543,7 +1543,7 @@ msgstr "Моля, изберете програматор от менюто Ин
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Плотерът е недостъпен при отворен сериен монитор"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1815,7 +1815,7 @@ msgstr "Сериен плотер"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Серийният монитор е недостъпен при отворен плотер"
 
 #: Serial.java:194
 #, java-format
@@ -1838,7 +1838,7 @@ msgstr "Серийни портове"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "Задавам път за изграждане {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -1916,7 +1916,7 @@ msgstr "Не е зададен път до скицника"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Пропускам допринесения index файл {0}, възникна грешка при разбора:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1942,7 +1942,7 @@ msgstr "Някои файлове са с флаг \"само за четене\
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
 msgid "Sorry, the folder \"{0}\" already exists."
-msgstr ""
+msgstr "Съжалявам, папка с име \"{0}\" вече съществува."
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2013,7 +2013,7 @@ msgstr "Класът Udp беше преименуван на EthernetUdp."
 
 #: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
-msgstr ""
+msgstr "Текущо избраната платка изисква ядро '{0}', което не е инсталирано."
 
 #: Editor.java:2147
 #, java-format
@@ -2033,7 +2033,7 @@ msgstr "Библиотеката \"{0}\" не може да се ползва.\n
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
-msgstr ""
+msgstr "Основният файл не може да използва разширение"
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2059,7 +2059,7 @@ msgstr "Скицата \"{0}\" не може да се ползва.\nИмена
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr ""
+msgstr "Скицата вече съдържа файл с име \"{0}\""
 
 #: Sketch.java:1755
 msgid ""
@@ -2121,7 +2121,7 @@ msgstr ""
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
 msgid "Tool {0} is not available for your operating system."
-msgstr ""
+msgstr "Инструментът {0} не е наличен за Вашата операционна система."
 
 #: Editor.java:663
 msgid "Tools"
@@ -2129,7 +2129,7 @@ msgstr "Инструменти"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "Тема"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -2203,7 +2203,7 @@ msgstr "Отмяна"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "Необработваем тип {0} в контекста на ключ {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
@@ -2263,7 +2263,7 @@ msgstr "Качване чрез програматор"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Качете някаква скица, за да се получи"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2297,7 +2297,7 @@ msgstr "Потребител:"
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr ""
+msgstr "Използвайки библиотека {0} от версия {1} в папка: {2} {3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2358,12 +2358,12 @@ msgstr "Посетете Arduino.cc"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
 #, java-format
 msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
-msgstr ""
+msgstr "ВНИМАНИЕ: Категория '{0}' в библиотека {1} е невалидна. Променям на '{2}'"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "ВНИМАНИЕ: Фалшива папка {0} в библиотека '{1}'"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2380,39 +2380,39 @@ msgstr "Внимание"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr ""
+msgstr "Внимание: Това ядро не поддържа експортиране на скици. Моля, обмислете обновяване или се свържете с автора му"
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
 msgid "Warning: file {0} links to an absolute path {1}"
-msgstr ""
+msgstr "Внимание: файлът {0} прави връзка към абсолютния път {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr ""
+msgstr "Внимание: наложено е доверяване на недоверено съдържание"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
 msgid "Warning: forced untrusted script execution ({0})"
-msgstr ""
+msgstr "Внимание: наложено е изпълнение на недоверен скрипт ({0})"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr ""
+msgstr "Внимание: недоверено съдържание, пропускам изпълнение на скрипт ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
 msgid ""
 "Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
 " converted to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "Внимание: platform.txt от ядро '{0}' съдържа остарялото {1}, променено автоматично на {2}. Обмислете обновяване на това ядро."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr ""
+msgstr "Внимание: в platform.txt от ядро '{0}' липсва свойство '{1}', ще ползвам подразбиращото се '{2}'. Обмислете обновяване на това ядро."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -2473,13 +2473,13 @@ msgstr "Достигнали сте лимита за автоматично и�
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Вашата среда за разработка (IDE) е инсталирана в подпапка на\nпапката с настройки. Моля, преместете средата в друга папка."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr ""
+msgstr "Вашата среда за разработка (IDE) е инсталирана в подпапка\nна скицника Ви. Моля, преместете средата в друга папка."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2501,7 +2501,7 @@ msgid ""
 "older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
 " to update the sketch to use UTF-8 encoding. If not, you may need to delete "
 "the bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" съдържа непознати символи. Ако този код е създаден с по-стара версия на Arduino, може да е нужно да ползвате Инструменти -> Корекция на кодирането & Презареждане, за да обновите скицата с използване на UTF-8 кодиране. Ако не, може да е нужно да изтриете грешните символи, за да се избавите от това предупреждение."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2645,12 +2645,12 @@ msgstr "{0} трябва да е папка"
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr ""
+msgstr "{0} на {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
 msgid "{0} pattern is missing"
-msgstr ""
+msgstr "шаблонът {0} липсва"
 
 #: debug/Compiler.java:365
 #, java-format
@@ -2707,4 +2707,4 @@ msgstr "{0}: Непознат пакет"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "{0}Инсталирайте пакета{1}, за да използвате Вашата {2} платка"

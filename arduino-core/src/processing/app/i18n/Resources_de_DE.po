@@ -23,8 +23,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-11-22 18:04+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -419,7 +419,7 @@ msgstr "Bootloader wird auf das E/A-Board gebrannt (dies kann eine Minute dauern
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr ""
+msgstr "CRC stimmt nicht überein, Datei ist beschädigt. Es kann ein temporäres Problem sein, bitte versuchen Sie es später erneut."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -524,7 +524,7 @@ msgstr "Konnte nicht an einen korrekten Speicherort kopieren. "
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "Verzeichnis \"{0}\" konnte nicht erstellt werden"
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
@@ -930,13 +930,13 @@ msgstr "Beispiele"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "Beispiele für jedes Board"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
-msgstr ""
+msgstr "Beispiele für {0}"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -962,11 +962,11 @@ msgstr "Fehler beim Öffnen des Sketches: \"{0}\""
 #: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
 #, java-format
 msgid "Failed to rename \"{0}\" to \"{1}\""
-msgstr ""
+msgstr "Fehler beim Umbenennen von \"{0}\" zu \"{1}\""
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:298
 msgid "Failed to rename sketch folder"
-msgstr ""
+msgstr "Fehler beim Umbenennen des Sketch-Ordners"
 
 #: Editor.java:491
 msgid "File"
@@ -1942,7 +1942,7 @@ msgstr "Einige Dateien sind als \"schreibgeschützt\" gekennzeichnet.\nSie müss
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
 msgid "Sorry, the folder \"{0}\" already exists."
-msgstr ""
+msgstr "Entschuldigung, der Ordner \"{0}\" ist bereits vorhanden."
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2013,7 +2013,7 @@ msgstr "Die Klasse Udp wurde in EthernetUdp umbenannt."
 
 #: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
-msgstr ""
+msgstr "Die aktuell ausgewählte Board benötigt den Kern '{0}', der nicht installiert ist."
 
 #: Editor.java:2147
 #, java-format
@@ -2033,7 +2033,7 @@ msgstr "Die Bibliothek \"{0}\" kann nicht verwendet werden.\nBibliotheksnamen d�
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
-msgstr ""
+msgstr "Die Hauptdatei kann keine Erweiterung verwenden"
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2059,7 +2059,7 @@ msgstr "Der Sketch \"{0}\" kann nicht verwendet werden.\nSketchnamen dürfen nur
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr ""
+msgstr "Der Sketch enthält bereits eine Datei mit dem Namen \"{0}\""
 
 #: Sketch.java:1755
 msgid ""
@@ -2707,4 +2707,4 @@ msgstr "{0}: Unbekanntes Paket"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "{0}Installieren Sie dieses Paket{1}, um Ihr Board {2} verwenden zu können"
