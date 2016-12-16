@@ -19,8 +19,8 @@
           },
           "url": "http://downloads.arduino.cc/cores/avr-1.6.16.tar.bz2",
           "archiveFileName": "avr-1.6.16.tar.bz2",
-          "checksum": "SHA-256:c222efcabbdf6fa63ba3d64afb8d149f83fa73693c413aa05a2ccd9f986ed2fa",
-          "size": "4993959",
+          "checksum": "SHA-256:07b7a4b68c132e021d112c424cde1286a210dbf728884a214607cc8c4e602d6a",
+          "size": "5011038",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
@@ -29,6 +29,7 @@
             {"name": "Arduino/Genuino Mega"},
             {"name": "Arduino MegaADK"},
             {"name": "Arduino Leonardo"},
+            {"name": "Arduino Leonardo Ethernet"},
             {"name": "Arduino/Genuino Micro"},
             {"name": "Arduino Esplora"},
             {"name": "Arduino Mini"},
@@ -42,7 +43,10 @@
             {"name": "Arduino Robot Control"},
             {"name": "Arduino Robot Motor"},
             {"name": "Arduino Gemma"},
-            {"name": "Adafruit Circuit Playground"}
+            {"name": "Adafruit Circuit Playground"},
+            {"name": "Arduino Yún Mini"},
+            {"name": "Arduino Industrial 101"},
+            {"name": "Linino One"}
           ],
           "toolsDependencies": [
             {
@@ -79,14 +83,14 @@
             },
             {
               "size": "711544",
-              "checksum": "SHA-256:97b4875cad6110c70101bb776f3ac37b64a2e73f036cd0b10afb6f4be96a6621",
+              "checksum": "SHA-256:85f38d02e2398d3b7f93da2ca8b830ee65bb73f66cc7a7b30c466d3cebf2da6e",
               "host": "x86_64-linux-gnu",
               "archiveFileName": "avrdude-6.3.0-arduino8-x86_64-pc-linux-gnu.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino8-x86_64-pc-linux-gnu.tar.bz2"
             },
             {
               "size": "701718",
-              "checksum": "SHA-256:85f38d02e2398d3b7f93da2ca8b830ee65bb73f66cc7a7b30c466d3cebf2da6e",
+              "checksum": "SHA-256:8e2e4bc71d22e9d11ed143763b97f3aa2d164cdeee678a9deaf5b36e245b2d20",
               "host": "i686-linux-gnu",
               "archiveFileName": "avrdude-6.3.0-arduino8-i686-pc-linux-gnu.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino8-i686-pc-linux-gnu.tar.bz2"
