@@ -735,6 +735,7 @@ atmegang.menu.cpu.atmega8.upload.maximum_data_size=1024
 
 atmegang.menu.cpu.atmega8.bootloader.low_fuses=0xdf
 atmegang.menu.cpu.atmega8.bootloader.high_fuses=0xca
+atmegang.menu.cpu.atmega8.bootloader.extended_fuses=
 atmegang.menu.cpu.atmega8.bootloader.file=atmega8/ATmegaBOOT-prod-firmware-2009-11-07.hex
 
 atmegang.menu.cpu.atmega8.build.mcu=atmega8
