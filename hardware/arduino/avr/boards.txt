@@ -904,7 +904,7 @@ circuitplay32u4cat.upload.speed=57600
 circuitplay32u4cat.upload.disable_flushing=true
 circuitplay32u4cat.upload.use_1200bps_touch=true
 circuitplay32u4cat.upload.wait_for_upload_port=true
-circuitplay32u4cat.upload.tool=arduino:avrdude
+circuitplay32u4cat.upload.tool=avrdude
 circuitplay32u4cat.vid.0=0x239A
 circuitplay32u4cat.pid.0=0x8011
 
