@@ -58,6 +58,11 @@
               "packager": "arduino",
               "name": "avrdude",
               "version": "6.3.0-arduino8"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.0.0"
             }
           ]
         }
@@ -142,6 +147,47 @@
               "host": "x86_64-linux-gnu",
               "archiveFileName": "avr-gcc-4.9.2-atmel3.5.3-arduino2-x86_64-pc-linux-gnu.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.3-arduino2-x86_64-pc-linux-gnu.tar.bz2"
+            }
+          ]
+        },
+        {
+          "name": "arduinoOTA",
+          "version": "1.0.0",
+          "systems": [
+            {
+              "size": "2044124",
+              "checksum": "SHA-256:850a86876403cb45c944590a8cc7f9d8ef6d53ed853f7a9593ec395c4c1c6b2d",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.0.0-linux32.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linux32.tar.bz2"
+            },
+            {
+              "size": "2178772",
+              "checksum": "SHA-256:f01f25e02787492a8a30414230635adae76ed85228045437433892d185991f9e",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.0.0-linux64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linux64.tar.bz2"
+            },
+            {
+              "size": "1961623",
+              "checksum": "SHA-256:0ca6c0a93bfad50be0b6e62dc51ba6c3267b809bab4ec91ef9606ab7d838e46b",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "arduinoOTA-1.0.0-linuxarm.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linuxarm.tar.bz2"
+            },
+            {
+              "size": "2180617",
+              "checksum": "SHA-256:e63c6034da2c1a7fe453eaa29c22df88627cc0aa3c5cbab7635c19367b74ee59",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "arduinoOTA-1.0.0-osx.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-osx.tar.bz2"
+            },
+            {
+              "size": "2247970",
+              "checksum": "SHA-256:7bced1489217e07661ea1e75702a10a874b54f6146e2414ee47684c7eac014d1",
+              "host": "i686-mingw32",
+              "archiveFileName": "arduinoOTA-1.0.0-windows.zip",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-windows.zip"
             }
           ]
         }
