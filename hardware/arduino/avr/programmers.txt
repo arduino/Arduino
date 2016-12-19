@@ -45,6 +45,19 @@ arduinoasisp.program.speed=19200
 arduinoasisp.program.tool=avrdude
 arduinoasisp.program.extra_params=-P{serial.port} -b{program.speed}
 
+## Notes about Dangerous Prototypes Bus Pirate as ISP
+## Bus Pirate V3 need Firmware v5.10 or later
+## Bus Pirate V4 need Firmware v6.3-r2151 or later
+## Could happen that BP does not have enough current to power an Arduino board 
+## through the ICSP connector. In this case disconnect the +Vcc from ICSP connector
+## and power Arduino board in the normal way.
+buspirate.name=BusPirate as ISP
+buspirate.communication=serial
+buspirate.protocol=buspirate
+buspirate.program.protocol=buspirate
+buspirate.program.tool=avrdude
+buspirate.program.extra_params=-P{serial.port}
+
 usbGemma.name=Arduino Gemma
 usbGemma.protocol=arduinogemma
 usbGemma.program.tool=avrdude
