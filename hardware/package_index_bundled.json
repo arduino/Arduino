@@ -12,18 +12,19 @@
         {
           "name": "Arduino AVR Boards",
           "architecture": "avr",
-          "version": "1.6.16",
+          "version": "1.6.17",
           "category": "Arduino",
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.6.16.tar.bz2",
-          "archiveFileName": "avr-1.6.16.tar.bz2",
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.17.tar.bz2",
+          "archiveFileName": "avr-1.6.17.tar.bz2",
           "checksum": "SHA-256:07b7a4b68c132e021d112c424cde1286a210dbf728884a214607cc8c4e602d6a",
           "size": "5011038",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino/Genuino Mega"},
