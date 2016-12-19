@@ -24,6 +24,7 @@
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno WiFi"},
             {"name": "Arduino Diecimila"},
             {"name": "Arduino Nano"},
             {"name": "Arduino/Genuino Mega"},
