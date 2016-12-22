@@ -52,7 +52,7 @@ class Print
     }
     template<size_t N>
     inline size_t write(const char (str&)[N]) {
-      return write((const uint8_t *)str, N);
+      return write((const uint8_t *)str, N-1);
     }
     virtual size_t write(const uint8_t *buffer, size_t size);
     size_t write(const char *buffer, size_t size) {
