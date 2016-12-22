@@ -50,6 +50,10 @@ class Print
       if (str == NULL) return 0;
       return write((const uint8_t *)str, strlen(str));
     }
+    template<size_t N>
+    inline size_t write(const char (str&)[N]) {
+      return write((const uint8_t *)str, N);
+    }
     virtual size_t write(const uint8_t *buffer, size_t size);
     size_t write(const char *buffer, size_t size) {
       return write((const uint8_t *)buffer, size);
@@ -58,6 +62,10 @@ class Print
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);
     size_t print(const char[]);
+    template<size_t N>
+    inline size_t print(const char (str&)[N]) {
+      return write(str);
+    }
     size_t print(char);
     size_t print(unsigned char, int = DEC);
     size_t print(int, int = DEC);
@@ -70,6 +78,12 @@ class Print
     size_t println(const __FlashStringHelper *);
     size_t println(const String &s);
     size_t println(const char[]);
+    template<size_t N>
+    inline size_t println(const char (str&)[N]) {
+      size_t n = print(str);
+      n += println();
+      return n;
+    }
     size_t println(char);
     size_t println(unsigned char, int = DEC);
     size_t println(int, int = DEC);
