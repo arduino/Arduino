@@ -236,14 +236,29 @@ public class Platform {
           List<String> vids = new LinkedList<>(board.getPreferences().subTree("vid", 1).values());
           if (!vids.isEmpty()) {
             List<String> pids = new LinkedList<>(board.getPreferences().subTree("pid", 1).values());
+            List<String> descriptors = new LinkedList<>(board.getPreferences().subTree("descriptor", 1).values());
             for (int i = 0; i < vids.size(); i++) {
               String vidPid = vids.get(i) + "_" + pids.get(i);
               if (vid_pid_iSerial.toUpperCase().contains(vidPid.toUpperCase())) {
+                if (!descriptors.isEmpty()) {
+                  boolean matched = false;
+                  for (int j = 0; j < descriptors.size(); j++) {
+                    if (vid_pid_iSerial.toUpperCase().contains(descriptors.get(j).toUpperCase())) {
+                      matched = true;
+                      break;
+                    }
+                  }
+                  if (matched == false) {
+                    continue;
+                  }
+                }
                 Map<String, Object> boardData = new HashMap<>();
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
-                boardData.put("iserial", vid_pid_iSerial.substring(vidPid.length()+1));
+                String extrafields = vid_pid_iSerial.substring(vidPid.length()+1);
+                String[] parts = extrafields.split("_");
+                boardData.put("iserial", parts[0]);
                 return boardData;
               }
             }

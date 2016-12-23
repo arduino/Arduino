@@ -85,10 +85,11 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.21_r1" />
-  <property name="LIBLISTSERIAL-VERSION" value="1.2.0" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.23" />
+  <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
   <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.3-arduino2" />
-  <property name="AVRDUDE-VERSION" value="6.3.0-arduino6" />
+  <property name="AVRDUDE-VERSION" value="6.3.0-arduino8" />
+  <property name="arduinoOTA-VERSION" value="1.0.0" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -236,7 +237,8 @@
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.1"/>
-    <download-library name="SD" version="1.0.9"/>
+    <download-library name="SD" version="1.1.0"/>
+    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.4"/>
   </target>
   <target name="assemble-libraries-light" if="light_bundle">
     <mkdir dir="${target.path}/libraries" />
@@ -507,6 +509,8 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-osx.tar.bz2"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
 
     <chmod perm="+x">
@@ -732,6 +736,8 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linuxarm.tar.bz2"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
 
@@ -762,6 +768,8 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux32.tar.bz2"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
 
@@ -792,6 +800,8 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux64.tar.bz2"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
 
@@ -1031,7 +1041,7 @@
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
     <chmod perm="755" file="windows/work/arduino-builder.exe" />
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino10/ctags.exe" />
+    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino11/ctags.exe" />
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
@@ -1091,6 +1101,8 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.zip"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-windows.zip"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
 
@@ -1176,10 +1188,21 @@
       <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/"/>
     </antcall>
 
+    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA"/>
+
+    <antcall target="${unpack_target}">
+      <param name="archive_file" value="${staging_folder}/${arduinoOTA_archive_file}"/>
+      <param name="archive_url" value="http://downloads.arduino.cc/tools/${arduinoOTA_archive_file}"/>
+      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA/${arduinoOTA_version}"/>
+      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA/"/>
+    </antcall>
+
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
+    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA/" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
+    <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.arduinoOTA=${arduinoOTA_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
 
     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
