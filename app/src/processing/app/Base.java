@@ -120,8 +120,16 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
 
   static public void main(String args[]) throws Exception {
-    System.setProperty("awt.useSystemAAFontSettings", "on");
-    System.setProperty("swing.aatext", "true");
+    if (!OSUtils.isWindows()) {
+      // Those properties helps enabling anti-aliasing on Linux
+      // (but not on Windows where they made things worse actually
+      // and the font rendering becomes ugly).
+
+      // Those properties must be set before initializing any
+      // graphic object, otherwise they don't have any effect.
+      System.setProperty("awt.useSystemAAFontSettings", "on");
+      System.setProperty("swing.aatext", "true");
+    }
     System.setProperty("java.net.useSystemProxies", "true");
 
     if (OSUtils.isMacOS()) {
