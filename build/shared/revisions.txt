@@ -1,5 +1,7 @@
 ARDUINO 1.8.1
 
+[ide]
+* Fixed font rendering not anti-aliased on Windows (regression)
 
 ARDUINO 1.8.0 - 2016.12.20
 
