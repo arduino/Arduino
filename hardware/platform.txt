@@ -1,0 +1,12 @@
+# ctags
+# ------------------------------
+tools.ctags.path={runtime.tools.ctags.path}
+tools.ctags.cmd.path={path}/ctags
+tools.ctags.pattern="{cmd.path}" -u --language-force=c++ -f - --c++-kinds=svpf --fields=KSTtzns --line-directives "{source_file}"
+
+# additional entries
+tools.avrdude.path={runtime.tools.avrdude.path}
+
+preproc.macros.flags=-w -x c++ -E -CC
+#preproc.macros.compatibility_flags={build.mbed_api_include} {build.nRF51822_api_include} {build.ble_api_include} {compiler.libsam.c.flags} {compiler.arm.cmsis.path} {build.variant_system_include}
+#recipe.preproc.macros="{compiler.path}{compiler.cpp.cmd}" {compiler.cpreprocessor.flags} {compiler.cpp.flags} {preproc.macros.flags} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {preproc.macros.compatibility_flags} {includes} "{source_file}" -o "{preprocessed_file_path}"
