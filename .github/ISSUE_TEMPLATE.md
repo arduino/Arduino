@@ -26,3 +26,7 @@ If an issue has alreday been reported, add your case to its thread.
 ### Describe the actual results.
 
 `INSERT DESCRIPTION OF THE ACTUAL RESULT`
+
+### List the steps to reproduce the problem.
+
+`INSERT STEPS TO REPRODUCE THE PROBLEM`
