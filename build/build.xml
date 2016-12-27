@@ -924,7 +924,7 @@
   <target name="download-launch4j-windows">
     <antcall target="unzip-with-ant-task">
       <param name="archive_file" value="windows/launch4j-3.9-win32.zip"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-win32.zip"/>
+      <param name="archive_url" value="https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-win32.zip"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
@@ -933,7 +933,7 @@
   <target name="download-launch4j-linux">
     <antcall target="untar">
       <param name="archive_file" value="windows/launch4j-3.9-linux.tgz"/>
-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-linux.tgz"/>
+      <param name="archive_url" value="https://downloads.sourceforge.net/project/launch4j/launch4j-3/3.9/launch4j-3.9-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
       <param name="dest_folder" value="windows/launcher/"/>
     </antcall>
