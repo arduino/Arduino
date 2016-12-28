@@ -69,13 +69,14 @@ public class ContributionsIndexer {
   private final File builtInHardwareFolder;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
-  private ContributionsIndex index;
+  private final ContributionsIndex index;
 
   public ContributionsIndexer(File preferencesFolder, File builtInHardwareFolder, Platform platform, SignatureVerifier signatureVerifier) {
     this.preferencesFolder = preferencesFolder;
     this.builtInHardwareFolder = builtInHardwareFolder;
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
+    index = new EmptyContributionIndex();
     packagesFolder = new File(preferencesFolder, "packages");
     stagingFolder = new File(preferencesFolder, "staging" + File.separator + "packages");
   }
@@ -83,7 +84,7 @@ public class ContributionsIndexer {
   public void parseIndex() throws Exception {
     // Read bundled index...
     File bundledIndexFile = new File(builtInHardwareFolder, Constants.BUNDLED_INDEX_FILE_NAME);
-    index = parseIndex(bundledIndexFile);
+    mergeContributions(bundledIndexFile);
 
     // ...and overlay the default index if present
     File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
@@ -93,7 +94,7 @@ public class ContributionsIndexer {
         throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
       }
 
-      mergeContributions(parseIndex(defaultIndexFile), defaultIndexFile);
+      mergeContributions(defaultIndexFile);
     }
 
     // Set main and bundled indexes as trusted
@@ -104,8 +105,7 @@ public class ContributionsIndexer {
 
     for (File indexFile : indexFiles) {
       try {
-	      ContributionsIndex contributionsIndex = parseIndex(indexFile);
-	      mergeContributions(contributionsIndex, indexFile);
+	      mergeContributions(indexFile);
       } catch (JsonProcessingException e) {
         System.err.println(I18n.format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
         System.err.println(e);
@@ -136,7 +136,11 @@ public class ContributionsIndexer {
     index.fillCategories();
   }
 
-  private void mergeContributions(ContributionsIndex contributionsIndex, File indexFile) {
+  private void mergeContributions(File indexFile) throws IOException {
+    if (!indexFile.exists())
+      return;
+
+    ContributionsIndex contributionsIndex = parseIndex(indexFile);
     boolean signed = signatureVerifier.isSigned(indexFile);
     boolean trustall = PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL);
 
