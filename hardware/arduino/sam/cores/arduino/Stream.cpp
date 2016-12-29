@@ -53,7 +53,7 @@ int Stream::timedPeek()
 
 // returns peek of the next digit in the stream or -1 if timeout
 // discards non-numeric characters
-int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal )
+int Stream::peekNextDigit(LookaheadMode lookahead, bool detectDecimal)
 {
   int c;
   while (1) {

@@ -41,19 +41,6 @@ size_t Print::write(const uint8_t *buffer, size_t size)
   return n;
 }
 
-size_t Print::print(const __FlashStringHelper *ifsh)
-{
-  PGM_P p = reinterpret_cast<PGM_P>(ifsh);
-  size_t n = 0;
-  while (1) {
-    unsigned char c = pgm_read_byte(p++);
-    if (c == 0) break;
-    if (write(c)) n++;
-    else break;
-  }
-  return n;
-}
-
 size_t Print::print(const String &s)
 {
   return write(s.c_str(), s.length());
@@ -257,7 +244,7 @@ size_t Print::printFloat(double number, uint8_t digits)
   while (digits-- > 0)
   {
     remainder *= 10.0;
-    unsigned int toPrint = (unsigned int)(remainder);
+    unsigned int toPrint = (unsigned int)remainder;
     n += print(toPrint);
     remainder -= toPrint; 
   } 
