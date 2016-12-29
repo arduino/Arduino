@@ -93,8 +93,8 @@ struct EEPtr{
     EEPtr &operator=( int in )          { return index = in, *this; }
     
     //Iterator functionality.
-    bool operator!=( const EEPtr &ptr ) { return index != ptr.index; }
-    EERef operator*()                   { return index; }
+    bool operator!=( const EEPtr &ptr ) const { return index != ptr.index; }
+    EERef operator*()                         { return index; }
     
     /** Prefix & Postfix increment/decrement **/
     EEPtr& operator++()                 { return ++index, *this; }
