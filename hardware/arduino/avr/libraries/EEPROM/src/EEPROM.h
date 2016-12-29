@@ -116,10 +116,11 @@ struct EEPtr{
 struct EEPROMClass{
 
     //Basic user access methods.
-    EERef operator[]( const int idx )    { return idx; }
-    uint8_t read( int idx )              { return EERef( idx ); }
-    void write( int idx, uint8_t val )   { (EERef( idx )) = val; }
-    void update( int idx, uint8_t val )  { EERef( idx ).update( val ); }
+    EERef operator[]( const int idx )             { return idx; }
+    const EERef operator[]( const int idx ) const { return idx; }
+    uint8_t read( int idx ) const                 { return EERef( idx ); }
+    void write( int idx, uint8_t val )            { (EERef( idx )) = val; }
+    void update( int idx, uint8_t val )           { EERef( idx ).update( val ); }
     
     //STL and C++11 iteration capability.
     EEPtr begin()                        { return 0x00; }
@@ -127,7 +128,7 @@ struct EEPROMClass{
     uint16_t length()                    { return E2END + 1; }
     
     //Functionality to 'get' and 'put' objects to and from EEPROM.
-    template< typename T > T &get( int idx, T &t ){
+    template< typename T > T &get( int idx, T &t ) const {
         EEPtr e = idx;
         uint8_t *ptr = (uint8_t*) &t;
         for( int count = sizeof(T) ; count ; --count, ++e )  *ptr++ = *e;
