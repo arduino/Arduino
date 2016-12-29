@@ -172,7 +172,7 @@ Stepper::Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
 /*
  * Sets the speed in revs per minute
  */
-void Stepper::setSpeed(long whatSpeed)
+void Stepper::setSpeed(float whatSpeed)
 {
   this->step_delay = 60L * 1000L * 1000L / this->number_of_steps / whatSpeed;
 }
