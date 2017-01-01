@@ -495,61 +495,64 @@ public class SketchController {
       isData = true;
     }
 
-    // check whether this file already exists
-    if (destFile.exists()) {
-      Object[] options = { tr("OK"), tr("Cancel") };
-      String prompt = I18n.format(tr("Replace the existing version of {0}?"), filename);
-      int result = JOptionPane.showOptionDialog(editor,
-                                                prompt,
-                                                tr("Replace"),
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
-      if (result == JOptionPane.YES_OPTION) {
-        replacement = true;
-      } else {
-        return false;
-      }
-    }
-
-    // If it's a replacement, delete the old file first,
-    // otherwise case changes will not be preserved.
-    // http://dev.processing.org/bugs/show_bug.cgi?id=969
-    if (replacement) {
-      boolean muchSuccess = destFile.delete();
-      if (!muchSuccess) {
-        Base.showWarning(tr("Error adding file"),
-                         I18n.format(tr("Could not delete the existing ''{0}'' file."), filename),
-			 null);
-        return false;
-      }
-    }
-
-    // make sure they aren't the same file
-    if (isData && sourceFile.equals(destFile)) {
-      Base.showWarning(tr("You can't fool me"),
-                       tr("This file has already been copied to the\n" +
-                         "location from which where you're trying to add it.\n" +
-                         "I ain't not doin nuthin'."), null);
-      return false;
-    }
-
-    // in case the user is "adding" the code in an attempt
-    // to update the sketch's tabs
     if (!sourceFile.equals(destFile)) {
+      // The typical case here is adding a file from somewhere else.
+      // This however fails if the source and destination are equal
+
+      // check whether this file already exists
+      if (destFile.exists()) {
+        Object[] options = { tr("OK"), tr("Cancel") };
+        String prompt = I18n.format(tr("Replace the existing version of {0}?"), filename);
+        int result = JOptionPane.showOptionDialog(editor,
+                                                  prompt,
+                                                  tr("Replace"),
+                                                  JOptionPane.YES_NO_OPTION,
+                                                  JOptionPane.QUESTION_MESSAGE,
+                                                  null,
+                                                  options,
+                                                  options[0]);
+        if (result == JOptionPane.YES_OPTION) {
+          replacement = true;
+        } else {
+          return false;
+        }
+      }
+
+      // If it's a replacement, delete the old file first,
+      // otherwise case changes will not be preserved.
+      // http://dev.processing.org/bugs/show_bug.cgi?id=969
+      if (replacement) {
+        if (!destFile.delete()) {
+          Base.showWarning(tr("Error adding file"),
+                           I18n.format(tr("Could not delete the existing ''{0}'' file."), filename),
+                           null);
+          return false;
+        }
+      }
+
+      // perform the copy
       try {
         Base.copyFile(sourceFile, destFile);
 
       } catch (IOException e) {
         Base.showWarning(tr("Error adding file"),
                          I18n.format(tr("Could not add ''{0}'' to the sketch."), filename),
-			 e);
+                         e);
         return false;
       }
     }
+    else {
+      // If the source and destination are equal, a code file is handled
+      //   - as a replacement, if there is a corresponding tab,
+      //    (eg. user wants to update the file after modifying it outside the editor)
+      //   - as an addition, otherwise.
+      //    (eg. the user copied the file to the sketch folder and wants to edit it)
+      // For a data file, this is a no-op.
+      if (editor.findTabIndex(destFile) >= 0)
+        replacement = true;
+    }
 
+    // open/refresh the tab
     if (!isData) {
       int tabIndex;
       if (replacement) {
