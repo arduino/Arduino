@@ -96,6 +96,31 @@ public class Compiler implements MessageConsumer {
     tr("Warning: platform.txt from core '{0}' misses property '{1}', using default value '{2}'. Consider upgrading this core.");
     tr("Warning: platform.txt from core '{0}' contains deprecated {1}, automatically converted to {2}. Consider upgrading this core.");
     tr("WARNING: Spurious {0} folder in '{1}' library");
+    tr("Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} bytes.");
+    tr("Couldn't determine program size: {0}");
+    tr("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes.");
+    tr("Global variables use {0} bytes of dynamic memory.");
+    tr("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it.");
+    tr("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint.");
+    tr("Low memory available, stability problems may occur.");
+    tr("An error occurred while verifying the sketch");
+    tr("An error occurred while verifying/uploading the sketch");
+    tr("Can't find the sketch in the specified path");
+    tr("Done compiling");
+    tr("Done uploading");
+    tr("Error while uploading");
+    tr("Error while verifying");
+    tr("Error while verifying/uploading");
+    tr("Mode not supported");
+    tr("Multiple files not supported");
+    tr("No command line parameters found");
+    tr("No parameters");
+    tr("No sketch");
+    tr("No sketchbook");
+    tr("Only --verify, --upload or --get-pref are supported");
+    tr("Sketchbook path not defined");
+    tr("The --upload option supports only one file at a time");
+    tr("Verifying and uploading...");
   }
 
   enum BuilderAction {
