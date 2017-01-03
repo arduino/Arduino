@@ -1,0 +1,146 @@
+;/*++
+;
+;Module Name:
+;
+;    SLABVCP.INF
+;
+;    Copyright 2013, Silicon Laboratories
+;
+;Abstract:
+;    Installation INF for Silicon Laboratories CP210x device using KDMF Version 1.9
+;
+;--*/
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%Provider%
+DriverVer=03/19/2014,6.7.0.0
+CatalogFile=slabvcp.cat
+
+
+; ================= Device section =====================
+
+[Manufacturer]
+%MfgName%=SiLabs, NTamd64
+
+[SiLabs]
+%USB\VID_10C4&PID_EA60.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA60
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA70&Mi_00
+%USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA70&Mi_01
+%USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_00
+%USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_01
+%USB\VID_10C4&PID_EA71&Mi_02.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_02
+%USB\VID_10C4&PID_EA71&Mi_03.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_03
+
+[SiLabs.NTamd64]
+%USB\VID_10C4&PID_EA60.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA60
+%USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA70&Mi_00
+%USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA70&Mi_01
+%USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_00
+%USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_01
+%USB\VID_10C4&PID_EA71&Mi_02.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_02
+%USB\VID_10C4&PID_EA71&Mi_03.DeviceDesc%=silabser.Dev, USB\VID_10C4&PID_EA71&Mi_03
+
+[silabser.Dev.NT]
+Include=msports.inf
+AddReg=silabser.AddReg,silabser.NT.AddReg
+CopyFiles=silabser.Files.Ext
+
+[silabser.Dev.NT.Services]
+Include=msports.inf
+Addservice = silabenm,,silabenm.AddService
+Addservice = silabser,0x00000002,silabser.AddService
+
+[silabser.AddService]
+DisplayName    = %silabser.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\silabser.sys
+LoadOrderGroup = Extended Base
+
+[silabenm.AddService]
+DisplayName    = %silabenm.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\silabenm.sys
+LoadOrderGroup = PNP Filter
+
+; common registry entries 
+[silabser.AddReg]
+HKR,,NTMPDriver,,silabser.sys
+HKR,,RateLimitPurgeMS, 0x10001, 0x64, 0x00, 0x00, 0x00
+HKR,,OverrideDefaultPortSettings, 0x10001, 01,00,00,00
+HKR,,InitialBaudRate, 0x10001, 00,C2,01,00		;115200 initial baud rate
+HKR,,InitialLineControl,, "8N1"				;8-bits, No parity, 1 stop bit
+
+[silabser.NT.AddReg]
+HKR,,PortSubClass,1,01
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[silabser.Dev.NT.HW]
+AddReg=silabser.Dev.NT.HW.AddReg
+
+[silabser.Dev.NT.HW.AddReg]
+HKR,,"UpperFilters",0x00010008,"silabenm"
+HKR,,"SelectiveSuspendTimeout",0x00010001,10000
+
+[silabser.Files.Ext]
+silabser.sys
+silabenm.sys
+
+[SourceDisksNames.x86]
+1=%Disk_Description%,"silabser.sys",,\x86
+
+[SourceDisksNames.amd64]
+1=%Disk_Description%,"silabser.sys",,\x64
+
+[SourceDisksFiles]
+silabser.sys = 1
+silabenm.sys = 1
+
+[DestinationDirs]
+Silabser.Files.Ext = 12
+
+;-------------- WDF Coinstaller installation
+
+[DestinationDirs]
+CoInstaller_CopyFiles = 11
+
+[silabser.Dev.NT.CoInstallers]
+AddReg=CoInstaller_AddReg
+CopyFiles=CoInstaller_CopyFiles
+
+[CoInstaller_CopyFiles]
+WdfCoinstaller01009.dll
+
+[SourceDisksFiles]
+WdfCoinstaller01009.dll=1
+
+[CoInstaller_AddReg]
+HKR,,CoInstallers32,0x00010000, "WdfCoinstaller01009.dll,WdfCoInstaller"
+
+[silabser.Dev.NT.Wdf]
+KmdfService = silabser, silabser_wdfsect
+[silabser_wdfsect]
+KmdfLibraryVersion = 1.9
+
+;---------------------------------------------------------------;
+
+[Strings]
+Provider="Silicon Laboratories"
+MfgName="Silicon Laboratories"
+Disk_Description="Silicon Labs USB to UART Bridge Installation Disk"
+USB\VID_10C4&PID_EA60.DeviceDesc="Silicon Labs CP210x USB to UART Bridge"
+USB\VID_10C4&PID_EA70&Mi_00.DeviceDesc="Silicon Labs Dual CP210x USB to UART Bridge: Enhanced COM Port"
+USB\VID_10C4&PID_EA70&Mi_01.DeviceDesc="Silicon Labs Dual CP210x USB to UART Bridge: Standard COM Port"
+USB\VID_10C4&PID_EA71&Mi_00.DeviceDesc="Silicon Labs Quad CP210x USB to UART Bridge: Interface 0"
+USB\VID_10C4&PID_EA71&Mi_01.DeviceDesc="Silicon Labs Quad CP210x USB to UART Bridge: Interface 1"
+USB\VID_10C4&PID_EA71&Mi_02.DeviceDesc="Silicon Labs Quad CP210x USB to UART Bridge: Interface 2"
+USB\VID_10C4&PID_EA71&Mi_03.DeviceDesc="Silicon Labs Quad CP210x USB to UART Bridge: Interface 3"
+silabser.SvcDesc="Silicon Labs CP210x USB to UART Bridge Driver"
+silabenm.SvcDesc="Silicon Labs CP210x USB to UART Bridge Serial Port Enumerator Driver"
+PortsClassName = "Ports (COM & LPT)"
