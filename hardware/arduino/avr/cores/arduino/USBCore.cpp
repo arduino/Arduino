@@ -256,9 +256,7 @@ u8 USB_SendSpace(u8 ep)
 	LockEP lock(ep);
 	if (!ReadWriteAllowed())
 		return 0;
-	// subtract 1 from the EP size to never send a full packet,
-	// this avoids dealing with ZLP's in USB_Send
-	return USB_EP_SIZE - 1 - FifoByteCount();
+	return USB_EP_SIZE - FifoByteCount();
 }
 
 //	Blocking Send of data to an endpoint
