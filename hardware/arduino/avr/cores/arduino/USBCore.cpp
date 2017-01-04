@@ -273,7 +273,9 @@ int USB_Send(u8 ep, const void* d, int len)
 	int r = len;
 	const u8* data = (const u8*)d;
 	u8 timeout = 250;		// 250ms timeout on send? TODO
-	while (len)
+	bool sendZlp = false;
+
+	while (len || sendZlp)
 	{
 		u8 n = USB_SendSpace(ep);
 		if (n == 0)
@@ -284,13 +286,16 @@ int USB_Send(u8 ep, const void* d, int len)
 			continue;
 		}
 
-		if (n > len)
+		if (n > len) {
 			n = len;
+		}
+
 		{
 			LockEP lock(ep);
 			// Frame may have been released by the SOF interrupt handler
 			if (!ReadWriteAllowed())
 				continue;
+
 			len -= n;
 			if (ep & TRANSFER_ZERO)
 			{
@@ -307,8 +312,17 @@ int USB_Send(u8 ep, const void* d, int len)
 				while (n--)
 					Send8(*data++);
 			}
-			if (!ReadWriteAllowed() || ((len == 0) && (ep & TRANSFER_RELEASE)))	// Release full buffer
+
+			if (sendZlp) {
 				ReleaseTX();
+				sendZlp = false;
+			} else if (!ReadWriteAllowed()) { // ...release if buffer is full...
+				ReleaseTX();
+				if (len == 0) sendZlp = true;
+			} else if ((len == 0) && (ep & TRANSFER_RELEASE)) { // ...or if forced with TRANSFER_RELEASE
+				// XXX: TRANSFER_RELEASE is never used can be removed?
+				ReleaseTX();
+			}
 		}
 	}
 	TXLED1;					// light the TX LED
@@ -473,7 +487,7 @@ static
 bool SendConfiguration(int maxlen)
 {
 	//	Count and measure interfaces
-	InitControl(0);	
+	InitControl(0);
 	u8 interfaces = SendInterfaces();
 	ConfigDescriptor config = D_CONFIG(_cmark + sizeof(ConfigDescriptor),interfaces);
 
