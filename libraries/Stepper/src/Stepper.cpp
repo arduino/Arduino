@@ -179,7 +179,7 @@ void Stepper::setSpeed(long whatSpeed)
 /*
 * Sets initial delay in us to prevent unexpected behaviour in the start 
 */
-void Stepper::initializeWithDelay(long initial_delay)
+void Stepper::initializeWithDelay(unsigned long initial_delay)
   {
     //first the motor is enabled on its first step
     stepMotor(0);
