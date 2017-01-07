@@ -132,10 +132,10 @@ int atexit(void (*func)()) __attribute__((weak));
 
 void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
-int digitalRead(uint8_t);
-int analogRead(uint8_t);
+uint8_t digitalRead(uint8_t);
+uint16_t analogRead(uint8_t);
 void analogReference(uint8_t mode);
-void analogWrite(uint8_t, int);
+void analogWrite(uint8_t, uint8_t);
 
 unsigned long millis(void);
 unsigned long micros(void);

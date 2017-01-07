@@ -35,7 +35,7 @@ void analogReference(uint8_t mode)
 	analog_reference = mode;
 }
 
-int analogRead(uint8_t pin)
+uint16_t analogRead(uint8_t pin)
 {
 	uint8_t low, high;
 
@@ -101,7 +101,7 @@ int analogRead(uint8_t pin)
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default
 // to digital output.
-void analogWrite(uint8_t pin, int val)
+void analogWrite(uint8_t pin, uint8_t val)
 {
 	// We need to make sure the PWM output is enabled for those pins
 	// that support it, as we turn it off when digitally reading or
