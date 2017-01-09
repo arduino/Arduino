@@ -236,7 +236,7 @@
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.1"/>
-    <download-library name="SD" version="1.1.0"/>
+    <download-library name="SD" version="1.1.1"/>
     <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.4"/>
   </target>
 

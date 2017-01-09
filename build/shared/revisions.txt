@@ -4,6 +4,9 @@ ARDUINO 1.8.1
 * Fixed font rendering not anti-aliased on Windows (regression)
 * Increased number of colors on serial plotter to 8, thanks @cousteaulecommandant
 
+[libraries]
+* Fixed regression in SD library. Thanks @greiman
+
 ARDUINO 1.8.0 - 2016.12.20
 
 [ide]
