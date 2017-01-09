@@ -15,9 +15,11 @@
 # Translators:
 # Translators:
 # Cougar <cougar@random.ee>, 2012
+# Cougar <transifex@lost.data.ee>, 2013
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Georg, 2014
 # Georg, 2014
+# Hasso Tepper <hasso.tepper@gmail.com>, 2016
 # Lauri Võsandi <lauri.vosandi@gmail.com>, 2015
 # Triin Taveter <taveter@ut.ee>, 2016
 msgid ""
@@ -25,8 +27,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2016-12-30 03:45+0000\n"
+"Last-Translator: Hasso Tepper <hasso.tepper@gmail.com>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,7 +128,7 @@ msgstr "Arduino info"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Akoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -340,13 +342,13 @@ msgstr "Plaat"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Plaadi info"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr "Plaat kohas {0} ei ole saadaval"
+msgstr "„{0}“ pordis pole plaati."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -421,7 +423,7 @@ msgstr "Alglaaduri I/O plaadile kirjutamine (see võib võtta mõne minuti) ..."
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr ""
+msgstr "CRC ei kattu ja fail on rikutud. See võib olla ajutine probleem, proovi hiljem uuesti."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
@@ -496,7 +498,7 @@ msgstr "Visandi kompileerimine ..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr "Kaastööd"
+msgstr "Kolmandate osapoolte"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -526,7 +528,7 @@ msgstr "Ettenähtud kohta ei saa kopeerida."
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "Kataloogi „{0}“ ei saa luua"
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
@@ -813,7 +815,7 @@ msgstr "Viga faili lisamisel"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr "Viga plaadi {0} jaoks kompilleerimisel."
+msgstr "Viga „{0}“ plaadile kompileerimisel."
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -932,13 +934,13 @@ msgstr "Näited"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "Näited kõigile plaatidele"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
-msgstr ""
+msgstr "„{0}“ näited"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -946,7 +948,7 @@ msgstr "Ise paigaldatud teekide näited"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Näited teistest teekidest"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -964,11 +966,11 @@ msgstr "Visandi avamine ebaõnnestus: „{0}“"
 #: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
 #, java-format
 msgid "Failed to rename \"{0}\" to \"{1}\""
-msgstr ""
+msgstr "„{0}“ nime muutmine „{1}“-ks ebaõnnestus"
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:298
 msgid "Failed to rename sketch folder"
-msgstr ""
+msgstr "Visandikausta nime muutmine ebaõnnestus"
 
 #: Editor.java:491
 msgid "File"
@@ -977,7 +979,7 @@ msgstr "Fail"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr "Faili nimi {0} on kehtetu: ignoreeritakse"
+msgstr "Failinimi {0} pole korrektne: faili ignoreeritakse"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1061,7 +1063,7 @@ msgstr "Saksa"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Plaadi info"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1123,7 +1125,7 @@ msgstr "Ungari"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "MITTEKOMPATIIBEL"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1207,7 +1209,7 @@ msgstr "Paigaldamine ..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr "Liidese skaala:"
+msgstr "Kasutajaliidese suurendus:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1229,7 +1231,7 @@ msgstr "Jaapani"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kasahhi"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1333,7 +1335,7 @@ msgstr "Uue faili nimi:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Info lugemine jadapordist ei õnnestu"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1345,7 +1347,7 @@ msgstr "Võrk"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Info lugemine võrgupordist ei õnnestu"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1536,7 +1538,7 @@ msgstr "Laadi Wire teek menüüst Visand -> Laadi teek."
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Plaadi info nägemiseks vali port."
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1545,7 +1547,7 @@ msgstr "Vali programmaator menüüst Tööriistad -> Programmaator."
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr "Plotterit ei saa kasutada, kui jadapordi monitor on avatud"
+msgstr "Plotterit ei saa kasutada, kui jadapordi monitor on avatud."
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1817,7 +1819,7 @@ msgstr "Jadapordi plotter"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr "Jadapordi monitori ei saa kasutada, kui plotter on avatud"
+msgstr "Jadapordi monitori ei saa kasutada, kui plotter on avatud."
 
 #: Serial.java:194
 #, java-format
@@ -1918,7 +1920,7 @@ msgstr "Visandite asukoht on määramata"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr ""
+msgstr "Paki indeksi faili {0} ignoreeritakse, viga parsimisel:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1944,7 +1946,7 @@ msgstr "Mõned failid on kirjutuskaitsega.\nPead salvestama visandi kuhugi mujal
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
 msgid "Sorry, the folder \"{0}\" already exists."
-msgstr ""
+msgstr "Vabandust, „{0}“ nimeline kaust on juba olemas."
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1980,7 +1982,7 @@ msgstr "Tamili"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2015,7 +2017,7 @@ msgstr "Klass Udp on nimetatud ümber EthernetUdp."
 
 #: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
-msgstr ""
+msgstr "Hetkel valitud plaat vajab „{0}“ baaspakki, mis pole paigaldatud."
 
 #: Editor.java:2147
 #, java-format
@@ -2035,7 +2037,7 @@ msgstr "Teeki „{0}“ ei saa kasutada.\nTeekide nimed tohivad sisaldada ainult
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
-msgstr ""
+msgstr "Põhifailil ei tohi laiendit olla."
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2061,7 +2063,7 @@ msgstr "Visandit „{0}“ ei saa kasutada.\nVisandite nimed nimed tohivad sisal
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr ""
+msgstr "Visandis on „{0}“ nimeline fail juba olemas."
 
 #: Sketch.java:1755
 msgid ""
@@ -2161,7 +2163,7 @@ msgstr "Ukraina"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr "Ei saa ühendust seadme/võrguga {0}"
+msgstr "Aadressiga „{0}“ ei õnnestu ühendust luua"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2179,7 +2181,7 @@ msgstr "Ühendust ei õnnestu luua, vale parool?"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr "Ei õnnestu leida {0} kohast {1}"
+msgstr "Visandit „{0}“ pole kataloogis „{1}“"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2205,11 +2207,11 @@ msgstr "Võta tagasi"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr "Käsitlemata tüüp {0} konteksi võtmes {1}"
+msgstr ""
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Tundmatu plaat"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2265,7 +2267,7 @@ msgstr "Laadi üles programmaatori kaudu"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Info lugemiseks laadi suvaline visand üles"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2391,7 +2393,7 @@ msgstr "Hoiatus: fail {0} viitab täielikule asukohale {1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
 msgid "Warning: forced trusting untrusted contributions"
-msgstr "Hoiatus: mitteusaldusväärseid kaastöid sunnitud usaldamine"
+msgstr "Hoiatus: mitteusaldusväärse paki sunnitud usaldamine"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
 #, java-format
@@ -2401,7 +2403,7 @@ msgstr "Hoiatus: mitteusaldusväärse skripti ({0}) sunnitud käivitamine"
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr "Hoiatus: kaastöö pole usaldusväärne, skripte ei käivitata ({0})"
+msgstr "Hoiatus: pakk pole usaldusväärne, skripte ei käivitata ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
@@ -2562,7 +2564,7 @@ msgstr "boodi"
 
 #: Preferences.java:389
 msgid "compilation "
-msgstr "kopileerimise ajal"
+msgstr "kompileerimise ajal"
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
@@ -2709,4 +2711,4 @@ msgstr "{0}: Tundmatu pakk"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "„{2}“ plaadi kasutamiseks paigalda {0}see pakk{1}"
