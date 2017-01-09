@@ -72,6 +72,10 @@ public class TextAreaFIFO extends JTextArea implements DocumentListener {
     }
   }
 
+  public int getLength() {
+    return getDocument().getLength();
+  }
+
   public void appendNoTrim(String s) {
     int free = maxChars - getDocument().getLength();
     if (free <= 0)
