@@ -26,6 +26,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.Document;
 
 import cc.arduino.packages.BoardPort;
@@ -35,7 +37,9 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
   protected JLabel noLineEndingAlert;
   protected TextAreaFIFO textArea;
+  protected HTMLTextAreaFIFO htmlTextArea;
   protected JScrollPane scrollPane;
+  protected JScrollPane htmlScrollPane;
   protected JTextField textField;
   protected JButton sendButton;
   protected JButton clearButton;
@@ -43,6 +47,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JCheckBox addTimeStampBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
+  protected Container mainPane;
+  private long lastMessage;
+  private javax.swing.Timer updateTimer;
+  private boolean htmlView = true;
 
   private SimpleDateFormat logDateFormat;
   
@@ -56,6 +64,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     Font editorFont = PreferencesData.getFont("editor.font");
     Font font = Theme.scale(new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize()));
 
+    this.mainPane = mainPane;
     mainPane.setLayout(new BorderLayout());
 
     textArea = new TextAreaFIFO(8000000);
@@ -64,13 +73,89 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     textArea.setEditable(false);
     textArea.setFont(font);
 
+    htmlTextArea = new HTMLTextAreaFIFO(8000000);
+    htmlTextArea.setEditable(false);
+    htmlTextArea.setFont(font);
+    htmlTextArea.setOpaque(false);
+
     // don't automatically update the caret.  that way we can manually decide
     // whether or not to do so based on the autoscroll checkbox.
     ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    ((DefaultCaret) htmlTextArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+    Document doc = textArea.getDocument();
+    if (doc instanceof AbstractDocument)
+    {
+      UndoableEditListener[] undoListeners =
+          ( (AbstractDocument) doc).getUndoableEditListeners();
+      if (undoListeners.length > 0)
+      {
+        for (UndoableEditListener undoListener : undoListeners)
+        {
+          doc.removeUndoableEditListener(undoListener);
+        }
+      }
+    }
+
+    doc = htmlTextArea.getDocument();
+    if (doc instanceof AbstractDocument)
+    {
+      UndoableEditListener[] undoListeners =
+          ( (AbstractDocument) doc).getUndoableEditListeners();
+      if (undoListeners.length > 0)
+      {
+        for (UndoableEditListener undoListener : undoListeners)
+        {
+          doc.removeUndoableEditListener(undoListener);
+        }
+      }
+    }
 
     scrollPane = new JScrollPane(textArea);
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    htmlScrollPane = new JScrollPane(htmlTextArea);
+    htmlScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+    ActionListener checkIfSteady = new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
+        if (System.currentTimeMillis() - lastMessage > 200) {
+          if (htmlView == false && textArea.getLength() < 1000) {
+
+            htmlTextArea.setText("");
+            boolean res = htmlTextArea.append(textArea.getText());
+            if (res) {
+              htmlView = true;
+              mainPane.remove(scrollPane);
+              if (textArea.getCaretPosition() > htmlTextArea.getDocument().getLength()) {
+                htmlTextArea.setCaretPosition(htmlTextArea.getDocument().getLength());
+              } else {
+                htmlTextArea.setCaretPosition(textArea.getCaretPosition());
+              }
+              mainPane.add(htmlScrollPane, BorderLayout.CENTER);
+              scrollPane.setVisible(false);
+              mainPane.validate();
+              mainPane.repaint();
+            }
+          }
+        } else {
+          if (htmlView == true) {
+            htmlView = false;
+            mainPane.remove(htmlScrollPane);
+            mainPane.add(scrollPane, BorderLayout.CENTER);
+            scrollPane.setVisible(true);
+            mainPane.validate();
+            mainPane.repaint();
+          }
+        }
+      }
+    };
+
+    updateTimer = new javax.swing.Timer(33, checkIfSteady);
 
     mainPane.add(scrollPane, BorderLayout.CENTER);
+
+    htmlTextArea.setVisible(true);
+    htmlScrollPane.setVisible(true);
   
     JPanel upperPane = new JPanel();
     upperPane.setLayout(new BoxLayout(upperPane, BoxLayout.X_AXIS));
@@ -147,19 +232,26 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.add(clearButton);
 
     mainPane.add(pane, BorderLayout.SOUTH);
+
+    updateTimer.start();
   }
 
   protected void onEnableWindow(boolean enable)
   {
     textArea.setEnabled(enable);
     clearButton.setEnabled(enable);
+    htmlTextArea.setEnabled(enable);
     scrollPane.setEnabled(enable);
+    htmlScrollPane.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
     autoscrollBox.setEnabled(enable);
     addTimeStampBox.setEnabled(enable);
     lineEndings.setEnabled(enable);
     serialRates.setEnabled(enable);
+    if (enable == false) {
+      htmlTextArea.setText("");
+    }
   }
 
   public void onSendCommand(ActionListener listener) {
@@ -174,8 +266,9 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void onSerialRateChange(ActionListener listener) {
     serialRates.addActionListener(listener);
   }
-  
+
   public void message(final String s) {
+    lastMessage = System.currentTimeMillis();
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         if (addTimeStampBox.isSelected()) {
