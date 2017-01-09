@@ -1,4 +1,4 @@
-ARDUINO 1.8.1
+ARDUINO 1.8.1 - 2017.01.09
 
 [ide]
 * Fixed font rendering not anti-aliased on Windows (regression)
