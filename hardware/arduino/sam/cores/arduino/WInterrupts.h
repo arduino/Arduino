@@ -8,7 +8,7 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
@@ -21,16 +21,19 @@
 
 #include "Arduino.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <functional>
 
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
+
+void attachInterrupt(uint32_t pin, std::function<void(void)>, uint32_t mode);
 void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode);
 
 void detachInterrupt(uint32_t pin);
 
-#ifdef __cplusplus
-}
-#endif
+// #ifdef __cplusplus
+// }
+// #endif
 
 #endif /* _WIRING_INTERRUPTS_ */
