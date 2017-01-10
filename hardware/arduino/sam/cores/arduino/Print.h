@@ -31,6 +31,8 @@
 #define OCT 8
 #define BIN 2
 
+#define _always_inline __attribute__ ((__always_inline__)) // undefined at end
+
 class Print
 {
   private:
@@ -61,22 +63,24 @@ class Print
     size_t print(unsigned long, int = DEC);
     size_t print(double, int = 2);
     
-    size_t print(const char str[])   { return write(str); }
-    size_t print(const char c)       { return write(c); }
-    size_t print(const Printable &x) { return x.printTo(*this); }
+    _always_inline size_t print(const char str[])   { return write(str); }
+    _always_inline size_t print(const char c)       { return write(c); }
+    _always_inline size_t print(const Printable &x) { return x.printTo(*this); }
     
-    size_t print(  signed char  n, int f = DEC) { return print((  signed long) n, f); }
-    size_t print(  signed short n, int f = DEC) { return print((  signed long) n, f); }
-    size_t print(  signed int   n, int f = DEC) { return print((  signed long) n, f); }
-    size_t print(unsigned char  n, int f = DEC) { return print((unsigned long) n, f); }
-    size_t print(unsigned short n, int f = DEC) { return print((unsigned long) n, f); }
-    size_t print(unsigned int   n, int f = DEC) { return print((unsigned long) n, f); }
-    size_t print(    float      n, int f = 2  ) { return print((    double   ) n, f); }
+    _always_inline size_t print(  signed char  n, int f = DEC) { return print((  signed long) n, f); }
+    _always_inline size_t print(  signed short n, int f = DEC) { return print((  signed long) n, f); }
+    _always_inline size_t print(  signed int   n, int f = DEC) { return print((  signed long) n, f); }
+    _always_inline size_t print(unsigned char  n, int f = DEC) { return print((unsigned long) n, f); }
+    _always_inline size_t print(unsigned short n, int f = DEC) { return print((unsigned long) n, f); }
+    _always_inline size_t print(unsigned int   n, int f = DEC) { return print((unsigned long) n, f); }
+    _always_inline size_t print(    float      n, int f = 2  ) { return print((    double   ) n, f); }
     
     size_t println(void);
     
-    template<typename T> size_t println(const T &arg)      { size_t t = print(arg);  return t + println(); }
-    template<typename T> size_t println(const T &n, int f) { size_t t = print(n, f); return t + println(); }
+    template<typename T> _always_inline size_t println(const T &arg)      { size_t t = print(arg);  return t + println(); }
+    template<typename T> _always_inline size_t println(const T &n, int f) { size_t t = print(n, f); return t + println(); }
 };
+
+#undef _always_inline
 
 #endif
