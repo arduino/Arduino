@@ -51,7 +51,7 @@ size_t Print::print(const String &s)
   return write(s.c_str(), s.length());
 }
 
-size_t Print::print(long n, int base)
+size_t Print::print(signed long n, int base)
 {
   if (base == 0) {
     return write(n);

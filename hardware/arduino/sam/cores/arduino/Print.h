@@ -57,7 +57,7 @@ class Print
     
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);
-    size_t print(long, int = DEC);
+    size_t print(  signed long, int = DEC);
     size_t print(unsigned long, int = DEC);
     size_t print(double, int = 2);
     
@@ -65,9 +65,13 @@ class Print
     size_t print(const char c)       { return write(c); }
     size_t print(const Printable &x) { return x.printTo(*this); }
     
+    size_t print(  signed char  n, int f = DEC) { return print((  signed long) n, f); }
+    size_t print(  signed short n, int f = DEC) { return print((  signed long) n, f); }
+    size_t print(  signed int   n, int f = DEC) { return print((  signed long) n, f); }
     size_t print(unsigned char  n, int f = DEC) { return print((unsigned long) n, f); }
-    size_t print(         int   n, int f = DEC) { return print((         long) n, f); }
+    size_t print(unsigned short n, int f = DEC) { return print((unsigned long) n, f); }
     size_t print(unsigned int   n, int f = DEC) { return print((unsigned long) n, f); }
+    size_t print(    float      n, int f = 2  ) { return print((    double   ) n, f); }
     
     size_t println(void);
     
