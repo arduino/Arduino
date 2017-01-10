@@ -59,31 +59,6 @@ size_t Print::print(const String &s)
   return write(s.c_str(), s.length());
 }
 
-size_t Print::print(const char str[])
-{
-  return write(str);
-}
-
-size_t Print::print(char c)
-{
-  return write(c);
-}
-
-size_t Print::print(unsigned char b, int base)
-{
-  return print((unsigned long) b, base);
-}
-
-size_t Print::print(int n, int base)
-{
-  return print((long) n, base);
-}
-
-size_t Print::print(unsigned int n, int base)
-{
-  return print((unsigned long) n, base);
-}
-
 size_t Print::print(long n, int base)
 {
   if (base == 0) {
@@ -109,11 +84,6 @@ size_t Print::print(unsigned long n, int base)
 size_t Print::print(double n, int digits)
 {
   return printFloat(n, digits);
-}
-
-size_t Print::print(const Printable& x)
-{
-  return x.printTo(*this);
 }
 
 size_t Print::println(void)
