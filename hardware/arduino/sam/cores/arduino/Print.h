@@ -67,18 +67,10 @@ class Print
     size_t print(double, int = 2);
     size_t print(const Printable&);
 
-    size_t println(const __FlashStringHelper *);
-    size_t println(const String &s);
-    size_t println(const char[]);
-    size_t println(char);
-    size_t println(unsigned char, int = DEC);
-    size_t println(int, int = DEC);
-    size_t println(unsigned int, int = DEC);
-    size_t println(long, int = DEC);
-    size_t println(unsigned long, int = DEC);
-    size_t println(double, int = 2);
-    size_t println(const Printable&);
     size_t println(void);
+    
+    template<typename T> size_t println(const T &arg)      { size_t t = print(arg);  return t + println(); }
+    template<typename T> size_t println(const T &n, int f) { size_t t = print(n, f); return t + println(); }
 };
 
 #endif
