@@ -28,7 +28,7 @@ catalog()
 update()
 {
   echo -e "Updating $1...\c"
-  cat "$catalog" | python python/update.py "$1"
+  cat "$catalog" | python2 python/update.py "$1"
   msgcat -p "$1" > $(basename "$1" .po).properties
   # msgcat may complain about "CHARSET" if you didn't replace "CHARSET" with
   # your correct charset.

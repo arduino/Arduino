@@ -6,7 +6,7 @@
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
 name=Arduino ARM (32-bits) Boards
-version=1.6.9
+version=1.6.11
 
 # SAM3 compile variables
 # ----------------------
@@ -23,7 +23,7 @@ compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sectio
 compiler.c.elf.cmd=arm-none-eabi-gcc
 compiler.c.elf.flags=-Os -Wl,--gc-sections
 compiler.S.cmd=arm-none-eabi-gcc
-compiler.S.flags=-c -g -x assembler-with-cpp
+compiler.S.flags=-c -g -x assembler-with-cpp -MMD
 compiler.cpp.cmd=arm-none-eabi-g++
 compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -Dprintf=iprintf -MMD
 compiler.ar.cmd=arm-none-eabi-ar

@@ -298,5 +298,6 @@ public class SketchFile {
 
     BaseNoGui.saveFile(storage.getText(), newFile);
     renamedTo(newFile);
+    storage.clearModified();
   }
 }

@@ -1306,7 +1306,7 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
     copyForumItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleHTMLCopy();
+          getCurrentTab().handleDiscourseCopy();
         }
       });
     menu.add(copyForumItem);
@@ -1314,7 +1314,7 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem copyHTMLItem = newJMenuItemAlt(tr("Copy as HTML"), 'C');
     copyHTMLItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleDiscourseCopy();
+          getCurrentTab().handleHTMLCopy();
         }
       });
     menu.add(copyHTMLItem);

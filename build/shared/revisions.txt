@@ -1,7 +1,30 @@
-ARDUINO 1.6.14
+ARDUINO 1.8.1 - 2017.01.09
+
 [ide]
+* Fixed font rendering not anti-aliased on Windows (regression)
+* Increased number of colors on serial plotter to 8, thanks @cousteaulecommandant
+
+[libraries]
+* Fixed regression in SD library. Thanks @greiman
+
+ARDUINO 1.8.0 - 2016.12.20
+
+[ide]
+* Linux: running in command line mode doesn't require an X11 display anymore
+* "Save as" now clears the "modified" status
+* builder: Paths with strange UTF8 chars are now correctly handled
+* builder: .hpp and .hh file extensions are now considered valid sketch extension
+* builder: core.a is not rebuild if not needed (improve build time in particular for big projects)
+* Fixed swapped actions "Copy for Forum" and "Copy as HTML"
+* Linux/osx: If an editor tab is a symbolic link it is no more replaced with a real file when saving (see #5478)
+* Increased the upload timeout to 5 minutes (it was 2 min, but it may be not sufficient when uploading via UART a big sketch)
 
 [core]
+* Added Arduino.org boards
+* Added Adafruit Circuit Playground board
+* Added "-g" option to linker to keep debug information in the .elf file (see #5539)
+* avrdude: Added fake configuration for EFUSE on atmega8 part. This solves a long standing issue with "Burn bootloader".
+  Thanks @rigelinorion, @awatterott
 
 ARDUINO 1.6.13 - 2016.11.22
 
