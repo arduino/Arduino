@@ -63,7 +63,7 @@
             {
               "packager": "arduino",
               "name": "arduinoOTA",
-              "version": "1.0.0"
+              "version": "1.1.1"
             }
           ]
         }
@@ -153,42 +153,42 @@
         },
         {
           "name": "arduinoOTA",
-          "version": "1.0.0",
+          "version": "1.1.1",
           "systems": [
             {
-              "size": "2044124",
-              "checksum": "SHA-256:850a86876403cb45c944590a8cc7f9d8ef6d53ed853f7a9593ec395c4c1c6b2d",
+              "size": "2045036",
+              "checksum": "SHA-256:7ac91ef1d5b357c0ceb790be02ef54986db598ba5a42fffbd6c8ecbdd6a271ef",
               "host": "i686-linux-gnu",
-              "archiveFileName": "arduinoOTA-1.0.0-linux32.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linux32.tar.bz2"
+              "archiveFileName": "arduinoOTA-1.1.1-linux_386.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_386.tar.bz2"
             },
             {
-              "size": "2178772",
-              "checksum": "SHA-256:f01f25e02787492a8a30414230635adae76ed85228045437433892d185991f9e",
+              "size": "2178288",
+              "checksum": "SHA-256:eb5ad0a457dd7f610f7f9b85454399c36755673d61a16f9d07cdfcbbb32ec277",
               "host": "x86_64-linux-gnu",
-              "archiveFileName": "arduinoOTA-1.0.0-linux64.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linux64.tar.bz2"
+              "archiveFileName": "arduinoOTA-1.1.1-linux_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_amd64.tar.bz2"
             },
             {
-              "size": "1961623",
-              "checksum": "SHA-256:0ca6c0a93bfad50be0b6e62dc51ba6c3267b809bab4ec91ef9606ab7d838e46b",
+              "size": "1962115",
+              "checksum": "SHA-256:e4880d83df3d3f6f4b7b7bcde161e80a0556877468803a3c6066ee4ad18a374c",
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "arduinoOTA-1.0.0-linuxarm.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-linuxarm.tar.bz2"
+              "archiveFileName": "arduinoOTA-1.1.1-linux_arm.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_arm.tar.bz2"
             },
             {
-              "size": "2180617",
-              "checksum": "SHA-256:e63c6034da2c1a7fe453eaa29c22df88627cc0aa3c5cbab7635c19367b74ee59",
+              "size": "2181376",
+              "checksum": "SHA-256:a1ce7cf578982f3af5e4fab6b5839e44830d7a41cb093faba5c4b45952a6fa55",
               "host": "i386-apple-darwin11",
-              "archiveFileName": "arduinoOTA-1.0.0-osx.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-osx.tar.bz2"
+              "archiveFileName": "arduinoOTA-1.1.1-darwin_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-darwin_amd64.tar.bz2"
             },
             {
-              "size": "2247970",
-              "checksum": "SHA-256:7bced1489217e07661ea1e75702a10a874b54f6146e2414ee47684c7eac014d1",
+              "size": "2248431",
+              "checksum": "SHA-256:b2d3610c77f969a68cd75b6ea66bf63ec10c263937009d99147fbcd975c90006",
               "host": "i686-mingw32",
-              "archiveFileName": "arduinoOTA-1.0.0-windows.zip",
-              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.0.0-windows.zip"
+              "archiveFileName": "arduinoOTA-1.1.1-windows_386.zip",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-windows_386.zip"
             }
           ]
         }
