@@ -88,7 +88,7 @@
   <property name="ARDUINO-BUILDER-VERSION" value="1.3.24" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
   <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.4-arduino2" />
-  <property name="AVRDUDE-VERSION" value="6.3.0-arduino8" />
+  <property name="AVRDUDE-VERSION" value="6.3.0-arduino9" />
   <property name="arduinoOTA-VERSION" value="1.0.0" />
 
   <!-- Libraries required for running arduino -->
