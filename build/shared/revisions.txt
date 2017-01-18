@@ -1,5 +1,8 @@
 ARDUINO 1.8.2
 
+[ide]
+* Fix command line: works again with relative paths (regression)
+
 ARDUINO 1.8.1 - 2017.01.09
 
 [ide]
