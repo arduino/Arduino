@@ -376,7 +376,7 @@ public class Base {
         // Build
         splash.splashText(tr("Verifying..."));
 
-        File sketchFile = new File(parser.getFilenames().get(0));
+        File sketchFile = BaseNoGui.absoluteFile(parser.getFilenames().get(0));
         sketch = new Sketch(sketchFile);
 
         outputFile = new Compiler(sketch).build(progress -> {}, false);
