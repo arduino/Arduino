@@ -5,6 +5,7 @@ import javax.jmdns.impl.DNSTaskStarter;
 import javax.jmdns.impl.JmDNSImpl;
 import javax.jmdns.impl.ServiceInfoImpl;
 import javax.jmdns.impl.tasks.RecordReaper;
+import java.net.InetAddress;
 import java.util.Timer;
 
 public class ArduinoDNSTaskStarter implements DNSTaskStarter.Factory.ClassDelegate {
@@ -86,8 +87,8 @@ public class ArduinoDNSTaskStarter implements DNSTaskStarter.Factory.ClassDelega
       }
 
       @Override
-      public void startResponder(DNSIncoming in, int port) {
-        delegate.startResponder(in, port);
+      public void startResponder(DNSIncoming in, InetAddress addr, int port) {
+        delegate.startResponder(in, addr, port);
       }
     };
   }
