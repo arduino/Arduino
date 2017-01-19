@@ -13,13 +13,13 @@
  modified 13 Jan 2014
  by Federico Vanzati
 
- http://arduino.cc/en/Tutorial/WifiWebClientRepeating
+ http://www.arduino.cc/en/Tutorial/WifiWebClientRepeating
  This code is in the public domain.
  */
 
 #include <SPI.h>
 #include <WiFi.h>
- 
+
 char ssid[] = "yourNetwork";      //  your network SSID (name)
 char pass[] = "secretPassword";   // your network password
 int keyIndex = 0;            // your network key Index number (needed only for WEP)
@@ -40,7 +40,7 @@ void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // check for the presence of the shield:
@@ -51,11 +51,12 @@ void setup() {
   }
 
   String fv = WiFi.firmwareVersion();
-  if ( fv != "1.1.0" )
+  if (fv != "1.1.0") {
     Serial.println("Please upgrade the firmware");
+  }
 
   // attempt to connect to Wifi network:
-  while ( status != WL_CONNECTED) {
+  while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
@@ -103,8 +104,7 @@ void httpRequest() {
 
     // note the time that the connection was made:
     lastConnectionTime = millis();
-  }
-  else {
+  } else {
     // if you couldn't make a connection:
     Serial.println("connection failed");
   }

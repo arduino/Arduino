@@ -13,7 +13,7 @@
 
  This example is in the public domain.
 
- http://arduino.cc/en/Tutorial/GSMExamplesReceiveSMS
+ http://www.arduino.cc/en/Tutorial/GSMExamplesReceiveSMS
 
 */
 
@@ -30,12 +30,11 @@ GSM_SMS sms;
 // Array to hold the number a SMS is retreived from
 char senderNumber[20];
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   Serial.println("SMS Messages Receiver");
@@ -44,12 +43,10 @@ void setup()
   boolean notConnected = true;
 
   // Start GSM connection
-  while (notConnected)
-  {
-    if (gsmAccess.begin(PINNUMBER) == GSM_READY)
+  while (notConnected) {
+    if (gsmAccess.begin(PINNUMBER) == GSM_READY) {
       notConnected = false;
-    else
-    {
+    } else {
       Serial.println("Not connected");
       delay(1000);
     }
@@ -59,13 +56,11 @@ void setup()
   Serial.println("Waiting for messages");
 }
 
-void loop()
-{
+void loop() {
   char c;
 
   // If there are any SMSs available()
-  if (sms.available())
-  {
+  if (sms.available()) {
     Serial.println("Message received from:");
 
     // Get remote number
@@ -74,15 +69,15 @@ void loop()
 
     // An example of message disposal
     // Any messages starting with # should be discarded
-    if (sms.peek() == '#')
-    {
+    if (sms.peek() == '#') {
       Serial.println("Discarded SMS");
       sms.flush();
     }
 
     // Read message bytes and print them
-    while (c = sms.read())
+    while (c = sms.read()) {
       Serial.print(c);
+    }
 
     Serial.println("\nEND OF MESSAGE");
 

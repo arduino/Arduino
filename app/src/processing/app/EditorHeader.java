@@ -22,17 +22,25 @@
 */
 
 package processing.app;
-import static processing.app.I18n._;
+
+import processing.app.helpers.Keys;
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.SimpleAction;
+import processing.app.tools.MenuScroller;
+import static processing.app.I18n.tr;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import java.io.IOException;
+import java.util.List;
 import javax.swing.*;
 
+import static processing.app.Theme.scale;
 
 /**
  * Sketch tabs at the top of the editor window.
  */
+@SuppressWarnings("serial")
 public class EditorHeader extends JComponent {
   static Color backgroundColor;
   static Color textColor[] = new Color[2];
@@ -58,33 +66,98 @@ public class EditorHeader extends JComponent {
   static final int UNSELECTED = 0;
   static final int SELECTED = 1;
 
-  static final String WHERE[] = { "left", "mid", "right", "menu" };
+  static final String WHERE[] = { "left", "mid", "right" };
   static final int LEFT = 0;
   static final int MIDDLE = 1;
   static final int RIGHT = 2;
-  static final int MENU = 3;
 
-  static final int PIECE_WIDTH = 4;
+  static final int PIECE_WIDTH = scale(4);
+  static final int PIECE_HEIGHT = scale(33);
+
+  // value for the size bars, buttons, etc
+  // TODO: Should be a Theme value?
+  static final int GRID_SIZE = 33;
 
   static Image[][] pieces;
-
-  //
+  static Image menuButtons[];
 
   Image offscreen;
   int sizeW, sizeH;
   int imageW, imageH;
 
+  public class Actions {
+    public final Action newTab = new SimpleAction(tr("New Tab"),
+        Keys.ctrlShift(KeyEvent.VK_N),
+        () -> editor.getSketchController().handleNewCode());
+
+    public final Action renameTab = new SimpleAction(tr("Rename"),
+        () -> editor.getSketchController().handleRenameCode());
+
+    public final Action deleteTab = new SimpleAction(tr("Delete"), () -> {
+      try {
+        editor.getSketchController().handleDeleteCode();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+
+    public final Action prevTab = new SimpleAction(tr("Previous Tab"),
+        Keys.ctrlAlt(KeyEvent.VK_LEFT), () -> editor.selectPrevTab());
+
+    public final Action nextTab = new SimpleAction(tr("Next Tab"),
+        Keys.ctrlAlt(KeyEvent.VK_RIGHT), () -> editor.selectNextTab());
+
+    Actions() {
+      // Explicitly bind keybindings for the actions with accelerators above
+      // Normally, this happens automatically for any actions bound to menu
+      // items, but only for menus attached to a window, not for popup menus.
+      Keys.bind(EditorHeader.this, newTab);
+      Keys.bind(EditorHeader.this, prevTab);
+      Keys.bind(EditorHeader.this, nextTab);
+
+      // Add alternative keybindings to switch tabs
+      Keys.bind(EditorHeader.this, prevTab, Keys.ctrlShift(KeyEvent.VK_TAB));
+      Keys.bind(EditorHeader.this, nextTab, Keys.ctrl(KeyEvent.VK_TAB));
+    }
+  }
+  public Actions actions = new Actions();
+
+  /**
+   * Called whenever we, or any of our ancestors, is added to a container.
+   */
+  public void addNotify() {
+    super.addNotify();
+    /*
+     * Once we get added to a window, remove Ctrl-Tab and Ctrl-Shift-Tab from
+     * the keys used for focus traversal (so our bindings for these keys will
+     * work). All components inherit from the window eventually, so this should
+     * work whenever the focus is inside our window. Some components (notably
+     * JTextPane / JEditorPane) keep their own focus traversal keys, though, and
+     * have to be treated individually (either the same as below, or by
+     * disabling focus traversal entirely).
+     */
+    Window window = SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+      Keys.killFocusTraversalBinding(window, Keys.ctrl(KeyEvent.VK_TAB));
+      Keys.killFocusTraversalBinding(window, Keys.ctrlShift(KeyEvent.VK_TAB));
+    }
+  }
 
   public EditorHeader(Editor eddie) {
     this.editor = eddie; // weird name for listener
 
     if (pieces == null) {
       pieces = new Image[STATUS.length][WHERE.length];
+      menuButtons = new Image[STATUS.length];
       for (int i = 0; i < STATUS.length; i++) {
         for (int j = 0; j < WHERE.length; j++) {
-          String path = "tab-" + STATUS[i] + "-" + WHERE[j] + ".gif";
-          pieces[i][j] = Base.getThemeImage(path, this);
+          String path = "tab-" + STATUS[i] + "-" + WHERE[j];
+          pieces[i][j] = Theme.getThemeImage(path, this, PIECE_WIDTH,
+                                             PIECE_HEIGHT);
         }
+        String path = "tab-" + STATUS[i] + "-menu";
+        menuButtons[i] = Theme.getThemeImage(path, this, PIECE_HEIGHT,
+                                             PIECE_HEIGHT);
       }
     }
 
@@ -106,10 +179,10 @@ public class EditorHeader extends JComponent {
             popup.show(EditorHeader.this, x, y);
 
           } else {
-            Sketch sketch = editor.getSketch();
-            for (int i = 0; i < sketch.getCodeCount(); i++) {
+            int numTabs = editor.getTabs().size();
+            for (int i = 0; i < numTabs; i++) {
               if ((x > tabLeft[i]) && (x < tabRight[i])) {
-                sketch.setCurrentCode(i);
+                editor.selectTab(i);
                 repaint();
               }
             }
@@ -122,7 +195,7 @@ public class EditorHeader extends JComponent {
   public void paintComponent(Graphics screen) {
     if (screen == null) return;
 
-    Sketch sketch = editor.getSketch();
+    SketchController sketch = editor.getSketchController();
     if (sketch == null) return;  // ??
 
     Dimension size = getSize();
@@ -148,47 +221,42 @@ public class EditorHeader extends JComponent {
       offscreen = createImage(imageW, imageH);
     }
 
-    Graphics g = offscreen.getGraphics();
+    Graphics2D g = Theme.setupGraphics2D(offscreen.getGraphics());
     if (font == null) {
       font = Theme.getFont("header.text.font");
     }
     g.setFont(font);  // need to set this each time through
     metrics = g.getFontMetrics();
     fontAscent = metrics.getAscent();
-    //}
-
-    //Graphics2D g2 = (Graphics2D) g;
-    //g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-    //                    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
     // set the background for the offscreen
     g.setColor(backgroundColor);
     g.fillRect(0, 0, imageW, imageH);
 
-    int codeCount = sketch.getCodeCount();
+    List<EditorTab> tabs = editor.getTabs();
+
+    int codeCount = tabs.size();
     if ((tabLeft == null) || (tabLeft.length < codeCount)) {
       tabLeft = new int[codeCount];
       tabRight = new int[codeCount];
     }
 
-    int x = 6; // offset from left edge of the component
-    for (int i = 0; i < sketch.getCodeCount(); i++) {
-      SketchCode code = sketch.getCode(i);
-
-      String codeName = sketch.hideExtension(code.getExtension()) ? 
-        code.getPrettyName() : code.getFileName();
+    int x = scale(6); // offset from left edge of the component
+    int i = 0;
+    for (EditorTab tab : tabs) {
+      SketchFile file = tab.getSketchFile();
+      String filename = file.getPrettyName();
 
       // if modified, add the li'l glyph next to the name
-      String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
+      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
 
-      Graphics2D g2 = (Graphics2D) g;
       int textWidth = (int)
-        font.getStringBounds(text, g2.getFontRenderContext()).getWidth();
+        font.getStringBounds(text, g.getFontRenderContext()).getWidth();
 
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
 
-      int state = (code == sketch.getCurrentCode()) ? SELECTED : UNSELECTED;
+      int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
       g.drawImage(pieces[state][LEFT], x, 0, null);
       x += PIECE_WIDTH;
 
@@ -208,12 +276,13 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+      i++;
     }
 
-    menuLeft = sizeW - (16 + pieces[0][MENU].getWidth(this));
+    menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
     menuRight = sizeW - 16;
     // draw the dropdown menu target
-    g.drawImage(pieces[popup.isVisible() ? SELECTED : UNSELECTED][MENU],
+    g.drawImage(menuButtons[popup.isVisible() ? SELECTED : UNSELECTED],
                 menuLeft, 0, null);
 
     screen.drawImage(offscreen, 0, 0, null);
@@ -232,146 +301,39 @@ public class EditorHeader extends JComponent {
 
 
   public void rebuildMenu() {
-    //System.out.println("rebuilding");
     if (menu != null) {
       menu.removeAll();
 
     } else {
       menu = new JMenu();
+      MenuScroller.setScrollerFor(menu);
       popup = menu.getPopupMenu();
-      add(popup);
       popup.setLightWeightPopupEnabled(true);
-
-      /*
-      popup.addPopupMenuListener(new PopupMenuListener() {
-          public void popupMenuCanceled(PopupMenuEvent e) {
-            // on redraw, the isVisible() will get checked.
-            // actually, a repaint may be fired anyway, so this
-            // may be redundant.
-            repaint();
-          }
-
-          public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
-          public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
-        });
-      */
     }
     JMenuItem item;
 
-    // maybe this shouldn't have a command key anyways..
-    // since we're not trying to make this a full ide..
-    //item = Editor.newJMenuItem("New", 'T');
-
-    /*
-    item = Editor.newJMenuItem("Previous", KeyEvent.VK_PAGE_UP);
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          System.out.println("prev");
-        }
-      });
-    if (editor.sketch != null) {
-      item.setEnabled(editor.sketch.codeCount > 1);
-    }
-    menu.add(item);
-
-    item = Editor.newJMenuItem("Next", KeyEvent.VK_PAGE_DOWN);
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          System.out.println("ext");
-        }
-      });
-    if (editor.sketch != null) {
-      item.setEnabled(editor.sketch.codeCount > 1);
-    }
-    menu.add(item);
-
+    menu.add(new JMenuItem(actions.newTab));
+    menu.add(new JMenuItem(actions.renameTab));
+    menu.add(new JMenuItem(actions.deleteTab));
     menu.addSeparator();
-    */
-
-    //item = new JMenuItem("New Tab");
-    item = Editor.newJMenuItemShift(_("New Tab"), 'N');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleNewCode();
-        }
-      });
-    menu.add(item);
-
-    item = new JMenuItem(_("Rename"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleRenameCode();
-          /*
-          // this is already being called by nameCode(), the second stage of rename
-          if (editor.sketch.current == editor.sketch.code[0]) {
-            editor.sketchbook.rebuildMenus();
-          }
-          */
-        }
-      });
-    menu.add(item);
-
-    item = new JMenuItem(_("Delete"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.getSketch().handleDeleteCode();
-        }
-      });
-    menu.add(item);
-
-    menu.addSeparator();
-
-    //  KeyEvent.VK_LEFT and VK_RIGHT will make Windows beep
-
-    item = new JMenuItem(_("Previous Tab"));
-    KeyStroke ctrlAltLeft =
-      KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, Editor.SHORTCUT_ALT_KEY_MASK);
-    item.setAccelerator(ctrlAltLeft);
-    // this didn't want to work consistently
-    /*
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.sketch.prevCode();
-        }
-      });
-    */
-    menu.add(item);
-
-    item = new JMenuItem(_("Next Tab"));
-    KeyStroke ctrlAltRight =
-      KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, Editor.SHORTCUT_ALT_KEY_MASK);
-    item.setAccelerator(ctrlAltRight);
-    /*
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          editor.sketch.nextCode();
-        }
-      });
-    */
-    menu.add(item);
+    menu.add(new JMenuItem(actions.prevTab));
+    menu.add(new JMenuItem(actions.nextTab));
 
     Sketch sketch = editor.getSketch();
     if (sketch != null) {
       menu.addSeparator();
 
-      ActionListener jumpListener = new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            editor.getSketch().setCurrentCode(e.getActionCommand());
-          }
-        };
-      for (SketchCode code : sketch.getCode()) {
-        item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
-                             code.getPrettyName() : code.getFileName());
-        item.setActionCommand(code.getFileName());
-        item.addActionListener(jumpListener);
+      int i = 0;
+      for (EditorTab tab : editor.getTabs()) {
+        SketchFile file = tab.getSketchFile();
+        final int index = i++;
+        item = new JMenuItem(file.getPrettyName());
+        item.addActionListener((ActionEvent e) -> {
+          editor.selectTab(index);
+        });
         menu.add(item);
       }
     }
-  }
-
-
-  public void deselectMenu() {
-    repaint();
   }
 
 
@@ -381,17 +343,17 @@ public class EditorHeader extends JComponent {
 
 
   public Dimension getMinimumSize() {
-    if (Base.isMacOS()) {
-      return new Dimension(300, Preferences.GRID_SIZE);
-    }
-    return new Dimension(300, Preferences.GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(300, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 
 
   public Dimension getMaximumSize() {
-    if (Base.isMacOS()) {
-      return new Dimension(3000, Preferences.GRID_SIZE);
-    }
-    return new Dimension(3000, Preferences.GRID_SIZE - 1);
+    Dimension size = scale(new Dimension(3000, GRID_SIZE));
+    if (OSUtils.isMacOS())
+      size.height--;
+    return size;
   }
 }

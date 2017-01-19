@@ -37,13 +37,12 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // start the Ethernet connection:
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
-    // no point in carrying on, so do nothing forevermore:
     // try to congifure using IP address instead of DHCP:
     Ethernet.begin(mac, ip);
   }
@@ -59,15 +58,13 @@ void setup() {
     client.println("Host: www.google.com");
     client.println("Connection: close");
     client.println();
-  }
-  else {
-    // kf you didn't get a connection to the server:
+  } else {
+    // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
 }
 
-void loop()
-{
+void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
   if (client.available()) {

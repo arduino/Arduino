@@ -13,7 +13,7 @@
 
  This example code is part of the public domain
 
- http://arduino.cc/en/Tutorial/GSMToolsTestGPRS
+ http://www.arduino.cc/en/Tutorial/GSMToolsTestGPRS
 
  */
 
@@ -34,7 +34,7 @@ String errortext = "ERROR";
 
 // URL and path (for example: arduino.cc)
 char url[] = "arduino.cc";
-char urlproxy[] = "http://arduino.cc";
+char urlproxy[] = "http://www.arduino.cc";
 char path[] = "/";
 
 // variable for save response obtained
@@ -43,8 +43,7 @@ String response = "";
 // use a proxy
 boolean use_proxy = false;
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -52,15 +51,13 @@ void setup()
   }
 }
 
-void loop()
-{
+void loop() {
   use_proxy = false;
 
   // start GSM shield
   // if your SIM has PIN, pass it as a parameter of begin() in quotes
   Serial.print("Connecting GSM network...");
-  if (gsmAccess.begin(PINNUMBER) != GSM_READY)
-  {
+  if (gsmAccess.begin(PINNUMBER) != GSM_READY) {
     Serial.println(errortext);
     while (true);
   }
@@ -85,11 +82,9 @@ void loop()
 
   // attach GPRS
   Serial.println("Attaching to GPRS with your APN...");
-  if (gprsAccess.attachGPRS(apn, login, password) != GPRS_READY)
-  {
+  if (gprsAccess.attachGPRS(apn, login, password) != GPRS_READY) {
     Serial.println(errortext);
-  }
-  else {
+  } else {
 
     Serial.println(oktext);
 
@@ -117,40 +112,37 @@ void loop()
     int res_connect;
 
     // if use a proxy, connect with it
-    if (use_proxy)
+    if (use_proxy) {
       res_connect = client.connect(proxy, pport);
-    else
+    } else {
       res_connect = client.connect(url, 80);
+    }
 
-    if (res_connect)
-    {
+    if (res_connect) {
       // make a HTTP 1.0 GET request (client sends the request)
       client.print("GET ");
 
       // if use a proxy, the path is arduino.cc URL
-      if (use_proxy)
+      if (use_proxy) {
         client.print(urlproxy);
-      else
+      } else {
         client.print(path);
+      }
 
       client.println(" HTTP/1.0");
       client.println();
       Serial.println(oktext);
-    }
-    else
-    {
+    } else {
       // if you didn't get a connection to the server
       Serial.println(errortext);
     }
     Serial.print("Receiving response...");
 
     boolean test = true;
-    while (test)
-    {
+    while (test) {
       // if there are incoming bytes available
       // from the server, read and check them
-      if (client.available())
-      {
+      if (client.available()) {
         char c = client.read();
         response += c;
 
@@ -167,8 +159,7 @@ void loop()
       }
 
       // if the server's disconnected, stop the client:
-      if (!client.connected())
-      {
+      if (!client.connected()) {
         Serial.println();
         Serial.println("disconnecting.");
         client.stop();
@@ -181,21 +172,16 @@ void loop()
 /*
   Read input serial
  */
-int readSerial(char result[])
-{
+int readSerial(char result[]) {
   int i = 0;
-  while (1)
-  {
-    while (Serial.available() > 0)
-    {
+  while (1) {
+    while (Serial.available() > 0) {
       char inChar = Serial.read();
-      if (inChar == '\n')
-      {
+      if (inChar == '\n') {
         result[i] = '\0';
         return 0;
       }
-      if (inChar != '\r')
-      {
+      if (inChar != '\r') {
         result[i] = inChar;
         i++;
       }
