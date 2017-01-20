@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- See https://wiki.gnome.org/GnomeGoals/AppDataGnomeSoftware -->
-<application>
-  <id type="desktop">arduino.desktop</id>
-  <licence>CC-BY-SA</licence>
+<!-- See https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html -->
+<component type="desktop-application">
+  <id>cc.arduino.arduinoide.desktop</id>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+
+  <name>Arduino IDE</name>
+  <summary>Open-source electronics prototyping platform</summary>
+
   <description>
     <p>
       Arduino is an open-source electronics prototyping platform based
@@ -15,10 +19,13 @@
       to develop and upload code to compatible microcontrollers.
     </p>
   </description>
+
   <screenshots>
     <screenshot type="default" width="624" height="351">http://mavit.fedorapeople.org/appdata/arduino-screenshot.png</screenshot>
     <screenshot width="704" height="396">http://mavit.fedorapeople.org/appdata/arduino-photo.jpg</screenshot>
   </screenshots>
+
   <url type="homepage">http://www.arduino.cc/</url>
-  <updatecontact>arduino.appdata.xml@mavit.org.uk</updatecontact>
-</application>
+
+  <update_contact>arduino.appdata.xml@mavit.org.uk</update_contact>
+</component>
