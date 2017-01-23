@@ -104,6 +104,9 @@ class Stream : public Print
   // terminates if length characters have been read, timeout, or if the terminator character  detected
   // returns the number of characters placed in the buffer (0 means no valid data found)
 
+  size_t readBlock( char *buffer, size_t length); // read block of chars from stream into buffer
+  size_t readBlock( uint8_t *buffer, size_t length) { return readBlock((char *)buffer, length); }
+
   // Arduino String functions to be added here
   String readString();
   String readStringUntil(char terminator);

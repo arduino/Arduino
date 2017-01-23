@@ -211,6 +211,19 @@ size_t Stream::readBytes(char *buffer, size_t length)
   return count;
 }
 
+// the same as readBytes only super fast
+size_t Stream::readBlock(char *buffer, size_t length)
+{
+  size_t count = 0;
+  int n;
+  _startMillis = millis();
+  while (count < length && millis() - _startMillis < _timeout) {
+    n = SerialUSB.readb(buffer+count, length-count);
+    count += (size_t)n;
+    if (n) _startMillis = millis();
+  }
+  return count;
+}
 
 // as readBytes with terminator character
 // terminates if length characters have been read, timeout, or if the terminator character  detected
