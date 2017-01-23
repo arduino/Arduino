@@ -184,6 +184,7 @@ uint32_t USBD_Send(uint32_t ep, const void* d, uint32_t len)
 {
     uint32_t n;
 	int r = len;
+	uint32_t epSize = (ep==0) ? EP0_SIZE : EPX_SIZE;
 	const uint8_t* data = (const uint8_t*)d;
 
     if (!_usbConfiguration)
@@ -194,8 +195,7 @@ uint32_t USBD_Send(uint32_t ep, const void* d, uint32_t len)
 
 	while (len)
 	{
-        if(ep==0) n = EP0_SIZE;
-        else n =  EPX_SIZE;
+		n = epSize;
 		if (n > len)
 			n = len;
 		len -= n;
@@ -203,6 +203,10 @@ uint32_t USBD_Send(uint32_t ep, const void* d, uint32_t len)
 		UDD_Send(ep & 0xF, data, n);
 		data += n;
     }
+
+	if ((r != 0) && (r % epSize) == 0)
+		UDD_Send(ep & 0xF, NULL, 0);
+
 	//TXLED1;					// light the TX LED
 	//TxLEDPulse = TX_RX_LED_PULSE_MS;
 	return r;
