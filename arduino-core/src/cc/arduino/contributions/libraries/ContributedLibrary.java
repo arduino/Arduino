@@ -133,9 +133,9 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     if (!(obj instanceof ContributedLibrary)) {
       return false;
     }
-
+    ContributedLibrary other = (ContributedLibrary) obj;
     String thisVersion = getParsedVersion();
-    String otherVersion = ((ContributedLibrary) obj).getParsedVersion();
+    String otherVersion = other.getParsedVersion();
 
     boolean versionEquals = (thisVersion != null && otherVersion != null
                              && thisVersion.equals(otherVersion));
@@ -146,7 +146,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
       versionEquals = true;
 
     String thisName = getName();
-    String otherName = ((ContributedLibrary) obj).getName();
+    String otherName = other.getName();
 
     boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
 
