@@ -61,7 +61,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<String> getTypes();
 
-  public abstract List<ContributedLibraryReference> getRequires();
+  public abstract List<ContributedLibraryDependency> getRequires();
 
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 
@@ -117,7 +117,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     res += "\n";
     res += "            requires :\n";
     if (getRequires() != null)
-      for (ContributedLibraryReference r : getRequires()) {
+      for (ContributedLibraryDependency r : getRequires()) {
         res += "                       " + r;
       }
     res += "\n";
