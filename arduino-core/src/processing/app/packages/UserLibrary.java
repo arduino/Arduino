@@ -44,7 +44,7 @@ import com.github.zafarkhaja.semver.Version;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.VersionHelper;
-import cc.arduino.contributions.libraries.ContributedLibraryReference;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
 import processing.app.helpers.PreferencesMap;
 import processing.app.packages.UserLibraryFolder.Location;
 
@@ -230,7 +230,7 @@ public class UserLibrary {
     return maintainer;
   }
 
-  public List<ContributedLibraryReference> getRequires() {
+  public List<ContributedLibraryDependency> getRequires() {
     return null;
   }
 
