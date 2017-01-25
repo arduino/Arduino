@@ -63,7 +63,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<String> getTypes();
 
-  public abstract List<ContributedLibraryReference> getRequires();
+  public abstract List<ContributedLibraryDependency> getRequires();
 
   public abstract List<String> getProvidesIncludes();
 
@@ -146,7 +146,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     res += "\n";
     res += "            requires :\n";
     if (getRequires() != null)
-      for (ContributedLibraryReference r : getRequires()) {
+      for (ContributedLibraryDependency r : getRequires()) {
         res += "                       " + r;
       }
     res += "\n";
