@@ -29,6 +29,8 @@
 
 #define CDC_LINESTATE_READY		(CDC_LINESTATE_RTS | CDC_LINESTATE_DTR)
 
+uint32_t lineStateChangeTime = 0;
+
 struct ring_buffer
 {
 	uint8_t buffer[CDC_SERIAL_BUFFER_SIZE];
@@ -131,6 +133,7 @@ bool WEAK CDC_Setup(USBSetup& setup)
 		if (CDC_SET_CONTROL_LINE_STATE == r)
 		{
 			_usbLineInfo.lineState = setup.wValueL;
+			lineStateChangeTime = millis();
 			// auto-reset into the bootloader is triggered when the port, already
 			// open at 1200 bps, is closed.
 			if (1200 == _usbLineInfo.dwDTERate)
@@ -306,12 +309,11 @@ Serial_::operator bool()
 
 	bool result = false;
 
-	if (_usbLineInfo.lineState > 0)
+	if (_usbLineInfo.lineState > 0 && ((millis() - lineStateChangeTime) >= 10))
 	{
 		result = true;
 	}
 
-	delay(10);
 	return result;
 }
 
