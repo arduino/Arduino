@@ -166,7 +166,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     String thisVersion = getParsedVersion();
     String otherVersion = other.getParsedVersion();
 
-    boolean versionEquals = (thisVersion != null && otherVersion != null
+    boolean versionEquals = (thisVersion != null
                              && thisVersion.equals(otherVersion));
 
     // Important: for legacy libs, versions are null. Two legacy libs must
@@ -176,9 +176,14 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
     String thisName = getName();
     String otherName = other.getName();
-
-    boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
+    boolean nameEquals = thisName != null && thisName.equals(otherName);
 
     return versionEquals && nameEquals;
+  }
+
+  @Override
+  public int hashCode() {
+    String hashingData = "CONTRIBUTEDLIB" + getName() + getVersion();
+    return hashingData.hashCode();
   }
 }
