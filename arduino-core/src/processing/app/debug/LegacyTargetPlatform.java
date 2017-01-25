@@ -96,8 +96,8 @@ public class LegacyTargetPlatform implements TargetPlatform {
       // Create boards
       Set<String> boardIds = boardsPreferences.keySet();
       for (String boardId : boardIds) {
-        PreferencesMap preferences = boardsPreferences.get(boardId);
-        TargetBoard board = new LegacyTargetBoard(boardId, preferences, this);
+        PreferencesMap prefs = boardsPreferences.get(boardId);
+        TargetBoard board = new LegacyTargetBoard(boardId, prefs, this);
         boards.put(boardId, board);
 
         // Pick the first board as default

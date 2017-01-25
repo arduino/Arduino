@@ -555,18 +555,18 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
-      RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+      RunnerException ex = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
-      if (exception != null) {
-        String fileName = exception.getCodeFile().getPrettyName();
-        int lineNum = exception.getCodeLine() + 1;
+      if (ex != null) {
+        String fileName = ex.getCodeFile().getPrettyName();
+        int lineNum = ex.getCodeLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
 
-      if (exception != null) {
-        if (this.exception == null || this.exception.getMessage().equals(exception.getMessage())) {
-          this.exception = exception;
-          this.exception.hideStackTrace();
+      if (ex != null) {
+        if (exception == null || exception.getMessage().equals(ex.getMessage())) {
+          exception = ex;
+          exception.hideStackTrace();
         }
       }
     }

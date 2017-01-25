@@ -156,9 +156,9 @@ public class BaseNoGui {
     List<ContributedTool> requiredTools = new ArrayList<>();
 
     // Add all tools dependencies specified in package index
-    ContributedPlatform platform = indexer.getContributedPlaform(getTargetPlatform());
-    if (platform != null)
-      requiredTools.addAll(platform.getResolvedTools());
+    ContributedPlatform p = indexer.getContributedPlaform(getTargetPlatform());
+    if (p != null)
+      requiredTools.addAll(p.getResolvedTools());
 
     // Add all tools dependencies from the (possibily) referenced core
     String core = prefs.get("build.core");
@@ -586,8 +586,8 @@ public class BaseNoGui {
       }
       String arch = subFolder.getName();
       try {
-        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, targetPackage);
-        targetPackage.getPlatforms().put(arch, platform);
+        TargetPlatform p = new LegacyTargetPlatform(arch, subFolder, targetPackage);
+        targetPackage.getPlatforms().put(arch, p);
       } catch (TargetPlatformException e) {
         System.err.println(e.getMessage());
       }
@@ -668,8 +668,8 @@ public class BaseNoGui {
     populateImportToLibraryTable();
   }
 
-  static protected void loadContributedHardware(ContributionsIndexer indexer) {
-    for (TargetPackage pack : indexer.createTargetPackages()) {
+  static protected void loadContributedHardware(ContributionsIndexer idx) {
+    for (TargetPackage pack : idx.createTargetPackages()) {
       packages.put(pack.getId(), pack);
     }
   }
