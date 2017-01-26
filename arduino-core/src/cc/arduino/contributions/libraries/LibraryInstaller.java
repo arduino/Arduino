@@ -88,11 +88,19 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
-    final MultiStepProgress progress = new MultiStepProgress(4);
+  public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
+    ArrayList<ContributedLibrary> libs = new ArrayList<>();
+    libs.add(lib);
+    install(libs, progressListener);
+  }
 
-    // Do install library (3 steps)
-    performInstall(lib, progressListener, progress);
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
+    MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
+
+    for (ContributedLibrary lib : libs) {
+      // Do install library (3 steps)
+      performInstall(lib, progressListener, progress);
+    }
 
     // Rescan index (1 step)
     rescanLibraryIndex(progress, progressListener);

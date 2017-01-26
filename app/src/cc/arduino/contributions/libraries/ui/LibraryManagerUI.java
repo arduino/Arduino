@@ -214,11 +214,23 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   }
 
   public void onInstallPressed(final ContributedLibrary lib) {
+    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    final boolean installDeps;
+    if (deps.size() > 1) {
+      System.out.println("The library requires dependencies!");
+      installDeps = true;
+    } else {
+      installDeps = false;
+    }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, this::setProgress);
+        if (installDeps) {
+          installer.install(deps, this::setProgress);
+        } else {
+          installer.install(lib, this::setProgress);
+        }
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
