@@ -29,13 +29,14 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContribution;
-import processing.app.I18n;
+import static processing.app.I18n.tr;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static processing.app.I18n.tr;
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.VersionHelper;
+import processing.app.I18n;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
@@ -150,6 +151,10 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     boolean nameEquals = thisName != null && thisName.equals(otherName);
 
     return versionEquals && nameEquals;
+  }
+
+  public boolean isBefore(ContributedLibrary other) {
+    return VersionHelper.compare(getVersion(), other.getVersion()) < 0;
   }
 
   @Override
