@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static processing.app.I18n.tr;
+import cc.arduino.contributions.VersionHelper;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
@@ -166,6 +167,14 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     ContributedLibrary other = (ContributedLibrary) obj;
     return Objects.equals(getParsedVersion(), other.getParsedVersion()) &&
            Objects.equals(getName(), other.getName());
+  }
+
+  public boolean isBefore(ContributedLibrary other) {
+    return VersionHelper.compare(getVersion(), other.getVersion()) < 0;
+  }
+
+  public static ContributedLibrary max(ContributedLibrary x, ContributedLibrary y) {
+    return x.isBefore(y) ? y : x;
   }
 
   @Override
