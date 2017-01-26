@@ -83,14 +83,22 @@ public class LibraryInstaller {
   }
 
   public synchronized void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
+    final MultiStepProgress progress = new MultiStepProgress(4);
+
+    // Do install library (3 steps)
+    performInstall(lib, replacedLib, progressListener, progress);
+
+    // Rescan index (1 step)
+    rescanLibraryIndex(progress, progressListener);
+  }
+
+  private void performInstall(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
-
-    final MultiStepProgress progress = new MultiStepProgress(3);
 
     // Step 1: Download library
     try {
@@ -99,6 +107,7 @@ public class LibraryInstaller {
       // Download interrupted... just exit
       return;
     }
+    progress.stepDone();
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
@@ -123,9 +132,6 @@ public class LibraryInstaller {
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
-
-    // Step 4: Rescan index
-    rescanLibraryIndex(progress, progressListener);
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
