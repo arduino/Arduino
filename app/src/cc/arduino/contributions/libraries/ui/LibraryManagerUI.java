@@ -85,7 +85,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
           onRemovePressed(mayInstalledLibrary.get());
         } else {
-          onInstallPressed(selectedLibrary, mayInstalledLibrary);
+          onInstallPressed(selectedLibrary);
         }
       }
 
@@ -213,12 +213,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final Optional<ContributedLibrary> mayReplaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, mayReplaced, this::setProgress);
+        installer.install(lib, this::setProgress);
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
