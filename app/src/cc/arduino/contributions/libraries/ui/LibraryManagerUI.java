@@ -84,7 +84,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
         if (selectedLibrary.isReadOnly()) {
           onRemovePressed(installedLibrary);
         } else {
-          onInstallPressed(selectedLibrary, installedLibrary);
+          onInstallPressed(selectedLibrary);
         }
       }
 
@@ -219,12 +219,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced, this::setProgress);
+        installer.install(lib, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {
