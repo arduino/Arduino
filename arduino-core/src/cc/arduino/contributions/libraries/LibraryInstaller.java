@@ -43,7 +43,6 @@ import processing.app.helpers.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -83,17 +82,17 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
+  public synchronized void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(4);
 
     // Do install library (3 steps)
-    performInstall(lib, mayReplacedLib, progressListener, progress);
+    performInstall(lib, progressListener, progress);
 
     // Rescan index (1 step)
     rescanLibraryIndex(progress, progressListener);
   }
 
-  private void performInstall(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
+  private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isLibraryInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
@@ -127,12 +126,16 @@ public class LibraryInstaller {
     }
     progress.stepDone();
 
-    // Step 3: Remove replaced library and move installed one to the correct location
-    // TODO: Fix progress bar...
-    if (mayReplacedLib.isPresent()) {
-      remove(mayReplacedLib.get(), progressListener);
-    }
+    // Step 3: Remove replaced library (if any) and move installed one to the correct location
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
+    // Check if we are replacing an already installed library
+    LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
+    for (ContributedLibrary l : index.find(lib.getName())) {
+      if (l.isLibraryInstalled() && l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) {
+        remove(l, progressListener);
+        break;
+      }
+    }
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
   }
