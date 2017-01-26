@@ -29,12 +29,17 @@
 
 package cc.arduino.contributions.libraries;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class LibrariesIndex {
 
@@ -100,5 +105,75 @@ public abstract class LibrariesIndex {
     }
 
     return installedReleases.get(0);
+  }
+
+  public List<ContributedLibrary> resolveDependeciesOf(ContributedLibrary library) {
+    List<ContributedLibrary> solution = new ArrayList<>();
+    solution.add(library);
+    if (resolveDependeciesOf(solution, library)) {
+      return solution;
+    } else {
+      return null;
+    }
+  }
+
+  public boolean resolveDependeciesOf(List<ContributedLibrary> solution,
+                                      ContributedLibrary library) {
+    List<ContributedLibraryDependency> requirements = library.getRequires();
+    if (requirements == null) {
+      // No deps for this library, great!
+      return true;
+    }
+
+    for (ContributedLibraryDependency dep : requirements) {
+
+      // If the current solution already contains this dependency, skip over
+      boolean alreadyInSolution = false;
+      for (ContributedLibrary c : solution) {
+        if (c.getName().equals(dep.getName()))
+          alreadyInSolution = true;
+      }
+      if (alreadyInSolution)
+        continue;
+
+      // Generate possible matching dependencies
+      List<ContributedLibrary> possibleDeps = findMatchingDependencies(dep);
+
+      // If there are no dependencies available add as "missing" lib
+      if (possibleDeps.isEmpty()) {
+        solution.add(new UnavailableContributedLibrary(dep));
+        continue;
+      }
+
+      // Pick the latest version among possible deps
+      ContributedLibrary last = possibleDeps.stream()
+          .reduce((a, b) -> b.isBefore(a) ? a : b).get();
+
+      // Add dependecy to the solution and process recursively
+      solution.add(last);
+      if (!resolveDependeciesOf(solution, last)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private List<ContributedLibrary> findMatchingDependencies(ContributedLibraryDependency dep) {
+    List<ContributedLibrary> available = find(dep.getName());
+    if (dep.getVersionRequired() == null || dep.getVersionRequired().isEmpty())
+      return available;
+
+    // XXX: The following part is actually never reached. The use of version
+    // constraints requires a much complex backtracking algorithm, the following
+    // is just a draft placeholder.
+
+//    List<ContributedLibrary> match = available.stream()
+//        // TODO: add more complex version comparators (> >= < <= ~ 1.0.* 1.*...)
+//        .filter(candidate -> candidate.getParsedVersion()
+//            .equals(dep.getVersionRequired()))
+//        .collect(Collectors.toList());
+//    return match;
+
+    return available;
   }
 }
