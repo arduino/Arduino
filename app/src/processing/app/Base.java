@@ -384,7 +384,7 @@ public class Base {
                       library, mayInstalled.get().getParsedVersion())));
           libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, mayInstalled, progressListener);
+          libraryInstaller.install(selected, progressListener);
         }
       }
 
