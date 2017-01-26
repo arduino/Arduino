@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javax.swing.Box;
@@ -220,11 +221,23 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public void onInstallPressed(final ContributedLibrary lib) {
+    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    final boolean installDeps;
+    if (deps.size() > 1) {
+      System.out.println("The library requires dependencies!");
+      installDeps = true;
+    } else {
+      installDeps = false;
+    }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, this::setProgress);
+        if (installDeps) {
+          installer.install(deps, this::setProgress);
+        } else {
+          installer.install(lib, this::setProgress);
+        }
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {
