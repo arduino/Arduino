@@ -1344,8 +1344,8 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(gotoLine);
 
     menu.addSeparator();
-
-    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), '/');
+    
+    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), PreferencesData.get("editor.keys.shortcut_comment", "/").charAt(0));
     commentItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           getCurrentTab().handleCommentUncomment();
