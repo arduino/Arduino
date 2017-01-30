@@ -38,6 +38,7 @@ import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
@@ -1935,12 +1936,25 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     SketchFile current = getCurrentTab().getSketchFile();
-    if (current.isPrimary()) {
-      setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
-                           BaseNoGui.VERSION_NAME_LONG));
+    String customFormat = PreferencesData.get("editor.custom_title_format");
+    if (customFormat != null && !customFormat.trim().isEmpty()) {
+      Map<String, String> titleMap = new HashMap<String, String>();
+      titleMap.put("file", current.getFileName());
+      String path = sketch.getFolder().getAbsolutePath();
+      titleMap.put("folder", path);
+      titleMap.put("path", path);
+      titleMap.put("project", sketch.getName());
+      titleMap.put("version", BaseNoGui.VERSION_NAME_LONG);
+
+      setTitle(StringReplacer.replaceFromMapping(customFormat, titleMap));
     } else {
-      setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
-                           current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      if (current.isPrimary()) {
+        setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
+                             BaseNoGui.VERSION_NAME_LONG));
+      } else {
+        setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
+                             current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      }
     }
   }
 
