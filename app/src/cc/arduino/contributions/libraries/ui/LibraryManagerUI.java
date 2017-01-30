@@ -51,6 +51,7 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownAllItem;
 import cc.arduino.contributions.ui.DropdownItem;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
@@ -222,18 +223,23 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   public void onInstallPressed(final ContributedLibrary lib) {
     List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
-    final boolean installDeps;
-    if (deps.size() > 1) {
-      System.out.println("The library requires dependencies!");
-      installDeps = true;
+    boolean depsInstalled = deps.stream().allMatch(l -> l.isInstalled() || l.getName().equals(lib.getName()));
+    Result installDeps;
+    if (!depsInstalled) {
+      MultiLibraryInstallDialog dialog;
+      dialog = new MultiLibraryInstallDialog(this, lib, deps);
+      dialog.setVisible(true);
+      installDeps = dialog.getInstallDepsResult();
+      if (installDeps == Result.CANCEL)
+        return;
     } else {
-      installDeps = false;
+      installDeps = Result.NONE;
     }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        if (installDeps) {
+        if (installDeps == Result.ALL) {
           installer.install(deps, this::setProgress);
         } else {
           installer.install(lib, this::setProgress);
