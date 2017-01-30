@@ -57,6 +57,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
+    if (true) return;
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());

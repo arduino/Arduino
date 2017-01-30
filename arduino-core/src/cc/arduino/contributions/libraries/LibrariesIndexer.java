@@ -68,7 +68,7 @@ public class LibrariesIndexer {
   private final List<String> badLibNotified = new ArrayList<>();
 
   public LibrariesIndexer(File preferencesFolder) {
-    indexFile = new File(preferencesFolder, "library_index.json");
+    indexFile = new File(preferencesFolder, "library_index_test.json");
     stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
   }
 
@@ -99,6 +99,11 @@ public class LibrariesIndexer {
     } finally {
       IOUtils.closeQuietly(indexIn);
     }
+
+//    ContributedLibrary lib = index.find("ArduinoCloud","1.0.0");
+//    System.out.println(lib.info());
+//    System.out.println(index.resolveDependeciesOf(lib));
+//    System.exit(0);
   }
 
   public void setLibrariesFolders(List<File> _librariesFolders) {

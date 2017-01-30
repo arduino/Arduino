@@ -487,6 +487,7 @@ public class BaseNoGui {
     try {
       librariesIndexer.parseIndex();
     } catch (JsonProcessingException e) {
+      e.printStackTrace();
       File librariesIndexFile = librariesIndexer.getIndexFile();
       FileUtils.deleteIfExists(librariesIndexFile);
     }
