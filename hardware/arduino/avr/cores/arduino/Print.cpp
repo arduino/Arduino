@@ -264,3 +264,56 @@ size_t Print::printFloat(double number, uint8_t digits)
   
   return n;
 }
+
+//----------------------------------------
+//printf begin
+
+#include <stdarg.h>
+#include <stdio.h>
+                            
+//non class function for callback from stdio.FILE steam.
+//in field FILE.udata  passed class->this
+static int dummy_putchar(char c, FILE *stream  ) 
+{
+    Print* pPrint = (Print*)(stream->udata); 
+    if(c=='\n') pPrint->print('\r');
+    pPrint->print(c);
+    return 1;
+}
+
+size_t Print::printf(const char *fmt, ...)
+{
+   FILE oStream; //size 12 bytes on Stack 
+   oStream.put   = dummy_putchar;
+   oStream.flags |= __SWR;
+   oStream.udata = (void*) this;
+   //----  
+   oStream.flags &= ~__SPGM;
+   //
+   va_list ap;
+   va_start( (ap), (fmt) );     
+   size_t i = vfprintf(&oStream, fmt, ap);
+   va_end(ap); 
+   return i; 
+}
+
+size_t Print::printf(const __FlashStringHelper  *fmt_P, ...)
+{ 
+   PGM_P fmt = reinterpret_cast<PGM_P>(fmt_P);  
+
+   FILE oStream; //size 12 bytes on Stack 
+   oStream.put   = dummy_putchar;
+   oStream.flags |= __SWR;
+   oStream.udata = (void*)this;
+   //----
+   oStream.flags |=  __SPGM;    
+   //
+   va_list ap;
+   va_start( (ap), (fmt_P) ); 
+   size_t i = vfprintf(&oStream, fmt, ap);
+   va_end(ap); 
+   return i; 
+}
+
+//printf end
+//----------------------------------------
