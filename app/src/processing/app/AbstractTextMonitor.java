@@ -128,13 +128,14 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     pane.add(autoscrollBox);
     pane.add(addTimeStampBox);
-    pane.add(clearButton);
     pane.add(Box.createHorizontalGlue());
     pane.add(noLineEndingAlert);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(lineEndings);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(clearButton);
 
     mainPane.add(pane, BorderLayout.SOUTH);
   }

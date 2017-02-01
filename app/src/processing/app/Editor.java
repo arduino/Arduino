@@ -198,6 +198,8 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportHandler;
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
+  
+  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -963,8 +965,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   JMenuItem createToolMenuItem(String className) {
     try {
-      Class<?> toolClass = Class.forName(className);
-      final Tool tool = (Tool) toolClass.newInstance();
+      final Tool tool = getOrCreateToolInstance(className);
 
       JMenuItem item = new JMenuItem(tool.getMenuTitle());
 
@@ -983,6 +984,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private Tool getOrCreateToolInstance(String className) {
+    Tool internalTool = internalToolCache.get(className);
+    if (internalTool == null) {
+      try {
+        Class<?> toolClass = Class.forName(className);
+        internalTool = (Tool) toolClass.newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+      internalToolCache.put(className, internalTool);
+    }
+    return internalTool;
+  }
 
   private void addInternalTools(JMenu menu) {
     JMenuItem item;
@@ -2055,6 +2070,12 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
+      
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+      
       boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();
