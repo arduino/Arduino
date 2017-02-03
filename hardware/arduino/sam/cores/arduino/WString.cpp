@@ -19,6 +19,8 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <float.h>
+
 #include "WString.h"
 #include "itoa.h"
 #include "avr/dtostrf.h"
@@ -110,14 +112,14 @@ String::String(unsigned long value, unsigned char base)
 String::String(float value, unsigned char decimalPlaces)
 {
 	init();
-	char buf[33];
+	char buf[FLT_MAX_10_EXP + 4 + decimalPlaces]; // +4, one for: 10, -, ., \0
 	*this = dtostrf(value, (decimalPlaces + 2), decimalPlaces, buf);
 }
 
 String::String(double value, unsigned char decimalPlaces)
 {
 	init();
-	char buf[33];
+	char buf[DBL_MAX_10_EXP + 4 + decimalPlaces]; // +4, one for: 10, -, ., \0
 	*this = dtostrf(value, (decimalPlaces + 2), decimalPlaces, buf);
 }
 
