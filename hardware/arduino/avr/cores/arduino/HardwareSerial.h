@@ -126,6 +126,7 @@ class HardwareSerial : public Stream
     virtual int read(void);
     int availableForWrite(void);
     virtual void flush(void);
+    virtual bool isFlushed(void);
     virtual size_t write(uint8_t);
     inline size_t write(unsigned long n) { return write((uint8_t)n); }
     inline size_t write(long n) { return write((uint8_t)n); }

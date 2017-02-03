@@ -142,6 +142,11 @@ void UARTClass::flush( void )
    ;
 }
 
+bool UARTClass::isFlushed( void )
+{
+  return ((_pUart->UART_SR & UART_SR_TXRDY) == UART_SR_TXRDY) && (_tx_buffer->_iTail == _tx_buffer->_iHead);
+}
+
 size_t UARTClass::write( const uint8_t uc_data )
 {
   // Is the hardware currently busy?

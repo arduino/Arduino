@@ -210,6 +210,12 @@ void HardwareSerial::flush()
   // the hardware finished tranmission (TXC is set).
 }
 
+bool HardwareSerial::isFlushed(void)
+{
+  if (!_written) return true;
+  return (_tx_buffer_head == _tx_buffer_tail) && bit_is_clear(*_ucsrb, UDRIE0) && bit_is_set(*_ucsra, TXC0);
+}
+
 size_t HardwareSerial::write(uint8_t c)
 {
   _written = true;
