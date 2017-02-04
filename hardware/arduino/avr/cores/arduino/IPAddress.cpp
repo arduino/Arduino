@@ -74,12 +74,15 @@ bool IPAddress::fromString(const char *address)
             return false;
         }
     }
+    
+    _address.bytes[dots++] = acc;
 
-    if (dots != 3) {
-        // Too few dots (there must be 3 dots)
-        return false;
+    // Fill remaining bytes with zeroes (needed to support a, a.b, a.b.c addresses)
+    while (dots <= 3)
+    {
+       _address.bytes[dots++] = 0; 
     }
-    _address.bytes[3] = acc;
+    
     return true;
 }
 
