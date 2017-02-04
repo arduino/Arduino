@@ -47,12 +47,12 @@ class UARTClass : public HardwareSerial
     void begin(const uint32_t dwBaudRate);
     void begin(const uint32_t dwBaudRate, const UARTModes config);
     void end(void);
-    int available(void);
+    virtual int available(void);
     int availableForWrite(void);
-    int peek(void);
-    int read(void);
-    void flush(void);
-    size_t write(const uint8_t c);
+    virtual int peek(void);
+    virtual int read(void);
+    virtual void flush(void);
+    virtual size_t write(const uint8_t c);
     using Print::write; // pull in write(str) and write(buf, size) from Print
 
     void setInterruptPriority(uint32_t priority);
