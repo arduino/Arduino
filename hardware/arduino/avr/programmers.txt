@@ -81,3 +81,8 @@ buspirate.program.protocol=buspirate
 buspirate.program.tool=avrdude
 buspirate.program.extra_params=-P{serial.port}
 
+mySmartUSB_light.name=mySmartUSB light
+mySmartUSB_light.protocol=stk500v2
+mySmartUSB_light.communication=serial
+mySmartUSB_light.program.tool=avrdude
+mySmartUSB_light.program.extra_params=-P{serial.port}
