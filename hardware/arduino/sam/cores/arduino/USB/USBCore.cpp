@@ -21,6 +21,8 @@
 #include "PluggableUSB.h"
 #include <stdint.h>
 
+#define _min(a, b)           (((a) < (b)) ?  (a) : (b))
+
 //#define TRACE_CORE(x)	x
 #define TRACE_CORE(x)
 
@@ -144,7 +146,7 @@ uint32_t USBD_Recv(uint32_t ep, void* d, uint32_t len)
 
 	LockEP lock(ep);
 	uint32_t n = UDD_FifoByteCount(ep & 0xF);
-	len = min(n,len);
+	len = _min(n,len);
 	n = len;
 	uint8_t* dst = (uint8_t*)d;
 	while (n--)

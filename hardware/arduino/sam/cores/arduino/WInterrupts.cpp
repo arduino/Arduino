@@ -8,17 +8,24 @@
 
   This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   See the GNU Lesser General Public License for more details.
 
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
+namespace std
+{
+void __throw_bad_function_call()
+{
+//Log.Error(F("STL ERROR - HALT NOW"));
+}
+}
 #include "WInterrupts.h"
 
-typedef void (*interruptCB)(void);
+//typedef void (*interruptCB)(void);
+typedef std::function<void(void)> interruptCB;
 
 static interruptCB callbacksPioA[32];
 static interruptCB callbacksPioB[32];
@@ -60,8 +67,17 @@ static void __initialize() {
 	NVIC_EnableIRQ(PIOD_IRQn);
 }
 
+// void attachInterrupt(uint32_t pin, std::function<void(void)> callback, uint32_t mode){
+//
+// }
 
-void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
+void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode){
+	std::function<void(void)> _callback =callback;
+	attachInterrupt(pin,_callback,mode);
+}
+
+// void attachInterrupt(uint32_t pin, void (*callback)(void), uint32_t mode)
+void attachInterrupt(uint32_t pin, std::function<void(void)> callback, uint32_t mode)
 {
 	static int enabled = 0;
 	if (!enabled) {
