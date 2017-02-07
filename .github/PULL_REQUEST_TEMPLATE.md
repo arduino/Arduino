@@ -6,7 +6,7 @@ Before opening the request, please review the following guidelines.
 
 Describe the scope of the change.
 
-Limit the number of modified lines of code and avoid unecessary modified lines (`tab` replaced by `space`).
+Limit the number of modified lines of code and avoid unecessary modified lines (like `tab` replaced by `space`).
 
 ### Known limitations 
 
