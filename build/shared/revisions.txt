@@ -2,6 +2,12 @@ ARDUINO 1.8.2
 
 [ide]
 * Fix command line: works again with relative paths (regression)
+* Update arduino-builder to 1.3.24 to avoid name clashing for libraries
+* Allow BoardManager to fetch FreeBSD tools (thanks @kevans91)
+
+[core]
+* Add Atmel-ICE and JTAGICE3 programmers for AVR chips (thanks @matthijskooijman)
+* Move SAM platform to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
 
 ARDUINO 1.8.1 - 2017.01.09
 
