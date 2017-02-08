@@ -22,8 +22,10 @@
 
 package processing.app;
 
+import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
@@ -84,7 +86,6 @@ public class Base {
   private static boolean commandLine;
   public static volatile Base INSTANCE;
 
-  public static SplashScreenHelper splashScreenHelper = new SplashScreenHelper(SplashScreen.getSplashScreen());
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
   private final LibraryInstaller libraryInstaller;
@@ -119,8 +120,16 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
 
   static public void main(String args[]) throws Exception {
-    System.setProperty("awt.useSystemAAFontSettings", "on");
-    System.setProperty("swing.aatext", "true");
+    if (!OSUtils.isWindows()) {
+      // Those properties helps enabling anti-aliasing on Linux
+      // (but not on Windows where they made things worse actually
+      // and the font rendering becomes ugly).
+
+      // Those properties must be set before initializing any
+      // graphic object, otherwise they don't have any effect.
+      System.setProperty("awt.useSystemAAFontSettings", "on");
+      System.setProperty("swing.aatext", "true");
+    }
     System.setProperty("java.net.useSystemProxies", "true");
 
     if (OSUtils.isMacOS()) {
@@ -128,58 +137,12 @@ public class Base {
     }
 
     try {
-      guardedMain(args);
+      INSTANCE = new Base(args);
     } catch (Throwable e) {
       e.printStackTrace(System.err);
       System.exit(255);
     }
   }
-
-  static public void guardedMain(String args[]) throws Exception {
-    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
-    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
-    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
-
-    BaseNoGui.initLogger();
-
-    initLogger();
-
-    BaseNoGui.initPlatform();
-
-    BaseNoGui.getPlatform().init();
-
-    BaseNoGui.initPortableFolder();
-
-    BaseNoGui.initParameters(args);
-
-    splashScreenHelper.splashText(tr("Loading configuration..."));
-
-    BaseNoGui.initVersion();
-
-    // Use native popups so they don't look so crappy on osx
-    JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-    // Don't put anything above this line that might make GUI,
-    // because the platform has to be inited properly first.
-
-    // setup the theme coloring fun
-    Theme.init();
-    System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
-
-    // Set the look and feel before opening the window
-    try {
-      BaseNoGui.getPlatform().setLookAndFeel();
-    } catch (Exception e) {
-      // ignore
-    }
-
-    // Create a location for untitled sketches
-    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
-    DeleteFilesOnShutdown.add(untitledFolder);
-
-    INSTANCE = new Base(args);
-  }
-
 
   static public void initLogger() {
     Handler consoleHandler = new ConsoleLogger();
@@ -208,12 +171,6 @@ public class Base {
 
   }
 
-
-  static protected void setCommandLine() {
-    commandLine = true;
-  }
-
-
   static protected boolean isCommandLine() {
     return commandLine;
   }
@@ -227,10 +184,60 @@ public class Base {
   }
 
   public Base(String[] args) throws Exception {
-    BaseNoGui.notifier = new GUIUserNotifier(this);
+    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
+    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
+    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
+
+    BaseNoGui.initLogger();
+
+    initLogger();
+
+    BaseNoGui.initPlatform();
+
+    BaseNoGui.getPlatform().init();
+
+    BaseNoGui.initPortableFolder();
+
+    // Look for a possible "--preferences-file" parameter and load preferences
+    BaseNoGui.initParameters(args);
 
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
+    commandLine = !parser.isGuiMode();
+
+    SplashScreenHelper splash;
+    if (parser.isGuiMode()) {
+      // Setup all notification widgets
+      splash = new SplashScreenHelper(SplashScreen.getSplashScreen());
+      BaseNoGui.notifier = new GUIUserNotifier(this);
+
+      // Setup the theme coloring fun
+      Theme.init();
+      System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
+
+      // Set the look and feel before opening the window
+      try {
+        BaseNoGui.getPlatform().setLookAndFeel();
+      } catch (Exception e) {
+        // ignore
+      }
+
+      // Use native popups so they don't look so crappy on osx
+      JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+    } else {
+      splash = new SplashScreenHelper(null);
+    }
+
+    splash.splashText(tr("Loading configuration..."));
+
+    BaseNoGui.initVersion();
+
+    // Don't put anything above this line that might make GUI,
+    // because the platform has to be inited properly first.
+
+    // Create a location for untitled sketches
+    untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
+    DeleteFilesOnShutdown.add(untitledFolder);
 
     BaseNoGui.checkInstallationFolder();
 
@@ -246,11 +253,15 @@ public class Base {
       }
     }
 
-    splashScreenHelper.splashText(tr("Initializing packages..."));
+    splash.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
-    splashScreenHelper.splashText(tr("Preparing boards..."));
-    rebuildBoardsMenu();
-    rebuildProgrammerMenu();
+
+    splash.splashText(tr("Preparing boards..."));
+
+    if (!isCommandLine()) {
+      rebuildBoardsMenu();
+      rebuildProgrammerMenu();
+    }
 
     // Setup board-dependent variables.
     onBoardOrPortChange();
@@ -262,35 +273,6 @@ public class Base {
     libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
 
     parser.parseArgumentsPhase2();
-
-    for (String path : parser.getFilenames()) {
-      // Correctly resolve relative paths
-      File file = absoluteFile(path);
-
-      // Fix a problem with systems that use a non-ASCII languages. Paths are
-      // being passed in with 8.3 syntax, which makes the sketch loader code
-      // unhappy, since the sketch folder naming doesn't match up correctly.
-      // http://dev.processing.org/bugs/show_bug.cgi?id=1089
-      if (OSUtils.isWindows()) {
-        try {
-          file = file.getCanonicalFile();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-
-      boolean showEditor = parser.isGuiMode();
-      if (!parser.isForceSavePrefs())
-        PreferencesData.setDoSave(showEditor);
-      if (handleOpen(file, retrieveSketchLocation(".default"), showEditor, false) == null) {
-        String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
-        // Open failure is fatal in upload/verify mode
-        if (parser.isVerifyOrUploadMode())
-          showError(null, mess, 2);
-        else
-          showWarning(null, mess, null);
-      }
-    }
 
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
@@ -377,35 +359,90 @@ public class Base {
       System.exit(0);
 
     } else if (parser.isVerifyOrUploadMode()) {
-      splashScreenHelper.close();
       // Set verbosity for command line build
-      PreferencesData.set("build.verbose", "" + parser.isDoVerboseBuild());
-      PreferencesData.set("upload.verbose", "" + parser.isDoVerboseUpload());
-      PreferencesData.set("runtime.preserve.temp.files", Boolean.toString(parser.isPreserveTempFiles()));
+      PreferencesData.setBoolean("build.verbose", parser.isDoVerboseBuild());
+      PreferencesData.setBoolean("upload.verbose", parser.isDoVerboseUpload());
 
-      // Make sure these verbosity preferences are only for the
-      // current session
+      // Set preserve-temp flag
+      PreferencesData.setBoolean("runtime.preserve.temp.files", parser.isPreserveTempFiles());
+
+      // Make sure these verbosity preferences are only for the current session
       PreferencesData.setDoSave(false);
 
-      Editor editor = editors.get(0);
+      Sketch sketch = null;
+      String outputFile = null;
 
-      if (parser.isUploadMode()) {
-        splashScreenHelper.splashText(tr("Verifying and uploading..."));
-        editor.exportHandler.run();
-      } else {
-        splashScreenHelper.splashText(tr("Verifying..."));
-        editor.runHandler.run();
+      try {
+        // Build
+        splash.splashText(tr("Verifying..."));
+
+        File sketchFile = BaseNoGui.absoluteFile(parser.getFilenames().get(0));
+        sketch = new Sketch(sketchFile);
+
+        outputFile = new Compiler(sketch).build(progress -> {}, false);
+      } catch (Exception e) {
+        // Error during build
+        System.exit(1);
       }
 
-      // Error during build or upload
-      if (editor.status.isErr()) {
-        System.exit(1);
+      if (parser.isUploadMode()) {
+        // Upload
+        splash.splashText(tr("Uploading..."));
+
+        try {
+          List<String> warnings = new ArrayList<>();
+          UploaderUtils uploader = new UploaderUtils();
+          boolean res = uploader.upload(sketch, null, outputFile,
+                                        parser.isDoUseProgrammer(),
+                                        parser.isNoUploadPort(), warnings);
+          for (String warning : warnings) {
+            System.out.println(tr("Warning") + ": " + warning);
+          }
+          if (!res) {
+            throw new Exception();
+          }
+        } catch (Exception e) {
+          // Error during upload
+          System.out.flush();
+          System.err.flush();
+          System.err
+              .println(tr("An error occurred while uploading the sketch"));
+          System.exit(1);
+        }
       }
 
       // No errors exit gracefully
       System.exit(0);
     } else if (parser.isGuiMode()) {
-      splashScreenHelper.splashText(tr("Starting..."));
+      splash.splashText(tr("Starting..."));
+
+      for (String path : parser.getFilenames()) {
+        // Correctly resolve relative paths
+        File file = absoluteFile(path);
+
+        // Fix a problem with systems that use a non-ASCII languages. Paths are
+        // being passed in with 8.3 syntax, which makes the sketch loader code
+        // unhappy, since the sketch folder naming doesn't match up correctly.
+        // http://dev.processing.org/bugs/show_bug.cgi?id=1089
+        if (OSUtils.isWindows()) {
+          try {
+            file = file.getCanonicalFile();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+
+        if (!parser.isForceSavePrefs())
+          PreferencesData.setDoSave(true);
+        if (handleOpen(file, retrieveSketchLocation(".default"), false) == null) {
+          String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
+          // Open failure is fatal in upload/verify mode
+          if (parser.isVerifyOrUploadMode())
+            showError(null, mess, 2);
+          else
+            showWarning(null, mess, null);
+        }
+      }
 
       installKeyboardInputMap();
 
@@ -472,7 +509,7 @@ public class Base {
       }
       int[] location = retrieveSketchLocation("" + i);
       // If file did not exist, null will be returned for the Editor
-      if (handleOpen(new File(path), location, nextEditorLocation(), true, false, false) != null) {
+      if (handleOpen(new File(path), location, nextEditorLocation(), false, false) != null) {
         opened++;
       }
     }
@@ -764,14 +801,14 @@ public class Base {
   }
 
   public Editor handleOpen(File file, boolean untitled) throws Exception {
-    return handleOpen(file, nextEditorLocation(), true, untitled);
+    return handleOpen(file, nextEditorLocation(), untitled);
   }
 
-  protected Editor handleOpen(File file, int[] location, boolean showEditor, boolean untitled) throws Exception {
-    return handleOpen(file, location, location, showEditor, true, untitled);
+  protected Editor handleOpen(File file, int[] location, boolean untitled) throws Exception {
+    return handleOpen(file, location, location, true, untitled);
   }
 
-  protected Editor handleOpen(File file, int[] storedLocation, int[] defaultLocation, boolean showEditor, boolean storeOpenedSketches, boolean untitled) throws Exception {
+  protected Editor handleOpen(File file, int[] storedLocation, int[] defaultLocation, boolean storeOpenedSketches, boolean untitled) throws Exception {
     if (!file.exists()) return null;
 
     // Cycle through open windows to make sure that it's not already open.
@@ -804,9 +841,7 @@ public class Base {
 
     // now that we're ready, show the window
     // (don't do earlier, cuz we might move it based on a window being closed)
-    if (showEditor) {
-      SwingUtilities.invokeLater(() -> editor.setVisible(true));
-    }
+    SwingUtilities.invokeLater(() -> editor.setVisible(true));
 
     return editor;
   }
@@ -1417,6 +1452,8 @@ public class Base {
 
         // Cycle through all boards of this platform
         for (TargetBoard board : targetPlatform.getBoards().values()) {
+          if (board.getPreferences().get("hide") != null)
+            continue;
           JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
@@ -1810,10 +1847,9 @@ public class Base {
   }
 
   public File getDefaultSketchbookFolderOrPromptForIt() {
-
     File sketchbookFolder = BaseNoGui.getDefaultSketchbookFolder();
 
-    if (sketchbookFolder == null) {
+    if (sketchbookFolder == null && !isCommandLine()) {
       sketchbookFolder = promptSketchbookLocation();
     }
 

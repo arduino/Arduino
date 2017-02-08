@@ -79,6 +79,14 @@ public abstract class HostDependentDownloadableContribution extends Downloadable
       }
     }
 
+    if (osName.contains("FreeBSD")) {
+      if (osArch.contains("arm")) {
+        return host.matches("arm.*-freebsd[0-9]*");
+      } else {
+        return host.matches(osArch + "-freebsd[0-9]*");
+      }
+    }
+
     return false;
   }
 }

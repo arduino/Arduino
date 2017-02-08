@@ -22,6 +22,11 @@ arduinoisp.protocol=arduinoisp
 arduinoisp.program.tool=avrdude
 arduinoisp.program.extra_params=
 
+arduinoisporg.name=ArduinoISP.org
+arduinoisporg.protocol=arduinoisporg
+arduinoisporg.program.tool=avrdude
+arduinoisporg.program.extra_params=
+
 usbasp.name=USBasp
 usbasp.communication=usb
 usbasp.protocol=usbasp
@@ -92,3 +97,10 @@ jtag3.program.tool=avrdude
 # work regardless of the crystal used, since JTAG doesn't use the MCU
 # clock but dictates its own clock.
 jtag3.program.extra_params=-B0.1
+
+atmel_ice.name=Atmel-ICE (AVR)
+atmel_ice.communication=usb
+atmel_ice.protocol=atmelice_isp
+atmel_ice.program.protocol=atmelice_isp
+atmel_ice.program.tool=avrdude
+atmel_ice.program.extra_params=-Pusb

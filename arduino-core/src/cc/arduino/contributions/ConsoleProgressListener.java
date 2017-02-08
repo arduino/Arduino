@@ -33,12 +33,19 @@ import cc.arduino.utils.Progress;
 
 public class ConsoleProgressListener implements ProgressListener {
   private String lastStatus = "";
+  private double lastProgress = 0.0;
 
   @Override
   public void onProgress(Progress progress) {
-    if (!lastStatus.equals(progress.getStatus())) {
+    // Reduce verbosity when running in console
+    String s = progress.getStatus().replaceAll("[0-9]", "");
+    double p = progress.getProgress();
+
+    if (!lastStatus.equals(s) || (p - lastProgress) > 1.0) {
       System.out.println(progress.getStatus());
+      lastProgress = p;
     }
-    lastStatus = progress.getStatus();
+
+    lastStatus = s;
   }
 }
