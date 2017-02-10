@@ -36,6 +36,7 @@ import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.PdeKeywords;
 import processing.app.tools.MenuScroller;
@@ -197,6 +198,8 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportHandler;
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
+  
+  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -962,8 +965,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   JMenuItem createToolMenuItem(String className) {
     try {
-      Class<?> toolClass = Class.forName(className);
-      final Tool tool = (Tool) toolClass.newInstance();
+      final Tool tool = getOrCreateToolInstance(className);
 
       JMenuItem item = new JMenuItem(tool.getMenuTitle());
 
@@ -982,6 +984,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private Tool getOrCreateToolInstance(String className) {
+    Tool internalTool = internalToolCache.get(className);
+    if (internalTool == null) {
+      try {
+        Class<?> toolClass = Class.forName(className);
+        internalTool = (Tool) toolClass.newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+      internalToolCache.put(className, internalTool);
+    }
+    return internalTool;
+  }
 
   private void addInternalTools(JMenu menu) {
     JMenuItem item;
@@ -1344,8 +1360,8 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(gotoLine);
 
     menu.addSeparator();
-
-    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), '/');
+    
+    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), PreferencesData.get("editor.keys.shortcut_comment", "/").charAt(0));
     commentItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           getCurrentTab().handleCommentUncomment();
@@ -1992,12 +2008,27 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     SketchFile current = getCurrentTab().getSketchFile();
-    if (current.isPrimary()) {
-      setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
-                           BaseNoGui.VERSION_NAME_LONG));
+    
+    String customFormat = PreferencesData.get("editor.custom_title_format");
+    if (customFormat != null && !customFormat.trim().isEmpty()) {
+      
+      Map<String, String> titleMap = new HashMap<String, String>();
+      titleMap.put("file", current.getFileName());
+      String path = sketch.getFolder().getAbsolutePath();
+      titleMap.put("folder", path);
+      titleMap.put("path", path);
+      titleMap.put("project", sketch.getName());
+      titleMap.put("version", BaseNoGui.VERSION_NAME_LONG);
+      
+      setTitle(StringReplacer.replaceFromMapping(customFormat, titleMap));
     } else {
-      setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
-                           current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      if (current.isPrimary()) {
+        setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
+                             BaseNoGui.VERSION_NAME_LONG));
+      } else {
+        setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
+                             current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      }
     }
   }
 
@@ -2039,6 +2070,12 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
+      
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+      
       boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();

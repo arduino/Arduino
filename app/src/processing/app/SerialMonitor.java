@@ -62,6 +62,12 @@ public class SerialMonitor extends AbstractTextMonitor {
         textField.setText("");
       }
     });
+    
+    onClearCommand(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textArea.setText("");
+      }
+    });
   }
 
   private void send(String s) {

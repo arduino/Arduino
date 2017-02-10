@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,7 +22,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 
 import cc.arduino.packages.BoardPort;
 
@@ -32,12 +36,17 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JScrollPane scrollPane;
   protected JTextField textField;
   protected JButton sendButton;
+  protected JButton clearButton;
   protected JCheckBox autoscrollBox;
+  protected JCheckBox addTimeStampBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
 
+  private SimpleDateFormat logDateFormat;
+  
   public AbstractTextMonitor(BoardPort boardPort) {
     super(boardPort);
+    logDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
   }
   
   protected void onCreateWindow(Container mainPane) {
@@ -67,6 +76,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     textField = new JTextField(40);
     sendButton = new JButton(tr("Send"));
+    clearButton = new JButton(tr("Clear output"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
@@ -79,6 +89,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
     autoscrollBox = new JCheckBox(tr("Autoscroll"), true);
+    addTimeStampBox = new JCheckBox(tr("Show timestamp"), false);
 
     noLineEndingAlert = new JLabel(I18n.format(tr("You've pressed {0} but nothing was sent. Should you select a line ending?"), tr("Send")));
     noLineEndingAlert.setToolTipText(noLineEndingAlert.getText());
@@ -97,6 +108,15 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     if (PreferencesData.get("serial.line_ending") != null) {
       lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
     }
+    if (PreferencesData.get("serial.show_timestamp") != null) {
+      addTimeStampBox.setSelected(PreferencesData.getBoolean("serial.show_timestamp"));
+    }
+    addTimeStampBox.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected());
+      }
+    });
+    
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
     serialRates = new JComboBox();
@@ -107,12 +127,15 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     serialRates.setMaximumSize(serialRates.getMinimumSize());
 
     pane.add(autoscrollBox);
+    pane.add(addTimeStampBox);
     pane.add(Box.createHorizontalGlue());
     pane.add(noLineEndingAlert);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(lineEndings);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(clearButton);
 
     mainPane.add(pane, BorderLayout.SOUTH);
   }
@@ -120,10 +143,12 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected void onEnableWindow(boolean enable)
   {
     textArea.setEnabled(enable);
+    clearButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
     autoscrollBox.setEnabled(enable);
+    addTimeStampBox.setEnabled(enable);
     lineEndings.setEnabled(enable);
     serialRates.setEnabled(enable);
   }
@@ -131,6 +156,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void onSendCommand(ActionListener listener) {
     textField.addActionListener(listener);
     sendButton.addActionListener(listener);
+  }
+  
+  public void onClearCommand(ActionListener listener) {
+    clearButton.addActionListener(listener);
   }
 
   public void onSerialRateChange(ActionListener listener) {
@@ -140,7 +169,25 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void message(final String s) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-        textArea.append(s);
+        
+        if (addTimeStampBox.isSelected()) {
+          String[] lines = s.split("(?<=\\n)");
+          Document doc = textArea.getDocument();
+          for (String currentLine : lines) {
+              try {
+                if (doc.getLength() == 0 || ((int)doc.getText(doc.getLength() - 1, 1).charAt(0) == 10)) {
+                  textArea.append(logDateFormat.format(new Date()) + " -> " + currentLine); 
+                } else {
+                  textArea.append(currentLine);
+                }
+              } catch (BadLocationException e) {
+                e.printStackTrace();
+              }
+          }
+        } else {
+          textArea.append(s);  
+        }
+                
         if (autoscrollBox.isSelected()) {
           textArea.setCaretPosition(textArea.getDocument().getLength());
         }
