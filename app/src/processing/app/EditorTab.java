@@ -44,7 +44,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
-import javax.swing.undo.UndoManager;
 import javax.swing.text.DefaultCaret;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -546,10 +545,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   
   void handleRedo() {
     textarea.redoLastAction();
-  }
-  
-  public UndoManager getUndoManager() {
-    return textarea.getUndoManager();
   }
   
   public String getCurrentKeyword() {
