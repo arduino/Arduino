@@ -401,14 +401,14 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
       int oldLength = doc.getLength();
       // The undo manager already seems to group the insert and remove together
       // automatically, but better be explicit about it.
-      textarea.getUndoManager().beginInternalAtomicEdit();
+      textarea.beginAtomicEdit();
       try {
         doc.insertString(oldLength, what, null);
         doc.remove(0, oldLength);
       } catch (BadLocationException e) {
         System.err.println("Unexpected failure replacing text");
       } finally {
-        textarea.getUndoManager().endInternalAtomicEdit();
+        textarea.endAtomicEdit();
       }
     } finally {
       caret.setUpdatePolicy(policy);
