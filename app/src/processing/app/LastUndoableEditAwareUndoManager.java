@@ -29,9 +29,5 @@ public class LastUndoableEditAwareUndoManager extends RUndoManager {
   @Override
   public void updateActions() {
     super.updateActions();
-    editor.undoAction.updateUndoState();
-    editor.redoAction.updateRedoState();
   }
-
-
 }
