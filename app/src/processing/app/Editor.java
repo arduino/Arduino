@@ -33,6 +33,7 @@ import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.ActionWrapper;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
@@ -1259,6 +1260,24 @@ public class Editor extends JFrame implements RunnerListener {
     return menu;
   }
 
+  /**
+   * Wrapper around RSyntaxTextArea's RecordableTextActions. Normally,
+   * these actions use the event source, or the most recently focused
+   * component to find the text area to work on, but this does not
+   * always work. This wrapper makes them always work on the currently
+   * selected tab instead.
+   */
+  class RstaActionWrapper extends ActionWrapper {
+    RstaActionWrapper(RecordableTextAction action) {
+      super(action);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      ((RecordableTextAction) getWrappedAction()).actionPerformedImpl(e, getCurrentTab().getTextArea());
+    }
+  }
+
   private JMenu buildEditMenu() {
     JMenu menu = new JMenu(tr("Edit"));
     menu.setName("menuEdit");
@@ -1269,12 +1288,12 @@ public class Editor extends JFrame implements RunnerListener {
     new RTextArea();
 
     RecordableTextAction undoAction = RTextArea.getAction(RTextArea.UNDO_ACTION);
-    JMenuItem undoItem = new JMenuItem(undoAction);
+    JMenuItem undoItem = new JMenuItem(new RstaActionWrapper(undoAction));
     undoItem.setName("menuEditUndo");
     menu.add(undoItem);
 
     RecordableTextAction redoAction = RTextArea.getAction(RTextArea.REDO_ACTION);
-    JMenuItem redoItem = new JMenuItem(redoAction);
+    JMenuItem redoItem = new JMenuItem(new RstaActionWrapper(redoAction));
     redoItem.setName("menuEditRedo");
     menu.add(redoItem);
 
@@ -1288,10 +1307,10 @@ public class Editor extends JFrame implements RunnerListener {
     menu.addSeparator();
 
     RecordableTextAction cutAction = RTextArea.getAction(RTextArea.CUT_ACTION);
-    menu.add(new JMenuItem(cutAction));
+    menu.add(new JMenuItem(new RstaActionWrapper(cutAction)));
 
     RecordableTextAction copyAction = RTextArea.getAction(RTextArea.COPY_ACTION);
-    menu.add(new JMenuItem(copyAction));
+    menu.add(new JMenuItem(new RstaActionWrapper(copyAction)));
 
 
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
@@ -1311,10 +1330,10 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(copyHTMLItem);
 
     RecordableTextAction pasteAction = RTextArea.getAction(RTextArea.PASTE_ACTION);
-    menu.add(new JMenuItem(pasteAction));
+    menu.add(new JMenuItem(new RstaActionWrapper(pasteAction)));
 
     RecordableTextAction selectAllAction = RTextArea.getAction(RTextArea.SELECT_ALL_ACTION);
-    menu.add(new JMenuItem(selectAllAction));
+    menu.add(new JMenuItem(new RstaActionWrapper(selectAllAction)));
 
     JMenuItem gotoLine = newJMenuItem(tr("Go to line..."), 'L');
     gotoLine.addActionListener(e -> {
