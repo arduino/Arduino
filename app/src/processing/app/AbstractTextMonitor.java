@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -66,6 +68,13 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
     textField = new JTextField(40);
+    // textField is selected every time the window is focused
+    addWindowFocusListener(new WindowAdapter() {
+      public void windowGainedFocus(WindowEvent e) {
+        textField.requestFocusInWindow();
+      }
+    });
+
     sendButton = new JButton(tr("Send"));
 
     upperPane.add(textField);
