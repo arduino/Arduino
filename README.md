@@ -28,9 +28,7 @@ https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 
 Installation
 ------------
-Detailed instructions are in reference/Guide_Windows.html and
-reference/Guide_MacOSX.html.  For Linux, see the Arduino playground:
-http://www.arduino.cc/playground/Learning/Linux
+Detailed instructions are in https://github.com/arduino/Arduino/wiki/Building-Arduino
 
 Credits
 --------
