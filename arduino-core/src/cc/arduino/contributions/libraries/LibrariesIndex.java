@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
@@ -145,13 +146,20 @@ public abstract class LibrariesIndex {
         continue;
       }
 
-      // Pick the latest version among possible deps
-      ContributedLibrary last = possibleDeps.stream()
-          .reduce((a, b) -> b.isBefore(a) ? a : b).get();
+      // Pick the installed version if available
+      ContributedLibrary selected;
+      Optional<ContributedLibrary> installed = possibleDeps.stream()
+          .filter(l -> l.isInstalled()).findAny();
+      if (installed.isPresent()) {
+        selected = installed.get();
+      } else {
+        // otherwise pick the latest version
+        selected = possibleDeps.stream().reduce((a, b) -> b.isBefore(a) ? a : b).get();
+      }
 
-      // Add dependecy to the solution and process recursively
-      solution.add(last);
-      if (!resolveDependeciesOf(solution, last)) {
+      // Add dependency to the solution and process recursively
+      solution.add(selected);
+      if (!resolveDependeciesOf(solution, selected)) {
         return false;
       }
     }
