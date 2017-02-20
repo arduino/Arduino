@@ -28,11 +28,17 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 public class Serial implements SerialPortEventListener {
 
@@ -46,6 +52,12 @@ public class Serial implements SerialPortEventListener {
   // the static class would have an object that could be closed
 
   private SerialPort port;
+
+  private CharsetDecoder bytesToStrings;
+  private static final int IN_BUFFER_CAPACITY = 128;
+  private static final int OUT_BUFFER_CAPACITY = 128;
+  private ByteBuffer inFromSerial = ByteBuffer.allocate(IN_BUFFER_CAPACITY);
+  private CharBuffer outToMessage = CharBuffer.allocate(OUT_BUFFER_CAPACITY);
 
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
@@ -101,6 +113,8 @@ public class Serial implements SerialPortEventListener {
     //this.parent = parent;
     //parent.attach(this);
 
+    resetDecoding(StandardCharsets.UTF_8);
+
     int parity = SerialPort.PARITY_NONE;
     if (iparity == 'E') parity = SerialPort.PARITY_EVEN;
     if (iparity == 'O') parity = SerialPort.PARITY_ODD;
@@ -153,10 +167,24 @@ public class Serial implements SerialPortEventListener {
     if (serialEvent.isRXCHAR()) {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
-        if (buf.length > 0) {
-          String msg = new String(buf);
-          char[] chars = msg.toCharArray();
-          message(chars, chars.length);
+        int next = 0;
+        while(next < buf.length) {
+          while(next < buf.length && outToMessage.hasRemaining()) {
+            int spaceInIn = inFromSerial.remaining();
+            int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
+            inFromSerial.put(buf, next, copyNow);
+            next += copyNow;
+            inFromSerial.flip();
+            bytesToStrings.decode(inFromSerial, outToMessage, false);
+            inFromSerial.compact();
+          }
+          outToMessage.flip();
+          if(outToMessage.hasRemaining()) {
+            char[] chars = new char[outToMessage.remaining()];
+            outToMessage.get(chars);
+            message(chars, chars.length);
+          }
+          outToMessage.clear();
         }
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
@@ -224,6 +252,17 @@ public class Serial implements SerialPortEventListener {
     } catch (SerialPortException e) {
       errorMessage("setRTS", e);
     }
+  }
+
+  /**
+   * Reset the encoding used to convert the bytes coming in
+   * before they are handed as Strings to {@Link #message(char[], int)}.
+   */
+  public synchronized void resetDecoding(Charset charset) {
+    bytesToStrings = charset.newDecoder()
+                      .onMalformedInput(CodingErrorAction.REPLACE)
+                      .onUnmappableCharacter(CodingErrorAction.REPLACE)
+                      .replaceWith("\u2e2e");
   }
 
   static public List<String> list() {
