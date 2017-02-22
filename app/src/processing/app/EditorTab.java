@@ -103,11 +103,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     this.editor = editor;
     this.file = file;
     RSyntaxDocument document = createDocument(contents);
-    this.textarea = createTextArea(document);
-    this.scrollPane = createScrollPane(this.textarea);
+    textarea = createTextArea(document);
+    scrollPane = createScrollPane(textarea);
     file.setStorage(this);
     applyPreferences();
-    add(this.scrollPane, BorderLayout.CENTER);
+    add(scrollPane, BorderLayout.CENTER);
 
     RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
     document.addUndoableEditListener(undo);
