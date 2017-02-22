@@ -46,6 +46,7 @@ import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
 import javax.swing.undo.UndoManager;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
@@ -402,7 +403,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     int policy = caret.getUpdatePolicy();
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     try {
-      RSyntaxDocument doc = (RSyntaxDocument)textarea.getDocument();
+      Document doc = textarea.getDocument();
       int oldLength = doc.getLength();
       // The undo manager already seems to group the insert and remove together
       // automatically, but better be explicit about it.
