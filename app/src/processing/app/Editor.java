@@ -33,20 +33,19 @@ import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.PdeKeywords;
+import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -185,8 +184,6 @@ public class Editor extends JFrame implements RunnerListener {
   // undo fellers
   private JMenuItem undoItem;
   private JMenuItem redoItem;
-  protected UndoAction undoAction;
-  protected RedoAction redoAction;
 
   private FindReplace find;
 
@@ -1273,7 +1270,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     undoItem = newJMenuItem(tr("Undo"), 'Z');
     undoItem.setName("menuEditUndo");
-    undoItem.addActionListener(undoAction = new UndoAction());
+    undoItem.addActionListener(e -> getCurrentTab().handleUndo());
     menu.add(undoItem);
 
     if (!OSUtils.isMacOS()) {
@@ -1282,7 +1279,7 @@ public class Editor extends JFrame implements RunnerListener {
         redoItem = newJMenuItemShift(tr("Redo"), 'Z');
     }
     redoItem.setName("menuEditRedo");
-    redoItem.addActionListener(redoAction = new RedoAction());
+    redoItem.addActionListener(e -> getCurrentTab().handleRedo());
     menu.add(redoItem);
 
     menu.addSeparator();
@@ -1478,68 +1475,10 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
-  class UndoAction extends AbstractAction {
-    public UndoAction() {
-      super("Undo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleUndo();
-      } catch (CannotUndoException ex) {
-        //System.out.println("Unable to undo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateUndoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canUndo()) {
-        this.setEnabled(true);
-        undoItem.setEnabled(true);
-        undoItem.setText(undo.getUndoPresentationName());
-        putValue(Action.NAME, undo.getUndoPresentationName());
-      } else {
-        this.setEnabled(false);
-        undoItem.setEnabled(false);
-        undoItem.setText(tr("Undo"));
-        putValue(Action.NAME, "Undo");
-      }
-    }
-  }
-
-
-  class RedoAction extends AbstractAction {
-    public RedoAction() {
-      super("Redo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleRedo();
-      } catch (CannotRedoException ex) {
-        //System.out.println("Unable to redo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateRedoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canRedo()) {
-        redoItem.setEnabled(true);
-        redoItem.setText(undo.getRedoPresentationName());
-        putValue(Action.NAME, undo.getRedoPresentationName());
-      } else {
-        this.setEnabled(false);
-        redoItem.setEnabled(false);
-        redoItem.setText(tr("Redo"));
-        putValue(Action.NAME, "Redo");
-      }
-    }
+  protected void updateUndoRedoState() {
+    SketchTextArea textArea = getCurrentTab().getTextArea();
+    undoItem.setEnabled(textArea.canUndo());
+    redoItem.setEnabled(textArea.canRedo());
   }
 
 
@@ -1610,8 +1549,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void selectTab(final int index) {
     currentTabIndex = index;
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
+    updateUndoRedoState();
     updateTitle();
     header.rebuild();
     getCurrentTab().activated();
@@ -1710,6 +1648,9 @@ public class Editor extends JFrame implements RunnerListener {
    */
   protected void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
+    tab.getTextArea().getDocument()
+        .addDocumentListener(new DocumentTextChangeListener(
+            () -> updateUndoRedoState()));
     tabs.add(tab);
     reorderTabs();
   }

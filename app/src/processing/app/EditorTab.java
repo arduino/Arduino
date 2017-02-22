@@ -44,7 +44,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
-import javax.swing.undo.UndoManager;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
@@ -53,7 +52,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.RUndoManager;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import processing.app.helpers.DocumentTextChangeListener;
@@ -108,10 +106,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
-
-    RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
-    document.addUndoableEditListener(undo);
-    textarea.setUndoManager(undo);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -407,14 +401,14 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
       int oldLength = doc.getLength();
       // The undo manager already seems to group the insert and remove together
       // automatically, but better be explicit about it.
-      textarea.getUndoManager().beginInternalAtomicEdit();
+      textarea.beginAtomicEdit();
       try {
         doc.insertString(oldLength, what, null);
         doc.remove(0, oldLength);
       } catch (BadLocationException e) {
         System.err.println("Unexpected failure replacing text");
       } finally {
-        textarea.getUndoManager().endInternalAtomicEdit();
+        textarea.endAtomicEdit();
       }
     } finally {
       caret.setUpdatePolicy(policy);
@@ -552,10 +546,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   
   void handleRedo() {
     textarea.redoLastAction();
-  }
-  
-  public UndoManager getUndoManager() {
-    return textarea.getUndoManager();
   }
   
   public String getCurrentKeyword() {
