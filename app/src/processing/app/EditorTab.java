@@ -518,7 +518,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   void handleCommentUncomment() {
     Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaToggleCommentAction);
     action.actionPerformed(null);
-
+    // XXX: RSyntaxDocument doesn't fire DocumentListener events, it should be fixed in RSyntaxTextArea?
+    editor.updateUndoRedoState();
   }
 
   void handleDiscourseCopy() {
@@ -538,6 +539,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
       Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaDecreaseIndentAction);
       action.actionPerformed(null);
     }
+    // XXX: RSyntaxDocument doesn't fire DocumentListener events, it should be fixed in RSyntaxTextArea?
+    editor.updateUndoRedoState();
   }
 
   void handleUndo() {
