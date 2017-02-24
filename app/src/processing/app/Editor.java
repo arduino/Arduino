@@ -33,6 +33,7 @@ import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.ActionWrapper;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
@@ -44,9 +45,9 @@ import processing.app.tools.Tool;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RecordableTextAction;
+
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -181,12 +182,6 @@ public class Editor extends JFrame implements RunnerListener {
 
   //boolean presenting;
   private boolean uploading;
-
-  // undo fellers
-  private JMenuItem undoItem;
-  private JMenuItem redoItem;
-  protected UndoAction undoAction;
-  protected RedoAction redoAction;
 
   private FindReplace find;
 
@@ -1265,43 +1260,58 @@ public class Editor extends JFrame implements RunnerListener {
     return menu;
   }
 
+  /**
+   * Wrapper around RSyntaxTextArea's RecordableTextActions. Normally,
+   * these actions use the event source, or the most recently focused
+   * component to find the text area to work on, but this does not
+   * always work. This wrapper makes them always work on the currently
+   * selected tab instead.
+   */
+  class RstaActionWrapper extends ActionWrapper {
+    RstaActionWrapper(RecordableTextAction action) {
+      super(action);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      ((RecordableTextAction) getWrappedAction()).actionPerformedImpl(e, getCurrentTab().getTextArea());
+    }
+  }
 
   private JMenu buildEditMenu() {
     JMenu menu = new JMenu(tr("Edit"));
     menu.setName("menuEdit");
     menu.setMnemonic(KeyEvent.VK_E);
 
-    undoItem = newJMenuItem(tr("Undo"), 'Z');
+    // Create a dummy RTextArea, to force it to create the static list
+    // of actions accessible through RTextArea.getAction().
+    new RTextArea();
+
+    RecordableTextAction undoAction = RTextArea.getAction(RTextArea.UNDO_ACTION);
+    JMenuItem undoItem = new JMenuItem(new RstaActionWrapper(undoAction));
     undoItem.setName("menuEditUndo");
-    undoItem.addActionListener(undoAction = new UndoAction());
     menu.add(undoItem);
 
-    if (!OSUtils.isMacOS()) {
-        redoItem = newJMenuItem(tr("Redo"), 'Y');
-    } else {
-        redoItem = newJMenuItemShift(tr("Redo"), 'Z');
-    }
+    RecordableTextAction redoAction = RTextArea.getAction(RTextArea.REDO_ACTION);
+    JMenuItem redoItem = new JMenuItem(new RstaActionWrapper(redoAction));
     redoItem.setName("menuEditRedo");
-    redoItem.addActionListener(redoAction = new RedoAction());
     menu.add(redoItem);
+
+    // RSTA defaults to Ctrl-Y for redo, but convention on OSX is Ctrl-Shift-Z
+    // This might not be the best place, but it works.
+    if (OSUtils.isMacOS()) {
+      int mods = SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK;
+      redoAction.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, mods));
+    }
 
     menu.addSeparator();
 
-    JMenuItem cutItem = newJMenuItem(tr("Cut"), 'X');
-    cutItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleCut();
-        }
-      });
-    menu.add(cutItem);
+    RecordableTextAction cutAction = RTextArea.getAction(RTextArea.CUT_ACTION);
+    menu.add(new JMenuItem(new RstaActionWrapper(cutAction)));
 
-    JMenuItem copyItem = newJMenuItem(tr("Copy"), 'C');
-    copyItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().getTextArea().copy();
-        }
-      });
-    menu.add(copyItem);
+    RecordableTextAction copyAction = RTextArea.getAction(RTextArea.COPY_ACTION);
+    menu.add(new JMenuItem(new RstaActionWrapper(copyAction)));
+
 
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
     copyForumItem.addActionListener(new ActionListener() {
@@ -1319,21 +1329,11 @@ public class Editor extends JFrame implements RunnerListener {
       });
     menu.add(copyHTMLItem);
 
-    JMenuItem pasteItem = newJMenuItem(tr("Paste"), 'V');
-    pasteItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handlePaste();
-        }
-      });
-    menu.add(pasteItem);
+    RecordableTextAction pasteAction = RTextArea.getAction(RTextArea.PASTE_ACTION);
+    menu.add(new JMenuItem(new RstaActionWrapper(pasteAction)));
 
-    JMenuItem selectAllItem = newJMenuItem(tr("Select All"), 'A');
-    selectAllItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleSelectAll();
-        }
-      });
-    menu.add(selectAllItem);
+    RecordableTextAction selectAllAction = RTextArea.getAction(RTextArea.SELECT_ALL_ACTION);
+    menu.add(new JMenuItem(new RstaActionWrapper(selectAllAction)));
 
     JMenuItem gotoLine = newJMenuItem(tr("Go to line..."), 'L');
     gotoLine.addActionListener(e -> {
@@ -1422,21 +1422,6 @@ public class Editor extends JFrame implements RunnerListener {
       menu.add(useSelectionForFindItem);
     }
 
-    menu.addMenuListener(new MenuListener() {
-      @Override
-      public void menuSelected(MenuEvent e) {
-        boolean enabled = getCurrentTab().getSelectedText() != null;
-        cutItem.setEnabled(enabled);
-        copyItem.setEnabled(enabled);
-      }
-
-      @Override
-      public void menuDeselected(MenuEvent e) {}
-
-      @Override
-      public void menuCanceled(MenuEvent e) {}
-    });
-
     return menu;
   }
 
@@ -1473,75 +1458,6 @@ public class Editor extends JFrame implements RunnerListener {
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_ALT_KEY_MASK));
     return menuItem;
   }
-
-
-  // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-
-
-  class UndoAction extends AbstractAction {
-    public UndoAction() {
-      super("Undo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleUndo();
-      } catch (CannotUndoException ex) {
-        //System.out.println("Unable to undo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateUndoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canUndo()) {
-        this.setEnabled(true);
-        undoItem.setEnabled(true);
-        undoItem.setText(undo.getUndoPresentationName());
-        putValue(Action.NAME, undo.getUndoPresentationName());
-      } else {
-        this.setEnabled(false);
-        undoItem.setEnabled(false);
-        undoItem.setText(tr("Undo"));
-        putValue(Action.NAME, "Undo");
-      }
-    }
-  }
-
-
-  class RedoAction extends AbstractAction {
-    public RedoAction() {
-      super("Redo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleRedo();
-      } catch (CannotRedoException ex) {
-        //System.out.println("Unable to redo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateRedoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canRedo()) {
-        redoItem.setEnabled(true);
-        redoItem.setText(undo.getRedoPresentationName());
-        putValue(Action.NAME, undo.getRedoPresentationName());
-      } else {
-        this.setEnabled(false);
-        redoItem.setEnabled(false);
-        redoItem.setText(tr("Redo"));
-        putValue(Action.NAME, "Redo");
-      }
-    }
-  }
-
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
@@ -1610,8 +1526,6 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void selectTab(final int index) {
     currentTabIndex = index;
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
     updateTitle();
     header.rebuild();
     getCurrentTab().activated();
