@@ -2168,6 +2168,8 @@ public class Editor extends JFrame implements RunnerListener {
     console.clear();
     status.progress(tr("Uploading to I/O Board..."));
 
+    avoidMultipleOperations = true;
+
     new Thread(timeoutUploadHandler).start();
     new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
   }

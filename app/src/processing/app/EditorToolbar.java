@@ -376,7 +376,6 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         // launch a timeout timer which can reenable to upload button functionality an
         if (!editor.avoidMultipleOperations) {
           editor.handleExport(e.isShiftDown());
-          editor.avoidMultipleOperations = true;
         }
         break;
 
