@@ -58,6 +58,41 @@ void pinMode(uint8_t pin, uint8_t mode)
 	}
 }
 
+void input(uint8_t pin)
+{
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
+	volatile uint8_t *reg, *out;
+
+	if (port == NOT_A_PIN) return;
+
+	reg = portModeRegister(port);
+	out = portOutputRegister(port);
+	
+	uint8_t oldSREG = SREG;
+			cli();
+	*reg &= ~bit;
+	*out &= ~bit;
+	SREG = oldSREG;
+}
+
+void output(uint8_t pin)
+{
+	uint8_t bit = digitalPinToBitMask(pin);
+	uint8_t port = digitalPinToPort(pin);
+	volatile uint8_t *reg, *out;
+
+	if (port == NOT_A_PIN) return;
+
+	reg = portModeRegister(port);
+	out = portOutputRegister(port);
+	
+	uint8_t oldSREG = SREG;
+			cli();
+	*reg |= bit;
+	SREG = oldSREG;
+}
+
 // Forcing this inline keeps the callers from having to push their own stuff
 // on the stack. It is a good performance win and only takes 1 more byte per
 // user than calling. (It will take more bytes on the 168.)
