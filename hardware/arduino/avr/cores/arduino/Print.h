@@ -29,7 +29,12 @@
 #define DEC 10
 #define HEX 16
 #define OCT 8
+// Special Attinyx4 definition conflict, give the internal iotnx4.h a higher priority
+#ifndef BIN
 #define BIN 2
+#else
+#warning Not using the correct BIN definition for print in this file! See #4784 on Github.
+#endif
 
 class Print
 {
