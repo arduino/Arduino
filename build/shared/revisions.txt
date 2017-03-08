@@ -2,13 +2,22 @@ ARDUINO 1.8.2
 
 [ide]
 * Fix command line: works again with relative paths (regression)
+* AVR toolchain has been updated with a tentative fix for the ld-returned-5-exit-status bug
 * Update arduino-builder to 1.3.24 to avoid name clashing for libraries
 * Allow BoardManager to fetch FreeBSD tools (thanks @kevans91)
 * Serial monitor: the input string box is automatically focused when window is selected
+* Serial monitor: now can not be opened during upload
+* Serial monitor: now properly decodes UTF8 characters (thanks @aknrdureegaesr)
+* Serial monitor: added 500k, 1M and 2M baudrates (thanks @dsstutts)
+* Updated RSyntaxTextArea to 2.6.1 (textarea component)
+* Updated jmdsn (mDNS discovery)
 
 [core]
 * Add Atmel-ICE and JTAGICE3 programmers for AVR chips (thanks @matthijskooijman)
-* Move SAM platform to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
+* AVR: Set unused bits of extended fuse to 1, should remove some avrdude warning during burn bootloader (thanks @descampsa)
+
+[other]
+* SAM platform source code has been moved to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
 
 ARDUINO 1.8.1 - 2017.01.09
 
