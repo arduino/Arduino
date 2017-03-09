@@ -1001,6 +1001,18 @@
     </copy>
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
 
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jna-4.2.2.jar" />
+      <arg value="com/sun/jna/win32-x86/jnidispatch.dll" />
+    </exec>
+    <move file="windows/work/lib/jnidispatch.dll" tofile="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+    <chmod perm="755" file="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
