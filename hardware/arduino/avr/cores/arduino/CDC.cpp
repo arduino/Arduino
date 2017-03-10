@@ -36,8 +36,6 @@ static volatile int32_t breakValue = -1;
 
 static u8 wdtcsr_save;
 
-bool _updatedLUFAbootloader = false;
-
 #define WEAK __attribute__ ((weak))
 
 extern const CDCDescriptor _cdcInterface PROGMEM;
@@ -58,6 +56,11 @@ const CDCDescriptor _cdcInterface =
 	D_ENDPOINT(USB_ENDPOINT_OUT(CDC_ENDPOINT_OUT),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0),
 	D_ENDPOINT(USB_ENDPOINT_IN (CDC_ENDPOINT_IN ),USB_ENDPOINT_TYPE_BULK,USB_EP_SIZE,0)
 };
+
+bool isLUFAbootloader()
+{
+	return pgm_read_word(FLASHEND - 1) == NEW_LUFA_SIGNATURE;
+}
 
 int CDC_GetInterface(u8* interfaceNum)
 {
@@ -111,7 +114,7 @@ bool CDC_Setup(USBSetup& setup)
 #if MAGIC_KEY_POS != (RAMEND-1)
 			// For future boards save the key in the inproblematic RAMEND
 			// Which is reserved for the main() return value (which will never return)
-			if (_updatedLUFAbootloader) {
+			if (isLUFAbootloader()) {
 				// horray, we got a new bootloader!
 				magic_key_pos = (RAMEND-1);
 			}

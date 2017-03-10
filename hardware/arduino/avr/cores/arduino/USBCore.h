@@ -285,8 +285,7 @@ typedef struct
 // Old Caterina bootloader places the MAGIC key into unsafe RAM locations (it can be rewritten
 // by the running sketch before to actual reboot).
 // Newer bootloaders, recognizable by the LUFA "signature" at the end of the flash, can handle both
-// the usafe and the safe location. Check once (in USBCore.cpp) if the bootloader in new, then set the global
-// _updatedLUFAbootloader variable to true/false and place the magic key consequently
+// the unsafe and the safe location.
 #ifndef MAGIC_KEY
 #define MAGIC_KEY 0x7777
 #endif
