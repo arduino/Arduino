@@ -97,10 +97,7 @@ bool CDC_Setup(USBSetup& setup)
 		if (CDC_SET_CONTROL_LINE_STATE == r)
 		{
 			_usbLineInfo.lineState = setup.wValueL;
-		}
 
-		if (CDC_SET_LINE_CODING == r || CDC_SET_CONTROL_LINE_STATE == r)
-		{
 			// auto-reset into the bootloader is triggered when the port, already 
 			// open at 1200 bps, is closed.  this is the signal to start the watchdog
 			// with a relatively long period so it can finish housekeeping tasks
