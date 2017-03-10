@@ -34,6 +34,8 @@ typedef struct
 static volatile LineInfo _usbLineInfo = { 57600, 0x00, 0x00, 0x00, 0x00 };
 static volatile int32_t breakValue = -1;
 
+static u8 wdtcsr_save;
+
 bool _updatedLUFAbootloader = false;
 
 #define WEAK __attribute__ ((weak))
@@ -127,6 +129,8 @@ bool CDC_Setup(USBSetup& setup)
 #endif
 				// Store boot key
 				*(uint16_t *)magic_key_pos = MAGIC_KEY;
+				// Save the watchdog state in case the reset is aborted.
+				wdtcsr_save = WDTCSR;
 				wdt_enable(WDTO_120MS);
 			}
 			else if (*(uint16_t *)magic_key_pos == MAGIC_KEY)
@@ -138,8 +142,10 @@ bool CDC_Setup(USBSetup& setup)
 				// Cancellation is only done if an auto-reset was started, which is
 				// indicated by the magic key having been set.
 
-				wdt_disable();
 				wdt_reset();
+				// Restore the watchdog state in case the sketch was using it.
+				WDTCSR |= (1<<WDCE) | (1<<WDE);
+				WDTCSR = wdtcsr_save;
 #if MAGIC_KEY_POS != (RAMEND-1)
 				// Restore backed up (old bootloader) magic key data
 				if (magic_key_pos != (RAMEND-1)) {
