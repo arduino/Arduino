@@ -119,9 +119,9 @@ bool CDC_Setup(USBSetup& setup)
 			if (1200 == _usbLineInfo.dwDTERate && (_usbLineInfo.lineState & 0x01) == 0)
 			{
 #if MAGIC_KEY_POS != (RAMEND-1)
-				// Backup ram value if its not a newer bootloader.
+				// Backup ram value if its not a newer bootloader and it hasn't already been saved.
 				// This should avoid memory corruption at least a bit, not fully
-				if (magic_key_pos != (RAMEND-1)) {
+				if (magic_key_pos != (RAMEND-1) && *(uint16_t *)magic_key_pos != MAGIC_KEY) {
 					*(uint16_t *)(RAMEND-1) = *(uint16_t *)magic_key_pos;
 				}
 #endif
@@ -129,12 +129,14 @@ bool CDC_Setup(USBSetup& setup)
 				*(uint16_t *)magic_key_pos = MAGIC_KEY;
 				wdt_enable(WDTO_120MS);
 			}
-			else
+			else if (*(uint16_t *)magic_key_pos == MAGIC_KEY)
 			{
 				// Most OSs do some intermediate steps when configuring ports and DTR can
 				// twiggle more than once before stabilizing.
-				// To avoid spurious resets we set the watchdog to 250ms and eventually
+				// To avoid spurious resets we set the watchdog to 120ms and eventually
 				// cancel if DTR goes back high.
+				// Cancellation is only done if an auto-reset was started, which is
+				// indicated by the magic key having been set.
 
 				wdt_disable();
 				wdt_reset();
