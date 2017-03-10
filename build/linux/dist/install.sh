@@ -70,6 +70,9 @@ xdg_install_f() {
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
   rmdir "$TMP_DIR"
 
+  # Launching arduino-linux-setup.sh script
+  ./arduino-linux-setup.sh $(whoami)
+
 }
 
 # Install by simply copying desktop file (fallback)
