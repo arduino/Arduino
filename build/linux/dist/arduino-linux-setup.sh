@@ -146,6 +146,19 @@ EOF
 
 }
 
+dfuarduino101rules (){
+
+    echo ""
+    echo "# Arduino 101 in DFU Mode"
+    echo ""
+
+cat <<EOF
+SUBSYSTEM=="tty", ENV{ID_REVISION}=="8087", ENV{ID_MODEL_ID}=="0ab6", MODE="0666", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_CANDIDATE}="0"
+SUBSYSTEM=="usb", ATTR{idVendor}=="8087", ATTR{idProduct}=="0aba", MODE="0666", ENV{ID_MM_DEVICE_IGNORE}="1"
+EOF
+
+}
+
 removemm () {
 
     echo ""
@@ -195,6 +208,8 @@ else
     avrisprules > $PWD/rulesgen/avrisp.rules
 
     dfustm32rules > $PWD/rulesgen/40-dfuse.rules
+
+    dfuarduino101rules > $PWD/rulesgen/99-arduino-101.rules
 
     sudo mv $PWD/rulesgen/*.rules /etc/udev/rules.d/
 
