@@ -54,9 +54,9 @@
 
 refreshudev () {
 
-	echo ""
+    echo ""
     echo "Restarting udev"
-	echo ""
+    echo ""
 
     sudo service udev restart
     sudo udevadm control --reload-rules
