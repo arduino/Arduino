@@ -164,10 +164,10 @@ removemm () {
     then
         #Only for Red Hat/Fedora/CentOS
         sudo yum remove modemmanager
-	else
-	    echo ""
-	    echo "Your system is not supported, please take care of it with your package manager"
-	    echo ""
+    else
+        echo ""
+        echo "Your system is not supported, please take care of it with your package manager"
+        echo ""
     fi
 
 }
