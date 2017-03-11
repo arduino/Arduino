@@ -212,7 +212,8 @@ EXIT STATUS
 
 FILES
 -----
-*~/.arduino15/preferences.txt*::
+*~/AppData/Local/Arduino15/preferences.txt (Windows)::
+*~/.arduino15/preferences.txt* (Mac OS X and Linux)::
 	This file stores the preferences used for the IDE, building and
 	uploading sketches.
 
