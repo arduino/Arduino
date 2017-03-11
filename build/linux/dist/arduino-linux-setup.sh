@@ -3,6 +3,7 @@
 #
 # Author : Arturo Rinaldi
 # E-mail : arturo@arduino.org
+# Project URL : https://github.com/artynet/arduino-linux-setup
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,6 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+#
+# Release v7 changelog :
+#
+#	+ Adding project URL
+#	+ minor bugfixing
 #
 # Release v6 changelog :
 #
@@ -75,7 +81,7 @@ groupsfunc () {
 acmrules () {
 
     echo ""
-    echo "Setting serial port rules"
+    echo "# Setting serial port rules"
     echo ""
 
 cat <<EOF
@@ -88,7 +94,7 @@ EOF
 openocdrules () {
 
     echo ""
-	echo "Adding Arduino M0/M0 Pro Rules"
+    echo "# Adding Arduino M0/M0 Pro, Primo UDEV Rules for CMSIS-DAP port"
     echo ""
 
 cat <<EOF
@@ -107,6 +113,10 @@ EOF
 
 avrisprules () {
 
+    echo ""
+    echo "# Adding AVRisp UDEV rules"
+    echo ""
+
 cat <<EOF
 SUBSYSTEM!="usb_device", ACTION!="add", GOTO="avrisp_end"
 # Atmel Corp. JTAG ICE mkII
@@ -122,6 +132,10 @@ EOF
 }
 
 dfustm32rules () {
+
+    echo ""
+    echo "# Adding STM32 bootloader mode UDEV rules"
+    echo ""
 
 cat <<EOF
 # Example udev rules (usually placed in /etc/udev/rules.d)
@@ -141,7 +155,7 @@ removemm () {
     if [ -f /etc/lsb-release -a ! -f /etc/SuSE-release ] || [ -f /etc/debian_version ] || [ -f /etc/linuxmint/info ]
     then
         #Only for Ubuntu/Mint/Debian
-        sudo apt-get remove modemmanager
+        sudo apt-get -y remove modemmanager
     elif [ -f /etc/SuSE-release ]
     then
         #Only for Suse
@@ -151,9 +165,9 @@ removemm () {
         #Only for Red Hat/Fedora/CentOS
         sudo yum remove modemmanager
 	else
-		echo ""
-		echo "Your system is not supported, please take care of it with your package manager"
-		echo ""
+	    echo ""
+	    echo "Your system is not supported, please take care of it with your package manager"
+	    echo ""
     fi
 
 }
