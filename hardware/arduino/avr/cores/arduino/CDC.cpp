@@ -128,6 +128,8 @@ bool CDC_Setup(USBSetup& setup)
 				// Store boot key
 				*(uint16_t *)magic_key_pos = MAGIC_KEY;
 				wdt_enable(WDTO_120MS);
+				// Go into infinite loop to avoid any watchdog resets or disable calls
+				while(1);
 			}
 			else
 			{
