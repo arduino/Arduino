@@ -193,6 +193,8 @@ static inline u8 FrameNumber()
 //==================================================================
 //==================================================================
 
+bool _sendZlp[USB_ENDPOINTS];
+
 u8 USBGetConfiguration(void)
 {
 	return _usbConfiguration;
@@ -206,7 +208,7 @@ public:
 	LockEP(u8 ep) : _sreg(SREG)
 	{
 		cli();
-		SetEP(ep & 7);
+		SetEP(ep & USB_ENDPOINTS_MASK);
 	}
 	~LockEP()
 	{
@@ -309,8 +311,15 @@ int USB_Send(u8 ep, const void* d, int len)
 				while (n--)
 					Send8(*data++);
 			}
-			if (!ReadWriteAllowed() || ((len == 0) && (ep & TRANSFER_RELEASE)))	// Release full buffer
+			_sendZlp[ep & USB_ENDPOINTS_MASK] = !ReadWriteAllowed() && (len == 0) && !(ep & TRANSFER_RELEASE);
+
+			if (!ReadWriteAllowed())	// Release full buffer
 				ReleaseTX();
+
+			if ((len == 0) && (ep & TRANSFER_RELEASE)) {
+				while(!ReadWriteAllowed());
+				ReleaseTX();
+			}
 		}
 	}
 	TXLED1;					// light the TX LED
@@ -645,8 +654,15 @@ ISR(USB_COM_vect)
 void USB_Flush(u8 ep)
 {
 	SetEP(ep);
-	if (FifoByteCount())
+
+	// wait for write access if a ZLP is needed
+	if (_sendZlp[ep])
+		while(!ReadWriteAllowed());
+
+	if (FifoByteCount() || _sendZlp[ep])
 		ReleaseTX();
+
+	_sendZlp[ep] = false;
 }
 
 static inline void USB_ClockDisable()
