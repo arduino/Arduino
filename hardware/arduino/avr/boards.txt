@@ -1049,3 +1049,5 @@ unowifi.build.f_cpu=16000000L
 unowifi.build.board=AVR_UNO_WIFI
 unowifi.build.core=arduino
 unowifi.build.variant=standard
+unowifi.build.esp_ch_uart_br=19200
+unowifi.build.extra_flags=-DESP_CH_UART -DESP_CH_UART_BR={build.esp_ch_uart_br}
