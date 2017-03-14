@@ -30,6 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.Action;
@@ -47,6 +49,14 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
@@ -60,11 +70,12 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.syntax.SketchTextAreaEditorKit;
 import processing.app.tools.DiscourseFormat;
+import processing.app.tools.WatchDir;
 
 /**
  * Single tab, editing a single file, in the main window.
  */
-public class EditorTab extends JPanel implements SketchFile.TextStorage {
+public class EditorTab extends JPanel implements SketchFile.TextStorage, FocusListener {
   protected Editor editor;
   protected SketchTextArea textarea;
   protected RTextScrollPane scrollPane;
@@ -72,6 +83,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   protected boolean modified;
   /** Is external editing mode currently enabled? */
   protected boolean external;
+  protected Thread watcher = null;
+  protected Runnable task = null;
   
   /**
    * Create a new EditorTab
@@ -106,6 +119,27 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
+    addFocusListener(this);
+    textarea.addFocusListener(this);
+    scrollPane.addFocusListener(this);
+    setFocusable(true);
+    setRequestFocusEnabled(true);
+  }
+
+  @Override
+  public void focusGained(FocusEvent fe){
+    if (watcher != null) {
+      watcher.interrupt();
+      watcher = null;
+    }
+  }
+
+  @Override
+  public void focusLost(FocusEvent fe){
+    if (watcher == null) {
+      watcher = new Thread(task);
+      watcher.start();
+    }
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -120,6 +154,25 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     }
     document.addDocumentListener(new DocumentTextChangeListener(
         () -> setModified(true)));
+
+    // Add FS watcher for modification
+    File dir_s = this.file.getFile();
+    Path dir = dir_s.toPath().getParent();
+    EditorTab tab = this;
+
+    task = new Runnable() {
+      public void run() {
+        try {
+          new WatchDir(dir, true).processEvents(tab);
+        } catch (IOException x) {
+          System.err.println(x);
+        }
+      }
+    };
+
+    watcher = new Thread(task);
+    watcher.start();
+
     return document;
   }
   
