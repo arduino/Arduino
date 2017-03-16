@@ -351,13 +351,22 @@ public class Sketch {
         file.saveAs(new File(newFolder, file.getFileName()));
     }
 
-    folder = newFolder;
 
     // Copy the data folder (this may take a while.. add progress bar?)
     if (getDataFolder().exists()) {
       File newDataFolder = new File(newFolder, "data");
+      // Check if data folder exits, if not try to create the data folder
+      if (!newDataFolder.exists() && !newDataFolder.mkdirs()) {
+        String msg = I18n.format(tr("Could not create directory \"{0}\""), newFolder.getAbsolutePath());
+        throw new IOException(msg);
+      }
+      // Copy the data files into the new folder
       FileUtils.copy(getDataFolder(), newDataFolder);
     }
+    
+    // Change folder to the new folder
+    folder = newFolder;
+    
   }
 
   /**
