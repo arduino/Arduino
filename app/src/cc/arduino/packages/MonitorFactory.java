@@ -37,7 +37,13 @@ public class MonitorFactory {
 
   public AbstractMonitor newMonitor(BoardPort port) {
     if ("network".equals(port.getProtocol())) {
-      return new NetworkMonitor(port);
+      if ("yes".equals(port.getPrefs().get("ssh_upload"))) {
+        // the board is SSH capable
+        return new NetworkMonitor(port); 
+      } else {
+        // SSH not supported, no monitor support
+        return null;
+      }
     }
 
     return new SerialMonitor(port);
