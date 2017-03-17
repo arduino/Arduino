@@ -2318,6 +2318,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
+    
+    if (serialMonitor == null) {
+      String board = port.getPrefs().get("board");
+      String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
+      statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
+      return;
+    }
+    
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
