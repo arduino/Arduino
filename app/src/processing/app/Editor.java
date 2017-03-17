@@ -157,7 +157,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static volatile AbstractMonitor serialMonitor;
   static AbstractMonitor serialPlotter;
-  
+
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
@@ -247,7 +247,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
-    
+
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -1862,7 +1862,9 @@ public class Editor extends JFrame implements RunnerListener {
     File file = Sketch.checkSketchFile(sketchFile);
 
     if (file == null) {
-      if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
+      if (fileName.endsWith(".inz")) {
+        file = sketchFile;
+      } else if (!fileName.endsWith(".ino") && !fileName.endsWith(".pde")) {
 
         Base.showWarning(tr("Bad file selected"), tr("Arduino can only open its own sketches\n" +
           "and other files ending in .ino or .pde"), null);
@@ -2288,7 +2290,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialMonitor != null) {
       // The serial monitor already exists
 
@@ -2385,7 +2387,7 @@ public class Editor extends JFrame implements RunnerListener {
     } while (serialMonitor.requiresAuthorization() && !success);
 
   }
-  
+
   public void handlePlotter() {
     if(serialMonitor != null) {
       if(serialMonitor.isClosed()) {
@@ -2395,7 +2397,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialPlotter != null) {
       // The serial plotter already exists
 
