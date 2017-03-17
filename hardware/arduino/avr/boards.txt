@@ -1046,7 +1046,7 @@ unowifi.bootloader.file=optiboot/optiboot_atmega328.hex
 
 unowifi.build.mcu=atmega328p
 unowifi.build.f_cpu=16000000L
-unowifi.build.board=AVR_UNO_WIFI
+unowifi.build.board=AVR_UNO_WIFI_DEV_ED
 unowifi.build.core=arduino
 unowifi.build.variant=standard
 unowifi.build.esp_ch_uart_br=19200
