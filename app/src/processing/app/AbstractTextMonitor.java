@@ -37,6 +37,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
+  protected JButton clearButton;
 
   public AbstractTextMonitor(BoardPort boardPort) {
     super(boardPort);
@@ -81,6 +82,9 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
     upperPane.add(sendButton);
 
+    clearButton = new JButton(tr("Clear"));
+    upperPane.add(clearButton);
+    
     mainPane.add(upperPane, BorderLayout.NORTH);
 
     final JPanel pane = new JPanel();
@@ -132,6 +136,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     scrollPane.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
+    clearButton.setEnabled(enable);
     autoscrollBox.setEnabled(enable);
     lineEndings.setEnabled(enable);
     serialRates.setEnabled(enable);
@@ -140,6 +145,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void onSendCommand(ActionListener listener) {
     textField.addActionListener(listener);
     sendButton.addActionListener(listener);
+  }
+  
+  public void onClearCommand(ActionListener listener) {
+    clearButton.addActionListener(listener);
   }
 
   public void onSerialRateChange(ActionListener listener) {
