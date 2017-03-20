@@ -494,8 +494,6 @@ bool SendConfiguration(int maxlen)
 	return true;
 }
 
-static u8 _cdcComposite = 0;
-
 static
 bool SendDescriptor(USBSetup& setup)
 {
