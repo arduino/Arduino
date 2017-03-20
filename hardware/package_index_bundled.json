@@ -17,10 +17,10 @@
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.6.17.tar.bz2",
-          "archiveFileName": "avr-1.6.17.tar.bz2",
-          "checksum": "SHA-256:ecf63bb02d8f647f720be64b4bf235e0ca37b3180b90d816cbff1886f6744833",
-          "size": "5011912",
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.18.tar.bz2",
+          "archiveFileName": "avr-1.6.18.tar.bz2",
+          "checksum": "SHA-256:7c56e381602b779e8e81ec46deb5c8b82e1c84c134c3c1b672d0b43f5e45ee13",
+          "size": "4897659",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
