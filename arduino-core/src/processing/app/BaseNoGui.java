@@ -21,6 +21,9 @@ import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
+import cc.arduino.files.DeleteFilesOnShutdown;
+import processing.app.helpers.FileUtils;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -100,6 +103,8 @@ public class BaseNoGui {
 
   private static String boardManagerLink = "";
 
+  private static File buildCache;
+
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
   // directory when starting the IDE (which is not the same as the
@@ -131,7 +136,7 @@ public class BaseNoGui {
     if (board == null)
       return null;
     String boardId = board.getId();
-    
+
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
 
     String extendedName = prefs.get("name");
@@ -254,6 +259,18 @@ public class BaseNoGui {
 
   static public String getPortableSketchbookFolder() {
     return portableSketchbookFolder;
+  }
+
+  static public File getCachePath() {
+    if (buildCache == null) {
+      try {
+        buildCache = FileUtils.createTempFolder("arduino_cache_");
+        DeleteFilesOnShutdown.add(buildCache);
+      } catch (IOException e) {
+        return null;
+      }
+    }
+    return buildCache;
   }
 
   /**

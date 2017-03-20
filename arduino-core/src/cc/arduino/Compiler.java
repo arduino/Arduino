@@ -138,6 +138,7 @@ public class Compiler implements MessageConsumer {
   private final File pathToSketch;
   private final Sketch sketch;
   private String buildPath;
+  private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
 
@@ -156,9 +157,10 @@ public class Compiler implements MessageConsumer {
     listeners.add(progListener);
     return this.build(listeners, exportHex);
   }
-  
+
   public String build(ArrayList<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
+    this.buildCache = BaseNoGui.getCachePath();
 
     TargetBoard board = BaseNoGui.getTargetBoard();
     if (board == null) {
@@ -257,6 +259,11 @@ public class Compiler implements MessageConsumer {
     cmd.add("-build-path");
     cmd.add(buildPath);
     cmd.add("-warnings=" + PreferencesData.get("compiler.warning_level"));
+
+    if (PreferencesData.getBoolean("compiler.cache_core") == true && buildCache != null) {
+      cmd.add("-build-cache");
+      cmd.add(buildCache.getAbsolutePath());
+    }
 
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
