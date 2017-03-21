@@ -14,6 +14,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Amit BC <amitbc123@walla.com>, 2014
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # eli.ganem <eli.ganem@gmail.com>, 2012
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2017-03-21 11:42+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Hebrew (http://www.transifex.com/mbanzi/arduino-ide-15/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -149,6 +150,10 @@ msgstr "כתובות מנהל הלוחות הנוספים:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "אפריקנס"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -1817,6 +1822,13 @@ msgstr "מסך סיריאלי"
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr ""
@@ -2093,13 +2105,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr ""
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "הקובץ כבר הועתק למקום אליו\nאתה מנסה להוסיף אותו.\nלא עושה שום שינוי."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2443,10 +2448,6 @@ msgstr "נמצא מיקרו קונטרולר שגוי, האם בחרת את הל
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
 msgstr "כן"
-
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "אתה לא יכול לעבוד עליי"
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
