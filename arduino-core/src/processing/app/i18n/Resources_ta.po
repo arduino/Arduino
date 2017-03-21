@@ -14,6 +14,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Alagappan Karthikeyan <me@karthik.sg>, 2016
 # Shankar C <c.shankar7@hotmail.com>, 2015
 # Nadar Solomon Sunder <solomonsunder@gmail.com>, 2014
@@ -22,7 +23,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2017-03-21 11:42+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Tamil (http://www.transifex.com/mbanzi/arduino-ide-15/language/ta/)\n"
 "MIME-Version: 1.0\n"
@@ -143,6 +144,10 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
 msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
@@ -1812,6 +1817,13 @@ msgstr "தொடர்நிலை கண்காணிப்புத்த�
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr ""
@@ -2088,13 +2100,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr ""
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "இந்த கோப்பு நீங்கள் நகலெடுக்க முயலும் இடத்தில் \nஏற்கனவே செர்கப்பட்டுவிட்டது.\nநான் என்னால் முடிந்த அனைத்தையும் செய்துவிட்டேன்."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2438,10 +2443,6 @@ msgstr "தவறான நுண் கட்டுப்பாட்டுக�
 #: Preferences.java:77 UpdateCheck.java:108
 msgid "Yes"
 msgstr "ஆம்"
-
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "நீங்கள் என்னை ஏமாற்ற முடியாது"
 
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
