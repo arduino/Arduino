@@ -3,7 +3,9 @@ ARDUINO 1.8.2
 [ide]
 * Fix command line: works again with relative paths (regression)
 * AVR toolchain has been updated with a tentative fix for the ld-returned-5-exit-status bug
-* Update arduino-builder to 1.3.24 to avoid name clashing for libraries
+* Update arduino-builder to 1.3.25
+  - avoid name clashing for libraries
+  - cache core archives to speedup compilation consistently
 * Allow BoardManager to fetch FreeBSD tools (thanks @kevans91)
 * Serial monitor: the input string box is automatically focused when window is selected
 * Serial monitor: now can not be opened during upload
@@ -11,13 +13,17 @@ ARDUINO 1.8.2
 * Serial monitor: added 500k, 1M and 2M baudrates (thanks @dsstutts)
 * Updated RSyntaxTextArea to 2.6.1 (textarea component)
 * Updated jmdsn (mDNS discovery)
+* Allow plugins to attach a listener to compile progress (thanks @tomneutens)
 
 [core]
 * Add Atmel-ICE and JTAGICE3 programmers for AVR chips (thanks @matthijskooijman)
 * AVR: Set unused bits of extended fuse to 1, should remove some avrdude warning during burn bootloader (thanks @descampsa)
+* AVR: USB: send ZLP when needed (allows full 64 bytes packets)
+* AVR: USB: use IAD descriptors instead than Generic (thanks @cuitoldfish)
 
 [other]
 * SAM platform source code has been moved to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
+* Update Wifi101 Firmware Updater plugin
 
 ARDUINO 1.8.1 - 2017.01.09
 
