@@ -26,7 +26,7 @@
 # Philipe Rabelo <philipe_elvis_preslei@hotmail.com>, 2013
 # Radamés Ajna <radamajna@gmail.com>, 2016
 # Rafael H L Moretti <rafael.moretti@gmail.com>, 2014
-# Tiago Goto Sala, 2014
+# Tiago G. Sala, 2014
 # Walter Souza <wsouza@zipmail.com.br>, 2016
 msgid ""
 msgstr ""
