@@ -29,7 +29,7 @@
 
 package processing.app;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 
@@ -38,6 +38,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMap;
 
 public class CommandLineTest {
 
@@ -82,4 +83,48 @@ public class CommandLineTest {
     assertEquals(0, pr.exitValue());
   }
 
+  @Test
+  public void testCommandLinePreferencesSave() throws Exception {
+    Runtime rt = Runtime.getRuntime();
+    File prefFile = File.createTempFile("test_pref", ".txt");
+    prefFile.deleteOnExit();
+
+    Process pr = rt.exec(new String[] {
+        arduinoPath.getAbsolutePath(),
+        "--save-prefs",
+        "--preferences-file", prefFile.getAbsolutePath(),
+        "--get-pref", // avoids starting the GUI
+    });
+    IOUtils.copy(pr.getInputStream(), System.out);
+    IOUtils.copy(pr.getErrorStream(), System.out);
+    pr.waitFor();
+    assertEquals(0, pr.exitValue());
+
+    pr = rt.exec(new String[] {
+        arduinoPath.getAbsolutePath(),
+        "--pref", "test_pref=xxx",
+        "--preferences-file", prefFile.getAbsolutePath(),
+    });
+    IOUtils.copy(pr.getInputStream(), System.out);
+    IOUtils.copy(pr.getErrorStream(), System.out);
+    pr.waitFor();
+    assertEquals(0, pr.exitValue());
+
+    PreferencesMap prefs = new PreferencesMap(prefFile);
+    assertNull("preference should not be saved", prefs.get("test_pref"));
+
+    pr = rt.exec(new String[] {
+        arduinoPath.getAbsolutePath(),
+        "--pref", "test_pref=xxx",
+        "--preferences-file", prefFile.getAbsolutePath(),
+        "--save-prefs",
+    });
+    IOUtils.copy(pr.getInputStream(), System.out);
+    IOUtils.copy(pr.getErrorStream(), System.out);
+    pr.waitFor();
+    assertEquals(0, pr.exitValue());
+
+    prefs = new PreferencesMap(prefFile);
+    assertEquals("preference should be saved", "xxx", prefs.get("test_pref"));
+}
 }
