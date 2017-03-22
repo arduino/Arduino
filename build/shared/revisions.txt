@@ -1,4 +1,4 @@
-ARDUINO 1.8.2
+ARDUINO 1.8.2 2017.03.22
 
 [ide]
 * Fix command line: works again with relative paths (regression)
