@@ -1311,7 +1311,7 @@ public class Base {
   private static String priorPlatformFolder;
   private static boolean newLibraryImported;
 
-  public void onBoardOrPortChange() {
+  public synchronized void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
 
     // reload keywords when package/platform changes
@@ -1510,12 +1510,26 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
-        BaseNoGui.selectBoard((TargetBoard) getValue("b"));
-        filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
 
-        onBoardOrPortChange();
-        rebuildImportMenu(Editor.importMenu);
-        rebuildExamplesMenu(Editor.examplesMenu);
+        new Thread()
+        {
+            public void run() {
+              if (activeEditor != null && activeEditor.isCompiling()) {
+                  // block until isCompiling becomes false, but aboid blocking the UI
+                  while (activeEditor.isCompiling()) {
+                    try {
+                      Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                  }
+              }
+
+              BaseNoGui.selectBoard((TargetBoard) getValue("b"));
+              filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
+              onBoardOrPortChange();
+              rebuildImportMenu(Editor.importMenu);
+              rebuildExamplesMenu(Editor.examplesMenu);
+            }
+        }.start();
       }
     };
     action.putValue("b", board);
