@@ -277,7 +277,9 @@ public class Base {
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
-    PreferencesData.save();
+    if (parser.isForceSavePrefs()) {
+      PreferencesData.save();
+    }
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(

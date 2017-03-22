@@ -2,6 +2,7 @@ ARDUINO 1.8.2
 
 [ide]
 * Fix command line: works again with relative paths (regression)
+* Fix command line: "--save-prefs" works again (regression)
 * AVR toolchain has been updated with a tentative fix for the ld-returned-5-exit-status bug
 * Update arduino-builder to 1.3.25
   - avoid name clashing for libraries
