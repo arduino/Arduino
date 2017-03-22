@@ -34,15 +34,12 @@ import cc.arduino.packages.Discovery;
 import processing.app.BaseNoGui;
 
 import javax.jmdns.*;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.util.*;
 
 import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
 
 public class NetworkDiscovery implements Discovery, ServiceListener {
-
-  private static final int MAX_TIME_AWAITING_FOR_PACKAGES = 5000;
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();

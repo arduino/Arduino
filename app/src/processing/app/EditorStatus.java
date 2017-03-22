@@ -98,7 +98,7 @@ public class EditorStatus extends JPanel {
     this.message = NO_MESSAGE;
     this.mode = NOTICE;
     this.font = Theme.getFont("status.font");
-    this.compilerProgressListeners = new ArrayList<CompilerProgressListener>();
+    this.compilerProgressListeners = new ArrayList<>();
     this.compilerProgressListeners.add(this::progressUpdate);
     initialize();
   }

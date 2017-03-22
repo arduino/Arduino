@@ -34,16 +34,12 @@ import cc.arduino.packages.discoverers.NetworkDiscovery;
 import processing.app.helpers.NetUtils;
 
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 import java.net.UnknownHostException;
 import java.util.*;
 
 public class BoardReachabilityFilter extends TimerTask {
 
   private final NetworkDiscovery networkDiscovery;
-  private Enumeration<NetworkInterface> staticNetworkInterfaces;
-  private final List<String> staticNetworkInterfacesList = new LinkedList<>();
 
   public BoardReachabilityFilter(NetworkDiscovery networkDiscovery) {
     this.networkDiscovery = networkDiscovery;

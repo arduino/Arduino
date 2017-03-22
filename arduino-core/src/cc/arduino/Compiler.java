@@ -153,7 +153,7 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
-    ArrayList<CompilerProgressListener> listeners = new ArrayList<CompilerProgressListener>();
+    ArrayList<CompilerProgressListener> listeners = new ArrayList<>();
     listeners.add(progListener);
     return this.build(listeners, exportHex);
   }
