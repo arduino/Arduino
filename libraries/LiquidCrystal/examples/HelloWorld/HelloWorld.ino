@@ -19,9 +19,9 @@
  * LCD R/W pin to ground
  * LCD VSS pin to ground
  * LCD VCC pin to 5V
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
+ * 10K or 100K potentiometer:
+   * ends to +5V and ground
+   * wiper to LCD VO pin (pin 3)
 
  Library originally added 18 Apr 2008
  by David A. Mellis
@@ -57,4 +57,3 @@ void loop() {
   // print the number of seconds since reset:
   lcd.print(millis() / 1000);
 }
-

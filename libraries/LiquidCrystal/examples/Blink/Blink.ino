@@ -17,7 +17,7 @@
  * LCD D6 pin to digital pin 3
  * LCD D7 pin to digital pin 2
  * LCD R/W pin to ground
- * 10K resistor:
+ * 10K or 100K potentiometer:
    * ends to +5V and ground
    * wiper to LCD VO pin (pin 3)
 
@@ -57,5 +57,3 @@ void loop() {
   lcd.blink();
   delay(3000);
 }
-
-
