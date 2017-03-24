@@ -18,6 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# Release v8 changelog :
+#
+#   + rules are now created in /tmp folder
 #
 # Release v7 changelog :
 #
@@ -199,21 +202,17 @@ else
 
     removemm
 
-    mkdir -p $PWD/rulesgen
+    acmrules $1 > /tmp/90-extraacl.rules
 
-    acmrules $1 > $PWD/rulesgen/90-extraacl.rules
+    openocdrules > /tmp/98-openocd.rules
 
-    openocdrules > $PWD/rulesgen/98-openocd.rules
+    avrisprules > /tmp/avrisp.rules
 
-    avrisprules > $PWD/rulesgen/avrisp.rules
+    dfustm32rules > /tmp/40-dfuse.rules
 
-    dfustm32rules > $PWD/rulesgen/40-dfuse.rules
+    dfuarduino101rules > /tmp/99-arduino-101.rules
 
-    dfuarduino101rules > $PWD/rulesgen/99-arduino-101.rules
-
-    sudo mv $PWD/rulesgen/*.rules /etc/udev/rules.d/
-
-    rm -rf $PWD/rulesgen
+    sudo mv /tmp/*.rules /etc/udev/rules.d/
 
     refreshudev
 
