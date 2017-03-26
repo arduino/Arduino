@@ -29,8 +29,8 @@ arduinoisporg.program.extra_params=
 
 usbasp.name=USBasp
 usbasp.communication=usb
-usbasp.protocol=usbasp
-usbasp.program.protocol=usbasp
+usbasp.protocol=usbasp-clone
+usbasp.program.protocol=usbasp-clone
 usbasp.program.tool=avrdude
 usbasp.program.extra_params=-Pusb
 
