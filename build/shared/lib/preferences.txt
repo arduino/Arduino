@@ -146,6 +146,10 @@ editor.tabs.size   = 2
 # automatically indent each line
 editor.indent = true
 
+# enable/disable any 'autocomplete' features
+# this currently includes 'auto curly brace'
+editor.autocomplete = true
+
 # size of divider between editing area and the console
 editor.divider.size = 0
 # the larger divider on windows is ugly with the little arrows
