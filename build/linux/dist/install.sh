@@ -6,7 +6,7 @@
 # If called with the "-u" option, it will undo the changes.
 
 # Resource name to use (including vendor prefix)
-RESOURCE_NAME=cc.arduino.arduinoide
+RESOURCE_NAME=arduino-arduinoide
 
 # Get absolute path from which this script file was executed
 # (Could be changed to "pwd -P" to resolve symlinks to their target)
