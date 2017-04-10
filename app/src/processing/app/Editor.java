@@ -2016,6 +2016,11 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+
       boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();
