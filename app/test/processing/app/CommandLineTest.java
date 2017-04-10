@@ -59,7 +59,7 @@ public class CommandLineTest {
       arduinoPath = new File(buildPath, "build/linux/work/arduino");
     }
     if (OSUtils.isWindows()) {
-      arduinoPath = new File(buildPath, "build/windows/work/arduino");
+      arduinoPath = new File(buildPath, "build/windows/work/arduino.exe");
     }
     if (OSUtils.isMacOS()) {
       arduinoPath = new File(buildPath,
