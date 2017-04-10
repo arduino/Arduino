@@ -1,6 +1,7 @@
 ARDUINO 1.8.3
 
 [ide]
+* Serial Monitor: added "Clear output" button. Thanks @MichaelSy
 * added option in preferences.txt for: custom title, comment/uncomment shortcut, always show file extensions. Thanks @MichaelSy
 
 ARDUINO 1.8.2 2017.03.22
