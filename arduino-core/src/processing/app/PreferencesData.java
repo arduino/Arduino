@@ -176,6 +176,13 @@ public class PreferencesData {
     prefs.remove(attribute);
   }
 
+  static public boolean getBoolean(String attribute, boolean defaultValue) {
+    if (has(attribute)) {
+      return getBoolean(attribute);
+    }
+
+    return defaultValue;
+  }
 
   static public boolean getBoolean(String attribute) {
     return prefs.getBoolean(attribute);
