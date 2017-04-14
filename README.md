@@ -6,15 +6,15 @@ board and a development environment that implements the Processing/Wiring
 language. Arduino can be used to develop stand-alone interactive objects or
 can be connected to software on your computer (e.g. Flash, Processing and MaxMSP).
 The boards can be assembled by hand or purchased preassembled; the open-source
-IDE can be downloaded for free at http://www.arduino.cc/en/Main/Software
+IDE can be downloaded for free at https://www.arduino.cc/en/Main/Software
 
-* For more information, see the website at: http://www.arduino.cc/
-or the forums at: http://www.arduino.cc/forum/  
+* For more information, see the website at: https://www.arduino.cc/
+or the forums at: https://forum.arduino.cc/  
 You can also follow Arduino on Twitter at: https://twitter.com/arduino or
 like Arduino on Facebook at: https://www.facebook.com/official.arduino
 
 * To report a *bug* in the software or to request *a simple enhancement* go to:
-http://github.com/arduino/Arduino/issues
+https://github.com/arduino/Arduino/issues
 
 * More complex requests and technical discussion should go on the Arduino Developers
 mailing list:
@@ -41,7 +41,7 @@ The Arduino team is composed of Massimo Banzi, David Cuartielles, Tom Igoe
 and David A. Mellis.
 
 Arduino uses
-[GNU avr-gcc toolchain](http://gcc.gnu.org/wiki/avr-gcc),
+[GNU avr-gcc toolchain](https://gcc.gnu.org/wiki/avr-gcc),
 [GCC ARM Embedded toolchain](https://launchpad.net/gcc-arm-embedded),
 [avr-libc](http://www.nongnu.org/avr-libc/),
 [avrdude](http://www.nongnu.org/avrdude/),
@@ -50,5 +50,5 @@ Arduino uses
 and code from [Processing](http://www.processing.org)
 and [Wiring](http://wiring.org.co).
 
-Icon and about image designed by [ToDo](http://www.todo.to.it/)
+Icon and about image designed by [ToDo](https://www.todo.to.it/)
 
