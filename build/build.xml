@@ -24,6 +24,8 @@
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
   <condition property="platform" value="linuxarm"><os family="unix" arch="arm" /></condition>
 
+  <condition property="windows_host" value="true"><os family="windows" /></condition>
+
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="linux32"><equals arg1="${platform}" arg2="linux32" /></condition>
@@ -857,6 +859,19 @@
     <unzip src="${archive_file}" dest="${dest_folder}"/>
   </target>
 
+  <!-- Ensure that the executable flag is set in all enviroments/OS -->
+  <target name="make-file-executable" depends="make-file-executable-windows">
+    <chmod perm="755" file="${file}" />
+  </target>
+
+  <target name="make-file-executable-windows" if="windows_host">
+    <exec executable="icacls" failonerror="false">
+      <arg value="${file}"/>
+      <arg value="/grant"/>
+      <arg value="Everyone:(RX)"/>
+    </exec>
+  </target>
+
   <target name="linux-dist" depends="build"
 	  description="Build .tar.xz of linux version">
 
@@ -983,7 +998,9 @@
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
     <copy file="windows/liblistSerials-${LIBLISTSERIAL-VERSION}/windows/listSerialsj.dll" todir="windows/work/lib/" />
-    <chmod perm="755" file="windows/work/lib/listSerialsj.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/listSerialsj.dll" />
+    </antcall>
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-windows"/>
@@ -994,13 +1011,31 @@
       <param name="dest_folder" value="${staging_folder}/arduino-builder-windows" />
     </antcall>
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
-    <chmod perm="755" file="windows/work/arduino-builder.exe" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/arduino-builder.exe" />
+    </antcall>
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino11/ctags.exe" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/tools-builder/ctags/5.8-arduino11/ctags.exe" />
+    </antcall>
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
+
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jna-4.2.2.jar" />
+      <arg value="com/sun/jna/win32-x86/jnidispatch.dll" />
+    </exec>
+    <move file="windows/work/lib/jnidispatch.dll" tofile="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+    </antcall>
 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />

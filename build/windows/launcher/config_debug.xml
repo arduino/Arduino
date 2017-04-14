@@ -59,6 +59,8 @@
     <runtimeBits>32</runtimeBits>
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-Djna.nosys=true</opt>
+    <opt>-Djna.boot.library.name=jnidispatch-4.2.2-win32-x86</opt>
+    <opt>-Djna.boot.library.path=lib</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
     <opt>-DDEBUG=true</opt>
   </jre>
