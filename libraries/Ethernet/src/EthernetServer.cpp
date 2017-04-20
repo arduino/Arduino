@@ -13,8 +13,11 @@ EthernetServer::EthernetServer(uint16_t port)
   _port = port;
 }
 
-void EthernetServer::begin()
+EthernetServer::EthernetServer() {}
+
+void EthernetServer::begin(uint16_t port)
 {
+   _port = port;
   for (int sock = 0; sock < MAX_SOCK_NUM; sock++) {
     EthernetClient client(sock);
     if (client.status() == SnSR::CLOSED) {
@@ -24,6 +27,10 @@ void EthernetServer::begin()
       break;
     }
   }  
+}
+
+void EthernetServer::begin() {
+   begin(_port);
 }
 
 void EthernetServer::accept()
