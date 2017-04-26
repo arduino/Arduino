@@ -60,6 +60,9 @@
     <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-Djna.nosys=true</opt>
+    <opt>-Djna.nounpack=true</opt>
+    <opt>-Djna.boot.library.name=jnidispatch-4.2.2-win32-x86</opt>
+    <opt>-Djna.boot.library.path="%EXEDIR%"/lib</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
   <versionInfo>
