@@ -34,6 +34,7 @@ import cc.arduino.i18n.Language;
 import cc.arduino.i18n.Languages;
 import processing.app.Base;
 import processing.app.BaseNoGui;
+import processing.app.Editor;
 import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.Theme;
@@ -42,6 +43,7 @@ import processing.app.legacy.PApplet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.LinkedList;
@@ -243,6 +245,20 @@ public class Preferences extends javax.swing.JDialog {
     checkboxesContainer.add(verifyUploadBox);
 
     externalEditorBox.setText(tr("Use external editor"));
+    externalEditorBox.addItemListener(ev -> {
+      if (ev.getStateChange() == ItemEvent.SELECTED) {
+        for (Editor e : base.getEditors()) {
+          if (e.getSketch().isModified()) {
+            String msg = tr("You have unsaved changes!\nYou must save all your sketches to enable this option.");
+            JOptionPane.showMessageDialog(null, msg,
+                                          tr("Can't enable external editor"),
+                                          JOptionPane.INFORMATION_MESSAGE);
+            externalEditorBox.setSelected(false);
+          }
+        }
+      }
+    });
+
     checkboxesContainer.add(externalEditorBox);
 
     cacheCompiledCore.setText(tr("Aggressively cache compiled core"));
