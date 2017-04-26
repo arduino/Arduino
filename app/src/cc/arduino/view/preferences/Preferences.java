@@ -254,6 +254,7 @@ public class Preferences extends javax.swing.JDialog {
                                           tr("Can't enable external editor"),
                                           JOptionPane.INFORMATION_MESSAGE);
             externalEditorBox.setSelected(false);
+            return;
           }
         }
       }
