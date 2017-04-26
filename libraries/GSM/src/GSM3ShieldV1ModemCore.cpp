@@ -80,7 +80,7 @@ void GSM3ShieldV1ModemCore::unRegisterUMProvider(GSM3ShieldV1BaseProvider* provi
 
 
 //Response parse.
-bool GSM3ShieldV1ModemCore::genericParse_rsp(bool& rsp, char* string, char* string2)
+bool GSM3ShieldV1ModemCore::genericParse_rsp(bool& rsp, const char* string, const char* string2)
 {
 	if((string==0) && (string2==0))
 		string=__ok__;
