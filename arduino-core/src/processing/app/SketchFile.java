@@ -246,6 +246,10 @@ public class SketchFile {
   public boolean equals(Object o) {
     return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
   }
+  
+  public Sketch getSketch() {
+	return sketch;
+  }
 
   /**
    * Load this piece of code from a file and return the contents. This
