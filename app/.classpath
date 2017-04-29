@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="lib" path="lib/apple.jar"/>
 	<classpathentry kind="lib" path="lib/batik-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/batik-anim-1.8.jar"/>
@@ -44,6 +43,7 @@
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0-arduino1.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/autocomplete-2.6.1.jar" sourcepath="/media/ricardo/Dados/Workspace/Arduino/arduino-dep/AutoComplete-2.6.1"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/xmlgraphics-commons-2.0.jar"/>
@@ -53,4 +53,5 @@
 	<classpathentry kind="lib" path="test-lib/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
