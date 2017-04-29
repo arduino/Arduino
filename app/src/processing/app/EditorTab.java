@@ -82,6 +82,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.RecordableTextAction;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import cc.arduino.autocomplete.FakeCompletionProvider;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.PreferencesMap;
 import processing.app.syntax.ArduinoTokenMakerFactory;
@@ -137,6 +138,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
     textarea.addMouseWheelListener(this);
+    textarea.setupAutoComplete(file.getSketch(), new FakeCompletionProvider());
   }
 
   private RSyntaxDocument createDocument(String contents) {
