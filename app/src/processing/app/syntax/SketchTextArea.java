@@ -66,6 +66,49 @@ import org.fife.ui.rtextarea.RTextAreaUI;
 
 import processing.app.Base;
 import processing.app.PreferencesData;
+
+import javax.swing.event.EventListenerList;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Segment;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.swing.KeyStroke;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Segment;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.rsyntaxtextarea.LinkGenerator;
+import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Style;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenImpl;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaUI;
+
+import cc.arduino.autocomplete.CompletionProvider;
+import cc.arduino.autocomplete.rsyntax.SketchCompletionProvider;
+import processing.app.Base;
+import processing.app.BaseNoGui;
+import processing.app.PreferencesData;
+import processing.app.Sketch;
 import processing.app.helpers.OSUtils;
 
 /**
@@ -79,6 +122,8 @@ public class SketchTextArea extends RSyntaxTextArea {
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
 
   private PdeKeywords pdeKeywords;
+  
+  private SketchCompletionProvider completionProvider;
 
   public SketchTextArea(RSyntaxDocument document, PdeKeywords pdeKeywords) throws IOException {
     super(document);
@@ -90,6 +135,22 @@ public class SketchTextArea extends RSyntaxTextArea {
   public void setKeywords(PdeKeywords keywords) {
     pdeKeywords = keywords;
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
+  }
+  
+  public void setupAutoComplete(Sketch sketch, CompletionProvider provider) {
+ 
+    this.completionProvider = new SketchCompletionProvider(sketch, this, provider);
+    
+    AutoCompletion ac = new AutoCompletion( this.completionProvider);
+    
+    ac.setAutoActivationEnabled(true);
+    ac.setShowDescWindow(false);
+    ac.setAutoCompleteSingleChoices(true);
+    ac.setParameterAssistanceEnabled(true);
+//    ac.setParamChoicesRenderer(new CompletionsRenderer());
+//    ac.setListCellRenderer(new CompletionsRenderer());
+    ac.install(this);
+	  
   }
 
   private void installFeatures() throws IOException {
