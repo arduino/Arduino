@@ -43,6 +43,7 @@
 	<classpathentry kind="lib" path="lib/log4j-core-2.12.0.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea-3.0.3-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/autocomplete-2.6.1.jar" sourcepath="/media/ricardo/Dados/Workspace/Arduino/arduino-dep/AutoComplete-2.6.1"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/xmlgraphics-commons-2.0.jar"/>
