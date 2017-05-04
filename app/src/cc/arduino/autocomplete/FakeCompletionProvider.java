@@ -3,20 +3,26 @@ package cc.arduino.autocomplete;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.text.JTextComponent;
+
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.Completion;
 
-public class FakeCompletionProvider implements CompletionProvider {
-  
+import processing.app.syntax.SketchTextArea;
 
+public class FakeCompletionProvider extends BaseCCompletionProvider {
+  
   @Override
-  public List<Completion> getSuggestions(CompletionContext context) {
+  protected List<Completion> getCompletionsImpl(JTextComponent comp) {
     List<Completion> list = new LinkedList<>();
-    list.add(new BasicCompletion(context.getDelegate(), "Text: " + context.getAlreadyEnteredText()));
-    list.add(new BasicCompletion(context.getDelegate(), "Line: " + context.getLineNumber()));
+    
+    SketchTextArea area = (SketchTextArea) comp;
+    
+    list.add(new BasicCompletion(this, "Text: " + getAlreadyEnteredText(comp)));
+    list.add(new BasicCompletion(this, "Line: " + area.getCaretLineNumber()));
 
     return list;
   }
-  
+
 
 }
