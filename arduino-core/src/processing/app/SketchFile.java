@@ -247,10 +247,6 @@ public class SketchFile {
     return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
   }
   
-  public Sketch getSketch() {
-	return sketch;
-  }
-
   /**
    * Load this piece of code from a file and return the contents. This
    * completely ignores any changes in the linked storage, if any, and
