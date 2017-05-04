@@ -80,6 +80,7 @@ import javax.swing.text.Segment;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.LinkGenerator;
 import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -92,8 +93,7 @@ import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextAreaUI;
 
-import cc.arduino.autocomplete.CompletionProvider;
-import cc.arduino.autocomplete.rsyntax.SketchCompletionProvider;
+import cc.arduino.autocomplete.SketchCompletionProvider;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
@@ -112,8 +112,6 @@ public class SketchTextArea extends RSyntaxTextArea {
 
   private PdeKeywords pdeKeywords;
   
-  private SketchCompletionProvider completionProvider;
-
   public SketchTextArea(RSyntaxDocument document, PdeKeywords pdeKeywords) throws IOException {
     super(document);
     this.pdeKeywords = pdeKeywords;
@@ -128,9 +126,9 @@ public class SketchTextArea extends RSyntaxTextArea {
   
   public void setupAutoComplete(Sketch sketch, CompletionProvider provider) {
  
-    this.completionProvider = new SketchCompletionProvider(sketch, this, provider);
+    SketchCompletionProvider completionProvider = new SketchCompletionProvider(sketch, this, provider);
     
-    AutoCompletion ac = new AutoCompletion( this.completionProvider);
+    AutoCompletion ac = new AutoCompletion( completionProvider );
     
     ac.setAutoActivationEnabled(true);
     ac.setShowDescWindow(false);
