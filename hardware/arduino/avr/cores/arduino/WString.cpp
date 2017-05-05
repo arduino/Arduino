@@ -43,16 +43,15 @@ String::String(const __FlashStringHelper *pstr)
 	*this = pstr;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if STRING_HAS_MOVE
 String::String(String &&rval)
+	: buffer(rval.buffer)
+	, capacity(rval.capacity)
+	, len(rval.len)
 {
-	init();
-	move(rval);
-}
-String::String(StringSumHelper &&rval)
-{
-	init();
-	move(rval);
+	rval.buffer = NULL;
+	rval.capacity = 0;
+	rval.len = 0;
 }
 #endif
 
@@ -189,25 +188,22 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 	return *this;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if STRING_HAS_MOVE
 void String::move(String &rhs)
 {
-	if (buffer) {
-		if (rhs && capacity >= rhs.len) {
-			strcpy(buffer, rhs.buffer);
-			len = rhs.len;
-			rhs.len = 0;
-			return;
-		} else {
+	if (this != &rhs)
+	{
+		if (buffer != NULL)
 			free(buffer);
-		}
+
+		buffer = rhs.buffer;
+		len = rhs.len;
+		capacity = rhs.capacity;
+
+		rhs.buffer = NULL;
+		rhs.len = 0;
+		rhs.capacity = 0;
 	}
-	buffer = rhs.buffer;
-	capacity = rhs.capacity;
-	len = rhs.len;
-	rhs.buffer = NULL;
-	rhs.capacity = 0;
-	rhs.len = 0;
 }
 #endif
 
@@ -221,16 +217,10 @@ String & String::operator = (const String &rhs)
 	return *this;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#if STRING_HAS_MOVE
 String & String::operator = (String &&rval)
 {
-	if (this != &rval) move(rval);
-	return *this;
-}
-
-String & String::operator = (StringSumHelper &&rval)
-{
-	if (this != &rval) move(rval);
+	move(rval);
 	return *this;
 }
 #endif

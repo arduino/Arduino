@@ -41,6 +41,10 @@ class __FlashStringHelper;
 // result objects are assumed to be writable by subsequent concatenations.
 class StringSumHelper;
 
+#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#define STRING_HAS_MOVE 1
+#endif
+
 // The string class
 class String
 {
@@ -59,9 +63,8 @@ public:
 	String(const char *cstr = "");
 	String(const String &str);
 	String(const __FlashStringHelper *str);
-       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	#if STRING_HAS_MOVE
 	String(String &&rval);
-	String(StringSumHelper &&rval);
 	#endif
 	explicit String(char c);
 	explicit String(unsigned char, unsigned char base=10);
@@ -86,9 +89,8 @@ public:
 	String & operator = (const String &rhs);
 	String & operator = (const char *cstr);
 	String & operator = (const __FlashStringHelper *str);
-       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	#if STRING_HAS_MOVE
 	String & operator = (String &&rval);
-	String & operator = (StringSumHelper &&rval);
 	#endif
 
 	// concatenate (works w/ built-in types)
@@ -205,7 +207,7 @@ protected:
 	// copy and move
 	String & copy(const char *cstr, unsigned int length);
 	String & copy(const __FlashStringHelper *pstr, unsigned int length);
-       #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+	#if STRING_HAS_MOVE
 	void move(String &rhs);
 	#endif
 };
