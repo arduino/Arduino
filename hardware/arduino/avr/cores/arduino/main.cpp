@@ -17,6 +17,19 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+
+/* Scheduler include files. */
+#include "freeRTOS/FreeRTOS.h"
+#include "freeRTOS/task.h"
+#include "freeRTOS/queue.h"
+#include "freeRTOS/StackMacros.h"
+
 #include <Arduino.h>
 
 // Declared weak in Arduino.h to allow user redefinitions.
@@ -30,6 +43,8 @@ void initVariant() { }
 void setupUSB() __attribute__((weak));
 void setupUSB() { }
 
+/* Main program loop, never return from main() */
+int main(void) __attribute__((OS_main));
 int main(void)
 {
 	init();
@@ -41,12 +56,7 @@ int main(void)
 #endif
 	
 	setup();
-    
-	for (;;) {
-		loop();
-		if (serialEventRun) serialEventRun();
-	}
-        
-	return 0;
+	
+	vTaskStartScheduler();
 }
 
