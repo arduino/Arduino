@@ -125,7 +125,7 @@ public class Compiler implements MessageConsumer {
   }
 
   enum BuilderAction {
-    COMPILE("-compile"), DUMP_PREFS("-dump-prefs");
+    COMPILE("-compile"), DUMP_PREFS("-dump-prefs"), CODE_COMPLETE("-code-complete-at");
 
     final String value;
 
@@ -142,6 +142,10 @@ public class Compiler implements MessageConsumer {
   private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
+
+  private File codeCompleteFile;
+  private int codeCompleteLine;
+  private int codeCompleteCol;
 
   public Compiler(Sketch data) {
     this(data.getPrimaryFile().getFile(), data);
@@ -193,6 +197,34 @@ public class Compiler implements MessageConsumer {
     return sketch.getPrimaryFile().getFileName();
   }
 
+  public String codeComplete(ArrayList<CompilerProgressListener> progListeners, File file, int line, int col) throws RunnerException, PreferencesMapException, IOException {
+    this.buildPath = sketch.getBuildPath().getAbsolutePath();
+    this.buildCache = BaseNoGui.getCachePath();
+
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    if (board == null) {
+      throw new RunnerException("Board is not selected");
+    }
+
+    TargetPlatform platform = board.getContainerPlatform();
+    TargetPackage aPackage = platform.getContainerPackage();
+    String vidpid = VIDPID();
+
+    ByteArrayOutputStream completions = new ByteArrayOutputStream();
+    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(new PrintStream(completions), System.err), progListeners), "\n");
+    MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
+
+    codeCompleteFile = file;
+    codeCompleteLine = line;
+    codeCompleteCol = col;
+    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.CODE_COMPLETE, out, err);
+
+    out.flush();
+    err.flush();
+
+    return completions.toString();
+  }
+
   private String VIDPID() {
     BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
     if (boardPort == null) {
@@ -234,6 +266,9 @@ public class Compiler implements MessageConsumer {
     List<String> cmd = new ArrayList<>();
     cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
     cmd.add(action.value);
+    if (action == BuilderAction.CODE_COMPLETE) {
+      cmd.add(codeCompleteFile.getAbsolutePath() + ":" + codeCompleteLine + ":" + codeCompleteCol);
+    }
     cmd.add("-logger=machine");
 
     File installedPackagesFolder = new File(BaseNoGui.getSettingsFolder(), "packages");
@@ -280,9 +315,7 @@ public class Compiler implements MessageConsumer {
         }
     }
 
-    //commandLine.addArgument("-debug-level=10", false);
-
-    if (verbose) {
+    if (verbose && action != BuilderAction.CODE_COMPLETE) {
       cmd.add("-verbose");
     }
 
