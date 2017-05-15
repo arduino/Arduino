@@ -681,6 +681,40 @@ public class SketchController {
   }
 
   /**
+   * Preprocess sketch and obtain code-completions.
+   *
+   * @return null if compilation failed, main class name if not
+   */
+  public String codeComplete(SketchFile file, int line, int col) throws RunnerException, PreferencesMapException, IOException {
+    // run the preprocessor
+    for (CompilerProgressListener progressListener : editor.status.getCompilerProgressListeners()){
+      progressListener.progress(20);
+    }
+
+    ensureExistence();
+
+    boolean deleteTemp = false;
+    File pathToSketch = sketch.getPrimaryFile().getFile();
+    File requestedFile = file.getFile();
+    if (sketch.isModified()) {
+      // If any files are modified, make a copy of the sketch with the changes
+      // saved, so arduino-builder will see the modifications.
+      pathToSketch = saveSketchInTempFolder();
+      // This takes into account when the sketch is copied into a temporary folder
+      requestedFile = new File(pathToSketch.getParent(), requestedFile.getName());
+      deleteTemp = true;
+    }
+
+    try {
+      return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
+    } finally {
+      // Make sure we clean up any temporary sketch copy
+      if (deleteTemp)
+        FileUtils.recursiveDelete(pathToSketch.getParentFile());
+    }
+  }
+
+  /**
    * Handle export to applet.
    */
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {

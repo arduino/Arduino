@@ -124,22 +124,6 @@ public class SketchTextArea extends RSyntaxTextArea {
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
   }
   
-  public void setupAutoComplete(Sketch sketch, CompletionProvider provider) {
- 
-    SketchCompletionProvider completionProvider = new SketchCompletionProvider(sketch, this, provider);
-    
-    AutoCompletion ac = new AutoCompletion( completionProvider );
-    
-    ac.setAutoActivationEnabled(true);
-    ac.setShowDescWindow(false);
-    ac.setAutoCompleteSingleChoices(true);
-    ac.setParameterAssistanceEnabled(true);
-//    ac.setParamChoicesRenderer(new CompletionsRenderer());
-//    ac.setListCellRenderer(new CompletionsRenderer());
-    ac.install(this);
-	  
-  }
-
   private void installFeatures() throws IOException {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
 

@@ -7,7 +7,7 @@ import org.fife.ui.autocomplete.DefaultCompletionProvider;
  * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
  * @date 28/04/2017
  */
-public class BaseCCompletionProvider extends DefaultCompletionProvider{
+public class BaseCCompletionProvider extends DefaultCompletionProvider {
  
   @Override
   protected boolean isValidChar(char ch) {
