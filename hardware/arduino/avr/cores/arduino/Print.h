@@ -87,6 +87,52 @@ class Print
     size_t println(double, int = 2);
     size_t println(const Printable&);
     size_t println(void);
+
+    // Addition by NicoHood
+    template <typename First, typename Second, typename Third, typename... Rest> 
+    inline size_t print(const First& first, const Second& second, const Third& third, const Rest&... rest) {
+        // A Wrapper is needed here in order to not call the
+        // Formatted functions if the input was three integers
+        // If you input only two integers the formatted
+        // Functions have higher priority
+        return printWrapper(first, second, third, rest...);
+    }
+
+    template <typename First> 
+    inline size_t printWrapper(const First& first) {
+        return print(first);
+    }
+
+    template <typename First, typename... Rest> 
+    inline size_t printWrapper(const First& first, const Rest&... rest) {
+        size_t r = 0;
+        r+=print(first);
+        r+=printWrapper(rest...); // recursive call using pack expansion syntax
+        return r;
+    }
+
+    template <typename First, typename Second, typename Third, typename... Rest> 
+    inline size_t println(const First& first, const Second& second, const Third& third, const Rest&... rest) {
+        // A Wrapper is needed here in order to not call the
+        // Formatted functions if the input was three integers
+        // If you input only two integers the formatted
+        // Functions have higher priority
+        return printlnWrapper(first, second, third, rest...);
+    }
+
+    template <typename First> 
+    inline size_t printlnWrapper(const First& first) {
+        return println(first);
+    }
+
+    template <typename First, typename... Rest> 
+    inline size_t printlnWrapper(const First& first, const Rest&... rest) {
+        size_t r = 0;
+        r+=print(first);
+        r+=printlnWrapper(rest...); // recursive call using pack expansion syntax
+        return r;
+    }
+
 };
 
 #endif
