@@ -17,7 +17,7 @@ like Arduino on Facebook at: https://www.facebook.com/official.arduino
 http://github.com/arduino/Arduino/issues
 
 * More complex requests and technical discussion should go on the Arduino Developers
-mailing list:
+Mailing list:
 https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 
 * If you're interested in modifying or extending the Arduino software, we strongly
