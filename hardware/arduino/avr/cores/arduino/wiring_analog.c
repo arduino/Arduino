@@ -109,11 +109,11 @@ void analogWrite(uint8_t pin, int val)
 	// for consistenty with Wiring, which doesn't require a pinMode
 	// call for the analog output pins.
 	pinMode(pin, OUTPUT);
-	if (val == 0)
+	if (val <= 0)
 	{
 		digitalWrite(pin, LOW);
 	}
-	else if (val == 255)
+	else if (val >= 256)
 	{
 		digitalWrite(pin, HIGH);
 	}
