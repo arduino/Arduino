@@ -22,7 +22,6 @@
 
 #include <inttypes.h>
 #include <stdio.h> // for size_t
-#include <limits.h> // for INT_MAX
 
 #include "WString.h"
 #include "Printable.h"
