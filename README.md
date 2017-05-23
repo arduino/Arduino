@@ -8,7 +8,7 @@ can be connected to software on your computer (e.g. Flash, Processing and MaxMSP
 The boards can be assembled by hand or purchased preassembled; the open-source
 IDE can be downloaded for free at http://www.arduino.cc/en/Main/Software
 
-* For more information, see the website at: http://www.arduino.cc/
+* For more informations, see the website at: http://www.arduino.cc/
 or the forums at: http://www.arduino.cc/forum/  
 You can also follow Arduino on Twitter at: https://twitter.com/arduino or
 like Arduino on Facebook at: https://www.facebook.com/official.arduino
