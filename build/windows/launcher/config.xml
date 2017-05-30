@@ -47,7 +47,7 @@
     <cp>%EXEDIR%/lib/jna-4.2.2.jar</cp>
     <cp>%EXEDIR%/lib/jna-platform-4.2.2.jar</cp>
     <cp>%EXEDIR%/lib/jsch-0.1.50.jar</cp>
-    <cp>%EXEDIR%/lib/jssc-2.8.0.jar</cp>
+    <cp>%EXEDIR%/lib/jssc-2.8.0-arduino1.jar</cp>
     <cp>%EXEDIR%/lib/pde.jar</cp>
     <cp>%EXEDIR%/lib/rsyntaxtextarea-2.6.1.jar</cp>
     <cp>%EXEDIR%/lib/xml-apis-1.3.04.jar</cp>
@@ -63,6 +63,7 @@
     <opt>-Djna.nounpack=true</opt>
     <opt>-Djna.boot.library.name=jnidispatch-4.2.2-win32-x86</opt>
     <opt>-Djna.boot.library.path="%EXEDIR%"/lib</opt>
+    <opt>-Djssc.library.path="%EXEDIR%"/lib</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
   </jre>
   <versionInfo>

@@ -42,7 +42,7 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.22.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.22.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
-	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/jssc-2.8.0-arduino1.jar"/>
 	<classpathentry kind="lib" path="lib/rsyntaxtextarea-2.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-ext-1.3.04.jar"/>

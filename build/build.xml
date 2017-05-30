@@ -1037,6 +1037,33 @@
       <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
     </antcall>
 
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jssc-2.8.0-arduino1.jar" />
+      <arg value="libs/windows/jSSC-2.8_x86.dll" />
+    </exec>
+    <move file="windows/work/lib/jSSC-2.8_x86.dll" tofile="windows/work/lib/jSSC-2.8_x86.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jSSC-2.8_x86.dll" />
+    </antcall>
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jssc-2.8.0-arduino1.jar" />
+      <arg value="libs/windows/jSSC-2.8_x86_64.dll" />
+    </exec>
+    <move file="windows/work/lib/jSSC-2.8_x86_64.dll" tofile="windows/work/lib/jSSC-2.8_x86_64.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jSSC-2.8_x86_64.dll" />
+    </antcall>
+
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
     </antcall>
