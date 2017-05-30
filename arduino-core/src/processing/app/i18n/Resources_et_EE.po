@@ -21,7 +21,7 @@
 # Georg, 2014
 # Georg, 2014
 # Hasso Tepper <hasso.tepper@gmail.com>, 2016
-# Lauri Võsandi <lauri.vosandi@gmail.com>, 2015
+# Lauri Võsandi <inactive+v6sa@transifex.com>, 2015
 # Triin Taveter <taveter@ut.ee>, 2016
 msgid ""
 msgstr ""

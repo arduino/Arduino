@@ -16,13 +16,14 @@
 # Translators:
 # Translators:
 # Ali Mirjamali <ali.mirjamali@gmail.com>, 2013
+# Seyyed Mohammad Amin Mousavi <inoaaa2011@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-03-21 11:42+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2017-05-14 11:47+0000\n"
+"Last-Translator: Seyyed Mohammad Amin Mousavi <inoaaa2011@gmail.com>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/mbanzi/arduino-ide-15/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,52 +33,52 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr ""
+msgstr "(آردوینو باید راه اندازی مجدد شود)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "استفاده نشده: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "استفاده شده: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "\"کیبوردی\" پیدا نشد. آیا اسکچ شما خط\n\"#include<Keyboard.h> را شامل می شود؟"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "\"ماوس\" پیدا نشد. آیا اسکچ شما خط\n\"#include>Mouse.h< را شامل می شود؟"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "پوشه ی arch دیگر پشتیبانی نمی شود! برای اطلاعات بیشتر به آدرس زیر مراجعه کنید:\nhttp://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr ""
+msgstr "(تنها در صورتی ویرایش شود که آردوینو در حال اجرا نیست)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(قدیمی)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir\nدیگر پشتیبانی نمی شود"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose,--verbose-upload , --verbose-build\nتنها می توانند با یکدیگر و با \n--verify\nیا \n--upload\nاستفاده شوند"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"

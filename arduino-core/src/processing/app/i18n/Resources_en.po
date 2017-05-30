@@ -427,10 +427,6 @@ msgstr "CRC doesn't match, file is corrupted. It may be a temporary problem, ple
 msgid "Can only pass one of: {0}"
 msgstr "Can only pass one of: {0}"
 
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
-msgid "Can't enable external editor"
-msgstr ""
-
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -472,10 +468,6 @@ msgstr "Chinese (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Chinese (Taiwan) (Big5)"
-
-#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
-msgid "Clear output"
-msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -2462,12 +2454,6 @@ msgstr "You cannot save the sketch into a folder\ninside itself. This would go o
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "You forgot your sketchbook"
-
-#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
-msgid ""
-"You have unsaved changes!\n"
-"You must save all your sketches to enable this option."
-msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

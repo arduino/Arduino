@@ -22,7 +22,7 @@
 # GregerA <greger.andersson@electrokit.se>, 2014
 # GudenTorson, 2015
 # Jonas Bengtsson <jonas.b@gmail.com>, 2013
-# Jonatan Nyberg <jonatan@autistici.org>, 2016
+# Jonatan Nyberg, 2016
 # Patrik Hermansson <patrik@paheco.nu>, 2015
 msgid ""
 msgstr ""
