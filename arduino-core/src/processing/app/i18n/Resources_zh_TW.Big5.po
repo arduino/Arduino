@@ -15,6 +15,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ethan <ethan42411@gmail.com>, 2014
 # james58899 <james59988@gmail.com>, 2014
 # Jordan_Fung <jordanfung2002@gmail.com>, 2014
@@ -24,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-03-21 11:42+0000\n"
+"PO-Revision-Date: 2017-05-30 15:31+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Chinese (Taiwan) (Big5)  (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_TW.Big5/)\n"
 "MIME-Version: 1.0\n"
@@ -431,6 +432,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -472,6 +477,10 @@ msgstr "中文(台灣)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "中文(台灣)(Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -2458,6 +2467,12 @@ msgstr "比不能將草稿碼儲存到它自己裡頭的資料夾中，\n這將�
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "你忘記你的草稿碼簿了"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

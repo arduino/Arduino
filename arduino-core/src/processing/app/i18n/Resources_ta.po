@@ -15,6 +15,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Alagappan Karthikeyan <me@karthik.sg>, 2016
 # Shankar C <c.shankar7@hotmail.com>, 2015
 # Nadar Solomon Sunder <solomonsunder@gmail.com>, 2014
@@ -23,7 +24,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-03-21 11:42+0000\n"
+"PO-Revision-Date: 2017-05-30 15:31+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Tamil (http://www.transifex.com/mbanzi/arduino-ide-15/language/ta/)\n"
 "MIME-Version: 1.0\n"
@@ -430,6 +431,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -470,6 +475,10 @@ msgstr ""
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
@@ -2457,6 +2466,12 @@ msgstr "நீங்கள் வரைவுக்குள் உள்ள உ
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "நீங்கள் உங்கள் வரைவுப்புத்தகத்தை மறந்துவிட்டீர்கள்"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
