@@ -1,9 +1,20 @@
 ARDUINO 1.8.3
 
+(bugfix service release)
+
 [ide]
+* Fixed RESOURCE_NAME in install.sh script
 * Serial Monitor: added "Clear output" button. Thanks @MichaelSy
-* added option in preferences.txt for: custom title, comment/uncomment shortcut, always show file extensions. Thanks @MichaelSy
+* added options in preferences.txt for: custom title, comment/uncomment shortcut, always show file extensions. Thanks @MichaelSy
+* added options in preferences.txt to enable/disable typing assistance (auto close brace, auto indent)
 * Enabling "Use external editor" option now requires to save all sketches.
+
+[core]
+* AVR: added availableForWrite() method in generic Stream class. Thanks @eric-wieser
+* AVR: moved flush() method up in the class hierarchy from Stream to Print class. Thanks @matthijskooijman
+
+[other]
+* Update Wifi101 Firmware Updater plugin
 
 ARDUINO 1.8.2 2017.03.22
 
