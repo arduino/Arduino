@@ -127,7 +127,7 @@
 #define MSC_PROTOCOL_BULK_ONLY					0x50 
 
 #ifndef USB_VERSION
-#define USB_VERSION 0x200
+#define USB_VERSION 0x210
 #endif
 
 //	Device
