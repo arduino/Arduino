@@ -18,6 +18,7 @@
  by DojoDave <http://www.0j0.org>
  modified 30 Aug 2011
  by Tom Igoe
+ modified 27 Feb 2017
 
  This example code is in the public domain.
 
@@ -34,9 +35,9 @@ int buttonState = 0;         // variable for reading the pushbutton status
 
 void setup() {
   // initialize the LED pin as an output:
-  pinMode(ledPin, OUTPUT);
+  output(ledPin);
   // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
+  input(buttonPin);
 }
 
 void loop() {

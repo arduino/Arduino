@@ -13,7 +13,7 @@ void setup() {
   // initialize serial communication at 9600 bits per second:
   Serial.begin(9600);
   // make the pushbutton's pin an input:
-  pinMode(pushButton, INPUT);
+  input(pushButton);
 }
 
 // the loop routine runs over and over again forever:

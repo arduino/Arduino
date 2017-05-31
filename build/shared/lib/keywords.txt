@@ -167,6 +167,8 @@ micros	KEYWORD2	Micros
 noInterrupts	KEYWORD2	NoInterrupts
 noTone	KEYWORD2	NoTone
 pinMode	KEYWORD2	PinMode
+input	KEYWORD2	Input
+output	KEYWORD2	Output
 pulseIn	KEYWORD2	PulseIn
 pulseInLong	KEYWORD2	PulseInLong
 shiftIn	KEYWORD2	ShiftIn

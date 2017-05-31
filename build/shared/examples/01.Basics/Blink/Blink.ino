@@ -18,13 +18,16 @@
   
   modified 8 Sep 2016
   by Colby Newman
+  
+  modified 27 Feb 2017
+  by Otacilio Neto
 */
 
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
+  output(LED_BUILTIN);
 }
 
 // the loop function runs over and over again forever

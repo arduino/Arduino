@@ -20,7 +20,7 @@ int fadeAmount = 5;    // how many points to fade the LED by
 // the setup routine runs once when you press reset:
 void setup() {
   // declare pin 9 to be an output:
-  pinMode(led, OUTPUT);
+  output(led);
 }
 
 // the loop routine runs over and over again forever:
