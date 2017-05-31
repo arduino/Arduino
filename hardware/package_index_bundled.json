@@ -12,15 +12,15 @@
         {
           "name": "Arduino AVR Boards",
           "architecture": "avr",
-          "version": "1.6.18",
+          "version": "1.6.19",
           "category": "Arduino",
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.6.18.tar.bz2",
-          "archiveFileName": "avr-1.6.18.tar.bz2",
-          "checksum": "SHA-256:7c56e381602b779e8e81ec46deb5c8b82e1c84c134c3c1b672d0b43f5e45ee13",
-          "size": "4897659",
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.19.tar.bz2",
+          "archiveFileName": "avr-1.6.19.tar.bz2",
+          "checksum": "SHA-256:",
+          "size": "",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
