@@ -1,4 +1,4 @@
-ARDUINO 1.8.3
+ARDUINO 1.8.3 2017.05.31
 
 (bugfix service release)
 

@@ -19,8 +19,8 @@
           },
           "url": "http://downloads.arduino.cc/cores/avr-1.6.19.tar.bz2",
           "archiveFileName": "avr-1.6.19.tar.bz2",
-          "checksum": "SHA-256:",
-          "size": "",
+          "checksum": "SHA-256:1c544db39f36a8468f585d6338343718c2892526227fa04805339084dd0ab4ff",
+          "size": "4959420",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
