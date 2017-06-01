@@ -31,12 +31,61 @@ package processing.app.packages;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 public class LegacyUserLibrary extends UserLibrary {
 
   private String name;
 
   public static LegacyUserLibrary create(File libFolder) {
+  
+    //Check legacy libraries for examples using .pde extensions.
+	//.pde examples no longer compile as the builder uses a hard coded .ino extension.
+    File examplesFolder = new File(libFolder, "examples");
+    boolean hasNotifiedOfPdeExamples = false;
+    
+    if (examplesFolder.isDirectory()){
+    
+      File[] dirs = examplesFolder.listFiles();
+      
+      if (dirs != null){
+example_verify_loop:  //Label to break out of if the user chooses not to update a library.
+        for (File childDir : dirs) {
+        
+          if (childDir.isDirectory()){
+          
+            File[] sketchFiles = childDir.listFiles();
+            
+            for (File childFile : sketchFiles) {
+            
+              if (childFile.isFile()){
+                if (childFile.getName().endsWith(".pde")){
+                  if (!hasNotifiedOfPdeExamples){ //only prompt once per library.
+                
+                    int msgResult = JOptionPane.showConfirmDialog(
+                      null,
+                      "One or more of the examples in the library \"" + libFolder.getName() + "\" uses a file extension that is no longer compatible with the IDE." +
+                      "\nSketches (and examples) since version 1.0 of the IDE are required to use '.ino' extensions!" +
+                      "\nPrior to version 1.0, the extension used  was '.pde'." +
+                      "\nClick yes to update the extensions of these files automatically (contents is not touched).",
+                      libFolder.getName() + " contains out of date examples!",
+                      JOptionPane.YES_NO_OPTION,
+                      JOptionPane.QUESTION_MESSAGE);
+              
+                    if (msgResult == 1){
+                      break example_verify_loop;
+                    }
+                    hasNotifiedOfPdeExamples = true;
+                  }
+                  childFile.renameTo(new File(childFile.getPath().replace(".pde", ".ino")));
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     // construct an old style library
     LegacyUserLibrary res = new LegacyUserLibrary();
     res.setInstalledFolder(libFolder);
