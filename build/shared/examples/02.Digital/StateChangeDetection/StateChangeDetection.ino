@@ -75,12 +75,7 @@ void loop() {
   // checking the modulo of the button push counter.
   // the modulo function gives you the remainder of
   // the division of two numbers:
-  if (buttonPushCounter % 4 == 0) {
-    digitalWrite(ledPin, HIGH);
-  } else {
-    digitalWrite(ledPin, LOW);
-  }
-
+  digitalWrite(ledPin, buttonPushCounter % 4 == 0);
 }
 
 

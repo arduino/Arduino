@@ -40,11 +40,7 @@ void loop() {
   // logic is inverted. It goes HIGH when it's open,
   // and LOW when it's pressed. Turn on pin 13 when the
   // button's pressed, and off when it's not:
-  if (sensorVal == HIGH) {
-    digitalWrite(13, LOW);
-  } else {
-    digitalWrite(13, HIGH);
-  }
+  digitalWrite(13, !sensorVal);
 }
 
 
