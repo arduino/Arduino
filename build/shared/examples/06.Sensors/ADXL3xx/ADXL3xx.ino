@@ -36,6 +36,11 @@ const int zpin = A1;                  // z-axis (only on 3-axis models)
 void setup() {
   // initialize the serial communications:
   Serial.begin(9600);
+  // wait for Serial port to connect
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
 
   // Provide ground and power by using the analog inputs as normal
   // digital pins.  This makes it possible to directly connect the

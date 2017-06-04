@@ -26,6 +26,11 @@ const int ledPin = 9;      // the pin that the LED is attached to
 void setup() {
   // initialize the serial communication:
   Serial.begin(9600);
+  // wait for Serial port initialization.
+  // Needed for boards that use native USB port such as
+  // ATMEGA32U4 based boards, Arduino/Genuino 101,
+  // Arduino Due and Arduino/Genuino Zero (Native Port)
+  while(!Serial) ;
   // initialize the ledPin as an output:
   pinMode(ledPin, OUTPUT);
 }
