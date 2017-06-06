@@ -176,7 +176,29 @@ void Stepper::setSpeed(long whatSpeed)
 {
   this->step_delay = 60L * 1000L * 1000L / this->number_of_steps / whatSpeed;
 }
-
+/*
+* Sets initial delay in us to prevent unexpected behaviour in the start 
+*/
+void Stepper::initializeWithDelay(unsigned long initial_delay)
+  {
+    //first the motor is enabled on its first step
+    stepMotor(0);
+    
+    if(initial_delay <= this->step_delay)
+    {
+      /*if the intial delay is smaller than the step_ delay the motor 
+      * is only enabled and the current time is saved.
+      */
+      this->last_step_time = micros() ;
+    } 
+    else
+    {
+      /*if the delay is bigger than the step_delay the difference is added to 
+      * the saved time to postpone the next step. 
+      */
+      this->last_step_time = micros() + initial_delay - this->step_delay;
+    }
+  }
 /*
  * Moves the motor steps_to_move steps.  If the number is negative,
  * the motor moves in the reverse direction.
@@ -188,8 +210,7 @@ void Stepper::step(int steps_to_move)
   // determine direction based on whether steps_to_mode is + or -:
   if (steps_to_move > 0) { this->direction = 1; }
   if (steps_to_move < 0) { this->direction = 0; }
-
-
+  
   // decrement the number of steps, moving one step each time:
   while (steps_left > 0)
   {
