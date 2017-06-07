@@ -106,6 +106,7 @@ import processing.app.helpers.OSUtils;
  * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
  * @since 1.6.4
  */
+@SuppressWarnings("unused")
 public class SketchTextArea extends RSyntaxTextArea {
 
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
