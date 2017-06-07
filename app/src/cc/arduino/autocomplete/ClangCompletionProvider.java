@@ -7,6 +7,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.fife.ui.autocomplete.Completion;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.FunctionCompletion;
+import org.fife.ui.autocomplete.ParameterizedCompletion.Parameter;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,13 +17,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import processing.app.Editor;
 import processing.app.EditorTab;
 
-public class ClangCompletionProvider extends BaseCCompletionProvider {
+public class ClangCompletionProvider extends DefaultCompletionProvider {
 
   private Editor editor;
 
   public ClangCompletionProvider(Editor e) {
     super();
     editor = e;
+    setParameterizedCompletionParams('(', ", ", ')');
   }
 
   @Override
@@ -31,6 +35,8 @@ public class ClangCompletionProvider extends BaseCCompletionProvider {
 
   @Override
   protected List<Completion> getCompletionsImpl(JTextComponent textarea) {
+
+    List<Completion> res = new ArrayList<>();
 
     // Retrieve current line and column
     EditorTab tab = editor.getCurrentTab();
@@ -44,7 +50,7 @@ public class ClangCompletionProvider extends BaseCCompletionProvider {
     } catch (BadLocationException e1) {
       // Should never happen...
       e1.printStackTrace();
-      return completions;
+      return res;
     }
 
     try {
@@ -52,37 +58,63 @@ public class ClangCompletionProvider extends BaseCCompletionProvider {
       String out = editor.getSketchController()
           .codeComplete(tab.getSketchFile(), line, col);
 
-      List<Completion> res = new ArrayList<>();
-      res.add(new TemplateCompletion(this, "for", "interate over array",
-          "for (int ${i} = 0; ${i} < ${array}.length; ${i}++) {\n  ${cursor}\n}"));
-
       // Parse engine output and build code completions
       ObjectMapper mapper = new ObjectMapper();
       ArduinoCompletionsList allCc;
       allCc = mapper.readValue(out, ArduinoCompletionsList.class);
       for (ArduinoCompletion cc : allCc) {
-        if (cc.type.equals("macro")) {
+        if (cc.type.equals("Macro")) {
           // for now skip macro
           continue;
         }
-        String returnType;
-        String typedText;
+
+        if (cc.type.equals("Function")) {
+          List<Parameter> params = new ArrayList<>();
+          for (CompletionChunk chunk : cc.completion.chunks) {
+            if (chunk.placeholder != null) {
+              params.add(new Parameter("type", chunk.placeholder));
+            }
+          }
+
+          FunctionCompletion compl = new FunctionCompletion(this,
+              cc.getCompletion().getTypedText(),
+              cc.getCompletion().getResultType());
+          compl.setParams(params);
+          res.add(compl);
+          continue;
+        }
+
+        String returnType = "";
+        String typedText = null;
         String template = "";
         for (CompletionChunk chunk : cc.completion.chunks) {
           if (chunk.t != null) {
-            template += "t";
+            template += chunk.t;
           }
           if (chunk.res != null) {
-            returnType = chunk.res;
+            returnType = " - " + chunk.res;
           }
           if (chunk.typedtext != null) {
+            template += chunk.typedtext;
             typedText = chunk.typedtext;
           }
+          if (chunk.placeholder != null) {
+            String[] spl = chunk.placeholder.split(" ");
+            template += "${" + spl[spl.length - 1] + "}";
+          }
+          if (chunk.info != null) {
+            System.out.println("INFO: "+chunk.info);
+          }
         }
+        template += "${cursor}";
+        System.out.println("TEMPLATE: " + template);
+        res.add(new TemplateCompletion(this, typedText, typedText + returnType,
+            template));
       }
+      return res;
     } catch (Exception e) {
       e.printStackTrace();
+      return res;
     }
-    return completions;
   }
 }
