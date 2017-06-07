@@ -4,10 +4,10 @@ This document serves as a checklist before contributing to this repository. It i
 ## Issues
 To report a bug or a small enhancement please use the [issue tracker](http://github.com/arduino/Arduino/issues). But check the following boxes before posting an issue:
 
-- [ ] `Your issue is NOT a question about an Arduino sketch.` Sketch questions are handled on the [Arduino Forum](http://forum.arduino.cc/).
-- [ ] `Check if your issue has already been resolved in the` [hourly build](http://www.arduino.cc/en/Main/Software#hourly)
-- [ ] `Your issue is not a duplicate.` So search for similar open and closed issues and pull-requests.
-- [ ] `Make sure you are working on the right repository. See the table below.`
+- Issue reports are NOT to be used for questions about an Arduino sketch. Sketch questions are handled on the [Arduino Forum](http://forum.arduino.cc/).
+- Check if your issue has already been resolved in the [hourly build](http://www.arduino.cc/en/Main/Software#hourly)
+- Search for similar open and closed issues and pull-requests.
+- Make sure you are working on the right repository. See the table below:
 
 | Issue topic | Report at |
 |-|-|
@@ -26,13 +26,11 @@ To report a bug or a small enhancement please use the [issue tracker](http://git
 
 When you're not sure where your issue belongs, report it at [arduino/Arduino](https://github.com/arduino/Arduino) and we'll move it to where it belongs (but remember: Only bug reports and feature requests, do not ask for help with your own code there).
 
-When you have checked the previous boxes. Please consider the following points before posting the issue.
-
-- [ ] `Describe the issue based on the behaviour you were expecting`
-- [ ] `Post complete error messages using markdown code fencing:` [Markdown Code Fencing Example](https://guides.github.com/features/mastering-markdown/#examples)
-- [ ] `Provide a full set of steps necessary to reproduce the issue`
-- [ ] `Demonstration code should be complete, correct and the minimum amount necessary to reproduce the issue`
-- [ ] `Library Manager submissions: make sure your library meets all the requirements listed in the` [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ)
+- Describe the issue based on the behaviour you were expecting
+- Post complete error messages using markdown code fencing: [Markdown Code Fencing Example](https://guides.github.com/features/mastering-markdown/#examples)
+- Provide a full set of steps necessary to reproduce the issue
+- Demonstration code should be complete, correct and the minimum amount necessary to reproduce the issue
+- Library Manager submissions: make sure your library meets all the requirements listed in the [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ)
 
 ## Pull Requests
 This guide mainly focuses on the proper use of Git. It has some overlap with the more general information found in the [Development Policy File](https://github.com/arduino/Arduino/wiki/Development-Policy).
@@ -81,5 +79,5 @@ See also: #456, #789
 ```
 - When different people are working on the Arduino project simultaneously, pull requests can go stale quickly. A "stale" pull request is one that is no longer up to date with the latest merges in the project. It needs to be updated before it can be merged. Most often pull requests become stale when merge conflicts occur. This happens when two pull requests both modify similar lines in the same file and one gets merged, the unmerged request will now have a merge conflict and needs updating. When your pull request is stale, you will need to rebase your branch on the current master branch before you can merge it without conflicts. More information about rebasing can be found at the repository of [edX](https://github.com/edx/edx-platform/wiki/How-to-Rebase-a-Pull-Request).
 - When your pull request is merged please update the documentation if the changes require it:
-  - [ ] Edit appropiate [Wiki pages](https://github.com/arduino/Arduino/wiki/_pages)
-  - [ ] Submit an [issue report](https://github.com/arduino/Arduino/issues/new) requesting changes to the [arduino.cc reference pages](https://www.arduino.cc/en/Reference/HomePage)
+  - Edit appropiate [Wiki pages](https://github.com/arduino/Arduino/wiki/_pages)
+  - Submit an [issue report](https://github.com/arduino/Arduino/issues/new) requesting changes to the [arduino.cc reference pages](https://www.arduino.cc/en/Reference/HomePage)
