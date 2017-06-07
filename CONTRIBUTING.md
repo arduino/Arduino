@@ -9,19 +9,22 @@ To report a bug or a small enhancement please use the [issue tracker](http://git
 - [ ] `Your issue is not a duplicate.` So search for similar open and closed issues and pull-requests.
 - [ ] `Make sure you are working on the right repository. See the table below.`
 
-| Repositories | Projects |
-|---|---|
-|[Arduino](https://github.com/arduino/Arduino) | Arduino IDE, arduino.cc (but not the Arduino Playground), Library Manager |
-|[Arduino Playground](http://forum.arduino.cc/index.php?board=24.0) | This is a publicly editable wiki. Please either make the edit yourself or create a post |
-|[Arduino Forum](https://github.com/arduino/forum-issues) | Issues about the Arduino Forum |
-| [Libraries for Arduino IDE](https://github.com/arduino-libraries) | Changing libraries for the IDE |
-| [Arduino-builder](https://github.com/arduino/arduino-builder)| |
-|[Arduino Web Editor](https://github.com/arduino/arduino-create-agent) | |
-|[Arduino SAMD Boards](https://github.com/arduino/ArduinoCore-samd)|Zero, MKR1000, MKRZero, etc. |
-|[Arduino SAM Boards](https://github.com/arduino/ArduinoCore-sam)| Due |
-|[Arduino AVR Boards toolchain (avr-gcc)](https://github.com/arduino/toolchain-avr)| |
-|[Arduino's build of AVRDUDE](https://github.com/arduino/avrdude-build-script)||
-|Third party repository |  for third party libraries, hardware packages or sketches |
+| Issue topic | Report at |
+|-|-|
+| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Playground), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino) |
+| [Arduino Playground](http://playground.arduino.cc/) | This is a publicly editable wiki. Please either make the edit yourself or create a post on the [forum](http://forum.arduino.cc/index.php?board=24.0). |
+| Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
+| Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues) |
+| Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
+| arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder) |
+| [Arduino Web Editor](https://create.arduino.cc/editor) | [arduino/arduino-create-agent](https://github.com/arduino/arduino-create-agent) |
+| Arduino SAMD Boards (Zero, MKR1000, MKRZero, etc.) | [arduino/ArduinoCore-samd](https://github.com/arduino/ArduinoCore-samd) |
+| Arduino SAM Boards (Due) | [arduino/ArduinoCore-sam](https://github.com/arduino/ArduinoCore-sam) |
+| AVR Toolchain for Arduino | [arduino/toolchain-avr](https://github.com/arduino/toolchain-avr) |
+| Arduino's build of AVRDUDE | [arduino/avrdude-build-script](https://github.com/arduino/avrdude-build-script) |
+| 3rd party libraries, hardware, or sketches | Report issues to the author of the software, *not* Arduino. |
+
+When you're not sure where your issue belongs, report it at [arduino/Arduino](https://github.com/arduino/Arduino) and we'll move it to where it belongs (but remember: Only bug reports and feature requests, do not ask for help with your own code there).
 
 When you have checked the previous boxes. Please consider the following points before posting the issue.
 
