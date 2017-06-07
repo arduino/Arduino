@@ -1,36 +1,36 @@
-# Contributing guide
-This document serves as a checklist before contributing to this repository. It includes includes links to read up on if topics are unclear to you.
+# Contributing Rules
+Thanks for your interest in contributing to this free open source project! Please take the time to read this before submitting an issue report or pull request.
 
 ## Issues
-To report a bug or a small enhancement please use the [issue tracker](http://github.com/arduino/Arduino/issues). But check the following boxes before posting an issue:
-
-- Issue reports are NOT to be used for questions about an Arduino sketch. Sketch questions are handled on the [Arduino Forum](http://forum.arduino.cc/).
-- Check if your issue has already been resolved in the [hourly build](http://www.arduino.cc/en/Main/Software#hourly)
-- Search for similar open and closed issues and pull-requests.
-- Make sure you are working on the right repository. See the table below:
+- Do you need help or have a question about using Arduino? Support requests should be made to the appropriate section of the [Arduino forum](http://forum.arduino.cc) rather than an issue report. **Issue reports are to be used to report bugs or make feature requests only.**
+- Check if your issue has already been resolved in the [hourly build](http://www.arduino.cc/en/Main/Software#hourly).
+- Submit issue reports to the correct repository:
 
 | Issue topic | Report at |
 |-|-|
-| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Playground), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino) |
+| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Playground or forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
 | [Arduino Playground](http://playground.arduino.cc/) | This is a publicly editable wiki. Please either make the edit yourself or create a post on the [forum](http://forum.arduino.cc/index.php?board=24.0). |
 | Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
-| Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues) |
+| Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
-| arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder) |
-| [Arduino Web Editor](https://create.arduino.cc/editor) | [arduino/arduino-create-agent](https://github.com/arduino/arduino-create-agent) |
-| Arduino SAMD Boards (Zero, MKR1000, MKRZero, etc.) | [arduino/ArduinoCore-samd](https://github.com/arduino/ArduinoCore-samd) |
-| Arduino SAM Boards (Due) | [arduino/ArduinoCore-sam](https://github.com/arduino/ArduinoCore-sam) |
-| AVR Toolchain for Arduino | [arduino/toolchain-avr](https://github.com/arduino/toolchain-avr) |
-| Arduino's build of AVRDUDE | [arduino/avrdude-build-script](https://github.com/arduino/avrdude-build-script) |
+| arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder/issues) |
+| [Arduino Web Editor](https://create.arduino.cc/editor) | [arduino/arduino-create-agent](https://github.com/arduino/arduino-create-agent/issues) |
+| Arduino SAMD Boards (Zero, MKR1000, MKRZero, etc.) | [arduino/ArduinoCore-samd](https://github.com/arduino/ArduinoCore-samd/issues) |
+| Arduino SAM Boards (Due) | [arduino/ArduinoCore-sam](https://github.com/arduino/ArduinoCore-sam/issues) |
+| AVR Toolchain for Arduino | [arduino/toolchain-avr](https://github.com/arduino/toolchain-avr/issues) |
+| Arduino's build of AVRDUDE | [arduino/avrdude-build-script](https://github.com/arduino/avrdude-build-script/issues) |
 | 3rd party libraries, hardware, or sketches | Report issues to the author of the software, *not* Arduino. |
 
 When you're not sure where your issue belongs, report it at [arduino/Arduino](https://github.com/arduino/Arduino) and we'll move it to where it belongs (but remember: Only bug reports and feature requests, do not ask for help with your own code there).
 
-- Describe the issue based on the behaviour you were expecting
-- Post complete error messages using markdown code fencing: [Markdown Code Fencing Example](https://guides.github.com/features/mastering-markdown/#examples)
-- Provide a full set of steps necessary to reproduce the issue
-- Demonstration code should be complete, correct and the minimum amount necessary to reproduce the issue
-- Library Manager submissions: make sure your library meets all the requirements listed in the [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ)
+- Search [existing pull requests and issues](https://github.com/arduino/Arduino/issues?q=) to be sure it hasn't already been reported. If you have additional information to provide about an existing issue then please comment on that issue. If you simply want to express your support then use the [Reactions feature](https://github.com/blog/2119-add-reactions-to-pull-requests-issues-and-comments).
+- State the newest version of the Arduino IDE you have verified the issue with and which operating system you are using.
+- The issue title should be concise yet descriptive. Vague titles make it difficult to know the purpose of the issue when looking through the list of reports and may cause your issue to not be given proper attention.
+- Describe the issue and what behavior you were expecting. Post complete error messages using [markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples).
+- Provide a full set of steps necessary to reproduce the issue. Demonstration code should be complete, correct, and simplified to the minimum amount of code necessary to reproduce the issue. Please use [markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) when posting code.
+- Be responsive. We may need you to provide more information, please respond as soon as possible.
+- If you find a solution to your problem update your issue report with an explanation of how you were able to fix it and close the issue.
+- Library Manager submissions: make sure your library meets all the requirements listed in the [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ).
 
 ## Pull Requests
 This guide mainly focuses on the proper use of Git. It has some overlap with the more general information found in the [Development Policy File](https://github.com/arduino/Arduino/wiki/Development-Policy).
