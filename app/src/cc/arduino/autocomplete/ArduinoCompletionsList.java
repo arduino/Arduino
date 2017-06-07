@@ -9,6 +9,7 @@ public class ArduinoCompletionsList extends ArrayList<ArduinoCompletion> {
 class ArduinoCompletion {
   ArduinoCompletionDetail completion;
   String type;
+  String location;
 
   public ArduinoCompletionDetail getCompletion() {
     return completion;
@@ -16,6 +17,10 @@ class ArduinoCompletion {
 
   public String getType() {
     return type;
+  }
+
+  public String getLocation() {
+    return location;
   }
 }
 
@@ -30,6 +35,22 @@ class ArduinoCompletionDetail {
   public String getBrief() {
     return brief;
   }
+
+  public String getResultType() {
+    for (CompletionChunk c : chunks) {
+      if (c.res != null)
+        return c.res;
+    }
+    return null;
+  }
+
+  public String getTypedText() {
+    for (CompletionChunk c : chunks) {
+      if (c.typedtext != null)
+        return c.typedtext;
+    }
+    return null;
+  }
 }
 
 class CompletionChunk {
@@ -37,8 +58,9 @@ class CompletionChunk {
   String t;
   String placeholder;
   String res;
+  String info;
   ArduinoCompletionDetail optional;
-  
+
   public String getTypedtext() {
     return typedtext;
   }
@@ -54,8 +76,12 @@ class CompletionChunk {
   public String getRes() {
     return res;
   }
-  
+
   public ArduinoCompletionDetail getOptional() {
     return optional;
+  }
+
+  public String getInfo() {
+    return info;
   }
 }
