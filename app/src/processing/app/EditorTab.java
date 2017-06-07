@@ -59,6 +59,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.autocomplete.ClangCompletionProvider;
+import cc.arduino.autocomplete.CompletionsRenderer;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
@@ -120,6 +121,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     ac.setShowDescWindow(false);
     ac.setAutoCompleteSingleChoices(true);
     ac.setParameterAssistanceEnabled(true);
+    ac.setListCellRenderer(new CompletionsRenderer());
     // ac.setParamChoicesRenderer(new CompletionsRenderer());
     // ac.setListCellRenderer(new CompletionsRenderer());
     ac.install(textarea);
