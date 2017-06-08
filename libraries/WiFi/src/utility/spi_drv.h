@@ -84,7 +84,7 @@ public:
 */
     static int waitResponse(uint8_t cmd, uint8_t* numParamRead, uint8_t** params, uint8_t maxNumParams);
 
-    static void sendParam(uint8_t* param, uint8_t param_len, uint8_t lastParam = NO_LAST_PARAM);
+    static void sendParam(const uint8_t* param, uint8_t param_len, uint8_t lastParam = NO_LAST_PARAM);
 
     static void sendParamLen8(uint8_t param_len);
 
