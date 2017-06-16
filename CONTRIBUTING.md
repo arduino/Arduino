@@ -1,5 +1,15 @@
 # Contributing Rules
-Thanks for your interest in contributing to this free open source project! Please take the time to read this before submitting an issue report or pull request.
+Thanks for your interest in contributing to this free open source project! Arduino welcomes help from the community. There are several ways you can get involved:
+
+| Type of contribution | Contribution method |
+|-|-|
+| - Support request<br/>- Question<br/>- Problem with your Arduino<br/>- Discussion | Post on the [Arduino Forum](http://forum.arduino.cc) |
+| - Bug report<br/>- [Arduino website](https://www.arduino.cc/) issue or improvement<br/>- Feature request | Issue report (read the [issue guidelines](#issues)) |
+| - Bug fix<br/>- Enhancement | Pull Request (read the [pull request guidelines](#pull-requests)) |
+| [Arduino Playground](http://playground.arduino.cc/) | This is a publicly editable wiki. Feel free to make edits or create a post on the [forum](http://forum.arduino.cc/index.php?board=24.0) to discuss changes. |
+| Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
+| Monetary | - [Donate](https://www.arduino.cc/en/Main/Contribute)<br/>- [Buy official products](https://store.arduino.cc) |
+
 
 ## Issues
 - Do you need help or have a question about using Arduino? Support requests should be made to the appropriate section of the [Arduino forum](http://forum.arduino.cc) rather than an issue report. **Issue reports are to be used to report bugs or make feature requests only.**
@@ -9,8 +19,6 @@ Thanks for your interest in contributing to this free open source project! Pleas
 | Issue topic | Report at |
 |-|-|
 | Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Playground or forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
-| [Arduino Playground](http://playground.arduino.cc/) | This is a publicly editable wiki. Please either make the edit yourself or create a post on the [forum](http://forum.arduino.cc/index.php?board=24.0). |
-| Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
 | Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
 | arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder/issues) |
