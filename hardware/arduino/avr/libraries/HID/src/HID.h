@@ -96,6 +96,11 @@ public:
   int SendReport(uint8_t id, const void* data, int len);
   void AppendDescriptor(HIDSubDescriptor* node);
 
+  // Registers a callback for when a report with the given id occurs.  You can only have
+  // one callback registered.  If you need to un-register a callback, supply 0 and NULL
+  // to this method.
+  int RegisterReportReceiver(uint8_t id, void(*reportReceiver)(const void *data, int len));
+
 protected:
   // Implementation of the PluggableUSBModule
   int getInterface(uint8_t* interfaceCount);
@@ -111,6 +116,8 @@ private:
 
   uint8_t protocol;
   uint8_t idle;
+  uint8_t receiverId;
+  void(*reportReceiver)(const void *data, int len);
 };
 
 // Replacement for global singleton.

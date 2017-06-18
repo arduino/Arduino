@@ -95,6 +95,12 @@ int HID_::SendReport(uint8_t id, const void* data, int len)
 	return ret + ret2;
 }
 
+int HID_::RegisterReportReceiver(uint8_t id, void(*reportReceiver)(const void *data, int len))
+{
+	this->receiverId = id;
+	this->reportReceiver = reportReceiver;
+}
+
 bool HID_::setup(USBSetup& setup)
 {
 	if (pluggedInterface != setup.wIndex) {
@@ -133,13 +139,23 @@ bool HID_::setup(USBSetup& setup)
 		}
 		if (request == HID_SET_REPORT)
 		{
-			//uint8_t reportID = setup.wValueL;
-			//uint16_t length = setup.wLength;
-			//uint8_t data[length];
+			if (this->reportReceiver == NULL)
+			{
+				return false;
+			}
+			uint8_t reportID = setup.wValueL;
+			uint16_t length = setup.wLength;
+			uint8_t data[16];
 			// Make sure to not read more data than USB_EP_SIZE.
 			// You can read multiple times through a loop.
 			// The first byte (may!) contain the reportID on a multreport.
-			//USB_RecvControl(data, length);
+			int numRead = USB_RecvControl(data, length);
+			if (numRead < 1 || data[0] != this->receiverId )
+			{
+				return false;
+			}
+
+			(*this->reportReceiver)(data + 1, length - 1);
 		}
 	}
 
@@ -148,7 +164,8 @@ bool HID_::setup(USBSetup& setup)
 
 HID_::HID_(void) : PluggableUSBModule(1, 1, epType),
                    rootNode(NULL), descriptorSize(0),
-                   protocol(HID_REPORT_PROTOCOL), idle(1)
+                   protocol(HID_REPORT_PROTOCOL), idle(1),
+                   receiverId(0), reportReceiver(NULL)
 {
 	epType[0] = EP_TYPE_INTERRUPT_IN;
 	PluggableUSB().plug(this);
