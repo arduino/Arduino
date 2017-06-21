@@ -58,6 +58,10 @@ public class FileUtils {
   public static void copy(File sourceFolder, File destFolder) throws IOException {
     for (File file : sourceFolder.listFiles()) {
       File destFile = new File(destFolder, file.getName());
+      if ((destFolder.getPath().equals(file.getPath()))) {
+          // Avoid recursive copy of folders
+          continue;
+      }
       if (file.isDirectory() && !SOURCE_CONTROL_FOLDERS.contains(file.getName())) {
         if (!destFile.exists() && !destFile.mkdir()) {
           throw new IOException("Unable to create folder: " + destFile);
