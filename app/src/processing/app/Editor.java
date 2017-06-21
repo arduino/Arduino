@@ -72,6 +72,8 @@ import java.util.ArrayList;
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
 
+import processing.app.helpers.FileUtils;
+
 /**
  * Main editor panel for the Processing Development Environment.
  */
@@ -1935,7 +1937,7 @@ public class Editor extends JFrame implements RunnerListener {
         // copy the sketch inside
         File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          Base.copyFile(sketchFile, properPdeFile);
+          FileUtils.copy(new File(sketchFile.getParent()), properFolder);
         } catch (IOException e) {
           Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
