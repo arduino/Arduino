@@ -1108,6 +1108,9 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     portMenu.setEnabled(portMenu.getMenuComponentCount() > 0);
+    if (portMenu.getMenuComponentCount() > 0) {
+      MenuScroller.setScrollerFor(portMenu);
+    }
   }
 
 
