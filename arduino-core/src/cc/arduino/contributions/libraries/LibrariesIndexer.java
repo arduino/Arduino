@@ -106,6 +106,10 @@ public class LibrariesIndexer {
     rescanLibraries();
   }
 
+  public List<File> getLibrariesFolders() {
+    return librariesFolders;
+  }
+
   public void rescanLibraries() {
     // Clear all installed flags
     installedLibraries.clear();
