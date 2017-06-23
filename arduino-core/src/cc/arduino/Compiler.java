@@ -64,6 +64,7 @@ public class Compiler implements MessageConsumer {
   //used by transifex integration
   static {
     tr("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
+    tr("Archiving built core (caching) in: {0}");
     tr("Board {0} (platform {1}, package {2}) is unknown");
     tr("Bootloader file specified but missing: {0}");
     tr("Build options changed, rebuilding all");
