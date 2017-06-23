@@ -245,7 +245,7 @@ public class BaseNoGui {
     return getHardwareFolder().getAbsolutePath();
   }
 
-  static public List<File> getLibrariesPath() {
+  static public ArrayList<File> getLibrariesPath() {
     return librariesFolders;
   }
 
