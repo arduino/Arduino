@@ -87,7 +87,7 @@ public class BaseNoGui {
   public static Map<String, LibraryList> importToLibraryTable;
 
   // XXX: Remove this field
-  static private List<File> librariesFolders;
+  static private ArrayList<File> librariesFolders;
 
   static UserNotifier notifier = new BasicUserNotifier();
 
@@ -679,8 +679,9 @@ public class BaseNoGui {
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
     librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    librariesIndexer.setLibrariesFolders(librariesFolders);
-    librariesIndexer.rescanLibraries();
+    if (librariesIndexer.getLibrariesFolders() == null || !librariesIndexer.getLibrariesFolders().equals(librariesFolders)) {
+      librariesIndexer.setLibrariesFolders(librariesFolders);
+    }
 
     populateImportToLibraryTable();
   }

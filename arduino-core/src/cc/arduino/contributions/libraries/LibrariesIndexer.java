@@ -60,7 +60,7 @@ public class LibrariesIndexer {
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
   private final LibraryList installedLibrariesWithDuplicates = new LibraryList();
-  private List<File> librariesFolders;
+  private ArrayList<File> librariesFolders;
   private final File indexFile;
   private final File stagingFolder;
   private File sketchbookLibrariesFolder;
@@ -101,9 +101,13 @@ public class LibrariesIndexer {
     }
   }
 
-  public void setLibrariesFolders(List<File> _librariesFolders) {
+  public void setLibrariesFolders(ArrayList<File> _librariesFolders) {
     librariesFolders = _librariesFolders;
     rescanLibraries();
+  }
+
+  public ArrayList<File> getLibrariesFolders() {
+    return librariesFolders;
   }
 
   public void rescanLibraries() {
