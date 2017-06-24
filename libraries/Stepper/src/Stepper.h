@@ -106,6 +106,7 @@ class Stepper {
     int number_of_steps;      // total number of steps this motor can take
     int pin_count;            // how many pins are in use.
     int step_number;          // which step the motor is on
+    bool set_stop;            // call to break the while, maybe called from interrups
 
     // motor pin numbers:
     int motor_pin_1;
