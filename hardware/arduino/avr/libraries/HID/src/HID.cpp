@@ -106,16 +106,8 @@ bool HID_::setup(USBSetup& setup)
 
 	if (requestType == REQUEST_DEVICETOHOST_CLASS_INTERFACE)
 	{
-		if (request == HID_GET_REPORT) {
-			// TODO: HID_GetReport();
+		if (request == HID_GET_REPORT || request == HID_GET_PROTOCOL) {
 			return true;
-		}
-		if (request == HID_GET_PROTOCOL) {
-			// TODO: Send8(protocol);
-			return true;
-		}
-		if (request == HID_GET_IDLE) {
-			// TODO: Send8(idle);
 		}
 	}
 
@@ -130,16 +122,6 @@ bool HID_::setup(USBSetup& setup)
 		if (request == HID_SET_IDLE) {
 			idle = setup.wValueL;
 			return true;
-		}
-		if (request == HID_SET_REPORT)
-		{
-			//uint8_t reportID = setup.wValueL;
-			//uint16_t length = setup.wLength;
-			//uint8_t data[length];
-			// Make sure to not read more data than USB_EP_SIZE.
-			// You can read multiple times through a loop.
-			// The first byte (may!) contain the reportID on a multreport.
-			//USB_RecvControl(data, length);
 		}
 	}
 
