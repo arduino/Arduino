@@ -761,6 +761,7 @@ public class Editor extends JFrame implements RunnerListener {
       portMenu = new JMenu(tr("Port"));
     populatePortMenu();
     toolsMenu.add(portMenu);
+    MenuScroller.setScrollerFor(portMenu);
     item = new JMenuItem(tr("Get Board Info"));
     item.addActionListener(e -> handleBoardInfo());
     toolsMenu.add(item);
@@ -1108,9 +1109,6 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     portMenu.setEnabled(portMenu.getMenuComponentCount() > 0);
-    if (portMenu.getMenuComponentCount() > 0) {
-      MenuScroller.setScrollerFor(portMenu);
-    }
   }
 
 
