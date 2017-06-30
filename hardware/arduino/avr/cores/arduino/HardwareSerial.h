@@ -24,8 +24,6 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
-#define SERIAL9
-
 #include <inttypes.h>
 
 #include "Stream.h"
