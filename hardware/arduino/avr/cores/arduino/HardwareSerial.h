@@ -24,6 +24,8 @@
 #ifndef HardwareSerial_h
 #define HardwareSerial_h
 
+#define SERIAL9
+
 #include <inttypes.h>
 
 #include "Stream.h"
@@ -64,6 +66,12 @@ typedef uint16_t rx_buffer_index_t;
 typedef uint8_t rx_buffer_index_t;
 #endif
 
+#ifdef SERIAL9
+typedef unsigned short serial_data_t;
+#else
+typedef unsigned char serial_data_t;
+#endif // SERIAL9
+
 // Define config for Serial.begin(baud, config);
 #define SERIAL_5N1 0x00
 #define SERIAL_6N1 0x02
@@ -90,6 +98,17 @@ typedef uint8_t rx_buffer_index_t;
 #define SERIAL_7O2 0x3C
 #define SERIAL_8O2 0x3E
 
+#ifdef SERIAL9
+
+#define SERIAL_9N1 0x106
+#define SERIAL_9N2 (0x106 + SERIAL_5N2)
+#define SERIAL_9E1 (0x106 + SERIAL_5E1)
+#define SERIAL_9E2 (0x106 + SERIAL_5E2)
+#define SERIAL_9O1 (0x106 + SERIAL_5O1)
+#define SERIAL_9O2 (0x106 + SERIAL_5O2)
+
+#endif // SERIAL9
+
 class HardwareSerial : public Stream
 {
   protected:
@@ -101,6 +120,9 @@ class HardwareSerial : public Stream
     volatile uint8_t * const _udr;
     // Has any byte been written to the UART since begin()
     bool _written;
+#ifdef SERIAL9
+    volatile bool use9bit;
+#endif // SERIAL9
 
     volatile rx_buffer_index_t _rx_buffer_head;
     volatile rx_buffer_index_t _rx_buffer_tail;
@@ -110,8 +132,8 @@ class HardwareSerial : public Stream
     // Don't put any members after these buffers, since only the first
     // 32 bytes of this struct can be accessed quickly using the ldd
     // instruction.
-    unsigned char _rx_buffer[SERIAL_RX_BUFFER_SIZE];
-    unsigned char _tx_buffer[SERIAL_TX_BUFFER_SIZE];
+    serial_data_t _rx_buffer[SERIAL_RX_BUFFER_SIZE];
+    serial_data_t _tx_buffer[SERIAL_TX_BUFFER_SIZE];
 
   public:
     inline HardwareSerial(
@@ -119,18 +141,26 @@ class HardwareSerial : public Stream
       volatile uint8_t *ucsra, volatile uint8_t *ucsrb,
       volatile uint8_t *ucsrc, volatile uint8_t *udr);
     void begin(unsigned long baud) { begin(baud, SERIAL_8N1); }
-    void begin(unsigned long, uint8_t);
+    void begin(unsigned long, uint16_t);
     void end();
     virtual int available(void);
     virtual int peek(void);
     virtual int read(void);
     virtual int availableForWrite(void);
     virtual void flush(void);
-    virtual size_t write(uint8_t);
     inline size_t write(unsigned long n) { return write((uint8_t)n); }
     inline size_t write(long n) { return write((uint8_t)n); }
     inline size_t write(unsigned int n) { return write((uint8_t)n); }
     inline size_t write(int n) { return write((uint8_t)n); }
+
+#ifdef SERIAL9
+    size_t write9(unsigned int);
+    inline size_t write9(long n) { return write9((unsigned int)n); }
+    inline size_t write9(int n) { return write9((unsigned int)n); }
+    inline size_t write(uint8_t n) { return write9((unsigned int)n); }
+#else // !defined(SERIAL9)
+    virtual size_t write(uint8_t);
+#endif // SERIAL9
     using Print::write; // pull in write(str) and write(buf, size) from Print
     operator bool() { return true; }
 
