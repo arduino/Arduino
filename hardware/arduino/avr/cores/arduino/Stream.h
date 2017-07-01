@@ -60,8 +60,9 @@ class Stream : public Print
     virtual int read() = 0;
     virtual int peek() = 0;
 
-    Stream() {_timeout=1000;}
-
+    Stream() {_timeout=1000, _startMillis=0;}
+    virtual ~Stream() {}
+    
 // parsing methods
 
   void setTimeout(unsigned long timeout);  // sets maximum milliseconds to wait for stream data, default is 1 second
