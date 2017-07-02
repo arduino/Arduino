@@ -58,7 +58,6 @@ void loop() {
   Serial.println(stringThree);    // prints "Sensor Value: 401" or whatever value analogRead(A0) has
 
   // adding a variable long integer to a string:
-  long currentTime = millis();
   stringOne = "millis() value: ";
   stringThree = stringOne + millis();
   Serial.println(stringThree);    // prints "The millis: 345345" or whatever value currentTime has
