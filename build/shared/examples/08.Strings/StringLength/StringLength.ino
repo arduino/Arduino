@@ -13,7 +13,7 @@
  */
 
 String txtMsg = "";                         // a string for incoming text
-int lastStringLength = txtMsg.length();     // previous length of the String
+unsigned int lastStringLength = txtMsg.length();     // previous length of the String
 
 void setup() {
   // Open serial communications and wait for port to open:
