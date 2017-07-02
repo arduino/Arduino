@@ -8,6 +8,9 @@
  A good test for this is to try it with a GPS receiver
  that sends out NMEA 0183 sentences.
 
+ NOTE: The serialEvent() feature is not available on the
+ Leonardo, Micro, or other ATmega32U4 based boards.
+ 
  Created 9 May 2011
  by Tom Igoe
 
