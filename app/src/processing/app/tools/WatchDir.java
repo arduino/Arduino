@@ -37,7 +37,10 @@ import static java.nio.file.LinkOption.*;
 import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
-import processing.app.EditorTab;
+import processing.app.Editor;
+import processing.app.Sketch;
+import processing.app.SketchFile;
+import processing.app.helpers.FileUtils;
 
 /**
  * Example to watch a directory (or tree) for changes to files.
@@ -109,7 +112,7 @@ public class WatchDir {
     /**
      * Process all events for keys queued to the watcher
      */
-    public void processEvents(EditorTab tab) {
+    public void processEvents(Editor editor) {
         for (;;) {
 
             // wait for key to be signalled
@@ -139,7 +142,26 @@ public class WatchDir {
                 Path child = dir.resolve(name);
 
                 // reload the tab content
-                tab.reload();
+                if (kind == ENTRY_CREATE) {
+					try {
+						String filename = name.toString();
+						FileUtils.SplitFile split = FileUtils.splitFilename(filename);
+						if (Sketch.EXTENSIONS.contains(split.extension.toLowerCase())) {
+							SketchFile sketch = editor.getSketch().addFile(filename);
+							editor.addTab(sketch, null);
+						}
+					} catch (IOException e) {}
+                } else if (kind == ENTRY_DELETE) {
+					editor.getTabs().forEach(tab -> {
+						try {
+							if (name.getFileName().toString() == tab.getSketchFile().getFileName()) {
+								editor.removeTab(tab.getSketchFile());
+							}
+						} catch (IOException x) {}
+					});
+				} else {
+					editor.getTabs().forEach(tab -> tab.reload());
+				}
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
