@@ -1676,7 +1676,7 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
    *          the given file.
    * @throws IOException
    */
-  public void addTab(SketchFile file, String contents) throws IOException {
+  public synchronized void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
         .addDocumentListener(new DocumentTextChangeListener(
@@ -1685,7 +1685,7 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
     reorderTabs();
   }
 
-  public void removeTab(SketchFile file) throws IOException {
+  public synchronized void removeTab(SketchFile file) throws IOException {
     int index = findTabIndex(file);
     tabs.remove(index);
   }

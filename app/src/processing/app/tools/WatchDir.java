@@ -38,6 +38,7 @@ import java.nio.file.attribute.*;
 import java.io.*;
 import java.util.*;
 import processing.app.Editor;
+import processing.app.EditorTab;
 import processing.app.Sketch;
 import processing.app.SketchFile;
 import processing.app.helpers.FileUtils;
@@ -152,16 +153,18 @@ public class WatchDir {
 						}
 					} catch (IOException e) {}
                 } else if (kind == ENTRY_DELETE) {
-					editor.getTabs().forEach(tab -> {
-						try {
-							if (name.getFileName().toString() == tab.getSketchFile().getFileName()) {
+					List<EditorTab> tabs = editor.getTabs();
+					Iterator<EditorTab> iter = tabs.iterator();
+					while (iter.hasNext()) {
+						EditorTab tab = iter.next();
+						if (name.getFileName().toString().equals(tab.getSketchFile().getFileName())) {
+							try {
 								editor.removeTab(tab.getSketchFile());
-							}
-						} catch (IOException x) {}
-					});
-				} else {
-					editor.getTabs().forEach(tab -> tab.reload());
+							} catch (IOException e) {}
+						}
+					}
 				}
+				editor.getTabs().forEach(tab -> tab.reload());
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
