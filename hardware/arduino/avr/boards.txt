@@ -94,9 +94,9 @@ diecimila.build.board=AVR_DUEMILANOVE
 diecimila.build.core=arduino
 diecimila.build.variant=standard
 
-## Arduino Duemilanove or Diecimila w/ ATmega328
-## ---------------------------------------------
-diecimila.menu.cpu.atmega328=ATmega328
+## Arduino Duemilanove or Diecimila w/ ATmega328P
+## ----------------------------------------------
+diecimila.menu.cpu.atmega328=ATmega328P
 
 diecimila.menu.cpu.atmega328.upload.maximum_size=30720
 diecimila.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -138,9 +138,9 @@ nano.build.board=AVR_NANO
 nano.build.core=arduino
 nano.build.variant=eightanaloginputs
 
-## Arduino Nano w/ ATmega328
-## -------------------------
-nano.menu.cpu.atmega328=ATmega328
+## Arduino Nano w/ ATmega328P
+## --------------------------
+nano.menu.cpu.atmega328=ATmega328P
 
 nano.menu.cpu.atmega328.upload.maximum_size=30720
 nano.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -450,9 +450,9 @@ mini.build.board=AVR_MINI
 mini.build.core=arduino
 mini.build.variant=eightanaloginputs
 
-## Arduino Mini w/ ATmega328
-## -------------------------
-mini.menu.cpu.atmega328=ATmega328
+## Arduino Mini w/ ATmega328P
+## --------------------------
+mini.menu.cpu.atmega328=ATmega328P
 
 mini.menu.cpu.atmega328.upload.maximum_size=28672
 mini.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -545,9 +545,9 @@ bt.build.board=AVR_BT
 bt.build.core=arduino
 bt.build.variant=eightanaloginputs
 
-## Arduino BT w/ ATmega328
-## -----------------------
-bt.menu.cpu.atmega328=ATmega328
+## Arduino BT w/ ATmega328P
+## ------------------------
+bt.menu.cpu.atmega328=ATmega328P
 bt.menu.cpu.atmega328.upload.maximum_size=28672
 bt.menu.cpu.atmega328.upload.maximum_data_size=2048
 
@@ -620,9 +620,9 @@ lilypad.build.board=AVR_LILYPAD
 lilypad.build.core=arduino
 lilypad.build.variant=standard
 
-## LilyPad Arduino w/ ATmega328
-## ----------------------------
-lilypad.menu.cpu.atmega328=ATmega328
+## LilyPad Arduino w/ ATmega328P
+## -----------------------------
+lilypad.menu.cpu.atmega328=ATmega328P
 
 lilypad.menu.cpu.atmega328.upload.maximum_size=30720
 lilypad.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -665,9 +665,9 @@ pro.build.board=AVR_PRO
 pro.build.core=arduino
 pro.build.variant=eightanaloginputs
 
-## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328
-## -------------------------------------------------
-pro.menu.cpu.16MHzatmega328=ATmega328 (5V, 16 MHz)
+## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328P
+## --------------------------------------------------
+pro.menu.cpu.16MHzatmega328=ATmega328P (5V, 16 MHz)
 
 pro.menu.cpu.16MHzatmega328.upload.maximum_size=30720
 pro.menu.cpu.16MHzatmega328.upload.maximum_data_size=2048
@@ -681,9 +681,9 @@ pro.menu.cpu.16MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 pro.menu.cpu.16MHzatmega328.build.mcu=atmega328p
 pro.menu.cpu.16MHzatmega328.build.f_cpu=16000000L
 
-## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328
-## --------------------------------------------------
-pro.menu.cpu.8MHzatmega328=ATmega328 (3.3V, 8 MHz)
+## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328P
+## ---------------------------------------------------
+pro.menu.cpu.8MHzatmega328=ATmega328P (3.3V, 8 MHz)
 
 pro.menu.cpu.8MHzatmega328.upload.maximum_size=30720
 pro.menu.cpu.8MHzatmega328.upload.maximum_data_size=2048
