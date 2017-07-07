@@ -40,6 +40,20 @@ import java.util.List;
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
+//added by PetuniaTech
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.URLDecoder;
+import java.util.Properties;
+
+import processing.app.helpers.PreferencesMap;
+//end of added
+
 public class Serial implements SerialPortEventListener {
 
   //PApplet parent;
@@ -58,6 +72,15 @@ public class Serial implements SerialPortEventListener {
   private static final int OUT_BUFFER_CAPACITY = 128;
   private ByteBuffer inFromSerial = ByteBuffer.allocate(IN_BUFFER_CAPACITY);
   private CharBuffer outToMessage = CharBuffer.allocate(OUT_BUFFER_CAPACITY);
+  
+  //added by PetuniaTech
+  private static final int DEFAULT_WICOM_INTERFACE_TCP_PORT = 14250;
+  private static final String CRLF = "\r\n";
+  private Socket clientSocket;
+  private DataOutputStream outToWiLoaderFX;
+  private String portName;
+  private boolean socketClosed = false;
+  //end of added
 
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
@@ -88,6 +111,13 @@ public class Serial implements SerialPortEventListener {
   }
 
   public static boolean touchForCDCReset(String iname) throws SerialException {
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(iname)){
+		  return true;
+	  }
+	  //end of added
+    
     SerialPort serialPort = new SerialPort(iname);
     try {
       serialPort.openPort();
@@ -114,6 +144,153 @@ public class Serial implements SerialPortEventListener {
     //parent.attach(this);
 
     resetDecoding(StandardCharsets.UTF_8);
+    
+    
+    //added by PetuniaTech
+	portName = iname;
+	if("WiCOM".equalsIgnoreCase(portName)){
+		
+		String path = null;
+		try{
+			PreferencesMap prefs = PreferencesData.getMap();
+			path = prefs.getOrExcept("runtime.ide.path");
+		}catch(Exception e){
+		}
+		
+		if(path == null){
+			System.err.println("Couldn't load runtime.ide.path from preferences. Default TCP port: " + String.valueOf(DEFAULT_WICOM_INTERFACE_TCP_PORT) + " will be used");
+		}
+		
+		String decodedWiLoaderFXPath = null;
+		int portNumber = DEFAULT_WICOM_INTERFACE_TCP_PORT;
+		if(path != null){
+			String configPath = path + File.separator + "hardware" + File.separator + "tools" + File.separator
+			+ "avr"  + File.separator + "etc" + File.separator + "wiloader.conf";
+			
+			String WiLoaderFXPath = path + File.separator + "hardware" + File.separator + "tools" + File.separator
+			+ "avr"  + File.separator + "bin" + File.separator + "WiLoaderFX";
+			
+			String decodedConfigPath = configPath;
+			try {
+				decodedConfigPath = URLDecoder.decode(configPath, "UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+			}
+			
+			try {
+				decodedWiLoaderFXPath = URLDecoder.decode(WiLoaderFXPath, "UTF-8");
+			} catch (UnsupportedEncodingException ex) {
+			}
+			
+			Properties WiLoaderConfig = new Properties();
+			boolean configFileLoaded = false;
+
+			try {
+				WiLoaderConfig.load(new FileInputStream(decodedConfigPath));
+				configFileLoaded = true;
+			} catch (IOException ex) {
+				configFileLoaded = false;
+				System.err.println("Error loading wiloader.conf file. Couldn't load " + decodedConfigPath + " Default TCP port: " + String.valueOf(DEFAULT_WICOM_INTERFACE_TCP_PORT) + " will be used");
+			}
+			
+			if (configFileLoaded) {
+				String portString = WiLoaderConfig.getProperty("WiCOMInterfacePort");
+				if (portString == null) {
+					System.err.println("Error loading WiCOMInterfacePort parameter from config file: " + decodedConfigPath +  " Default TCP port: " + String.valueOf(DEFAULT_WICOM_INTERFACE_TCP_PORT) + " will be used");
+				} else {
+					try {
+						portNumber = Integer.parseInt(portString);
+					} catch (Exception ex) {
+						System.err.println("Error parsing WiCOMInterfacePort parameter loaded from config file: " + decodedConfigPath +  " Default TCP port: " + String.valueOf(DEFAULT_WICOM_INTERFACE_TCP_PORT) + " will be used");
+					}
+				}
+			}
+		}
+		
+		// connect to WiLoaderFX software
+		clientSocket = new Socket();
+
+		try {
+			clientSocket.connect(new InetSocketAddress("127.0.0.1", portNumber), 2000);
+			outToWiLoaderFX = new DataOutputStream(clientSocket.getOutputStream());
+			//send baud rate
+			write(new byte[]{'B','A','U','D',':', (byte)(irate/65536),(byte)(irate/256),(byte)(irate)});
+		} catch (IOException ex) {
+			System.err.println("Error Connecting to WiLoaderFX Software using TCP port: " + String.valueOf(portNumber));
+			clientSocket = null;
+			//run WiLoaderFX software
+			if(decodedWiLoaderFXPath == null){
+				System.err.println("Please run WiLoaderFX Software, select a WiLoader and try again");
+			}else{
+				try {
+					System.err.println("Launching WiLoaderFX software: " + decodedWiLoaderFXPath);
+					Runtime.getRuntime().exec(new String[] {decodedWiLoaderFXPath});
+				} catch (Exception e) {
+					System.err.println("Couldn't run WiLoaderFX software. Please run WiLoaderFX, select a WiLoader and try again");
+				}
+			}
+			
+			throw new SerialException("Error Connecting to WiLoaderFX Software using TCP port: " + String.valueOf(portNumber));
+		}
+			
+		new Thread(
+		new Runnable() {
+			public void run() {
+			byte[] readBuffer;
+			InputStream inFromWiLoaderFX;
+			try {
+				inFromWiLoaderFX = clientSocket.getInputStream();
+				while (true) {
+					readBuffer = new byte[4096];
+					int responseLength = inFromWiLoaderFX.read(readBuffer);
+					if (responseLength > 0) {
+						
+						int next = 0;
+						while(next < responseLength) {
+							while(next < responseLength && outToMessage.hasRemaining()) {
+							int spaceInIn = inFromSerial.remaining();
+							int copyNow = responseLength - next < spaceInIn ? responseLength - next : spaceInIn;
+							inFromSerial.put(readBuffer, next, copyNow);
+							next += copyNow;
+							inFromSerial.flip();
+							bytesToStrings.decode(inFromSerial, outToMessage, false);
+							inFromSerial.compact();
+							}
+							outToMessage.flip();
+							if(outToMessage.hasRemaining()) {
+								char[] chars = new char[outToMessage.remaining()];
+								outToMessage.get(chars);
+								message(chars, chars.length);
+							}
+							outToMessage.clear();
+						}
+						
+					} else {
+						if(socketClosed == false){
+							System.err.println("Error Receiving data from WiLoaderFX Software. Please restart Serial Monitor");
+							clientSocket = null;
+							String err = "NETWORK RECEIVE OPERATION ERROR: PLEASE RESTART SERIAL MONITOR" + CRLF;
+							message(err.toCharArray(), err.length());
+						}
+						return;
+					}
+
+				}
+
+			} catch (IOException ex) {
+				if(socketClosed == false){
+					System.err.println("Error Receiving data from WiLoaderFX Software. Please restart Serial Monitor");
+					clientSocket = null;
+					String err = "NETWORK RECEIVE OPERATION ERROR: PLEASE RESTART SERIAL MONITOR" + CRLF;
+					message(err.toCharArray(), err.length());
+				}
+			}
+			}
+		}).start();
+				
+		return;
+		
+	}
+    //end of added
 
     int parity = SerialPort.PARITY_NONE;
     if (iparity == 'E') parity = SerialPort.PARITY_EVEN;
@@ -149,6 +326,24 @@ public class Serial implements SerialPortEventListener {
   }
 
   public void dispose() throws IOException {
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(portName)){
+		  socketClosed = true;
+		  if(clientSocket == null){
+			  return;
+		  }
+		  try {
+              clientSocket.close();
+          }catch (IOException e) {
+          }finally {
+              clientSocket = null;
+          }
+			
+		  return;
+	  }
+	  //end of added
+    
     if (port != null) {
       try {
         if (port.isOpened()) {
@@ -205,6 +400,25 @@ public class Serial implements SerialPortEventListener {
    * This will handle both ints, bytes and chars transparently.
    */
   public void write(int what) {  // will also cover char
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(portName)){
+		  if(clientSocket == null){
+			  String err = "CONNECTION ERROR" + CRLF;
+			  message(err.toCharArray(), err.length());
+			  return;
+		  }
+		  try {
+              outToWiLoaderFX.write(what & 0xff);
+		  } catch (IOException ex) {
+             System.err.println("Error Sending data to WiLoaderFX Software.");
+			       String err = "NETWORK DATA TRANSMISSION ERROR" + CRLF;
+			       message(err.toCharArray(), err.length());
+      }
+		  return;
+	  }
+	  //end of added
+    
     try {
       port.writeInt(what & 0xff);
     } catch (SerialPortException e) {
@@ -214,6 +428,25 @@ public class Serial implements SerialPortEventListener {
 
 
   public void write(byte bytes[]) {
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(portName)){
+		  if(clientSocket == null){
+			  String err = "CONNECTION ERROR" + CRLF;
+			  message(err.toCharArray(), err.length());
+			  return;
+		  }
+		  try {
+              outToWiLoaderFX.write(bytes);
+		  } catch (IOException ex) {
+            System.err.println("Error Sending data to WiLoaderFX Software.");
+			      String err = "NETWORK DATA TRANSMISSION ERROR" + CRLF;
+			      message(err.toCharArray(), err.length());
+      }
+		  return;
+	  }
+	  //end of added
+    
     try {
       port.writeBytes(bytes);
     } catch (SerialPortException e) {
@@ -239,6 +472,13 @@ public class Serial implements SerialPortEventListener {
   }
 
   public void setDTR(boolean state) {
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(portName)){
+		  return;
+	  }
+	  //end of added
+    
     try {
       port.setDTR(state);
     } catch (SerialPortException e) {
@@ -247,6 +487,13 @@ public class Serial implements SerialPortEventListener {
   }
 
   public void setRTS(boolean state) {
+    
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(portName)){
+		  return;
+	  }
+	  //end of added
+    
     try {
       port.setRTS(state);
     } catch (SerialPortException e) {

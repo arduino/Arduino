@@ -71,6 +71,13 @@ public class SerialUploader extends Uploader {
       prefs.putAll(boardPreferences);
     }
     String tool = prefs.getOrExcept("upload.tool");
+    
+    //added by PetuniaTech (use WiLoader command line interface if WiCOM is selected as serial port)
+	  if("WiCOM".equalsIgnoreCase(prefs.getOrExcept("serial.port"))){
+		  tool = "WiLoader";
+	  }
+	  //end of added
+    
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
@@ -127,6 +134,12 @@ public class SerialUploader extends Uploader {
     String t = prefs.get("upload.use_1200bps_touch");
     boolean doTouch = t != null && t.equals("true");
 
+    //added by PetuniaTech
+	  if("WiCOM".equalsIgnoreCase(prefs.getOrExcept("serial.port"))){
+		  doTouch = false;
+	  }
+	  //end of added
+    
     t = prefs.get("upload.wait_for_upload_port");
     boolean waitForUploadPort = (t != null) && t.equals("true");
 
@@ -378,6 +391,13 @@ public class SerialUploader extends Uploader {
     // Create configuration for bootloader tool
     PreferencesMap toolPrefs = new PreferencesMap();
     String tool = prefs.getOrExcept("bootloader.tool");
+    
+    //added by PetuniaTech (use WiLoader programmer (invoke WiLoader Interface tool instead of avrdude) to burn bootloader if WiLoader is selected as programmer)
+	  if("WiLoader".equalsIgnoreCase(programmer)){
+		  tool = "WiLoader";
+	  }
+	  //end of added
+    
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
       TargetPlatform platform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
