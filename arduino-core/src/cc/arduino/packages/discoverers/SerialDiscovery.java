@@ -73,6 +73,17 @@ public class SerialDiscovery implements Discovery {
   public void setSerialBoardPorts(List<BoardPort> newSerialBoardPorts) {
       serialBoardPorts.clear();
       serialBoardPorts.addAll(newSerialBoardPorts);
+      
+      //added by PetuniaTech (WiCOM will be listed on Port menu)
+	    BoardPort boardPort = new BoardPort();
+	    boardPort.setAddress("WiCOM");
+	    boardPort.setLabel("WiCOM");
+      boardPort.setProtocol("serial");
+	    boardPort.setVIDPID("0000", "0000");
+      boardPort.setISerial("");
+      boardPort.setOnlineStatus(true);
+	    serialBoardPorts.add(boardPort);
+	    //end of added
   }
 
   public void forceRefresh() {
