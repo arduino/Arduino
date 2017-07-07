@@ -104,3 +104,11 @@ atmel_ice.protocol=atmelice_isp
 atmel_ice.program.protocol=atmelice_isp
 atmel_ice.program.tool=avrdude
 atmel_ice.program.extra_params=-Pusb
+
+#WiLoader: WiFi Programmer added by PetuniaTech
+WiLoader.name=WiLoader
+WiLoader.communication=WiFi
+WiLoader.protocol=AVRISP
+WiLoader.program.protocol=AVRISP
+WiLoader.program.tool=WiLoader
+WiLoader.program.extra_params=-b2,000,000
