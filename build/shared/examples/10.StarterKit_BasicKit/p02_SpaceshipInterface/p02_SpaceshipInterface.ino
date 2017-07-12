@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 2  - Spaceship Interface
+ Project 2 - Spaceship Interface
 
  This sketch is written to accompany Project 2 in the
  Arduino Starter Kit

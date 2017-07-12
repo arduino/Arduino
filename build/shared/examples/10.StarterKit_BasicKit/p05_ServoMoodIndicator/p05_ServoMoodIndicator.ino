@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 5  - Servo Mood Indicator
+ Project 5 - Servo Mood Indicator
 
  This sketch is written to accompany Project 5 in the
  Arduino Starter Kit
@@ -18,7 +18,7 @@
  This example code is part of the public domain
  */
 
-// include the servo library
+// include the Servo library
 #include <Servo.h>
 
 Servo myServo;  // create a servo object
@@ -34,7 +34,7 @@ void setup() {
 
 void loop() {
   potVal = analogRead(potPin); // read the value of the potentiometer
-  // print out the value to the serial monitor
+  // print out the value to the Serial Monitor
   Serial.print("potVal: ");
   Serial.print(potVal);
 

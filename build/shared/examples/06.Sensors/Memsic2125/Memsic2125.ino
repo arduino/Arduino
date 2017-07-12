@@ -2,7 +2,7 @@
    Memsic2125
 
    Read the Memsic 2125 two-axis accelerometer.  Converts the
-   pulses output by the 2125 into milli-g's (1/1000 of earth's
+   pulses output by the 2125 into milli-g's (1/1000 of Earth's
    gravity) and prints them over the serial connection to the
    computer.
 
@@ -48,7 +48,7 @@ void loop() {
 
   // convert the pulse width into acceleration
   // accelerationX and accelerationY are in milli-g's:
-  // earth's gravity is 1000 milli-g's, or 1g.
+  // Earth's gravity is 1000 milli-g's, or 1 g.
   accelerationX = ((pulseX / 10) - 500) * 8;
   accelerationY = ((pulseY / 10) - 500) * 8;
 

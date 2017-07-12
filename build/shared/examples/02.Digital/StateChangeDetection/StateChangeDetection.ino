@@ -53,21 +53,21 @@ void loop() {
     // if the state has changed, increment the counter
     if (buttonState == HIGH) {
       // if the current state is HIGH then the button
-      // wend from off to on:
+      // went from off to on:
       buttonPushCounter++;
       Serial.println("on");
       Serial.print("number of button pushes:  ");
       Serial.println(buttonPushCounter);
     } else {
       // if the current state is LOW then the button
-      // wend from on to off:
+      // went from on to off:
       Serial.println("off");
     }
     // Delay a little bit to avoid bouncing
     delay(50);
   }
   // save the current state as the last state,
-  //for next time through the loop
+  // for next time through the loop
   lastButtonState = buttonState;
 
 

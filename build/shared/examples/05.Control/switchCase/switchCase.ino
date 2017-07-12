@@ -5,9 +5,9 @@
  statement allows you to choose from among a set of discrete values
  of a variable.  It's like a series of if statements.
 
- To see this sketch in action, but the board and sensor in a well-lit
- room, open the serial monitor, and and move your hand gradually
- down over the sensor.
+ To see this sketch in action, put the board and sensor in a well-lit
+ room, open the Serial Monitor, and move your hand gradually down
+ over the sensor.
 
  The circuit:
  * photoresistor from analog in 0 to +5V

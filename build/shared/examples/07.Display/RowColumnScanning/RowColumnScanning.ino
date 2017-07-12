@@ -7,7 +7,7 @@
  modified 30 Aug 2011
  by Tom Igoe
 
- This example works for the Lumex  LDM-24488NI Matrix. See
+ This example works for the Lumex LDM-24488NI Matrix. See
  http://sigma.octopart.com/140413/datasheet/Lumex-LDM-24488NI.pdf
  for the pin connections
 

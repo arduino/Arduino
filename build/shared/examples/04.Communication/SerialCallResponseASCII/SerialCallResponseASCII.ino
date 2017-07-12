@@ -54,7 +54,7 @@ void loop() {
     firstSensor = analogRead(A0);
     // read second analog input:
     secondSensor = analogRead(A1);
-    // read  switch, map it to 0 or 255L
+    // read switch, map it to 0 or 255
     thirdSensor = map(digitalRead(2), 0, 1, 0, 255);
     // send sensor values:
     Serial.print(firstSensor);
@@ -92,8 +92,8 @@ void setup() {
  // if using Processing 2.1 or later, use Serial.printArray()
   println(Serial.list());
 
-  // I know that the first port in the serial list on my mac
-  // is always my  Arduino module, so I open Serial.list()[0].
+  // I know that the first port in the serial list on my Mac
+  // is always my Arduino board, so I open Serial.list()[0].
   // Change the 0 to the appropriate number of the serial port
   // that your microcontroller is attached to.
   myPort = new Serial(this, Serial.list()[0], 9600);
@@ -112,7 +112,7 @@ void draw() {
   ellipse(xpos, ypos, 20, 20);
 }
 
-// serialEvent  method is run automatically by the Processing applet
+// serialEvent method is run automatically by the Processing applet
 // whenever the buffer reaches the  byte value set in the bufferUntil()
 // method in the setup():
 

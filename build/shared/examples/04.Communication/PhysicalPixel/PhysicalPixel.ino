@@ -6,7 +6,7 @@
  it receives the character 'H', and turns off the LED when it
  receives the character 'L'.
 
- The data can be sent from the Arduino serial monitor, or another
+ The data can be sent from the Arduino Serial Monitor, or another
  program like Processing (see code below), Flash (via a serial-net
  proxy), PD, or Max/MSP.
 
@@ -51,7 +51,7 @@ void loop() {
 
 /* Processing code for this example
 
- // mouseover serial
+ // mouse over serial
 
  // Demonstrates how to send data to the Arduino I/O board, in order to
  // turn ON a light if the mouse is over a square and turn it off
@@ -108,7 +108,7 @@ void loop() {
  port.write('H');
  }
  else {
- // return the box to it's inactive state:
+ // return the box to its inactive state:
  stroke(153);
  fill(153);
  // send an 'L' to turn the LED off:

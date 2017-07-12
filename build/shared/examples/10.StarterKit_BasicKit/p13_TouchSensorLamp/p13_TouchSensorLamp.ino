@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 13  - Touch Sensor Lamp
+ Project 13 - Touch Sensor Lamp
 
  This sketch is written to accompany Project 13 in the
  Arduino Starter Kit

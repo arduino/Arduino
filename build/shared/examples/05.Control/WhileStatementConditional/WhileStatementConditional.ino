@@ -4,13 +4,13 @@
  This example demonstrates the use of  while() statements.
 
  While the pushbutton is pressed, the sketch runs the calibration routine.
- The  sensor readings during the while loop define the minimum and maximum
- of expected values from the photo resistor.
+ The sensor readings during the while loop define the minimum and maximum
+ of expected values from the photoresistor.
 
  This is a variation on the calibrate example.
 
  The circuit:
- * photo resistor connected from +5V to analog in pin 0
+ * photoresistor connected from +5V to analog in pin 0
  * 10K resistor connected from ground to analog in pin 0
  * LED connected from digital pin 9 to ground through 220 ohm resistor
  * pushbutton attached from pin 2 to +5V

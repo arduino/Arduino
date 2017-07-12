@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 7  - Keyboard
+ Project 7 - Keyboard
 
  This sketch is written to accompany Project 7 in the
  Arduino Starter Kit

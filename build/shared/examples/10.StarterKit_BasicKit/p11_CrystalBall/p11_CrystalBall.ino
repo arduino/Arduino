@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 11  - Crystal Ball
+ Project 11 - Crystal Ball
 
  This sketch is written to accompany Project 11 in the
  Arduino Starter Kit
@@ -27,13 +27,13 @@
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-// set up a constant for the tilt switchPin
+// set up a constant for the tilt switch pin
 const int switchPin = 6;
 
-// variable to hold the value of the switchPin
+// variable to hold the value of the switch pin
 int switchState = 0;
 
-// variable to hold previous value of the switchpin
+// variable to hold previous value of the switch pin
 int prevSwitchState = 0;
 
 // a variable to choose which reply from the crystal ball
@@ -76,7 +76,7 @@ void loop() {
       // move the cursor to the second line
       lcd.setCursor(0, 1);
 
-      // choose a saying to print baed on the value in reply
+      // choose a saying to print based on the value in reply
       switch (reply) {
         case 0:
           lcd.print("Yes");

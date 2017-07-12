@@ -10,7 +10,7 @@
   it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
   the correct LED pin independent of which board is used.
   If you want to know what pin the on-board LED is connected to on your Arduino model, check
-  the Technical Specs of your board  at https://www.arduino.cc/en/Main/Products
+  the Technical Specs of your board at https://www.arduino.cc/en/Main/Products
 
  created 2005
  by David A. Mellis
@@ -27,17 +27,17 @@
  http://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
  */
 
-// constants won't change. Used here to set a pin number :
+// constants won't change. Used here to set a pin number:
 const int ledPin =  LED_BUILTIN;// the number of the LED pin
 
-// Variables will change :
+// Variables will change:
 int ledState = LOW;             // ledState used to set the LED
 
 // Generally, you should use "unsigned long" for variables that hold time
 // The value will quickly become too large for an int to store
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
-// constants won't change :
+// constants won't change:
 const long interval = 1000;           // interval at which to blink (milliseconds)
 
 void setup() {

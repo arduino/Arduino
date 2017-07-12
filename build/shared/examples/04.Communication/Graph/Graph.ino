@@ -8,7 +8,7 @@
  a USB cable. Bytes are sent one after another (serially) from the Arduino
  to the computer.
 
- You can use the Arduino serial monitor to view the sent data, or it can
+ You can use the Arduino Serial Monitor to view the sent data, or it can
  be read by Processing, PD, Max/MSP, or any other program capable of reading
  data from a serial port.  The Processing code below graphs the data received
  so you can see the value of the analog input changing over time.
@@ -67,15 +67,15 @@ void setup () {
   // if using Processing 2.1 or later, use Serial.printArray()
   println(Serial.list());
 
-  // I know that the first port in the serial list on my mac
-  // is always my  Arduino, so I open Serial.list()[0].
+  // I know that the first port in the serial list on my Mac
+  // is always my Arduino, so I open Serial.list()[0].
   // Open whatever port is the one you're using.
   myPort = new Serial(this, Serial.list()[0], 9600);
 
   // don't generate a serialEvent() unless you get a newline character:
   myPort.bufferUntil('\n');
 
-  // set inital background:
+  // set initial background:
   background(0);
 }
 void draw () {

@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 4  - Color Mixing Lamp
+ Project 4 - Color Mixing Lamp
 
  This sketch is written to accompany Project 3 in the
  Arduino Starter Kit
@@ -62,7 +62,7 @@ void loop() {
   // read the value from the blue-filtered photoresistor:
   blueSensorValue = analogRead(blueSensorPin);
 
-  // print out the values to the serial monitor
+  // print out the values to the Serial Monitor
   Serial.print("raw sensor Values \t red: ");
   Serial.print(redSensorValue);
   Serial.print("\t green: ");
@@ -80,7 +80,7 @@ void loop() {
   greenValue = greenSensorValue / 4;
   blueValue = blueSensorValue / 4;
 
-  //  print out the mapped values
+  // print out the mapped values
   Serial.print("Mapped sensor Values \t red: ");
   Serial.print(redValue);
   Serial.print("\t green: ");

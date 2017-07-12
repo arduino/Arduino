@@ -51,7 +51,7 @@ void loop() {
     delay(10);
     // read second analog input, divide by 4 to make the range 0-255:
     secondSensor = analogRead(1) / 4;
-    // read  switch, map it to 0 or 255L
+    // read switch, map it to 0 or 255L
     thirdSensor = map(digitalRead(2), 0, 1, 0, 255);
     // send sensor values:
     Serial.write(firstSensor);
@@ -94,8 +94,8 @@ void setup() {
   // if using Processing 2.1 or later, use Serial.printArray()
   println(Serial.list());
 
-  // I know that the first port in the serial list on my mac
-  // is always my  FTDI adaptor, so I open Serial.list()[0].
+  // I know that the first port in the serial list on my Mac
+  // is always my FTDI adaptor, so I open Serial.list()[0].
   // On Windows machines, this generally opens COM1.
   // Open whatever port is the one you're using.
   String portName = Serial.list()[0];

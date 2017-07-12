@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 9  - Motorized Pinwheel
+ Project 9 - Motorized Pinwheel
 
  This sketch is written to accompany Project 9 in the
  Arduino Starter Kit

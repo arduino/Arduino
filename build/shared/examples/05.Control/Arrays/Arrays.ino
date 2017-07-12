@@ -1,7 +1,7 @@
 /*
   Arrays
 
- Demonstrates the use of  an array to hold pin numbers
+ Demonstrates the use of an array to hold pin numbers
  in order to iterate over the pins in a sequence.
  Lights multiple LEDs in sequence, then in reverse.
 

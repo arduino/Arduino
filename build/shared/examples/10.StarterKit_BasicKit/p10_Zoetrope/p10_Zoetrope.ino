@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 10  - Zoetrope
+ Project 10 - Zoetrope
 
  This sketch is written to accompany Project 10 in the
  Arduino Starter Kit
@@ -30,7 +30,7 @@ const int onOffSwitchStateSwitchPin = 5; // connected to the switch for turning 
 const int potPin = A0;  // connected to the potentiometer's output
 
 // create some variables to hold values from your inputs
-int onOffSwitchState = 0;  // current state of the On/Off switch
+int onOffSwitchState = 0;  // current state of the on/off switch
 int previousOnOffSwitchState = 0; // previous position of the on/off switch
 int directionSwitchState = 0;  // current state of the direction switch
 int previousDirectionSwitchState = 0;  // previous state of the direction switch
@@ -40,7 +40,7 @@ int motorSpeed = 0; // speed of the motor
 int motorDirection = 1; // current direction of the motor
 
 void setup() {
-  // intialize the inputs and outputs
+  // initialize the inputs and outputs
   pinMode(directionSwitchPin, INPUT);
   pinMode(onOffSwitchStateSwitchPin, INPUT);
   pinMode(controlPin1, OUTPUT);
@@ -97,7 +97,7 @@ void loop() {
     //turn the motor off
     analogWrite(enablePin, 0);
   }
-  // save the current On/Offswitch state as the previous
+  // save the current on/off switch state as the previous
   previousDirectionSwitchState = directionSwitchState;
   // save the current switch state as the previous
   previousOnOffSwitchState = onOffSwitchState;
