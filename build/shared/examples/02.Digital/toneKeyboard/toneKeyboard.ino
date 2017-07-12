@@ -4,9 +4,9 @@
  Plays a pitch that changes based on a changing analog input
 
  circuit:
- * 3 force-sensing resistors from +5V to analog in 0 through 5
- * 3 10K resistors from analog in 0 through 5 to ground
- * 8-ohm speaker on digital pin 8
+ - 3 force-sensing resistors from +5V to analog in 0 through 5
+ - 3 10K resistors from analog in 0 through 5 to ground
+ - 8-ohm speaker on digital pin 8
 
  created 21 Jan 2010
  modified 9 Apr 2012

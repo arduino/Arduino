@@ -13,8 +13,8 @@
  To wake: Spacebar.
 
  Circuit:
- * Arduino Leonardo or Micro
- * wire to connect D2 to ground.
+ - Arduino Leonardo or Micro
+ - wire to connect D2 to ground.
 
  created 6 Mar 2012
  modified 27 Mar 2012

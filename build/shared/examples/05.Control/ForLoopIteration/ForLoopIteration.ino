@@ -5,7 +5,7 @@
  Lights multiple LEDs in sequence, then in reverse.
 
  The circuit:
- * LEDs from pins 2 through 7 to ground
+ - LEDs from pins 2 through 7 to ground
 
  created 2006
  by David A. Mellis

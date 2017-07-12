@@ -5,8 +5,8 @@
  digital input on pin 2 and prints the results to the Serial Monitor.
 
  The circuit:
- * Momentary switch attached from pin 2 to ground
- * Built-in LED on pin 13
+ - Momentary switch attached from pin 2 to ground
+ - Built-in LED on pin 13
 
  Unlike pinMode(INPUT), there is no pull-down resistor necessary. An internal
  20K-ohm resistor is pulled to 5V. This configuration causes the input to

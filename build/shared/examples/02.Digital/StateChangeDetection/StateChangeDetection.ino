@@ -10,9 +10,9 @@
  and on to off.
 
  The circuit:
- * pushbutton attached to pin 2 from +5V
- * 10K resistor attached to pin 2 from ground
- * LED attached from pin 13 to ground (or use the built-in LED on
+ - pushbutton attached to pin 2 from +5V
+ - 10K resistor attached to pin 2 from ground
+ - LED attached from pin 13 to ground (or use the built-in LED on
    most Arduino boards)
 
  created  27 Sep 2005

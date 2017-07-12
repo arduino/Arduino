@@ -7,9 +7,9 @@
    the distance of the object from the sensor.
 
    The circuit:
-	* +V connection of the PING))) attached to +5V
-	* GND connection of the PING))) attached to ground
-	* SIG connection of the PING))) attached to digital pin 7
+	- +V connection of the PING))) attached to +5V
+	- GND connection of the PING))) attached to ground
+	- SIG connection of the PING))) attached to digital pin 7
 
    http://www.arduino.cc/en/Tutorial/Ping
 

@@ -12,8 +12,8 @@
  maximum low and listen for anything higher as the new maximum.
 
  The circuit:
- * Analog sensor (potentiometer will do) attached to analog input 0
- * LED attached from digital pin 9 to ground
+ - Analog sensor (potentiometer will do) attached to analog input 0
+ - LED attached from digital pin 9 to ground
 
  created 29 Oct 2008
  By David A Mellis

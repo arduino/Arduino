@@ -11,7 +11,7 @@
  proxy), PD, or Max/MSP.
 
  The circuit:
- * LED connected from digital pin 13 to ground
+ - LED connected from digital pin 13 to ground
 
  created 2006
  by David A. Mellis

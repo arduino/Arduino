@@ -5,7 +5,7 @@
   This sketch was written for the Arduino Mega, and will not work on other boards.
 
   The circuit:
-  * LEDs attached from pins 2 through 13 to ground.
+  - LEDs attached from pins 2 through 13 to ground.
 
   created 8 Feb 2009
   by Tom Igoe

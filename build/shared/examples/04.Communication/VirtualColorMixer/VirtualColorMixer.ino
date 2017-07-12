@@ -4,7 +4,7 @@
  take those three values and use them to change the background color of the screen.
 
  The circuit:
- * potentiometers attached to analog inputs 0, 1, and 2
+ - potentiometers attached to analog inputs 0, 1, and 2
 
  http://www.arduino.cc/en/Tutorial/VirtualColorMixer
 

@@ -6,8 +6,8 @@
  a second pushbutton to click the left mouse button
 
  Hardware:
- * 2-axis joystick connected to pins A0 and A1
- * pushbuttons connected to pin D2 and D3
+ - 2-axis joystick connected to pins A0 and A1
+ - pushbuttons connected to pin D2 and D3
 
  The mouse movement is always relative. This sketch reads
  two analog inputs that range from 0 to 1023 (or less on either end)

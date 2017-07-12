@@ -7,7 +7,7 @@
   continually averages them.
 
   The circuit:
-    * Analog sensor (potentiometer will do) attached to analog input 0
+    - Analog sensor (potentiometer will do) attached to analog input 0
 
   Created 22 April 2007
   By David A. Mellis  <dam@mellis.org>

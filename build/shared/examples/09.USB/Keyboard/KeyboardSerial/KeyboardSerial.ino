@@ -8,7 +8,7 @@
  if you send a, you get b, send A you get B, and so forth.
 
  The circuit:
- * none
+ - none
 
  created 21 Oct 2011
  modified 27 Mar 2012

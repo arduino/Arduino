@@ -4,7 +4,7 @@
  Plays multiple tones on multiple pins in sequence
 
  circuit:
- * 3 8-ohm speaker on digital pins 6, 7, and 8
+ - 3 8-ohm speaker on digital pins 6, 7, and 8
 
  created 8 March 2010
  by Tom Igoe
