@@ -1,1 +1,1 @@
-Look for the first/last instance of a character in a string. 
+Look for the first/last instance of a character in a String. 
