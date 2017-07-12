@@ -56,8 +56,3 @@ void loop() {
   }
   delay(1);        // delay in between reads for stability
 }
-
-
-
-
-

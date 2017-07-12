@@ -33,5 +33,3 @@ void loop() {
   digitalWrite(optoPin, LOW);  // pull pin 2 low until you're ready to activate again
   delay(21000);                // wait for 21 seconds
 }
-
-

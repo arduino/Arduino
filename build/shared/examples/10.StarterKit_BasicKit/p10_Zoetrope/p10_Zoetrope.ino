@@ -102,7 +102,3 @@ void loop() {
   // save the current switch state as the previous
   previousOnOffSwitchState = onOffSwitchState;
 }
-
-
-
-

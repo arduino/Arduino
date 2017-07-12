@@ -95,4 +95,3 @@ void loop() {
   analogWrite(greenLEDPin, greenValue);
   analogWrite(blueLEDPin, blueValue);
 }
-

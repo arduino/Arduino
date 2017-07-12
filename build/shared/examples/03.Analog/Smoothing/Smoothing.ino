@@ -65,5 +65,3 @@ void loop() {
   Serial.println(average);
   delay(1);        // delay in between reads for stability
 }
-
-

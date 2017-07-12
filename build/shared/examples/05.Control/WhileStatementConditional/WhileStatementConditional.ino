@@ -86,5 +86,3 @@ void calibrate() {
     sensorMin = sensorValue;
   }
 }
-
-
