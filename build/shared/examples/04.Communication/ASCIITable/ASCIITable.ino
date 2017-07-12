@@ -2,8 +2,8 @@
   ASCII table
 
  Prints out byte values in all possible formats:
- * as raw binary values
- * as ASCII-encoded decimal, hex, octal, and binary values
+ - as raw binary values
+ - as ASCII-encoded decimal, hex, octal, and binary values
 
  For more on ASCII, see http://www.asciitable.com and http://en.wikipedia.org/wiki/ASCII
 

@@ -7,12 +7,12 @@
  regardless of the level.
 
  The circuit:
- * potentiometer connected to analog pin 0.
+ - potentiometer connected to analog pin 0.
  Center pin of the potentiometer goes to the analog pin.
  side pins of the potentiometer go to +5V and ground
- * LED connected from digital pin 13 to ground
+ - LED connected from digital pin 13 to ground
 
- * Note: On most Arduino boards, there is already an LED on the board
+ - Note: On most Arduino boards, there is already an LED on the board
  connected to pin 13, so you don't need any extra components for this example.
 
  created 17 Jan 2009

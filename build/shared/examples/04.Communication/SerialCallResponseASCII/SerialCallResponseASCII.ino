@@ -12,8 +12,8 @@
  Thanks to Greg Shakar and Scott Fitzgerald for the improvements
 
   The circuit:
- * potentiometers attached to analog inputs 0 and 1
- * pushbutton attached to digital I/O 2
+ - potentiometers attached to analog inputs 0 and 1
+ - pushbutton attached to digital I/O 2
 
 
 

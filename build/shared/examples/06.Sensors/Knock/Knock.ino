@@ -6,9 +6,9 @@
    "knock" to the serial port, and toggles the LED on pin 13.
 
    The circuit:
-	* + connection of the piezo attached to analog in 0
-	* - connection of the piezo attached to ground
-	* 1-megohm resistor attached from analog in 0 to ground
+	- + connection of the piezo attached to analog in 0
+	- - connection of the piezo attached to ground
+	- 1-megohm resistor attached from analog in 0 to ground
 
    http://www.arduino.cc/en/Tutorial/Knock
 

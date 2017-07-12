@@ -6,10 +6,10 @@
  It parses them into ints, and uses those to fade an RGB LED.
 
  Circuit: Common-Cathode RGB LED wired like so:
- * Red anode: digital pin 3
- * Green anode: digital pin 5
- * Blue anode: digital pin 6
- * Cathode : GND
+ - Red anode: digital pin 3
+ - Green anode: digital pin 5
+ - Blue anode: digital pin 6
+ - Cathode : GND
 
  created 13 Apr 2012
  by Tom Igoe

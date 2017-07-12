@@ -6,14 +6,14 @@
  the value obtained by analogRead().
 
  The circuit:
- * Potentiometer attached to analog input 0
- * center pin of the potentiometer to the analog pin
- * one side pin (either one) to ground
- * the other side pin to +5V
- * LED anode (long leg) attached to digital output 13
- * LED cathode (short leg) attached to ground
+ - Potentiometer attached to analog input 0
+ - center pin of the potentiometer to the analog pin
+ - one side pin (either one) to ground
+ - the other side pin to +5V
+ - LED anode (long leg) attached to digital output 13
+ - LED cathode (short leg) attached to ground
 
- * Note: because most Arduinos have a built-in LED attached
+ - Note: because most Arduinos have a built-in LED attached
  to pin 13 on the board, the LED is optional.
 
 

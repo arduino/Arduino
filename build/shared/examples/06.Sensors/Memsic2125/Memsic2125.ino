@@ -7,10 +7,10 @@
    computer.
 
    The circuit:
-	* X output of accelerometer to digital pin 2
-	* Y output of accelerometer to digital pin 3
-	* +V of accelerometer to +5V
-	* GND of accelerometer to ground
+	- X output of accelerometer to digital pin 2
+	- Y output of accelerometer to digital pin 3
+	- +V of accelerometer to +5V
+	- GND of accelerometer to ground
 
    http://www.arduino.cc/en/Tutorial/Memsic2125
 

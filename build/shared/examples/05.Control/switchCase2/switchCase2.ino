@@ -10,7 +10,7 @@
  the LEDs off.
 
  The circuit:
- * 5 LEDs attached to digital pins 2 through 6 through 220-ohm resistors
+ - 5 LEDs attached to digital pins 2 through 6 through 220-ohm resistors
 
  created 1 Jul 2009
  by Tom Igoe

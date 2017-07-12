@@ -7,11 +7,11 @@
  noise).
 
  The circuit:
- * LED attached from pin 13 to ground
- * pushbutton attached from pin 2 to +5V
- * 10K resistor attached from pin 2 to ground
+ - LED attached from pin 13 to ground
+ - pushbutton attached from pin 2 to +5V
+ - 10K resistor attached from pin 2 to ground
 
- * Note: On most Arduino boards, there is already an LED on the board
+ - Note: On most Arduino boards, there is already an LED on the board
  connected to pin 13, so you don't need any extra components for this example.
 
 

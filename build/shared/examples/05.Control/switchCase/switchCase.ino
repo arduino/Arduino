@@ -10,8 +10,8 @@
  over the sensor.
 
  The circuit:
- * photoresistor from analog in 0 to +5V
- * 10K resistor from analog in 0 to ground
+ - photoresistor from analog in 0 to +5V
+ - 10K resistor from analog in 0 to ground
 
  created 1 Jul 2009
  modified 9 Apr 2012

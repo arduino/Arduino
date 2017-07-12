@@ -9,7 +9,7 @@
  contiguous, here the pins can be in any random order.
 
  The circuit:
- * LEDs from pins 2 through 7 to ground
+ - LEDs from pins 2 through 7 to ground
 
  created 2006
  by David A. Mellis
