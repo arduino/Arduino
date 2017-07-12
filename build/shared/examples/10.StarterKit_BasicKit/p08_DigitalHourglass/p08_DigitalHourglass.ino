@@ -6,17 +6,17 @@
   Arduino Starter Kit
 
   Parts required:
-  10 kilohm resistor
-  six 220 ohm resistors
-  six LEDs
-  tilt switch
+  - 10 kilohm resistor
+  - six 220 ohm resistors
+  - six LEDs
+  - tilt switch
 
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // named constant for the switch pin

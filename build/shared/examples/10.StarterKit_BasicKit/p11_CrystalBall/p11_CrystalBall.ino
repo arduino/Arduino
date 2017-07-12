@@ -6,19 +6,18 @@
   Arduino Starter Kit
 
   Parts required:
-  220 ohm resistor
-  10 kilohm resistor
-  10 kilohm potentiometer
-  16x2 LCD screen
-  tilt switch
+  - 220 ohm resistor
+  - 10 kilohm resistor
+  - 10 kilohm potentiometer
+  - 16x2 LCD screen
+  - tilt switch
 
-
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // include the library code:

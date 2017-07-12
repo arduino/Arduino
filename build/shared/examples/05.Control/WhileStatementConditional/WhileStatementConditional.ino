@@ -11,10 +11,10 @@
 
   The circuit:
   - photoresistor connected from +5V to analog in pin 0
-  - 10K resistor connected from ground to analog in pin 0
+  - 10 kilohm resistor connected from ground to analog in pin 0
   - LED connected from digital pin 9 to ground through 220 ohm resistor
   - pushbutton attached from pin 2 to +5V
-  - 10K resistor attached from pin 2 to ground
+  - 10 kilohm resistor attached from pin 2 to ground
 
   created 17 Jan 2009
   modified 30 Aug 2011
@@ -25,7 +25,6 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/WhileLoop
-
 */
 
 

@@ -5,20 +5,19 @@
   digital input on pin 2 and prints the results to the Serial Monitor.
 
   The circuit:
-  - Momentary switch attached from pin 2 to ground
-  - Built-in LED on pin 13
+  - momentary switch attached from pin 2 to ground
+  - built-in LED on pin 13
 
   Unlike pinMode(INPUT), there is no pull-down resistor necessary. An internal
   20K-ohm resistor is pulled to 5V. This configuration causes the input to
   read HIGH when the switch is open, and LOW when it is closed.
 
-  created 14 March 2012
+  created 14 Mar 2012
   by Scott Fitzgerald
 
+  This example code is in the public domain.
+
   http://www.arduino.cc/en/Tutorial/InputPullupSerial
-
-  This example code is in the public domain
-
 */
 
 void setup() {

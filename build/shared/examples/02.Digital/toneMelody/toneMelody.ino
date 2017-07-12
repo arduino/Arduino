@@ -4,7 +4,7 @@
   Plays a melody
 
   circuit:
-  - 8-ohm speaker on digital pin 8
+  - 8 ohm speaker on digital pin 8
 
   created 21 Jan 2010
   modified 30 Aug 2011
@@ -13,8 +13,8 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Tone
-
 */
+
 #include "pitches.h"
 
 // notes in the melody:

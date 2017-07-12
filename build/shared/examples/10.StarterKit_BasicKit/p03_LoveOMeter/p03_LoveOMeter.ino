@@ -6,16 +6,16 @@
   Arduino Starter Kit
 
   Parts required:
-  1 TMP36 temperature sensor
-  3 red LEDs
-  3 220 ohm resistors
+  - one TMP36 temperature sensor
+  - three red LEDs
+  - three 220 ohm resistors
 
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // named constant for the pin the sensor is connected to

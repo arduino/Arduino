@@ -1,4 +1,5 @@
-/* Blink without Delay
+/*
+  Blink without Delay
 
   Turns on and off a light emitting diode (LED) connected to a digital
   pin, without using the delay() function.  This means that other code
@@ -7,10 +8,10 @@
   The circuit:
   - Use the onboard LED.
   - Note: Most Arduinos have an on-board LED you can control. On the UNO, MEGA and ZERO
-   it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
-   the correct LED pin independent of which board is used.
-   If you want to know what pin the on-board LED is connected to on your Arduino model, check
-   the Technical Specs of your board at https://www.arduino.cc/en/Main/Products
+    it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN is set to
+    the correct LED pin independent of which board is used.
+    If you want to know what pin the on-board LED is connected to on your Arduino model, check
+    the Technical Specs of your board at https://www.arduino.cc/en/Main/Products
 
   created 2005
   by David A. Mellis
@@ -20,7 +21,6 @@
   by Scott Fitzgerald
   modified 9 Jan 2017
   by Arturo Guadalupi
-
 
   This example code is in the public domain.
 

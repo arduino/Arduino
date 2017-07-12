@@ -6,20 +6,20 @@
   Arduino Starter Kit
 
   Parts required:
-  two 10 kilohm resistors
-  2 momentary pushbuttons
-  one 10 kilohm potentiometer
-  motor
-  9V battery
-  H-Bridge
+  - two 10 kilohm resistors
+  - two momentary pushbuttons
+  - one 10 kilohm potentiometer
+  - motor
+  - 9V battery
+  - H-Bridge
 
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
   Thanks to Federico Vanzati for improvements
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 const int controlPin1 = 2; // connected to pin 7 on the H-bridge

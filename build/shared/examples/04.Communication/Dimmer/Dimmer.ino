@@ -7,8 +7,8 @@
   reads these bytes and uses them to set the brightness of the LED.
 
   The circuit:
-  LED attached from digital pin 9 to ground.
-  Serial connection to Processing, Max/MSP, or another serial application
+  - LED attached from digital pin 9 to ground.
+  - Serial connection to Processing, Max/MSP, or another serial application
 
   created 2006
   by David A. Mellis
@@ -18,7 +18,6 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Dimmer
-
 */
 
 const int ledPin = 9;      // the pin that the LED is attached to

@@ -6,20 +6,20 @@
   Arduino Starter Kit
 
   Parts required:
-  1 RGB LED
-  three 10 kilohm resistors
-  3 220 ohm resistors
-  3 photoresistors
-  red green and blue colored gels
+  - one RGB LED
+  - three 10 kilohm resistors
+  - three 220 ohm resistors
+  - three photoresistors
+  - red green and blue colored gels
 
-  Created 13 September 2012
-  Modified 14 November 2012
+  created 13 Sep 2012
+  modified 14 Nov 2012
   by Scott Fitzgerald
   Thanks to Federico Vanzati for improvements
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 const int greenLEDPin = 9;    // LED connected to digital pin 9

@@ -6,19 +6,19 @@
   Arduino Starter Kit
 
   Parts required:
-  10 kilohm resistor
-  pushbutton
-  motor
-  9V battery
-  IRF520 MOSFET
-  1N4007 diode
+  - 10 kilohm resistor
+  - pushbutton
+  - motor
+  - 9V battery
+  - IRF520 MOSFET
+  - 1N4007 diode
 
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // named constants for the switch and motor pins

@@ -7,12 +7,10 @@
   computer.
 
   The circuit:
-  - X output of accelerometer to digital pin 2
-  - Y output of accelerometer to digital pin 3
-  - +V of accelerometer to +5V
-  - GND of accelerometer to ground
-
-  http://www.arduino.cc/en/Tutorial/Memsic2125
+	- X output of accelerometer to digital pin 2
+	- Y output of accelerometer to digital pin 3
+	- +V of accelerometer to +5V
+	- GND of accelerometer to ground
 
   created 6 Nov 2008
   by David A. Mellis
@@ -21,6 +19,7 @@
 
   This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/Memsic2125
 */
 
 // these constants won't change:

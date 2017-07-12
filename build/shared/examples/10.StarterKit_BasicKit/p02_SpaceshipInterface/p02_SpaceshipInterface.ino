@@ -6,18 +6,18 @@
   Arduino Starter Kit
 
   Parts required:
-  1 green LED
-  2 red LEDs
-  pushbutton
-  10 kilohm resistor
-  3 220 ohm resistors
+  - one green LED
+  - two red LEDs
+  - pushbutton
+  - 10 kilohm resistor
+  - three 220 ohm resistors
 
-  Created 13 September 2012
+  created 13 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // Create a global variable to hold the

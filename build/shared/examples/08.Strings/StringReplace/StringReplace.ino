@@ -3,13 +3,13 @@
 
   Examples of how to replace characters or substrings of a String
 
-  created 27 July 2010
+  created 27 Jul 2010
   modified 2 Apr 2012
   by Tom Igoe
 
-  http://www.arduino.cc/en/Tutorial/StringReplace
-
   This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/StringReplace
 */
 
 void setup() {

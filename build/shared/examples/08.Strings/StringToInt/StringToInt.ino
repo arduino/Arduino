@@ -5,12 +5,14 @@
   the string to a number if the characters are digits.
 
   The circuit:
-  No external components needed.
+  - No external components needed.
 
   created 29 Nov 2010
   by Tom Igoe
 
   This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/StringToInt
 */
 
 String inString = "";    // string to hold input

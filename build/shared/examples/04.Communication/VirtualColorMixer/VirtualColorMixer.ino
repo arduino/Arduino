@@ -6,14 +6,14 @@
   The circuit:
   - potentiometers attached to analog inputs 0, 1, and 2
 
-  http://www.arduino.cc/en/Tutorial/VirtualColorMixer
-
   created 2 Dec 2006
   by David A. Mellis
   modified 30 Aug 2011
   by Tom Igoe and Scott Fitzgerald
 
   This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/VirtualColorMixer
 */
 
 const int redPin = A0;		// sensor to control red color
@@ -34,7 +34,7 @@ void loop() {
 
 /* Processing code for this example
 
-  //  This example code is in the public domain.
+  // This example code is in the public domain.
 
   import processing.serial.*;
 

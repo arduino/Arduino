@@ -1,7 +1,7 @@
 // ArduinoISP
 // Copyright (c) 2008-2011 Randall Bohn
 // If you require a license, see
-//     http://www.opensource.org/licenses/bsd-license.php
+// http://www.opensource.org/licenses/bsd-license.php
 //
 // This sketch turns the Arduino into a AVRISP
 // using the following Arduino pins:

@@ -11,6 +11,8 @@
   a "~" sign, like ~3, ~5, ~6, ~9, ~10 and ~11.
 
   This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/Fade
 */
 
 int led = 9;           // the PWM pin the LED is attached to

@@ -19,8 +19,8 @@
   but you can change these names to connect any two serial ports on a board
   that has multiple ports.
 
-   Created 23 May 2016
-   by Erik Nyquist
+  created 23 May 2016
+  by Erik Nyquist
 */
 
 void setup() {

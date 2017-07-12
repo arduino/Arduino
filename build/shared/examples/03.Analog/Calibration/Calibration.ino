@@ -12,18 +12,17 @@
   maximum low and listen for anything higher as the new maximum.
 
   The circuit:
-  - Analog sensor (potentiometer will do) attached to analog input 0
+  - analog sensor (potentiometer will do) attached to analog input 0
   - LED attached from digital pin 9 to ground
 
   created 29 Oct 2008
-  By David A Mellis
+  by David A Mellis
   modified 30 Aug 2011
-  By Tom Igoe
-
-  http://www.arduino.cc/en/Tutorial/Calibration
+  by Tom Igoe
 
   This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/Calibration
 */
 
 // These constants won't change:

@@ -6,17 +6,15 @@
   The circuit:
   - LED attached from digital pin 9 to ground.
 
-  Created 1 Nov 2008
-  By David A. Mellis
+  created 1 Nov 2008
+  by David A. Mellis
   modified 30 Aug 2011
-  By Tom Igoe
-
-  http://www.arduino.cc/en/Tutorial/Fading
+  by Tom Igoe
 
   This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/Fading
 */
-
 
 int ledPin = 9;    // LED connected to digital pin 9
 
