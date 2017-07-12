@@ -52,4 +52,3 @@ void loop() {
   }
   delay(100);  // delay to avoid overloading the serial port buffer
 }
-

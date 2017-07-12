@@ -61,4 +61,3 @@ void loop() {
   // wait for a moment
   delay(10);
 }
-

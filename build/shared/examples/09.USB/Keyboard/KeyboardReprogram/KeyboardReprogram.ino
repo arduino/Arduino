@@ -105,10 +105,3 @@ void loop() {
   // wait for the sweet oblivion of reprogramming:
   while (true);
 }
-
-
-
-
-
-
-

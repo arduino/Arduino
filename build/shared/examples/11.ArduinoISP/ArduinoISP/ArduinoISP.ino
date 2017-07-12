@@ -722,4 +722,3 @@ void avrisp() {
         SERIAL.print((char)STK_NOSYNC);
   }
 }
-

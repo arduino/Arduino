@@ -115,4 +115,3 @@ void loop() {
   // save the current switch state as the last state
   prevSwitchState = switchState;
 }
-

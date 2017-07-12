@@ -39,9 +39,3 @@ void loop() {
   tone(9, thisPitch, 10);
   delay(1);        // delay in between reads for stability
 }
-
-
-
-
-
-

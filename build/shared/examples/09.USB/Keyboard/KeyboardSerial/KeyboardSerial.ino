@@ -37,4 +37,3 @@ void loop() {
     Keyboard.write(inChar + 1);
   }
 }
-

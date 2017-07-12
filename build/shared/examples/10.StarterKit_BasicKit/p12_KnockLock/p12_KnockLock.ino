@@ -171,4 +171,3 @@ boolean checkForKnock(int value) {
     return false;
   }
 }
-

@@ -69,4 +69,3 @@ void loop() {
     digitalWrite(ledPin, ledState);
   }
 }
-
