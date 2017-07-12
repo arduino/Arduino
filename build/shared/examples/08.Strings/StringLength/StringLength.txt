@@ -1,1 +1,1 @@
-Get and trim the length of a string.
+Examples of how to use length() in a String.
