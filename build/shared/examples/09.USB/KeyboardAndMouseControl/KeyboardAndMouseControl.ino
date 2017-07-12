@@ -1,11 +1,10 @@
-
 /*
   KeyboardAndMouseControl
 
   Controls the mouse from five pushbuttons on an Arduino Leonardo, Micro or Due.
 
   Hardware:
-  - 5 pushbuttons attached to D2, D3, D4, D5, D6
+  - five pushbuttons attached to D2, D3, D4, D5, D6
 
   The mouse movement is always relative. This sketch reads
   four pushbuttons, and uses them to set the movement of the mouse.
@@ -17,8 +16,9 @@
   modified 27 Mar 2012
   by Tom Igoe
 
-  this code is in the public domain
+  This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/KeyboardAndMouseControl
 */
 
 #include "Keyboard.h"

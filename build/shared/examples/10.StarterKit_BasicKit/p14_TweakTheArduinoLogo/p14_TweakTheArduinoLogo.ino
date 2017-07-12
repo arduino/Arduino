@@ -6,18 +6,18 @@
   Arduino Starter Kit
 
   Parts required:
-  10 kilohm potentiometer
+  - 10 kilohm potentiometer
 
-  Software required :
-  Processing (3.0 or newer) http://processing.org
-  Active Internet connection
+  Software required:
+  - Processing (3.0 or newer) http://processing.org
+  - Active Internet connection
 
-  Created 18 September 2012
+  created 18 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 
@@ -36,7 +36,7 @@ void loop() {
 /* Processing code for this example
   // Tweak the Arduino Logo
   // by Scott Fitzgerald
-  // This example code is in the public domain
+  // This example code is in the public domain.
 
   // import the serial library
   import processing.serial.*;

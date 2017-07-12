@@ -6,21 +6,21 @@
   Arduino Starter Kit
 
   Parts required:
-  1 Megohm resistor
-  metal foil or copper mesh
-  220 ohm resistor
-  LED
+  - 1 megohm resistor
+  - metal foil or copper mesh
+  - 220 ohm resistor
+  - LED
 
   Software required :
-  CapacitiveSensor library by Paul Badger
-  http://www.arduino.cc/playground/Main/CapacitiveSensor
+  - CapacitiveSensor library by Paul Badger
+    http://www.arduino.cc/playground/Main/CapacitiveSensor
 
-  Created 18 September 2012
+  created 18 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // import the library (must be located in the

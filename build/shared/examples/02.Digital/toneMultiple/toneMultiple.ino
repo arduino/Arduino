@@ -4,16 +4,15 @@
   Plays multiple tones on multiple pins in sequence
 
   circuit:
-  - 3 8-ohm speaker on digital pins 6, 7, and 8
+  - three 8 ohm speakers on digital pins 6, 7, and 8
 
-  created 8 March 2010
+  created 8 Mar 2010
   by Tom Igoe
   based on a snippet from Greg Borenstein
 
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Tone4
-
 */
 
 void setup() {

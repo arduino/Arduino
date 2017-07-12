@@ -6,16 +6,16 @@
   Arduino Starter Kit
 
   Parts required:
-  battery powered component
-  220 ohm resistor
-  4N35 optocoupler
+  - battery powered component
+  - 220 ohm resistor
+  - 4N35 optocoupler
 
-  Created 18 September 2012
+  created 18 Sep 2012
   by Scott Fitzgerald
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 const int optoPin = 2; // the pin the optocoupler is connected to

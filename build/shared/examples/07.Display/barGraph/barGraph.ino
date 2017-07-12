@@ -10,7 +10,7 @@
   depends on an analog input.
 
   The circuit:
-   - LEDs from pins 2 through 11 to ground
+  - LEDs from pins 2 through 11 to ground
 
   created 4 Sep 2010
   by Tom Igoe
@@ -19,7 +19,6 @@
 
   http://www.arduino.cc/en/Tutorial/BarGraph
 */
-
 
 // these constants won't change:
 const int analogPin = A0;   // the pin that the potentiometer is attached to

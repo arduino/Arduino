@@ -4,13 +4,13 @@
   Examples of how to add Strings together
   You can also add several different data types to String, as shown here:
 
-  created 27 July 2010
+  created 27 Jul 2010
   modified 2 Apr 2012
   by Tom Igoe
 
-  http://www.arduino.cc/en/Tutorial/StringAdditionOperator
-
   This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/StringAdditionOperator
 */
 
 // declare three Strings:

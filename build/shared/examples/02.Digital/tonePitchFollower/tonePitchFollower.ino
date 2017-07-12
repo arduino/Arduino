@@ -4,9 +4,9 @@
   Plays a pitch that changes based on a changing analog input
 
   circuit:
-  - 8-ohm speaker on digital pin 9
+  - 8 ohm speaker on digital pin 9
   - photoresistor on analog 0 to 5V
-  - 4.7K resistor on analog 0 to ground
+  - 4.7 kilohm resistor on analog 0 to ground
 
   created 21 Jan 2010
   modified 31 May 2012
@@ -15,9 +15,7 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Tone2
-
 */
-
 
 void setup() {
   // initialize serial communications (for debugging only):

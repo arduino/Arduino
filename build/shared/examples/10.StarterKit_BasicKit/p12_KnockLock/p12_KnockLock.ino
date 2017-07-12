@@ -6,24 +6,24 @@
   Arduino Starter Kit
 
   Parts required:
-  1 Megohm resistor
-  10 kilohm resistor
-  three 220 ohm resistors
-  piezo
-  servo motor
-  push button
-  one red LED
-  one yellow LED
-  one green LED
-  100 uF capacitor
+  - 1 megohm resistor
+  - 10 kilohm resistor
+  - three 220 ohm resistors
+  - piezo
+  - servo motor
+  - push button
+  - one red LED
+  - one yellow LED
+  - one green LED
+  - 100 uF capacitor
 
-  Created 18 September 2012
+  created 18 Sep 2012
   by Scott Fitzgerald
   Thanks to Federico Vanzati for improvements
 
   http://www.arduino.cc/starterKit
 
-  This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // import the library

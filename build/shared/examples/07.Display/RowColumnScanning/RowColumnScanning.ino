@@ -1,18 +1,14 @@
 /*
   Row-Column Scanning an 8x8 LED matrix with X-Y input
 
-  This example controls an 8x8 LED matrix using two analog inputs
-
-  created 27 May 2009
-  modified 30 Aug 2011
-  by Tom Igoe
+  This example controls an 8x8 LED matrix using two analog inputs.
 
   This example works for the Lumex LDM-24488NI Matrix. See
   http://sigma.octopart.com/140413/datasheet/Lumex-LDM-24488NI.pdf
-  for the pin connections
+  for the pin connections.
 
   For other LED cathode column matrixes, you should only need to change
-  the pin numbers in the row[] and column[] arrays
+  the pin numbers in the row[] and column[] arrays.
 
   rows are the anodes
   cols are the cathodes
@@ -20,19 +16,22 @@
 
   Pin numbers:
   Matrix:
-  - Digital pins 2 through 13,
+  - digital pins 2 through 13,
   - analog pins 2 through 5 used as digital 16 through 19
   Potentiometers:
   - center pins are attached to analog pins 0 and 1, respectively
-  - side pins attached to +5V and ground, respectively.
+  - side pins attached to +5V and ground, respectively
+
+  created 27 May 2009
+  modified 30 Aug 2011
+  by Tom Igoe
 
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/RowColumnScanning
 
-  see also http://www.tigoe.net/pcomp/code/category/arduinowiring/514 for more
+  see also http://www.tigoe.net/pcomp/code/category/arduinowiring for more
 */
-
 
 // 2-dimensional array of row pin numbers:
 const int row[8] = {

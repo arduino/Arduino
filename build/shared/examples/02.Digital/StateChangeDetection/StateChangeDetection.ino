@@ -11,7 +11,7 @@
 
   The circuit:
   - pushbutton attached to pin 2 from +5V
-  - 10K resistor attached to pin 2 from ground
+  - 10 kilohm resistor attached to pin 2 from ground
   - LED attached from pin 13 to ground (or use the built-in LED on
     most Arduino boards)
 
@@ -22,7 +22,6 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/ButtonStateChange
-
 */
 
 // this constant won't change:

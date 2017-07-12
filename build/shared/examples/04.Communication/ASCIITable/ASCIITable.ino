@@ -10,15 +10,15 @@
   The circuit:  No external hardware needed.
 
   created 2006
-  by Nicholas Zambetti
+  by Nicholas Zambetti <http://www.zambetti.com>
   modified 9 Apr 2012
   by Tom Igoe
 
   This example code is in the public domain.
 
-  <http://www.zambetti.com>
-
+  http://www.arduino.cc/en/Tutorial/ASCIITable
 */
+
 void setup() {
   //Initialize serial and wait for port to open:
   Serial.begin(9600);

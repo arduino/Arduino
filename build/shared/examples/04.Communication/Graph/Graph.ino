@@ -14,7 +14,7 @@
   so you can see the value of the analog input changing over time.
 
   The circuit:
-  Any analog input sensor is attached to analog in pin 0.
+  - any analog input sensor attached to analog in pin 0
 
   created 2006
   by David A. Mellis

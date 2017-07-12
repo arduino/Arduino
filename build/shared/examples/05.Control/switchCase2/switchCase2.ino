@@ -1,5 +1,5 @@
 /*
-  Switch statement  with serial input
+  Switch statement with serial input
 
   Demonstrates the use of a switch statement.  The switch
   statement allows you to choose from among a set of discrete values
@@ -10,7 +10,7 @@
   the LEDs off.
 
   The circuit:
-  - 5 LEDs attached to digital pins 2 through 6 through 220-ohm resistors
+  - five LEDs attached to digital pins 2 through 6 through 220 ohm resistors
 
   created 1 Jul 2009
   by Tom Igoe

@@ -14,7 +14,7 @@
 
   Circuit:
   - Arduino Leonardo, Micro, Due, LilyPad USB, or Yún
-  - wire to connect D2 to ground.
+  - wire to connect D2 to ground
 
   created 5 Mar 2012
   modified 29 Mar 2012
@@ -22,7 +22,7 @@
   modified 3 May 2014
   by Scott Fitzgerald
 
-  This example is in the public domain
+  This example is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/KeyboardReprogram
 */

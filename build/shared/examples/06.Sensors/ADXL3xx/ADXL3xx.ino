@@ -1,4 +1,3 @@
-
 /*
   ADXL3xx
 
@@ -7,15 +6,13 @@
   compatible with the breakout boards from SparkFun, available from:
   http://www.sparkfun.com/commerce/categories.php?c=80
 
-  http://www.arduino.cc/en/Tutorial/ADXL3xx
-
   The circuit:
-  analog 0: accelerometer self test
-  analog 1: z-axis
-  analog 2: y-axis
-  analog 3: x-axis
-  analog 4: ground
-  analog 5: vcc
+  - analog 0: accelerometer self test
+  - analog 1: z-axis
+  - analog 2: y-axis
+  - analog 3: x-axis
+  - analog 4: ground
+  - analog 5: vcc
 
   created 2 Jul 2008
   by David A. Mellis
@@ -24,6 +21,7 @@
 
   This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/ADXL3xx
 */
 
 // these constants describe the pins. They won't change:

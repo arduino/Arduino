@@ -7,9 +7,9 @@
   regardless of the level.
 
   The circuit:
-  - potentiometer connected to analog pin 0.
-  Center pin of the potentiometer goes to the analog pin.
-  side pins of the potentiometer go to +5V and ground
+  - potentiometer
+    Center pin of the potentiometer goes to analog pin 0.
+    Side pins of the potentiometer go to +5V and ground.
   - LED connected from digital pin 13 to ground
 
   - Note: On most Arduino boards, there is already an LED on the board
@@ -22,7 +22,6 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/IfStatement
-
 */
 
 // These constants won't change:

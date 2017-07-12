@@ -3,7 +3,7 @@
 
   Controls the mouse from a joystick on an Arduino Leonardo, Micro or Due.
   Uses a pushbutton to turn on and off mouse control, and
-  a second pushbutton to click the left mouse button
+  a second pushbutton to click the left mouse button.
 
   Hardware:
   - 2-axis joystick connected to pins A0 and A1
@@ -20,12 +20,13 @@
   This sketch includes a pushbutton to toggle the mouse control state, so
   you can turn on and off mouse control.
 
-  created 15 Sept 2011
+  created 15 Sep 2011
   updated 28 Mar 2012
   by Tom Igoe
 
-  this code is in the public domain
+  This example code is in the public domain.
 
+  http://www.arduino.cc/en/Tutorial/JoystickMouseControl
 */
 
 #include "Mouse.h"

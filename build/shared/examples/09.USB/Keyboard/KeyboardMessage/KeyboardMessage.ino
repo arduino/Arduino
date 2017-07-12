@@ -7,7 +7,7 @@
 
   The circuit:
   - pushbutton attached from pin 4 to +5V
-  - 10-kilohm resistor attached from pin 4 to ground
+  - 10 kilohm resistor attached from pin 4 to ground
 
   created 24 Oct 2011
   modified 27 Mar 2012

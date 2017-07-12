@@ -9,13 +9,12 @@
   The circuit:
   - LED attached from pin 13 to ground
   - pushbutton attached from pin 2 to +5V
-  - 10K resistor attached from pin 2 to ground
+  - 10 kilohm resistor attached from pin 2 to ground
 
   - Note: On most Arduino boards, there is already an LED on the board
-  connected to pin 13, so you don't need any extra components for this example.
+    connected to pin 13, so you don't need any extra components for this example.
 
-
-  created 21 November 2006
+  created 21 Nov 2006
   by David A. Mellis
   modified 30 Aug 2011
   by Limor Fried
@@ -23,7 +22,6 @@
   by Mike Walters
   modified 30 Aug 2016
   by Arturo Guadalupi
-
 
   This example code is in the public domain.
 
