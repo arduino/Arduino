@@ -2,8 +2,8 @@
   Analog input, analog output, serial output
 
  Reads an analog input pin, maps the result to a range from 0 to 255
- and uses the result to set the pulsewidth modulation (PWM) of an output pin.
- Also prints the results to the serial monitor.
+ and uses the result to set the pulse width modulation (PWM) of an output pin.
+ Also prints the results to the Serial Monitor.
 
  The circuit:
  * potentiometer connected to analog pin 0.
@@ -40,7 +40,7 @@ void loop() {
   // change the analog out value:
   analogWrite(analogOutPin, outputValue);
 
-  // print the results to the serial monitor:
+  // print the results to the Serial Monitor:
   Serial.print("sensor = ");
   Serial.print(sensorValue);
   Serial.print("\t output = ");

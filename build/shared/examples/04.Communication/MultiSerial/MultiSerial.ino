@@ -1,5 +1,5 @@
 /*
-  Multple Serial test
+  Multiple Serial test
 
  Receives from the main serial port, sends to the others.
  Receives from serial port 1, sends to the main serial (Serial 0).

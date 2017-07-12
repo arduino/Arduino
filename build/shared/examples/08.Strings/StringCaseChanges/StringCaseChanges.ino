@@ -1,7 +1,7 @@
 /*
   String Case changes
 
- Examples of how to change the case of a string
+ Examples of how to change the case of a String
 
  created 27 July 2010
  modified 2 Apr 2012
@@ -20,7 +20,7 @@ void setup() {
   }
 
   // send an intro:
-  Serial.println("\n\nString  case changes:");
+  Serial.println("\n\nString case changes:");
   Serial.println();
 }
 

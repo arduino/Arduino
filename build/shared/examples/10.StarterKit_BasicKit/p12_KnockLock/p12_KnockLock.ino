@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 12  - Knock Lock
+ Project 12 - Knock Lock
 
  This sketch is written to accompany Project 12 in the
  Arduino Starter Kit
@@ -28,7 +28,7 @@
 
 // import the library
 #include <Servo.h>
-// create an instance of the servo library
+// create an instance of the Servo library
 Servo myServo;
 
 const int piezo = A0;      // pin the piezo is attached to
@@ -72,7 +72,7 @@ void setup() {
   // move the servo to the unlocked position
   myServo.write(0);
 
-  // print status to the serial monitor
+  // print status to the Serial Monitor
   Serial.println("the box is unlocked!");
 }
 

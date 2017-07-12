@@ -4,11 +4,11 @@
 //     http://www.opensource.org/licenses/bsd-license.php
 //
 // This sketch turns the Arduino into a AVRISP
-// using the following arduino pins:
+// using the following Arduino pins:
 //
 // Pin 10 is used to reset the target microcontroller.
 //
-// By default, the hardware SPI pins MISO, MOSI and SCK pins are used
+// By default, the hardware SPI pins MISO, MOSI and SCK are used
 // to communicate with the target. On all Arduinos, these pins can be found
 // on the ICSP/SPI header:
 //
@@ -20,7 +20,7 @@
 // as digital pin 11, 12 and 13, respectively. That is why many tutorials
 // instruct you to hook up the target to these pins. If you find this wiring
 // more practical, have a define USE_OLD_STYLE_WIRING. This will work even
-// even when not using an Uno. (On an Uno this is not needed).
+// when not using an Uno. (On an Uno this is not needed).
 //
 // Alternatively you can use any other digital pin by configuring software ('BitBanged')
 // SPI and having appropriate defines for PIN_MOSI, PIN_MISO and PIN_SCK.
@@ -43,18 +43,18 @@
 #define PROG_FLICKER true
 
 // Configure SPI clock (in Hz).
-// E.g. for an attiny @128 kHz: the datasheet states that both the high
-// and low spi clock pulse must be > 2 cpu cycles, so take 3 cycles i.e.
+// E.g. for an ATtiny @ 128 kHz: the datasheet states that both the high
+// and low SPI clock pulse must be > 2 CPU cycles, so take 3 cycles i.e.
 // divide target f_cpu by 6:
 //     #define SPI_CLOCK            (128000/6)
 //
-// A clock slow enough for an attiny85 @ 1MHz, is a reasonable default:
+// A clock slow enough for an ATtiny85 @ 1 MHz, is a reasonable default:
 
 #define SPI_CLOCK 		(1000000/6)
 
 
 // Select hardware or software SPI, depending on SPI clock.
-// Currently only for AVR, for other archs (Due, Zero,...),
+// Currently only for AVR, for other architectures (Due, Zero,...),
 // hardware SPI is probably too fast anyway.
 
 #if defined(ARDUINO_ARCH_AVR)
@@ -88,7 +88,7 @@
 
 #endif
 
-// HOODLOADER2 means running sketches on the atmega16u2 
+// HOODLOADER2 means running sketches on the ATmega16U2 
 // serial converter chips on Uno or Mega boards.
 // We must use pins that are broken out:
 #else 
@@ -371,7 +371,7 @@ void get_version(uint8_t c) {
 }
 
 void set_parameters() {
-  // call this after reading paramter packet into buff[]
+  // call this after reading parameter packet into buff[]
   param.devicecode = buff[0];
   param.revision   = buff[1];
   param.progtype   = buff[2];
@@ -393,7 +393,7 @@ void set_parameters() {
                     + buff[18] * 0x00000100
                     + buff[19];
 
-  // avr devices have active low reset, at89sx are active high
+  // AVR devices have active low reset, AT89Sx are active high
   rst_active_high = (param.devicecode >= 0xe0);
 }
 
@@ -404,7 +404,7 @@ void start_pmode() {
   // SPI.begin() will configure SS as output,
   // so SPI master mode is selected.
   // We have defined RESET as pin 10,
-  // which for many arduino's is not the SS pin.
+  // which for many Arduinos is not the SS pin.
   // So we have to configure RESET as output here,
   // (reset_target() first sets the correct level)
   reset_target(true);
@@ -412,14 +412,14 @@ void start_pmode() {
   SPI.begin();
   SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
 
-  // See avr datasheets, chapter "SERIAL_PRG Programming Algorithm":
+  // See AVR datasheets, chapter "SERIAL_PRG Programming Algorithm":
 
   // Pulse RESET after PIN_SCK is low:
   digitalWrite(PIN_SCK, LOW);
-  delay(20); // discharge PIN_SCK, value arbitrally chosen
+  delay(20); // discharge PIN_SCK, value arbitrarily chosen
   reset_target(false);
   // Pulse must be minimum 2 target CPU clock cycles
-  // so 100 usec is ok for CPU speeds above 20KHz
+  // so 100 usec is ok for CPU speeds above 20 KHz
   delayMicroseconds(100);
   reset_target(true);
 

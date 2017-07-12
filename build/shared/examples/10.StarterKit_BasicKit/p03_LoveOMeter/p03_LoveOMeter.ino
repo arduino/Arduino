@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 3  - Love-O-Meter
+ Project 3 - Love-O-Meter
 
  This sketch is written to accompany Project 3 in the
  Arduino Starter Kit
@@ -20,7 +20,7 @@
 
 // named constant for the pin the sensor is connected to
 const int sensorPin = A0;
-// room temperature in Celcius
+// room temperature in Celsius
 const float baselineTemp = 20.0;
 
 void setup() {
@@ -53,7 +53,7 @@ void loop() {
   // convert the voltage to temperature in degrees C
   // the sensor changes 10 mV per degree
   // the datasheet says there's a 500 mV offset
-  // ((volatge - 500mV) times 100)
+  // ((voltage - 500 mV) times 100)
   Serial.print(", degrees C: ");
   float temperature = (voltage - .5) * 100;
   Serial.println(temperature);

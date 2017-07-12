@@ -39,7 +39,7 @@ char ctrlKey = KEY_LEFT_GUI;
 
 void setup() {
   // make pin 2 an input and turn on the
-  // pullup resistor so it goes high unless
+  // pull-up resistor so it goes high unless
   // connected to ground:
   pinMode(2, INPUT_PULLUP);
   // initialize control over the keyboard:
@@ -63,7 +63,7 @@ void loop() {
   // versions of the Arduino IDE after 1.5 pre-populate
   // new sketches with setup() and loop() functions
   // let's clear the window before typing anything new
-  //  select all
+  // select all
   Keyboard.press(ctrlKey);
   Keyboard.press('a');
   delay(500);

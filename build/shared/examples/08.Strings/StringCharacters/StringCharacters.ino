@@ -19,11 +19,11 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.println("\n\nString  charAt() and setCharAt():");
+  Serial.println("\n\nString charAt() and setCharAt():");
 }
 
 void loop() {
-  // make a string to report a sensor reading:
+  // make a String to report a sensor reading:
   String reportString = "SensorReading: 456";
   Serial.println(reportString);
 
@@ -36,7 +36,7 @@ void loop() {
   // add blank space:
   Serial.println();
 
-  // you can alo set the character of a string. Change the : to a = character
+  // you can also set the character of a String. Change the : to a = character
   reportString.setCharAt(13, '=');
   Serial.println(reportString);
 

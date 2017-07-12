@@ -1,12 +1,12 @@
 /*
   Arduino Starter Kit example
- Project 15  - Hacking Buttons
+ Project 15 - Hacking Buttons
 
  This sketch is written to accompany Project 15 in the
  Arduino Starter Kit
 
  Parts required:
- batery powered component
+ battery powered component
  220 ohm resistor
  4N35 optocoupler
 

@@ -1,7 +1,7 @@
 /*
   Dimmer
 
- Demonstrates the sending data from the computer to the Arduino board,
+ Demonstrates sending data from the computer to the Arduino board,
  in this case to control the brightness of an LED.  The data is sent
  in individual bytes, each of which ranges from 0 to 255.  Arduino
  reads these bytes and uses them to set the brightness of the LED.
@@ -45,7 +45,7 @@ void loop() {
 /* Processing code for this example
  // Dimmer - sends bytes over a serial port
  // by David A. Mellis
- //This example code is in the public domain.
+ // This example code is in the public domain.
 
  import processing.serial.*;
  Serial port;

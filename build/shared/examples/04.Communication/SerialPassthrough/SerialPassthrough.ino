@@ -8,7 +8,7 @@
   the Arduino UNO (commonly used to interact with devices/shields that
   require configuration via serial AT commands) will not work by default.
 
-  This sketch allows you to  emulate the serial passthrough behaviour.
+  This sketch allows you to emulate the serial passthrough behaviour.
   Any text you type in the IDE Serial monitor will be written
   out to the serial port on Digital pins 0 and 1, and vice-versa.
 

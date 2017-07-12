@@ -4,7 +4,7 @@
 
  Reads an Analog Devices ADXL3xx accelerometer and communicates the
  acceleration to the computer.  The pins used are designed to be easily
- compatible with the breakout boards from Sparkfun, available from:
+ compatible with the breakout boards from SparkFun, available from:
  http://www.sparkfun.com/commerce/categories.php?c=80
 
  http://www.arduino.cc/en/Tutorial/ADXL3xx

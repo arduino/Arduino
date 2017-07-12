@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 6  - Light Theremin
+ Project 6 - Light Theremin
 
  This sketch is written to accompany Project 6 in the
  Arduino Starter Kit

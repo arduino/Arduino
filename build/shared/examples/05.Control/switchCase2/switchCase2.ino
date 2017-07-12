@@ -35,7 +35,7 @@ void loop() {
     int inByte = Serial.read();
     // do something different depending on the character received.
     // The switch statement expects single number values for each case;
-    // in this exmaple, though, you're using single quotes to tell
+    // in this example, though, you're using single quotes to tell
     // the controller to get the ASCII value for the character.  For
     // example 'a' = 97, 'b' = 98, and so forth:
 

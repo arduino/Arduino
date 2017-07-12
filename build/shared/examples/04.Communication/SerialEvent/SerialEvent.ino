@@ -20,7 +20,7 @@
 
  */
 
-String inputString = "";         // a string to hold incoming data
+String inputString = "";         // a String to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
 void setup() {

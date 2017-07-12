@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 8  - Digital Hourglass
+ Project 8 - Digital Hourglass
 
  This sketch is written to accompany Project 8 in the
  Arduino Starter Kit

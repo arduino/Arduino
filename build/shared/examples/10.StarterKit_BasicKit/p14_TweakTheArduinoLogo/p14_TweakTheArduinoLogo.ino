@@ -1,6 +1,6 @@
 /*
   Arduino Starter Kit example
- Project 14  - Tweak the Arduino Logo
+ Project 14 - Tweak the Arduino Logo
 
  This sketch is written to accompany Project 14 in the
  Arduino Starter Kit
@@ -9,8 +9,8 @@
  10 kilohm potentiometer
 
  Software required :
- Processing  (3.0 or newer) http://processing.org
- Active internet connection 
+ Processing (3.0 or newer) http://processing.org
+ Active Internet connection 
 
  Created 18 September 2012
  by Scott Fitzgerald
@@ -34,7 +34,7 @@ void loop() {
 }
 
 /* Processing code for this example
-// Tweak the Arduno Logo
+// Tweak the Arduino Logo
 // by Scott Fitzgerald
 // This example code is in the public domain
 
@@ -63,12 +63,12 @@ void setup() {
   surface.setSize(logo.width, logo.height);
 
   // print a list of available serial ports to the
-  // Processing staus window
+  // Processing status window
   println("Available serial ports:");
   println(Serial.list());
 
   // Tell the serial object the information it needs to communicate
-  // with the Arduno. Change Serial.list()[0] to the correct
+  // with the Arduino. Change Serial.list()[0] to the correct
   // port corresponding to your Arduino board.  The last
   // parameter (e.g. 9600) is the speed of the communication.  It
   // has to correspond to the value passed to Serial.begin() in your

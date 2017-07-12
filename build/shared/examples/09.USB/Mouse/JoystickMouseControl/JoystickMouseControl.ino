@@ -108,7 +108,7 @@ int readAxis(int thisAxis) {
   reading = map(reading, 0, 1023, 0, range);
 
   // if the output reading is outside from the
-  // rest position threshold,  use it:
+  // rest position threshold, use it:
   int distance = reading - center;
 
   if (abs(distance) < threshold) {

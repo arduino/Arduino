@@ -1,8 +1,8 @@
 /*
- Input Pullup Serial
+ Input Pull-up Serial
 
  This example demonstrates the use of pinMode(INPUT_PULLUP). It reads a
- digital input on pin 2 and prints the results to the serial monitor.
+ digital input on pin 2 and prints the results to the Serial Monitor.
 
  The circuit:
  * Momentary switch attached from pin 2 to ground
@@ -24,7 +24,7 @@
 void setup() {
   //start serial connection
   Serial.begin(9600);
-  //configure pin2 as an input and enable the internal pull-up resistor
+  //configure pin 2 as an input and enable the internal pull-up resistor
   pinMode(2, INPUT_PULLUP);
   pinMode(13, OUTPUT);
 
@@ -36,7 +36,7 @@ void loop() {
   //print out the value of the pushbutton
   Serial.println(sensorVal);
 
-  // Keep in mind the pullup means the pushbutton's
+  // Keep in mind the pull-up means the pushbutton's
   // logic is inverted. It goes HIGH when it's open,
   // and LOW when it's pressed. Turn on pin 13 when the
   // button's pressed, and off when it's not:

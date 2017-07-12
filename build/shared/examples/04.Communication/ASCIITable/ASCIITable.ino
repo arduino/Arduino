@@ -33,22 +33,22 @@ void setup() {
 // first visible ASCIIcharacter '!' is number 33:
 int thisByte = 33;
 // you can also write ASCII characters in single quotes.
-// for example. '!' is the same as 33, so you could also use this:
-//int thisByte = '!';
+// for example, '!' is the same as 33, so you could also use this:
+// int thisByte = '!';
 
 void loop() {
   // prints value unaltered, i.e. the raw binary version of the
-  // byte. The serial monitor interprets all bytes as
+  // byte. The Serial Monitor interprets all bytes as
   // ASCII, so 33, the first number,  will show up as '!'
   Serial.write(thisByte);
 
   Serial.print(", dec: ");
   // prints value as string as an ASCII-encoded decimal (base 10).
-  // Decimal is the  default format for Serial.print() and Serial.println(),
+  // Decimal is the default format for Serial.print() and Serial.println(),
   // so no modifier is needed:
   Serial.print(thisByte);
   // But you can declare the modifier for decimal if you want to.
-  //this also works if you uncomment it:
+  // this also works if you uncomment it:
 
   // Serial.print(thisByte, DEC);
 

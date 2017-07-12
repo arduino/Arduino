@@ -36,7 +36,7 @@ int platform = OSX;
 
 void setup() {
   // make pin 2 an input and turn on the
-  // pullup resistor so it goes high unless
+  // pull-up resistor so it goes high unless
   // connected to ground:
   pinMode(2, INPUT_PULLUP);
   Keyboard.begin();
@@ -67,7 +67,7 @@ void loop() {
       Keyboard.press(KEY_DELETE);
       delay(100);
       Keyboard.releaseAll();
-      //ALT-l:
+      // ALT-l:
       delay(2000);
       Keyboard.press(KEY_LEFT_ALT);
       Keyboard.press('l');

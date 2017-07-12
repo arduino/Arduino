@@ -20,7 +20,7 @@ void setup() {
   }
 
   // send an intro:
-  Serial.println("\n\nString  length() and trim():");
+  Serial.println("\n\nString length() and trim():");
   Serial.println();
 }
 
