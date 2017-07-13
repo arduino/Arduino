@@ -11,8 +11,8 @@
   The mouse movement is always relative. This sketch reads
   four pushbuttons, and uses them to set the movement of the mouse.
 
-  WARNING:  When you use the Mouse.move() command, the Arduino takes
-  over your mouse!  Make sure you have control before you use the mouse commands.
+  WARNING: When you use the Mouse.move() command, the Arduino takes
+  over your mouse! Make sure you have control before you use the mouse commands.
 
   created 15 Mar 2012
   modified 27 Mar 2012

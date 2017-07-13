@@ -1,7 +1,7 @@
 /*
   Memsic2125
 
-  Read the Memsic 2125 two-axis accelerometer.  Converts the
+  Read the Memsic 2125 two-axis accelerometer. Converts the
   pulses output by the 2125 into milli-g's (1/1000 of Earth's
   gravity) and prints them over the serial connection to the
   computer.

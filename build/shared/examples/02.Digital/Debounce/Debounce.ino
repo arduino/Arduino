@@ -2,7 +2,7 @@
   Debounce
 
   Each time the input pin goes from LOW to HIGH (e.g. because of a push-button
-  press), the output pin is toggled from LOW to HIGH or HIGH to LOW.  There's
+  press), the output pin is toggled from LOW to HIGH or HIGH to LOW. There's
   a minimum delay between toggles to debounce the circuit (i.e. to ignore
   noise).
 
@@ -83,7 +83,7 @@ void loop() {
   // set the LED:
   digitalWrite(ledPin, ledState);
 
-  // save the reading.  Next time through the loop,
+  // save the reading. Next time through the loop,
   // it'll be the lastButtonState:
   lastButtonState = reading;
 }

@@ -2,8 +2,8 @@
   Dimmer
 
   Demonstrates sending data from the computer to the Arduino board,
-  in this case to control the brightness of an LED.  The data is sent
-  in individual bytes, each of which ranges from 0 to 255.  Arduino
+  in this case to control the brightness of an LED. The data is sent
+  in individual bytes, each of which ranges from 0 to 255. Arduino
   reads these bytes and uses them to set the brightness of the LED.
 
   The circuit:
@@ -56,9 +56,9 @@ void loop() {
   // if using Processing 2.1 or later, use Serial.printArray()
   println(Serial.list());
 
-  // Uses the first port in this list (number 0).  Change this to
-  // select the port corresponding to your Arduino board.  The last
-  // parameter (e.g. 9600) is the speed of the communication.  It
+  // Uses the first port in this list (number 0). Change this to
+  // select the port corresponding to your Arduino board. The last
+  // parameter (e.g. 9600) is the speed of the communication. It
   // has to correspond to the value passed to Serial.begin() in your
   // Arduino sketch.
   port = new Serial(this, Serial.list()[0], 9600);

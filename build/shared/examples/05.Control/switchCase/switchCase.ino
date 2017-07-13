@@ -1,9 +1,9 @@
 /*
   Switch statement
 
-  Demonstrates the use of a switch statement.  The switch
+  Demonstrates the use of a switch statement. The switch
   statement allows you to choose from among a set of discrete values
-  of a variable.  It's like a series of if statements.
+  of a variable. It's like a series of if statements.
 
   To see this sketch in action, put the board and sensor in a well-lit
   room, open the Serial Monitor, and move your hand gradually down

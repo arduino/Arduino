@@ -20,7 +20,7 @@
   http://www.arduino.cc/en/Tutorial/AnalogInOutSerial
 */
 
-// These constants won't change.  They're used to give names
+// These constants won't change. They're used to give names
 // to the pins used:
 const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
 const int analogOutPin = 9; // Analog output pin that the LED is attached to

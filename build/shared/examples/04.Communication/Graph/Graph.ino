@@ -2,7 +2,7 @@
   Graph
 
   A simple example of communication from the Arduino board to the computer:
-  the value of analog input 0 is sent out the serial port.  We call this "serial"
+  the value of analog input 0 is sent out the serial port. We call this "serial"
   communication because the connection appears to both the Arduino and the
   computer as a serial port, even though it may actually use
   a USB cable. Bytes are sent one after another (serially) from the Arduino
@@ -10,7 +10,7 @@
 
   You can use the Arduino Serial Monitor to view the sent data, or it can
   be read by Processing, PD, Max/MSP, or any other program capable of reading
-  data from a serial port.  The Processing code below graphs the data received
+  data from a serial port. The Processing code below graphs the data received
   so you can see the value of the analog input changing over time.
 
   The circuit:

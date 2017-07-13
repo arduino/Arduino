@@ -7,7 +7,7 @@
 
   For more on ASCII, see http://www.asciitable.com and http://en.wikipedia.org/wiki/ASCII
 
-  The circuit:  No external hardware needed.
+  The circuit: No external hardware needed.
 
   created 2006
   by Nicholas Zambetti <http://www.zambetti.com>
@@ -39,7 +39,7 @@ int thisByte = 33;
 void loop() {
   // prints value unaltered, i.e. the raw binary version of the
   // byte. The Serial Monitor interprets all bytes as
-  // ASCII, so 33, the first number,  will show up as '!'
+  // ASCII, so 33, the first number, will show up as '!'
   Serial.write(thisByte);
 
   Serial.print(", dec: ");
