@@ -1,12 +1,12 @@
 /*
   Switch statement with serial input
 
-  Demonstrates the use of a switch statement.  The switch
+  Demonstrates the use of a switch statement. The switch
   statement allows you to choose from among a set of discrete values
-  of a variable.  It's like a series of if statements.
+  of a variable. It's like a series of if statements.
 
   To see this sketch in action, open the Serial monitor and send any character.
-  The characters a, b, c, d, and e, will turn on LEDs.  Any other character will turn
+  The characters a, b, c, d, and e, will turn on LEDs. Any other character will turn
   the LEDs off.
 
   The circuit:
@@ -36,7 +36,7 @@ void loop() {
     // do something different depending on the character received.
     // The switch statement expects single number values for each case;
     // in this example, though, you're using single quotes to tell
-    // the controller to get the ASCII value for the character.  For
+    // the controller to get the ASCII value for the character. For
     // example 'a' = 97, 'b' = 98, and so forth:
 
     switch (inByte) {

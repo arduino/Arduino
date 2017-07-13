@@ -2,7 +2,7 @@
   ADXL3xx
 
   Reads an Analog Devices ADXL3xx accelerometer and communicates the
-  acceleration to the computer.  The pins used are designed to be easily
+  acceleration to the computer. The pins used are designed to be easily
   compatible with the breakout boards from SparkFun, available from:
   http://www.sparkfun.com/commerce/categories.php?c=80
 
@@ -36,8 +36,8 @@ void setup() {
   Serial.begin(9600);
 
   // Provide ground and power by using the analog inputs as normal
-  // digital pins.  This makes it possible to directly connect the
-  // breakout board to the Arduino.  If you use the normal 5V and
+  // digital pins. This makes it possible to directly connect the
+  // breakout board to the Arduino. If you use the normal 5V and
   // GND pins on the Arduino, you can remove these lines.
   pinMode(groundpin, OUTPUT);
   pinMode(powerpin, OUTPUT);

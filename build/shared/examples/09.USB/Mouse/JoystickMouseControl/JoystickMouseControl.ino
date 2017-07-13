@@ -15,8 +15,8 @@
   The sketch assumes that the joystick resting values are around the
   middle of the range, but that they vary within a threshold.
 
-  WARNING:  When you use the Mouse.move() command, the Arduino takes
-  over your mouse!  Make sure you have control before you use the command.
+  WARNING: When you use the Mouse.move() command, the Arduino takes
+  over your mouse! Make sure you have control before you use the command.
   This sketch includes a pushbutton to toggle the mouse control state, so
   you can turn on and off mouse control.
 

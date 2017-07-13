@@ -4,7 +4,7 @@
   This sketch reads a PING))) ultrasonic rangefinder and returns the
   distance to the closest object in range. To do this, it sends a pulse
   to the sensor to initiate a reading, then listens for a pulse
-  to return.  The length of the returning pulse is proportional to
+  to return. The length of the returning pulse is proportional to
   the distance of the object from the sensor.
 
   The circuit:
@@ -22,7 +22,7 @@
   http://www.arduino.cc/en/Tutorial/Ping
 */
 
-// this constant won't change.  It's the pin number
+// this constant won't change. It's the pin number
 // of the sensor's output:
 const int pingPin = 7;
 
@@ -67,7 +67,7 @@ void loop() {
 long microsecondsToInches(long microseconds) {
   // According to Parallax's datasheet for the PING))), there are
   // 73.746 microseconds per inch (i.e. sound travels at 1130 feet per
-  // second).  This gives the distance travelled by the ping, outbound
+  // second). This gives the distance travelled by the ping, outbound
   // and return, so we divide by 2 to get the distance of the obstacle.
   // See: http://www.parallax.com/dl/docs/prod/acc/28015-PING-v1.3.pdf
   return microseconds / 74 / 2;

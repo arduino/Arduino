@@ -2,7 +2,7 @@
   Physical Pixel
 
   An example of using the Arduino board to receive data from the
-  computer.  In this case, the Arduino boards turns on an LED when
+  computer. In this case, the Arduino boards turns on an LED when
   it receives the character 'H', and turns off the LED when it
   receives the character 'L'.
 

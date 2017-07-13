@@ -2,7 +2,7 @@
   Blink without Delay
 
   Turns on and off a light emitting diode (LED) connected to a digital
-  pin, without using the delay() function.  This means that other code
+  pin, without using the delay() function. This means that other code
   can run at the same time without being interrupted by the LED code.
 
   The circuit:

@@ -3,7 +3,7 @@
 
   Often, you don't need to know the state of a digital input all the time,
   but you just need to know when the input changes from one state to another.
-  For example, you want to know when a button goes from OFF to ON.  This is called
+  For example, you want to know when a button goes from OFF to ON. This is called
   state change detection, or edge detection.
 
   This example shows how to detect when a button or button changes from off to on
@@ -55,7 +55,7 @@ void loop() {
       // went from off to on:
       buttonPushCounter++;
       Serial.println("on");
-      Serial.print("number of button pushes:  ");
+      Serial.print("number of button pushes: ");
       Serial.println(buttonPushCounter);
     } else {
       // if the current state is LOW then the button
