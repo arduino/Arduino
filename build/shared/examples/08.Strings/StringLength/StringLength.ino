@@ -10,7 +10,7 @@
   http://www.arduino.cc/en/Tutorial/StringLengthTrim
 
   This example code is in the public domain.
- */
+*/
 
 String txtMsg = "";                         // a string for incoming text
 unsigned int lastStringLength = txtMsg.length();     // previous length of the String

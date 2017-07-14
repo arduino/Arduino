@@ -13,12 +13,12 @@
 
   created 13 Apr 2012
   by Tom Igoe
-  
+
   modified 14 Mar 2016
   by Arturo Guadalupi
 
   This example code is in the public domain.
- */
+*/
 
 // pins for the LEDs:
 const int redPin = 3;

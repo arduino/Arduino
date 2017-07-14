@@ -10,7 +10,7 @@
   http://www.arduino.cc/en/Tutorial/StringAppendOperator
 
   This example code is in the public domain.
- */
+*/
 
 String stringOne, stringTwo;
 

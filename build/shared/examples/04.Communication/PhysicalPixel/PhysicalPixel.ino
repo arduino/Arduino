@@ -21,7 +21,7 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/PhysicalPixel
- */
+*/
 
 const int ledPin = 13; // the pin that the LED is attached to
 int incomingByte;      // a variable to read incoming serial data into
@@ -121,7 +121,7 @@ void loop() {
   }
 
 
- */
+*/
 
 /*
 Max/MSP version 5 patch to run with this example:

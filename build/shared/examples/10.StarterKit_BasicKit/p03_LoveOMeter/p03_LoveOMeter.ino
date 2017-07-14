@@ -16,7 +16,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // named constant for the pin the sensor is connected to
 const int sensorPin = A0;

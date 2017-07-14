@@ -24,7 +24,7 @@
 
   This example code is in the public domain.
 
- */
+*/
 
 // These constants won't change:
 const int sensorPin = A0;    // pin that the sensor is attached to

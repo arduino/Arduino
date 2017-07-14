@@ -23,7 +23,7 @@
   This example is in the public domain
 
   http://www.arduino.cc/en/Tutorial/KeyboardLogout
- */
+*/
 
 #define OSX 0
 #define WINDOWS 1

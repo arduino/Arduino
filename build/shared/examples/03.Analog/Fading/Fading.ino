@@ -15,7 +15,7 @@
 
   This example code is in the public domain.
 
- */
+*/
 
 
 int ledPin = 9;    // LED connected to digital pin 9

@@ -16,7 +16,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 const int optoPin = 2; // the pin the optocoupler is connected to
 

@@ -31,7 +31,7 @@
   http://www.arduino.cc/en/Tutorial/RowColumnScanning
 
   see also http://www.tigoe.net/pcomp/code/category/arduinowiring/514 for more
- */
+*/
 
 
 // 2-dimensional array of row pin numbers:

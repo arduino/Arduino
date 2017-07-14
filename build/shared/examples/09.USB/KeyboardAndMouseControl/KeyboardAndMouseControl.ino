@@ -19,7 +19,7 @@
 
   this code is in the public domain
 
- */
+*/
 
 #include "Keyboard.h"
 #include "Mouse.h"

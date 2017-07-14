@@ -14,7 +14,7 @@
 
   http://www.arduino.cc/en/Tutorial/Tone
 
- */
+*/
 #include "pitches.h"
 
 // notes in the melody:

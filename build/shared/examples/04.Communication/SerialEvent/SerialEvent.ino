@@ -10,7 +10,7 @@
 
   NOTE: The serialEvent() feature is not available on the
   Leonardo, Micro, or other ATmega32U4 based boards.
-  
+
   Created 9 May 2011
   by Tom Igoe
 
@@ -18,7 +18,7 @@
 
   http://www.arduino.cc/en/Tutorial/SerialEvent
 
- */
+*/
 
 String inputString = "";         // a String to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
@@ -45,7 +45,7 @@ void loop() {
   hardware serial RX.  This routine is run between each
   time loop() runs, so using delay inside loop can delay
   response.  Multiple bytes of data may be available.
- */
+*/
 void serialEvent() {
   while (Serial.available()) {
     // get the new byte:

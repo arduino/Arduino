@@ -22,7 +22,7 @@
 
   this code is in the public domain
 
- */
+*/
 
 #include "Mouse.h"
 

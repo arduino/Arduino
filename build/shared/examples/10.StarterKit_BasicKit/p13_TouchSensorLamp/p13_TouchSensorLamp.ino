@@ -21,7 +21,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // import the library (must be located in the
 // Arduino/libraries directory)

@@ -19,7 +19,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // include the library code:
 #include <LiquidCrystal.h>

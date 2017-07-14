@@ -26,7 +26,7 @@
 
   http://www.arduino.cc/en/Tutorial/SerialCallResponseASCII
 
- */
+*/
 
 int firstSensor = 0;    // first analog sensor
 int secondSensor = 0;   // second analog sensor

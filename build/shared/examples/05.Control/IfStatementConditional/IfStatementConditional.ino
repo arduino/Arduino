@@ -23,7 +23,7 @@
 
   http://www.arduino.cc/en/Tutorial/IfStatement
 
- */
+*/
 
 // These constants won't change:
 const int analogPin = A0;    // pin that the sensor is attached to

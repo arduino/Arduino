@@ -19,7 +19,7 @@
 
   http://www.arduino.cc/en/Tutorial/Dimmer
 
- */
+*/
 
 const int ledPin = 9;      // the pin that the LED is attached to
 
@@ -80,7 +80,7 @@ void loop() {
   // a single byte
   port.write(mouseX);
   }
- */
+*/
 
 /* Max/MSP v5 patch for this example
 

@@ -11,7 +11,7 @@
   by Tom Igoe
 
   This example code is in the public domain.
- */
+*/
 
 String inString = "";    // string to hold input
 

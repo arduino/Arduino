@@ -20,7 +20,7 @@
 
   This example code is in the public domain.
 
- */
+*/
 
 // this constant won't change.  It's the pin number
 // of the sensor's output:

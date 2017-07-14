@@ -16,7 +16,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // include the Servo library
 #include <Servo.h>

@@ -19,7 +19,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // named constants for the switch and motor pins
 const int switchPin = 2; // the number of the switch pin
