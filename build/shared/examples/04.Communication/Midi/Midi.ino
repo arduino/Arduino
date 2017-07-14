@@ -2,8 +2,8 @@
   MIDI note player
 
   This sketch shows how to use the serial transmit pin (pin 1) to send MIDI note data.
-  If this circuit is connected to a MIDI synth, it will play
-  the notes F#-0 (0x1E) to F#-5 (0x5A) in sequence.
+  If this circuit is connected to a MIDI synth, it will play the notes
+  F#-0 (0x1E) to F#-5 (0x5A) in sequence.
 
   The circuit:
   - digital in 1 connected to MIDI jack pin 5
@@ -37,8 +37,8 @@ void loop() {
   }
 }
 
-// plays a MIDI note. Doesn't check to see that
-// cmd is greater than 127, or that data values are less than 127:
+// plays a MIDI note. Doesn't check to see that cmd is greater than 127, or that
+// data values are less than 127:
 void noteOn(int cmd, int pitch, int velocity) {
   Serial.write(cmd);
   Serial.write(pitch);

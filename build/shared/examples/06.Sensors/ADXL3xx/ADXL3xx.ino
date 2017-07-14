@@ -35,10 +35,10 @@ void setup() {
   // initialize the serial communications:
   Serial.begin(9600);
 
-  // Provide ground and power by using the analog inputs as normal
-  // digital pins. This makes it possible to directly connect the
-  // breakout board to the Arduino. If you use the normal 5V and
-  // GND pins on the Arduino, you can remove these lines.
+  // Provide ground and power by using the analog inputs as normal digital pins.
+  // This makes it possible to directly connect the breakout board to the
+  // Arduino. If you use the normal 5V and GND pins on the Arduino,
+  // you can remove these lines.
   pinMode(groundpin, OUTPUT);
   pinMode(powerpin, OUTPUT);
   digitalWrite(groundpin, LOW);

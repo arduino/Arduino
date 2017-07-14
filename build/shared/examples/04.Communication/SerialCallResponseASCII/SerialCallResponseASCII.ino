@@ -2,12 +2,10 @@
   Serial Call and Response in ASCII
   Language: Wiring/Arduino
 
-  This program sends an ASCII A (byte of value 65) on startup
-  and repeats that until it gets some data in.
-  Then it waits for a byte in the serial port, and
-  sends three ASCII-encoded, comma-separated sensor values,
-  truncated by a linefeed and carriage return,
-  whenever it gets a byte in.
+  This program sends an ASCII A (byte of value 65) on startup and repeats that
+  until it gets some data in. Then it waits for a byte in the serial port, and
+  sends three ASCII-encoded, comma-separated sensor values, truncated by a
+  linefeed and carriage return, whenever it gets a byte in.
 
   The circuit:
   - potentiometers attached to analog inputs 0 and 1
@@ -88,10 +86,10 @@ void establishContact() {
    // if using Processing 2.1 or later, use Serial.printArray()
     println(Serial.list());
 
-    // I know that the first port in the serial list on my Mac
-    // is always my Arduino board, so I open Serial.list()[0].
-    // Change the 0 to the appropriate number of the serial port
-    // that your microcontroller is attached to.
+    // I know that the first port in the serial list on my Mac is always my
+    // Arduino board, so I open Serial.list()[0].
+    // Change the 0 to the appropriate number of the serial port that your
+    // microcontroller is attached to.
     myPort = new Serial(this, Serial.list()[0], 9600);
 
     // read bytes into a buffer until you get a linefeed (ASCII 10):
@@ -108,8 +106,8 @@ void establishContact() {
     ellipse(xpos, ypos, 20, 20);
   }
 
-  // serialEvent method is run automatically by the Processing applet
-  // whenever the buffer reaches the  byte value set in the bufferUntil()
+  // serialEvent method is run automatically by the Processing applet whenever
+  // the buffer reaches the  byte value set in the bufferUntil()
   // method in the setup():
 
   void serialEvent(Serial myPort) {
@@ -118,8 +116,7 @@ void establishContact() {
     // if you got any bytes other than the linefeed:
       myString = trim(myString);
 
-      // split the string at the commas
-      // and convert the sections into integers:
+      // split the string at the commas and convert the sections into integers:
       int sensors[] = int(split(myString, ','));
 
       // print out the values you got:

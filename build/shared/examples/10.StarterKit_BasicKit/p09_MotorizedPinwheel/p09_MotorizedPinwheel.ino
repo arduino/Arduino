@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 9 - Motorized Pinwheel
 
-  This sketch is written to accompany Project 9 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 9 in the Arduino Starter Kit
 
   Parts required:
   - 10 kilohm resistor

@@ -97,8 +97,8 @@ void loop() {
 
   // the compareTo() operator also allows you to compare Strings
   // it evaluates on the first character that's different.
-  // if the first character of the String you're comparing to
-  // comes first in alphanumeric order, then compareTo() is greater than 0:
+  // if the first character of the String you're comparing to comes first in
+  // alphanumeric order, then compareTo() is greater than 0:
   stringOne = "Cucumber";
   stringTwo = "Cucuracha";
   if (stringOne.compareTo(stringTwo) < 0) {

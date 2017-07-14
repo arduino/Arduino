@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 4 - Color Mixing Lamp
 
-  This sketch is written to accompany Project 3 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 3 in the Arduino Starter Kit
 
   Parts required:
   - one RGB LED
@@ -71,10 +70,10 @@ void loop() {
   Serial.println(blueSensorValue);
 
   /*
-    In order to use the values from the sensor for the LED,
-    you need to do some math. The ADC provides a 10-bit number,
-    but analogWrite() uses 8 bits. You'll want to divide your
-    sensor readings by 4 to keep them in range of the output.
+    In order to use the values from the sensor for the LED, you need to do some
+    math. The ADC provides a 10-bit number, but analogWrite() uses 8 bits.
+    You'll want to divide your sensor readings by 4 to keep them in range
+    of the output.
   */
   redValue = redSensorValue / 4;
   greenValue = greenSensorValue / 4;

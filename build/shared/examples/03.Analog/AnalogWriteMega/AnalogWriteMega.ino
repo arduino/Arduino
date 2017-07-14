@@ -15,8 +15,7 @@
   http://www.arduino.cc/en/Tutorial/AnalogWriteMega
 */
 
-// These constants won't change. They're used to give names
-// to the pins used:
+// These constants won't change. They're used to give names to the pins used:
 const int lowestPin = 2;
 const int highestPin = 13;
 

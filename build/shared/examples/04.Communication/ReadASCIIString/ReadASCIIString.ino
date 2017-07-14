@@ -45,8 +45,7 @@ void loop() {
     // do it again:
     int blue = Serial.parseInt();
 
-    // look for the newline. That's the end of your
-    // sentence:
+    // look for the newline. That's the end of your sentence:
     if (Serial.read() == '\n') {
       // constrain the values to 0 - 255 and invert
       // if you're using a common-cathode LED, just use "constrain(color, 0, 255);"

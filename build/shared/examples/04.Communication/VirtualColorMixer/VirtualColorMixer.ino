@@ -1,7 +1,7 @@
 /*
-  This example reads three analog sensors (potentiometers are easiest)
-  and sends their values serially. The Processing and Max/MSP programs at the bottom
-  take those three values and use them to change the background color of the screen.
+  This example reads three analog sensors (potentiometers are easiest) and sends
+  their values serially. The Processing and Max/MSP programs at the bottom take
+  those three values and use them to change the background color of the screen.
 
   The circuit:
   - potentiometers attached to analog inputs 0, 1, and 2
@@ -51,8 +51,8 @@ void loop() {
     // if using Processing 2.1 or later, use Serial.printArray()
     println(Serial.list());
 
-    // I know that the first port in the serial list on my Mac
-    // is always my Arduino, so I open Serial.list()[0].
+    // I know that the first port in the serial list on my Mac is always my
+    // Arduino, so I open Serial.list()[0].
     // Open whatever port is the one you're using.
     myPort = new Serial(this, Serial.list()[0], 9600);
     // don't generate a serialEvent() unless you get a newline character:
@@ -71,12 +71,11 @@ void loop() {
     if (inString != null) {
       // trim off any whitespace:
       inString = trim(inString);
-      // split the string on the commas and convert the
-      // resulting substrings into an integer array:
+      // split the string on the commas and convert the resulting substrings
+      // into an integer array:
       float[] colors = float(split(inString, ","));
-      // if the array has at least three elements, you know
-      // you got the whole thing.  Put the numbers in the
-      // color variables:
+      // if the array has at least three elements, you know you got the whole
+      // thing.  Put the numbers in the color variables:
       if (colors.length >=3) {
         // map them to the range 0-255:
         redValue = map(colors[0], 0, 1023, 0, 255);

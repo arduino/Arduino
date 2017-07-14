@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 5 - Servo Mood Indicator
 
-  This sketch is written to accompany Project 5 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 5 in the Arduino Starter Kit
 
   Parts required:
   - servo motor

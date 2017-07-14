@@ -1,17 +1,16 @@
 /*
   Graph
 
-  A simple example of communication from the Arduino board to the computer:
-  the value of analog input 0 is sent out the serial port. We call this "serial"
+  A simple example of communication from the Arduino board to the computer: The
+  value of analog input 0 is sent out the serial port. We call this "serial"
   communication because the connection appears to both the Arduino and the
-  computer as a serial port, even though it may actually use
-  a USB cable. Bytes are sent one after another (serially) from the Arduino
-  to the computer.
+  computer as a serial port, even though it may actually use a USB cable. Bytes
+  are sent one after another (serially) from the Arduino to the computer.
 
-  You can use the Arduino Serial Monitor to view the sent data, or it can
-  be read by Processing, PD, Max/MSP, or any other program capable of reading
-  data from a serial port. The Processing code below graphs the data received
-  so you can see the value of the analog input changing over time.
+  You can use the Arduino Serial Monitor to view the sent data, or it can be
+  read by Processing, PD, Max/MSP, or any other program capable of reading data
+  from a serial port. The Processing code below graphs the data received so you
+  can see the value of the analog input changing over time.
 
   The circuit:
   - any analog input sensor attached to analog in pin 0
@@ -34,8 +33,8 @@ void setup() {
 void loop() {
   // send the value of analog input 0:
   Serial.println(analogRead(A0));
-  // wait a bit for the analog-to-digital converter
-  // to stabilize after the last reading:
+  // wait a bit for the analog-to-digital converter to stabilize after the last
+  // reading:
   delay(2);
 }
 
@@ -44,9 +43,9 @@ void loop() {
   // Graphing sketch
 
 
-  // This program takes ASCII-encoded strings
-  // from the serial port at 9600 baud and graphs them. It expects values in the
-  // range 0 to 1023, followed by a newline, or newline and carriage return
+  // This program takes ASCII-encoded strings from the serial port at 9600 baud
+  // and graphs them. It expects values in the range 0 to 1023, followed by a
+  // newline, or newline and carriage return
 
   // Created 20 Apr 2005
   // Updated 24 Nov 2015
@@ -67,8 +66,8 @@ void loop() {
     // if using Processing 2.1 or later, use Serial.printArray()
     println(Serial.list());
 
-    // I know that the first port in the serial list on my Mac
-    // is always my Arduino, so I open Serial.list()[0].
+    // I know that the first port in the serial list on my Mac is always my
+    // Arduino, so I open Serial.list()[0].
     // Open whatever port is the one you're using.
     myPort = new Serial(this, Serial.list()[0], 9600);
 

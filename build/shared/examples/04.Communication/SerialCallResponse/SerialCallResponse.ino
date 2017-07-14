@@ -2,9 +2,8 @@
   Serial Call and Response
   Language: Wiring/Arduino
 
-  This program sends an ASCII A (byte of value 65) on startup
-  and repeats that until it gets some data in.
-  Then it waits for a byte in the serial port, and
+  This program sends an ASCII A (byte of value 65) on startup and repeats that
+  until it gets some data in. Then it waits for a byte in the serial port, and
   sends three sensor values whenever it gets a byte in.
 
   The circuit:
@@ -92,8 +91,8 @@ void establishContact() {
     // if using Processing 2.1 or later, use Serial.printArray()
     println(Serial.list());
 
-    // I know that the first port in the serial list on my Mac
-    // is always my FTDI adaptor, so I open Serial.list()[0].
+    // I know that the first port in the serial list on my Mac is always my FTDI
+    // adaptor, so I open Serial.list()[0].
     // On Windows machines, this generally opens COM1.
     // Open whatever port is the one you're using.
     String portName = Serial.list()[0];
@@ -110,9 +109,8 @@ void establishContact() {
   void serialEvent(Serial myPort) {
     // read a byte from the serial port:
     int inByte = myPort.read();
-    // if this is the first byte received, and it's an A,
-    // clear the serial buffer and note that you've
-    // had first contact from the microcontroller.
+    // if this is the first byte received, and it's an A, clear the serial
+    // buffer and note that you've had first contact from the microcontroller.
     // Otherwise, add the incoming byte to the array:
     if (firstContact == false) {
       if (inByte == 'A') {

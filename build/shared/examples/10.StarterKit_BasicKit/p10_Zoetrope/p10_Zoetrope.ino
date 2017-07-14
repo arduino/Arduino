@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 10 - Zoetrope
 
-  This sketch is written to accompany Project 10 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 10 in the Arduino Starter Kit
 
   Parts required:
   - two 10 kilohm resistors
@@ -59,8 +58,8 @@ void loop() {
   // read the value of the direction switch
   directionSwitchState = digitalRead(directionSwitchPin);
 
-  // read the value of the pot and divide by 4 to get
-  // a value that can be used for PWM
+  // read the value of the pot and divide by 4 to get a value that can be
+  // used for PWM
   motorSpeed = analogRead(potPin) / 4;
 
   // if the on/off button changed state since the last loop()
@@ -79,8 +78,8 @@ void loop() {
     }
   }
 
-  // change the direction the motor spins by talking
-  // to the control pins on the H-Bridge
+  // change the direction the motor spins by talking to the control pins
+  // on the H-Bridge
   if (motorDirection == 1) {
     digitalWrite(controlPin1, HIGH);
     digitalWrite(controlPin2, LOW);

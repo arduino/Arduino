@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 12 - Knock Lock
 
-  This sketch is written to accompany Project 12 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 12 in the Arduino Starter Kit
 
   Parts required:
   - 1 megohm resistor
@@ -146,11 +145,10 @@ void loop() {
   }
 }
 
-// this function checks to see if a
-// detected knock is within max and min range
+// this function checks to see if a detected knock is within max and min range
 boolean checkForKnock(int value) {
-  // if the value of the knock is greater than
-  // the minimum, and larger than the maximum
+  // if the value of the knock is greater than the minimum, and larger
+  // than the maximum
   if (value > quietKnock && value < loudKnock) {
     // turn the status LED on
     digitalWrite(yellowLed, HIGH);

@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 11 - Crystal Ball
 
-  This sketch is written to accompany Project 11 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 11 in the Arduino Starter Kit
 
   Parts required:
   - 220 ohm resistor
@@ -60,9 +59,8 @@ void loop() {
 
   // compare the switchState to its previous state
   if (switchState != prevSwitchState) {
-    // if the state has changed from HIGH to LOW
-    // you know that the ball has been tilted from
-    // one direction to the other
+    // if the state has changed from HIGH to LOW you know that the ball has been
+    // tilted from one direction to the other
     if (switchState == LOW) {
       // randomly chose a reply
       reply = random(8);
