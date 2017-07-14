@@ -1,28 +1,28 @@
 
 /*
- ADXL3xx
+  ADXL3xx
 
- Reads an Analog Devices ADXL3xx accelerometer and communicates the
- acceleration to the computer.  The pins used are designed to be easily
- compatible with the breakout boards from SparkFun, available from:
- http://www.sparkfun.com/commerce/categories.php?c=80
+  Reads an Analog Devices ADXL3xx accelerometer and communicates the
+  acceleration to the computer.  The pins used are designed to be easily
+  compatible with the breakout boards from SparkFun, available from:
+  http://www.sparkfun.com/commerce/categories.php?c=80
 
- http://www.arduino.cc/en/Tutorial/ADXL3xx
+  http://www.arduino.cc/en/Tutorial/ADXL3xx
 
- The circuit:
- analog 0: accelerometer self test
- analog 1: z-axis
- analog 2: y-axis
- analog 3: x-axis
- analog 4: ground
- analog 5: vcc
+  The circuit:
+  analog 0: accelerometer self test
+  analog 1: z-axis
+  analog 2: y-axis
+  analog 3: x-axis
+  analog 4: ground
+  analog 5: vcc
 
- created 2 Jul 2008
- by David A. Mellis
- modified 30 Aug 2011
- by Tom Igoe
+  created 2 Jul 2008
+  by David A. Mellis
+  modified 30 Aug 2011
+  by Tom Igoe
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
 */
 

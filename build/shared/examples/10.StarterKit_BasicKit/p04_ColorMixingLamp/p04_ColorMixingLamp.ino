@@ -1,25 +1,25 @@
 /*
   Arduino Starter Kit example
- Project 4 - Color Mixing Lamp
+  Project 4 - Color Mixing Lamp
 
- This sketch is written to accompany Project 3 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 3 in the
+  Arduino Starter Kit
 
- Parts required:
- 1 RGB LED
- three 10 kilohm resistors
- 3 220 ohm resistors
- 3 photoresistors
- red green and blue colored gels
+  Parts required:
+  1 RGB LED
+  three 10 kilohm resistors
+  3 220 ohm resistors
+  3 photoresistors
+  red green and blue colored gels
 
- Created 13 September 2012
- Modified 14 November 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  Created 13 September 2012
+  Modified 14 November 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
+  This example code is part of the public domain
  */
 
 const int greenLEDPin = 9;    // LED connected to digital pin 9
@@ -71,10 +71,10 @@ void loop() {
   Serial.println(blueSensorValue);
 
   /*
-  In order to use the values from the sensor for the LED,
-  you need to do some math. The ADC provides a 10-bit number,
-  but analogWrite() uses 8 bits. You'll want to divide your
-  sensor readings by 4 to keep them in range of the output.
+    In order to use the values from the sensor for the LED,
+    you need to do some math. The ADC provides a 10-bit number,
+    but analogWrite() uses 8 bits. You'll want to divide your
+    sensor readings by 4 to keep them in range of the output.
   */
   redValue = redSensorValue / 4;
   greenValue = greenSensorValue / 4;

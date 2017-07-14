@@ -1,18 +1,18 @@
 /*
   Melody
 
- Plays a melody
+  Plays a melody
 
- circuit:
- - 8-ohm speaker on digital pin 8
+  circuit:
+  - 8-ohm speaker on digital pin 8
 
- created 21 Jan 2010
- modified 30 Aug 2011
- by Tom Igoe
+  created 21 Jan 2010
+  modified 30 Aug 2011
+  by Tom Igoe
 
-This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/Tone
+  http://www.arduino.cc/en/Tutorial/Tone
 
  */
 #include "pitches.h"

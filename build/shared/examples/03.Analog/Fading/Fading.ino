@@ -1,19 +1,19 @@
 /*
- Fading
+  Fading
 
- This example shows how to fade an LED using the analogWrite() function.
+  This example shows how to fade an LED using the analogWrite() function.
 
- The circuit:
- - LED attached from digital pin 9 to ground.
+  The circuit:
+  - LED attached from digital pin 9 to ground.
 
- Created 1 Nov 2008
- By David A. Mellis
- modified 30 Aug 2011
- By Tom Igoe
+  Created 1 Nov 2008
+  By David A. Mellis
+  modified 30 Aug 2011
+  By Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/Fading
+  http://www.arduino.cc/en/Tutorial/Fading
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
  */
 

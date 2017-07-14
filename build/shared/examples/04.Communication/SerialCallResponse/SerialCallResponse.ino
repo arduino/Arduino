@@ -1,26 +1,26 @@
 /*
   Serial Call and Response
- Language: Wiring/Arduino
+  Language: Wiring/Arduino
 
- This program sends an ASCII A (byte of value 65) on startup
- and repeats that until it gets some data in.
- Then it waits for a byte in the serial port, and
- sends three sensor values whenever it gets a byte in.
+  This program sends an ASCII A (byte of value 65) on startup
+  and repeats that until it gets some data in.
+  Then it waits for a byte in the serial port, and
+  sends three sensor values whenever it gets a byte in.
 
- Thanks to Greg Shakar and Scott Fitzgerald for the improvements
+  Thanks to Greg Shakar and Scott Fitzgerald for the improvements
 
-   The circuit:
- - potentiometers attached to analog inputs 0 and 1
- - pushbutton attached to digital I/O 2
+    The circuit:
+  - potentiometers attached to analog inputs 0 and 1
+  - pushbutton attached to digital I/O 2
 
- Created 26 Sept. 2005
- by Tom Igoe
- modified 24 April 2012
- by Tom Igoe and Scott Fitzgerald
+  Created 26 Sept. 2005
+  by Tom Igoe
+  modified 24 April 2012
+  by Tom Igoe and Scott Fitzgerald
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/SerialCallResponse
+  http://www.arduino.cc/en/Tutorial/SerialCallResponse
 
  */
 
@@ -68,82 +68,82 @@ void establishContact() {
 }
 
 /*
-Processing sketch to run with this example:
+  Processing sketch to run with this example:
 
-// This example code is in the public domain.
+  // This example code is in the public domain.
 
-import processing.serial.*;
+  import processing.serial.*;
 
-int bgcolor;			     // Background color
-int fgcolor;			     // Fill color
-Serial myPort;                       // The serial port
-int[] serialInArray = new int[3];    // Where we'll put what we receive
-int serialCount = 0;                 // A count of how many bytes we receive
-int xpos, ypos;		             // Starting position of the ball
-boolean firstContact = false;        // Whether we've heard from the microcontroller
+  int bgcolor;			     // Background color
+  int fgcolor;			     // Fill color
+  Serial myPort;                       // The serial port
+  int[] serialInArray = new int[3];    // Where we'll put what we receive
+  int serialCount = 0;                 // A count of how many bytes we receive
+  int xpos, ypos;		             // Starting position of the ball
+  boolean firstContact = false;        // Whether we've heard from the microcontroller
 
-void setup() {
-  size(256, 256);  // Stage size
-  noStroke();      // No border on the next thing drawn
+  void setup() {
+    size(256, 256);  // Stage size
+    noStroke();      // No border on the next thing drawn
 
-  // Set the starting position of the ball (middle of the stage)
-  xpos = width/2;
-  ypos = height/2;
+    // Set the starting position of the ball (middle of the stage)
+    xpos = width/2;
+    ypos = height/2;
 
-  // Print a list of the serial ports for debugging purposes
-  // if using Processing 2.1 or later, use Serial.printArray()
-  println(Serial.list());
+    // Print a list of the serial ports for debugging purposes
+    // if using Processing 2.1 or later, use Serial.printArray()
+    println(Serial.list());
 
-  // I know that the first port in the serial list on my Mac
-  // is always my FTDI adaptor, so I open Serial.list()[0].
-  // On Windows machines, this generally opens COM1.
-  // Open whatever port is the one you're using.
-  String portName = Serial.list()[0];
-  myPort = new Serial(this, portName, 9600);
-}
+    // I know that the first port in the serial list on my Mac
+    // is always my FTDI adaptor, so I open Serial.list()[0].
+    // On Windows machines, this generally opens COM1.
+    // Open whatever port is the one you're using.
+    String portName = Serial.list()[0];
+    myPort = new Serial(this, portName, 9600);
+  }
 
-void draw() {
-  background(bgcolor);
-  fill(fgcolor);
-  // Draw the shape
-  ellipse(xpos, ypos, 20, 20);
-}
+  void draw() {
+    background(bgcolor);
+    fill(fgcolor);
+    // Draw the shape
+    ellipse(xpos, ypos, 20, 20);
+  }
 
-void serialEvent(Serial myPort) {
-  // read a byte from the serial port:
-  int inByte = myPort.read();
-  // if this is the first byte received, and it's an A,
-  // clear the serial buffer and note that you've
-  // had first contact from the microcontroller.
-  // Otherwise, add the incoming byte to the array:
-  if (firstContact == false) {
-    if (inByte == 'A') {
-      myPort.clear();          // clear the serial port buffer
-      firstContact = true;     // you've had first contact from the microcontroller
-      myPort.write('A');       // ask for more
+  void serialEvent(Serial myPort) {
+    // read a byte from the serial port:
+    int inByte = myPort.read();
+    // if this is the first byte received, and it's an A,
+    // clear the serial buffer and note that you've
+    // had first contact from the microcontroller.
+    // Otherwise, add the incoming byte to the array:
+    if (firstContact == false) {
+      if (inByte == 'A') {
+        myPort.clear();          // clear the serial port buffer
+        firstContact = true;     // you've had first contact from the microcontroller
+        myPort.write('A');       // ask for more
+      }
+    }
+    else {
+      // Add the latest byte from the serial port to array:
+      serialInArray[serialCount] = inByte;
+      serialCount++;
+
+      // If we have 3 bytes:
+      if (serialCount > 2 ) {
+        xpos = serialInArray[0];
+        ypos = serialInArray[1];
+        fgcolor = serialInArray[2];
+
+        // print the values (for debugging purposes only):
+        println(xpos + "\t" + ypos + "\t" + fgcolor);
+
+        // Send a capital A to request new sensor readings:
+        myPort.write('A');
+        // Reset serialCount:
+        serialCount = 0;
+      }
     }
   }
-  else {
-    // Add the latest byte from the serial port to array:
-    serialInArray[serialCount] = inByte;
-    serialCount++;
-
-    // If we have 3 bytes:
-    if (serialCount > 2 ) {
-      xpos = serialInArray[0];
-      ypos = serialInArray[1];
-      fgcolor = serialInArray[2];
-
-      // print the values (for debugging purposes only):
-      println(xpos + "\t" + ypos + "\t" + fgcolor);
-
-      // Send a capital A to request new sensor readings:
-      myPort.write('A');
-      // Reset serialCount:
-      serialCount = 0;
-    }
-  }
-}
 */
 
 /*

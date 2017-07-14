@@ -1,8 +1,8 @@
 /*
   DigitalReadSerial
- Reads a digital input on pin 2, prints the result to the Serial Monitor
+  Reads a digital input on pin 2, prints the result to the Serial Monitor
 
- This example code is in the public domain.
+  This example code is in the public domain.
  */
 
 // digital pin 2 has a pushbutton attached to it. Give it a name:

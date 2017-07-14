@@ -1,25 +1,25 @@
 /*
   Arduino Starter Kit example
- Project 10 - Zoetrope
+  Project 10 - Zoetrope
 
- This sketch is written to accompany Project 10 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 10 in the
+  Arduino Starter Kit
 
- Parts required:
- two 10 kilohm resistors
- 2 momentary pushbuttons
- one 10 kilohm potentiometer
- motor
- 9V battery
- H-Bridge
+  Parts required:
+  two 10 kilohm resistors
+  2 momentary pushbuttons
+  one 10 kilohm potentiometer
+  motor
+  9V battery
+  H-Bridge
 
- Created 13 September 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  Created 13 September 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
+  This example code is part of the public domain
  */
 
 const int controlPin1 = 2; // connected to pin 7 on the H-bridge

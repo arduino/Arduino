@@ -1,15 +1,15 @@
 /*
   String substring()
 
- Examples of how to use substring in a String
+  Examples of how to use substring in a String
 
- created 27 July 2010,
- modified 2 Apr 2012
- by Zach Eveland
+  created 27 July 2010,
+  modified 2 Apr 2012
+  by Zach Eveland
 
- http://www.arduino.cc/en/Tutorial/StringSubstring
+  http://www.arduino.cc/en/Tutorial/StringSubstring
 
- This example code is in the public domain.
+  This example code is in the public domain.
  */
 
 void setup() {

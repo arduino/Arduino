@@ -1,15 +1,15 @@
 /*
-   String constructors
+  String constructors
 
- Examples of how to create Strings from other data types
+  Examples of how to create Strings from other data types
 
- created 27 July 2010
- modified 30 Aug 2011
- by Tom Igoe
+  created 27 July 2010
+  modified 30 Aug 2011
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringConstructors
+  http://www.arduino.cc/en/Tutorial/StringConstructors
 
- This example code is in the public domain.
+  This example code is in the public domain.
  */
 
 void setup() {
