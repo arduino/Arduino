@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 14 - Tweak the Arduino Logo
 
-  This sketch is written to accompany Project 14 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 14 in the Arduino Starter Kit
 
   Parts required:
   - 10 kilohm potentiometer
@@ -27,8 +26,8 @@ void setup() {
 }
 
 void loop() {
-  // read the value of A0, divide by 4 and
-  // send it as a byte over the serial connection
+  // read the value of A0, divide by 4 and send it as a byte over the
+  // serial connection
   Serial.write(analogRead(A0) / 4);
   delay(1);
 }
@@ -62,21 +61,19 @@ void loop() {
     // make the window the same size as the image
     surface.setSize(logo.width, logo.height);
 
-    // print a list of available serial ports to the
-    // Processing status window
+    // print a list of available serial ports to the Processing status window
     println("Available serial ports:");
     println(Serial.list());
 
-    // Tell the serial object the information it needs to communicate
-    // with the Arduino. Change Serial.list()[0] to the correct
-    // port corresponding to your Arduino board.  The last
-    // parameter (e.g. 9600) is the speed of the communication.  It
-    // has to correspond to the value passed to Serial.begin() in your
-    // Arduino sketch.
+    // Tell the serial object the information it needs to communicate with the
+    // Arduino. Change Serial.list()[0] to the correct port corresponding to
+    // your Arduino board.  The last parameter (e.g. 9600) is the speed of the
+    // communication.  It has to correspond to the value passed to
+    // Serial.begin() in your Arduino sketch.
     myPort = new Serial(this, Serial.list()[0], 9600);
 
-    // If you know the name of the port used by the Arduino board, you
-    // can specify it directly like this.
+    // If you know the name of the port used by the Arduino board, you can
+    // specify it directly like this.
     // port = new Serial(this, "COM1", 9600);
   }
 
@@ -91,9 +88,8 @@ void loop() {
       println(bgcolor);
     }
 
-    // Draw the background. the variable bgcolor
-    // contains the Hue, determined by the value
-    // from the serial port
+    // Draw the background. the variable bgcolor contains the Hue, determined by
+    // the value from the serial port
     background(bgcolor, 255, 255);
 
     // draw the Arduino logo

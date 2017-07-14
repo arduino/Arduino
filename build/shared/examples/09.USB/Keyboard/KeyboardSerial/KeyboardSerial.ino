@@ -4,8 +4,8 @@
   For the Arduino Leonardo, Micro or Due
 
   Reads a byte from the serial port, sends a keystroke back.
-  The sent keystroke is one higher than what's received, e.g.
-  if you send a, you get b, send A you get B, and so forth.
+  The sent keystroke is one higher than what's received, e.g. if you send a,
+  you get b, send A you get B, and so forth.
 
   The circuit:
   - none

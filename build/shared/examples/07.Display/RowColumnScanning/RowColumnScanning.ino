@@ -7,8 +7,8 @@
   http://sigma.octopart.com/140413/datasheet/Lumex-LDM-24488NI.pdf
   for the pin connections.
 
-  For other LED cathode column matrixes, you should only need to change
-  the pin numbers in the row[] and column[] arrays.
+  For other LED cathode column matrixes, you should only need to change the pin
+  numbers in the row[] and column[] arrays.
 
   rows are the anodes
   cols are the cathodes
@@ -51,14 +51,12 @@ int x = 5;
 int y = 5;
 
 void setup() {
-  // initialize the I/O pins as outputs
-  // iterate over the pins:
+  // initialize the I/O pins as outputs iterate over the pins:
   for (int thisPin = 0; thisPin < 8; thisPin++) {
     // initialize the output pins:
     pinMode(col[thisPin], OUTPUT);
     pinMode(row[thisPin], OUTPUT);
-    // take the col pins (i.e. the cathodes) high to ensure that
-    // the LEDS are off:
+    // take the col pins (i.e. the cathodes) high to ensure that the LEDS are off:
     digitalWrite(col[thisPin], HIGH);
   }
 
@@ -84,8 +82,8 @@ void readSensors() {
   // read the sensors for X and Y values:
   x = 7 - map(analogRead(A0), 0, 1023, 0, 7);
   y = map(analogRead(A1), 0, 1023, 0, 7);
-  // set the new pixel position low so that the LED will turn on
-  // in the next screen refresh:
+  // set the new pixel position low so that the LED will turn on in the next
+  // screen refresh:
   pixels[x][y] = LOW;
 
 }

@@ -37,9 +37,9 @@ int thisByte = 33;
 // int thisByte = '!';
 
 void loop() {
-  // prints value unaltered, i.e. the raw binary version of the
-  // byte. The Serial Monitor interprets all bytes as
-  // ASCII, so 33, the first number, will show up as '!'
+  // prints value unaltered, i.e. the raw binary version of the byte.
+  // The Serial Monitor interprets all bytes as ASCII, so 33, the first number,
+  // will show up as '!'
   Serial.write(thisByte);
 
   Serial.print(", dec: ");
@@ -62,8 +62,7 @@ void loop() {
   Serial.print(thisByte, OCT);
 
   Serial.print(", bin: ");
-  // prints value as string in binary (base 2)
-  // also prints ending line break:
+  // prints value as string in binary (base 2) also prints ending line break:
   Serial.println(thisByte, BIN);
 
   // if printed last visible character '~' or 126, stop:

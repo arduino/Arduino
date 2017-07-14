@@ -1,14 +1,12 @@
 /*
   Physical Pixel
 
-  An example of using the Arduino board to receive data from the
-  computer. In this case, the Arduino boards turns on an LED when
-  it receives the character 'H', and turns off the LED when it
-  receives the character 'L'.
+  An example of using the Arduino board to receive data from the computer. In
+  this case, the Arduino boards turns on an LED when it receives the character
+  'H', and turns off the LED when it receives the character 'L'.
 
-  The data can be sent from the Arduino Serial Monitor, or another
-  program like Processing (see code below), Flash (via a serial-net
-  proxy), PD, or Max/MSP.
+  The data can be sent from the Arduino Serial Monitor, or another program like
+  Processing (see code below), Flash (via a serial-net proxy), PD, or Max/MSP.
 
   The circuit:
   - LED connected from digital pin 13 to ground
@@ -53,9 +51,8 @@ void loop() {
 
   // mouse over serial
 
-  // Demonstrates how to send data to the Arduino I/O board, in order to
-  // turn ON a light if the mouse is over a square and turn it off
-  // if the mouse is not.
+  // Demonstrates how to send data to the Arduino I/O board, in order to turn ON
+  // a light if the mouse is over a square and turn it off if the mouse is not.
 
   // created 2003-4
   // based on examples by Casey Reas and Hernando Barragan
@@ -81,9 +78,9 @@ void loop() {
   rectMode(RADIUS);
 
   // List all the available serial ports in the output pane.
-  // You will need to choose the port that the Arduino board is
-  // connected to from this list. The first port in the list is
-  // port #0 and the third port in the list is port #2.
+  // You will need to choose the port that the Arduino board is connected to
+  // from this list. The first port in the list is port #0 and the third port
+  // in the list is port #2.
   // if using Processing 2.1 or later, use Serial.printArray()
   println(Serial.list());
 

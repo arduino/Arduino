@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 13 - Touch Sensor Lamp
 
-  This sketch is written to accompany Project 13 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 13 in the Arduino Starter Kit
 
   Parts required:
   - 1 megohm resistor
@@ -23,8 +22,7 @@
   This example code is part of the public domain.
 */
 
-// import the library (must be located in the
-// Arduino/libraries directory)
+// import the library (must be located in the Arduino/libraries directory)
 #include <CapacitiveSensor.h>
 
 // create an instance of the library

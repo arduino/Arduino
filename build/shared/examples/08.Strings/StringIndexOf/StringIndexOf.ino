@@ -25,8 +25,8 @@ void setup() {
 }
 
 void loop() {
-  // indexOf() returns the position (i.e. index) of a particular character
-  // in a String. For example, if you were parsing HTML tags, you could use it:
+  // indexOf() returns the position (i.e. index) of a particular character in a
+  // String. For example, if you were parsing HTML tags, you could use it:
   String stringOne = "<HTML><HEAD><BODY>";
   int firstClosingBracket = stringOne.indexOf('>');
   Serial.println("The index of > in the string " + stringOne + " is " + firstClosingBracket);

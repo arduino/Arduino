@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 3 - Love-O-Meter
 
-  This sketch is written to accompany Project 3 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 3 in the Arduino Starter Kit
 
   Parts required:
   - one TMP36 temperature sensor
@@ -35,8 +34,7 @@ void setup() {
 }
 
 void loop() {
-  // read the value on AnalogIn pin 0
-  // and store it in a variable
+  // read the value on AnalogIn pin 0 and store it in a variable
   int sensorVal = analogRead(sensorPin);
 
   // send the 10-bit sensor value out the serial port
@@ -58,8 +56,7 @@ void loop() {
   float temperature = (voltage - .5) * 100;
   Serial.println(temperature);
 
-  // if the current temperature is lower than the baseline
-  // turn off all LEDs
+  // if the current temperature is lower than the baseline turn off all LEDs
   if (temperature < baselineTemp + 2) {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);

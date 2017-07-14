@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 7 - Keyboard
 
-  This sketch is written to accompany Project 7 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 7 in the Arduino Starter Kit
 
   Parts required:
   - two 10 kilohm resistors
@@ -21,8 +20,7 @@
 */
 
 // create an array of notes
-// the numbers below correspond to
-// the frequencies of middle C, D, E, and F
+// the numbers below correspond to the frequencies of middle C, D, E, and F
 int notes[] = {262, 294, 330, 349};
 
 void setup() {

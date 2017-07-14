@@ -4,8 +4,8 @@
   This example demonstrates the use of  while() statements.
 
   While the pushbutton is pressed, the sketch runs the calibration routine.
-  The sensor readings during the while loop define the minimum and maximum
-  of expected values from the photoresistor.
+  The sensor readings during the while loop define the minimum and maximum of
+  expected values from the photoresistor.
 
   This is a variation on the calibrate example.
 

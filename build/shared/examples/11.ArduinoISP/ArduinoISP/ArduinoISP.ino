@@ -3,30 +3,30 @@
 // If you require a license, see
 // http://www.opensource.org/licenses/bsd-license.php
 //
-// This sketch turns the Arduino into a AVRISP
-// using the following Arduino pins:
+// This sketch turns the Arduino into a AVRISP using the following Arduino pins:
 //
 // Pin 10 is used to reset the target microcontroller.
 //
-// By default, the hardware SPI pins MISO, MOSI and SCK are used
-// to communicate with the target. On all Arduinos, these pins can be found
+// By default, the hardware SPI pins MISO, MOSI and SCK are used to communicate
+// with the target. On all Arduinos, these pins can be found
 // on the ICSP/SPI header:
 //
 //               MISO °. . 5V (!) Avoid this pin on Due, Zero...
 //               SCK   . . MOSI
 //                     . . GND
 //
-// On some Arduinos (Uno,...), pins MOSI, MISO and SCK are the same pins
-// as digital pin 11, 12 and 13, respectively. That is why many tutorials
-// instruct you to hook up the target to these pins. If you find this wiring
-// more practical, have a define USE_OLD_STYLE_WIRING. This will work even
-// when not using an Uno. (On an Uno this is not needed).
+// On some Arduinos (Uno,...), pins MOSI, MISO and SCK are the same pins as
+// digital pin 11, 12 and 13, respectively. That is why many tutorials instruct
+// you to hook up the target to these pins. If you find this wiring more
+// practical, have a define USE_OLD_STYLE_WIRING. This will work even when not
+// using an Uno. (On an Uno this is not needed).
 //
-// Alternatively you can use any other digital pin by configuring software ('BitBanged')
-// SPI and having appropriate defines for PIN_MOSI, PIN_MISO and PIN_SCK.
+// Alternatively you can use any other digital pin by configuring
+// software ('BitBanged') SPI and having appropriate defines for PIN_MOSI,
+// PIN_MISO and PIN_SCK.
 //
-// IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...)
-// as the programmer, make sure to not expose any of the programmer's pins to 5V.
+// IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...) as
+// the programmer, make sure to not expose any of the programmer's pins to 5V.
 // A simple way to accomplish this is to power the complete system (programmer
 // and target) at 3V3.
 //
@@ -43,9 +43,9 @@
 #define PROG_FLICKER true
 
 // Configure SPI clock (in Hz).
-// E.g. for an ATtiny @ 128 kHz: the datasheet states that both the high
-// and low SPI clock pulse must be > 2 CPU cycles, so take 3 cycles i.e.
-// divide target f_cpu by 6:
+// E.g. for an ATtiny @ 128 kHz: the datasheet states that both the high and low
+// SPI clock pulse must be > 2 CPU cycles, so take 3 cycles i.e. divide target
+// f_cpu by 6:
 //     #define SPI_CLOCK            (128000/6)
 //
 // A clock slow enough for an ATtiny85 @ 1 MHz, is a reasonable default:
@@ -54,8 +54,8 @@
 
 
 // Select hardware or software SPI, depending on SPI clock.
-// Currently only for AVR, for other architectures (Due, Zero,...),
-// hardware SPI is probably too fast anyway.
+// Currently only for AVR, for other architectures (Due, Zero,...), hardware SPI
+// is probably too fast anyway.
 
 #if defined(ARDUINO_ARCH_AVR)
 
@@ -88,9 +88,8 @@
 
 #endif
 
-// HOODLOADER2 means running sketches on the ATmega16U2
-// serial converter chips on Uno or Mega boards.
-// We must use pins that are broken out:
+// HOODLOADER2 means running sketches on the ATmega16U2 serial converter chips
+// on Uno or Mega boards. We must use pins that are broken out:
 #else
 
 #define RESET     	4
@@ -401,10 +400,8 @@ void start_pmode() {
 
   // Reset target before driving PIN_SCK or PIN_MOSI
 
-  // SPI.begin() will configure SS as output,
-  // so SPI master mode is selected.
-  // We have defined RESET as pin 10,
-  // which for many Arduinos is not the SS pin.
+  // SPI.begin() will configure SS as output, so SPI master mode is selected.
+  // We have defined RESET as pin 10, which for many Arduinos is not the SS pin.
   // So we have to configure RESET as output here,
   // (reset_target() first sets the correct level)
   reset_target(true);
@@ -418,8 +415,8 @@ void start_pmode() {
   digitalWrite(PIN_SCK, LOW);
   delay(20); // discharge PIN_SCK, value arbitrarily chosen
   reset_target(false);
-  // Pulse must be minimum 2 target CPU clock cycles
-  // so 100 usec is ok for CPU speeds above 20 KHz
+  // Pulse must be minimum 2 target CPU clock cycles so 100 usec is ok for CPU
+  // speeds above 20 KHz
   delayMicroseconds(100);
   reset_target(true);
 
@@ -431,8 +428,7 @@ void start_pmode() {
 
 void end_pmode() {
   SPI.end();
-  // We're about to take the target out of reset
-  // so configure SPI pins as input
+  // We're about to take the target out of reset so configure SPI pins as input
   pinMode(PIN_MOSI, INPUT);
   pinMode(PIN_SCK, INPUT);
   reset_target(false);
@@ -530,8 +526,7 @@ uint8_t write_eeprom(unsigned int length) {
 }
 // write (length) bytes, (start) is a byte address
 uint8_t write_eeprom_chunk(unsigned int start, unsigned int length) {
-  // this writes byte-by-byte,
-  // page writing may be faster (4 bytes at a time)
+  // this writes byte-by-byte, page writing may be faster (4 bytes at a time)
   fill(length);
   prog_lamp(LOW);
   for (unsigned int x = 0; x < length; x++) {

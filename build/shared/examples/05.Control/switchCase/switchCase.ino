@@ -1,13 +1,12 @@
 /*
   Switch statement
 
-  Demonstrates the use of a switch statement. The switch
-  statement allows you to choose from among a set of discrete values
-  of a variable. It's like a series of if statements.
+  Demonstrates the use of a switch statement. The switch statement allows you
+  to choose from among a set of discrete values of a variable. It's like a
+  series of if statements.
 
-  To see this sketch in action, put the board and sensor in a well-lit
-  room, open the Serial Monitor, and move your hand gradually down
-  over the sensor.
+  To see this sketch in action, put the board and sensor in a well-lit room,
+  open the Serial Monitor, and move your hand gradually down over the sensor.
 
   The circuit:
   - photoresistor from analog in 0 to +5V
@@ -22,8 +21,8 @@
   http://www.arduino.cc/en/Tutorial/SwitchCase
 */
 
-// these constants won't change. They are the
-// lowest and highest readings you get from your sensor:
+// these constants won't change. They are the lowest and highest readings you
+// get from your sensor:
 const int sensorMin = 0;      // sensor minimum, discovered through experiment
 const int sensorMax = 600;    // sensor maximum, discovered through experiment
 
@@ -38,8 +37,7 @@ void loop() {
   // map the sensor range to a range of four options:
   int range = map(sensorReading, sensorMin, sensorMax, 0, 3);
 
-  // do something different depending on the
-  // range value:
+  // do something different depending on the range value:
   switch (range) {
     case 0:    // your hand is on the sensor
       Serial.println("dark");

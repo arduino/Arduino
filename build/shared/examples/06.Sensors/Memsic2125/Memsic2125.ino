@@ -1,10 +1,9 @@
 /*
   Memsic2125
 
-  Read the Memsic 2125 two-axis accelerometer. Converts the
-  pulses output by the 2125 into milli-g's (1/1000 of Earth's
-  gravity) and prints them over the serial connection to the
-  computer.
+  Read the Memsic 2125 two-axis accelerometer. Converts the pulses output by the
+  2125 into milli-g's (1/1000 of Earth's gravity) and prints them over the
+  serial connection to the computer.
 
   The circuit:
 	- X output of accelerometer to digital pin 2
@@ -29,8 +28,7 @@ const int yPin = 3;		// Y output of the accelerometer
 void setup() {
   // initialize serial communications:
   Serial.begin(9600);
-  // initialize the pins connected to the accelerometer
-  // as inputs:
+  // initialize the pins connected to the accelerometer as inputs:
   pinMode(xPin, INPUT);
   pinMode(yPin, INPUT);
 }

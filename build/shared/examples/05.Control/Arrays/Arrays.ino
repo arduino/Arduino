@@ -1,12 +1,11 @@
 /*
   Arrays
 
-  Demonstrates the use of an array to hold pin numbers
-  in order to iterate over the pins in a sequence.
-  Lights multiple LEDs in sequence, then in reverse.
+  Demonstrates the use of an array to hold pin numbers in order to iterate over
+  the pins in a sequence. Lights multiple LEDs in sequence, then in reverse.
 
-  Unlike the For Loop tutorial, where the pins have to be
-  contiguous, here the pins can be in any random order.
+  Unlike the For Loop tutorial, where the pins have to be contiguous, here the
+  pins can be in any random order.
 
   The circuit:
   - LEDs from pins 2 through 7 to ground

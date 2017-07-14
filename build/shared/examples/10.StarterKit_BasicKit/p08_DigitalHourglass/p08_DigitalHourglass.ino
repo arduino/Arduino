@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 8 - Digital Hourglass
 
-  This sketch is written to accompany Project 8 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 8 in the Arduino Starter Kit
 
   Parts required:
   - 10 kilohm resistor

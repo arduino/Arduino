@@ -2,8 +2,7 @@
   Arduino Starter Kit example
   Project 15 - Hacking Buttons
 
-  This sketch is written to accompany Project 15 in the
-  Arduino Starter Kit
+  This sketch is written to accompany Project 15 in the Arduino Starter Kit
 
   Parts required:
   - battery powered component
