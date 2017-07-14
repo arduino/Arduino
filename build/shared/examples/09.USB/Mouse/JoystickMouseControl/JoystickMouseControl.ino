@@ -26,7 +26,7 @@
 
   this code is in the public domain
 
- */
+*/
 
 #include "Mouse.h"
 
@@ -98,7 +98,7 @@ void loop() {
 /*
   reads an axis (0 or 1 for x or y) and scales the
   analog input range to a range from 0 to <range>
- */
+*/
 
 int readAxis(int thisAxis) {
   // read the analog input:

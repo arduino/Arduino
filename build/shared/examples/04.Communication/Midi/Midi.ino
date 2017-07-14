@@ -20,7 +20,7 @@
 
   http://www.arduino.cc/en/Tutorial/Midi
 
- */
+*/
 
 void setup() {
   // Set MIDI baud rate:

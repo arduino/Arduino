@@ -10,7 +10,7 @@
   http://www.arduino.cc/en/Tutorial/StringCharacters
 
   This example code is in the public domain.
- */
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:

@@ -14,7 +14,7 @@
   by Tom Igoe and Scott Fitzgerald
 
   This example code is in the public domain.
- */
+*/
 
 const int redPin = A0;		// sensor to control red color
 const int greenPin = A1;	// sensor to control green color
@@ -86,7 +86,7 @@ void loop() {
     }
   }
 
- */
+*/
 
 /* Max/MSP patch for this example
 

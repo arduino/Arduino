@@ -24,7 +24,7 @@
 //
 // Alternatively you can use any other digital pin by configuring software ('BitBanged')
 // SPI and having appropriate defines for PIN_MOSI, PIN_MISO and PIN_SCK.
-// 
+//
 // IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...)
 // as the programmer, make sure to not expose any of the programmer's pins to 5V.
 // A simple way to accomplish this is to power the complete system (programmer
@@ -68,7 +68,7 @@
 // Configure which pins to use:
 
 // The standard pin configuration.
-#ifndef ARDUINO_HOODLOADER2 
+#ifndef ARDUINO_HOODLOADER2
 
 #define RESET     10 // Use pin 10 to reset the target rather than SS
 #define LED_HB    9
@@ -88,10 +88,10 @@
 
 #endif
 
-// HOODLOADER2 means running sketches on the ATmega16U2 
+// HOODLOADER2 means running sketches on the ATmega16U2
 // serial converter chips on Uno or Mega boards.
 // We must use pins that are broken out:
-#else 
+#else
 
 #define RESET     	4
 #define LED_HB    	7
@@ -166,51 +166,51 @@ void pulse(int pin, int times);
 #define SPI_MODE0 0x00
 
 class SPISettings {
-public:
-  // clock is in Hz
-  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) : clock(clock){
-    (void) bitOrder;
-    (void) dataMode;
-  };
+  public:
+    // clock is in Hz
+    SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) : clock(clock) {
+      (void) bitOrder;
+      (void) dataMode;
+    };
 
-private:
-  uint32_t clock;
+  private:
+    uint32_t clock;
 
-friend class BitBangedSPI;
+    friend class BitBangedSPI;
 };
 
 class BitBangedSPI {
-public:
-  void begin() {
-    digitalWrite(PIN_SCK, LOW);
-    digitalWrite(PIN_MOSI, LOW);
-    pinMode(PIN_SCK, OUTPUT);
-    pinMode(PIN_MOSI, OUTPUT);
-    pinMode(PIN_MISO, INPUT);
-  }
-
-  void beginTransaction(SPISettings settings) {
-    pulseWidth = (500000 + settings.clock - 1) / settings.clock;
-    if (pulseWidth == 0)
-      pulseWidth = 1;
-  }
-
-  void end() {}
-
-  uint8_t transfer (uint8_t b) {
-    for (unsigned int i = 0; i < 8; ++i) {
-      digitalWrite(PIN_MOSI, (b & 0x80) ? HIGH : LOW);
-      digitalWrite(PIN_SCK, HIGH);
-      delayMicroseconds(pulseWidth);
-      b = (b << 1) | digitalRead(PIN_MISO);
-      digitalWrite(PIN_SCK, LOW); // slow pulse
-      delayMicroseconds(pulseWidth);
+  public:
+    void begin() {
+      digitalWrite(PIN_SCK, LOW);
+      digitalWrite(PIN_MOSI, LOW);
+      pinMode(PIN_SCK, OUTPUT);
+      pinMode(PIN_MOSI, OUTPUT);
+      pinMode(PIN_MISO, INPUT);
     }
-    return b;
-  }
 
-private:
-  unsigned long pulseWidth; // in microseconds
+    void beginTransaction(SPISettings settings) {
+      pulseWidth = (500000 + settings.clock - 1) / settings.clock;
+      if (pulseWidth == 0)
+        pulseWidth = 1;
+    }
+
+    void end() {}
+
+    uint8_t transfer (uint8_t b) {
+      for (unsigned int i = 0; i < 8; ++i) {
+        digitalWrite(PIN_MOSI, (b & 0x80) ? HIGH : LOW);
+        digitalWrite(PIN_SCK, HIGH);
+        delayMicroseconds(pulseWidth);
+        b = (b << 1) | digitalRead(PIN_MISO);
+        digitalWrite(PIN_SCK, LOW); // slow pulse
+        delayMicroseconds(pulseWidth);
+      }
+      return b;
+    }
+
+  private:
+    unsigned long pulseWidth; // in microseconds
 };
 
 static BitBangedSPI SPI;

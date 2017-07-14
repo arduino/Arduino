@@ -28,7 +28,7 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Debounce
- */
+*/
 
 // constants won't change. They're used here to
 // set pin numbers:

@@ -11,7 +11,7 @@
   http://www.arduino.cc/en/Tutorial/StringAdditionOperator
 
   This example code is in the public domain.
- */
+*/
 
 // declare three Strings:
 String stringOne, stringTwo, stringThree;

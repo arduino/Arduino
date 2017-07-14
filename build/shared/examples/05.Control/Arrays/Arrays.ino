@@ -19,7 +19,7 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/Array
- */
+*/
 
 int timer = 100;           // The higher the number, the slower the timing.
 int ledPins[] = {

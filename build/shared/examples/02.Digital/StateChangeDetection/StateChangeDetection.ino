@@ -23,7 +23,7 @@
 
   http://www.arduino.cc/en/Tutorial/ButtonStateChange
 
- */
+*/
 
 // this constant won't change:
 const int  buttonPin = 2;    // the pin that the pushbutton is attached to

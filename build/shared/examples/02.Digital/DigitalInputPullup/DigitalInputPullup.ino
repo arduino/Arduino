@@ -19,7 +19,7 @@
 
   This example code is in the public domain
 
- */
+*/
 
 void setup() {
   //start serial connection

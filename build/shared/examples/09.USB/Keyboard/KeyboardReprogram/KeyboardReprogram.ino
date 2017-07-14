@@ -25,7 +25,7 @@
   This example is in the public domain
 
   http://www.arduino.cc/en/Tutorial/KeyboardReprogram
- */
+*/
 
 #include "Keyboard.h"
 

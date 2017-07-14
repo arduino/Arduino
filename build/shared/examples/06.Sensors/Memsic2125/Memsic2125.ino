@@ -21,7 +21,7 @@
 
   This example code is in the public domain.
 
- */
+*/
 
 // these constants won't change:
 const int xPin = 2;		// X output of the accelerometer

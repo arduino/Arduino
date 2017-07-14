@@ -20,7 +20,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 const int controlPin1 = 2; // connected to pin 7 on the H-bridge
 const int controlPin2 = 3; // connected to pin 2 on the H-bridge

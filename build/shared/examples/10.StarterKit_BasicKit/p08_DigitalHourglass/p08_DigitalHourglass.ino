@@ -17,7 +17,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 // named constant for the switch pin
 const int switchPin = 8;

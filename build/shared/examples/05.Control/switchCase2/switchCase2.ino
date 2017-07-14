@@ -18,7 +18,7 @@
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/SwitchCase2
- */
+*/
 
 void setup() {
   // initialize serial communication:

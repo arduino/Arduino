@@ -10,7 +10,7 @@
 
   Software required :
   Processing (3.0 or newer) http://processing.org
-  Active Internet connection 
+  Active Internet connection
 
   Created 18 September 2012
   by Scott Fitzgerald
@@ -18,7 +18,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 
 void setup() {
@@ -99,4 +99,4 @@ void loop() {
     // draw the Arduino logo
     image(logo, 0, 0);
   }
- */
+*/

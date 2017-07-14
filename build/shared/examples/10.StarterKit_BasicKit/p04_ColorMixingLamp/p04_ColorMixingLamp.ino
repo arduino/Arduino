@@ -20,7 +20,7 @@
   http://www.arduino.cc/starterKit
 
   This example code is part of the public domain
- */
+*/
 
 const int greenLEDPin = 9;    // LED connected to digital pin 9
 const int redLEDPin = 10;     // LED connected to digital pin 10
@@ -89,7 +89,7 @@ void loop() {
   Serial.println(blueValue);
 
   /*
-  Now that you have a usable value, it's time to PWM the LED.
+    Now that you have a usable value, it's time to PWM the LED.
   */
   analogWrite(redLEDPin, redValue);
   analogWrite(greenLEDPin, greenValue);

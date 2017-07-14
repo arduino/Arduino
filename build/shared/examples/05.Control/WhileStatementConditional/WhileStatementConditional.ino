@@ -26,7 +26,7 @@
 
   http://www.arduino.cc/en/Tutorial/WhileLoop
 
- */
+*/
 
 
 // These constants won't change:
