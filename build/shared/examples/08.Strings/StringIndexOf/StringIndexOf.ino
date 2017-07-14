@@ -1,15 +1,15 @@
 /*
   String indexOf() and lastIndexOf() functions
 
- Examples of how to evaluate, look for, and replace characters in a String
+  Examples of how to evaluate, look for, and replace characters in a String
 
- created 27 July 2010
- modified 2 Apr 2012
- by Tom Igoe
+  created 27 July 2010
+  modified 2 Apr 2012
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringIndexOf
+  http://www.arduino.cc/en/Tutorial/StringIndexOf
 
- This example code is in the public domain.
+  This example code is in the public domain.
  */
 
 void setup() {

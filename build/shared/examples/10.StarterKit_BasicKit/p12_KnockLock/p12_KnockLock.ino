@@ -1,29 +1,29 @@
 /*
   Arduino Starter Kit example
- Project 12 - Knock Lock
+  Project 12 - Knock Lock
 
- This sketch is written to accompany Project 12 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 12 in the
+  Arduino Starter Kit
 
- Parts required:
- 1 Megohm resistor
- 10 kilohm resistor
- three 220 ohm resistors
- piezo
- servo motor
- push button
- one red LED
- one yellow LED
- one green LED
- 100 uF capacitor
+  Parts required:
+  1 Megohm resistor
+  10 kilohm resistor
+  three 220 ohm resistors
+  piezo
+  servo motor
+  push button
+  one red LED
+  one yellow LED
+  one green LED
+  100 uF capacitor
 
- Created 18 September 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  Created 18 September 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
+  This example code is part of the public domain
  */
 
 // import the library

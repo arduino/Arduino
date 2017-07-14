@@ -1,23 +1,23 @@
 /* Knock Sensor
 
-   This sketch reads a piezo element to detect a knocking sound.
-   It reads an analog pin and compares the result to a set threshold.
-   If the result is greater than the threshold, it writes
-   "knock" to the serial port, and toggles the LED on pin 13.
+  This sketch reads a piezo element to detect a knocking sound.
+  It reads an analog pin and compares the result to a set threshold.
+  If the result is greater than the threshold, it writes
+  "knock" to the serial port, and toggles the LED on pin 13.
 
-   The circuit:
-	- + connection of the piezo attached to analog in 0
-	- - connection of the piezo attached to ground
-	- 1-megohm resistor attached from analog in 0 to ground
+  The circuit:
+  - + connection of the piezo attached to analog in 0
+  - - connection of the piezo attached to ground
+  - 1-megohm resistor attached from analog in 0 to ground
 
-   http://www.arduino.cc/en/Tutorial/Knock
+  http://www.arduino.cc/en/Tutorial/Knock
 
-   created 25 Mar 2007
-   by David Cuartielles <http://www.0j0.org>
-   modified 30 Aug 2011
-   by Tom Igoe
+  created 25 Mar 2007
+  by David Cuartielles <http://www.0j0.org>
+  modified 30 Aug 2011
+  by Tom Igoe
 
-   This example code is in the public domain.
+  This example code is in the public domain.
 
  */
 

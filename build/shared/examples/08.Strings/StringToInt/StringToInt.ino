@@ -1,16 +1,16 @@
 /*
   String to Integer conversion
 
- Reads a serial input string until it sees a newline, then converts
- the string to a number if the characters are digits.
+  Reads a serial input string until it sees a newline, then converts
+  the string to a number if the characters are digits.
 
- The circuit:
- No external components needed.
+  The circuit:
+  No external components needed.
 
- created 29 Nov 2010
- by Tom Igoe
+  created 29 Nov 2010
+  by Tom Igoe
 
- This example code is in the public domain.
+  This example code is in the public domain.
  */
 
 String inString = "";    // string to hold input
