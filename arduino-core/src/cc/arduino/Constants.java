@@ -80,10 +80,15 @@ public class Constants {
     String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
     if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
       LIBRARY_INDEX_URL = externalLibraryIndexUrl;
+      LIBRARY_INDEX_URL_GZ = "";
+      String externalLibraryIndexUrlGz = System.getProperty("LIBRARY_INDEX_URL_GZ");
+      if (externalLibraryIndexUrlGz != null && !"".equals(externalLibraryIndexUrlGz)) {
+        LIBRARY_INDEX_URL_GZ = externalLibraryIndexUrlGz;
+      }
     } else {
       LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
+      LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
     }
-    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
   }
 
 }
