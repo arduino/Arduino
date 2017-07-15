@@ -115,8 +115,7 @@ void loop() {
 
 */
 
-/*
-Max/MSP version 5 patch to run with this example:
+/* Max/MSP version 5 patch to run with this example:
 
 ----------begin_max5_patcher----------
 1672.3oc2ZszaaiCD9ryuBBebQVCQRYao8xhf1cQCPVfBzh8RRQ.sDsM2HSZ
@@ -159,5 +158,4 @@ hN97JSnSfLUXGUoj6ujWXd6Pk1SAC+Pkogm.tZ.1lX1qL.pe6PE11DPeMMZ2
 .P0K+3peBt3NskC
 -----------end_max5_patcher-----------
 
-
- */
+*/

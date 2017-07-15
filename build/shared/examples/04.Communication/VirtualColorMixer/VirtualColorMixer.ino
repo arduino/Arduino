@@ -126,5 +126,4 @@ ASi6Zyw8.RQi65J8ZsNx3ho93OhGWENtWpowepae4YhCFeLErOLENtXJrOSc
 iadi39rf4hwc8xdhHz3gn3dBI7iDRlFe8huAfIZhq
 -----------end_max5_patcher-----------
 
-
- */
+*/

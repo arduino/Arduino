@@ -142,8 +142,7 @@ void establishContact() {
 
 */
 
-/*
-Max/MSP version 5 patch to run with this example:
+/* Max/MSP version 5 patch to run with this example:
 
 ----------begin_max5_patcher----------
 3908.3oc6ckziiaiE9b0+J3XjCIXpp.WzZNMURv.jCInQ5fYNjNngrDssRKK
@@ -234,7 +233,5 @@ WrZL9fpwVXeaogMByE6y1SMdjk+gbavbN7fYvVtt1C2XwHJSzpk+tidUO25H
 UB9onw9mlFQ10fhpZBaDatcMTTEGcJpwzqg92qqiVtM6Cu0IRQ0ndEdfCAqV
 l0qYAUmPrctbxO4XCuPMa1asYzKDks1D52ZCne6Mednz9qW8+.vfqkDA
 -----------end_max5_patcher-----------
-
-
 
 */
