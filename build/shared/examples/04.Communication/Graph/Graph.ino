@@ -42,13 +42,12 @@ void loop() {
 
   // Graphing sketch
 
-
   // This program takes ASCII-encoded strings from the serial port at 9600 baud
   // and graphs them. It expects values in the range 0 to 1023, followed by a
   // newline, or newline and carriage return
 
-  // Created 20 Apr 2005
-  // Updated 24 Nov 2015
+  // created 20 Apr 2005
+  // updated 24 Nov 2015
   // by Tom Igoe
   // This example code is in the public domain.
 
@@ -77,6 +76,7 @@ void loop() {
     // set initial background:
     background(0);
   }
+
   void draw () {
     // draw the line:
     stroke(127, 34, 255);
@@ -91,7 +91,6 @@ void loop() {
       xPos++;
     }
   }
-
 
   void serialEvent (Serial myPort) {
     // get the ASCII string:

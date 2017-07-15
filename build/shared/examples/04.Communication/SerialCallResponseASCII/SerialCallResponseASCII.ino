@@ -66,24 +66,22 @@ void establishContact() {
   }
 }
 
-
-/*
-  Processing code to run with this example:
+/* Processing code to run with this example:
 
   // This example code is in the public domain.
 
   import processing.serial.*;     // import the Processing serial library
   Serial myPort;                  // The serial port
 
-  float bgcolor;			// Background color
-  float fgcolor;			// Fill color
-  float xpos, ypos;	        // Starting position of the ball
+  float bgcolor;      // Background color
+  float fgcolor;      // Fill color
+  float xpos, ypos;         // Starting position of the ball
 
   void setup() {
-    size(640,480);
+    size(640, 480);
 
     // List all the available serial ports
-   // if using Processing 2.1 or later, use Serial.printArray()
+    // if using Processing 2.1 or later, use Serial.printArray()
     println(Serial.list());
 
     // I know that the first port in the serial list on my Mac is always my
@@ -114,25 +112,25 @@ void establishContact() {
     // read the serial buffer:
     String myString = myPort.readStringUntil('\n');
     // if you got any bytes other than the linefeed:
-      myString = trim(myString);
+    myString = trim(myString);
 
-      // split the string at the commas and convert the sections into integers:
-      int sensors[] = int(split(myString, ','));
+    // split the string at the commas and convert the sections into integers:
+    int sensors[] = int(split(myString, ','));
 
-      // print out the values you got:
-      for (int sensorNum = 0; sensorNum < sensors.length; sensorNum++) {
-        print("Sensor " + sensorNum + ": " + sensors[sensorNum] + "\t");
-      }
-      // add a linefeed after all the sensor values are printed:
-      println();
-      if (sensors.length > 1) {
-        xpos = map(sensors[0], 0,1023,0,width);
-        ypos = map(sensors[1], 0,1023,0,height);
-        fgcolor = sensors[2];
-      }
-      // send a byte to ask for more data:
-      myPort.write("A");
+    // print out the values you got:
+    for (int sensorNum = 0; sensorNum < sensors.length; sensorNum++) {
+      print("Sensor " + sensorNum + ": " + sensors[sensorNum] + "\t");
     }
+    // add a linefeed after all the sensor values are printed:
+    println();
+    if (sensors.length > 1) {
+      xpos = map(sensors[0], 0, 1023, 0, width);
+      ypos = map(sensors[1], 0, 1023, 0, height);
+      fgcolor = sensors[2];
+    }
+    // send a byte to ask for more data:
+    myPort.write("A");
+  }
 
 */
 
