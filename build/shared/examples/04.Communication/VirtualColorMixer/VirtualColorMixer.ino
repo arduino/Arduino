@@ -76,7 +76,7 @@ void loop() {
       float[] colors = float(split(inString, ","));
       // if the array has at least three elements, you know you got the whole
       // thing.  Put the numbers in the color variables:
-      if (colors.length >=3) {
+      if (colors.length >= 3) {
         // map them to the range 0-255:
         redValue = map(colors[0], 0, 1023, 0, 255);
         greenValue = map(colors[1], 0, 1023, 0, 255);

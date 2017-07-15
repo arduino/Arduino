@@ -64,19 +64,18 @@ void establishContact() {
   }
 }
 
-/*
-  Processing sketch to run with this example:
+/* Processing sketch to run with this example:
 
   // This example code is in the public domain.
 
   import processing.serial.*;
 
-  int bgcolor;			     // Background color
-  int fgcolor;			     // Fill color
+  int bgcolor;           // Background color
+  int fgcolor;           // Fill color
   Serial myPort;                       // The serial port
   int[] serialInArray = new int[3];    // Where we'll put what we receive
   int serialCount = 0;                 // A count of how many bytes we receive
-  int xpos, ypos;		             // Starting position of the ball
+  int xpos, ypos;                // Starting position of the ball
   boolean firstContact = false;        // Whether we've heard from the microcontroller
 
   void setup() {
@@ -84,8 +83,8 @@ void establishContact() {
     noStroke();      // No border on the next thing drawn
 
     // Set the starting position of the ball (middle of the stage)
-    xpos = width/2;
-    ypos = height/2;
+    xpos = width / 2;
+    ypos = height / 2;
 
     // Print a list of the serial ports for debugging purposes
     // if using Processing 2.1 or later, use Serial.printArray()
@@ -140,6 +139,7 @@ void establishContact() {
       }
     }
   }
+
 */
 
 /*

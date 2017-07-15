@@ -33,7 +33,9 @@ void loop() {
 }
 
 /* Processing code for this example
+
   // Tweak the Arduino Logo
+
   // by Scott Fitzgerald
   // This example code is in the public domain.
 
@@ -95,4 +97,5 @@ void loop() {
     // draw the Arduino logo
     image(logo, 0, 0);
   }
+
 */
