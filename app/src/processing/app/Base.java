@@ -261,6 +261,10 @@ public class Base {
     if (!isCommandLine()) {
       rebuildBoardsMenu();
       rebuildProgrammerMenu();
+    } else {
+      TargetBoard lastSelectedBoard = BaseNoGui.getTargetBoard();
+      if (lastSelectedBoard != null)
+        BaseNoGui.selectBoard(lastSelectedBoard);
     }
 
     // Setup board-dependent variables.

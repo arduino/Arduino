@@ -4,6 +4,7 @@ ARDUINO 1.8.4
 * IDE Toolbar can now go full width on 4K display.
 * Environment variable LIBRARY_INDEX_URL is now correctly parsed (LIBRARY_INDEX_URL_GZ can also be optinally specified). Thanks @xardael
 * Added per-board generic option in config file boards.txt for disabling control of dtr+rts. Thanks @d-a-v
+* CLI: fixed missing "runtime.platform.path" when running without the `--board` option
 
 [libraries]
 * Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
