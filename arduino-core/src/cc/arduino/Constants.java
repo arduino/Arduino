@@ -78,10 +78,10 @@ public class Constants {
     }
 
     String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
-    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
+    if (externalLibraryIndexUrl != null && !externalLibraryIndexUrl.isEmpty()) {
       LIBRARY_INDEX_URL = externalLibraryIndexUrl;
       String externalLibraryIndexUrlGz = System.getProperty("LIBRARY_INDEX_URL_GZ");
-      if (externalLibraryIndexUrlGz != null && !"".equals(externalLibraryIndexUrlGz)) {
+      if (externalLibraryIndexUrlGz != null && !externalLibraryIndexUrlGz.isEmpty()) {
         LIBRARY_INDEX_URL_GZ = externalLibraryIndexUrlGz;
       } else {
         LIBRARY_INDEX_URL_GZ = "";
