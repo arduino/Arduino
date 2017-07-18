@@ -29,24 +29,25 @@ import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
+import cc.arduino.CompilerProgressListener;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.PdeKeywords;
+import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -66,6 +67,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.ArrayList;
 
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
@@ -185,8 +187,6 @@ public class Editor extends JFrame implements RunnerListener {
   // undo fellers
   private JMenuItem undoItem;
   private JMenuItem redoItem;
-  protected UndoAction undoAction;
-  protected RedoAction redoAction;
 
   private FindReplace find;
 
@@ -1273,7 +1273,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     undoItem = newJMenuItem(tr("Undo"), 'Z');
     undoItem.setName("menuEditUndo");
-    undoItem.addActionListener(undoAction = new UndoAction());
+    undoItem.addActionListener(e -> getCurrentTab().handleUndo());
     menu.add(undoItem);
 
     if (!OSUtils.isMacOS()) {
@@ -1282,7 +1282,7 @@ public class Editor extends JFrame implements RunnerListener {
         redoItem = newJMenuItemShift(tr("Redo"), 'Z');
     }
     redoItem.setName("menuEditRedo");
-    redoItem.addActionListener(redoAction = new RedoAction());
+    redoItem.addActionListener(e -> getCurrentTab().handleRedo());
     menu.add(redoItem);
 
     menu.addSeparator();
@@ -1345,7 +1345,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), '/');
+    JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), PreferencesData.get("editor.keys.shortcut_comment", "/").charAt(0));
     commentItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           getCurrentTab().handleCommentUncomment();
@@ -1478,68 +1478,10 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 
-  class UndoAction extends AbstractAction {
-    public UndoAction() {
-      super("Undo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleUndo();
-      } catch (CannotUndoException ex) {
-        //System.out.println("Unable to undo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateUndoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canUndo()) {
-        this.setEnabled(true);
-        undoItem.setEnabled(true);
-        undoItem.setText(undo.getUndoPresentationName());
-        putValue(Action.NAME, undo.getUndoPresentationName());
-      } else {
-        this.setEnabled(false);
-        undoItem.setEnabled(false);
-        undoItem.setText(tr("Undo"));
-        putValue(Action.NAME, "Undo");
-      }
-    }
-  }
-
-
-  class RedoAction extends AbstractAction {
-    public RedoAction() {
-      super("Redo");
-      this.setEnabled(false);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      try {
-        getCurrentTab().handleRedo();
-      } catch (CannotRedoException ex) {
-        //System.out.println("Unable to redo: " + ex);
-        //ex.printStackTrace();
-      }
-    }
-
-    protected void updateRedoState() {
-      UndoManager undo = getCurrentTab().getUndoManager();
-
-      if (undo.canRedo()) {
-        redoItem.setEnabled(true);
-        redoItem.setText(undo.getRedoPresentationName());
-        putValue(Action.NAME, undo.getRedoPresentationName());
-      } else {
-        this.setEnabled(false);
-        redoItem.setEnabled(false);
-        redoItem.setText(tr("Redo"));
-        putValue(Action.NAME, "Redo");
-      }
-    }
+  protected void updateUndoRedoState() {
+    SketchTextArea textArea = getCurrentTab().getTextArea();
+    undoItem.setEnabled(textArea.canUndo());
+    redoItem.setEnabled(textArea.canRedo());
   }
 
 
@@ -1610,8 +1552,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   public void selectTab(final int index) {
     currentTabIndex = index;
-    undoAction.updateUndoState();
-    redoAction.updateRedoState();
+    updateUndoRedoState();
     updateTitle();
     header.rebuild();
     getCurrentTab().activated();
@@ -1710,6 +1651,9 @@ public class Editor extends JFrame implements RunnerListener {
    */
   protected void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
+    tab.getTextArea().getDocument()
+        .addDocumentListener(new DocumentTextChangeListener(
+            () -> updateUndoRedoState()));
     tabs.add(tab);
     reorderTabs();
   }
@@ -1992,12 +1936,25 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
     SketchFile current = getCurrentTab().getSketchFile();
-    if (current.isPrimary()) {
-      setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
-                           BaseNoGui.VERSION_NAME_LONG));
+    String customFormat = PreferencesData.get("editor.custom_title_format");
+    if (customFormat != null && !customFormat.trim().isEmpty()) {
+      Map<String, String> titleMap = new HashMap<String, String>();
+      titleMap.put("file", current.getFileName());
+      String path = sketch.getFolder().getAbsolutePath();
+      titleMap.put("folder", path);
+      titleMap.put("path", path);
+      titleMap.put("project", sketch.getName());
+      titleMap.put("version", BaseNoGui.VERSION_NAME_LONG);
+
+      setTitle(StringReplacer.replaceFromMapping(customFormat, titleMap));
     } else {
-      setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
-                           current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      if (current.isPrimary()) {
+        setTitle(I18n.format(tr("{0} | Arduino {1}"), sketch.getName(),
+                             BaseNoGui.VERSION_NAME_LONG));
+      } else {
+        setTitle(I18n.format(tr("{0} - {1} | Arduino {2}"), sketch.getName(),
+                             current.getFileName(), BaseNoGui.VERSION_NAME_LONG));
+      }
     }
   }
 
@@ -2167,6 +2124,8 @@ public class Editor extends JFrame implements RunnerListener {
     toolbar.activateExport();
     console.clear();
     status.progress(tr("Uploading to I/O Board..."));
+
+    avoidMultipleOperations = true;
 
     new Thread(timeoutUploadHandler).start();
     new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
@@ -2373,6 +2332,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
+    
+    if (serialMonitor == null) {
+      String board = port.getPrefs().get("board");
+      String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
+      statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
+      return;
+    }
+    
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
@@ -2748,5 +2715,8 @@ public class Editor extends JFrame implements RunnerListener {
     lineStatus.repaint();
   }
 
+  public void addCompilerProgressListener(CompilerProgressListener listener){
+    this.status.addCompilerProgressListener(listener);
+  }
 
 }

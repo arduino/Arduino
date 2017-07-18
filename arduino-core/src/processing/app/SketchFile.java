@@ -206,7 +206,7 @@ public class SketchFile {
    * others.
    */
   public String getPrettyName() {
-    if (isExtension(Sketch.SKETCH_EXTENSIONS))
+    if (!PreferencesData.getBoolean("editor.show_always_extensions") && isExtension(Sketch.SKETCH_EXTENSIONS))
       return getBaseName();
     else
       return getFileName();

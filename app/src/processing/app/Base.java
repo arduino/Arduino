@@ -277,7 +277,9 @@ public class Base {
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
-    PreferencesData.save();
+    if (parser.isForceSavePrefs()) {
+      PreferencesData.save();
+    }
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(
@@ -376,7 +378,7 @@ public class Base {
         // Build
         splash.splashText(tr("Verifying..."));
 
-        File sketchFile = new File(parser.getFilenames().get(0));
+        File sketchFile = BaseNoGui.absoluteFile(parser.getFilenames().get(0));
         sketch = new Sketch(sketchFile);
 
         outputFile = new Compiler(sketch).build(progress -> {}, false);

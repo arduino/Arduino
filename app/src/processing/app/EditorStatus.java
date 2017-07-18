@@ -24,6 +24,7 @@
 package processing.app;
 
 import processing.app.helpers.OSUtils;
+import cc.arduino.CompilerProgressListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +32,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
@@ -88,12 +90,16 @@ public class EditorStatus extends JPanel {
   private JTextField editField;
   private JProgressBar progressBar;
   private JButton copyErrorButton;
+  
+  private ArrayList<CompilerProgressListener> compilerProgressListeners;
 
   public EditorStatus(Editor editor) {
     this.editor = editor;
     this.message = NO_MESSAGE;
     this.mode = NOTICE;
     this.font = Theme.getFont("status.font");
+    this.compilerProgressListeners = new ArrayList<>();
+    this.compilerProgressListeners.add(this::progressUpdate);
     initialize();
   }
 
@@ -408,6 +414,14 @@ public class EditorStatus extends JPanel {
 
   public boolean isErr() {
     return mode == ERR;
+  }
+  
+  public void addCompilerProgressListener(CompilerProgressListener listener){
+    compilerProgressListeners.add(listener);
+  }
+  
+  public ArrayList<CompilerProgressListener> getCompilerProgressListeners(){
+    return compilerProgressListeners;
   }
 
 }

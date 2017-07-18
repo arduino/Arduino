@@ -81,10 +81,10 @@ public class LibrariesIndexer {
     // TODO: resolve libraries inner references
   }
 
-  private void parseIndex(File indexFile) throws IOException {
+  private void parseIndex(File file) throws IOException {
     InputStream indexIn = null;
     try {
-      indexIn = new FileInputStream(indexFile);
+      indexIn = new FileInputStream(file);
       ObjectMapper mapper = new ObjectMapper();
       mapper.registerModule(new MrBeanModule());
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);

@@ -21,6 +21,9 @@ import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
+import cc.arduino.files.DeleteFilesOnShutdown;
+import processing.app.helpers.FileUtils;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -38,9 +41,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10801;
+  public static final int REVISION = 10803;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.8.1";
+  public static final String VERSION_NAME = "1.8.3";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -100,6 +103,8 @@ public class BaseNoGui {
 
   private static String boardManagerLink = "";
 
+  private static File buildCache;
+
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
   // directory when starting the IDE (which is not the same as the
@@ -131,7 +136,7 @@ public class BaseNoGui {
     if (board == null)
       return null;
     String boardId = board.getId();
-    
+
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
 
     String extendedName = prefs.get("name");
@@ -156,9 +161,9 @@ public class BaseNoGui {
     List<ContributedTool> requiredTools = new ArrayList<>();
 
     // Add all tools dependencies specified in package index
-    ContributedPlatform platform = indexer.getContributedPlaform(getTargetPlatform());
-    if (platform != null)
-      requiredTools.addAll(platform.getResolvedTools());
+    ContributedPlatform p = indexer.getContributedPlaform(getTargetPlatform());
+    if (p != null)
+      requiredTools.addAll(p.getResolvedTools());
 
     // Add all tools dependencies from the (possibily) referenced core
     String core = prefs.get("build.core");
@@ -254,6 +259,18 @@ public class BaseNoGui {
 
   static public String getPortableSketchbookFolder() {
     return portableSketchbookFolder;
+  }
+
+  static public File getCachePath() {
+    if (buildCache == null) {
+      try {
+        buildCache = FileUtils.createTempFolder("arduino_cache_");
+        DeleteFilesOnShutdown.add(buildCache);
+      } catch (IOException e) {
+        return null;
+      }
+    }
+    return buildCache;
   }
 
   /**
@@ -586,8 +603,8 @@ public class BaseNoGui {
       }
       String arch = subFolder.getName();
       try {
-        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, targetPackage);
-        targetPackage.getPlatforms().put(arch, platform);
+        TargetPlatform p = new LegacyTargetPlatform(arch, subFolder, targetPackage);
+        targetPackage.getPlatforms().put(arch, p);
       } catch (TargetPlatformException e) {
         System.err.println(e.getMessage());
       }
@@ -668,8 +685,8 @@ public class BaseNoGui {
     populateImportToLibraryTable();
   }
 
-  static protected void loadContributedHardware(ContributionsIndexer indexer) {
-    for (TargetPackage pack : indexer.createTargetPackages()) {
+  static protected void loadContributedHardware(ContributionsIndexer idx) {
+    for (TargetPackage pack : idx.createTargetPackages()) {
       packages.put(pack.getId(), pack);
     }
   }

@@ -34,6 +34,7 @@ import cc.arduino.i18n.Language;
 import cc.arduino.i18n.Languages;
 import processing.app.Base;
 import processing.app.BaseNoGui;
+import processing.app.Editor;
 import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.Theme;
@@ -42,6 +43,7 @@ import processing.app.legacy.PApplet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.LinkedList;
@@ -128,6 +130,7 @@ public class Preferences extends javax.swing.JDialog {
     enableCodeFoldingBox = new javax.swing.JCheckBox();
     verifyUploadBox = new javax.swing.JCheckBox();
     externalEditorBox = new javax.swing.JCheckBox();
+    cacheCompiledCore = new javax.swing.JCheckBox();
     checkUpdatesBox = new javax.swing.JCheckBox();
     updateExtensionBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
@@ -242,7 +245,25 @@ public class Preferences extends javax.swing.JDialog {
     checkboxesContainer.add(verifyUploadBox);
 
     externalEditorBox.setText(tr("Use external editor"));
+    externalEditorBox.addItemListener(ev -> {
+      if (ev.getStateChange() == ItemEvent.SELECTED) {
+        for (Editor e : base.getEditors()) {
+          if (e.getSketch().isModified()) {
+            String msg = tr("You have unsaved changes!\nYou must save all your sketches to enable this option.");
+            JOptionPane.showMessageDialog(null, msg,
+                                          tr("Can't enable external editor"),
+                                          JOptionPane.INFORMATION_MESSAGE);
+            externalEditorBox.setSelected(false);
+            return;
+          }
+        }
+      }
+    });
+
     checkboxesContainer.add(externalEditorBox);
+
+    cacheCompiledCore.setText(tr("Aggressively cache compiled core"));
+    checkboxesContainer.add(cacheCompiledCore);
 
     checkUpdatesBox.setText(tr("Check for updates on startup"));
     checkboxesContainer.add(checkUpdatesBox);
@@ -678,6 +699,7 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JCheckBox enableCodeFoldingBox;
   private javax.swing.JButton extendedAdditionalUrlFieldWindow;
   private javax.swing.JCheckBox externalEditorBox;
+  private javax.swing.JCheckBox cacheCompiledCore;
   private javax.swing.JTextField fontSizeField;
   private javax.swing.JLabel fontSizeLabel;
   private javax.swing.JLabel jLabel1;
@@ -772,6 +794,8 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("editor.external", externalEditorBox.isSelected());
 
+    PreferencesData.setBoolean("compiler.cache_core", cacheCompiledCore.isSelected());
+
     PreferencesData.setBoolean("update.check", checkUpdatesBox.isSelected());
 
     PreferencesData.setBoolean("editor.update_extension", updateExtensionBox.isSelected());
@@ -831,6 +855,8 @@ public class Preferences extends javax.swing.JDialog {
     verifyUploadBox.setSelected(PreferencesData.getBoolean("upload.verify"));
 
     externalEditorBox.setSelected(PreferencesData.getBoolean("editor.external"));
+
+    cacheCompiledCore.setSelected(PreferencesData.get("compiler.cache_core") == null || PreferencesData.getBoolean("compiler.cache_core"));
 
     checkUpdatesBox.setSelected(PreferencesData.getBoolean("update.check"));
 

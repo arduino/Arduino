@@ -44,15 +44,14 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
-import javax.swing.undo.UndoManager;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
-import org.fife.ui.rtextarea.RUndoManager;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import processing.app.helpers.DocumentTextChangeListener;
@@ -102,15 +101,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     this.editor = editor;
     this.file = file;
     RSyntaxDocument document = createDocument(contents);
-    this.textarea = createTextArea(document);
-    this.scrollPane = createScrollPane(this.textarea);
+    textarea = createTextArea(document);
+    scrollPane = createScrollPane(textarea);
     file.setStorage(this);
     applyPreferences();
-    add(this.scrollPane, BorderLayout.CENTER);
-
-    RUndoManager undo = new LastUndoableEditAwareUndoManager(this.textarea, this.editor);
-    document.addUndoableEditListener(undo);
-    textarea.setUndoManager(undo);
+    add(scrollPane, BorderLayout.CENTER);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -152,6 +147,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     textArea.setMarkOccurrences(PreferencesData.getBoolean("editor.advanced"));
     textArea.setMarginLineEnabled(false);
     textArea.setCodeFoldingEnabled(PreferencesData.getBoolean("editor.code_folding"));
+    textArea.setAutoIndentEnabled(PreferencesData.getBoolean("editor.indent"));
+    textArea.setCloseCurlyBraces(PreferencesData.getBoolean("editor.auto_close_braces", true));
     textArea.setAntiAliasingEnabled(PreferencesData.getBoolean("editor.antialias"));
     textArea.setTabsEmulated(PreferencesData.getBoolean("editor.tabs.expand"));
     textArea.setTabSize(PreferencesData.getInteger("editor.tabs.size"));
@@ -402,18 +399,18 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     int policy = caret.getUpdatePolicy();
     caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
     try {
-      RSyntaxDocument doc = (RSyntaxDocument)textarea.getDocument();
+      Document doc = textarea.getDocument();
       int oldLength = doc.getLength();
       // The undo manager already seems to group the insert and remove together
       // automatically, but better be explicit about it.
-      textarea.getUndoManager().beginInternalAtomicEdit();
+      textarea.beginAtomicEdit();
       try {
         doc.insertString(oldLength, what, null);
         doc.remove(0, oldLength);
       } catch (BadLocationException e) {
         System.err.println("Unexpected failure replacing text");
       } finally {
-        textarea.getUndoManager().endInternalAtomicEdit();
+        textarea.endAtomicEdit();
       }
     } finally {
       caret.setUpdatePolicy(policy);
@@ -523,7 +520,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   void handleCommentUncomment() {
     Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaToggleCommentAction);
     action.actionPerformed(null);
-
+    // XXX: RSyntaxDocument doesn't fire DocumentListener events, it should be fixed in RSyntaxTextArea?
+    editor.updateUndoRedoState();
   }
 
   void handleDiscourseCopy() {
@@ -543,6 +541,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
       Action action = textarea.getActionMap().get(RSyntaxTextAreaEditorKit.rstaDecreaseIndentAction);
       action.actionPerformed(null);
     }
+    // XXX: RSyntaxDocument doesn't fire DocumentListener events, it should be fixed in RSyntaxTextArea?
+    editor.updateUndoRedoState();
   }
 
   void handleUndo() {
@@ -551,10 +551,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   
   void handleRedo() {
     textarea.redoLastAction();
-  }
-  
-  public UndoManager getUndoManager() {
-    return textarea.getUndoManager();
   }
   
   public String getCurrentKeyword() {

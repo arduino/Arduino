@@ -46,11 +46,12 @@ public class BoardReachabilityFilter extends TimerTask {
   }
 
   public void start(Timer timer) {
-    timer.schedule(this, 0, 3000);
+    timer.schedule(this, 0, 5000);
   }
 
   @Override
   public void run() {
+
     List<BoardPort> boardPorts = networkDiscovery.getBoardPortsDiscoveredWithJmDNS();
 
     Iterator<BoardPort> boardPortIterator = boardPorts.iterator();

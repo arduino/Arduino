@@ -1,7 +1,7 @@
 ;************************************************************
 ; Windows USB CDC ACM Setup File
 ; Copyright (c) 2000 Microsoft Corporation
-
+; For Adafruit Circuit Playground Board by Adafruit Industries LLC 2016
 
 [Version]
 Signature="$Windows NT$"
@@ -10,7 +10,7 @@ ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
 Provider=%MFGNAME%
 LayoutFile=layout.inf
 CatalogFile=%MFGFILENAME%.cat
-DriverVer=11/15/2007,5.1.2600.0
+DriverVer=02/25/2016,6.2.2600.0
 
 [Manufacturer]
 %MFGNAME%=DeviceList, NTamd64
@@ -18,9 +18,11 @@ DriverVer=11/15/2007,5.1.2600.0
 [DestinationDirs]
 DefaultDestDir=12
 
+[DefaultInstall]
+CopyINF="AdafruitCircuitPlayground.inf"
 
 ;------------------------------------------------------------------------------
-;  Windows 2000/XP/Vista-32bit Sections
+;  Windows 2000/XP/Vista/Win7/Win8/Win8.1/Win10 32 bit Sections
 ;------------------------------------------------------------------------------
 
 [DriverInstall.nt]
@@ -47,7 +49,7 @@ ErrorControl=1
 ServiceBinary=%12%\%DRIVERFILENAME%.sys
 
 ;------------------------------------------------------------------------------
-;  Vista-64bit Sections
+;  Vista/Win7/Win8/Win8.1/Win10 64 bit Sections
 ;------------------------------------------------------------------------------
 
 [DriverInstall.NTamd64]
@@ -73,7 +75,6 @@ StartType=3
 ErrorControl=1
 ServiceBinary=%12%\%DRIVERFILENAME%.sys
 
-
 ;------------------------------------------------------------------------------
 ;  Vendor and Product ID Definitions
 ;------------------------------------------------------------------------------
@@ -96,12 +97,13 @@ ServiceBinary=%12%\%DRIVERFILENAME%.sys
 ;------------------------------------------------------------------------------
 ;  String Definitions
 ;------------------------------------------------------------------------------
-;Modify these strings to customize your device
+;  Modify these strings to customize your device
+;  NOTE: Do not put spaces in %MFGFILENAME% to maintain Windows 7 compatibility
 ;------------------------------------------------------------------------------
 [Strings]
-MFGFILENAME="CDC_vista"
+MFGFILENAME="AdafruitCircuitPlayground"
 DRIVERFILENAME ="usbser"
 MFGNAME="Adafruit Industries LLC"
-INSTDISK="Circuit Playground Driver Installer"
+INSTDISK="Circuit Playground Board Driver Installer"
 DESCRIPTION="Adafruit Circuit Playground"
 SERVICE="USB RS-232 Emulation Driver"

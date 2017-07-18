@@ -19,6 +19,8 @@
  created 17 Jan 2009
  modified 30 Aug 2011
  by Tom Igoe
+ modified 20 Jan 2017
+ by Arturo Guadalupi
 
  This example code is in the public domain.
 
@@ -28,7 +30,7 @@
 
 
 // These constants won't change:
-const int sensorPin = A2;       // pin that the sensor is attached to
+const int sensorPin = A0;       // pin that the sensor is attached to
 const int ledPin = 9;           // pin that the LED is attached to
 const int indicatorLedPin = 13; // pin that the built-in LED is attached to
 const int buttonPin = 2;        // pin that the button is attached to

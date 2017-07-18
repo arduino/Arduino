@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -37,6 +39,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JScrollPane htmlScrollPane;
   protected JTextField textField;
   protected JButton sendButton;
+  protected JButton clearButton;
   protected JCheckBox autoscrollBox;
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
@@ -152,7 +155,15 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
 
     textField = new JTextField(40);
+    // textField is selected every time the window is focused
+    addWindowFocusListener(new WindowAdapter() {
+      public void windowGainedFocus(WindowEvent e) {
+        textField.requestFocusInWindow();
+      }
+    });
+
     sendButton = new JButton(tr("Send"));
+    clearButton = new JButton(tr("Clear output"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
@@ -199,6 +210,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.add(lineEndings);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(clearButton);
 
     mainPane.add(pane, BorderLayout.SOUTH);
 
@@ -209,6 +222,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   {
     textArea.setEnabled(enable);
     htmlTextArea.setEnabled(enable);
+    clearButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
     htmlScrollPane.setEnabled(enable);
     textField.setEnabled(enable);
@@ -224,6 +238,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void onSendCommand(ActionListener listener) {
     textField.addActionListener(listener);
     sendButton.addActionListener(listener);
+  }
+  
+  public void onClearCommand(ActionListener listener) {
+    clearButton.addActionListener(listener);
   }
 
   public void onSerialRateChange(ActionListener listener) {
