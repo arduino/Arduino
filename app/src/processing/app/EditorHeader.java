@@ -351,7 +351,7 @@ public class EditorHeader extends JComponent {
 
 
   public Dimension getMaximumSize() {
-    Dimension size = scale(new Dimension(3000, GRID_SIZE));
+    Dimension size = scale(new Dimension(30000, GRID_SIZE));
     if (OSUtils.isMacOS())
       size.height--;
     return size;

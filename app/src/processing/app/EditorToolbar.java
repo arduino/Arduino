@@ -450,7 +450,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMaximumSize() {
-    return new Dimension(scale(3000), BUTTON_HEIGHT);
+    return new Dimension(scale(30000), BUTTON_HEIGHT);
   }
 
   public boolean dispatchKeyEvent(final KeyEvent e) {
