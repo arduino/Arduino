@@ -240,11 +240,12 @@
     <download-library name="Keyboard" version="1.0.1"/>
     <download-library name="SD" version="1.1.1"/>
     <download-library name="Servo" version="1.1.2"/>
-    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.4"/>
+    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.8" foldername="Adafruit_Circuit_Playground"/>
   </target>
 
   <macrodef name="download-library">
     <attribute name="name"/>
+    <attribute name="foldername" default="@{name}"/>
     <attribute name="version"/>
     <attribute name="tag" default="@{version}"/>
     <attribute name="githubuser" default="arduino-libraries"/>
@@ -255,7 +256,7 @@
         <param name="final_folder" value="${target.path}/libraries/@{name}-@{version}"/>
         <param name="dest_folder" value="${target.path}/libraries"/>
       </antcall>
-      <move file="${target.path}/libraries/@{name}-@{version}" tofile="${target.path}/libraries/@{name}"/>
+      <move file="${target.path}/libraries/@{name}-@{version}" tofile="${target.path}/libraries/@{foldername}"/>
     </sequential>
   </macrodef>
 
