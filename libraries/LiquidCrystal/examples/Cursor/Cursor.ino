@@ -18,9 +18,9 @@
  * LCD D6 pin to digital pin 3
  * LCD D7 pin to digital pin 2
  * LCD R/W pin to ground
- * 10K resistor:
- * ends to +5V and ground
- * wiper to LCD VO pin (pin 3)
+ * 10K or 100K potentiometer:
+   * ends to +5V and ground
+   * wiper to LCD VO pin (pin 3)
 
  Library originally added 18 Apr 2008
  by David A. Mellis
@@ -58,4 +58,3 @@ void loop() {
   lcd.cursor();
   delay(500);
 }
-
