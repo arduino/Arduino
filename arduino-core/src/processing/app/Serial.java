@@ -65,8 +65,8 @@ public class Serial implements SerialPortEventListener {
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().get("serial.disableRTS").equalsIgnoreCase("true"),
-      !BaseNoGui.getBoardPreferences().get("serial.disableDTR").equalsIgnoreCase("true"));
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(int irate) throws SerialException {
@@ -74,16 +74,16 @@ public class Serial implements SerialPortEventListener {
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().get("serial.disableRTS").equalsIgnoreCase("true"),
-      !BaseNoGui.getBoardPreferences().get("serial.disableDTR").equalsIgnoreCase("true"));
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname, int irate) throws SerialException {
     this(iname, irate, PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().get("serial.disableRTS").equalsIgnoreCase("true"),
-      !BaseNoGui.getBoardPreferences().get("serial.disableDTR").equalsIgnoreCase("true"));
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname) throws SerialException {
@@ -91,8 +91,8 @@ public class Serial implements SerialPortEventListener {
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().get("serial.disableRTS").equalsIgnoreCase("true"),
-      !BaseNoGui.getBoardPreferences().get("serial.disableDTR").equalsIgnoreCase("true"));
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public static boolean touchForCDCReset(String iname) throws SerialException {
