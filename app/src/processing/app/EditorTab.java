@@ -30,6 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.Action;
@@ -47,6 +49,14 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
@@ -60,6 +70,7 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.syntax.SketchTextAreaEditorKit;
 import processing.app.tools.DiscourseFormat;
+import processing.app.tools.WatchDir;
 
 /**
  * Single tab, editing a single file, in the main window.
@@ -106,6 +117,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
+    setFocusable(true);
+    setRequestFocusEnabled(true);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -120,6 +133,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     }
     document.addDocumentListener(new DocumentTextChangeListener(
         () -> setModified(true)));
+
     return document;
   }
   
@@ -456,7 +470,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   public int getScrollPosition() {
     return scrollPane.getVerticalScrollBar().getValue();
   }
-    
+
+  public RTextScrollPane getScrollPane() {
+    return scrollPane;
+  }
+
   public void setScrollPosition(int pos) {
     scrollPane.getVerticalScrollBar().setValue(pos);
   }
