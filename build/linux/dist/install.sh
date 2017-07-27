@@ -44,11 +44,10 @@ xdg_install_f() {
   xdg-icon-resource install --context apps --size 256 "${SCRIPT_PATH}/lib/icons/256x256/apps/arduino.png" $RESOURCE_NAME
 
   # Install the created *.desktop file
-## XFCE's Launcher wants the .desktop file to be +x as well
-  xdg-desktop-menu install --mode 755 "${TMP_DIR}/${RESOURCE_NAME}.desktop"
+  xdg-desktop-menu install "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
   # Create icon on the desktop
-  xdg-desktop-icon install --mode 755 "${TMP_DIR}/${RESOURCE_NAME}.desktop"
+  xdg-desktop-icon install "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
   # Install Arduino mime type
   xdg-mime install "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
