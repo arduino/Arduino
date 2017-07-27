@@ -47,6 +47,8 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
@@ -54,6 +56,8 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import cc.arduino.autocomplete.FakeCompletionProvider;
+import cc.arduino.autocomplete.SketchCompletionProvider;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
@@ -106,6 +110,24 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
+    
+    // setAutocompletionProvider(new FakeCompletionProvider());
+  }
+  
+  public void setAutocompletionProvider(CompletionProvider provider) {
+    
+    SketchCompletionProvider completionProvider = new SketchCompletionProvider(editor.getSketch(), textarea, provider);
+    
+    AutoCompletion ac = new AutoCompletion( completionProvider );
+    
+    ac.setAutoActivationEnabled(true);
+    ac.setShowDescWindow(false);
+    ac.setAutoCompleteSingleChoices(true);
+    ac.setParameterAssistanceEnabled(true);
+//    ac.setParamChoicesRenderer(new CompletionsRenderer());
+//    ac.setListCellRenderer(new CompletionsRenderer());
+    ac.install(textarea);
+    
   }
 
   private RSyntaxDocument createDocument(String contents) {
