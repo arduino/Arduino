@@ -639,6 +639,7 @@
     <chmod perm="ugo+x">
         <fileset dir="linux/work" includes="arduino" />
         <fileset dir="linux/work" includes="**/*.sh" />
+        <fileset dir="linux/work/lib" includes="**/*desktop*" />
     </chmod>
   </target>
 
