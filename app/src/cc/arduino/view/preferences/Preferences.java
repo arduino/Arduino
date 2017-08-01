@@ -552,7 +552,7 @@ public class Preferences extends javax.swing.JDialog {
         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(manualProxyPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(manualProxyPasswordLabel))
-        .addContainerGap(190, Short.MAX_VALUE))
+        .addContainerGap(50, Short.MAX_VALUE))
     );
 
     jTabbedPane1.addTab(tr("Network"), jPanel4);
@@ -587,11 +587,9 @@ public class Preferences extends javax.swing.JDialog {
     jPanel3Layout.setVerticalGroup(
       jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(okButton)
-          .addComponent(cancelButton))
-        .addContainerGap())
+          .addComponent(cancelButton)))
     );
 
     jPanel2.add(jPanel3);
@@ -606,7 +604,7 @@ public class Preferences extends javax.swing.JDialog {
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 637, Short.MAX_VALUE)
+      .addGap(0, 580, Short.MAX_VALUE)
       .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
