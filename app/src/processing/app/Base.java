@@ -1843,6 +1843,17 @@ public class Base {
     dialog.setVisible(true);
   }
 
+  /**
+   * Adjust font size
+   */
+  public void handleFontSizeChange(int change) {
+    String pieces[] = PApplet.split(PreferencesData.get("editor.font"), ',');
+    int newSize = Integer.parseInt(pieces[2]) + change;
+    pieces[2] = String.valueOf(newSize);
+    PreferencesData.set("editor.font", PApplet.join(pieces, ','));
+    this.getEditors().forEach(processing.app.Editor::applyPreferences);
+  }
+
   // XXX: Remove this method and make librariesIndexer non-static
   static public LibraryList getLibraries() {
     return BaseNoGui.librariesIndexer.getInstalledLibraries();
