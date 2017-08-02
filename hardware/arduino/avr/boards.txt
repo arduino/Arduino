@@ -691,7 +691,7 @@ pro.menu.cpu.8MHzatmega328.upload.speed=57600
 
 pro.menu.cpu.8MHzatmega328.bootloader.low_fuses=0xFF
 pro.menu.cpu.8MHzatmega328.bootloader.high_fuses=0xDA
-pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0xFD
+pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0xF8
 pro.menu.cpu.8MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 
 pro.menu.cpu.8MHzatmega328.build.mcu=atmega328p
