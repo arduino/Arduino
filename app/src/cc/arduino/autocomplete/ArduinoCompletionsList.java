@@ -10,6 +10,7 @@ class ArduinoCompletion {
   ArduinoCompletionDetail completion;
   String type;
   String location;
+  List<ArduinoParameter> parameters;
 
   public ArduinoCompletionDetail getCompletion() {
     return completion;
@@ -21,6 +22,23 @@ class ArduinoCompletion {
 
   public String getLocation() {
     return location;
+  }
+
+  public List<ArduinoParameter> getParameters() {
+    return parameters;
+  }
+}
+
+class ArduinoParameter {
+  String name;
+  String type;
+
+  public String getName() {
+    return name;
+  }
+
+  public String getType() {
+    return type;
   }
 }
 
