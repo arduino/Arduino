@@ -70,9 +70,12 @@ public class ClangCompletionProvider extends DefaultCompletionProvider {
 
         if (cc.type.equals("Function")) {
           List<Parameter> params = new ArrayList<>();
+          int i=0;
           for (CompletionChunk chunk : cc.completion.chunks) {
             if (chunk.placeholder != null) {
-              params.add(new Parameter("type", chunk.placeholder));
+              ArduinoParameter p = cc.parameters.get(i);
+              params.add(new Parameter(p.type, p.name));
+              i++;
             }
           }
 
