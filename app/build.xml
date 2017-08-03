@@ -130,6 +130,8 @@
   </target>
 
   <target name="build" depends="compile" description="Build PDE">
-    <jar basedir="bin" destfile="pde.jar" />
+    <jar basedir="bin" destfile="pde.jar" >
+      <fileset dir="src" includes="**/icons/**" />
+    </jar>
   </target>
 </project>
