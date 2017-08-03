@@ -87,7 +87,7 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.25-prepr-rc1" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.25-PR232" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
   <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.4-arduino2" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino9" />
