@@ -1,9 +1,8 @@
-/* -*- mode: java; c-basic-offset: 2; indent-tabs-mode: nil -*- */
 /*
  * This file is part of Arduino.
  *
- * Copyright 2015 Ricardo JL Rufino (ricardo@criativasoft.com.br)
- * Copyright 2015 Arduino LLC
+ * Copyright 2017 Arduino LLC (www.arduino.cc)
+ *                Ricardo JL Rufino (ricardo@criativasoft.com.br)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
