@@ -40,6 +40,7 @@ import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.awt.GraphicsDevice.WindowTranslucency.*;
 import static processing.app.I18n.tr;
 
 public class FindReplace extends javax.swing.JFrame {
@@ -55,6 +56,7 @@ public class FindReplace extends javax.swing.JFrame {
   public FindReplace(Editor editor, Map<String, Object> state) {
     this.editor = editor;
 
+    isTranslucencySupported();
     initComponents();
 
     if (OSUtils.isMacOS()) {
@@ -78,6 +80,10 @@ public class FindReplace extends javax.swing.JFrame {
         findField.requestFocusInWindow();
         findField.selectAll();
         setAlwaysOnTop(true);
+        if (useTranslucency) {
+          // Window is decorated, so tranparency doesn't work :(
+          //setOpacity(0.7f);
+        }
       }
       public void windowDeactivated(WindowEvent e) {
         setAlwaysOnTop(false);
@@ -89,6 +95,10 @@ public class FindReplace extends javax.swing.JFrame {
         findField.requestFocusInWindow();
         findField.selectAll();
         setAlwaysOnTop(true);
+        if (useTranslucency) {
+          // Window is decorated, so tranparency doesn't work :(
+          //setOpacity(1.0f);
+        }
       }
       public void windowDeactivated(WindowEvent e) {
       }
@@ -102,6 +112,15 @@ public class FindReplace extends javax.swing.JFrame {
     getRootPane().setDefaultButton(findButton);
 
     super.setVisible(b);
+  }
+
+  private boolean useTranslucency;
+
+  private void isTranslucencySupported() {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    //If translucent windows aren't supported, exit.
+    useTranslucency = gd.isWindowTranslucencySupported(TRANSLUCENT);
   }
 
   private Map<String, Object> findDialogState() {
