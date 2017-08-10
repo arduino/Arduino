@@ -37,6 +37,9 @@ import processing.app.helpers.OSUtils;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPopupMenu;
+import javax.swing.Action;
+import javax.swing.text.DefaultEditorKit;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -193,6 +196,22 @@ public class FindReplace extends javax.swing.JFrame {
     wrapAroundBox.setText(tr("Wrap Around"));
 
     searchAllFilesBox.setText(tr("Search all Sketch Tabs"));
+
+    JPopupMenu menu = new JPopupMenu();
+    Action cut = new DefaultEditorKit.CutAction();
+    cut.putValue(Action.NAME, tr("Cut"));
+    menu.add( cut );
+
+    Action copy = new DefaultEditorKit.CopyAction();
+    copy.putValue(Action.NAME, tr("Copy"));
+    menu.add( copy );
+
+    Action paste = new DefaultEditorKit.PasteAction();
+    paste.putValue(Action.NAME, tr("Paste"));
+    menu.add( paste );
+
+    findField.setComponentPopupMenu( menu );
+    replaceField.setComponentPopupMenu( menu );
 
     findButton.setText(tr("Find"));
     findButton.addActionListener(new java.awt.event.ActionListener() {
