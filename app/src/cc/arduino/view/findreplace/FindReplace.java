@@ -73,10 +73,24 @@ public class FindReplace extends javax.swing.JFrame {
 
     Base.setIcon(this);
 
+    editor.addWindowListener(new WindowAdapter() {
+      public void windowActivated(WindowEvent e) {
+        findField.requestFocusInWindow();
+        findField.selectAll();
+        setAlwaysOnTop(true);
+      }
+      public void windowDeactivated(WindowEvent e) {
+        setAlwaysOnTop(false);
+      }
+    });
+
     addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
         findField.requestFocusInWindow();
         findField.selectAll();
+        setAlwaysOnTop(true);
+      }
+      public void windowDeactivated(WindowEvent e) {
       }
     });
 
