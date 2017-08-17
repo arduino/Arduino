@@ -34,7 +34,7 @@ void loop() {
 
   // turn off tone function for pin 7:
   noTone(7);
-  // play a note on pin 8 for 500 ms:
+  // play a note on pin 8 for 300 ms:
   tone(8, 523, 300);
   delay(300);
 }
