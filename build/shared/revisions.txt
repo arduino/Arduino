@@ -11,6 +11,8 @@ ARDUINO 1.8.4
 * Fix error when renaming an unsaved, newly added file. Thanks @matthijskooijman
 * Added the ability to increase/decrease font size via keyboard + mouse shortcuts (Ctrl + MouseWheel)
 * Sketch names starting with a digit are now allowed
+* Serial monitor is opened on a default position if the multi-monitor setup change (this should fix cases
+  when the serial monitor is opened outside of the visibile space)
 
 [libraries]
 * Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
