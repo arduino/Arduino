@@ -26,6 +26,7 @@
 # Jack R. <dny1020@aol.com>, 2013
 # Miguel Ángel Barrio Vázquez <descartex1@gmail.com>, 2013
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
+# Nestor Contreras <axel14zen@gmail.com>, 2017
 # Pedro Luis Plizze <plizze@gmail.com>, 2015-2016
 # Salvador Parra Camacho <sparrac@gmail.com>, 2014
 # Sam Dale <doublebassclef@gmail.com>, 2016
@@ -34,8 +35,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-05-30 15:31+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2017-08-03 11:07+0000\n"
+"Last-Translator: Nestor Contreras <axel14zen@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/mbanzi/arduino-ide-15/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,7 +62,7 @@ msgstr "Usado: {0}"
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr "'Teclado' no encontrado. Tu sketch incluye la linea '#include <Keyboard.h>'?"
+msgstr "'Teclado' no encontrado. Tu sketch incluye la línea '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
@@ -159,7 +160,7 @@ msgstr "Afrikáans"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
 msgid "Aggressively cache compiled core"
-msgstr ""
+msgstr "Núcleo agresivamente compilado de caché"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -443,7 +444,7 @@ msgstr "Sólo puede pasar uno de: {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
 msgid "Can't enable external editor"
-msgstr ""
+msgstr "No se puede habilitar el editor externo."
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -1471,7 +1472,7 @@ msgstr "Noruego"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr "No hay suficiente memoria, ver http://www.arduino.cc/en/Guide/Troubleshooting#size para obtener consejos sobre cómo reducir su huella."
+msgstr "No hay suficiente memoria, ver http://www.arduino.cc/en/Guide/Troubleshooting#size para obtener consejos sobre cómo optimizar su código."
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1841,7 +1842,7 @@ msgstr "Serial Plotter"
 msgid ""
 "Serial monitor is not supported on network ports such as {0} for the {1} in "
 "this release"
-msgstr ""
+msgstr "El monitor serial no está soportado en puertos para redes tales como {0} para el {1} de esta versión "
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
@@ -2481,7 +2482,7 @@ msgstr "Olvidó su proyecto."
 msgid ""
 "You have unsaved changes!\n"
 "You must save all your sketches to enable this option."
-msgstr ""
+msgstr "¡Tiene cambios sin guardar!\nDebe guardar todos sus sketches para habilitar esta opción."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

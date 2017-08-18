@@ -28,6 +28,7 @@
 # Philipe Rabelo <philipe_elvis_preslei@hotmail.com>, 2013
 # Radamés Ajna <radamajna@gmail.com>, 2016
 # Rafael H L Moretti <rafael.moretti@gmail.com>, 2014
+# sergio mazzotti <ser.mazzotti@gmail.com>, 2017
 # Tiago G. Sala, 2014
 # Walter Souza <wsouza@zipmail.com.br>, 2016
 msgid ""
@@ -35,8 +36,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-05-30 15:31+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2017-08-14 17:15+0000\n"
+"Last-Translator: sergio mazzotti <ser.mazzotti@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/mbanzi/arduino-ide-15/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -444,7 +445,7 @@ msgstr "Pode passar somente um de: {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
 msgid "Can't enable external editor"
-msgstr ""
+msgstr "Não é possível habilitar editor externo"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -490,7 +491,7 @@ msgstr "Chinês (Taiwan) (Big5)"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
 msgid "Clear output"
-msgstr ""
+msgstr "Deleta a saida"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1842,7 +1843,7 @@ msgstr "Plotter serial"
 msgid ""
 "Serial monitor is not supported on network ports such as {0} for the {1} in "
 "this release"
-msgstr ""
+msgstr "Serial Monitor não é compatível com portas de rede, tais como {0} para {1} neste lançamento"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
@@ -2482,7 +2483,7 @@ msgstr "Você esqueceu seu sketchbook"
 msgid ""
 "You have unsaved changes!\n"
 "You must save all your sketches to enable this option."
-msgstr ""
+msgstr "Você tem alterações não salvas!\nVocê deve salvar todos os seus sketches para ativar essa opção."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
