@@ -13,6 +13,7 @@ ARDUINO 1.8.4
 
 [libraries]
 * Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
+* Fixed wrong include for "RobotIRRemote", now it should not interfere anymore with the real IRRemote.
 
 ARDUINO 1.8.3 2017.05.31
 
