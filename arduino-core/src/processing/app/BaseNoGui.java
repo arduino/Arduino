@@ -873,10 +873,6 @@ public class BaseNoGui {
     char c[] = origName.toCharArray();
     StringBuffer buffer = new StringBuffer();
 
-    // can't lead with a digit, so start with an underscore
-    if ((c[0] >= '0') && (c[0] <= '9')) {
-      buffer.append('_');
-    }
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||

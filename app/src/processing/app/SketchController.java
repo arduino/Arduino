@@ -826,8 +826,7 @@ public class SketchController {
     if (!newName.equals(origName)) {
       String msg =
         tr("The sketch name had to be modified. Sketch names can only consist\n" +
-          "of ASCII characters and numbers (but cannot start with a number).\n" +
-          "They should also be less than 64 characters long.");
+          "of ASCII characters and numbers and be less than 64 characters long.");
       System.out.println(msg);
     }
     return newName;

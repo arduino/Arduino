@@ -10,6 +10,7 @@ ARDUINO 1.8.4
 * Make Preference window fit 600px height displays
 * Fix error when renaming an unsaved, newly added file. Thanks @matthijskooijman
 * Added the ability to increase/decrease font size via keyboard + mouse shortcuts (Ctrl + MouseWheel)
+* Sketch names starting with a digit are now allowed
 
 [libraries]
 * Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
