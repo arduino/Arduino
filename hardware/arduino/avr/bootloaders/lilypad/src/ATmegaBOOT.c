@@ -294,7 +294,7 @@ int main(void)
 #endif
     }
 
-#ifdef __AVR_ATmega128__    
+#ifdef __AVR_ATmega128__
     /* no bootuart was selected, default to uart 0 */
     if(!bootuart) {
       bootuart = 1;
@@ -360,7 +360,7 @@ int main(void)
 #else
     flash_led(NUM_LED_FLASHES);
 #endif
-    
+
     /* 20050803: by DojoCorp, this is one of the parts provoking the
                  system to stop listening, cancelled from the original */
     //putch('\0');
@@ -374,7 +374,7 @@ int main(void)
 
 	/* A bunch of if...else if... gives smaller code than switch...case ! */
 
-	/* Hello is anyone home ? */ 
+	/* Hello is anyone home ? */
 	if(ch=='0') {
 	    nothing_response();
 	}
@@ -513,9 +513,9 @@ int main(void)
 				 "ldi	r29,hi8(buff)	\n\t"
 				 "lds	r24,length	\n\t"	//Length of data to be written (in bytes)
 				 "lds	r25,length+1	\n\t"
-				 "length_loop:		\n\t"	//Main loop, repeat for number of words in block							 							 
+				 "length_loop:		\n\t"	//Main loop, repeat for number of words in block							 							
 				 "cpi	r17,0x00	\n\t"	//If page_word_count=0 then erase page
-				 "brne	no_page_erase	\n\t"						 
+				 "brne	no_page_erase	\n\t"						
 				 "wait_spm1:		\n\t"
 				 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 				 "andi	r16,1           \n\t"
@@ -523,7 +523,7 @@ int main(void)
 				 "breq	wait_spm1       \n\t"
 				 "ldi	r16,0x03	\n\t"	//Erase page pointed to by Z
 				 "sts	%0,r16		\n\t"
-				 "spm			\n\t"							 
+				 "spm			\n\t"							
 #ifdef __AVR_ATmega163__
 				 ".word 0xFFFF		\n\t"
 				 "nop			\n\t"
@@ -532,19 +532,19 @@ int main(void)
 				 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 				 "andi	r16,1           \n\t"
 				 "cpi	r16,1           \n\t"
-				 "breq	wait_spm2       \n\t"									 
+				 "breq	wait_spm2       \n\t"									
 
 				 "ldi	r16,0x11	\n\t"	//Re-enable RWW section
-				 "sts	%0,r16		\n\t"						 			 
+				 "sts	%0,r16		\n\t"						 			
 				 "spm			\n\t"
 #ifdef __AVR_ATmega163__
 				 ".word 0xFFFF		\n\t"
 				 "nop			\n\t"
 #endif
-				 "no_page_erase:		\n\t"							 
+				 "no_page_erase:		\n\t"							
 				 "ld	r0,Y+		\n\t"	//Write 2 bytes into page buffer
-				 "ld	r1,Y+		\n\t"							 
-							 
+				 "ld	r1,Y+		\n\t"							
+							
 				 "wait_spm3:		\n\t"
 				 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 				 "andi	r16,1           \n\t"
@@ -553,7 +553,7 @@ int main(void)
 				 "ldi	r16,0x01	\n\t"	//Load r0,r1 into FLASH page buffer
 				 "sts	%0,r16		\n\t"
 				 "spm			\n\t"
-							 
+							
 				 "inc	r17		\n\t"	//page_word_count++
 				 "cpi r17,%1	        \n\t"
 				 "brlo	same_page	\n\t"	//Still same page in FLASH
@@ -566,7 +566,7 @@ int main(void)
 				 "breq	wait_spm4       \n\t"
 #ifdef __AVR_ATmega163__
 				 "andi	r30,0x80	\n\t"	// m163 requires Z6:Z1 to be zero during page write
-#endif							 							 
+#endif							 							
 				 "ldi	r16,0x05	\n\t"	//Write page pointed to by Z
 				 "sts	%0,r16		\n\t"
 				 "spm			\n\t"
@@ -579,15 +579,15 @@ int main(void)
 				 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 				 "andi	r16,1           \n\t"
 				 "cpi	r16,1           \n\t"
-				 "breq	wait_spm5       \n\t"									 
+				 "breq	wait_spm5       \n\t"									
 				 "ldi	r16,0x11	\n\t"	//Re-enable RWW section
-				 "sts	%0,r16		\n\t"						 			 
-				 "spm			\n\t"					 		 
+				 "sts	%0,r16		\n\t"						 			
+				 "spm			\n\t"					 		
 #ifdef __AVR_ATmega163__
 				 ".word 0xFFFF		\n\t"
 				 "nop			\n\t"
 #endif
-				 "same_page:		\n\t"							 
+				 "same_page:		\n\t"							
 				 "adiw	r30,2		\n\t"	//Next word in FLASH
 				 "sbiw	r24,2		\n\t"	//length-2
 				 "breq	final_write	\n\t"	//Finished
@@ -615,7 +615,7 @@ int main(void)
 		    app_start();
 	    }		
 	}
-    
+
 
         /* Read memory block mode, length is big endian.  */
         else if(ch=='t') {
@@ -733,7 +733,7 @@ int main(void)
 				putch('0');
 			    }
 
-			} 
+			}
 
 			/* read byte from address */
 			else if(ch == 'r') {
@@ -878,7 +878,7 @@ char getch(void)
 #elif defined __AVR_ATmega168__
     uint32_t count = 0;
     while(!(UCSR0A & _BV(RXC0))){
-    	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/               
+    	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/
     	/* HACKME:: here is a good place to count times*/
     	count++;
     	if (count > MAX_TIME_COUNT)
@@ -889,7 +889,7 @@ char getch(void)
     /* m8,16,32,169,8515,8535,163 */
     uint32_t count = 0;
     while(!(UCSRA & _BV(RXC))){
-    	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/               
+    	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/
     	/* HACKME:: here is a good place to count times*/
     	count++;
     	if (count > MAX_TIME_COUNT)
@@ -908,7 +908,7 @@ void getNch(uint8_t count)
 	if(bootuart == 1) {
 	    while(!(UCSR0A & _BV(RXC0)));
 	    UDR0;
-	} 
+	}
 	else if(bootuart == 2) {
 	    while(!(UCSR1A & _BV(RXC1)));
 	    UDR1;
@@ -918,7 +918,7 @@ void getNch(uint8_t count)
 	UDR0;
 #else
 	/* m8,16,32,169,8515,8535,163 */
-   	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/               
+   	/* 20060803 DojoCorp:: Addon coming from the previous Bootloader*/
 	//while(!(UCSRA & _BV(RXC)));
 	//UDR;
     uint8_t i;
@@ -964,7 +964,7 @@ void flash_led(uint8_t count)
     if (count == 0) {
       count = 3;
     }
-    
+
     for (i = 0; i < count; ++i) {
 	LED_PORT |= _BV(LED);
 	for(l = 0; l < (F_CPU / 1000); ++l);

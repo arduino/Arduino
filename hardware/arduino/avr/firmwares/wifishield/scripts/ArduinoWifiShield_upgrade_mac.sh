@@ -7,7 +7,7 @@ progname=$0
 
 usage () {
 cat <<EOF
-Usage: $progname [-a Arduino_path] [-f which_firmware] [-h] 
+Usage: $progname [-a Arduino_path] [-f which_firmware] [-h]
        -a set the path where the Arduino IDE is installed
        -f the firmware you want to upload, valid parameters are:
 	  shield  - to upgrade the WiFi shield firmware
@@ -32,7 +32,7 @@ upgradeShield () {
   echo "****Upgrade WiFi Shield firmware****\n"
   dfu-programmer at32uc3a1256 erase
   dfu-programmer at32uc3a1256 flash --suppress-bootloader-mem $WIFI_FW_PATH/wifiHD.hex
-  dfu-programmer at32uc3a1256 start 
+  dfu-programmer at32uc3a1256 start
   echo "\nDone. Remove the J3 jumper and press the RESET button on the shield."
   echo "Thank you!\n"
 }
@@ -49,7 +49,7 @@ if [ $USER = 'root' ] ; then  #check if the current user is root
   while getopts ":a:f:h" opt; do
     case $opt in
 	a)
-	  ARDUINO_PATH=$OPTARG 
+	  ARDUINO_PATH=$OPTARG
 	  WIFI_FW_PATH=$ARDUINO_PATH$WIFI_FW_PATH
 	  AVR_TOOLS_PATH=$ARDUINO_PATH$AVR_TOOLS_PATH
 	  cd $AVR_TOOLS_PATH
@@ -77,7 +77,7 @@ if [ $USER = 'root' ] ; then  #check if the current user is root
 	  fi
 	  ;;
 	h)
-	  usage ;; 
+	  usage ;;
 	\?)
 	  echo "Invalid option: $OPTARG" >&2
 	  usage

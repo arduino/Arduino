@@ -35,7 +35,7 @@ public:
     static void startClient(uint32_t ipAddress, uint16_t port, uint8_t sock, uint8_t protMode=TCP_MODE);
 
     static void stopClient(uint8_t sock);
-                                                                                  
+
     static uint8_t getServerState(uint8_t sock);
 
     static uint8_t getClientState(uint8_t sock);

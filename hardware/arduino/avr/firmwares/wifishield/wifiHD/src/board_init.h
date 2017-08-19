@@ -41,7 +41,7 @@ void board_init(void);
  * ---------------------------------------------------------------------------
  *
  */
-#if BOARD == EVK1100 
+#if BOARD == EVK1100
 
 /* USART0 physical assignment */
 #define BOARD_RS232_0 AVR32_USART1

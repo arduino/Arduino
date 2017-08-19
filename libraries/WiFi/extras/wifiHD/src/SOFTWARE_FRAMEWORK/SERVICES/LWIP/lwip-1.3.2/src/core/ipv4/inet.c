@@ -50,8 +50,8 @@
 #define isxdigit(c)          (isdigit(c) || in_range(c, 'a', 'f') || in_range(c, 'A', 'F'))
 #define islower(c)           in_range(c, 'a', 'z')
 #define isspace(c)           (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v')
-#endif    
-    
+#endif
+
 /**
  * Ascii internet address interpretation routine.
  * The value returned is in network order.
@@ -216,7 +216,7 @@ inet_ntoa(struct in_addr addr)
  * Again with the aim of being simple, correct and fully portable.
  * Byte swapping is the second thing you would want to optimize. You will
  * need to port it to your architecture and in your cc.h:
- * 
+ *
  * #define LWIP_PLATFORM_BYTESWAP 1
  * #define LWIP_PLATFORM_HTONS(x) <your_htons>
  * #define LWIP_PLATFORM_HTONL(x) <your_htonl>

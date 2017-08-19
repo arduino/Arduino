@@ -52,7 +52,7 @@ public class SerialPlotter extends AbstractMonitor {
       color = Theme.getColorCycleColor("plotting.graphcolor", id);
     }
 
-    public void paint(Graphics2D g, float xstep, double minY, 
+    public void paint(Graphics2D g, float xstep, double minY,
                       double maxY, double rangeY, double height) {
       g.setColor(color);
       g.setStroke(new BasicStroke(1.0f));
@@ -148,11 +148,11 @@ public class SerialPlotter extends AbstractMonitor {
       // handle data count
       int cnt = xCount - BUFFER_CAPACITY;
       if (xCount < BUFFER_CAPACITY) cnt = 0;
-        
+
       double zeroTick = ticks.getTick(0);
       double lastTick = ticks.getTick(ticks.getTickCount() - 1);
       double xTickRange = BUFFER_CAPACITY / ticks.getTickCount();
-        
+
       for (int i = 0; i < ticks.getTickCount() + 1; i++) {
           String s;
           int xValue;
@@ -182,14 +182,14 @@ public class SerialPlotter extends AbstractMonitor {
       g.drawLine(bounds.x + xOffset, (int) transformY(lastTick) - 5, bounds.x + xOffset, bounds.y + (int) transformY(zeroTick) + 5);
       // draw major x axis
       g.drawLine(xOffset, (int) transformY(zeroTick), bounds.width - xPadding, (int)transformY(zeroTick));
-        
+
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
       float xstep = (float) (bounds.width - xOffset - xPadding) / (float) BUFFER_CAPACITY;
       int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
 
       for(int i = 0; i < graphs.size(); ++i) {
         graphs.get(i).paint(g, xstep, minY, maxY, rangeY, bounds.height);
-        if(graphs.size() > 1) {    
+        if(graphs.size() > 1) {
           g.fillRect(bounds.width - (xOffset + legendLength + 10) + i * 13, 10, 10, 10);
         }
       }
@@ -283,7 +283,7 @@ public class SerialPlotter extends AbstractMonitor {
 
       int validParts = 0;
       for(int i = 0; i < parts.length; ++i) {
-        try {          
+        try {
           double value = Double.valueOf(parts[i]);
           if(validParts >= graphs.size()) {
             graphs.add(new Graph(validParts));

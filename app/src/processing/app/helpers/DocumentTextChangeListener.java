@@ -36,7 +36,7 @@ import javax.swing.event.DocumentListener;
  * Helper class that create a document listener that calls the given
  * TextChangeListener on any change to the document text (but not changes to
  * document attributes).
- * 
+ *
  * The TextChangeListener to be passed is intended to be a lambda function, for
  * easy definition of a callback.
  */

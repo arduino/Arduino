@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -197,7 +197,7 @@ size_t GSM3ShieldV1ModemCore::writePGM(PGM_P str, bool CR)
 	
 	do
 	{	
-		c=pgm_read_byte_near(str + i); 
+		c=pgm_read_byte_near(str + i);
 		if(c!=0)
 			write(c);
 		i++;
@@ -226,6 +226,6 @@ unsigned long GSM3ShieldV1ModemCore::takeMilliseconds()
 
 void GSM3ShieldV1ModemCore::delayInsideInterrupt(unsigned long milliseconds)
 {
-	for (unsigned long k=0;k<milliseconds;k++)  
-		theGSM3ShieldV1ModemCore.gss.tunedDelay(1000); 
+	for (unsigned long k=0;k<milliseconds;k++)
+		theGSM3ShieldV1ModemCore.gss.tunedDelay(1000);
 }

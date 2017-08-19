@@ -13,7 +13,7 @@ print "username: "; my $user = <STDIN>; chomp($user);
 print "password: "; my $pass = <STDIN>; chomp($pass);
 
 my $verbose = 1;
-my $CURL_OPTIONS = "--silent --show-error -u $user:$pass"; 
+my $CURL_OPTIONS = "--silent --show-error -u $user:$pass";
 
 my $ARDUINO = 'http://edit.arduino.cc/en_ref'; # base url for reference site
 my $PUBLIC = 'http://www.arduino.cc/en'; # base url for public site
@@ -77,7 +77,7 @@ exit 0;
 #  $original_text = create_page($filename, $url)
 #
 #    Download the web page at the given URL, change links to point to
-#    the offline pages, and save it locally under the given filename. 
+#    the offline pages, and save it locally under the given filename.
 #    The original (unmodified) text of the downloaded page is returned.
 #
 sub create_page {
@@ -90,7 +90,7 @@ sub create_page {
   $downloaded{$url} = $page;  # remember that we downloaded this page
 
   my $localized_text = localize_page($original_text);
-  open(my $PAGE, "> $page") 
+  open(my $PAGE, "> $page")
     or die "** Unable to open $page for writing. **\n";
   print $PAGE $localized_text;
   close $PAGE;
@@ -127,13 +127,13 @@ sub localize_page {
   # direct pages to the local style file
   $text =~ s!$ARDUINO/pub/skins/arduinoWideRender/arduinoWideRender.css!arduinoWideRender.css!xg;
 
-  # change links to Main/FAQ to go to FAQ.html 
+  # change links to Main/FAQ to go to FAQ.html
   $text =~ s!$ARDUINO/Main/FAQ!FAQ.html!xg;
 
-  # change links to the reference HomePage to go to index.html 
+  # change links to the reference HomePage to go to index.html
   $text =~ s!HomePage.html!index.html!xg;
 
-  # change links to the reference edit site to go to the public site 
+  # change links to the reference edit site to go to the public site
   $text =~ s!$ARDUINO!$PUBLIC!xg;
 
   # change links to the root directory to go to the Arduino home page
@@ -146,12 +146,12 @@ sub localize_page {
 #  create_linked_pages($text, $link_pattern, $page_name)
 #
 #    Scan the given text for links matching the $link_pattern and
-#    create local files for the linked pages.  
+#    create local files for the linked pages.
 #
 #    The link_pattern is a regexp with one parenthesized subexpression -
 #    the text matching the subexpression will replace the
 #    special pattern '%%' in the $page_name to generate the name of
-#    the local file.  
+#    the local file.
 #
 sub create_linked_pages {
   my $text = shift;

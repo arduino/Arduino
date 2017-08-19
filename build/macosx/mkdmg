@@ -43,14 +43,14 @@ echo
 DEVICES=`hdid -nomount $TMPFILE`
 DEVMASTER=`echo $DEVICES| awk '{ print $1 }'`
 
-# Different results on 10.4 vs 10.5. Yay! [fry] 
+# Different results on 10.4 vs 10.5. Yay! [fry]
 #echo "devices as follows"
 #echo $DEVICES
 DARWINVERSION=`uname -r`
-if [ $DARWINVERSION = "9.5.0" ] ; then 
+if [ $DARWINVERSION = "9.5.0" ] ; then
   DEVHFS=`echo $DEVICES| awk '{ print $3 }'`
-else 
-  if [ $DARWINVERSION = "8.11.1" ] ; then 
+else
+  if [ $DARWINVERSION = "8.11.1" ] ; then
     DEVHFS=`echo $DEVICES| awk '{ print $5 }'`
   else
     echo "This version of OS X not recognized."
@@ -75,7 +75,7 @@ rm -f $TMPFILE
 exit 7
 fi
 
-# These two lines removed when doing the 10.4 and 10.5 split above. 
+# These two lines removed when doing the 10.4 and 10.5 split above.
 # They seem to be duplicates, so just rely on the earlier logic. [fry]
 #DEVMASTER=`echo $DEVICES| awk '{ print $1 }'`
 #DEVHFS=`echo $DEVICES| awk '{ print $5 }'`

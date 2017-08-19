@@ -125,7 +125,7 @@ extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 // for the analog output (software PWM).  Analog input
 // pins are a separate set.
 
-// ARDUINO LEONARDO / ARDUINO ROBOT CONTROL / ATMEGA 32U4 / FUNCTION / REGISTER 
+// ARDUINO LEONARDO / ARDUINO ROBOT CONTROL / ATMEGA 32U4 / FUNCTION / REGISTER
 //
 // D0		RX					PD2		RX			RXD1/INT2
 // D1		TX					PD3		TX			TXD1/INT3

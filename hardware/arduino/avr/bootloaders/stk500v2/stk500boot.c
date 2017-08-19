@@ -82,7 +82,7 @@ LICENSE:
 //*	Nov  9,	2010	<MLS> Issue 392:Fixed bug that 3 !!! in code would cause it to jump to monitor
 //*	Jun 24,	2011	<MLS> Removed analogRead (was not used)
 //*	Dec 29,	2011	<MLS> Issue 181: added watch dog timmer support
-//*	Dec 29,	2011	<MLS> Issue 505:  bootloader is comparing the seqNum to 1 or the current sequence 
+//*	Dec 29,	2011	<MLS> Issue 505:  bootloader is comparing the seqNum to 1 or the current sequence
 //*	Jan  1,	2012	<MLS> Issue 543: CMD_CHIP_ERASE_ISP now returns STATUS_CMD_FAILED instead of STATUS_CMD_OK
 //*	Jan  1,	2012	<MLS> Issue 543: Write EEPROM now does something (NOT TESTED)
 //*	Jan  1,	2012	<MLS> Issue 544: stk500v2 bootloader doesn't support reading fuses
@@ -92,8 +92,8 @@ LICENSE:
 //*	these are used to test issues
 //*	http://code.google.com/p/arduino/issues/detail?id=505
 //*	Reported by mark.stubbs, Mar 14, 2011
-//*	The STK500V2 bootloader is comparing the seqNum to 1 or the current sequence 
-//*	(IE: Requiring the sequence to be 1 or match seqNum before continuing).  
+//*	The STK500V2 bootloader is comparing the seqNum to 1 or the current sequence
+//*	(IE: Requiring the sequence to be 1 or match seqNum before continuing).
 //*	The correct behavior is for the STK500V2 to accept the PC's sequence number, and echo it back for the reply message.
 #define	_FIX_ISSUE_505_
 //************************************************************************
@@ -1613,7 +1613,7 @@ int		errorCount;
 
 
 #if (FLASHEND > 0x08000)
-//*	this includes the interrupt names for the monitor portion. There is no longer enough 
+//*	this includes the interrupt names for the monitor portion. There is no longer enough
 //*	memory to include this
 //	#include	"avrinterruptnames.h"
 //	#ifndef _INTERRUPT_NAMES_DEFINED_

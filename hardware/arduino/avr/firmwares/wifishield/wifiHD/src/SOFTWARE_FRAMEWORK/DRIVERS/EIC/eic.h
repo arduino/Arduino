@@ -55,7 +55,7 @@
 /*! \name External Interrupt lines
  */
 //! @{
-#if (UC3A || UC3B)  
+#if (UC3A || UC3B)
 #define EXT_INT0    AVR32_EIC_INT0 //!< Line 0
 #define EXT_INT1    AVR32_EIC_INT1 //!< Line 1
 #define EXT_INT2    AVR32_EIC_INT2 //!< Line 2
@@ -227,7 +227,7 @@ extern Bool eic_is_interrupt_line_enabled(volatile avr32_eic_t *eic, unsigned in
 
 /*! \brief Clear the interrupt flag.
  *         Call this function once you've handled the interrupt.
- * 
+ *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param mask_lines Mask for current selected lines
  */
@@ -235,7 +235,7 @@ extern void eic_clear_interrupt_lines(volatile avr32_eic_t *eic, unsigned int ma
 
 /*! \brief Clear the interrupt flag.
  *         Call this function once you've handled the interrupt.
- * 
+ *
  * \param eic Base address of the EIC (i.e. &AVR32_EIC).
  * \param line_number Line number to clear
  */

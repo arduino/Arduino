@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -67,7 +67,7 @@ String GSM3ShieldV1BandManagement::getBand()
 
   Serial.print("Unrecognized modem answer:");
   Serial.println(modemResponse);
-  
+
   return "";
 }
 

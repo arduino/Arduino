@@ -4,7 +4,7 @@
   ----> http://www.adafruit.com/products/358
   as well as Adafruit raw 1.8" TFT display
   ----> http://www.adafruit.com/products/618
- 
+
   Check out the links above for our tutorials and wiring diagrams
   These displays use SPI to communicate, 4 or 5 pins are required to
   interface (RST is optional)
@@ -90,7 +90,7 @@
 #define	ST7735_GREEN   0x07E0
 #define ST7735_CYAN    0x07FF
 #define ST7735_MAGENTA 0xF81F
-#define ST7735_YELLOW  0xFFE0  
+#define ST7735_YELLOW  0xFFE0
 #define ST7735_WHITE   0xFFFF
 
 
@@ -116,7 +116,7 @@ class Adafruit_ST7735 : public Adafruit_GFX {
            setRotation(uint8_t r),
            invertDisplay(boolean i);
   uint16_t Color565(uint8_t r, uint8_t g, uint8_t b) { return newColor(r, g, b);}
-  
+
   /* These are not for current use, 8-bit protocol only!
   uint8_t  readdata(void),
            readcommand8(uint8_t);
@@ -149,7 +149,7 @@ class Adafruit_ST7735 : public Adafruit_GFX {
   uint8_t  _cs, _rs, _rst, _sid, _sclk,
            datapinmask, clkpinmask, cspinmask, rspinmask,
            colstart, rowstart; // some displays need this changed
- #endif   
+ #endif
 };
 
 #endif

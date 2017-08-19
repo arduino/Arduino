@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -66,13 +66,13 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 		GSM3ShieldV1AccessProvider(bool debug=false);
 		
 		/** Start the GSM/GPRS modem, attaching to the GSM network
-			@param pin 			SIM PIN number (4 digits in a string, example: "1234"). If 
+			@param pin 			SIM PIN number (4 digits in a string, example: "1234"). If
 								NULL the SIM has no configured PIN.
 			@param restart		Restart the modem. Default is TRUE. The modem receives
 								a signal through the Ctrl/D7 pin. If it is shut down, it will
-								start-up. If it is running, it will restart. Takes up to 10 
+								start-up. If it is running, it will restart. Takes up to 10
 								seconds
-			@param synchronous	If TRUE the call only returns after the Start is complete 
+			@param synchronous	If TRUE the call only returns after the Start is complete
 								or fails. If FALSE the call will return inmediately. You have
 								to call repeatedly ready() until you get a result. Default is TRUE.
 			@return If synchronous, GSM3_NetworkStatus_t. If asynchronous, returns 0.
@@ -95,24 +95,24 @@ class GSM3ShieldV1AccessProvider : public GSM3MobileAccessProvider, public GSM3S
 		bool secureShutdown();
 		
 		/** Returns 0 if last command is still executing
-			@return 1 if success, >1 if error 
+			@return 1 if success, >1 if error
 		*/
 		int ready(){return GSM3ShieldV1BaseProvider::ready();};
 		
 		/** Returns modem status
-			@return modem network status 
+			@return modem network status
 		*/
 		inline GSM3_NetworkStatus_t getStatus(){return theGSM3ShieldV1ModemCore.getStatus();};
 
 		void manageResponse(byte from, byte to);
 
 		/** Restart the modem (will shut down if running)
-			@return 1 if success, >1 if error 
+			@return 1 if success, >1 if error
 		*/		
 		int HWrestart();
 		
 		/** Start the modem (will not shut down if running)
-			@return 1 if success, >1 if error 
+			@return 1 if success, >1 if error
 		*/		
 		int HWstart();
 

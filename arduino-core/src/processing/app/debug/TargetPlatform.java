@@ -35,7 +35,7 @@ public interface TargetPlatform {
   /**
    * Get TargetBoards under this TargetPlatform into a Map that maps the board
    * id with the corresponding TargetBoard
-   * 
+   *
    * @return a Map<String, TargetBoard>
    */
   public Map<String, TargetBoard> getBoards();
@@ -44,21 +44,21 @@ public interface TargetPlatform {
 
   /**
    * Return ids for top level menus
-   * 
+   *
    * @return a Set<String> with the ids of the top level custom menus
    */
   public Set<String> getCustomMenuIds();
 
   /**
    * Get preferences for all programmers
-   * 
+   *
    * @return
    */
   public Map<String, PreferencesMap> getProgrammers();
 
   /**
    * Get preferences for a specific programmer
-   * 
+   *
    * @param programmer
    * @return
    */
@@ -66,7 +66,7 @@ public interface TargetPlatform {
 
   /**
    * Get preferences for a specific tool
-   * 
+   *
    * @param tool
    * @return
    */
@@ -74,14 +74,14 @@ public interface TargetPlatform {
 
   /**
    * Return TargetPlatform preferences
-   * 
+   *
    * @return
    */
   public PreferencesMap getPreferences();
 
   /**
    * Get a target board
-   * 
+   *
    * @param boardId
    * @return
    */
@@ -89,7 +89,7 @@ public interface TargetPlatform {
 
   /**
    * Get the TargetPackage that contains this TargetPlatform
-   * 
+   *
    * @return
    */
   public TargetPackage getContainerPackage();

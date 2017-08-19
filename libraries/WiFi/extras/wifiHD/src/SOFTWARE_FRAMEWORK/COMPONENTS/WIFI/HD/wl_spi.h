@@ -32,7 +32,7 @@
  * passed to owl_spi_txrx().
  *
  *
- */ 
+ */
 #define MAX_BLOCK_LEN                 512
 
 
@@ -78,7 +78,7 @@
  * of up to 250 ms must be added after GPIO_POWER_PIN is pulled high to ensure
  * that startup is completed. The actual time is usually much shorter, therefore
  * one might try to reduce the delay for a particualar hardware design.
- * 
+ *
  * On SPB104, the GPIO_POWER_PIN will be connected to VCC and GPIO_SHUTDOWN_PIN
  * will be unconnected; hence we have to make sure that we have enough delay
  * after powering on the host. Since the device power-on usually happens at the
@@ -97,7 +97,7 @@ int owl_spi_init(uint8_t *flags);
 
 /**
  * Invoked when a spi transfer should be performed.
- * 
+ *
  * All buffers that are allocated by the wl library will have a size that is
  * aligned to 4. If size-unaligned data is passed to this function, it is
  * always allocated by the ip stack. If 4-byte size alignment (e.g. for DMA)
@@ -136,7 +136,7 @@ void owl_spi_txrx(const uint8_t *in, uint8_t* out, uint16_t len);
  * left empty and the wifi device will be used in polled mode. In polled mode,
  * the interrupt line is not used. Regardless of polled or interrupt-mode,
  * wl_poll() must be called to ensure progress of the driver.
- * 
+ *
  * @param enable specifies if interrupts should be enabled or disabled.
  *
  */
@@ -151,7 +151,7 @@ void owl_spi_irq(uint8_t enable);
  * @param enable specifies whether chip select should be asserted or deasserted,
  *        The chip select signal is active low, so if enable is '1' then the
  *        chip select connected to the wifi device should be set to '0'.
- *        
+ *
  */
 void owl_spi_cs(uint8_t enable);
 

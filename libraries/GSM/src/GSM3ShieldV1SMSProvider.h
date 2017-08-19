@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -101,7 +101,7 @@ class GSM3ShieldV1SMSProvider : public GSM3MobileSMSProvider, public GSM3ShieldV
 	
 		int idSMS; // Id from current SMS being read.
 		bool flagReadingSMS; // To detect first SMS char if not yet reading.
-		bool fullBufferSMS; // To detect if the SMS being read needs another buffer. 
+		bool fullBufferSMS; // To detect if the SMS being read needs another buffer.
 		bool twoSMSinBuffer; // To detect if the buffer has more than 1 SMS.
 		bool checkSecondBuffer; // Pending to detect if the second buffer has more than 1 SMS.
 

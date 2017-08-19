@@ -29,7 +29,7 @@ public class StringUtils {
 
   /**
    * Returns the string without trailing whitespace characters
-   * 
+   *
    * @param s
    * @return
    */

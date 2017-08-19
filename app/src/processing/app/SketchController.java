@@ -478,7 +478,7 @@ public class SketchController {
    * Supported code files will be copied to the sketch folder. All other files
    * will be copied to the "data" folder (which is created if it does not exist
    * yet).
-   * 
+   *
    * @return true if successful.
    */
   public boolean addFile(File sourceFile) {
@@ -632,7 +632,7 @@ public class SketchController {
     }
 
     ensureExistence();
-       
+
 
     boolean deleteTemp = false;
     File pathToSketch = sketch.getPrimaryFile().getFile();

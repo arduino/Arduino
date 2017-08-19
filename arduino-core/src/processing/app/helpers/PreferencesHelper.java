@@ -8,7 +8,7 @@ public abstract class PreferencesHelper {
 //  /**
 //   * Create a Color with the value of the specified key. The format of the color
 //   * should be an hexadecimal number of 6 digit, eventually prefixed with a '#'.
-//   * 
+//   *
 //   * @param name
 //   * @return A Color object or <b>null</b> if the key is not found or the format
 //   *         is wrong
@@ -58,7 +58,7 @@ public abstract class PreferencesHelper {
 
   /**
    * Set the value of the specified key based on the Color passed as parameter.
-   * 
+   *
    * @param attr
    * @param color
    */

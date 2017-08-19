@@ -1,5 +1,5 @@
 /*
-  OnlyFilesWithExtension - FilenameFilter that accepts only files with a 
+  OnlyFilesWithExtension - FilenameFilter that accepts only files with a
   specific extension.
   Part of the Arduino project - http://www.arduino.cc/
 

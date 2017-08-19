@@ -92,7 +92,7 @@ unsigned int flashc_get_flash_size(void)
     1024 << 10
   };
   return FLASH_SIZE[(AVR32_FLASHC.pr & AVR32_FLASHC_PR_FSZ_MASK) >> AVR32_FLASHC_PR_FSZ_OFFSET];
-#else 
+#else
   static const unsigned int FLASH_SIZE[1 << AVR32_FLASHC_FSR_FSZ_SIZE] =
   {
       32 << 10,
@@ -105,7 +105,7 @@ unsigned int flashc_get_flash_size(void)
     1024 << 10
   };
   return FLASH_SIZE[(AVR32_FLASHC.fsr & AVR32_FLASHC_FSR_FSZ_MASK) >> AVR32_FLASHC_FSR_FSZ_OFFSET];
-#endif  
+#endif
 }
 
 
@@ -1085,7 +1085,7 @@ void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz)
   #define AVR32_FLASHC_HSEN_FWS_0_MAX_FREQ      33000000
   #define AVR32_FLASHC_HSEN_FWS_1_MAX_FREQ      72000000
   // These defines are missing from or wrong in the toolchain header files uc3cxxx.h
-  // Put a Bugzilla 
+  // Put a Bugzilla
 
   if(cpu_f_hz > AVR32_FLASHC_HSEN_FWS_0_MAX_FREQ)    // > 33MHz
   {
@@ -1093,23 +1093,23 @@ void flashc_set_flash_waitstate_and_readmode(unsigned long cpu_f_hz)
     flashc_set_wait_state(1);
     if(cpu_f_hz <= AVR32_FLASHC_FWS_1_MAX_FREQ) // <= 66MHz and >33Mhz
     {
-      // Disable the high-speed read mode.      
+      // Disable the high-speed read mode.
       flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSDIS, -1);
     }
     else // > 66Mhz
     {
       // Enable the high-speed read mode.
-      flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSEN, -1);                     
+      flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSEN, -1);
     }
   }
-  else  // <= 33 MHz    
+  else  // <= 33 MHz
   {
     // Disable wait-state
     flashc_set_wait_state(0);
 
     // Disable the high-speed read mode.
     flashc_issue_command(AVR32_FLASHC_FCMD_CMD_HSDIS, -1);
-    
+
   }
 }
 #endif // UC3C device-specific implementation

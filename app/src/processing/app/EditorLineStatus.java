@@ -45,7 +45,7 @@ public class EditorLineStatus extends JComponent {
   Color foreground;
   Color background;
   Color messageForeground;
-  
+
   Font font;
   int height;
 
@@ -111,9 +111,9 @@ public class EditorLineStatus extends JComponent {
 
     g.setColor(messageForeground);
     String tmp = I18n.format(tr("{0} on {1}"), name, serialport);
-    
+
     Rectangle2D bounds = g.getFontMetrics().getStringBounds(tmp, null);
-    
+
     g.drawString(tmp, size.width - (int) bounds.getWidth() - RESIZE_IMAGE_SIZE,
                  baseline);
 

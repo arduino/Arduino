@@ -40,9 +40,9 @@ int fw_download_init(void)
 #define BUF_SIZE 512
 
 
-size_t fw_read_cb(void* ctx, 
-                  const uint8_t** buf, 
-                  size_t offset, 
+size_t fw_read_cb(void* ctx,
+                  const uint8_t** buf,
+                  size_t offset,
                   size_t len)
 {
         static uint8_t* fw_buf = NULL;
@@ -65,7 +65,7 @@ size_t fw_read_cb(void* ctx,
          */
         if (fw_buf == NULL) {
                 fw_buf = malloc(BUF_SIZE);
-                
+
                 if (fw_buf == NULL) {
                         printk("could not allocate firmware buffer\n");
                         return 0;
@@ -73,7 +73,7 @@ size_t fw_read_cb(void* ctx,
         }
         /* read at most a full buffer */
 	rlen = len > BUF_SIZE ? BUF_SIZE : len;
-        
+
         /* read data and update output parameters */
         nvram_read(offset, fw_buf, rlen);
 	*buf = fw_buf;

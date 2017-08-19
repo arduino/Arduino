@@ -41,20 +41,20 @@ public class FixEncoding implements Tool {
   public String getMenuTitle() {
     return tr("Fix Encoding & Reload");
   }
-  
-  
+
+
   public void init(Editor editor) {
     this.editor = editor;
   }
-  
+
 
   public void run() {
     Sketch sketch = editor.getSketch();
     //SketchCode code = sketch.current;
-    
+
     if (sketch.isModified()) {
-      int result = 
-        JOptionPane.showConfirmDialog(editor, 
+      int result =
+        JOptionPane.showConfirmDialog(editor,
                                       tr("Discard all changes and reload sketch?"),
                                       tr("Fix Encoding & Reload"),
                                       JOptionPane.YES_NO_OPTION,
@@ -70,7 +70,7 @@ public class FixEncoding implements Tool {
         editor.findTab(file).setText(loadWithLocalEncoding(file.getFile()));
       }
     } catch (IOException e) {
-      String msg = 
+      String msg =
         tr("An error occurred while trying to fix the file encoding.\nDo not attempt to save this sketch as it may overwrite\nthe old version. Use Open to re-open the sketch and try again.\n") +
         e.getMessage();
       Base.showWarning(tr("Fix Encoding & Reload"), msg, e);

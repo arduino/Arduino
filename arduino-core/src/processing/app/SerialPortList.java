@@ -1,6 +1,6 @@
 /* jSSC (Java Simple Serial Connector) - serial port communication library.
  * (C) Alexey Sokolov (scream3r), 2010-2014.
- * 
+ *
  * Patched for Arduino by Cristian Maglie.
  *
  * This file is part of jSSC.
@@ -159,7 +159,7 @@ public class SerialPortList {
         }
     };
     //<-since 2.1.0
-    
+
     /**
      * Get sorted array of serial ports in the system using default settings:<br>
      *
@@ -203,7 +203,7 @@ public class SerialPortList {
      * Get sorted array of serial ports in the system matched pattern
      *
      * @param pattern RegExp pattern for matching port names <b>(not null)</b>
-     * 
+     *
      * @return String array. If there is no ports in the system String[]
      *
      * @since 2.3.0

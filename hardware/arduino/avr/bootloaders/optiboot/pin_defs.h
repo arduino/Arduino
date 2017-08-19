@@ -1,5 +1,5 @@
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega328__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
-/* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove */ 
+/* Onboard LED is connected to pin PB5 in Arduino NG, Diecimila, and Duemilanove */
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
 #define LED_PIN     PINB
@@ -28,7 +28,7 @@
 
 /* Luminet support */
 #if defined(__AVR_ATtiny84__)
-/* Red LED is connected to pin PA4 */ 
+/* Red LED is connected to pin PA4 */
 #define LED_DDR     DDRA
 #define LED_PORT    PORTA
 #define LED_PIN     PINA
@@ -45,7 +45,7 @@
 
 /* Sanguino support */
 #if defined(__AVR_ATmega644P__)
-/* Onboard LED is connected to pin PB0 on Sanguino */ 
+/* Onboard LED is connected to pin PB0 on Sanguino */
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
 #define LED_PIN     PINB
@@ -63,7 +63,7 @@
 
 /* Mega support */
 #if defined(__AVR_ATmega1280__)
-/* Onboard LED is connected to pin PB7 on Arduino Mega */ 
+/* Onboard LED is connected to pin PB7 on Arduino Mega */
 #define LED_DDR     DDRB
 #define LED_PORT    PORTB
 #define LED_PIN     PINB

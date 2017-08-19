@@ -12,7 +12,7 @@
  * This file provides the wlap_api interface.
  *
  * - Compiler:           GNU GCC for AVR32
- * - Supported devices:  
+ * - Supported devices:
  *  \li SPB104 + EVK1100
  *  \li SPB104 + EVK1101
  *  \li SPB104 + EVK1104
@@ -31,12 +31,12 @@
  * \section files Main Files
  * - wlap_api.h : WiFi driver interface.
  * - libwlap_api_*.*.a - Driver library.
- * 
+ *
  */
 
 #ifndef WLAP_API_H
 #define WLAP_API_H
- 
+
 #define WLAP_API_RELEASE_NAME "unknown"
 
 #include <wl_api.h>
@@ -48,13 +48,13 @@
  *  @{
  */
 /*
- * Station representation 
+ * Station representation
  *
  */
 struct wl_sta_t
 {
         struct wl_mac_addr_t bssid; /**<  The BSSID of the network. */
-        uint8_t queued_pkt_cnt;     /**< Number of queueud packets for 
+        uint8_t queued_pkt_cnt;     /**< Number of queueud packets for
                                        this STA. */
         uint8_t in_ps;              /**< Is the STA in power save mode. */
         uint8_t aid;                /**< STA AID */
@@ -69,8 +69,8 @@ struct wl_sta_list_t
 
 /*! \brief Get the list of currently associated stations (SoftAP).
  *
- * Retrieves the list of current stations from 
- * the driver. 
+ * Retrieves the list of current stations from
+ * the driver.
  *
  * This function is not thread safe. It must be called in the
  * same execution context as wl_poll().
@@ -121,8 +121,8 @@ typedef ssize_t (*wl_pkt_read_cb_t)(char *dst,
  * a single contiguous buffer. This function is only needed in SoftAP
  * mode.
  *
- * @param pkt_read_cb Read callback. 
- * @param ctx Context 
+ * @param pkt_read_cb Read callback.
+ * @param ctx Context
  */
 void wl_register_pkt_read_cb(wl_pkt_read_cb_t pkt_read_cb);
 
@@ -139,9 +139,9 @@ wl_err_t wlap_start_ap(const char *ssid,
                      const enum wl_enc_type enc_type);
 
 /*! \brief Disconnect a STA (SoftAP)
- * 
+ *
  * @param bssid The BSSID of the station to disconnect.
- * @return 
+ * @return
  *  - WL_SUCCESS
  *  - WL_FAILURE.
  */

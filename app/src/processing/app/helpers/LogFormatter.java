@@ -37,10 +37,10 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 public class LogFormatter extends Formatter  {
-  
+
   public String format;
   private final Date dat = new Date();
-  
+
   public LogFormatter(String logformat) {
     format = logformat;
   }

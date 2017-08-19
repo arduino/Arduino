@@ -12,7 +12,7 @@
  * This file provides the wl_api interface.
  *
  * - Compiler:           GNU GCC for AVR32
- * - Supported devices:  
+ * - Supported devices:
  *  \li SPB104 + EVK1100
  *  \li SPB104 + EVK1101
  *  \li SPB104 + EVK1104
@@ -31,7 +31,7 @@
  * \section files Main Files
  * - wl_api.h : WiFi driver interface.
  * - lib_ucr*_hd_wifi_standalone_v*.*.a - Driver library.
- * 
+ *
  */
 /** \mainpage wl_api Reference Manual
 
@@ -44,9 +44,9 @@ wireless as a communications interface. (o)WL API &copy; is shortened
 
 wl_api has been designed to meet the following goals :
  \li Simple : The API is as simple as is practicable
-   to make it easy to use. 
+   to make it easy to use.
  \li Minimal size : The API is usable on very resource constrained
-   platforms. 
+   platforms.
  \li Portable : The API is deployable on any platform with a standards
    compliant C compiler.
  \li OS independent : The API is deployable on systems using a real time
@@ -100,18 +100,18 @@ performs any other tasks necessary for forward progress. After
 function is called again. Also, to send and receive data, the \a wl_process_rx()
 and \a wl_process_tx() must be invoked upon reception and transmission of data.
 
-The third important property is that wl_api is \b not \b thread \b safe. 
+The third important property is that wl_api is \b not \b thread \b safe.
 All wl_api calls must execute in the same context since the
 library has no knowledge of the locking mechanisms available (if any).
 
 \section wl_api_code_examples A note on the code examples
 
 The code examples illustrate how to call the different wl_api functions.
-They do not constitute a complete program. Functions with the prefix "app_" 
+They do not constitute a complete program. Functions with the prefix "app_"
 in the code examples are application specific calls that illustrate a
 particular action. These functions are not part of the API and will have
 to be implemented if needed. For a complete working code example see
-one of the H&D Wireless software reference designs, such as the WiFi HTTP 
+one of the H&D Wireless software reference designs, such as the WiFi HTTP
 server demo code in the Atmel Software Framework.
 
 The API is structured into these functional groups:
@@ -134,10 +134,10 @@ a new hardware platform.
  * <A href="http://www.hd-wireless.se/">H&D Wireless</A>.\n
  * Support and FAQ: http://www.atmel.com/
  */
- 
+
 #ifndef WL_API_H
 #define WL_API_H
- 
+
 #define WL_API_RELEASE_NAME "v2.7.0"
 
 /*! Maximum size of a SSID */
@@ -151,8 +151,8 @@ a new hardware platform.
 
 #define SPB104 104
 #define SPB105 105
- 
-/*! \ingroup wl_api 
+
+/*! \ingroup wl_api
  * API Error codes */
 typedef enum {
         WL_FAILURE = -1,
@@ -174,7 +174,7 @@ typedef enum {
 
 } wl_err_t;
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  * Event identifiers */
 enum wl_event_id_t {
         WL_EVENT_MEDIA_CONNECTED = 0,
@@ -185,7 +185,7 @@ enum wl_event_id_t {
         MAX_WL_EVENT
 };
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  * Authentication modes */
 enum wl_auth_mode {
         AUTH_MODE_INVALID,
@@ -198,7 +198,7 @@ enum wl_auth_mode {
         AUTH_MODE_WPA2_PSK
 };
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  * Encryption modes */
 enum wl_enc_type {  /* Values map to 802.11 encryption suites... */
         ENC_TYPE_WEP  = 5,
@@ -214,8 +214,8 @@ enum wl_host_attention_mode {
         WL_HOST_ATTENTION_SPI  = 0x5a /*!< For SPI with interrupt line */
 };
 
-/*! \ingroup wl_wifi 
- * Event descriptor 
+/*! \ingroup wl_wifi
+ * Event descriptor
 */
 struct wl_event_t {
         enum wl_event_id_t id;  /**< Event identifier. */
@@ -233,7 +233,7 @@ enum wl_conn_type_t {
 /* Note:
  * If your environment does not have stdint.h you will have to
  * define the fixed-width integer types specified in that file
- * yourself, make sure that those definitions are included 
+ * yourself, make sure that those definitions are included
  * before any inclusions of wl_api.h, and build with the macro
  * WITHOUT_STDINT defined. In this case the wl_api library
  * must have been built with the same integer type definitions.
@@ -271,7 +271,7 @@ struct wl_ssid_t
 
 /*! \ingroup wl_wifi
  *
- * MAC-address/BSSID representation 
+ * MAC-address/BSSID representation
  *
  * A broadcast BSSID is one with all octets set to 0xFF.
  */
@@ -282,9 +282,9 @@ struct wl_mac_addr_t
                                             */
 };
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  *
- * Network representation 
+ * Network representation
  *
  */
 struct wl_network_t
@@ -297,14 +297,14 @@ struct wl_network_t
         int32_t rssi; /**< Received Signal Strength in dBm (measured on beacons) */
         int32_t snr; /**< Received Signal to noise ratio in dBm (measured on beacons) */
         uint8_t enc_type; /**< The encryption type used in the network. */
-    
+
         enum wl_conn_type_t net_type; /**< Type of network (Infrastructure or Ad-Hoc */
         size_t ie_len;    /**< Always 0 unless wl_api has been built with WL_CONFIG_WPA_SUPPLICANT */
-                             
+
         uint8_t ie[0]; /**< Not used unless wl_api has been built with WL_CONFIG_WPA_SUPPLICANT */
 };
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  * Network list representation. Array of pointers to wl_network_t entries.
  *
  */
@@ -331,13 +331,13 @@ struct wl_network_list_t
 #define WL_RATE_NUM_RATES  14
 #define WL_RATE_INVALID    WL_RATE_NUM_RATES
 
-/*! \ingroup wl_wifi 
+/*! \ingroup wl_wifi
  *
- * Rate representation 
+ * Rate representation
  *
  */
 typedef uint8_t wl_rate_t;
-    
+
 /** \defgroup wl_api Library support functions
  *
  * These functions manage the library in general. They concern initalizing
@@ -349,7 +349,7 @@ without an operating system.
 
 Before the library can do anything it needs to start up the WiFi
 hardware by downloading a firmware image. The firmware image is
-relatively big (around 144kB) and is therefore not included in the library 
+relatively big (around 144kB) and is therefore not included in the library
 it is only needed once. It is up to the application to decide where to
 store the firmware image and how to read it into the wl_api library.
 
@@ -361,9 +361,9 @@ the firmware image from the \a wl_fw.h header file and write a
 firmware read function like this
 
 \code
-static size_t fw_read_cb(void* ctx, 
-                         uint8_t** buf, 
-                         size_t offset, 
+static size_t fw_read_cb(void* ctx,
+                         uint8_t** buf,
+                         size_t offset,
                          size_t len)
 {
         if ( NULL == buf ) {
@@ -390,7 +390,7 @@ if ( wl_transport_init(fw_read_cb, NULL, &mode) != WL_SUCCESS ) {
 }
 \endcode
 
-The wl_api library is then initialized like this 
+The wl_api library is then initialized like this
 
 \code
 if ( wl_init(NULL, init_complete_cb, mode) != WL_SUCCESS ) {
@@ -447,7 +447,7 @@ invoked and the application can initialize its IP stack.
  */
 
 /*! \brief WiFi event callback.
- * 
+ *
  * This function receives WiFi events that the application
  * wants notification of. This function is supplied by the user
  * of the API.
@@ -473,14 +473,14 @@ typedef void (*wl_event_cb_t) (struct wl_event_t event, void* ctx);
  */
 typedef void (wl_init_complete_cb_t)(void* ctx);
 
- 
+
 /*! \brief Register an event handler.
  *
  * Register an event handler with the driver. This
  * event handler will be called whenever a event
  * listed in #wl_event_id_t occurs.
  * See #wl_event_cb_t and #wl_event_id_t for more details.
- * 
+ *
  * @param cb Event callback function to register.
  * @param ctx Opaque context pointer that will be
  *            passed to the callback when it is
@@ -504,15 +504,15 @@ wl_err_t wl_register_event_cb(wl_event_cb_t cb, void* ctx);
  *
  * @param ctx Opaque context pointer that will be passed to the callback
  *            when invoked. This parameter is never accessed by the API.
- * @param init_complete_cb callback function to invoke when initialization is 
+ * @param init_complete_cb callback function to invoke when initialization is
  *        complete.
  * @param mode Indicates the host attention mode used by the device. If
  *         \a wl_transport_init() was used to download the firmware image to the
  *         device, the proper mode can be obtained from the mode parameter of
  *         that function.
  *
- * @return 
- * - WL_SUCCESS 
+ * @return
+ * - WL_SUCCESS
  * - WL_FAILURE
  */
 wl_err_t wl_init(void* ctx, wl_init_complete_cb_t init_complete_cb,
@@ -524,7 +524,7 @@ wl_err_t wl_init(void* ctx, wl_init_complete_cb_t init_complete_cb,
  * \a wl_init() must be invoked to startup the library
  * again.
  *
- * @return 
+ * @return
  * - WL_SUCCESS on success
  * - WL_FAILURE
  *
@@ -553,10 +553,10 @@ void wl_tick(uint32_t tick);
  * and power save modes.
  *
 
-\section scanning Scanning 
+\section scanning Scanning
 
 To scan all channels that are available in the current regulatory
-domain 
+domain
 
 \code
        if ( wl_scan() != WL_SUCCESS ) {
@@ -575,7 +575,7 @@ static void event_cb(struct wl_event_t event, void* ctx) {
               case WL_EVENT_SCAN_COMPLETE:
                      struct wl_network_list_t *netlist;
                      uint8_t netcnt;
-                     
+
                      wl_get_network_list(&netlist);
                      netcnt = netlist->cnt;
                      while (--netcnt) {
@@ -587,7 +587,7 @@ static void event_cb(struct wl_event_t event, void* ctx) {
 \endcode
 
 The function print_network() could display the network name, the SSID, in
-a user interface. It is important to keep in mind is that despite the fact 
+a user interface. It is important to keep in mind is that despite the fact
 that the SSID is usually presented as a ASCII string, it is
 in fact just a byte string and can legally contain all kinds of
 non-printable characters, including a 0-byte. This means that it is
@@ -646,7 +646,7 @@ static void event_cb(struct wl_event_t event, void* ctx) {
               case WL_EVENT_SCAN_COMPLETE:
                      struct wl_network_list_t *netlist;
                      uint8_t netcnt;
-                     
+
                      wl_get_network_list(&netlist);
                      netcnt = netlist->cnt;
                      while (--netcnt) {
@@ -680,7 +680,7 @@ To set the 40-bit WEP key 0xDEADBEEF00 as default key for key index 0 do
          // This means that the bssid is a broadcast bssid and the WEP key will be a default key instead of a key-mapping key.
          memset(&bssid.octet, 0xff, sizeof bssid.octet);
 
-         if ( wl_add_wep_key(0, sizeof key, key, &bssid) 
+         if ( wl_add_wep_key(0, sizeof key, key, &bssid)
               != WL_SUCCESS ) {
               app_error("Failed to add WEP key.");
               return 0;
@@ -688,7 +688,7 @@ To set the 40-bit WEP key 0xDEADBEEF00 as default key for key index 0 do
 \endcode
 
 To use WPA/WPA2 with a Pre-shared key a passphrase must be associated
-with the network before the connection is initiated. 
+with the network before the connection is initiated.
 
 \code
         struct wl_network_t net;
@@ -699,11 +699,11 @@ with the network before the connection is initiated.
         strncpy(net.ssid.ssid, "My AP", strlen("My AP"));
         net.ssid.len = strlen("My AP");
         net.enc_type = ENC_TYPE_AUTO;
-        if (wl_set_passphrase(&net, 
-                              passphrase, 
-                              strlen(passphrase), 
+        if (wl_set_passphrase(&net,
+                              passphrase,
+                              strlen(passphrase),
                               ENC_TYPE_AUTO,
-                              AUTH_MODE_AUTO) 
+                              AUTH_MODE_AUTO)
             != WL_SUCCESS) {
                 app_error("Failed to add passphrase");
         }
@@ -718,11 +718,11 @@ key from the passphrase before the connection attempt can start.
  *  @{
  */
 
-    
+
 /*! \brief Scan all channels.
- * 
+ *
  * Starts a scan of all WiFi channels allowed in this regulatory
- * domain. The list of allowed channels (the domain) is adapted to the 
+ * domain. The list of allowed channels (the domain) is adapted to the
  * channels announced as allowed by the first AP heard.
  *
  * The scan will proceed asynchronously and will raise a
@@ -743,14 +743,14 @@ wl_err_t wl_scan(void);
 
 /*! \brief Get the list of currently known networks.
  *
- * Retrieves the list of currently known networks from 
+ * Retrieves the list of currently known networks from
  * the driver. To ensure that this list is up-to-date
  * a wl_scan() call should be issued and this function
  * should be called upon reception of the WL_EVENT_SCAN_COMPLETE
  * event. This function can be called at other times
  * but the list of networks retrieved then might not
  * correspond to the networks actually in range.
- * 
+ *
  * Note that a successful scan does not necessarily
  * find any networks.
  *
@@ -770,7 +770,7 @@ wl_err_t wl_get_network_list(struct wl_network_list_t **network_list);
  * will be raised once the first peer station connects to the Ad-hoc
  * network (and not when the network is announced on the air).
  *
- * If a Ad-hoc network should be started with encryption 
+ * If a Ad-hoc network should be started with encryption
  * enabled then \a wl_set_passphrase() should be called before
  * \a wl_start_adhoc_net() to configure the security parameters.
  * The Ad-hoc network is started with the security parameters
@@ -780,26 +780,26 @@ wl_err_t wl_get_network_list(struct wl_network_list_t **network_list);
  *             already present with this SSID this call will fail.
  * @param channel The channel to use. Valid channels are 1-14
  * @param auth_mode The authentication mode to use. Supported
- *        authentication modes for Ad-hoc networks are 
+ *        authentication modes for Ad-hoc networks are
  *        AUTH_MODE_OPEN_SYSTEM and AUTH_MODE_SHARED_KEY.
  *        Passing other modes will cause a WL_INVALID_ARGS return.
  *        If AUTH_MODE_SHARED_KEY is used then a valid WEP
  *        key must be set with a call to \a wl_add_wep_key()
  *        and the default WEP key index must be set with a
  *        call to \a wl_set_default_wep_key().
- * @return 
+ * @return
  *        - WL_SUCCESS on success.
  *        - WL_INVALID_ARGS if the ssid is malformed, if
  *          the channel not valid or if the authentication mode
  *          is invalid.
  *        - WL_RETRY if the driver is busy resolving a conflicting
  *          operation.  The operation should be retried after a wait
- *          (at least one call to wl_poll() for polled implementations).  
+ *          (at least one call to wl_poll() for polled implementations).
  *        - WL_BUSY if the driver is already connected or if a network
  *          with the same SSID is already known.
- *         
+ *
  */
-wl_err_t wl_start_adhoc_net(struct wl_ssid_t ssid, 
+wl_err_t wl_start_adhoc_net(struct wl_ssid_t ssid,
                             uint8_t channel,
                             enum wl_auth_mode auth_mode);
 #endif
@@ -825,7 +825,7 @@ wl_err_t wl_start_adhoc_net(struct wl_ssid_t ssid,
  * @param ssid Pointer to the SSID string.
  *             Freed by caller.
  * @param ssid_len Length of the SSID string in octets. Max value is 32.
- * @return 
+ * @return
  *  - WL_SUCCESS
  *  - WL_FAILURE if the network could not be found
  *  - WL_BUSY if the driver is already connected
@@ -854,7 +854,7 @@ wl_err_t wl_connect(char* ssid, size_t ssid_len);
  * to it, if found.
  *
  * @param bssid Pointer to the BSSID. Freed by caller.
- * @return 
+ * @return
  *  - WL_SUCCESS
  *  - WL_FAILURE if the network could not be found
  *  - WL_BUSY if the driver is already connected
@@ -896,14 +896,14 @@ wl_err_t wl_disconnect(void);
  *        after adding it). If the BSSID is a valid unicast
  *        bssid then the key is configured as a key-mapping
  *        key ( See 802.11-2007 8.2.1.3 ).
- * @return 
+ * @return
  * - WL_SUCCESS on success.
  * - WL_INVALID_LENGTH if the key length is bad.
  * - WL_FAILURE on failure
  */
-wl_err_t wl_add_wep_key(uint8_t key_idx, 
-                        size_t key_len, 
-                        const void *key, 
+wl_err_t wl_add_wep_key(uint8_t key_idx,
+                        size_t key_len,
+                        const void *key,
                         struct wl_mac_addr_t *bssid);
 
 /*! @brief Set the default WEP key index.
@@ -954,13 +954,13 @@ wl_err_t wl_delete_wep_key(uint8_t key_idx, struct wl_mac_addr_t *bssid);
  *        Normally you only need to pass something else here if the network
  *        announces support for both WPA and WPA2/RSN and the passphrases are
  *        different.
- * @return 
+ * @return
  *        - WL_SUCCESS
  *        - WL_INVALID_ARGS if the passphrase length is invalid.
  *        - WL_RESOURCES if no more passphrases can be added.
  */
 wl_err_t wl_set_passphrase(const struct wl_network_t *net,
-                           const char *passphrase, 
+                           const char *passphrase,
                            const size_t len,
                            const enum wl_enc_type  enc_type,
                            const enum wl_auth_mode auth_mode);
@@ -972,7 +972,7 @@ wl_err_t wl_set_passphrase(const struct wl_network_t *net,
  * @param net Network with which to associate the passphrase.
  *        If net is NULL then all stored passphrases will be
  *        cleared.
- * @return 
+ * @return
  *        - WL_SUCCESS
  *        - WL_FAILURE if no passphrase was associated with the net.
  */
@@ -1031,27 +1031,27 @@ wl_err_t wl_disable_ps(void);
  *
  * @return WL_SUCCESS or WL_FAILURE.
  */
-wl_err_t wl_conf_ps(uint8_t use_ps_poll,  
+wl_err_t wl_conf_ps(uint8_t use_ps_poll,
                     uint32_t ps_traffic_timeout,
                     uint32_t ps_delay,
                     uint8_t rx_all_dtim,
                     uint16_t listen_interval);
- 
+
 /*! \brief Get the interface MAC address.
  *
  * Return the 802.3 MAC address of the network interface.
- * 
+ *
  * @param buf Output buffer. It must be at least WL_MAC_ADDR_LENGTH
- *            bytes long and only the first WL_MAC_ADDR_LENGTH bytes 
+ *            bytes long and only the first WL_MAC_ADDR_LENGTH bytes
  *            will contain valid data.
- * @return 
+ * @return
  *         - WL_FAILURE if the interface is not up.
- *         - WL_SUCCESS 
+ *         - WL_SUCCESS
  */
 wl_err_t wl_get_mac_addr(uint8_t* buf);
 
 /*! \brief Return the associated network.
- * 
+ *
  * Return the description of the currently associated
  * network, if any.
  *
@@ -1067,14 +1067,14 @@ struct wl_network_t* wl_get_current_network(void);
  *
  * Note that the examples in this group assumes that the transport library
  * functions in the \a wl_transport group are being used. For more information,
- * See the documentation for those functions in the \a wl_transport group. 
+ * See the documentation for those functions in the \a wl_transport group.
 
 For the IP stack integration you need to intercept received packets so
 they can be sent up the stack and to transmit packets coming down the
 stack.
 
 By default the wl_api library discards all data packets.  To receive
-them the application must register a rx interrupt service routine (isr) 
+them the application must register a rx interrupt service routine (isr)
 using the \a wl_register_rx_isr() function.
 
 \code
@@ -1084,11 +1084,11 @@ static void rx_isr(void* ctx) {
 \endcode
 
 Since the rx_isr() function is only called in interrupt context, it is not
-safe to perform the actual read directly from rx_isr(). If an OS is used, 
-the normal case is to signal a receiver thread to invoke the ip stack 
-read function to read the pending data. In a system that runs without an OS 
-(as in the example), a flag is set to indicate that wl_rx() can be invoked 
-from the ip stack read function next time the ip stack is polled. 
+safe to perform the actual read directly from rx_isr(). If an OS is used,
+the normal case is to signal a receiver thread to invoke the ip stack
+read function to read the pending data. In a system that runs without an OS
+(as in the example), a flag is set to indicate that wl_rx() can be invoked
+from the ip stack read function next time the ip stack is polled.
 The beginning of a ip stack read function can look like this
 
 \code
@@ -1105,12 +1105,12 @@ static void ip_stack_rx_pkt() {
               app_error("Packet reception failed.");
               free(pkt);
               return
-       }      
+       }
 }
 \endcode
 
-Since the ip_stack_rx_pkt() function should only be called when there is 
-actually a packet ready to read you do not have to check the return value 
+Since the ip_stack_rx_pkt() function should only be called when there is
+actually a packet ready to read you do not have to check the return value
 from \a wl_rx() since it only returns failure if there is no packet ready to
 read.
 
@@ -1127,7 +1127,7 @@ before the packet can be safely ingested by the IP stack.
 All this happens in the function \a wl_process_rx() which \b must
 be called on every packet received by a call to \a wl_rx().
 
-Continuing the ip_stack_rx_pkt() example 
+Continuing the ip_stack_rx_pkt() example
 
 \code
        {
@@ -1135,7 +1135,7 @@ Continuing the ip_stack_rx_pkt() example
                 size_t stripped_pkt_len;
                 uint16_t vlan;
                 int status;
-                
+
                 status = wl_process_rx(pkt,
                                        len,
                                        &stripped_pkt,
@@ -1145,7 +1145,7 @@ Continuing the ip_stack_rx_pkt() example
                        // This is normal. The packet was a
                        // wl_api-internal message.
                        free(pkt);
-                       return;    
+                       return;
                 }
                 app_ip_stack_input(stripped_pkt,
                                    stripped_pkt_len,
@@ -1154,17 +1154,17 @@ Continuing the ip_stack_rx_pkt() example
         }
 }
 \endcode
-                               
+
 If \a wl_process_rx() decides that the packet was a command it processes
 it and returns \a WL_ABSORBED to signal that the packet should
 not be used by anyone else. Otherwise stripped_pkt is
 pointing to the beginning of a 802.3 Ethernet frame of length
 stripped_pkt_len. If the IP stack supports VLAN and QoS
 the extra VLAN tag should be passed to the IP stack
-together with the packet. For IP stacks without this support the VLAN tag 
+together with the packet. For IP stacks without this support the VLAN tag
 contents can safely be ignored, but it must still be filled in by \a wl_process_tx().
 
-To register the receive isr 
+To register the receive isr
 
 \code
         wl_register_rx_isr(rx_isr, NULL);
@@ -1226,14 +1226,14 @@ the MAC address of the WiFi interface
 #else
 #define WL_HEADER_SIZE 14
 #endif
-    
+
 /*! Maximum packet size (including wl_api headers and paddings)
  *
  * Maximum packet size is obtained with the following data:
  *
  * 1500 bytes of Ethernet payload (MTU) + 14 bytes of Ethernet header +
  * WL_HEADER_SIZE of wl header. This data is then size-aligned to 16.
- * 
+ *
  */
 #define WL_MAX_PKT_LEN 1536
 
@@ -1272,7 +1272,7 @@ the MAC address of the WiFi interface
  *  0|   VLANID   |PRI
  * </PRE>
  *
- * @returns 
+ * @returns
  *          - WL_FAILURE
  *          - WL_ABSORBED if the packet was an internal driver command
  *                      and not a proper data packet. The packet should
@@ -1280,13 +1280,13 @@ the MAC address of the WiFi interface
  *                      to a valid packet.
  *          - WL_SUCCESS
  */
-wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt, 
+wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt,
                        size_t *stripped_pkt_len, uint16_t *vlanid_prio);
 
 /*! \brief Process tx packet.
  *
  * Prepare tx packet for transmission.
- * 
+ *
  * This function is typically used only by the TCP/IP stack driver.
  *
  * Takes a Ethernet II frame header and generates a message passing header
@@ -1299,7 +1299,7 @@ wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt,
  * The Ethernet header is assumed to have the following layout :
  * <dst addr:6><src addr:6><type:2>...
  * The rest of the Ethernet header buffer (if any) is ignored.
- * 
+ *
  * A note on the TX packet representation :
  * If your TX packets are simple contiguous buffers you can ignore
  * the rest of this note and pass NULL in parameter \a pkt_handle.
@@ -1308,7 +1308,7 @@ wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt,
  * for example represent a packet as a linked list of buffers where
  * the Ethernet header, the IP header and other headers, are represented
  * by separate buffers. In some cases, such as when the driver is
- * running in SoftAP mode, a TX packet has to be copied and queued 
+ * running in SoftAP mode, a TX packet has to be copied and queued
  * internally for later processing and to support this when packets
  * have a complicated structure a special data access function can
  * be registered. See \a wl_register_pkt_read_cb() for details.
@@ -1336,11 +1336,11 @@ wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt,
  * @param pkt_handle A handle to the complete packet. If this parameter
  *  is NULL then \a eth_hdr is expected to point to the whole packet
  *  in a single contiguous buffer (the default). If a different packet
- *  representation is used this parameter should be a handle to the 
+ *  representation is used this parameter should be a handle to the
  *  complete packet and will be passed unmodified to the data
  *  access function that was registered with \a wl_register_pkt_read_cb().
  *
- * @returns 
+ * @returns
  *          - WL_FAILURE
  *          - WL_RESOURCES if packet can not be processed at the moment.
  *                       The caller must either drop the packet or try
@@ -1348,14 +1348,14 @@ wl_err_t wl_process_rx(char *pkt, size_t pkt_len, char **stripped_pkt,
  *          - WL_AVAIL     if network not available
  *          - WL_SUCCESS   if packet is ready for transmission through wl_tx().
  */
-wl_err_t wl_process_tx(char *eth_hdr, 
-                       size_t eth_hdr_len, 
-                       size_t pkt_len, 
+wl_err_t wl_process_tx(char *eth_hdr,
+                       size_t eth_hdr_len,
+                       size_t pkt_len,
                        char *hdr,
                        uint16_t vlanid_prio,
                        void *pkt_handle);
 
- 
+
 /*! \brief Get current TX and RX rate used for data transfer
  *
  * During transmission and reception of data, the actual rate used will depend
@@ -1368,7 +1368,7 @@ wl_err_t wl_process_tx(char *eth_hdr,
  * @return
  * - WL_SUCCESS on success
  * - WL_FAILURE on failure.
- */ 
+ */
 wl_err_t wl_get_rate(wl_rate_t *tx, wl_rate_t *rx);
 
 
@@ -1383,7 +1383,7 @@ wl_err_t wl_get_rate(wl_rate_t *tx, wl_rate_t *rx);
  * the application independent of the actual physical transport
  * layer (usually SDIO or SPI).
  *
- 
+
 For applications running on an real time kernel or without an
 operating system, the provided transport library will fit right into the
 application design. However, when running on a more complex operating system
@@ -1400,7 +1400,7 @@ transport interface functions are fully optional.
 
 
 /*! \brief WiFi event callback.
- * 
+ *
  * This function is invoked in interrupt context when there is new data
  * available from the mac. This function is supplied by the user
  * of the API.
@@ -1429,7 +1429,7 @@ typedef void (*wl_rx_isr_t) (void* ctx);
  *
  * This function will be called repeatedly until the complete firmware
  * image has been read.
- * 
+ *
  * This function may be called again at any time while the driver is
  * running to download further pieces of the WiFi firmware image as
  * needed by the runtime requirements. This will normally only happen
@@ -1440,7 +1440,7 @@ typedef void (*wl_rx_isr_t) (void* ctx);
  * downloaded this function will be called once with the \a buf
  * parameter set to NULL to indicate that no more data is needed right
  * now and that any dynamically allocated buffers which holds firmware
- * data can be freed without much performance impact. 
+ * data can be freed without much performance impact.
  *
  * @param ctx Opaque context pointer as provided to \a wl_init() that will be
  *            passed back to the callback.
@@ -1449,13 +1449,13 @@ typedef void (*wl_rx_isr_t) (void* ctx);
  *            that there are no further immediately pending accesses.
  * @param offset Offset in bytes from the start of the firmware image.
  *            Data should be copied into buf starting at \a offset.
- * @param len The number of bytes to copy into \a buf. 
+ * @param len The number of bytes to copy into \a buf.
  * @return The number of bytes copied into buf. This may be smaller than
  *         \len if the implementation of the function so requires.
  */
-typedef size_t (wl_fw_read_cb_t)(void *ctx, 
-                                 const uint8_t **buf, 
-                                 size_t offset, 
+typedef size_t (wl_fw_read_cb_t)(void *ctx,
+                                 const uint8_t **buf,
+                                 size_t offset,
                                  size_t len);
 
 
@@ -1473,7 +1473,7 @@ typedef size_t (wl_fw_read_cb_t)(void *ctx,
  * @param mode will hold the host attention mode used by the transport layer.
  *         This parameter can be passed directly to \a wl_init().
  *
- * @return 
+ * @return
  *
  * - WL_CARD_FAILURE if the wl hardware device is not available
  * - WL_FIRMWARE_INVALID if the firmware obtained through fw_read_cb is
@@ -1483,7 +1483,7 @@ typedef size_t (wl_fw_read_cb_t)(void *ctx,
 wl_err_t wl_transport_init(wl_fw_read_cb_t *fw_read_cb,
                            void *ctx,
                            enum wl_host_attention_mode *mode);
- 
+
 /*! \brief WiFi driver forward progress function
  *
  * This function must be called in polled environments to
@@ -1500,20 +1500,20 @@ wl_err_t wl_transport_init(wl_fw_read_cb_t *fw_read_cb,
  */
 void wl_poll(void);
 
- 
+
 /*! \brief Register RX callback
  *
  * Register function to be called by the low level transport driver
- * when a new packet is available or when there is a state change in the 
+ * when a new packet is available or when there is a state change in the
  * data path. When invoked, any pending data can be fetched by calling wl_rx().
  *
  * This function is typically used only by the TCP/IP stack driver.
  * Note, the registered function is called in interrupt context.
  *
- * @param isr rx interrup handler. 
+ * @param isr rx interrup handler.
  * @param ctx Opaque context pointer that is passed unmodified to the
  * rx_cb callback when it is invoked.
- * 
+ *
  * @return WL_SUCCESS
  */
 wl_err_t wl_register_rx_isr(wl_rx_isr_t isr, void* ctx);
@@ -1529,13 +1529,13 @@ wl_err_t wl_register_rx_isr(wl_rx_isr_t isr, void* ctx);
  *            at least WL_MAX_PKT_LEN bytes long.
  * @param len Length of buf in bytes. Contains the length of the
  *            read packet in bytes on output.
- * @return 
+ * @return
  *         - WL_FAILURE if no RX packet is pending.
  *         - WL_SUCCESS
  */
 wl_err_t wl_rx(uint8_t* buf, uint16_t* len);
 
-/*! \brief Send processed tx packet 
+/*! \brief Send processed tx packet
  *
  * Send a packet to the low level transport driver.
  * This packet has to have been successfully processed by the
@@ -1543,14 +1543,14 @@ wl_err_t wl_rx(uint8_t* buf, uint16_t* len);
  *
  * @param buf Buffer to send.
  * @param len Length of buf in bytes.
- * 
- * @return 
+ *
+ * @return
  *         - WL_FAILURE if the interface is not ready to send.
  *         - WL_SUCCESS if the packet was successfully transmitted.
  */
 wl_err_t wl_tx(const uint8_t* buf, uint16_t len);
 
- 
+
 /*! \brief Configure data alignment
  *
  * This function can be used if the host SDIO/SPI controller has certain
@@ -1588,7 +1588,7 @@ incoming packets are processed by the core.
 
  *  @{
  */
- 
+
  /*! \brief Wakeup callback function.
  *
  * Invoked when the WiFi device should wake up from power save mode.
@@ -1617,7 +1617,7 @@ typedef void (wl_wakeup_cb_t)(void* ctx, uint8_t wakeup);
  * @param ctx Opaque context pointer that will be passed back to the callback.
  */
 void wl_register_wakeup_cb(wl_wakeup_cb_t *wakeup_cb, void *ctx);
- 
+
 
 /*! \brief Management tx callback function.
  *
@@ -1669,7 +1669,7 @@ void wl_register_mgmt_tx_cb(wl_mgmt_tx_cb_t *mgmt_tx_cb, void *ctx);
  *            accessed by the API.
  * @param fw_read_cb callback function to invoke during firmware download.
  *
- * @return 
+ * @return
  *
  * - WL_CARD_FAILURE if the wl hardware device is not available
  * - WL_FIRMWARE_INVALID if the firmware obtained through fw_read_cb is
@@ -1678,8 +1678,8 @@ void wl_register_mgmt_tx_cb(wl_mgmt_tx_cb_t *mgmt_tx_cb, void *ctx);
  */
  wl_err_t wl_fw_download(wl_fw_read_cb_t *fw_read_cb, void *ctx);
 
- 
- 
+
+
 /*! @} */ /* End wl_custom group */
 
 

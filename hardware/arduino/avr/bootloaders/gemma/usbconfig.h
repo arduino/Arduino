@@ -6,15 +6,15 @@
  * Copyright: (c) 2005 by OBJECTIVE DEVELOPMENT Software GmbH
  * License: GNU GPL v2 or v3 (see License.txt)
  */
- 
+
 /* Modified by me@frank-zhao.com for project GemmaBoot
- *  
+ *
  * GemmaBoot is a bootloader that emulates a USBtinyISP (from Adafruit Industries)
- *  
+ *
  * Gemma will use GemmaBoot
  *
  * This code is heavily derived from USBaspLoader, but also from USBtiny, with USBtinyISP's settings
- 
+
   Copyright (c) 2013 Adafruit Industries
   All rights reserved.
 

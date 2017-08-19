@@ -240,7 +240,7 @@ int printk_va(char **out, const char *format, va_list args )
 int printk(const char *format, ...)
 {
         va_list args;
-        
+
         va_start( args, format );
         return printk_va( 0, format, args );
 }
@@ -249,7 +249,7 @@ int printk(const char *format, ...)
 int sprintf(char *out, const char *format, ...)
 {
         va_list args;
-        
+
         va_start( args, format );
         return printk_va( &out, format, args );
 }

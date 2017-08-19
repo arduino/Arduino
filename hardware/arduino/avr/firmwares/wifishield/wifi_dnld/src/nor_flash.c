@@ -47,7 +47,7 @@ void flash_init(void)
                 { AT45DBX_SPI_MOSI_PIN, AT45DBX_SPI_MOSI_FUNCTION },
                 { AT45DBX_SPI_NPCS2_PIN, AT45DBX_SPI_NPCS2_FUNCTION },
         };
-        
+
         spi_options_t spiOptions = {
                 .reg          = AT45DBX_SPI_FIRST_NPCS,
                 .baudrate     = AT45DBX_SPI_MASTER_SPEED,
@@ -58,11 +58,11 @@ void flash_init(void)
                 .spi_mode     = 0,
                 .modfdis      = 1
         };
-    
+
         gpio_enable_module(AT45DBX_SPI_GPIO_MAP,
                            sizeof(AT45DBX_SPI_GPIO_MAP) /
                            sizeof(AT45DBX_SPI_GPIO_MAP[0]));
-        
+
         spi_initMaster(AT45DBX_SPI, &spiOptions);
 
         spi_selectionMode(AT45DBX_SPI, 0, 0, 0);
@@ -79,7 +79,7 @@ void flash_write(U32 addr, const U8* buf, U32 len)
         U32 sector = addr / AT45DBX_SECTOR_SIZE;
         U32 i;
         Assert(addr % AT45DBX_SECTOR_SIZE == 0);
-        
+
         at45dbx_write_open(sector);
         for (i = 0; i < len; i++)
                 at45dbx_write_byte(buf[i]);
@@ -91,7 +91,7 @@ void flash_read(U32 addr, U8* buf, U32 len)
         U32 sector = addr / AT45DBX_SECTOR_SIZE;
         U32 i;
         Assert(addr % AT45DBX_SECTOR_SIZE == 0);
-        
+
         at45dbx_read_open(sector);
         for (i = 0; i < len; i++)
                 buf[i] = at45dbx_read_byte();

@@ -55,7 +55,7 @@
 #include "board.h"
 
 #if (ET024006DHU_SMC_USE_NCS == 0)
-#define  SMC_USE_NCS0                             
+#define  SMC_USE_NCS0
 #define  SMC_COMPONENT_CS0          ET024006DHU_SMC_COMPONENT_CS
 #else
 
@@ -104,5 +104,5 @@
 
 #define EBI_NWE0                    ET024006DHU_EBI_NWE
 #define EBI_NRD                     ET024006DHU_EBI_NRD
-    
+
 #endif  // _CONF_EBI_H_

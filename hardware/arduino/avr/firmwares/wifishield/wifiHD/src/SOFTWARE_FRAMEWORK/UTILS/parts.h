@@ -61,7 +61,7 @@
                      defined (__AT32UC3A0256__)     || \
                      defined (__AT32UC3A0512__)     || \
                      defined (__AT32UC3A0512ES__)))
-                     
+
 #define UC3A1    ( defined (__GNUC__) && \
                    ( defined (__AVR32_UC3A1128__)   || \
                      defined (__AVR32_UC3A1256__)   || \
@@ -72,7 +72,7 @@
                      defined (__AT32UC3A1256__)     || \
                      defined (__AT32UC3A1512__)     || \
                      defined (__AT32UC3A1512ES__)))
-                     
+
 #define UC3A3  ( defined (__GNUC__) && \
                    ( defined (__AVR32_UC3A364__)    || \
                      defined (__AVR32_UC3A364S__)   || \
@@ -87,7 +87,7 @@
                      defined (__AT32UC3A3128S__)    || \
                      defined (__AT32UC3A3256__)     || \
                      defined (__AT32UC3A3256S__)))
-                     
+
 #define UC3A (UC3A0 || UC3A1 || UC3A3)
 
 // UC3 B Series
@@ -134,7 +134,7 @@
                      defined (__AT32UC3C0128C__)        || \
                      defined (__AT32UC3C0256C__)        || \
                      defined (__AT32UC3C0512C__)))
-                     
+
 #define UC3C1    ( defined (__GNUC__) && \
                    ( defined (__AVR32_UC3C164C__)       || \
                      defined (__AVR32_UC3C1128C__)      || \
@@ -145,7 +145,7 @@
                      defined (__AT32UC3C1128C__)        || \
                      defined (__AT32UC3C1256C__)        || \
                      defined (__AT32UC3C1512C__)))
-                     
+
 #define UC3C2    ( defined (__GNUC__) && \
                    ( defined (__AVR32_UC3C264C__)       || \
                      defined (__AVR32_UC3C2128C__)      || \
@@ -170,7 +170,7 @@
                     defined (__AT32UC3L032__)     || \
                     defined (__AT32UC3L064__)     || \
                     defined (__AT32UC3L064REVB__)))
-                    
+
 #define UC3L1 ( defined (__GNUC__) && \
                   ( defined (__AVR32_UC3L116__)     || \
                     defined (__AVR32_UC3L132__)     || \
@@ -179,7 +179,7 @@
                   ( defined (__AT32UC3L116__)     || \
                     defined (__AT32UC3L132__)     || \
                     defined (__AT32UC3L164__)))
-                    
+
 #define UC3L2 ( defined (__GNUC__) && \
                   ( defined (__AVR32_UC3L216__)     || \
                     defined (__AVR32_UC3L232__)     || \
@@ -188,7 +188,7 @@
                   ( defined (__AT32UC3L216__)     || \
                     defined (__AT32UC3L232__)     || \
                     defined (__AT32UC3L264__)))
-                    
+
 #define UC3L3 ( defined (__GNUC__) && \
                   ( defined (__AVR32_UC3L316__)     || \
                     defined (__AVR32_UC3L332__)     || \

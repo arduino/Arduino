@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -39,12 +39,12 @@ GSM3ShieldV1VoiceProvider::GSM3ShieldV1VoiceProvider()
 	phonelength=0;
 	theGSM3MobileVoiceProvider=this;
  }
- 
+
  void GSM3ShieldV1VoiceProvider::initialize()
  {
  	theGSM3ShieldV1ModemCore.registerUMProvider(this);
  }
- 
+
 //Voice Call main function.
 int GSM3ShieldV1VoiceProvider::voiceCall(const char* to)
 {

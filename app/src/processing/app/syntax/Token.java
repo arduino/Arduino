@@ -86,7 +86,7 @@ public class Token
          * URL token id.
          */
         public static final byte URL = 10;
-        
+
         /**
          * Invalid token id. This can be used to mark invalid
          * or incomplete tokens, so the user can easily spot

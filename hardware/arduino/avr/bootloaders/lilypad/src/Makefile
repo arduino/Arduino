@@ -37,7 +37,7 @@ ISPFLASH    = avrdude -c $(ISPTOOL) -p m168 -P $(ISPPORT) $(ISPSPEED) -U flash:w
 OBJ        = $(PROGRAM).o
 OPTIMIZE   = -O2
 
-DEFS       = 
+DEFS       =
 LIBS       =
 
 CC         = avr-gcc
@@ -63,7 +63,7 @@ $(PROGRAM).hex: $(PROGRAM).elf
 $(PROGRAM).elf: $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 	
-$(OBJ): 
+$(OBJ):
 	avr-gcc $(CFLAGS) $(LDFLAGS) -c -g -O2 -Wall -mmcu=atmega168 ATmegaBOOT.c -o ATmegaBOOT_168.o
 
 %.lst: %.elf
@@ -79,5 +79,5 @@ clean:
 	rm -rf *.o *.elf *.lst *.map *.sym *.lss *.eep *.srec *.bin *.hex
 	
 install:
-	avrdude -p m168 -c stk500v2 -P /dev/cu.USA19H1b1P1.1 -e -u -U lock:w:0x3f:m -U efuse:w:0x00:m -U hfuse:w:0xdd:m -U lfuse:w:0xe2:m 
+	avrdude -p m168 -c stk500v2 -P /dev/cu.USA19H1b1P1.1 -e -u -U lock:w:0x3f:m -U efuse:w:0x00:m -U hfuse:w:0xdd:m -U lfuse:w:0xe2:m
 	avrdude -p m168 -c stk500v2 -P /dev/cu.USA19H1b1P1.1 -e -u -U flash:w:ATmegaBOOT_168.hex  -U lock:w:0x0f:m

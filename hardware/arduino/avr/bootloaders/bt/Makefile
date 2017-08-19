@@ -50,7 +50,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 OBJ        = $(PROGRAM).o
 OPTIMIZE   = -O2
 
-DEFS       = 
+DEFS       =
 LIBS       =
 
 CC         = avr-gcc
@@ -68,7 +68,7 @@ all:
 
 atmega328_bt: TARGET = atmega328_bt
 atmega328_bt: MCU_TARGET = atmega328p
-atmega328_bt: AVR_FREQ = 16000000L 
+atmega328_bt: AVR_FREQ = 16000000L
 atmega328_bt: LDSECTION  = --section-start=.text=0x7000
 atmega328_bt: $(PROGRAM)_atmega328_bt.hex
 

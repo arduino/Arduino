@@ -34,7 +34,7 @@ import static org.junit.Assert.assertArrayEquals;
 import org.junit.Test;
 
 public class StringReplacerTest {
-  
+
   @Test
   public void quotingCheck() throws Exception {
     String in = "a\"bc ab'c   'abc abc' ";
@@ -54,5 +54,5 @@ public class StringReplacerTest {
     assertArrayEquals(res, new String[] { "a\"bc", "ab'c", "", "", "abc abc",
         "abc abc", "\"abc abc\"", "'abc abc'" });
   }
-  
+
 }

@@ -75,8 +75,8 @@ public class NewBoardListener implements PropertyChangeListener, Runnable {
     SwingUtilities.invokeLater(() -> {
 
       ed = base.getActiveEditor();
-      NotificationPopup notificationPopup = new NotificationPopup(ed, 
-                 new UpdatableBoardsLibsFakeURLsHandler(base), 
+      NotificationPopup notificationPopup = new NotificationPopup(ed,
+                 new UpdatableBoardsLibsFakeURLsHandler(base),
                  newBoardManagerLink, false);
       if (ed.isFocused()) {
         notificationPopup.begin();

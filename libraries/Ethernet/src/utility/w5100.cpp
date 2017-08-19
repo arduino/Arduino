@@ -54,7 +54,7 @@ uint16_t W5100Class::getTXFreeSize(SOCKET s)
     val1 = readSnTX_FSR(s);
     if (val1 != 0)
       val = readSnTX_FSR(s);
-  } 
+  }
   while (val != val1);
   return val;
 }
@@ -66,7 +66,7 @@ uint16_t W5100Class::getRXReceivedSize(SOCKET s)
     val1 = readSnRX_RSR(s);
     if (val1 != 0)
       val = readSnRX_RSR(s);
-  } 
+  }
   while (val != val1);
   return val;
 }
@@ -85,13 +85,13 @@ void W5100Class::send_data_processing_offset(SOCKET s, uint16_t data_offset, con
   uint16_t offset = ptr & SMASK;
   uint16_t dstAddr = offset + SBASE[s];
 
-  if (offset + len > SSIZE) 
+  if (offset + len > SSIZE)
   {
     // Wrap around circular buffer
     uint16_t size = SSIZE - offset;
     write(dstAddr, data, size);
     write(SBASE[s], data + size, len - size);
-  } 
+  }
   else {
     write(dstAddr, data, len);
   }
@@ -122,13 +122,13 @@ void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
   src_mask = src & RMASK;
   src_ptr = RBASE[s] + src_mask;
 
-  if( (src_mask + len) > RSIZE ) 
+  if( (src_mask + len) > RSIZE )
   {
     size = RSIZE - src_mask;
     read(src_ptr, (uint8_t *)dst, size);
     dst += size;
     read(RBASE[s], (uint8_t *) dst, len - size);
-  } 
+  }
   else
     read(src_ptr, (uint8_t *) dst, len);
 }
@@ -137,7 +137,7 @@ void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
 uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
 {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  setSS();  
+  setSS();
   SPI.transfer(0xF0);
   SPI.transfer(_addr >> 8);
   SPI.transfer(_addr & 0xFF);
@@ -157,7 +157,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
   for (uint16_t i=0; i<_len; i++)
   {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-    setSS();    
+    setSS();
     SPI.transfer(0xF0);
     SPI.transfer(_addr >> 8);
     SPI.transfer(_addr & 0xFF);
@@ -178,7 +178,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
 uint8_t W5100Class::read(uint16_t _addr)
 {
 #if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
-  setSS();  
+  setSS();
   SPI.transfer(0x0F);
   SPI.transfer(_addr >> 8);
   SPI.transfer(_addr & 0xFF);

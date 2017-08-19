@@ -47,12 +47,12 @@ static void init_hmatrix(void)
 	union {
 		unsigned long                 scfg;
 		avr32_hmatrix_scfg_t          SCFG;
-	} u_avr32_hmatrix_scfg = { 
+	} u_avr32_hmatrix_scfg = {
 		AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH]
 	};
-	u_avr32_hmatrix_scfg.SCFG.defmstr_type = 
+	u_avr32_hmatrix_scfg.SCFG.defmstr_type =
 		AVR32_HMATRIX_DEFMSTR_TYPE_LAST_DEFAULT;
-	AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH] = 
+	AVR32_HMATRIX.scfg[AVR32_HMATRIX_SLAVE_FLASH] =
 		u_avr32_hmatrix_scfg.scfg;
 }
 

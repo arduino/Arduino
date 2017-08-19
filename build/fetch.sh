@@ -3,7 +3,7 @@
 # fetch.sh
 # David A. Mellis and Tom Pollard
 # Script to download reference pages from Arduino website and change links
-# to point to local copies of the pages. 
+# to point to local copies of the pages.
 
 die () { echo ERROR: $*; exit 1; }
 

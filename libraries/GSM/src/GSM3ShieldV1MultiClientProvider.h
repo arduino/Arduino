@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -80,7 +80,7 @@ class GSM3ShieldV1MultiClientProvider : public GSM3MobileClientProvider,  public
 			@param rsp		Returns true if expected response exists
 			@return true if command executed correctly
 		 */
-		bool parseQIRD_head(bool& rsp); 
+		bool parseQIRD_head(bool& rsp);
 
 	public:
 	
@@ -144,7 +144,7 @@ class GSM3ShieldV1MultiClientProvider : public GSM3MobileClientProvider,  public
 		/** Read a character from socket
 			@return socket
 		 */
-		int readSocket(); //If Read() gets to the end of the QIRD response, execute again QIRD SYNCHRONOUSLY 
+		int readSocket(); //If Read() gets to the end of the QIRD response, execute again QIRD SYNCHRONOUSLY
 		
 		/** Flush socket
 		 */

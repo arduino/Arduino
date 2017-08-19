@@ -31,7 +31,7 @@ public:
   uint8_t getSocketNumber();
 
   friend class EthernetServer;
-  
+
   using Print::write;
 
 private:

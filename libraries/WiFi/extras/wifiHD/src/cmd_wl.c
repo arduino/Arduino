@@ -53,7 +53,7 @@ extern void showTTCPstatus();
 /**
  *
  */
-cmd_state_t 
+cmd_state_t
 cmd_scan(int argc, char* argv[], void* ctx)
 {
         /* Note that the scan results presented will
@@ -64,7 +64,7 @@ cmd_scan(int argc, char* argv[], void* ctx)
         return CMD_DONE;
 }
 
-cmd_state_t 
+cmd_state_t
 cmd_debug_toggle(int argc, char* argv[], void* ctx)
 {
         extern uint8_t tr_data_trace;
@@ -84,18 +84,18 @@ cmd_debug_toggle(int argc, char* argv[], void* ctx)
 /**
  *
  */
-cmd_state_t 
+cmd_state_t
 cmd_connect(int argc, char* argv[], void* ctx)
 {
         struct wl_ssid_t ssid;
         char desired_ssid[WL_SSID_MAX_LENGTH];
         int len = 0;
-        
+
         if (argc < 2) {
                 printk("usage: connect <ssid>\n");
                 return CMD_DONE;
         }
-        
+
         len = join_argv(desired_ssid, sizeof desired_ssid, argc - 1, argv + 1);
         if (0 == len) {
                 return CMD_DONE;
@@ -110,7 +110,7 @@ cmd_connect(int argc, char* argv[], void* ctx)
 }
 
 #ifdef WFE_6_12
-cmd_state_t 
+cmd_state_t
 cmd_ibss(int argc, char* argv[], void* ctx)
 {
         struct wl_ssid_t ssid;
@@ -119,7 +119,7 @@ cmd_ibss(int argc, char* argv[], void* ctx)
         enum wl_auth_mode amode;
         int len = 0;
         wl_err_t ret;
-        
+
         if ( 2 == argc && ! strncmp(argv[1], "none", 4) ) {
                 printk("Disconnecting\n");
                 wl_disconnect();
@@ -131,7 +131,7 @@ cmd_ibss(int argc, char* argv[], void* ctx)
                 printk("       ibss none\n");
                 return CMD_DONE;
         }
-        
+
         channel = atoi(argv[argc - 2]);
         if ( *argv[argc - 1] == '0' ) {
                 amode = AUTH_MODE_OPEN_SYSTEM;
@@ -152,7 +152,7 @@ cmd_ibss(int argc, char* argv[], void* ctx)
         ssid.len = len;
         /* Stop the connection manager */
         wl_cm_stop();
-        
+
         ret = wl_start_adhoc_net(ssid, channel, amode);
         switch (ret) {
         case WL_BUSY:
@@ -179,7 +179,7 @@ cmd_ibss(int argc, char* argv[], void* ctx)
 /**
  *
  */
-cmd_state_t 
+cmd_state_t
 cmd_set_ip(int argc, char* argv[], void* ctx)
 {
 	struct ctx_server *hs = ctx;
@@ -187,10 +187,10 @@ cmd_set_ip(int argc, char* argv[], void* ctx)
         struct ip_addr lwip_addr;
         struct netif *nif = ncfg->netif;
 
-        if (argc == 2 && 
+        if (argc == 2 &&
             (strncmp(argv[1], "none", 4) == 0)) {
                 ncfg->dhcp_enabled = DYNAMIC_IP_CONFIG;
-                
+
                 return CMD_DONE;
         }
         else if (argc != 4 ) {
@@ -280,11 +280,11 @@ cmd_setpass(int argc, char* argv[], void* ctx)
         memcpy(net.ssid.ssid, desired_ssid, len);
         net.ssid.len = len;
         net.enc_type = ENC_TYPE_AUTO;
-        if (wl_set_passphrase(&net, 
-                              argv[argc - 1], 
-                              strlen(argv[argc - 1]), 
+        if (wl_set_passphrase(&net,
+                              argv[argc - 1],
+                              strlen(argv[argc - 1]),
                               ENC_TYPE_AUTO,
-                              AUTH_MODE_AUTO) 
+                              AUTH_MODE_AUTO)
             != WL_SUCCESS) {
                 printk("%s : Failed to add passphrase\n", __func__);
         }
@@ -448,14 +448,14 @@ cmd_status(int argc, char* argv[], void* ctx)
 
         /* print network info */
         net = wl_get_current_network();
-        printk("link status: "); 
-        if (!net) { 
+        printk("link status: ");
+        if (!net) {
                 printk("down\n");
 
         }else{
         print_network(net);
         }
-        
+
         /* print ip address */
         if (netif_is_up(netif_default))
 		{
@@ -490,12 +490,12 @@ cmd_state_t
 cmd_power(int argc, char* argv[], void* ctx)
 {
         const char *usage = "usage: powersave <on|off>\n";
-        
+
         if (argc < 2) {
                 printk(usage);
                 return CMD_DONE;
         }
-        
+
         if (!strcmp(argv[1], "on")) {
                 if (wl_enable_ps() != WL_SUCCESS) {
                         printk("could not enable power save\n");
@@ -523,24 +523,24 @@ cmd_power(int argc, char* argv[], void* ctx)
 cmd_state_t
 cmd_psconf(int argc, char* argv[], void* ctx)
 {
-        const char *usage = 
+        const char *usage =
                 "usage: psconf <use_ps_poll>      (0/1       default 0)\n" \
                 "              <traffic_timeout>  ([ms]      default 10)\n" \
                 "              <ps_delay>         ([ms]      default 5000)\n"\
                 "              <rx_all_dtim>      (0/1       default 1)\n"\
                 "              <listen_interval>  ([beacons] default 20)\n";
-        
+
         uint8_t use_ps_poll;
         uint32_t traffic_timeout;
         uint32_t ps_delay;
         uint8_t rx_all_dtim;
         uint16_t listen_interval;
-        
+
         if (argc < 6) {
                 printk(usage);
                 return CMD_DONE;
         }
-        
+
         use_ps_poll = atoi(argv[1]);
         traffic_timeout = atoi(argv[2]);
         ps_delay = atoi(argv[3]);
@@ -560,7 +560,7 @@ cmd_psconf(int argc, char* argv[], void* ctx)
         if (wl_conf_ps(use_ps_poll, traffic_timeout, ps_delay,
                        rx_all_dtim, listen_interval) != WL_SUCCESS)
                 printk("configuration failed\n");
-        
+
         return CMD_DONE;
 }
 #endif

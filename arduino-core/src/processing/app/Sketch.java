@@ -363,10 +363,10 @@ public class Sketch {
       // Copy the data files into the new folder
       FileUtils.copy(getDataFolder(), newDataFolder);
     }
-    
+
     // Change folder to the new folder
     folder = newFolder;
-    
+
   }
 
   /**

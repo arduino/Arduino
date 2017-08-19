@@ -42,7 +42,7 @@ public abstract class InstallerTableCell extends AbstractCellEditor implements T
   abstract public void setEnabled(boolean b);
 
   abstract public void setStatus(String s);
-  
+
   public static void setJTextPaneDimensionToFitContainedText(JTextPane jTextPane, int width) {
     Dimension minimumDimension = new Dimension(width, 10);
     jTextPane.setPreferredSize(minimumDimension);

@@ -515,7 +515,7 @@ void watchdogReset() {
        */
     watchdogReset();
   }
-  
+
   ch = UDR0;
     7fb8:	80 91 c6 00 	lds	r24, 0x00C6
   LED_PIN |= _BV(LED);

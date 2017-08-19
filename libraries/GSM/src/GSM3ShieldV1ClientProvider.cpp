@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -81,7 +81,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 {
 	bool resp;
 	// 0: Dot or DNS notation activation
-	// 1: Disable SW flow control 
+	// 1: Disable SW flow control
 	// 2: Waiting for IFC OK
 	// 3: Start-up TCP connection "AT+QIOPEN"
 	// 4: Wait for connection OK
@@ -96,7 +96,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 			theGSM3ShieldV1ModemCore.print('1');
 			theGSM3ShieldV1ModemCore.print('\r');
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.print('0');
 			theGSM3ShieldV1ModemCore.print('\r');
@@ -157,7 +157,7 @@ void GSM3ShieldV1ClientProvider::connectTCPClientContinue()
 				theGSM3ShieldV1ModemCore.theBuffer().chopUntil(auxLocate, true);
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}		
 		break;
@@ -248,7 +248,7 @@ int GSM3ShieldV1ClientProvider::readSocket()
 		return 0;
 	}
 	
-	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read(); 
+	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read();
 	
 	if(theGSM3ShieldV1ModemCore.theBuffer().availableBytes()==100)
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
@@ -260,7 +260,7 @@ int GSM3ShieldV1ClientProvider::readSocket()
 //Read socket main function.
 int GSM3ShieldV1ClientProvider::peekSocket()
 {
-	return theGSM3ShieldV1ModemCore.theBuffer().peek(0); 
+	return theGSM3ShieldV1ModemCore.theBuffer().peek(0);
 }
 
 
@@ -283,7 +283,7 @@ void GSM3ShieldV1ClientProvider::flushSocketContinue()
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
 		theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 	}
-	else 
+	else
 	{
 		//We're done		
 		theGSM3ShieldV1ModemCore.closeCommand(1);

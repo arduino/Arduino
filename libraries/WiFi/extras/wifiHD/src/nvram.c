@@ -58,7 +58,7 @@ int nvram_init(void)
                 .spi_mode     = 0,
                 .modfdis      = 1
         };
-    
+
         at45dbx_init(spiOptions, FPBA_HZ);
         return 0;
 }
@@ -102,7 +102,7 @@ static int nvram_rw(uint32_t addr, void *data, uint16_t len, int write)
 {
         struct nvram *priv = &PRIV;
         priv->read = write ? 0 : 1;
-        
+
         while (len) {
                 uint32_t sector = addr / AT45DBX_SECTOR_SIZE;
                 priv->data = data;
@@ -124,12 +124,12 @@ static int nvram_rw(uint32_t addr, void *data, uint16_t len, int write)
                         at45dbx_write_multiple_sector(1);
                         at45dbx_write_close();
                 }
-                
+
                 data += priv->len;
                 len -= priv->len;
                 addr += priv->len;
         }
-        
+
         return 0;
 }
 

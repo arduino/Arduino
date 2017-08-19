@@ -75,7 +75,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
   protected boolean modified;
   /** Is external editing mode currently enabled? */
   protected boolean external;
-  
+
   /**
    * Create a new EditorTab
    *
@@ -126,7 +126,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
         () -> setModified(true)));
     return document;
   }
-  
+
   private RTextScrollPane createScrollPane(SketchTextArea textArea) throws IOException {
     RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
     scrollPane.setBorder(new MatteBorder(0, 6, 0, 0, Theme.getColor("editor.bgcolor")));
@@ -181,7 +181,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     configurePopupMenu(textArea);
     return textArea;
   }
-  
+
   public void mouseWheelMoved(MouseWheelEvent e) {
     if (e.isControlDown()) {
       if (e.getWheelRotation() < 0) {
@@ -207,7 +207,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     item.setName("menuToolsAutoFormat");
 
     menu.add(item);
-    
+
     item = new JMenuItem(tr("Comment/Uncomment"), '/');
     item.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -251,7 +251,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
 
     final JMenuItem referenceItem = new JMenuItem(tr("Find in Reference"));
     referenceItem.addActionListener(editor::handleFindReference);
-    menu.add(referenceItem);  
+    menu.add(referenceItem);
 
     final JMenuItem openURLItem = new JMenuItem(tr("Open URL"));
     openURLItem.addActionListener(new ActionListener() {
@@ -259,15 +259,15 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
         Base.openURL(e.getActionCommand());
       }
     });
-    menu.add(openURLItem);   
-    
+    menu.add(openURLItem);
+
     menu.addPopupMenuListener(new PopupMenuListener() {
 
       @Override
       public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             String referenceFile = editor.base.getPdeKeywords().getReference(getCurrentKeyword());
             referenceItem.setEnabled(referenceFile != null);
-    
+
             int offset = textarea.getCaretPosition();
             org.fife.ui.rsyntaxtextarea.Token token = RSyntaxUtilities.getTokenAtOffset(textarea, offset);
             if (token != null && token.isHyperlink()) {
@@ -288,7 +288,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     });
 
   }
-  
+
   public void applyPreferences() {
     textarea.setCodeFoldingEnabled(PreferencesData.getBoolean("editor.code_folding"));
     scrollPane.setFoldIndicatorEnabled(PreferencesData.getBoolean("editor.code_folding"));
@@ -322,7 +322,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     textarea.setFont(editorFont);
     scrollPane.getGutter().setLineNumberFont(editorFont);
   }
-  
+
   public void updateKeywords(PdeKeywords keywords) {
     // update GUI for "Find In Reference"
     textarea.setKeywords(keywords);
@@ -376,14 +376,14 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
   public SketchController getSketch() {
     return editor.getSketchController();
   }
-  
+
   /**
    * Get the SketchFile that is being edited in this tab.
    */
   public SketchFile getSketchFile() {
     return this.file;
   }
-  
+
   /**
    * Get the contents of the text area.
    */
@@ -468,11 +468,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
   public void setSelection(int start, int stop) {
     textarea.select(start, stop);
   }
-  
+
   public int getScrollPosition() {
     return scrollPane.getVerticalScrollBar().getValue();
   }
-    
+
   public void setScrollPosition(int pos) {
     scrollPane.getVerticalScrollBar().setValue(pos);
   }
@@ -504,7 +504,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
 
   /**
    * Jump to the given line
-   * @param line The line number to jump to, 1-based. 
+   * @param line The line number to jump to, 1-based.
    */
   public void goToLine(int line) {
     if (line <= 0) {
@@ -516,19 +516,19 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
       //ignore
     }
   }
-  
+
   void handleCut() {
     textarea.cut();
   }
- 
+
   void handleCopy() {
     textarea.copy();
   }
-  
+
   void handlePaste() {
     textarea.paste();
   }
-  
+
   void handleSelectAll() {
     textarea.selectAll();
   }
@@ -564,11 +564,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
   void handleUndo() {
     textarea.undoLastAction();
   }
-  
+
   void handleRedo() {
     textarea.redoLastAction();
   }
-  
+
   public String getCurrentKeyword() {
     String text = "";
     if (textarea.getSelectedText() != null)

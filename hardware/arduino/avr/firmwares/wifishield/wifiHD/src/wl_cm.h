@@ -40,8 +40,8 @@ typedef void (cm_disconn_cb_t)(void* ctx);
 
 wl_err_t wl_cm_set_network(struct wl_ssid_t *ssid, struct wl_mac_addr_t *bssid);
 
-wl_err_t wl_cm_init(cm_scan_cb_t scan_cb, 
-                    cm_conn_cb_t conn_cb, 
+wl_err_t wl_cm_init(cm_scan_cb_t scan_cb,
+                    cm_conn_cb_t conn_cb,
                     cm_disconn_cb_t disconn_cb,
                     void* ctx);
 

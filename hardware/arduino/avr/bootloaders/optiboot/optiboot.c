@@ -579,7 +579,7 @@ uint8_t getch(void) {
        */
     watchdogReset();
   }
-  
+
   ch = UDR0;
 #endif
 

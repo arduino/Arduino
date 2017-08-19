@@ -72,7 +72,7 @@ typedef struct
   uint8_t descLenH;
 } HIDDescDescriptor;
 
-typedef struct 
+typedef struct
 {
   InterfaceDescriptor hid;
   HIDDescDescriptor   desc;

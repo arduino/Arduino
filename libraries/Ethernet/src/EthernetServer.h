@@ -5,7 +5,7 @@
 
 class EthernetClient;
 
-class EthernetServer : 
+class EthernetServer :
 public Server {
 private:
   uint16_t _port;

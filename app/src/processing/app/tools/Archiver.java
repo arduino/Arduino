@@ -55,8 +55,8 @@ public class Archiver implements Tool {
   public String getMenuTitle() {
     return tr("Archive Sketch");
   }
-  
-  
+
+
   public void init(Editor editor) {
     this.editor = editor;
 
@@ -70,7 +70,7 @@ public class Archiver implements Tool {
 
   public void run() {
     SketchController sketch = editor.getSketchController();
-    
+
     // first save the sketch so that things don't archive strangely
     boolean success = false;
     try {

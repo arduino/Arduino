@@ -90,7 +90,7 @@ public class EditorStatus extends JPanel {
   private JTextField editField;
   private JProgressBar progressBar;
   private JButton copyErrorButton;
-  
+
   private ArrayList<CompilerProgressListener> compilerProgressListeners;
 
   public EditorStatus(Editor editor) {
@@ -415,11 +415,11 @@ public class EditorStatus extends JPanel {
   public boolean isErr() {
     return mode == ERR;
   }
-  
+
   public void addCompilerProgressListener(CompilerProgressListener listener){
     compilerProgressListeners.add(listener);
   }
-  
+
   public ArrayList<CompilerProgressListener> getCompilerProgressListeners(){
     return compilerProgressListeners;
   }

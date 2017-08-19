@@ -41,7 +41,7 @@ public class Sizer implements MessageConsumer {
   private Pattern textPattern;
   private Pattern dataPattern;
   private Pattern eepromPattern;
-  
+
   public Sizer(PreferencesMap _prefs) {
     prefs = _prefs;
     textPattern = Pattern.compile(prefs.get("recipe.size.regex"));
@@ -54,7 +54,7 @@ public class Sizer implements MessageConsumer {
     if (pref != null)
       eepromPattern = Pattern.compile(pref);
   }
-  
+
   public long[] computeSize() throws RunnerException {
 
     int r = 0;
@@ -86,16 +86,16 @@ public class Sizer implements MessageConsumer {
       exception = new RunnerException(
         (e.toString() == null) ? e.getClass().getName() + r : e.toString() + r);
     }
-    
+
     if (exception != null)
       throw exception;
-      
+
     if (textSize == -1)
       throw new RunnerException(firstLine);
-      
+
     return new long[] { textSize, dataSize, eepromSize };
   }
-  
+
   @Override
   public void message(String s) {
     if (firstLine == null)

@@ -1,5 +1,5 @@
 /*
-  OnlyDirs - FilenameFilter that accepts only directories (CVS, .svn, 
+  OnlyDirs - FilenameFilter that accepts only directories (CVS, .svn,
   .DS_Store files are excluded as well)
   Part of the Arduino project - http://www.arduino.cc/
 
@@ -27,7 +27,7 @@ import java.io.FilenameFilter;
 /**
  * This filter accepts only directories (excluding .DS_Store files, .svn
  * folders, etc)
- * 
+ *
  * @author Cristian Maglie
  */
 public class OnlyDirs implements FilenameFilter {
@@ -40,10 +40,10 @@ public class OnlyDirs implements FilenameFilter {
       return false;
     return new File(dir, name).isDirectory();
   }
-  
+
   /**
-   * An handy pre-instantiated object 
+   * An handy pre-instantiated object
    */
   public static final OnlyDirs ONLY_DIRS = new OnlyDirs();
-  
+
 }

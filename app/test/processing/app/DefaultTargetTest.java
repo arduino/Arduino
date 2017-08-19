@@ -61,7 +61,7 @@ public class DefaultTargetTest extends AbstractWithPreferencesTest {
 
     // skip test if no target platforms are available
     Assume.assumeNotNull(BaseNoGui.getTargetPlatform());
-    
+
     TargetBoard targetBoard = BaseNoGui.getTargetBoard();
     assertNotEquals("unreal_board", targetBoard.getId());
   }

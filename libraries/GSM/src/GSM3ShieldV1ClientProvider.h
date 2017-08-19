@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -120,7 +120,7 @@ class GSM3ShieldV1ClientProvider : public GSM3MobileClientProvider,  public GSM3
 		/** Read data (get a character) available in socket
 			@return character
 		 */
-		int readSocket(); //If Read() gets to the end of the QIRD response, execute again QIRD SYNCHRONOUSLY 
+		int readSocket(); //If Read() gets to the end of the QIRD response, execute again QIRD SYNCHRONOUSLY
 		
 		/** Flush socket
 		 */

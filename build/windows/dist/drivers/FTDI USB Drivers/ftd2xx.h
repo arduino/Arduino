@@ -268,7 +268,7 @@ extern "C" {
 		FT_HANDLE *pHandle
 		);
 
-	FTD2XX_API 
+	FTD2XX_API
 		FT_STATUS WINAPI FT_ListDevices(
 		PVOID pArg1,
 		PVOID pArg2,
@@ -288,7 +288,7 @@ extern "C" {
 		LPDWORD lpBytesReturned
 		);
 
-	FTD2XX_API 
+	FTD2XX_API
 		FT_STATUS WINAPI FT_Write(
 		FT_HANDLE ftHandle,
 		LPVOID lpBuffer,
@@ -296,7 +296,7 @@ extern "C" {
 		LPDWORD lpBytesWritten
 		);
 
-	FTD2XX_API 
+	FTD2XX_API
 		FT_STATUS WINAPI FT_IoCtl(
 		FT_HANDLE ftHandle,
 		DWORD dwIoControlCode,
@@ -462,7 +462,7 @@ extern "C" {
 	//
 	typedef struct ft_program_data {
 
-		DWORD Signature1;			// Header - must be 0x00000000 
+		DWORD Signature1;			// Header - must be 0x00000000
 		DWORD Signature2;			// Header - must be 0xffffffff
 		DWORD Version;				// Header - FT_PROGRAM_DATA version
 		//			0 = original

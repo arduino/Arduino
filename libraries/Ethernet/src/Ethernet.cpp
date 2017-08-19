@@ -3,9 +3,9 @@
 #include "Dhcp.h"
 
 // XXX: don't make assumptions about the value of MAX_SOCK_NUM.
-uint8_t EthernetClass::_state[MAX_SOCK_NUM] = { 
+uint8_t EthernetClass::_state[MAX_SOCK_NUM] = {
   0, 0, 0, 0 };
-uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = { 
+uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
   0, 0, 0, 0 };
 
 int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned long responseTimeout)

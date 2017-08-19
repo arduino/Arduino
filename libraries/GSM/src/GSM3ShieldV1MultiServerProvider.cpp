@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -145,7 +145,7 @@ bool GSM3ShieldV1MultiServerProvider::parseQILOCIP_rsp(char* LocalIP, int LocalI
 {
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("\r\n","\r\n", LocalIP, LocalIPlength)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	return true;
 }
@@ -176,9 +176,9 @@ void GSM3ShieldV1MultiServerProvider::getIPContinue()
 	case 2:
 		if(parseQILOCIP_rsp(theGSM3ShieldV1ModemCore.getPhoneNumber(), theGSM3ShieldV1ModemCore.getPort(), resp))
 	    {
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}	
 		break;	
@@ -187,7 +187,7 @@ void GSM3ShieldV1MultiServerProvider::getIPContinue()
 
 bool GSM3ShieldV1MultiServerProvider::getSocketAsServerModemStatus(int s)
 {
-	if (socketsAccepted&(0x0001<<s)) 
+	if (socketsAccepted&(0x0001<<s))
 		return true;
 	else return false;
 }

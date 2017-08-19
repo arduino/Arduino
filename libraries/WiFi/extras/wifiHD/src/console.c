@@ -53,7 +53,7 @@ int io_getc(char *c)
         status = usart_read_char(&CONFIG_CONSOLE_PORT, &ci);
         if (status == USART_RX_EMPTY)
                 return 1;
-        
+
         if (status == USART_RX_ERROR) {
                 CONFIG_CONSOLE_PORT.cr = AVR32_USART_CR_RSTSTA_MASK;
                 return 1;
@@ -68,7 +68,7 @@ int io_getc(char *c)
                 board_putchar(ci);
         } else
                 board_putchar(ci);
-        
+
 
         *c = ci;
         return 0;
@@ -81,11 +81,11 @@ char* console_gets()
         static char buf[CMD_MAX_LEN];
         static int pos = 0;
         char c;
-        
+
         for (;;) {
                 if (io_getc(&c))
                         return NULL;
-                
+
                 if (c == '\r' || c == '\n') {
                         buf[pos] = 0;
                         pos = 0;
@@ -110,10 +110,10 @@ int console_add_cmd(const char* str, cmd_cb_t cb, void* ctx)
         for (i = 0; i < ARRAY_SIZE(cmd_list); i++)
                 if (!cmd_list[i].cb)
                         break;
-        
+
         if (i == ARRAY_SIZE(cmd_list))
                 return -1;
-        
+
         cmd_list[i].str = str;
         cmd_list[i].cb = cb;
         cmd_list[i].ctx = ctx;
@@ -174,7 +174,7 @@ int console_schedule_cmd(char *cmd, int interactive) {
                         free(buf);
                         return 0;
                 }
-                
+
                 for (token = strtok(buf, " "); token != NULL;
                      token = strtok(NULL, " ")) {
                         argv[argc] = token;
@@ -182,10 +182,10 @@ int console_schedule_cmd(char *cmd, int interactive) {
                         if (argc == MAX_ARGS)
                                 break;
                 }
-                
+
                 state = RUN;
         } /* fall through */
-                
+
         case RUN: {
                 cmd_state_t s = cmd_list[i].cb(argc, argv, cmd_list[i].ctx);
                 if (s == CMD_INPROGRESS)

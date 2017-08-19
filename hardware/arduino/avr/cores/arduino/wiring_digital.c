@@ -38,7 +38,7 @@ void pinMode(uint8_t pin, uint8_t mode)
 	reg = portModeRegister(port);
 	out = portOutputRegister(port);
 
-	if (mode == INPUT) { 
+	if (mode == INPUT) {
 		uint8_t oldSREG = SREG;
                 cli();
 		*reg &= ~bit;

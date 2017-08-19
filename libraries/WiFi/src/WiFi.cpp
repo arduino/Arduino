@@ -159,7 +159,7 @@ uint8_t* WiFiClass::macAddress(uint8_t* mac)
 	memcpy(mac, _mac, WL_MAC_ADDR_LENGTH);
     return mac;
 }
-   
+
 IPAddress WiFiClass::localIP()
 {
 	IPAddress ret;

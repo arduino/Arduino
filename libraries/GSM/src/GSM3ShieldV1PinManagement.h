@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -42,9 +42,9 @@ class GSM3ShieldV1PinManagement
 
 	private:
 	
-		GSM3ShieldV1AccessProvider gsm; // GSM access required for network register with PIN code     
-		GSM3ShieldV1DirectModemProvider modemAccess; 
-		bool pin_used; // determines if pin lock is activated 
+		GSM3ShieldV1AccessProvider gsm; // GSM access required for network register with PIN code
+		GSM3ShieldV1DirectModemProvider modemAccess;
+		bool pin_used; // determines if pin lock is activated
 		
 	public:
 

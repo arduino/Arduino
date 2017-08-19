@@ -107,7 +107,7 @@ int WiFiClient::available() {
   {
       return ServerDrv::availData(_sock);
   }
-   
+
   return 0;
 }
 

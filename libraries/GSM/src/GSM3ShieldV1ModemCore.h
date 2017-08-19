@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -60,7 +60,7 @@ class GSM3ShieldV1ModemCore : public GSM3SoftSerialMgr, public Print
 		// 1 = OK
 		// 2 = Error. Incorrect state
 		// 3 = Unexpected modem message
-		// 4 = OK but not available data. 
+		// 4 = OK but not available data.
 		uint8_t commandError;
 
 		// Counts the steps by the command

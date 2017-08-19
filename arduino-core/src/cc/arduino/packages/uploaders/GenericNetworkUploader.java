@@ -71,7 +71,7 @@ public class GenericNetworkUploader extends Uploader {
       tool = split[1];
     }
     prefs.putAll(targetPlatform.getTool(tool));
-    
+
     String password = "";
     if(requiresAuthorization()){
       password = prefs.getOrExcept(getAuthorizationKey());
@@ -79,7 +79,7 @@ public class GenericNetworkUploader extends Uploader {
     prefs.put("network.password", password);
 
     prefs.put("network.port", this.port.getPrefs().get("port"));
-    
+
     prefs.put("build.path", buildPath);
     prefs.put("build.project_name", className);
     if (verbose) {
@@ -87,7 +87,7 @@ public class GenericNetworkUploader extends Uploader {
     } else {
       prefs.put("upload.verbose", prefs.getOrExcept("upload.params.quiet"));
     }
-    
+
     boolean uploadResult;
     try {
       String pattern;

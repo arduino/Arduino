@@ -10,7 +10,7 @@ progname=$0
 
 usage () {
 cat <<EOF
-Usage: $progname [-a Arduino_path] [-f which_firmware] [-h] 
+Usage: $progname [-a Arduino_path] [-f which_firmware] [-h]
        -a set the path where the Arduino IDE is installed
        -f the firmware you want to upload, valid parameters are:
 	  shield  - to upgrade the WiFi shield firmware
@@ -23,13 +23,13 @@ EOF
 upgradeHDmodule () {
   sleep 1 # Give time to the shield to end the boot
   echo "****Upgrade HD WiFi module firmware****\n"
-  dfu-programmer $TARGET_MICRO erase 
+  dfu-programmer $TARGET_MICRO erase
   dfu-programmer $TARGET_MICRO flash --suppress-bootloader-mem $WIFI_FW_PATH/wifi_dnld.hex
   dfu-programmer $TARGET_MICRO start
-  
-  if [ $? != 0 ] ; then 
+
+  if [ $? != 0 ] ; then
   echo "\nError during device initialization, please close the J3 jumper and press the reset button.\nTry -h for help\n"
-  exit 1 # if the device is not recognized exit 
+  exit 1 # if the device is not recognized exit
   fi
 
   echo -n "\nPress the RESET button on the shield then type [ENTER] to upgrade the firmware of the shield..\n"
@@ -41,11 +41,11 @@ upgradeShield () {
   echo "****Upgrade WiFi Shield firmware****\n"
   dfu-programmer $TARGET_MICRO erase
   dfu-programmer $TARGET_MICRO flash --suppress-bootloader-mem $WIFI_FW_PATH/wifiHD.hex
-  dfu-programmer $TARGET_MICRO start 
+  dfu-programmer $TARGET_MICRO start
 
-  if [ $? != 0 ] ;  then 
+  if [ $? != 0 ] ;  then
   echo "\nError during device initialization, please close the J3 jumper and press the reset button.\nTry -h for help\n"
-  exit 1 # if the device is not recognized exit 
+  exit 1 # if the device is not recognized exit
   fi
 
   echo "\nDone. Remove the J3 jumper and press the RESET button on the shield."
@@ -73,7 +73,7 @@ if [ $USER = 'root' ] ; then  #check if the current user is root
   while getopts ":a:f:h" opt; do
     case $opt in
 	a)
-	  ARDUINO_PATH=$OPTARG 
+	  ARDUINO_PATH=$OPTARG
 	  WIFI_FW_PATH=$ARDUINO_PATH$WIFI_FW_PATH
 	  AVR_TOOLS_PATH=$ARDUINO_PATH$AVR_TOOLS_PATH
 	  cd $AVR_TOOLS_PATH
@@ -101,7 +101,7 @@ if [ $USER = 'root' ] ; then  #check if the current user is root
 	  fi
 	  ;;
 	h)
-	  usage ;; 
+	  usage ;;
 	\?)
 	  echo "Invalid option: $OPTARG" >&2
 	  usage

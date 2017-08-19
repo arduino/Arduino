@@ -42,7 +42,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public AbstractTextMonitor(BoardPort boardPort) {
     super(boardPort);
   }
-  
+
   protected void onCreateWindow(Container mainPane) {
     Font consoleFont = Theme.getFont("console.font");
     Font editorFont = PreferencesData.getFont("editor.font");
@@ -63,7 +63,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     scrollPane = new JScrollPane(textArea);
 
     mainPane.add(scrollPane, BorderLayout.CENTER);
-  
+
     JPanel upperPane = new JPanel();
     upperPane.setLayout(new BoxLayout(upperPane, BoxLayout.X_AXIS));
     upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
@@ -146,7 +146,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     textField.addActionListener(listener);
     sendButton.addActionListener(listener);
   }
-  
+
   public void onClearCommand(ActionListener listener) {
     clearButton.addActionListener(listener);
   }
@@ -154,7 +154,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   public void onSerialRateChange(ActionListener listener) {
     serialRates.addActionListener(listener);
   }
-  
+
   public void message(final String s) {
     SwingUtilities.invokeLater(new Runnable() {
       public void run() {

@@ -1,9 +1,9 @@
 //*********************************************/
-// 
+//
 //  File:   debug.h
-// 
+//
 //  Author:  Domenico La Fauci
-// 
+//
 //********************************************/
 
 
@@ -145,7 +145,7 @@ Y;	\
 #define INFO_INIT_VER(msg, args...) IF_DEBUG_VER(INIT,PRINT_DEBUG(msg, ##args))
 #else
 #define INFO_INIT(msg, args...) 	
-#define INFO_INIT_VER(msg, args...) 
+#define INFO_INIT_VER(msg, args...)
 #endif
 #define INFO_TCP(msg, args...) 		IF_DEBUG(TCP,PRINT_DEBUG(msg, ##args))
 #define INFO_TCP_VER(msg, args...) 	IF_DEBUG_VER(TCP,PRINT_DEBUG(msg, ##args))

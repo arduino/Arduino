@@ -28,28 +28,28 @@ public interface TargetBoard {
 
   /**
    * Get the name of the board.
-   * 
+   *
    * @return
    */
   public String getName();
 
   /**
    * Get the identifier of the board
-   * 
+   *
    * @return
    */
   public String getId();
 
   /**
    * Get the full preferences map of the board
-   * 
+   *
    * @return
    */
   public PreferencesMap getPreferences();
 
   /**
    * Check if the board has a sub menu.
-   * 
+   *
    * @param menuId
    *          The menu ID to check
    * @return
@@ -58,7 +58,7 @@ public interface TargetBoard {
 
   /**
    * Returns the options available on a specific menu
-   * 
+   *
    * @param menuId
    *          The menu ID
    * @return
@@ -67,7 +67,7 @@ public interface TargetBoard {
 
   /**
    * Returns the label of the specified option in the specified menu
-   * 
+   *
    * @param menuId
    *          The menu ID
    * @param selectionId
@@ -81,7 +81,7 @@ public interface TargetBoard {
   /**
    * Returns the configuration parameters to override (as a PreferenceMap) when
    * the specified option in the specified menu is selected
-   * 
+   *
    * @param menuId
    *          The menu ID
    * @param selectionId

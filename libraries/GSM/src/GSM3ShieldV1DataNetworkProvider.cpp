@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -54,8 +54,8 @@ GSM3_NetworkStatus_t GSM3ShieldV1DataNetworkProvider::attachGPRS(char* apn, char
 	if(synchronous)
 	{
 		// if we shorten this delay, the command fails
-		while(ready()==0) 
-			delay(100); 
+		while(ready()==0)
+			delay(100);
 	}
 
 	return theGSM3ShieldV1ModemCore.getStatus();	
@@ -68,7 +68,7 @@ void GSM3ShieldV1DataNetworkProvider::attachGPRSContinue()
 	// 1: Attach to GPRS service "AT+CGATT=1"
 	// 2: Wait attach OK and Set the context 0 as FGCNT "AT+QIFGCNT=0"
 	// 3: Wait context OK and Set bearer type as GPRS, APN, user name and pasword "AT+QICSGP=1..."
-	// 4: Wait bearer OK and Enable the function of MUXIP "AT+QIMUX=1" 
+	// 4: Wait bearer OK and Enable the function of MUXIP "AT+QIMUX=1"
 	// 5: Wait for disable MUXIP OK and Set the session mode as non transparent "AT+QIMODE=0"
 	// 6: Wait for session mode OK and Enable notification when data received "AT+QINDI=1"
 	// 8: Wait domain name OK and Register the TCP/IP stack "AT+QIREGAPP"
@@ -187,7 +187,7 @@ void GSM3ShieldV1DataNetworkProvider::attachGPRSContinue()
 	{
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
-			if (resp) 
+			if (resp)
 				{
 					theGSM3ShieldV1ModemCore.setStatus(GPRS_READY);
 					theGSM3ShieldV1ModemCore.closeCommand(1);
@@ -206,8 +206,8 @@ GSM3_NetworkStatus_t GSM3ShieldV1DataNetworkProvider::detachGPRS(bool synchronou
 	
 	if(synchronous)
 	{
-		while(ready()==0) 
-			delay(1); 
+		while(ready()==0)
+			delay(1);
 	}
 	
 	return theGSM3ShieldV1ModemCore.getStatus();
@@ -217,7 +217,7 @@ void GSM3ShieldV1DataNetworkProvider::detachGPRSContinue()
 {
 	bool resp;
 	// 1: Detach to GPRS service "AT+CGATT=0"
-	// 2: Wait dettach +PDP DEACT 
+	// 2: Wait dettach +PDP DEACT
 	// 3: Wait for OK
 
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
@@ -245,7 +245,7 @@ void GSM3ShieldV1DataNetworkProvider::detachGPRSContinue()
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {
 			// OK received
-			if (resp) 
+			if (resp)
 				{
 					theGSM3ShieldV1ModemCore.setStatus(GSM_READY);
 					theGSM3ShieldV1ModemCore.closeCommand(1);
@@ -263,7 +263,7 @@ bool GSM3ShieldV1DataNetworkProvider::parseQILOCIP_rsp(char* LocalIP, int LocalI
 {
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("\r\n","\r\n", LocalIP, LocalIPlength)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	return true;
 }
@@ -294,9 +294,9 @@ void GSM3ShieldV1DataNetworkProvider::getIPContinue()
 	case 2:
 		if(parseQILOCIP_rsp(theGSM3ShieldV1ModemCore.getPhoneNumber(), theGSM3ShieldV1ModemCore.getPort(), resp))
 	    {
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
@@ -314,7 +314,7 @@ IPAddress GSM3ShieldV1DataNetworkProvider::getIPAddress() {
 	while((millis()-m)<10*1000 && (!ready())){
 		// wait for a response from the modem:
 		delay(100);
-	} 
+	}
 	IPAddress ip;
 	inet_aton(ip_temp, ip);
 	return ip;

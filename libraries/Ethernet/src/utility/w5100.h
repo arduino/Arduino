@@ -134,16 +134,16 @@ public:
 
   /**
    * @brief	This function is being used for copy the data form Receive buffer of the chip to application buffer.
-   * 
+   *
    * It calculate the actual physical address where one has to read
    * the data from Receive buffer. Here also take care of the condition while it exceed
    * the Rx memory uper-bound of socket.
    */
   void read_data(SOCKET s, volatile uint16_t src, volatile uint8_t * dst, uint16_t len);
-  
+
   /**
-   * @brief	 This function is being called by send() and sendto() function also. 
-   * 
+   * @brief	 This function is being called by send() and sendto() function also.
+   *
    * This function read the Tx write pointer register and after copy the data in buffer update the Tx write pointer
    * register. User should read upper byte first and lower byte later to get proper value.
    */
@@ -163,7 +163,7 @@ public:
 
   /**
    * @brief	This function is being called by recv() also.
-   * 
+   *
    * This function read the Rx read pointer register
    * and after copy the data from receive buffer update the Rx write pointer register.
    * User should read upper byte first and lower byte later to get proper value.
@@ -186,10 +186,10 @@ public:
   inline void setRetransmissionCount(uint8_t _retry);
 
   void execCmdSn(SOCKET s, SockCMD _cmd);
-  
+
   uint16_t getTXFreeSize(SOCKET s);
   uint16_t getRXReceivedSize(SOCKET s);
-  
+
 
   // W5100 Registers
   // ---------------
@@ -198,7 +198,7 @@ private:
   static uint16_t write(uint16_t addr, const uint8_t *buf, uint16_t len);
   static uint8_t read(uint16_t addr);
   static uint16_t read(uint16_t addr, uint8_t *buf, uint16_t len);
-  
+
 #define __GP_REGISTER8(name, address)             \
   static inline void write##name(uint8_t _data) { \
     write(address, _data);                        \
@@ -241,7 +241,7 @@ public:
   __GP_REGISTER8 (PMAGIC, 0x0029);    // PPP LCP Magic Number
   __GP_REGISTER_N(UIPR,   0x002A, 4); // Unreachable IP address in UDP mode
   __GP_REGISTER16(UPORT,  0x002E);    // Unreachable Port address in UDP mode
-  
+
 #undef __GP_REGISTER8
 #undef __GP_REGISTER16
 #undef __GP_REGISTER_N
@@ -284,7 +284,7 @@ private:
   static uint16_t read##name(SOCKET _s, uint8_t *_buff) {    \
     return readSn(_s, address, _buff, size);                 \
   }
-  
+
 public:
   __SOCKET_REGISTER8(SnMR,        0x0000)        // Mode
   __SOCKET_REGISTER8(SnCR,        0x0001)        // Command
@@ -304,7 +304,7 @@ public:
   __SOCKET_REGISTER16(SnRX_RSR,   0x0026)        // RX Free Size
   __SOCKET_REGISTER16(SnRX_RD,    0x0028)        // RX Read Pointer
   __SOCKET_REGISTER16(SnRX_WR,    0x002A)        // RX Write Pointer (supported?)
-  
+
 #undef __SOCKET_REGISTER8
 #undef __SOCKET_REGISTER16
 #undef __SOCKET_REGISTER_N

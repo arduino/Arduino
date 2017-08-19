@@ -158,7 +158,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static volatile AbstractMonitor serialMonitor;
   static AbstractMonitor serialPlotter;
-  
+
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
@@ -248,7 +248,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
-    
+
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -2321,7 +2321,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialMonitor != null) {
       // The serial monitor already exists
 
@@ -2351,14 +2351,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
-    
+
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");
       String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
       statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
       return;
     }
-    
+
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
@@ -2418,7 +2418,7 @@ public class Editor extends JFrame implements RunnerListener {
     } while (serialMonitor.requiresAuthorization() && !success);
 
   }
-  
+
   public void handlePlotter() {
     if(serialMonitor != null) {
       if(serialMonitor.isClosed()) {
@@ -2428,7 +2428,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialPlotter != null) {
       // The serial plotter already exists
 

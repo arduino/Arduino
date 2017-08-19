@@ -249,7 +249,7 @@ uint16_t DNSClient::ProcessResponse(uint16_t aTimeout, IPAddress& aAddress)
     // Read the UDP header
     uint8_t header[DNS_HEADER_SIZE]; // Enough space to reuse for the DNS header
     // Check that it's a response from the right server and the right port
-    if ( (iDNSServer != iUdp.remoteIP()) || 
+    if ( (iDNSServer != iUdp.remoteIP()) ||
         (iUdp.remotePort() != DNS_PORT) )
     {
         // It's not from who we expected

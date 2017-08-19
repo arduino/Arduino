@@ -109,7 +109,7 @@ STK500-2 = $(STK500) -d$(MCU_TARGET) -ms -q -lCF -LCF -cUSB -I200kHz -s -wt
 OBJ        = $(PROGRAM).o
 OPTIMIZE = -Os -fno-inline-small-functions -fno-split-wide-types -mshort-calls
 
-DEFS       = 
+DEFS       =
 LIBS       =
 
 CC         = $(GCCROOT)avr-gcc
@@ -185,7 +185,7 @@ pro16_isp: isp
 atmega168: TARGET = atmega168
 atmega168: MCU_TARGET = atmega168
 atmega168: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
-atmega168: AVR_FREQ = 16000000L 
+atmega168: AVR_FREQ = 16000000L
 atmega168: $(PROGRAM)_atmega168.hex
 atmega168: $(PROGRAM)_atmega168.lst
 
@@ -202,7 +202,7 @@ atmega168_isp: isp
 diecimila: TARGET = diecimila
 diecimila: MCU_TARGET = atmega168
 diecimila: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
-diecimila: AVR_FREQ = 16000000L 
+diecimila: AVR_FREQ = 16000000L
 diecimila: $(PROGRAM)_diecimila.hex
 diecimila: $(PROGRAM)_diecimila.lst
 
@@ -281,7 +281,7 @@ mega_isp: isp
 atmega8: TARGET = atmega8
 atmega8: MCU_TARGET = atmega8
 atmega8: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
-atmega8: AVR_FREQ = 16000000L 
+atmega8: AVR_FREQ = 16000000L
 atmega8: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe
 atmega8: $(PROGRAM)_atmega8.hex
 atmega8: $(PROGRAM)_atmega8.lst
@@ -300,7 +300,7 @@ atmega8_isp: isp
 atmega88: TARGET = atmega88
 atmega88: MCU_TARGET = atmega88
 atmega88: CFLAGS += '-DLED_START_FLASHES=3' '-DBAUD_RATE=115200'
-atmega88: AVR_FREQ = 16000000L 
+atmega88: AVR_FREQ = 16000000L
 atmega88: LDSECTIONS  = -Wl,--section-start=.text=0x1e00 -Wl,--section-start=.version=0x1ffe
 atmega88: $(PROGRAM)_atmega88.hex
 atmega88: $(PROGRAM)_atmega88.lst

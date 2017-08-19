@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -38,7 +38,7 @@ https://github.com/BlueVia/Official-Arduino
 	#define __RESETPIN__ 7
 #endif
 
-#if defined(__AVR_ATmega328P__) 
+#if defined(__AVR_ATmega328P__)
 	#ifdef TTOPEN_V1
 		#define __TXPIN__ 3
 		#define __RXPIN__ 4

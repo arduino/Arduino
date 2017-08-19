@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -125,12 +125,12 @@ void GSM3ShieldV1ServerProvider::connectTCPServerContinue()
 	    {
 			// Response received
 			// OK received, kathapoon, chessespoon
-			if (resp) 
+			if (resp)
 			{
 				theGSM3ShieldV1ModemCore.registerUMProvider(this);
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}		
 		break;	
@@ -142,7 +142,7 @@ void GSM3ShieldV1ServerProvider::connectTCPServerContinue()
 {
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().extractSubstring("\r\n","\r\n", LocalIP, LocalIPlength)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	return true;
 }
@@ -173,9 +173,9 @@ void GSM3ShieldV1ServerProvider::getIPContinue()
 	case 2:
 		if(parseQILOCIP_rsp(theGSM3ShieldV1ModemCore.getPhoneNumber(), theGSM3ShieldV1ModemCore.getPort(), resp))
 	    {
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}
 		theGSM3ShieldV1ModemCore.theBuffer().flush();
@@ -188,7 +188,7 @@ bool GSM3ShieldV1ServerProvider::getSocketAsServerModemStatus(int s)
 {
 	if(theGSM3ShieldV1ModemCore.getStatus()==TRANSPARENT_CONNECTED)
 		return true;
-	else 
+	else
 		return false;
 }
 

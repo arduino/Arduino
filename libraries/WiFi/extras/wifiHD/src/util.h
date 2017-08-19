@@ -53,16 +53,16 @@ const char* mac2str(uint8_t mac[6]);
 
 char* enc_type2str(enum wl_enc_type enc_type);
 
-int equal_ssid(const struct wl_ssid_t* ssid1, 
+int equal_ssid(const struct wl_ssid_t* ssid1,
 	       const struct wl_ssid_t* ssid2);
 
-int equal_bssid(const struct wl_mac_addr_t* bssid1, 
+int equal_bssid(const struct wl_mac_addr_t* bssid1,
 		const struct wl_mac_addr_t* bssid2);
 
 #define NET_SET_SSID(net, xssid, ssid_len) do { \
                 DE_MEMCPY((net)->ssid.ssid, (xssid), (ssid_len));   \
                 (net)->ssid.len = (ssid_len);                   \
-        } while (0) 
+        } while (0)
 
 #define NET_SET_BSSID(net, xbssid) do { \
                 DE_MEMCPY(&(net)->bssid, &(xbssid), sizeof (xbssid));  \

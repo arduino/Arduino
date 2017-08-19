@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -73,7 +73,7 @@ class GSM3MobileSMSProvider
 			@param nlength		Buffer length
 			@return 1 success, >1 error
 		 */
-		virtual inline int remoteSMSNumber(char* number, int nlength){return 0;}; 
+		virtual inline int remoteSMSNumber(char* number, int nlength){return 0;};
 		
 		/** Read one char for SMS buffer (advance circular buffer)
 			@return character

@@ -38,8 +38,8 @@
  *  signal strength should be before we'll consider roaming to an AP
  *  with better signal strength. The objective is to stay on the
  *  current AP as long as the RSSI is decent, even if there are other
- *  APs in the same BSS with better RSSI available.  
- *  If ROAMING_RSSI_THRESHOLD is too high we might roam unecessarily.  
+ *  APs in the same BSS with better RSSI available.
+ *  If ROAMING_RSSI_THRESHOLD is too high we might roam unecessarily.
  *  If ROAMING_RSSI_THRESHOLD is too low we might not roam in time to
  *  avoid packet loss. This also impacts power consumption, staying
  *  too long with an AP with poor RSSI will consume more power.
@@ -48,7 +48,7 @@
 #define ROAMING_RSSI_THRESHOLD -65
 
 /*! The ROAMING_RSSI_DIFF setting defines how much better
- *  than the currently associated AP a new AP must be before 
+ *  than the currently associated AP a new AP must be before
  *  we'll attempt to roam over to the new AP.
  *  If ROAMING_RSSI_DIFF is too high it might be too hard
  *  to roam (important if the STA is expected to move
@@ -65,8 +65,8 @@
 
 /** \defgroup wl_cm Connection Manager
  *
- * These functions are used to configure and control the WiFi connetion 
- * manager. 
+ * These functions are used to configure and control the WiFi connetion
+ * manager.
  *
  *
  *  @{
@@ -102,28 +102,28 @@ find_best_candidate(struct cm* cm)
         struct wl_network_list_t* netlist;
         struct wl_network_t *best_net = NULL;
         uint8_t i;
-        
+
         if (wl_get_network_list(&netlist) != WL_SUCCESS)
                 return NULL;
-        
+
         if (netlist->cnt == 0)
                 return NULL;
 
         for (i = 0; i < netlist->cnt; i++) {
                 /* match on ssid */
                 if (cm->candidate.ssid.len)
-                        if (!equal_ssid(&cm->candidate.ssid, 
+                        if (!equal_ssid(&cm->candidate.ssid,
                                         &netlist->net[i]->ssid))
                                 continue;
 
                 /* match bssid */
-                if (strncmp((char*) cm->candidate.bssid.octet, 
+                if (strncmp((char*) cm->candidate.bssid.octet,
                             "\xff\xff\xff\xff\xff\xff", 6))
-                        if (!equal_bssid(&cm->candidate.bssid, 
+                        if (!equal_bssid(&cm->candidate.bssid,
                                          &netlist->net[i]->bssid))
                                 continue;
                 /* check for best rssi. */
-                if ( best_net && 
+                if ( best_net &&
                      ( best_net->rssi > netlist->net[i]->rssi) ) {
                         continue;
                 }
@@ -135,7 +135,7 @@ find_best_candidate(struct cm* cm)
 
 
 /**
- * 
+ *
  */
 static void
 select_net(struct cm* cm)
@@ -150,7 +150,7 @@ select_net(struct cm* cm)
         if (0 == cm->candidate.ssid.len) {
                 return;
         }
-        
+
         current_net = wl_get_current_network();
         candidate_net = find_best_candidate(cm);
 
@@ -158,7 +158,7 @@ select_net(struct cm* cm)
         if ( current_net == candidate_net ) {
                 if ( current_net ) {
                         /* ...yes, dont change. */
-                        
+
                         return;
                 }
         }
@@ -166,7 +166,7 @@ select_net(struct cm* cm)
         /* Roaming checks */
         if (current_net && candidate_net) {
                 /* Are we changing BSSs? */
-                if ( equal_ssid(&candidate_net->ssid, 
+                if ( equal_ssid(&candidate_net->ssid,
                                 &current_net->ssid)) {
 
                         /* ...no. Does the currently connected
@@ -178,7 +178,7 @@ select_net(struct cm* cm)
                         /* ...no. Does the candidate have
                          * sufficiently better RSSI to
                          * motivate a switch to it? */
-                        if ( candidate_net->rssi < current_net->rssi + 
+                        if ( candidate_net->rssi < current_net->rssi +
                              ROAMING_RSSI_DIFF) {
                                 return;
                         }
@@ -219,18 +219,18 @@ select_net(struct cm* cm)
         default :
                 CM_DPRINTF("CM: failed to connect\n");
                 break;
-        } 
-                
+        }
+
         /* some operation failed or no candidate found */
         if (wl_scan() != WL_SUCCESS)
-                CM_DPRINTF("CM: failed to scan\n");                
+                CM_DPRINTF("CM: failed to scan\n");
 }
 
 
 /**
  *
  */
-static void 
+static void
 wl_scan_complete_cb(void* ctx)
 {
         struct cm *cm = ctx;
@@ -249,7 +249,7 @@ wl_scan_complete_cb(void* ctx)
 /**
  *
  */
-static void 
+static void
 wl_media_connected_cb(void* ctx)
 {
         struct cm *cm = ctx;
@@ -265,14 +265,14 @@ wl_media_connected_cb(void* ctx)
 /**
  *
  */
-static void 
+static void
 wl_conn_failure_cb(void* ctx)
 {
         struct cm *cm = ctx;
         CM_DPRINTF("CM: connect failed, scanning\n");
         ERROR_LED_ON();
         LINK_LED_OFF();
-        
+
         if ( 0 == cm->enabled ) {
                 return;
         }
@@ -285,7 +285,7 @@ wl_conn_failure_cb(void* ctx)
 /**
  *
  */
-static void 
+static void
 wl_conn_lost_cb(void* ctx)
 {
         struct cm *cm = ctx;
@@ -315,11 +315,11 @@ wl_event_cb(struct wl_event_t event, void* ctx)
         case WL_EVENT_MEDIA_CONNECTED:
                 wl_media_connected_cb(cm);
                 break;
-                
+
         case WL_EVENT_CONN_FAILURE:
                 wl_conn_failure_cb(cm);
                 break;
-                
+
         case WL_EVENT_MEDIA_DISCONNECTED:
                 CM_DPRINTF("CM: disconnected\n");
                 wl_conn_lost_cb(cm);
@@ -337,14 +337,14 @@ wl_event_cb(struct wl_event_t event, void* ctx)
 static struct cm *cm = NULL;
 
 
-/** 
+/**
  * Doesn't actually start the CM, just initializing. CM will run whenever
  * an valid ssid is set through wl_cm_set_network() and wl_cm_start()
  * has been called.
  */
 wl_err_t
-wl_cm_init(cm_scan_cb_t scan_cb, 
-            cm_conn_cb_t conn_cb, 
+wl_cm_init(cm_scan_cb_t scan_cb,
+            cm_conn_cb_t conn_cb,
             cm_disconn_cb_t disconn_cb,
             void* ctx)
 {
@@ -356,7 +356,7 @@ wl_cm_init(cm_scan_cb_t scan_cb,
                 CM_DPRINTF("CM: out of memory\n");
                 return WL_FAILURE;
         }
-        
+
         if (wl_register_event_cb(wl_event_cb, cm) != WL_SUCCESS) {
                 CM_DPRINTF("CM: could not register event cb\n");
                 return WL_FAILURE;
@@ -367,12 +367,12 @@ wl_cm_init(cm_scan_cb_t scan_cb,
         cm->disconn_cb = disconn_cb;
         cm->enabled = 0;
         cm->ctx = ctx;
-        
+
         CM_DPRINTF("CM: initialized\n");
         return WL_SUCCESS;
 }
 
-wl_err_t 
+wl_err_t
 wl_cm_start(void) {
         if (NULL == cm)
                 return WL_FAILURE;
@@ -381,7 +381,7 @@ wl_cm_start(void) {
         return WL_SUCCESS;
 }
 
-wl_err_t 
+wl_err_t
 wl_cm_stop(void) {
         if (NULL == cm)
                 return WL_FAILURE;
@@ -392,38 +392,38 @@ wl_cm_stop(void) {
 
 
 /**
- * Set the desired network which the connection manager should try to 
+ * Set the desired network which the connection manager should try to
  * connect to.
- * 
+ *
  * The ssid and bssid of the desired network should be specified. The ssid and
- * bssid will be matched against the networks found during scan. If any 
- * parameter is null, it will always match. If both parameters are null, 
+ * bssid will be matched against the networks found during scan. If any
+ * parameter is null, it will always match. If both parameters are null,
  * the first found network will be chosen.
  *
  * @param ssid The ssid of the desired network. If null, any ssid will match.
  * @param bssid The bssid of the desired network. If null, any bssid will match.
- *          
+ *
  */
-wl_err_t 
+wl_err_t
 wl_cm_set_network(struct wl_ssid_t *ssid, struct wl_mac_addr_t *bssid)
 {
         if (cm == NULL)
                 return WL_FAILURE;
-           
+
         if (ssid)
                 memcpy(&cm->candidate.ssid, ssid, sizeof(cm->candidate.ssid));
-        else 
+        else
                 cm->candidate.ssid.len = 0;
-        
+
         if (bssid)
-                memcpy(&cm->candidate.bssid, bssid, 
+                memcpy(&cm->candidate.bssid, bssid,
                        sizeof(cm->candidate.bssid));
         else
                 memset(&cm->candidate.bssid, 0xff, sizeof(cm->candidate.bssid));
 
         if (cm->candidate.ssid.len)
                 wl_scan();
-        
+
         return WL_SUCCESS;
 }
 /*

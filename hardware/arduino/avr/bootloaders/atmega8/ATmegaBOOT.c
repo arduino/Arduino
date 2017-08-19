@@ -193,7 +193,7 @@ int main(void)
 		
 		/* A bunch of if...else if... gives smaller code than switch...case ! */
 	
-		/* Hello is anyone home ? */ 
+		/* Hello is anyone home ? */
 		if(ch=='0') {
 		  nothing_response();
 		}
@@ -254,7 +254,7 @@ int main(void)
 		/* Leave programming mode  */
 		else if(ch=='Q') {
 		  nothing_response();
-		  //time_count=MAX_TIME_COUNT_MORATORY; 	// once the programming is done, 
+		  //time_count=MAX_TIME_COUNT_MORATORY; 	// once the programming is done,
 												// we should start the application
 												// but uisp has problems with this,
 												// therefore we just change the times
@@ -309,7 +309,7 @@ int main(void)
 							 "lds	r30,address	\n\t"	//Address of FLASH location (in words)
 							 "lds	r31,address+1	\n\t"
 							 "lsl r30				\n\t"  //address * 2 -> byte location
-							 "rol r31				\n\t" 
+							 "rol r31				\n\t"
 							 "ldi	r28,lo8(buff)	\n\t"	//Start of buffer array in RAM
 							 "ldi	r29,hi8(buff)	\n\t"
 							 "lds	r24,length	\n\t"	//Length of data to be written (in bytes)
@@ -317,9 +317,9 @@ int main(void)
 							 "sbrs r24,0		\n\t"  //Even up an odd number of bytes
 							 "rjmp length_loop		\n\t"
 							 "adiw r24,1		\n\t"
-							 "length_loop:		\n\t"	//Main loop, repeat for number of words in block							 							 
+							 "length_loop:		\n\t"	//Main loop, repeat for number of words in block							 							
 							 "cpi	r17,0x00	\n\t"	//If page_word_count=0 then erase page
-							 "brne	no_page_erase	\n\t"						 
+							 "brne	no_page_erase	\n\t"						
 							 "rcall  wait_spm		\n\t"
 //							 "wait_spm1:		\n\t"
 //							 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
@@ -328,20 +328,20 @@ int main(void)
 //							 "breq	wait_spm1       \n\t"
 							 "ldi	r16,0x03	\n\t"	//Erase page pointed to by Z
 							 "sts	%0,r16		\n\t"
-							 "spm			\n\t"							 
+							 "spm			\n\t"							
 							 "rcall  wait_spm		\n\t"
 //							 "wait_spm2:		\n\t"
 //							 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 //							 "andi	r16,1           \n\t"
 //							 "cpi	r16,1           \n\t"
-//							 "breq	wait_spm2       \n\t"									 
+//							 "breq	wait_spm2       \n\t"									
 							 "ldi	r16,0x11	\n\t"	//Re-enable RWW section
-							 "sts	%0,r16		\n\t"						 			 
+							 "sts	%0,r16		\n\t"						 			
 							 "spm			\n\t"
-							 "no_page_erase:		\n\t"							 
+							 "no_page_erase:		\n\t"							
 							 "ld	r0,Y+		\n\t"	//Write 2 bytes into page buffer
-							 "ld	r1,Y+		\n\t"							 
-										 
+							 "ld	r1,Y+		\n\t"							
+										
 							 "rcall  wait_spm		\n\t"
 //							 "wait_spm3:		\n\t"
 //							 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
@@ -351,7 +351,7 @@ int main(void)
 							 "ldi	r16,0x01	\n\t"	//Load r0,r1 into FLASH page buffer
 							 "sts	%0,r16		\n\t"
 							 "spm			\n\t"
-										 
+										
 							 "inc	r17		\n\t"	//page_word_count++
 							 "cpi r17,%1	        \n\t"
 							 "brlo	same_page	\n\t"	//Still same page in FLASH
@@ -371,23 +371,23 @@ int main(void)
 //							 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 //							 "andi	r16,1           \n\t"
 //							 "cpi	r16,1           \n\t"
-//							 "breq	wait_spm5       \n\t"									 
+//							 "breq	wait_spm5       \n\t"									
 							 "ldi	r16,0x11	\n\t"	//Re-enable RWW section
-							 "sts	%0,r16		\n\t"						 			 
-							 "spm			\n\t"					 		 
-							 "same_page:		\n\t"							 
+							 "sts	%0,r16		\n\t"						 			
+							 "spm			\n\t"					 		
+							 "same_page:		\n\t"							
 							 "adiw	r30,2		\n\t"	//Next word in FLASH
 							 "sbiw	r24,2		\n\t"	//length-2
 							 "breq	final_write	\n\t"	//Finished
 							 "rjmp	length_loop	\n\t"
-							 
+							
 							 "wait_spm:  \n\t"
 							 "lds	r16,%0		\n\t"	//Wait for previous spm to complete
 							 "andi	r16,1           \n\t"
 							 "cpi	r16,1           \n\t"
 							 "breq	wait_spm       \n\t"
 							 "ret			\n\t"
-							 
+							
 							 "final_write:		\n\t"
 							 "cpi	r17,0		\n\t"
 							 "breq	block_done	\n\t"

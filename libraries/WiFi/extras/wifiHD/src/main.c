@@ -243,7 +243,7 @@ void tc_init(void)
 /**
  *
  */
-void 
+void
 poll(struct ctx_server* hs)
 {
         /* this will trigger any scheduled timer callbacks */
@@ -306,8 +306,8 @@ void initShell(void* ctx)
 /**
  *
  */
-void 
-wl_init_complete_cb(void* ctx) 
+void
+wl_init_complete_cb(void* ctx)
 {
 	struct ctx_server *hs = ctx;
     struct ip_addr ipaddr, netmask, gw;
@@ -410,7 +410,7 @@ main(void)
     initShell(hs);
 	timer_init(NULL, NULL);
     lwip_init();
-        
+
 	status = fw_download_init();
 	ASSERT(status == 0, "failed to prepare for firmware download\n");
 

@@ -86,7 +86,7 @@ public class UpdateCheck implements Runnable {
                         System.getProperty("os.name") + "\t" +
                         System.getProperty("os.version") + "\t" +
                         System.getProperty("os.arch"), "UTF-8");
-      
+
       int latest = readInt(downloadURL + "?" + info);
 
       String lastString = PreferencesData.get("update.last");
@@ -103,7 +103,7 @@ public class UpdateCheck implements Runnable {
       String prompt =
         tr("A new version of Arduino is available,\n" +
           "would you like to visit the Arduino download page?");
-        
+
       if (base.activeEditor != null) {
         if (latest > BaseNoGui.REVISION) {
           Object[] options = { tr("Yes"), tr("No") };

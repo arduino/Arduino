@@ -482,7 +482,7 @@ unsigned char String::equalsIgnoreCase( const String &s2 ) const
 	const char *p2 = s2.buffer;
 	while (*p1) {
 		if (tolower(*p1++) != tolower(*p2++)) return 0;
-	} 
+	}
 	return 1;
 }
 
@@ -513,7 +513,7 @@ char String::charAt(unsigned int loc) const
 	return operator[](loc);
 }
 
-void String::setCharAt(unsigned int loc, char c) 
+void String::setCharAt(unsigned int loc, char c)
 {
 	if (loc < len) buffer[loc] = c;
 }

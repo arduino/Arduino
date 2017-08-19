@@ -523,7 +523,7 @@ void watchdogReset() {
        */
     watchdogReset();
   }
-  
+
   ch = UDR0;
     1faa:	8c b1       	in	r24, 0x0c	; 12
   LED_PIN |= _BV(LED);

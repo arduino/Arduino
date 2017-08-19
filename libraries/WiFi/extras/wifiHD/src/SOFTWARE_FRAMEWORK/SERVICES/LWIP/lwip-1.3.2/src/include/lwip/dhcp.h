@@ -18,22 +18,22 @@ extern "C" {
 #endif
 
 /** period (in seconds) of the application calling dhcp_coarse_tmr() */
-#define DHCP_COARSE_TIMER_SECS 60 
+#define DHCP_COARSE_TIMER_SECS 60
 /** period (in milliseconds) of the application calling dhcp_coarse_tmr() */
 #define DHCP_COARSE_TIMER_MSECS (DHCP_COARSE_TIMER_SECS * 1000UL)
 /** period (in milliseconds) of the application calling dhcp_fine_tmr() */
-#define DHCP_FINE_TIMER_MSECS 500 
+#define DHCP_FINE_TIMER_MSECS 500
 
 struct dhcp
 {
-  /** transaction identifier of last sent request */ 
+  /** transaction identifier of last sent request */
   u32_t xid;
-  /** our connection to the DHCP server */ 
+  /** our connection to the DHCP server */
   struct udp_pcb *pcb;
   /** incoming msg */
   struct dhcp_msg *msg_in;
   /** incoming msg options */
-  void *options_in; 
+  void *options_in;
   /** ingoing msg options length */
   u16_t options_in_len;
   /** current DHCP state machine state */
@@ -55,7 +55,7 @@ struct dhcp
 #define DHCP_MAX_DNS 2
   u32_t dns_count; /* actual number of DNS servers obtained */
   struct ip_addr offered_dns_addr[DHCP_MAX_DNS]; /* DNS server addresses */
- 
+
   u32_t offered_t0_lease; /* lease period (in seconds) */
   u32_t offered_t1_renew; /* recommended renew time (usually 50% of lease period) */
   u32_t offered_t2_rebind; /* recommended rebind time (usually 66% of lease period)  */
@@ -136,9 +136,9 @@ void dhcp_arp_reply(struct netif *netif, struct ip_addr *addr);
 void dhcp_coarse_tmr(void);
 /** to be called every half second */
 void dhcp_fine_tmr(void);
- 
+
 /** DHCP message item offsets and length */
-#define DHCP_MSG_OFS (UDP_DATA_OFS)  
+#define DHCP_MSG_OFS (UDP_DATA_OFS)
   #define DHCP_OP_OFS (DHCP_MSG_OFS + 0)
   #define DHCP_HTYPE_OFS (DHCP_MSG_OFS + 1)
   #define DHCP_HLEN_OFS (DHCP_MSG_OFS + 2)
@@ -158,7 +158,7 @@ void dhcp_fine_tmr(void);
 #define DHCP_COOKIE_OFS (DHCP_MSG_OFS + DHCP_MSG_LEN)
 #define DHCP_OPTIONS_OFS (DHCP_MSG_OFS + DHCP_MSG_LEN + 4)
 
-#define DHCP_CLIENT_PORT 68  
+#define DHCP_CLIENT_PORT 68
 #define DHCP_SERVER_PORT 67
 
 /** DHCP client states */
@@ -179,7 +179,7 @@ void dhcp_fine_tmr(void);
 /** AUTOIP cooperatation flags */
 #define DHCP_AUTOIP_COOP_STATE_OFF 0
 #define DHCP_AUTOIP_COOP_STATE_ON 1
- 
+
 #define DHCP_BOOTREQUEST 1
 #define DHCP_BOOTREPLY 2
 
@@ -203,7 +203,7 @@ void dhcp_fine_tmr(void);
 #define DHCP_OPTION_PAD 0
 #define DHCP_OPTION_SUBNET_MASK 1 /* RFC 2132 3.3 */
 #define DHCP_OPTION_ROUTER 3
-#define DHCP_OPTION_DNS_SERVER 6 
+#define DHCP_OPTION_DNS_SERVER 6
 #define DHCP_OPTION_HOSTNAME 12
 #define DHCP_OPTION_IP_TTL 23
 #define DHCP_OPTION_MTU 26

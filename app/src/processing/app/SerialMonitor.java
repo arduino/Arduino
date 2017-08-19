@@ -62,7 +62,7 @@ public class SerialMonitor extends AbstractTextMonitor {
         textField.setText("");
       }
     });
-    
+
     onClearCommand(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         textArea.setText("");
@@ -117,5 +117,5 @@ public class SerialMonitor extends AbstractTextMonitor {
       serial = null;
     }
   }
-  
+
 }

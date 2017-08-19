@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -77,11 +77,11 @@ GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, 
 	#endif
 
 	// If asked for modem restart, restart
-	if (restart) 
+	if (restart)
 		HWrestart();
-	else 
+	else
  		HWstart();
-  
+
 	theGSM3ShieldV1ModemCore.gss.begin(9600);
 	// Launch modem configuration commands
 	ModemConfiguration(pin);
@@ -89,8 +89,8 @@ GSM3_NetworkStatus_t GSM3ShieldV1AccessProvider::begin(char* pin, bool restart, 
 	if(synchronous)
 	{
 		// if we shorten this delay, the command fails
-		while(ready()==0) 
-			delay(1000); 
+		while(ready()==0)
+			delay(1000);
 	}
 	return getStatus();
 }
@@ -161,15 +161,15 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 	   if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	   {
 			if(resp)
-			{ 
+			{
 				// OK received
-				if(theGSM3ShieldV1ModemCore.getPhoneNumber() && (theGSM3ShieldV1ModemCore.getPhoneNumber()[0]!=0)) 
+				if(theGSM3ShieldV1ModemCore.getPhoneNumber() && (theGSM3ShieldV1ModemCore.getPhoneNumber()[0]!=0))
 					{
 						theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+CPIN="), false);
 						theGSM3ShieldV1ModemCore.setCommandCounter(3);
 						theGSM3ShieldV1ModemCore.genericCommand_rqc(theGSM3ShieldV1ModemCore.getPhoneNumber());
 					}
-				else 
+				else
 					{
 						//DEBUG	
 						//Serial.println("AT+CGREG?");	
@@ -215,7 +215,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 				{
 					theGSM3ShieldV1ModemCore.closeCommand(3);
 				}
-				else 
+				else
 				{
 					theGSM3ShieldV1ModemCore.delayInsideInterrupt(2000);
 					theGSM3ShieldV1ModemCore.genericCommand_rq(_command_CGREG);
@@ -271,7 +271,7 @@ void GSM3ShieldV1AccessProvider::ModemConfigurationContinue()
 		// 9: Wait ATCOLP OK
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 		{
-			if (resp) 
+			if (resp)
 				{
 					theGSM3ShieldV1ModemCore.setStatus(GSM_READY);
 					theGSM3ShieldV1ModemCore.closeCommand(1);

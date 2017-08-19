@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -50,7 +50,7 @@ void GSM3ShieldV1MultiClientProvider::manageResponse(byte from, byte to)
 	switch(theGSM3ShieldV1ModemCore.getOngoingCommand())
 	{
 		case XON:
-			if (flagReadingSocket) 
+			if (flagReadingSocket)
 				{
 //					flagReadingSocket = 0;
 					fullBufferSocket = (theGSM3ShieldV1ModemCore.theBuffer().availableBytes()<3);
@@ -106,7 +106,7 @@ void GSM3ShieldV1MultiClientProvider::connectTCPClientContinue()
 {
 	bool resp;
 	// 0: Dot or DNS notation activation
-	// 1: Disable SW flow control 
+	// 1: Disable SW flow control
 	// 2: Waiting for IFC OK
 	// 3: Start-up TCP connection "AT+QIOPEN"
 	// 4: Wait for connection OK
@@ -121,7 +121,7 @@ void GSM3ShieldV1MultiClientProvider::connectTCPClientContinue()
 			theGSM3ShieldV1ModemCore.print('1');
 			theGSM3ShieldV1ModemCore.print('\r');
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.print('0');
 			theGSM3ShieldV1ModemCore.print('\r');
@@ -181,7 +181,7 @@ void GSM3ShieldV1MultiClientProvider::connectTCPClientContinue()
 				// Great. We're done
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}		
 		break;
@@ -198,7 +198,7 @@ int GSM3ShieldV1MultiClientProvider::disconnectTCP(bool client1Server0, int id_s
 	unsigned long m;
 	m=millis();
 	flushSocket();
-	while(((millis()-m)< __TOUTFLUSH__ )&&(ready()==0)) 
+	while(((millis()-m)< __TOUTFLUSH__ )&&(ready()==0))
 		delay(10);
 		
 	// Could not flush the communications... strange
@@ -243,16 +243,16 @@ void GSM3ShieldV1MultiClientProvider::disconnectTCPContinue()
 			theGSM3ShieldV1ModemCore.print('\r');
 			theGSM3ShieldV1ModemCore.setCommandCounter(3);
 		}
-		else 
+		else
 			theGSM3ShieldV1ModemCore.closeCommand(3);
 		break;
 	case 3:
 		if(theGSM3ShieldV1ModemCore.genericParse_rsp(resp))
 	    {		
 			theGSM3ShieldV1ModemCore.setCommandCounter(0);
-			if (resp) 
+			if (resp)
 				theGSM3ShieldV1ModemCore.closeCommand(1);
-			else 
+			else
 				theGSM3ShieldV1ModemCore.closeCommand(3);
 		}	
 		break;
@@ -279,9 +279,9 @@ void GSM3ShieldV1MultiClientProvider::beginWriteSocketContinue()
 	case 1:
 		// AT+QISRVC
 		theGSM3ShieldV1ModemCore.genericCommand_rq(_command_MultiQISRVC, false);
-		if (client1_server0) 
+		if (client1_server0)
 			theGSM3ShieldV1ModemCore.print('1');
-		else 
+		else
 			theGSM3ShieldV1ModemCore.print('2');
 		theGSM3ShieldV1ModemCore.print('\r');
 		theGSM3ShieldV1ModemCore.setCommandCounter(2);
@@ -390,9 +390,9 @@ void GSM3ShieldV1MultiClientProvider::availableSocketContinue()
 	switch (theGSM3ShieldV1ModemCore.getCommandCounter()) {
 	case 1:
 		theGSM3ShieldV1ModemCore.genericCommand_rq(PSTR("AT+QIRD=0,"),false);
-		if (client1_server0) 
+		if (client1_server0)
 			theGSM3ShieldV1ModemCore.print('1');
-		else 
+		else
 			theGSM3ShieldV1ModemCore.print('2');
 		theGSM3ShieldV1ModemCore.print(',');
 		theGSM3ShieldV1ModemCore.print(idSocket);
@@ -408,13 +408,13 @@ void GSM3ShieldV1MultiClientProvider::availableSocketContinue()
 			{
 				theGSM3ShieldV1ModemCore.closeCommand(4);
 			}
-			else 
+			else
 			{
 				flagReadingSocket=1;
 				theGSM3ShieldV1ModemCore.closeCommand(1);
 			}
 		}
-		else 
+		else
 		{
 			theGSM3ShieldV1ModemCore.closeCommand(3);	
 		}
@@ -428,7 +428,7 @@ bool GSM3ShieldV1MultiClientProvider::parseQIRD_head(bool& rsp)
 	char _qird [8];
 	prepareAuxLocate(PSTR("+QIRD:"), _qird);
 	fullBufferSocket = (theGSM3ShieldV1ModemCore.theBuffer().availableBytes()<3);
-	if(theGSM3ShieldV1ModemCore.theBuffer().locate(_qird)) 
+	if(theGSM3ShieldV1ModemCore.theBuffer().locate(_qird))
 	{		
 		theGSM3ShieldV1ModemCore.theBuffer().chopUntil(_qird, true);
 		// Saving more memory, reuse _qird
@@ -438,7 +438,7 @@ bool GSM3ShieldV1MultiClientProvider::parseQIRD_head(bool& rsp)
 		rsp = true;			
 		return true;
 	}
-	else if(theGSM3ShieldV1ModemCore.theBuffer().locate("OK")) 
+	else if(theGSM3ShieldV1ModemCore.theBuffer().locate("OK"))
 	{
 		rsp = false;
 		return true;
@@ -454,7 +454,7 @@ bool GSM3ShieldV1MultiClientProvider::parseQIRD_head(bool& rsp)
 int GSM3ShieldV1MultiClientProvider::readSocket()
 {
 	char charSocket;
-	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read(); 
+	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read();
 	//Case buffer not full
 	if (!fullBufferSocket)
 	{	
@@ -480,7 +480,7 @@ int GSM3ShieldV1MultiClientProvider::readSocket()
 	//To distinguish the case no more available data in socket.			
 	if (ready()==1)	
 		return charSocket;
-	else 
+	else
 		return 0;
 }	
 */
@@ -494,7 +494,7 @@ int GSM3ShieldV1MultiClientProvider::readSocket()
 		return 0;
 	}
 		
-	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read(); 
+	charSocket = theGSM3ShieldV1ModemCore.theBuffer().read();
 	//Case buffer not full
 	if (!fullBufferSocket)
 	{	
@@ -527,7 +527,7 @@ int GSM3ShieldV1MultiClientProvider::readSocket()
 //Read socket main function.
 int GSM3ShieldV1MultiClientProvider::peekSocket()
 {
-	return theGSM3ShieldV1ModemCore.theBuffer().peek(0); 
+	return theGSM3ShieldV1ModemCore.theBuffer().peek(0);
 }
 
 
@@ -550,12 +550,12 @@ void GSM3ShieldV1MultiClientProvider::flushSocketContinue()
 		//DEBUG
 		//Serial.println("Flushing Socket.");	
 			theGSM3ShieldV1ModemCore.theBuffer().flush();
-			if (fullBufferSocket) 
+			if (fullBufferSocket)
 				{
 					//Serial.println("Buffer flushed.");
 					theGSM3ShieldV1ModemCore.gss.spaceAvailable();
 				}
-			else 
+			else
 				{
 					//Serial.println("Socket flushed completely.");
 					theGSM3ShieldV1ModemCore.closeCommand(1);

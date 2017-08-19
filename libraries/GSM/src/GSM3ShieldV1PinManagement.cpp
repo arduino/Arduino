@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -64,7 +64,7 @@ int GSM3ShieldV1PinManagement::isPIN()
   if(strstr(res_to_compare, "READY") != NULL)
     return 0;
   else if(strstr(res_to_compare, "SIM PIN") != NULL)
-    return 1; 
+    return 1;
   else if(strstr(res_to_compare, "SIM PUK") != NULL)
     return -1;
   else
@@ -181,7 +181,7 @@ int GSM3ShieldV1PinManagement::checkReg()
   else if(strstr(res_to_compare, "5") != NULL)
     return 1;
   else
-    return -1; 
+    return -1;
 }
 
 /*

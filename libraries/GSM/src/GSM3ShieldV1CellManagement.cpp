@@ -10,7 +10,7 @@ This file is part of the GSM3 communications library for Arduino
 
 This library has been developed by Telefónica Digital - PDI -
 - Physical Internet Lab, as part as its collaboration with
-Arduino and the Open Hardware Community. 
+Arduino and the Open Hardware Community.
 
 September-December 2012
 
@@ -67,12 +67,12 @@ bool GSM3ShieldV1CellManagement::parseQENG_available(bool& rsp)
 	
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().chopUntil("+QENG: ", true)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	
 	if (!(theGSM3ShieldV1ModemCore.theBuffer().chopUntil("+QENG:", true)))
 		rsp = false;
-	else 
+	else
 		rsp = true;
 	
 	while(((c = theGSM3ShieldV1ModemCore.theBuffer().read()) != 0) & (i < 50))

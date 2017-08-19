@@ -181,7 +181,7 @@ void dumpPbuf(uint8_t sock)
 	do {
 	if (pBufStore[index][sock].data != NULL)
 	{
-		printk("%d] pcb:%p Buf: %p Len:%d\n", pBufStore[index][sock].idx, pBufStore[index][sock].pcb, 
+		printk("%d] pcb:%p Buf: %p Len:%d\n", pBufStore[index][sock].idx, pBufStore[index][sock].pcb,
 			pBufStore[index][sock].data, pBufStore[index][sock].len);
 	}
 	++index;

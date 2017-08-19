@@ -100,10 +100,10 @@ static void ard_tcp_done(struct ttcp* ttcp, int result) {
 }
 
 /**
- * Only used in TCP mode. 
- * Will transmit a maximum of pbuf->tot_len bytes. 
+ * Only used in TCP mode.
+ * Will transmit a maximum of pbuf->tot_len bytes.
  * Called upon connect and when there's space available in the TCP send window
- * 
+ *
  */
 static err_t tcp_send_data_pcb(struct ttcp *ttcp, struct tcp_pcb *pcb) {
 	err_t err = ERR_OK;
@@ -131,7 +131,7 @@ static err_t tcp_send_data_pcb(struct ttcp *ttcp, struct tcp_pcb *pcb) {
 	err = tcp_write(pcb, ttcp->payload[id], len, TCP_WRITE_FLAG_COPY);
 	if (err != ERR_OK)
 	{
-		INFO_TCP("tcp_write failed %p state:%d len:%d err:%d\n", 
+		INFO_TCP("tcp_write failed %p state:%d len:%d err:%d\n",
 				pcb, pcb->state, len, err);
 		ttcp->buff_sent[id] = 0;
 	}else{
@@ -174,7 +174,7 @@ static void cleanSockState_cb(void *ctx) {
 	_connected = false;
 }
 
-/** 
+/**
  * Only used in TCP mode.
  */
 
@@ -336,7 +336,7 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 	}
 	
 	if (pcb)
-		INFO_TCP_POLL("keepAliveCnt:%d keep_idle:%d persist_cnt:%d\n", 
+		INFO_TCP_POLL("keepAliveCnt:%d keep_idle:%d persist_cnt:%d\n",
 						pcb->keep_cnt_sent, pcb->keep_idle, pcb->persist_cnt);
 	
 	if (_ttcp->left[id] > 0)
@@ -362,7 +362,7 @@ static err_t atcp_poll(void *arg, struct tcp_pcb *pcb) {
 				INFO_TCP("----------------------\n");
 			}
 		}	
-		INFO_TCP("ARD TCP [%p-%p] try to close pending:%d err:%d id:%d\n", pcb, 
+		INFO_TCP("ARD TCP [%p-%p] try to close pending:%d err:%d id:%d\n", pcb,
 			(_ttcp)?GET_FIRST_CLIENT_TCP(_ttcp):0, _ttcp->pending_close[id], err, id);
 	}
 	return ERR_OK;
@@ -664,8 +664,8 @@ static int udp_start(struct ttcp* ttcp) {
 		setRemoteClient(ttcp->sock, 0, 0);
 		udp_recv(ttcp->upcb, audp_recv_cb, ttcp);
 	}
-	INFO_TCP("%s, loc:0x%x-%d rem:0x%x-%d\n", __FUNCTION__, 
-		 ttcp->upcb->local_ip.addr, ttcp->upcb->local_port, 
+	INFO_TCP("%s, loc:0x%x-%d rem:0x%x-%d\n", __FUNCTION__,
+		 ttcp->upcb->local_ip.addr, ttcp->upcb->local_port,
 		 ttcp->upcb->remote_ip.addr, ttcp->upcb->remote_port);
 	return 0;
 }
@@ -674,7 +674,7 @@ static int udp_start(struct ttcp* ttcp) {
  * Start a new ttcp transfer. It should be possible to call this function
  * multiple times in order to get multiple ttcp streams. done_cb() will be
  * invoked upon completion.
- * 
+ *
  */
 int ard_tcp_start(struct ip_addr addr, uint16_t port, void *opaque,
 		ard_tcp_done_cb_t *done_cb, int mode, uint16_t nbuf, uint16_t buflen,
@@ -724,7 +724,7 @@ int ard_tcp_start(struct ip_addr addr, uint16_t port, void *opaque,
 		goto fail;
 	}
 	INFO_TCP("TTCP [%p-%p]: nbuf=%d, buflen=%d, port=%d (%s/%s)\n", ttcp,
-			((ttcp->udp==1)?(void*)ttcp->upcb:GET_FIRST_CLIENT_TCP(ttcp)), ttcp->nbuf, ttcp->buflen, 
+			((ttcp->udp==1)?(void*)ttcp->upcb:GET_FIRST_CLIENT_TCP(ttcp)), ttcp->nbuf, ttcp->buflen,
 			ttcp->port, ProtMode2Str(ttcp->udp), Mode2Str(ttcp->mode));
 
 	*_ttcp = (void*) ttcp;
@@ -831,7 +831,7 @@ static err_t tcp_data_sent(void *arg, struct tcp_pcb *pcb, u16_t len) {
 	return ERR_OK;
 }
 
-int sendTcpData(void* p, uint8_t* buf, uint16_t len) 
+int sendTcpData(void* p, uint8_t* buf, uint16_t len)
 {
 	struct ttcp* _ttcp = (struct ttcp*) p;
 

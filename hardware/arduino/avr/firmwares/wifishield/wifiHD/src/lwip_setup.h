@@ -23,7 +23,7 @@ struct ctx_server {
  * function can be called).
  */
 int start_ip_stack(struct net_cfg *cfg,
-                   struct ip_addr ipaddr, 
+                   struct ip_addr ipaddr,
                    struct ip_addr netmask,
                    struct ip_addr gw);
 

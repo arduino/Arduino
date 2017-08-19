@@ -41,12 +41,12 @@ int main(void)
 #endif
 	
 	setup();
-    
+
 	for (;;) {
 		loop();
 		if (serialEventRun) serialEventRun();
 	}
-        
+
 	return 0;
 }
 

@@ -210,9 +210,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
     /*
     // if i ever find the guy who wrote the java2d api, i will hurt him.
-     * 
+     *
      * whereas I love the Java2D API. --jdf. lol.
-     * 
+     *
     Graphics2D g2 = (Graphics2D) g;
     FontRenderContext frc = g2.getFontRenderContext();
     float statusW = (float) statusFont.getStringBounds(status, frc).getWidth();

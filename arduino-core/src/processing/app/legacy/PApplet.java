@@ -74,7 +74,7 @@ public class PApplet {
    * java.util.StringTokenizer, plus the unicode non-breaking space character,
    * which is found commonly on files created by or used in conjunction with Mac
    * OS X (character 160, or 0x00A0 in hex).
-   * 
+   *
    * <PRE>
    * i.e. splitTokens("a b") -> { "a", "b" }
    *      splitTokens("a    b") -> { "a", "b" }
@@ -91,14 +91,14 @@ public class PApplet {
    * as separator characters. For instance, in addition to white space, you
    * might want to treat commas as a separator. The delimeter characters won't
    * appear in the returned String array.
-   * 
+   *
    * <PRE>
    * i.e. splitTokens("a, b", " ,") -> { "a", "b" }
    * </PRE>
-   * 
+   *
    * To include all the whitespace possibilities, use the variable WHITESPACE,
    * found in PConstants:
-   * 
+   *
    * <PRE>
    * i.e. splitTokens("a   | b", WHITESPACE + "|");  ->  { "a", "b" }
    * </PRE>
@@ -484,7 +484,7 @@ public class PApplet {
     }
     return matches;
   }
-  
+
   /**
    * Match a string with a regular expression, and returns the match as an
    * array. The first index is the matching expression, and array elements
@@ -586,7 +586,7 @@ public class PApplet {
     } catch (UnsupportedEncodingException e) { }  // not gonna happen
     return null;
   }
-  
+
   static public InputStream createInput(File file) {
     if (file == null) {
       throw new IllegalArgumentException("File passed to createInput() was null");
