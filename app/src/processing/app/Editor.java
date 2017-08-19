@@ -739,16 +739,16 @@ public class Editor extends JFrame implements RunnerListener {
 
     addInternalTools(toolsMenu);
 
-    JMenuItem item = newJMenuItemShift(tr("Serial Monitor"), 'M');
+    JMenuItem item = newJMenuItemShift(tr("Manage Libraries..."), 'O');
+    item.addActionListener(e -> base.openLibraryManager("", ""));
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Monitor"), 'M');
     item.addActionListener(e -> handleSerial());
     toolsMenu.add(item);
 
     item = newJMenuItemShift(tr("Serial Plotter"), 'L');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePlotter();
-        }
-    });
+    item.addActionListener(e -> handlePlotter());
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
