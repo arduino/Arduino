@@ -9,7 +9,7 @@
 
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
    <!--<baseFont family="..." size="13"/>-->
-   
+
    <!--  General editor colors. -->
    <background color="293134"/>
    <caret color="c1cbc2"/>
@@ -25,13 +25,13 @@
       <language index="2" bg="223322"/>
       <language index="3" bg="332222"/>
    </secondaryLanguages>
-   
+
    <!-- Gutter styling. -->
    <gutterBorder color="81969A"/>
    <lineNumbers fg="81969A"/>
    <foldIndicator fg="6A8088" iconBg="2f383c"/>
    <iconRowHeader activeLineRange="3399ff"/>
-   
+
    <!-- Syntax tokens. -->
    <tokenStyles>
       <style token="IDENTIFIER" fg="E0E2E4"/>
@@ -68,7 +68,7 @@
       <style token="SEPARATOR" fg="E8E2B7"/>
       <style token="VARIABLE" fg="ae9fbf" bold="true"/>
       <style token="WHITESPACE" fg="E0E2E4"/>
-      
+
       <style token="ERROR_IDENTIFIER" fg="E0E2E4" bg="04790e"/>
       <style token="ERROR_NUMBER_FORMAT" fg="E0E2E4" bg="04790e"/>
       <style token="ERROR_STRING_DOUBLE" fg="E0E2E4" bg="04790e"/>

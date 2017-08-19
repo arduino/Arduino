@@ -35,7 +35,7 @@ When you have checked the previous boxes. Please consider the following points b
 - [ ] `Library Manager submissions: make sure your library meets all the requirements listed in the` [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ)
 
 ### 3. Pull Requests
-Before starting to work on bigger topics like modifying the API or changes with backward compatibility trade-offs please discuss them in the [mailing list](https://groups.google.com/a/arduino.cc/forum/#!forum/developers) first.  
+Before starting to work on bigger topics like modifying the API or changes with backward compatibility trade-offs please discuss them in the [mailing list](https://groups.google.com/a/arduino.cc/forum/#!forum/developers) first.
 
 ### 4. Commit messages
 An easy to read pull request will speed up the merging process. Your commit messages need to be logically separate. And containing enough information on their own. When this is done consistently your pull request will have an easy to read log of changes.

@@ -1,13 +1,13 @@
 # !!!!!!!! UNLIKE PREVIOUS VERSIONS OF PROCESSING !!!!!!!!!!
 # DO NOT MODIFY THIS FILE, OR DELETE SETTINGS FROM THIS FILE
 
-# These are the default preferences. If you want to modify 
+# These are the default preferences. If you want to modify
 # them directly, use the per-user local version of the file:
 
-# Documents and Settings -> [username] -> Application Data -> 
+# Documents and Settings -> [username] -> Application Data ->
 #    Processing -> preferences.txt (on Windows XP)
 
-# Users -> [username] -> AppData -> Roaming -> 
+# Users -> [username] -> AppData -> Roaming ->
 #    Processing -> preferences.txt (on Windows Vista)
 
 # ~/Library -> Processing -> preferences.txt (on Mac OS X)
@@ -17,11 +17,11 @@
 # The exact location of your preferences file can be found at
 # the bottom of the Preferences window inside Processing.
 
-# Because AppData and Application Data may be considered 
+# Because AppData and Application Data may be considered
 # hidden or system folders on Windows, you'll have to ensure
 # that they're visible in order to get at preferences.txt
 
-# You'll have problems running Processing if you incorrectly 
+# You'll have problems running Processing if you incorrectly
 # modify lines in this file.
 
 
@@ -36,9 +36,9 @@
 # note that this path should use forward slashes (like unix)
 # instead of \ on windows or : on macos or whatever else
 
-# If you don't want users to have their sketchbook default to 
-# "My Documents/Processing" on Windows and "Documents/Processing" on OS X, 
-# set this to another path that will be used by default. 
+# If you don't want users to have their sketchbook default to
+# "My Documents/Processing" on Windows and "Documents/Processing" on OS X,
+# set this to another path that will be used by default.
 # Note that this path must exist already otherwise it won't see
 # the sketchbook folder, and will instead assume the sketchbook
 # has gone missing, and that it should instead use the default.
@@ -61,7 +61,7 @@ last.sketch.count=0
 
 
 # by default, check the processing server for any updates
-# (please avoid disabling, this also helps us know basic numbers 
+# (please avoid disabling, this also helps us know basic numbers
 # on how many people are using Processing)
 update.check = true
 
@@ -91,7 +91,7 @@ editor.window.height.min = 290
 # tested to be 515 on Windows XP, this leaves some room
 #editor.window.height.min.windows = 530
 
-# Enable code folding 
+# Enable code folding
 editor.code_folding=false
 
 # font size for editor
@@ -119,7 +119,7 @@ editor.linenumbers = false
 editor.keys.alternative_cut_copy_paste = true
 editor.keys.alternative_cut_copy_paste.macosx = false
 
-# true if shift-backspace sends the delete character, 
+# true if shift-backspace sends the delete character,
 # false if shift-backspace just means backspace
 editor.keys.shift_backspace_is_delete = true
 
@@ -152,7 +152,7 @@ editor.auto_close_braces = true
 # size of divider between editing area and the console
 editor.divider.size = 0
 # the larger divider on windows is ugly with the little arrows
-# this makes it large enough to see (mouse changes) and use, 
+# this makes it large enough to see (mouse changes) and use,
 # but keeps it from being annoyingly obtrusive
 editor.divider.size.windows = 2
 
@@ -162,8 +162,8 @@ editor.save_on_verify = true
 # any additional java options when running externally
 # (for applets that are run external to the environment...
 # those with a code folder, or using any libraries)
-# if you hose this and can't run things, it's your own durn fault 
-run.options = 
+# if you hose this and can't run things, it's your own durn fault
+run.options =
 
 # settings for the -XmsNNNm and -XmxNNNm command line option
 run.options.memory = false
@@ -182,7 +182,7 @@ run.display = 1
 
 # set to false to open a new untitled window when closing the last window
 # (otherwise, the environment will quit)
-# default to the relative norm for the different platforms, 
+# default to the relative norm for the different platforms,
 # but the setting can be changed in the prefs dialog anyway
 #sketchbook.closing_last_window_quits = true
 #sketchbook.closing_last_window_quits.macosx = false
@@ -216,7 +216,7 @@ export.delete_target_folder = true
 # may be useful when attempting to debug the preprocessor
 preproc.save_build_files=false
 
-# allows various preprocessor features to be toggled 
+# allows various preprocessor features to be toggled
 # in case they are causing problems
 
 # preprocessor: pde.g
@@ -276,7 +276,7 @@ serial.debug_rate=9600
 # I18 Preferences
 
 # default chosen language (none for none)
-editor.languages.current = 
+editor.languages.current =
 
 # Debugging/Development Preferences
 # ---------------------------------

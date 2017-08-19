@@ -3,7 +3,7 @@ Building the bootloader for the Arduino Robot
 
 The Arduino Robot has two boards featuring the atmega32U4 processor from Atmel. Each one of them is identified as a different board at the USB level and has a different bootloader.
 
-The Arduino Robot Control board has the USB identifier 0x0038. This is the value configured by default in the Makefile. 
+The Arduino Robot Control board has the USB identifier 0x0038. This is the value configured by default in the Makefile.
 
 The Arduino Robot Motor board has the USB identifier 0x0039. If you want to compile/upload this version of the bootloader, you will have to edit the Makefile, comment away the like dedicated to the PID and uncomment the one that configures such variable accordingly.
 

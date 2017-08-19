@@ -245,7 +245,7 @@ ARDUINO 1.6.7 - 2015.12.17
 
 [core]
 * Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
-* Stream: Optional lookahead and skipChar options added to parseInt and parseFloat, 
+* Stream: Optional lookahead and skipChar options added to parseInt and parseFloat,
   parseFloat also support parsing floats without a leading 0,
   Stream::find(char) added to SAM. Thanks @Chris--A.
 * Leonardo/Micro (and other atmega32u4 based boards) now have SerialUSB alias for Serial
@@ -635,7 +635,7 @@ ARDUINO 1.5.6 BETA - 2014.02.20
 * Windows: added arduino_debug.exe to help debugging errors when launch4j fails to start IDE
 
 [libraries]
-* TFT: warning messages in PImage class and strings inside examples now stored in flash to save RAM. 
+* TFT: warning messages in PImage class and strings inside examples now stored in flash to save RAM.
 * Ethernet: added operator == for EthernetClient class (Norbert Truchsess)
 * Robot_Control: removed embedded copies of Wire and SPI to allow their use in sketch.
   Old sketches using Robot_Control now must include Wire.h and SPI.h.
@@ -708,7 +708,7 @@ We suggest to delay the adoption of the new format until a stable 1.5.x is relea
 * Bridge: Fixed return value of Bridge::get(..) (returning 0 with valid data len >0)
 * Bridge: Implemented multi-byte File::read(..)
 * sam: Fixed SPI initialization (when using extended API and multiple CS)
-* Partially fixed the behavior of EthernetClient::flush(), now it doesn't discard 
+* Partially fixed the behavior of EthernetClient::flush(), now it doesn't discard
   incoming data BUT it doesn't wait for outgoing data to be successfully transmitted.
 * Esplora: Added support for display GREENTAB_L
 
@@ -766,7 +766,7 @@ ARDUINO 1.5.3 BETA - 2013.08.30
 * removed unused flags from String (free 1 byte of SRAM)
 
 [libraries]
-* sam: Removed CAN library, you can find an updated version here:  
+* sam: Removed CAN library, you can find an updated version here:
        https://github.com/collin80/due_can
 * sam: Bugfix SPI library: begin() after end() now works (stimmer)
 * sam: Bugfix SPI library: incorrent pin configuration in non-extended mode.
@@ -849,9 +849,9 @@ ARDUINO 1.5 BETA - 2012.10.22
 
 * First release for the unified IDE for both AVR 8-bit and ARM 32-bit
   (SAM3 CPUs) architectures.
-* This release include the SAM Arduino Core used in the Arduino Due 
+* This release include the SAM Arduino Core used in the Arduino Due
   Board.
-* Everything is in beta, most features or libraries are still  missing 
+* Everything is in beta, most features or libraries are still  missing
   or incomplete.
 * For more info refer to this press release:
   http://www.arduino.cc/blog/2012/10/22/arduino-1-5-support-for-the-due-and-other-processors-easier-library-installation-simplified-board-menu-etc/
@@ -915,7 +915,7 @@ ARDUINO 1.0.5 - 2013.05.15
 [core]
 
 * [avr] malloc bug: backported avr-libc 1.8.0 implementation
-* [avr] removed deprecated interrupt handlers causing compiler issues 
+* [avr] removed deprecated interrupt handlers causing compiler issues
   with newer avr-gcc.
 * [avr] added c_str() method to String
 * [avr] Stream "_timeout" field and related methods are now protected
@@ -975,7 +975,7 @@ ARDUINO 1.0.3 - 2012.12.10
 
 [core]
 
-* Fixed power-up-starts-bootloader in Leonardo (and derivative) 
+* Fixed power-up-starts-bootloader in Leonardo (and derivative)
   bootloaders. (Kristian Lauszus)
   (https://github.com/arduino/Arduino/pull/118)
 
@@ -999,7 +999,7 @@ ARDUINO 1.0.2 - 2012.11.05
 * Added support for the LilyPad Arduino USB.
 
 * For Arduino Mega, having avrdude use "wiring" not "stk500v2" for
-  uploads (to improve auto-reset behavior). 
+  uploads (to improve auto-reset behavior).
   http://code.google.com/p/arduino/issues/detail?id=806
 
 [environment]
@@ -1089,7 +1089,7 @@ ARDUINO 1.0.1 - 2012.05.21
   information, see: http://www.arduino.cc/playground/Main/LanguagesIDE
 
 * Added preference for selecting the language in which to display the
-  Arduino software.  Defaults to the operating system locale.  
+  Arduino software.  Defaults to the operating system locale.
 
 * New upload process for the Arduino Leonardo (ATmega32U4).
 
@@ -1122,7 +1122,7 @@ ARDUINO 1.0.1 - 2012.05.21
   speed).  (Nathan Seidle)
   http://code.google.com/p/arduino/issues/detail?id=842
 
-* Added the gcc toolchain to the Linux distribution.  (To use the 
+* Added the gcc toolchain to the Linux distribution.  (To use the
   toolchain already installed on your system, simply delete the one
   that comes with the Arduino software.)  (Paul Stoffregen)
   http://code.google.com/p/arduino/issues/detail?id=300
@@ -1133,7 +1133,7 @@ ARDUINO 1.0.1 - 2012.05.21
 [core / libraries]
 
 * Updated (and official) support for the Arduino Leonardo (ATmega32U4).
-  Includes new bootloader and various fixes to the core.  
+  Includes new bootloader and various fixes to the core.
 
 * Adding overloads to Wire.write() (for Wire.write(0)). (Paul Stoffregen)
   http://code.google.com/p/arduino/issues/detail?id=527
@@ -1288,7 +1288,7 @@ ARDUINO 1.0 - 2011.11.30
 * Added the Arduino Mini w/ ATmega328.
 
 * Added Windows drivers (.inf files) and 16U2 firmware (.hex files) for
-  the rev. 3 boards (Uno, Mega, and Mega ADK).  
+  the rev. 3 boards (Uno, Mega, and Mega ADK).
 
 [internals]
 
@@ -1428,7 +1428,7 @@ ARDUINO 0019 - 2010.09.03
 * Added aliases for the analog input pins: A0, A1, etc.
   http://code.google.com/p/arduino/issues/detail?id=244
 
-* Added a String class.  
+* Added a String class.
 
 * Added a shiftIn() function (from Wiring).
   http://code.google.com/p/arduino/issues/detail?id=280
@@ -1453,7 +1453,7 @@ ARDUINO 0019 - 2010.09.03
 
 * Replacing INTERNAL analog reference with INTERNAL1V1 AND INTERNAL2V56 on
   the Arduino Mega.  http://code.google.com/p/arduino/issues/detail?id=194
- 
+
 [environment]
 
 * Added Arduino Fio to the boards menu.
@@ -1492,7 +1492,7 @@ ARDUINO 0018 - 2010.01.29
 * Added Serial.end() command.
 * Added precision parameter for printing of floats / doubles.
 * Incorporated latest version of Firmata.
-* Fixed bug w/ disabling use of the RW pin in the LiquidCrystal library. 
+* Fixed bug w/ disabling use of the RW pin in the LiquidCrystal library.
 * No longer disabling interrupts in delayMicroseconds().
 * Fixed bug w/ micros() returning incorrect values from within an interrupt.
 * Fixed bug that broke use of analog inputs 8-15 on the Mega.
@@ -1507,7 +1507,7 @@ ARDUINO 0018 - 2010.01.29
 
 * Added Ctrl-Shift-M / Command-Shift-M shortcut for serial monitor.
 
-* Hold down shift when pressing the Verify / Compile or Upload toolbar 
+* Hold down shift when pressing the Verify / Compile or Upload toolbar
   buttons to generate verbose output (including command lines).
 
 * Moving build (on upload) from the applet/ sub-folder of the sketch
@@ -1568,7 +1568,7 @@ ARDUINO 0016 - 2009.05.30
   micros()).  Thanks to westfw and mikalhart.
 * Fixing bug that limited the bit() macro to 15 bits.  Thanks to Paul Badger.
 * Adding ARDUINO version constant (thanks to prodding from mikalhart).
-  
+
 [environment]
 * Ordering the items in the Tools > Board menu.
 * Adding "Copy as HTML" command to the Tools menu.
@@ -1576,7 +1576,7 @@ ARDUINO 0016 - 2009.05.30
   Thanks to the Clever Monkey.
 * Moving selection of Linux look-and-feel into the arduino script so it can
   be changed by users.  Thanks to Eberhard Fahle.
-  
+
 [tools]
 * Adding automatic dependency generation to the Makefile.  (Lars Immisch)
 
@@ -1595,13 +1595,13 @@ ARDUINO 0014 - 2009.03.07
 [core / libraries]
 * Fixing bug that prevented multiple outgoing Client connections with the
   ethernet library.
-  
+
 [environment]
 * Clarifying ATmega168 vs. ATmega328 in the Tools > Boards menu.
 
 [tools]
 * Updating the Mac OS X AVR tools to AVR MacPack 20081213.  This includes
-  avr-gcc 4.3.2, which should fix problems with functions called from 
+  avr-gcc 4.3.2, which should fix problems with functions called from
   within interrupts.
 
 ARDUINO 0013 - 2009.02.06
@@ -1611,7 +1611,7 @@ ARDUINO 0013 - 2009.02.06
 
 [core / libraries]
 * Adding support for the ATmega328.  The upload speed is 57600 baud, so you
-  may need to edit boards.txt or reburn your bootloader if you bought an 
+  may need to edit boards.txt or reburn your bootloader if you bought an
   ATmega328 w/ bootloader from adafruit or other supplier.
 * Adding support for printing floats to Print class (meaning that it works
   in the Serial, Ethernet, and LiquidCrystal classes too).  Includes two
@@ -1633,7 +1633,7 @@ ARDUINO 0013 - 2009.02.06
 * Updating ATmega168 bootloader to work with standard distributions of avrdude
   (responding to signature requests made with the universal SPI command) and
   correctly store EEPROM data.  Thanks to ladyada.
-  
+
 [environment]
 * Omitting unused functions from compiled sketches, reducing their size.
 * Changing compilation process to allow for use of EEMEM directive (although
@@ -1730,7 +1730,7 @@ ARDUINO 0008 - 2007.06.09
 * Lots of reference additions and fixes from Paul Badger.
 * Changed default microcontroller to ATmega168 from ATmega8.
 * Removed the delay from analogRead().
-* Activating TWI/I2C pullup resistors on the ATmega168 (in addition to the 
+* Activating TWI/I2C pullup resistors on the ATmega168 (in addition to the
   ATmega8).
 
 ARDUINO 0007 - 2006.12.25
@@ -1843,7 +1843,7 @@ ARDUINO 0002 - 2005.10.05
 * Bootloader shrunk to less than 1 KB; fuses updated accordingly.
 * Added serialRead(), serialAvailable(), and delayMicroseconds().
 
-ARDUINO 0001 - 2005.08.25 
+ARDUINO 0001 - 2005.08.25
 
 * This is the first released of the unified IDE + language library
   it's a terrible hack... but it works. at the moment it's in alpha stage

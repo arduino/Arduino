@@ -9,7 +9,7 @@
 
    <!-- Omitting baseFont will use a system-appropriate monospaced. -->
    <!--<baseFont family="..." size="13"/>-->
-   
+
    <!--  General editor colors. -->
    <background color="ffffff"/>
    <caret color="424242"/>
@@ -25,13 +25,13 @@
       <language index="2" bg="dafeda"/>
       <language index="3" bg="ffe0f0"/>
    </secondaryLanguages>
-   
+
    <!-- Gutter styling. -->
    <gutterBorder color="dddddd"/>
    <lineNumbers fg="787878"/>
    <foldIndicator fg="808080" iconBg="ffffff"/>
    <iconRowHeader activeLineRange="3399ff"/>
-   
+
    <!-- Syntax tokens. -->
    <tokenStyles>
       <style token="IDENTIFIER" fg="000000"/>

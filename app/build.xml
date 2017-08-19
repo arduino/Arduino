@@ -32,8 +32,8 @@
     <mkdir dir="bin" />
 
     <!-- ant seems to nuke ${java.home} for some reason, pointing at the JRE
-	 subfolder instead of the actual JDK found at JAVA_HOME. 
-	 To avoid this, we grab the actual JAVA_HOME environment variable 
+	 subfolder instead of the actual JDK found at JAVA_HOME.
+	 To avoid this, we grab the actual JAVA_HOME environment variable
 	 and use that to specify the location of tools.jar. -->
 
     <!-- if someone is better with ant please help clean this up -->

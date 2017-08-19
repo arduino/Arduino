@@ -11,20 +11,20 @@ Known Issues and Limitations
 ----------------------------
 
 	This release includes the Macintosh OSX driver for the Intel and
-	PowerPC Platforms versions 10.5, 10.6, 10.7, 10.8, 
+	PowerPC Platforms versions 10.5, 10.6, 10.7, 10.8,
 	10.9, and 10.10.
 
 Driver Installation
 -------------------
 
-	Mount the DMG file and double click on 
-	Silicon Labs VCP Driver. 
+	Mount the DMG file and double click on
+	Silicon Labs VCP Driver.
 
 Uninstalling the Driver
 -----------------------
 
 	To uninstall the driver, run the uninstaller.sh shell script from
-	a Terminal command prompt. 
+	a Terminal command prompt.
 
 Release Dates
 -------------
@@ -78,7 +78,7 @@ Version 3.0
 	incorrectly on aligned packet boundaries
 
 Version 2.9
-	Corrected issue with Baud Rates not being set properly if they were greater 
+	Corrected issue with Baud Rates not being set properly if they were greater
 	than 230400 on PPC or Intel platforms
 	Corrected an issue where a device might get stuck when coming out of sleep mode
 	Corrected an issue on PPC where Baud Rates were not getting set properly

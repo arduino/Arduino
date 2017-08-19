@@ -1,6 +1,6 @@
 #######################################
 # Syntax Coloring Map For GSM
-####################################### 
+#######################################
 # Class
 #######################################
 
@@ -16,7 +16,7 @@ GSMPIN	KEYWORD1	GSMPINConstructor
 GSMBand KEYWORD1	GSMBandConstructor
 
 #######################################
-# Methods and Functions 
+# Methods and Functions
 #######################################	
 
 begin	KEYWORD2
@@ -52,7 +52,7 @@ getvoiceCallStatus	KEYWORD2
 #######################################
 # Constants
 #######################################
- 
+
 ERROR	LITERAL1
 IDLE	LITERAL1
 CONNECTING	LITERAL1

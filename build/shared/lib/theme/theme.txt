@@ -51,7 +51,7 @@ plotting.graphcolor.05 = #666666
 plotting.graphcolor.06 = #00CCFF
 plotting.graphcolor.07 = #000000
 
-# GUI - LINESTATUS   
+# GUI - LINESTATUS
 linestatus.color = #ffffff
 linestatus.bgcolor = #006468
 

@@ -9,7 +9,7 @@ The boards can be assembled by hand or purchased preassembled; the open-source
 IDE can be downloaded for free at https://www.arduino.cc/en/Main/Software
 
 * For more information, see the website at: https://www.arduino.cc/
-or the forums at: https://forum.arduino.cc/  
+or the forums at: https://forum.arduino.cc/
 You can also follow Arduino on Twitter at: https://twitter.com/arduino or
 like Arduino on Facebook at: https://www.facebook.com/official.arduino
 
@@ -28,9 +28,9 @@ https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 
 Installation
 ------------
-Detailed instructions for installation in popular operating systems.  
-For Linux: https://www.arduino.cc/en/Guide/Linux (see also the Arduino playground page http://www.arduino.cc/playground/Learning/Linux)   
-For macOS X: https://www.arduino.cc/en/Guide/MacOSX   
+Detailed instructions for installation in popular operating systems.
+For Linux: https://www.arduino.cc/en/Guide/Linux (see also the Arduino playground page http://www.arduino.cc/playground/Learning/Linux)
+For macOS X: https://www.arduino.cc/en/Guide/MacOSX
 For Windows: https://www.arduino.cc/en/Guide/Windows
 
 Credits
