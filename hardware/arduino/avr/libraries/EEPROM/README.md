@@ -66,7 +66,7 @@ This function returns a reference to the `object` passed in. It does not need to
 
 #### **Subscript operator: `EEPROM[address]`** [[_example_]](examples/eeprom_crc/eeprom_crc.ino)
 
-This operator allows using the identifier `EEPROM` like an array.
+This operator allows using the identifier `EEPROM` like an array.\
 EEPROM cells can be read _and_ **_written_** directly using this method.
 
 This operator returns a reference to the EEPROM cell.
@@ -128,12 +128,12 @@ ptr++; //Move to next EEPROM cell.
 
 #### **`EEPROM.begin()`**
 
-This function returns an `EEPtr` pointing to the first cell in the EEPROM.
+This function returns an `EEPtr` pointing to the first cell in the EEPROM.\
 This is useful for STL objects, custom iteration and C++11 style ranged for loops.
 
 #### **`EEPROM.end()`**
 
-This function returns an `EEPtr` pointing at the location after the last EEPROM cell.
+This function returns an `EEPtr` pointing at the location after the last EEPROM cell.\
 Used with `begin()` to provide custom iteration.
 
 **Note:** The `EEPtr` returned is invalid as it is out of range. Infact the hardware causes wrapping of the address (overflow) and `EEPROM.end()` actually references the first EEPROM cell.
