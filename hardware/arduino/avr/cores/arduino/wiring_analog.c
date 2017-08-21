@@ -69,6 +69,9 @@ int analogRead(uint8_t pin)
 #else
 	ADMUX = (analog_reference << 6) | (pin & 0x07);
 #endif
+#elif defined(ADMUXA)
+        ADMUXA = (pin & 0x07);
+        ADMUXB = (analog_reference << 5);
 #endif
 
 	// without a delay, we seem to read from the wrong channel
