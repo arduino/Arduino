@@ -1,4 +1,6 @@
-ARDUINO 1.8.4
+ARDUINO 1.8.5
+
+ARDUINO 1.8.4 2017.08.23
 
 [ide]
 * IDE Toolbar can now go full width on 4K display.
