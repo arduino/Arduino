@@ -1854,11 +1854,18 @@ public class Base {
    * Adjust font size
    */
   public void handleFontSizeChange(int change) {
-    String pieces[] = PApplet.split(PreferencesData.get("editor.font"), ',');
-    int newSize = Integer.parseInt(pieces[2]) + change;
-    pieces[2] = String.valueOf(newSize);
-    PreferencesData.set("editor.font", PApplet.join(pieces, ','));
-    this.getEditors().forEach(processing.app.Editor::applyPreferences);
+    String pieces[] = PreferencesData.get("editor.font").split(",");
+    try {
+      int newSize = Integer.parseInt(pieces[2]) + change;
+      if (newSize < 4)
+        newSize = 4;
+      pieces[2] = String.valueOf(newSize);
+    } catch (NumberFormatException e) {
+      // ignore
+      return;
+    }
+    PreferencesData.set("editor.font", StringUtils.join(pieces, ','));
+    getEditors().forEach(Editor::applyPreferences);
   }
 
   // XXX: Remove this method and make librariesIndexer non-static
