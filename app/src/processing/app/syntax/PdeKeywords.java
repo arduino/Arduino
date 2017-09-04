@@ -116,7 +116,7 @@ public class PdeKeywords {
           continue;
         }
 
-        String pieces[] = PApplet.split(line, '\t');
+        String pieces[] = line.split("\\s+", 4);
 
         String keyword = pieces[0].trim();
         if (keyword.startsWith("\\#")) {
