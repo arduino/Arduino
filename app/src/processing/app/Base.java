@@ -1404,7 +1404,7 @@ public class Base {
     // The first custom menu is the "Board" selection submenu
     JMenu boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu);
+    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
     boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
