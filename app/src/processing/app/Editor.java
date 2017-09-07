@@ -769,6 +769,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     base.rebuildProgrammerMenu();
     programmersMenu = new JMenu(tr("Programmer"));
+    MenuScroller.setScrollerFor(programmersMenu);
     base.getProgrammerMenus().stream().forEach(programmersMenu::add);
     toolsMenu.add(programmersMenu);
 
