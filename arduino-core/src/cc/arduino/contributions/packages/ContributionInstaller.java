@@ -292,13 +292,13 @@ public class ContributionInstaller {
       packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
     }
 
-    for (String packageIndexURL : packageIndexURLs) {
+    packageIndexURLs.parallelStream().forEach(packageIndexURL -> {
       try {
         downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
-    }
+    });
 
     progress.stepDone();
 
