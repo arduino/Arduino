@@ -44,6 +44,7 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
+import processing.app.tools.WatchDir;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -73,12 +74,19 @@ import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
 
 import processing.app.helpers.FileUtils;
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
 
 /**
  * Main editor panel for the Processing Development Environment.
  */
 @SuppressWarnings("serial")
-public class Editor extends JFrame implements RunnerListener {
+public class Editor extends JFrame implements RunnerListener, FocusListener {
 
   public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
 
@@ -201,6 +209,8 @@ public class Editor extends JFrame implements RunnerListener {
   private Runnable timeoutUploadHandler;
 
   private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  protected Thread watcher = null;
+  protected Runnable task = null;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -348,6 +358,21 @@ public class Editor extends JFrame implements RunnerListener {
     EditorConsole.setCurrentEditorConsole(console);
   }
 
+  @Override
+  public void focusGained(FocusEvent fe){
+    if (watcher != null) {
+      watcher.interrupt();
+      watcher = null;
+    }
+  }
+
+  @Override
+  public void focusLost(FocusEvent fe){
+    if (watcher == null) {
+      watcher = new Thread(task);
+      watcher.start();
+    }
+  }
 
   /**
    * Handles files dragged & dropped from the desktop and into the editor
@@ -1689,7 +1714,7 @@ public class Editor extends JFrame implements RunnerListener {
    *          the given file.
    * @throws IOException
    */
-  protected void addTab(SketchFile file, String contents) throws IOException {
+  public synchronized void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
         .addDocumentListener(new DocumentTextChangeListener(
@@ -1698,7 +1723,7 @@ public class Editor extends JFrame implements RunnerListener {
     reorderTabs();
   }
 
-  protected void removeTab(SketchFile file) throws IOException {
+  public synchronized void removeTab(SketchFile file) throws IOException {
     int index = findTabIndex(file);
     tabs.remove(index);
   }
@@ -1966,6 +1991,25 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Disable untitled setting from previous document, if any
     untitled = false;
+
+    // Add FS watcher for current Editor instance
+    Path dir = file.toPath().getParent();
+
+    Editor instance = this;
+
+    task = new Runnable() {
+      public void run() {
+        try {
+          new WatchDir(dir, true).processEvents(instance);
+        } catch (IOException x) {
+          System.err.println(x);
+        }
+      }
+    };
+
+    addFocusListener(this);
+    getTabs().forEach(tab -> tab.getScrollPane().addFocusListener(this));
+    getTabs().forEach(tab -> tab.getTextArea().addFocusListener(this));
 
     // opening was successful
     return true;
