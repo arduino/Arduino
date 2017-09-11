@@ -96,6 +96,7 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
   private final Box upper;
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
+  private static boolean watcherDisable = false;
 
   private static class ShouldSaveIfModified
       implements Predicate<SketchController> {
@@ -1992,6 +1993,10 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
     // Disable untitled setting from previous document, if any
     untitled = false;
 
+    if (watcherDisable == true) {
+      return true;
+    }
+
     // Add FS watcher for current Editor instance
     Path dir = file.toPath().getParent();
 
@@ -2002,7 +2007,7 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
         try {
           new WatchDir(dir, true).processEvents(instance);
         } catch (IOException x) {
-          System.err.println(x);
+          watcherDisable = true;
         }
       }
     };
