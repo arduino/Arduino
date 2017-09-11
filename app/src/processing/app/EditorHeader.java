@@ -243,6 +243,52 @@ public class EditorHeader extends JComponent {
 
     int x = scale(6); // offset from left edge of the component
     int i = 0;
+    int x_selected = 0;
+
+    // dry run, get the correct offset
+    for (EditorTab tab : tabs) {
+      SketchFile file = tab.getSketchFile();
+      String filename = file.getPrettyName();
+
+      // if modified, add the li'l glyph next to the name
+      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
+
+      int textWidth = (int)
+        font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+
+      int pieceCount = 2 + (textWidth / PIECE_WIDTH);
+      int pieceWidth = pieceCount * PIECE_WIDTH;
+
+      int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
+      x += PIECE_WIDTH;
+
+      int contentLeft = x;
+      tabLeft[i] = x;
+      for (int j = 0; j < pieceCount; j++) {
+        x += PIECE_WIDTH;
+      }
+      tabRight[i] = x;
+      int textLeft = contentLeft + (pieceWidth - textWidth) / 2;
+
+      int baseline = (sizeH + fontAscent) / 2;
+      //g.drawString(sketch.code[i].name, textLeft, baseline);
+
+      x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+
+      if (state == SELECTED) {
+        x_selected = x;
+      }
+
+      i++;
+    }
+
+    if (x_selected > imageW) {
+      x = -(x_selected - imageW);
+    } else {
+      x = scale(6); // offset from left edge of the component
+    }
+    i = 0;
+
     for (EditorTab tab : tabs) {
       SketchFile file = tab.getSketchFile();
       String filename = file.getPrettyName();
@@ -276,6 +322,7 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+
       i++;
     }
 
