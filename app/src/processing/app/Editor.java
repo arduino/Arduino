@@ -107,6 +107,15 @@ import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
 
+import processing.app.tools.WatchDir;
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 /**
  * Main editor panel for the Processing Development Environment.
  */
@@ -121,6 +130,7 @@ public class Editor extends JFrame implements RunnerListener {
   private final Box upper;
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
+  private static boolean watcherDisable = false;
 
   private static class ShouldSaveIfModified
       implements Predicate<SketchController> {
@@ -231,6 +241,8 @@ public class Editor extends JFrame implements RunnerListener {
   private Runnable timeoutUploadHandler;
 
   private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  protected Thread watcher = null;
+  protected Runnable task = null;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -256,12 +268,20 @@ public class Editor extends JFrame implements RunnerListener {
     // When bringing a window to front, let the Base know
     addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
+          if (watcher != null) {
+            watcher.interrupt();
+            watcher = null;
+          }
           base.handleActivated(Editor.this);
         }
 
         // added for 1.0.5
         // http://dev.processing.org/bugs/show_bug.cgi?id=1260
         public void windowDeactivated(WindowEvent e) {
+          if (watcher == null) {
+            watcher = new Thread(task);
+            watcher.start();
+          }
           List<Component> toolsMenuItemsToRemove = new LinkedList<>();
           for (Component menuItem : toolsMenu.getMenuComponents()) {
             if (menuItem instanceof JComponent) {
@@ -375,7 +395,6 @@ public class Editor extends JFrame implements RunnerListener {
     // default the console output to the last opened editor
     EditorConsole.setCurrentEditorConsole(console);
   }
-
 
   /**
    * Handles files dragged & dropped from the desktop and into the editor
@@ -1526,7 +1545,7 @@ public class Editor extends JFrame implements RunnerListener {
    *          the given file.
    * @throws IOException
    */
-  protected void addTab(SketchFile file, String contents) throws IOException {
+  public synchronized void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
         .addDocumentListener(new DocumentTextChangeListener(
@@ -1535,9 +1554,12 @@ public class Editor extends JFrame implements RunnerListener {
     reorderTabs();
   }
 
-  protected void removeTab(SketchFile file) throws IOException {
+  public synchronized void removeTab(SketchFile file) throws IOException {
     int index = findTabIndex(file);
     tabs.remove(index);
+    if (index == currentTabIndex) {
+      currentTabIndex = currentTabIndex -1;
+    }
   }
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -1803,6 +1825,25 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Disable untitled setting from previous document, if any
     untitled = false;
+
+    if (watcherDisable == true) {
+      return true;
+    }
+
+    // Add FS watcher for current Editor instance
+    Path dir = file.toPath().getParent();
+
+    Editor instance = this;
+
+    task = new Runnable() {
+      public void run() {
+        try {
+          new WatchDir(dir, true).processEvents(instance);
+        } catch (IOException x) {
+          watcherDisable = true;
+        }
+      }
+    };
 
     // opening was successful
     return true;
