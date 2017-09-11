@@ -49,6 +49,14 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
@@ -63,6 +71,7 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.syntax.SketchTextAreaEditorKit;
 import processing.app.tools.DiscourseFormat;
+import processing.app.tools.WatchDir;
 
 /**
  * Single tab, editing a single file, in the main window.
@@ -486,7 +495,11 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
   public int getScrollPosition() {
     return scrollPane.getVerticalScrollBar().getValue();
   }
-    
+
+  public RTextScrollPane getScrollPane() {
+    return scrollPane;
+  }
+
   public void setScrollPosition(int pos) {
     scrollPane.getVerticalScrollBar().setValue(pos);
   }
