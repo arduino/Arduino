@@ -40,7 +40,9 @@ volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
 static (*TIM0_Callback)(void) = NULL;
 
-#define CALLBACKDIVIDER		16
+#if !defined(CALLBACKDIVIDER)
+#define CALLBACKDIVIDER 16    // should power of two as the modulo is IMO too expensive
+#endif
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
 ISR(TIM0_OVF_vect)
