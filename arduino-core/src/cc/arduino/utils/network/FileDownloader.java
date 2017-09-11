@@ -122,10 +122,14 @@ public class FileDownloader extends Observable {
   }
 
   public void download() throws InterruptedException {
+    download(false);
+  }
+
+  public void download(boolean noResume) throws InterruptedException {
     if ("file".equals(downloadUrl.getProtocol())) {
       saveLocalFile();
     } else {
-      downloadFile();
+      downloadFile(noResume);
     }
   }
 
@@ -140,12 +144,23 @@ public class FileDownloader extends Observable {
   }
 
   private void downloadFile() throws InterruptedException {
+    downloadFile(false);
+  }
+
+  private void downloadFile(boolean noResume) throws InterruptedException {
     RandomAccessFile file = null;
 
     try {
       // Open file and seek to the end of it
       file = new RandomAccessFile(outputFile, "rw");
       initialSize = file.length();
+
+      if (noResume && initialSize > 0) {
+        // delete file and restart downloading
+        Files.delete(outputFile.toPath());
+        initialSize = 0;
+      }
+
       file.seek(initialSize);
 
       setStatus(Status.CONNECTING);
