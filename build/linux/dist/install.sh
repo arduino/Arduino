@@ -71,7 +71,7 @@ xdg_install_f() {
   rmdir "$TMP_DIR"
 
   # Launching arduino-linux-setup.sh script
-  ./arduino-linux-setup.sh $(whoami)
+  #./arduino-linux-setup.sh $(whoami)
 
 }
 
