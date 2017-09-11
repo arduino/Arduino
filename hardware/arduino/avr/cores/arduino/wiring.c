@@ -38,6 +38,9 @@
 volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
+static (*TIM0_Callback)(void) = NULL;
+
+#define CALLBACKDIVIDER		16
 
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
 ISR(TIM0_OVF_vect)
@@ -49,6 +52,7 @@ ISR(TIMER0_OVF_vect)
 	// (volatile variables must be read from memory on every access)
 	unsigned long m = timer0_millis;
 	unsigned char f = timer0_fract;
+	unsigned char Only8Bits = (unsigned char)m;
 
 	m += MILLIS_INC;
 	f += FRACT_INC;
@@ -60,6 +64,17 @@ ISR(TIMER0_OVF_vect)
 	timer0_fract = f;
 	timer0_millis = m;
 	timer0_overflow_count++;
+	if(TIM0_Callback != NULL && !(m & (CALLBACKDIVIDER - 1))) 
+		TIM0_Callback();
+}
+
+void attachTIM0Callback(void (*callback)(void)
+{
+	uint8_t oldSREG = SREG;
+	
+	cli();
+	TIM0_Callback = callback;
+	SREG = oldSREG;
 }
 
 unsigned long millis()
