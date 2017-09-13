@@ -38,7 +38,7 @@
 volatile unsigned long timer0_overflow_count = 0;
 volatile unsigned long timer0_millis = 0;
 static unsigned char timer0_fract = 0;
-static (*TIM0_Callback)(void) = NULL;
+static void (*TIM0_Callback)(void) = NULL;
 
 #if !defined(CALLBACKDIVIDER)
 #define CALLBACKDIVIDER 16    // should power of two as the modulo is IMO too expensive
@@ -70,7 +70,7 @@ ISR(TIMER0_OVF_vect)
 		TIM0_Callback();
 }
 
-void attachTIM0Callback(void (*callback)(void)
+void attachTIM0Callback(void (*callback)(void))
 {
 	uint8_t oldSREG = SREG;
 	
