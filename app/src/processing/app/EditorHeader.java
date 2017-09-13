@@ -27,6 +27,9 @@ import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.SimpleAction;
 import processing.app.tools.MenuScroller;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
+
 import static processing.app.I18n.tr;
 
 import java.awt.*;
@@ -189,6 +192,25 @@ public class EditorHeader extends JComponent {
           }
         }
       });
+
+    this.addMouseWheelListener(new MouseAdapter() {
+      public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getWheelRotation() > 0) {
+          int index = editor.getCurrentTabIndex() + 1;
+          if (index >= (editor.getTabs().size())) {
+            index = 0;
+          }
+          editor.selectTab(index);
+        } else {
+          int index = editor.getCurrentTabIndex() - 1;
+          if (index < 0) {
+            index = editor.getTabs().size() -1 ;
+          }
+          editor.selectTab(index);
+        }
+        repaint();
+      }
+    });
   }
 
 
