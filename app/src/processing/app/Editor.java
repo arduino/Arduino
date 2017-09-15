@@ -731,16 +731,16 @@ public class Editor extends JFrame implements RunnerListener {
 
     addInternalTools(toolsMenu);
 
-    JMenuItem item = newJMenuItemShift(tr("Serial Monitor"), 'M');
+    JMenuItem item = new JMenuItem(tr("Manage Libraries..."));
+    item.addActionListener(e -> base.openLibraryManager("", ""));
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Monitor"), 'M');
     item.addActionListener(e -> handleSerial());
     toolsMenu.add(item);
 
     item = newJMenuItemShift(tr("Serial Plotter"), 'L');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePlotter();
-        }
-    });
+    item.addActionListener(e -> handlePlotter());
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
@@ -1476,6 +1476,7 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Like newJMenuItem() but adds shift as a modifier for the key command.
    */
+  // Control + Shift + K seems to not be working on linux (Xubuntu 17.04, 2017-08-19)
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
