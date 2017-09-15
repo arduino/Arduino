@@ -158,7 +158,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static volatile AbstractMonitor serialMonitor;
   static AbstractMonitor serialPlotter;
-  
+
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
@@ -248,7 +248,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
-    
+
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -399,8 +399,7 @@ public class Editor extends JFrame implements RunnerListener {
         statusNotice(tr("One file added to the sketch."));
 
       } else {
-        statusNotice(
-	    I18n.format(tr("{0} files added to the sketch."), successful));
+        statusNotice(I18n.format(tr("{0} files added to the sketch."), successful));
       }
       return true;
     }
@@ -947,14 +946,14 @@ public class Editor extends JFrame implements RunnerListener {
     } finally {
       if (zipFile != null) {
         try {
-          zipFile.close();
-        } catch (IOException e) {
-          // noop
-        }
-      }
-    }
-    return null;
-	}
+           zipFile.close();
+         } catch (IOException e) {
+           // noop
+         }
+       }
+     }
+     return null;
+   }
 
   public void updateKeywords(PdeKeywords keywords) {
     for (EditorTab tab : tabs)
@@ -2096,18 +2095,19 @@ public class Editor extends JFrame implements RunnerListener {
       names[i] = portMenu.getItem(i).getText();
     }
 
+    // FIXME: This is horribly unreadable
     String result = (String)
-      JOptionPane.showInputDialog(this,
-	I18n.format(
-	  tr("Serial port {0} not found.\n" +
-	    "Retry the upload with another serial port?"),
-	  PreferencesData.get("serial.port")
-	),
-				  "Serial port not found",
-                                  JOptionPane.PLAIN_MESSAGE,
-                                  null,
-                                  names,
-                                  0);
+    JOptionPane.showInputDialog(this,
+     I18n.format(
+      tr("Serial port {0} not found.\n" +
+       "Retry the upload with another serial port?"),
+      PreferencesData.get("serial.port")
+     ),
+     "Serial port not found",
+     JOptionPane.PLAIN_MESSAGE,
+     null,
+     names,
+     0);
     if (result == null) return false;
     selectSerialPort(result);
     base.onBoardOrPortChange();
@@ -2321,7 +2321,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialMonitor != null) {
       // The serial monitor already exists
 
@@ -2351,14 +2351,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
-    
+
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");
       String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
       statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
       return;
     }
-    
+
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
@@ -2418,7 +2418,7 @@ public class Editor extends JFrame implements RunnerListener {
     } while (serialMonitor.requiresAuthorization() && !success);
 
   }
-  
+
   public void handlePlotter() {
     if(serialMonitor != null) {
       if(serialMonitor.isClosed()) {
@@ -2428,7 +2428,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialPlotter != null) {
       // The serial plotter already exists
 
