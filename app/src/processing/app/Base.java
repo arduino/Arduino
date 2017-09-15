@@ -1075,6 +1075,10 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
+    // Ctrl+Shift+I on Windows and Linux, Command+Shift+I on macOS
+    menu.setAccelerator(KeyStroke.getKeyStroke('I',
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+        ActionEvent.SHIFT_MASK));
     menu.addActionListener(e -> openLibraryManager("", ""));
     importMenu.add(menu);
     importMenu.addSeparator();
