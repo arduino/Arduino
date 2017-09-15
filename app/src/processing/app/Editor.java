@@ -731,7 +731,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     addInternalTools(toolsMenu);
 
-    JMenuItem item = new JMenuItem(tr("Manage Libraries..."));
+    JMenuItem item = newJMenuItemShift(tr("Manage Libraries..."), 'I');
     item.addActionListener(e -> base.openLibraryManager("", ""));
     toolsMenu.add(item);
 
