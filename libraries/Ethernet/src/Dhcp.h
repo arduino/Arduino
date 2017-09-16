@@ -44,7 +44,7 @@
 #define MAGIC_COOKIE		0x63825363
 #define MAX_DHCP_OPT	16
 
-#define HOST_NAME "WIZnet"
+//#define HOST_NAME "WIZnet"  // Commented Modififed by Sudheer Thimmaiya
 #define DEFAULT_LEASE	(900) //default lease time in seconds
 
 #define DHCP_CHECK_NONE         (0)
@@ -172,6 +172,9 @@ public:
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int checkLease();
+  //
+  void setHostName(char *);
+  char * getHostName();
 };
 
 #endif
