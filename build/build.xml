@@ -91,6 +91,7 @@
   <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
   <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.4-arduino2" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino9" />
+  <property name="AVRCORE-VERSION" value="1.6.20" />
   <property name="arduinoOTA-VERSION" value="1.2.1" />
 
   <!-- Libraries required for running arduino -->
@@ -263,28 +264,19 @@
 
   <!-- copy hardware folder -->
   <target name="assemble-hardware" unless="light_bundle">
-    <copy todir="${target.path}/hardware">
-      <fileset dir="../hardware">
-        <exclude name="arduino/sam/**"/>
-      </fileset>
-    </copy>
+    <mkdir dir="${target.path}/hardware/arduino" />
+    <antcall target="untar">
+      <param name="archive_file" value="avr-${AVRCORE-VERSION}.tar.bz2"/>
+      <param name="archive_url" value="https://downloads.arduino.cc/cores/avr-${AVRCORE-VERSION}.tar.bz2"/>
+      <param name="final_folder" value="${target.path}/hardware/arduino/avr"/>
+      <param name="dest_folder" value="${target.path}/hardware/arduino"/>
+    </antcall>
   </target>
 
   <!-- - - - - - - - - -->
   <!-- Revision check  -->
   <!-- - - - - - - - - -->
   <target name="revision-check">
-
-    <!-- figure out the AVR core version number in platform.txt -->
-    <loadfile srcfile="../hardware/arduino/avr/platform.txt" property="revision.avr.platform">
-      <filterchain>
-        <tokenfilter>
-          <linetokenizer />
-          <containsregex pattern="version="/>
-          <replaceregex pattern="version=(.*)" flags="g" replace="\1"/>
-        </tokenfilter>
-      </filterchain>
-    </loadfile>
 
     <!-- figure out the latest AVR core version number in package_index.json -->
     <loadfile srcfile="../hardware/package_index_bundled.json" property="revision.avr.index">
@@ -298,18 +290,18 @@
       </filterchain>
     </loadfile>
 
-    <echo message="AVR Arduino core version in platform.txt is: ${revision.avr.platform}" />
+    <echo message="AVR Arduino core version in build.xml is: ${AVRCORE-VERSION}" />
     <echo message="    latest in package_index_bundled.json is: ${revision.avr.index}" />
     <condition property="revision.avr.ok">
       <or>
         <!-- fail build if -Drevision.check=enforce is set -->
         <not><equals arg1="${revision.check}" arg2="enforce"/></not>
-        <equals arg1="${revision.avr.index}" arg2="${revision.avr.platform}"/>
+        <equals arg1="${revision.avr.index}" arg2="${AVRCORE-VERSION}"/>
       </or>
     </condition>
     <fail unless="revision.avr.ok">
       Mismatching versions for bundled AVR core and package_index_bundled.json.
-      Please check your platform.txt and package_index_bundled.json.
+      Please check your package_index_bundled.json.
     </fail>
 
     <!-- figure out the IDE version number -->
