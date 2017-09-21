@@ -34,6 +34,10 @@
 #endif
 #define BIN 2
 
+//define the arguments
+#define PRINT_NOARGS 0
+#define PRINT_LEADINGZERO 1
+
 class Print
 {
   private:
@@ -66,24 +70,24 @@ class Print
     size_t print(const String &);
     size_t print(const char[]);
     size_t print(char);
-    size_t print(unsigned char, int = DEC);
-    size_t print(int, int = DEC);
-    size_t print(unsigned int, int = DEC);
-    size_t print(long, int = DEC);
-    size_t print(unsigned long, int = DEC);
-    size_t print(double, int = 2);
+    size_t print(unsigned char, int = DEC, int = PRINT_NOARGS);
+    size_t print(int, int = DEC, int = PRINT_NOARGS);
+    size_t print(unsigned int, int = DEC, int = PRINT_NOARGS);
+    size_t print(long, int = DEC, int = PRINT_NOARGS);
+    size_t print(unsigned long, int = DEC, int = PRINT_NOARGS);
+    size_t print(double, int = 2, int = PRINT_NOARGS);
     size_t print(const Printable&);
 
     size_t println(const __FlashStringHelper *);
     size_t println(const String &s);
     size_t println(const char[]);
     size_t println(char);
-    size_t println(unsigned char, int = DEC);
-    size_t println(int, int = DEC);
-    size_t println(unsigned int, int = DEC);
-    size_t println(long, int = DEC);
-    size_t println(unsigned long, int = DEC);
-    size_t println(double, int = 2);
+    size_t println(unsigned char, int = DEC, int = PRINT_NOARGS);
+    size_t println(int, int = DEC, int = PRINT_NOARGS);
+    size_t println(unsigned int, int = DEC, int = PRINT_NOARGS);
+    size_t println(long, int = DEC, bool = PRINT_NOARGS);
+    size_t println(unsigned long, int = DEC, int = PRINT_NOARGS);
+    size_t println(double, int = 2, int = PRINT_NOARGS);
     size_t println(const Printable&);
     size_t println(void);
 
