@@ -69,22 +69,22 @@ size_t Print::print(char c)
   return write(c);
 }
 
-size_t Print::print(unsigned char b, int base)
+size_t Print::print(unsigned char b, int base, int arg)
 {
-  return print((unsigned long) b, base);
+  return print((unsigned long) b, base, arg);
 }
 
-size_t Print::print(int n, int base)
+size_t Print::print(int n, int base, int arg)
 {
-  return print((long) n, base);
+  return print((long) n, base, arg);
 }
 
-size_t Print::print(unsigned int n, int base)
+size_t Print::print(unsigned int n, int base, int arg)
 {
   return print((unsigned long) n, base);
 }
 
-size_t Print::print(long n, int base)
+size_t Print::print(long n, int base, int arg)
 {
   if (base == 0) {
     return write(n);
@@ -92,18 +92,18 @@ size_t Print::print(long n, int base)
     if (n < 0) {
       int t = print('-');
       n = -n;
-      return printNumber(n, 10) + t;
+      return printNumber(n, 10, arg) + t;
     }
-    return printNumber(n, 10);
+    return printNumber(n, 10, arg);
   } else {
-    return printNumber(n, base);
+    return printNumber(n, base, arg);
   }
 }
 
-size_t Print::print(unsigned long n, int base)
+size_t Print::print(unsigned long n, int base, int arg)
 {
   if (base == 0) return write(n);
-  else return printNumber(n, base);
+  else return printNumber(n, base, arg);
 }
 
 size_t Print::print(double n, int digits)
@@ -149,37 +149,37 @@ size_t Print::println(char c)
   return n;
 }
 
-size_t Print::println(unsigned char b, int base)
+size_t Print::println(unsigned char b, int base, int arg)
 {
-  size_t n = print(b, base);
+  size_t n = print(b, base, arg);
   n += println();
   return n;
 }
 
-size_t Print::println(int num, int base)
+size_t Print::println(int num, int base, int arg)
 {
-  size_t n = print(num, base);
+  size_t n = print(num, base, arg);
   n += println();
   return n;
 }
 
-size_t Print::println(unsigned int num, int base)
+size_t Print::println(unsigned int num, int base, int arg)
 {
-  size_t n = print(num, base);
+  size_t n = print(num, base, arg);
   n += println();
   return n;
 }
 
-size_t Print::println(long num, int base)
+size_t Print::println(long num, int base, int arg)
 {
-  size_t n = print(num, base);
+  size_t n = print(num, base, arg);
   n += println();
   return n;
 }
 
-size_t Print::println(unsigned long num, int base)
+size_t Print::println(unsigned long num, int base, int arg)
 {
-  size_t n = print(num, base);
+  size_t n = print(num, base, arg);
   n += println();
   return n;
 }
@@ -200,7 +200,7 @@ size_t Print::println(const Printable& x)
 
 // Private Methods /////////////////////////////////////////////////////////////
 
-size_t Print::printNumber(unsigned long n, uint8_t base)
+size_t Print::printNumber(unsigned long n, uint8_t base, uint8_t arg)
 {
   char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
   char *str = &buf[sizeof(buf) - 1];
@@ -209,14 +209,16 @@ size_t Print::printNumber(unsigned long n, uint8_t base)
 
   // prevent crash if called with base == 1
   if (base < 2) base = 10;
-
-  do {
+  //the argument is only valid for HEX values smaler than 0x10
+  if(base != 8 || n>=16) arg = 0;
+  
+ do {
     char c = n % base;
     n /= base;
 
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
-
+  if(arg == 1)*--str = '0';
   return write(str);
 }
 
