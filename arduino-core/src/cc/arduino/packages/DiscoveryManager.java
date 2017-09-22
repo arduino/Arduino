@@ -51,7 +51,7 @@ public class DiscoveryManager {
     // Start all discoverers
     for (Discovery d : discoverers) {
       try {
-        d.start();
+        new Thread(d).start();
       } catch (Exception e) {
         System.err.println(tr("Error starting discovery method: ") + d.getClass());
         e.printStackTrace();
