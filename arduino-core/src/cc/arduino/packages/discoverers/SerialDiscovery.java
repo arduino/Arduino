@@ -37,7 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 
-public class SerialDiscovery implements Discovery {
+public class SerialDiscovery implements Discovery, Runnable {
 
   private Timer serialBoardsListerTimer;
   private final List<BoardPort> serialBoardPorts;
@@ -84,6 +84,11 @@ public class SerialDiscovery implements Discovery {
   }
 
   public void pausePolling(boolean param) { serialBoardsLister.pausePolling = param;}
+
+  @Override
+  public void run() {
+    start();
+  }
 
   @Override
   public void start() {
