@@ -39,7 +39,7 @@ import java.util.*;
 
 import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
 
-public class NetworkDiscovery implements Discovery, ServiceListener {
+public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
@@ -136,6 +136,11 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
 
   public NetworkDiscovery() {
 
+  }
+
+  @Override
+  public void run() {
+    start();
   }
 
   @Override
