@@ -33,5 +33,20 @@
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-netty-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-protobuf-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-stub-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-core-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/guava-19.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-context-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/protobuf-java-3.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-services-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-grpclb-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-auth-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-okhttp-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-protobuf-nano-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/netty-all-4.1.15.Final.jar"/>
+	<classpathentry kind="lib" path="lib/instrumentation-api-0.4.3.jar"/>
+	<classpathentry kind="lib" path="lib/grpc-protobuf-lite-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
