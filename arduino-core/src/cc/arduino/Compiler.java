@@ -267,15 +267,8 @@ public class Compiler implements MessageConsumer {
     }
     cmd.add("-logger=machine");
 
-    File installedPackagesFolder = new File(BaseNoGui.getSettingsFolder(), "packages");
-
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getHardwareFolder());
-    addPathFlagIfPathExists(cmd, "-hardware", installedPackagesFolder);
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getSketchbookHardwareFolder());
-
-    addPathFlagIfPathExists(cmd, "-tools", BaseNoGui.getContentFile("tools-builder"));
-    addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
-    addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
+    BaseNoGui.getAllHardwareFolders().forEach(x -> addPathFlagIfPathExists(cmd, "-hardware", x));
+    BaseNoGui.getAllToolsFolders().forEach(x -> addPathFlagIfPathExists(cmd, "-tools", x));
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
     addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
