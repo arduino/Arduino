@@ -26,6 +26,7 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
+import cc.arduino.builder.ArduinoBuilder;
 import cc.arduino.packages.Uploader;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
@@ -58,10 +59,18 @@ import static processing.app.I18n.tr;
 public class SketchController {
   private final Editor editor;
   private final Sketch sketch;
+  private final ArduinoBuilder builder;
 
   public SketchController(Editor _editor, Sketch _sketch) {
+    ArduinoBuilder _builder = null;
+    try {
+      _builder = new ArduinoBuilder();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     editor = _editor;
     sketch = _sketch;
+    builder = _builder;
   }
 
   private boolean renamingCode;
@@ -706,7 +715,8 @@ public class SketchController {
     }
 
     try {
-      return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
+      return builder.codeComplete(BaseNoGui.getTargetBoard(), pathToSketch, requestedFile, line, col);
+      //return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
