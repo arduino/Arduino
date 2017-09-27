@@ -409,10 +409,8 @@
       <classpath refid="runtime.jars"/>
 
       <option value="-Dapple.awt.application.name=Arduino"/>
-      <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-Duser.language=en"/>
       <option value="-Duser.country=US"/>
       <option value="-Duser.variant=US"/>
