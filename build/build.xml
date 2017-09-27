@@ -407,10 +407,8 @@
       <classpath refid="runtime.jars"/>
 
       <option value="-Dapple.awt.application.name=Arduino"/>
-      <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
 
