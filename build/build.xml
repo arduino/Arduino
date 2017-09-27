@@ -373,13 +373,13 @@
     <mkdir dir="${staging_folder}/work" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino4.jar.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/appbundler-1.0ea-arduino4.jar.zip" />
-      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
-      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
+      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino5.jar.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/appbundler-1.0ea-arduino5.jar.zip" />
+      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino5" />
+      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino5" />
     </antcall>
 
-    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino4/appbundler-1.0ea-arduino4.jar"/>
+    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino5/appbundler-1.0ea-arduino5.jar"/>
 
     <bundleapp
             jvmRequired="1.8"
@@ -404,13 +404,16 @@
       <arch name="x86_64"/>
       <arch name="i386"/>
 
+      <environment name="LANG" value="en_US-UTF-8"/>
+
       <classpath refid="runtime.jars"/>
 
       <option value="-Dapple.awt.application.name=Arduino"/>
-      <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+      <option value="-Duser.language=en"/>
+      <option value="-Duser.country=US"/>
+      <option value="-Duser.variant=US"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
 
