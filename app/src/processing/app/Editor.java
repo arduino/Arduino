@@ -619,7 +619,7 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.add(item);
 
     // macosx already has its own preferences and quit menu
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.isMacOS() || System.getProperty("apple.laf.useScreenMenuBar") == "false") {
       fileMenu.addSeparator();
 
       item = newJMenuItem(tr("Preferences"), ',');
@@ -1252,7 +1252,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     // macosx already has its own about menu
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.isMacOS() || System.getProperty("apple.laf.useScreenMenuBar") == "false") {
       menu.addSeparator();
       item = new JMenuItem(tr("About Arduino"));
       item.addActionListener(new ActionListener() {
@@ -1812,7 +1812,7 @@ public class Editor extends JFrame implements RunnerListener {
     String prompt = I18n.format(tr("Save changes to \"{0}\"?  "),
                                 sketch.getName());
 
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.isMacOS() || System.getProperty("apple.laf.useScreenMenuBar") == "false") {
       int result =
         JOptionPane.showConfirmDialog(this, prompt, tr("Close"),
                                       JOptionPane.YES_NO_CANCEL_OPTION,
