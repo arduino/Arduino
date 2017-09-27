@@ -404,6 +404,8 @@
       <arch name="x86_64"/>
       <arch name="i386"/>
 
+      <environment name="LANG" value="en_US-UTF-8"/>
+
       <classpath refid="runtime.jars"/>
 
       <option value="-Dapple.awt.application.name=Arduino"/>
@@ -411,6 +413,9 @@
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
       <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+      <option value="-Duser.language=en"/>
+      <option value="-Duser.country=US"/>
+      <option value="-Duser.variant=US"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
 
