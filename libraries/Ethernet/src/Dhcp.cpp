@@ -9,6 +9,12 @@
 #include "Arduino.h"
 #include "utility/util.h"
 
+char HOST_NAME[12] = "WIZNet";
+
+void DhcpClass::setHostName(char *dhcpHost) {
+	strcpy(HOST_NAME, dhcpHost);
+}
+//
 int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout)
 {
     _dhcpLeaseTime=0;
@@ -203,6 +209,8 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
     memcpy(buffer + 10, _dhcpMacAddr, 6);
 
     // OPT - host name
+	if (strcmp ("WIZNet",HOST_NAME) == 0)  // If Default Host Name.
+	{
     buffer[16] = hostName;
     buffer[17] = strlen(HOST_NAME) + 6; // length of hostname + last 3 bytes of mac address
     strcpy((char*)&(buffer[18]), HOST_NAME);
@@ -210,8 +218,15 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
     printByte((char*)&(buffer[24]), _dhcpMacAddr[3]);
     printByte((char*)&(buffer[26]), _dhcpMacAddr[4]);
     printByte((char*)&(buffer[28]), _dhcpMacAddr[5]);
-
-    //put data in W5100 transmit buffer
+	}
+	else
+	{
+		buffer[16] = hostName;
+		buffer[17] = strlen(HOST_NAME); // length of hostname + last 3 bytes of mac address
+		strcpy((char*)&(buffer[18]), HOST_NAME);
+	}
+	
+   //put data in W5100 transmit buffer
     _dhcpUdpSocket.write(buffer, 30);
 
     if(messageType == DHCP_REQUEST)
@@ -457,6 +472,11 @@ IPAddress DhcpClass::getDhcpServerIp()
 IPAddress DhcpClass::getDnsServerIp()
 {
     return IPAddress(_dhcpDnsServerIp);
+}
+
+//Get Host Name.
+char * DhcpClass::getHostName() {
+	return HOST_NAME;
 }
 
 void DhcpClass::printByte(char * buf, uint8_t n ) {
