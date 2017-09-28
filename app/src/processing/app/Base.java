@@ -392,6 +392,7 @@ public class Base {
         outputFile = new Compiler(sketch).build(progress -> {}, false);
       } catch (Exception e) {
         // Error during build
+        e.printStackTrace();
         System.exit(1);
       }
 
