@@ -971,7 +971,7 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      if (!OSUtils.isMacOS() || System.getProperty("apple.laf.useScreenMenuBar") == "false") {
+      if (!OSUtils.hasMacOSStyleMenus()) {
         // If this was fired from the menu or an AppleEvent (the Finder),
         // then Mac OS X will send the terminate signal itself.
         System.exit(0);

@@ -26,4 +26,7 @@ public class OSUtils {
     return System.getProperty("os.name").contains("Mac");
   }
 
+  static public boolean hasMacOSStyleMenus() {
+    return OSUtils.isMacOS() && System.getProperty("apple.laf.useScreenMenuBar").equals("true");
+  }
 }
