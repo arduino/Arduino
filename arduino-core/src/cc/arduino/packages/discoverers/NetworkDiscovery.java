@@ -153,7 +153,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   @Override
   public void stop() {
-    jmdns.unregisterAllServices();
+    if (jmdns != null) {
+      jmdns.unregisterAllServices();
+    }
     // we don't close the JmmDNS instance as it's too slow
     /*
     try {
@@ -162,7 +164,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
       e.printStackTrace();
     }
     */
-    reachabilityTimer.cancel();
+    if (reachabilityTimer != null) {
+      reachabilityTimer.cancel();
+    }
   }
 
   @Override
