@@ -3,7 +3,7 @@ ARDUINO 1.8.5 2017.09.29
 (bugfix service release)
 
 [ide]
-* Added workaround for menu visualization bug in MacOSX 10.13 beta. Thanks @puybaret
+* Added workaround for menu visibility bug in MacOSX 10.13 beta. Thanks @puybaret
 * Fixed bug for negative-font-size.
 * New/Rename tabs now allows names starting with a number.
 
