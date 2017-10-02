@@ -54,10 +54,13 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     downgradeChooser.addItem("-");
     downgradeChooser.setMaximumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
     downgradeChooser.setMinimumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
-    downgradeChooser.addItemListener(e -> {
+    downgradeChooser.addActionListener(e -> {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
-      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      boolean disableDowngrade = (downgradeChooser.getSelectedItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
