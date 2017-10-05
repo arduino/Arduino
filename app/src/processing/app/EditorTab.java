@@ -70,6 +70,7 @@ import java.nio.file.Path;
 import java.io.File;
 
 import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
@@ -143,7 +144,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
 //    SketchCompletionProvider completionProvider = new SketchCompletionProvider(
 //        editor.getSketch(), textarea, new ClangCompletionProvider(editor));
 
-    AutoCompletion ac = new AutoCompletion(new ClangCompletionProvider(editor));
+    DefaultCompletionProvider cp = new DefaultCompletionProvider();
+    AutoCompletion ac = new AutoCompletion(new ClangCompletionProvider(editor, cp));
     ac.setAutoActivationEnabled(true);
     ac.setShowDescWindow(false);
     ac.setAutoCompleteSingleChoices(true);
