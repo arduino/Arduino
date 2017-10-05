@@ -57,5 +57,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0-arduino4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AutoComplete"/>
+	<classpathentry kind="lib" path="lib/autocomplete-2.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
