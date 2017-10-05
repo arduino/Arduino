@@ -36,8 +36,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.fife.ui.autocomplete.Completion;
+import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.FunctionCompletion;
+import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.autocomplete.ParameterizedCompletion.Parameter;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
@@ -46,20 +48,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import processing.app.Editor;
 import processing.app.EditorTab;
 
-public class ClangCompletionProvider extends DefaultCompletionProvider {
+public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
 
   private Editor editor;
+  private String completeCache;
+  private int completeCacheLine;
+  private int completeCacheColumn;
 
-  public ClangCompletionProvider(Editor e) {
-    super();
+  public ClangCompletionProvider(Editor e, DefaultCompletionProvider cp) {
+    super(cp);
     editor = e;
-    setParameterizedCompletionParams('(', ", ", ')');
-  }
-
-  @Override
-  public List<Completion> getCompletionByInputText(String inputText) {
-    System.out.println("INPUTTEXT: " + inputText);
-    return super.getCompletionByInputText(inputText);
+    //setParameterizedCompletionParams('(', ", ", ')');
   }
 
   @Override
@@ -84,14 +83,21 @@ public class ClangCompletionProvider extends DefaultCompletionProvider {
 
     try {
       // Run codecompletion engine
-      String out = editor.getSketchController()
+      String out = completeCache;
+      if (completeCacheLine != line || (completeCacheColumn != (col + 1)) && (completeCacheColumn != (col - 1))) {
+        out = editor.getSketchController()
           .codeComplete(tab.getSketchFile(), line, col);
+        completeCache = out;
+        completeCacheLine = line;
+      }
+      completeCacheColumn = col;
 
       // Parse engine output and build code completions
       ObjectMapper mapper = new ObjectMapper();
       ArduinoCompletionsList allCc;
       allCc = mapper.readValue(out, ArduinoCompletionsList.class);
       for (ArduinoCompletion cc : allCc) {
+
         if (cc.type.equals("Macro")) {
           // for now skip macro
           continue;
@@ -106,6 +112,10 @@ public class ClangCompletionProvider extends DefaultCompletionProvider {
               params.add(new Parameter(p.type, p.name));
               i++;
             }
+          }
+
+          if (!cc.getCompletion().getTypedText().startsWith(getAlreadyEnteredText(textarea))) {
+            continue;
           }
 
           FunctionCompletion compl = new FunctionCompletion(this,
@@ -135,13 +145,15 @@ public class ClangCompletionProvider extends DefaultCompletionProvider {
             template += "${" + spl[spl.length - 1] + "}";
           }
           if (chunk.info != null) {
-            System.out.println("INFO: "+chunk.info);
+            //System.out.println("INFO: "+chunk.info);
           }
         }
         template += "${cursor}";
-        System.out.println("TEMPLATE: " + template);
+        //System.out.println("TEMPLATE: " + template);
+        if (typedText.startsWith(getAlreadyEnteredText(textarea))) {
         res.add(new TemplateCompletion(this, typedText, typedText + returnType,
             template));
+        }
       }
       return res;
     } catch (Exception e) {
