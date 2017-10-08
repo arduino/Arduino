@@ -102,7 +102,7 @@ public class Languages {
       new Language(tr("Telugu"), "తెలుగు", "te"),
       new Language(tr("Thai"), "ภาษาไทย", "th"),
       new Language(tr("Turkish"), "Türk", "tr"),
-      new Language(tr("Ukrainian"), "Український", "uk"),
+      new Language(tr("Ukrainian"), "Українська", "uk"),
       new Language(tr("Vietnamese"), "Tiếng Việt", "vi"),
       new Language(tr("Western Frisian"), "Western Frisian", "fy")
     };
