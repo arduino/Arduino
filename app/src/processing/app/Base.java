@@ -1103,7 +1103,7 @@ public class Base {
             importMenu.addSeparator();
           }
           lastLibType = lib.getTypes().get(0);
-          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), lastLibType));
+          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), tr(lastLibType)));
           platformItem.setEnabled(false);
           importMenu.add(platformItem);
         }
