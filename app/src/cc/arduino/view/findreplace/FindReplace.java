@@ -62,6 +62,10 @@ public class FindReplace extends javax.swing.JFrame {
     isTranslucencySupported();
     initComponents();
 
+    if (OSUtils.isWindows()) {
+      setAutoRequestFocus(false);
+    }
+
     if (OSUtils.isMacOS()) {
       buttonsContainer.removeAll();
       buttonsContainer.add(replaceAllButton);
@@ -80,6 +84,10 @@ public class FindReplace extends javax.swing.JFrame {
 
     editor.addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          toFront();
+          return;
+        }
         findField.requestFocusInWindow();
         findField.selectAll();
         setAlwaysOnTop(true);
@@ -89,12 +97,18 @@ public class FindReplace extends javax.swing.JFrame {
         }
       }
       public void windowDeactivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          return;
+        }
         setAlwaysOnTop(false);
       }
     });
 
     addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          return;
+        }
         findField.requestFocusInWindow();
         findField.selectAll();
         setAlwaysOnTop(true);
