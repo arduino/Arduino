@@ -51,8 +51,12 @@ public class SplashScreenHelper {
 
   public SplashScreenHelper(SplashScreen splash) {
     this.splash = splash;
-    Toolkit tk = Toolkit.getDefaultToolkit();
-    desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
+    if (splash != null) {
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
+    } else {
+      desktopHints = null;
+    }
   }
 
   public void splashText(String text) {

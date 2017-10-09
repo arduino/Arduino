@@ -1,16 +1,16 @@
 /*
   String charAt() and setCharAt()
 
- Examples of how to get and set characters of a String
+  Examples of how to get and set characters of a String
 
- created 27 July 2010
- modified 2 Apr 2012
- by Tom Igoe
+  created 27 Jul 2010
+  modified 2 Apr 2012
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringCharacters
+  This example code is in the public domain.
 
- This example code is in the public domain.
- */
+  http://www.arduino.cc/en/Tutorial/StringCharacters
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -19,11 +19,11 @@ void setup() {
     ; // wait for serial port to connect. Needed for native USB port only
   }
 
-  Serial.println("\n\nString  charAt() and setCharAt():");
+  Serial.println("\n\nString charAt() and setCharAt():");
 }
 
 void loop() {
-  // make a string to report a sensor reading:
+  // make a String to report a sensor reading:
   String reportString = "SensorReading: 456";
   Serial.println(reportString);
 
@@ -36,11 +36,10 @@ void loop() {
   // add blank space:
   Serial.println();
 
-  // you can alo set the character of a string. Change the : to a = character
+  // you can also set the character of a String. Change the : to a = character
   reportString.setCharAt(13, '=');
   Serial.println(reportString);
 
   // do nothing while true:
   while (true);
 }
-

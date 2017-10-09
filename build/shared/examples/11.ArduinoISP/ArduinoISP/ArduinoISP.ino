@@ -1,32 +1,32 @@
 // ArduinoISP
 // Copyright (c) 2008-2011 Randall Bohn
 // If you require a license, see
-//     http://www.opensource.org/licenses/bsd-license.php
+// http://www.opensource.org/licenses/bsd-license.php
 //
-// This sketch turns the Arduino into a AVRISP
-// using the following arduino pins:
+// This sketch turns the Arduino into a AVRISP using the following Arduino pins:
 //
 // Pin 10 is used to reset the target microcontroller.
 //
-// By default, the hardware SPI pins MISO, MOSI and SCK pins are used
-// to communicate with the target. On all Arduinos, these pins can be found
+// By default, the hardware SPI pins MISO, MOSI and SCK are used to communicate
+// with the target. On all Arduinos, these pins can be found
 // on the ICSP/SPI header:
 //
 //               MISO °. . 5V (!) Avoid this pin on Due, Zero...
 //               SCK   . . MOSI
 //                     . . GND
 //
-// On some Arduinos (Uno,...), pins MOSI, MISO and SCK are the same pins
-// as digital pin 11, 12 and 13, respectively. That is why many tutorials
-// instruct you to hook up the target to these pins. If you find this wiring
-// more practical, have a define USE_OLD_STYLE_WIRING. This will work even
-// even when not using an Uno. (On an Uno this is not needed).
+// On some Arduinos (Uno,...), pins MOSI, MISO and SCK are the same pins as
+// digital pin 11, 12 and 13, respectively. That is why many tutorials instruct
+// you to hook up the target to these pins. If you find this wiring more
+// practical, have a define USE_OLD_STYLE_WIRING. This will work even when not
+// using an Uno. (On an Uno this is not needed).
 //
-// Alternatively you can use any other digital pin by configuring software ('BitBanged')
-// SPI and having appropriate defines for PIN_MOSI, PIN_MISO and PIN_SCK.
-// 
-// IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...)
-// as the programmer, make sure to not expose any of the programmer's pins to 5V.
+// Alternatively you can use any other digital pin by configuring
+// software ('BitBanged') SPI and having appropriate defines for PIN_MOSI,
+// PIN_MISO and PIN_SCK.
+//
+// IMPORTANT: When using an Arduino that is not 5V tolerant (Due, Zero, ...) as
+// the programmer, make sure to not expose any of the programmer's pins to 5V.
 // A simple way to accomplish this is to power the complete system (programmer
 // and target) at 3V3.
 //
@@ -43,19 +43,19 @@
 #define PROG_FLICKER true
 
 // Configure SPI clock (in Hz).
-// E.g. for an attiny @128 kHz: the datasheet states that both the high
-// and low spi clock pulse must be > 2 cpu cycles, so take 3 cycles i.e.
-// divide target f_cpu by 6:
+// E.g. for an ATtiny @ 128 kHz: the datasheet states that both the high and low
+// SPI clock pulse must be > 2 CPU cycles, so take 3 cycles i.e. divide target
+// f_cpu by 6:
 //     #define SPI_CLOCK            (128000/6)
 //
-// A clock slow enough for an attiny85 @ 1MHz, is a reasonable default:
+// A clock slow enough for an ATtiny85 @ 1 MHz, is a reasonable default:
 
 #define SPI_CLOCK 		(1000000/6)
 
 
 // Select hardware or software SPI, depending on SPI clock.
-// Currently only for AVR, for other archs (Due, Zero,...),
-// hardware SPI is probably too fast anyway.
+// Currently only for AVR, for other architectures (Due, Zero,...), hardware SPI
+// is probably too fast anyway.
 
 #if defined(ARDUINO_ARCH_AVR)
 
@@ -68,7 +68,7 @@
 // Configure which pins to use:
 
 // The standard pin configuration.
-#ifndef ARDUINO_HOODLOADER2 
+#ifndef ARDUINO_HOODLOADER2
 
 #define RESET     10 // Use pin 10 to reset the target rather than SS
 #define LED_HB    9
@@ -88,10 +88,9 @@
 
 #endif
 
-// HOODLOADER2 means running sketches on the atmega16u2 
-// serial converter chips on Uno or Mega boards.
-// We must use pins that are broken out:
-#else 
+// HOODLOADER2 means running sketches on the ATmega16U2 serial converter chips
+// on Uno or Mega boards. We must use pins that are broken out:
+#else
 
 #define RESET     	4
 #define LED_HB    	7
@@ -166,51 +165,51 @@ void pulse(int pin, int times);
 #define SPI_MODE0 0x00
 
 class SPISettings {
-public:
-  // clock is in Hz
-  SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) : clock(clock){
-    (void) bitOrder;
-    (void) dataMode;
-  };
+  public:
+    // clock is in Hz
+    SPISettings(uint32_t clock, uint8_t bitOrder, uint8_t dataMode) : clock(clock) {
+      (void) bitOrder;
+      (void) dataMode;
+    };
 
-private:
-  uint32_t clock;
+  private:
+    uint32_t clock;
 
-friend class BitBangedSPI;
+    friend class BitBangedSPI;
 };
 
 class BitBangedSPI {
-public:
-  void begin() {
-    digitalWrite(PIN_SCK, LOW);
-    digitalWrite(PIN_MOSI, LOW);
-    pinMode(PIN_SCK, OUTPUT);
-    pinMode(PIN_MOSI, OUTPUT);
-    pinMode(PIN_MISO, INPUT);
-  }
-
-  void beginTransaction(SPISettings settings) {
-    pulseWidth = (500000 + settings.clock - 1) / settings.clock;
-    if (pulseWidth == 0)
-      pulseWidth = 1;
-  }
-
-  void end() {}
-
-  uint8_t transfer (uint8_t b) {
-    for (unsigned int i = 0; i < 8; ++i) {
-      digitalWrite(PIN_MOSI, (b & 0x80) ? HIGH : LOW);
-      digitalWrite(PIN_SCK, HIGH);
-      delayMicroseconds(pulseWidth);
-      b = (b << 1) | digitalRead(PIN_MISO);
-      digitalWrite(PIN_SCK, LOW); // slow pulse
-      delayMicroseconds(pulseWidth);
+  public:
+    void begin() {
+      digitalWrite(PIN_SCK, LOW);
+      digitalWrite(PIN_MOSI, LOW);
+      pinMode(PIN_SCK, OUTPUT);
+      pinMode(PIN_MOSI, OUTPUT);
+      pinMode(PIN_MISO, INPUT);
     }
-    return b;
-  }
 
-private:
-  unsigned long pulseWidth; // in microseconds
+    void beginTransaction(SPISettings settings) {
+      pulseWidth = (500000 + settings.clock - 1) / settings.clock;
+      if (pulseWidth == 0)
+        pulseWidth = 1;
+    }
+
+    void end() {}
+
+    uint8_t transfer (uint8_t b) {
+      for (unsigned int i = 0; i < 8; ++i) {
+        digitalWrite(PIN_MOSI, (b & 0x80) ? HIGH : LOW);
+        digitalWrite(PIN_SCK, HIGH);
+        delayMicroseconds(pulseWidth);
+        b = (b << 1) | digitalRead(PIN_MISO);
+        digitalWrite(PIN_SCK, LOW); // slow pulse
+        delayMicroseconds(pulseWidth);
+      }
+      return b;
+    }
+
+  private:
+    unsigned long pulseWidth; // in microseconds
 };
 
 static BitBangedSPI SPI;
@@ -371,7 +370,7 @@ void get_version(uint8_t c) {
 }
 
 void set_parameters() {
-  // call this after reading paramter packet into buff[]
+  // call this after reading parameter packet into buff[]
   param.devicecode = buff[0];
   param.revision   = buff[1];
   param.progtype   = buff[2];
@@ -393,7 +392,7 @@ void set_parameters() {
                     + buff[18] * 0x00000100
                     + buff[19];
 
-  // avr devices have active low reset, at89sx are active high
+  // AVR devices have active low reset, AT89Sx are active high
   rst_active_high = (param.devicecode >= 0xe0);
 }
 
@@ -401,10 +400,8 @@ void start_pmode() {
 
   // Reset target before driving PIN_SCK or PIN_MOSI
 
-  // SPI.begin() will configure SS as output,
-  // so SPI master mode is selected.
-  // We have defined RESET as pin 10,
-  // which for many arduino's is not the SS pin.
+  // SPI.begin() will configure SS as output, so SPI master mode is selected.
+  // We have defined RESET as pin 10, which for many Arduinos is not the SS pin.
   // So we have to configure RESET as output here,
   // (reset_target() first sets the correct level)
   reset_target(true);
@@ -412,14 +409,14 @@ void start_pmode() {
   SPI.begin();
   SPI.beginTransaction(SPISettings(SPI_CLOCK, MSBFIRST, SPI_MODE0));
 
-  // See avr datasheets, chapter "SERIAL_PRG Programming Algorithm":
+  // See AVR datasheets, chapter "SERIAL_PRG Programming Algorithm":
 
   // Pulse RESET after PIN_SCK is low:
   digitalWrite(PIN_SCK, LOW);
-  delay(20); // discharge PIN_SCK, value arbitrally chosen
+  delay(20); // discharge PIN_SCK, value arbitrarily chosen
   reset_target(false);
-  // Pulse must be minimum 2 target CPU clock cycles
-  // so 100 usec is ok for CPU speeds above 20KHz
+  // Pulse must be minimum 2 target CPU clock cycles so 100 usec is ok for CPU
+  // speeds above 20 KHz
   delayMicroseconds(100);
   reset_target(true);
 
@@ -431,8 +428,7 @@ void start_pmode() {
 
 void end_pmode() {
   SPI.end();
-  // We're about to take the target out of reset
-  // so configure SPI pins as input
+  // We're about to take the target out of reset so configure SPI pins as input
   pinMode(PIN_MOSI, INPUT);
   pinMode(PIN_SCK, INPUT);
   reset_target(false);
@@ -530,8 +526,7 @@ uint8_t write_eeprom(unsigned int length) {
 }
 // write (length) bytes, (start) is a byte address
 uint8_t write_eeprom_chunk(unsigned int start, unsigned int length) {
-  // this writes byte-by-byte,
-  // page writing may be faster (4 bytes at a time)
+  // this writes byte-by-byte, page writing may be faster (4 bytes at a time)
   fill(length);
   prog_lamp(LOW);
   for (unsigned int x = 0; x < length; x++) {
@@ -722,4 +717,3 @@ void avrisp() {
         SERIAL.print((char)STK_NOSYNC);
   }
 }
-

@@ -66,7 +66,7 @@ uno.upload.speed=115200
 uno.bootloader.tool=avrdude
 uno.bootloader.low_fuses=0xFF
 uno.bootloader.high_fuses=0xDE
-uno.bootloader.extended_fuses=0x05
+uno.bootloader.extended_fuses=0xFD
 uno.bootloader.unlock_bits=0x3F
 uno.bootloader.lock_bits=0x0F
 uno.bootloader.file=optiboot/optiboot_atmega328.hex
@@ -94,16 +94,16 @@ diecimila.build.board=AVR_DUEMILANOVE
 diecimila.build.core=arduino
 diecimila.build.variant=standard
 
-## Arduino Duemilanove or Diecimila w/ ATmega328
-## ---------------------------------------------
-diecimila.menu.cpu.atmega328=ATmega328
+## Arduino Duemilanove or Diecimila w/ ATmega328P
+## ----------------------------------------------
+diecimila.menu.cpu.atmega328=ATmega328P
 
 diecimila.menu.cpu.atmega328.upload.maximum_size=30720
 diecimila.menu.cpu.atmega328.upload.maximum_data_size=2048
 diecimila.menu.cpu.atmega328.upload.speed=57600
 
 diecimila.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-diecimila.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+diecimila.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 diecimila.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 diecimila.menu.cpu.atmega328.build.mcu=atmega328p
@@ -117,7 +117,7 @@ diecimila.menu.cpu.atmega168.upload.maximum_data_size=1024
 diecimila.menu.cpu.atmega168.upload.speed=19200
 
 diecimila.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-diecimila.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+diecimila.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 diecimila.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 diecimila.menu.cpu.atmega168.build.mcu=atmega168
@@ -138,9 +138,9 @@ nano.build.board=AVR_NANO
 nano.build.core=arduino
 nano.build.variant=eightanaloginputs
 
-## Arduino Nano w/ ATmega328
-## -------------------------
-nano.menu.cpu.atmega328=ATmega328
+## Arduino Nano w/ ATmega328P
+## --------------------------
+nano.menu.cpu.atmega328=ATmega328P
 
 nano.menu.cpu.atmega328.upload.maximum_size=30720
 nano.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -148,7 +148,7 @@ nano.menu.cpu.atmega328.upload.speed=57600
 
 nano.menu.cpu.atmega328.bootloader.low_fuses=0xFF
 nano.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-nano.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+nano.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 nano.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 nano.menu.cpu.atmega328.build.mcu=atmega328p
@@ -163,7 +163,7 @@ nano.menu.cpu.atmega168.upload.speed=19200
 
 nano.menu.cpu.atmega168.bootloader.low_fuses=0xff
 nano.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-nano.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+nano.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 nano.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 nano.menu.cpu.atmega168.build.mcu=atmega168
@@ -303,6 +303,41 @@ leonardo.build.extra_flags={build.usb_flags}
 
 ##############################################################
 
+leonardoeth.name=Arduino Leonardo ETH
+leonardoeth.vid.0=0x2a03
+leonardoeth.pid.0=0x0040
+leonardoeth.vid.1=0x2a03
+leonardoeth.pid.1=0x8040
+
+leonardoeth.upload.tool=avrdude
+leonardoeth.upload.protocol=avr109
+leonardoeth.upload.maximum_size=28672
+leonardoeth.upload.maximum_data_size=2560
+leonardoeth.upload.speed=57600
+leonardoeth.upload.disable_flushing=true
+leonardoeth.upload.use_1200bps_touch=true
+leonardoeth.upload.wait_for_upload_port=true
+
+leonardoeth.bootloader.tool=avrdude
+leonardoeth.bootloader.low_fuses=0xff
+leonardoeth.bootloader.high_fuses=0xd8
+leonardoeth.bootloader.extended_fuses=0xcb
+leonardoeth.bootloader.file=caterina/Caterina-LeonardoEthernet.hex
+leonardoeth.bootloader.unlock_bits=0x3F
+leonardoeth.bootloader.lock_bits=0x2F
+
+leonardoeth.build.mcu=atmega32u4
+leonardoeth.build.f_cpu=16000000L
+leonardoeth.build.vid=0x2a03
+leonardoeth.build.pid=0x8040
+leonardoeth.build.usb_product="Arduino Leonardo ETH"
+leonardoeth.build.board=AVR_LEONARDO_ETH
+leonardoeth.build.core=arduino
+leonardoeth.build.variant=leonardo
+leonardoeth.build.extra_flags={build.usb_flags}
+
+##############################################################
+
 micro.name=Arduino/Genuino Micro
 
 micro.vid.0=0x2341
@@ -415,16 +450,16 @@ mini.build.board=AVR_MINI
 mini.build.core=arduino
 mini.build.variant=eightanaloginputs
 
-## Arduino Mini w/ ATmega328
-## -------------------------
-mini.menu.cpu.atmega328=ATmega328
+## Arduino Mini w/ ATmega328P
+## --------------------------
+mini.menu.cpu.atmega328=ATmega328P
 
 mini.menu.cpu.atmega328.upload.maximum_size=28672
 mini.menu.cpu.atmega328.upload.maximum_data_size=2048
 mini.menu.cpu.atmega328.upload.speed=115200
 
 mini.menu.cpu.atmega328.bootloader.high_fuses=0xd8
-mini.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+mini.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 mini.menu.cpu.atmega328.bootloader.file=optiboot/optiboot_atmega328-Mini.hex
 
 mini.menu.cpu.atmega328.build.mcu=atmega328p
@@ -438,7 +473,7 @@ mini.menu.cpu.atmega168.upload.maximum_data_size=1024
 mini.menu.cpu.atmega168.upload.speed=19200
 
 mini.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-mini.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+mini.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 mini.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
 
 mini.menu.cpu.atmega168.build.mcu=atmega168
@@ -456,7 +491,7 @@ ethernet.upload.speed=115200
 ethernet.bootloader.tool=avrdude
 ethernet.bootloader.low_fuses=0xff
 ethernet.bootloader.high_fuses=0xde
-ethernet.bootloader.extended_fuses=0x05
+ethernet.bootloader.extended_fuses=0xFD
 ethernet.bootloader.file=optiboot/optiboot_atmega328.hex
 ethernet.bootloader.unlock_bits=0x3F
 ethernet.bootloader.lock_bits=0x0F
@@ -480,7 +515,7 @@ fio.upload.speed=57600
 fio.bootloader.tool=avrdude
 fio.bootloader.low_fuses=0xFF
 fio.bootloader.high_fuses=0xDA
-fio.bootloader.extended_fuses=0x05
+fio.bootloader.extended_fuses=0xFD
 fio.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 fio.bootloader.unlock_bits=0x3F
 fio.bootloader.lock_bits=0x0F
@@ -510,14 +545,14 @@ bt.build.board=AVR_BT
 bt.build.core=arduino
 bt.build.variant=eightanaloginputs
 
-## Arduino BT w/ ATmega328
-## -----------------------
-bt.menu.cpu.atmega328=ATmega328
+## Arduino BT w/ ATmega328P
+## ------------------------
+bt.menu.cpu.atmega328=ATmega328P
 bt.menu.cpu.atmega328.upload.maximum_size=28672
 bt.menu.cpu.atmega328.upload.maximum_data_size=2048
 
 bt.menu.cpu.atmega328.bootloader.high_fuses=0xd8
-bt.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+bt.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 bt.menu.cpu.atmega328.bootloader.file=bt/ATmegaBOOT_168_atmega328_bt.hex
 
 bt.menu.cpu.atmega328.build.mcu=atmega328p
@@ -529,7 +564,7 @@ bt.menu.cpu.atmega168.upload.maximum_size=14336
 bt.menu.cpu.atmega168.upload.maximum_data_size=1024
 
 bt.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-bt.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+bt.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 bt.menu.cpu.atmega168.bootloader.file=bt/ATmegaBOOT_168.hex
 
 bt.menu.cpu.atmega168.build.mcu=atmega168
@@ -585,9 +620,9 @@ lilypad.build.board=AVR_LILYPAD
 lilypad.build.core=arduino
 lilypad.build.variant=standard
 
-## LilyPad Arduino w/ ATmega328
-## ----------------------------
-lilypad.menu.cpu.atmega328=ATmega328
+## LilyPad Arduino w/ ATmega328P
+## -----------------------------
+lilypad.menu.cpu.atmega328=ATmega328P
 
 lilypad.menu.cpu.atmega328.upload.maximum_size=30720
 lilypad.menu.cpu.atmega328.upload.maximum_data_size=2048
@@ -595,7 +630,7 @@ lilypad.menu.cpu.atmega328.upload.speed=57600
 
 lilypad.menu.cpu.atmega328.bootloader.low_fuses=0xFF
 lilypad.menu.cpu.atmega328.bootloader.high_fuses=0xDA
-lilypad.menu.cpu.atmega328.bootloader.extended_fuses=0x05
+lilypad.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
 lilypad.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 
 lilypad.menu.cpu.atmega328.build.mcu=atmega328p
@@ -610,7 +645,7 @@ lilypad.menu.cpu.atmega168.upload.speed=19200
 
 lilypad.menu.cpu.atmega168.bootloader.low_fuses=0xe2
 lilypad.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-lilypad.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+lilypad.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 lilypad.menu.cpu.atmega168.bootloader.file=lilypad/LilyPadBOOT_168.hex
 
 lilypad.menu.cpu.atmega168.build.mcu=atmega168
@@ -630,9 +665,9 @@ pro.build.board=AVR_PRO
 pro.build.core=arduino
 pro.build.variant=eightanaloginputs
 
-## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328
-## -------------------------------------------------
-pro.menu.cpu.16MHzatmega328=ATmega328 (5V, 16 MHz)
+## Arduino Pro or Pro Mini (5V, 16 MHz) w/ ATmega328P
+## --------------------------------------------------
+pro.menu.cpu.16MHzatmega328=ATmega328P (5V, 16 MHz)
 
 pro.menu.cpu.16MHzatmega328.upload.maximum_size=30720
 pro.menu.cpu.16MHzatmega328.upload.maximum_data_size=2048
@@ -640,15 +675,15 @@ pro.menu.cpu.16MHzatmega328.upload.speed=57600
 
 pro.menu.cpu.16MHzatmega328.bootloader.low_fuses=0xFF
 pro.menu.cpu.16MHzatmega328.bootloader.high_fuses=0xDA
-pro.menu.cpu.16MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.16MHzatmega328.bootloader.extended_fuses=0xFD
 pro.menu.cpu.16MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
 
 pro.menu.cpu.16MHzatmega328.build.mcu=atmega328p
 pro.menu.cpu.16MHzatmega328.build.f_cpu=16000000L
 
-## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328
-## --------------------------------------------------
-pro.menu.cpu.8MHzatmega328=ATmega328 (3.3V, 8 MHz)
+## Arduino Pro or Pro Mini (3.3V, 8 MHz) w/ ATmega328P
+## ---------------------------------------------------
+pro.menu.cpu.8MHzatmega328=ATmega328P (3.3V, 8 MHz)
 
 pro.menu.cpu.8MHzatmega328.upload.maximum_size=30720
 pro.menu.cpu.8MHzatmega328.upload.maximum_data_size=2048
@@ -656,7 +691,7 @@ pro.menu.cpu.8MHzatmega328.upload.speed=57600
 
 pro.menu.cpu.8MHzatmega328.bootloader.low_fuses=0xFF
 pro.menu.cpu.8MHzatmega328.bootloader.high_fuses=0xDA
-pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0x05
+pro.menu.cpu.8MHzatmega328.bootloader.extended_fuses=0xFD
 pro.menu.cpu.8MHzatmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
 
 pro.menu.cpu.8MHzatmega328.build.mcu=atmega328p
@@ -672,7 +707,7 @@ pro.menu.cpu.16MHzatmega168.upload.speed=19200
 
 pro.menu.cpu.16MHzatmega168.bootloader.low_fuses=0xff
 pro.menu.cpu.16MHzatmega168.bootloader.high_fuses=0xdd
-pro.menu.cpu.16MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.16MHzatmega168.bootloader.extended_fuses=0xF8
 pro.menu.cpu.16MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_diecimila.hex
 
 pro.menu.cpu.16MHzatmega168.build.mcu=atmega168
@@ -688,7 +723,7 @@ pro.menu.cpu.8MHzatmega168.upload.speed=19200
 
 pro.menu.cpu.8MHzatmega168.bootloader.low_fuses=0xc6
 pro.menu.cpu.8MHzatmega168.bootloader.high_fuses=0xdd
-pro.menu.cpu.8MHzatmega168.bootloader.extended_fuses=0x00
+pro.menu.cpu.8MHzatmega168.bootloader.extended_fuses=0xF8
 pro.menu.cpu.8MHzatmega168.bootloader.file=atmega/ATmegaBOOT_168_pro_8MHz.hex
 
 pro.menu.cpu.8MHzatmega168.build.mcu=atmega168
@@ -721,7 +756,7 @@ atmegang.menu.cpu.atmega168.upload.maximum_data_size=1024
 
 atmegang.menu.cpu.atmega168.bootloader.low_fuses=0xff
 atmegang.menu.cpu.atmega168.bootloader.high_fuses=0xdd
-atmegang.menu.cpu.atmega168.bootloader.extended_fuses=0x00
+atmegang.menu.cpu.atmega168.bootloader.extended_fuses=0xF8
 atmegang.menu.cpu.atmega168.bootloader.file=atmega/ATmegaBOOT_168_ng.hex
 
 atmegang.menu.cpu.atmega168.build.mcu=atmega168
@@ -735,6 +770,7 @@ atmegang.menu.cpu.atmega8.upload.maximum_data_size=1024
 
 atmegang.menu.cpu.atmega8.bootloader.low_fuses=0xdf
 atmegang.menu.cpu.atmega8.bootloader.high_fuses=0xca
+atmegang.menu.cpu.atmega8.bootloader.extended_fuses=
 atmegang.menu.cpu.atmega8.bootloader.file=atmega8/ATmegaBOOT-prod-firmware-2009-11-07.hex
 
 atmegang.menu.cpu.atmega8.build.mcu=atmega8
@@ -841,3 +877,177 @@ gemma.build.board=AVR_GEMMA
 gemma.upload.tool=avrdude
 gemma.upload.maximum_size=5310
 
+##############################################################
+
+# Adafruit Circuit Playground 32u4 w/Caterina Configuration
+circuitplay32u4cat.name=Adafruit Circuit Playground
+circuitplay32u4cat.bootloader.low_fuses=0xff
+circuitplay32u4cat.bootloader.high_fuses=0xd8
+circuitplay32u4cat.bootloader.extended_fuses=0xcb
+circuitplay32u4cat.bootloader.file=caterina/Caterina-Circuitplay32u4.hex
+circuitplay32u4cat.bootloader.unlock_bits=0x3F
+circuitplay32u4cat.bootloader.lock_bits=0x2F
+circuitplay32u4cat.bootloader.tool=avrdude
+circuitplay32u4cat.build.mcu=atmega32u4
+circuitplay32u4cat.build.f_cpu=8000000L
+circuitplay32u4cat.build.vid=0x239A
+circuitplay32u4cat.build.pid=0x8011
+circuitplay32u4cat.build.core=arduino
+circuitplay32u4cat.build.variant=circuitplay32u4
+circuitplay32u4cat.build.board=AVR_CIRCUITPLAY
+circuitplay32u4cat.build.usb_product="Circuit Playground"
+circuitplay32u4cat.build.usb_manufacturer="Adafruit"
+circuitplay32u4cat.build.extra_flags={build.usb_flags}
+circuitplay32u4cat.upload.protocol=avr109
+circuitplay32u4cat.upload.maximum_size=28672
+circuitplay32u4cat.upload.speed=57600
+circuitplay32u4cat.upload.disable_flushing=true
+circuitplay32u4cat.upload.use_1200bps_touch=true
+circuitplay32u4cat.upload.wait_for_upload_port=true
+circuitplay32u4cat.upload.tool=avrdude
+circuitplay32u4cat.vid.0=0x239A
+circuitplay32u4cat.pid.0=0x8011
+
+##############################################################
+
+yunmini.name=Arduino Yún Mini
+yunmini.upload.via_ssh=true
+
+yunmini.vid.0=0x2a03
+yunmini.pid.0=0x0050
+yunmini.vid.1=0x2a03
+yunmini.pid.1=0x8050
+
+yunmini.upload.tool=avrdude
+yunmini.upload.protocol=avr109
+yunmini.upload.maximum_size=28672
+yunmini.upload.maximum_data_size=2560
+yunmini.upload.speed=57600
+yunmini.upload.disable_flushing=true
+yunmini.upload.use_1200bps_touch=true
+yunmini.upload.wait_for_upload_port=true
+
+yunmini.bootloader.tool=avrdude
+yunmini.bootloader.low_fuses=0xff
+yunmini.bootloader.high_fuses=0xd8
+yunmini.bootloader.extended_fuses=0xfb
+yunmini.bootloader.file=caterina/Caterina-Yunmini.hex
+yunmini.bootloader.unlock_bits=0x3F
+yunmini.bootloader.lock_bits=0x2F
+
+yunmini.build.mcu=atmega32u4
+yunmini.build.f_cpu=16000000L
+yunmini.build.vid=0x2a03
+yunmini.build.pid=0x8050
+yunmini.build.usb_product="Arduino Yún Mini"
+yunmini.build.board=AVR_YUNMINI
+yunmini.build.core=arduino
+yunmini.build.variant=yun
+yunmini.build.extra_flags={build.usb_flags}
+
+##############################################################
+
+chiwawa.name=Arduino Industrial 101
+chiwawa.upload.via_ssh=true
+
+chiwawa.vid.0=0x2a03
+chiwawa.pid.0=0x0056
+chiwawa.vid.1=0x2a03
+chiwawa.pid.1=0x8056
+
+chiwawa.upload.tool=avrdude
+chiwawa.upload.protocol=avr109
+chiwawa.upload.maximum_size=28672
+chiwawa.upload.maximum_data_size=2560
+chiwawa.upload.speed=57600
+chiwawa.upload.disable_flushing=true
+chiwawa.upload.use_1200bps_touch=true
+chiwawa.upload.wait_for_upload_port=true
+
+chiwawa.bootloader.tool=avrdude
+chiwawa.bootloader.low_fuses=0xff
+chiwawa.bootloader.high_fuses=0xd8
+chiwawa.bootloader.extended_fuses=0xfb
+chiwawa.bootloader.file=caterina/Caterina-Industrial101.hex
+chiwawa.bootloader.unlock_bits=0x3F
+chiwawa.bootloader.lock_bits=0x2F
+
+chiwawa.build.mcu=atmega32u4
+chiwawa.build.f_cpu=16000000L
+chiwawa.build.vid=0x2a03
+chiwawa.build.pid=0x8056
+chiwawa.build.usb_product="Arduino Industrial 101"
+chiwawa.build.board=AVR_INDUSTRIAL101
+chiwawa.build.core=arduino
+chiwawa.build.variant=yun
+chiwawa.build.extra_flags={build.usb_flags}
+
+##############################################################
+
+one.name=Linino One
+one.upload.via_ssh=true
+
+one.vid.0=0x2a03
+one.pid.0=0x0001
+one.vid.1=0x2a03
+one.pid.1=0x8001
+
+one.upload.tool=avrdude
+one.upload.protocol=avr109
+one.upload.maximum_size=28672
+one.upload.maximum_data_size=2560
+one.upload.speed=57600
+one.upload.disable_flushing=true
+one.upload.use_1200bps_touch=true
+one.upload.wait_for_upload_port=true
+
+one.bootloader.tool=avrdude
+one.bootloader.low_fuses=0xff
+one.bootloader.high_fuses=0xd8
+one.bootloader.extended_fuses=0xfb
+one.bootloader.file=caterina/Caterina-LininoOne.hex
+one.bootloader.unlock_bits=0x3F
+one.bootloader.lock_bits=0x2F
+
+one.build.mcu=atmega32u4
+one.build.f_cpu=16000000L
+one.build.vid=0x2a03
+one.build.pid=0x8001
+one.build.usb_product="Linino One"
+one.build.board=AVR_LININO_ONE
+one.build.core=arduino
+one.build.variant=yun
+one.build.extra_flags={build.usb_flags}
+
+##############################################################
+
+unowifi.name=Arduino Uno WiFi
+unowifi.vid.0=0x2A03
+unowifi.pid.0=0x0057
+
+unowifi.upload.tool=avrdude
+unowifi.upload.protocol=arduino
+unowifi.upload.maximum_size=32256
+unowifi.upload.maximum_data_size=2048
+unowifi.upload.speed=115200
+unowifi.upload.network.endpoint_upload=/pgm/upload
+unowifi.upload.network.endpoint_sync=/pgm/sync
+unowifi.upload.network.sync_return=204:SYNC
+unowifi.upload.network.endpoint_reset=/log/reset
+unowifi.upload.network.port=80
+
+unowifi.bootloader.tool=avrdude
+unowifi.bootloader.low_fuses=0xFF
+unowifi.bootloader.high_fuses=0xDE
+unowifi.bootloader.extended_fuses=0x05
+unowifi.bootloader.unlock_bits=0x3F
+unowifi.bootloader.lock_bits=0x0F
+unowifi.bootloader.file=optiboot/optiboot_atmega328.hex
+
+unowifi.build.mcu=atmega328p
+unowifi.build.f_cpu=16000000L
+unowifi.build.board=AVR_UNO_WIFI_DEV_ED
+unowifi.build.core=arduino
+unowifi.build.variant=standard
+unowifi.build.esp_ch_uart_br=19200
+unowifi.build.extra_flags=-DESP_CH_UART -DESP_CH_UART_BR={build.esp_ch_uart_br}

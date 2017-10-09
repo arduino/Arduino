@@ -14,6 +14,8 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Enric Verdaguer <verdaga@hotmail.com>, 2016
 # Francesc Famadas <kiski97@gmail.com>, 2015
 # Marc GB <marc.giralt.butjosa@gmail.com>, 2016
@@ -28,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2017-09-19 14:21+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Catalan (http://www.transifex.com/mbanzi/arduino-ide-15/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -150,6 +152,10 @@ msgstr "URLs addicionals de Gestor de plaques:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Afrikaans"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -431,6 +437,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr "Només es pot passar un de: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -472,6 +482,10 @@ msgstr "Xinès (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Xinès (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1818,6 +1832,13 @@ msgstr "Monitor sèrie"
 msgid "Serial Plotter"
 msgstr "Plotter sèrie"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "El monitor sèrie no es troba disponible mentre el plotter està obert"
@@ -2094,13 +2115,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "La carpeta del bloc d'esbossos especificada conté la teva còpia de l'IDE.\nSisplau escull una carpeta diferent per al teu bloc d'esbossos."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Aquest arxiu ja s'ha copiat a\nla localització de on vosté està intentant afegir-lo.\n-."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2445,10 +2459,6 @@ msgstr "Microcontrolador trobat incorrecte. Ha seleccionat la placa adequada del
 msgid "Yes"
 msgstr "Sí"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "A mi no em pots enganyar"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "No pots importar una carpeta que conté el teu bloc d'esbossos"
@@ -2462,6 +2472,12 @@ msgstr "No pot desar el sketch en una carpeta\ndins del mateix. Això seria un p
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Ha oblidat el seu sketchbook"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

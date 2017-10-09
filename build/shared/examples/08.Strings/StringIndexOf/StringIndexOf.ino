@@ -1,16 +1,16 @@
 /*
   String indexOf() and lastIndexOf() functions
 
- Examples of how to evaluate, look for, and replace characters in a String
+  Examples of how to evaluate, look for, and replace characters in a String
 
- created 27 July 2010
- modified 2 Apr 2012
- by Tom Igoe
+  created 27 Jul 2010
+  modified 2 Apr 2012
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringIndexOf
+  This example code is in the public domain.
 
- This example code is in the public domain.
- */
+  http://www.arduino.cc/en/Tutorial/StringIndexOf
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -25,8 +25,8 @@ void setup() {
 }
 
 void loop() {
-  // indexOf() returns the position (i.e. index) of a particular character
-  // in a string. For example, if you were parsing HTML tags, you could use it:
+  // indexOf() returns the position (i.e. index) of a particular character in a
+  // String. For example, if you were parsing HTML tags, you could use it:
   String stringOne = "<HTML><HEAD><BODY>";
   int firstClosingBracket = stringOne.indexOf('>');
   Serial.println("The index of > in the string " + stringOne + " is " + firstClosingBracket);
@@ -63,4 +63,3 @@ void loop() {
   // do nothing while true:
   while (true);
 }
-

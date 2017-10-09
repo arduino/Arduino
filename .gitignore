@@ -20,6 +20,7 @@ build/windows/*.zip
 build/windows/*.tgz
 build/windows/*.tar.bz2
 build/windows/libastylej*
+build/windows/liblistSerials*
 build/windows/arduino-*.zip
 build/windows/dist/*.tar.gz
 build/windows/dist/*.tar.bz2

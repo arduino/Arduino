@@ -22,6 +22,11 @@ arduinoisp.protocol=arduinoisp
 arduinoisp.program.tool=avrdude
 arduinoisp.program.extra_params=
 
+arduinoisporg.name=ArduinoISP.org
+arduinoisporg.protocol=arduinoisporg
+arduinoisporg.program.tool=avrdude
+arduinoisporg.program.extra_params=
+
 usbasp.name=USBasp
 usbasp.communication=usb
 usbasp.protocol=usbasp
@@ -51,18 +56,6 @@ usbGemma.program.tool=avrdude
 usbGemma.program.extra_params=
 usbGemma.config.path={runtime.platform.path}/bootloaders/gemma/avrdude.conf
 
-# STK500 firmware version v1 and v2 use different serial protocols.
-# Using the 'stk500' protocol tells avrdude to try and autodetect the
-# firmware version. If this leads to problems, we might need to add
-# stk500v1 and stk500v2 entries to allow explicitely selecting the
-# firmware version.
-stk500.name=Atmel STK500 development board
-stk500.communication=serial
-stk500.protocol=stk500
-stk500.program.protocol=stk500
-stk500.program.tool=avrdude
-stk500.program.extra_params=-P{serial.port}
-
 ## Notes about Dangerous Prototypes Bus Pirate as ISP
 ## Bus Pirate V3 need Firmware v5.10 or later
 ## Bus Pirate V4 need Firmware v6.3-r2151 or later
@@ -76,3 +69,38 @@ buspirate.program.protocol=buspirate
 buspirate.program.tool=avrdude
 buspirate.program.extra_params=-P{serial.port}
 
+# STK500 firmware version v1 and v2 use different serial protocols.
+# Using the 'stk500' protocol tells avrdude to try and autodetect the
+# firmware version. If this leads to problems, we might need to add
+# stk500v1 and stk500v2 entries to allow explicitely selecting the
+# firmware version.
+stk500.name=Atmel STK500 development board
+stk500.communication=serial
+stk500.protocol=stk500
+stk500.program.protocol=stk500
+stk500.program.tool=avrdude
+stk500.program.extra_params=-P{serial.port}
+
+jtag3isp.name=Atmel JTAGICE3 (ISP mode)
+jtag3isp.communication=usb
+jtag3isp.protocol=jtag3isp
+jtag3isp.program.protocol=jtag3isp
+jtag3isp.program.tool=avrdude
+jtag3isp.program.extra_params=
+
+jtag3.name=Atmel JTAGICE3 (JTAG mode)
+jtag3.communication=usb
+jtag3.protocol=jtag3
+jtag3.program.protocol=jtag3
+jtag3.program.tool=avrdude
+# Set a bitclock of 0.1us (the fastest supported value). This should
+# work regardless of the crystal used, since JTAG doesn't use the MCU
+# clock but dictates its own clock.
+jtag3.program.extra_params=-B0.1
+
+atmel_ice.name=Atmel-ICE (AVR)
+atmel_ice.communication=usb
+atmel_ice.protocol=atmelice_isp
+atmel_ice.program.protocol=atmelice_isp
+atmel_ice.program.tool=avrdude
+atmel_ice.program.extra_params=-Pusb

@@ -94,6 +94,8 @@ public abstract class PreferencesHelper {
     try {
       // ParseDouble handle numbers with decimals too
       size = (int) Double.parseDouble(split[2]);
+      if (size < 1) // Do not allow negative or zero size
+        throw new NumberFormatException();
     } catch (NumberFormatException e) {
       // for wrong formatted size pick the default
       size = 12;

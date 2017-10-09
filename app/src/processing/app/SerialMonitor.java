@@ -62,6 +62,12 @@ public class SerialMonitor extends AbstractTextMonitor {
         textField.setText("");
       }
     });
+    
+    onClearCommand(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        textArea.setText("");
+      }
+    });
   }
 
   private void send(String s) {
@@ -75,6 +81,8 @@ public class SerialMonitor extends AbstractTextMonitor {
           break;
         case 3:
           s += "\r\n";
+          break;
+        default:
           break;
       }
       if ("".equals(s) && lineEndings.getSelectedIndex() == 0 && !PreferencesData.has("runtime.line.ending.alert.notified")) {

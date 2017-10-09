@@ -85,17 +85,17 @@ public class GPGDetachedSignatureVerifier extends SignatureVerifier {
     }
   }
 
-  private PGPPublicKey readPublicKey(File file, String keyId) throws IOException, PGPException {
+  private PGPPublicKey readPublicKey(File file, String id) throws IOException, PGPException {
     InputStream keyIn = null;
     try {
       keyIn = new BufferedInputStream(new FileInputStream(file));
-      return readPublicKey(keyIn, keyId);
+      return readPublicKey(keyIn, id);
     } finally {
       IOUtils.closeQuietly(keyIn);
     }
   }
 
-  private PGPPublicKey readPublicKey(InputStream input, String keyId) throws IOException, PGPException {
+  private PGPPublicKey readPublicKey(InputStream input, String id) throws IOException, PGPException {
     PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(input), new BcKeyFingerprintCalculator());
 
     Iterator<PGPPublicKeyRing> keyRingIter = pgpPub.getKeyRings();
@@ -106,7 +106,7 @@ public class GPGDetachedSignatureVerifier extends SignatureVerifier {
       while (keyIter.hasNext()) {
         PGPPublicKey key = keyIter.next();
 
-        if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(keyId)) {
+        if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(id)) {
           return key;
         }
       }

@@ -1,26 +1,25 @@
 /*
   Arduino Starter Kit example
- Project 10  - Zoetrope
+  Project 10 - Zoetrope
 
- This sketch is written to accompany Project 10 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 10 in the Arduino Starter Kit
 
- Parts required:
- two 10 kilohm resistors
- 2 momentary pushbuttons
- one 10 kilohm potentiometer
- motor
- 9V battery
- H-Bridge
+  Parts required:
+  - two 10 kilohm resistors
+  - two momentary pushbuttons
+  - one 10 kilohm potentiometer
+  - motor
+  - 9V battery
+  - H-Bridge
 
- Created 13 September 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  created 13 Sep 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
 const int controlPin1 = 2; // connected to pin 7 on the H-bridge
 const int controlPin2 = 3; // connected to pin 2 on the H-bridge
@@ -30,7 +29,7 @@ const int onOffSwitchStateSwitchPin = 5; // connected to the switch for turning 
 const int potPin = A0;  // connected to the potentiometer's output
 
 // create some variables to hold values from your inputs
-int onOffSwitchState = 0;  // current state of the On/Off switch
+int onOffSwitchState = 0;  // current state of the on/off switch
 int previousOnOffSwitchState = 0; // previous position of the on/off switch
 int directionSwitchState = 0;  // current state of the direction switch
 int previousDirectionSwitchState = 0;  // previous state of the direction switch
@@ -40,7 +39,7 @@ int motorSpeed = 0; // speed of the motor
 int motorDirection = 1; // current direction of the motor
 
 void setup() {
-  // intialize the inputs and outputs
+  // initialize the inputs and outputs
   pinMode(directionSwitchPin, INPUT);
   pinMode(onOffSwitchStateSwitchPin, INPUT);
   pinMode(controlPin1, OUTPUT);
@@ -59,8 +58,8 @@ void loop() {
   // read the value of the direction switch
   directionSwitchState = digitalRead(directionSwitchPin);
 
-  // read the value of the pot and divide by 4 to get
-  // a value that can be used for PWM
+  // read the value of the pot and divide by 4 to get a value that can be
+  // used for PWM
   motorSpeed = analogRead(potPin) / 4;
 
   // if the on/off button changed state since the last loop()
@@ -79,8 +78,8 @@ void loop() {
     }
   }
 
-  // change the direction the motor spins by talking
-  // to the control pins on the H-Bridge
+  // change the direction the motor spins by talking to the control pins
+  // on the H-Bridge
   if (motorDirection == 1) {
     digitalWrite(controlPin1, HIGH);
     digitalWrite(controlPin2, LOW);
@@ -97,12 +96,8 @@ void loop() {
     //turn the motor off
     analogWrite(enablePin, 0);
   }
-  // save the current On/Offswitch state as the previous
+  // save the current on/off switch state as the previous
   previousDirectionSwitchState = directionSwitchState;
   // save the current switch state as the previous
   previousOnOffSwitchState = onOffSwitchState;
 }
-
-
-
-

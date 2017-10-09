@@ -64,6 +64,7 @@ public class Compiler implements MessageConsumer {
   //used by transifex integration
   static {
     tr("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
+    tr("Archiving built core (caching) in: {0}");
     tr("Board {0} (platform {1}, package {2}) is unknown");
     tr("Bootloader file specified but missing: {0}");
     tr("Build options changed, rebuilding all");
@@ -96,6 +97,31 @@ public class Compiler implements MessageConsumer {
     tr("Warning: platform.txt from core '{0}' misses property '{1}', using default value '{2}'. Consider upgrading this core.");
     tr("Warning: platform.txt from core '{0}' contains deprecated {1}, automatically converted to {2}. Consider upgrading this core.");
     tr("WARNING: Spurious {0} folder in '{1}' library");
+    tr("Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} bytes.");
+    tr("Couldn't determine program size: {0}");
+    tr("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes.");
+    tr("Global variables use {0} bytes of dynamic memory.");
+    tr("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it.");
+    tr("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint.");
+    tr("Low memory available, stability problems may occur.");
+    tr("An error occurred while verifying the sketch");
+    tr("An error occurred while verifying/uploading the sketch");
+    tr("Can't find the sketch in the specified path");
+    tr("Done compiling");
+    tr("Done uploading");
+    tr("Error while uploading");
+    tr("Error while verifying");
+    tr("Error while verifying/uploading");
+    tr("Mode not supported");
+    tr("Multiple files not supported");
+    tr("No command line parameters found");
+    tr("No parameters");
+    tr("No sketch");
+    tr("No sketchbook");
+    tr("Only --verify, --upload or --get-pref are supported");
+    tr("Sketchbook path not defined");
+    tr("The --upload option supports only one file at a time");
+    tr("Verifying and uploading...");
   }
 
   enum BuilderAction {
@@ -113,6 +139,7 @@ public class Compiler implements MessageConsumer {
   private final File pathToSketch;
   private final Sketch sketch;
   private String buildPath;
+  private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
 
@@ -127,7 +154,14 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+    ArrayList<CompilerProgressListener> listeners = new ArrayList<>();
+    listeners.add(progListener);
+    return this.build(listeners, exportHex);
+  }
+
+  public String build(ArrayList<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
+    this.buildCache = BaseNoGui.getCachePath();
 
     TargetBoard board = BaseNoGui.getTargetBoard();
     if (board == null) {
@@ -140,7 +174,7 @@ public class Compiler implements MessageConsumer {
 
     PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
 
-    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListener), "\n");
+    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
     callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);
@@ -155,8 +189,6 @@ public class Compiler implements MessageConsumer {
 
       runActions("hooks.savehex.postsavehex", prefs);
     }
-
-    size(prefs);
 
     return sketch.getPrimaryFile().getFileName();
   }
@@ -214,10 +246,8 @@ public class Compiler implements MessageConsumer {
     addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
     addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
-    cmd.add("-built-in-libraries");
-    cmd.add(BaseNoGui.getContentFile("libraries").getAbsolutePath());
-    cmd.add("-libraries");
-    cmd.add(BaseNoGui.getSketchbookLibrariesFolder().getAbsolutePath());
+    addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
+    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     cmd.add("-fqbn=" + fqbn);
@@ -230,6 +260,11 @@ public class Compiler implements MessageConsumer {
     cmd.add("-build-path");
     cmd.add(buildPath);
     cmd.add("-warnings=" + PreferencesData.get("compiler.warning_level"));
+
+    if (PreferencesData.getBoolean("compiler.cache_core") == true && buildCache != null) {
+      cmd.add("-build-cache");
+      cmd.add(buildCache.getAbsolutePath());
+    }
 
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
@@ -293,56 +328,6 @@ public class Compiler implements MessageConsumer {
       RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
       re.hideStackTrace();
       throw re;
-    }
-  }
-
-  private void size(PreferencesMap prefs) throws RunnerException {
-    String maxTextSizeString = prefs.get("upload.maximum_size");
-    String maxDataSizeString = prefs.get("upload.maximum_data_size");
-
-    if (maxTextSizeString == null) {
-      return;
-    }
-
-    long maxTextSize = Integer.parseInt(maxTextSizeString);
-    long maxDataSize = -1;
-
-    if (maxDataSizeString != null) {
-      maxDataSize = Integer.parseInt(maxDataSizeString);
-    }
-
-    Sizer sizer = new Sizer(prefs);
-    long[] sizes;
-    try {
-      sizes = sizer.computeSize();
-    } catch (RunnerException e) {
-      System.err.println(I18n.format(tr("Couldn't determine program size: {0}"), e.getMessage()));
-      return;
-    }
-
-    long textSize = sizes[0];
-    long dataSize = sizes[1];
-    System.out.println();
-    System.out.println(I18n.format(tr("Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} bytes."), textSize, maxTextSize, textSize * 100 / maxTextSize));
-    if (dataSize >= 0) {
-      if (maxDataSize > 0) {
-        System.out.println(I18n.format(tr("Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes for local variables. Maximum is {1} bytes."), dataSize, maxDataSize, dataSize * 100 / maxDataSize, maxDataSize - dataSize));
-      } else {
-        System.out.println(I18n.format(tr("Global variables use {0} bytes of dynamic memory."), dataSize));
-      }
-    }
-
-    if (textSize > maxTextSize) {
-      throw new RunnerException(tr("Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing it."));
-    }
-
-    if (maxDataSize > 0 && dataSize > maxDataSize) {
-      throw new RunnerException(tr("Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size for tips on reducing your footprint."));
-    }
-
-    int warnDataPercentage = Integer.parseInt(prefs.get("build.warn_data_percentage"));
-    if (maxDataSize > 0 && dataSize > maxDataSize * warnDataPercentage / 100) {
-      System.err.println(tr("Low memory available, stability problems may occur."));
     }
   }
 
@@ -584,18 +569,18 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
-      RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+      RunnerException ex = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
 
-      if (exception != null) {
-        String fileName = exception.getCodeFile().getPrettyName();
-        int lineNum = exception.getCodeLine() + 1;
+      if (ex != null) {
+        String fileName = ex.getCodeFile().getPrettyName();
+        int lineNum = ex.getCodeLine() + 1;
         s = fileName + ":" + lineNum + ": error: " + error + msg;
       }
 
-      if (exception != null) {
-        if (this.exception == null || this.exception.getMessage().equals(exception.getMessage())) {
-          this.exception = exception;
-          this.exception.hideStackTrace();
+      if (ex != null) {
+        if (exception == null || exception.getMessage().equals(ex.getMessage())) {
+          exception = ex;
+          exception.hideStackTrace();
         }
       }
     }
