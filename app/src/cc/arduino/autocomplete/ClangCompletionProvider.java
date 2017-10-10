@@ -58,7 +58,7 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
   public ClangCompletionProvider(Editor e, DefaultCompletionProvider cp) {
     super(cp);
     editor = e;
-    //setParameterizedCompletionParams('(', ", ", ')');
+    cp.setParameterizedCompletionParams('(', ", ", ')');
   }
 
   @Override
@@ -98,21 +98,23 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
       allCc = mapper.readValue(out, ArduinoCompletionsList.class);
       for (ArduinoCompletion cc : allCc) {
 
-        if (cc.type.equals("Macro")) {
-          // for now skip macro
-          continue;
-        }
-
-        if (cc.type.equals("Function")) {
+        if (cc.type.equals("Function") || cc.type.equals("Macro")) {
           List<Parameter> params = new ArrayList<>();
           int i=0;
+          String fancyParameters = "(";
           for (CompletionChunk chunk : cc.completion.chunks) {
             if (chunk.placeholder != null) {
               ArduinoParameter p = cc.parameters.get(i);
               params.add(new Parameter(p.type, p.name));
+              fancyParameters += (p.name.equals("") ? p.type : p.name) + ", ";
               i++;
             }
           }
+          int lastComma = fancyParameters.lastIndexOf(",");
+          if (lastComma > 0) {
+            fancyParameters = fancyParameters.substring(0, lastComma);
+          }
+          fancyParameters += ")";
 
           if (!cc.getCompletion().getTypedText().startsWith(getAlreadyEnteredText(textarea))) {
             continue;
@@ -122,6 +124,7 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
               cc.getCompletion().getTypedText(),
               cc.getCompletion().getResultType());
           compl.setParams(params);
+          compl.setShortDescription(fancyParameters + " : " + cc.getCompletion().getResultType());
           res.add(compl);
           continue;
         }
@@ -129,12 +132,14 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
         String returnType = "";
         String typedText = null;
         String template = "";
+        String fancyParameters = "(";
+
         for (CompletionChunk chunk : cc.completion.chunks) {
           if (chunk.t != null) {
             template += chunk.t;
           }
           if (chunk.res != null) {
-            returnType = " - " + chunk.res;
+            returnType = chunk.res;
           }
           if (chunk.typedtext != null) {
             template += chunk.typedtext;
@@ -143,16 +148,22 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
           if (chunk.placeholder != null) {
             String[] spl = chunk.placeholder.split(" ");
             template += "${" + spl[spl.length - 1] + "}";
+            fancyParameters += spl[spl.length - 1] + ", ";
           }
           if (chunk.info != null) {
             //System.out.println("INFO: "+chunk.info);
           }
         }
         template += "${cursor}";
+        int lastComma = fancyParameters.lastIndexOf(",");
+        if (lastComma > 0) {
+          fancyParameters = fancyParameters.substring(0, lastComma);
+        }
+        fancyParameters += ")";
         //System.out.println("TEMPLATE: " + template);
         if (typedText.startsWith(getAlreadyEnteredText(textarea))) {
-        res.add(new TemplateCompletion(this, typedText, typedText + returnType,
-            template));
+          TemplateCompletion compl = new TemplateCompletion(this, typedText, fancyParameters + " : " + returnType , template);
+          res.add(compl);
         }
       }
       return res;
