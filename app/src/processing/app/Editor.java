@@ -354,6 +354,9 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketchController = null;
+
+    // default the console output to the last opened editor
+    EditorConsole.setCurrentEditorConsole(console);
   }
 
   @Override
@@ -2588,6 +2591,7 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
 
   private void handleBurnBootloader() {
     console.clear();
+    EditorConsole.setCurrentEditorConsole(this.console);
     statusNotice(tr("Burning bootloader to I/O Board (this may take a minute)..."));
     new Thread(() -> {
       try {

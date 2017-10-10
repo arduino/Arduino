@@ -629,9 +629,6 @@ public class Base {
         System.err.println(e);
       }
     }
-
-    // set the current window to be the console that's getting output
-    EditorConsole.setCurrentEditorConsole(activeEditor.console);
   }
 
   protected int[] defaultEditorLocation() {
