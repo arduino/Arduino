@@ -631,6 +631,8 @@ public class SketchController {
       progressListener.progress(20);
     }
 
+    EditorConsole.setCurrentEditorConsole(editor.console);
+
     ensureExistence();
        
 
@@ -692,6 +694,8 @@ public class SketchController {
 
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+
+    EditorConsole.setCurrentEditorConsole(editor.console);
 
     boolean success = false;
     do {
