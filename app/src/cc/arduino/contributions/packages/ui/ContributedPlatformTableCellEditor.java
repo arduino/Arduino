@@ -33,6 +33,7 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,6 +52,8 @@ import cc.arduino.utils.ReverseComparator;
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
+  private List<Component> cellList = new ArrayList<Component>();
+
   private ContributedPlatformTableCellJPanel cell;
   private ContributedPlatformReleases value;
 
@@ -65,6 +68,10 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
                                                int column) {
     value = (ContributedPlatformReleases) _value;
 
+    if (cellList.size() > row && cellList.get(row) != null) {
+      return cellList.get(row);
+    }
+
     cell = new ContributedPlatformTableCellJPanel();
     cell.installButton.addActionListener(e -> onInstall(value.getSelected(),
                                                         value.getInstalled()));
@@ -74,9 +81,10 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
           .getSelectedItem();
       onInstall(selected, value.getInstalled());
     });
-    cell.versionToInstallChooser.addItemListener(e -> value
-        .select((ContributedPlatform) cell.versionToInstallChooser
-            .getSelectedItem()));
+    cell.versionToInstallChooser.addItemListener(e -> {
+      value.select((ContributedPlatform) cell.versionToInstallChooser
+            .getSelectedItem());
+    });
 
     setEnabled(true);
 
@@ -129,6 +137,9 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
     cell.update(table, _value, true, !installedBuiltIn.isEmpty());
     cell.setBackground(new Color(218, 227, 227)); // #dae3e3
+
+    cellList.add(row, cell);
+
     return cell;
   }
 

@@ -171,10 +171,15 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     contribTable.addMouseMotionListener(new MouseMotionListener() {
 
+        private int previousRowAtPoint = -1;
+
         public void mouseDragged(MouseEvent e) {}
 
         public void mouseMoved(MouseEvent e) {
-            contribTable.editCellAt(contribTable.rowAtPoint(e.getPoint()), 0);
+            if (contribTable.rowAtPoint(e.getPoint()) != previousRowAtPoint) {
+              contribTable.editCellAt(contribTable.rowAtPoint(e.getPoint()), 0);
+              previousRowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            }
         }
     });
 
