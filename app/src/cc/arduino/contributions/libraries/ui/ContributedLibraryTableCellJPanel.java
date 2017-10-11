@@ -52,7 +52,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
-    downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
+    downgradeChooser.setMaximumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.setMinimumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
     downgradeChooser.addItemListener(e -> {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
       boolean disableDowngrade = (e.getItem() == selectVersionItem);
@@ -62,7 +63,9 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser
-        .setMaximumSize(versionToInstallChooser.getPreferredSize());
+        .setMaximumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
+    versionToInstallChooser
+        .setMinimumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
 
     makeNewDescription();
 
