@@ -42,6 +42,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,21 +56,26 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkListener;
 
 import cc.arduino.Constants;
+import processing.app.Base;
+import processing.app.Editor;
 import processing.app.Theme;
 
 public class NotificationPopup extends JDialog {
 
   private Timer autoCloseTimer = new Timer(false);
   private boolean autoClose = true;
+  private Editor editor;
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+  public NotificationPopup(Editor parent, HyperlinkListener hyperlinkListener,
                            String message) {
     this(parent, hyperlinkListener, message, true);
+    editor = parent;
   }
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+  public NotificationPopup(Editor parent, HyperlinkListener hyperlinkListener,
                            String message, boolean _autoClose) {
     super(parent, false);
+    editor = parent;
     autoClose = _autoClose;
     setLayout(new FlowLayout());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -87,7 +93,9 @@ public class NotificationPopup extends JDialog {
     text.setEditable(false);
     text.setText("<html><body style=\"font-family:sans-serif; font-size: "
                  + scale(14) + ";\">  " + message + "  </body></html>");
-    text.addHyperlinkListener(hyperlinkListener);
+    if (hyperlinkListener != null) {
+      text.addHyperlinkListener(hyperlinkListener);
+    }
     add(text);
 
     Image close = Theme.getThemeImage("close", this, scale(22), scale(22));
@@ -158,5 +166,29 @@ public class NotificationPopup extends JDialog {
       }, Constants.NOTIFICATION_POPUP_AUTOCLOSE_DELAY);
     }
     setVisible(true);
+  }
+
+  public void beginWhenFocused() {
+    if (editor.isFocused()) {
+      begin();
+      return;
+    }
+    Base base = editor.getBase();
+
+    // If the IDE is not focused wait until it is focused again to
+    // display the notification, this avoids the annoying side effect
+    // to "steal" the focus from another application.
+    WindowFocusListener wfl = new WindowFocusListener() {
+      @Override
+      public void windowLostFocus(WindowEvent evt) {
+      }
+
+      @Override
+      public void windowGainedFocus(WindowEvent evt) {
+        begin();
+        base.getEditors().forEach(e -> e.removeWindowFocusListener(this));
+      }
+    };
+    base.getEditors().forEach(e -> e.addWindowFocusListener(wfl));
   }
 }
