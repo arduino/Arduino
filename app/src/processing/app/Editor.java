@@ -370,6 +370,10 @@ public class Editor extends JFrame implements RunnerListener {
     EditorConsole.setCurrentEditorConsole(console);
   }
 
+  public Base getBase() {
+    return base;
+  }
+
   /**
    * Handles files dragged & dropped from the desktop and into the editor
    * window. Dragging files into the editor window is the same as using
