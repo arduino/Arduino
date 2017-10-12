@@ -43,6 +43,7 @@ import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
 import org.fife.ui.autocomplete.ParameterizedCompletion.Parameter;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import processing.app.Editor;
@@ -95,7 +96,25 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
       // Parse engine output and build code completions
       ObjectMapper mapper = new ObjectMapper();
       ArduinoCompletionsList allCc;
-      allCc = mapper.readValue(out, ArduinoCompletionsList.class);
+      try {
+        allCc = mapper.readValue(out, ArduinoCompletionsList.class);
+      } catch (JsonParseException e) {
+        System.err.println("Error parsing autocomplete output:");
+        System.err.println();
+        int begin = (int) e.getLocation().getCharOffset() - 100;
+        if (begin < 0) {
+          begin = 0;
+        }
+        int end = begin + 100;
+        if (end >= out.length()) {
+          System.err.println(out.substring(begin));
+        } else {
+          System.err.println(out.substring(begin, end));
+        }
+        System.err.println();
+        e.printStackTrace();
+        return res;
+      }
       for (ArduinoCompletion cc : allCc) {
 
         if (cc.type.equals("Function") || cc.type.equals("Macro")) {
