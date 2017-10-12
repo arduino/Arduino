@@ -28,6 +28,7 @@ import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
 import cc.arduino.builder.ArduinoBuilder;
 import cc.arduino.packages.Uploader;
+import cc.arduino.view.NotificationPopup;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.FileUtils;
@@ -38,6 +39,8 @@ import processing.app.packages.UserLibrary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -717,6 +720,31 @@ public class SketchController {
     try {
       return builder.codeComplete(BaseNoGui.getTargetBoard(), pathToSketch, requestedFile, line, col);
       //return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
+    } catch (Exception x) {
+
+      // Try getting some more useful information about the error;
+      // Launch the same command in non-daemon mode, overriding verbosity to
+      // print the actual call
+      // TODO: override verbosity
+      try {
+        // Gather command line and preprocesor output
+        String out = new Compiler(pathToSketch, sketch)
+            .codeComplete(editor.status.getCompilerProgressListeners(),
+                          requestedFile, line, col);
+        System.out.println("autocomplete failure output:\n" + out);
+
+        SwingUtilities.invokeLater(() -> {
+          NotificationPopup notificationPopup = new NotificationPopup(editor,
+              null, tr("Code complete is not available. Try increasing ulimit."),
+              true);
+          notificationPopup.beginWhenFocused();
+        });
+
+        return "";
+      } catch (Exception e) {
+        // Ignore
+        return "";
+      }
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
