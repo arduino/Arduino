@@ -359,6 +359,10 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
     EditorConsole.setCurrentEditorConsole(console);
   }
 
+  public Base getBase() {
+    return base;
+  }
+
   @Override
   public void focusGained(FocusEvent fe){
     if (watcher != null) {
