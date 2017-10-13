@@ -209,6 +209,11 @@ msgstr "Archive sketch as:"
 msgid "Archive sketch canceled."
 msgstr "Archive sketch canceled."
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
+
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
@@ -657,6 +662,10 @@ msgstr "Data Processing"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Data Storage"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1164,6 +1173,10 @@ msgstr "Include Library"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Incorrect IDE installation folder"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2085,12 +2098,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "The sketch folder has disappeared.\n Will attempt to re-save in the same location,\nbut anything besides the code will be lost."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "The sketch name had to be modified. Sketch names can only consist\nof ASCII characters and numbers (but cannot start with a number).\nThey should also be less than 64 characters long."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""
