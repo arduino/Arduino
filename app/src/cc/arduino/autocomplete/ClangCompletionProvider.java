@@ -117,7 +117,7 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
       }
       for (ArduinoCompletion cc : allCc) {
 
-        if (cc.type.equals("Function") || cc.type.equals("Macro")) {
+        if (cc.type.equals("Function")) {
           List<Parameter> params = new ArrayList<>();
           int i=0;
           String fancyParameters = "(";
