@@ -64,4 +64,7 @@ public class VersionHelper {
     }
   }
 
+  public static int compare(String a, String b) {
+    return valueOf(a).compareTo(valueOf(b));
+  }
 }

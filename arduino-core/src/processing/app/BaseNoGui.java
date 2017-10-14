@@ -1,5 +1,31 @@
 package processing.app;
 
+import static processing.app.I18n.tr;
+import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.logging.impl.LogFactoryImpl;
+import org.apache.commons.logging.impl.NoOpLog;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import cc.arduino.Constants;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
@@ -8,42 +34,33 @@ import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.contributions.packages.ContributionsIndexer;
+import cc.arduino.files.DeleteFilesOnShutdown;
+import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.DiscoveryManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.logging.impl.LogFactoryImpl;
-import org.apache.commons.logging.impl.NoOpLog;
-import processing.app.debug.*;
-import processing.app.helpers.*;
+import processing.app.debug.LegacyTargetPackage;
+import processing.app.debug.LegacyTargetPlatform;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
+import processing.app.debug.TargetPlatformException;
+import processing.app.helpers.BasicUserNotifier;
+import processing.app.helpers.CommandlineParser;
+import processing.app.helpers.FileUtils;
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.UserNotifier;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
-import cc.arduino.files.DeleteFilesOnShutdown;
-import processing.app.helpers.FileUtils;
-
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import cc.arduino.packages.BoardPort;
-
-import static processing.app.I18n.tr;
-import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
-
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10805;
+  public static final int REVISION = 10900;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.8.5";
+  public static final String VERSION_NAME = "1.9.0-beta";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -87,7 +104,7 @@ public class BaseNoGui {
   public static Map<String, LibraryList> importToLibraryTable;
 
   // XXX: Remove this field
-  static private List<File> librariesFolders;
+  static private ArrayList<File> librariesFolders;
 
   static UserNotifier notifier = new BasicUserNotifier();
 
@@ -241,11 +258,27 @@ public class BaseNoGui {
     return getContentFile("hardware");
   }
 
+  static public List<File> getAllHardwareFolders() {
+    List<File> res = new ArrayList<>();
+    res.add(getHardwareFolder());
+    res.add(new File(getSettingsFolder(), "packages"));
+    res.add(getSketchbookHardwareFolder());
+    return res.stream().filter(x -> x.isDirectory()).collect(Collectors.toList());
+  }
+
+  static public List<File> getAllToolsFolders() {
+    List<File> res = new ArrayList<>();
+    res.add(BaseNoGui.getContentFile("tools-builder"));
+    res.add(FileUtils.newFile(BaseNoGui.getHardwareFolder(), "tools", "avr"));
+    res.add(new File(getSettingsFolder(), "packages"));
+    return res.stream().filter(x -> x.isDirectory()).collect(Collectors.toList());
+  }
+
   static public String getHardwarePath() {
     return getHardwareFolder().getAbsolutePath();
   }
 
-  static public List<File> getLibrariesPath() {
+  static public ArrayList<File> getLibrariesPath() {
     return librariesFolders;
   }
 
@@ -679,8 +712,9 @@ public class BaseNoGui {
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
     librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    librariesIndexer.setLibrariesFolders(librariesFolders);
-    librariesIndexer.rescanLibraries();
+    if (librariesIndexer.getLibrariesFolders() == null || !librariesIndexer.getLibrariesFolders().equals(librariesFolders)) {
+      librariesIndexer.setLibrariesFolders(librariesFolders);
+    }
 
     populateImportToLibraryTable();
   }

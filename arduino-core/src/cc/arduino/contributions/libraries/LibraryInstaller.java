@@ -43,6 +43,8 @@ import processing.app.helpers.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static processing.app.I18n.tr;
 
@@ -82,15 +84,44 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
+  public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
+    ArrayList<ContributedLibrary> libs = new ArrayList<>();
+    libs.add(lib);
+    install(libs, progressListener);
+  }
+
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
+    MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
+
+    for (ContributedLibrary lib : libs) {
+      // Do install library (3 steps)
+      performInstall(lib, progressListener, progress);
+    }
+
+    // Rescan index (1 step)
+    rescanLibraryIndex(progress, progressListener);
+  }
+
+  private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
-    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
+    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
+    File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
 
-    final MultiStepProgress progress = new MultiStepProgress(3);
+    // Check if we are replacing an already installed lib
+    ContributedLibrary replacedLib = null;
+    LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
+    for (ContributedLibrary l : index.find(lib.getName())) {
+      if (l.isInstalled() && l.getInstalledFolder().equals(destFolder)) {
+        replacedLib = l;
+        break;
+      }
+    }
+
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
 
     // Step 1: Download library
     try {
@@ -99,6 +130,7 @@ public class LibraryInstaller {
       // Download interrupted... just exit
       return;
     }
+    progress.stepDone();
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
@@ -107,7 +139,6 @@ public class LibraryInstaller {
     // Step 2: Unpack library on the correct location
     progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
     progressListener.onProgress(progress);
-    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
@@ -120,12 +151,8 @@ public class LibraryInstaller {
     // Step 3: Remove replaced library and move installed one to the correct location
     // TODO: Fix progress bar...
     remove(replacedLib, progressListener);
-    File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
-
-    // Step 4: Rescan index
-    rescanLibraryIndex(progress, progressListener);
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {

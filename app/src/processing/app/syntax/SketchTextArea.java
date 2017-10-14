@@ -30,24 +30,12 @@
 
 package processing.app.syntax;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
-import org.apache.commons.compress.utils.IOUtils;
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rtextarea.RTextArea;
-import org.fife.ui.rtextarea.RTextAreaUI;
-import processing.app.Base;
-import processing.app.BaseNoGui;
-import processing.app.PreferencesData;
-
-import javax.swing.event.EventListenerList;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Segment;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,6 +44,34 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.swing.KeyStroke;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Segment;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.LinkGenerator;
+import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Style;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenImpl;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaUI;
+
+import cc.arduino.autocomplete.SketchCompletionProvider;
+import processing.app.Base;
+import processing.app.BaseNoGui;
+import processing.app.PreferencesData;
+import processing.app.Sketch;
 import processing.app.helpers.OSUtils;
 
 /**
@@ -64,12 +80,13 @@ import processing.app.helpers.OSUtils;
  * @author Ricardo JL Rufino (ricardo@criativasoft.com.br)
  * @since 1.6.4
  */
+@SuppressWarnings("unused")
 public class SketchTextArea extends RSyntaxTextArea {
 
   private final static Logger LOG = Logger.getLogger(SketchTextArea.class.getName());
 
   private PdeKeywords pdeKeywords;
-
+  
   public SketchTextArea(RSyntaxDocument document, PdeKeywords pdeKeywords) throws IOException {
     super(document);
     this.pdeKeywords = pdeKeywords;
@@ -81,7 +98,7 @@ public class SketchTextArea extends RSyntaxTextArea {
     pdeKeywords = keywords;
     setLinkGenerator(new DocLinkGenerator(pdeKeywords));
   }
-
+  
   private void installFeatures() throws IOException {
     setTheme(PreferencesData.get("editor.syntax_theme", "default"));
 

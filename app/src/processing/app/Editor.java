@@ -44,6 +44,7 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
+import processing.app.tools.WatchDir;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -72,11 +73,20 @@ import java.util.ArrayList;
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
 
+import processing.app.helpers.FileUtils;
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 /**
  * Main editor panel for the Processing Development Environment.
  */
 @SuppressWarnings("serial")
-public class Editor extends JFrame implements RunnerListener {
+public class Editor extends JFrame implements RunnerListener, FocusListener {
 
   public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
 
@@ -86,6 +96,7 @@ public class Editor extends JFrame implements RunnerListener {
   private final Box upper;
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
+  private static boolean watcherDisable = false;
 
   private static class ShouldSaveIfModified
       implements Predicate<SketchController> {
@@ -197,6 +208,10 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable exportHandler;
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
+
+  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  protected Thread watcher = null;
+  protected Runnable task = null;
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -339,8 +354,30 @@ public class Editor extends JFrame implements RunnerListener {
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketchController = null;
+
+    // default the console output to the last opened editor
+    EditorConsole.setCurrentEditorConsole(console);
   }
 
+  public Base getBase() {
+    return base;
+  }
+
+  @Override
+  public void focusGained(FocusEvent fe){
+    if (watcher != null) {
+      watcher.interrupt();
+      watcher = null;
+    }
+  }
+
+  @Override
+  public void focusLost(FocusEvent fe){
+    if (watcher == null) {
+      watcher = new Thread(task);
+      watcher.start();
+    }
+  }
 
   /**
    * Handles files dragged & dropped from the desktop and into the editor
@@ -732,16 +769,16 @@ public class Editor extends JFrame implements RunnerListener {
 
     addInternalTools(toolsMenu);
 
-    JMenuItem item = newJMenuItemShift(tr("Serial Monitor"), 'M');
+    JMenuItem item = newJMenuItemShift(tr("Manage Libraries..."), 'O');
+    item.addActionListener(e -> base.openLibraryManager("", ""));
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Monitor"), 'M');
     item.addActionListener(e -> handleSerial());
     toolsMenu.add(item);
 
     item = newJMenuItemShift(tr("Serial Plotter"), 'L');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePlotter();
-        }
-    });
+    item.addActionListener(e -> handlePlotter());
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
@@ -769,6 +806,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     base.rebuildProgrammerMenu();
     programmersMenu = new JMenu(tr("Programmer"));
+    MenuScroller.setScrollerFor(programmersMenu);
     base.getProgrammerMenus().stream().forEach(programmersMenu::add);
     toolsMenu.add(programmersMenu);
 
@@ -963,8 +1001,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   JMenuItem createToolMenuItem(String className) {
     try {
-      Class<?> toolClass = Class.forName(className);
-      final Tool tool = (Tool) toolClass.newInstance();
+      final Tool tool = getOrCreateToolInstance(className);
 
       JMenuItem item = new JMenuItem(tool.getMenuTitle());
 
@@ -983,6 +1020,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private Tool getOrCreateToolInstance(String className) {
+    Tool internalTool = internalToolCache.get(className);
+    if (internalTool == null) {
+      try {
+        Class<?> toolClass = Class.forName(className);
+        internalTool = (Tool) toolClass.newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+      internalToolCache.put(className, internalTool);
+    }
+    return internalTool;
+  }
 
   private void addInternalTools(JMenu menu) {
     JMenuItem item;
@@ -1375,7 +1426,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), '+');
+    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
     increaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           base.handleFontSizeChange(1);
@@ -1383,7 +1434,7 @@ public class Editor extends JFrame implements RunnerListener {
     });
     menu.add(increaseFontSizeItem);
 
-    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), '-');
+    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), KeyEvent.VK_MINUS);
     decreaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           base.handleFontSizeChange(-1);
@@ -1668,7 +1719,7 @@ public class Editor extends JFrame implements RunnerListener {
    *          the given file.
    * @throws IOException
    */
-  protected void addTab(SketchFile file, String contents) throws IOException {
+  public synchronized void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
         .addDocumentListener(new DocumentTextChangeListener(
@@ -1677,7 +1728,7 @@ public class Editor extends JFrame implements RunnerListener {
     reorderTabs();
   }
 
-  protected void removeTab(SketchFile file) throws IOException {
+  public synchronized void removeTab(SketchFile file) throws IOException {
     int index = findTabIndex(file);
     tabs.remove(index);
   }
@@ -1919,7 +1970,7 @@ public class Editor extends JFrame implements RunnerListener {
         // copy the sketch inside
         File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          Base.copyFile(sketchFile, properPdeFile);
+          FileUtils.copy(new File(sketchFile.getParent()), properFolder);
         } catch (IOException e) {
           Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
@@ -1945,6 +1996,29 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Disable untitled setting from previous document, if any
     untitled = false;
+
+    if (watcherDisable == true) {
+      return true;
+    }
+
+    // Add FS watcher for current Editor instance
+    Path dir = file.toPath().getParent();
+
+    Editor instance = this;
+
+    task = new Runnable() {
+      public void run() {
+        try {
+          new WatchDir(dir, true).processEvents(instance);
+        } catch (IOException x) {
+          watcherDisable = true;
+        }
+      }
+    };
+
+    addFocusListener(this);
+    getTabs().forEach(tab -> tab.getScrollPane().addFocusListener(this));
+    getTabs().forEach(tab -> tab.getTextArea().addFocusListener(this));
 
     // opening was successful
     return true;
@@ -2015,6 +2089,11 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+
       boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();
@@ -2197,6 +2276,10 @@ public class Editor extends JFrame implements RunnerListener {
       resumeOrCloseSerialPlotter();
       base.onBoardOrPortChange();
     }
+  }
+
+  public boolean isCompiling() {
+    return uploading;
   }
 
   private void resumeOrCloseSerialMonitor() {
@@ -2512,6 +2595,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private void handleBurnBootloader() {
     console.clear();
+    EditorConsole.setCurrentEditorConsole(this.console);
     statusNotice(tr("Burning bootloader to I/O Board (this may take a minute)..."));
     new Thread(() -> {
       try {

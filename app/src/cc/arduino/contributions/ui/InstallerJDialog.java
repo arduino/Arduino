@@ -43,6 +43,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -165,6 +167,20 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
         contribTable.editCellAt(contribTable.getSelectedRow(), contribTable.getSelectedColumn());
       }
+    });
+
+    contribTable.addMouseMotionListener(new MouseMotionListener() {
+
+        private int previousRowAtPoint = -1;
+
+        public void mouseDragged(MouseEvent e) {}
+
+        public void mouseMoved(MouseEvent e) {
+            if (contribTable.rowAtPoint(e.getPoint()) != previousRowAtPoint) {
+              contribTable.editCellAt(contribTable.rowAtPoint(e.getPoint()), 0);
+              previousRowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            }
+        }
     });
 
     {
