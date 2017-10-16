@@ -153,18 +153,15 @@ public class WatchDir {
                     }
                   } catch (IOException e) {}
                 } else if (kind == ENTRY_DELETE) {
-                  List<EditorTab> tabs = editor.getTabs();
-                  Iterator<EditorTab> iter = tabs.iterator();
-                  while (iter.hasNext()) {
-                    EditorTab tab = iter.next();
-                    if (name.getFileName().toString().equals(tab.getSketchFile().getFileName())) {
-                      try {
-                        editor.removeTab(tab.getSketchFile());
-                      } catch (IOException e) {}
-                    }
+                  try {
+                    Thread.sleep(100);
+                    int index = editor.getSketch().findFileIndex(child.toAbsolutePath().toFile());
+                    editor.removeTab(editor.getSketch().getFile(index));
+                  } catch (Exception e1) {
+                    // Totally fine, if the sleep gets interrupted it means that
+                    // the action was executed in the UI, not externally
                   }
                 }
-                editor.getTabs().forEach(tab -> tab.reload());
 
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
