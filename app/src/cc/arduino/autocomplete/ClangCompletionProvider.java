@@ -115,7 +115,14 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
         e.printStackTrace();
         return res;
       }
+
+      String enteredText = getAlreadyEnteredText(textarea);
+
       for (ArduinoCompletion cc : allCc) {
+        // Filter completions based on already entered text
+        if (!cc.getCompletion().getTypedText().startsWith(enteredText)) {
+          continue;
+        }
 
         if (cc.type.equals("Function")) {
           List<Parameter> params = new ArrayList<>();
@@ -134,10 +141,6 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
             fancyParameters = fancyParameters.substring(0, lastComma);
           }
           fancyParameters += ")";
-
-          if (!cc.getCompletion().getTypedText().startsWith(getAlreadyEnteredText(textarea))) {
-            continue;
-          }
 
           FunctionCompletion compl = new FunctionCompletion(this,
               cc.getCompletion().getTypedText(),
@@ -180,10 +183,8 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
         }
         fancyParameters += ")";
         //System.out.println("TEMPLATE: " + template);
-        if (typedText.startsWith(getAlreadyEnteredText(textarea))) {
-          TemplateCompletion compl = new TemplateCompletion(this, typedText, fancyParameters + " : " + returnType , template);
-          res.add(compl);
-        }
+        TemplateCompletion compl = new TemplateCompletion(this, typedText, fancyParameters + " : " + returnType , template);
+        res.add(compl);
       }
       return res;
     } catch (Exception e) {
