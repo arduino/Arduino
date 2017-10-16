@@ -54,8 +54,6 @@ import cc.arduino.utils.ReverseComparator;
 @SuppressWarnings("serial")
 public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
-  private List<Component> cellList = new ArrayList<Component>();
-
   private ContributedLibraryReleases editorValue;
   private ContributedLibraryTableCellJPanel editorCell;
 
@@ -142,6 +140,15 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
+
+    if (cellList.size() < row) {
+      // allocate the empty slots
+      int i = cellList.size();
+      while (i < row) {
+        cellList.add(i, null);
+        i++;
+      }
+    }
 
     cellList.add(row, editorCell);
 
