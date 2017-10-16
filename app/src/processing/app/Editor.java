@@ -86,7 +86,7 @@ import java.io.File;
  * Main editor panel for the Processing Development Environment.
  */
 @SuppressWarnings("serial")
-public class Editor extends JFrame implements RunnerListener, FocusListener {
+public class Editor extends JFrame implements RunnerListener {
 
   public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
 
@@ -237,12 +237,20 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
     // When bringing a window to front, let the Base know
     addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
+          if (watcher != null) {
+            watcher.interrupt();
+            watcher = null;
+          }
           base.handleActivated(Editor.this);
         }
 
         // added for 1.0.5
         // http://dev.processing.org/bugs/show_bug.cgi?id=1260
         public void windowDeactivated(WindowEvent e) {
+          if (watcher == null) {
+            watcher = new Thread(task);
+            watcher.start();
+          }
           fileMenu.remove(sketchbookMenu);
           fileMenu.remove(examplesMenu);
           List<Component> toolsMenuItemsToRemove = new LinkedList<>();
@@ -357,22 +365,6 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
 
     // default the console output to the last opened editor
     EditorConsole.setCurrentEditorConsole(console);
-  }
-
-  @Override
-  public void focusGained(FocusEvent fe){
-    if (watcher != null) {
-      watcher.interrupt();
-      watcher = null;
-    }
-  }
-
-  @Override
-  public void focusLost(FocusEvent fe){
-    if (watcher == null) {
-      watcher = new Thread(task);
-      watcher.start();
-    }
   }
 
   /**
@@ -2011,10 +2003,6 @@ public class Editor extends JFrame implements RunnerListener, FocusListener {
         }
       }
     };
-
-    addFocusListener(this);
-    getTabs().forEach(tab -> tab.getScrollPane().addFocusListener(this));
-    getTabs().forEach(tab -> tab.getTextArea().addFocusListener(this));
 
     // opening was successful
     return true;
