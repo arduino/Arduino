@@ -1,3 +1,8 @@
+ARDUINO 1.8.6
+
+[ide]
+* Added translations for library types. Thanks @ReAlUA
+
 ARDUINO 1.8.5 2017.09.29
 
 (bugfix service release)
