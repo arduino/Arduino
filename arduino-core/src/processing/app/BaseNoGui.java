@@ -907,7 +907,14 @@ public class BaseNoGui {
    */
   static public void saveFile(String str, File file) throws IOException {
     File temp = File.createTempFile(file.getName(), null, file.getParentFile());
-    PApplet.saveStrings(temp, new String[] { str });
+    // Split the file content using minimum common separator \n
+    // then trim any other character (\r) so saveStrings can print it in the correct
+    // format for every OS
+    String strArray[] = str.split("\n");
+    for (String item : strArray) {
+      item.trim();
+    }
+    PApplet.saveStrings(temp, strArray);
 
     try {
       file = file.getCanonicalFile();
