@@ -151,7 +151,9 @@ public class WatchDir {
                       SketchFile sketch = editor.getSketch().addFile(filename);
                       editor.addTab(sketch, null);
                     }
-                  } catch (IOException e) {}
+                  } catch (Exception e) {
+                    return;
+                  }
                 } else if (kind == ENTRY_DELETE) {
                   try {
                     Thread.sleep(100);
@@ -160,9 +162,14 @@ public class WatchDir {
                   } catch (Exception e1) {
                     // Totally fine, if the sleep gets interrupted it means that
                     // the action was executed in the UI, not externally
+                    return;
                   }
                 }
-
+                editor.getTabs().forEach(tab -> {
+                  if (!tab.isModified()) {
+                      tab.reload();
+                    }
+                });
                 // if directory is created, and watching recursively, then
                 // register it and its sub-directories
                 if (recursive && (kind == ENTRY_CREATE)) {
