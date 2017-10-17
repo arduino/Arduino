@@ -36,7 +36,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
 import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.LanguageAwareCompletionProvider;
@@ -117,79 +116,85 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
       }
 
       String enteredText = getAlreadyEnteredText(textarea);
-
       for (ArduinoCompletion cc : allCc) {
         // Filter completions based on already entered text
         if (!cc.getCompletion().getTypedText().startsWith(enteredText)) {
           continue;
         }
 
-        if (cc.type.equals("Function")) {
-          List<Parameter> params = new ArrayList<>();
-          int i=0;
-          String fancyParameters = "(";
-          for (CompletionChunk chunk : cc.completion.chunks) {
-            if (chunk.placeholder != null) {
-              ArduinoParameter p = cc.parameters.get(i);
-              params.add(new Parameter(p.type, p.name));
-              fancyParameters += (p.name.equals("") ? p.type : p.name) + ", ";
-              i++;
-            }
-          }
-          int lastComma = fancyParameters.lastIndexOf(",");
-          if (lastComma > 0) {
-            fancyParameters = fancyParameters.substring(0, lastComma);
-          }
-          fancyParameters += ")";
-
-          FunctionCompletion compl = new FunctionCompletion(this,
-              cc.getCompletion().getTypedText(),
-              cc.getCompletion().getResultType());
-          compl.setParams(params);
-          compl.setShortDescription(fancyParameters + " : " + cc.getCompletion().getResultType());
-          res.add(compl);
-          continue;
-        }
-
-        String returnType = "";
-        String typedText = null;
-        String template = "";
-        String fancyParameters = "(";
-
-        for (CompletionChunk chunk : cc.completion.chunks) {
-          if (chunk.t != null) {
-            template += chunk.t;
-          }
-          if (chunk.res != null) {
-            returnType = chunk.res;
-          }
-          if (chunk.typedtext != null) {
-            template += chunk.typedtext;
-            typedText = chunk.typedtext;
-          }
-          if (chunk.placeholder != null) {
-            String[] spl = chunk.placeholder.split(" ");
-            template += "${" + spl[spl.length - 1] + "}";
-            fancyParameters += spl[spl.length - 1] + ", ";
-          }
-          if (chunk.info != null) {
-            //System.out.println("INFO: "+chunk.info);
-          }
-        }
-        template += "${cursor}";
-        int lastComma = fancyParameters.lastIndexOf(",");
-        if (lastComma > 0) {
-          fancyParameters = fancyParameters.substring(0, lastComma);
-        }
-        fancyParameters += ")";
-        //System.out.println("TEMPLATE: " + template);
-        TemplateCompletion compl = new TemplateCompletion(this, typedText, fancyParameters + " : " + returnType , template);
-        res.add(compl);
+        Completion completion = createCompletionFromArduinoCompletion(cc);
+        res.add(completion);
       }
       return res;
     } catch (Exception e) {
       e.printStackTrace();
       return res;
+    }
+  }
+
+  private Completion createCompletionFromArduinoCompletion(ArduinoCompletion cc) {
+    if (cc.type.equals("Function")) {
+      List<Parameter> params = new ArrayList<>();
+      int i = 0;
+      String shortDesc = "(";
+      for (CompletionChunk chunk : cc.completion.chunks) {
+        if (chunk.placeholder != null) {
+          ArduinoParameter p = cc.parameters.get(i);
+          params.add(new Parameter(p.type, p.name));
+          shortDesc += (p.name.equals("") ? p.type : p.name) + ", ";
+          i++;
+        }
+      }
+      int lastComma = shortDesc.lastIndexOf(",");
+      if (lastComma > 0) {
+        shortDesc = shortDesc.substring(0, lastComma);
+      }
+      shortDesc += ")";
+
+      FunctionCompletion compl = new FunctionCompletion(this,
+          cc.getCompletion().getTypedText(),
+          cc.getCompletion().getResultType());
+      compl.setParams(params);
+      compl.setShortDescription(shortDesc + " : "
+                                + cc.getCompletion().getResultType());
+      return compl;
+    } else {
+
+      String returnType = "";
+      String typedText = null;
+      String template = "";
+      String shortDesc = "";
+
+      for (CompletionChunk chunk : cc.completion.chunks) {
+        if (chunk.t != null) {
+          template += chunk.t;
+          shortDesc += chunk.t;
+        }
+        if (chunk.res != null) {
+          returnType = chunk.res;
+        }
+        if (chunk.typedtext != null) {
+          template += chunk.typedtext;
+          typedText = chunk.typedtext;
+        }
+        if (chunk.placeholder != null) {
+          String[] spl = chunk.placeholder.split(" ");
+          template += "${" + spl[spl.length - 1] + "}";
+          shortDesc += spl[spl.length - 1] + ", ";
+        }
+        if (chunk.info != null) {
+          // System.out.println("INFO: "+chunk.info);
+        }
+      }
+      template += "${cursor}";
+      int lastComma = shortDesc.lastIndexOf(",");
+      if (lastComma > 0) {
+        shortDesc = shortDesc.substring(0, lastComma);
+      }
+      shortDesc += ")";
+      System.out.println("TEMPLATE: " + template);
+      return new TemplateCompletion(this, typedText,
+          shortDesc + " : " + returnType, template);
     }
   }
 }
