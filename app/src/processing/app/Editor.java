@@ -242,7 +242,6 @@ public class Editor extends JFrame implements RunnerListener {
             watcher = null;
           }
           base.handleActivated(Editor.this);
-          getTabs().forEach(tab -> tab.reload());
         }
 
         // added for 1.0.5
