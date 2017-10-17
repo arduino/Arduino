@@ -120,21 +120,25 @@ public class CompletionsRenderer extends DefaultListCellRenderer {
     //
     // } else
     if (value instanceof ShorthandCompletion) {
-      text = ((ShorthandCompletion) value).getShortDescription();
+      ShorthandCompletion v = (ShorthandCompletion) value;
+      text = v.getShortDescription();
       tokenType = CompletionType.TEMPLATE;
     } else if (value instanceof FunctionCompletion) {
-      text = font(((FunctionCompletion) value).getInputText(), LIGHT_BLUE)
-          + font(((FunctionCompletion) value).getShortDescription(), GRAY);
+      FunctionCompletion v = (FunctionCompletion) value;
+      text = font(v.getInputText(), LIGHT_BLUE) + " "
+             + font(v.getShortDescription(), GRAY);
       tokenType = CompletionType.FUNCTION;
     } else if (value instanceof BasicCompletion) {
-      text = ((BasicCompletion) value).getInputText();
-      if (((BasicCompletion) value).getShortDescription() != null) {
-        text = ((BasicCompletion) value).getShortDescription();
+      BasicCompletion v = (BasicCompletion) value;
+      if (v.getShortDescription() != null) {
+        text = v.getShortDescription();
+      } else {
+        text = v.getInputText();
       }
     } else if (value instanceof TemplateCompletion) {
-      TemplateCompletion template = (TemplateCompletion) value;
-      text = font(template.getInputText(), LIGHT_BLUE)
-             + font(template.getDefinitionString(), GRAY);
+      TemplateCompletion v = (TemplateCompletion) value;
+      text = font(v.getInputText(), LIGHT_BLUE) + " "
+             + font(v.getDefinitionString(), GRAY);
     }
 
     if (text == null) {

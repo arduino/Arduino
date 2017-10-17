@@ -175,26 +175,25 @@ public class ClangCompletionProvider extends LanguageAwareCompletionProvider {
         }
         if (chunk.typedtext != null) {
           template += chunk.typedtext;
+          shortDesc += chunk.typedtext;
           typedText = chunk.typedtext;
         }
         if (chunk.placeholder != null) {
           String[] spl = chunk.placeholder.split(" ");
           template += "${" + spl[spl.length - 1] + "}";
-          shortDesc += spl[spl.length - 1] + ", ";
+          shortDesc += spl[spl.length - 1];
         }
         if (chunk.info != null) {
           // System.out.println("INFO: "+chunk.info);
         }
       }
       template += "${cursor}";
-      int lastComma = shortDesc.lastIndexOf(",");
-      if (lastComma > 0) {
-        shortDesc = shortDesc.substring(0, lastComma);
-      }
-      shortDesc += ")";
       System.out.println("TEMPLATE: " + template);
-      return new TemplateCompletion(this, typedText,
-          shortDesc + " : " + returnType, template);
+      System.out.println("SHORT: " + shortDesc);
+      if (!returnType.isEmpty()) {
+        shortDesc += " : " + returnType;
+      }
+      return new TemplateCompletion(this, typedText, shortDesc, template);
     }
   }
 }
