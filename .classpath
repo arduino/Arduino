@@ -28,5 +28,8 @@
 	<classpathentry kind="lib" path="app/lib/commons-compress-1.8.jar"/>
 	<classpathentry kind="lib" path="app/lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
+	<classpathentry kind="lib" path="app/lib/jssc-2.8.0-arduino1.jar"/>
+	<classpathentry kind="lib" path="app/lib/java-semver-0.8.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/app"/>
 	<classpathentry kind="output" path="app/bin"/>
 </classpath>
