@@ -37,13 +37,10 @@ import javax.jmdns.*;
 import java.net.InetAddress;
 import java.util.*;
 
-import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
-
 public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
-  private Timer reachabilityTimer;
   private JmmDNS jmdns = null;
 
   private void removeDuplicateBoards(BoardPort newBoard) {
@@ -81,6 +78,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
     }
 
     ServiceInfo info = serviceEvent.getInfo();
+
     for (InetAddress inetAddress : info.getInet4Addresses()) {
       String address = inetAddress.getHostAddress();
       String name = serviceEvent.getName();
@@ -145,10 +143,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   @Override
   public void start() {
+	System.getProperties().setProperty("net.dns.ttl", "10");
     jmdns = JmmDNS.Factory.getInstance();
     jmdns.addServiceListener("_arduino._tcp.local.", this);
-    reachabilityTimer =  new Timer();
-    new BoardReachabilityFilter(this).start(reachabilityTimer);
   }
 
   @Override
@@ -164,15 +161,12 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
       e.printStackTrace();
     }
     */
-    if (reachabilityTimer != null) {
-      reachabilityTimer.cancel();
-    }
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards() {
       synchronized (reachableBoardPorts) {
-      return new LinkedList<>(reachableBoardPorts);
+      return getBoardPortsDiscoveredWithJmDNS();
     }
   }
 
