@@ -38,7 +38,7 @@
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/jmdns-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/jmdns-3.5.3.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.22.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.22.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>

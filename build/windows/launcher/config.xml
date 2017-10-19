@@ -41,7 +41,7 @@
     <cp>%EXEDIR%/lib/jackson-databind-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/jackson-module-mrbean-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
-    <cp>%EXEDIR%/lib/jmdns-3.5.1.jar</cp>
+    <cp>%EXEDIR%/lib/jmdns-3.5.3.jar</cp>
     <cp>%EXEDIR%/lib/slf4j-simple-1.7.22.jar</cp>
     <cp>%EXEDIR%/lib/slf4j-api-1.7.22.jar</cp>
     <cp>%EXEDIR%/lib/jna-4.2.2.jar</cp>
