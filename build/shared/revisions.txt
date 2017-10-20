@@ -2,6 +2,10 @@ ARDUINO 1.8.6
 
 [ide]
 * Added translations for library types. Thanks @ReAlUA
+* Added scroller in programmers menu.
+* Added "accelerator" in scrollable menu, press "a" key while scrolling
+* Keep Board Manager always window on top
+* keyword.txt now allows any whitespace. Thanks @bhagman
 
 ARDUINO 1.8.5 2017.09.29
 
