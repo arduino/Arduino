@@ -26,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+#include <util/atomic.h>
 #include "Arduino.h"
 
 #include "HardwareSerial.h"
@@ -75,6 +76,13 @@ void serialEventRun(void)
   if (Serial3_available && serialEvent3 && Serial3_available()) serialEvent3();
 #endif
 }
+
+// macro to guard critical sections when needed for large TX buffer sizes
+#if (SERIAL_TX_BUFFER_SIZE>256)
+#define TX_BUFFER_ATOMIC ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+#else
+#define TX_BUFFER_ATOMIC
+#endif
 
 // Actual interrupt handlers //////////////////////////////////////////////////////////////
 
@@ -177,15 +185,13 @@ int HardwareSerial::read(void)
 
 int HardwareSerial::availableForWrite(void)
 {
-#if (SERIAL_TX_BUFFER_SIZE>256)
-  uint8_t oldSREG = SREG;
-  cli();
-#endif
-  tx_buffer_index_t head = _tx_buffer_head;
-  tx_buffer_index_t tail = _tx_buffer_tail;
-#if (SERIAL_TX_BUFFER_SIZE>256)
-  SREG = oldSREG;
-#endif
+  tx_buffer_index_t head;
+  tx_buffer_index_t tail;
+
+  TX_BUFFER_ATOMIC {
+    head = _tx_buffer_head;
+    tail = _tx_buffer_tail;
+  }
   if (head >= tail) return SERIAL_TX_BUFFER_SIZE - 1 - head + tail;
   return tail - head - 1;
 }
