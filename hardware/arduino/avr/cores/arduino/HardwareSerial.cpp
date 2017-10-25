@@ -246,9 +246,14 @@ size_t HardwareSerial::write(uint8_t c)
   }
 
   _tx_buffer[_tx_buffer_head] = c;
-  _tx_buffer_head = i;
-	
-  sbi(*_ucsrb, UDRIE0);
+
+  // make atomic to prevent execution of ISR between setting the
+  // head pointer and setting the interrupt flag resulting in buffer
+  // retransmission
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    _tx_buffer_head = i;
+    sbi(*_ucsrb, UDRIE0);
+  }
   
   return 1;
 }
