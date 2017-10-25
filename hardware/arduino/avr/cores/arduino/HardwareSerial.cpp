@@ -97,8 +97,10 @@ void HardwareSerial::_tx_udr_empty_irq(void)
 
   // clear the TXC bit -- "can be cleared by writing a one to its bit
   // location". This makes sure flush() won't return until the bytes
-  // actually got written
-  sbi(*_ucsra, TXC0);
+  // actually got written. Other r/w bits are preserved, and zeroes
+  // written to the rest.
+
+  *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << MPCM0))) | (1 << TXC0);
 
   if (_tx_buffer_head == _tx_buffer_tail) {
     // Buffer empty, so disable interrupts
@@ -225,7 +227,7 @@ size_t HardwareSerial::write(uint8_t c)
   // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
   if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
     *_udr = c;
-    sbi(*_ucsra, TXC0);
+    *_ucsra = ((*_ucsra) & ((1 << U2X0) | (1 << MPCM0))) | (1 << TXC0);
     return 1;
   }
   tx_buffer_index_t i = (_tx_buffer_head + 1) % SERIAL_TX_BUFFER_SIZE;
