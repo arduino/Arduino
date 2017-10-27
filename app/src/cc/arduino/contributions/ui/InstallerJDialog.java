@@ -43,6 +43,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -83,6 +85,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
   // Real contribution table
   protected JTable contribTable;
+  private InstallerTableCell cellEditor;
   // Model behind the table
   protected final FilteredAbstractTableModel<T> contribModel;
   private final JButton closeButton;
@@ -123,6 +126,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
             contribTable.getCellEditor().stopCellEditing();
           }
           updateIndexFilter(filters, categoryFilter);
+          cellEditor.clearCache();
           if (contribModel.getRowCount() == 1) {
             // TODO: understand why it doesn't work
             //contribTable.addRowSelectionInterval(0, 0);
@@ -167,11 +171,26 @@ public abstract class InstallerJDialog<T> extends JDialog {
       }
     });
 
+    contribTable.addMouseMotionListener(new MouseMotionListener() {
+
+        private int previousRowAtPoint = -1;
+
+        public void mouseDragged(MouseEvent e) {}
+
+        public void mouseMoved(MouseEvent e) {
+            if (contribTable.rowAtPoint(e.getPoint()) != previousRowAtPoint) {
+              contribTable.editCellAt(contribTable.rowAtPoint(e.getPoint()), 0);
+              previousRowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            }
+        }
+    });
+
     {
       TableColumnModel tcm = contribTable.getColumnModel();
       TableColumn col = tcm.getColumn(0);
       col.setCellRenderer(createCellRenderer());
-      col.setCellEditor(createCellEditor());
+      cellEditor = createCellEditor();
+      col.setCellEditor(cellEditor);
       col.setResizable(true);
     }
 
@@ -244,6 +263,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
   public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
     Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
     contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
+    cellEditor.clearCache();
   }
 
   public void setErrorMessage(String message) {
@@ -292,6 +312,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
           contribTable.getCellEditor().stopCellEditing();
         }
         updateIndexFilter(filters, categoryFilter);
+        cellEditor.clearCache();
       }
     }
   };

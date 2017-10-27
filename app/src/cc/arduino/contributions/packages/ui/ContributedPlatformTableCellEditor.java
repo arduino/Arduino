@@ -33,6 +33,7 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,6 +66,10 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
                                                int column) {
     value = (ContributedPlatformReleases) _value;
 
+    if (cellList.size() > row && cellList.get(row) != null) {
+      return cellList.get(row);
+    }
+
     cell = new ContributedPlatformTableCellJPanel();
     cell.installButton.addActionListener(e -> onInstall(value.getSelected(),
                                                         value.getInstalled()));
@@ -74,9 +79,10 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
           .getSelectedItem();
       onInstall(selected, value.getInstalled());
     });
-    cell.versionToInstallChooser.addItemListener(e -> value
-        .select((ContributedPlatform) cell.versionToInstallChooser
-            .getSelectedItem()));
+    cell.versionToInstallChooser.addItemListener(e -> {
+      value.select((ContributedPlatform) cell.versionToInstallChooser
+            .getSelectedItem());
+    });
 
     setEnabled(true);
 
@@ -129,6 +135,17 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
 
     cell.update(table, _value, true, !installedBuiltIn.isEmpty());
     cell.setBackground(new Color(218, 227, 227)); // #dae3e3
+
+    if (cellList.size() < row) {
+      // allocate the empty slots
+      int i = cellList.size();
+      while (i < row) {
+        cellList.add(i, null);
+        i++;
+      }
+    }
+    cellList.add(row, cell);
+
     return cell;
   }
 

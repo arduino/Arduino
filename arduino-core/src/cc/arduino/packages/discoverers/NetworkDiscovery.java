@@ -39,7 +39,7 @@ import java.util.*;
 
 import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
 
-public class NetworkDiscovery implements Discovery, ServiceListener {
+public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
@@ -139,6 +139,11 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
   }
 
   @Override
+  public void run() {
+    start();
+  }
+
+  @Override
   public void start() {
     jmdns = JmmDNS.Factory.getInstance();
     jmdns.addServiceListener("_arduino._tcp.local.", this);
@@ -148,7 +153,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
 
   @Override
   public void stop() {
-    jmdns.unregisterAllServices();
+    if (jmdns != null) {
+      jmdns.unregisterAllServices();
+    }
     // we don't close the JmmDNS instance as it's too slow
     /*
     try {
@@ -157,7 +164,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
       e.printStackTrace();
     }
     */
-    reachabilityTimer.cancel();
+    if (reachabilityTimer != null) {
+      reachabilityTimer.cancel();
+    }
   }
 
   @Override

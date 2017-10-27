@@ -292,13 +292,13 @@ public class ContributionInstaller {
       packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
     }
 
-    for (String packageIndexURL : packageIndexURLs) {
+    packageIndexURLs.parallelStream().forEach(packageIndexURL -> {
       try {
         downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
-    }
+    });
 
     progress.stepDone();
 
@@ -331,7 +331,8 @@ public class ContributionInstaller {
     File outputFile = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
-    downloader.download(url, tmpFile, progress, statusText, progressListener);
+    boolean noResume = true;
+    downloader.download(url, tmpFile, progress, statusText, progressListener, noResume);
 
     Files.deleteIfExists(outputFile.toPath());
     Files.move(tmpFile.toPath(), outputFile.toPath());

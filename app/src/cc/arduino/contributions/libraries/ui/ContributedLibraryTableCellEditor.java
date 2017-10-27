@@ -33,6 +33,7 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,6 +67,10 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
                                                boolean isSelected, int row,
                                                int column) {
     editorValue = (ContributedLibraryReleases) value;
+
+    if (cellList.size() > row && cellList.get(row) != null) {
+      return cellList.get(row);
+    }
 
     editorCell = new ContributedLibraryTableCellJPanel(table, value, true);
     editorCell.installButton
@@ -135,6 +140,18 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
+
+    if (cellList.size() < row) {
+      // allocate the empty slots
+      int i = cellList.size();
+      while (i < row) {
+        cellList.add(i, null);
+        i++;
+      }
+    }
+
+    cellList.add(row, editorCell);
+
     return editorCell;
   }
 

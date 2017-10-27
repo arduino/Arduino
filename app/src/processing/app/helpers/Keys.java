@@ -220,7 +220,7 @@ public class Keys {
   }
 
   /**
-   * Creates a KeyCode for the "menu shortcut" + shift + the key passed in. By
+   * Creates a KeyCode for the "menu shortcut" + alt + the key passed in. By
    * default, the menu shortcut is the ctrl key (hence the method name), but
    * platforms might use a different key (like the Apple key on OSX).
    *
