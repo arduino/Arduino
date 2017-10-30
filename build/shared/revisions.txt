@@ -4,8 +4,11 @@ ARDUINO 1.8.6
 * Added translations for library types. Thanks @ReAlUA
 * Added scroller in programmers menu.
 * Added "accelerator" in scrollable menu, press "a" key while scrolling
-* Keep Board Manager always window on top
+* Keep "Board Manager" menu item always as first in the menu
 * keyword.txt now allows any whitespace. Thanks @bhagman
+
+[wifi101-firmware]
+* SECURITY FIX: Released fix for WPA2 KRACK vulnerability (latest WINC1500 firmware 19.5.2).
 
 ARDUINO 1.8.5 2017.09.29
 
