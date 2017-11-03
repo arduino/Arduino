@@ -171,6 +171,11 @@ static inline u8 FifoFree()
 	return UEINTX & (1<<FIFOCON);
 }
 
+static inline u8 HasOUT()
+{
+	return UEINTX & (1<<RXOUTI);
+}
+
 static inline void ReleaseRX()
 {
 	UEINTX = 0x6B;	// FIFOCON=0 NAKINI=1 RWAL=1 NAKOUTI=0 RXSTPI=1 RXOUTI=0 STALLEDI=1 TXINI=1
@@ -214,7 +219,12 @@ public:
 u8 USB_Available(u8 ep)
 {
 	LockEP lock(ep);
-	return FifoByteCount();
+	u8 n = FifoByteCount();
+
+	if (!n && HasOUT())
+		ReleaseRX(); // handle ZLP
+
+	return n;
 }
 
 //	Non Blocking receive
