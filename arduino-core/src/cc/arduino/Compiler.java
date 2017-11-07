@@ -545,7 +545,17 @@ public class Compiler implements MessageConsumer {
     String[] pieces = PApplet.match(s, ERROR_FORMAT);
 
     if (pieces != null) {
-      String error = pieces[pieces.length - 1], msg = "";
+      String msg = "";
+      int errorIdx = pieces.length - 1;
+      String error = pieces[errorIdx];
+      String filename = pieces[1];
+      int line = PApplet.parseInt(pieces[2]);
+      int col;
+      if (errorIdx > 3) {
+        col = PApplet.parseInt(pieces[3].substring(1));
+      } else {
+        col = -1;
+      }
 
       if (error.trim().equals("SPI.h: No such file or directory")) {
         error = tr("Please import the SPI library from the Sketch > Import Library menu.");
@@ -599,12 +609,17 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
-      RunnerException ex = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+      RunnerException ex = placeException(error, filename, line - 1, col);
 
       if (ex != null) {
         String fileName = ex.getCodeFile().getPrettyName();
         int lineNum = ex.getCodeLine() + 1;
-        s = fileName + ":" + lineNum + ": error: " + error + msg;
+        int colNum = ex.getCodeColumn();
+        if (colNum != -1) {
+          s = fileName + ":" + lineNum + ":" + colNum + ": error: " + error + msg;
+        } else {
+          s = fileName + ":" + lineNum + ": error: " + error + msg;
+        }
       }
 
       if (ex != null) {
@@ -630,10 +645,10 @@ public class Compiler implements MessageConsumer {
     System.err.println(s);
   }
 
-  private RunnerException placeException(String message, String fileName, int line) {
+  private RunnerException placeException(String message, String fileName, int line, int col) {
     for (SketchFile file : sketch.getFiles()) {
       if (new File(fileName).getName().equals(file.getFileName())) {
-        return new RunnerException(message, file, line);
+        return new RunnerException(message, file, line, col);
       }
     }
     return null;
