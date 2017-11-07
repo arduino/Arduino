@@ -154,12 +154,12 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
-    ArrayList<CompilerProgressListener> listeners = new ArrayList<>();
+    List<CompilerProgressListener> listeners = new ArrayList<>();
     listeners.add(progListener);
     return this.build(listeners, exportHex);
   }
 
-  public String build(ArrayList<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+  public String build(List<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
     this.buildCache = BaseNoGui.getCachePath();
 
