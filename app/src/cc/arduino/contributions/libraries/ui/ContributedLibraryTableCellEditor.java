@@ -76,9 +76,12 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
       ContributedLibrary lib = (ContributedLibrary) chooser.getSelectedItem();
       onInstall(lib, editorValue.getInstalled());
     });
-    editorCell.versionToInstallChooser.addItemListener(e -> editorValue
-        .select((ContributedLibrary) editorCell.versionToInstallChooser
-            .getSelectedItem()));
+    editorCell.versionToInstallChooser.addActionListener(e -> {
+      editorValue.select((ContributedLibrary) editorCell.versionToInstallChooser.getSelectedItem());
+      if (editorCell.versionToInstallChooser.getSelectedIndex() != 0) {
+        InstallerTableCell.dropdownSelected(true);
+      }
+    });
 
     setEnabled(true);
 
