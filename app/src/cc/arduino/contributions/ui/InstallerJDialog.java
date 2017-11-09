@@ -171,10 +171,22 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
     contribTable.addMouseMotionListener(new MouseMotionListener() {
 
+        int previousRowAtPoint = -1;
+
         public void mouseDragged(MouseEvent e) {}
 
         public void mouseMoved(MouseEvent e) {
-            contribTable.editCellAt(contribTable.rowAtPoint(e.getPoint()), 0);
+            // avoid firing edits events until:
+            int rowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            if (!InstallerTableCell.isDropdownSelected() && rowAtPoint != previousRowAtPoint) {
+              contribTable.editCellAt(rowAtPoint, 0);
+              previousRowAtPoint = rowAtPoint;
+              InstallerTableCell.dropdownSelected(false);
+            }
+            if (InstallerTableCell.isDropdownSelected() && rowAtPoint == previousRowAtPoint) {
+              // back to the original cell, can drop dropdown selector lock
+              InstallerTableCell.dropdownSelected(false);
+            }
         }
     });
 

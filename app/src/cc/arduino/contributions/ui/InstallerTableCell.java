@@ -41,6 +41,16 @@ public abstract class InstallerTableCell extends AbstractCellEditor implements T
 
   abstract public void setEnabled(boolean b);
 
+  private static boolean dropdownSelected = false;
+
+  public static boolean isDropdownSelected( ) {
+    return dropdownSelected;
+  }
+
+  public static void dropdownSelected(boolean b) {
+    dropdownSelected = b;
+  }
+
   abstract public void setStatus(String s);
   
   public static void setJTextPaneDimensionToFitContainedText(JTextPane jTextPane, int width) {
