@@ -98,6 +98,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
       boolean disableDowngrade = (e.getItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
