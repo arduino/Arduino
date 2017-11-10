@@ -119,6 +119,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
+      previousRowAtPoint = -1;
       if (typeFilter == null || !typeFilter.equals(selected)) {
         typeFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
