@@ -151,26 +151,61 @@ void HardwareSerial::end()
 
 int HardwareSerial::available(void)
 {
-  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + _rx_buffer_head - _rx_buffer_tail)) % SERIAL_RX_BUFFER_SIZE;
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  uint8_t oldSREG = SREG;                                  // save interrupt flag
+  cli();                                                   // disable interrupts
+#endif
+  rx_buffer_index_t head = _rx_buffer_head;                // retrieve Rx head index
+  rx_buffer_index_t tail = _rx_buffer_tail;                // retrieve Rx tail index
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  SREG = oldSREG;                                          // restore the interrupt flag
+#endif
+  return ((unsigned int)(SERIAL_RX_BUFFER_SIZE + head - tail)) % SERIAL_RX_BUFFER_SIZE;
 }
 
 int HardwareSerial::peek(void)
 {
-  if (_rx_buffer_head == _rx_buffer_tail) {
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  uint8_t oldSREG = SREG;                                  // save interrupt flag
+  cli();                                                   // disable interrupts
+#endif
+  rx_buffer_index_t head = _rx_buffer_head;                // retrieve Rx head index
+  rx_buffer_index_t tail = _rx_buffer_tail;                // retrieve Rx tail index
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  SREG = oldSREG;                                          // restore the interrupt flag
+#endif
+  if (head == tail) {
     return -1;
   } else {
-    return _rx_buffer[_rx_buffer_tail];
+    return _rx_buffer[tail];
   }
 }
 
 int HardwareSerial::read(void)
 {
-  // if the head isn't ahead of the tail, we don't have any characters
-  if (_rx_buffer_head == _rx_buffer_tail) {
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  uint8_t oldSREG = SREG;                                  // save interrupt flag
+  cli();                                                   // disable interrupts
+#endif
+  rx_buffer_index_t head = _rx_buffer_head;                // retrieve Rx head index
+  rx_buffer_index_t tail = _rx_buffer_tail;                // retrieve Rx tail index
+#if (SERIAL_RX_BUFFER_SIZE>256)
+  SREG = oldSREG;                                          // restore the interrupt flag
+#endif
+
+  if (head == tail) {
     return -1;
   } else {
-    unsigned char c = _rx_buffer[_rx_buffer_tail];
-    _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
+    unsigned char c = _rx_buffer[tail];
+
+#if (SERIAL_RX_BUFFER_SIZE>256)
+    uint8_t oldSREG = SREG;                                // save interrupt flag
+    cli();                                                 // disable interrupts
+#endif
+    _rx_buffer_tail = (tail + 1) % SERIAL_RX_BUFFER_SIZE;
+#if (SERIAL_RX_BUFFER_SIZE>256)
+    SREG = oldSREG;                                        // restore the interrupt flag
+#endif
     return c;
   }
 }
