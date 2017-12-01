@@ -816,25 +816,6 @@ public class BaseNoGui {
             .format("Unable to list header files in {0}", lib.getSrcFolder()), e);
       }
     }
-    // repeat for ALL libraries, to pick up duplicates not visible normally.
-    // any new libraries found here are NEVER used, but they are added to the
-    // end of already-found headers, to allow Compiler to report them if
-    // the sketch tries to use them.
-    for (UserLibrary lib : librariesIndexer.getInstalledLibrariesWithDuplicates()) {
-      try {
-        String headers[] = headerListFromIncludePath(lib.getSrcFolder());
-        for (String header : headers) {
-          LibraryList list = importToLibraryTable.get(header);
-          if (list != null) {
-            if (!(list.hasLibrary(lib))) {
-              list.addLast(lib);
-              //System.out.println(" duplicate lib: " + lib.getInstalledFolder().getPath());
-            }
-          }
-        }
-        } catch (IOException e) {
-      }
-    }
   }
 
   static public void initParameters(String args[]) throws Exception {

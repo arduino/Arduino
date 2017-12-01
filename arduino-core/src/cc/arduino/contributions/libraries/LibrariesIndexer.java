@@ -59,7 +59,6 @@ public class LibrariesIndexer {
 
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
-  private final LibraryList installedLibrariesWithDuplicates = new LibraryList();
   private List<File> librariesFolders;
   private final File indexFile;
   private final File stagingFolder;
@@ -113,7 +112,6 @@ public class LibrariesIndexer {
   public void rescanLibraries() {
     // Clear all installed flags
     installedLibraries.clear();
-    installedLibrariesWithDuplicates.clear();
 
     if (index.getLibraries() == null) {
       return;
@@ -180,11 +178,6 @@ public class LibrariesIndexer {
         throw new IOException(lib.getSrcFolder().getAbsolutePath());
       }
       installedLibraries.addOrReplace(lib);
-      if (isSketchbook) {
-        installedLibrariesWithDuplicates.add(lib);
-      } else {
-        installedLibrariesWithDuplicates.addOrReplace(lib);
-      }
       return;
     }
 
@@ -196,11 +189,6 @@ public class LibrariesIndexer {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
     }
     installedLibraries.addOrReplaceArchAware(lib);
-    if (isSketchbook) {
-      installedLibrariesWithDuplicates.add(lib);
-    } else {
-      installedLibrariesWithDuplicates.addOrReplaceArchAware(lib);
-    }
 
     // Check if we can find the same library in the index
     // and mark it as installed
@@ -227,15 +215,6 @@ public class LibrariesIndexer {
 
   public LibraryList getInstalledLibraries() {
     return new LibraryList(installedLibraries);
-  }
-
-  // Same as getInstalledLibraries(), but allow duplicates between
-  // builtin+package libraries and sketchbook installed libraries.
-  // However, do not report duplicates among builtin and packages, to
-  // allow any package to override builtin libraries without being
-  // reported as duplicates.
-  public LibraryList getInstalledLibrariesWithDuplicates() {
-    return installedLibrariesWithDuplicates;
   }
 
   public File getStagingFolder() {
