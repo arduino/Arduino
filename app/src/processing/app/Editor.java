@@ -96,10 +96,7 @@ public class Editor extends JFrame implements RunnerListener {
     public boolean test(SketchController controller) {
       return PreferencesData.getBoolean("editor.save_on_verify")
              && controller.getSketch().isModified()
-             && !controller.isReadOnly(
-                                       BaseNoGui.librariesIndexer
-                                           .getInstalledLibraries(),
-                                       BaseNoGui.getExamplesPath());
+             && !controller.isReadOnly();
     }
   }
 
@@ -107,7 +104,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     @Override
     public boolean test(SketchController sketch) {
-      return sketch.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
+      return sketch.isReadOnly();
     }
   }
 
@@ -2043,7 +2040,7 @@ public class Editor extends JFrame implements RunnerListener {
         formatTool.run();
       }
 
-      boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
+      boolean wasReadOnly = sketchController.isReadOnly();
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();
       if (saved) {
@@ -2161,11 +2158,7 @@ public class Editor extends JFrame implements RunnerListener {
    */
   synchronized public void handleExport(final boolean usingProgrammer) {
     if (PreferencesData.getBoolean("editor.save_on_verify")) {
-      if (sketch.isModified()
-          && !sketchController.isReadOnly(
-                                          BaseNoGui.librariesIndexer
-                                              .getInstalledLibraries(),
-                                          BaseNoGui.getExamplesPath())) {
+      if (sketch.isModified() && !sketchController.isReadOnly()) {
         handleSave(true);
       }
     }

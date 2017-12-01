@@ -75,7 +75,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -107,7 +107,7 @@ public class SketchController {
     }
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -225,7 +225,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -303,7 +303,7 @@ public class SketchController {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       Base.showMessage(tr("Sketch is read-only"),
         tr("Some files are marked \"read-only\", so you'll\n" +
           "need to re-save this sketch to another location."));
@@ -367,7 +367,7 @@ public class SketchController {
   protected boolean saveAs() throws IOException {
     // get new name for folder
     FileDialog fd = new FileDialog(editor, tr("Save sketch folder as..."), FileDialog.SAVE);
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath()) || isUntitled()) {
+    if (isReadOnly() || isUntitled()) {
       // default to the sketchbook folder
       fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
@@ -456,7 +456,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -791,7 +791,9 @@ public class SketchController {
    * examples directory, or when sketches are loaded from read-only
    * volumes or folders without appropriate permissions.
    */
-  public boolean isReadOnly(LibraryList libraries, String examplesPath) {
+  public boolean isReadOnly() {
+    LibraryList libraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
+    String examplesPath = BaseNoGui.getExamplesPath();
     String apath = sketch.getFolder().getAbsolutePath();
 
     Optional<UserLibrary> libraryThatIncludesSketch = libraries.stream().filter(lib -> apath.startsWith(lib.getInstalledFolder().getAbsolutePath())).findFirst();
