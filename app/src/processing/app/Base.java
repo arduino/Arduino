@@ -1084,6 +1084,7 @@ public class Base {
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary();
+        BaseNoGui.librariesIndexer.rescanLibraries();
         Base.this.onBoardOrPortChange();
         Base.this.rebuildImportMenu(Editor.importMenu);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
