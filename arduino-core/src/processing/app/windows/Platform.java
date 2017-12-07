@@ -213,6 +213,8 @@ public class Platform extends processing.app.Platform {
   }
 
   public void symlink(File something, File somewhere) throws IOException, InterruptedException {
+	  Process process = Runtime.getRuntime().exec(new String[]{"mklink", somewhere.getAbsolutePath(), something.toString()}, null, somewhere.getParentFile());
+	  process.waitFor();
   }
 
   @Override
