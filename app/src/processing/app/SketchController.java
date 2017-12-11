@@ -379,7 +379,14 @@ public class SketchController {
     if (newName == null) return false;
     newName = SketchController.checkName(newName);
 
-    File newFolder = new File(newParentDir, newName);
+    File newFolder;
+    // User may want to overwrite a .ino
+    // check if the parent folder name ends with the sketch name
+    if (newName.endsWith(".ino") && newParentDir.endsWith(newName.substring(0, newName.lastIndexOf('.'))+ File.separator)) {
+      newFolder = new File(newParentDir);
+    } else {
+      newFolder = new File(newParentDir, newName);
+    }
 
     // check if the paths are identical
     if (newFolder.equals(sketch.getFolder())) {
