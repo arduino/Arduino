@@ -73,22 +73,21 @@ public class ContributionsSelfCheck extends TimerTask {
     updateContributionIndex();
     updateLibrariesIndex();
 
-    long updatablePlatforms = BaseNoGui.indexer.getPackages().stream()
+    boolean updatablePlatforms = BaseNoGui.indexer.getPackages().stream()
       .flatMap(pack -> pack.getPlatforms().stream())
-      .filter(new UpdatablePlatformPredicate()).count();
+      .anyMatch(new UpdatablePlatformPredicate());
 
-    long updatableLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries().stream()
-      .filter(new UpdatableLibraryPredicate())
-      .count();
+    boolean updatableLibraries = BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
+      .anyMatch(new UpdatableLibraryPredicate());
 
-    if (updatableLibraries <= 0 && updatablePlatforms <= 0) {
+    if (!updatableLibraries && !updatablePlatforms) {
       return;
     }
 
     String text;
-    if (updatableLibraries > 0 && updatablePlatforms <= 0) {
+    if (updatableLibraries && !updatablePlatforms) {
       text = I18n.format(tr("Updates available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
-    } else if (updatableLibraries <= 0 && updatablePlatforms > 0) {
+    } else if (!updatableLibraries && updatablePlatforms) {
       text = I18n.format(tr("Updates available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>");
     } else {
       text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>", "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
