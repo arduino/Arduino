@@ -106,10 +106,9 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
     final List<ContributedPlatform> uninstalledPreviousReleases = new LinkedList<>();
     final List<ContributedPlatform> uninstalledNewerReleases = new LinkedList<>();
 
-    final VersionComparator versionComparator = new VersionComparator();
     uninstalledReleases.stream().forEach(input -> {
       if (installed == null
-          || versionComparator.greaterThan(installed.getParsedVersion(),
+          || VersionComparator.greaterThan(installed.getParsedVersion(),
                                            input.getParsedVersion())) {
         uninstalledPreviousReleases.add(input);
       } else {

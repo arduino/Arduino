@@ -39,12 +39,6 @@ import java.util.function.Predicate;
 
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
-  private final VersionComparator versionComparator;
-
-  public UpdatableLibraryPredicate() {
-    this.versionComparator = new VersionComparator();
-  }
-
   @Override
   public boolean test(ContributedLibrary contributedLibrary) {
     String libraryName = contributedLibrary.getName();
@@ -54,7 +48,7 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
     }
     List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(libraryName);
     return libraries.stream()
-      .filter(library -> versionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion()))
+      .filter(library -> VersionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion()))
       .count() > 0;
   }
 }

@@ -84,7 +84,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       Thread.sleep(100);
     }
 
-    if (VersionHelper.valueOf(installedBuiltIn.getParsedVersion()).greaterThan(VersionHelper.valueOf(installedNotBuiltIn.getParsedVersion()))) {
+    if (VersionComparator.greaterThan(installedBuiltIn.getParsedVersion(), installedNotBuiltIn.getParsedVersion())) {
       SwingUtilities.invokeLater(() -> {
         PreferencesData.setInteger("builtin_platform_is_newer", BaseNoGui.REVISION);
         assert base.hasActiveEditor();

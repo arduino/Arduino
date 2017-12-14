@@ -31,6 +31,8 @@ package cc.arduino.contributions;
 
 import com.github.zafarkhaja.semver.Version;
 
+import cc.arduino.contributions.libraries.ContributedLibrary;
+
 import java.util.Comparator;
 
 public class VersionComparator implements Comparator<String> {
@@ -51,7 +53,7 @@ public class VersionComparator implements Comparator<String> {
     return versionA.compareTo(versionB);
   }
 
-  public boolean greaterThan(String a, String b) {
+  public static boolean greaterThan(String a, String b) {
     // null is always less than any other value
     if (a == null && b == null) {
       return false;
@@ -69,4 +71,16 @@ public class VersionComparator implements Comparator<String> {
     return versionA.greaterThan(versionB);
   }
 
+  public static String max(String a, String b) {
+    return greaterThan(a, b) ? a : b;
+  }
+
+  public static ContributedLibrary max(ContributedLibrary a, ContributedLibrary b) {
+    return greaterThan(a, b) ? a : b;
+  }
+
+  public static boolean greaterThan(ContributedLibrary a,
+                                    ContributedLibrary b) {
+    return greaterThan(a.getParsedVersion(), b.getParsedVersion());
+  }
 }

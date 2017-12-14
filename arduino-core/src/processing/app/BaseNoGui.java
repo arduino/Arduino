@@ -699,7 +699,6 @@ public class BaseNoGui {
     }
 
     Map<String, String> latestVersions = new HashMap<>();
-    VersionComparator comparator = new VersionComparator();
     for (ContributedTool tool : installedTools) {
       File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
       String toolPath;
@@ -714,7 +713,7 @@ public class BaseNoGui {
       PreferencesData.set(prefix + tool.getPackager() + "-" + toolName + "-" + toolVersion + ".path", toolPath);
       // In the generic tool property put the path of the latest version if more are available
       try {
-        if (!latestVersions.containsKey(toolName) || comparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
+        if (!latestVersions.containsKey(toolName) || VersionComparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
           latestVersions.put(toolName, toolVersion);
           PreferencesData.set(prefix + toolName + ".path", toolPath);
         }
