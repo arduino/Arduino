@@ -250,5 +250,6 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 //                            pins are NOT connected to anything by default.
 #define SERIAL_PORT_HARDWARE       Serial
 #define SERIAL_PORT_HARDWARE_OPEN  Serial
+#define SERIAL_PORT_MONITOR        Serial
 
 #endif
