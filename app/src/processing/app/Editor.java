@@ -476,8 +476,10 @@ public class Editor extends JFrame implements RunnerListener {
     boolean external = PreferencesData.getBoolean("editor.external");
     saveMenuItem.setEnabled(!external);
     saveAsMenuItem.setEnabled(!external);
-    for (EditorTab tab: tabs)
+    for (EditorTab tab: tabs) {
       tab.applyPreferences();
+    }
+    console.applyPreferences();
   }
 
 
