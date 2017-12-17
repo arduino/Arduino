@@ -30,7 +30,6 @@
 package cc.arduino.contributions.ui;
 
 import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.filters.NoopPredicate;
 
 import java.util.function.Predicate;
 
@@ -44,7 +43,7 @@ public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
 
   @Override
   public Predicate<DownloadableContribution> getFilterPredicate() {
-    return new NoopPredicate<>();
+    return x -> true;
   }
 
   @Override
