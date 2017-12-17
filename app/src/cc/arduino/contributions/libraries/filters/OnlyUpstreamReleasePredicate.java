@@ -29,15 +29,14 @@
 
 package cc.arduino.contributions.libraries.filters;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.packages.UserLibrary;
 
 import java.util.function.Predicate;
 
-public class OnlyUpstreamReleasePredicate implements Predicate<ContributedLibrary> {
+public class OnlyUpstreamReleasePredicate implements Predicate<Object> {
 
   @Override
-  public boolean test(ContributedLibrary input) {
+  public boolean test(Object input) {
     return !(input instanceof UserLibrary);
   }
 

@@ -35,6 +35,7 @@ import java.io.File;
 
 public abstract class DownloadableContribution {
 
+  // XXX: maybe installed fields should not be here but in UserLibrary and ContributedPlatform?
   private boolean installed;
   private File installedFolder;
 

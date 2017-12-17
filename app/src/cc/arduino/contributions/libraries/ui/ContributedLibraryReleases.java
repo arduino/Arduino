@@ -30,7 +30,6 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 
@@ -78,13 +77,11 @@ public class ContributedLibraryReleases {
   }
 
   public Optional<ContributedLibrary> getInstalled() {
-    List<ContributedLibrary> installedReleases = releases.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-    Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-
+    List<ContributedLibrary> installedReleases = releases.stream().filter(l -> l.isLibraryInstalled()).collect(Collectors.toList());
     if (installedReleases.isEmpty()) {
       return Optional.empty();
     }
-
+    Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
     return Optional.of(installedReleases.get(0));
   }
 

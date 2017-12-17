@@ -122,7 +122,7 @@ public class LibrariesIndexer {
     }
 
     for (ContributedLibrary lib : index.getLibraries()) {
-      lib.setInstalled(false);
+      lib.unsetInstalledUserLibrary();
     }
 
     // Rescan libraries
@@ -176,7 +176,6 @@ public class LibrariesIndexer {
     if (!check.exists() || !check.isFile()) {
       // Create a legacy library and exit
       LegacyUserLibrary lib = LegacyUserLibrary.create(folder);
-      lib.setReadOnly(readOnly);
       String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
       if (headers.length == 0) {
         throw new IOException(lib.getSrcFolder().getAbsolutePath());
@@ -187,7 +186,6 @@ public class LibrariesIndexer {
 
     // Create a regular library
     UserLibrary lib = UserLibrary.create(folder);
-    lib.setReadOnly(readOnly);
     String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
     if (headers.length == 0) {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
@@ -196,15 +194,13 @@ public class LibrariesIndexer {
 
     // Check if we can find the same library in the index
     // and mark it as installed
-    ContributedLibrary foundLib = index.find(lib.getName(), lib.getParsedVersion());
+    ContributedLibrary foundLib = index.find(lib.getName(), lib.getVersion());
     if (foundLib != null) {
-      foundLib.setInstalled(true);
-      foundLib.setInstalledFolder(folder);
-      foundLib.setReadOnly(readOnly);
+      foundLib.setInstalledUserLibrary(lib);
       lib.setTypes(foundLib.getTypes());
     }
 
-    if (lib.isReadOnly() && lib.getTypes() == null && !lib.getDeclaredTypes().isEmpty()) {
+    if (readOnly && lib.getTypes() == null && !lib.getDeclaredTypes().isEmpty()) {
       lib.setTypes(lib.getDeclaredTypes());
     }
 

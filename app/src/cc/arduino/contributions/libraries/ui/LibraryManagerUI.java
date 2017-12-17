@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -134,7 +135,6 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
 
-
     // Load categories
     categoryFilter = x -> true;
     categoryChooser.removeAllItems();
@@ -158,7 +158,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     typeChooser.addItem(new DropdownAllLibraries());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem());
     typeChooser.addItem(new DropdownInstalledLibraryItem());
-    java.util.List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
+    List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));

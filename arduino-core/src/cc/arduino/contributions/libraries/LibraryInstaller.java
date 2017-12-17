@@ -84,7 +84,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
-    if (lib.isInstalled()) {
+    if (lib.isLibraryInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
@@ -141,7 +141,7 @@ public class LibraryInstaller {
     // Step 1: Remove library
     progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
     progressListener.onProgress(progress);
-    FileUtils.recursiveDelete(lib.getInstalledFolder());
+    FileUtils.recursiveDelete(lib.getInstalledLibrary().get().getInstalledFolder());
     progress.stepDone();
 
     // Step 2: Rescan index

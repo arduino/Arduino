@@ -30,7 +30,6 @@
 package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
 
 import java.util.*;
@@ -92,7 +91,7 @@ public abstract class LibrariesIndex {
   }
 
   public Optional<ContributedLibrary> getInstalled(String name) {
-    List<ContributedLibrary> installedReleases = find(name).stream().filter(new InstalledPredicate()).collect(Collectors.toList());
+    List<ContributedLibrary> installedReleases = find(name).stream().filter(l -> l.isLibraryInstalled()).collect(Collectors.toList());
     Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedReleases.isEmpty()) {

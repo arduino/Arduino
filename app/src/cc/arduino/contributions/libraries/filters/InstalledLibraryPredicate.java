@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.libraries.filters;
 
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.BaseNoGui;
 
@@ -40,14 +39,14 @@ public class InstalledLibraryPredicate implements Predicate<ContributedLibrary> 
 
   @Override
   public boolean test(ContributedLibrary input) {
-    if (input.isInstalled()) {
+    if (input.isLibraryInstalled()) {
       return true;
     }
 
     List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(input.getName());
 
     return libraries.stream()
-      .filter(new InstalledPredicate())
+      .filter(l -> l.isLibraryInstalled())
       .count() > 0;
   }
 

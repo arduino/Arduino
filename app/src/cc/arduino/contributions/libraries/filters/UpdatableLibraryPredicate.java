@@ -35,20 +35,21 @@ import processing.app.BaseNoGui;
 import processing.app.packages.UserLibrary;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
   @Override
-  public boolean test(ContributedLibrary contributedLibrary) {
-    String libraryName = contributedLibrary.getName();
-    UserLibrary installed = BaseNoGui.librariesIndexer.getInstalledLibraries().getByName(libraryName);
-    if (installed == null) {
+  public boolean test(ContributedLibrary lib) {
+    Optional<UserLibrary> installed = lib.getInstalledLibrary();
+    if (!installed.isPresent()) {
       return false;
     }
+    String installedVersion = installed.get().getVersion();
+    String libraryName = lib.getName();
     List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(libraryName);
     return libraries.stream()
-      .filter(library -> VersionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion()))
-      .count() > 0;
+      .anyMatch(library -> VersionComparator.greaterThan(library.getParsedVersion(), installedVersion));
   }
 }

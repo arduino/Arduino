@@ -39,8 +39,7 @@ public class LegacyUserLibrary extends UserLibrary {
   public static LegacyUserLibrary create(File libFolder) {
     // construct an old style library
     LegacyUserLibrary res = new LegacyUserLibrary();
-    res.setInstalledFolder(libFolder);
-    res.setInstalled(true);
+    res.installedFolder = libFolder;
     res.layout = LibraryLayout.FLAT;
     res.name = libFolder.getName();
     res.setTypes(Arrays.asList("Contributed"));

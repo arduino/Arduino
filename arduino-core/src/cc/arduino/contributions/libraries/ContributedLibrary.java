@@ -31,9 +31,11 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.I18n;
+import processing.app.packages.UserLibrary;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -64,6 +66,24 @@ public abstract class ContributedLibrary extends DownloadableContribution {
   public abstract List<ContributedLibraryReference> getRequires();
 
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+
+  private Optional<UserLibrary> installedLib = Optional.empty();
+
+  public Optional<UserLibrary> getInstalledLibrary() {
+    return installedLib;
+  }
+
+  public boolean isLibraryInstalled() {
+    return installedLib.isPresent();
+  }
+
+  public void setInstalledUserLibrary(UserLibrary installed) {
+    this.installedLib = Optional.of(installed);
+  }
+
+  public void unsetInstalledUserLibrary() {
+    installedLib = Optional.empty();
+  }
 
   /**
    * Returns <b>true</b> if the library declares to support the specified

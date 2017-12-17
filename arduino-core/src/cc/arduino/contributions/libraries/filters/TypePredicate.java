@@ -29,11 +29,11 @@
 
 package cc.arduino.contributions.libraries.filters;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import processing.app.packages.UserLibrary;
 
 import java.util.function.Predicate;
 
-public class TypePredicate implements Predicate<ContributedLibrary> {
+public class TypePredicate implements Predicate<UserLibrary> {
 
   private final String type;
 
@@ -42,7 +42,7 @@ public class TypePredicate implements Predicate<ContributedLibrary> {
   }
 
   @Override
-  public boolean test(ContributedLibrary input) {
+  public boolean test(UserLibrary input) {
     return input.getTypes() != null && input.getTypes().contains(type);
   }
 

@@ -1059,8 +1059,8 @@ public class Base {
     }
   }
 
-  private List<ContributedLibrary> getSortedLibraries() {
-    List<ContributedLibrary> installedLibraries = new LinkedList<>(BaseNoGui.librariesIndexer.getInstalledLibraries());
+  private LibraryList getSortedLibraries() {
+    LibraryList installedLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     Collections.sort(installedLibraries, new LibraryByTypeComparator());
     Collections.sort(installedLibraries, new LibraryOfSameTypeComparator());
     return installedLibraries;
@@ -1097,9 +1097,9 @@ public class Base {
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
 
     if (targetPlatform != null) {
-      List<ContributedLibrary> libs = getSortedLibraries();
+      LibraryList libs = getSortedLibraries();
       String lastLibType = null;
-      for (ContributedLibrary lib : libs) {
+      for (UserLibrary lib : libs) {
         String libType = lib.getTypes().get(0);
         if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {

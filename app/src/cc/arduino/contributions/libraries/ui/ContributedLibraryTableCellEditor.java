@@ -45,7 +45,6 @@ import javax.swing.JTable;
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
 import cc.arduino.contributions.ui.InstallerTableCell;
@@ -92,10 +91,10 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
         .filter(new OnlyUpstreamReleasePredicate())
         .collect(Collectors.toList());
     List<ContributedLibrary> uninstalledReleases = releases.stream()
-        .filter(new InstalledPredicate().negate()).collect(Collectors.toList());
+        .filter(l -> !l.isLibraryInstalled()).collect(Collectors.toList());
 
     List<ContributedLibrary> installedBuiltIn = releases.stream()
-        .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
+        .filter(l -> !l.isLibraryInstalled()).filter(new BuiltInPredicate())
         .collect(Collectors.toList());
 
     if (mayInstalled.isPresent() && !installedBuiltIn.contains(mayInstalled.get())) {

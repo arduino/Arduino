@@ -29,15 +29,15 @@
 
 package cc.arduino.contributions.libraries.filters;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.BaseNoGui;
+import processing.app.packages.UserLibrary;
 
 import java.util.function.Predicate;
 
-public class LibraryInstalledInsideCore implements Predicate<ContributedLibrary> {
+public class LibraryInstalledInsideCore implements Predicate<UserLibrary> {
 
   @Override
-  public boolean test(ContributedLibrary contributedLibrary) {
+  public boolean test(UserLibrary contributedLibrary) {
     return BaseNoGui.indexer.isFolderInsidePlatform(contributedLibrary.getInstalledFolder());
   }
 

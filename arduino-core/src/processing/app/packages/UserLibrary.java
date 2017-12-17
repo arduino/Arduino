@@ -29,7 +29,7 @@
 package processing.app.packages;
 
 import cc.arduino.Constants;
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
 import processing.app.helpers.PreferencesMap;
 
@@ -41,7 +41,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class UserLibrary extends ContributedLibrary {
+import com.github.zafarkhaja.semver.Version;
+
+public class UserLibrary {
 
   private String name;
   private String version;
@@ -57,6 +59,7 @@ public class UserLibrary extends ContributedLibrary {
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
   private List<String> includes;
+  protected File installedFolder;
 
   public static UserLibrary create(File libFolder) throws IOException {
     // Parse metadata
@@ -139,11 +142,13 @@ public class UserLibrary extends ContributedLibrary {
         includes.add(i.trim());
     }
 
+    String declaredVersion = properties.get("version").trim();
+    Version version = VersionHelper.valueOf(declaredVersion);
+
     UserLibrary res = new UserLibrary();
-    res.setInstalledFolder(libFolder);
-    res.setInstalled(true);
+    res.installedFolder = libFolder;
     res.name = properties.get("name").trim();
-    res.version = properties.get("version").trim();
+    res.version = version.toString();
     res.author = properties.get("author").trim();
     res.maintainer = properties.get("maintainer").trim();
     res.sentence = properties.get("sentence").trim();
@@ -159,42 +164,34 @@ public class UserLibrary extends ContributedLibrary {
     return res;
   }
 
-  @Override
   public String getName() {
     return name;
   }
 
-  @Override
   public List<String> getArchitectures() {
     return architectures;
   }
 
-  @Override
   public String getAuthor() {
     return author;
   }
 
-  @Override
   public String getParagraph() {
     return paragraph;
   }
 
-  @Override
   public String getSentence() {
     return sentence;
   }
 
-  @Override
   public String getWebsite() {
     return website;
   }
 
-  @Override
   public String getCategory() {
     return category;
   }
 
-  @Override
   public List<String> getTypes() {
     return types;
   }
@@ -203,47 +200,22 @@ public class UserLibrary extends ContributedLibrary {
     this.types = types;
   }
 
-  @Override
   public String getLicense() {
     return license;
   }
 
-  @Override
   public void setCategory(String category) {
     this.category = category;
   }
 
-  @Override
   public String getVersion() {
     return version;
   }
 
-  @Override
   public String getMaintainer() {
     return maintainer;
   }
 
-  @Override
-  public String getChecksum() {
-    return null;
-  }
-
-  @Override
-  public long getSize() {
-    return 0;
-  }
-
-  @Override
-  public String getUrl() {
-    return null;
-  }
-
-  @Override
-  public String getArchiveFileName() {
-    return null;
-  }
-
-  @Override
   public List<ContributedLibraryReference> getRequires() {
     return null;
   }
@@ -269,9 +241,9 @@ public class UserLibrary extends ContributedLibrary {
   public File getSrcFolder() {
     switch (layout) {
       case FLAT:
-        return getInstalledFolder();
+        return installedFolder;
       case RECURSIVE:
-        return new File(getInstalledFolder(), "src");
+        return new File(installedFolder, "src");
       default:
         return null; // Keep compiler happy :-(
     }
@@ -284,6 +256,10 @@ public class UserLibrary extends ContributedLibrary {
   @Override
   public String toString() {
     return name + ":" + version + " " + architectures + " " + installedFolder.getAbsolutePath();
+  }
+
+  public File getInstalledFolder() {
+    return installedFolder;
   }
 
 }

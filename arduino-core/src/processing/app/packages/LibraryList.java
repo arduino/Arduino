@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.helpers.FileUtils;
 
 @SuppressWarnings("serial")
@@ -80,7 +79,7 @@ public class LibraryList extends LinkedList<UserLibrary> {
   }
 
   public synchronized void sort() {
-    Collections.sort(this, ContributedLibrary.CASE_INSENSITIVE_ORDER);
+    Collections.sort(this, (x, y) -> x.getName().compareToIgnoreCase(y.getName()));
   }
 
   public synchronized LibraryList filterLibrariesInSubfolder(File subFolder) {

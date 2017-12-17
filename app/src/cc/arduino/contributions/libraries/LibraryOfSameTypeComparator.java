@@ -31,10 +31,12 @@ package cc.arduino.contributions.libraries;
 
 import java.util.Comparator;
 
-public class LibraryOfSameTypeComparator implements Comparator<ContributedLibrary> {
+import processing.app.packages.UserLibrary;
+
+public class LibraryOfSameTypeComparator implements Comparator<UserLibrary> {
 
   @Override
-  public int compare(ContributedLibrary o1, ContributedLibrary o2) {
+  public int compare(UserLibrary o1, UserLibrary o2) {
     if (o1.getTypes() == null) {
       return 1;
     }
