@@ -46,7 +46,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -265,9 +264,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
     SwingUtilities.invokeLater(InstallerJDialog.this::onUpdatePressed);
   }
 
-  public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
-    Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
-    contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
+  public void updateIndexFilter(String[] filters, Predicate<T> additionalFilter) {
+    contribModel.updateIndexFilter(filters, additionalFilter);
   }
 
   public void setErrorMessage(String message) {
@@ -311,7 +309,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
       previousRowAtPoint = -1;
-      if (categoryFilter == null || categoryFilter != selected.getFilterPredicate()) {
+      if (selected != null && categoryFilter != selected.getFilterPredicate()) {
         categoryFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

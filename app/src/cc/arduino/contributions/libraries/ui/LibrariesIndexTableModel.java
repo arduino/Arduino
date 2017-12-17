@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel
@@ -54,8 +53,8 @@ public class LibrariesIndexTableModel
   String selectedFilters[] = null;
 
   public void updateIndexFilter(String filters[],
-                                Stream<Predicate<ContributedLibrary>> additionalFilters) {
-    selectedCategoryFilter = additionalFilters.reduce(Predicate::and).get();
+                                Predicate<ContributedLibrary> additionalFilter) {
+    selectedCategoryFilter = additionalFilter;
     selectedFilters = filters;
     update();
   }
