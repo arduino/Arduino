@@ -27,22 +27,22 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.ui;
+package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
 import static processing.app.I18n.tr;
 
-public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
+public class DropdownAllLibraries implements DropdownItem<ContributedLibraryReleases> {
 
   public String toString() {
     return tr("All");
   }
 
   @Override
-  public Predicate<DownloadableContribution> getFilterPredicate() {
+  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
     return x -> true;
   }
 

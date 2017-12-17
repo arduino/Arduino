@@ -41,7 +41,7 @@ import java.util.function.Predicate;
 
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel
-    extends FilteredAbstractTableModel<ContributedLibrary> {
+    extends FilteredAbstractTableModel<ContributedLibraryReleases> {
 
   private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
@@ -49,11 +49,11 @@ public class LibrariesIndexTableModel
 
   private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
-  Predicate<ContributedLibrary> selectedCategoryFilter = null;
+  Predicate<ContributedLibraryReleases> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
   public void updateIndexFilter(String filters[],
-                                Predicate<ContributedLibrary> additionalFilter) {
+                                Predicate<ContributedLibraryReleases> additionalFilter) {
     selectedCategoryFilter = additionalFilter;
     selectedFilters = filters;
     update();
@@ -84,17 +84,6 @@ public class LibrariesIndexTableModel
     }
 
     return true;
-  }
-
-  private void addContribution(ContributedLibrary lib) {
-    for (ContributedLibraryReleases contribution : contributions) {
-      if (!contribution.shouldContain(lib))
-        continue;
-      contribution.add(lib);
-      return;
-    }
-
-    contributions.add(new ContributedLibraryReleases(lib));
   }
 
   @Override
@@ -149,17 +138,19 @@ public class LibrariesIndexTableModel
     fireTableDataChanged();
   }
 
-  private void applyFilterToLibrary(ContributedLibrary lib) {
+  private boolean filterCondition(ContributedLibraryReleases lib) {
     if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
-      return;
+      return false;
     }
 
-    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph()
-                                      + "\n" + lib.getSentence();
+    ContributedLibrary latest = lib.getLatest();
+    String compoundTargetSearchText = latest.getName() + "\n" + latest.getParagraph()
+                                      + "\n" + latest.getSentence();
     if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
-      return;
+      return false;
     }
-    addContribution(lib);
+
+    return true;
   }
 
   public void updateLibrary(ContributedLibrary lib) {
@@ -189,12 +180,26 @@ public class LibrariesIndexTableModel
     fireTableRowsDeleted(row, row);
   }
 
+  private List<ContributedLibraryReleases> rebuildContributionsFromIndex() {
+    List<ContributedLibraryReleases> res = new ArrayList<>();
+    BaseNoGui.librariesIndexer.getIndex().getLibraries(). //
+        forEach(lib -> {
+          for (ContributedLibraryReleases contribution : res) {
+            if (!contribution.shouldContain(lib))
+              continue;
+            contribution.add(lib);
+            return;
+          }
+
+          res.add(new ContributedLibraryReleases(lib));
+        });
+    return res;
+  }
+
   private void updateContributions() {
+    List<ContributedLibraryReleases> all = rebuildContributionsFromIndex();
     contributions.clear();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries()
-        .forEach(this::applyFilterToLibrary);
-    BaseNoGui.librariesIndexer.getInstalledLibraries()
-        .forEach(this::applyFilterToLibrary);
+    all.stream().filter(this::filterCondition).forEach(contributions::add);
     Collections.sort(contributions,
                      new ContributedLibraryReleasesComparator("Arduino"));
   }

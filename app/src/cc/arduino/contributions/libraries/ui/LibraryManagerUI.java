@@ -47,11 +47,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
-import cc.arduino.contributions.ui.DropdownAllItem;
 import cc.arduino.contributions.ui.DropdownItem;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import cc.arduino.contributions.ui.InstallerJDialog;
@@ -61,11 +59,11 @@ import cc.arduino.utils.Progress;
 import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
-public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
+public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryReleases> {
 
   private final JComboBox typeChooser;
   private final LibraryInstaller installer;
-  private Predicate<ContributedLibrary> typeFilter;
+  private Predicate<ContributedLibraryReleases> typeFilter;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -117,7 +115,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-      DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
+      DropdownItem<ContributedLibraryReleases> selected = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
       previousRowAtPoint = -1;
       if (selected != null && typeFilter != selected.getFilterPredicate()) {
         typeFilter = selected.getFilterPredicate();
@@ -130,8 +128,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   };
 
   public void updateUI() {
-    DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
-    DropdownItem<DownloadableContribution> previouslySelectedType = (DropdownItem<DownloadableContribution>) typeChooser.getSelectedItem();
+    DropdownItem<ContributedLibraryReleases> previouslySelectedCategory = (DropdownItem<ContributedLibraryReleases>) categoryChooser.getSelectedItem();
+    DropdownItem<ContributedLibraryReleases> previouslySelectedType = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
@@ -140,7 +138,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     // Load categories
     categoryFilter = x -> true;
     categoryChooser.removeAllItems();
-    categoryChooser.addItem(new DropdownAllItem());
+    categoryChooser.addItem(new DropdownAllLibraries());
     Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
       categoryChooser.addItem(new DropdownLibraryOfCategoryItem(category));
@@ -157,7 +155,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
     typeFilter = x -> true;
     typeChooser.removeAllItems();
-    typeChooser.addItem(new DropdownAllItem());
+    typeChooser.addItem(new DropdownAllLibraries());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem());
     typeChooser.addItem(new DropdownInstalledLibraryItem());
     java.util.List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
