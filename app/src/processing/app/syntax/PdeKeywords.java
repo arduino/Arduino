@@ -89,7 +89,7 @@ public class PdeKeywords {
         File platformKeywords = new File(tp.getFolder(), "keywords.txt");
         if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
       }
-      for (ContributedLibrary lib : Base.getLibraries()) {
+      for (ContributedLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {
         File keywords = new File(lib.getInstalledFolder(), "keywords.txt");
         if (keywords.exists()) {
           parseKeywordsTxt(keywords);

@@ -1877,11 +1877,6 @@ public class Base {
     getEditors().forEach(Editor::applyPreferences);
   }
 
-  // XXX: Remove this method and make librariesIndexer non-static
-  static public LibraryList getLibraries() {
-    return BaseNoGui.librariesIndexer.getInstalledLibraries();
-  }
-
   public List<JMenu> getBoardsCustomMenus() {
     return boardsCustomMenus;
   }
