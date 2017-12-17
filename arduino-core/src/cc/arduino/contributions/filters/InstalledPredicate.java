@@ -40,9 +40,4 @@ public class InstalledPredicate implements Predicate<DownloadableContribution> {
     return input.isInstalled();
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DownloadableContribution;
-  }
-
 }

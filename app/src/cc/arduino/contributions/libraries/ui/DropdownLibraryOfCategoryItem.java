@@ -54,9 +54,4 @@ public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLi
     return new CategoryPredicate(category);
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownLibraryOfCategoryItem && ((DropdownLibraryOfCategoryItem) obj).category.equals(category);
-  }
-
 }

@@ -49,8 +49,4 @@ public class DropdownUpdatableCoresItem implements DropdownItem<ContributedPlatf
     return tr("Updatable");
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownUpdatableCoresItem;
-  }
 }

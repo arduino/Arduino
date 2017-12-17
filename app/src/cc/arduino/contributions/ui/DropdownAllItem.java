@@ -46,9 +46,4 @@ public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
     return x -> true;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownAllItem;
-  }
-
 }

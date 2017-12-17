@@ -118,7 +118,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     public void actionPerformed(ActionEvent event) {
       DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
       previousRowAtPoint = -1;
-      if (typeFilter == null || !typeFilter.equals(selected)) {
+      if (typeFilter == null || typeFilter != selected.getFilterPredicate()) {
         typeFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
@@ -143,10 +143,10 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
 
-    categoryFilter = null;
-    categoryChooser.removeAllItems();
 
     // Load categories
+    categoryFilter = x -> true;
+    categoryChooser.removeAllItems();
     categoryChooser.addItem(new DropdownAllItem());
     Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
@@ -162,7 +162,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
       categoryChooser.setSelectedIndex(0);
     }
 
-    typeFilter = null;
+    typeFilter = x -> true;
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllItem());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem());

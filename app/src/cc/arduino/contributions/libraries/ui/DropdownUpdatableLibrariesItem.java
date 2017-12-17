@@ -49,9 +49,4 @@ public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedL
     return tr("Updatable");
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownUpdatableLibrariesItem;
-  }
-
 }

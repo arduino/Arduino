@@ -48,9 +48,4 @@ public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLib
     return new InstalledLibraryPredicate();
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownInstalledLibraryItem;
-  }
-
 }

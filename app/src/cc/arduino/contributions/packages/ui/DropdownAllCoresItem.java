@@ -47,8 +47,4 @@ public class DropdownAllCoresItem implements DropdownItem<ContributedPlatform> {
     return x -> true;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownAllCoresItem;
-  }
 }

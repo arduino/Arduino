@@ -40,8 +40,4 @@ public class BuiltInPredicate implements Predicate<DownloadableContribution> {
     return input.isReadOnly();
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof BuiltInPredicate;
-  }
 }

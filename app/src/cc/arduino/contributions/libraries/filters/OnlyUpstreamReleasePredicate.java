@@ -41,8 +41,4 @@ public class OnlyUpstreamReleasePredicate implements Predicate<ContributedLibrar
     return !(input instanceof UserLibrary);
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof OnlyUpstreamReleasePredicate;
-  }
 }

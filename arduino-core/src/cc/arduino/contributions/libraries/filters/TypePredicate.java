@@ -46,9 +46,4 @@ public class TypePredicate implements Predicate<ContributedLibrary> {
     return input.getTypes() != null && input.getTypes().contains(type);
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof TypePredicate && ((TypePredicate) obj).type.equals(type);
-  }
-
 }

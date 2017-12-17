@@ -311,7 +311,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
       previousRowAtPoint = -1;
-      if (categoryFilter == null || !categoryFilter.equals(selected)) {
+      if (categoryFilter == null || categoryFilter != selected.getFilterPredicate()) {
         categoryFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

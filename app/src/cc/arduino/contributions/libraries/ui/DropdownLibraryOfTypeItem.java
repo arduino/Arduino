@@ -54,9 +54,4 @@ public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrar
     return new TypePredicate(type);
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownLibraryOfTypeItem && ((DropdownLibraryOfTypeItem) obj).type.equals(type);
-  }
-
 }
