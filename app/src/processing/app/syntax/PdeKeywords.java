@@ -30,7 +30,6 @@ import org.fife.ui.rsyntaxtextarea.TokenMap;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import processing.app.Base;
 import processing.app.BaseNoGui;
-import processing.app.legacy.PApplet;
 import processing.app.debug.TargetPlatform;
 
 import java.io.BufferedReader;

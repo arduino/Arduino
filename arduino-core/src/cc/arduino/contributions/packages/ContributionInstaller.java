@@ -34,7 +34,6 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
