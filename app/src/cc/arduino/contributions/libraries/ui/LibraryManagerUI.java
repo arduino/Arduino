@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javax.swing.Box;
@@ -80,11 +81,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   protected InstallerTableCell createCellEditor() {
     return new ContributedLibraryTableCellEditor() {
       @Override
-      protected void onInstall(ContributedLibrary selectedLibrary, ContributedLibrary installedLibrary) {
-        if (selectedLibrary.isReadOnly()) {
-          onRemovePressed(installedLibrary);
+      protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
+        if (selectedLibrary.isReadOnly() && mayInstalledLibrary.isPresent()) {
+          onRemovePressed(mayInstalledLibrary.get());
         } else {
-          onInstallPressed(selectedLibrary, installedLibrary);
+          onInstallPressed(selectedLibrary, mayInstalledLibrary);
         }
       }
 
@@ -212,12 +213,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
+  public void onInstallPressed(final ContributedLibrary lib, final Optional<ContributedLibrary> mayReplaced) {
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced, this::setProgress);
+        installer.install(lib, mayReplaced, this::setProgress);
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {

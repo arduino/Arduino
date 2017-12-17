@@ -358,11 +358,11 @@ public class Base {
           System.exit(1);
         }
 
-        ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
-        if (selected.isReadOnly()) {
-          libraryInstaller.remove(installed, progressListener);
+        Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
+        if (selected.isReadOnly() && mayInstalled.isPresent()) {
+          libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, installed, progressListener);
+          libraryInstaller.install(selected, mayInstalled, progressListener);
         }
       }
 

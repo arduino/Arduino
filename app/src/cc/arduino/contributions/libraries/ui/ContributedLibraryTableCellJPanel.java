@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -116,16 +117,16 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       return;
 
     ContributedLibrary selected = releases.getSelected();
-    ContributedLibrary installed = releases.getInstalled();
+    Optional<ContributedLibrary> mayInstalled = releases.getInstalled();
 
     boolean installable, upgradable;
-    if (installed == null) {
+    if (!mayInstalled.isPresent()) {
       installable = true;
       upgradable = false;
     } else {
       installable = false;
       upgradable = new DownloadableContributionVersionComparator()
-          .compare(selected, installed) > 0;
+          .compare(selected, mayInstalled.get()) > 0;
     }
     if (installable) {
       installButton.setText(tr("Install"));
@@ -151,7 +152,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     // Library name...
     desc += format("<b>{0}</b>", name);
-    if (installed != null && installed.isReadOnly()) {
+    if (mayInstalled.isPresent() && mayInstalled.get().isReadOnly()) {
       desc += " Built-In ";
     }
 
@@ -162,8 +163,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
 
     // ...version.
-    if (installed != null) {
-      String installedVer = installed.getParsedVersion();
+    if (mayInstalled.isPresent()) {
+      String installedVer = mayInstalled.get().getParsedVersion();
       if (installedVer == null) {
         desc += " " + tr("Version unknown");
       } else {
@@ -172,7 +173,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
     desc += "</font>";
 
-    if (installed != null) {
+    if (mayInstalled.isPresent()) {
       desc += " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
 

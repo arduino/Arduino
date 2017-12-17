@@ -36,6 +36,7 @@ import java.awt.Component;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
@@ -85,7 +86,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
     setEnabled(true);
 
-    final ContributedLibrary installed = editorValue.getInstalled();
+    final Optional<ContributedLibrary> mayInstalled = editorValue.getInstalled();
 
     List<ContributedLibrary> releases = editorValue.getReleases().stream()
         .filter(new OnlyUpstreamReleasePredicate())
@@ -97,7 +98,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
         .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
         .collect(Collectors.toList());
 
-    if (installed != null && !installedBuiltIn.contains(installed)) {
+    if (mayInstalled.isPresent() && !installedBuiltIn.contains(mayInstalled.get())) {
       uninstalledReleases.addAll(installedBuiltIn);
     }
 
@@ -111,8 +112,8 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     final List<ContributedLibrary> uninstalledNewerReleases = new LinkedList<>();
 
     uninstalledReleases.stream().forEach(input -> {
-      if (installed == null
-          || VersionComparator.greaterThan(installed, input)) {
+      if (!mayInstalled.isPresent()
+          || VersionComparator.greaterThan(mayInstalled.get(), input)) {
         uninstalledPreviousReleases.add(input);
       } else {
         uninstalledNewerReleases.add(input);
@@ -122,18 +123,18 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     uninstalledPreviousReleases.forEach(editorCell.downgradeChooser::addItem);
 
     editorCell.downgradeChooser
-        .setVisible(installed != null
+        .setVisible(mayInstalled.isPresent()
                     && (!uninstalledPreviousReleases.isEmpty()
                         || uninstalledNewerReleases.size() > 1));
     editorCell.downgradeButton
-        .setVisible(installed != null
+        .setVisible(mayInstalled.isPresent()
                     && (!uninstalledPreviousReleases.isEmpty()
                         || uninstalledNewerReleases.size() > 1));
 
     editorCell.versionToInstallChooser.removeAllItems();
     uninstalledReleases.forEach(editorCell.versionToInstallChooser::addItem);
     editorCell.versionToInstallChooser
-        .setVisible(installed == null && uninstalledReleases.size() > 1);
+        .setVisible(!mayInstalled.isPresent() && uninstalledReleases.size() > 1);
 
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
     return editorCell;
@@ -153,7 +154,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
   }
 
   protected void onInstall(ContributedLibrary selected,
-                           ContributedLibrary installed) {
+                           Optional<ContributedLibrary> mayInstalled) {
     // Empty
   }
 

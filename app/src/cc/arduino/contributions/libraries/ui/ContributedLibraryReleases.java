@@ -37,6 +37,7 @@ import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ContributedLibraryReleases {
@@ -76,15 +77,15 @@ public class ContributedLibraryReleases {
     selected = getLatest();
   }
 
-  public ContributedLibrary getInstalled() {
+  public Optional<ContributedLibrary> getInstalled() {
     List<ContributedLibrary> installedReleases = releases.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
     Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedReleases.isEmpty()) {
-      return null;
+      return Optional.empty();
     }
 
-    return installedReleases.get(0);
+    return Optional.of(installedReleases.get(0));
   }
 
   public ContributedLibrary getLatest() {

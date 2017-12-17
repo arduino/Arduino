@@ -91,14 +91,14 @@ public abstract class LibrariesIndex {
     return types;
   }
 
-  public ContributedLibrary getInstalled(String name) {
+  public Optional<ContributedLibrary> getInstalled(String name) {
     List<ContributedLibrary> installedReleases = find(name).stream().filter(new InstalledPredicate()).collect(Collectors.toList());
     Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedReleases.isEmpty()) {
-      return null;
+      return Optional.empty();
     }
 
-    return installedReleases.get(0);
+    return Optional.of(installedReleases.get(0));
   }
 }
