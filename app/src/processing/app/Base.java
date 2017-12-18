@@ -1177,7 +1177,7 @@ public class Base {
     // any incompatible sketchbook libs further divided into their own list.
     // The 7th list of "other" libraries should always be empty, but serves
     // as a safety feature to prevent any library from vanishing.
-    LibraryList allLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     LibraryList ideLibs = new LibraryList();
     LibraryList retiredIdeLibs = new LibraryList();
     LibraryList platformLibs = new LibraryList();
