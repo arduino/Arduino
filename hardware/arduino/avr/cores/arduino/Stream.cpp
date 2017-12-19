@@ -115,10 +115,10 @@ bool Stream::findUntil(char *target, size_t targetLen, char *terminator, size_t 
 {
   if (terminator == NULL) {
     MultiTarget t[1] = {{target, targetLen, 0}};
-    return findMulti(t, 1) == 0 ? true : false;
+    return findMulti(t, 1) == 0;
   } else {
     MultiTarget t[2] = {{target, targetLen, 0}, {terminator, termLen, 0}};
-    return findMulti(t, 2) == 0 ? true : false;
+    return findMulti(t, 2) == 0;
   }
 }
 
