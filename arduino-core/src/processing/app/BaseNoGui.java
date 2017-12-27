@@ -423,11 +423,6 @@ public class BaseNoGui {
     return toolsFolder.getAbsolutePath();
   }
 
-  static public LibraryList getUserLibs() {
-    LibraryList libs = BaseNoGui.librariesIndexer.getInstalledLibraries();
-    return libs.filterLibrariesInSubfolder(getSketchbookFolder());
-  }
-
   static public String getBoardManagerLink() {
 	  return boardManagerLink;
   }
