@@ -73,12 +73,9 @@ public class ContributionsSelfCheck extends TimerTask {
     updateContributionIndex();
     updateLibrariesIndex();
 
-    boolean updatablePlatforms = BaseNoGui.indexer.getPackages().stream()
-      .flatMap(pack -> pack.getPlatforms().stream())
-      .anyMatch(new UpdatablePlatformPredicate());
+    boolean updatablePlatforms = checkForUpdatablePlatforms();
 
-    boolean updatableLibraries = BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
-      .anyMatch(new UpdatableLibraryPredicate());
+    boolean updatableLibraries = checkForUpdatableLibraries();
 
     if (!updatableLibraries && !updatablePlatforms) {
       return;
@@ -123,6 +120,17 @@ public class ContributionsSelfCheck extends TimerTask {
       for (Editor e : base.getEditors())
         e.addWindowFocusListener(wfl);
     });
+  }
+
+  static boolean checkForUpdatablePlatforms() {
+    return BaseNoGui.indexer.getPackages().stream()
+      .flatMap(pack -> pack.getPlatforms().stream())
+      .anyMatch(new UpdatablePlatformPredicate());
+  }
+
+  static boolean checkForUpdatableLibraries() {
+    return BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
+      .anyMatch(new UpdatableLibraryPredicate());
   }
 
   @Override

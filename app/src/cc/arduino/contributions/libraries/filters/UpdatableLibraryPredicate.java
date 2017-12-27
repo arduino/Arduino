@@ -31,6 +31,7 @@ package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.LibrariesIndexer;
 import processing.app.BaseNoGui;
 import processing.app.packages.UserLibrary;
 
@@ -40,6 +41,16 @@ import java.util.function.Predicate;
 
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
+  LibrariesIndexer librariesIndexer;
+
+  public UpdatableLibraryPredicate() {
+    librariesIndexer = BaseNoGui.librariesIndexer;
+  }
+
+  public UpdatableLibraryPredicate(LibrariesIndexer indexer) {
+    librariesIndexer = indexer;
+  }
+
   @Override
   public boolean test(ContributedLibrary lib) {
     Optional<UserLibrary> installed = lib.getInstalledLibrary();
@@ -48,7 +59,7 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
     }
     String installedVersion = installed.get().getVersion();
     String libraryName = lib.getName();
-    List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(libraryName);
+    List<ContributedLibrary> libraries = librariesIndexer.getIndex().find(libraryName);
     return libraries.stream()
       .anyMatch(library -> VersionComparator.greaterThan(library.getParsedVersion(), installedVersion));
   }
