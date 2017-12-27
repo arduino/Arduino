@@ -2308,8 +2308,10 @@ public class Base {
       }
 
       String[] headers;
-      if (new File(libFolder, "library.properties").exists()) {
-        headers = BaseNoGui.headerListFromIncludePath(UserLibrary.create(libFolder).getSrcFolder());
+      File libProp = new File(libFolder, "library.properties");
+      File srcFolder = new File(libFolder, "src");
+      if (libProp.exists() && srcFolder.isDirectory()) {
+        headers = BaseNoGui.headerListFromIncludePath(srcFolder);
       } else {
         headers = BaseNoGui.headerListFromIncludePath(libFolder);
       }
