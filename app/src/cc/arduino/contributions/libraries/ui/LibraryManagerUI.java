@@ -81,7 +81,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     return new ContributedLibraryTableCellEditor() {
       @Override
       protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
-        if (selectedLibrary.isReadOnly() && mayInstalledLibrary.isPresent()) {
+        if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
           onRemovePressed(mayInstalledLibrary.get());
         } else {
           onInstallPressed(selectedLibrary, mayInstalledLibrary);

@@ -85,6 +85,13 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     installedLib = Optional.empty();
   }
 
+  public boolean isIDEBuiltIn() {
+    if (!installedLib.isPresent()) {
+      return false;
+    }
+    return installedLib.get().isIDEBuiltIn();
+  }
+
   /**
    * Returns <b>true</b> if the library declares to support the specified
    * architecture (through the "architectures" property field).

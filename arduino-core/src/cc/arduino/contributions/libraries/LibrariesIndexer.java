@@ -39,11 +39,12 @@ import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
-import processing.app.helpers.FileUtils;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.packages.LegacyUserLibrary;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
+import processing.app.packages.UserLibraryFolder;
+import processing.app.packages.UserLibraryFolder.Location;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,10 +60,9 @@ public class LibrariesIndexer {
 
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
-  private List<File> librariesFolders;
+  private List<UserLibraryFolder> librariesFolders;
   private final File indexFile;
   private final File stagingFolder;
-  private File sketchbookLibrariesFolder;
 
   private final List<String> badLibNotified = new ArrayList<>();
 
@@ -104,12 +104,12 @@ public class LibrariesIndexer {
     }
   }
 
-  public void setLibrariesFolders(List<File> _librariesFolders) {
-    librariesFolders = _librariesFolders;
+  public void setLibrariesFolders(List<UserLibraryFolder> folders) {
+    librariesFolders = folders;
     rescanLibraries();
   }
 
-  public List<File> getLibrariesFolders() {
+  public List<UserLibraryFolder> getLibrariesFolders() {
     return librariesFolders;
   }
 
@@ -126,8 +126,8 @@ public class LibrariesIndexer {
     }
 
     // Rescan libraries
-    for (File folder : librariesFolders) {
-      scanInstalledLibraries(folder, folder.equals(sketchbookLibrariesFolder));
+    for (UserLibraryFolder folderDesc : librariesFolders) {
+      scanInstalledLibraries(folderDesc);
     }
 
     installedLibraries.stream().filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore()).forEach(userLibrary -> {
@@ -136,46 +136,47 @@ public class LibrariesIndexer {
     });
   }
 
-  private void scanInstalledLibraries(File folder, boolean isSketchbook) {
-    File list[] = folder.listFiles(OnlyDirs.ONLY_DIRS);
+  private void scanInstalledLibraries(UserLibraryFolder folderDesc) {
+    File list[] = folderDesc.folder.listFiles(OnlyDirs.ONLY_DIRS);
     // if a bad folder or something like that, this might come back null
     if (list == null)
       return;
 
     for (File subfolder : list) {
-      if (!BaseNoGui.isSanitaryName(subfolder.getName())) {
+      String subfolderName = subfolder.getName();
+      if (!BaseNoGui.isSanitaryName(subfolderName)) {
 
         // Detect whether the current folder name has already had a notification.
-        if (!badLibNotified.contains(subfolder.getName())) {
+        if (!badLibNotified.contains(subfolderName)) {
 
-          badLibNotified.add(subfolder.getName());
+          badLibNotified.add(subfolderName);
 
           String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
               + "Library names must contain only basic letters and numbers.\n"
               + "(ASCII only and no spaces, and it cannot start with a number)"),
-            subfolder.getName());
+              subfolderName);
           BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
         }
         continue;
       }
 
       try {
-        scanLibrary(subfolder, isSketchbook);
+        scanLibrary(new UserLibraryFolder(subfolder, folderDesc.location));
       } catch (IOException e) {
         System.out.println(I18n.format(tr("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
       }
     }
   }
 
-  private void scanLibrary(File folder, boolean isSketchbook) throws IOException {
-    boolean readOnly = !FileUtils.isSubDirectory(sketchbookLibrariesFolder, folder);
+  private void scanLibrary(UserLibraryFolder folderDesc) throws IOException {
+    boolean readOnly = (folderDesc.location == Location.SKETCHBOOK);
 
     // A library is considered "legacy" if it doesn't contains
     // a file called "library.properties"
-    File check = new File(folder, "library.properties");
+    File check = new File(folderDesc.folder, "library.properties");
     if (!check.exists() || !check.isFile()) {
       // Create a legacy library and exit
-      LegacyUserLibrary lib = LegacyUserLibrary.create(folder);
+      LegacyUserLibrary lib = LegacyUserLibrary.create(folderDesc);
       String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
       if (headers.length == 0) {
         throw new IOException(lib.getSrcFolder().getAbsolutePath());
@@ -185,7 +186,7 @@ public class LibrariesIndexer {
     }
 
     // Create a regular library
-    UserLibrary lib = UserLibrary.create(folder);
+    UserLibrary lib = UserLibrary.create(folderDesc);
     String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
     if (headers.length == 0) {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
@@ -219,19 +220,6 @@ public class LibrariesIndexer {
 
   public File getStagingFolder() {
     return stagingFolder;
-  }
-
-  /**
-   * Set the sketchbook library folder. <br />
-   * New libraries will be installed here. <br />
-   * Libraries not found on this folder will be marked as read-only.
-   */
-  public void setSketchbookLibrariesFolder(File folder) {
-    this.sketchbookLibrariesFolder = folder;
-  }
-
-  public File getSketchbookLibrariesFolder() {
-    return sketchbookLibrariesFolder;
   }
 
   public File getIndexFile() {

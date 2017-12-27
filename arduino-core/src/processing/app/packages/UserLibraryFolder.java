@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2014 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2017 Arduino AG (http://www.arduino.cc/)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,40 +26,24 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package processing.app.packages;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 
-public class LegacyUserLibrary extends UserLibrary {
+public class UserLibraryFolder {
 
-  private String name;
-
-  public static LegacyUserLibrary create(UserLibraryFolder folderDesc) {
-    // construct an old style library
-    LegacyUserLibrary res = new LegacyUserLibrary();
-    res.installedFolder = folderDesc.folder;
-    res.layout = LibraryLayout.FLAT;
-    res.name = folderDesc.folder.getName();
-    res.setTypes(Arrays.asList("Contributed"));
-    res.setCategory("Uncategorized");
-    res.location = folderDesc.location;
-    return res;
+  public enum Location {
+    SKETCHBOOK, CORE, REFERENCED_CORE, IDE_BUILTIN,
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
+  public File folder;
 
-  @Override
-  public List<String> getArchitectures() {
-    return Arrays.asList("*");
-  }
+  public Location location;
 
-  @Override
-  public String toString() {
-    return "LegacyLibrary:" + name + "\n";
+  public UserLibraryFolder(File folder, Location location) {
+    this.folder = folder;
+    this.location = location;
   }
 
 }

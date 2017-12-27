@@ -32,6 +32,7 @@ import cc.arduino.Constants;
 import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
 import processing.app.helpers.PreferencesMap;
+import processing.app.packages.UserLibraryFolder.Location;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,8 +61,12 @@ public class UserLibrary {
   private boolean onGoingDevelopment;
   private List<String> includes;
   protected File installedFolder;
+  protected Location location;
 
-  public static UserLibrary create(File libFolder) throws IOException {
+  public static UserLibrary create(UserLibraryFolder libFolderDesc) throws IOException {
+    File libFolder = libFolderDesc.folder;
+    Location location = libFolderDesc.location;
+
     // Parse metadata
     File propertiesFile = new File(libFolder, "library.properties");
     PreferencesMap properties = new PreferencesMap();
@@ -161,6 +166,7 @@ public class UserLibrary {
     res.declaredTypes = typesList;
     res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
     res.includes = includes;
+    res.location = location;
     return res;
   }
 
@@ -253,9 +259,17 @@ public class UserLibrary {
     return (layout == LibraryLayout.RECURSIVE);
   }
 
+  public Location getLocation() {
+    return location;
+  }
+
+  public boolean isIDEBuiltIn() {
+    return getLocation() == Location.IDE_BUILTIN;
+  }
+
   @Override
   public String toString() {
-    return name + ":" + version + " " + architectures + " " + installedFolder.getAbsolutePath();
+    return name + ":" + version + " " + architectures + " " + location;
   }
 
   public File getInstalledFolder() {

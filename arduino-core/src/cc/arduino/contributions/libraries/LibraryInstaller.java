@@ -108,7 +108,7 @@ public class LibraryInstaller {
     // Step 2: Unpack library on the correct location
     progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
     progressListener.onProgress(progress);
-    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
+    File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
@@ -132,7 +132,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
-    if (lib.isReadOnly()) {
+    if (lib.isIDEBuiltIn()) {
       return;
     }
 

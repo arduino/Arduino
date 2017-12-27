@@ -152,7 +152,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     // Library name...
     desc += format("<b>{0}</b>", name);
-    if (mayInstalled.isPresent() && mayInstalled.get().isReadOnly()) {
+    if (mayInstalled.isPresent() && mayInstalled.get().isIDEBuiltIn()) {
       desc += " Built-In ";
     }
 

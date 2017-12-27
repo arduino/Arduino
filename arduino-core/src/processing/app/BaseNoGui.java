@@ -20,7 +20,8 @@ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-
+import processing.app.packages.UserLibraryFolder;
+import processing.app.packages.UserLibraryFolder.Location;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
 
@@ -87,7 +88,7 @@ public class BaseNoGui {
   public static Map<String, LibraryList> importToLibraryTable;
 
   // XXX: Remove this field
-  static private List<File> librariesFolders;
+  static private List<UserLibraryFolder> librariesFolders;
 
   static UserNotifier notifier = new BasicUserNotifier();
 
@@ -245,7 +246,7 @@ public class BaseNoGui {
     return getHardwareFolder().getAbsolutePath();
   }
 
-  static public List<File> getLibrariesPath() {
+  static public List<UserLibraryFolder> getLibrariesFolders() {
     return librariesFolders;
   }
 
@@ -326,7 +327,7 @@ public class BaseNoGui {
     return new File(getSketchbookFolder(), "hardware");
   }
 
-  static public File getSketchbookLibrariesFolder() {
+  static public UserLibraryFolder getSketchbookLibrariesFolder() {
     File libdir = new File(getSketchbookFolder(), "libraries");
     if (!libdir.exists()) {
       FileWriter freadme = null;
@@ -340,7 +341,7 @@ public class BaseNoGui {
         IOUtils.closeQuietly(freadme);
       }
     }
-    return libdir;
+    return new UserLibraryFolder(libdir, Location.SKETCHBOOK);
   }
 
   static public String getSketchbookPath() {
@@ -651,7 +652,7 @@ public class BaseNoGui {
     librariesFolders = new ArrayList<>();
 
     // Add IDE libraries folder
-    librariesFolders.add(getContentFile("libraries"));
+    librariesFolders.add(new UserLibraryFolder(getContentFile("libraries"), Location.IDE_BUILTIN));
 
     TargetPlatform targetPlatform = getTargetPlatform();
     if (targetPlatform != null) {
@@ -663,13 +664,13 @@ public class BaseNoGui {
           File referencedPlatformFolder = referencedPlatform.getFolder();
           // Add libraries folder for the referenced platform
           File folder = new File(referencedPlatformFolder, "libraries");
-          librariesFolders.add(folder);
+          librariesFolders.add(new UserLibraryFolder(folder, Location.REFERENCED_CORE));
         }
       }
       File platformFolder = targetPlatform.getFolder();
       // Add libraries folder for the selected platform
       File folder = new File(platformFolder, "libraries");
-      librariesFolders.add(folder);
+      librariesFolders.add(new UserLibraryFolder(folder, Location.CORE));
     }
 
     // Add libraries folder for the sketchbook
@@ -678,10 +679,7 @@ public class BaseNoGui {
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    if (librariesIndexer.getLibrariesFolders() == null || !librariesIndexer.getLibrariesFolders().equals(librariesFolders)) {
-      librariesIndexer.setLibrariesFolders(librariesFolders);
-    }
+    librariesIndexer.setLibrariesFolders(librariesFolders);
 
     populateImportToLibraryTable();
   }
