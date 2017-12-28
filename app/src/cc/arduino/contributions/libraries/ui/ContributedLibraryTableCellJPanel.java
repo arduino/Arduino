@@ -25,6 +25,7 @@ import javax.swing.text.html.StyleSheet;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 import processing.app.Theme;

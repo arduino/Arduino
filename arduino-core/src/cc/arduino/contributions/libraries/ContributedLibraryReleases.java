@@ -27,11 +27,10 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.libraries.ui;
+package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.libraries.ContributedLibrary;
 
 import java.util.Collections;
 import java.util.LinkedList;

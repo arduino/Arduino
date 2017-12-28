@@ -46,6 +46,7 @@ import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.utils.ReverseComparator;

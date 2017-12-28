@@ -30,6 +30,7 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;

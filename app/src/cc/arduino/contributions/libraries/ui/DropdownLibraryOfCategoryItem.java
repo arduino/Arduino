@@ -30,6 +30,7 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;

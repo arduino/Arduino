@@ -49,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.ui.DropdownItem;

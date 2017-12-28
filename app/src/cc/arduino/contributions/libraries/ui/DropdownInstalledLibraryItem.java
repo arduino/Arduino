@@ -33,6 +33,7 @@ import static processing.app.I18n.tr;
 
 import java.util.function.Predicate;
 
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.DropdownItem;
 
 public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLibraryReleases> {
