@@ -40,22 +40,17 @@ import java.util.stream.Collectors;
 
 public class ContributedLibraryReleases {
 
-  private final ContributedLibrary library;
-  private final List<ContributedLibrary> releases;
-  private final List<String> versions;
-
-  private ContributedLibrary selected;
+  private List<ContributedLibrary> releases = new LinkedList<>();
+  private List<String> versions = new LinkedList<>();
+  private ContributedLibrary latest = null;
+  private ContributedLibrary selected = null;
 
   public ContributedLibraryReleases(ContributedLibrary library) {
-    this.library = library;
-    this.versions = new LinkedList<>();
-    this.releases = new LinkedList<>();
-    this.selected = null;
     add(library);
   }
 
   public ContributedLibrary getLibrary() {
-    return library;
+    return latest;
   }
 
   public List<ContributedLibrary> getReleases() {
@@ -63,16 +58,25 @@ public class ContributedLibraryReleases {
   }
 
   public boolean shouldContain(ContributedLibrary lib) {
-    return lib.getName().equals(library.getName());
+    if (latest == null) {
+      return true;
+    }
+    return lib.getName().equals(latest.getName());
   }
 
   public void add(ContributedLibrary library) {
+    if (latest == null) {
+      latest = library;
+    }
     releases.add(library);
     String version = library.getParsedVersion();
     if (version != null) {
       versions.add(version);
     }
-    selected = getLatest();
+    if (VersionComparator.greaterThan(version, latest.getParsedVersion())) {
+      latest = library;
+    }
+    selected = latest;
   }
 
   public Optional<ContributedLibrary> getInstalled() {
@@ -85,25 +89,17 @@ public class ContributedLibraryReleases {
   }
 
   public ContributedLibrary getLatest() {
-    List<ContributedLibrary> rels = new LinkedList<>(releases);
-    final VersionComparator versionComparator = new VersionComparator();
-    Collections.sort(rels, (x, y) -> versionComparator.compare(x.getParsedVersion(), y.getParsedVersion()));
-
-    if (rels.isEmpty()) {
-      return null;
-    }
-
-    return rels.get(rels.size() - 1);
+    return latest;
   }
 
   public ContributedLibrary getSelected() {
     return selected;
   }
 
-  public void select(ContributedLibrary value) {
-    for (ContributedLibrary plat : releases) {
-      if (plat == value) {
-        selected = plat;
+  public void select(ContributedLibrary lib) {
+    for (ContributedLibrary r : releases) {
+      if (r == lib) {
+        selected = r;
         return;
       }
     }
