@@ -30,8 +30,8 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
+import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -86,7 +86,15 @@ public class ContributedLibraryReleases {
   }
 
   public ContributedLibrary getLatest() {
-    return FilteredAbstractTableModel.getLatestOf(releases);
+    List<ContributedLibrary> rels = new LinkedList<>(releases);
+    final VersionComparator versionComparator = new VersionComparator();
+    Collections.sort(rels, (x, y) -> versionComparator.compare(x.getParsedVersion(), y.getParsedVersion()));
+
+    if (rels.isEmpty()) {
+      return null;
+    }
+
+    return rels.get(rels.size() - 1);
   }
 
   public ContributedLibrary getSelected() {
