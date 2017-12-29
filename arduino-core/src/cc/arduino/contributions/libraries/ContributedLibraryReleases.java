@@ -49,10 +49,6 @@ public class ContributedLibraryReleases {
     add(library);
   }
 
-  public ContributedLibrary getLibrary() {
-    return latest;
-  }
-
   public List<ContributedLibrary> getReleases() {
     return releases;
   }
