@@ -24,7 +24,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 | Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
 | arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder/issues) |
-| [Arduino Web Editor](https://create.arduino.cc/editor) | [arduino/arduino-create-agent](https://github.com/arduino/arduino-create-agent/issues) |
+| [Arduino Web Editor](https://create.arduino.cc/editor) | [**Create > Editor** section of the Arduino Forum](http://forum.arduino.cc/index.php?board=101.0) |
 | Arduino AVR Boards (Uno, Mega, Leonardo, etc.) | [arduino/ArduinoCore-avr](https://github.com/arduino/ArduinoCore-avr/issues) |
 | Arduino SAMD Boards (Zero, MKR1000, MKRZero, etc.) | [arduino/ArduinoCore-samd](https://github.com/arduino/ArduinoCore-samd/issues) |
 | Arduino SAM Boards (Due) | [arduino/ArduinoCore-sam](https://github.com/arduino/ArduinoCore-sam/issues) |
