@@ -47,7 +47,6 @@ import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.filters.BuiltInPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReleases;
-import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.utils.ReverseComparator;
 
@@ -88,9 +87,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
     final Optional<ContributedLibrary> mayInstalled = editorValue.getInstalled();
 
-    List<ContributedLibrary> releases = editorValue.getReleases().stream()
-        .filter(new OnlyUpstreamReleasePredicate())
-        .collect(Collectors.toList());
+    List<ContributedLibrary> releases = editorValue.getReleases();
     List<ContributedLibrary> uninstalledReleases = releases.stream()
         .filter(l -> !l.isLibraryInstalled()).collect(Collectors.toList());
 
