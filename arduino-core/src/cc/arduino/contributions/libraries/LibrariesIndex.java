@@ -29,12 +29,15 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
 
 public abstract class LibrariesIndex {
 
@@ -92,14 +95,7 @@ public abstract class LibrariesIndex {
   }
 
   public Optional<ContributedLibrary> getInstalled(String name) {
-    return find(name).stream() //
-        .filter(l -> l.isLibraryInstalled()) //
-        .reduce((x, y) -> {
-          if (x.isIDEBuiltIn() == y.isIDEBuiltIn()) {
-            return VersionComparator.max(x, y);
-          } else {
-            return x.isIDEBuiltIn() ? y : x;
-          }
-        });
+    ContributedLibraryReleases rel = new ContributedLibraryReleases(find(name));
+    return rel.getInstalled();
   }
 }

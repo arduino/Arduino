@@ -29,14 +29,12 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.VersionComparator;
+import processing.app.packages.UserLibraryFolder.Location;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ContributedLibraryReleases {
 
@@ -47,6 +45,10 @@ public class ContributedLibraryReleases {
 
   public ContributedLibraryReleases(ContributedLibrary library) {
     add(library);
+  }
+
+  public ContributedLibraryReleases(List<ContributedLibrary> libraries) {
+    libraries.forEach(this::add);
   }
 
   public List<ContributedLibrary> getReleases() {
@@ -76,12 +78,16 @@ public class ContributedLibraryReleases {
   }
 
   public Optional<ContributedLibrary> getInstalled() {
-    List<ContributedLibrary> installedReleases = releases.stream().filter(l -> l.isLibraryInstalled()).collect(Collectors.toList());
-    if (installedReleases.isEmpty()) {
-      return Optional.empty();
-    }
-    Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-    return Optional.of(installedReleases.get(0));
+    return releases.stream() //
+        .filter(ContributedLibrary::isLibraryInstalled) //
+        .reduce((x, y) -> {
+          Location lx = x.getInstalledLibrary().get().getLocation();
+          Location ly = y.getInstalledLibrary().get().getLocation();
+          if (lx == ly) {
+            return VersionComparator.max(x, y);
+          }
+          return lx == Location.SKETCHBOOK ? x : y;
+        });
   }
 
   public ContributedLibrary getLatest() {
