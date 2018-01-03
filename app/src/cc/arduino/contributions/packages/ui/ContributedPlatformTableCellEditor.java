@@ -42,8 +42,6 @@ import javax.swing.JTable;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.utils.ReverseComparator;
@@ -86,11 +84,13 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
     final ContributedPlatform installed = value.getInstalled();
 
     List<ContributedPlatform> releases = new LinkedList<>(value.releases);
-    List<ContributedPlatform> uninstalledReleases = releases.stream()
-        .filter(new InstalledPredicate().negate()).collect(Collectors.toList());
+    List<ContributedPlatform> uninstalledReleases = releases.stream() //
+        .filter(p -> !p.isInstalled()) //
+        .collect(Collectors.toList());
 
-    List<ContributedPlatform> installedBuiltIn = releases.stream()
-        .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
+    List<ContributedPlatform> installedBuiltIn = releases.stream() //
+        .filter(p -> p.isInstalled()) //
+        .filter(p -> p.isBuiltIn()) //
         .collect(Collectors.toList());
 
     if (installed != null && !installedBuiltIn.contains(installed)) {

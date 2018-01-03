@@ -35,13 +35,6 @@ import java.io.File;
 
 public abstract class DownloadableContribution {
 
-  // XXX: maybe installed fields should not be here but in UserLibrary and ContributedPlatform?
-  private boolean installed;
-  private File installedFolder;
-
-  private boolean downloaded;
-  private File downloadedFile;
-
   public abstract String getUrl();
 
   public abstract String getVersion();
@@ -52,6 +45,8 @@ public abstract class DownloadableContribution {
 
   public abstract String getArchiveFileName();
 
+  private boolean downloaded;
+
   public boolean isDownloaded() {
     return downloaded;
   }
@@ -59,6 +54,8 @@ public abstract class DownloadableContribution {
   public void setDownloaded(boolean downloaded) {
     this.downloaded = downloaded;
   }
+
+  private File downloadedFile;
 
   public File getDownloadedFile() {
     return downloadedFile;
@@ -68,46 +65,11 @@ public abstract class DownloadableContribution {
     this.downloadedFile = downloadedFile;
   }
 
-  public boolean isInstalled() {
-    return installed;
-  }
-
-  public void setInstalled(boolean installed) {
-    this.installed = installed;
-  }
-
-  public File getInstalledFolder() {
-    return installedFolder;
-  }
-
-  public void setInstalledFolder(File installedFolder) {
-    this.installedFolder = installedFolder;
-  }
-
-  private boolean readOnly;
-
-  public boolean isReadOnly() {
-    return readOnly;
-  }
-
-  public void setReadOnly(boolean readOnly) {
-    this.readOnly = readOnly;
-  }
-
   public String getParsedVersion() {
     Version version = VersionHelper.valueOf(getVersion());
     if (version == null) {
       return null;
     }
     return version.toString();
-  }
-
-  @Override
-  public String toString() {
-    String res = "";
-    if (installed) {
-      res += "installed on " + installedFolder.getAbsolutePath() + " (" + getSize() + " bytes)";
-    }
-    return res;
   }
 }

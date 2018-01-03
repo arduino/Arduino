@@ -320,11 +320,11 @@ public class Base {
 
       ContributedPlatform installed = indexer.getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
 
-      if (!selected.isReadOnly()) {
+      if (!selected.isBuiltIn()) {
         contributionInstaller.install(selected, progressListener);
       }
 
-      if (installed != null && !installed.isReadOnly()) {
+      if (installed != null && !installed.isBuiltIn()) {
         contributionInstaller.remove(installed);
       }
 

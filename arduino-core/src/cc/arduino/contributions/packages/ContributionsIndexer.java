@@ -31,11 +31,8 @@ package cc.arduino.contributions.packages;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.SignatureVerifier;
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -240,9 +237,9 @@ public class ContributionsIndexer {
         PreferencesMap toolsVersion = new PreferencesMap(versionsFile).subTree(pack.getName());
         for (String name : toolsVersion.keySet()) {
           String version = toolsVersion.get(name);
-          DownloadableContribution tool = syncToolWithFilesystem(pack, toolFolder, name, version);
+          ContributedTool tool = syncToolWithFilesystem(pack, toolFolder, name, version);
           if (tool != null)
-            tool.setReadOnly(true);
+            tool.setBuiltIn(true);
         }
       }
     }
@@ -255,7 +252,7 @@ public class ContributionsIndexer {
       String version = new PreferencesMap(platformTxt).get("version");
       ContributedPlatform p = syncHardwareWithFilesystem(pack, platformFolder, platformFolder.getName(), version);
       if (p != null) {
-        p.setReadOnly(true);
+        p.setBuiltIn(true);
       }
     }
   }
@@ -301,7 +298,7 @@ public class ContributionsIndexer {
     }
   }
 
-  private DownloadableContribution syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
+  private ContributedTool syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
     ContributedTool tool = pack.findTool(toolName, version);
     if (tool == null) {
       tool = pack.findResolvedTool(toolName, version);
@@ -314,17 +311,17 @@ public class ContributionsIndexer {
       System.err.println(tool + " seems to have no downloadable contributions for your operating system, but it is installed in\n" + installationFolder);
       return null;
     }
-    contrib.setInstalled(true);
-    contrib.setInstalledFolder(installationFolder);
-    contrib.setReadOnly(false);
-    return contrib;
+    tool.setInstalled(true);
+    tool.setInstalledFolder(installationFolder);
+    tool.setBuiltIn(false);
+    return tool;
   }
 
   private ContributedPlatform syncHardwareWithFilesystem(ContributedPackage pack, File installationFolder, String architecture, String version) {
     ContributedPlatform p = pack.findPlatform(architecture, version);
     if (p != null) {
       p.setInstalled(true);
-      p.setReadOnly(false);
+      p.setBuiltIn(false);
       p.setInstalledFolder(installationFolder);
     }
     return p;
@@ -345,8 +342,10 @@ public class ContributionsIndexer {
     for (ContributedPackage aPackage : index.getPackages()) {
       ContributedTargetPackage targetPackage = new ContributedTargetPackage(aPackage.getName());
 
-      List<ContributedPlatform> platforms = aPackage.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-      Collections.sort(platforms, new DownloadableContributionBuiltInAtTheBottomComparator());
+      List<ContributedPlatform> platforms = aPackage.getPlatforms().stream() //
+          .filter(p -> p.isInstalled()) //
+          .collect(Collectors.toList());
+      Collections.sort(platforms, ContributedPlatform.BUILTIN_AS_LAST);
 
       for (ContributedPlatform p : platforms) {
         String arch = p.getArchitecture();
@@ -381,7 +380,7 @@ public class ContributionsIndexer {
         if (platformToIgnore.equals(p)) {
           continue;
         }
-        if (!p.isInstalled() || p.isReadOnly()) {
+        if (!p.isInstalled() || p.isBuiltIn()) {
           continue;
         }
         for (ContributedTool requiredTool : p.getResolvedTools()) {
@@ -399,12 +398,16 @@ public class ContributionsIndexer {
       return tools;
     }
     for (ContributedPackage pack : index.getPackages()) {
-      Collection<ContributedPlatform> platforms = pack.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
+      Collection<ContributedPlatform> platforms = pack.getPlatforms().stream() //
+          .filter(p -> p.isInstalled()) //
+          .collect(Collectors.toList());
       Map<String, List<ContributedPlatform>> platformsByName = platforms.stream().collect(Collectors.groupingBy(ContributedPlatform::getName));
 
       platformsByName.forEach((platformName, platformsWithName) -> {
         if (platformsWithName.size() > 1) {
-          platformsWithName = platformsWithName.stream().filter(new BuiltInPredicate().negate()).collect(Collectors.toList());
+          platformsWithName = platformsWithName.stream() //
+              .filter(p -> !p.isBuiltIn()) //
+              .collect(Collectors.toList());
         }
         for (ContributedPlatform p : platformsWithName) {
           tools.addAll(p.getResolvedTools());

@@ -183,7 +183,7 @@ public class BaseNoGui {
 
     String prefix = "runtime.tools.";
     for (ContributedTool tool : requiredTools) {
-      File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      File folder = tool.getInstalledFolder();
       if (folder == null) {
         continue;
       }
@@ -693,7 +693,7 @@ public class BaseNoGui {
 
     Map<String, String> latestVersions = new HashMap<>();
     for (ContributedTool tool : installedTools) {
-      File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      File installedFolder = tool.getInstalledFolder();
       String toolPath;
       if (installedFolder != null) {
         toolPath = installedFolder.getAbsolutePath();

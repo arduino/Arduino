@@ -85,7 +85,7 @@ public class ContributionInstaller {
         throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
       // Download the tool if it's not installed or it's a built-in tool
-      if (!downloadable.isInstalled() || downloadable.isReadOnly()) {
+      if (!tool.isInstalled() || tool.isBuiltIn()) {
         tools.add(tool);
       }
     }
@@ -121,11 +121,11 @@ public class ContributionInstaller {
     // once everything is successfully unpacked. If the operation fails remove
     // all the temporary folders and abort installation.
 
-    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform.getResolvedToolReferences().entrySet()
-      .stream()
-      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled()
-          || entry.getValue().getDownloadableContribution(platform).isReadOnly())
-      .collect(Collectors.toList());
+    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform
+        .getResolvedToolReferences().entrySet().stream()
+        .filter((entry) -> !entry.getValue().isInstalled()
+                           || entry.getValue().isBuiltIn())
+        .collect(Collectors.toList());
 
     int i = 1;
     for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {
@@ -133,10 +133,11 @@ public class ContributionInstaller {
       progressListener.onProgress(progress);
       i++;
       ContributedTool tool = entry.getValue();
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       Path destFolder = Paths.get(BaseNoGui.indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
 
       Files.createDirectories(destFolder);
+
+      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       assert toolContrib.getDownloadedFile() != null;
       new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
@@ -144,8 +145,8 @@ public class ContributionInstaller {
       } catch (IOException e) {
         errors.add(tr("Error running post install script"));
       }
-      toolContrib.setInstalled(true);
-      toolContrib.setInstalledFolder(destFolder.toFile());
+      tool.setInstalled(true);
+      tool.setInstalledFolder(destFolder.toFile());
       progress.stepDone();
     }
 
@@ -234,7 +235,7 @@ public class ContributionInstaller {
   }
 
   public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
-    if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
+    if (contributedPlatform == null || contributedPlatform.isBuiltIn()) {
       return new LinkedList<>();
     }
     List<String> errors = new LinkedList<>();
@@ -251,15 +252,14 @@ public class ContributionInstaller {
         continue;
 
       // Do not remove built-in tools
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
-      if (toolContrib.isReadOnly())
+      if (tool.isBuiltIn())
         continue;
 
       // Ok, delete the tool
-      File destFolder = toolContrib.getInstalledFolder();
+      File destFolder = tool.getInstalledFolder();
       FileUtils.recursiveDelete(destFolder);
-      toolContrib.setInstalled(false);
-      toolContrib.setInstalledFolder(null);
+      tool.setInstalled(false);
+      tool.setInstalledFolder(null);
 
       // We removed the version folder (.../tools/TOOL_NAME/VERSION)
       // now try to remove the containing TOOL_NAME folder
