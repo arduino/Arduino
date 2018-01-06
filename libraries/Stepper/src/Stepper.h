@@ -8,6 +8,7 @@
  * High-speed stepping mod         by Eugene Kozlenko
  * Timer rollover fix              by Eugene Kozlenko
  * Five phase five wire    (1.1.0) by Ryan Orendorff
+ * Improve C++             (1.2)   by Steve Weinrich
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -83,38 +84,48 @@
 class Stepper {
   public:
     // constructors:
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4);
-    Stepper(int number_of_steps, int motor_pin_1, int motor_pin_2,
-                                 int motor_pin_3, int motor_pin_4,
-                                 int motor_pin_5);
+    Stepper (int numberOfSteps, int motorPin1, int motorPin2);
+
+    Stepper (int numberOfSteps, int motorPin1, int motorPin2,
+                                int motorPin3, int motorPin4);
+
+    Stepper (int numberOfSteps, int motorPin1, int motorPin2,
+                                int motorPin3, int motorPin4,
+                                int motorPin5);
 
     // speed setter method:
-    void setSpeed(long whatSpeed);
+    void setSpeed (unsigned long revolutionsPerMinute);
 
-    // mover method:
-    void step(int number_of_steps);
+    // mover method, numberOfSteps may be positive or negative:
+    void step (int numberOfSteps);
 
-    int version(void);
+    inline int version (void) const { return 6; }
 
   private:
-    void stepMotor(int this_step);
+    void commonInitialization();
 
-    int direction;            // Direction of rotation
-    unsigned long step_delay; // delay between steps, in ms, based on speed
-    int number_of_steps;      // total number of steps this motor can take
-    int pin_count;            // how many pins are in use.
-    int step_number;          // which step the motor is on
+    void stepMotorTwoWire  (int step) const;
+    void stepMotorFourWire (int step) const;
+    void stepMotorFiveWire (int step) const;
+
+    // Thee following two statements declare a "pointer to member function".  The
+    // function pointed to must have the signature "void someFunction (int) const".
+    // You can see them declared right above.  The value of mStepMotor is set in
+    // the constructors.  The whole point of this is to permit the correct function
+    // to be called without using an "if" or "switch" statement.  You can see how
+    // mStepMotor is used at the bottom of the "step" function.
+    typedef void (Stepper::*StepMotorMethodPointer) (int) const; 
+    const StepMotorMethodPointer mStepMotor;
 
     // motor pin numbers:
-    int motor_pin_1;
-    int motor_pin_2;
-    int motor_pin_3;
-    int motor_pin_4;
-    int motor_pin_5;          // Only 5 phase motor
+    const int mMotorPins[5];        // arrays are indexed starting at 0, not 1
 
-    unsigned long last_step_time; // time stamp in us of when the last step was taken
+    const int mNumberOfPositions;   // total number of discrete control positions
+    const int mNumberOfSteps;       // total number of steps this motor can take
+
+    unsigned long mStepDelay;       // delay between steps, in microseconds, based on speed
+    int           mStepNumber;      // which step the motor is on
+    unsigned long mLastStepTime;    // time stamp in microseconds of when the last step was taken
 };
 
 #endif
