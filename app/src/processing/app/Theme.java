@@ -61,6 +61,8 @@ import processing.app.helpers.PreferencesMap;
  * and to make way for future ability to customize.
  */
 public class Theme {
+  
+  static final String THEME_DIR = "theme/";
 
   /**
    * Copy of the defaults in case the user mangles a preference.
@@ -73,7 +75,8 @@ public class Theme {
 
   static protected void init() {
     try {
-      table.load(new File(BaseNoGui.getContentFile("lib"), "theme/theme.txt"));
+      table.load(new File(BaseNoGui.getContentFile("lib"), THEME_DIR + "theme.txt"));
+      table.load(getThemeFile(THEME_DIR + "theme.txt"));
     } catch (Exception te) {
       Base.showError(null, tr("Could not read color theme settings.\n"
                               + "You'll need to reinstall Arduino."),
@@ -177,6 +180,9 @@ public class Theme {
       String value = getDefault(attr);
       set(attr, value);
       font = PreferencesHelper.getFont(table, attr);
+      if (font == null) {
+        return null;
+      }
     }
     return font.deriveFont((float) scale(font.getSize()));
   }
@@ -245,11 +251,10 @@ public class Theme {
    */
   static public Image getLibImage(String filename, Component who, int width,
                                   int height) {
-    File libFolder = BaseNoGui.getContentFile("lib");
     Image image = null;
 
     // Use vector image when available
-    File vectorFile = new File(libFolder, filename + ".svg");
+    File vectorFile = getThemeFile(filename + ".svg");
     if (vectorFile.exists()) {
       try {
         image = imageFromSVG(vectorFile.toURI().toURL(), width, height);
@@ -259,13 +264,16 @@ public class Theme {
       }
     }
 
-    // Otherwise fall-back to PNG bitmaps
-    if (image == null) {
-      File bitmapFile = new File(libFolder, filename + ".png");
-      File bitmap2xFile = new File(libFolder, filename + "@2x.png");
+    File bitmapFile = getThemeFile(filename + ".png");
+    
+    // Otherwise fall-back to PNG bitmaps, allowing user-defined bitmaps to
+    // override built-in svgs
+    if (image == null || (!isUserThemeFile(vectorFile) && isUserThemeFile(bitmapFile))) {
+      File bitmap2xFile = getThemeFile(filename + "@2x.png");
 
       File imageFile;
-      if ((getScale() > 125 && bitmap2xFile.exists()) || !bitmapFile.exists()) {
+      if (((getScale() > 125 && bitmap2xFile.exists()) || !bitmapFile.exists())
+          && isUserThemeFile(bitmapFile) == isUserThemeFile(bitmap2xFile)) {
         imageFile = bitmap2xFile;
       } else {
         imageFile = bitmapFile;
@@ -298,7 +306,7 @@ public class Theme {
    */
   static public Image getThemeImage(String name, Component who, int width,
                                     int height) {
-    return getLibImage("theme/" + name, who, width, height);
+    return getLibImage(THEME_DIR + name, who, width, height);
   }
 
   private static Image imageFromSVG(URL url, int width, int height)
@@ -324,5 +332,33 @@ public class Theme {
     }
     return g;
   }
+  
+  /**
+   * Check whether the specified file is a user-defined theme file
+   */
+  static public boolean isUserThemeFile(File file) {
+    return file.exists() && file.getAbsolutePath().startsWith(BaseNoGui.getSketchbookFolder().getAbsolutePath());
+  }
 
+  /**
+   * @param name
+   * @return
+   */
+  static public File getThemeFile(String name) {
+    File sketchBookThemeFolder = new File(BaseNoGui.getSketchbookFolder(), THEME_DIR);
+    
+    File themeFile = new File(sketchBookThemeFolder, name);
+    if (themeFile.exists()) {
+      return themeFile;
+    }
+    
+    if (name.startsWith(THEME_DIR)) {
+      themeFile = new File(sketchBookThemeFolder, name.substring(THEME_DIR.length()));
+      if (themeFile.exists()) {
+        return themeFile;
+      }
+    }
+    
+    return new File(BaseNoGui.getContentFile("lib"), name);
+  }
 }

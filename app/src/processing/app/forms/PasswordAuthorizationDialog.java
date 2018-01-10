@@ -1,12 +1,12 @@
 package processing.app.forms;
 
 import processing.app.Base;
+import processing.app.Theme;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import static processing.app.I18n.tr;
 
@@ -34,7 +34,7 @@ public class PasswordAuthorizationDialog extends JDialog {
 
     typePasswordLabel.setText(dialogText);
 
-    icon.setIcon(new ImageIcon(new File(Base.getContentFile("lib"), "theme/lock.png").getAbsolutePath()));
+    icon.setIcon(new ImageIcon(Theme.getThemeFile("theme/lock.png").getAbsolutePath()));
 
     passwordLabel.setText(tr("Password:"));
 
