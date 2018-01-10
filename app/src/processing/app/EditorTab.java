@@ -50,6 +50,7 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
@@ -319,6 +320,20 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     }
     // apply changes to the font size for the editor
     Font editorFont = scale(PreferencesData.getFont("editor.font"));
+    
+    // check whether a theme-defined editor font is available
+    Font themeFont = Theme.getFont("editor.font");
+    if (themeFont != null)
+    {
+      // Apply theme font if the editor font has *not* been changed by the user,
+      // This allows themes to specify an editor font which will only be applied
+      // if the user hasn't already changed their editor font via preferences.txt
+      String defaultFontName = StringUtils.defaultIfEmpty(PreferencesData.getDefault("editor.font"), "").split(",")[0];
+      if (defaultFontName.equals(editorFont.getName())) {
+        editorFont = new Font(themeFont.getName(), themeFont.getStyle(), editorFont.getSize());
+      }
+    }
+    
     textarea.setFont(editorFont);
     scrollPane.getGutter().setLineNumberFont(editorFont);
   }
