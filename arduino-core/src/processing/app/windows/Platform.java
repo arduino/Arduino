@@ -44,7 +44,7 @@ import com.sun.jna.win32.W32APIOptions;
 public class Platform extends processing.app.Platform {
 
   private File settingsFolder;
-  private File defaultSketchbookFolder;
+  private File defaultSketchbookFolder = null;
 
   @Override
   public void init() throws Exception {
@@ -52,7 +52,6 @@ public class Platform extends processing.app.Platform {
 
     checkPath();
     recoverSettingsFolderPath();
-    recoverDefaultSketchbookFolder();
   }
 
   private void recoverSettingsFolderPath() throws Exception {
@@ -119,6 +118,7 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public File getDefaultSketchbookFolder() throws Exception {
+    recoverDefaultSketchbookFolder();
     return defaultSketchbookFolder;
   }
 
