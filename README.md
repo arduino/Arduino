@@ -47,7 +47,7 @@ Arduino uses
 [avrdude](http://www.nongnu.org/avrdude/),
 [bossac](http://www.shumatech.com/web/products/bossa),
 [openOCD](http://openocd.org/)
-and code from [Processing](http://www.processing.org)
+and code from [Processing](https://www.processing.org)
 and [Wiring](http://wiring.org.co).
 
 Icon and about image designed by [ToDo](https://www.todo.to.it/)
