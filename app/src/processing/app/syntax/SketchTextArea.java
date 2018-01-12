@@ -110,7 +110,7 @@ public class SketchTextArea extends RSyntaxTextArea {
   private void setTheme(String name) throws IOException {
     FileInputStream defaultXmlInputStream = null;
     try {
-      defaultXmlInputStream = new FileInputStream(new File(BaseNoGui.getContentFile("lib"), "theme/syntax/" + name + ".xml"));
+      defaultXmlInputStream = new FileInputStream(processing.app.Theme.getThemeFile("theme/syntax/" + name + ".xml"));
       Theme theme = Theme.load(defaultXmlInputStream);
       theme.apply(this);
     } finally {
