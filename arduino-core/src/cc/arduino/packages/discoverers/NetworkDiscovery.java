@@ -122,6 +122,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
       port.setAddress(address);
       port.setBoardName(name);
+      port.setBoardId(board);
       port.setProtocol("network");
       port.setLabel(label);
 
