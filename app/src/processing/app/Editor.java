@@ -33,6 +33,9 @@ import cc.arduino.CompilerProgressListener;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
@@ -1046,19 +1049,21 @@ public class Editor extends JFrame implements RunnerListener {
   class SerialMenuListener implements ActionListener {
 
     private final String serialPort;
+    private final String boardId;
 
-    public SerialMenuListener(String serialPort) {
+    public SerialMenuListener(String serialPort, String boardId) {
       this.serialPort = serialPort;
+      this.boardId = boardId;
     }
 
     public void actionPerformed(ActionEvent e) {
-      selectSerialPort(serialPort);
+      selectSerialPort(serialPort, boardId);
       base.onBoardOrPortChange();
     }
 
   }
 
-  private void selectSerialPort(String name) {
+  private void selectSerialPort(String name, String boardId) {
     if(portMenu == null) {
       System.out.println(tr("serialMenu is null"));
       return;
@@ -1096,6 +1101,13 @@ public class Editor extends JFrame implements RunnerListener {
         serialPlotter.setVisible(false);
       } catch (Exception e) {
         // ignore
+      }
+    }
+    
+    if (boardId != null) {
+      TargetBoard targetBoard = BaseNoGui.getPlatform().resolveBoardById(BaseNoGui.packages, boardId);
+      if (targetBoard != null) {
+        base.selectTargetBoard(targetBoard);
       }
     }
 
@@ -1142,9 +1154,10 @@ public class Editor extends JFrame implements RunnerListener {
       }
       String address = port.getAddress();
       String label = port.getLabel();
+      String boardId = port.getBoardId();
 
       JCheckBoxMenuItem item = new JCheckBoxMenuItem(label, address.equals(selectedPort));
-      item.addActionListener(new SerialMenuListener(address));
+      item.addActionListener(new SerialMenuListener(address, boardId));
       portMenu.add(item);
     }
 
@@ -2178,7 +2191,7 @@ public class Editor extends JFrame implements RunnerListener {
      names,
      0);
     if (result == null) return false;
-    selectSerialPort(result);
+    selectSerialPort(result, null);
     base.onBoardOrPortChange();
     return true;
   }
