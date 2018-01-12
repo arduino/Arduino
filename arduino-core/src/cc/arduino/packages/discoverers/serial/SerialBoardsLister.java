@@ -155,6 +155,7 @@ public class SerialBoardsLister extends TimerTask {
             label += " (" + boardName + ")";
           }
           boardPort.setBoardName(boardName);
+          boardPort.setBoardId(board.getId());
         }
       } else {
         if (!parts[1].equals("0000")) {
