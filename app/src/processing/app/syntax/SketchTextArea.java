@@ -32,6 +32,16 @@ package processing.app.syntax;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import javax.swing.KeyStroke;
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -91,9 +101,9 @@ public class SketchTextArea extends RSyntaxTextArea {
   }
 
   private void setTheme(String name) throws IOException {
-    FileInputStream defaultXmlInputStream = null;
+    InputStream defaultXmlInputStream = null;
     try {
-      defaultXmlInputStream = new FileInputStream(processing.app.Theme.getThemeFile("theme/syntax/" + name + ".xml"));
+      defaultXmlInputStream = processing.app.Theme.getThemeResource("theme/syntax/" + name + ".xml").getInputStream();
       Theme theme = Theme.load(defaultXmlInputStream);
       theme.apply(this);
     } finally {
