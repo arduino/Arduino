@@ -34,7 +34,7 @@ public class PasswordAuthorizationDialog extends JDialog {
 
     typePasswordLabel.setText(dialogText);
 
-    icon.setIcon(new ImageIcon(Theme.getThemeFile("theme/lock.png").getAbsolutePath()));
+    icon.setIcon(new ImageIcon(Theme.getThemeResource("theme/lock.png").getUrl()));
 
     passwordLabel.setText(tr("Password:"));
 
