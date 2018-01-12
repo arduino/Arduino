@@ -36,6 +36,7 @@ public class BoardPort {
   private String address;
   private String protocol;
   private String boardName;
+  private String boardId;
   private String vid;
   private String pid;
   private String iserial;
@@ -71,6 +72,14 @@ public class BoardPort {
     this.boardName = boardName;
   }
 
+  public String getBoardId() {
+    return boardId;
+  }
+
+  public void setBoardId(String boardId) {
+    this.boardId = boardId;
+  }
+  
   public PreferencesMap getPrefs() {
     return prefs;
   }
