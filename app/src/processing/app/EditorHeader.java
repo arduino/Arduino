@@ -223,16 +223,7 @@ public class EditorHeader extends JComponent {
     Dimension size = getSize();
     if ((size.width != sizeW) || (size.height != sizeH)) {
       // component has been resized
-
-      if ((size.width > imageW) || (size.height > imageH)) {
-        // nix the image and recreate, it's too small
-        offscreen = null;
-
-      } else {
-        // who cares, just resize
-        sizeW = size.width;
-        sizeH = size.height;
-      }
+      offscreen = null;
     }
 
     if (offscreen == null) {
@@ -255,6 +246,8 @@ public class EditorHeader extends JComponent {
     g.setColor(backgroundColor);
     g.fillRect(0, 0, imageW, imageH);
 
+    imageW = sizeW - 30 - menuButtons[0].getWidth(this);
+
     List<EditorTab> tabs = editor.getTabs();
 
     int codeCount = tabs.size();
@@ -265,7 +258,8 @@ public class EditorHeader extends JComponent {
 
     int x = scale(6); // offset from left edge of the component
     int i = 0;
-    int x_selected = 0;
+    int selected = 0;
+    int size_selected = 0;
 
     // dry run, get the correct offset
     for (EditorTab tab : tabs) {
@@ -279,37 +273,33 @@ public class EditorHeader extends JComponent {
         font.getStringBounds(text, g.getFontRenderContext()).getWidth();
 
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
-      int pieceWidth = pieceCount * PIECE_WIDTH;
 
       int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
+      int x_initial = x;
       x += PIECE_WIDTH;
 
-      int contentLeft = x;
       tabLeft[i] = x;
-      for (int j = 0; j < pieceCount; j++) {
-        x += PIECE_WIDTH;
-      }
+      x += PIECE_WIDTH * pieceCount;
       tabRight[i] = x;
-      int textLeft = contentLeft + (pieceWidth - textWidth) / 2;
-
-      int baseline = (sizeH + fontAscent) / 2;
-      //g.drawString(sketch.code[i].name, textLeft, baseline);
 
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
 
       if (state == SELECTED) {
-        x_selected = x;
+        selected = i;
+        size_selected = x - x_initial;
       }
 
       i++;
     }
 
-    if (x_selected > imageW) {
-      x = -(x_selected - imageW);
-    } else {
-      x = scale(6); // offset from left edge of the component
+    int non_selected_tab_size = 0;
+
+    if (x > imageW) {
+      // find scaling factor
+      non_selected_tab_size = (imageW - size_selected)/(codeCount -1);
     }
     i = 0;
+    x = scale(6); // offset from left edge of the component
 
     for (EditorTab tab : tabs) {
       SketchFile file = tab.getSketchFile();
@@ -319,7 +309,36 @@ public class EditorHeader extends JComponent {
       String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
 
       int textWidth = (int)
-        font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+          font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+
+      if (non_selected_tab_size > 0) {
+        if (i != selected) {
+          // find a suitable title
+          while (textWidth + 3 * PIECE_WIDTH > non_selected_tab_size && filename.length() > 2) {
+            filename = filename.substring(0, filename.length()-1);
+            text = "  " + filename + ".." + (file.isModified() ? " \u00A7" : "  ");
+            textWidth = (int)font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+          }
+        }
+      }
+
+      int current_tab_size = non_selected_tab_size;
+      if (i == selected) {
+        current_tab_size = size_selected;
+      }
+
+      int padding = x + current_tab_size;
+
+      if (padding > imageW) {
+        if (i <= selected) {
+          // create another surface to overlay g
+          g.setColor(backgroundColor);
+          g.fillRect(0, 0, sizeW, imageH);
+          x = scale(6);
+        } else {
+          break;
+        }
+      }
 
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
