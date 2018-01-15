@@ -62,10 +62,6 @@ public class FindReplace extends javax.swing.JFrame {
     isTranslucencySupported();
     initComponents();
 
-    if (OSUtils.isWindows()) {
-      setAutoRequestFocus(false);
-    }
-
     if (OSUtils.isMacOS()) {
       buttonsContainer.removeAll();
       buttonsContainer.add(replaceAllButton);
@@ -76,6 +72,9 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     Base.registerWindowCloseKeys(getRootPane(), e -> {
+      if (OSUtils.isWindows()) {
+        setAutoRequestFocus(true);
+      }
       setVisible(false);
       Base.FIND_DIALOG_STATE = findDialogState();
     });
@@ -86,6 +85,7 @@ public class FindReplace extends javax.swing.JFrame {
       public void windowActivated(WindowEvent e) {
         if (OSUtils.isWindows()) {
           toFront();
+          setAutoRequestFocus(false);
           return;
         }
         findField.requestFocusInWindow();
@@ -127,6 +127,11 @@ public class FindReplace extends javax.swing.JFrame {
   @Override
   public void setVisible(boolean b) {
     getRootPane().setDefaultButton(findButton);
+
+    if (OSUtils.isWindows()) {
+      // means we are restoring the window visibility
+      setAutoRequestFocus(true);
+    }
 
     super.setVisible(b);
   }
