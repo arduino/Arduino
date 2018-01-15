@@ -28,8 +28,11 @@ import static processing.app.Theme.scale;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.MouseWheelEvent;
 
@@ -37,10 +40,16 @@ import java.io.IOException;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -52,6 +61,8 @@ import javax.swing.text.Document;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 import java.nio.file.WatchService;
+import java.util.ArrayList;
+import java.util.List;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchEvent;
 import java.nio.file.FileSystems;
@@ -59,13 +70,20 @@ import java.nio.file.Path;
 import java.io.File;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
+import org.fife.ui.rtextarea.GutterIconInfo;
+import org.fife.ui.rtextarea.RTADefaultInputMap;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaEditorKit;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.RecordableTextAction;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import processing.app.helpers.DocumentTextChangeListener;
+import processing.app.helpers.PreferencesMap;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
@@ -136,6 +154,8 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     return document;
   }
   
+  public static final String rtaNextBookmarkAction    = "RTA.NextBookmarkAction";
+
   private RTextScrollPane createScrollPane(SketchTextArea textArea) throws IOException {
     RTextScrollPane scrollPane = new RTextScrollPane(textArea, true);
     scrollPane.setBorder(new MatteBorder(0, 6, 0, 0, Theme.getColor("editor.bgcolor")));
@@ -144,11 +164,116 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     scrollPane.setIconRowHeaderEnabled(false);
 
     Gutter gutter = scrollPane.getGutter();
-    gutter.setBookmarkingEnabled(false);
-    //gutter.setBookmarkIcon(CompletionsRenderer.getIcon(CompletionType.TEMPLATE));
+
+    if (PreferencesData.getBoolean("editor.bookmarks")) {
+      gutter.setBookmarkingEnabled(true);
+      gutter.setBookmarkIcon(CompletionsRenderer.getIcon(CompletionType.FUNCTION));
+      InputMap map = SwingUtilities.getUIInputMap(textArea, JComponent.WHEN_FOCUSED);
+      NextBookmarkAction action = new NextBookmarkAction(rtaNextBookmarkAction);
+      map.put(KeyStroke.getKeyStroke(KeyEvent.VK_F3,    0), action);
+      SwingUtilities.replaceUIInputMap(textArea,JComponent.WHEN_FOCUSED,map);
+    }
+
     gutter.setIconRowHeaderInheritsGutterBackground(true);
 
     return scrollPane;
+  }
+
+  public class GutterIconInfoTabs  {
+    GutterIconInfo bookmark;
+    SketchFile file;
+    RTextArea textArea;
+
+    public String toString( ) {
+      return "File:" + file.getFileName() + " -- Line:" + bookmark.getMarkedOffset();
+    }
+  }
+
+  /**
+   * Action that moves the caret to the next bookmark.
+   */
+  public class NextBookmarkAction extends RecordableTextAction {
+
+    public NextBookmarkAction(String name) {
+      super(name);
+    }
+
+    @Override
+    public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+
+      Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+
+      List<GutterIconInfoTabs> bookmarks = new ArrayList<GutterIconInfoTabs>();
+
+        try {
+
+          for (EditorTab tab : editor.getTabs()) {
+            gutter = RSyntaxUtilities.getGutter(tab.getTextArea());
+
+            if (gutter!=null) {
+              GutterIconInfo[] tabBookmarks = gutter.getBookmarks();
+              for (GutterIconInfo element : tabBookmarks) {
+                GutterIconInfoTabs bookmark = new GutterIconInfoTabs();
+                bookmark.file = tab.getSketchFile();
+                bookmark.bookmark = element;
+                bookmark.textArea = tab.getTextArea();
+                bookmarks.add(bookmark);
+              }
+            }
+          }
+
+          if (bookmarks.size()==0) {
+            UIManager.getLookAndFeel().
+                  provideErrorFeedback(textArea);
+            return;
+          }
+
+          GutterIconInfoTabs moveTo = null;
+          int curLine = textArea.getCaretLineNumber();
+
+          for (int i=0; i<bookmarks.size(); i++) {
+            GutterIconInfo bookmark = bookmarks.get(i).bookmark;
+            int offs = bookmark.getMarkedOffset();
+            int line = 0;
+            int curTabIndex = editor.getCurrentTabIndex();
+            int bookmarkTabIndex = editor.findTabIndex(bookmarks.get(i).file);
+            if (curTabIndex == bookmarkTabIndex) {
+              line = textArea.getLineOfOffset(offs);
+            }
+            if ((curTabIndex == bookmarkTabIndex && line>curLine) || (curTabIndex < bookmarkTabIndex)) {
+              moveTo = bookmarks.get(i);
+              break;
+            }
+          }
+          if (moveTo==null) { // Loop back to beginning
+            moveTo = bookmarks.get(0);
+          }
+
+          editor.selectTab(editor.findTabIndex(moveTo.file));
+
+          int offs = moveTo.bookmark.getMarkedOffset();
+          if (moveTo.textArea instanceof RSyntaxTextArea) {
+            RSyntaxTextArea rsta = (RSyntaxTextArea)moveTo.textArea;
+            if (rsta.isCodeFoldingEnabled()) {
+              rsta.getFoldManager().
+                    ensureOffsetNotInClosedFold(offs);
+            }
+          }
+          int line = moveTo.textArea.getLineOfOffset(offs);
+          offs = moveTo.textArea.getLineStartOffset(line);
+          moveTo.textArea.setCaretPosition(offs);
+
+        } catch (BadLocationException ble) { // Never happens
+          UIManager.getLookAndFeel().
+                provideErrorFeedback(textArea);
+          ble.printStackTrace();
+        }
+      }
+
+    @Override
+    public String getMacroID() {
+      return getName();
+    }
   }
 
   private SketchTextArea createTextArea(RSyntaxDocument document)
