@@ -298,6 +298,12 @@ public class EditorHeader extends JComponent {
       // find scaling factor
       non_selected_tab_size = (imageW - size_selected)/(codeCount -1);
     }
+
+    if ((non_selected_tab_size > 0) && (size_selected > (3 * non_selected_tab_size))) {
+      // limit the maximum size of tab in case of crowded tabs
+      size_selected = 3 * non_selected_tab_size;
+    }
+
     i = 0;
     x = scale(6); // offset from left edge of the component
 
@@ -312,13 +318,11 @@ public class EditorHeader extends JComponent {
           font.getStringBounds(text, g.getFontRenderContext()).getWidth();
 
       if (non_selected_tab_size > 0) {
-        if (i != selected) {
-          // find a suitable title
-          while (textWidth + 3 * PIECE_WIDTH > non_selected_tab_size && filename.length() > 2) {
-            filename = filename.substring(0, filename.length()-1);
-            text = "  " + filename + ".." + (file.isModified() ? " \u00A7" : "  ");
-            textWidth = (int)font.getStringBounds(text, g.getFontRenderContext()).getWidth();
-          }
+        // find a suitable title
+        while (textWidth + 3 * PIECE_WIDTH > ((i != selected) ? non_selected_tab_size: size_selected) && filename.length() > 2) {
+          filename = filename.substring(0, filename.length()-1);
+          text = "  " + filename + ".." + (file.isModified() ? " \u00A7" : "  ");
+          textWidth = (int)font.getStringBounds(text, g.getFontRenderContext()).getWidth();
         }
       }
 
