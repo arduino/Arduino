@@ -133,6 +133,7 @@ public class Preferences extends javax.swing.JDialog {
     verifyUploadBox = new javax.swing.JCheckBox();
     externalEditorBox = new javax.swing.JCheckBox();
     cacheCompiledCore = new javax.swing.JCheckBox();
+    autoselectBoard = new javax.swing.JCheckBox();
     checkUpdatesBox = new javax.swing.JCheckBox();
     updateExtensionBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
@@ -279,6 +280,9 @@ public class Preferences extends javax.swing.JDialog {
 
     cacheCompiledCore.setText(tr("Aggressively cache compiled core"));
     checkboxesContainer.add(cacheCompiledCore);
+
+    autoselectBoard.setText(tr("Automatically use the correct target when selecting a known serial port"));
+    checkboxesContainer.add(autoselectBoard);
 
     checkUpdatesBox.setText(tr("Check for updates on startup"));
     checkboxesContainer.add(checkUpdatesBox);
@@ -731,6 +735,7 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JButton extendedAdditionalUrlFieldWindow;
   private javax.swing.JCheckBox externalEditorBox;
   private javax.swing.JCheckBox cacheCompiledCore;
+  private javax.swing.JCheckBox autoselectBoard;
   private javax.swing.JTextField fontSizeField;
   private javax.swing.JLabel fontSizeLabel;
   private javax.swing.JLabel jLabel1;
@@ -836,6 +841,8 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("compiler.cache_core", cacheCompiledCore.isSelected());
 
+    PreferencesData.setBoolean("editor.autoselectboard", autoselectBoard.isSelected());
+
     PreferencesData.setBoolean("update.check", checkUpdatesBox.isSelected());
 
     PreferencesData.setBoolean("editor.update_extension", updateExtensionBox.isSelected());
@@ -907,6 +914,8 @@ public class Preferences extends javax.swing.JDialog {
     externalEditorBox.setSelected(PreferencesData.getBoolean("editor.external"));
 
     cacheCompiledCore.setSelected(PreferencesData.get("compiler.cache_core") == null || PreferencesData.getBoolean("compiler.cache_core"));
+
+    autoselectBoard.setSelected(PreferencesData.getBoolean("editor.autoselectboard"));
 
     checkUpdatesBox.setSelected(PreferencesData.getBoolean("update.check"));
 
