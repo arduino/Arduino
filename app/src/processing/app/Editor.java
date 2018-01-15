@@ -1103,8 +1103,8 @@ public class Editor extends JFrame implements RunnerListener {
         // ignore
       }
     }
-    
-    if (boardId != null) {
+
+    if (boardId != null && PreferencesData.getBoolean("editor.autoselectboard")) {
       TargetBoard targetBoard = BaseNoGui.getPlatform().resolveBoardById(BaseNoGui.packages, boardId);
       if (targetBoard != null) {
         base.selectTargetBoard(targetBoard);
