@@ -37,14 +37,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
-
 public abstract class LibrariesIndex {
 
   public abstract List<ContributedLibrary> getLibraries();
 
   public List<ContributedLibrary> find(final String name) {
-    return getLibraries().stream().filter(new LibraryWithNamePredicate(name)).collect(Collectors.toList());
+    return getLibraries().stream() //
+        .filter(l -> name.equals(l.getName())) //
+        .collect(Collectors.toList());
   }
 
   public ContributedLibrary find(String name, String version) {
