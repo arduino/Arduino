@@ -30,7 +30,6 @@
 package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
-import cc.arduino.contributions.libraries.filters.LibraryInstalledInsideCore;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -130,10 +129,13 @@ public class LibrariesIndexer {
       scanInstalledLibraries(folderDesc);
     }
 
-    installedLibraries.stream().filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore()).forEach(userLibrary -> {
-      ContributedPlatform platform = BaseNoGui.indexer.getPlatformByFolder(userLibrary.getInstalledFolder());
-      userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
-    });
+    installedLibraries.stream() //
+        .filter(new TypePredicate("Contributed")) //
+        .filter(l -> l.getLocation() == Location.CORE || l.getLocation() == Location.REFERENCED_CORE) //
+        .forEach(l -> {
+          ContributedPlatform platform = BaseNoGui.indexer.getPlatformByFolder(l.getInstalledFolder());
+          l.setTypes(Collections.singletonList(platform.getCategory()));
+        });
   }
 
   private void scanInstalledLibraries(UserLibraryFolder folderDesc) {

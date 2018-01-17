@@ -461,10 +461,6 @@ public class ContributionsIndexer {
     return index.getInstalledPlatforms();
   }
 
-  public boolean isFolderInsidePlatform(final File folder) {
-    return getPlatformByFolder(folder) != null;
-  }
-
   public ContributedPlatform getPlatformByFolder(final File folder) {
     Optional<ContributedPlatform> platformOptional = getInstalledPlatforms().stream().filter(contributedPlatform -> {
       assert contributedPlatform.getInstalledFolder() != null;
