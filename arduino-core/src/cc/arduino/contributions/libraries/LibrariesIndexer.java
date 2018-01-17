@@ -204,11 +204,11 @@ public class LibrariesIndexer {
       }
     }
 
-    if (lib.getTypes() == null && folderDesc.location == Location.SKETCHBOOK) {
+    if (lib.getTypes().isEmpty() && loc == Location.SKETCHBOOK) {
       lib.setTypes(lib.getDeclaredTypes());
     }
 
-    if (lib.getTypes() == null) {
+    if (lib.getTypes().isEmpty()) {
       lib.setTypes(Collections.singletonList("Contributed"));
     }
   }

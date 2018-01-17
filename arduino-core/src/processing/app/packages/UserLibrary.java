@@ -56,7 +56,7 @@ public class UserLibrary {
   private String category;
   private String license;
   private List<String> architectures;
-  private List<String> types;
+  private List<String> types = new ArrayList<>();
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
   private List<String> includes;

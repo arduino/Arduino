@@ -43,7 +43,7 @@ public class TypePredicate implements Predicate<UserLibrary> {
 
   @Override
   public boolean test(UserLibrary input) {
-    return input.getTypes() != null && input.getTypes().contains(type);
+    return input.getTypes().contains(type);
   }
 
 }

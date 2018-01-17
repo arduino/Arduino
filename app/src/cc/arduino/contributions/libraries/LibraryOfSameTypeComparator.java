@@ -37,10 +37,13 @@ public class LibraryOfSameTypeComparator implements Comparator<UserLibrary> {
 
   @Override
   public int compare(UserLibrary o1, UserLibrary o2) {
-    if (o1.getTypes() == null) {
+    if (o1.getTypes().isEmpty() && o2.getTypes().isEmpty()) {
+      return 0;
+    }
+    if (o1.getTypes().isEmpty()) {
       return 1;
     }
-    if (o2.getTypes() == null) {
+    if (o2.getTypes().isEmpty()) {
       return -1;
     }
     if (!o1.getTypes().get(0).equals(o2.getTypes().get(0))) {

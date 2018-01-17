@@ -1193,10 +1193,7 @@ public class Base {
       if (location == Location.IDE_BUILTIN) {
         if (compatible) {
           // only compatible IDE libs are shown
-          boolean retired = false;
-          List<String> types = lib.getTypes();
-          if (types != null) retired = types.contains("Retired");
-          if (retired) {
+          if (lib.getTypes().contains("Retired")) {
             retiredIdeLibs.add(lib);
           } else {
             ideLibs.add(lib);
@@ -1214,7 +1211,7 @@ public class Base {
       } else if (location == Location.SKETCHBOOK) {
         if (compatible) {
           // libraries promoted from sketchbook (behave as builtin)
-          if (lib.getTypes() != null && lib.getTypes().contains("Arduino")
+          if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
               && lib.getArchitectures().contains("*")) {
             ideLibs.add(lib);
           } else {

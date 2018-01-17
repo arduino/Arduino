@@ -47,13 +47,17 @@ public class LibraryByTypeComparator implements Comparator<UserLibrary> {
 
   @Override
   public int compare(UserLibrary o1, UserLibrary o2) {
-    if (o1.getTypes() == null) {
+    if (o1.getTypes().isEmpty() && o2.getTypes().isEmpty()) {
+      return 0;
+    }
+    if (o1.getTypes().isEmpty()) {
       return 1;
     }
-    if (o2.getTypes() == null) {
+    if (o2.getTypes().isEmpty()) {
       return -1;
     }
-    return libraryTypeComparator.compare(o1.getTypes().get(0), o2.getTypes().get(0));
+    return libraryTypeComparator.compare(o1.getTypes().get(0),
+                                         o2.getTypes().get(0));
   }
 
 }
