@@ -30,7 +30,6 @@
 package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
-import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -130,7 +129,7 @@ public class LibrariesIndexer {
     }
 
     installedLibraries.stream() //
-        .filter(new TypePredicate("Contributed")) //
+        .filter(l -> l.getTypes().contains("Contributed")) //
         .filter(l -> l.getLocation() == Location.CORE || l.getLocation() == Location.REFERENCED_CORE) //
         .forEach(l -> {
           ContributedPlatform platform = BaseNoGui.indexer.getPlatformByFolder(l.getInstalledFolder());
