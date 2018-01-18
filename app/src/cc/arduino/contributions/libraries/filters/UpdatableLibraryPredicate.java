@@ -29,15 +29,13 @@
 
 package cc.arduino.contributions.libraries.filters;
 
+import java.util.List;
+import java.util.function.Predicate;
+
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import processing.app.BaseNoGui;
-import processing.app.packages.UserLibrary;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
@@ -53,14 +51,12 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
 
   @Override
   public boolean test(ContributedLibrary lib) {
-    Optional<UserLibrary> installed = lib.getInstalledLibrary();
-    if (!installed.isPresent()) {
+    if (!lib.isLibraryInstalled()) {
       return false;
     }
-    String installedVersion = installed.get().getVersion();
     String libraryName = lib.getName();
     List<ContributedLibrary> libraries = librariesIndexer.getIndex().find(libraryName);
-    return libraries.stream()
-      .anyMatch(library -> VersionComparator.greaterThan(library.getParsedVersion(), installedVersion));
+    ContributedLibrary latest = libraries.stream().reduce(VersionComparator::max).get();
+    return !latest.isLibraryInstalled();
   }
 }
