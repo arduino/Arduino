@@ -1061,7 +1061,6 @@ public class Base {
 
   private LibraryList getSortedLibraries() {
     LibraryList installedLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
-    Collections.sort(installedLibraries, new LibraryByTypeComparator());
     Collections.sort(installedLibraries, new LibraryOfSameTypeComparator());
     return installedLibraries;
   }
