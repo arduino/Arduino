@@ -43,6 +43,7 @@ import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 import processing.app.packages.UserLibraryFolder;
 import processing.app.packages.UserLibraryFolder.Location;
+import processing.app.packages.UserLibraryPriorityComparator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -111,7 +112,25 @@ public class LibrariesIndexer {
     return librariesFolders;
   }
 
+  private UserLibraryPriorityComparator priorityComparator;
+
+  public void addToInstalledLibraries(UserLibrary lib) {
+    UserLibrary toReplace = installedLibraries.getByName(lib.getName());
+    if (toReplace == null) {
+      installedLibraries.add(lib);
+      return;
+    }
+    if (priorityComparator.compare(toReplace, lib) >= 0) {
+      // The current lib has priority, do nothing
+      return;
+    }
+    installedLibraries.remove(toReplace);
+    installedLibraries.add(lib);
+  }
+
   public void rescanLibraries() {
+    priorityComparator = new UserLibraryPriorityComparator(BaseNoGui.getTargetPlatform().getId());
+
     // Clear all installed flags
     installedLibraries.clear();
 
@@ -180,7 +199,7 @@ public class LibrariesIndexer {
       if (headers.length == 0) {
         throw new IOException(lib.getSrcFolder().getAbsolutePath());
       }
-      installedLibraries.addOrReplace(lib);
+      addToInstalledLibraries(lib);
       return;
     }
 
@@ -190,7 +209,7 @@ public class LibrariesIndexer {
     if (headers.length == 0) {
       throw new IOException(lib.getSrcFolder().getAbsolutePath());
     }
-    installedLibraries.addOrReplaceArchAware(lib);
+    addToInstalledLibraries(lib);
 
     Location loc = lib.getLocation();
     if (loc != Location.CORE && loc != Location.REFERENCED_CORE) {

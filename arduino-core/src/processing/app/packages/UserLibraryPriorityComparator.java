@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2014 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2017 Arduino LLC (http://www.arduino.cc/)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,53 +28,44 @@
  */
 package processing.app.packages;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
-import processing.app.helpers.FileUtils;
+import processing.app.packages.UserLibraryFolder.Location;
 
-@SuppressWarnings("serial")
-public class LibraryList extends LinkedList<UserLibrary> {
+public class UserLibraryPriorityComparator implements Comparator<UserLibrary> {
 
-  public LibraryList(LibraryList libs) {
-    super(libs);
+  private final static Map<Location, Integer> priorities = new HashMap<>();
+  static {
+    priorities.put(Location.SKETCHBOOK, 4);
+    priorities.put(Location.CORE, 3);
+    priorities.put(Location.REFERENCED_CORE, 2);
+    priorities.put(Location.IDE_BUILTIN, 1);
   }
 
-  public LibraryList() {
-    super();
+  private String arch;
+
+  public UserLibraryPriorityComparator(String currentArch) {
+    arch = currentArch;
   }
 
-  public LibraryList(List<UserLibrary> ideLibs) {
-    super(ideLibs);
+  private boolean hasArchitecturePriority(UserLibrary x) {
+    return x.getArchitectures().contains(arch);
   }
 
-  public synchronized UserLibrary getByName(String name) {
-    for (UserLibrary l : this)
-      if (l.getName().equals(name))
-        return l;
-    return null;
+  public int priority(UserLibrary l) {
+    int priority = priorities.get(l.getLocation());
+    if (hasArchitecturePriority(l))
+      priority += 10;
+    return priority;
   }
 
-  public synchronized void sort() {
-    Collections.sort(this, (x, y) -> x.getName().compareToIgnoreCase(y.getName()));
-  }
-
-  public synchronized LibraryList filterLibrariesInSubfolder(File subFolder) {
-    LibraryList res = new LibraryList();
-    for (UserLibrary lib : this) {
-      if (FileUtils.isSubDirectory(subFolder, lib.getInstalledFolder())) {
-        res.add(lib);
-      }
+  @Override
+  public int compare(UserLibrary x, UserLibrary y) {
+    if (!x.getName().equals(y.getName())) {
+      throw new IllegalArgumentException("The compared libraries must have the same name");
     }
-    return res;
-  }
-
-  public synchronized boolean hasLibrary(UserLibrary lib) {
-    for (UserLibrary l : this)
-      if (l == lib) return true;
-    return false;
+    return priority(x) - priority(y);
   }
 }
-
