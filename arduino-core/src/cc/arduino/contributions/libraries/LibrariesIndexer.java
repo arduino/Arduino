@@ -169,8 +169,6 @@ public class LibrariesIndexer {
   }
 
   private void scanLibrary(UserLibraryFolder folderDesc) throws IOException {
-    boolean readOnly = (folderDesc.location == Location.SKETCHBOOK);
-
     // A library is considered "legacy" if it doesn't contains
     // a file called "library.properties"
     File check = new File(folderDesc.folder, "library.properties");
@@ -201,7 +199,7 @@ public class LibrariesIndexer {
       lib.setTypes(foundLib.getTypes());
     }
 
-    if (readOnly && lib.getTypes() == null && !lib.getDeclaredTypes().isEmpty()) {
+    if (lib.getTypes() == null && folderDesc.location == Location.SKETCHBOOK) {
       lib.setTypes(lib.getDeclaredTypes());
     }
 
