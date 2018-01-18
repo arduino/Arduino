@@ -283,17 +283,7 @@ public class UserLibrary extends ContributedLibrary {
 
   @Override
   public String toString() {
-    String res = "Library: " + name + "\n";
-    res += "         (version=" + version + ")\n";
-    res += "         (author=" + author + ")\n";
-    res += "         (maintainer=" + maintainer + ")\n";
-    res += "         (sentence=" + sentence + ")\n";
-    res += "         (paragraph=" + paragraph + ")\n";
-    res += "         (url=" + website + ")\n";
-    res += "         (architectures=" + architectures + ")\n";
-    if (includes != null)
-      res += "         (includes=" + includes + ")\n";
-    return res;
+    return name + ":" + version + " " + architectures + " " + installedFolder.getAbsolutePath();
   }
 
 }
