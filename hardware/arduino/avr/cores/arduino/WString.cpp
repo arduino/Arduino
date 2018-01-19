@@ -136,7 +136,7 @@ inline void String::init(void)
 
 void String::invalidate(void)
 {
-	if (buffer) free(buffer);
+	free(buffer);
 	buffer = NULL;
 	capacity = len = 0;
 }
@@ -193,8 +193,7 @@ void String::move(String &rhs)
 {
 	if (this != &rhs)
 	{
-		if (buffer != NULL)
-			free(buffer);
+		free(buffer);
 
 		buffer = rhs.buffer;
 		len = rhs.len;
