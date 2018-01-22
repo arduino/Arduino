@@ -69,6 +69,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.io.File;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -85,6 +86,7 @@ import org.fife.ui.rtextarea.RecordableTextAction;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.autocomplete.ClangCompletionProvider;
+import cc.arduino.autocomplete.CompletionType;
 import cc.arduino.autocomplete.CompletionsRenderer;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.PreferencesMap;
