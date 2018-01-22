@@ -85,7 +85,7 @@ public class LibraryInstaller {
 
   public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
     if (lib.isLibraryInstalled()) {
-      System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
+      System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
@@ -106,7 +106,7 @@ public class LibraryInstaller {
     // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Installing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
     File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
@@ -139,7 +139,7 @@ public class LibraryInstaller {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Removing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
     FileUtils.recursiveDelete(lib.getInstalledLibrary().get().getInstalledFolder());
     progress.stepDone();

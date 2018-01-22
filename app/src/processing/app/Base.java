@@ -360,6 +360,9 @@ public class Base {
 
         Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
+          System.out.println(tr(I18n
+              .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
+                      library, mayInstalled.get().getParsedVersion())));
           libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
           libraryInstaller.install(selected, mayInstalled, progressListener);
