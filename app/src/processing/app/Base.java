@@ -359,7 +359,7 @@ public class Base {
         }
 
         Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
-        if (mayInstalled.isPresent() && mayInstalled.get().isIDEBuiltIn()) {
+        if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
           libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
           libraryInstaller.install(selected, mayInstalled, progressListener);
