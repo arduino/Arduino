@@ -34,6 +34,10 @@ import processing.app.Base;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.net.URL;
+import java.net.URI;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class UpdatableBoardsLibsFakeURLsHandler implements HyperlinkListener {
 
@@ -69,6 +73,18 @@ public class UpdatableBoardsLibsFakeURLsHandler implements HyperlinkListener {
     if (LIBRARYMANAGER.equals(url.getHost())) {
       base.openLibraryManager(url.getRef() == null ? "": url.getRef() , url.getPath() == null ? "" : url.getPath().replace("/", ""));
       return;
+    }
+
+    if(Desktop.isDesktopSupported())
+    {
+      try {
+        Desktop.getDesktop().browse(url.toURI());
+        return;
+      } catch (IOException e) {
+        throw new IllegalArgumentException(url.getHost() + " is invalid");
+      } catch (URISyntaxException e) {
+        throw new IllegalArgumentException(url.getHost() + " is invalid");
+      }
     }
 
     throw new IllegalArgumentException(url.getHost() + " is invalid");

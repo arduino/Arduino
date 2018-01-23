@@ -37,9 +37,13 @@ import processing.app.helpers.OSUtils;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPopupMenu;
+import javax.swing.Action;
+import javax.swing.text.DefaultEditorKit;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.awt.GraphicsDevice.WindowTranslucency.*;
 import static processing.app.I18n.tr;
 
 public class FindReplace extends javax.swing.JFrame {
@@ -55,6 +59,7 @@ public class FindReplace extends javax.swing.JFrame {
   public FindReplace(Editor editor, Map<String, Object> state) {
     this.editor = editor;
 
+    isTranslucencySupported();
     initComponents();
 
     if (OSUtils.isMacOS()) {
@@ -67,16 +72,52 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     Base.registerWindowCloseKeys(getRootPane(), e -> {
+      if (OSUtils.isWindows()) {
+        setAutoRequestFocus(true);
+      }
       setVisible(false);
       Base.FIND_DIALOG_STATE = findDialogState();
     });
 
     Base.setIcon(this);
 
-    addWindowListener(new WindowAdapter() {
+    editor.addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          toFront();
+          setAutoRequestFocus(false);
+          return;
+        }
         findField.requestFocusInWindow();
         findField.selectAll();
+        setAlwaysOnTop(true);
+        if (useTranslucency) {
+          // Window is decorated, so tranparency doesn't work :(
+          //setOpacity(0.7f);
+        }
+      }
+      public void windowDeactivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          return;
+        }
+        setAlwaysOnTop(false);
+      }
+    });
+
+    addWindowListener(new WindowAdapter() {
+      public void windowActivated(WindowEvent e) {
+        if (OSUtils.isWindows()) {
+          return;
+        }
+        findField.requestFocusInWindow();
+        findField.selectAll();
+        setAlwaysOnTop(true);
+        if (useTranslucency) {
+          // Window is decorated, so tranparency doesn't work :(
+          //setOpacity(1.0f);
+        }
+      }
+      public void windowDeactivated(WindowEvent e) {
       }
     });
 
@@ -87,7 +128,21 @@ public class FindReplace extends javax.swing.JFrame {
   public void setVisible(boolean b) {
     getRootPane().setDefaultButton(findButton);
 
+    if (OSUtils.isWindows()) {
+      // means we are restoring the window visibility
+      setAutoRequestFocus(true);
+    }
+
     super.setVisible(b);
+  }
+
+  private boolean useTranslucency;
+
+  private void isTranslucencySupported() {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    //If translucent windows aren't supported, exit.
+    useTranslucency = gd.isWindowTranslucencySupported(TRANSLUCENT);
   }
 
   private Map<String, Object> findDialogState() {
@@ -160,6 +215,22 @@ public class FindReplace extends javax.swing.JFrame {
     wrapAroundBox.setText(tr("Wrap Around"));
 
     searchAllFilesBox.setText(tr("Search all Sketch Tabs"));
+
+    JPopupMenu menu = new JPopupMenu();
+    Action cut = new DefaultEditorKit.CutAction();
+    cut.putValue(Action.NAME, tr("Cut"));
+    menu.add( cut );
+
+    Action copy = new DefaultEditorKit.CopyAction();
+    copy.putValue(Action.NAME, tr("Copy"));
+    menu.add( copy );
+
+    Action paste = new DefaultEditorKit.PasteAction();
+    paste.putValue(Action.NAME, tr("Paste"));
+    menu.add( paste );
+
+    findField.setComponentPopupMenu( menu );
+    replaceField.setComponentPopupMenu( menu );
 
     findButton.setText(tr("Find"));
     findButton.addActionListener(new java.awt.event.ActionListener() {

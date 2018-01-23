@@ -109,6 +109,8 @@ public class Base {
   //  int editorCount;
   List<Editor> editors = Collections.synchronizedList(new ArrayList<Editor>());
   Editor activeEditor;
+  
+  private static JMenu boardMenu;
 
   // these menus are shared so that the board and serial port selections
   // are the same for all windows (since the board and serial port that are
@@ -362,7 +364,7 @@ public class Base {
         if (selected.isReadOnly()) {
           libraryInstaller.remove(installed, progressListener);
         } else {
-          libraryInstaller.install(selected, installed, progressListener);
+          libraryInstaller.install(selected, progressListener);
         }
       }
 
@@ -629,9 +631,6 @@ public class Base {
         System.err.println(e);
       }
     }
-
-    // set the current window to be the console that's getting output
-    EditorConsole.setCurrentEditorConsole(activeEditor.console);
   }
 
   protected int[] defaultEditorLocation() {
@@ -1087,6 +1086,7 @@ public class Base {
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary();
+        BaseNoGui.librariesIndexer.rescanLibraries();
         Base.this.onBoardOrPortChange();
         Base.this.rebuildImportMenu(Editor.importMenu);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
@@ -1313,8 +1313,30 @@ public class Base {
 
   private static String priorPlatformFolder;
   private static boolean newLibraryImported;
+  
+  public void selectTargetBoard(TargetBoard targetBoard) {
+    for (int i = 0; i < boardMenu.getItemCount(); i++) {
+      JMenuItem menuItem = boardMenu.getItem(i);
+      if (!(menuItem instanceof JRadioButtonMenuItem)) {
+        continue;
+      }
+      
+      JRadioButtonMenuItem radioButtonMenuItem = ((JRadioButtonMenuItem) menuItem);
+      if (targetBoard.getName().equals(radioButtonMenuItem.getText())) {
+        radioButtonMenuItem.setSelected(true);
+        break;
+      }
+    }
+    
+    BaseNoGui.selectBoard(targetBoard);
+    filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, targetBoard, 1);
+  
+    onBoardOrPortChange();
+    rebuildImportMenu(Editor.importMenu);
+    rebuildExamplesMenu(Editor.examplesMenu);
+  }
 
-  public void onBoardOrPortChange() {
+  public synchronized void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
 
     // reload keywords when package/platform changes
@@ -1407,7 +1429,7 @@ public class Base {
     boardsCustomMenus = new LinkedList<>();
 
     // The first custom menu is the "Board" selection submenu
-    JMenu boardMenu = new JMenu(tr("Board"));
+    boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
     MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
@@ -1513,12 +1535,26 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
-        BaseNoGui.selectBoard((TargetBoard) getValue("b"));
-        filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
 
-        onBoardOrPortChange();
-        rebuildImportMenu(Editor.importMenu);
-        rebuildExamplesMenu(Editor.examplesMenu);
+        new Thread()
+        {
+            public void run() {
+              if (activeEditor != null && activeEditor.isCompiling()) {
+                  // block until isCompiling becomes false, but aboid blocking the UI
+                  while (activeEditor.isCompiling()) {
+                    try {
+                      Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                  }
+              }
+
+              BaseNoGui.selectBoard((TargetBoard) getValue("b"));
+              filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
+              onBoardOrPortChange();
+              rebuildImportMenu(Editor.importMenu);
+              rebuildExamplesMenu(Editor.examplesMenu);
+            }
+        }.start();
       }
     };
     action.putValue("b", board);
