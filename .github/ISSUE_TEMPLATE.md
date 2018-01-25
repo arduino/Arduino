@@ -2,11 +2,11 @@ Thank you for opening an issue on the Energia repository.
 
 ### Do not use GitHub issues for project related questions. 
 
-Use instead the http://forum.43oh.com and http://e2e.ti.com forums, so everyone can share the questions and answers.
+Use instead the [43oh forum](http://forum.43oh.com) and [TI E2E forum](http://e2e.ti.com), so everyone can share the questions and answers.
 
 ### Do not use GitHub issues for questions on third-party libraries. 
 
-Use instead their own reposytories.
+Use instead their own repositories.
 
 ### Check the issue hasn't been reported yet.
 
