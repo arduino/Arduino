@@ -229,6 +229,7 @@ public class PdePreprocessor {
     // generate main.cpp (it depends on what's in the .ino files)
     if (Base.getArch() == "cc3200emt"
         || Base.getArch() == "msp432"
+        || Base.getArch() == "msp432e"
         || Base.getArch() == "cc2600emt") {
 
         String template = Preferences.get("preproc.main.template");

@@ -73,6 +73,7 @@ public class Base {
     archMap.put("cc3200", "cc3200");
     archMap.put("cc3200emt", "cc3200emt");
     archMap.put("msp432", "msp432");
+    archMap.put("msp432e", "msp432e");
     archMap.put("cc2600emt", "cc2600emt");
   }
   static Platform platform;

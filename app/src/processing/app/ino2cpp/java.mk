@@ -1,8 +1,8 @@
 # JDK specifies the JDK used to build the ino2cpp classes
-JDK ?= $(TOOLS)/vendors/oracle/jdk/jdk1.6.0_37/Linux
+JDK ?= /Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home/
 
 # JVM_TARGET specifies the JVM version "targeted" by javac
-JVM_TARGET ?= 1.6
+JVM_TARGET ?= 1.8
 
 # JVM<target>_BOOTCLASSES specifies a target-specific rt.jar to build against
 #
@@ -20,6 +20,7 @@ JVM1.5_BOOTCLASSES ?= $(TOOLS)/vendors/oracle/jdk/1.5.0_22/Linux/jre/lib/rt.jar
 # set default for 1.6
 JVM1.6_BOOTCLASSES ?= $(TOOLS)/vendors/oracle/jdk/jdk1.6.0_37/Linux/jre/lib/rt.jar
 
+JVM1.8_BOOTCLASSES ?= /Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home/jre/lib/rt.jar
 # check that the required variables are defined and reference existing files
 ifndef JVM$(JVM_TARGET)_BOOTCLASSES
     $(error JVM$(JVM_TARGET)_BOOTCLASSES must be defined to point to a $(JVM_TARGET) Java Runtime Environment's rt.jar)
