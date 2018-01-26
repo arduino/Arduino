@@ -72,9 +72,7 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     Base.registerWindowCloseKeys(getRootPane(), e -> {
-      if (OSUtils.isWindows()) {
-        setAutoRequestFocus(true);
-      }
+      setAutoRequestFocus(true);
       setVisible(false);
       Base.FIND_DIALOG_STATE = findDialogState();
     });
@@ -83,39 +81,17 @@ public class FindReplace extends javax.swing.JFrame {
 
     editor.addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
-        if (OSUtils.isWindows()) {
-          toFront();
-          setAutoRequestFocus(false);
-          return;
-        }
-        findField.requestFocusInWindow();
-        findField.selectAll();
-        setAlwaysOnTop(true);
-        if (useTranslucency) {
-          // Window is decorated, so tranparency doesn't work :(
-          //setOpacity(0.7f);
-        }
+        toFront();
+        setAutoRequestFocus(false);
       }
       public void windowDeactivated(WindowEvent e) {
-        if (OSUtils.isWindows()) {
           return;
-        }
-        setAlwaysOnTop(false);
       }
     });
 
     addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
-        if (OSUtils.isWindows()) {
           return;
-        }
-        findField.requestFocusInWindow();
-        findField.selectAll();
-        setAlwaysOnTop(true);
-        if (useTranslucency) {
-          // Window is decorated, so tranparency doesn't work :(
-          //setOpacity(1.0f);
-        }
       }
       public void windowDeactivated(WindowEvent e) {
       }
@@ -127,12 +103,8 @@ public class FindReplace extends javax.swing.JFrame {
   @Override
   public void setVisible(boolean b) {
     getRootPane().setDefaultButton(findButton);
-
-    if (OSUtils.isWindows()) {
-      // means we are restoring the window visibility
-      setAutoRequestFocus(true);
-    }
-
+    // means we are restoring the window visibility
+    setAutoRequestFocus(true);
     super.setVisible(b);
   }
 
