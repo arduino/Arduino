@@ -289,7 +289,6 @@ public class Platform extends processing.app.Platform {
       return ExtUser32.INSTANCE.GetDpiForSystem();
     } catch (Throwable e) {
       // DPI detection failed, fall back with default
-      System.out.println("DPI detection failed, fallback to 96 dpi");
       return -1;
     }
   }
