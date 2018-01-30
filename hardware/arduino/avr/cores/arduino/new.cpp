@@ -34,3 +34,11 @@ void operator delete[](void * ptr) {
   free(ptr);
 }
 
+void operator delete(void * ptr, size_t) {
+  free(ptr);
+}
+
+void operator delete[](void * ptr, size_t) {
+  free(ptr);
+}
+
