@@ -679,9 +679,7 @@ public class BaseNoGui {
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
     librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    if (librariesIndexer.getLibrariesFolders() == null || !librariesIndexer.getLibrariesFolders().equals(librariesFolders)) {
-      librariesIndexer.setLibrariesFolders(librariesFolders);
-    }
+    librariesIndexer.setLibrariesFolders(librariesFolders);
 
     populateImportToLibraryTable();
   }
