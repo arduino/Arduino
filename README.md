@@ -1,8 +1,8 @@
 Arduino
-A Fork By Winner Chicken.
-Winner Chicken are ALAN, ASHI, AYO, ZIKUN.
-========
 
+========
+* A Fork By Winner Chicken.
+Winner Chicken are ALAN, AHSI, AYO, ZIKUN.
 * Arduino is an open-source physical computing platform based on a simple I/O
 board and a development environment that implements the Processing/Wiring
 language. Arduino can be used to develop stand-alone interactive objects or
