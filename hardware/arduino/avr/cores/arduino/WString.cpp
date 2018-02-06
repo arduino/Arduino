@@ -43,6 +43,27 @@ String::String(const __FlashStringHelper *pstr)
 	*this = pstr;
 }
 
+// We do not use copy() in this constructor as copy() uses strcpy(), which will stop 
+// if it encounters a '\0'.  StringView's are not '\0' terminated strings, so the
+// constructor should honor the StringView length().
+String::String(StringView str)
+{
+    init();
+    if (str)
+    {
+        if (!reserve(str.length()))
+        {
+            invalidate();
+        }
+        else
+        {
+            len = str.length();
+            memcpy(buffer, str.begin(), len);
+            buffer[len] = '\0';
+        }
+    }
+}
+
 #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 String::String(String &&rval)
 {
