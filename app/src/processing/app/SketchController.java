@@ -253,11 +253,19 @@ public class SketchController {
         sketch.delete();
         editor.base.handleClose(editor);
       } else {
+
+        boolean neverSavedTab = !current.fileExists();
+
         // delete the file
-        if (!current.delete(sketch.getBuildPath().toPath())) {
+        if (!current.delete(sketch.getBuildPath().toPath()) && !neverSavedTab) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
+        }
+
+        if (neverSavedTab) {
+          // remove the file from the sketch list
+          sketch.removeFile(current);
         }
 
         editor.removeTab(current);
