@@ -44,7 +44,7 @@ import com.sun.jna.win32.W32APIOptions;
 public class Platform extends processing.app.Platform {
 
   private File settingsFolder;
-  private File defaultSketchbookFolder;
+  private File defaultSketchbookFolder = null;
 
   @Override
   public void init() throws Exception {
@@ -52,7 +52,6 @@ public class Platform extends processing.app.Platform {
 
     checkPath();
     recoverSettingsFolderPath();
-    recoverDefaultSketchbookFolder();
   }
 
   private void recoverSettingsFolderPath() throws Exception {
@@ -119,6 +118,7 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public File getDefaultSketchbookFolder() throws Exception {
+    recoverDefaultSketchbookFolder();
     return defaultSketchbookFolder;
   }
 
@@ -213,6 +213,8 @@ public class Platform extends processing.app.Platform {
   }
 
   public void symlink(File something, File somewhere) throws IOException, InterruptedException {
+	  Process process = Runtime.getRuntime().exec(new String[]{"mklink", somewhere.getAbsolutePath(), something.toString()}, null, somewhere.getParentFile());
+	  process.waitFor();
   }
 
   @Override

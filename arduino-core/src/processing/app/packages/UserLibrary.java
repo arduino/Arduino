@@ -30,7 +30,7 @@ package processing.app.packages;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReference;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
 import processing.app.helpers.PreferencesMap;
 
 import java.io.File;
@@ -244,7 +244,7 @@ public class UserLibrary extends ContributedLibrary {
   }
 
   @Override
-  public List<ContributedLibraryReference> getRequires() {
+  public List<ContributedLibraryDependency> getRequires() {
     return null;
   }
 

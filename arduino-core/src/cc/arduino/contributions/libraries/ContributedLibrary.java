@@ -29,13 +29,14 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContribution;
-import processing.app.I18n;
+import static processing.app.I18n.tr;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static processing.app.I18n.tr;
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.VersionHelper;
+import processing.app.I18n;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
@@ -61,7 +62,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<String> getTypes();
 
-  public abstract List<ContributedLibraryReference> getRequires();
+  public abstract List<ContributedLibraryDependency> getRequires();
 
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 
@@ -117,7 +118,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     res += "\n";
     res += "            requires :\n";
     if (getRequires() != null)
-      for (ContributedLibraryReference r : getRequires()) {
+      for (ContributedLibraryDependency r : getRequires()) {
         res += "                       " + r;
       }
     res += "\n";
@@ -137,7 +138,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     String thisVersion = getParsedVersion();
     String otherVersion = other.getParsedVersion();
 
-    boolean versionEquals = (thisVersion != null && otherVersion != null
+    boolean versionEquals = (thisVersion != null
                              && thisVersion.equals(otherVersion));
 
     // Important: for legacy libs, versions are null. Two legacy libs must
@@ -147,9 +148,18 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
     String thisName = getName();
     String otherName = other.getName();
-
-    boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
+    boolean nameEquals = thisName != null && thisName.equals(otherName);
 
     return versionEquals && nameEquals;
+  }
+
+  public boolean isBefore(ContributedLibrary other) {
+    return VersionHelper.compare(getVersion(), other.getVersion()) < 0;
+  }
+
+  @Override
+  public int hashCode() {
+    String hashingData = "CONTRIBUTEDLIB" + getName() + getVersion();
+    return hashingData.hashCode();
   }
 }

@@ -52,17 +52,23 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
-    downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(e -> {
+    downgradeChooser.setMaximumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.setMinimumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.addActionListener(e -> {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
-      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      boolean disableDowngrade = (downgradeChooser.getSelectedItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser
-        .setMaximumSize(versionToInstallChooser.getPreferredSize());
+        .setMaximumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
+    versionToInstallChooser
+        .setMinimumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
 
     makeNewDescription();
 
@@ -205,6 +211,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
   }
 
+  // TODO Make this a method of Theme
   private JTextPane makeNewDescription() {
     if (getComponentCount() > 0) {
       remove(0);

@@ -246,7 +246,7 @@ public class SketchFile {
   public boolean equals(Object o) {
     return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
   }
-
+  
   /**
    * Load this piece of code from a file and return the contents. This
    * completely ignores any changes in the linked storage, if any, and

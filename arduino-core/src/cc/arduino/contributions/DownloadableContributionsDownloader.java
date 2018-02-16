@@ -52,6 +52,10 @@ public class DownloadableContributionsDownloader {
   }
 
   public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener) throws Exception {
+    return download(contribution, progress, statusText, progressListener, false);
+  }
+
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean noResume) throws Exception {
     URL url = new URL(contribution.getUrl());
     Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
 
@@ -66,7 +70,7 @@ public class DownloadableContributionsDownloader {
     while (true) {
       // Need to download or resume downloading?
       if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
-        download(url, outputFile.toFile(), progress, statusText, progressListener);
+        download(url, outputFile.toFile(), progress, statusText, progressListener, noResume);
         downloaded = true;
       }
 
@@ -113,6 +117,10 @@ public class DownloadableContributionsDownloader {
   }
 
   public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
+    download(url, tmpFile, progress, statusText, progressListener, false);
+  }
+
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
@@ -126,7 +134,7 @@ public class DownloadableContributionsDownloader {
       progress.setProgress(me.getProgress());
       progressListener.onProgress(progress);
     });
-    downloader.download();
+    downloader.download(noResume);
     if (!downloader.isCompleted()) {
       throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }

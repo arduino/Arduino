@@ -38,6 +38,7 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javax.swing.Box;
@@ -50,6 +51,7 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownAllItem;
 import cc.arduino.contributions.ui.DropdownItem;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
@@ -84,7 +86,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
         if (selectedLibrary.isReadOnly()) {
           onRemovePressed(installedLibrary);
         } else {
-          onInstallPressed(selectedLibrary, installedLibrary);
+          onInstallPressed(selectedLibrary);
         }
       }
 
@@ -117,6 +119,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
+      previousRowAtPoint = -1;
       if (typeFilter == null || !typeFilter.equals(selected)) {
         typeFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
@@ -219,12 +222,29 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
+    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    boolean depsInstalled = deps.stream().allMatch(l -> l.isInstalled() || l.getName().equals(lib.getName()));
+    Result installDeps;
+    if (!depsInstalled) {
+      MultiLibraryInstallDialog dialog;
+      dialog = new MultiLibraryInstallDialog(this, lib, deps);
+      dialog.setVisible(true);
+      installDeps = dialog.getInstallDepsResult();
+      if (installDeps == Result.CANCEL)
+        return;
+    } else {
+      installDeps = Result.NONE;
+    }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced, this::setProgress);
+        if (installDeps == Result.ALL) {
+          installer.install(deps, this::setProgress);
+        } else {
+          installer.install(lib, this::setProgress);
+        }
         onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
         //getContribModel().updateLibrary(lib);
       } catch (Exception e) {

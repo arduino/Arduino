@@ -33,6 +33,9 @@ import cc.arduino.CompilerProgressListener;
 import com.jcraft.jsch.JSchException;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
@@ -44,6 +47,7 @@ import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
+import processing.app.tools.WatchDir;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -72,6 +76,15 @@ import java.util.ArrayList;
 import static processing.app.I18n.tr;
 import static processing.app.Theme.scale;
 
+import processing.app.helpers.FileUtils;
+import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.WatchService;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchEvent;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.File;
+
 /**
  * Main editor panel for the Processing Development Environment.
  */
@@ -86,6 +99,7 @@ public class Editor extends JFrame implements RunnerListener {
   private final Box upper;
   private ArrayList<EditorTab> tabs = new ArrayList<>();
   private int currentTabIndex = -1;
+  private static boolean watcherDisable = false;
 
   private static class ShouldSaveIfModified
       implements Predicate<SketchController> {
@@ -198,6 +212,10 @@ public class Editor extends JFrame implements RunnerListener {
   private Runnable exportAppHandler;
   private Runnable timeoutUploadHandler;
 
+  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  protected Thread watcher = null;
+  protected Runnable task = null;
+
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
     this.base = ibase;
@@ -222,12 +240,20 @@ public class Editor extends JFrame implements RunnerListener {
     // When bringing a window to front, let the Base know
     addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
+          if (watcher != null) {
+            watcher.interrupt();
+            watcher = null;
+          }
           base.handleActivated(Editor.this);
         }
 
         // added for 1.0.5
         // http://dev.processing.org/bugs/show_bug.cgi?id=1260
         public void windowDeactivated(WindowEvent e) {
+          if (watcher == null) {
+            watcher = new Thread(task);
+            watcher.start();
+          }
           fileMenu.remove(sketchbookMenu);
           fileMenu.remove(examplesMenu);
           List<Component> toolsMenuItemsToRemove = new LinkedList<>();
@@ -339,8 +365,14 @@ public class Editor extends JFrame implements RunnerListener {
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketchController = null;
+
+    // default the console output to the last opened editor
+    EditorConsole.setCurrentEditorConsole(console);
   }
 
+  public Base getBase() {
+    return base;
+  }
 
   /**
    * Handles files dragged & dropped from the desktop and into the editor
@@ -451,8 +483,10 @@ public class Editor extends JFrame implements RunnerListener {
     boolean external = PreferencesData.getBoolean("editor.external");
     saveMenuItem.setEnabled(!external);
     saveAsMenuItem.setEnabled(!external);
-    for (EditorTab tab: tabs)
+    for (EditorTab tab: tabs) {
       tab.applyPreferences();
+    }
+    console.applyPreferences();
   }
 
 
@@ -963,8 +997,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   JMenuItem createToolMenuItem(String className) {
     try {
-      Class<?> toolClass = Class.forName(className);
-      final Tool tool = (Tool) toolClass.newInstance();
+      final Tool tool = getOrCreateToolInstance(className);
 
       JMenuItem item = new JMenuItem(tool.getMenuTitle());
 
@@ -983,6 +1016,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
+  private Tool getOrCreateToolInstance(String className) {
+    Tool internalTool = internalToolCache.get(className);
+    if (internalTool == null) {
+      try {
+        Class<?> toolClass = Class.forName(className);
+        internalTool = (Tool) toolClass.newInstance();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+      internalToolCache.put(className, internalTool);
+    }
+    return internalTool;
+  }
 
   private void addInternalTools(JMenu menu) {
     JMenuItem item;
@@ -1006,19 +1053,21 @@ public class Editor extends JFrame implements RunnerListener {
   class SerialMenuListener implements ActionListener {
 
     private final String serialPort;
+    private final String boardId;
 
-    public SerialMenuListener(String serialPort) {
+    public SerialMenuListener(String serialPort, String boardId) {
       this.serialPort = serialPort;
+      this.boardId = boardId;
     }
 
     public void actionPerformed(ActionEvent e) {
-      selectSerialPort(serialPort);
+      selectSerialPort(serialPort, boardId);
       base.onBoardOrPortChange();
     }
 
   }
 
-  private void selectSerialPort(String name) {
+  private void selectSerialPort(String name, String boardId) {
     if(portMenu == null) {
       System.out.println(tr("serialMenu is null"));
       return;
@@ -1056,6 +1105,13 @@ public class Editor extends JFrame implements RunnerListener {
         serialPlotter.setVisible(false);
       } catch (Exception e) {
         // ignore
+      }
+    }
+
+    if (boardId != null && PreferencesData.getBoolean("editor.autoselectboard")) {
+      TargetBoard targetBoard = BaseNoGui.getPlatform().resolveBoardById(BaseNoGui.packages, boardId);
+      if (targetBoard != null) {
+        base.selectTargetBoard(targetBoard);
       }
     }
 
@@ -1102,9 +1158,10 @@ public class Editor extends JFrame implements RunnerListener {
       }
       String address = port.getAddress();
       String label = port.getLabel();
+      String boardId = port.getBoardId();
 
       JCheckBoxMenuItem item = new JCheckBoxMenuItem(label, address.equals(selectedPort));
-      item.addActionListener(new SerialMenuListener(address));
+      item.addActionListener(new SerialMenuListener(address, boardId));
       portMenu.add(item);
     }
 
@@ -1375,7 +1432,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), '+');
+    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
     increaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           base.handleFontSizeChange(1);
@@ -1383,7 +1440,7 @@ public class Editor extends JFrame implements RunnerListener {
     });
     menu.add(increaseFontSizeItem);
 
-    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), '-');
+    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), KeyEvent.VK_MINUS);
     decreaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           base.handleFontSizeChange(-1);
@@ -1669,7 +1726,7 @@ public class Editor extends JFrame implements RunnerListener {
    *          the given file.
    * @throws IOException
    */
-  protected void addTab(SketchFile file, String contents) throws IOException {
+  public synchronized void addTab(SketchFile file, String contents) throws IOException {
     EditorTab tab = new EditorTab(this, file, contents);
     tab.getTextArea().getDocument()
         .addDocumentListener(new DocumentTextChangeListener(
@@ -1678,9 +1735,12 @@ public class Editor extends JFrame implements RunnerListener {
     reorderTabs();
   }
 
-  protected void removeTab(SketchFile file) throws IOException {
+  public synchronized void removeTab(SketchFile file) throws IOException {
     int index = findTabIndex(file);
     tabs.remove(index);
+    if (index == currentTabIndex) {
+      currentTabIndex = currentTabIndex -1;
+    }
   }
 
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -1920,7 +1980,7 @@ public class Editor extends JFrame implements RunnerListener {
         // copy the sketch inside
         File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          Base.copyFile(sketchFile, properPdeFile);
+          FileUtils.copy(new File(sketchFile.getParent()), properFolder);
         } catch (IOException e) {
           Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
@@ -1946,6 +2006,25 @@ public class Editor extends JFrame implements RunnerListener {
 
     // Disable untitled setting from previous document, if any
     untitled = false;
+
+    if (watcherDisable == true) {
+      return true;
+    }
+
+    // Add FS watcher for current Editor instance
+    Path dir = file.toPath().getParent();
+
+    Editor instance = this;
+
+    task = new Runnable() {
+      public void run() {
+        try {
+          new WatchDir(dir, true).processEvents(instance);
+        } catch (IOException x) {
+          watcherDisable = true;
+        }
+      }
+    };
 
     // opening was successful
     return true;
@@ -2016,6 +2095,11 @@ public class Editor extends JFrame implements RunnerListener {
     statusNotice(tr("Saving..."));
     boolean saved = false;
     try {
+      if (PreferencesData.getBoolean("editor.autoformat_currentfile_before_saving")) {
+        Tool formatTool = getOrCreateToolInstance("cc.arduino.packages.formatter.AStyle");
+        formatTool.run();
+      }
+
       boolean wasReadOnly = sketchController.isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath());
       String previousMainFilePath = sketch.getMainFilePath();
       saved = sketchController.save();
@@ -2111,7 +2195,7 @@ public class Editor extends JFrame implements RunnerListener {
      names,
      0);
     if (result == null) return false;
-    selectSerialPort(result);
+    selectSerialPort(result, null);
     base.onBoardOrPortChange();
     return true;
   }
@@ -2199,6 +2283,10 @@ public class Editor extends JFrame implements RunnerListener {
       resumeOrCloseSerialPlotter();
       base.onBoardOrPortChange();
     }
+  }
+
+  public boolean isCompiling() {
+    return uploading;
   }
 
   private void resumeOrCloseSerialMonitor() {
@@ -2514,6 +2602,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private void handleBurnBootloader() {
     console.clear();
+    EditorConsole.setCurrentEditorConsole(this.console);
     statusNotice(tr("Burning bootloader to I/O Board (this may take a minute)..."));
     new Thread(() -> {
       try {

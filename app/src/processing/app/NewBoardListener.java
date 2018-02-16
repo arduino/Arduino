@@ -73,34 +73,11 @@ public class NewBoardListener implements PropertyChangeListener, Runnable {
     }
 
     SwingUtilities.invokeLater(() -> {
-
       ed = base.getActiveEditor();
       NotificationPopup notificationPopup = new NotificationPopup(ed, 
                  new UpdatableBoardsLibsFakeURLsHandler(base), 
                  newBoardManagerLink, false);
-      if (ed.isFocused()) {
-        notificationPopup.begin();
-        return;
-      }
-
-      // If the IDE is not focused wait until it is focused again to
-      // display the notification, this avoids the annoying side effect
-      // to "steal" the focus from another application.
-      WindowFocusListener wfl = new WindowFocusListener() {
-        @Override
-        public void windowLostFocus(WindowEvent evt) {
-        }
-
-        @Override
-        public void windowGainedFocus(WindowEvent evt) {
-          notificationPopup.begin();
-          for (Editor e : base.getEditors())
-            e.removeWindowFocusListener(this);
-        }
-      };
-
-      for (Editor e : base.getEditors())
-        e.addWindowFocusListener(wfl);
+      notificationPopup.beginWhenFocused();
     });
   }
 }

@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="app/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="app/lib/apple.jar"/>
-	<classpathentry kind="lib" path="app/lib/ecj.jar"/>
 	<classpathentry kind="lib" path="app/test-lib/junit-4.11.jar"/>
 	<classpathentry kind="lib" path="app/test-lib/fest-assert-1.2.jar"/>
 	<classpathentry kind="lib" path="app/test-lib/fest-reflect-1.2.jar"/>
@@ -19,7 +18,6 @@
 	<classpathentry kind="lib" path="app/lib/jmdns-3.5.1.jar"/>
 	<classpathentry kind="lib" path="app/lib/slf4j-api-1.7.22.jar"/>
 	<classpathentry kind="lib" path="app/lib/jsch-0.1.50.jar"/>
-	<classpathentry kind="lib" path="app/lib/jssc-2.8.0.jar"/>
 	<classpathentry kind="lib" path="app/lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="app/lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="app/lib/jackson-core-2.6.3.jar"/>
@@ -28,5 +26,8 @@
 	<classpathentry kind="lib" path="app/lib/jackson-annotations-2.6.3.jar"/>
 	<classpathentry kind="lib" path="app/lib/commons-compress-1.8.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/arduino-core"/>
+	<classpathentry kind="lib" path="app/lib/jssc-2.8.0-arduino1.jar"/>
+	<classpathentry kind="lib" path="app/lib/java-semver-0.8.0.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/app"/>
 	<classpathentry kind="output" path="app/bin"/>
 </classpath>

@@ -74,9 +74,12 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
           .getSelectedItem();
       onInstall(selected, value.getInstalled());
     });
-    cell.versionToInstallChooser.addItemListener(e -> value
-        .select((ContributedPlatform) cell.versionToInstallChooser
-            .getSelectedItem()));
+    cell.versionToInstallChooser.addActionListener(e -> {
+      value.select((ContributedPlatform) cell.versionToInstallChooser.getSelectedItem());
+      if (cell.versionToInstallChooser.getSelectedIndex() != 0) {
+        InstallerTableCell.dropdownSelected(true);
+      }
+    });
 
     setEnabled(true);
 

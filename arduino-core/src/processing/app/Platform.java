@@ -269,17 +269,25 @@ public class Platform {
     return null;
   }
 
-  public String resolveDeviceByBoardID(Map<String, TargetPackage> packages, String boardId) {
+  public TargetBoard resolveBoardById(Map<String, TargetPackage> packages, String boardId) {
     assert packages != null;
     assert boardId != null;
     for (TargetPackage targetPackage : packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
           if (boardId.equals(board.getId())) {
-            return board.getName();
+            return board;
           }
         }
       }
+    }
+    return null;
+  }
+
+  public String resolveDeviceByBoardID(Map<String, TargetPackage> packages, String boardId) {
+    TargetBoard targetBoard = resolveBoardById(packages, boardId);
+    if (targetBoard != null) {
+      return targetBoard.getName();
     }
     return null;
   }

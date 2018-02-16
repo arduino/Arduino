@@ -37,9 +37,13 @@ import processing.app.helpers.OSUtils;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JPopupMenu;
+import javax.swing.Action;
+import javax.swing.text.DefaultEditorKit;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.awt.GraphicsDevice.WindowTranslucency.*;
 import static processing.app.I18n.tr;
 
 public class FindReplace extends javax.swing.JFrame {
@@ -55,6 +59,7 @@ public class FindReplace extends javax.swing.JFrame {
   public FindReplace(Editor editor, Map<String, Object> state) {
     this.editor = editor;
 
+    isTranslucencySupported();
     initComponents();
 
     if (OSUtils.isMacOS()) {
@@ -67,16 +72,28 @@ public class FindReplace extends javax.swing.JFrame {
     }
 
     Base.registerWindowCloseKeys(getRootPane(), e -> {
+      setAutoRequestFocus(true);
       setVisible(false);
       Base.FIND_DIALOG_STATE = findDialogState();
     });
 
     Base.setIcon(this);
 
+    editor.addWindowListener(new WindowAdapter() {
+      public void windowActivated(WindowEvent e) {
+        toFront();
+        setAutoRequestFocus(false);
+      }
+      public void windowDeactivated(WindowEvent e) {
+          return;
+      }
+    });
+
     addWindowListener(new WindowAdapter() {
       public void windowActivated(WindowEvent e) {
-        findField.requestFocusInWindow();
-        findField.selectAll();
+          return;
+      }
+      public void windowDeactivated(WindowEvent e) {
       }
     });
 
@@ -86,8 +103,18 @@ public class FindReplace extends javax.swing.JFrame {
   @Override
   public void setVisible(boolean b) {
     getRootPane().setDefaultButton(findButton);
-
+    // means we are restoring the window visibility
+    setAutoRequestFocus(true);
     super.setVisible(b);
+  }
+
+  private boolean useTranslucency;
+
+  private void isTranslucencySupported() {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice gd = ge.getDefaultScreenDevice();
+    //If translucent windows aren't supported, exit.
+    useTranslucency = gd.isWindowTranslucencySupported(TRANSLUCENT);
   }
 
   private Map<String, Object> findDialogState() {
@@ -160,6 +187,22 @@ public class FindReplace extends javax.swing.JFrame {
     wrapAroundBox.setText(tr("Wrap Around"));
 
     searchAllFilesBox.setText(tr("Search all Sketch Tabs"));
+
+    JPopupMenu menu = new JPopupMenu();
+    Action cut = new DefaultEditorKit.CutAction();
+    cut.putValue(Action.NAME, tr("Cut"));
+    menu.add( cut );
+
+    Action copy = new DefaultEditorKit.CopyAction();
+    copy.putValue(Action.NAME, tr("Copy"));
+    menu.add( copy );
+
+    Action paste = new DefaultEditorKit.PasteAction();
+    paste.putValue(Action.NAME, tr("Paste"));
+    menu.add( paste );
+
+    findField.setComponentPopupMenu( menu );
+    replaceField.setComponentPopupMenu( menu );
 
     findButton.setText(tr("Find"));
     findButton.addActionListener(new java.awt.event.ActionListener() {

@@ -26,7 +26,9 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
+import cc.arduino.builder.ArduinoBuilder;
 import cc.arduino.packages.Uploader;
+import cc.arduino.view.NotificationPopup;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.FileUtils;
@@ -37,6 +39,8 @@ import processing.app.packages.UserLibrary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,10 +62,18 @@ import static processing.app.I18n.tr;
 public class SketchController {
   private final Editor editor;
   private final Sketch sketch;
+  private final ArduinoBuilder builder;
 
   public SketchController(Editor _editor, Sketch _sketch) {
+    ArduinoBuilder _builder = null;
+    try {
+      _builder = new ArduinoBuilder();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     editor = _editor;
     sketch = _sketch;
+    builder = _builder;
   }
 
   private boolean renamingCode;
@@ -253,11 +265,19 @@ public class SketchController {
         sketch.delete();
         editor.base.handleClose(editor);
       } else {
+
+        boolean neverSavedTab = !current.fileExists();
+
         // delete the file
-        if (!current.delete(sketch.getBuildPath().toPath())) {
+        if (!current.delete(sketch.getBuildPath().toPath()) && !neverSavedTab) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
+        }
+
+        if (neverSavedTab) {
+          // remove the file from the sketch list
+          sketch.removeFile(current);
         }
 
         editor.removeTab(current);
@@ -379,7 +399,14 @@ public class SketchController {
     if (newName == null) return false;
     newName = SketchController.checkName(newName);
 
-    File newFolder = new File(newParentDir, newName);
+    File newFolder;
+    // User may want to overwrite a .ino
+    // check if the parent folder name ends with the sketch name
+    if (newName.endsWith(".ino") && newParentDir.endsWith(newName.substring(0, newName.lastIndexOf('.'))+ File.separator)) {
+      newFolder = new File(newParentDir);
+    } else {
+      newFolder = new File(newParentDir, newName);
+    }
 
     // check if the paths are identical
     if (newFolder.equals(sketch.getFolder())) {
@@ -631,6 +658,8 @@ public class SketchController {
       progressListener.progress(20);
     }
 
+    EditorConsole.setCurrentEditorConsole(editor.console);
+
     ensureExistence();
        
 
@@ -664,6 +693,66 @@ public class SketchController {
   }
 
   /**
+   * Preprocess sketch and obtain code-completions.
+   *
+   * @return null if compilation failed, main class name if not
+   */
+  public String codeComplete(SketchFile file, int line, int col) throws RunnerException, PreferencesMapException, IOException {
+    // run the preprocessor
+    for (CompilerProgressListener progressListener : editor.status.getCompilerProgressListeners()){
+      progressListener.progress(20);
+    }
+
+    ensureExistence();
+
+    boolean deleteTemp = false;
+    File pathToSketch = sketch.getPrimaryFile().getFile();
+    File requestedFile = file.getFile();
+    if (sketch.isModified()) {
+      // If any files are modified, make a copy of the sketch with the changes
+      // saved, so arduino-builder will see the modifications.
+      pathToSketch = saveSketchInTempFolder();
+      // This takes into account when the sketch is copied into a temporary folder
+      requestedFile = new File(pathToSketch.getParent(), requestedFile.getName());
+      deleteTemp = true;
+    }
+
+    try {
+      return builder.codeComplete(BaseNoGui.getTargetBoard(), pathToSketch, requestedFile, line, col);
+      //return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
+    } catch (Exception x) {
+
+      // Try getting some more useful information about the error;
+      // Launch the same command in non-daemon mode, overriding verbosity to
+      // print the actual call
+      // TODO: override verbosity
+      try {
+        // Gather command line and preprocesor output
+        String out = new Compiler(pathToSketch, sketch)
+            .codeComplete(editor.status.getCompilerProgressListeners(),
+                          requestedFile, line, col);
+        System.out.println("autocomplete failure output:\n" + out);
+
+        SwingUtilities.invokeLater(() -> {
+          NotificationPopup notificationPopup = new NotificationPopup(editor,
+              null, tr("Code complete is not available. Try increasing ulimit."),
+              true);
+          notificationPopup.beginWhenFocused();
+        });
+
+        return "";
+      } catch (Exception e) {
+        // Ignore
+        return "";
+      }
+    } finally {
+      // Make sure we clean up any temporary sketch copy
+      if (deleteTemp)
+        FileUtils.recursiveDelete(pathToSketch.getParentFile());
+    }
+  }
+
+  /**
    * Handle export to applet.
    */
   protected boolean exportApplet(boolean usingProgrammer) throws Exception {
@@ -692,6 +781,8 @@ public class SketchController {
 
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+
+    EditorConsole.setCurrentEditorConsole(editor.console);
 
     boolean success = false;
     do {

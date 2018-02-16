@@ -30,8 +30,15 @@ package processing.app.packages;
 
 import java.io.File;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.helpers.FileUtils;
@@ -98,5 +105,36 @@ public class LibraryList extends LinkedList<UserLibrary> {
       if (l == lib) return true;
     return false;
   }
-}
 
+  public static Collector<UserLibrary, LibraryList, LibraryList> collector() {
+    return new Collector<UserLibrary, LibraryList, LibraryList>() {
+      @Override
+      public Supplier<LibraryList> supplier() {
+        return () -> new LibraryList();
+      }
+
+      @Override
+      public BiConsumer<LibraryList, UserLibrary> accumulator() {
+        return (libs, lib) -> libs.add(lib);
+      }
+
+      @Override
+      public BinaryOperator<LibraryList> combiner() {
+        return (we, they) -> {
+          we.addAll(they);
+          return we;
+        };
+      }
+
+      @Override
+      public Function<LibraryList, LibraryList> finisher() {
+        return (libs) -> libs;
+      }
+
+      @Override
+      public Set<Collector.Characteristics> characteristics() {
+        return EnumSet.noneOf(Characteristics.class);
+      }
+    };
+  }
+}
