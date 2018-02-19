@@ -115,7 +115,14 @@ public class PdeKeywords {
           continue;
         }
 
-        String pieces[] = line.split("\t");
+        String pieces[];
+
+        if (line.indexOf('\t')) {
+          pieces = line.split("\t");       // For the cyborgs
+        }
+        else {
+          pieces = line.split("\\s+", 4);  // For the rest of humanity
+        }
 
         String keyword = pieces[0].trim();
         if (keyword.startsWith("\\#")) {
