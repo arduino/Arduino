@@ -174,7 +174,8 @@ public class Preferences extends javax.swing.JDialog {
     jTabbedPane1.setRequestFocusEnabled(false);
 
     sketchbookLocationLabel.setText(tr("Sketchbook location:"));
-
+    sketchbookLocationLabel.setLabelFor(sketchbookLocationField);
+    
     sketchbookLocationField.setColumns(40);
 
     browseButton.setText(I18n.PROMPT_BROWSE);
@@ -187,21 +188,28 @@ public class Preferences extends javax.swing.JDialog {
     comboLanguageLabel.setText(tr("Editor language: "));
 
     requiresRestartLabel.setText(tr("  (requires restart of Arduino)"));
+    
+    comboLanguage.getAccessibleContext().setAccessibleName("Editor language (requires restart of Arduino)");
 
     fontSizeLabel.setText(tr("Editor font size: "));
+    fontSizeLabel.setLabelFor(fontSizeField);
 
     fontSizeField.setColumns(4);
 
     showVerboseLabel.setText(tr("Show verbose output during: "));
 
     verboseCompilationBox.setText(tr("compilation "));
+    verboseCompilationBox.getAccessibleContext().setAccessibleName("Show verbose output during compilation");
 
     verboseUploadBox.setText(tr("upload"));
+    verboseUploadBox.getAccessibleContext().setAccessibleName("Show verbose output during upload");
 
     comboWarningsLabel.setText(tr("Compiler warnings: "));
+    comboWarningsLabel.setLabelFor(comboWarnings);
 
     additionalBoardsManagerLabel.setText(tr("Additional Boards Manager URLs: "));
     additionalBoardsManagerLabel.setToolTipText(tr("Enter a comma separated list of urls"));
+    additionalBoardsManagerLabel.setLabelFor(additionalBoardsManagerField);
 
     additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls"));
 
@@ -212,6 +220,7 @@ public class Preferences extends javax.swing.JDialog {
         extendedAdditionalUrlFieldWindowActionPerformed(evt);
       }
     });
+    extendedAdditionalUrlFieldWindow.getAccessibleContext().setAccessibleName("New Window");
 
     morePreferencesLabel.setForeground(Color.GRAY);
     morePreferencesLabel.setText(tr("More preferences can be edited directly in the file"));
@@ -229,6 +238,7 @@ public class Preferences extends javax.swing.JDialog {
         preferencesFileLabelMouseEntered(evt);
       }
     });
+    preferencesFileLabel.setFocusable(true);
 
     arduinoNotRunningLabel.setForeground(Color.GRAY);
     arduinoNotRunningLabel.setText(tr("(edit only when Arduino is not running)"));
@@ -280,6 +290,7 @@ public class Preferences extends javax.swing.JDialog {
 
     scaleSpinner.setModel(new javax.swing.SpinnerNumberModel(100, 100, 400, 5));
     scaleSpinner.setEnabled(false);
+    scaleSpinner.getAccessibleContext().setAccessibleName("Interface scale (requires restart of Arduino)");
 
     autoScaleCheckBox.setSelected(true);
     autoScaleCheckBox.setText(tr("Automatic"));
@@ -288,6 +299,7 @@ public class Preferences extends javax.swing.JDialog {
         autoScaleCheckBoxItemStateChanged(evt);
       }
     });
+    autoScaleCheckBox.getAccessibleContext().setAccessibleName("Automatic interface scale (requires restart of Arduino");
 
     jLabel3.setText("%");
 

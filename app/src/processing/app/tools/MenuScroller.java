@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.KeyEvent;
 
 /**
  * A class that provides scrolling capabilities to a long menu dropdown or
@@ -40,6 +41,7 @@ public class MenuScroller {
   private int bottomFixedCount;
   private int firstIndex = 0;
   private int keepVisibleIndex = -1;
+  private int accelerator = 1;
 
   /**
    * Registers a menu to be scrolled with the default number of items to
@@ -293,6 +295,25 @@ public class MenuScroller {
     this.menu = menu;
     menu.addPopupMenuListener(menuListener);
     menu.addMouseWheelListener(mouseWheelListener);
+
+    ActionListener accel = new ActionListener() {
+      @Override
+        public void actionPerformed(ActionEvent e) {
+          accelerator = 6;
+      }
+    };
+
+    ActionListener decel = new ActionListener() {
+      @Override
+        public void actionPerformed(ActionEvent e) {
+          accelerator = 1;
+      }
+    };
+
+    KeyStroke keystroke_accel = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false);
+    KeyStroke keystroke_decel = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true);
+    menu.registerKeyboardAction(accel, "accel", keystroke_accel, JComponent.WHEN_IN_FOCUSED_WINDOW);
+    menu.registerKeyboardAction(decel, "decel", keystroke_decel, JComponent.WHEN_IN_FOCUSED_WINDOW);
   }
 
   /**
@@ -492,7 +513,7 @@ public class MenuScroller {
 
   private class MouseScrollListener implements MouseWheelListener {
     public void mouseWheelMoved(MouseWheelEvent mwe) {
-      firstIndex += mwe.getWheelRotation();
+      firstIndex += mwe.getWheelRotation() * accelerator;
       refreshMenu();
       mwe.consume();
     }
@@ -544,7 +565,7 @@ public class MenuScroller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-          firstIndex += increment;
+          firstIndex += increment * accelerator;
           refreshMenu();
         }
       });

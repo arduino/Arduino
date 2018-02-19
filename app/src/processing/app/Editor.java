@@ -158,7 +158,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   static volatile AbstractMonitor serialMonitor;
   static AbstractMonitor serialPlotter;
-  
+
   final EditorHeader header;
   EditorStatus status;
   EditorConsole console;
@@ -248,7 +248,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
-    
+
     buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
@@ -399,8 +399,7 @@ public class Editor extends JFrame implements RunnerListener {
         statusNotice(tr("One file added to the sketch."));
 
       } else {
-        statusNotice(
-	    I18n.format(tr("{0} files added to the sketch."), successful));
+        statusNotice(I18n.format(tr("{0} files added to the sketch."), successful));
       }
       return true;
     }
@@ -619,7 +618,7 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.add(item);
 
     // macosx already has its own preferences and quit menu
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.hasMacOSStyleMenus()) {
       fileMenu.addSeparator();
 
       item = newJMenuItem(tr("Preferences"), ',');
@@ -732,16 +731,16 @@ public class Editor extends JFrame implements RunnerListener {
 
     addInternalTools(toolsMenu);
 
-    JMenuItem item = newJMenuItemShift(tr("Serial Monitor"), 'M');
+    JMenuItem item = newJMenuItemShift(tr("Manage Libraries..."), 'I');
+    item.addActionListener(e -> base.openLibraryManager("", ""));
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Serial Monitor"), 'M');
     item.addActionListener(e -> handleSerial());
     toolsMenu.add(item);
 
     item = newJMenuItemShift(tr("Serial Plotter"), 'L');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePlotter();
-        }
-    });
+    item.addActionListener(e -> handlePlotter());
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
@@ -769,6 +768,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     base.rebuildProgrammerMenu();
     programmersMenu = new JMenu(tr("Programmer"));
+    MenuScroller.setScrollerFor(programmersMenu);
     base.getProgrammerMenus().stream().forEach(programmersMenu::add);
     toolsMenu.add(programmersMenu);
 
@@ -947,14 +947,14 @@ public class Editor extends JFrame implements RunnerListener {
     } finally {
       if (zipFile != null) {
         try {
-          zipFile.close();
-        } catch (IOException e) {
-          // noop
-        }
-      }
-    }
-    return null;
-	}
+           zipFile.close();
+         } catch (IOException e) {
+           // noop
+         }
+       }
+     }
+     return null;
+   }
 
   public void updateKeywords(PdeKeywords keywords) {
     for (EditorTab tab : tabs)
@@ -1252,7 +1252,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     // macosx already has its own about menu
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.hasMacOSStyleMenus()) {
       menu.addSeparator();
       item = new JMenuItem(tr("About Arduino"));
       item.addActionListener(new ActionListener() {
@@ -1476,6 +1476,7 @@ public class Editor extends JFrame implements RunnerListener {
   /**
    * Like newJMenuItem() but adds shift as a modifier for the key command.
    */
+  // Control + Shift + K seems to not be working on linux (Xubuntu 17.04, 2017-08-19)
   static public JMenuItem newJMenuItemShift(String title, int what) {
     JMenuItem menuItem = new JMenuItem(title);
     menuItem.setAccelerator(KeyStroke.getKeyStroke(what, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK));
@@ -1812,7 +1813,7 @@ public class Editor extends JFrame implements RunnerListener {
     String prompt = I18n.format(tr("Save changes to \"{0}\"?  "),
                                 sketch.getName());
 
-    if (!OSUtils.isMacOS()) {
+    if (!OSUtils.hasMacOSStyleMenus()) {
       int result =
         JOptionPane.showConfirmDialog(this, prompt, tr("Close"),
                                       JOptionPane.YES_NO_CANCEL_OPTION,
@@ -2096,18 +2097,19 @@ public class Editor extends JFrame implements RunnerListener {
       names[i] = portMenu.getItem(i).getText();
     }
 
+    // FIXME: This is horribly unreadable
     String result = (String)
-      JOptionPane.showInputDialog(this,
-	I18n.format(
-	  tr("Serial port {0} not found.\n" +
-	    "Retry the upload with another serial port?"),
-	  PreferencesData.get("serial.port")
-	),
-				  "Serial port not found",
-                                  JOptionPane.PLAIN_MESSAGE,
-                                  null,
-                                  names,
-                                  0);
+    JOptionPane.showInputDialog(this,
+     I18n.format(
+      tr("Serial port {0} not found.\n" +
+       "Retry the upload with another serial port?"),
+      PreferencesData.get("serial.port")
+     ),
+     "Serial port not found",
+     JOptionPane.PLAIN_MESSAGE,
+     null,
+     names,
+     0);
     if (result == null) return false;
     selectSerialPort(result);
     base.onBoardOrPortChange();
@@ -2321,7 +2323,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialMonitor != null) {
       // The serial monitor already exists
 
@@ -2351,14 +2353,14 @@ public class Editor extends JFrame implements RunnerListener {
     }
 
     serialMonitor = new MonitorFactory().newMonitor(port);
-    
+
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");
       String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
       statusError(I18n.format(tr("Serial monitor is not supported on network ports such as {0} for the {1} in this release"), PreferencesData.get("serial.port"), boardName));
       return;
     }
-    
+
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
@@ -2418,7 +2420,7 @@ public class Editor extends JFrame implements RunnerListener {
     } while (serialMonitor.requiresAuthorization() && !success);
 
   }
-  
+
   public void handlePlotter() {
     if(serialMonitor != null) {
       if(serialMonitor.isClosed()) {
@@ -2428,7 +2430,7 @@ public class Editor extends JFrame implements RunnerListener {
         return;
       }
     }
-  
+
     if (serialPlotter != null) {
       // The serial plotter already exists
 

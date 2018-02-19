@@ -34,7 +34,6 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -235,7 +234,6 @@ public class ContributionInstaller {
   }
 
   public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
-    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).collect(Collectors.toList());
     if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
       return new LinkedList<>();
     }

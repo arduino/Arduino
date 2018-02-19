@@ -144,14 +144,29 @@ nano.menu.cpu.atmega328=ATmega328P
 
 nano.menu.cpu.atmega328.upload.maximum_size=30720
 nano.menu.cpu.atmega328.upload.maximum_data_size=2048
-nano.menu.cpu.atmega328.upload.speed=57600
+nano.menu.cpu.atmega328.upload.speed=115200
 
 nano.menu.cpu.atmega328.bootloader.low_fuses=0xFF
 nano.menu.cpu.atmega328.bootloader.high_fuses=0xDA
 nano.menu.cpu.atmega328.bootloader.extended_fuses=0xFD
-nano.menu.cpu.atmega328.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
+nano.menu.cpu.atmega328.bootloader.file=optiboot/optiboot_atmega328.hex
 
 nano.menu.cpu.atmega328.build.mcu=atmega328p
+
+## Arduino Nano w/ ATmega328P (old bootloader)
+## --------------------------
+nano.menu.cpu.atmega328old=ATmega328P (Old Bootloader)
+
+nano.menu.cpu.atmega328old.upload.maximum_size=30720
+nano.menu.cpu.atmega328old.upload.maximum_data_size=2048
+nano.menu.cpu.atmega328old.upload.speed=57600
+
+nano.menu.cpu.atmega328old.bootloader.low_fuses=0xFF
+nano.menu.cpu.atmega328old.bootloader.high_fuses=0xDA
+nano.menu.cpu.atmega328old.bootloader.extended_fuses=0xFD
+nano.menu.cpu.atmega328old.bootloader.file=atmega/ATmegaBOOT_168_atmega328.hex
+
+nano.menu.cpu.atmega328old.build.mcu=atmega328p
 
 ## Arduino Nano w/ ATmega168
 ## -------------------------

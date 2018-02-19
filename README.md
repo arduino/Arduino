@@ -29,7 +29,7 @@ https://groups.google.com/a/arduino.cc/forum/#!forum/developers
 Installation
 ------------
 Detailed instructions for installation in popular operating systems.  
-For Linux: https://www.arduino.cc/en/Guide/Linux (see also the Arduino playground page http://www.arduino.cc/playground/Learning/Linux)   
+For Linux: https://www.arduino.cc/en/Guide/Linux (see also the Arduino playground page https://playground.arduino.cc/Learning/Linux)   
 For macOS X: https://www.arduino.cc/en/Guide/MacOSX   
 For Windows: https://www.arduino.cc/en/Guide/Windows
 
@@ -47,7 +47,7 @@ Arduino uses
 [avrdude](http://www.nongnu.org/avrdude/),
 [bossac](http://www.shumatech.com/web/products/bossa),
 [openOCD](http://openocd.org/)
-and code from [Processing](http://www.processing.org)
+and code from [Processing](https://www.processing.org)
 and [Wiring](http://wiring.org.co).
 
 Icon and about image designed by [ToDo](https://www.todo.to.it/)

@@ -133,6 +133,10 @@ public class Base {
     System.setProperty("java.net.useSystemProxies", "true");
 
     if (OSUtils.isMacOS()) {
+      System.setProperty("apple.laf.useScreenMenuBar",
+        String.valueOf(!System.getProperty("os.version").startsWith("10.13")
+          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+
       ThinkDifferent.init();
     }
 
@@ -388,6 +392,7 @@ public class Base {
         outputFile = new Compiler(sketch).build(progress -> {}, false);
       } catch (Exception e) {
         // Error during build
+        e.printStackTrace();
         System.exit(1);
       }
 
@@ -967,7 +972,7 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      if (!OSUtils.isMacOS()) {
+      if (!OSUtils.hasMacOSStyleMenus()) {
         // If this was fired from the menu or an AppleEvent (the Finder),
         // then Mac OS X will send the terminate signal itself.
         System.exit(0);
@@ -1070,6 +1075,10 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
+    // Ctrl+Shift+I on Windows and Linux, Command+Shift+I on macOS
+    menu.setAccelerator(KeyStroke.getKeyStroke('I',
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+        ActionEvent.SHIFT_MASK));
     menu.addActionListener(e -> openLibraryManager("", ""));
     importMenu.add(menu);
     importMenu.addSeparator();
@@ -1093,12 +1102,13 @@ public class Base {
       List<ContributedLibrary> libs = getSortedLibraries();
       String lastLibType = null;
       for (ContributedLibrary lib : libs) {
-        if (lastLibType == null || !lastLibType.equals(lib.getTypes().get(0))) {
+        String libType = lib.getTypes().get(0);
+        if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {
             importMenu.addSeparator();
           }
-          lastLibType = lib.getTypes().get(0);
-          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), lastLibType));
+          lastLibType = libType;
+          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), tr(lastLibType)));
           platformItem.setEnabled(false);
           importMenu.add(platformItem);
         }
@@ -1168,7 +1178,7 @@ public class Base {
     // any incompatible sketchbook libs further divided into their own list.
     // The 7th list of "other" libraries should always be empty, but serves
     // as a safety feature to prevent any library from vanishing.
-    LibraryList allLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     LibraryList ideLibs = new LibraryList();
     LibraryList retiredIdeLibs = new LibraryList();
     LibraryList platformLibs = new LibraryList();
@@ -1399,7 +1409,7 @@ public class Base {
     // The first custom menu is the "Board" selection submenu
     JMenu boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu);
+    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
     boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
@@ -1866,11 +1876,6 @@ public class Base {
     }
     PreferencesData.set("editor.font", StringUtils.join(pieces, ','));
     getEditors().forEach(Editor::applyPreferences);
-  }
-
-  // XXX: Remove this method and make librariesIndexer non-static
-  static public LibraryList getLibraries() {
-    return BaseNoGui.librariesIndexer.getInstalledLibraries();
   }
 
   public List<JMenu> getBoardsCustomMenus() {
