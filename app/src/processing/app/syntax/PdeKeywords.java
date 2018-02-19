@@ -117,7 +117,7 @@ public class PdeKeywords {
 
         String pieces[];
 
-        if (line.indexOf('\t')) {
+        if (line.indexOf('\t') > 0) {
           pieces = line.split("\t");       // For the cyborgs
         }
         else {
