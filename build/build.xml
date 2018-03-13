@@ -23,6 +23,7 @@
   <condition property="platform" value="linux32"><os family="unix" arch="i386" /></condition>
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
   <condition property="platform" value="linuxarm"><os family="unix" arch="arm" /></condition>
+  <condition property="platform" value="linuxaarch64"><os family="unix" arch="aarch64" /></condition>
 
   <condition property="windows_host" value="true"><os family="windows" /></condition>
 
@@ -33,18 +34,21 @@
   <condition property="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
   <condition property="linux"><equals arg1="${platform}" arg2="linuxarm" /></condition>
+  <condition property="linux"><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
 
   <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_folder" value="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linuxarm" /></condition>
+  <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
 
   <condition property="staging_hardware_folder" value="Arduino.app/Contents/Java/hardware"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linuxarm" /></condition>
+  <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
 
   <condition property="arch-bits" value="32">
     <equals arg1="${platform}" arg2="linux32"/>
@@ -54,6 +58,9 @@
   </condition>
   <condition property="arch-bits" value="64">
     <equals arg1="${platform}" arg2="linux64"/>
+  </condition>
+  <condition property="arch-bits" value="32">
+    <equals arg1="${platform}" arg2="linuxaarch64"/>
   </condition>
 
   <condition property="launch4j-download-unpack-target-name" value="launch4j-windows"><os family="windows" /></condition>
@@ -455,8 +462,8 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -643,8 +650,8 @@
 
   <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -668,8 +675,8 @@
 
   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -705,6 +712,48 @@
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
       <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux_arm.tar.bz2"/>
+      <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
+    </antcall>
+  </target>
+
+  <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
+    <antcall target="unzip">
+      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/libastylej-2.05.1/libastylej_aarch64.so" tofile="linux/work/lib/libastylej.so" />
+    <chmod perm="755" file="linux/work/lib/libastylej.so" />
+
+    <antcall target="portable-${portable}">
+      <param name="parentdir" value="linux/work" />
+    </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}-2.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/liblistSerials/liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/liblistSerials-${LIBLISTSERIAL-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}" />
+    </antcall>
+    <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/aarch64/liblistSerialsj.so" todir="linux/work/lib/" />
+    <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+  </target>
+
+  <target name="linuxaarch64-build" depends="linux-libastyle-aarch64" description="Build Linux (AArch64) version">
+    <antcall target="linux-jvm-${linux-bundle-jvm-task}">
+      <param name="JVM" value="${LINUXARM_BUNDLED_JVM}"/>
+    </antcall>
+
+    <antcall target="build-arduino-builder" />
+
+    <antcall target="avr-toolchain-bundle">
+      <param name="unpack_target" value="untar"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
+      <param name="gcc_version" value="${AVRGCC-VERSION}"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
+      <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux_aarch64.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
@@ -763,6 +812,8 @@
 
   <target name="linuxarm-run" depends="build,start"/>
 
+  <target name="linuxaarch64-run" depends="build,start"/>
+
   <target name="linux32-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
@@ -772,6 +823,10 @@
   </target>
 
   <target name="linuxarm-start">
+    <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
+  </target>
+
+  <target name="linuxaarch64-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
   </target>
 
@@ -906,6 +961,9 @@
   <target name="linuxarm-dist" depends="linux-dist"
 	  description="Build .tar.xz of linux armhf version" />
 
+  <target name="linuxaarch64-dist" depends="linux-dist"
+	  description="Build .tar.xz of linux aarch64 version" />
+
   <!-- - - - - - - - -->
   <!-- Windows       -->
   <!-- - - - - - - - -->
@@ -983,8 +1041,8 @@
     <antcall target="windows-build-avr-toolchain" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-3.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-3.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
