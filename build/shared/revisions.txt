@@ -6,6 +6,9 @@ ARDUINO 1.8.6
 * Added "accelerator" in scrollable menu, press "a" key while scrolling
 * Keep "Board Manager" menu item always as first in the menu
 
+[core]
+* AVR: Set Optiboot as default bootloader for Nano. This is the bootloader installed on new Arduino Nano boards. If you have a Nano with the old bootloader you must select Tools > Processor > ATmega328P (Old Bootloader) to upload.
+
 [wifi101-firmware]
 * SECURITY FIX: Released fix for WPA2 KRACK vulnerability (latest WINC1500 firmware 19.5.2).
 
