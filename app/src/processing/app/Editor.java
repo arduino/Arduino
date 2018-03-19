@@ -65,6 +65,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.ArrayList;
@@ -339,6 +340,7 @@ public class Editor extends JFrame implements RunnerListener {
     // Open the document that was passed in
     boolean loaded = handleOpenInternal(file);
     if (!loaded) sketchController = null;
+
   }
 
 
@@ -763,6 +765,10 @@ public class Editor extends JFrame implements RunnerListener {
     MenuScroller.setScrollerFor(portMenu);
     item = new JMenuItem(tr("Get Board Info"));
     item.addActionListener(e -> handleBoardInfo());
+    toolsMenu.add(item);
+
+    item = new JMenuItem(tr("Add build settings to .INO file"));
+    item.addActionListener(e -> handleAddBuildSettings());
     toolsMenu.add(item);
     toolsMenu.addSeparator();
 
@@ -2510,6 +2516,17 @@ public class Editor extends JFrame implements RunnerListener {
 
     } while (serialPlotter.requiresAuthorization() && !success);
 
+  }
+
+  public void handleAddBuildSettings(){
+    final LinkedHashMap<String, String> settingsMap = base.getBoardsCustomMenus().stream().filter(JMenu::isVisible).map((e)->{
+      String setting = e.getText().substring(0, e.getText().indexOf(":"));
+      String value = e.getText().replace(setting + ":", "").replace("\"", "").trim();
+      return new String[]{setting, value};
+    }).collect(LinkedHashMap::new, (map, menu) -> map.put(menu[0], menu[1]), LinkedHashMap::putAll);
+    sketch.setBuildSettings(findTab(sketch.getPrimaryFile()), settingsMap);
+    handleSave(true);
+    System.out.println("Build settings header should be added");
   }
 
   private void handleBurnBootloader() {
