@@ -3,6 +3,7 @@ app/pde.jar
 build/macosx/work/
 arduino-core/bin/
 arduino-core/arduino-core.jar
+lib/*
 hardware/arduino/bootloaders/caterina_LUFA/Descriptors.o
 hardware/arduino/bootloaders/caterina_LUFA/Descriptors.lst
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.sym

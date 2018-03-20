@@ -463,6 +463,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
           optionalBoardMenuItem.get().getAction().actionPerformed(new ActionEvent(this, -1, ""));
         }else{
           // TODO Ask the user which value should replace the current value
+
         }
       });
     }
