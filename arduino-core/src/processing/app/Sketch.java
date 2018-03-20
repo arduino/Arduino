@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
+import processing.app.EditorTab;
 
 import static processing.app.I18n.tr;
 
