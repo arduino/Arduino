@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
-import processing.app.EditorTab;
 
 import static processing.app.I18n.tr;
 
@@ -166,24 +165,23 @@ public class Sketch {
     return pos;
   }
 
-  private void removeBuildSettingsHeader(EditorTab tab){
-    if(tab.getText().contains(buildToolsHeader)) {
-      int headerStartIndex = tab.getText().indexOf(buildToolsHeader);
-      int headerStopIndex = tab.getText().indexOf(buildToolsHeaderEnd);
+  private String removeBuildSettingsHeader(Sketch sketch){
+    if(sketch.getPrimaryFile().getProgram().contains(buildToolsHeader)) {
+      int headerStartIndex = sketch.getPrimaryFile().getProgram().indexOf(buildToolsHeader);
+      int headerStopIndex = sketch.getPrimaryFile().getProgram().indexOf(buildToolsHeaderEnd);
       if (headerStartIndex > headerStopIndex) {
         System.err.println("The build tool header is not the first comment block in your file! Please fix this.");
-        for (int i = 0; i < tab.getText().length(); i++) {
-          if (headerStartIndex < ordinalIndexOf(tab.getText(), buildToolsHeaderEnd, i)) {
-            headerStopIndex = ordinalIndexOf(tab.getText(), buildToolsHeaderEnd, i);
+        for (int i = 0; i < sketch.getPrimaryFile().getProgram().length(); i++) {
+          if (headerStartIndex < ordinalIndexOf(sketch.getPrimaryFile().getProgram(), buildToolsHeaderEnd, i)) {
+            headerStopIndex = ordinalIndexOf(sketch.getPrimaryFile().getProgram(), buildToolsHeaderEnd, i);
             break;
           }
         }
       }
-      String header = tab.getText().substring(headerStartIndex, headerStopIndex + buildToolsHeaderEnd.length());
-      tab.setText(tab.getText().replace(header, ""));
-      // Run this method again so we are sure that there aren't any headers left
-      removeBuildSettingsHeader(tab);
+      String header = sketch.getPrimaryFile().getProgram().substring(headerStartIndex, headerStopIndex + buildToolsHeaderEnd.length());
+      return sketch.getPrimaryFile().getProgram().replace(header, "");
     }
+    return sketch.getPrimaryFile().getProgram();
   }
 
   /**
@@ -233,16 +231,17 @@ public class Sketch {
     return first.keySet().containsAll(second.keySet()) && first.values().containsAll(second.values());
   }
 
-  public void setBuildSettings(EditorTab tab, LinkedHashMap<String, String> buildSettings){
-    if(tab.getSketch().getSketch() != this){
-      return;
+  public String setBuildSettings(Sketch sketch, LinkedHashMap<String, String> buildSettings){
+    if(sketch != this){
+      return "";
     }
 
     String customBoardSettingsHeader = buildSettings.entrySet().stream().map(entry-> String.format(" * %s: %s\n", entry.getKey(), entry.getValue())).collect(Collectors.joining("", buildToolsHeader, "*/"));
-    if(!isBuildSettingsEqual(getBuildSettingsFromProgram(tab.getText()),buildSettings)){
-      removeBuildSettingsHeader(tab);
-      tab.setText(customBoardSettingsHeader + ((tab.getText().charAt(0) == '\n') ? "" : "\n") + tab.getText());
+    if(!isBuildSettingsEqual(getBuildSettingsFromProgram(sketch.getPrimaryFile().getProgram()),buildSettings)){
+      String headerLessProgram = removeBuildSettingsHeader(sketch);
+      return customBoardSettingsHeader + ((headerLessProgram.charAt(0) == '\n') ? "" : "\n") + headerLessProgram;
     }
+    return "";
   }
 
   public int getCodeCount() {

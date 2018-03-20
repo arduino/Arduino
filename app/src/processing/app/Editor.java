@@ -2524,9 +2524,13 @@ public class Editor extends JFrame implements RunnerListener {
       String value = e.getText().replace(setting + ":", "").replace("\"", "").trim();
       return new String[]{setting, value};
     }).collect(LinkedHashMap::new, (map, menu) -> map.put(menu[0], menu[1]), LinkedHashMap::putAll);
-    sketch.setBuildSettings(findTab(sketch.getPrimaryFile()), settingsMap);
-    handleSave(true);
-    System.out.println("Build settings header should be added");
+	handleSave(true);
+    Optional<EditorTab> optionalEditorTab = tabs.stream().filter(tab -> tab.getSketch().getSketch().equals(sketch)).findFirst();
+    if(optionalEditorTab.isPresent()){
+      optionalEditorTab.get().setText(sketch.setBuildSettings(sketch, settingsMap));
+      handleSave(true);
+      System.out.println("Build settings header should be added");
+    }
   }
 
   private void handleBurnBootloader() {

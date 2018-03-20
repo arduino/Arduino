@@ -434,6 +434,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     }
   }
 
+
   /**
    * This method loads the build settings from the main .INO file and sets the Arduino IDE accordingly
    */
