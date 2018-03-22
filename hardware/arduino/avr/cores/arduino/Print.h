@@ -44,10 +44,10 @@ class Print
     void setWriteError(int err = 1) { write_error = err; }
   public:
     Print() : write_error(0) {}
-  
+
     int getWriteError() { return write_error; }
     void clearWriteError() { setWriteError(0); }
-  
+
     virtual size_t write(uint8_t) = 0;
     size_t write(const char *str) {
       if (str == NULL) return 0;
@@ -86,6 +86,19 @@ class Print
     size_t println(double, int = 2);
     size_t println(const Printable&);
     size_t println(void);
+
+    size_t printlf(const __FlashStringHelper *);
+    size_t printlf(const String &s);
+    size_t printlf(const char[]);
+    size_t printlf(char);
+    size_t printlf(unsigned char, int = DEC);
+    size_t printlf(int, int = DEC);
+    size_t printlf(unsigned int, int = DEC);
+    size_t printlf(long, int = DEC);
+    size_t printlf(unsigned long, int = DEC);
+    size_t printlf(double, int = 2);
+    size_t printlf(const Printable&);
+    size_t printlf(void);
 
     virtual void flush() { /* Empty implementation for backward compatibility */ }
 };
