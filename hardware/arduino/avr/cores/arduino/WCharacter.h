@@ -68,7 +68,7 @@ inline boolean isAscii(int c)
 // Checks for a blank character, that is, a space or a tab.
 inline boolean isWhitespace(int c)
 {
-  return ( isblank (c) == 0 ? false : true);
+  return ( isspace (c) == 0 ? false : true);
 }
 
 
@@ -120,7 +120,7 @@ inline boolean isPunct(int c)
 // return ('\r'), horizontal tab ('\t'), and vertical tab ('\v').
 inline boolean isSpace(int c)
 {
-  return ( isspace (c) == 0 ? false : true);
+  return ( isblank (c) == 0 ? false : true);
 }
 
 
