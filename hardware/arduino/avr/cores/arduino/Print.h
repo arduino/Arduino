@@ -40,10 +40,13 @@ class Print
     int write_error;
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
+    const char * line_ending;
   protected:
     void setWriteError(int err = 1) { write_error = err; }
   public:
-    Print() : write_error(0) {}
+    Print() : write_error(0) {
+            line_ending = "\r\n";
+    }
 
     int getWriteError() { return write_error; }
     void clearWriteError() { setWriteError(0); }
@@ -87,18 +90,7 @@ class Print
     size_t println(const Printable&);
     size_t println(void);
 
-    size_t printlf(const __FlashStringHelper *);
-    size_t printlf(const String &s);
-    size_t printlf(const char[]);
-    size_t printlf(char);
-    size_t printlf(unsigned char, int = DEC);
-    size_t printlf(int, int = DEC);
-    size_t printlf(unsigned int, int = DEC);
-    size_t printlf(long, int = DEC);
-    size_t printlf(unsigned long, int = DEC);
-    size_t printlf(double, int = 2);
-    size_t printlf(const Printable&);
-    size_t printlf(void);
+    void set_line_ending(const char * ending);
 
     virtual void flush() { /* Empty implementation for backward compatibility */ }
 };

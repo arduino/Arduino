@@ -1,6 +1,5 @@
 /*
- Print.cpp - Base class that provides print(), println()
- and printlf()
+ Print.cpp - Base class that provides print() and println().
  Copyright (c) 2008 David A. Mellis.  All right reserved.
 
  This library is free software; you can redistribute it and/or
@@ -126,7 +125,7 @@ size_t Print::print(const Printable& x)
 
 size_t Print::println(void)
 {
-  return write("\r\n");
+  return write(line_ending);
 }
 
 size_t Print::println(const String &s)
@@ -199,92 +198,9 @@ size_t Print::println(const Printable& x)
   return n;
 }
 
-
-// printlf
-
-size_t Print::printlf(void)
-{
-  return write("\n");
+void Print::set_line_ending(const char * ending){
+        line_ending = ending;
 }
-
-size_t Print::printlf(const __FlashStringHelper *ifsh)
-{
-  size_t n = print(ifsh);
-  n += printlf();
-  return n;
-}
-
-
-size_t Print::printlf(const String &s)
-{
-  size_t n = print(s);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(const char c[])
-{
-  size_t n = print(c);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(char c)
-{
-  size_t n = print(c);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(unsigned char b, int base)
-{
-  size_t n = print(b, base);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(int num, int base)
-{
-  size_t n = print(num, base);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(unsigned int num, int base)
-{
-  size_t n = print(num, base);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(long num, int base)
-{
-  size_t n = print(num, base);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(unsigned long num, int base)
-{
-  size_t n = print(num, base);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(double num, int digits)
-{
-  size_t n = print(num, digits);
-  n += printlf();
-  return n;
-}
-
-size_t Print::printlf(const Printable& x)
-{
-  size_t n = print(x);
-  n += printlf();
-  return n;
-}
-
 
 // Private Methods /////////////////////////////////////////////////////////////
 
