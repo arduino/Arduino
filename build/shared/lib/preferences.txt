@@ -112,7 +112,7 @@ editor.caret.blink=true
 editor.invalid=false
 
 # show line numbers in editor
-editor.linenumbers = false
+editor.linenumbers = true
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
