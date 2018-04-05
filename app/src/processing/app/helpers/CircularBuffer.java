@@ -4,10 +4,10 @@ import java.util.NoSuchElementException;
 
 public class CircularBuffer {
 
-  private final double[] elements;
+  private double[] elements;
   private int start = -1;
   private int end = -1;
-  private final int capacity;
+  private int capacity;
 
   public void add(double num) {
     end = (end + 1) % capacity;
@@ -35,6 +35,12 @@ public class CircularBuffer {
   public CircularBuffer(int capacity) {
     this.capacity = capacity;
     elements = new double[capacity];
+  }
+  
+  public void newCapacity(int capacity) {
+    elements = new double[capacity];
+    this.capacity = capacity;
+    start = end = 0;
   }
 
   public double min() {

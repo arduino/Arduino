@@ -26,6 +26,9 @@ import processing.app.legacy.PApplet;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import com.jcraft.jsch.Buffer;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
@@ -42,14 +45,18 @@ public class SerialPlotter extends AbstractMonitor {
   private int serialRate, xCount;
 
   private ArrayList<Graph> graphs;
-  private final static int BUFFER_CAPACITY = 500;
+  private int buffer_capacity = 500;
+  private final static int BUFFER_CAPACITY_DEFAULT = 500;
+  private final static int BUFFER_CAPACITY_MAX = 5000;
+  private final static int BUFFER_CAPACITY_MIN = 10;
 
   private static class Graph {
     public CircularBuffer buffer;
+    public String label;
     private Color color;
 
-    public Graph(int id) {
-      buffer = new CircularBuffer(BUFFER_CAPACITY);
+    public Graph(int id, int capacity) {
+      buffer = new CircularBuffer(capacity);
       color = Theme.getColorCycleColor("plotting.graphcolor", id);
     }
 
@@ -147,12 +154,12 @@ public class SerialPlotter extends AbstractMonitor {
       }
 
       // handle data count
-      int cnt = xCount - BUFFER_CAPACITY;
-      if (xCount < BUFFER_CAPACITY) cnt = 0;
+      int cnt = xCount - buffer_capacity;
+      if (xCount < buffer_capacity) cnt = 0;
         
       double zeroTick = ticks.getTick(0);
       double lastTick = ticks.getTick(ticks.getTickCount() - 1);
-      double xTickRange = BUFFER_CAPACITY / ticks.getTickCount();
+      double xTickRange = buffer_capacity / ticks.getTickCount();
         
       for (int i = 0; i < ticks.getTickCount() + 1; i++) {
           String s;
@@ -168,7 +175,7 @@ public class SerialPlotter extends AbstractMonitor {
               s = String.valueOf((int)(xTickRange * i)+cnt);
               fBounds = fm.getStringBounds(s, g);
               sWidth = (int)fBounds.getWidth()/2;
-              xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / BUFFER_CAPACITY) + xOffset);
+              xValue = (int)((bounds.width - xOffset - xPadding) * ((xTickRange * i) / buffer_capacity) + xOffset);
           }
           // draw graph x axis, ticks and labels
           g.setColor(boundsColor);
@@ -185,13 +192,24 @@ public class SerialPlotter extends AbstractMonitor {
       g.drawLine(xOffset, (int) transformY(zeroTick), bounds.width - xPadding, (int)transformY(zeroTick));
         
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
-      float xstep = (float) (bounds.width - xOffset - xPadding) / (float) BUFFER_CAPACITY;
-      int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
-
+      float xstep = (float) (bounds.width - xOffset - xPadding) / (float) buffer_capacity;
+      // draw legend
+      int legendXOffset = 0;
       for(int i = 0; i < graphs.size(); ++i) {
         graphs.get(i).paint(g, xstep, minY, maxY, rangeY, bounds.height);
-        if(graphs.size() > 1) {    
-          g.fillRect(bounds.width - (xOffset + legendLength + 10) + i * 13, 10, 10, 10);
+        if(graphs.size() > 1) {
+          //draw legend rectangle
+          g.fillRect(10 + legendXOffset, 10, 10, 10);
+          legendXOffset += 13;
+          //draw label
+          g.setColor(boundsColor);
+          String s = graphs.get(i).label;
+          if(s != null && s.length() > 0) {
+			Rectangle2D fBounds = fm.getStringBounds(s, g);
+			int sWidth = (int)fBounds.getWidth();
+			g.drawString(s, 10 + legendXOffset, 10 + (int)fBounds.getHeight() /2);
+			legendXOffset += sWidth + 3;
+	      }
         }
       }
     }
@@ -270,6 +288,17 @@ public class SerialPlotter extends AbstractMonitor {
   private void onSerialRateChange(ActionListener listener) {
     serialRates.addActionListener(listener);
   }
+  
+  private void setNewBufferCapacity(int capacity){
+    if(buffer_capacity != capacity) {
+      if(capacity > BUFFER_CAPACITY_MAX) capacity = BUFFER_CAPACITY_MAX;
+      else if(capacity < BUFFER_CAPACITY_MIN) capacity = BUFFER_CAPACITY_MIN;
+      buffer_capacity = capacity;
+      for(int i = 0; i < graphs.size(); i++) {
+        graphs.get(i).buffer.newCapacity(capacity);
+      }
+    }
+  }
 
   public void message(final String s) {
     messageBuffer.append(s);
@@ -287,19 +316,81 @@ public class SerialPlotter extends AbstractMonitor {
       if(parts.length == 0) {
         continue;
       }
-
+	
       int validParts = 0;
+      int validLabels = 0;
       for(int i = 0; i < parts.length; ++i) {
-        try {          
-          double value = Double.valueOf(parts[i]);
+        Double value = null;
+        String label = null;
+        
+        // all commands start with #
+        if(parts[i].startsWith("#") && parts[i].length() > 1) {
+          String command = parts[i].substring(1, parts[i].length()).trim();
+          if(command.equals("CLEAR")) {
+            graphs.clear();
+          }
+          else if(command.startsWith("SIZE:")) {
+            String[] subString = parts[i].split("[:]+");
+            int newSize = BUFFER_CAPACITY_DEFAULT;
+            if(subString.length > 1) {
+              try {
+                newSize = Integer.parseInt(subString[1]);
+              } catch (NumberFormatException e) {
+                // Ignore
+              }
+            }
+            setNewBufferCapacity(newSize);
+          }
+        } else {
+          if(parts[i].contains(":")) {
+            // get label
+            String[] subString = parts[i].split("[:]+");
+            
+            if(subString.length > 0) {
+              int labelLength = subString[0].length();
+              
+              if(labelLength > 32) {
+                labelLength = 32;
+              }
+              label = subString[0].substring(0, labelLength);
+            } else {
+              label = "";
+            }
+            
+            if(subString.length > 1) {
+              parts[i] = subString[1];
+            } else {
+              parts[i] = "";
+            }
+          }
+          try {          
+            value = Double.valueOf(parts[i]);
+          } catch (NumberFormatException e) {
+              // ignored
+          }
+          //CSV header
+          if(label == null && value == null) {
+            label = parts[i];
+          }
+        }
+          
+        if(value != null) {
           if(validParts >= graphs.size()) {
-            graphs.add(new Graph(validParts));
+            graphs.add(new Graph(validParts, buffer_capacity));
           }
           graphs.get(validParts).buffer.add(value);
           validParts++;
-        } catch (NumberFormatException e) {
-          // ignore
+          
         }
+        if(label != null) {
+          if(validLabels >= graphs.size()) {
+            graphs.add(new Graph(validLabels, buffer_capacity));
+          }
+          graphs.get(validLabels).label = label;
+          validLabels++;
+        }
+        if(validParts > validLabels) validLabels = validParts;
+        else if(validLabels > validParts) validParts = validLabels;
       }
     }
 
