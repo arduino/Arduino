@@ -26,9 +26,8 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
-package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.VersionComparator;
+package cc.arduino.contributions.packages;
 
 import java.util.List;
 
@@ -48,6 +47,8 @@ public abstract class ContributedPackage {
 
   public abstract ContributedHelp getHelp();
 
+  private boolean trusted;
+
   public ContributedPlatform findPlatform(String architecture, String version) {
     if (architecture == null || version == null) {
       return null;
@@ -60,11 +61,33 @@ public abstract class ContributedPackage {
   }
 
   public ContributedTool findTool(String name, String version) {
+    if (getTools() == null) {
+      return null;
+    }
     for (ContributedTool tool : getTools()) {
       if (tool.getName().equals(name) && tool.getVersion().equals(version))
         return tool;
     }
     return null;
+  }
+
+  public ContributedTool findResolvedTool(String toolName, String version) {
+    for (ContributedPlatform platform : getPlatforms()) {
+      for (ContributedTool tool : platform.getResolvedTools()) {
+        if (toolName.equals(tool.getName()) && version.equals(tool.getVersion())) {
+          return tool;
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean isTrusted() {
+    return trusted;
+  }
+
+  public void setTrusted(boolean trusted) {
+    this.trusted = trusted;
   }
 
   @Override
@@ -80,16 +103,16 @@ public abstract class ContributedPackage {
         }
         res += "\n                    category     : " + plat.getCategory();
         res += "\n                    architecture : " +
-            plat.getArchitecture() + " " + plat.getParsedVersion() + "\n";
+          plat.getArchitecture() + " " + plat.getParsedVersion() + "\n";
         if (plat.getToolsDependencies() != null)
           for (ContributedToolReference t : plat.getToolsDependencies()) {
             res += "                    tool dep     : " + t.getName() + " " +
-                t.getVersion() + "\n";
+              t.getVersion() + "\n";
           }
         if (plat.getBoards() != null)
           for (ContributedBoard board : plat.getBoards())
             res += "                    board        : " + board.getName() +
-                "\n";
+              "\n";
       }
     }
     if (getTools() != null) {

@@ -131,12 +131,17 @@ void EthernetClient::stop() {
   disconnect(_sock);
   unsigned long start = millis();
 
-  // wait a second for the connection to close
-  while (status() != SnSR::CLOSED && millis() - start < 1000)
+  // wait up to a second for the connection to close
+  uint8_t s;
+  do {
+    s = status();
+    if (s == SnSR::CLOSED)
+      break; // exit the loop
     delay(1);
+  } while (millis() - start < 1000);
 
   // if it hasn't closed, close it forcefully
-  if (status() != SnSR::CLOSED)
+  if (s != SnSR::CLOSED)
     close(_sock);
 
   EthernetClass::_server_port[_sock] = 0;
@@ -145,7 +150,7 @@ void EthernetClient::stop() {
 
 uint8_t EthernetClient::connected() {
   if (_sock == MAX_SOCK_NUM) return 0;
-  
+
   uint8_t s = status();
   return !(s == SnSR::LISTEN || s == SnSR::CLOSED || s == SnSR::FIN_WAIT ||
     (s == SnSR::CLOSE_WAIT && !available()));
@@ -165,4 +170,8 @@ EthernetClient::operator bool() {
 
 bool EthernetClient::operator==(const EthernetClient& rhs) {
   return _sock == rhs._sock && _sock != MAX_SOCK_NUM && rhs._sock != MAX_SOCK_NUM;
+}
+
+uint8_t EthernetClient::getSocketNumber() {
+  return _sock;
 }

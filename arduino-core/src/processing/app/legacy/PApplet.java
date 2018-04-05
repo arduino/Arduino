@@ -66,25 +66,6 @@ public class PApplet {
   }
 
   /**
-   * GIF image of the Processing logo.
-   */
-  static public final byte[] ICON_IMAGE = {
-    71, 73, 70, 56, 57, 97, 16, 0, 16, 0, -60, 0, 0, 0, 0, 0, 
-    0, 0, -127, 0, -127, 0, 0, -127, -127, -127, 0, 0, -127, 0, -127, -127, 
-    -127, 0, -127, -127, -127, -63, -63, -63, 0, 0, -1, 0, -1, 0, 0, -1, 
-    -1, -1, 0, 0, -1, 0, -1, -1, -1, 0, -1, -1, -1, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 33, -7, 4, 
-    9, 0, 0, 16, 0, 44, 0, 0, 0, 0, 16, 0, 16, 0, 0, 5, 
-    75, 32, 36, -118, -57, 96, 14, -57, -88, 66, -27, -23, -90, -86, 43, -97, 
-    99, 59, -65, -30, 125, -77, 3, -14, -4, 8, -109, 15, -120, -22, 61, 78, 
-    15, -124, 15, 25, 28, 28, 93, 63, -45, 115, -22, -116, 90, -83, 82, 89, 
-    -44, -103, 61, 44, -91, -54, -89, 19, -111, 50, 18, -51, -55, 1, 73, -121, 
-    -53, -79, 77, 43, -101, 12, -74, -30, -99, -24, -94, 16, 0, 59,
-  };
-
-  /**
    * Split the provided String at wherever whitespace occurs. Multiple
    * whitespace (extra spaces or tabs or whatever) between items will count as a
    * single break.
@@ -485,7 +466,7 @@ public class PApplet {
   static public String[][] matchAll(String what, String regexp) {
     Pattern p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
     Matcher m = p.matcher(what);
-    ArrayList<String[]> results = new ArrayList<String[]>();
+    ArrayList<String[]> results = new ArrayList<>();
     int count = m.groupCount() + 1;
     while (m.find()) {
       String[] groups = new String[count];
@@ -499,7 +480,7 @@ public class PApplet {
     }
     String[][] matches = new String[results.size()][count];
     for (int i = 0; i < matches.length; i++) {
-      matches[i] = (String[]) results.get(i);
+      matches[i] = results.get(i);
     }
     return matches;
   }
@@ -516,7 +497,11 @@ public class PApplet {
    */
   static public String[] match(String what, String regexp) {
     Pattern p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
-    Matcher m = p.matcher(what);
+    return match(what, p);
+  }
+
+  static public String[] match(String what, Pattern pattern) {
+    Matcher m = pattern.matcher(what);
     if (m.find()) {
       int count = m.groupCount() + 1;
       String[] groups = new String[count];

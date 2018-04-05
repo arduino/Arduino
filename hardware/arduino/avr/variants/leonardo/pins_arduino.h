@@ -18,8 +18,6 @@
   Public License along with this library; if not, write to the
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
-
-  $Id: wiring.h 249 2007-02-03 16:52:51Z mellis $
 */
 
 #ifndef Pins_Arduino_h
@@ -90,7 +88,7 @@
 #undef OCR2_6
 #undef OCR2_7
 
-#define NUM_DIGITAL_PINS  30
+#define NUM_DIGITAL_PINS  31
 #define NUM_ANALOG_INPUTS 12
 
 #define TX_RX_LED_INIT	DDRD |= (1<<5), DDRB |= (1<<0)
@@ -99,30 +97,54 @@
 #define RXLED0			PORTB |= (1<<0)
 #define RXLED1			PORTB &= ~(1<<0)
 
-static const uint8_t SDA = 2;
-static const uint8_t SCL = 3;
+#define PIN_WIRE_SDA         (2)
+#define PIN_WIRE_SCL         (3)
+
+static const uint8_t SDA = PIN_WIRE_SDA;
+static const uint8_t SCL = PIN_WIRE_SCL;
+
 #define LED_BUILTIN 13
+#define LED_BUILTIN_RX 17
+#define LED_BUILTIN_TX 30
 
 // Map SPI port to 'new' pins D14..D17
-static const uint8_t SS   = 17;
-static const uint8_t MOSI = 16;
-static const uint8_t MISO = 14;
-static const uint8_t SCK  = 15;
+#define PIN_SPI_SS    (17)
+#define PIN_SPI_MOSI  (16)
+#define PIN_SPI_MISO  (14)
+#define PIN_SPI_SCK   (15)
+
+static const uint8_t SS   = PIN_SPI_SS;
+static const uint8_t MOSI = PIN_SPI_MOSI;
+static const uint8_t MISO = PIN_SPI_MISO;
+static const uint8_t SCK  = PIN_SPI_SCK;
 
 // Mapping of analog pins as digital I/O
 // A6-A11 share with digital pins
-static const uint8_t A0 = 18;
-static const uint8_t A1 = 19;
-static const uint8_t A2 = 20;
-static const uint8_t A3 = 21;
-static const uint8_t A4 = 22;
-static const uint8_t A5 = 23;
-static const uint8_t A6 = 24;	// D4
-static const uint8_t A7 = 25;	// D6
-static const uint8_t A8 = 26;	// D8
-static const uint8_t A9 = 27;	// D9
-static const uint8_t A10 = 28;	// D10
-static const uint8_t A11 = 29;	// D12
+#define PIN_A0   (18)
+#define PIN_A1   (19)
+#define PIN_A2   (20)
+#define PIN_A3   (21)
+#define PIN_A4   (22)
+#define PIN_A5   (23)
+#define PIN_A6   (24)
+#define PIN_A7   (25)
+#define PIN_A8   (26)
+#define PIN_A9   (27)
+#define PIN_A10  (28)
+#define PIN_A11  (29)
+
+static const uint8_t A0 = PIN_A0;
+static const uint8_t A1 = PIN_A1;
+static const uint8_t A2 = PIN_A2;
+static const uint8_t A3 = PIN_A3;
+static const uint8_t A4 = PIN_A4;
+static const uint8_t A5 = PIN_A5;
+static const uint8_t A6 = PIN_A6;	// D4
+static const uint8_t A7 = PIN_A7;	// D6
+static const uint8_t A8 = PIN_A8;	// D8
+static const uint8_t A9 = PIN_A9;	// D9
+static const uint8_t A10 = PIN_A10;	// D10
+static const uint8_t A11 = PIN_A11;	// D12
 
 #define digitalPinToPCICR(p)    ((((p) >= 8 && (p) <= 11) || ((p) >= 14 && (p) <= 17) || ((p) >= A8 && (p) <= A10)) ? (&PCICR) : ((uint8_t *)0))
 #define digitalPinToPCICRbit(p) 0
@@ -132,6 +154,8 @@ static const uint8_t A11 = 29;	// D12
 //	__AVR_ATmega32U4__ has an unusual mapping of pins to channels
 extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 #define analogPinToChannel(P)  ( pgm_read_byte( analog_pin_to_channel_PGM + (P) ) )
+
+#define digitalPinHasPWM(p)         ((p) == 3 || (p) == 5 || (p) == 6 || (p) == 9 || (p) == 10 || (p) == 11 || (p) == 13)
 
 #define digitalPinToInterrupt(p) ((p) == 0 ? 2 : ((p) == 1 ? 3 : ((p) == 2 ? 1 : ((p) == 3 ? 0 : ((p) == 7 ? 4 : NOT_AN_INTERRUPT)))))
 
@@ -173,8 +197,8 @@ extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 // MOSI		D16		PB2					MOSI,PCINT2
 // SS		D17		PB0					RXLED,SS/PCINT0
 //
-// TXLED			PD5
-// RXLED		    PB0
+// TXLED	D30		PD5					XCK1
+// RXLED	D17	    PB0
 // HWB				PE2					HWB
 
 // these arrays map port names (e.g. port B) to the
@@ -245,6 +269,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PB, // D27 / D9 - A9 - PB5
 	PB, // D28 / D10 - A10 - PB6
 	PD, // D29 / D12 - A11 - PD6
+	PD, // D30 / TX Led - PD5
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
@@ -282,6 +307,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV(5), // D27 / D9 - A9 - PB5
 	_BV(6), // D28 / D10 - A10 - PB6
 	_BV(6), // D29 / D12 - A11 - PD6
+	_BV(5), // D30 / TX Led - PD5
 };
 
 const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
@@ -309,6 +335,7 @@ const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 
+	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
 	NOT_ON_TIMER,
@@ -357,5 +384,8 @@ const uint8_t PROGMEM analog_pin_to_channel_PGM[] = {
 #define SERIAL_PORT_USBVIRTUAL     Serial
 #define SERIAL_PORT_HARDWARE       Serial1
 #define SERIAL_PORT_HARDWARE_OPEN  Serial1
+
+// Alias SerialUSB to Serial
+#define SerialUSB SERIAL_PORT_USBVIRTUAL
 
 #endif /* Pins_Arduino_h */

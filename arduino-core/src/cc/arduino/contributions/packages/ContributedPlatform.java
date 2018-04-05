@@ -26,14 +26,13 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public abstract class ContributedPlatform extends DownloadableContribution {
 
@@ -45,6 +44,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract String getArchitecture();
 
+  @Override
   public abstract String getChecksum();
 
   public abstract List<ContributedToolReference> getToolsDependencies();
@@ -53,19 +53,21 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract ContributedHelp getHelp();
 
-  private List<ContributedTool> resolvedTools = null;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
 
   private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
-    if (resolvedTools == null) {
-      return null;
-    }
-    return new LinkedList<ContributedTool>(resolvedTools);
+    return new LinkedList<>(resolvedToolReferences.values());
+  }
+
+  @JsonIgnore
+  public Map<ContributedToolReference, ContributedTool> getResolvedToolReferences() {
+    return resolvedToolReferences;
   }
 
   public void resolveToolsDependencies(Collection<ContributedPackage> packages) {
-    resolvedTools = new ArrayList<ContributedTool>();
+    resolvedToolReferences = new HashMap<>();
 
     // If there are no dependencies return empty list
     if (getToolsDependencies() == null) {
@@ -78,8 +80,9 @@ public abstract class ContributedPlatform extends DownloadableContribution {
       ContributedTool tool = dep.resolve(packages);
       if (tool == null) {
         System.err.println("Index error: could not find referenced tool " + dep);
+      } else {
+        resolvedToolReferences.put(dep, tool);
       }
-      resolvedTools.add(tool);
     }
   }
 
@@ -94,5 +97,36 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   @Override
   public String toString() {
     return getParsedVersion();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ContributedPlatform)) {
+      return false;
+    }
+
+    ContributedPlatform obj1 = (ContributedPlatform) obj;
+
+    ContributedPackage parent = getParentPackage();
+    ContributedPackage parent1 = obj1.getParentPackage();
+    if (parent == null) {
+      if (parent1 != null)
+        return false;
+    } else {
+      if (parent1 == null)
+        return false;
+      if (!parent.getName().equals(parent1.getName()))
+        return false;
+    }
+    if (!getArchitecture().equals(obj1.getArchitecture())) {
+      return false;
+    }
+    if (!getVersion().equals(obj1.getVersion())) {
+      return false;
+    }
+    return getName().equals(obj1.getName());
   }
 }

@@ -5,22 +5,17 @@ import processing.app.Base;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class PasswordAuthorizationDialog extends JDialog {
 
-  protected final JButton uploadButton;
-  protected final JButton cancelButton;
-  protected final JLabel typePasswordLabel;
-  protected final JLabel passwordLabel;
-  protected final JLabel icon;
-  protected final JPasswordField passwordField;
+  private final JPasswordField passwordField;
 
-  protected boolean cancelled;
-  protected String password;
+  private boolean cancelled;
+  private String password;
 
   public PasswordAuthorizationDialog(Frame parent, String dialogText) {
     super(parent, true);
@@ -28,12 +23,12 @@ public class PasswordAuthorizationDialog extends JDialog {
     this.cancelled = false;
     this.password = null;
 
-    typePasswordLabel = new JLabel();
-    icon = new JLabel();
-    passwordLabel = new JLabel();
+    JLabel typePasswordLabel = new JLabel();
+    JLabel icon = new JLabel();
+    JLabel passwordLabel = new JLabel();
     passwordField = new JPasswordField();
-    uploadButton = new JButton();
-    cancelButton = new JButton();
+    JButton uploadButton = new JButton();
+    JButton cancelButton = new JButton();
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -41,71 +36,61 @@ public class PasswordAuthorizationDialog extends JDialog {
 
     icon.setIcon(new ImageIcon(new File(Base.getContentFile("lib"), "theme/lock.png").getAbsolutePath()));
 
-    passwordLabel.setText(_("Password:"));
+    passwordLabel.setText(tr("Password:"));
 
     passwordField.setText("");
-    passwordField.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        uploadButtonPressed(evt);
-      }
-    });
+    passwordField.addActionListener(PasswordAuthorizationDialog.this::uploadButtonPressed);
 
-    uploadButton.setText(_("Upload"));
-    uploadButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        uploadButtonPressed(evt);
-      }
-    });
+    uploadButton.setText(tr("Upload"));
+    uploadButton.addActionListener(PasswordAuthorizationDialog.this::uploadButtonPressed);
 
-    cancelButton.setText(_("Cancel"));
-    cancelButton.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        cancelButtonPressed(evt);
-      }
-    });
+    cancelButton.setText(tr("Cancel"));
+    cancelButton.addActionListener(PasswordAuthorizationDialog.this::cancelButtonPressed);
+
+    Base.registerWindowCloseKeys(getRootPane(), this::cancelButtonPressed);
 
     GroupLayout layout = new GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(icon, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(typePasswordLabel)
-                                    .addGroup(layout.createSequentialGroup()
-                                            .addComponent(passwordLabel)
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)))
-                            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cancelButton)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(uploadButton)
-                            .addContainerGap())
+      layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+          .addContainerGap()
+          .addComponent(icon, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+          .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+          .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(typePasswordLabel)
+            .addGroup(layout.createSequentialGroup()
+              .addComponent(passwordLabel)
+              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)))
+          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(cancelButton)
+          .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+          .addComponent(uploadButton)
+          .addContainerGap())
     );
     layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(typePasswordLabel)
-                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                            .addGap(53, 53, 53)
-                                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(passwordLabel)
-                                                    .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                            .addGap(18, 18, 18))
-                                    .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(icon)
-                                            .addGap(9, 9, 9)))
-                            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(uploadButton)
-                                    .addComponent(cancelButton))
-                            .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+      layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+          .addContainerGap()
+          .addComponent(typePasswordLabel)
+          .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+              .addGap(53, 53, 53)
+              .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(passwordLabel)
+                .addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+              .addGap(18, 18, 18))
+            .addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+              .addComponent(icon)
+              .addGap(9, 9, 9)))
+          .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+            .addComponent(uploadButton)
+            .addComponent(cancelButton))
+          .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
     pack();
@@ -113,12 +98,12 @@ public class PasswordAuthorizationDialog extends JDialog {
 
   private void cancelButtonPressed(ActionEvent event) {
     this.cancelled = true;
-    this.dispose();
+    dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
   }
 
-  public void uploadButtonPressed(ActionEvent event) {
+  private void uploadButtonPressed(ActionEvent event) {
     this.password = new String(passwordField.getPassword());
-    this.dispose();
+    dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
   }
 
   public String getPassword() {

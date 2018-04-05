@@ -182,7 +182,7 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
    * @return
    */
   public Map<String, PreferencesMap> firstLevelMap() {
-    Map<String, PreferencesMap> res = new LinkedHashMap<String, PreferencesMap>();
+    Map<String, PreferencesMap> res = new LinkedHashMap<>();
     for (String key : keySet()) {
       int dot = key.indexOf('.');
       if (dot == -1)
@@ -246,7 +246,7 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
 
   public String toString(String indent) {
     String res = indent + "{\n";
-    SortedSet<String> treeSet = new TreeSet<String>(keySet());
+    SortedSet<String> treeSet = new TreeSet<>(keySet());
     for (String k : treeSet)
       res += indent + k + " = " + get(k) + "\n";
     return res;

@@ -30,7 +30,8 @@
 package cc.arduino.contributions.filters;
 
 import cc.arduino.contributions.DownloadableContribution;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class DownloadableContributionWithVersionPredicate implements Predicate<DownloadableContribution> {
   private final String version;
@@ -40,7 +41,7 @@ public class DownloadableContributionWithVersionPredicate implements Predicate<D
   }
 
   @Override
-  public boolean apply(DownloadableContribution contribution) {
+  public boolean test(DownloadableContribution contribution) {
     return version.equals(contribution.getParsedVersion());
   }
 

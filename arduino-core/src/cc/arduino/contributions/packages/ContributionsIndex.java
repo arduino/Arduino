@@ -26,18 +26,19 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.DownloadableContributionWithVersionPredicate;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.filters.PlatformArchitecturePredicate;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ContributionsIndex {
 
@@ -60,8 +61,7 @@ public abstract class ContributionsIndex {
     if (aPackage == null) {
       return null;
     }
-    Collection<ContributedPlatform> platforms = Collections2.filter(aPackage.getPlatforms(), new PlatformArchitecturePredicate(platformArch));
-    return Lists.newLinkedList(platforms);
+    return aPackage.getPlatforms().stream().filter(new PlatformArchitecturePredicate(platformArch)).collect(Collectors.toList());
   }
 
   public ContributedPlatform findPlatform(String packageName, final String platformArch, final String platformVersion) {
@@ -75,7 +75,7 @@ public abstract class ContributionsIndex {
       return null;
     }
 
-    Collection<ContributedPlatform> platforms = Collections2.filter(platformsByName, new DownloadableContributionWithVersionPredicate(platformVersion));
+    Collection<ContributedPlatform> platforms = platformsByName.stream().filter(new DownloadableContributionWithVersionPredicate(platformVersion)).collect(Collectors.toList());
     if (platforms.isEmpty()) {
       return null;
     }
@@ -84,11 +84,15 @@ public abstract class ContributionsIndex {
   }
 
   public List<ContributedPlatform> getInstalledPlatforms() {
-    return Lists.newLinkedList(Collections2.filter(getPlatforms(), new InstalledPredicate()));
+    return getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
   }
 
   public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
-    List<ContributedPlatform> installedPlatforms = new LinkedList<ContributedPlatform>(Collections2.filter(findPlatforms(packageName, platformArch), new InstalledPredicate()));
+    List<ContributedPlatform> platforms = findPlatforms(packageName, platformArch);
+    if (platforms == null) {
+      return null;
+    }
+    List<ContributedPlatform> installedPlatforms = platforms.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
     Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedPlatforms.isEmpty()) {
@@ -98,25 +102,11 @@ public abstract class ContributionsIndex {
     return installedPlatforms.get(0);
   }
 
-  public List<ContributedPlatform> getPlatforms() {
-    return Lists.newLinkedList(Iterables.concat(Collections2.transform(getPackages(), new Function<ContributedPackage, List<ContributedPlatform>>() {
-      @Override
-      public List<ContributedPlatform> apply(ContributedPackage contributedPackage) {
-        return contributedPackage.getPlatforms();
-      }
-    })));
+  private List<ContributedPlatform> getPlatforms() {
+    return getPackages().stream().map(ContributedPackage::getPlatforms).flatMap(Collection::stream).collect(Collectors.toList());
   }
 
-
-  public ContributedTool findTool(String packageName, String name,
-                                  String version) {
-    ContributedPackage pack = findPackage(packageName);
-    if (pack == null)
-      return null;
-    return pack.findTool(name, version);
-  }
-
-  private final List<String> categories = new ArrayList<String>();
+  private final List<String> categories = new ArrayList<>();
 
   public List<String> getCategories() {
     return categories;
@@ -125,10 +115,9 @@ public abstract class ContributionsIndex {
   public void fillCategories() {
     categories.clear();
     for (ContributedPackage pack : getPackages()) {
-      for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (!categories.contains(platform.getCategory()))
-          categories.add(platform.getCategory());
-      }
+      pack.getPlatforms().stream()
+        .filter(platform -> !categories.contains(platform.getCategory()))
+        .forEach(platform -> categories.add(platform.getCategory()));
     }
   }
 

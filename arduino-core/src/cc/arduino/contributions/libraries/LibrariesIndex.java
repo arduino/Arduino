@@ -32,16 +32,16 @@ package cc.arduino.contributions.libraries;
 import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
-import com.google.common.collect.Collections2;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class LibrariesIndex {
 
   public abstract List<ContributedLibrary> getLibraries();
 
   public List<ContributedLibrary> find(final String name) {
-    return new LinkedList<ContributedLibrary>(Collections2.filter(getLibraries(), new LibraryWithNamePredicate(name)));
+    return getLibraries().stream().filter(new LibraryWithNamePredicate(name)).collect(Collectors.toList());
   }
 
   public ContributedLibrary find(String name, String version) {
@@ -66,7 +66,7 @@ public abstract class LibrariesIndex {
   }
 
   public List<String> getCategories() {
-    List<String> categories = new LinkedList<String>();
+    List<String> categories = new LinkedList<>();
     for (ContributedLibrary lib : getLibraries()) {
       if (lib.getCategory() != null && !categories.contains(lib.getCategory())) {
         categories.add(lib.getCategory());
@@ -78,21 +78,21 @@ public abstract class LibrariesIndex {
   }
 
   public List<String> getTypes() {
-    Collection<String> typesAccumulator = new HashSet<String>();
+    Collection<String> typesAccumulator = new HashSet<>();
     for (ContributedLibrary lib : getLibraries()) {
       if (lib.getTypes() != null) {
         typesAccumulator.addAll(lib.getTypes());
       }
     }
 
-    List<String> types = new LinkedList<String>(typesAccumulator);
+    List<String> types = new LinkedList<>(typesAccumulator);
     Collections.sort(types);
 
     return types;
   }
 
   public ContributedLibrary getInstalled(String name) {
-    List<ContributedLibrary> installedReleases = new LinkedList<ContributedLibrary>(Collections2.filter(find(name), new InstalledPredicate()));
+    List<ContributedLibrary> installedReleases = find(name).stream().filter(new InstalledPredicate()).collect(Collectors.toList());
     Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
 
     if (installedReleases.isEmpty()) {

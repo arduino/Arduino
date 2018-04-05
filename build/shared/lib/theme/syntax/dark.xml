@@ -18,7 +18,7 @@
    <marginLine fg="394448"/>
    <markAllHighlight color="6b8189"/> <!-- TODO: Fix me -->
    <markOccurrencesHighlight color="5b7179" border="false"/>
-   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="false" animate="true"/>
+   <matchedBracket fg="6A8088" bg="6b8189" highlightBoth="false" animate="false"/>
    <hyperlinks fg="a082bd"/>
    <secondaryLanguages>
       <language index="1" bg="333344"/>

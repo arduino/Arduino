@@ -30,20 +30,27 @@
 package cc.arduino.packages.formatter;
 
 import processing.app.Base;
+import processing.app.helpers.OSUtils;
 
 import java.io.File;
 
 public class AStyleInterface {
 
   static {
-    File astyleLib = new File(Base.getContentFile("lib"), System.mapLibraryName("astylej"));
-    String astylePath = astyleLib.getAbsolutePath();
+    if (OSUtils.isWindows()) {
+      loadLib(Base.getContentFile(System.mapLibraryName("msvcp100")));
+      loadLib(Base.getContentFile(System.mapLibraryName("msvcr100")));
+    }
+    loadLib(new File(Base.getContentFile("lib"), System.mapLibraryName("astylej")));
+  }
+
+  private static void loadLib(File lib) {
     try {
-      System.load(astylePath);
+      System.load(lib.getAbsolutePath());
     } catch (UnsatisfiedLinkError e) {
       e.printStackTrace();
       System.out.println(e.getMessage());
-      System.out.println("Cannot load native library " + astylePath);
+      System.out.println("Cannot load native library " + lib.getAbsolutePath());
       System.out.println("The program has terminated!");
       System.exit(1);
     }

@@ -73,7 +73,7 @@
     <echo message="override ${env.JAVA_HOME}/lib/tools.jar" />
     <fail />
 -->
-    <javac source="1.6" target="1.6"
+    <javac source="1.8" target="1.8"
 	   srcdir="src"
 	   destdir="bin"
 	   encoding="UTF-8"
@@ -85,7 +85,7 @@
   <target name="test" depends="compile" description="Runs the test">
     <mkdir dir="test-bin"/>
 
-    <javac source="1.6" target="1.6"
+    <javac source="1.8" target="1.8"
            srcdir="test"
            destdir="test-bin"
            encoding="UTF-8"
@@ -101,6 +101,8 @@
       <fileset dir="test" includes="**/*.ino" />
       <fileset dir="test" includes="**/*.json*" />
       <fileset dir="test" includes="**/*.key" />
+      <fileset dir="test" includes="**/*.hex" />
+      <fileset dir="test" includes="**/*.pac" />
     </copy>
 
     <junit printsummary="yes" dir="${work.dir}" fork="true">
@@ -110,7 +112,8 @@
       <classpath>
         <pathelement location="bin"/>
         <pathelement location="test-bin"/>
-        <pathelement path="../build/macosx/work/Arduino.app/Contents/Resources/Java/quaqua.jar"/>
+        <pathelement location="${work.dir}/lib/jna-4.2.2.jar"/>
+        <pathelement location="${work.dir}/lib/jna-platform-4.2.2.jar"/>
         <path refid="class.path.test"/>
       </classpath>
 

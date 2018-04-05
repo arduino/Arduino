@@ -2,19 +2,20 @@
   Mega analogWrite() test
 
   This sketch fades LEDs up and down one at a time on digital pins 2 through 13.
-  This sketch was written for the Arduino Mega, and will not work on previous boards.
+  This sketch was written for the Arduino Mega, and will not work on other boards.
 
   The circuit:
-  * LEDs attached from pins 2 through 13 to ground.
+  - LEDs attached from pins 2 through 13 to ground.
 
   created 8 Feb 2009
   by Tom Igoe
 
   This example code is in the public domain.
 
- */
-// These constants won't change.  They're used to give names
-// to the pins used:
+  http://www.arduino.cc/en/Tutorial/AnalogWriteMega
+*/
+
+// These constants won't change. They're used to give names to the pins used:
 const int lowestPin = 2;
 const int highestPin = 13;
 
@@ -34,7 +35,7 @@ void loop() {
       analogWrite(thisPin, brightness);
       delay(2);
     }
-    // fade the LED on thisPin from brithstest to off:
+    // fade the LED on thisPin from brightest to off:
     for (int brightness = 255; brightness >= 0; brightness--) {
       analogWrite(thisPin, brightness);
       delay(2);

@@ -26,6 +26,7 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
@@ -49,7 +50,17 @@ public abstract class HostDependentDownloadableContribution extends Downloadable
     String host = getHost();
 
     if (osName.contains("Linux")) {
-      if (osArch.contains("amd64")) {
+      if (osArch.equals("arm")) {
+        // Raspberry PI, BBB or other ARM based host
+
+        // PI: "arm-linux-gnueabihf"
+        // Arch-linux on PI2: "armv7l-unknown-linux-gnueabihf"
+        // Raspbian on PI2: "arm-linux-gnueabihf"
+        // Ubuntu Mate on PI2: "arm-linux-gnueabihf"
+        // Debian 7.9 on BBB: "arm-linux-gnueabihf"
+        // Raspbian on PI Zero: "arm-linux-gnueabihf"
+        return host.matches("arm.*-linux-gnueabihf");
+      } else if (osArch.contains("amd64")) {
         return host.matches("x86_64-.*linux-gnu");
       } else {
         return host.matches("i[3456]86-.*linux-gnu");
@@ -65,6 +76,14 @@ public abstract class HostDependentDownloadableContribution extends Downloadable
         return host.matches("x86_64-apple-darwin.*") || host.matches("i[3456]86-apple-darwin.*");
       } else {
         return host.matches("i[3456]86-apple-darwin.*");
+      }
+    }
+
+    if (osName.contains("FreeBSD")) {
+      if (osArch.contains("arm")) {
+        return host.matches("arm.*-freebsd[0-9]*");
+      } else {
+        return host.matches(osArch + "-freebsd[0-9]*");
       }
     }
 

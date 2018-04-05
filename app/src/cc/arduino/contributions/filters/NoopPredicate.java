@@ -29,12 +29,12 @@
 
 package cc.arduino.contributions.filters;
 
-import com.google.common.base.Predicate;
+import java.util.function.Predicate;
 
 public class NoopPredicate<T> implements Predicate<T> {
 
   @Override
-  public boolean apply(T input) {
+  public boolean test(T input) {
     return true;
   }
 

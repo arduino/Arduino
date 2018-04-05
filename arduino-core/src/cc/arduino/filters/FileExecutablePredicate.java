@@ -29,14 +29,13 @@
 
 package cc.arduino.filters;
 
-import com.google.common.base.Predicate;
-
 import java.io.File;
+import java.util.function.Predicate;
 
 public class FileExecutablePredicate implements Predicate<File> {
 
   @Override
-  public boolean apply(File file) {
+  public boolean test(File file) {
     return file.isFile() && file.exists() && file.canRead() && file.canExecute();
   }
 

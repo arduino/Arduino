@@ -1,6 +1,8 @@
 /*
  * This file is part of Arduino.
  *
+ * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
+ *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -23,8 +25,6 @@
  * the GNU General Public License.  This exception does not however
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
- *
- * Copyright 2015 Arduino LLC (http://www.arduino.cc/)
  */
 
 package cc.arduino.contributions;
@@ -37,7 +37,7 @@ import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
 import java.io.*;
 import java.util.Iterator;
 
-public class GPGDetachedSignatureVerifier {
+public class GPGDetachedSignatureVerifier extends SignatureVerifier {
 
   private String keyId;
 
@@ -49,9 +49,8 @@ public class GPGDetachedSignatureVerifier {
     this.keyId = keyId;
   }
 
-  public boolean verify(File signedFile, File signature, File publicKey) throws IOException, PGPException {
-    PGPPublicKey pgpPublicKey = readPublicKey(publicKey, keyId);
-
+  @Override
+  protected boolean verify(File signedFile, File signature, File publicKey) throws IOException {
     FileInputStream signatureInputStream = null;
     FileInputStream signedFileInputStream = null;
     try {
@@ -71,39 +70,43 @@ public class GPGDetachedSignatureVerifier {
       assert pgpSignatureList.size() == 1;
       PGPSignature pgpSignature = pgpSignatureList.get(0);
 
+      PGPPublicKey pgpPublicKey = readPublicKey(publicKey, keyId);
+
       pgpSignature.init(new BcPGPContentVerifierBuilderProvider(), pgpPublicKey);
       signedFileInputStream = new FileInputStream(signedFile);
       pgpSignature.update(IOUtils.toByteArray(signedFileInputStream));
 
       return pgpSignature.verify();
+    } catch (PGPException e) {
+      throw new IOException(e);
     } finally {
       IOUtils.closeQuietly(signatureInputStream);
       IOUtils.closeQuietly(signedFileInputStream);
     }
   }
 
-  private PGPPublicKey readPublicKey(File file, String keyId) throws IOException, PGPException {
+  private PGPPublicKey readPublicKey(File file, String id) throws IOException, PGPException {
     InputStream keyIn = null;
     try {
       keyIn = new BufferedInputStream(new FileInputStream(file));
-      return readPublicKey(keyIn, keyId);
+      return readPublicKey(keyIn, id);
     } finally {
       IOUtils.closeQuietly(keyIn);
     }
   }
 
-  private PGPPublicKey readPublicKey(InputStream input, String keyId) throws IOException, PGPException {
+  private PGPPublicKey readPublicKey(InputStream input, String id) throws IOException, PGPException {
     PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(input), new BcKeyFingerprintCalculator());
 
-    Iterator keyRingIter = pgpPub.getKeyRings();
+    Iterator<PGPPublicKeyRing> keyRingIter = pgpPub.getKeyRings();
     while (keyRingIter.hasNext()) {
-      PGPPublicKeyRing keyRing = (PGPPublicKeyRing) keyRingIter.next();
+      PGPPublicKeyRing keyRing = keyRingIter.next();
 
-      Iterator keyIter = keyRing.getPublicKeys();
+      Iterator<PGPPublicKey> keyIter = keyRing.getPublicKeys();
       while (keyIter.hasNext()) {
-        PGPPublicKey key = (PGPPublicKey) keyIter.next();
+        PGPPublicKey key = keyIter.next();
 
-        if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(keyId)) {
+        if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(id)) {
           return key;
         }
       }

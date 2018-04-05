@@ -30,7 +30,7 @@ import org.fife.ui.rsyntaxtextarea.TokenMap;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import processing.app.Base;
 import processing.app.BaseNoGui;
-import processing.app.legacy.PApplet;
+import processing.app.debug.TargetPlatform;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
 
 public class PdeKeywords {
 
-  private static final Map<String, Integer> KNOWN_TOKEN_TYPES = new HashMap<String, Integer>();
+  private static final Map<String, Integer> KNOWN_TOKEN_TYPES = new HashMap<>();
   private static final Pattern ALPHA = Pattern.compile("\\w");
 
   static {
@@ -54,6 +54,7 @@ public class PdeKeywords {
     KNOWN_TOKEN_TYPES.put("DATA_TYPE", TokenTypes.DATA_TYPE);
     KNOWN_TOKEN_TYPES.put("LITERAL_BOOLEAN", TokenTypes.LITERAL_BOOLEAN);
     KNOWN_TOKEN_TYPES.put("LITERAL_CHAR", TokenTypes.LITERAL_CHAR);
+    KNOWN_TOKEN_TYPES.put("PREPROCESSOR", TokenTypes.PREPROCESSOR);
   }
 
   // lookup table for the TokenMarker subclass, handles coloring
@@ -66,9 +67,9 @@ public class PdeKeywords {
 
   public PdeKeywords() {
     this.keywordTokenType = new TokenMap();
-    this.keywordOldToken = new HashMap<String, String>();
-    this.keywordTokenTypeAsString = new HashMap<String, String>();
-    this.keywordToReference = new HashMap<String, String>();
+    this.keywordOldToken = new HashMap<>();
+    this.keywordTokenTypeAsString = new HashMap<>();
+    this.keywordToReference = new HashMap<>();
   }
 
   /**
@@ -83,7 +84,12 @@ public class PdeKeywords {
   public void reload() {
     try {
       parseKeywordsTxt(new File(BaseNoGui.getContentFile("lib"), "keywords.txt"));
-      for (ContributedLibrary lib : Base.getLibraries()) {
+      TargetPlatform tp = BaseNoGui.getTargetPlatform();
+      if (tp != null) {
+        File platformKeywords = new File(tp.getFolder(), "keywords.txt");
+        if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
+      }
+      for (ContributedLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {
         File keywords = new File(lib.getInstalledFolder(), "keywords.txt");
         if (keywords.exists()) {
           parseKeywordsTxt(keywords);
@@ -109,9 +115,12 @@ public class PdeKeywords {
           continue;
         }
 
-        String pieces[] = PApplet.split(line, '\t');
+        String pieces[] = line.split("\t");
 
         String keyword = pieces[0].trim();
+        if (keyword.startsWith("\\#")) {
+          keyword = keyword.replace("\\#", "#");
+        }
 
         if (pieces.length >= 2) {
           keywordOldToken.put(keyword, pieces[1]);
@@ -138,7 +147,11 @@ public class PdeKeywords {
       if (!keywordTokenTypeAsString.containsKey(keyword)) {
         if ("KEYWORD1".equals(oldTokenEntry.getValue())) {
           parseRSyntaxTextAreaTokenType("DATA_TYPE", keyword);
-        } else {
+        }
+        else if ("LITERAL1".equals(oldTokenEntry.getValue())) {      
+          parseRSyntaxTextAreaTokenType("RESERVED_WORD_2", keyword);
+        }
+        else {
           parseRSyntaxTextAreaTokenType("FUNCTION", keyword);
         }
       }

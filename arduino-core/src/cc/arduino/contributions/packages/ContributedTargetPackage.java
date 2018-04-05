@@ -26,14 +26,15 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
+
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import processing.app.debug.TargetPackage;
-import processing.app.debug.TargetPlatform;
 
 public class ContributedTargetPackage implements TargetPackage {
 
@@ -42,7 +43,7 @@ public class ContributedTargetPackage implements TargetPackage {
 
   public ContributedTargetPackage(String _id) {
     id = _id;
-    platforms = new HashMap<String, TargetPlatform>();
+    platforms = new HashMap<>();
   }
 
   void addPlatform(TargetPlatform p) {

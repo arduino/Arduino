@@ -4,7 +4,6 @@
  Serves the output of a Barometric Pressure Sensor as a web page.
  Uses the SPI library. For details on the sensor, see:
  http://www.sparkfun.com/commerce/product_info.php?products_id=8161
- http://www.vti.fi/en/support/obsolete_products/pressure_sensors/
 
  This sketch adapted from Nathan Seidle's SCP1000 example for PIC:
  http://www.sparkfun.com/datasheets/Sensors/SCP1000-Testing.zip
@@ -26,15 +25,13 @@
 #include <SPI.h>
 
 
-// assign a MAC address for the ethernet controller.
+// assign a MAC address for the Ethernet controller.
 // fill in your address here:
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 // assign an IP address for the controller:
 IPAddress ip(192, 168, 1, 20);
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 255, 0);
 
 
 // Initialize the Ethernet server library
@@ -156,8 +153,7 @@ void listenForEthernetClients() {
         if (c == '\n') {
           // you're starting a new line
           currentLineIsBlank = true;
-        }
-        else if (c != '\r') {
+        } else if (c != '\r') {
           // you've gotten a character on the current line
           currentLineIsBlank = false;
         }
@@ -219,5 +215,5 @@ unsigned int readRegister(byte registerName, int numBytes) {
   // take the chip select high to de-select:
   digitalWrite(chipSelectPin, HIGH);
   // return the result:
-  return(result);
+  return (result);
 }

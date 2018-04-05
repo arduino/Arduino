@@ -31,29 +31,24 @@ package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndex;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import processing.app.BaseNoGui;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class InstalledLibraryPredicate implements Predicate<ContributedLibrary> {
 
-  private final LibrariesIndex index;
-
-  public InstalledLibraryPredicate(LibrariesIndex index) {
-    this.index = index;
-  }
-
   @Override
-  public boolean apply(ContributedLibrary input) {
+  public boolean test(ContributedLibrary input) {
     if (input.isInstalled()) {
       return true;
     }
 
-    Collection<ContributedLibrary> installed = Collections2.filter(index.find(input.getName()), new InstalledPredicate());
+    List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(input.getName());
 
-    return !installed.isEmpty();
+    return libraries.stream()
+      .filter(new InstalledPredicate())
+      .count() > 0;
   }
 
   @Override

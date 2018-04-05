@@ -26,6 +26,7 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContribution;
@@ -34,7 +35,7 @@ import processing.app.I18n;
 import java.util.Comparator;
 import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public abstract class ContributedLibrary extends DownloadableContribution {
 
@@ -62,12 +63,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<ContributedLibraryReference> getRequires();
 
-  public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = new Comparator<ContributedLibrary>() {
-    @Override
-    public int compare(ContributedLibrary o1, ContributedLibrary o2) {
-      return o1.getName().compareToIgnoreCase(o2.getName());
-    }
-  };
+  public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 
   /**
    * Returns <b>true</b> if the library declares to support the specified
@@ -98,7 +94,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   @Override
   public String toString() {
-    return I18n.format(_("Version {0}"), getParsedVersion());
+    return I18n.format(tr("Version {0}"), getParsedVersion());
   }
 
   public String info() {
@@ -137,14 +133,20 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     if (!(obj instanceof ContributedLibrary)) {
       return false;
     }
-
+    ContributedLibrary other = (ContributedLibrary) obj;
     String thisVersion = getParsedVersion();
-    String otherVersion = ((ContributedLibrary) obj).getParsedVersion();
+    String otherVersion = other.getParsedVersion();
 
-    boolean versionEquals = thisVersion == otherVersion || (thisVersion != null && otherVersion != null && thisVersion.equals(otherVersion));
+    boolean versionEquals = (thisVersion != null && otherVersion != null
+                             && thisVersion.equals(otherVersion));
+
+    // Important: for legacy libs, versions are null. Two legacy libs must
+    // always pass this test.
+    if (thisVersion == null && otherVersion == null)
+      versionEquals = true;
 
     String thisName = getName();
-    String otherName = ((ContributedLibrary) obj).getName();
+    String otherName = other.getName();
 
     boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
 

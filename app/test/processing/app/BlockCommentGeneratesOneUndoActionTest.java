@@ -53,12 +53,24 @@ public class BlockCommentGeneratesOneUndoActionTest extends AbstractGUITest {
     jEditTextArea.selectAll();
 
     GuiActionRunner.execute(new GuiQuery<Frame>() {
-
       protected Frame executeInEDT() {
-        window.getEditor().handleCommentUncomment();
+        window.getEditor().getCurrentTab().handleCommentUncomment();
         return window.getEditor();
       }
+    });
 
+    menuEditUndo.requireEnabled();
+    menuEditUndo.click();
+
+    assertEquals(previousText, jEditTextArea.getText());
+
+    menuEditUndo.requireDisabled();
+
+    GuiActionRunner.execute(new GuiQuery<Frame>() {
+      protected Frame executeInEDT() {
+        window.getEditor().getCurrentTab().handleIndentOutdent(true);
+        return window.getEditor();
+      }
     });
 
     menuEditUndo.requireEnabled();

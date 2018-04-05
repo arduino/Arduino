@@ -1,21 +1,23 @@
 /*
   Reading a serial ASCII-encoded string.
 
- This sketch demonstrates the Serial parseInt() function.
- It looks for an ASCII string of comma-separated values.
- It parses them into ints, and uses those to fade an RGB LED.
+  This sketch demonstrates the Serial parseInt() function.
+  It looks for an ASCII string of comma-separated values.
+  It parses them into ints, and uses those to fade an RGB LED.
 
- Circuit: Common-anode RGB LED wired like so:
- * Red cathode: digital pin 3
- * Green cathode: digital pin 5
- * blue cathode: digital pin 6
- * anode: +5V
+  Circuit: Common-Cathode RGB LED wired like so:
+  - red anode: digital pin 3
+  - green anode: digital pin 5
+  - blue anode: digital pin 6
+  - cathode: GND
 
- created 13 Apr 2012
- by Tom Igoe
+  created 13 Apr 2012
+  by Tom Igoe
+  modified 14 Mar 2016
+  by Arturo Guadalupi
 
- This example code is in the public domain.
- */
+  This example code is in the public domain.
+*/
 
 // pins for the LEDs:
 const int redPin = 3;
@@ -43,8 +45,7 @@ void loop() {
     // do it again:
     int blue = Serial.parseInt();
 
-    // look for the newline. That's the end of your
-    // sentence:
+    // look for the newline. That's the end of your sentence:
     if (Serial.read() == '\n') {
       // constrain the values to 0 - 255 and invert
       // if you're using a common-cathode LED, just use "constrain(color, 0, 255);"
@@ -64,11 +65,3 @@ void loop() {
     }
   }
 }
-
-
-
-
-
-
-
-

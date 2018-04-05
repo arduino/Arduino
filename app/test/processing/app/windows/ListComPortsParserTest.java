@@ -32,6 +32,7 @@ package processing.app.windows;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class ListComPortsParserTest {
 
@@ -46,12 +47,22 @@ public class ListComPortsParserTest {
   @Test
   public void shouldFindVIDPID2() throws Exception {
     String listComPortsOutput = "COM1 - (Standard port types) - ACPI\\PNP0501\\1\n" +
-            "COM3 - IVT Corporation - {F12D3CF8-B11D-457E-8641-BE2AF2D6D204}\\IVTCOMM\\1&27902E60&2&0001\n" +
-            "COM4 - IVT Corporation - {F12D3CF8-B11D-457E-8641-BE2AF2D6D204}\\IVTCOMM\\1&27902E60&2&0002\n" +
-            "COM18 - FTDI - FTDIBUS\\VID_0403+PID_0000+A9EPHBR7A\\0000";
+      "COM3 - IVT Corporation - {F12D3CF8-B11D-457E-8641-BE2AF2D6D204}\\IVTCOMM\\1&27902E60&2&0001\n" +
+      "COM4 - IVT Corporation - {F12D3CF8-B11D-457E-8641-BE2AF2D6D204}\\IVTCOMM\\1&27902E60&2&0002\n" +
+      "COM18 - FTDI - FTDIBUS\\VID_0403+PID_0000+A9EPHBR7A\\0000";
 
     assertEquals("0X0403_0X0000", new ListComPortsParser().extractVIDAndPID(listComPortsOutput, "COM18"));
   }
 
+  @Test
+  public void shouldNotBeFooledByCOMPortsWithSimilarNames() throws Exception {
+    String listComPortsOutput = "COM1 - (Standard port types) - ACPI\\PNP0501\\1\n" +
+      "COM2 - (Standard port types) - ACPI\\PNP0501\\2\n" +
+      "COM12 - Arduino LLC (www.arduino.cc) - USB\\VID_2341&PID_8041&MI_00\\8&AB76839&0&0000\n" +
+      "COM3 - FTDI - FTDIBUS\\VID_0403+PID_6015+DA00WSEWA\\0000";
+
+    assertEquals("0X2341_0X8041", new ListComPortsParser().extractVIDAndPID(listComPortsOutput, "COM12"));
+    assertNull(new ListComPortsParser().extractVIDAndPID(listComPortsOutput, "COM1"));
+  }
 
 }

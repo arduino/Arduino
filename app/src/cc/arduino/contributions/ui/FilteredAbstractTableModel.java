@@ -26,31 +26,27 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.ui;
 
-import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.DownloadableContribution;
-import com.google.common.base.Predicate;
+import cc.arduino.contributions.VersionComparator;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
 
-  abstract public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters);
+  abstract public void updateIndexFilter(String[] filters, Stream<Predicate<T>> additionalFilters);
 
-  protected static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
-    contribs = new LinkedList<T>(contribs);
+  public static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
+    contribs = new LinkedList<>(contribs);
     final VersionComparator versionComparator = new VersionComparator();
-    Collections.sort(contribs, new Comparator<T>() {
-      @Override
-      public int compare(T contrib1, T contrib2) {
-        return versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion());
-      }
-    });
+    Collections.sort(contribs, (contrib1, contrib2) -> versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion()));
 
     if (contribs.isEmpty()) {
       return null;

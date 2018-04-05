@@ -30,7 +30,8 @@
 package cc.arduino.contributions.libraries.filters;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
 
 public class TypePredicate implements Predicate<ContributedLibrary> {
 
@@ -41,7 +42,7 @@ public class TypePredicate implements Predicate<ContributedLibrary> {
   }
 
   @Override
-  public boolean apply(ContributedLibrary input) {
+  public boolean test(ContributedLibrary input) {
     return input.getTypes() != null && input.getTypes().contains(type);
   }
 

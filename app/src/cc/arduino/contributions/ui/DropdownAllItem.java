@@ -29,21 +29,22 @@
 
 package cc.arduino.contributions.ui;
 
-import cc.arduino.contributions.filters.NoopPredicate;
 import cc.arduino.contributions.DownloadableContribution;
-import com.google.common.base.Predicate;
+import cc.arduino.contributions.filters.NoopPredicate;
 
-import static processing.app.I18n._;
+import java.util.function.Predicate;
+
+import static processing.app.I18n.tr;
 
 public class DropdownAllItem implements DropdownItem<DownloadableContribution> {
 
   public String toString() {
-    return _("All");
+    return tr("All");
   }
 
   @Override
   public Predicate<DownloadableContribution> getFilterPredicate() {
-    return new NoopPredicate<DownloadableContribution>();
+    return new NoopPredicate<>();
   }
 
   @Override

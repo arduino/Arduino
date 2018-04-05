@@ -2,24 +2,23 @@
   LED bar graph
 
   Turns on a series of LEDs based on the value of an analog sensor.
-  This is a simple way to make a bar graph display. Though this graph
-  uses 10 LEDs, you can use any number by changing the LED count
-  and the pins in the array.
+  This is a simple way to make a bar graph display. Though this graph uses 10
+  LEDs, you can use any number by changing the LED count and the pins in the
+  array.
 
-  This method can be used to control any series of digital outputs that
-  depends on an analog input.
+  This method can be used to control any series of digital outputs that depends
+  on an analog input.
 
   The circuit:
-   * LEDs from pins 2 through 11 to ground
+  - LEDs from pins 2 through 11 to ground
 
- created 4 Sep 2010
- by Tom Igoe
+  created 4 Sep 2010
+  by Tom Igoe
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/BarGraph
- */
-
+  http://www.arduino.cc/en/Tutorial/BarGraph
+*/
 
 // these constants won't change:
 const int analogPin = A0;   // the pin that the potentiometer is attached to
@@ -56,6 +55,3 @@ void loop() {
     }
   }
 }
-
-
-

@@ -26,10 +26,14 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.utils.network;
 
+import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
+
+import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 
 import java.io.File;
@@ -37,8 +41,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Observable;
 
 public class FileDownloader extends Observable {
@@ -61,12 +68,15 @@ public class FileDownloader extends Observable {
   private final File outputFile;
   private InputStream stream = null;
   private Exception error;
+  private String userAgent;
 
   public FileDownloader(URL url, File file) {
     downloadUrl = url;
     outputFile = file;
     downloaded = 0;
     initialSize = 0;
+    userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
+                + System.getProperty("java.version");
   }
 
   public long getInitialSize() {
@@ -112,6 +122,24 @@ public class FileDownloader extends Observable {
   }
 
   public void download() throws InterruptedException {
+    if ("file".equals(downloadUrl.getProtocol())) {
+      saveLocalFile();
+    } else {
+      downloadFile();
+    }
+  }
+
+  private void saveLocalFile() {
+    try {
+      Files.write(outputFile.toPath(), Files.readAllBytes(Paths.get(downloadUrl.getPath())));
+      setStatus(Status.COMPLETE);
+    } catch (Exception e) {
+      setStatus(Status.ERROR);
+      setError(e);
+    }
+  }
+
+  private void downloadFile() throws InterruptedException {
     RandomAccessFile file = null;
 
     try {
@@ -122,30 +150,13 @@ public class FileDownloader extends Observable {
 
       setStatus(Status.CONNECTING);
 
-      System.getProperties().remove("http.proxyHost");
-      System.getProperties().remove("http.proxyPort");
-      System.getProperties().remove("https.proxyHost");
-      System.getProperties().remove("https.proxyPort");
-      System.getProperties().remove("http.proxyUser");
-      System.getProperties().remove("http.proxyPassword");
-
-      if (PreferencesData.has("proxy.http.server") && PreferencesData.get("proxy.http.server") != null && !PreferencesData.get("proxy.http.server").equals("")) {
-        System.getProperties().put("http.proxyHost", PreferencesData.get("proxy.http.server"));
-        System.getProperties().put("http.proxyPort", PreferencesData.get("proxy.http.port"));
-      }
-      if (PreferencesData.has("proxy.https.server") && PreferencesData.get("proxy.https.server") != null && !PreferencesData.get("proxy.https.server").equals("")) {
-        System.getProperties().put("https.proxyHost", PreferencesData.get("proxy.https.server"));
-        System.getProperties().put("https.proxyPort", PreferencesData.get("proxy.https.port"));
-      }
-      if (PreferencesData.has("proxy.user") && PreferencesData.get("proxy.user") != null && !PreferencesData.get("proxy.user").equals("")) {
-        System.getProperties().put("http.proxyUser", PreferencesData.get("proxy.user"));
-        System.getProperties().put("http.proxyPassword", PreferencesData.get("proxy.password"));
-        System.getProperties().put("https.proxyUser", PreferencesData.get("proxy.user"));
-        System.getProperties().put("https.proxyPassword", PreferencesData.get("proxy.password"));
+      Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(downloadUrl.toURI());
+      if ("true".equals(System.getProperty("DEBUG"))) {
+        System.err.println("Using proxy " + proxy);
       }
 
-      HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection();
-
+      HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
+      connection.setRequestProperty("User-agent", userAgent);
       if (downloadUrl.getUserInfo() != null) {
         String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
         connection.setRequestProperty("Authorization", auth);
@@ -160,10 +171,13 @@ public class FileDownloader extends Observable {
       int resp = connection.getResponseCode();
 
       if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
-        String newUrl = connection.getHeaderField("Location");
+        URL newUrl = new URL(connection.getHeaderField("Location"));
+
+        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
 
         // open the new connnection again
-        connection = (HttpURLConnection) new URL(newUrl).openConnection();
+        connection = (HttpURLConnection) newUrl.openConnection(proxy);
+        connection.setRequestProperty("User-agent", userAgent);
         if (downloadUrl.getUserInfo() != null) {
           String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
           connection.setRequestProperty("Authorization", auth);
@@ -177,7 +191,7 @@ public class FileDownloader extends Observable {
       }
 
       if (resp < 200 || resp >= 300) {
-        throw new IOException("Recevied invalid http status code from server: " + resp);
+        throw new IOException("Received invalid http status code from server: " + resp);
       }
 
       // Check for valid content length.
@@ -199,8 +213,10 @@ public class FileDownloader extends Observable {
         file.write(buffer, 0, read);
         setDownloaded(getDownloaded() + read);
 
-        if (Thread.interrupted())
+        if (Thread.interrupted()) {
+          file.close();
           throw new InterruptedException();
+        }
       }
 
       if (getDownloadSize() != null) {

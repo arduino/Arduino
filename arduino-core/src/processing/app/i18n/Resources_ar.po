@@ -3,17 +3,35 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <alsadi@gmail.com>, 2012.
-# ameen MS <amas89@gmail.com>, 2012.
-#   <belal@eshtre.com>, 2012.
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# alsadi <alsadi@gmail.com>, 2012
+# amas89 <amas89@gmail.com>, 2012
+# belal affouri <belal@eshtre.com>, 2015
+# belal affouri <belal@eshtre.com>, 2012
+# Federico Fissore <f.fissore@arduino.cc>, 2015
+# JAMAL ELMERABETE <jmerabet@procyonst.com>, 2014-2015
+# Khaled Saleem Baleesh <Kbaleesh@gmail.com>, 2015-2016
+# Mubarak Qahtani <abu-q76@hotmail.com>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2015-01-14 17:10+0000\n"
+"PO-Revision-Date: 2017-09-19 14:19+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
-"Language-Team: Arabic (http://www.transifex.com/projects/p/arduino-ide-15/language/ar/)\n"
+"Language-Team: Arabic (http://www.transifex.com/mbanzi/arduino-ide-15/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,34 +42,54 @@ msgstr ""
 msgid "  (requires restart of Arduino)"
 msgstr "(يتطلب اعادة تشغيل للأردوينو)"
 
-#: debug/Compiler.java:455
-msgid "'Keyboard' only supported on the Arduino Leonardo"
-msgstr "'لوحة المفاتيح'  يمكن  ان تعمل فقط على لوحة اردوينو ليوناردو"
+#: ../../../processing/app/debug/Compiler.java:529
+#, java-format
+msgid " Not used: {0}"
+msgstr " غير مستخدم : {0}"
 
-#: debug/Compiler.java:450
-msgid "'Mouse' only supported on the Arduino Leonardo"
-msgstr "'الفأرة' يمكن  ان تعمل فقط على لوحة اردوينو ليوناردو"
+#: ../../../processing/app/debug/Compiler.java:525
+#, java-format
+msgid " Used: {0}"
+msgstr " مستخدم : {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
+msgid ""
+"'Keyboard' not found. Does your sketch include the line '#include "
+"<Keyboard.h>'?"
+msgstr "لم يتم العثور على'لوحة مفاتيح'. هل شيفرتك البرمجية تحتوي على السطر '#include <Keyboard.h>' ؟"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
+msgid ""
+"'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
+msgstr "لم يتم العثور على 'ماوس'. هل شيفرتك البرمجية تحتوي على السطر '#include <Mouse.h>' ؟"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
+msgid ""
+"'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
+"information"
+msgstr "مجلد 'arch' لم يعد مدعوما! للمزيد من المعلومات http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
 msgstr "(لا يمكن التحرير والأردوينو تعمل)"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+msgid "(legacy)"
+msgstr ""
+
+#: ../../../processing/app/helpers/CommandlineParser.java:149
+msgid "--curdir no longer supported"
+msgstr "--curdir غير مدعوم بعد الآن"
+
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload و --verbose-build يمكن فقط ان يستخدما معا مع  --verify او --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
 msgstr ".pde -> .ino"
-
-#: Base.java:773
-msgid ""
-"<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p {"
-" font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Are you "
-"sure you want to Quit?</b><p>Closing the last open sketch will quit Arduino."
-msgstr "<html dir=\"RTL\"> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>هل انت متأكد من الخروج ؟</b><p>اغلاق اخر سكتش مفتوح سوف يغلق الارديونو."
 
 #: Editor.java:2053
 msgid ""
@@ -61,15 +99,10 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html dir=\"RTL\"> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>هل تريد حفظ الغييرات لهذا الشيفرة البرمجية<BR>قبل الاغلاق ؟</b><p>اذا لم ترد الحفظ , سوف تفقد جميع التغييرات."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "الملف المسمى \"{0}\" موجود مسبقا في \"{1}\""
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr "المجلد المسكى \"{0}\" موجود مسبقا. لا يمكن فتح الشيفرة البرمجية"
+msgstr "المجلد المسمى \"{0}\" موجود مسبقا. لا يمكن فتح الشيفرة البرمجية"
 
 #: Base.java:2690
 #, java-format
@@ -82,31 +115,56 @@ msgid ""
 "would you like to visit the Arduino download page?"
 msgstr "إصدار جديد من الأردوينو متوفر ,/n هل ترغب بزيارة صفحة تحميل الأردوينو"
 
-#: EditorConsole.java:153
-msgid ""
-"A problem occurred while trying to open the\n"
-"files used to store the console output."
-msgstr "حدثت مشكلة اثناء محاولة فتح\nملفات تستخدم لتخزين المخرجات."
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid "A newer {0} package is available"
+msgstr "يوجد {0} رزمة متاحة"
+
+#: ../../../../../app/src/processing/app/Base.java:2307
+msgid "A subfolder of your sketchbook is not a valid library"
+msgstr "الملف الفرعي من كراسة الرسم الخاصة بك لا يشكل مكتبة صالحة"
 
 #: Editor.java:1116
 msgid "About Arduino"
 msgstr "عن الاردوينو"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1177
+msgid "Add .ZIP Library..."
+msgstr "اضف مكتبة .ZIP ..."
+
 #: Editor.java:650
 msgid "Add File..."
-msgstr "...اضف ملف"
+msgstr "اضف ملف..."
 
-#: Base.java:963
-msgid "Add Library..."
-msgstr "اضف مكتبة "
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
+msgid "Additional Boards Manager URLs"
+msgstr "تدبير عناوين اللوحات الإضافية"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
+msgid "Additional Boards Manager URLs: "
+msgstr "تدبير عناوين اللوحات الإضافية"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
+msgstr "لغة جنوب إفريقيا‏"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
 msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "ألباني"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
+msgid "All"
+msgstr "الكل"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -115,19 +173,23 @@ msgid ""
 "the old version. Use Open to re-open the sketch and try again.\n"
 msgstr "حدث خطأ اثناء محاولة اصلاح ترميز \"تشفير\" الملف. لا تحاول اصلاح السكتش لانه قد يقوم بالكتابة فوق الإصدار القديم. استخدم فتح لاعادة فتح السكتش مرة أخرى.\n"
 
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
+msgid "An error occurred while updating libraries index!"
+msgstr "حصل خطأ أثناء تحديث مُصَنِّف المكتبة"
+
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء رفع الرسمة"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء التحقق من الرسمة"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "حدث خطأ أثناء رفع او التحقق من الرسمة"
 
 #: Base.java:228
 msgid ""
@@ -161,9 +223,13 @@ msgid ""
 "the sketch couldn't save properly."
 msgstr "ارشفة الشيفرة البرمجية الغيت لأنه\n الشيفرة البرمجية لا يمكن حفظها بشكل مناسب"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:24
+msgid "Arduino"
+msgstr "أردوينو"
+
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr "ألواح الأردوينو ARM  (بايت 32)"
+msgstr "ألواح الأردوينو معمارية (32 بت)"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
@@ -173,7 +239,7 @@ msgstr "لوحات AVR أردوينو  "
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "يفتح الأردوينو الشيفرة البرمجية الخاصة به فقط، والملفات الملحقة ب .ino و .pde"
 
 #: Base.java:1682
 msgid ""
@@ -186,13 +252,6 @@ msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
 msgstr "الاردوينو لم يتمكن من الشروع في العمل لأنه \nلا يستطيع انشاء مجلد لحفظ كتاب الشيفرة البرمجية \"sketchbook\"."
-
-#: Base.java:240
-msgid ""
-"Arduino requires a full JDK (not just a JRE)\n"
-"to run. Please install JDK 1.5 or later.\n"
-"More information can be found in the reference."
-msgstr "الاردوينو بحاجة الى JDK كاملة (وليس فقط JRE)\n لكي تعمل الرجاء تنصيب JDK 1.5 أو أحدث.\nلمزيد من التفاصيل تجدها في المراجع."
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
@@ -211,14 +270,6 @@ msgstr "هل انت متأكد انك تريد حذف الشيفرة البرم�
 msgid "Argument required for --board"
 msgstr "حجة مطلوبة للوحة--  "
 
-#: ../../../processing/app/Base.java:370
-msgid "Argument required for --curdir"
-msgstr "حجة مطلوبة ل-- curdir "
-
-#: ../../../processing/app/Base.java:385
-msgid "Argument required for --get-pref"
-msgstr ""
-
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
 msgstr "حجة مطلوبة ل-- منفذ"
@@ -231,6 +282,12 @@ msgstr "الحجة المطلوبة ل-- pref"
 msgid "Argument required for --preferences-file"
 msgstr "حجة مطلوبة ل--تفضيلات-ملف"
 
+#: ../../../processing/app/helpers/CommandlineParser.java:76
+#: ../../../processing/app/helpers/CommandlineParser.java:83
+#, java-format
+msgid "Argument required for {0}"
+msgstr "حجة مطلوبة لأجل {0}"
+
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
 msgstr "أرميني"
@@ -241,35 +298,27 @@ msgstr "اللغة الأستورية"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "الترخيص مطلوب"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
 msgstr "تنسيق تلقائي"
 
-#: tools/AutoFormat.java:934
-msgid "Auto Format Canceled: Too many left curly braces."
-msgstr "التنسيق التلقائي الغي: كثير من الاقواس الملتوية لجهة اليسار"
-
-#: tools/AutoFormat.java:925
-msgid "Auto Format Canceled: Too many left parentheses."
-msgstr "التنسيق التلقائي الغي: كثير من الاقواس لجهة اليسار"
-
-#: tools/AutoFormat.java:931
-msgid "Auto Format Canceled: Too many right curly braces."
-msgstr "التنسيق التلقائي الغي: كثير من الاقواس الملتوية لجهة اليمين"
-
-#: tools/AutoFormat.java:922
-msgid "Auto Format Canceled: Too many right parentheses."
-msgstr "التنسيق التلقائي الغي: كثير من الاقواس اليمين"
-
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
 msgstr "انتهى التنسيق التلقائي"
 
-#: Preferences.java:439
-msgid "Automatically associate .ino files with Arduino"
-msgstr "دمج .ino بشكل تلقائي مع الاردوينو"
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
+msgid "Auto-detect proxy settings"
+msgstr "إكتشاف تلقائي لإعدادات البروكسي"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
+msgid "Automatic"
+msgstr "تلقائي"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
+msgid "Automatic proxy configuration URL:"
+msgstr "ضبط بروكسي تلقائي للرابط:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -284,10 +333,6 @@ msgstr "خطأ سيئ السطر : {0}"
 msgid "Bad file selected"
 msgstr "الملف المحدد غير صالح"
 
-#: ../../../processing/app/debug/Compiler.java:89
-msgid "Bad sketch primary file or bad sketch directory structure"
-msgstr ""
-
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
 msgstr "لغة الباسك"
@@ -296,25 +341,53 @@ msgstr "لغة الباسك"
 msgid "Belarusian"
 msgstr "بيلاروسي"
 
-#: ../../../../../app/src/processing/app/Preferences.java:165
-msgid "Bengali (India)"
-msgstr ""
-
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "لوحة"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2545
+#: ../../../../../app/src/processing/app/Editor.java:2641
+#, java-format
+msgid "Board at {0} is not available"
+msgstr "اللوحة عند {0} غير متاحة"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
+#, java-format
+msgid "Board {0} (platform {1}, package {2}) is unknown"
+msgstr "اللوحة {0} (المنصة {1}، الحزمة {2}) غير معروفة"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "اللوحة {0}:{1}:{2} لا تعرّف ''build.board'' خاصية . Auto-set to: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
 msgstr "لوحة:"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Boards Manager"
+msgstr "مدير اللوحة"
+
+#: ../../../../../app/src/processing/app/Base.java:1320
+msgid "Boards Manager..."
+msgstr "مدير اللوحة"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
+msgid "Boards included in this package:"
+msgstr "الألواح المتضمنة في الحزمة:"
+
+#: ../../../processing/app/debug/Compiler.java:1273
+#, java-format
+msgid "Bootloader file specified but missing: {0}"
+msgstr "ملف محمل الإقلاع تم تحدديده لكن مفقود:  {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
@@ -328,13 +401,13 @@ msgstr "كلاهما NL & CR"
 msgid "Browse"
 msgstr "استعرض"
 
-#: Sketch.java:1392 Sketch.java:1423
-msgid "Build folder disappeared or could not be written"
-msgstr "مجلد البناء \"Build folder\" اختفى او انه لايمكن الكتابة عليه"
-
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
 msgstr "تغير بناء الخيارات ، إعادة بناء الكل"
+
+#: ../../../../../app/src/processing/app/Base.java:1210
+msgid "Built-in Examples"
+msgstr "الأمثلة المدمجة"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -352,15 +425,25 @@ msgstr "ثبت محمل برنامج الإقلاع"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "يتم تثبيت محمل برنامج الإقلاع على اللوحة (يمكن أن يستغرق ذلك دقيقة).."
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
+
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
+msgstr "يمكن ان تمرر واحدة من : {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
 msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "لا يمكن ايجاد السكتش في المسار المحدد"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
@@ -371,13 +454,9 @@ msgstr "الفرنسية (كندا)"
 msgid "Cancel"
 msgstr "الغاء"
 
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "لا يمكن اعادة التسمية"
-
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "لا يمكن تحديد اي ملفات سكتش "
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
@@ -395,10 +474,6 @@ msgstr "افحص التحديثات عند التشغيل"
 msgid "Chinese (China)"
 msgstr "الصينية (الصين)"
 
-#: ../../../processing/app/Preferences.java:142
-msgid "Chinese (Hong Kong)"
-msgstr "الصينية (هونغ كونغ)"
-
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
 msgstr "الصينية (تايوان)"
@@ -407,13 +482,13 @@ msgstr "الصينية (تايوان)"
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "الصينية (تايوان) (Big5)"
 
-#: Preferences.java:88
-msgid "Chinese Simplified"
-msgstr "Chinese Simplified"
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
-#: Preferences.java:89
-msgid "Chinese Traditional"
-msgstr "Chinese Traditional"
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
+msgid "Click for a list of unofficial boards support URLs"
+msgstr "اضغط للرؤية قائمة المواقع للألواح الغير رسمية المدعومة"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -423,13 +498,21 @@ msgstr "إغلاق"
 msgid "Comment/Uncomment"
 msgstr "ملاحظة \\ الغاء الملاحظة"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:30
+msgid "Communication"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
+msgid "Compiler warnings: "
+msgstr "تحذيرات المترجم:"
+
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
 msgstr "ترجمة الشيفرة البرمجية..."
 
-#: EditorConsole.java:152
-msgid "Console Error"
-msgstr "خطأ في وحدة التحكم Console"
+#: ../../../../../arduino-core/src/processing/app/I18n.java:27
+msgid "Contributed"
+msgstr "ساهم"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -456,6 +539,11 @@ msgstr "لا يمكن اضافة  ''{0}'' الى الشيفرة البرمجية
 msgid "Could not copy to a proper location."
 msgstr "لا يمكن النسخ لمكان مناسب"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr ".لا يمكن انشاء مجلد الشيفرة البرمجية"
@@ -473,11 +561,6 @@ msgstr "لا يمكن حذف \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "لا يمكن حذف الملف \"{0}\""
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "لا يمكن حذف {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -522,7 +605,7 @@ msgstr "لا يمكن اعادة نسخ الشيفرة البرمجية"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "غير قادر على قراءة إعدادات الألوان.\n يتوجب عليك إعادة تثبيت الأردوينو"
 
 #: Preferences.java:219
 msgid ""
@@ -530,40 +613,15 @@ msgid ""
 "You'll need to reinstall Arduino."
 msgstr "لا يمكن قراءة الاعدادات الافتراضية يجب عليك اعادة تنصيب الاردوينو"
 
-#: ../../../processing/app/Sketch.java:1525
-msgid "Could not read prevous build preferences file, rebuilding all"
-msgstr "يتعذر قراءة إنشاء ملف التفضيلات البريفوس ، إعادة بناء الكل"
-
 #: Base.java:2482
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "لا يمكن حذف الاصدار السابق من {0}"
 
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "لا يمكن اعادة تسمية \"{0}\" الى \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "لا يمكن إعادة تسمية الشيفرة البرمجية .(0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "لا يمكن اعادة تسمية الملف. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "لا يمكن اعادة تسمية الملف. (2)"
-
 #: Base.java:2492
 #, java-format
 msgid "Could not replace {0}"
 msgstr "لا يمكن استبدال {0}"
-
-#: ../../../processing/app/Sketch.java:1579
-msgid "Could not write build preferences file"
-msgstr "لا يمكن كتابة إنشاء ملف التفضيلات"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -592,29 +650,37 @@ msgstr "كرواتي"
 msgid "Cut"
 msgstr "قص"
 
-#: ../../../processing/app/Preferences.java:83
-msgid "Czech"
-msgstr "تشيكي"
-
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
-
-#: Preferences.java:90
-msgid "Danish"
-msgstr "Dansk"
+msgstr "التشيكية (جمهورية التشيك)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "الدنماركية (الدنمارك)"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:36
+msgid "Data Processing"
+msgstr "معالجة البيانات"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:35
+msgid "Data Storage"
+msgstr "تخزين البيانات"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "تقليل البادئة"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
+msgid "Default"
+msgstr "إفتراضي"
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "حذف"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:33
+msgid "Device Control"
+msgstr ""
 
 #: debug/Uploader.java:199
 msgid ""
@@ -626,9 +692,20 @@ msgstr "الجهاز لا يستجيب, تأكد من المنفذ port او ق�
 msgid "Discard all changes and reload sketch?"
 msgstr "تجاهل كل التغييرات واعد تحميل الشيفرة البرمجية"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:29
+msgid "Display"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
 msgstr "عرض أرقام السطور "
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+#, java-format
+msgid ""
+"Do you want to remove {0}?\n"
+"If you do so you won't be able to use {0} any more."
+msgstr "هل تود حذف {0}؟\nإذا قمت بذلك فلن تستطيع استخدام {0} بعد الآن."
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -645,7 +722,7 @@ msgstr "انتهى تثبيت محمل برنامج الإقلاع"
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "تمت الترجمة"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -657,11 +734,38 @@ msgstr "...انتهاء الطباعة"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "تم الرفع"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
 msgstr "انتهى التحميل"
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
+#, java-format
+msgid "Downloaded {0}kb of {1}kb."
+msgstr "تم تحميل {0}ك.ب من {1}ك.ب"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
+msgid "Downloading boards definitions."
+msgstr "جاري تحميل معرفات الألواح."
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
+msgid "Downloading libraries index..."
+msgstr "جاري تحميل فهرس المكتبات..."
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
+#, java-format
+msgid "Downloading library: {0}"
+msgstr "جاري تحميل المكتبة: {0}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
+msgid "Downloading platforms index..."
+msgstr "جاري تحميل فهرس المنصات..."
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
+#, java-format
+msgid "Downloading tools ({0}/{1})."
+msgstr "جاري تحميل الأدوات ({0}\\{1})."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -670,6 +774,10 @@ msgstr "Dutch"
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
 msgstr "الهولندية (هولندا)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1309
+msgid "Edison Help"
+msgstr "مساعدة لوحة إديسون"
 
 #: Editor.java:1130
 msgid "Edit"
@@ -683,6 +791,10 @@ msgstr "حجم خط المحرر:"
 msgid "Editor language: "
 msgstr "لغة المحرر:"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
+msgid "Enable Code Folding"
+msgstr "تفعيل إلتفاف الشيفرة"
+
 #: Preferences.java:92
 msgid "English"
 msgstr "English"
@@ -690,6 +802,15 @@ msgstr "English"
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
 msgstr "الإنجليزية (المملكة المتحدة)"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
+msgid "Enter a comma separated list of urls"
+msgstr "أدخل مجموعة من الروابط وضع بينهم فاصلة"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
+msgid "Enter additional URLs, one for each row"
+msgstr "أدخل روابط إضافية، واحد في كل صف"
 
 #: Editor.java:1062
 msgid "Environment"
@@ -705,9 +826,19 @@ msgstr "خطأ"
 msgid "Error adding file"
 msgstr "مشكلة في اضافة الملف"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
+#, java-format
+msgid "Error compiling for board {0}."
+msgstr ""
+
 #: debug/Compiler.java:369
 msgid "Error compiling."
 msgstr "خطأ في الترجمة."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
+#, java-format
+msgid "Error downloading {0}"
+msgstr "خطأ أثناء تحميل {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -717,10 +848,6 @@ msgstr "مشكلة في الحصول على مجلد بيانات الاردوي
 #, java-format
 msgid "Error inside Serial.{0}()"
 msgstr "Serial.{0}() خطأ داخل "
-
-#: ../../../processing/app/Base.java:1232
-msgid "Error loading libraries"
-msgstr " خطأ تحميل المكتبات"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -734,6 +861,13 @@ msgstr "خطأ أثناء تحميل {0}"
 msgid "Error opening serial port ''{0}''."
 msgstr "خطأ في فتح المنفذ التسلسل ''{0}''."
 
+#: ../../../processing/app/Serial.java:119
+#, java-format
+msgid ""
+"Error opening serial port ''{0}''. Try consulting the documentation at "
+"http://playground.arduino.cc/Linux/All#Permission"
+msgstr "خطأ في فتح المنفذ التسلسلي \"{0}\". حاول نصائح المستند التالي http://playground.arduino.cc/Linux/All#Permission"
+
 #: Preferences.java:277
 msgid "Error reading preferences"
 msgstr "خطأ في قراءة الخصائص"
@@ -744,6 +878,12 @@ msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
 msgstr "خطافي قرائة ملف الخصائص . رجاءا احذف (او انقل )\n{0} ثم اعد تشغيل الارديونو"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
+msgid "Error running post install script"
+msgstr ""
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
@@ -760,39 +900,39 @@ msgstr "حدث خطأ خلال تثبيت محمل برنامج الإقلاع"
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "خطأ عند حرق محمل الإقلاع:  '{0}' معامل الإعدادات مفقود"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
-
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "خطأ اثناء تحميل الكود {0}"
+msgstr "خطأ عند الترجمة:  '{0}' معامل الإعدادات مفقود"
 
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr ".خطأ خلال الطباعة "
 
+#: ../../../../../arduino-core/src/processing/app/Serial.java:117
+#, java-format
+msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
+msgstr "حدث خطأ بينما يتم إعداد معاملات المنفذ التسلسلي: {0} {1} {2} {3}"
+
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "خطأ أثناء التحميل"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
 msgid "Error while uploading: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "خطأ عند الرفع:  '{0}' معامل الإعدادات مفقود"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "خطأ أثناء التحقق"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "خطأ أثناء التحقق أو الرفع"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -806,22 +946,62 @@ msgstr "الأستونية (إستونيا)"
 msgid "Examples"
 msgstr "أمثلة"
 
-#: Editor.java:2482
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1244
+msgid "Examples from Custom Libraries"
+msgstr "أمثلة من مكتبات مخصصة"
+
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
-msgstr "لقد ألغي التصدير، يجب حفظ التغييرات أولا"
+msgstr "ألغي التصدير، يجب حفظ التغييرات أولا."
+
+#: ../../../../../app/src/processing/app/Editor.java:750
+msgid "Export compiled Binary"
+msgstr "تصدير الترجمة باللغة الثنائية"
 
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
-msgstr "فشل في فتح  ketch :               \n\"{ 0}\""
+msgstr "فشل في فتح  ketch :               \n\"{0}\""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
 
 #: Editor.java:491
 msgid "File"
 msgstr "ملف"
 
+#: ../../../../../arduino-core/src/processing/app/SketchData.java:139
+#, java-format
+msgid "File name {0} is invalid: ignored"
+msgstr "اسم الملف {0}  غير صالح: تم تجاهله"
+
 #: Preferences.java:94
 msgid "Filipino"
 msgstr "Pilipino"
+
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
+msgid "Filter your search..."
+msgstr "ترشيح بحثك..."
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -856,16 +1036,16 @@ msgstr "الفنلندية"
 msgid "Fix Encoding & Reload"
 msgstr "الترميز و أعد التحميل"
 
-#: Base.java:1851
+#: ../../../processing/app/BaseNoGui.java:318
 msgid ""
 "For information on installing libraries, see: "
-"http://arduino.cc/en/Guide/Libraries\n"
-msgstr "لمزيد من المعلومات حول تنصيب المكتبات, انظر:\nhttp://arduino.cc/en/Guide/Libraries\n"
+"http://www.arduino.cc/en/Guide/Libraries\n"
+msgstr "للمزيد من المعلومات حول تثبيت المكتبات، انظر http://www.arduino.cc/en/Guide/Libraries\n"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
 msgid "Forcing reset using 1200bps open/close on port {0}"
-msgstr ""
+msgstr "فرض إعادة فتح\\إغلاق باستخدام 1200بت\\ث على المنفذ {0}"
 
 #: Preferences.java:95
 msgid "French"
@@ -881,7 +1061,11 @@ msgstr "Galego"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "الجاليكية (اسبانيا)"
+
+#: ../../../../../app/src/processing/app/Editor.java:1288
+msgid "Galileo Help"
+msgstr "مساعدة لوحة جاليلو"
 
 #: ../../../processing/app/Preferences.java:94
 msgid "Georgian"
@@ -890,6 +1074,10 @@ msgstr "الجورجية"
 #: Preferences.java:97
 msgid "German"
 msgstr "Deutsch"
+
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -900,12 +1088,20 @@ msgstr "الشروع في البدء"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "المتغيرات العامة تستخدم  {0} بايت من ({2}%%) الذاكرة المتغيرة، تبقى {3} بايت للمتغيرات الداخلية. القيمة القصوى  {1} بايت."
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr ""
+msgstr "المتغيرات العامة تستخدم  {0} بايت من الذاكرة المتغيرة."
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
+msgid "Go to line"
+msgstr "اذهب الى السطر"
+
+#: ../../../../../app/src/processing/app/Editor.java:1460
+msgid "Go to line..."
+msgstr "اذهب الى السطر..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -923,6 +1119,10 @@ msgstr "مساعدة"
 msgid "Hindi"
 msgstr "Hindi"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
+msgid "Host name:"
+msgstr "اسم المضيف:"
+
 #: Sketch.java:295
 msgid ""
 "How about saving the sketch first \n"
@@ -937,6 +1137,10 @@ msgstr "ما هذه السخافة"
 msgid "Hungarian"
 msgstr "Magyar"
 
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
+
 #: FindReplace.java:96
 msgid "Ignore Case"
 msgstr "تجاهل الحالة"
@@ -949,10 +1153,6 @@ msgstr "تجاهل اسم المكتبة الخاطئ"
 msgid "Ignoring sketch with bad name"
 msgstr "تجاهل الشيفرة البرمجية ذات الاسم الخاطئ"
 
-#: Editor.java:636
-msgid "Import Library..."
-msgstr "...استيراد مكتبة"
-
 #: ../../../processing/app/Sketch.java:736
 msgid ""
 "In Arduino 1.0, the default file extension has changed\n"
@@ -962,7 +1162,16 @@ msgid ""
 "disable this in the Preferences dialog.\n"
 "\n"
 "Save sketch and update its extension?"
-msgstr ""
+msgstr "في اردينو 1.0، الملحق الإفتراضي للملف قد تغير\nمن .pde إلى .ino. المخططات الجديدة (بما فيها\nالمنشئة بواسطة \"حفظ باسم\") سوف تستخدم الملحق الجديد.\nالملحق للمخططات الحالية سوف تحدث عند الحفظ، لكن يمكن تعطيل\nذلك من تبويب التفضيلات.\n\nحفظ المخطط وتحديث ملحقه؟"
+
+#: ../../../../../app/src/processing/app/Editor.java:778
+msgid "Include Library"
+msgstr "إدراج مكتبة"
+
+#: ../../../processing/app/BaseNoGui.java:768
+#: ../../../processing/app/BaseNoGui.java:771
+msgid "Incorrect IDE installation folder"
+msgstr "خطأ مجلد التثبيت لبيئة التطوير"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -972,10 +1181,59 @@ msgstr "زيادة البادئة"
 msgid "Indonesian"
 msgstr "Bahasa Indonesia"
 
+#: ../../../../../app/src/processing/app/Base.java:295
+msgid "Initializing packages..."
+msgstr "بدء تهيئة الحزم..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:289
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:78
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
+msgid "Install"
+msgstr "تنصيب"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
+msgid "Installation completed!"
+msgstr "التنصيب إكتمل"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
+msgid "Installed"
+msgstr "تم التنصيب"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
+msgid "Installing boards..."
+msgstr "جاري تثبيت الألواح..."
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#, java-format
+msgid "Installing library: {0}"
+msgstr "جاري تثبيت مكتبة:{0}"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
+#, java-format
+msgid "Installing tools ({0}/{1})..."
+msgstr "جاري تثبيت الأدوات ({0}\\{1})..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
+msgid "Installing..."
+msgstr "جاري التنصيب"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
+msgid "Interface scale:"
+msgstr "مقياس الواجهة:"
+
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr ""
+msgstr "العثور على مكتبة غير صالحةفي {0}: {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
+#, java-format
+msgid "Invalid quoting: no closing [{0}] char found."
+msgstr "إقتباس غير صحيح: لم يعثر على [{0}] رمز إغلاق"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -985,6 +1243,10 @@ msgstr "Italiano"
 msgid "Japanese"
 msgstr "Japanese"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Korean"
@@ -993,21 +1255,51 @@ msgstr "Korean"
 msgid "Latvian"
 msgstr "Latvian"
 
-#: Base.java:2699
-msgid "Library added to your libraries. Check \"Import library\" menu"
-msgstr "يوجد مكتبة اضيفت الى مكتباتك. تفقد قائمة \"استيراد مكتبة\""
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
+msgid "Library Manager"
+msgstr "إدارة المكتبات"
+
+#: ../../../../../app/src/processing/app/Base.java:2349
+msgid "Library added to your libraries. Check \"Include library\" menu"
+msgstr "مكتبة أضيفت إلى مكتباتك. تحقق من \"إدراج مكتبة\""
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
+msgstr "المكتبة لا تستطيع استخدام كلا المجلدين 'src' و 'utility'. تحقق جيدا من {0}"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#, java-format
+msgid "Library is already installed: {0} version {1}"
+msgstr "المكتبة مثبته مسبقا: {0} اصدار {1}"
+
+#: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
+msgid "Line number:"
+msgstr "رقم السطر:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
 msgstr "Lithuaninan"
 
-#: ../../../processing/app/Sketch.java:1684
-msgid "Low memory available, stability problems may occur."
+#: ../../../../../app/src/processing/app/Base.java:132
+msgid "Loading configuration..."
+msgstr "جاري تحميل الإعدادات..."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
+#, java-format
+msgid "Looking for recipes like {0}*{1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Preferences.java:180
-msgid "Malay (Malaysia)"
-msgstr ""
+#: ../../../processing/app/Sketch.java:1684
+msgid "Low memory available, stability problems may occur."
+msgstr "ذاكرة منخفضة متبقية، مشاكل عدم إستقرار قد تحدث."
+
+#: ../../../../../app/src/processing/app/Base.java:1168
+msgid "Manage Libraries..."
+msgstr "إدارة المكتبات..."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:466
+msgid "Manual proxy configuration"
+msgstr "إعداد يدوي للبروكسي"
 
 #: Preferences.java:107
 msgid "Marathi"
@@ -1017,13 +1309,18 @@ msgstr "Marathi"
 msgid "Message"
 msgstr "رسالة"
 
-#: ../../../processing/app/preproc/PdePreprocessor.java:412
-msgid "Missing the */ from the end of a /* comment */"
-msgstr ""
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
+#, java-format
+msgid "Missing '{0}' from library in {1}"
+msgstr "'{0}' مفقود من المكتبة في {1}"
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Mode not supported"
-msgstr ""
+msgstr "الوضع غير مدعوم"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:186
+msgid "More"
+msgstr "أكثر"
 
 #: Preferences.java:449
 msgid "More preferences can be edited directly in the file"
@@ -1035,39 +1332,48 @@ msgstr "نقل"
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "Multiple files not supported"
-msgstr ""
+msgstr "ملفات متعددة غير مدعومة"
+
+#: ../../../processing/app/debug/Compiler.java:520
+#, java-format
+msgid "Multiple libraries were found for \"{0}\""
+msgstr "العثور على عدة مكتبات لـ\"{0}\""
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr ""
-
-#: ../../../processing/app/Preferences.java:158
-msgid "N'Ko"
-msgstr ""
+msgstr "يجب تحديد ملف واحد فقط لملف الشيفرة البرمجية"
 
 #: Sketch.java:282
 msgid "Name for new file:"
 msgstr "اسم لملف جديد:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "النيبالية"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
+msgid "Network"
+msgstr "شبكة"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
-msgstr ""
+msgstr "منفذ الشبكة"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr ""
+msgstr "الرفع للشبكة باستخدام المبرمجة غير مدعوم"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
 msgstr "جديد"
-
-#: EditorToolbar.java:46
-msgid "New Editor Window"
-msgstr "نافذة تحرير جديدة"
 
 #: EditorHeader.java:292
 msgid "New Tab"
@@ -1085,13 +1391,9 @@ msgstr "تبويب جديد"
 msgid "No"
 msgstr "لا"
 
-#: ../../../processing/app/debug/Compiler.java:146
-msgid "No athorization data found"
-msgstr ""
-
-#: debug/Compiler.java:126
-msgid "No board selected; please choose a board from the Tools > Board menu."
-msgstr "لم تختار البورد; رجاءا اختار البورد من قائمة أدوات > قائمة  بورد."
+#: ../../../processing/app/debug/Compiler.java:158
+msgid "No authorization data found"
+msgstr "لم يعثر على بيانات التفويض"
 
 #: tools/format/src/AutoFormat.java:54 tools/AutoFormat.java:916
 msgid "No changes necessary for Auto Format."
@@ -1099,7 +1401,11 @@ msgstr "لا يوجد تغييرات ضرورية للتنسيق التلقائ�
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No command line parameters found"
-msgstr ""
+msgstr "لم يعثر على معاملات في سطر الأوامر"
+
+#: ../../../processing/app/debug/Compiler.java:200
+msgid "No compiled sketch found"
+msgstr "لم يعثر على شيفرة برمجية مترجمة"
 
 #: Editor.java:373
 msgid "No files were added to the sketch."
@@ -1115,7 +1421,11 @@ msgstr "نهاية السطر غير موجودة"
 
 #: ../../../processing/app/BaseNoGui.java:665
 msgid "No parameters"
-msgstr ""
+msgstr "لا توجد معاملات"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:453
+msgid "No proxy"
+msgstr "لا يوجد بروكسي"
 
 #: Base.java:541
 msgid "No really, time for some fresh air for you."
@@ -1129,50 +1439,34 @@ msgstr "\"{0}\"لا يوجد مرجع متاح ل "
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "No sketch"
-msgstr ""
+msgstr "لا توجد شيفرة برمجية"
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "No sketchbook"
-msgstr ""
+msgstr "لاتوجد كتاب شيفرة البرمجية"
 
 #: ../../../processing/app/Sketch.java:204
 msgid "No valid code files found"
-msgstr ""
-
-#: ../../../processing/app/Base.java:309
-msgid "No valid configured cores found! Exiting..."
-msgstr ""
+msgstr "لم يعثر على ملفات شفرة صالحة"
 
 #: ../../../processing/app/debug/TargetPackage.java:63
 #, java-format
 msgid "No valid hardware definitions found in folder {0}."
-msgstr ""
+msgstr "لم يعثر على معرفات للوحة في مجلد {0}."
 
-#: Base.java:191
-msgid "Non-fatal error while setting the Look & Feel."
-msgstr "خطأ-غير-ضار اثناء اعداد واجة البرنامج"
-
-#: Sketch.java:396 Sketch.java:410 Sketch.java:419 Sketch.java:859
-msgid "Nope"
-msgstr "لا يا صديقي"
-
-#: ../../../../../app/src/processing/app/Preferences.java:181
-msgid "Norwegian"
-msgstr ""
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:184
+msgid "None"
+msgstr "لا شيْ"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
 msgstr "النرويجية"
 
-#: ../../../../../app/src/processing/app/Preferences.java:182
-msgid "Norwegian Nynorsk"
-msgstr ""
-
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr ""
+msgstr "الذاكرة غير كافية؛ راجع http://www.arduino.cc/en/Guide/Troubleshooting#size لنصائح حول استخدامها بكفائة"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1185,11 +1479,15 @@ msgstr "لقد اضيف ملف واحد للشيفرة البرمجية."
 
 #: ../../../processing/app/BaseNoGui.java:455
 msgid "Only --verify, --upload or --get-pref are supported"
-msgstr ""
+msgstr "المدعومة فقط هي --verify أو --upload أو --get-pref"
 
 #: EditorToolbar.java:41
 msgid "Open"
 msgstr "فتح"
+
+#: ../../../../../app/src/processing/app/Editor.java:625
+msgid "Open Recent"
+msgstr "المفتوحة حديثا"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1199,17 +1497,21 @@ msgstr "افتح الرابط"
 msgid "Open an Arduino sketch..."
 msgstr "فتح  شيفرة \"سكتش\" أردوينو برمجية"
 
-#: EditorToolbar.java:46
-msgid "Open in Another Window"
-msgstr "افتح نافذة اخرى"
-
 #: Base.java:903 Editor.java:501
 msgid "Open..."
 msgstr "افتح..."
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:37
+msgid "Other"
+msgstr "أخرى"
+
 #: Editor.java:563
 msgid "Page Setup"
 msgstr "اعدادات الصفحة"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:25
+msgid "Partner"
+msgstr "شريك"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1227,21 +1529,38 @@ msgstr "فارسي"
 msgid "Persian (Iran)"
 msgstr "الفارسية (إيران)"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:79
+#, java-format
+msgid "Platform {0} (package {1}) is unknown"
+msgstr "المنصة {0} (الحزمة {1}) غير معروفة"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
+msgid "Please confirm boards deletion"
+msgstr "الرجاء تأكيد حذف الألواح"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
+msgid "Please confirm library deletion"
+msgstr "أكد حذف المكتبة"
+
 #: debug/Compiler.java:408
 msgid "Please import the SPI library from the Sketch > Import Library menu."
 msgstr "الرجاء استورد مكتبة الـ SPI من القائمة شيفرة البرمجية > قائمة استيراد مكتبة."
 
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
-msgstr ""
+msgstr "الرجاء إستيراد مكتبة Wire من قائمة الشيفرة البرمجية > استيراد مكتبة"
 
-#: Base.java:239
-msgid "Please install JDK 1.5 or later"
-msgstr "الرجاء تنصيب JDK 1.5 أو احدث"
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
+msgstr "الرجاء تحديد مبرمجة من قائمة أدوات->المبرمجة"
+
+#: ../../../../../app/src/processing/app/Editor.java:2613
+msgid "Plotter not available while serial monitor is open"
 msgstr ""
 
 #: Preferences.java:110
@@ -1251,6 +1570,10 @@ msgstr "Polish"
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
 msgstr "منفذ"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
+msgid "Port number:"
+msgstr "رقم المنفذ:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1267,6 +1590,10 @@ msgstr "البرتغالية (البرتغال)"
 #: Preferences.java:295 Editor.java:583
 msgid "Preferences"
 msgstr "تفضيلات"
+
+#: ../../../../../app/src/processing/app/Base.java:297
+msgid "Preparing boards..."
+msgstr "جاري اعداد الألواح..."
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1302,20 +1629,16 @@ msgstr "اعدادات المنصة خاطئة"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:136
 msgid "Problem accessing board folder /www/sd"
-msgstr ""
+msgstr "مشكلة في الوصول لملف اللوحة /www/sd"
 
-#: ../../../cc/arduino/packages/uploaders/SSHUploader.java:132
-msgid "Problem accessing files in folder "
-msgstr "مشكل في الولوج إلى ملفات المجلد "
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
+#, java-format
+msgid "Problem accessing files in folder \"{0}\""
+msgstr "مشكلة في الوصول للملفات الموجودة في المجلد \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
 msgstr "مشكلة في الحصول على مجلد البيانات"
-
-#: Sketch.java:1467
-#, java-format
-msgid "Problem moving {0} to the build folder"
-msgstr "مشكلة في نقل {0} الى مجللد البناء \"Build folder\""
 
 #: debug/Uploader.java:209
 msgid ""
@@ -1335,9 +1658,22 @@ msgstr "معالج"
 msgid "Programmer"
 msgstr "المبرمجة"
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
+#, java-format
+msgid "Progress {0}"
+msgstr "تقدم {0}"
+
 #: Base.java:783 Editor.java:593
 msgid "Quit"
 msgstr "خروج"
+
+#: ../../../../../app/src/processing/app/Base.java:1233
+msgid "RETIRED"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:26
+msgid "Recommended"
+msgstr "مستحسن"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1346,6 +1682,20 @@ msgstr "اعادة"
 #: Editor.java:1078
 msgid "Reference"
 msgstr "مرجع"
+
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
+msgid "Remove"
+msgstr "حذف"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#, java-format
+msgid "Removing library: {0}"
+msgstr "جاري حذف المكتبة: {0}"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
+msgid "Removing..."
+msgstr "حذف ..."
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -1372,9 +1722,23 @@ msgstr "استبدال الاصدار الموجود  {0}؟"
 msgid "Replace with:"
 msgstr "استبدل بـ:"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:28
+msgid "Retired"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Romanian"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
+#, java-format
+msgid "Running recipe: {0}"
+msgstr "جاري تشغيل الوصفة: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
+#, java-format
+msgid "Running: {0}"
+msgstr "جاري تشغيل: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1393,10 +1757,6 @@ msgstr "حفظ بإسم..."
 msgid "Save Canceled."
 msgstr ".الغاء الحفظ"
 
-#: Editor.java:2467
-msgid "Save changes before export?"
-msgstr " حفظ التغييرات قبل التصدير؟"
-
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
@@ -1408,7 +1768,7 @@ msgstr "حفظ مجلد الشيفرة البرمجية الى ..."
 
 #: ../../../../../app/src/processing/app/Preferences.java:425
 msgid "Save when verifying or uploading"
-msgstr ""
+msgstr "حفظ أثناء التحقق أو الرفع"
 
 #: Editor.java:2270 Editor.java:2308
 msgid "Saving..."
@@ -1416,7 +1776,7 @@ msgstr "...حفظ"
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "ابحث في كل تبويبات الشيفرة البرمجية"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1438,17 +1798,49 @@ msgstr "اختر صورة او ملف بيانات أخر لنسخه الى ال
 msgid "Select new sketchbook location"
 msgstr "اختيار مكان كتاب الشيفرة البرمجية \"سكتش بوك\" الجديد"
 
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:237
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:249
+msgid "Select version"
+msgstr "إختر نسخة"
+
 #: ../../../processing/app/debug/Compiler.java:146
 msgid "Selected board depends on '{0}' core (not installed)."
-msgstr ""
+msgstr "اللوحة المختارة تعتمد على  النواة '{0}' (غير مثبتة)."
+
+#: ../../../../../app/src/processing/app/Base.java:374
+msgid "Selected board is not available"
+msgstr "اللوحة المحددة غير متوفرة"
+
+#: ../../../../../app/src/processing/app/Base.java:423
+msgid "Selected library is not available"
+msgstr "المكتبة المحددة غير متوفرة"
 
 #: SerialMonitor.java:93
 msgid "Send"
 msgstr "ارسل"
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:32
+msgid "Sensors"
+msgstr "حساسات"
+
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
 msgstr "مراقب المنفذ التسلسلي \"سيريال بورت\""
+
+#: ../../../../../app/src/processing/app/Editor.java:804
+msgid "Serial Plotter"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2516
+msgid "Serial monitor not available while plotter is open"
+msgstr ""
 
 #: Serial.java:194
 #, java-format
@@ -1466,7 +1858,16 @@ msgstr "المنفذ التسلسلي {0} لم يتم العثور عليه.\nح
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
+msgstr "المنافذ التسلسلية"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
+#, java-format
+msgid "Setting build path to {0}"
 msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
+msgid "Settings"
+msgstr "أعدادات"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1476,13 +1877,13 @@ msgstr "ضبط المسائل"
 msgid "Show Sketch Folder"
 msgstr "اعرض مجلد الشيفرة البرمجية"
 
-#: ../../../processing/app/EditorStatus.java:468
-msgid "Show verbose output during compilation"
-msgstr ""
-
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "عرض المخرجات خلال:"
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:31
+msgid "Signal Input/Output"
+msgstr "إشارة الدخل\\الخرج"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1519,7 +1920,7 @@ msgstr " الشيفرة البرمجية كبير جدا; راجع http://www.ar
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "الشيفرة البرمجية تستخدم {0} بايت ({2}%%) من مساحة البرنامج. أقصى حد {1} بايت."
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -1535,15 +1936,16 @@ msgstr "مكان كتاب الشيفرة البرمجية \"سكتش بوك\""
 
 #: ../../../processing/app/BaseNoGui.java:428
 msgid "Sketchbook path not defined"
-msgstr ""
+msgstr "مسار كتاب الشيفرة البرمجية غير معروفة"
 
-#: ../../../processing/app/Base.java:785
-msgid "Sketches (*.ino, *.pde)"
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
-msgstr ""
+msgstr "السلوفاكية"
 
 #: ../../../processing/app/Preferences.java:152
 msgid "Slovenian"
@@ -1562,22 +1964,26 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "بعض الملفات معلمة بـ \"read-only\" , لذلك سوف تحتاج ان\nتعيد حفظ الشيفرة البرمجية في مكان آخر."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "اسف, الشيفرة البرمجية (او المجلد) المسمى بـ \"{0}\" مستخدم مسبقا"
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
 msgstr "Spanish"
 
+#: ../../../../../app/src/processing/app/Base.java:2333
+msgid "Specified folder/zip file does not contain a valid library"
+msgstr "المجلد\\الملف المضغوط لا يحتوي على مكتبة صالحة"
+
+#: ../../../../../app/src/processing/app/Base.java:466
+msgid "Starting..."
+msgstr "جاري البدء..."
+
 #: Base.java:540
 msgid "Sunshine"
 msgstr "شروق الشمس"
-
-#: ../../../../../app/src/processing/app/Preferences.java:187
-msgid "Swahili"
-msgstr ""
 
 #: ../../../processing/app/Preferences.java:153
 msgid "Swedish"
@@ -1589,11 +1995,19 @@ msgstr "الاعدادات الافتراضية"
 
 #: ../../../../../app/src/processing/app/Preferences.java:188
 msgid "Talossan"
-msgstr ""
+msgstr "تالوسان"
 
 #: Preferences.java:116
 msgid "Tamil"
 msgstr "Tamil"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
+msgid "Thai"
+msgstr "التايلاندية"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -1601,11 +2015,18 @@ msgstr "الكلمة الفتاحية 'BYTE' لم تعد مدعومة."
 
 #: ../../../processing/app/BaseNoGui.java:484
 msgid "The --upload option supports only one file at a time"
-msgstr ""
+msgstr "خيار --upload يدعم ملف واحد في كل مرة"
 
 #: debug/Compiler.java:426
 msgid "The Client class has been renamed EthernetClient."
 msgstr "الـ Client class أعيد تسميته الى EthernetClient."
+
+#: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
+#, java-format
+msgid ""
+"The IDE includes an updated {0} package, but you're using an older one.\n"
+"Do you want to upgrade {0}?"
+msgstr "منصة التطوير تتضمن حزم {0} محدثة، لكنك تستخدم النسخة القديمة.\nهل تريد التحديث لـ{0} ؟"
 
 #: debug/Compiler.java:420
 msgid "The Server class has been renamed EthernetServer."
@@ -1615,9 +2036,9 @@ msgstr "الـ Server class أعيد تسميته الى EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "The Udp class أعيد تسميته الى EthernetUdp."
 
-#: Base.java:192
-msgid "The error message follows, however Arduino should run fine."
-msgstr "رسالة الخطأ يتبع , لكن لوحة الاردوينو سوف تعمل  بدون مشاكل."
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
 
 #: Editor.java:2147
 #, java-format
@@ -1635,12 +2056,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "المكتبة  \"{0}\" لا يمكن استخدامها.\nاسم المكتبة يجب ان يكون حروف وارقام فقط.\n(أحرف آسكي \"ASCII \" فقط ولا يمكن وضع فراغات ولا يمكن البدء في رقم)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "الملف الرئيسي لا يستطيع استخدام الامتداد.\n(قد يكون الوقت قد حان  لتخريجه ل\nبيئة برمجية حقيقية)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -1663,6 +2081,11 @@ msgid ""
 "{1}"
 msgstr "الشيفرة البرمجية \"{0}\" لا يمكن استخدامها.\nاسم الشيفرة البرمجية يجب ان يحتوي حروف وارقام فقط\n(أحرف آسكي فقط  من دون فراغات,ولا يمكن ان يبدأ في رقم).\nللتخلص من هذه الرسالة, احذف الشيفرة البرمجية من \n{1}"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
+
 #: Sketch.java:1755
 msgid ""
 "The sketch folder has disappeared.\n"
@@ -1675,7 +2098,7 @@ msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
 "of ASCII characters and numbers (but cannot start with a number).\n"
 "They should also be less than 64 characters long."
-msgstr ""
+msgstr "اسم الشيفرة البرمجية توجب تعديله. أسماء الشيفرات البرمجية يحتوي على\nحروف وأرقام ترميز الآسكي (لكن لايمكن أن يبدأ برقم). ويتوجب أيضا أن\nيكون طوله أقل من 64 رمزا."
 
 #: Base.java:259
 msgid ""
@@ -1686,30 +2109,45 @@ msgid ""
 "himself in the third person."
 msgstr "مجلد كتاب الشيفرة البرمجية \"السكتش\" لم يعد موجودا.\nسينتقل الاردوينو الى مكان كتاب الشيفرة البرمجية الافتراضي,\nوانشاء مجلد جديد اذا كان\nضرورياً. الاردوينو سيوقف الحديث \nعن نفسه."
 
-#: ../../../processing/app/debug/Compiler.java:201
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
 msgid ""
-"Third-party platform.txt does not define compiler.path. Please report this "
-"to the third-party hardware maintainer."
-msgstr ""
+"The specified sketchbook folder contains your copy of the IDE.\n"
+"Please choose a different folder for your sketchbook."
+msgstr "مجلد كتاب الشيفرة البرمجية المحدد يحتوي على نسختك من منصة التطوير.\nالرجاء إختيار مجلد آخر لكتاب الشيفرة البرمجية."
 
-#: Sketch.java:1075
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "هذا الملف تم بالفعل نسخه الى\nالموقع الذي تحاول اضافته اليه.\nانت في حالة تسمى \"كأن شيئا لم يحدث\""
+"This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
+"Are you sure you want to delete it?"
+msgstr "هذه المكتبة غير مدرجة في إدارة المكتبات. لن تستطيع إعادة تثبيتها من هنا.\nهل أنت متأكد من حذفها؟"
 
-#: ../../../processing/app/EditorStatus.java:467
-msgid "This report would have more information with"
-msgstr ""
+#: ../../../../../app/src/processing/app/EditorStatus.java:349
+msgid ""
+"This report would have more information with\n"
+"\"Show verbose output during compilation\"\n"
+"option enabled in File -> Preferences.\n"
+msgstr "هذا التقرير قد يحتوي على معلومات أكثر مع تفعيل الخيار\n\"Show verbose output during compilation\"\nفي ملف -> تفضيلات\n"
 
 #: Base.java:535
 msgid "Time for a Break"
 msgstr "حان وقت الاستراحة "
 
+#: ../../../../../arduino-core/src/processing/app/I18n.java:34
+msgid "Timing"
+msgstr "توقيت"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
+#, java-format
+msgid "Tool {0} is not available for your operating system."
+msgstr "الأداة {0} غير متوفرة لنظام تشغيلك."
+
 #: Editor.java:663
 msgid "Tools"
 msgstr "ادوات"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
+msgid "Topic"
+msgstr "مقالة"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -1719,22 +2157,32 @@ msgstr "استكشاف الاخطاء واصلاحها"
 msgid "Turkish"
 msgstr "اللغة التركية"
 
+#: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
+msgid "Type"
+msgstr "نوع"
+
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
-msgstr ""
+msgstr "أدخل كلمة المرور اللوحة للوصول إلى محرر الأوامر"
 
 #: ../../../processing/app/Sketch.java:1673
 msgid "Type board password to upload a new sketch"
-msgstr ""
+msgstr "أدخل كلمة المرور اللوحة لرفع شيفرة برمجية جديدة"
 
 #: ../../../processing/app/Preferences.java:118
 msgid "Ukrainian"
 msgstr "الأوكرانية"
 
+#: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
+#, java-format
+msgid "Unable to connect to {0}"
+msgstr "غير قادر على الاتصال بـ {0}"
+
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
 msgid "Unable to connect: is the sketch using the bridge?"
-msgstr ""
+msgstr "غير قادر على الإتصال: هل الشيفرة البرمجية تستخدم الجسر؟"
 
 #: ../../../processing/app/NetworkMonitor.java:130
 msgid "Unable to connect: retrying"
@@ -1744,18 +2192,45 @@ msgstr "مشكل في عملية الاتصال: إعادة المحاولة"
 msgid "Unable to connect: wrong password?"
 msgstr "مشكل في عملية الاتصال:  كلمة المرور خاطئة؟ "
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
+#, java-format
+msgid "Unable to find {0} in {1}"
+msgstr "لم يعثر على {0} في {1}"
+
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
+msgstr "غير قادر على فتح مراقب المنفذ التساسلي"
+
+#: ../../../../../app/src/processing/app/Editor.java:2709
+msgid "Unable to open serial plotter"
 msgstr ""
 
-#: Sketch.java:1432
-#, java-format
-msgid "Uncaught exception type: {0}"
-msgstr "نوع المشكلة غير محدد: {0}"
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
+msgid "Unable to reach Arduino.cc due to possible network issues."
+msgstr "غير قادر على الوصول إلى Arduino.cc لاحتمالية مشاكل في الشبكة."
+
+#: ../../../../../arduino-core/src/processing/app/I18n.java:38
+msgid "Uncategorized"
+msgstr "غير مصنف"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
 msgstr "تراجع"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
+#, java-format
+msgid "Unhandled type {0} in context key {1}"
+msgstr ""
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
+#, java-format
+msgid "Unknown sketch file extension: {0}"
+msgstr "لاحقة ملف غير معروفة للشيفرة البرمجية: {0}"
 
 #: Platform.java:168
 msgid ""
@@ -1763,6 +2238,11 @@ msgid ""
 "To enable opening URLs or folders, add a \n"
 "\"launcher=/path/to/app\" line to preferences.txt"
 msgstr "المنصة غير محددة، المشغل غير متاح.\nللتفعيل أفتح الروابط أو المجلدات ؛ أضف :اضف سطر \"launcher=/path/to/app\" الى preferences.txt"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
+msgid "Updatable"
+msgstr "قابل للتحديث"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -1772,6 +2252,25 @@ msgstr "تحديث"
 msgid "Update sketch files to new extension on save (.pde -> .ino)"
 msgstr "تحديث ملفات الشيفرة البرمجية  الى امتداد جديد عند الحفظ (.pde -> .ino)"
 
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
+#, java-format
+msgid "Updates available for some of your {0}boards{1}"
+msgstr "تتوفر تحديثات لبعض {0}ألواحك{1}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
+#, java-format
+msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
+msgstr "تتوفر تحديثات لبعض {0}ألواحك{1} و {2}مكتباتك{3}"
+
+#: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
+#, java-format
+msgid "Updates available for some of your {0}libraries{1}"
+msgstr "تتوفر تحديثات لبعض {0}مكتباتك{1}"
+
+#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
+msgid "Updating list of installed libraries"
+msgstr "جاري تحديث قائمة للمكتبات المثبتة"
+
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
 msgstr "رفع"
@@ -1779,6 +2278,10 @@ msgstr "رفع"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "رفع بواسطة المبرمجة"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -1796,10 +2299,6 @@ msgstr "جاري التحميل إلى اللوحة دخل/خرج ..."
 msgid "Uploading..."
 msgstr "رفع..."
 
-#: ../../../../../app/src/processing/app/Preferences.java:189
-msgid "Urdu (Pakistan)"
-msgstr ""
-
 #: Editor.java:1269
 msgid "Use Selection For Find"
 msgstr "استخدم المظلل للبحث"
@@ -1808,27 +2307,63 @@ msgstr "استخدم المظلل للبحث"
 msgid "Use external editor"
 msgstr "استعمال محرر خارجي"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:493
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:499
+msgid "Username:"
+msgstr "اسم المستخدم:"
+
+#: ../../../processing/app/debug/Compiler.java:410
+#, java-format
+msgid "Using library {0} at version {1} in folder: {2} {3}"
+msgstr "استخدام المكتبة {0} الإصدار {1} في المجلد:  {2} {3}"
+
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
 msgid "Using library {0} in folder: {1} {2}"
-msgstr ""
+msgstr "استخدام المكتبة {0} في المجلد:  {1} {2}"
 
 #: ../../../processing/app/debug/Compiler.java:320
 #, java-format
 msgid "Using previously compiled file: {0}"
-msgstr ""
+msgstr "استخدام الملف المترجم سابقا: {0}"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46
 msgid "Verify"
 msgstr "افحص"
 
-#: Editor.java:609
-msgid "Verify / Compile"
-msgstr "تدقيق / ترجم"
-
 #: Preferences.java:400
 msgid "Verify code after upload"
 msgstr "التأكد من الكود بعد الرفع"
+
+#: ../../../../../app/src/processing/app/Editor.java:725
+msgid "Verify/Compile"
+msgstr "تحقق/ترجم"
+
+#: ../../../../../app/src/processing/app/Base.java:451
+msgid "Verifying and uploading..."
+msgstr "جاري التحقق والرفع..."
+
+#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
+msgid "Verifying archive integrity..."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:454
+msgid "Verifying..."
+msgstr "جاري التحقق..."
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
+#, java-format
+msgid "Version <b>{0}</b>"
+msgstr "إصدار <b>{0}</b>"
+
+#: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:326
+msgid "Version unknown"
+msgstr "النسخة غير معروفة"
+
+#: ../../../cc/arduino/contributions/libraries/ContributedLibrary.java:97
+#, java-format
+msgid "Version {0}"
+msgstr "النسخة {0}"
 
 #: ../../../processing/app/Preferences.java:154
 msgid "Vietnamese"
@@ -1838,20 +2373,68 @@ msgstr "اللغة الفيتنامية"
 msgid "Visit Arduino.cc"
 msgstr "Arduino.cc زر صفحة "
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:90
+#, java-format
+msgid "WARNING: Category '{0}' in library {1} is not valid. Setting to '{2}'"
+msgstr "تحذير: الفئة '{0}' في المكتبة {1} غير صالحة. الإعداد إلى '{2}'"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
+#, java-format
+msgid "WARNING: Spurious {0} folder in '{1}' library"
+msgstr "تحذير: مجلد {0} زائف في المكتبة '{1}'"
+
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
 msgid ""
 "WARNING: library {0} claims to run on {1} architecture(s) and may be "
 "incompatible with your current board which runs on {2} architecture(s)."
-msgstr ""
+msgstr "تحذير: المكتبة {0} تعمل على معمارية {1} وقد لا تتوافق مع لوحتك الحالية التي تعمل على معمارية {2}."
 
 #: Base.java:2128
 msgid "Warning"
 msgstr "تحذير"
 
+#: ../../../processing/app/debug/Compiler.java:1295
+msgid ""
+"Warning: This core does not support exporting sketches. Please consider "
+"upgrading it or contacting its author"
+msgstr "تحذير: هذه النواة لاتدعم تصدير الشيفرة البرمجية. الرجاء الأخذ بالإعتبار تحديثها أو التواصل مع مؤلفها"
+
+#: ../../../cc/arduino/utils/ArchiveExtractor.java:197
+#, java-format
+msgid "Warning: file {0} links to an absolute path {1}"
+msgstr ""
+
+#: ../../../cc/arduino/contributions/packages/ContributionsIndexer.java:133
+msgid "Warning: forced trusting untrusted contributions"
+msgstr "تحذير: فرض الوثوق على مساهمات غير موثوقة"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:217
+#, java-format
+msgid "Warning: forced untrusted script execution ({0})"
+msgstr "تحذير: فرض التنفيذ على شيفرة غير موثوقة ({0})"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
+#, java-format
+msgid "Warning: non trusted contribution, skipping script execution ({0})"
+msgstr "تحذير: مساهمات غير موثوقة، جاري تجاوز تنفيذ الشيفرة ({0})"
+
+#: ../../../processing/app/debug/LegacyTargetPlatform.java:158
+#, java-format
+msgid ""
+"Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
+" converted to {2}. Consider upgrading this core."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
+msgid ""
+"Warning: platform.txt from core '{0}' misses property '{1}', using default "
+"value '{2}'. Consider upgrading this core."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
-msgstr ""
+msgstr "الفارسية الغربية"
 
 #: debug/Compiler.java:444
 msgid "Wire.receive() has been renamed Wire.read()."
@@ -1875,25 +2458,9 @@ msgstr "وجد خطأ في المتحكم الصغري. هل انت متاكد �
 msgid "Yes"
 msgstr "نعم"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "لا يمكنك خداعي"
-
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "لا يمكن ان يكون لديك ملف .cpp مع نفس اسم الشيفرة البرمجية "
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "لا يمكن اعادة تسمية الشيفرة البرمجية لـ \"{0}\"\nلأن الشيفرة البرمجية لديه ملف .cpp مسبقا  بنفس الاسم"
-
-#: Sketch.java:861
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "لا يمكنك حفظ الشيفرة البرمجية كـ \"{0}\"\nلان الشيفرة البرمجية بالفعل لديه ملف .cpp بنفس الاسم."
+#: ../../../../../app/src/processing/app/Base.java:2312
+msgid "You can't import a folder that contains your sketchbook"
+msgstr "لايمكنك استيراد المجلد الذي يحتوي على شيفرتك البرمجية"
 
 #: Sketch.java:883
 msgid ""
@@ -1905,6 +2472,12 @@ msgstr "لا يمكنك حفظ الشيفرة البرمجية الى مجلد\n
 msgid "You forgot your sketchbook"
 msgstr "لقد نسيت كتاب الشيفرة البرمجية (sketchbook)"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
+
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
 "You've pressed {0} but nothing was sent. Should you select a line ending?"
@@ -1915,6 +2488,18 @@ msgid ""
 "You've reached the limit for auto naming of new sketches\n"
 "for the day. How about going for a walk instead?"
 msgstr "لقد وصلت الى الحد الاقصى للتسمية التلقائية لليوم للسكتشات. ما رأيك في الخروج في نزهة بدل ذلك اليوم؟"
+
+#: ../../../processing/app/BaseNoGui.java:768
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your settings folder.\n"
+"Please move the IDE to another folder."
+msgstr "منصة التطوير لديك مثبتة في مجلد فرعي لمجلد الإعدادات.\nالرجاء نقل منصة التطوير إلى مجلد آخر."
+
+#: ../../../processing/app/BaseNoGui.java:771
+msgid ""
+"Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
+"Please move the IDE to another folder."
+msgstr "منصة التطوير لديك مثبتة في مجلد فرعي لشيفرتك البرمجية.\nالرجاء نقل منصة التطوير إلى مجلد آخر."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -1929,14 +2514,14 @@ msgstr "الملف المضغوط \"zip\" لا يحتوي على اي مكتبة
 msgid "\".{0}\" is not a valid extension."
 msgstr "\".{0}\" امتداد غير صالح"
 
-#: SketchCode.java:258
+#: ../../../../../arduino-core/src/processing/app/SketchCode.java:201
 #, java-format
 msgid ""
-"\"{0}\" contains unrecognized characters.If this code was created with an "
-"older version of Arduino,you may need to use Tools -> Fix Encoding & Reload "
-"to updatethe sketch to use UTF-8 encoding. If not, you may need todelete the"
-" bad characters to get rid of this warning."
-msgstr ""
+"\"{0}\" contains unrecognized characters. If this code was created with an "
+"older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
+" to update the sketch to use UTF-8 encoding. If not, you may need to delete "
+"the bad characters to get rid of this warning."
+msgstr "\"{0}\" يحتوي على احرف غير معرفة . اذا انشئ الكود مع اصدار قديم من الأردينو , يلزمك ان تستخدم ادوات -> اصلاح الترميز واعد التحميل لتحديث الشيفرة البرمجية ليستخدم ترميز UTF-8 . غير ذلك يمكنك ان تحذف الاحرف الغير معرفة للتخلص من هذا التحذير."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2001,17 +2586,9 @@ msgstr "ترجمة"
 msgid "connected!"
 msgstr "متصل!"
 
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() returned false"
-
-#: ../../../processing/app/EditorStatus.java:469
-msgid "enabled in File > Preferences."
-msgstr "مفعل في ملف> تفضيلات."
-
-#: Editor.java:1108
-msgid "http://arduino.cc/"
-msgstr "http://arduino.cc/"
+#: ../../../../../app/src/processing/app/Editor.java:1352
+msgid "http://www.arduino.cc/"
+msgstr "http://www.arduino.cc/"
 
 #: UpdateCheck.java:118
 msgid "http://www.arduino.cc/en/Main/Software"
@@ -2049,10 +2626,51 @@ msgstr "خيار غير معروف: {0}"
 msgid "upload"
 msgstr "رفع"
 
+#: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:324
+#, java-format
+msgid "version <b>{0}</b>"
+msgstr "النسخة <b>{0}</b>"
+
+#: ../../../../../app/src/processing/app/Editor.java:2243
+#, java-format
+msgid "{0} - {1} | Arduino {2}"
+msgstr "{0} - {1} | أردينو {2}"
+
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
+#: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
+#, java-format
+msgid "{0} file signature verification failed"
+msgstr "ملف {0} التحقق من التوقيع قد فشل"
+
+#: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:310
+#, java-format
+msgid "{0} file signature verification failed. File ignored."
+msgstr "ملف {0} التحقق من التوقيع قد فشل. تم تجاهل الملف."
+
 #: Editor.java:380
 #, java-format
 msgid "{0} files added to the sketch."
 msgstr "اضيفت {0} ملفات الى شيفرة البرمجية."
+
+#: ../../../../../app/src/processing/app/Base.java:1201
+#, java-format
+msgid "{0} libraries"
+msgstr "{0} المكتبات"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
+#, java-format
+msgid "{0} must be a folder"
+msgstr "{0} يجب أن يكون ملف"
+
+#: ../../../../../app/src/processing/app/EditorLineStatus.java:109
+#, java-format
+msgid "{0} on {1}"
+msgstr "{0} على {1}"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
+#, java-format
+msgid "{0} pattern is missing"
+msgstr ""
 
 #: debug/Compiler.java:365
 #, java-format
@@ -2074,7 +2692,7 @@ msgstr ""
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr ""
+msgstr "{0}: اسم لوحة غير صالح، يتوجب أن يكون صيغة \"package:arch:board\" أو \"package:arch:board:options\""
 
 #: ../../../processing/app/Base.java:509
 #, java-format
@@ -2089,12 +2707,12 @@ msgstr "{0}: خيار غير صحيح للوحة \"{1}\""
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr ""
+msgstr "{0}: خيار غير صالح، يتوجب أن يكون بصيغة \"name=value\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
 msgid "{0}: Unknown architecture"
-msgstr ""
+msgstr "{0}: معمارية غير معروفة"
 
 #: ../../../processing/app/Base.java:491
 #, java-format
@@ -2105,3 +2723,8 @@ msgstr "{0}: لوحة غير معروفة"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: حزمة غير معروفة"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

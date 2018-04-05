@@ -140,8 +140,7 @@ int WiFiClient::peek() {
 }
 
 void WiFiClient::flush() {
-  while (available())
-    read();
+  // TODO: a real check to ensure transmission has been completed
 }
 
 void WiFiClient::stop() {

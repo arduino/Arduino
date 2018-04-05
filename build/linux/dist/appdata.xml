@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- See https://wiki.gnome.org/GnomeGoals/AppDataGnomeSoftware -->
-<application>
-  <id type="desktop">arduino.desktop</id>
-  <licence>CC-BY-SA</licence>
+<!-- See https://www.freedesktop.org/software/appstream/docs/chap-Quickstart.html -->
+<component type="desktop-application">
+  <id>cc.arduino.arduinoide.desktop</id>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <developer_name>Arduino LLC</developer_name>
+
+  <name>Arduino IDE</name>
+  <summary>Open-source electronics prototyping platform</summary>
+
   <description>
     <p>
       Arduino is an open-source electronics prototyping platform based
@@ -15,10 +20,23 @@
       to develop and upload code to compatible microcontrollers.
     </p>
   </description>
+
   <screenshots>
-    <screenshot type="default" width="624" height="351">http://mavit.fedorapeople.org/appdata/arduino-screenshot.png</screenshot>
-    <screenshot width="704" height="396">http://mavit.fedorapeople.org/appdata/arduino-photo.jpg</screenshot>
+    <screenshot type="default">
+      <image>https://mavit.fedorapeople.org/appdata/arduino-screenshot.png</image>
+      <caption>The Arduino IDE showing a simple example program</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://mavit.fedorapeople.org/appdata/arduino-photo.jpg</image>
+      <caption>Arduino hardware being connected to a breadboard</caption>
+    </screenshot>
   </screenshots>
+
   <url type="homepage">http://www.arduino.cc/</url>
-  <updatecontact>arduino.appdata.xml@mavit.org.uk</updatecontact>
-</application>
+  <url type="help">https://www.arduino.cc/en/Guide/HomePage</url>
+  <url type="bugtracker">https://github.com/arduino/Arduino/issues</url>
+  <url type="translate">https://github.com/arduino/Arduino/tree/master/arduino-core/src/processing/app/i18n</url>
+  <url type="donation">https://www.arduino.cc/en/Main/Contribute</url>
+
+  <update_contact>arduino.appdata.xml@mavit.org.uk</update_contact>
+</component>

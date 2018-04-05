@@ -59,7 +59,7 @@ void setup() {
   // print some diagnostic info
   Serial.begin(9600);
   while (!Serial) {
-    // wait for serial line to be ready
+    // wait for serial port to connect. Needed for native USB port only
   }
 
   // clear the GLCD screen before starting

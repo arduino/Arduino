@@ -1,0 +1,130 @@
+CP210x Macintosh OS X VCP Driver v4 Release Notes
+Copyright (C) 2015 Silicon Laboratories, Inc.
+
+This release contains the following components:
+
+* SiLabsUSBDriverDisk.dmg - Image containing the VCP Driver Installer
+* ReleaseNotes.txt (this file)
+* uninstaller.sh - a bash shell script for removing the driver
+
+Known Issues and Limitations
+----------------------------
+
+	This release includes the Macintosh OSX driver for the Intel and
+	PowerPC Platforms versions 10.5, 10.6, 10.7, 10.8, 
+	10.9, and 10.10.
+
+Driver Installation
+-------------------
+
+	Mount the DMG file and double click on 
+	Silicon Labs VCP Driver. 
+
+Uninstalling the Driver
+-----------------------
+
+	To uninstall the driver, run the uninstaller.sh shell script from
+	a Terminal command prompt. 
+
+Release Dates
+-------------
+
+	CP210x Macintosh OSX VCP Driver 4.10.7 - February 15, 2016
+	CP210x Macintosh OSX VCP Driver v3.1 - December 6, 2012
+
+
+CP210x Macintosh OSX Driver Revision History
+--------------------------------------------
+
+Version 4.x.7
+	Added VID/PID for Sekonic and DASCOM.
+	Minor fix to postflight script for 64 bit 10.8 and below OS's.
+
+Version 4.x.6
+	Added VID/PIDs for Vorze and Cadex Electronics.
+
+Version 4.x.5
+	Added VID/PIDs for California Eastern Labs and Micro Computer Control Corp.
+
+Version 4.x.4
+	Added VID/PIDs for Zonge International, AES GmbH, SPORTident GmbH
+
+Version 4.x.3
+	Added VID/PID for Aruba Networks, Inc.
+
+Version 4.x.2
+	Added VID/PID for ARKRAY, Inc.
+
+Version 4.x.1
+	Added VID/PIDs for BodyCap, RTKWARE, and West Mountain Radio
+	Added uninstaller script to DMG
+	Installer now runs uninstaller script before executing install - removes older versions using previous naming scheme
+	Dropping support for OS X 10.4.  If you require OS X 10.4 support, please install version 3.1 of the VCP driver
+
+Version 4.x.0
+	Added OSX 10.9 and 10.10 driver support with signed kernel extension
+	Updated version numbering - 2nd digit represents target OS versions
+		4.7 - OSX 10.7 and older, 32 bit
+		4.8 - OSX 10.8 and older, 64 bit
+		4.10 - OSX 10.9 and 10.10, 64 bit, signed kext
+	Updated version numbering - 3rd digit represents VID/PID updates.  Customers not needing the new VID/PID do not need to update drivers for 3rd digit changes.
+	Installer will now only install the proper matching kernel extension instead of both the 32 bit and 64 bit versions.
+
+Version 3.1
+	Added support for CP2108
+
+Version 3.0
+	Corrected issue where transmission would stop when a 0 length packet was sent
+	incorrectly on aligned packet boundaries
+
+Version 2.9
+	Corrected issue with Baud Rates not being set properly if they were greater 
+	than 230400 on PPC or Intel platforms
+	Corrected an issue where a device might get stuck when coming out of sleep mode
+	Corrected an issue on PPC where Baud Rates were not getting set properly
+	Added enhanced support for sleep, now reads state on sleep and writes state on
+	wake to provide smoother and more stable state transitions
+
+Version 2.7
+	Corrected issue with initial Stop Bits value
+	Corrected issue which seen which switching between 32 and 64 bit mode and trying
+	to use the driver in each mode
+	Added in a clear stall to be more complete in invalid control transfers
+
+Version 2.6
+	Corrected all known Kernel Panics for 10.4/5/6 for surprise removal and data
+	transmission
+	Corrected an issue with data drop while using XON/XOFF flow control
+	Corrected RTS/DTR toggling sync issue
+	
+Version 2.2
+	Corrected Kernel Panic in Snow Leopard which would randomly occur after
+	transmission
+	Modified DTR pin to toggle on open and close instead of on insertion
+	Modified driver to load without showing the Network Connection Dialog
+	Modified driver to allow toggling of RTS and DTR pins
+	Added 64 bit support for Snow Leopard
+	
+Version 2.1
+	Corrected device strings that were changed in the 2.0 release back to the
+	format used in pre-2.0 drivers
+
+Version 2.0
+	Driver architecture updated.
+
+Version 1.06
+	Corrected a bug which causes a Kernel Panic with a Baud Rate of 0, yileding
+	a Divide-By-Zero error
+
+Version 1.04
+	Updated to support newer versions of Mac OSX
+	
+
+Version 1.02
+	Updated to support the Intel platform through a universal binary that
+	also supports PowerPC.
+
+Version 1.00
+	Initial Release
+
+

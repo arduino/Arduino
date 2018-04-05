@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import cc.arduino.contributions.libraries.ContributedLibrary;
 import processing.app.helpers.FileUtils;
 
 @SuppressWarnings("serial")
@@ -50,29 +51,39 @@ public class LibraryList extends LinkedList<UserLibrary> {
     super(ideLibs);
   }
 
-  public UserLibrary getByName(String name) {
+  public synchronized UserLibrary getByName(String name) {
     for (UserLibrary l : this)
       if (l.getName().equals(name))
         return l;
     return null;
   }
 
-  public void addOrReplace(UserLibrary lib) {
-    remove(lib);
+  public synchronized void addOrReplaceArchAware(UserLibrary lib) {
+    addOrReplace(lib, true);
+  }
+
+  public synchronized void addOrReplace(UserLibrary lib) {
+    addOrReplace(lib, false);
+  }
+
+  public synchronized void addOrReplace(UserLibrary lib, boolean archAware) {
+    remove(lib, archAware);
     add(lib);
   }
-  
-  public void remove(UserLibrary lib) {
+
+  public synchronized void remove(UserLibrary lib, boolean archAware) {
     UserLibrary l = getByName(lib.getName());
-    if (l != null)
-      super.remove(l);
+    if (l != null) {
+      if (!archAware || lib.getArchitectures().contains("*") || lib.getArchitectures().containsAll(l.getArchitectures()))
+        super.remove(l);
+    }
   }
 
-  public void sort() {
-    Collections.sort(this, UserLibrary.CASE_INSENSITIVE_ORDER);
+  public synchronized void sort() {
+    Collections.sort(this, ContributedLibrary.CASE_INSENSITIVE_ORDER);
   }
 
-  public LibraryList filterLibrariesInSubfolder(File subFolder) {
+  public synchronized LibraryList filterLibrariesInSubfolder(File subFolder) {
     LibraryList res = new LibraryList();
     for (UserLibrary lib : this) {
       if (FileUtils.isSubDirectory(subFolder, lib.getInstalledFolder())) {
@@ -82,7 +93,7 @@ public class LibraryList extends LinkedList<UserLibrary> {
     return res;
   }
 
-  public boolean hasLibrary(UserLibrary lib) {
+  public synchronized boolean hasLibrary(UserLibrary lib) {
     for (UserLibrary l : this)
       if (l == lib) return true;
     return false;

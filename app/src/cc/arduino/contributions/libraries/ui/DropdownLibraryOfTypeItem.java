@@ -30,10 +30,12 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.CategoryPredicate;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
+
+import static processing.app.I18n.tr;
 
 public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrary> {
 
@@ -44,7 +46,7 @@ public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrar
   }
 
   public String toString() {
-    return type;
+    return tr(type);
   }
 
   @Override

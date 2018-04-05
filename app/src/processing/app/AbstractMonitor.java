@@ -1,59 +1,35 @@
 package processing.app;
 
-import static processing.app.I18n._;
+import cc.arduino.packages.BoardPort;
+import processing.app.legacy.PApplet;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultCaret;
-
-import processing.app.debug.TextAreaFIFO;
-import processing.app.legacy.PApplet;
-
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
-  protected final JLabel noLineEndingAlert;
-  protected TextAreaFIFO textArea;
-  protected JScrollPane scrollPane;
-  protected JTextField textField;
-  protected JButton sendButton;
-  protected JCheckBox autoscrollBox;
-  protected JComboBox lineEndings;
-  protected JComboBox serialRates;
+  private boolean closed;
 
-  private Timer updateTimer;
   private StringBuffer updateBuffer;
+  private Timer updateTimer;
 
-  public AbstractMonitor(String title) {
-    super(title);
+  private BoardPort boardPort;
+
+  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000", "500000", "1000000", "2000000"};
+
+  public AbstractMonitor(BoardPort boardPort) {
+    super(boardPort.getLabel());
+    this.boardPort = boardPort;
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent event) {
         try {
+          closed = true;
           close();
         } catch (Exception e) {
           // ignore
@@ -75,117 +51,57 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
       }
     }));
 
-    getContentPane().setLayout(new BorderLayout());
 
-    Font consoleFont = Theme.getFont("console.font");
-    Font editorFont = PreferencesData.getFont("editor.font");
-    Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
+    onCreateWindow(getContentPane());
 
-    textArea = new TextAreaFIFO(8000000);
-    textArea.setRows(16);
-    textArea.setColumns(40);
-    textArea.setEditable(false);
-    textArea.setFont(font);
-
-    // don't automatically update the caret.  that way we can manually decide
-    // whether or not to do so based on the autoscroll checkbox.
-    ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-
-    scrollPane = new JScrollPane(textArea);
-
-    getContentPane().add(scrollPane, BorderLayout.CENTER);
-
-    JPanel upperPane = new JPanel();
-    upperPane.setLayout(new BoxLayout(upperPane, BoxLayout.X_AXIS));
-    upperPane.setBorder(new EmptyBorder(4, 4, 4, 4));
-
-    textField = new JTextField(40);
-    sendButton = new JButton(_("Send"));
-
-    upperPane.add(textField);
-    upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
-    upperPane.add(sendButton);
-
-    getContentPane().add(upperPane, BorderLayout.NORTH);
-
-    final JPanel pane = new JPanel();
-    pane.setLayout(new BoxLayout(pane, BoxLayout.X_AXIS));
-    pane.setBorder(new EmptyBorder(4, 4, 4, 4));
-
-    autoscrollBox = new JCheckBox(_("Autoscroll"), true);
-
-    noLineEndingAlert = new JLabel(I18n.format(_("You've pressed {0} but nothing was sent. Should you select a line ending?"), _("Send")));
-    noLineEndingAlert.setToolTipText(noLineEndingAlert.getText());
-    noLineEndingAlert.setForeground(pane.getBackground());
-    Dimension minimumSize = new Dimension(noLineEndingAlert.getMinimumSize());
-    minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
-    noLineEndingAlert.setMinimumSize(minimumSize);
-
-    lineEndings = new JComboBox(new String[]{_("No line ending"), _("Newline"), _("Carriage return"), _("Both NL & CR")});
-    lineEndings.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
-        noLineEndingAlert.setForeground(pane.getBackground());
-      }
-    });
-    if (PreferencesData.get("serial.line_ending") != null) {
-      lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
-    }
-    lineEndings.setMaximumSize(lineEndings.getMinimumSize());
-
-    String[] serialRateStrings = {
-            "300", "1200", "2400", "4800", "9600",
-            "19200", "38400", "57600", "115200"
-    };
-
-    serialRates = new JComboBox();
-    for (String rate : serialRateStrings) {
-      serialRates.addItem(rate + " " + _("baud"));
-    }
-
-    serialRates.setMaximumSize(serialRates.getMinimumSize());
-
-    pane.add(autoscrollBox);
-    pane.add(Box.createHorizontalGlue());
-    pane.add(noLineEndingAlert);
-    pane.add(Box.createRigidArea(new Dimension(8, 0)));
-    pane.add(lineEndings);
-    pane.add(Box.createRigidArea(new Dimension(8, 0)));
-    pane.add(serialRates);
-
-    this.setMinimumSize(new Dimension(pane.getMinimumSize().width, this.getPreferredSize().height));
-
-    getContentPane().add(pane, BorderLayout.SOUTH);
+    this.setMinimumSize(new Dimension(getContentPane().getMinimumSize().width, this.getPreferredSize().height));
 
     pack();
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    if (PreferencesData.get("last.screen.height") != null) {
-      // if screen size has changed, the window coordinates no longer
-      // make sense, so don't use them unless they're identical
-      int screenW = PreferencesData.getInteger("last.screen.width");
-      int screenH = PreferencesData.getInteger("last.screen.height");
-      if ((screen.width == screenW) && (screen.height == screenH)) {
-        String locationStr = PreferencesData.get("last.serial.location");
-        if (locationStr != null) {
-          int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
-          setPlacement(location);
-        }
+    String locationStr = PreferencesData.get("last.serial.location");
+    if (locationStr != null) {
+      int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
+      if (location[0] + location[2] <= screen.width && location[1] + location[3] <= screen.height) {
+        setPlacement(location);
       }
     }
-    
+
     updateBuffer = new StringBuffer(1048576);
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
+
+    closed = false;
   }
 
-  public void onSerialRateChange(ActionListener listener) {
-    serialRates.addActionListener(listener);
+  protected abstract void onCreateWindow(Container mainPane);
+
+  public void enableWindow(boolean enable) {
+    onEnableWindow(enable);
   }
 
-  public void onSendCommand(ActionListener listener) {
-    textField.addActionListener(listener);
-    sendButton.addActionListener(listener);
+  protected abstract void onEnableWindow(boolean enable);
+
+  // Puts the window in suspend state, closing the serial port
+  // to allow other entity (the programmer) to use it
+  public void suspend() throws Exception {
+    enableWindow(false);
+
+    close();
+  }
+
+  public void resume(BoardPort boardPort) throws Exception {
+    setBoardPort(boardPort);
+
+    // Enable the window
+    enableWindow(true);
+
+    // If the window is visible, try to open the serial port
+    if (!isVisible()) {
+      return;
+    }
+
+    open();
   }
 
   protected void setPlacement(int[] location) {
@@ -205,16 +121,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     return location;
   }
 
-  public void message(final String s) {
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        textArea.append(s);
-        if (autoscrollBox.isSelected()) {
-          textArea.setCaretPosition(textArea.getDocument().getLength());
-        }
-      }
-    });
-  }
+  public abstract void message(final String s);
 
   public boolean requiresAuthorization() {
     return false;
@@ -224,10 +131,30 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     return null;
   }
 
-  public abstract void open() throws Exception;
+  public boolean isClosed() {
+    return closed;
+  }
 
-  public abstract void close() throws Exception;
-  
+  public void open() throws Exception {
+    closed = false;
+  }
+
+  public void close() throws Exception {
+    closed = true;
+  }
+
+  public BoardPort getBoardPort() {
+    return boardPort;
+  }
+
+  public void setBoardPort(BoardPort boardPort) {
+    if (boardPort == null) {
+      return;
+    }
+    setTitle(boardPort.getLabel());
+    this.boardPort = boardPort;
+  }
+
   public synchronized void addToUpdateBuffer(char buff[], int n) {
     updateBuffer.append(buff, 0, n);
   }
@@ -239,16 +166,11 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
   }
 
   public void actionPerformed(ActionEvent e) {
-    final String s = consumeUpdateBuffer();
-    if (s.length() > 0) {
-      //System.out.println("gui append " + s.length());
-      if (autoscrollBox.isSelected()) {
-        textArea.appendTrim(s);
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-      } else {
-        textArea.appendNoTrim(s);
-      }
+    String s = consumeUpdateBuffer();
+    if (s.isEmpty()) {
+      return;
+    } else {
+      message(s);
     }
   }
-
 }

@@ -16,5 +16,4 @@ public class UDevAdmParser {
       return null;
     return ("0x" + vid + "_0x" + pid).toUpperCase();
   }
-
 }

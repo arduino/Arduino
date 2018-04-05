@@ -26,31 +26,44 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndexer;
-import cc.arduino.contributions.libraries.LibraryInstaller;
-import cc.arduino.contributions.libraries.LibraryTypeComparator;
-import cc.arduino.contributions.DownloadableContribution;
-import cc.arduino.contributions.ui.InstallerJDialogUncaughtExceptionHandler;
-import cc.arduino.contributions.ui.*;
-import cc.arduino.utils.Progress;
-import com.google.common.base.Predicate;
+import static processing.app.I18n.tr;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.function.Predicate;
 
-import static processing.app.I18n._;
+import javax.swing.Box;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableCellRenderer;
+
+import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.LibraryInstaller;
+import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.ui.DropdownAllItem;
+import cc.arduino.contributions.ui.DropdownItem;
+import cc.arduino.contributions.ui.FilteredAbstractTableModel;
+import cc.arduino.contributions.ui.InstallerJDialog;
+import cc.arduino.contributions.ui.InstallerJDialogUncaughtExceptionHandler;
+import cc.arduino.contributions.ui.InstallerTableCell;
+import cc.arduino.utils.Progress;
+import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
-  private LibrariesIndexer indexer;
   private final JComboBox typeChooser;
+  private final LibraryInstaller installer;
   private Predicate<ContributedLibrary> typeFilter;
 
   @Override
@@ -58,18 +71,14 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     return new LibrariesIndexTableModel();
   }
 
-  private LibrariesIndexTableModel getContribModel() {
-    return (LibrariesIndexTableModel) contribModel;
-  }
-
   @Override
-  protected InstallerTableCell createCellRenderer() {
-    return new ContributedLibraryTableCell();
+  protected TableCellRenderer createCellRenderer() {
+    return new ContributedLibraryTableCellRenderer();
   }
 
   @Override
   protected InstallerTableCell createCellEditor() {
-    return new ContributedLibraryTableCell() {
+    return new ContributedLibraryTableCellEditor() {
       @Override
       protected void onInstall(ContributedLibrary selectedLibrary, ContributedLibrary installedLibrary) {
         if (selectedLibrary.isReadOnly()) {
@@ -86,10 +95,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent) {
-    super(parent, "Library Manager", Dialog.ModalityType.APPLICATION_MODAL, _("Unable to reach Arduino.cc due to possible network issues."));
+  public LibraryManagerUI(Frame parent, LibraryInstaller installer) {
+    super(parent, tr("Library Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
+    this.installer = installer;
 
-    filtersContainer.add(new JLabel(_("Topic")), 1);
+    filtersContainer.add(new JLabel(tr("Topic")), 1);
     filtersContainer.remove(2);
 
     typeChooser = new JComboBox();
@@ -97,7 +107,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeChooser.setEnabled(false);
 
     filtersContainer.add(Box.createHorizontalStrut(5), 0);
-    filtersContainer.add(new JLabel(_("Type")), 1);
+    filtersContainer.add(new JLabel(tr("Type")), 1);
     filtersContainer.add(Box.createHorizontalStrut(5), 2);
     filtersContainer.add(typeChooser, 3);
   }
@@ -120,30 +130,24 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   @Override
   public void updateIndexFilter(String[] filters, Predicate<ContributedLibrary>... additionalFilters) {
     if (additionalFilters.length == 1) {
-      additionalFilters = new Predicate[] { additionalFilters[0], typeFilter };
+      additionalFilters = new Predicate[]{additionalFilters[0], typeFilter};
     }
     super.updateIndexFilter(filters, additionalFilters);
   }
 
-  public void setIndexer(LibrariesIndexer indexer) {
-    this.indexer = indexer;
-
+  public void updateUI() {
     DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
     DropdownItem<DownloadableContribution> previouslySelectedType = (DropdownItem<DownloadableContribution>) typeChooser.getSelectedItem();
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
 
-    // TODO: Remove setIndexer and make getContribModel 
-    // return a FilteredAbstractTableModel
-    getContribModel().setIndexer(indexer);
-
     categoryFilter = null;
     categoryChooser.removeAllItems();
 
     // Load categories
     categoryChooser.addItem(new DropdownAllItem());
-    Collection<String> categories = indexer.getIndex().getCategories();
+    Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
       categoryChooser.addItem(new DropdownLibraryOfCategoryItem(category));
     }
@@ -160,8 +164,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     typeFilter = null;
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllItem());
-    typeChooser.addItem(new DropdownInstalledLibraryItem(indexer.getIndex()));
-    java.util.List<String> types = new LinkedList<String>(indexer.getIndex().getTypes());
+    typeChooser.addItem(new DropdownUpdatableLibrariesItem());
+    typeChooser.addItem(new DropdownInstalledLibraryItem());
+    java.util.List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));
@@ -175,29 +180,16 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     }
 
     filterField.setEnabled(contribModel.getRowCount() > 0);
-
-    // Create LibrariesInstaller tied with the provided index
-    installer = new LibraryInstaller(indexer) {
-      @Override
-      public void onProgress(Progress progress) {
-        setProgress(progress);
-      }
-    };
   }
 
-  public LibrariesIndexer getIndexer() {
-    return indexer;
+  public void selectDropdownItemByClassName(String dropdownItem) {
+    selectDropdownItemByClassName(typeChooser, dropdownItem);
   }
 
   public void setProgress(Progress progress) {
     progressBar.setValue(progress);
   }
 
-  /*
-   * Installer methods follows
-   */
-
-  private LibraryInstaller installer;
   private Thread installerThread = null;
 
   @Override
@@ -211,71 +203,65 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   @Override
   protected void onUpdatePressed() {
     super.onUpdatePressed();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, "");
-          installer.updateIndex();
-          onIndexesUpdated();
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, "");
+        installer.updateIndex(this::setProgress);
+        onIndexesUpdated();
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Update Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
 
   public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
     clearErrorMessage();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, _("Installing..."));
-          installer.install(lib, replaced);
-          onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-          //getContribModel().updateLibrary(lib);
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, tr("Installing..."));
+        installer.install(lib, replaced, this::setProgress);
+        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
+        //getContribModel().updateLibrary(lib);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Installer Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }
 
   public void onRemovePressed(final ContributedLibrary lib) {
-    boolean managedByIndex = indexer.getIndex().getLibraries().contains(lib);
+    boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib);
 
     if (!managedByIndex) {
-      int chosenOption = JOptionPane.showConfirmDialog(this, _("This library is not listed on Library Manager. You won't be able to resinstall it from here.\nAre you sure you want to delete it?"), _("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+      int chosenOption = JOptionPane.showConfirmDialog(this, tr("This library is not listed on Library Manager. You won't be able to reinstall it from here.\nAre you sure you want to delete it?"), tr("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
       if (chosenOption != JOptionPane.YES_OPTION) {
         return;
       }
     }
 
     clearErrorMessage();
-    installerThread = new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          setProgressVisible(true, _("Removing..."));
-          installer.remove(lib);
-          onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-          //getContribModel().updateLibrary(lib);
-        } catch (Exception e) {
-          throw new RuntimeException(e);
-        } finally {
-          setProgressVisible(false, "");
-        }
+    installerThread = new Thread(() -> {
+      try {
+        setProgressVisible(true, tr("Removing..."));
+        installer.remove(lib, this::setProgress);
+        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
+        //getContribModel().updateLibrary(lib);
+      } catch (Exception e) {
+        throw new RuntimeException(e);
+      } finally {
+        setProgressVisible(false, "");
       }
     });
+    installerThread.setName("LibraryManager Remove Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
   }

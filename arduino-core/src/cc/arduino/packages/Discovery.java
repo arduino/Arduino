@@ -51,5 +51,6 @@ public interface Discovery {
    * @return
    */
   List<BoardPort> listDiscoveredBoards();
+  List<BoardPort> listDiscoveredBoards(boolean complete);
 
 }

@@ -40,4 +40,12 @@ public class StringUtils {
     }
     return s.substring(0, i + 1);
   }
+
+  public static String join(String[] arr, String separator) {
+    StringBuffer sb = new StringBuffer();
+    for (String s : arr) {
+      sb.append(s).append(separator);
+    }
+    return sb.substring(0, sb.length() - separator.length());
+  }
 }

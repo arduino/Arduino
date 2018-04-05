@@ -34,7 +34,7 @@ IPAddress server(1, 1, 1, 1);
 // Initialize the Ethernet client library
 // with the IP address and port of the server
 // that you want to connect to (port 23 is default for telnet;
-// if you're using Processing's ChatServer, use  port 10002):
+// if you're using Processing's ChatServer, use port 10002):
 EthernetClient client;
 
 void setup() {
@@ -43,7 +43,7 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
 
@@ -54,15 +54,13 @@ void setup() {
   // if you get a connection, report back via serial:
   if (client.connect(server, 10002)) {
     Serial.println("connected");
-  }
-  else {
+  } else {
     // if you didn't get a connection to the server:
     Serial.println("connection failed");
   }
 }
 
-void loop()
-{
+void loop() {
   // if there are incoming bytes available
   // from the server, read them and print them:
   if (client.available()) {

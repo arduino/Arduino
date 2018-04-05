@@ -1,4 +1,358 @@
-ARDUINO 1.6.5
+ARDUINO 1.8.6
+
+[ide]
+* Added translations for library types. Thanks @ReAlUA
+* Added scroller in programmers menu.
+* Added "accelerator" in scrollable menu, press "a" key while scrolling
+* Keep "Board Manager" menu item always as first in the menu
+
+[core]
+* AVR: Set Optiboot as default bootloader for Nano. This is the bootloader installed on new Arduino Nano boards. If you have a Nano with the old bootloader you must select Tools > Processor > ATmega328P (Old Bootloader) to upload.
+
+[wifi101-firmware]
+* SECURITY FIX: Released fix for WPA2 KRACK vulnerability (latest WINC1500 firmware 19.5.2).
+
+ARDUINO 1.8.5 2017.09.29
+
+(bugfix service release)
+
+[ide]
+* Added workaround for menu visibility bug in MacOSX 10.13 beta. Thanks @puybaret
+* Fixed bug for negative-font-size.
+* New/Rename tabs now allows names starting with a number.
+
+ARDUINO 1.8.4 2017.08.23
+
+[ide]
+* IDE Toolbar can now go full width on 4K display.
+* Environment variable LIBRARY_INDEX_URL is now correctly parsed (LIBRARY_INDEX_URL_GZ can also be optinally specified). Thanks @xardael
+* Added per-board generic option in config file boards.txt for disabling control of dtr+rts. Thanks @d-a-v
+* CLI: fixed missing "runtime.platform.path" when running without the `--board` option
+* Linux: fixed desktop icon not launching the IDE in certain Window Managers (thanks @herrold)
+* Allow setting low values for console size (correctly applies console.lines=x in preferences.txt)
+* Make Preference window fit 600px height displays
+* Fix error when renaming an unsaved, newly added file. Thanks @matthijskooijman
+* Added the ability to increase/decrease font size via keyboard + mouse shortcuts (Ctrl + MouseWheel)
+* Sketch names starting with a digit are now allowed
+* Serial monitor is opened on a default position if the multi-monitor setup change (this should fix cases
+  when the serial monitor is opened outside of the visibile space)
+
+[libraries]
+* Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
+* Fixed wrong include for "RobotIRRemote", now it should not interfere anymore with the real IRRemote.
+
+ARDUINO 1.8.3 2017.05.31
+
+(bugfix service release)
+
+[ide]
+* Fixed RESOURCE_NAME in install.sh script
+* Serial Monitor: added "Clear output" button. Thanks @MichaelSy
+* added options in preferences.txt for: custom title, comment/uncomment shortcut, always show file extensions. Thanks @MichaelSy
+* added options in preferences.txt to enable/disable typing assistance (auto close brace, auto indent)
+* Enabling "Use external editor" option now requires to save all sketches.
+
+[core]
+* AVR: added availableForWrite() method in generic Stream class. Thanks @eric-wieser
+* AVR: moved flush() method up in the class hierarchy from Stream to Print class. Thanks @matthijskooijman
+
+[other]
+* Update Wifi101 Firmware Updater plugin
+
+ARDUINO 1.8.2 2017.03.22
+
+[ide]
+* Fix command line: works again with relative paths (regression)
+* Fix command line: "--save-prefs" works again (regression)
+* AVR toolchain has been updated with a tentative fix for the ld-returned-5-exit-status bug
+* Update arduino-builder to 1.3.25
+  - avoid name clashing for libraries
+  - cache core archives to speedup compilation consistently
+* Allow BoardManager to fetch FreeBSD tools (thanks @kevans91)
+* Serial monitor: the input string box is automatically focused when window is selected
+* Serial monitor: now can not be opened during upload
+* Serial monitor: now properly decodes UTF8 characters (thanks @aknrdureegaesr)
+* Serial monitor: added 500k, 1M and 2M baudrates (thanks @dsstutts)
+* Updated RSyntaxTextArea to 2.6.1 (textarea component)
+* Updated jmdsn (mDNS discovery)
+* Allow plugins to attach a listener to compile progress (thanks @tomneutens)
+
+[core]
+* Add Atmel-ICE and JTAGICE3 programmers for AVR chips (thanks @matthijskooijman)
+* AVR: Set unused bits of extended fuse to 1, should remove some avrdude warning during burn bootloader (thanks @descampsa)
+* AVR: USB: send ZLP when needed (allows full 64 bytes packets)
+* AVR: USB: use IAD descriptors instead than Generic (thanks @cuitoldfish)
+
+[other]
+* SAM platform source code has been moved to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
+* Update Wifi101 Firmware Updater plugin
+
+ARDUINO 1.8.1 - 2017.01.09
+
+[ide]
+* Fixed font rendering not anti-aliased on Windows (regression)
+* Increased number of colors on serial plotter to 8, thanks @cousteaulecommandant
+
+[libraries]
+* Fixed regression in SD library. Thanks @greiman
+
+ARDUINO 1.8.0 - 2016.12.20
+
+[ide]
+* Linux: running in command line mode doesn't require an X11 display anymore
+* "Save as" now clears the "modified" status
+* builder: Paths with strange UTF8 chars are now correctly handled
+* builder: .hpp and .hh file extensions are now considered valid sketch extension
+* builder: core.a is not rebuild if not needed (improve build time in particular for big projects)
+* Fixed swapped actions "Copy for Forum" and "Copy as HTML"
+* Linux/osx: If an editor tab is a symbolic link it is no more replaced with a real file when saving (see #5478)
+* Increased the upload timeout to 5 minutes (it was 2 min, but it may be not sufficient when uploading via UART a big sketch)
+
+[core]
+* Added Arduino.org boards
+* Added Adafruit Circuit Playground board
+* Added "-g" option to linker to keep debug information in the .elf file (see #5539)
+* avrdude: Added fake configuration for EFUSE on atmega8 part. This solves a long standing issue with "Burn bootloader".
+  Thanks @rigelinorion, @awatterott
+
+ARDUINO 1.6.13 - 2016.11.22
+
+[ide]
+* Improved robustness of Serial Plotter while dealing with malformed or partial data. Thanks @xloem.
+* Fixed regression on command line upload.
+* Bugifx installing libraries from command line: the IDE tries to update the libraries index but it
+  didn't use it straight away (this caused issues mainly on CI environments)
+* Libraries and Boards Managers: if a download error happens (CRC error) the IDE tries to download the file again
+  without the need to remove the corrupted file manually.
+* Improved serial plotter with horizontal axis and grid. Thanks @duff2013
+* Windows: Improved DPI detection
+* Fixed a bunch of small bugs in the editor.
+* WiFi101 Firmware Updater: fixed certificates download from websites usign SNI (handshake_failed error)
+
+[core]
+* avr: set default values for "upload.verify" and "program.verify" (allows compatibility with older IDE). Thanks @per1234
+
+ARDUINO 1.6.12 - 2016.09.21
+
+[ide]
+* Refactor Editor code, solving some long standing bugs and cleaning up everything. Thanks @matthijskooijman
+* Add initial Cloud API integration. When plugging a new board, if an additional core is needed, the user will be prompted to install it
+* Improved examples menu organization. Thanks @PaulStoffregen
+* Recompiled arduino-builder with Go 1.7.1 to avoid crash on OSX Sierra
+
+[core]
+* avr: Add support for internal 2.56V and 2.56V ext. cap analog references on the ATtiny25/45/85. Thanks @mischnic
+* Added String::toDouble(). Thanks @Ivan-Perez
+* Update to avrdude 6.3 with patch to ignore unused fuses (burn bootloader works also wih outdated cores)
+
+ARDUINO 1.6.11 - 2016.08.17
+
+[ide]
+* Fixed a serious bug that prevented some 3rd party boards, installed through external index.json URL, to work correctly.
+* Fixed a bug in boards manager that, in some rare circumstances, could lead to remove bundled
+  tools when uninstalling a previously installed AVR core.
+* builder: fixed regression about inclusion of files in subfolders of the sketch
+  (see https://github.com/arduino/Arduino/issues/5186 for details)
+* avrdude: reverted to version 6.0.1, until all discovered regressions are solved
+  (see https://github.com/arduino/Arduino/issues?q=is%3Aissue+is%3Aopen+label%3A%22Component%3A+Avrdude+6.3%22 for details)
+
+ARDUINO 1.6.10 - 2016.07.26
+
+[ide]
+* A lot of bugfixes to builder:
+  https://github.com/arduino/arduino-builder/issues?q=milestone%3A1.3.19+is%3Aclosed
+* Libraries can now define the property "includes" in the library.properties to
+  tell the IDE which `#include <...>` lines should be added to the sketch when
+  the "Include library" command is used. See:
+  https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5:-Library-specification#libraryproperties-file-format
+* Examples are now filtered by architecture
+* Added more graceful handling of upload failures
+* Solved a bug that crashed the IDE with some exotic serial devices
+
+[core]
+* avr: toolchain updated to latest Atmel release 3.5.3 http://distribute.atmel.no/tools/opensource/Atmel-AVR-GNU-Toolchain/3.5.3/
+  The updated tools are now binutils-2.26, gcc-4.9.2, avr-libc-2.0.0, gdb-7.8
+* avr: avrdude updated to version 6.3
+* fixed a small bug that caused a compile error on some 3rd party derivatives boards based on Leonardo
+* sam: added snprintf_P to avr/pgmspace.h stub. Thanks @jantje
+* avr: Fix TX buffer being overwritten by multiple Wire.write(...) calls in slave mode. Thanks @kellerkindt
+* Another small fix to String iterators. Thanks @Ivan-Perez @Chris--A
+* Added getTimeout() method to Stream. Thanks @mattb5906
+* avr: Fixed USB wakeup event handling, this solves some rare lockups of serial port on some linux distributions
+* Speed and size improvement on Print::printFloat(..). Thanks @bblanchon
+* avr: Added Serial.availableForWrite() for USB-CDC serial ports
+* avr: Added PIN_* defines to all board variants
+
+[libraries]
+
+ARDUINO 1.6.9 - 2016.05.10
+
+[ide]
+* Catch and report errors during parsing contributed index files
+* Fixed IDE version color on about dialog box. Thanks @ivanebernal
+* The "always-on-top update notification" popup is now less intrusive.
+* Fixed untraslated string during IDE startup splash window. Thanks @ivanebernal
+* New arduino-builder: better core library detection, faster operations when recompiling and more.
+  See https://github.com/arduino/arduino-builder/compare/1.3.9...1.3.15
+* Fixed multitab error reporting
+* Rework serial port discovery to be faster, less cpu intensive and FTDI friendly
+* Avoid launching multiple concurrent compile and upload operation
+* Use hi-res icons for Serial monitor and plotter
+* Make http://librarymanager and http://boardsmanager links clickable from the editor window
+* Cut/Copy actions are disable when there is no text selected. Thanks @avargas-nearsoft
+* Added more OSX native (emacs-like) keybindings. Thanks @nopdotcom
+* Fixed Ctrl+Del: now deletes the word behind the cursor instead of the entire line. Thanks @avargas-nearsoft
+* Fixed "Verify code after upload" option in preferences. Thanks @gh-megabit
+
+[core]
+* String class now supports iterators. Thanks @Chris--A
+* sam: Allow 3rd party boards that depend on SAM core to use their own
+       USB vid/pid and manufacturer/product strings. Thanks @philmanofsky.
+* avr: Check at runtime if 32u4 boards are shipped with new bootloader; if so
+       write bootloader magic value in an unproblematic RAM location
+* avr, sam: Added "reciper.ar.pattern" to plaform.txt to allow compatibility
+  with older version of Arduino IDE. Thanks @per1234
+
+[libraries]
+* Bridge / bridge.py: added support for SSL sockets (Yun firmware >=1.6.2 is
+  needed).
+
+ARDUINO 1.6.8 - 2016.03.09
+
+[ide]
+* Added support for GUI interface scaling for UHD monitors.
+  Thanks to all contributors and testers:
+  https://github.com/arduino/Arduino/pull/4376
+  https://github.com/arduino/Arduino/pull/2776
+* Editor position is saved when closing with Alt+F4 or clicking on the "X" button. Thanks @willie68
+* Fixed a NullPointerException when dealing with some rare combination of package_*.json files
+* Fixed incorrect key bindings handling for changing tab. Thanks @matthijskooijman
+* MacOSX: Fixed handling of add indent/remove indent shortcuts (CMD+[ and CMD+])
+* Fixed incorrect update of available libraries in Library Manager. Thanks @vicnevicne
+* Serial plotter now correctly resize graphs with negative values. Thanks @vicnevicne
+* Improved sketch preprocessor when handling C++11 keywords. Thanks @matthijskooijman @igrr
+* Updates to keyword pigmentation to match Create
+* Fixed display of LITERAL1 keywords
+* Added target board information when "Error compiling" message is displayed. Thanks @PaulStoffregen
+
+[core]
+* avr: fixed USB_SendControl(...) for buffer with len > 64. Thanks @NicoHood
+* avr: fixed yield() usage inside delay(). Thanks @vbextreme
+* sam: fixed USB descriptor length
+* avr: reduced boiler-plate for ISR declarations. Thanks @paulo-raca
+* avr: added Timer3 support for atmega1284/1284p. Thanks @feilipu
+* sam: added USB CDC send break support and readBreak API
+
+[libraries]
+* Added support for Arduino/Genuino 101 to: TFT, Ethernet, SD
+* SD: the library is now board-agnostic. Thanks @feilipu
+
+ARDUINO 1.6.7 - 2015.12.17
+
+[ide]
+* New arduino-builder: faster, better prototype generation and library discovery logic, and more. See https://github.com/arduino/arduino-builder/compare/1.0.5...1.3.9
+* Serial plotter now allows to plot multiple values at once. Thanks @henningpohl
+* New translations
+* Added support to file:// protocol for boards manager URLs
+* Portable sketchbook folder can now be any arbitrary location
+* Fixed a bug that caused Boards Manager to install the same tool twice or more, thus wasting disk space, if other cores where using tools delivered by arduino
+* Fixed various Boards manager glitches, in particular when removing a board
+* Windows: Arduino IDE icon is now in high definition, bye bye that blurry icon
+* Remote upload without SSH is now supported (allows OTA upload for many 3rd party boards). Thanks @me-no-dev.
+
+[libraries]
+* SPI: Added SPI.transfer16(...) function to SAM core.
+* Ethernet, WiFi, SoftwareSerial: Fixed flush() behaviour:
+  the flush function is no more dropping the receive buffer, as per
+  1.0 API specification. Thanks @drmpf
+
+[core]
+* Fixed wrong timings for HardwareSerial::flush() in SAM core. Thanks @borisff
+* Stream: Optional lookahead and skipChar options added to parseInt and parseFloat, 
+  parseFloat also support parsing floats without a leading 0,
+  Stream::find(char) added to SAM. Thanks @Chris--A.
+* Leonardo/Micro (and other atmega32u4 based boards) now have SerialUSB alias for Serial
+* Leonardo now has LED_BUILTIN_RX/TX definitions in variant file. Thanks @NicoHood
+
+ARDUINO 1.6.6 - 2015.11.03
+
+[ide]
+* Switched to Java 8, which is now both bundled and needed for compiling the IDE
+* Added link to unofficial boards support list in preferences
+* Limit of possible new sketches in a day raised to 676. Thanks @Chris--A
+* Windows: fixed a bug when running username had non ASCII chars
+* Lots of fixes
+* ArduinoISP examples moved under 11.ArduinoISP folder
+* MacOSX: binary is now able to tell the IDE its current working directory. Eases life to those using the IDE from the CLI
+* CLI: if specified board doesn't exist, fail instead of using a default one
+* Windows: IDE stores its stuff under %LOCALAPPDATA% instead of %APPDATA% (which was a roaming folder). %APPDATA% content is automatically migrated to new location
+* Added 74880 baud rate to serial monitor. Thanks @Chris--A
+* When changing tab, file name is shown in window title
+* IDE groups compiled files into "libraries", "core" and "sketch" folders
+* Added Serial Plotter. Thanks @henningpohl
+* Editor: triple click selects whole line
+* Windows: IDE startup feels faster
+* Examples of libraries with a .development flag file in their root folder won't get marked as read-only. See #2619
+* Update notifications: when updates are available from either Library or Boards Managers, a popup will be shown
+* Introducing arduino-builder, a command line tool that properly calls gcc. Fixes lots of issues about buggy preprocessing.
+* Each open sketch gets built in its own folder, allowing the IDE to recycle previous compilations and being much faster
+* "Go to line": CTRL+L or Edit > Go to line... will open a dialog where you can type the line number where you want the editor to jump to
+* Added boards.local.txt support: like platform.local.txt, allows to enrich a boards.txt definition without modifying the original file. Thanks @Wackerbarth
+* Library to library dependencies: when your sketch imports a library, and that library uses another, the IDE will find out without you having to add a useless #include to your sketch
+* Allow per-platform keywords.txt. Thanks @PaulStoffregen
+* Allow spaces in IDE install path on Linux. Thanks @matthijskooijman
+* Fixed a lot of documentation. Thanks to @per1234 @q2dg
+* Fixed parsing for SystemProfiler when scanning for available serial ports on Macosx El Capitan
+
+[libraries]
+* Bridge: YunClient.connected() returns true if there are bytes available for read. Thanks @RobAtticus
+* Bridge: YunClient.stop() now empties all buffers. Thanks @RobAtticus
+* Ethernet: Added missing keywords. Thanks @per1234
+* Ethernet: Fixed DNSClient.inet_aton() function. Thanks @jhorck
+* Ethernet: Expose optional DHCP timout parameters to Ethernet:begin(). Thanks @chaveiro
+* Wire: Implemented Wire.end().
+* Wire: Fixed bug with repeated START for AVR. Thanks Nate Williams
+* Wire: Resolved timing issues on AVR. See #2173 #1477.
+* Wire: Fixed bug in repeated start in slave mode on SAM. See #3908
+* SD: Change "char *" to "const char *" on methods accepting a string as a parameter. Thanks @Ivan-Perez
+* Scheduler: Added support for cortex-M0. Thanks @PeterVH
+
+[core]
+* Added new PluggableUSB and HID support. This change introduces a more powerful API for
+  libraries that wants use advanced features of USB-Device.
+  Thanks to @obra @NicoHood @matthijskooijman @nospam2000 @weizenspreu
+* AVR: fixed wrong turnOffPWM() for TIMER0B. Thanks @gonzoveliki
+* AVR: added support for AtmegaXXu2. Thanks @NicoHood
+* AVR: a bunch of USB Core bug fix. Thanks @NicoHood
+* AVR: Expose serial setting from USB-CDC serial port. Thanks @matthijskooijman
+* ArduinoISP is now compatible with every architecture (not only AVR) and is much more stable. Thanks @PeterVH
+* Print not aborting on write() failure. Thanks @stickbreaker
+* AVR: Faster interrupts patch. Thanks @xxxajk
+* AVR: Fixed pulseInLong wrong measurements.
+* AVR: Removed a bunch of compiler warnings. Thanks @NicoHood
+* Improved variants files for Boards Gemma and Ethernet
+
+ARDUINO 1.6.5-r5 - 2015.08.28
+
+[ide]
+* Fixed a but preventing upload on boards that do not supply VID/PID. See #3738
+
+ARDUINO 1.6.5-r4 - 2015.08.27
+
+[ide]
+* Added support to Genuino boards
+
+ARDUINO 1.6.5-r3 - 2015.07.20
+
+[ide]
+* Fixed Mac signature for OSX >=10.10.4
+
+ARDUINO 1.6.5-r2 - 2015.06.17
+
+[ide]
+* Windows: fixed a problem that prevented opening the IDE when double clicking a .ino file
+
+ARDUINO 1.6.5 - 2015.06.15
 
 [ide]
 * File, Sketch and Tools menu items are properly handled when switching between different windows
@@ -11,12 +365,36 @@ ARDUINO 1.6.5
 * Removed JNA. Less native stuff and less chances of incurring into an UnsatisfiedLinkError
 * Many new and old issues closed. Thanks to many, and @Chris--A in particular
 * Faster libraries list update
+* Serial monitor stays opened during upload, disabled. Thanks @avishorp and @Wackerbarth
+* CLI: --get-pref can now be called without a pref name. If pref name is missing, IDE dumps all preferences
+* Holding SHIFT when hovering the save icon will trigger a "Save As"
+* Removed proxy settings from File > Preferences: IDE will use system settings
+* Linux versions bundle the latest JVM, 1.8.0_45
+* Local docs: if your sketch has a "docs" folder, you can add local links to it. For example file://./docs/index.html
+  will use your browser to open file index.html from the "docs" folder of your sketch
+* When using "external editor" mode, sketch code is updated when the IDE gets focused
+* Added keyboard shortcuts to IDE menus: ALT+F for File, ALT+E for Edit and so on
+* Added support for Dangerous Prototypes Bus Pirate as ISP
+* Added "Close" button to Boards/Libs Managers, in order to help linux people with weird Window Managers
+* Added File > Open Recent menu, showing the last 5 opened sketches
+* Windows: added Arduino Zero drivers
+* Tons of minor fixes
 
 [libraries]
 * LiquidCrystal fixes. Thanks @newbie15
+* Added SPI Transactions to TFT lib
+* Stepper: support for 5-phase/5-wires motors. Thanks @rdodesigns
+* Stepper: increased precision in timing calculations. Thanks @ekozlenko
+* Firmata and Temboo: dropped our vesions, tagged released are downloaded from their respective git repos
 
 [core]
-* SAM: added watchdog routing for Due. Thanks @bobc
+* AVR: delayMicroseconds(..) doesn't hang if called with 0. Thanks @cano64
+* AVR: delayMicroseconds(..), added support for 1Mhz, 12Mhz and 24Mhz. Thanks @cano64
+* AVR: added missing case in detachInterrupt(). Thanks @leres, @vicatcu
+* SAM: added watchdog routine for Due. Thanks @bobc
+* AVR+SAM: reworked pulseIn() function to become GCC agnostic
+* AVR+SAM: added pulseInLong() (based on micros()) to help getting good results in interrupt-prone environments
+* AVR: fixed regression in HardwareSerial.flush(). Thanks @chromhelm
 
 ARDUINO 1.6.4 - 2015.05.06
 

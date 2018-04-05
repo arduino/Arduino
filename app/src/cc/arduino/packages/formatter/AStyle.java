@@ -1,5 +1,3 @@
-/* -*- mode: java; c-basic-offset: 2; indent-tabs-mode: nil -*- */
-
 /*
  * This file is part of Arduino.
  *
@@ -32,16 +30,15 @@
 package cc.arduino.packages.formatter;
 
 import processing.app.Base;
+import processing.app.BaseNoGui;
 import processing.app.Editor;
 import processing.app.helpers.FileUtils;
-import processing.app.syntax.SketchTextArea;
 import processing.app.tools.Tool;
 
-import javax.swing.text.BadLocationException;
 import java.io.File;
 import java.io.IOException;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class AStyle implements Tool {
 
@@ -53,7 +50,7 @@ public class AStyle implements Tool {
 
   public AStyle() {
     this.aStyleInterface = new AStyleInterface();
-    File customFormatterConf = Base.getSettingsFile(FORMATTER_CONF);
+    File customFormatterConf = BaseNoGui.getSettingsFile(FORMATTER_CONF);
     File defaultFormatterConf = new File(Base.getContentFile("lib"), FORMATTER_CONF);
 
     File formatterConf;
@@ -79,61 +76,23 @@ public class AStyle implements Tool {
 
   @Override
   public void run() {
-    String originalText = editor.getText();
+    String originalText = editor.getCurrentTab().getText();
     String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
 
     if (formattedText.equals(originalText)) {
-      editor.statusNotice(_("No changes necessary for Auto Format."));
+      editor.statusNotice(tr("No changes necessary for Auto Format."));
       return;
     }
 
-    SketchTextArea textArea = editor.getTextArea();
-
-    int line = getLineOfOffset(textArea);
-    int lineOffset = getLineOffset(textArea, line);
-
-    editor.getTextArea().getUndoManager().beginInternalAtomicEdit();
-    editor.setText(formattedText);
-    editor.getSketch().setModified(true);
-    editor.getTextArea().getUndoManager().endInternalAtomicEdit();
-
-    if (line != -1 && lineOffset != -1) {
-      setCaretPosition(textArea, line, lineOffset);
-    }
+    editor.getCurrentTab().setText(formattedText);
 
     // mark as finished
-    editor.statusNotice(_("Auto Format finished."));
-  }
-
-  private void setCaretPosition(SketchTextArea textArea, int line, int lineOffset) {
-    try {
-      textArea.setCaretPosition(Math.min(textArea.getLineStartOffset(line) + lineOffset, textArea.getLineEndOffset(line) - 1));
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private int getLineOffset(SketchTextArea textArea, int line) {
-    try {
-      return textArea.getCaretPosition() - textArea.getLineStartOffset(line);
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-    return -1;
-  }
-
-  private int getLineOfOffset(SketchTextArea textArea) {
-    try {
-      return textArea.getLineOfOffset(textArea.getCaretPosition());
-    } catch (BadLocationException e) {
-      e.printStackTrace();
-    }
-    return -1;
+    editor.statusNotice(tr("Auto Format finished."));
   }
 
   @Override
   public String getMenuTitle() {
-    return _("Auto Format");
+    return tr("Auto Format");
   }
 
 }

@@ -138,8 +138,7 @@ void HardwareSerial::begin(unsigned long baud, byte config)
 void HardwareSerial::end()
 {
   // wait for transmission of outgoing data
-  while (_tx_buffer_head != _tx_buffer_tail)
-    ;
+  flush();
 
   cbi(*_ucsrb, RXEN0);
   cbi(*_ucsrb, TXEN0);

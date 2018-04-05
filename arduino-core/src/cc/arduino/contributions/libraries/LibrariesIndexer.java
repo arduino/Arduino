@@ -26,17 +26,16 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.Constants;
 import cc.arduino.contributions.libraries.filters.LibraryInstalledInsideCore;
 import cc.arduino.contributions.libraries.filters.TypePredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.packages.ContributionsIndexer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -50,15 +49,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 public class LibrariesIndexer {
 
-  private final ContributionsIndexer contributionsIndexer;
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
   private final LibraryList installedLibrariesWithDuplicates = new LibraryList();
@@ -66,24 +64,27 @@ public class LibrariesIndexer {
   private final File indexFile;
   private final File stagingFolder;
   private File sketchbookLibrariesFolder;
-  
-  private final List<String> badLibNotified = new ArrayList<String>();
 
-  public LibrariesIndexer(File preferencesFolder, ContributionsIndexer contributionsIndexer) {
-    this.contributionsIndexer = contributionsIndexer;
-    this.indexFile = new File(preferencesFolder, "library_index.json");
-    this.stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
+  private final List<String> badLibNotified = new ArrayList<>();
+
+  public LibrariesIndexer(File preferencesFolder) {
+    indexFile = new File(preferencesFolder, "library_index.json");
+    stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
   }
 
   public void parseIndex() throws IOException {
-    parseIndex(indexFile);
+    if (!indexFile.exists()) {
+      index = new EmptyLibrariesIndex();
+    } else {
+      parseIndex(indexFile);
+    }
     // TODO: resolve libraries inner references
   }
 
-  private void parseIndex(File indexFile) throws IOException {
+  private void parseIndex(File file) throws IOException {
     InputStream indexIn = null;
     try {
-      indexIn = new FileInputStream(indexFile);
+      indexIn = new FileInputStream(file);
       ObjectMapper mapper = new ObjectMapper();
       mapper.registerModule(new MrBeanModule());
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -91,11 +92,10 @@ public class LibrariesIndexer {
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       index = mapper.readValue(indexIn, LibrariesIndex.class);
 
-      for (ContributedLibrary library : index.getLibraries()) {
-        if (library.getCategory() == null || "".equals(library.getCategory())) {
-          library.setCategory("Uncategorized");
-        }
-      }
+      index.getLibraries()
+        .stream()
+        .filter(library -> library.getCategory() == null || "".equals(library.getCategory()) || !Constants.LIBRARY_CATEGORIES.contains(library.getCategory()))
+        .forEach(library -> library.setCategory("Uncategorized"));
     } finally {
       IOUtils.closeQuietly(indexIn);
     }
@@ -110,6 +110,11 @@ public class LibrariesIndexer {
     // Clear all installed flags
     installedLibraries.clear();
     installedLibrariesWithDuplicates.clear();
+
+    if (index.getLibraries() == null) {
+      return;
+    }
+
     for (ContributedLibrary lib : index.getLibraries()) {
       lib.setInstalled(false);
     }
@@ -119,14 +124,10 @@ public class LibrariesIndexer {
       scanInstalledLibraries(folder, folder.equals(sketchbookLibrariesFolder));
     }
 
-    FluentIterable.from(installedLibraries).filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore(contributionsIndexer)).transform(new Function<UserLibrary, Object>() {
-      @Override
-      public Object apply(UserLibrary userLibrary) {
-        ContributedPlatform platform = contributionsIndexer.getPlatformByFolder(userLibrary.getInstalledFolder());
-        userLibrary.setTypes(Arrays.asList(platform.getCategory()));
-        return userLibrary;
-      }
-    }).toList();
+    installedLibraries.stream().filter(new TypePredicate("Contributed")).filter(new LibraryInstalledInsideCore()).forEach(userLibrary -> {
+      ContributedPlatform platform = BaseNoGui.indexer.getPlatformByFolder(userLibrary.getInstalledFolder());
+      userLibrary.setTypes(Collections.singletonList(platform.getCategory()));
+    });
   }
 
   private void scanInstalledLibraries(File folder, boolean isSketchbook) {
@@ -139,15 +140,15 @@ public class LibrariesIndexer {
       if (!BaseNoGui.isSanitaryName(subfolder.getName())) {
 
         // Detect whether the current folder name has already had a notification.
-        if(!badLibNotified.contains(subfolder.getName())) { 
+        if (!badLibNotified.contains(subfolder.getName())) {
 
           badLibNotified.add(subfolder.getName());
 
-          String mess = I18n.format(_("The library \"{0}\" cannot be used.\n"
-                        + "Library names must contain only basic letters and numbers.\n"
-                        + "(ASCII only and no spaces, and it cannot start with a number)"),
-                subfolder.getName());
-          BaseNoGui.showMessage(_("Ignoring bad library name"), mess);
+          String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
+              + "Library names must contain only basic letters and numbers.\n"
+              + "(ASCII only and no spaces, and it cannot start with a number)"),
+            subfolder.getName());
+          BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
         }
         continue;
       }
@@ -155,7 +156,7 @@ public class LibrariesIndexer {
       try {
         scanLibrary(subfolder, isSketchbook);
       } catch (IOException e) {
-        System.out.println(I18n.format(_("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
+        System.out.println(I18n.format(tr("Invalid library found in {0}: {1}"), subfolder, e.getMessage()));
       }
     }
   }
@@ -170,6 +171,10 @@ public class LibrariesIndexer {
       // Create a legacy library and exit
       LegacyUserLibrary lib = LegacyUserLibrary.create(folder);
       lib.setReadOnly(readOnly);
+      String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
+      if (headers.length == 0) {
+        throw new IOException(lib.getSrcFolder().getAbsolutePath());
+      }
       installedLibraries.addOrReplace(lib);
       if (isSketchbook) {
         installedLibrariesWithDuplicates.add(lib);
@@ -182,11 +187,15 @@ public class LibrariesIndexer {
     // Create a regular library
     UserLibrary lib = UserLibrary.create(folder);
     lib.setReadOnly(readOnly);
-    installedLibraries.addOrReplace(lib);
+    String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
+    if (headers.length == 0) {
+      throw new IOException(lib.getSrcFolder().getAbsolutePath());
+    }
+    installedLibraries.addOrReplaceArchAware(lib);
     if (isSketchbook) {
       installedLibrariesWithDuplicates.add(lib);
     } else {
-      installedLibrariesWithDuplicates.addOrReplace(lib);
+      installedLibrariesWithDuplicates.addOrReplaceArchAware(lib);
     }
 
     // Check if we can find the same library in the index
@@ -204,7 +213,7 @@ public class LibrariesIndexer {
     }
 
     if (lib.getTypes() == null) {
-      lib.setTypes(Arrays.asList("Contributed"));
+      lib.setTypes(Collections.singletonList("Contributed"));
     }
   }
 
@@ -213,7 +222,7 @@ public class LibrariesIndexer {
   }
 
   public LibraryList getInstalledLibraries() {
-    return installedLibraries;
+    return new LibraryList(installedLibraries);
   }
 
   // Same as getInstalledLibraries(), but allow duplicates between
@@ -233,8 +242,6 @@ public class LibrariesIndexer {
    * Set the sketchbook library folder. <br />
    * New libraries will be installed here. <br />
    * Libraries not found on this folder will be marked as read-only.
-   *
-   * @param folder
    */
   public void setSketchbookLibrariesFolder(File folder) {
     this.sketchbookLibrariesFolder = folder;

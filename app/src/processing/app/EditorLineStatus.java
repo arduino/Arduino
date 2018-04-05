@@ -24,43 +24,44 @@ package processing.app;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.Map;
-
 import javax.swing.JComponent;
 
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
-import processing.app.syntax.SketchTextArea;
+import static processing.app.I18n.tr;
 
+import static processing.app.Theme.scale;
 
 /**
  * Li'l status bar fella that shows the line number.
  */
 public class EditorLineStatus extends JComponent {
+
   int start = -1, stop;
 
   Image resize;
+  private static final int RESIZE_IMAGE_SIZE = scale(20);
 
   Color foreground;
   Color background;
   Color messageForeground;
   
   Font font;
-  int high;
+  int height;
 
   String text = "";
   String name = "";
   String serialport = "";
-
+  String serialnumber = "";
 
   public EditorLineStatus() {
     background = Theme.getColor("linestatus.bgcolor");
     font = Theme.getFont("linestatus.font");
     foreground = Theme.getColor("linestatus.color");
-    high = Theme.getInteger("linestatus.height");
+    height = Theme.getInteger("linestatus.height");
 
     if (OSUtils.isMacOS()) {
-      resize = Base.getThemeImage("resize.gif", this);
+      resize = Theme.getThemeImage("resize", this, RESIZE_IMAGE_SIZE, RESIZE_IMAGE_SIZE);
     }
     //linestatus.bgcolor = #000000
     //linestatus.font    = SansSerif,plain,10
@@ -89,9 +90,10 @@ public class EditorLineStatus extends JComponent {
     repaint();
   }
 
-  public void paintComponent(Graphics g) {
-    if (name == "" && serialport == "") {
-      PreferencesMap boardPreferences = Base.getBoardPreferences();
+  public void paintComponent(Graphics graphics) {
+    Graphics2D g = Theme.setupGraphics2D(graphics);
+    if (name.isEmpty() && serialport.isEmpty()) {
+      PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
       if (boardPreferences != null)
         setBoardName(boardPreferences.get("name"));
       else
@@ -104,18 +106,19 @@ public class EditorLineStatus extends JComponent {
 
     g.setFont(font);
     g.setColor(foreground);
-    int baseline = (high + g.getFontMetrics().getAscent()) / 2;
-    g.drawString(text, 6, baseline);
+    int baseline = (size.height + g.getFontMetrics().getAscent()) / 2;
+    g.drawString(text, scale(6), baseline);
 
     g.setColor(messageForeground);
-    String tmp = name + " on " + serialport;
+    String tmp = I18n.format(tr("{0} on {1}"), name, serialport);
     
     Rectangle2D bounds = g.getFontMetrics().getStringBounds(tmp, null);
     
-    g.drawString(tmp, size.width - (int) bounds.getWidth() -20 , baseline);
+    g.drawString(tmp, size.width - (int) bounds.getWidth() - RESIZE_IMAGE_SIZE,
+                 baseline);
 
     if (OSUtils.isMacOS()) {
-      g.drawImage(resize, size.width - 20, 0, this);
+      g.drawImage(resize, size.width - RESIZE_IMAGE_SIZE, 0, this);
     }
   }
 
@@ -127,8 +130,12 @@ public class EditorLineStatus extends JComponent {
     this.serialport = serialport;
   }
 
+  public void setSerialNumber(String serialnumber) {
+    this.serialnumber = serialnumber;
+  }
+
   public Dimension getPreferredSize() {
-    return new Dimension(300, high);
+    return scale(new Dimension(300, height));
   }
 
   public Dimension getMinimumSize() {
@@ -136,6 +143,6 @@ public class EditorLineStatus extends JComponent {
   }
 
   public Dimension getMaximumSize() {
-    return new Dimension(3000, high);
+    return scale(new Dimension(3000, height));
   }
 }

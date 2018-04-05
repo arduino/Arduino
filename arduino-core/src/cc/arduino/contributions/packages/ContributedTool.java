@@ -26,10 +26,11 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
-import processing.app.BaseNoGui;
+import processing.app.Platform;
 
 import java.util.List;
 
@@ -41,9 +42,23 @@ public abstract class ContributedTool {
 
   public abstract List<HostDependentDownloadableContribution> getSystems();
 
-  public DownloadableContribution getDownloadableContribution() {
+  private ContributedPackage contributedPackage;
+
+  public ContributedPackage getPackage() {
+    return contributedPackage;
+  }
+
+  public void setPackage(ContributedPackage pack) {
+    contributedPackage = pack;
+  }
+
+  public String getPackager() {
+    return contributedPackage.getName();
+  }
+
+  public DownloadableContribution getDownloadableContribution(Platform platform) {
     for (HostDependentDownloadableContribution c : getSystems()) {
-      if (c.isCompatible(BaseNoGui.getPlatform()))
+      if (c.isCompatible(platform))
         return c;
     }
     return null;
@@ -51,14 +66,32 @@ public abstract class ContributedTool {
 
   @Override
   public String toString() {
+    return toString(null);
+  }
+
+  public String toString(Platform platform) {
     String res;
     res = "Tool name : " + getName() + " " + getVersion() + "\n";
     for (HostDependentDownloadableContribution sys : getSystems()) {
       res += "     sys";
-      res += sys.isCompatible(BaseNoGui.getPlatform()) ? "*" : " ";
+      if (platform != null) {
+        res += sys.isCompatible(platform) ? "*" : " ";
+      }
       res += " : " + sys + "\n";
     }
     return res;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof ContributedTool)) {
+      return false;
+    }
+
+    ContributedTool obj1 = (ContributedTool) obj;
+    return getName().equals(obj1.getName()) && getVersion().equals(obj1.getVersion());
+  }
 }

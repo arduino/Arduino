@@ -32,7 +32,10 @@ package cc.arduino.contributions.packages.ui;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.filters.CategoryPredicate;
 import cc.arduino.contributions.ui.DropdownItem;
-import com.google.common.base.Predicate;
+
+import java.util.function.Predicate;
+
+import static processing.app.I18n.tr;
 
 public class DropdownCoreOfCategoryItem implements DropdownItem<ContributedPlatform> {
 
@@ -43,7 +46,7 @@ public class DropdownCoreOfCategoryItem implements DropdownItem<ContributedPlatf
   }
 
   public String toString() {
-    return category;
+    return tr(category);
   }
 
   @Override

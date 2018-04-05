@@ -31,20 +31,23 @@ package processing.app;
 
 import cc.arduino.files.DeleteFilesOnShutdown;
 import org.junit.Before;
+import processing.app.helpers.FileUtils;
+
+import java.util.Random;
 
 public abstract class AbstractWithPreferencesTest {
 
   @Before
   public void init() throws Exception {
     Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
-    Base.initPlatform();
-    Base.getPlatform().init();
-    Preferences.init(null);
+    BaseNoGui.initPlatform();
+    BaseNoGui.getPlatform().init();
+    PreferencesData.init(null);
     Theme.init();
 
     BaseNoGui.initPackages();
 
-    Base.untitledFolder = Base.createTempFolder("untitled");
+    Base.untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(Base.untitledFolder);
   }
 

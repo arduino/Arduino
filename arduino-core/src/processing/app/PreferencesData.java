@@ -1,23 +1,22 @@
 package processing.app;
 
-import static processing.app.I18n._;
-
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.MissingResourceException;
-
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
 import processing.app.legacy.PApplet;
 import processing.app.legacy.PConstants;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.MissingResourceException;
+import java.util.stream.Collectors;
+
+import static processing.app.I18n.tr;
 
 
 public class PreferencesData {
@@ -32,7 +31,10 @@ public class PreferencesData {
   static boolean doSave = true;
 
 
-  static public void init(File file) {
+  static public void init(File file) throws Exception {
+    if (file == null) {
+      BaseNoGui.getPlatform().fixSettingsLocation();
+    }
     if (file != null) {
       preferencesFile = file;
     } else {
@@ -50,15 +52,15 @@ public class PreferencesData {
     try {
       prefs.load(new File(BaseNoGui.getContentFile("lib"), PREFS_FILE));
     } catch (IOException e) {
-      BaseNoGui.showError(null, _("Could not read default settings.\n" +
-              "You'll need to reinstall Arduino."), e);
+      BaseNoGui.showError(null, tr("Could not read default settings.\n" +
+        "You'll need to reinstall Arduino."), e);
     }
 
     // set some runtime constants (not saved on preferences file)
     File hardwareFolder = BaseNoGui.getHardwareFolder();
     prefs.put("runtime.ide.path", hardwareFolder.getParentFile().getAbsolutePath());
     prefs.put("runtime.ide.version", "" + BaseNoGui.REVISION);
-    
+
     // clone the hash table
     defaults = new PreferencesMap(prefs);
 
@@ -67,11 +69,11 @@ public class PreferencesData {
       try {
         prefs.load(preferencesFile);
       } catch (IOException ex) {
-        BaseNoGui.showError(_("Error reading preferences"),
-                            I18n.format(_("Error reading the preferences file. "
-                                            + "Please delete (or move)\n"
-                                            + "{0} and restart Arduino."),
-                                        preferencesFile.getAbsolutePath()), ex);
+        BaseNoGui.showError(tr("Error reading preferences"),
+          I18n.format(tr("Error reading the preferences file. "
+              + "Please delete (or move)\n"
+              + "{0} and restart Arduino."),
+            preferencesFile.getAbsolutePath()), ex);
       }
     }
 
@@ -147,6 +149,11 @@ public class PreferencesData {
     return (value == null) ? defaultValue : value;
   }
 
+  static public String getNonEmpty(String attribute, String defaultValue) {
+    String value = get(attribute, defaultValue);
+    return ("".equals(value)) ? defaultValue : value;
+  }
+
   public static boolean has(String key) {
     return prefs.containsKey(key);
   }
@@ -169,6 +176,13 @@ public class PreferencesData {
     prefs.remove(attribute);
   }
 
+  static public boolean getBoolean(String attribute, boolean defaultValue) {
+    if (has(attribute)) {
+      return getBoolean(attribute);
+    }
+
+    return defaultValue;
+  }
 
   static public boolean getBoolean(String attribute) {
     return prefs.getBoolean(attribute);
@@ -196,9 +210,20 @@ public class PreferencesData {
     set(key, String.valueOf(value));
   }
 
+  static public float getFloat(String attribute, float defaultValue) {
+    if (has(attribute)) {
+      return getFloat(attribute);
+    }
+
+    return defaultValue;
+  }
+
+  static public float getFloat(String attribute) {
+    return Float.parseFloat(get(attribute));
+  }
+
   // get a copy of the Preferences
-  static public PreferencesMap getMap() 
-  {
+  static public PreferencesMap getMap() {
     return new PreferencesMap(prefs);
   }
 
@@ -211,8 +236,7 @@ public class PreferencesData {
 
   // Decide wether changed preferences will be saved. When value is
   // false, Preferences.save becomes a no-op.
-  static public void setDoSave(boolean value)
-  {
+  static public void setDoSave(boolean value) {
     doSave = value;
   }
 
@@ -224,5 +248,14 @@ public class PreferencesData {
       font = PreferencesHelper.getFont(prefs, attr);
     }
     return font;
+  }
+
+  public static Collection<String> getCollection(String key) {
+    return Arrays.asList(get(key, "").split(","));
+  }
+
+  public static void setCollection(String key, Collection<String> values) {
+    String value = values.stream().collect(Collectors.joining(","));
+    set(key, value);
   }
 }

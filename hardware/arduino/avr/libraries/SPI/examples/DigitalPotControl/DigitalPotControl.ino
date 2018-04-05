@@ -36,7 +36,7 @@ const int slaveSelectPin = 10;
 
 void setup() {
   // set the slaveSelectPin as an output:
-  pinMode (slaveSelectPin, OUTPUT);
+  pinMode(slaveSelectPin, OUTPUT);
   // initialize SPI:
   SPI.begin();
 }
@@ -63,9 +63,11 @@ void loop() {
 void digitalPotWrite(int address, int value) {
   // take the SS pin low to select the chip:
   digitalWrite(slaveSelectPin, LOW);
+  delay(100);
   //  send in the address and value via SPI:
   SPI.transfer(address);
   SPI.transfer(value);
+  delay(100);
   // take the SS pin high to de-select the chip:
   digitalWrite(slaveSelectPin, HIGH);
 }

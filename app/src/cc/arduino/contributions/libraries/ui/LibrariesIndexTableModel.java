@@ -26,110 +26,36 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.VersionHelper;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
-import com.github.zafarkhaja.semver.Version;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
+import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
-public class LibrariesIndexTableModel extends FilteredAbstractTableModel<ContributedLibrary> {
+public class LibrariesIndexTableModel
+    extends FilteredAbstractTableModel<ContributedLibrary> {
 
-  public final static int DESCRIPTION_COL = 0;
+  private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
-  public static class ContributedLibraryReleases implements Comparable<ContributedLibraryReleases> {
+  private final String[] columnNames = { "Description" };
 
-    public final String name;
-    public final List<ContributedLibrary> releases;
-    public final List<String> versions;
-
-    public ContributedLibrary selected;
-
-    public ContributedLibraryReleases(ContributedLibrary library) {
-      this.name = library.getName();
-      this.versions = new LinkedList<String>();
-      this.releases = new LinkedList<ContributedLibrary>();
-      this.selected = null;
-      add(library);
-    }
-
-    public boolean shouldContain(ContributedLibrary lib) {
-      return lib.getName().equals(name);
-    }
-
-    public void add(ContributedLibrary library) {
-      releases.add(library);
-      String version = library.getParsedVersion();
-      if (version != null) {
-        versions.add(version);
-      }
-      selected = getLatest();
-    }
-
-    public ContributedLibrary getInstalled() {
-      List<ContributedLibrary> installedReleases = new LinkedList<ContributedLibrary>(Collections2.filter(releases, new InstalledPredicate()));
-      Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-
-      if (installedReleases.isEmpty()) {
-        return null;
-      }
-
-      return installedReleases.get(0);
-    }
-
-    public ContributedLibrary getLatest() {
-      return getLatestOf(releases);
-    }
-
-    public ContributedLibrary getSelected() {
-      return selected;
-    }
-
-    public void select(ContributedLibrary value) {
-      for (ContributedLibrary plat : releases) {
-        if (plat == value) {
-          selected = plat;
-          return;
-        }
-      }
-    }
-
-    @Override
-    public int compareTo(ContributedLibraryReleases o) {
-      return name.compareToIgnoreCase(o.name);
-    }
-  }
-
-  private final List<ContributedLibraryReleases> contributions = new ArrayList<ContributedLibraryReleases>();
-
-  private final String[] columnNames = {"Description"};
-
-  private final Class<?>[] columnTypes = {ContributedPlatform.class};
-
-  private LibrariesIndexer indexer;
-
-  public void setIndexer(LibrariesIndexer _index) {
-    indexer = _index;
-  }
+  private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
   Predicate<ContributedLibrary> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
-  public void updateIndexFilter(String filters[], Predicate<ContributedLibrary>... additionalFilters) {
-    selectedCategoryFilter = Predicates.and(additionalFilters);
+  public void updateIndexFilter(String filters[],
+                                Stream<Predicate<ContributedLibrary>> additionalFilters) {
+    selectedCategoryFilter = additionalFilters.reduce(Predicate::and).get();
     selectedFilters = filters;
     update();
   }
@@ -141,7 +67,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
    * @param string
    * @param filters
    * @return <b>true<b> if all the strings in <b>set</b> are contained in
-   * <b>string</b>.
+   *         <b>string</b>.
    */
   private boolean stringContainsAll(String string, String filters[]) {
     if (string == null) {
@@ -194,9 +120,7 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    if (col == DESCRIPTION_COL) {
-      fireTableCellUpdated(row, col);
-    }
+    fireTableCellUpdated(row, col);
   }
 
   @Override
@@ -205,15 +129,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
       return null;
     }
     ContributedLibraryReleases contribution = contributions.get(row);
-    if (col == DESCRIPTION_COL) {
-      return contribution;// .getSelected();
-    }
-    return null;
+    return contribution;// .getSelected();
   }
 
   @Override
   public boolean isCellEditable(int row, int col) {
-    return col == DESCRIPTION_COL;
+    return true;
   }
 
   public ContributedLibraryReleases getReleases(int row) {
@@ -230,10 +151,13 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
   }
 
   private void applyFilterToLibrary(ContributedLibrary lib) {
-    if (selectedCategoryFilter != null && !selectedCategoryFilter.apply(lib)) {
+    if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
       return;
     }
-    if (!stringContainsAll(lib.getName(), selectedFilters) && !stringContainsAll(lib.getParagraph(), selectedFilters) && !stringContainsAll(lib.getSentence(), selectedFilters)) {
+
+    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph()
+                                      + "\n" + lib.getSentence();
+    if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
       return;
     }
     addContribution(lib);
@@ -268,13 +192,12 @@ public class LibrariesIndexTableModel extends FilteredAbstractTableModel<Contrib
 
   private void updateContributions() {
     contributions.clear();
-    for (ContributedLibrary l : indexer.getIndex().getLibraries()) {
-      applyFilterToLibrary(l);
-    }
-    for (ContributedLibrary l : indexer.getInstalledLibraries()) {
-      applyFilterToLibrary(l);
-    }
-    Collections.sort(contributions);
+    BaseNoGui.librariesIndexer.getIndex().getLibraries()
+        .forEach(this::applyFilterToLibrary);
+    BaseNoGui.librariesIndexer.getInstalledLibraries()
+        .forEach(this::applyFilterToLibrary);
+    Collections.sort(contributions,
+                     new ContributedLibraryReleasesComparator("Arduino"));
   }
 
 }

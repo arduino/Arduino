@@ -1,0 +1,198 @@
+{
+  "packages": [
+    {
+      "name": "arduino",
+      "maintainer": "Arduino",
+      "websiteURL": "http://www.arduino.cc/",
+      "email": "packages@arduino.cc",
+      "help": {
+        "online": "http://www.arduino.cc/en/Reference/HomePage"
+      },
+      "platforms": [
+        {
+          "name": "Arduino AVR Boards",
+          "architecture": "avr",
+          "version": "1.6.20",
+          "category": "Arduino",
+          "help": {
+            "online": "http://www.arduino.cc/en/Reference/HomePage"
+          },
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.20.tar.bz2",
+          "archiveFileName": "avr-1.6.20.tar.bz2",
+          "checksum": "SHA-256:61f3d59a2ab2e9191230e91e79ee91c05f32b32c33129d34d76ef87e56d257e1",
+          "size": "4897949",
+          "boards": [
+            {"name": "Arduino Yún"},
+            {"name": "Arduino/Genuino Uno"},
+            {"name": "Arduino Uno WiFi"},
+            {"name": "Arduino Diecimila"},
+            {"name": "Arduino Nano"},
+            {"name": "Arduino/Genuino Mega"},
+            {"name": "Arduino MegaADK"},
+            {"name": "Arduino Leonardo"},
+            {"name": "Arduino Leonardo Ethernet"},
+            {"name": "Arduino/Genuino Micro"},
+            {"name": "Arduino Esplora"},
+            {"name": "Arduino Mini"},
+            {"name": "Arduino Ethernet"},
+            {"name": "Arduino Fio"},
+            {"name": "Arduino BT"},
+            {"name": "Arduino LilyPadUSB"},
+            {"name": "Arduino Lilypad"},
+            {"name": "Arduino Pro"},
+            {"name": "Arduino ATMegaNG"},
+            {"name": "Arduino Robot Control"},
+            {"name": "Arduino Robot Motor"},
+            {"name": "Arduino Gemma"},
+            {"name": "Adafruit Circuit Playground"},
+            {"name": "Arduino Yún Mini"},
+            {"name": "Arduino Industrial 101"},
+            {"name": "Linino One"}
+          ],
+          "toolsDependencies": [
+            {
+              "packager": "arduino",
+              "name": "avr-gcc",
+              "version": "4.9.2-atmel3.5.4-arduino2"
+            },
+            {
+              "packager": "arduino",
+              "name": "avrdude",
+              "version": "6.3.0-arduino9"
+            },
+            {
+              "packager": "arduino",
+              "name": "arduinoOTA",
+              "version": "1.1.1"
+            }
+          ]
+        }
+      ],
+      "tools": [
+        {
+          "name": "avrdude",
+          "version": "6.3.0-arduino9",
+          "systems": [
+            {
+              "size": "644550",
+              "checksum": "SHA-256:25a6834ae48019fccf37024236a1f79fe21760414292a4f3fa058d937ceee1ce",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avrdude-6.3.0-arduino9-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "697309",
+              "checksum": "SHA-256:bfa06bc042dff252d3a8eded98da159484e75b46d2697da4d9446dcd2aea8465",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "avrdude-6.3.0-arduino9-i386-apple-darwin11.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-i386-apple-darwin11.tar.bz2"
+            },
+            {
+              "size": "711229",
+              "checksum": "SHA-256:c8cccb84e2fe49ee837b24f0a60a99e9c371dae26e84c5b0b22b6b6aab2f1f6a",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino9-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-x86_64-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "701590",
+              "checksum": "SHA-256:4235a2d58e3c3224c603d6c5f0610507ed6c48ebf4051fdcce9f77a7646e218b",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino9-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "645974",
+              "checksum": "SHA-256:f3c5cfa8d0b3b0caee81c5b35fb6acff89c342ef609bf4266734c6266a256d4f",
+              "host": "i686-mingw32",
+              "archiveFileName": "avrdude-6.3.0-arduino9-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino9-i686-w64-mingw32.zip"
+            }
+          ]
+        },
+        {
+          "name": "avr-gcc",
+          "version": "4.9.2-atmel3.5.4-arduino2",
+          "systems": [
+            {
+              "size": "27764772",
+              "checksum": "SHA-256:ee36009e19bd238d1f6351cbc9aa5db69714761f67dec4c1d69d5d5d7758720c",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "avr-gcc-4.9.2-atmel3.5.4-arduino2-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "28574644",
+              "checksum": "SHA-256:67b3ed3555eacf0b4fc6f62240773b9f0220171fe4de26bb8d711547fc884730",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "avr-gcc-4.9.2-atmel3.5.4-arduino2-i386-apple-darwin11.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-i386-apple-darwin11.tar.bz2"
+            },
+            {
+              "size": "44386446",
+              "checksum": "SHA-256:6044551cd729d88ea6ffcccf10aad1934c5b164d61f4f5890b0e78524ffff853",
+              "host": "i686-mingw32",
+              "archiveFileName": "avr-gcc-4.9.2-atmel3.5.4-arduino2-i686-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-i686-mingw32.zip"
+            },
+            {
+              "size": "29723974",
+              "checksum": "SHA-256:63a9d4cebbac06fd5fa8f48a2e2ba7d513837dcddc97f560129b4e466af901b5",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "avr-gcc-4.9.2-atmel3.5.4-arduino2-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-i686-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "30374404",
+              "checksum": "SHA-256:19480217f1524d78467b83cd742f503182bbcc76b5440093261f146828aa588c",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "avr-gcc-4.9.2-atmel3.5.4-arduino2-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-4.9.2-atmel3.5.4-arduino2-x86_64-pc-linux-gnu.tar.bz2"
+            }
+          ]
+        },
+        {
+          "name": "arduinoOTA",
+          "version": "1.1.1",
+          "systems": [
+            {
+              "size": "2045036",
+              "checksum": "SHA-256:7ac91ef1d5b357c0ceb790be02ef54986db598ba5a42fffbd6c8ecbdd6a271ef",
+              "host": "i686-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.1.1-linux_386.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_386.tar.bz2"
+            },
+            {
+              "size": "2178288",
+              "checksum": "SHA-256:eb5ad0a457dd7f610f7f9b85454399c36755673d61a16f9d07cdfcbbb32ec277",
+              "host": "x86_64-linux-gnu",
+              "archiveFileName": "arduinoOTA-1.1.1-linux_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_amd64.tar.bz2"
+            },
+            {
+              "size": "1962115",
+              "checksum": "SHA-256:e4880d83df3d3f6f4b7b7bcde161e80a0556877468803a3c6066ee4ad18a374c",
+              "host": "arm-linux-gnueabihf",
+              "archiveFileName": "arduinoOTA-1.1.1-linux_arm.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-linux_arm.tar.bz2"
+            },
+            {
+              "size": "2181376",
+              "checksum": "SHA-256:a1ce7cf578982f3af5e4fab6b5839e44830d7a41cb093faba5c4b45952a6fa55",
+              "host": "i386-apple-darwin11",
+              "archiveFileName": "arduinoOTA-1.1.1-darwin_amd64.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-darwin_amd64.tar.bz2"
+            },
+            {
+              "size": "2248431",
+              "checksum": "SHA-256:b2d3610c77f969a68cd75b6ea66bf63ec10c263937009d99147fbcd975c90006",
+              "host": "i686-mingw32",
+              "archiveFileName": "arduinoOTA-1.1.1-windows_386.zip",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.1.1-windows_386.zip"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

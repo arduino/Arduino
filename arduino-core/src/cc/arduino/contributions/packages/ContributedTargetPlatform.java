@@ -26,20 +26,18 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
-package cc.arduino.contributions.packages;
 
-import java.io.File;
+package cc.arduino.contributions.packages;
 
 import processing.app.debug.LegacyTargetPlatform;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatformException;
 
+import java.io.File;
+
 public class ContributedTargetPlatform extends LegacyTargetPlatform {
 
-  public ContributedTargetPlatform(String _name, File _folder,
-                                   TargetPackage parent,
-                                   ContributionsIndex index)
-      throws TargetPlatformException {
+  public ContributedTargetPlatform(String _name, File _folder, TargetPackage parent) throws TargetPlatformException {
     super(_name, _folder, parent);
   }
 }

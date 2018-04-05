@@ -26,108 +26,44 @@
  * invalidate any other reasons why the executable file might be covered by
  * the GNU General Public License.
  */
+
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
+import cc.arduino.contributions.packages.ContributedBoard;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
-import cc.arduino.contributions.packages.ContributionsIndexer;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
+import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
-public class ContributionIndexTableModel extends FilteredAbstractTableModel<ContributedPlatform> {
+public class ContributionIndexTableModel
+    extends FilteredAbstractTableModel<ContributedPlatform> {
 
-  public final static int DESCRIPTION_COL = 0;
+  private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
+  private final String[] columnNames = { "Description" };
+  private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
-  public static class ContributedPlatformReleases {
-    public final ContributedPackage packager;
-    public final String arch;
-    public final List<ContributedPlatform> releases;
-    public final List<String> versions;
-    public ContributedPlatform selected = null;
-
-    public ContributedPlatformReleases(ContributedPlatform platform) {
-      this.packager = platform.getParentPackage();
-      this.arch = platform.getArchitecture();
-      this.releases = new LinkedList<ContributedPlatform>();
-      this.versions = new LinkedList<String>();
-      add(platform);
-    }
-
-    public boolean shouldContain(ContributedPlatform platform) {
-      if (platform.getParentPackage() != packager)
-        return false;
-      return platform.getArchitecture().equals(arch);
-    }
-
-    public void add(ContributedPlatform platform) {
-      releases.add(platform);
-      String version = platform.getParsedVersion();
-      if (version != null) {
-        versions.add(version);
-      }
-      selected = getLatest();
-    }
-
-    public ContributedPlatform getInstalled() {
-      List<ContributedPlatform> installedReleases = new LinkedList<ContributedPlatform>(Collections2.filter(releases, new InstalledPredicate()));
-      Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-
-      if (installedReleases.isEmpty()) {
-        return null;
-      }
-
-      return installedReleases.get(0);
-    }
-
-    public ContributedPlatform getLatest() {
-      return getLatestOf(releases);
-    }
-
-    public ContributedPlatform getSelected() {
-      return selected;
-    }
-
-    public void select(ContributedPlatform value) {
-      for (ContributedPlatform plat : releases) {
-        if (plat == value) {
-          selected = plat;
-          return;
-        }
-      }
-    }
-  }
-
-  private List<ContributedPlatformReleases> contributions = new ArrayList<ContributedPlatformReleases>();
-
-  private String[] columnNames = {"Description"};
-
-  private Class<?>[] columnTypes = {ContributedPlatform.class};
-
-  private ContributionsIndexer indexer;
-
-  public void setIndexer(ContributionsIndexer indexer) {
-    this.indexer = indexer;
-  }
-
-  public void updateIndexFilter(String filters[], Predicate<ContributedPlatform>... additionalFilters) {
+  public void updateIndexFilter(String[] filters,
+                                Stream<Predicate<ContributedPlatform>> additionalFilters) {
     contributions.clear();
-    Predicate<ContributedPlatform> filter = Predicates.and(additionalFilters);
-    for (ContributedPackage pack : indexer.getPackages()) {
+    Predicate<ContributedPlatform> filter = additionalFilters
+        .reduce(Predicate::and).get();
+    for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (!filter.apply(platform)) {
+        String compoundTargetSearchText = platform.getName() + "\n"
+                                          + platform.getBoards().stream()
+                                              .map(ContributedBoard::getName)
+                                              .collect(Collectors.joining(" "));
+        if (!filter.test(platform)) {
           continue;
         }
-        if (!stringContainsAll(platform.getName(), filters))
+        if (!stringContainsAll(compoundTargetSearchText, filters))
           continue;
         addContribution(platform);
       }
@@ -142,7 +78,7 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
    * @param string
    * @param set
    * @return <b>true<b> if all the strings in <b>set</b> are contained in
-   * <b>string</b>.
+   *         <b>string</b>.
    */
   private boolean stringContainsAll(String string, String set[]) {
     if (set == null)
@@ -187,9 +123,7 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
 
   @Override
   public void setValueAt(Object value, int row, int col) {
-    if (col == DESCRIPTION_COL) {
-      fireTableCellUpdated(row, col);
-    }
+    fireTableCellUpdated(row, col);
   }
 
   @Override
@@ -198,15 +132,12 @@ public class ContributionIndexTableModel extends FilteredAbstractTableModel<Cont
       return null;
     }
     ContributedPlatformReleases contribution = contributions.get(row);
-    if (col == DESCRIPTION_COL) {
-      return contribution;// .getSelected();
-    }
-    return null;
+    return contribution;// .getSelected();
   }
 
   @Override
   public boolean isCellEditable(int row, int col) {
-    return col == DESCRIPTION_COL;
+    return true;
   }
 
   public ContributedPlatformReleases getReleases(int row) {

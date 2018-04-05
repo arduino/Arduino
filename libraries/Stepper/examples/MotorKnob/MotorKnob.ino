@@ -21,14 +21,12 @@ Stepper stepper(STEPS, 8, 9, 10, 11);
 // the previous reading from the analog input
 int previous = 0;
 
-void setup()
-{
+void setup() {
   // set the speed of the motor to 30 RPMs
   stepper.setSpeed(30);
 }
 
-void loop()
-{
+void loop() {
   // get the sensor value
   int val = analogRead(0);
 

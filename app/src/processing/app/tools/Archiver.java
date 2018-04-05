@@ -26,7 +26,7 @@ package processing.app.tools;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.Base;
 import processing.app.Editor;
-import processing.app.Sketch;
+import processing.app.SketchController;
 
 import java.awt.*;
 import java.io.File;
@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static processing.app.I18n._;
+import static processing.app.I18n.tr;
 
 
 public class Archiver implements Tool {
@@ -53,7 +53,7 @@ public class Archiver implements Tool {
 
 
   public String getMenuTitle() {
-    return _("Archive Sketch");
+    return tr("Archive Sketch");
   }
   
   
@@ -69,7 +69,7 @@ public class Archiver implements Tool {
 
 
   public void run() {
-    Sketch sketch = editor.getSketch();
+    SketchController sketch = editor.getSketchController();
     
     // first save the sketch so that things don't archive strangely
     boolean success = false;
@@ -79,12 +79,12 @@ public class Archiver implements Tool {
       e.printStackTrace();
     }
     if (!success) {
-      Base.showWarning(_("Couldn't archive sketch"),
-                       _("Archiving the sketch has been canceled because\nthe sketch couldn't save properly."), null);
+      Base.showWarning(tr("Couldn't archive sketch"),
+                       tr("Archiving the sketch has been canceled because\nthe sketch couldn't save properly."), null);
       return;
     }
 
-    File location = sketch.getFolder();
+    File location = sketch.getSketch().getFolder();
     String name = location.getName();
     File parent = new File(location.getParent());
 
@@ -113,7 +113,7 @@ public class Archiver implements Tool {
     } while (newbie.exists());
 
     // open up a prompt for where to save this fella
-    FileDialog fd = new FileDialog(editor, _("Archive sketch as:"), FileDialog.SAVE);
+    FileDialog fd = new FileDialog(editor, tr("Archive sketch as:"), FileDialog.SAVE);
     fd.setDirectory(parent.getAbsolutePath());
     fd.setFile(newbie.getName());
     fd.setVisible(true);
@@ -142,7 +142,7 @@ public class Archiver implements Tool {
         IOUtils.closeQuietly(zos);
       }
     } else {
-      editor.statusNotice(_("Archive sketch canceled."));
+      editor.statusNotice(tr("Archive sketch canceled."));
     }
   }
 
