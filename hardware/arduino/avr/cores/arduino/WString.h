@@ -137,16 +137,30 @@ public:
 	// comparison (only works w/ Strings and "strings")
 	operator StringIfHelperType() const { return buffer ? &String::StringIfHelper : 0; }
 	int compareTo(const String &s) const;
+	int compareTo(const char *cstr) const;
 	unsigned char equals(const String &s) const;
 	unsigned char equals(const char *cstr) const;
-	unsigned char operator == (const String &rhs) const {return equals(rhs);}
-	unsigned char operator == (const char *cstr) const {return equals(cstr);}
-	unsigned char operator != (const String &rhs) const {return !equals(rhs);}
-	unsigned char operator != (const char *cstr) const {return !equals(cstr);}
-	unsigned char operator <  (const String &rhs) const;
-	unsigned char operator >  (const String &rhs) const;
-	unsigned char operator <= (const String &rhs) const;
-	unsigned char operator >= (const String &rhs) const;
+
+	friend unsigned char operator == (const String &a, const String &b) { return a.equals(b); }
+	friend unsigned char operator == (const String &a, const char   *b) { return a.equals(b); }
+	friend unsigned char operator == (const char   *a, const String &b) { return b == a; }
+	friend unsigned char operator <  (const String &a, const String &b) { return a.compareTo(b) < 0; }
+	friend unsigned char operator <  (const String &a, const char   *b) { return a.compareTo(b) < 0; }
+	friend unsigned char operator <  (const char   *a, const String &b) { return b.compareTo(a) > 0; }
+
+	friend unsigned char operator != (const String &a, const String &b) { return !(a == b); }
+	friend unsigned char operator != (const String &a, const char   *b) { return !(a == b); }
+	friend unsigned char operator != (const char   *a, const String &b) { return !(a == b); }
+	friend unsigned char operator >  (const String &a, const String &b) { return b < a; }
+	friend unsigned char operator >  (const String &a, const char   *b) { return b < a; }
+	friend unsigned char operator >  (const char   *a, const String &b) { return b < a; }
+	friend unsigned char operator <= (const String &a, const String &b) { return !(b < a); }
+	friend unsigned char operator <= (const String &a, const char   *b) { return !(b < a); }
+	friend unsigned char operator <= (const char   *a, const String &b) { return !(b < a); }
+	friend unsigned char operator >= (const String &a, const String &b) { return !(a < b); }
+	friend unsigned char operator >= (const String &a, const char   *b) { return !(a < b); }
+	friend unsigned char operator >= (const char   *a, const String &b) { return !(a < b); }
+
 	unsigned char equalsIgnoreCase(const String &s) const;
 	unsigned char startsWith( const String &prefix) const;
 	unsigned char startsWith(const String &prefix, unsigned int offset) const;

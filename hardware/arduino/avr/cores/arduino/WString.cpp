@@ -441,6 +441,16 @@ int String::compareTo(const String &s) const
 	return strcmp(buffer, s.buffer);
 }
 
+int String::compareTo(const char *cstr) const
+{
+	if (!buffer || !cstr) {
+		if (cstr && !*cstr) return 0 - *(unsigned char *)cstr;
+		if (buffer && len > 0) return *(unsigned char *)buffer;
+		return 0;
+	}
+	return strcmp(buffer, cstr);
+}
+
 unsigned char String::equals(const String &s2) const
 {
 	return (len == s2.len && compareTo(s2) == 0);
@@ -451,26 +461,6 @@ unsigned char String::equals(const char *cstr) const
 	if (len == 0) return (cstr == NULL || *cstr == 0);
 	if (cstr == NULL) return buffer[0] == 0;
 	return strcmp(buffer, cstr) == 0;
-}
-
-unsigned char String::operator<(const String &rhs) const
-{
-	return compareTo(rhs) < 0;
-}
-
-unsigned char String::operator>(const String &rhs) const
-{
-	return compareTo(rhs) > 0;
-}
-
-unsigned char String::operator<=(const String &rhs) const
-{
-	return compareTo(rhs) <= 0;
-}
-
-unsigned char String::operator>=(const String &rhs) const
-{
-	return compareTo(rhs) >= 0;
 }
 
 unsigned char String::equalsIgnoreCase( const String &s2 ) const
