@@ -37,6 +37,7 @@ public class SerialPlotter extends AbstractMonitor {
 
   private final StringBuffer messageBuffer;
   private JComboBox<String> serialRates;
+  private JButton clearButton;
   private Serial serial;
   private int serialRate, xCount;
 
@@ -231,6 +232,8 @@ public class SerialPlotter extends AbstractMonitor {
 
     messageBuffer = new StringBuffer();
     graphs = new ArrayList<>();
+    
+    clearButton.addActionListener(ae -> {graphs.clear();});
   }
 
   protected void onCreateWindow(Container mainPane) {
@@ -248,16 +251,20 @@ public class SerialPlotter extends AbstractMonitor {
     for (String serialRateString : serialRateStrings) serialRates.addItem(serialRateString + " " + tr("baud"));
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());
-
+	
+	clearButton = new JButton(tr("Clear output"));
+	
     pane.add(Box.createHorizontalGlue());
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
+    pane.add(clearButton);
 
     mainPane.add(pane, BorderLayout.SOUTH);
   }
 
   protected void onEnableWindow(boolean enable) {
     serialRates.setEnabled(enable);
+    clearButton.setEnabled(enable);
   }
 
   private void onSerialRateChange(ActionListener listener) {
