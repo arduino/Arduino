@@ -21,7 +21,7 @@ See example for how to.
 
 `grab(..)`	implement mutual exclusion barrier lock
 
-`loose(.)`	unlock barrier what has been grabbed by grab(..)
+`loose(.)`	unlock barrier what has been locked by `grab(..)` call
 
 #### constant
 
