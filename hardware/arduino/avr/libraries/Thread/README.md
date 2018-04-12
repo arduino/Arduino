@@ -21,7 +21,7 @@ See example for how to.
 
 `grab(.)`	implement mutual exclusion barrier lock
 
-`loose(.)`	unlock barrier what will be grabbed by grab(..)
+`loose(.)`	unlock barrier what has been grabbed by grab(..)
 
 #### constant
 
@@ -30,5 +30,5 @@ See example for how to.
 #### variables
 
 `therad`	dinamic pointer on the process stack structure
-		what can be used for reeentant and identification
+		what can be used for reentrant and identification
 
