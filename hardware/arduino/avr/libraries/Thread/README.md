@@ -29,6 +29,6 @@ See example for how to.
 
 #### variables
 
-`therad`	dinamic pointer on the process stack structure
+`therad`	dynamic pointer on the process stack structure
 		what can be used for reentrant and identification
 
