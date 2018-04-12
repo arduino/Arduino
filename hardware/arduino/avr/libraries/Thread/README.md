@@ -19,7 +19,7 @@ See example for how to.
 
 `quantize()`	enable time division of the execution flows
 
-`grab(.)`	implement mutual exclusion barrier lock
+`grab(..)`	implement mutual exclusion barrier lock
 
 `loose(.)`	unlock barrier what has been grabbed by grab(..)
 
