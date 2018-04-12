@@ -235,7 +235,8 @@ size_t HardwareSerial::write(uint8_t c)
       if(bit_is_set(*_ucsra, UDRE0))
 	_tx_udr_empty_irq();
     } else {
-      // nop, the interrupt handler will free up space for us
+	    // share CPU when buffer free waiting
+	    yield();
     }
   }
 
