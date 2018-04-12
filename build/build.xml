@@ -632,6 +632,7 @@
 
     <copy todir="linux/work" file="linux/dist/arduino" />
     <copy todir="linux/work" file="linux/dist/install.sh" />
+    <copy todir="linux/work" file="linux/dist/arduino-linux-setup.sh" />
     <copy todir="linux/work" file="linux/dist/uninstall.sh" />
 
     <chmod perm="ugo+x">
