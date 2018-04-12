@@ -258,9 +258,8 @@ public class SerialPlotter extends AbstractMonitor {
 
     serialRates.setMaximumSize(serialRates.getMinimumSize());
 	
-	clearButton = new JButton(tr("Clear output"));
+	  clearButton = new JButton(tr("Clear output"));
 	
-
     graphWidth = new JSpinner(new SpinnerNumberModel(
                                BUFFER_CAPACITY_DEFAULT, //initial value
                                BUFFER_CAPACITY_MIN, //min
@@ -321,15 +320,37 @@ public class SerialPlotter extends AbstractMonitor {
 
       int validParts = 0;
       for(int i = 0; i < parts.length; ++i) {
-        try {          
-          double value = Double.valueOf(parts[i]);
-          if(validParts >= graphs.size()) {
-            graphs.add(new Graph(validParts, buffer_capacity));
+        // all commands start with #
+        if(parts[i].startsWith("#") && parts[i].length() > 1) {
+          String command = parts[i].substring(1, parts[i].length()).trim();
+          if(command.equals("CLEAR")) {
+            graphs.clear();
           }
-          graphs.get(validParts).buffer.add(value);
-          validParts++;
-        } catch (NumberFormatException e) {
-          // ignore
+          else if(command.startsWith("SIZE:")) {
+            String[] subString = parts[i].split("[:]+");
+            int newSize = BUFFER_CAPACITY_DEFAULT;
+            if(subString.length > 1) {
+              try {
+                newSize = Integer.parseInt(subString[1]);
+              } catch (NumberFormatException e) {
+                // Ignore
+              }
+            }
+            if((int)graphWidth.getValue() != newSize) {
+              graphWidth.setValue(newSize);
+            }
+          }
+        } else {
+            try {
+            double value = Double.valueOf(parts[i]);
+            if(validParts >= graphs.size()) {
+              graphs.add(new Graph(validParts, buffer_capacity));
+            }
+            graphs.get(validParts).buffer.add(value);
+            validParts++;
+          } catch (NumberFormatException e) {
+            // ignore
+          }
         }
       }
     }
