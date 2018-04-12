@@ -82,9 +82,18 @@ void HardwareSerial::_tx_udr_empty_irq(void)
 {
   // If interrupts are enabled, there must be more data in the output
   // buffer. Send the next byte
-  unsigned char c = _tx_buffer[_tx_buffer_tail];
+  serial_data_t c = _tx_buffer[_tx_buffer_tail];
   _tx_buffer_tail = (_tx_buffer_tail + 1) % SERIAL_TX_BUFFER_SIZE;
-
+#ifdef SERIAL9
+  if (use9bit) {
+      if (c & 0x100) {
+        sbi(*_ucsrb, TXB80);
+      } else {
+        cbi(*_ucsrb, TXB80);
+      }
+      c = c & 0xff;
+  }
+#endif // SERIAL9
   *_udr = c;
 
   // clear the TXC bit -- "can be cleared by writing a one to its bit
@@ -100,8 +109,9 @@ void HardwareSerial::_tx_udr_empty_irq(void)
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-void HardwareSerial::begin(unsigned long baud, byte config)
+void HardwareSerial::begin(unsigned long baud, uint16_t extConfig)
 {
+  byte config = extConfig & 0xff;
   // Try u2x mode first
   uint16_t baud_setting = (F_CPU / 4 / baud - 1) / 2;
   *_ucsra = 1 << U2X0;
@@ -128,7 +138,15 @@ void HardwareSerial::begin(unsigned long baud, byte config)
   config |= 0x80; // select UCSRC register (shared with UBRRH)
 #endif
   *_ucsrc = config;
-  
+#ifdef SERIAL9
+  if (extConfig & 0x100) {
+    sbi(*_ucsrb, UCSZ02);
+    use9bit = true;
+  } else {
+    use9bit = false;
+  }
+#endif // SERIAL9
+
   sbi(*_ucsrb, RXEN0);
   sbi(*_ucsrb, TXEN0);
   sbi(*_ucsrb, RXCIE0);
@@ -169,7 +187,7 @@ int HardwareSerial::read(void)
   if (_rx_buffer_head == _rx_buffer_tail) {
     return -1;
   } else {
-    unsigned char c = _rx_buffer[_rx_buffer_tail];
+    serial_data_t c = _rx_buffer[_rx_buffer_tail];
     _rx_buffer_tail = (rx_buffer_index_t)(_rx_buffer_tail + 1) % SERIAL_RX_BUFFER_SIZE;
     return c;
   }
@@ -210,7 +228,11 @@ void HardwareSerial::flush()
   // the hardware finished tranmission (TXC is set).
 }
 
+#ifdef SERIAL9
+size_t HardwareSerial::write9(uint16_t c)
+#else // !defined(SERIAL9)
 size_t HardwareSerial::write(uint8_t c)
+#endif // SERIAL9
 {
   _written = true;
   // If the buffer and the data register is empty, just write the byte
@@ -218,6 +240,16 @@ size_t HardwareSerial::write(uint8_t c)
   // significantly improve the effective datarate at high (>
   // 500kbit/s) bitrates, where interrupt overhead becomes a slowdown.
   if (_tx_buffer_head == _tx_buffer_tail && bit_is_set(*_ucsra, UDRE0)) {
+#ifdef SERIAL9
+    if (use9bit) {
+        if (c & 0x100) {
+          sbi(*_ucsrb, TXB80);
+        } else {
+          cbi(*_ucsrb, TXB80);
+        }
+        c = c & 0xff;
+    }
+#endif // SERIAL9
     *_udr = c;
     sbi(*_ucsra, TXC0);
     return 1;
@@ -239,7 +271,11 @@ size_t HardwareSerial::write(uint8_t c)
     }
   }
 
+#ifdef SERIAL9
+  _tx_buffer[_tx_buffer_head] = (c & 0x1ff);
+#else // !defined(SERIAL9)
   _tx_buffer[_tx_buffer_head] = c;
+#endif // SERIAL9
   _tx_buffer_head = i;
 	
   sbi(*_ucsrb, UDRIE0);

@@ -93,6 +93,9 @@ HardwareSerial::HardwareSerial(
     _udr(udr),
     _rx_buffer_head(0), _rx_buffer_tail(0),
     _tx_buffer_head(0), _tx_buffer_tail(0)
+#ifdef SERIAL9
+    ,use9bit(false)
+#endif // SERIAL9
 {
 }
 
@@ -103,7 +106,15 @@ void HardwareSerial::_rx_complete_irq(void)
   if (bit_is_clear(*_ucsra, UPE0)) {
     // No Parity error, read byte and store it in the buffer if there is
     // room
-    unsigned char c = *_udr;
+    serial_data_t c = 0;
+#ifdef SERIAL9
+    if (use9bit) {
+        if (bit_is_set(*_ucsrb, RXB80)) {
+            c = 0x100;
+        }
+    }
+#endif // SERIAL9
+    c |= *_udr;
     rx_buffer_index_t i = (unsigned int)(_rx_buffer_head + 1) % SERIAL_RX_BUFFER_SIZE;
 
     // if we should be storing the received character into the location
