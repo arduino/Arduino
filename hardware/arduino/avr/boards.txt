@@ -31,8 +31,8 @@ yun.bootloader.high_fuses=0xd8
 yun.bootloader.extended_fuses=0xfb
 yun.bootloader.file=caterina/Caterina-Yun.hex
 yun.bootloader.noblink=caterina/Caterina-Yun-noblink.hex
-yun.bootloader.unlock_bits=0x3F
-yun.bootloader.lock_bits=0x2F
+yun.bootloader.unlock_bits=0xFF
+yun.bootloader.lock_bits=0xEF
 
 yun.build.mcu=atmega32u4
 yun.build.f_cpu=16000000L
@@ -67,8 +67,8 @@ uno.bootloader.tool=avrdude
 uno.bootloader.low_fuses=0xFF
 uno.bootloader.high_fuses=0xDE
 uno.bootloader.extended_fuses=0xFD
-uno.bootloader.unlock_bits=0x3F
-uno.bootloader.lock_bits=0x0F
+uno.bootloader.unlock_bits=0xFF
+uno.bootloader.lock_bits=0xCF
 uno.bootloader.file=optiboot/optiboot_atmega328.hex
 
 uno.build.mcu=atmega328p
@@ -86,8 +86,8 @@ diecimila.upload.protocol=arduino
 
 diecimila.bootloader.tool=avrdude
 diecimila.bootloader.low_fuses=0xFF
-diecimila.bootloader.unlock_bits=0x3F
-diecimila.bootloader.lock_bits=0x0F
+diecimila.bootloader.unlock_bits=0xFF
+diecimila.bootloader.lock_bits=0xCF
 
 diecimila.build.f_cpu=16000000L
 diecimila.build.board=AVR_DUEMILANOVE
@@ -130,8 +130,8 @@ nano.upload.tool=avrdude
 nano.upload.protocol=arduino
 
 nano.bootloader.tool=avrdude
-nano.bootloader.unlock_bits=0x3F
-nano.bootloader.lock_bits=0x0F
+nano.bootloader.unlock_bits=0xFF
+nano.bootloader.lock_bits=0xCF
 
 nano.build.f_cpu=16000000L
 nano.build.board=AVR_NANO
@@ -205,8 +205,8 @@ mega.upload.maximum_data_size=8192
 
 mega.bootloader.tool=avrdude
 mega.bootloader.low_fuses=0xFF
-mega.bootloader.unlock_bits=0x3F
-mega.bootloader.lock_bits=0x0F
+mega.bootloader.unlock_bits=0xFF
+mega.bootloader.lock_bits=0xCF
 
 mega.build.f_cpu=16000000L
 mega.build.core=arduino
@@ -268,8 +268,8 @@ megaADK.bootloader.low_fuses=0xFF
 megaADK.bootloader.high_fuses=0xD8
 megaADK.bootloader.extended_fuses=0xFD
 megaADK.bootloader.file=stk500v2/stk500boot_v2_mega2560.hex
-megaADK.bootloader.unlock_bits=0x3F
-megaADK.bootloader.lock_bits=0x0F
+megaADK.bootloader.unlock_bits=0xFF
+megaADK.bootloader.lock_bits=0xCF
 
 megaADK.build.mcu=atmega2560
 megaADK.build.f_cpu=16000000L
@@ -303,8 +303,8 @@ leonardo.bootloader.low_fuses=0xff
 leonardo.bootloader.high_fuses=0xd8
 leonardo.bootloader.extended_fuses=0xcb
 leonardo.bootloader.file=caterina/Caterina-Leonardo.hex
-leonardo.bootloader.unlock_bits=0x3F
-leonardo.bootloader.lock_bits=0x2F
+leonardo.bootloader.unlock_bits=0xFF
+leonardo.bootloader.lock_bits=0xEF
 
 leonardo.build.mcu=atmega32u4
 leonardo.build.f_cpu=16000000L
@@ -338,8 +338,8 @@ leonardoeth.bootloader.low_fuses=0xff
 leonardoeth.bootloader.high_fuses=0xd8
 leonardoeth.bootloader.extended_fuses=0xcb
 leonardoeth.bootloader.file=caterina/Caterina-LeonardoEthernet.hex
-leonardoeth.bootloader.unlock_bits=0x3F
-leonardoeth.bootloader.lock_bits=0x2F
+leonardoeth.bootloader.unlock_bits=0xFF
+leonardoeth.bootloader.lock_bits=0xEF
 
 leonardoeth.build.mcu=atmega32u4
 leonardoeth.build.f_cpu=16000000L
@@ -396,8 +396,8 @@ micro.bootloader.low_fuses=0xff
 micro.bootloader.high_fuses=0xd8
 micro.bootloader.extended_fuses=0xcb
 micro.bootloader.file=caterina/Caterina-Micro.hex
-micro.bootloader.unlock_bits=0x3F
-micro.bootloader.lock_bits=0x2F
+micro.bootloader.unlock_bits=0xFF
+micro.bootloader.lock_bits=0xEF
 
 micro.build.mcu=atmega32u4
 micro.build.f_cpu=16000000L
@@ -435,8 +435,8 @@ esplora.bootloader.low_fuses=0xff
 esplora.bootloader.high_fuses=0xd8
 esplora.bootloader.extended_fuses=0xcb
 esplora.bootloader.file=caterina/Caterina-Esplora.hex
-esplora.bootloader.unlock_bits=0x3F
-esplora.bootloader.lock_bits=0x2F
+esplora.bootloader.unlock_bits=0xFF
+esplora.bootloader.lock_bits=0xEF
 
 esplora.build.mcu=atmega32u4
 esplora.build.f_cpu=16000000L
@@ -457,8 +457,8 @@ mini.upload.protocol=arduino
 
 mini.bootloader.tool=avrdude
 mini.bootloader.low_fuses=0xff
-mini.bootloader.unlock_bits=0x3F
-mini.bootloader.lock_bits=0x0F
+mini.bootloader.unlock_bits=0xFF
+mini.bootloader.lock_bits=0xCF
 
 mini.build.f_cpu=16000000L
 mini.build.board=AVR_MINI
@@ -508,8 +508,8 @@ ethernet.bootloader.low_fuses=0xff
 ethernet.bootloader.high_fuses=0xde
 ethernet.bootloader.extended_fuses=0xFD
 ethernet.bootloader.file=optiboot/optiboot_atmega328.hex
-ethernet.bootloader.unlock_bits=0x3F
-ethernet.bootloader.lock_bits=0x0F
+ethernet.bootloader.unlock_bits=0xFF
+ethernet.bootloader.lock_bits=0xCF
 
 ethernet.build.variant=ethernet
 ethernet.build.mcu=atmega328p
@@ -532,8 +532,8 @@ fio.bootloader.low_fuses=0xFF
 fio.bootloader.high_fuses=0xDA
 fio.bootloader.extended_fuses=0xFD
 fio.bootloader.file=atmega/ATmegaBOOT_168_atmega328_pro_8MHz.hex
-fio.bootloader.unlock_bits=0x3F
-fio.bootloader.lock_bits=0x0F
+fio.bootloader.unlock_bits=0xFF
+fio.bootloader.lock_bits=0xCF
 
 fio.build.mcu=atmega328p
 fio.build.f_cpu=8000000L
@@ -552,8 +552,8 @@ bt.upload.disable_flushing=true
 
 bt.bootloader.tool=avrdude
 bt.bootloader.low_fuses=0xff
-bt.bootloader.unlock_bits=0x3F
-bt.bootloader.lock_bits=0x0F
+bt.bootloader.unlock_bits=0xFF
+bt.bootloader.lock_bits=0xCF
 
 bt.build.f_cpu=16000000L
 bt.build.board=AVR_BT
@@ -606,8 +606,8 @@ LilyPadUSB.bootloader.low_fuses=0xff
 LilyPadUSB.bootloader.high_fuses=0xd8
 LilyPadUSB.bootloader.extended_fuses=0xce
 LilyPadUSB.bootloader.file=caterina-LilyPadUSB/Caterina-LilyPadUSB.hex
-LilyPadUSB.bootloader.unlock_bits=0x3F
-LilyPadUSB.bootloader.lock_bits=0x2F
+LilyPadUSB.bootloader.unlock_bits=0xFF
+LilyPadUSB.bootloader.lock_bits=0xEF
 
 LilyPadUSB.build.mcu=atmega32u4
 LilyPadUSB.build.f_cpu=8000000L
@@ -627,8 +627,8 @@ lilypad.upload.tool=avrdude
 lilypad.upload.protocol=arduino
 
 lilypad.bootloader.tool=avrdude
-lilypad.bootloader.unlock_bits=0x3F
-lilypad.bootloader.lock_bits=0x0F
+lilypad.bootloader.unlock_bits=0xFF
+lilypad.bootloader.lock_bits=0xCF
 
 lilypad.build.f_cpu=8000000L
 lilypad.build.board=AVR_LILYPAD
@@ -673,8 +673,8 @@ pro.upload.tool=avrdude
 pro.upload.protocol=arduino
 
 pro.bootloader.tool=avrdude
-pro.bootloader.unlock_bits=0x3F
-pro.bootloader.lock_bits=0x0F
+pro.bootloader.unlock_bits=0xFF
+pro.bootloader.lock_bits=0xCF
 
 pro.build.board=AVR_PRO
 pro.build.core=arduino
@@ -753,8 +753,8 @@ atmegang.upload.protocol=arduino
 atmegang.upload.speed=19200
 
 atmegang.bootloader.tool=avrdude
-atmegang.bootloader.unlock_bits=0x3F
-atmegang.bootloader.lock_bits=0x0F
+atmegang.bootloader.unlock_bits=0xFF
+atmegang.bootloader.lock_bits=0xCF
 
 atmegang.build.mcu=atmegang
 atmegang.build.f_cpu=16000000L
@@ -816,8 +816,8 @@ robotControl.bootloader.low_fuses=0xff
 robotControl.bootloader.high_fuses=0xd8
 robotControl.bootloader.extended_fuses=0xcb
 robotControl.bootloader.file=caterina-Arduino_Robot/Caterina-Robot-Control.hex
-robotControl.bootloader.unlock_bits=0x3F
-robotControl.bootloader.lock_bits=0x2F
+robotControl.bootloader.unlock_bits=0xFF
+robotControl.bootloader.lock_bits=0xEF
 
 robotControl.build.mcu=atmega32u4
 robotControl.build.f_cpu=16000000L
@@ -855,8 +855,8 @@ robotMotor.bootloader.low_fuses=0xff
 robotMotor.bootloader.high_fuses=0xd8
 robotMotor.bootloader.extended_fuses=0xcb
 robotMotor.bootloader.file=caterina-Arduino_Robot/Caterina-Robot-Motor.hex
-robotMotor.bootloader.unlock_bits=0x3F
-robotMotor.bootloader.lock_bits=0x2F
+robotMotor.bootloader.unlock_bits=0xFF
+robotMotor.bootloader.lock_bits=0xEF
 
 robotMotor.build.mcu=atmega32u4
 robotMotor.build.f_cpu=16000000L
@@ -900,8 +900,8 @@ circuitplay32u4cat.bootloader.low_fuses=0xff
 circuitplay32u4cat.bootloader.high_fuses=0xd8
 circuitplay32u4cat.bootloader.extended_fuses=0xcb
 circuitplay32u4cat.bootloader.file=caterina/Caterina-Circuitplay32u4.hex
-circuitplay32u4cat.bootloader.unlock_bits=0x3F
-circuitplay32u4cat.bootloader.lock_bits=0x2F
+circuitplay32u4cat.bootloader.unlock_bits=0xFF
+circuitplay32u4cat.bootloader.lock_bits=0xEF
 circuitplay32u4cat.bootloader.tool=avrdude
 circuitplay32u4cat.build.mcu=atmega32u4
 circuitplay32u4cat.build.f_cpu=8000000L
@@ -947,8 +947,8 @@ yunmini.bootloader.low_fuses=0xff
 yunmini.bootloader.high_fuses=0xd8
 yunmini.bootloader.extended_fuses=0xfb
 yunmini.bootloader.file=caterina/Caterina-Yunmini.hex
-yunmini.bootloader.unlock_bits=0x3F
-yunmini.bootloader.lock_bits=0x2F
+yunmini.bootloader.unlock_bits=0xFF
+yunmini.bootloader.lock_bits=0xEF
 
 yunmini.build.mcu=atmega32u4
 yunmini.build.f_cpu=16000000L
@@ -984,8 +984,8 @@ chiwawa.bootloader.low_fuses=0xff
 chiwawa.bootloader.high_fuses=0xd8
 chiwawa.bootloader.extended_fuses=0xfb
 chiwawa.bootloader.file=caterina/Caterina-Industrial101.hex
-chiwawa.bootloader.unlock_bits=0x3F
-chiwawa.bootloader.lock_bits=0x2F
+chiwawa.bootloader.unlock_bits=0xFF
+chiwawa.bootloader.lock_bits=0xEF
 
 chiwawa.build.mcu=atmega32u4
 chiwawa.build.f_cpu=16000000L
@@ -1021,8 +1021,8 @@ one.bootloader.low_fuses=0xff
 one.bootloader.high_fuses=0xd8
 one.bootloader.extended_fuses=0xfb
 one.bootloader.file=caterina/Caterina-LininoOne.hex
-one.bootloader.unlock_bits=0x3F
-one.bootloader.lock_bits=0x2F
+one.bootloader.unlock_bits=0xFF
+one.bootloader.lock_bits=0xEF
 
 one.build.mcu=atmega32u4
 one.build.f_cpu=16000000L
@@ -1055,8 +1055,8 @@ unowifi.bootloader.tool=avrdude
 unowifi.bootloader.low_fuses=0xFF
 unowifi.bootloader.high_fuses=0xDE
 unowifi.bootloader.extended_fuses=0x05
-unowifi.bootloader.unlock_bits=0x3F
-unowifi.bootloader.lock_bits=0x0F
+unowifi.bootloader.unlock_bits=0xFF
+unowifi.bootloader.lock_bits=0xCF
 unowifi.bootloader.file=optiboot/optiboot_atmega328.hex
 
 unowifi.build.mcu=atmega328p
