@@ -158,16 +158,27 @@ void loop(void);
 
 #define analogInPinToBit(P) (P)
 
+// Define GCCPROGMEM
+// The GCCPROGMEM keyword ensures the resulting PGM data is stored in PGM at locations
+// below 64K, allowing them to be accessed using 16-bit pointers and allowing the pin
+// functions to work properly. The GCCPROGMEM keyword uses the .progmem.gcc.* section
+// in the standard linker map, also used by gcc functions, storing the Arduino
+// contents in .progmem.gcc.arduinocore.*
+// Solves #2226: https://github.com/arduino/Arduino/issues/2226
+#ifndef GCCPROGMEM
+#define GCCPROGMEM  __attribute__((section(".progmem.gcc.arduinocore")))
+#endif
+
 // On the ATmega1280, the addresses of some of the port registers are
 // greater than 255, so we can't store them in uint8_t's.
-extern const uint16_t PROGMEM port_to_mode_PGM[];
-extern const uint16_t PROGMEM port_to_input_PGM[];
-extern const uint16_t PROGMEM port_to_output_PGM[];
+extern const uint16_t GCCPROGMEM port_to_mode_PGM[];
+extern const uint16_t GCCPROGMEM port_to_input_PGM[];
+extern const uint16_t GCCPROGMEM port_to_output_PGM[];
 
-extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
-// extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
-extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
-extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
+extern const uint8_t GCCPROGMEM digital_pin_to_port_PGM[];
+// extern const uint8_t GCCPROGMEM digital_pin_to_bit_PGM[];
+extern const uint8_t GCCPROGMEM digital_pin_to_bit_mask_PGM[];
+extern const uint8_t GCCPROGMEM digital_pin_to_timer_PGM[];
 
 // Get the bit location within the hardware port of the given virtual pin.
 // This comes from the pins_*.c file for the active board configuration.

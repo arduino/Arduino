@@ -119,6 +119,16 @@ static const uint8_t A7 = PIN_A7;
 // A0-A7 PF0-PF7
 // A8-A15 PK0-PK7
 
+// Define GCCPROGMEM
+// The GCCPROGMEM keyword ensures the resulting PGM data is stored in PGM at locations
+// below 64K, allowing them to be accessed using 16-bit pointers and allowing the pin
+// functions to work properly. The GCCPROGMEM keyword uses the .progmem.gcc.* section
+// in the standard linker map, also used by gcc functions, storing the Arduino
+// contents in .progmem.gcc.arduinocore.*
+// Solves #2226: https://github.com/arduino/Arduino/issues/2226
+#ifndef GCCPROGMEM
+#define GCCPROGMEM  __attribute__((section(".progmem.gcc.arduinocore")))
+#endif
 
 // these arrays map port names (e.g. port B) to the
 // appropriate addresses for various functions (e.g. reading

@@ -111,7 +111,18 @@ static const uint8_t A15 = PIN_A15;
 
 #ifdef ARDUINO_MAIN
 
-const uint16_t PROGMEM port_to_mode_PGM[] = {
+// Define GCCPROGMEM
+// The GCCPROGMEM keyword ensures the resulting PGM data is stored in PGM at locations
+// below 64K, allowing them to be accessed using 16-bit pointers and allowing the pin
+// functions to work properly. The GCCPROGMEM keyword uses the .progmem.gcc.* section
+// in the standard linker map, also used by gcc functions, storing the Arduino
+// contents in .progmem.gcc.arduinocore.*
+// Solves #2226: https://github.com/arduino/Arduino/issues/2226
+#ifndef GCCPROGMEM
+#define GCCPROGMEM  __attribute__((section(".progmem.gcc.arduinocore")))
+#endif
+
+const uint16_t GCCPROGMEM port_to_mode_PGM[] = {
 	NOT_A_PORT,
 	(uint16_t) &DDRA,
 	(uint16_t) &DDRB,
@@ -127,7 +138,7 @@ const uint16_t PROGMEM port_to_mode_PGM[] = {
 	(uint16_t) &DDRL,
 };
 
-const uint16_t PROGMEM port_to_output_PGM[] = {
+const uint16_t GCCPROGMEM port_to_output_PGM[] = {
 	NOT_A_PORT,
 	(uint16_t) &PORTA,
 	(uint16_t) &PORTB,
@@ -143,7 +154,7 @@ const uint16_t PROGMEM port_to_output_PGM[] = {
 	(uint16_t) &PORTL,
 };
 
-const uint16_t PROGMEM port_to_input_PGM[] = {
+const uint16_t GCCPROGMEM port_to_input_PGM[] = {
 	NOT_A_PIN,
 	(uint16_t) &PINA,
 	(uint16_t) &PINB,
@@ -159,7 +170,7 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 	(uint16_t) &PINL,
 };
 
-const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
+const uint8_t GCCPROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST		
 	// -------------------------------------------		
 	PE	, // PE 0 ** 0 ** USART0_RX	
@@ -234,7 +245,7 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PK	, // PK 7 ** 69 ** A15	
 };
 
-const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
+const uint8_t GCCPROGMEM digital_pin_to_bit_mask_PGM[] = {
 	// PIN IN PORT		
 	// -------------------------------------------		
 	_BV( 0 )	, // PE 0 ** 0 ** USART0_RX	
@@ -309,7 +320,7 @@ const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
 	_BV( 7 )	, // PK 7 ** 69 ** A15	
 };
 
-const uint8_t PROGMEM digital_pin_to_timer_PGM[] = {
+const uint8_t GCCPROGMEM digital_pin_to_timer_PGM[] = {
 	// TIMERS		
 	// -------------------------------------------		
 	NOT_ON_TIMER	, // PE 0 ** 0 ** USART0_RX	
