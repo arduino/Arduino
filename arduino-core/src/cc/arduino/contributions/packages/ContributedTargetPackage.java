@@ -43,7 +43,7 @@ public class ContributedTargetPackage implements TargetPackage {
 
   public ContributedTargetPackage(String _id) {
     id = _id;
-    platforms = new HashMap<String, TargetPlatform>();
+    platforms = new HashMap<>();
   }
 
   void addPlatform(TargetPlatform p) {

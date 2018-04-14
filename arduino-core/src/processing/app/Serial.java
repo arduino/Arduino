@@ -28,11 +28,17 @@ import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
-import static processing.app.I18n.tr;
 import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 public class Serial implements SerialPortEventListener {
 
@@ -47,32 +53,46 @@ public class Serial implements SerialPortEventListener {
 
   private SerialPort port;
 
+  private CharsetDecoder bytesToStrings;
+  private static final int IN_BUFFER_CAPACITY = 128;
+  private static final int OUT_BUFFER_CAPACITY = 128;
+  private ByteBuffer inFromSerial = ByteBuffer.allocate(IN_BUFFER_CAPACITY);
+  private CharBuffer outToMessage = CharBuffer.allocate(OUT_BUFFER_CAPACITY);
+
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
       PreferencesData.getInteger("serial.debug_rate", 9600),
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(int irate) throws SerialException {
     this(PreferencesData.get("serial.port"), irate,
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname, int irate) throws SerialException {
     this(iname, irate, PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname) throws SerialException {
     this(iname, PreferencesData.getInteger("serial.debug_rate", 9600),
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public static boolean touchForCDCReset(String iname) throws SerialException {
@@ -96,10 +116,12 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
-  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits) throws SerialException {
+  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
     //if (port != null) port.close();
     //this.parent = parent;
     //parent.attach(this);
+
+    resetDecoding(StandardCharsets.UTF_8);
 
     int parity = SerialPort.PARITY_NONE;
     if (iparity == 'E') parity = SerialPort.PARITY_EVEN;
@@ -112,7 +134,7 @@ public class Serial implements SerialPortEventListener {
     try {
       port = new SerialPort(iname);
       port.openPort();
-      boolean res = port.setParams(irate, idatabits, stopbits, parity, true, true);
+      boolean res = port.setParams(irate, idatabits, stopbits, parity, setRTS, setDTR);
       if (!res) {
         System.err.println(format(tr("Error while setting serial port parameters: {0} {1} {2} {3}"),
                                   irate, iparity, idatabits, istopbits));
@@ -148,14 +170,29 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
+  @Override
   public synchronized void serialEvent(SerialPortEvent serialEvent) {
     if (serialEvent.isRXCHAR()) {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
-        if (buf.length > 0) {
-          String msg = new String(buf);
-          char[] chars = msg.toCharArray();
-          message(chars, chars.length);
+        int next = 0;
+        while(next < buf.length) {
+          while(next < buf.length && outToMessage.hasRemaining()) {
+            int spaceInIn = inFromSerial.remaining();
+            int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
+            inFromSerial.put(buf, next, copyNow);
+            next += copyNow;
+            inFromSerial.flip();
+            bytesToStrings.decode(inFromSerial, outToMessage, false);
+            inFromSerial.compact();
+          }
+          outToMessage.flip();
+          if(outToMessage.hasRemaining()) {
+            char[] chars = new char[outToMessage.remaining()];
+            outToMessage.get(chars);
+            message(chars, chars.length);
+          }
+          outToMessage.clear();
         }
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
@@ -184,7 +221,7 @@ public class Serial implements SerialPortEventListener {
   }
 
 
-  private void write(byte bytes[]) {
+  public void write(byte bytes[]) {
     try {
       port.writeBytes(bytes);
     } catch (SerialPortException e) {
@@ -223,6 +260,17 @@ public class Serial implements SerialPortEventListener {
     } catch (SerialPortException e) {
       errorMessage("setRTS", e);
     }
+  }
+
+  /**
+   * Reset the encoding used to convert the bytes coming in
+   * before they are handed as Strings to {@Link #message(char[], int)}.
+   */
+  public synchronized void resetDecoding(Charset charset) {
+    bytesToStrings = charset.newDecoder()
+                      .onMalformedInput(CodingErrorAction.REPLACE)
+                      .onUnmappableCharacter(CodingErrorAction.REPLACE)
+                      .replaceWith("\u2e2e");
   }
 
   static public List<String> list() {

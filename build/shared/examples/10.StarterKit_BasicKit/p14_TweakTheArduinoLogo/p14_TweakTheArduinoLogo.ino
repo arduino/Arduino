@@ -1,24 +1,23 @@
 /*
   Arduino Starter Kit example
- Project 14  - Tweak the Arduino Logo
+  Project 14 - Tweak the Arduino Logo
 
- This sketch is written to accompany Project 14 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 14 in the Arduino Starter Kit
 
- Parts required:
- 10 kilohm potentiometer
+  Parts required:
+  - 10 kilohm potentiometer
 
- Software required :
- Processing  (3.0 or newer) http://processing.org
- Active internet connection 
+  Software required:
+  - Processing (3.0 or newer) http://processing.org
+  - Active Internet connection
 
- Created 18 September 2012
- by Scott Fitzgerald
+  created 18 Sep 2012
+  by Scott Fitzgerald
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
 
 void setup() {
@@ -27,76 +26,76 @@ void setup() {
 }
 
 void loop() {
-  // read the value of A0, divide by 4 and
-  // send it as a byte over the serial connection
+  // read the value of A0, divide by 4 and send it as a byte over the
+  // serial connection
   Serial.write(analogRead(A0) / 4);
   delay(1);
 }
 
 /* Processing code for this example
-// Tweak the Arduno Logo
-// by Scott Fitzgerald
-// This example code is in the public domain
 
-// import the serial library
-import processing.serial.*;
+  // Tweak the Arduino Logo
 
-// create an instance of the serial library
-Serial myPort;
+  // by Scott Fitzgerald
+  // This example code is in the public domain.
 
-// create an instance of PImage
-PImage logo;
+  // import the serial library
+  import processing.serial.*;
 
-// a variable to hold the background color
-int bgcolor = 0;
+  // create an instance of the serial library
+  Serial myPort;
 
-void setup() {
-  size(1, 1);
-  surface.setResizable(true);
-  // set the color mode to Hue/Saturation/Brightness
-  colorMode(HSB, 255);
+  // create an instance of PImage
+  PImage logo;
 
-  // load the Arduino logo into the PImage instance
-  logo = loadImage("http://www.arduino.cc/arduino_logo.png");
+  // a variable to hold the background color
+  int bgcolor = 0;
 
-  // make the window the same size as the image
-  surface.setSize(logo.width, logo.height);
+  void setup() {
+    size(1, 1);
+    surface.setResizable(true);
+    // set the color mode to Hue/Saturation/Brightness
+    colorMode(HSB, 255);
 
-  // print a list of available serial ports to the
-  // Processing staus window
-  println("Available serial ports:");
-  println(Serial.list());
+    // load the Arduino logo into the PImage instance
+    logo = loadImage("http://www.arduino.cc/arduino_logo.png");
 
-  // Tell the serial object the information it needs to communicate
-  // with the Arduno. Change Serial.list()[0] to the correct
-  // port corresponding to your Arduino board.  The last
-  // parameter (e.g. 9600) is the speed of the communication.  It
-  // has to correspond to the value passed to Serial.begin() in your
-  // Arduino sketch.
-  myPort = new Serial(this, Serial.list()[0], 9600);
+    // make the window the same size as the image
+    surface.setSize(logo.width, logo.height);
 
-  // If you know the name of the port used by the Arduino board, you
-  // can specify it directly like this.
-  // port = new Serial(this, "COM1", 9600);
-}
+    // print a list of available serial ports to the Processing status window
+    println("Available serial ports:");
+    println(Serial.list());
 
-void draw() {
+    // Tell the serial object the information it needs to communicate with the
+    // Arduino. Change Serial.list()[0] to the correct port corresponding to
+    // your Arduino board.  The last parameter (e.g. 9600) is the speed of the
+    // communication.  It has to correspond to the value passed to
+    // Serial.begin() in your Arduino sketch.
+    myPort = new Serial(this, Serial.list()[0], 9600);
 
-  // if there is information in the serial port
-  if ( myPort.available() > 0) {
-    // read the value and store it in a variable
-    bgcolor = myPort.read();
-
-    // print the value to the status window
-    println(bgcolor);
+    // If you know the name of the port used by the Arduino board, you can
+    // specify it directly like this.
+    // port = new Serial(this, "COM1", 9600);
   }
 
-  // Draw the background. the variable bgcolor
-  // contains the Hue, determined by the value
-  // from the serial port
-  background(bgcolor, 255, 255);
+  void draw() {
 
-  // draw the Arduino logo
-  image(logo, 0, 0);
-}
- */
+    // if there is information in the serial port
+    if ( myPort.available() > 0) {
+      // read the value and store it in a variable
+      bgcolor = myPort.read();
+
+      // print the value to the status window
+      println(bgcolor);
+    }
+
+    // Draw the background. the variable bgcolor contains the Hue, determined by
+    // the value from the serial port
+    background(bgcolor, 255, 255);
+
+    // draw the Arduino logo
+    image(logo, 0, 0);
+  }
+
+*/

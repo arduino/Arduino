@@ -86,7 +86,7 @@ public class ArchiveExtractor {
 
     // Folders timestamps must be set at the end of archive extraction
     // (because creating a file in a folder alters the folder's timestamp)
-    Map<File, Long> foldersTimestamps = new HashMap<File, Long>();
+    Map<File, Long> foldersTimestamps = new HashMap<>();
 
     ArchiveInputStream in = null;
     try {
@@ -106,10 +106,10 @@ public class ArchiveExtractor {
 
       String pathPrefix = "";
 
-      Map<File, File> hardLinks = new HashMap<File, File>();
-      Map<File, Integer> hardLinksMode = new HashMap<File, Integer>();
-      Map<File, String> symLinks = new HashMap<File, String>();
-      Map<File, Long> symLinksModifiedTimes = new HashMap<File, Long>();
+      Map<File, File> hardLinks = new HashMap<>();
+      Map<File, Integer> hardLinksMode = new HashMap<>();
+      Map<File, String> symLinks = new HashMap<>();
+      Map<File, Long> symLinksModifiedTimes = new HashMap<>();
 
       // Cycle through all the archive entries
       while (true) {

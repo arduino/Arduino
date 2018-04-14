@@ -162,6 +162,7 @@ public class CustomProxySelector {
     }
     Authenticator.setDefault(
       new Authenticator() {
+        @Override
         public PasswordAuthentication getPasswordAuthentication() {
           return new PasswordAuthentication(username, actualPassword.toCharArray());
         }

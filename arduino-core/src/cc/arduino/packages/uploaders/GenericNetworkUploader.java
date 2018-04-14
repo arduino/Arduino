@@ -46,6 +46,7 @@ public class GenericNetworkUploader extends Uploader {
     this.port = port;
   }
 
+  @Override
   public boolean requiresAuthorization() {
     return this.port.getPrefs().get("auth_upload").contentEquals("yes");
   }
@@ -55,6 +56,7 @@ public class GenericNetworkUploader extends Uploader {
     return "runtime.pwd." + this.port.getAddress();
   }
 
+  @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     PreferencesMap prefs = PreferencesData.getMap();

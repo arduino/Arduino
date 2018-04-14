@@ -60,10 +60,17 @@ import processing.app.Theme;
 public class NotificationPopup extends JDialog {
 
   private Timer autoCloseTimer = new Timer(false);
+  private boolean autoClose = true;
 
   public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
                            String message) {
+    this(parent, hyperlinkListener, message, true);
+  }
+
+  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+                           String message, boolean _autoClose) {
     super(parent, false);
+    autoClose = _autoClose;
     setLayout(new FlowLayout());
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     setUndecorated(true);
@@ -135,17 +142,21 @@ public class NotificationPopup extends JDialog {
   }
 
   public void close() {
-    autoCloseTimer.cancel();
+    if (autoClose) {
+      autoCloseTimer.cancel();
+    }
     dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
   }
 
   public void begin() {
-    autoCloseTimer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        close();
-      }
-    }, Constants.NOTIFICATION_POPUP_AUTOCLOSE_DELAY);
+    if (autoClose) {
+      autoCloseTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          close();
+        }
+      }, Constants.NOTIFICATION_POPUP_AUTOCLOSE_DELAY);
+    }
     setVisible(true);
   }
 }

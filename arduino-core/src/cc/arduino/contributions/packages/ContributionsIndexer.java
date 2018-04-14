@@ -66,57 +66,81 @@ public class ContributionsIndexer {
   private final File packagesFolder;
   private final File stagingFolder;
   private final File preferencesFolder;
+  private final File builtInHardwareFolder;
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
-  private ContributionsIndex index;
+  private final ContributionsIndex index;
 
-  public ContributionsIndexer(File preferencesFolder, Platform platform, SignatureVerifier signatureVerifier) {
+  public ContributionsIndexer(File preferencesFolder, File builtInHardwareFolder, Platform platform, SignatureVerifier signatureVerifier) {
     this.preferencesFolder = preferencesFolder;
+    this.builtInHardwareFolder = builtInHardwareFolder;
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
+    index = new EmptyContributionIndex();
     packagesFolder = new File(preferencesFolder, "packages");
     stagingFolder = new File(preferencesFolder, "staging" + File.separator + "packages");
   }
 
   public void parseIndex() throws Exception {
-    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
-    if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
-      throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
-    }
-    index = parseIndex(defaultIndexFile);
-    index.setTrusted();
+    // Read bundled index...
+    File bundledIndexFile = new File(builtInHardwareFolder, Constants.BUNDLED_INDEX_FILE_NAME);
+    mergeContributions(bundledIndexFile);
 
+    // ...and overlay the default index if present
+    File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+    if (defaultIndexFile.exists()) {
+      // Check main index signature
+      if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
+        throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
+      }
+
+      mergeContributions(defaultIndexFile);
+    }
+
+    // Set main and bundled indexes as trusted
+    index.getPackages().forEach(pack -> pack.setTrusted(true));
+
+    // Overlay 3rd party indexes
     File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
     for (File indexFile : indexFiles) {
       try {
-	      ContributionsIndex contributionsIndex = parseIndex(indexFile);
-	      mergeContributions(contributionsIndex, indexFile);
+	      mergeContributions(indexFile);
       } catch (JsonProcessingException e) {
         System.err.println(I18n.format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
         System.err.println(e);
       }
     }
 
+    // Fill tools and toolsDependency cross references
     List<ContributedPackage> packages = index.getPackages();
     Collection<ContributedPackage> packagesWithTools = packages.stream()
       .filter(input -> input.getTools() != null && !input.getTools().isEmpty())
       .collect(Collectors.toList());
 
     for (ContributedPackage pack : packages) {
-      for (ContributedPlatform platform : pack.getPlatforms()) {
+      // Fill references to package in tools
+      for (ContributedTool tool : pack.getTools()) {
+        tool.setPackage(pack);
+      }
+
+      for (ContributedPlatform plat : pack.getPlatforms()) {
         // Set a reference to parent packages
-        platform.setParentPackage(pack);
+        plat.setParentPackage(pack);
 
         // Resolve tools dependencies (works also as a check for file integrity)
-        platform.resolveToolsDependencies(packagesWithTools);
+        plat.resolveToolsDependencies(packagesWithTools);
       }
     }
 
     index.fillCategories();
   }
 
-  private void mergeContributions(ContributionsIndex contributionsIndex, File indexFile) {
+  private void mergeContributions(File indexFile) throws IOException {
+    if (!indexFile.exists())
+      return;
+
+    ContributionsIndex contributionsIndex = parseIndex(indexFile);
     boolean signed = signatureVerifier.isSigned(indexFile);
     boolean trustall = PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL);
 
@@ -142,9 +166,9 @@ public class ContributionsIndexer {
             platforms = new LinkedList<>();
           }
           for (ContributedPlatform contributedPlatform : platforms) {
-            ContributedPlatform platform = targetPackage.findPlatform(contributedPlatform.getArchitecture(), contributedPlatform.getVersion());
-            if (platform != null) {
-              targetPackage.getPlatforms().remove(platform);
+            ContributedPlatform plat = targetPackage.findPlatform(contributedPlatform.getArchitecture(), contributedPlatform.getVersion());
+            if (plat != null) {
+              targetPackage.getPlatforms().remove(plat);
             }
             targetPackage.getPlatforms().add(contributedPlatform);
           }
@@ -183,32 +207,42 @@ public class ContributionsIndexer {
     }
   }
 
-  public void syncWithFilesystem(File hardwareFolder) throws IOException {
-    syncBuiltInHardwareFolder(hardwareFolder);
+  public void syncWithFilesystem() throws IOException {
+    syncBuiltInHardware();
 
-    syncLocalPackagesFolder();
+    syncLocalPackages();
   }
 
-  private void syncBuiltInHardwareFolder(File hardwareFolder) throws IOException {
+  private void syncBuiltInHardware() throws IOException {
     if (index == null) {
       return;
     }
-    for (File folder : hardwareFolder.listFiles(ONLY_DIRS)) {
+    for (File folder : builtInHardwareFolder.listFiles(ONLY_DIRS)) {
       ContributedPackage pack = index.findPackage(folder.getName());
-      if (pack != null) {
-        syncBuiltInPackageWithFilesystem(pack, folder);
+      if (pack == null)
+        continue;
+      syncBuiltInPackageWithFilesystem(pack, folder);
 
-        File toolsFolder = new File(hardwareFolder, "tools");
-        if (toolsFolder.isDirectory()) {
-          for (File toolFolder : toolsFolder.listFiles(ONLY_DIRS)) {
-            File builtInToolsMetadata = new File(toolFolder, "builtin_tools_versions.txt");
-            if (builtInToolsMetadata.isFile()) {
-              PreferencesMap toolsMetadata = new PreferencesMap(builtInToolsMetadata).subTree(pack.getName());
-              for (Map.Entry<String, String> toolMetadata : toolsMetadata.entrySet()) {
-                syncToolWithFilesystem(pack, toolFolder, toolMetadata.getKey(), toolMetadata.getValue());
-              }
-            }
-          }
+      File toolsFolder = new File(builtInHardwareFolder, "tools");
+      if (!toolsFolder.isDirectory())
+        continue;
+
+      for (File toolFolder : toolsFolder.listFiles(ONLY_DIRS)) {
+
+        // builtin_tools_versions.txt contains tools versions in the format:
+        // "PACKAGER.TOOL_NAME=TOOL_VERSION"
+        // for example:
+        // "arduino.avrdude=6.0.1-arduino5"
+
+        File versionsFile = new File(toolFolder, "builtin_tools_versions.txt");
+        if (!versionsFile.isFile())
+          continue;
+        PreferencesMap toolsVersion = new PreferencesMap(versionsFile).subTree(pack.getName());
+        for (String name : toolsVersion.keySet()) {
+          String version = toolsVersion.get(name);
+          DownloadableContribution tool = syncToolWithFilesystem(pack, toolFolder, name, version);
+          if (tool != null)
+            tool.setReadOnly(true);
         }
       }
     }
@@ -219,14 +253,14 @@ public class ContributionsIndexer {
     for (File platformFolder : hardwareFolder.listFiles(ONLY_DIRS)) {
       File platformTxt = new File(platformFolder, "platform.txt");
       String version = new PreferencesMap(platformTxt).get("version");
-      ContributedPlatform platform = syncHardwareWithFilesystem(pack, platformFolder, platformFolder.getName(), version);
-      if (platform != null) {
-        platform.setReadOnly(true);
+      ContributedPlatform p = syncHardwareWithFilesystem(pack, platformFolder, platformFolder.getName(), version);
+      if (p != null) {
+        p.setReadOnly(true);
       }
     }
   }
 
-  private void syncLocalPackagesFolder() {
+  private void syncLocalPackages() {
     if (!packagesFolder.isDirectory()) {
       return;
     }
@@ -267,31 +301,33 @@ public class ContributionsIndexer {
     }
   }
 
-  private void syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
+  private DownloadableContribution syncToolWithFilesystem(ContributedPackage pack, File installationFolder, String toolName, String version) {
     ContributedTool tool = pack.findTool(toolName, version);
     if (tool == null) {
       tool = pack.findResolvedTool(toolName, version);
     }
     if (tool == null) {
-      return;
+      return null;
     }
     DownloadableContribution contrib = tool.getDownloadableContribution(platform);
     if (contrib == null) {
       System.err.println(tool + " seems to have no downloadable contributions for your operating system, but it is installed in\n" + installationFolder);
-      return;
+      return null;
     }
     contrib.setInstalled(true);
     contrib.setInstalledFolder(installationFolder);
+    contrib.setReadOnly(false);
+    return contrib;
   }
 
   private ContributedPlatform syncHardwareWithFilesystem(ContributedPackage pack, File installationFolder, String architecture, String version) {
-    ContributedPlatform platform = pack.findPlatform(architecture, version);
-    if (platform != null) {
-      platform.setInstalled(true);
-      platform.setReadOnly(false);
-      platform.setInstalledFolder(installationFolder);
+    ContributedPlatform p = pack.findPlatform(architecture, version);
+    if (p != null) {
+      p.setInstalled(true);
+      p.setReadOnly(false);
+      p.setInstalledFolder(installationFolder);
     }
-    return platform;
+    return p;
   }
 
   @Override
@@ -312,9 +348,9 @@ public class ContributionsIndexer {
       List<ContributedPlatform> platforms = aPackage.getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
       Collections.sort(platforms, new DownloadableContributionBuiltInAtTheBottomComparator());
 
-      for (ContributedPlatform platform : platforms) {
-        String arch = platform.getArchitecture();
-        File folder = platform.getInstalledFolder();
+      for (ContributedPlatform p : platforms) {
+        String arch = p.getArchitecture();
+        File folder = p.getInstalledFolder();
 
         try {
           TargetPlatform targetPlatform = new ContributedTargetPlatform(arch, folder, targetPackage);
@@ -341,14 +377,14 @@ public class ContributionsIndexer {
 
   public boolean isContributedToolUsed(ContributedPlatform platformToIgnore, ContributedTool tool) {
     for (ContributedPackage pack : index.getPackages()) {
-      for (ContributedPlatform platform : pack.getPlatforms()) {
-        if (platformToIgnore.equals(platform)) {
+      for (ContributedPlatform p : pack.getPlatforms()) {
+        if (platformToIgnore.equals(p)) {
           continue;
         }
-        if (!platform.isInstalled()) {
+        if (!p.isInstalled() || p.isReadOnly()) {
           continue;
         }
-        for (ContributedTool requiredTool : platform.getResolvedTools()) {
+        for (ContributedTool requiredTool : p.getResolvedTools()) {
           if (requiredTool.equals(tool))
             return true;
         }
@@ -370,8 +406,8 @@ public class ContributionsIndexer {
         if (platformsWithName.size() > 1) {
           platformsWithName = platformsWithName.stream().filter(new BuiltInPredicate().negate()).collect(Collectors.toList());
         }
-        for (ContributedPlatform platform : platformsWithName) {
-          tools.addAll(platform.getResolvedTools());
+        for (ContributedPlatform p : platformsWithName) {
+          tools.addAll(p.getResolvedTools());
         }
       });
     }
@@ -433,5 +469,13 @@ public class ContributionsIndexer {
     }).findFirst();
 
     return platformOptional.orElse(null);
+  }
+
+  public ContributedPlatform getContributedPlaform(TargetPlatform targetPlatform) {
+    for (ContributedPlatform plat : getInstalledPlatforms()) {
+      if (plat.getInstalledFolder().equals(targetPlatform.getFolder()))
+        return plat;
+    }
+    return null;
   }
 }

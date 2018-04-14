@@ -12,24 +12,32 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Wong Min <alpha080@gmail.com>, 2013
+# Benu Lin <rmzbly@163.com>, 2017
 # 陈吕洲 <clz@clz.me>, 2015
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # dongfengweixiao <dongfengweixiao@gmail.com>, 2013-2015
 # Dreamcolor <dreamcolor@gmail.com>, 2015
 # Hosuke <geyang@mensa.org.au>, 2014
+# Haichao Zhu <haichaozhu77@gmail.com>, 2017
 # hanchao <hanchao0123@hotmail.com>, 2013
 # Jacques S, 2015-2016
 # Wong Min <alpha080@gmail.com>, 2013
+# Yung Wei <oscarwei1988@gmail.com>, 2016
 # Zhuo Liu <lzhskywalker@gmail.com>, 2015
+# Godners Ren <godners@163.com>, 2016
 # 陈吕洲 <clz@clz.me>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 17:36+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2017-09-19 17:24+0000\n"
+"Last-Translator: Benu Lin <rmzbly@163.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/mbanzi/arduino-ide-15/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +82,7 @@ msgstr "（只能在 Arduino 未运行时进行编辑）"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr "(legacy)"
+msgstr "(继承)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -97,11 +105,6 @@ msgid ""
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>在关闭前你想要把所做的修改<BR>保存到项目文件中吗？ </b><p>如果您不保存，所做的修改将会丢失。"
-
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "在“{1}”中已存在命名为“{0}”的文件"
 
 #: Editor.java:2169
 #, java-format
@@ -132,6 +135,10 @@ msgstr "项目文件夹中的子文件夹不是有效的库"
 msgid "About Arduino"
 msgstr "关于 Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "添加一个 .ZIP 库..."
@@ -151,6 +158,10 @@ msgstr "附加开发板管理器网址:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "南非语"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -310,7 +321,7 @@ msgstr "自动检测代理设置"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "自动调整"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -342,11 +353,15 @@ msgstr "白俄罗斯语"
 msgid "Board"
 msgstr "开发板"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr "开发板信息"
+
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "开发板在 {0} 不可用"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -417,14 +432,20 @@ msgstr "烧录引导程序"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "正在烧录引导程序到输入/输出开发板(可能需要几分钟)…"
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "CRC 不符。文件已损坏。"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr "CRC校验出错：文件可能已损坏。这可能是个暂时性的问题，请稍后重试。"
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
 msgstr "以下之一无法通过: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -439,10 +460,6 @@ msgstr "加拿大法语"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "取消"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "无法重命名"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -471,6 +488,10 @@ msgstr "中文(台湾)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "中文(台湾)(Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -525,6 +546,11 @@ msgstr "无法将 ''{0}'' 添加到这个项目"
 msgid "Could not copy to a proper location."
 msgstr "无法复制到正确的地方。"
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr "无法创建目录\"{0}\""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "无法创建项目文件夹"
@@ -542,11 +568,6 @@ msgstr "无法删除\"{0}\""
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "无法删除现有''{0}''文件。"
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "无法删除{0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -603,23 +624,6 @@ msgstr "无法读取预设设置。\n你必须重新安装Arduino。"
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "无法移除{0}的旧版本"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "无法将\"{0}\"重命名为\"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "无法重命名这个项目。(0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "无法重命名这个项目。(1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "无法重命名这个项目。(2)"
 
 #: Base.java:2492
 #, java-format
@@ -832,7 +836,7 @@ msgstr "添加文件出错"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "为开发板 {0} 编译时出错。"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -909,11 +913,6 @@ msgstr "烧录引导程序时出错：缺少 '{0}' 配置参数"
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "编译时出错：缺少 '{0}' 配置参数"
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "载入代码{0}时发生错误"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "在输出过程中发生错误。"
@@ -954,13 +953,23 @@ msgstr "爱沙尼亚语(爱沙尼亚)"
 msgid "Examples"
 msgstr "示例"
 
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr "所有开发板的示例。"
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr "第三方库示例"
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
-msgstr "库示例"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr "其他库示例"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -975,6 +984,15 @@ msgstr "导出已编译的二进制文件"
 msgid "Failed to open sketch: \"{0}\""
 msgstr "打开项目失败:：\"{0}\""
 
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr "无法将\"{0}\"重命名为\"{1}\""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr "重命名项目文件夹失败。"
+
 #: Editor.java:491
 msgid "File"
 msgstr "文件"
@@ -982,7 +1000,7 @@ msgstr "文件"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "文件名 {0} 无效：已忽略"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1064,6 +1082,10 @@ msgstr "格鲁吉亚"
 msgid "German"
 msgstr "德语"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr "取得开发板信息"
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "入门"
@@ -1122,13 +1144,17 @@ msgstr "谁能比你更痴狂"
 msgid "Hungarian"
 msgstr "匈牙利语"
 
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr "不相容"
+
 #: FindReplace.java:96
 msgid "Ignore Case"
 msgstr "忽略大小写"
 
 #: Base.java:1058
 msgid "Ignoring bad library name"
-msgstr "忽略糟糕的库名称"
+msgstr "忽略错误的库名称"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1204,7 +1230,7 @@ msgstr "正在安装..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "界面缩放："
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1223,6 +1249,10 @@ msgstr "意大利语"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "日语"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1264,7 +1294,7 @@ msgstr "正在加载配置..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "寻找与{0}*{1}类似的方法"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1284,7 +1314,7 @@ msgstr "马拉地语"
 
 #: Base.java:2112
 msgid "Message"
-msgstr "信息"
+msgstr "消息"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:81
 #, java-format
@@ -1324,6 +1354,10 @@ msgstr "必须制定一个项目文件"
 msgid "Name for new file:"
 msgstr "新文件的名字"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "尼泊尔语"
@@ -1331,6 +1365,10 @@ msgstr "尼泊尔语"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "网络"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1468,7 +1506,7 @@ msgstr "打开Arduino项目"
 
 #: Base.java:903 Editor.java:501
 msgid "Open..."
-msgstr "打开"
+msgstr "打开..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
@@ -1519,6 +1557,10 @@ msgstr "请利用 “项目>导入库” 菜单导入 SPI 库。"
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "请点击“草稿> 导入库”导入Wire 库。"
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
@@ -1526,7 +1568,7 @@ msgstr "请从 工具>编程器 菜单中选择一个编程器"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "打开串口监视器时绘图器不可用"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1609,7 +1651,7 @@ msgstr "取得资料文件夹时出现问题"
 msgid ""
 "Problem uploading to board.  See "
 "http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions."
-msgstr "上传出错。查看页面 http://www.arduino.cc/en/Guide/Troubleshooting#upload 获取建议。"
+msgstr "上传出错。查看http://www.arduino.cc/en/Guide/Troubleshooting#upload 获取建议。"
 
 #: Sketch.java:355 Sketch.java:362 Sketch.java:373
 msgid "Problem with rename"
@@ -1634,7 +1676,7 @@ msgstr "关闭"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr "已淘汰"
+msgstr "已弃用"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
@@ -1698,7 +1740,7 @@ msgstr "罗马尼亚语"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr ""
+msgstr "运行方法：{0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
@@ -1796,9 +1838,16 @@ msgstr "串口监视器"
 msgid "Serial Plotter"
 msgstr "串口绘图器"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "打开绘图器时串口监视器不可用"
 
 #: Serial.java:194
 #, java-format
@@ -1896,6 +1945,11 @@ msgstr "项目文件夹位置"
 msgid "Sketchbook path not defined"
 msgstr "没有定义项目文件夹"
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "斯洛伐克语"
@@ -1917,10 +1971,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "某些文件为只读状态，因此你需要\n将项目保存于其他位置。"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "抱歉，已存在名为{0}的项目（或文件夹）。"
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1954,6 +2008,10 @@ msgstr "塔罗萨语"
 msgid "Tamil"
 msgstr "泰米尔语"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
 msgstr "泰语"
@@ -1985,6 +2043,10 @@ msgstr "Server class 已改名为 EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Udp class 已改名为 EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -2001,12 +2063,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "无法使用库\"{0}\"。\n库的名称只能含有基本字母与数字。\n（只能是ASCII，不能有空白字符，也不能以數字開頭）"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "主文件不能使用扩展。\n（或许是時候开始使用\n“真正”的编程环境了）"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2028,6 +2087,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "无法使用项目\"{0}\"。\n项目的名称只能含有基本字母与数字\n(只能是ASCII，不能含有空白字符，也不能以数字开头)。\n若不想看到此信息，请从{1}移除该项目。"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2057,13 +2121,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "指定的项目文件夹包含你的 IDE 。\n请为项目选择另外的文件夹。"
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "此文件已经复制到你想要\n复制到的地方了。我绝对不会\n想要做一个无所事事的人。"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2127,7 +2184,7 @@ msgstr "乌克兰语"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "无法连接到 {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2172,6 +2229,10 @@ msgstr "复原"
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
 msgstr "上下文关键词 {1} 中未处理类型 {0} "
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr "未知的开发板"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2224,6 +2285,10 @@ msgstr "上传"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "使用编程器上传"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2323,7 +2388,7 @@ msgstr "警告：库 {1} 中的分类 '{0}' 不可用。设置为 '{2}'"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:93
 #, java-format
 msgid "WARNING: Spurious {0} folder in '{1}' library"
-msgstr ""
+msgstr "警告：库 '{1}' 中包含多余文件夹 {0}"
 
 #: ../../../processing/app/debug/Compiler.java:115
 #, java-format
@@ -2400,29 +2465,9 @@ msgstr "找到错误的微控制器。请检查 工具->开发板 菜单是否�
 msgid "Yes"
 msgstr "是"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "你骗不了我"
-
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "项目名称和.cpp文件名不能相同。"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "不可以导入包含项目文件夹的文件夹"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "无法将项目重命名为{0}\n因为项目中已有同名.cpp文件。"
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "无法将项目保存为 {0}\n因为项目中已含有同名文件。"
 
 #: Sketch.java:883
 msgid ""
@@ -2433,6 +2478,12 @@ msgstr "不可以将项目保存到自身所在的文件夹。\n否则会进入�
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "你忘记了项目文件夹"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2541,10 +2592,6 @@ msgstr "编译"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "已连接!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile()返回false"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2683,3 +2730,8 @@ msgstr "{0}: 未知的开发板"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: 未知的软件包"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

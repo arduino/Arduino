@@ -1,25 +1,24 @@
 /*
   Dimmer
 
- Demonstrates the sending data from the computer to the Arduino board,
- in this case to control the brightness of an LED.  The data is sent
- in individual bytes, each of which ranges from 0 to 255.  Arduino
- reads these bytes and uses them to set the brightness of the LED.
+  Demonstrates sending data from the computer to the Arduino board, in this case
+  to control the brightness of an LED. The data is sent in individual bytes,
+  each of which ranges from 0 to 255. Arduino reads these bytes and uses them to
+  set the brightness of the LED.
 
- The circuit:
- LED attached from digital pin 9 to ground.
- Serial connection to Processing, Max/MSP, or another serial application
+  The circuit:
+  - LED attached from digital pin 9 to ground.
+  - Serial connection to Processing, Max/MSP, or another serial application
 
- created 2006
- by David A. Mellis
- modified 30 Aug 2011
- by Tom Igoe and Scott Fitzgerald
+  created 2006
+  by David A. Mellis
+  modified 30 Aug 2011
+  by Tom Igoe and Scott Fitzgerald
 
- This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/Dimmer
-
- */
+  http://www.arduino.cc/en/Tutorial/Dimmer
+*/
 
 const int ledPin = 9;      // the pin that the LED is attached to
 
@@ -43,44 +42,46 @@ void loop() {
 }
 
 /* Processing code for this example
- // Dimmer - sends bytes over a serial port
- // by David A. Mellis
- //This example code is in the public domain.
 
- import processing.serial.*;
- Serial port;
+  // Dimmer - sends bytes over a serial port
 
- void setup() {
- size(256, 150);
+  // by David A. Mellis
+  // This example code is in the public domain.
 
- println("Available serial ports:");
- // if using Processing 2.1 or later, use Serial.printArray()
- println(Serial.list());
+  import processing.serial.*;
+  Serial port;
 
- // Uses the first port in this list (number 0).  Change this to
- // select the port corresponding to your Arduino board.  The last
- // parameter (e.g. 9600) is the speed of the communication.  It
- // has to correspond to the value passed to Serial.begin() in your
- // Arduino sketch.
- port = new Serial(this, Serial.list()[0], 9600);
+  void setup() {
+    size(256, 150);
 
- // If you know the name of the port used by the Arduino board, you
- // can specify it directly like this.
- //port = new Serial(this, "COM1", 9600);
- }
+    println("Available serial ports:");
+    // if using Processing 2.1 or later, use Serial.printArray()
+    println(Serial.list());
 
- void draw() {
- // draw a gradient from black to white
- for (int i = 0; i < 256; i++) {
- stroke(i);
- line(i, 0, i, 150);
- }
+    // Uses the first port in this list (number 0). Change this to select the port
+    // corresponding to your Arduino board. The last parameter (e.g. 9600) is the
+    // speed of the communication. It has to correspond to the value passed to
+    // Serial.begin() in your Arduino sketch.
+    port = new Serial(this, Serial.list()[0], 9600);
 
- // write the current X-position of the mouse to the serial port as
- // a single byte
- port.write(mouseX);
- }
- */
+    // If you know the name of the port used by the Arduino board, you can specify
+    // it directly like this.
+    //port = new Serial(this, "COM1", 9600);
+  }
+
+  void draw() {
+    // draw a gradient from black to white
+    for (int i = 0; i < 256; i++) {
+      stroke(i);
+      line(i, 0, i, 150);
+    }
+
+    // write the current X-position of the mouse to the serial port as
+    // a single byte
+    port.write(mouseX);
+  }
+
+*/
 
 /* Max/MSP v5 patch for this example
 
@@ -109,4 +110,5 @@ D6YmX6fMznaF7kdczmJXwm.XSOOrdoHhNA7GMiZYLZZR.+4lconMaJP6JOZ8
 ftCs1YWHZI3o.sIXezX5ihMSuXzZtk3ai1mXRSczoCS32hAydeyXNEu5SHyS
 xqZqbd3ZLdera1iPqYxOm++v7SUSz
 -----------end_max5_patcher-----------
- */
+
+*/

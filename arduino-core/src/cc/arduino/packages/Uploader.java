@@ -36,7 +36,6 @@ import processing.app.I18n;
 import processing.app.PreferencesData;
 import processing.app.debug.MessageConsumer;
 import processing.app.debug.MessageSiphon;
-import processing.app.debug.RunnerException;
 import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.StringUtils;
 
@@ -89,7 +88,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   private void init(boolean nup) {
-    this.error = null;
+    this.error = "";
     this.notFoundError = false;
     this.noUploadPort = nup;
   }
@@ -133,8 +132,8 @@ public abstract class Uploader implements MessageConsumer {
       new MessageSiphon(process.getErrorStream(), this, 100);
 
       // wait for the process to finish, but not forever
-      // kill the flasher process after 2 minutes to avoid 100% cpu spinning
-      if (!process.waitFor(2, TimeUnit.MINUTES)) {
+      // kill the flasher process after 5 minutes to avoid 100% cpu spinning
+      if (!process.waitFor(5, TimeUnit.MINUTES)) {
         process.destroyForcibly();
       }
       if (!process.isAlive()) {
@@ -146,15 +145,14 @@ public abstract class Uploader implements MessageConsumer {
       e.printStackTrace();
     }
 
-    if (error != null) {
-      RunnerException exception = new RunnerException(error);
-      exception.hideStackTrace();
-      throw exception;
-    }
-
     return result == 0;
   }
 
+  public String getFailureMessage() {
+    return error;
+  }
+
+  @Override
   public void message(String s) {
     // selectively suppress a bunch of avrdude output for AVR109/Caterina that should already be quelled but isn't
     if (!verbose && StringUtils.stringContainsOneOf(s, STRINGS_TO_SUPPRESS)) {
@@ -164,8 +162,9 @@ public abstract class Uploader implements MessageConsumer {
     System.err.print(s);
 
     // ignore cautions
-    if (s.contains("Error")) {
+    if (s.toLowerCase().contains("error")) {
       notFoundError = true;
+      error = s;
       return;
     }
     if (notFoundError) {

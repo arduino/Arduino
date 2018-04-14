@@ -250,14 +250,14 @@ size_t Print::printFloat(double number, uint8_t digits)
 
   // Print the decimal point, but only if there are digits beyond
   if (digits > 0) {
-    n += print("."); 
+    n += print('.'); 
   }
 
   // Extract digits from the remainder one at a time
   while (digits-- > 0)
   {
     remainder *= 10.0;
-    int toPrint = int(remainder);
+    unsigned int toPrint = (unsigned int)(remainder);
     n += print(toPrint);
     remainder -= toPrint; 
   } 

@@ -310,7 +310,7 @@ public class SerialPortList {
         if(portNames == null){
             return new String[]{};
         }
-        TreeSet<String> ports = new TreeSet<String>(comparator);
+        TreeSet<String> ports = new TreeSet<>(comparator);
         for(String portName : portNames){
             if(pattern.matcher(portName).find()){
                 ports.add(portName);
@@ -329,7 +329,7 @@ public class SerialPortList {
         if(dir.exists() && dir.isDirectory()){
             File[] files = dir.listFiles();
             if(files.length > 0){
-                TreeSet<String> portsTree = new TreeSet<String>(comparator);
+                TreeSet<String> portsTree = new TreeSet<>(comparator);
                 for(File file : files){
                     String fileName = file.getName();
                     if(!file.isDirectory() && !file.isFile() && pattern.matcher(fileName).find()){

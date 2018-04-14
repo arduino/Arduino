@@ -39,6 +39,7 @@ public class Constants {
   public static final String PREF_CONTRIBUTIONS_TRUST_ALL = "contributions.trust.all";
 
   public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
+  public static final String BUNDLED_INDEX_FILE_NAME = "package_index_bundled.json";
   public static final List<String> PROTECTED_PACKAGE_NAMES = Arrays.asList("arduino", "Intel");
 
   public static final String LIBRARY_DEVELOPMENT_FLAG_FILE = ".development";
@@ -77,12 +78,18 @@ public class Constants {
     }
 
     String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
-    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
+    if (externalLibraryIndexUrl != null && !externalLibraryIndexUrl.isEmpty()) {
       LIBRARY_INDEX_URL = externalLibraryIndexUrl;
+      String externalLibraryIndexUrlGz = System.getProperty("LIBRARY_INDEX_URL_GZ");
+      if (externalLibraryIndexUrlGz != null && !externalLibraryIndexUrlGz.isEmpty()) {
+        LIBRARY_INDEX_URL_GZ = externalLibraryIndexUrlGz;
+      } else {
+        LIBRARY_INDEX_URL_GZ = "";
+      }
     } else {
       LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
+      LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
     }
-    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
   }
 
 }

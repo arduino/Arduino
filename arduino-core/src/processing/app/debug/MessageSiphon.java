@@ -63,6 +63,7 @@ public class MessageSiphon implements Runnable {
   }
 
 
+  @Override
   public void run() {
     try {
       // process data until we hit EOF; this will happily block

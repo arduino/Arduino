@@ -1,16 +1,16 @@
 /*
-   String constructors
+  String constructors
 
- Examples of how  to create strings from other data types
+  Examples of how to create Strings from other data types
 
- created 27 July 2010
- modified 30 Aug 2011
- by Tom Igoe
+  created 27 Jul 2010
+  modified 30 Aug 2011
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringConstructors
+  This example code is in the public domain.
 
- This example code is in the public domain.
- */
+  http://www.arduino.cc/en/Tutorial/StringConstructors
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -66,11 +66,11 @@ void loop() {
   // prints "123456" or whatever the value of millis() is:
   Serial.println(stringOne);
 
-  //using a float and the right decimal places:
+  // using a float and the right decimal places:
   stringOne = String(5.698, 3);
   Serial.println(stringOne);
 
-  //using a float and less decimal places to use rounding:
+  // using a float and less decimal places to use rounding:
   stringOne = String(5.698, 2);
   Serial.println(stringOne);
 

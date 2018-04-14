@@ -1,1 +1,1 @@
-Replace individual characters in a string. 
+Replace individual characters in a String. 

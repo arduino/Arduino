@@ -5,8 +5,10 @@
 	<classpathentry kind="lib" path="lib/apple.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-3.3.jar"/>
-	<classpathentry kind="lib" path="lib/jmdns-3.4.1.jar"/>
-	<classpathentry kind="lib" path="lib/jssc-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/jmdns-3.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.22.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.22.jar"/>
+	<classpathentry kind="lib" path="lib/jssc-2.8.0-arduino1.jar"/>
 	<classpathentry kind="lib" path="lib/jsch-0.1.50.jar"/>
 	<classpathentry kind="lib" path="lib/commons-exec-1.1.jar"/>
 	<classpathentry kind="lib" path="../app/lib/commons-codec-1.7.jar"/>
@@ -29,7 +31,7 @@
 	<classpathentry kind="lib" path="lib/jackson-databind-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.6.3.jar"/>
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jna-platform-4.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/jna-platform-4.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -38,16 +38,26 @@ public class VersionHelper {
       return null;
     }
     try {
-      String[] verParts = ver.split("\\.");
-      if (verParts.length < 3) {
-        if (verParts.length == 2) {
-          return Version.forIntegers(Integer.valueOf(verParts[0]), Integer.valueOf(verParts[1]));
-        } else {
-          return Version.forIntegers(Integer.valueOf(verParts[0]));
-        }
-      } else {
+      // Allow x.y-something, assuming x.y.0-something
+      // Allow x-something, assuming x.0.0-something
+      String version = ver;
+      String extra = "";
+      String split[] = ver.split("[+-]", 2);
+      if (split.length == 2) {
+        version = split[0];
+        extra = ver.substring(version.length()); // includes separator + or -
+      }
+      String[] parts = version.split("\\.");
+      if (parts.length >= 3) {
         return Version.valueOf(ver);
       }
+      if (parts.length == 2) {
+        version += ".0";
+      }
+      if (parts.length == 1) {
+        version += ".0.0";
+      }
+      return Version.valueOf(version + extra);
     } catch (Exception e) {
       System.err.println("Invalid version found: " + ver);
       return null;

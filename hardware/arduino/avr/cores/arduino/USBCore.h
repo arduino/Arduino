@@ -126,11 +126,15 @@
 #define MSC_SUBCLASS_SCSI						0x06 
 #define MSC_PROTOCOL_BULK_ONLY					0x50 
 
+#ifndef USB_VERSION
+#define USB_VERSION 0x200
+#endif
+
 //	Device
 typedef struct {
 	u8 len;				// 18
 	u8 dtype;			// 1 USB_DEVICE_DESCRIPTOR_TYPE
-	u16 usbVersion;		// 0x200
+	u16 usbVersion;		// 0x200 or 0x210
 	u8	deviceClass;
 	u8	deviceSubClass;
 	u8	deviceProtocol;
@@ -260,7 +264,7 @@ typedef struct
 
 
 #define D_DEVICE(_class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs) \
-	{ 18, 1, 0x200, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
+	{ 18, 1, USB_VERSION, _class,_subClass,_proto,_packetSize0,_vid,_pid,_version,_im,_ip,_is,_configs }
 
 #define D_CONFIG(_totalLength,_interfaces) \
 	{ 9, 2, _totalLength,_interfaces, 1, 0, USB_CONFIG_BUS_POWERED | USB_CONFIG_REMOTE_WAKEUP, USB_CONFIG_POWER_MA(500) }
@@ -277,5 +281,22 @@ typedef struct
 #define D_CDCCS(_subtype,_d0,_d1)	{ 5, 0x24, _subtype, _d0, _d1 }
 #define D_CDCCS4(_subtype,_d0)		{ 4, 0x24, _subtype, _d0 }
 
+// Bootloader related fields
+// Old Caterina bootloader places the MAGIC key into unsafe RAM locations (it can be rewritten
+// by the running sketch before to actual reboot).
+// Newer bootloaders, recognizable by the LUFA "signature" at the end of the flash, can handle both
+// the usafe and the safe location. Check once (in USBCore.cpp) if the bootloader in new, then set the global
+// _updatedLUFAbootloader variable to true/false and place the magic key consequently
+#ifndef MAGIC_KEY
+#define MAGIC_KEY 0x7777
+#endif
+
+#ifndef MAGIC_KEY_POS
+#define MAGIC_KEY_POS 0x0800
+#endif
+
+#ifndef NEW_LUFA_SIGNATURE
+#define NEW_LUFA_SIGNATURE 0xDCFB
+#endif
 
 #endif

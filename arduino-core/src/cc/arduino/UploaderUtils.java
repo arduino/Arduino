@@ -34,7 +34,7 @@ import cc.arduino.packages.Uploader;
 import cc.arduino.packages.UploaderFactory;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
-import processing.app.SketchData;
+import processing.app.Sketch;
 import processing.app.debug.TargetPlatform;
 
 import java.util.LinkedList;
@@ -56,7 +56,7 @@ public class UploaderUtils {
     return new UploaderFactory().newUploader(target.getBoards().get(board), boardPort, noUploadPort);
   }
 
-  public boolean upload(SketchData data, Uploader uploader, String buildPath, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
+  public boolean upload(Sketch data, Uploader uploader, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
 
     if (uploader == null)
       uploader = getUploaderByPreferences(noUploadPort);
@@ -70,12 +70,12 @@ public class UploaderUtils {
 
     boolean useNewWarningsAccumulator = false;
     if (warningsAccumulator == null) {
-      warningsAccumulator = new LinkedList<String>();
+      warningsAccumulator = new LinkedList<>();
       useNewWarningsAccumulator = true;
     }
 
     try {
-      success = uploader.uploadUsingPreferences(data.getFolder(), buildPath, suggestedClassName, usingProgrammer, warningsAccumulator);
+      success = uploader.uploadUsingPreferences(data.getFolder(), data.getBuildPath().getAbsolutePath(), suggestedClassName, usingProgrammer, warningsAccumulator);
     } finally {
       if (uploader.requiresAuthorization() && !success) {
         PreferencesData.remove(uploader.getAuthorizationKey());

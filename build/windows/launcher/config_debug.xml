@@ -41,13 +41,15 @@
     <cp>%EXEDIR%/lib/jackson-databind-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/jackson-module-mrbean-2.6.3.jar</cp>
     <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
-    <cp>%EXEDIR%/lib/jmdns-3.4.1.jar</cp>
-    <cp>%EXEDIR%/lib/jna-4.1.0.jar</cp>
-    <cp>%EXEDIR%/lib/jna-platform-4.1.0.jar</cp>
+    <cp>%EXEDIR%/lib/jmdns-3.5.1.jar</cp>
+    <cp>%EXEDIR%/lib/slf4j-simple-1.7.22.jar</cp>
+    <cp>%EXEDIR%/lib/slf4j-api-1.7.22.jar</cp>
+    <cp>%EXEDIR%/lib/jna-4.2.2.jar</cp>
+    <cp>%EXEDIR%/lib/jna-platform-4.2.2.jar</cp>
     <cp>%EXEDIR%/lib/jsch-0.1.50.jar</cp>
-    <cp>%EXEDIR%/lib/jssc-2.8.0.jar</cp>
+    <cp>%EXEDIR%/lib/jssc-2.8.0-arduino1.jar</cp>
     <cp>%EXEDIR%/lib/pde.jar</cp>
-    <cp>%EXEDIR%/lib/rsyntaxtextarea-2.5.8.1+arduino.jar</cp>
+    <cp>%EXEDIR%/lib/rsyntaxtextarea-2.6.1.jar</cp>
     <cp>%EXEDIR%/lib/xml-apis-1.3.04.jar</cp>
     <cp>%EXEDIR%/lib/xml-apis-ext-1.3.04.jar</cp>
     <cp>%EXEDIR%/lib/xmlgraphics-commons-2.0.jar</cp>
@@ -56,6 +58,12 @@
     <path>java</path>
     <runtimeBits>32</runtimeBits>
     <opt>-Dsun.java2d.d3d=false</opt>
+    <opt>-Djna.nosys=true</opt>
+    <opt>-Djna.nounpack=true</opt>
+    <opt>-Djna.boot.library.name=jnidispatch-4.2.2-win32-x86</opt>
+    <opt>-Djna.boot.library.path="%EXEDIR%"/lib</opt>
+    <opt>-Djssc.library.path="%EXEDIR%"/lib</opt>
+    <opt>-Djna.debug_load=true</opt>
     <opt>-DAPP_DIR="%EXEDIR%"</opt>
     <opt>-DDEBUG=true</opt>
   </jre>
@@ -74,4 +82,5 @@
     <launcherErr>The registry refers to a nonexistent Java Development Kit installation or the runtime is corrupted.</launcherErr>
     <instanceAlreadyExistsMsg>An application instance is already running.</instanceAlreadyExistsMsg>
   </messages>
+  <manifest>wrapper-manifest.xml</manifest>
 </launch4jConfig>

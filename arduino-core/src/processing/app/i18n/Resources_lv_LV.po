@@ -12,14 +12,18 @@
 # Translators:
 # Translators:
 # Translators:
-# Kristofers <kristozz@gmail.com>, 2015
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Kristofers <kristozz@gmail.com>, 2015,2017
 # Kristofers <kristozz@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-07 18:40+0000\n"
+"PO-Revision-Date: 2017-09-23 18:38+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Latvian (Latvia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/lv_LV/)\n"
 "MIME-Version: 1.0\n"
@@ -89,11 +93,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Vai vēlaties saglabāt izmaiņas šajā skicē<BR> pirms aizvēršanas?</b><p>Ja nesaglabāsiet, visas jūsu veiktās izmaiņas pazudīs."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Fails ar nosaukumu \"{0}\" jau eksistē iekš \"{1}\""
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -108,7 +107,7 @@ msgstr "Bibliotēka ar nosaukumu {0} jau eksistē"
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr "Ir pieejama jauna Arduino versija\nvai vēlaties apmeklēt Arduino lejupielādes lapu?"
+msgstr "Ir pieejama jauna Arduino versija,\nvai vēlaties apmeklēt Arduino lejupielādes lapu?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
@@ -123,9 +122,13 @@ msgstr "Apakšmape tavā skiču mapē nav derīga kā bibliotēka"
 msgid "About Arduino"
 msgstr "Par Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "Pievienot .ZIP bibliotēku"
+msgstr "Pievienot .ZIP bibliotēku..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -143,6 +146,10 @@ msgstr ""
 msgid "Afrikaans"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr ""
@@ -158,7 +165,7 @@ msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
-msgstr "Radās kļūda, labojot faila kodējumu.\nNemēģiniet saglabāt šo skici, jo var tikt pārrakstīta vecā versija.\nIzmantojiet Atvērt, lai atvērtu pa jaunu skici un mēģinātu vēlreiz.\n"
+msgstr "Radās kļūda, labojot faila kodējumu.\nNemēģiniet saglabāt šo skici, jo var tikt pārrakstīta vecā versija.\nIzmantojiet Atvērt, lai atvērtu skici pa jaunu un mēģinātu vēlreiz.\n"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
@@ -212,7 +219,7 @@ msgstr "Skices arhivēšana neizdevās, jo\nskici nevarēja korekti saglabāt."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -301,7 +308,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Automātiski"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -332,6 +339,10 @@ msgstr ""
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
 msgstr "Plate"
+
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr "Plates informācija"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
@@ -390,7 +401,7 @@ msgstr "Būvējuma opcijas ir izmainījušās, pārbūvē visu"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Iebūvētie piemēri"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -408,13 +419,19 @@ msgstr "Iededzināt sāknēšanas ielādētāju"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Iededzina sāknēšanas ielādētāju I/O platē (tas var aizņemt kādu laiku)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
 msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
 msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
@@ -430,10 +447,6 @@ msgstr ""
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Atcelt"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Nevar pārsaukt"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -463,6 +476,10 @@ msgstr ""
 msgid "Chinese (Taiwan) (Big5)"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
 msgstr ""
@@ -477,7 +494,7 @@ msgstr "Komentēt/atkomentēt"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Komunikācija"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -489,7 +506,7 @@ msgstr "Kompilē skici..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Piedalījās"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -516,6 +533,11 @@ msgstr "Neizdevās pievienot \"{0}\" skicei."
 msgid "Could not copy to a proper location."
 msgstr "Neizdevās pārkopēt uz pareizo atrašanās vietu."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Nevar izveidot skices mapi."
@@ -533,11 +555,6 @@ msgstr "Neidevās izdzēst \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Neizdevās izdzēst esošo \"{0}\" failu."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Neidevās izdzēst {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -594,23 +611,6 @@ msgstr "Nevar nolasīt noklusējuma iestatījumus.\nJums vajadzēs pārinstalēt
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Neizdevās aizvākt {0} veco versiju"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Neizdevās pārsaukt \"{0}\" uz \"{1}\""
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Neizdevās pārsaukt skici. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Neizdevās pārsaukt skici. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Neizdevās pārsaukt skici. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -737,7 +737,7 @@ msgstr "Augšupielādēšana pabeigta."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "Lejupielādēti {0}kb no {1}kb"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
@@ -759,7 +759,7 @@ msgstr "Lejupielādē platformu indeksu..."
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr ""
+msgstr "Lejupielādē rīkus ({0}/{1})."
 
 #: Preferences.java:91
 msgid "Dutch"
@@ -823,7 +823,7 @@ msgstr "Kļūda pievienojot failu"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Kļūda, kompilējot platei {0}."
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -832,7 +832,7 @@ msgstr "Neizdevās nokompilēt."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "Kļūda, lejupielādējot {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -848,7 +848,7 @@ msgstr "Kļūda iekš Serial.{0}()"
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr ""
+msgstr "Kļūda, lādējot {0}"
 
 #: Serial.java:181
 #, java-format
@@ -900,14 +900,9 @@ msgstr ""
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Radās kļūda, ielādējot kodu {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
-msgstr "Drukājot radās kļūda."
+msgstr "Drukājot, radās kļūda."
 
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
@@ -945,13 +940,23 @@ msgstr ""
 msgid "Examples"
 msgstr "Piemēri"
 
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr "Piemēri jebkurai platei"
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr "Piemēri priekš {0}"
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
-msgstr ""
+msgstr "Piemēri no pielāgotajām bibliotēkām"
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
-msgstr ""
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr "Piemēri no citām bibliotēkām"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -964,6 +969,15 @@ msgstr ""
 #: ../../../processing/app/Base.java:416
 #, java-format
 msgid "Failed to open sketch: \"{0}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
 msgstr ""
 
 #: Editor.java:491
@@ -1020,7 +1034,7 @@ msgstr "Salabot kodējumu un pārlādēt"
 msgid ""
 "For information on installing libraries, see: "
 "http://www.arduino.cc/en/Guide/Libraries\n"
-msgstr ""
+msgstr "Lai uzzinātu par bibliotēku instalēšanu, apskatiet: http://www.arduino.cc/en/Guide/Libraries\n\n"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:118
 #, java-format
@@ -1055,6 +1069,10 @@ msgstr ""
 msgid "German"
 msgstr "German"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr "Iegūt plates informāciju"
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "Pirmie soļi"
@@ -1073,11 +1091,11 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Iet uz rindu"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Iet uz rindu..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1112,6 +1130,10 @@ msgstr "Cik ļoti Borhess no jums"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "Hungarian"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr "NESADERĪGS"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1215,6 +1237,10 @@ msgstr "Italian"
 msgid "Japanese"
 msgstr "Japanese"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
+
 #: Preferences.java:104
 msgid "Korean"
 msgstr "Korean"
@@ -1242,7 +1268,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
-msgstr ""
+msgstr "Rindas numurs:"
 
 #: Preferences.java:106
 msgid "Lithuaninan"
@@ -1250,7 +1276,7 @@ msgstr "Lithuaninan"
 
 #: ../../../../../app/src/processing/app/Base.java:132
 msgid "Loading configuration..."
-msgstr ""
+msgstr "Ielādē konfigurāciju..."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
@@ -1315,12 +1341,20 @@ msgstr "Jānorāda precīzi viens skices fails"
 msgid "Name for new file:"
 msgstr "Jaunā faila nosaukums:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
+msgstr ""
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
@@ -1510,6 +1544,10 @@ msgstr "Lūdzu, importējiet SPI bibliotēku no Skice > Importēt bibliotēku iz
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr ""
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
@@ -1529,7 +1567,7 @@ msgstr "Ports"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
-msgstr ""
+msgstr "Porta numurs:"
 
 #: ../../../processing/app/Preferences.java:151
 msgid "Portugese"
@@ -1617,7 +1655,7 @@ msgstr "Programmators"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
 msgid "Progress {0}"
-msgstr ""
+msgstr "Progress {0}"
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
@@ -1629,7 +1667,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
-msgstr ""
+msgstr "Ieteicams"
 
 #: Editor.java:1138 Editor.java:1140 Editor.java:1390
 msgid "Redo"
@@ -1732,7 +1770,7 @@ msgstr "Saglabā..."
 
 #: ../../../processing/app/FindReplace.java:131
 msgid "Search all Sketch Tabs"
-msgstr ""
+msgstr "Meklēt visās skices cilnēs"
 
 #: Base.java:1909
 msgid "Select (or create new) folder for sketches..."
@@ -1787,6 +1825,13 @@ msgstr "Seriālā porta monitors"
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr ""
@@ -1803,7 +1848,7 @@ msgstr "Seriālais ports \"{0}\" netika atrasts. Vai jūs izvēlējāties pareiz
 msgid ""
 "Serial port {0} not found.\n"
 "Retry the upload with another serial port?"
-msgstr "Seriālais ports {0} netika atrasts.\nAtkārtot augšupielādi ar citu seriālo portu?"
+msgstr "Seriālais ports {0} netika atrasts.\nAtkārtot augšupielādi uz citu seriālo portu?"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1816,7 +1861,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
-msgstr ""
+msgstr "Iestatījumi"
 
 #: Base.java:1681
 msgid "Settings issues"
@@ -1887,6 +1932,11 @@ msgstr "Skiču burtnīcas atrašanās vieta:"
 msgid "Sketchbook path not defined"
 msgstr ""
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr ""
@@ -1908,10 +1958,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Daži faili ir atzīmēti kā \"tikai-lasāmi\", tādēļ jums\nvajadzēs saglabāt šo skici citā vietā."
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Atvainojiet, skice (vai mape) ar nosaukumu \"{0}\" jau eksistē."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1945,6 +1995,10 @@ msgstr ""
 msgid "Tamil"
 msgstr "Tamil"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
 msgstr ""
@@ -1976,6 +2030,10 @@ msgstr "Servera klase ir pārsaukta par EthernetServer."
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Udp klase ir pārsaukta par EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -1992,12 +2050,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "\"{0}\" bibliotēka nevar tikt izmantota.\nBibliotēku nosaukumiem jāsatur tikai parastos burtus un ciparus.\n(Tikai ASCII, bez atstarpēm, un tas nedrīkst sākties ar ciparu)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Galvenais fails nedrīkst izmantot paplašinājumu.\n(Varbūt ir laiks izmantot \"īstu\" programmēšanas vidi)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2019,6 +2074,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Skice \"{0}\" nevar tikt izmantota.\nSkiču nosaukumiem jāsatur tikai parastos burtus un ciparus.\n(Tikai ASCII, bez atstarpēm, un tas nedrīkst sākties ar ciparu).\nLai atbrīvotos no šī ziņojuma, aizvāciet skici no\n{1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2048,13 +2108,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr ""
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Fails jau ir ticis iekopēts vietā,\nno kurienes jūs to centāties pievienot.\nEs neko nedarīšu."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2088,7 +2141,7 @@ msgstr "Rīki"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "Tēma"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -2164,6 +2217,10 @@ msgstr "Atsaukt"
 msgid "Unhandled type {0} in context key {1}"
 msgstr ""
 
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
+
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
 msgid "Unknown sketch file extension: {0}"
@@ -2215,6 +2272,10 @@ msgstr "Augšupielādēt"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "Augšupielādēt, izmantojot programmatoru"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2270,7 +2331,7 @@ msgstr "Pārbaudīt kodu pēc augšupielādes"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr ""
+msgstr "Pārbaudīt/kompilēt"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
@@ -2391,28 +2452,8 @@ msgstr "Atrasts cits mikrokontrolieris. Vai izvēlējāties pareizo plati no Rī
 msgid "Yes"
 msgstr "Jā"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Tu nevari mani piemuļķot"
-
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Jūs nedrīkstat uzturēt .cpp failu ar tādu pašu nosaukumu kā skice."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
-msgstr ""
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Jūs nevarat pārsaukt skici uz \"{0}\"\njo skicei jau ir .cpp fails ar tādu nosaukumu."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
 msgstr ""
 
 #: Sketch.java:883
@@ -2424,6 +2465,12 @@ msgstr "Jūs nevarat saglabāt skici pašas\nmapē. Tas turpinātos bezgalīgi."
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Jūs aizmirsāt skiču burtnīcu"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2533,10 +2580,6 @@ msgstr "kompilē"
 msgid "connected!"
 msgstr "pievienots!"
 
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "createNewFile() atgrieza kļūdu"
-
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
 msgstr "http://www.arduino.cc/"
@@ -2585,7 +2628,7 @@ msgstr "versija <b>{0}</b>"
 #: ../../../../../app/src/processing/app/Editor.java:2243
 #, java-format
 msgid "{0} - {1} | Arduino {2}"
-msgstr ""
+msgstr "{0} - {1} | Arduino {2}"
 
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:39
 #: ../../../cc/arduino/contributions/SignatureVerificationFailedException.java:43
@@ -2673,4 +2716,9 @@ msgstr ""
 #: ../../../processing/app/Base.java:481
 #, java-format
 msgid "{0}: Unknown package"
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
 msgstr ""

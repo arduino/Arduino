@@ -57,8 +57,6 @@ void DNSClient::begin(const IPAddress& aDNSServer)
 
 int DNSClient::inet_aton(const char* address, IPAddress& result)
 {
-    // TODO: add support for "a", "a.b", "a.b.c" formats
-
     uint16_t acc = 0; // Accumulator
     uint8_t dots = 0;
 

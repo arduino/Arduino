@@ -1,38 +1,44 @@
-/* Blink without Delay
+/*
+  Blink without Delay
 
- Turns on and off a light emitting diode (LED) connected to a digital
- pin, without using the delay() function.  This means that other code
- can run at the same time without being interrupted by the LED code.
+  Turns on and off a light emitting diode (LED) connected to a digital pin,
+  without using the delay() function. This means that other code can run at the
+  same time without being interrupted by the LED code.
 
- The circuit:
- * LED attached from pin 13 to ground.
- * Note: on most Arduinos, there is already an LED on the board
- that's attached to pin 13, so no hardware is needed for this example.
+  The circuit:
+  - Use the onboard LED.
+  - Note: Most Arduinos have an on-board LED you can control. On the UNO, MEGA
+    and ZERO it is attached to digital pin 13, on MKR1000 on pin 6. LED_BUILTIN
+    is set to the correct LED pin independent of which board is used.
+    If you want to know what pin the on-board LED is connected to on your
+    Arduino model, check the Technical Specs of your board at:
+    https://www.arduino.cc/en/Main/Products
 
- created 2005
- by David A. Mellis
- modified 8 Feb 2010
- by Paul Stoffregen
- modified 11 Nov 2013
- by Scott Fitzgerald
+  created 2005
+  by David A. Mellis
+  modified 8 Feb 2010
+  by Paul Stoffregen
+  modified 11 Nov 2013
+  by Scott Fitzgerald
+  modified 9 Jan 2017
+  by Arturo Guadalupi
 
+  This example code is in the public domain.
 
- This example code is in the public domain.
+  http://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
+*/
 
- http://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
- */
+// constants won't change. Used here to set a pin number:
+const int ledPin =  LED_BUILTIN;// the number of the LED pin
 
-// constants won't change. Used here to set a pin number :
-const int ledPin =  13;      // the number of the LED pin
-
-// Variables will change :
+// Variables will change:
 int ledState = LOW;             // ledState used to set the LED
 
 // Generally, you should use "unsigned long" for variables that hold time
 // The value will quickly become too large for an int to store
 unsigned long previousMillis = 0;        // will store last time LED was updated
 
-// constants won't change :
+// constants won't change:
 const long interval = 1000;           // interval at which to blink (milliseconds)
 
 void setup() {
@@ -43,10 +49,9 @@ void setup() {
 void loop() {
   // here is where you'd put code that needs to be running all the time.
 
-  // check to see if it's time to blink the LED; that is, if the
-  // difference between the current time and last time you blinked
-  // the LED is bigger than the interval at which you want to
-  // blink the LED.
+  // check to see if it's time to blink the LED; that is, if the difference
+  // between the current time and last time you blinked the LED is bigger than
+  // the interval at which you want to blink the LED.
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
@@ -64,4 +69,3 @@ void loop() {
     digitalWrite(ledPin, ledState);
   }
 }
-

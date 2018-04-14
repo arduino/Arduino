@@ -122,7 +122,7 @@ public class Theme {
         return scale;
     } catch (NumberFormatException ignore) {
     }
-    return 100;
+    return BaseNoGui.getPlatform().getSystemDPI() * 100 / 96;
   }
 
   static public int scale(int size) {
@@ -228,12 +228,12 @@ public class Theme {
     Font styledFont = new Font(font.getFamily(),
         (bold ? Font.BOLD : 0) | (italic ? Font.ITALIC : 0), font.getSize());
     if (underlined) {
-      Map<TextAttribute, Object> attr = new Hashtable<TextAttribute, Object>();
+      Map<TextAttribute, Object> attr = new Hashtable<>();
       attr.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
       styledFont = styledFont.deriveFont(attr);
     }
 
-    Map<String, Object> result = new HashMap<String, Object>();
+    Map<String, Object> result = new HashMap<>();
     result.put("color", color);
     result.put("font", styledFont);
 

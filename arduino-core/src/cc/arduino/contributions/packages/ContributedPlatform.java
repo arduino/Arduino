@@ -44,6 +44,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   public abstract String getArchitecture();
 
+  @Override
   public abstract String getChecksum();
 
   public abstract List<ContributedToolReference> getToolsDependencies();
@@ -109,15 +110,15 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
     ContributedPlatform obj1 = (ContributedPlatform) obj;
 
-    ContributedPackage parentPackage = getParentPackage();
-    ContributedPackage parentPackage1 = obj1.getParentPackage();
-    if (parentPackage == null) {
-      if (parentPackage1 != null)
+    ContributedPackage parent = getParentPackage();
+    ContributedPackage parent1 = obj1.getParentPackage();
+    if (parent == null) {
+      if (parent1 != null)
         return false;
     } else {
-      if (parentPackage1 == null)
+      if (parent1 == null)
         return false;
-      if (!parentPackage.getName().equals(parentPackage1.getName()))
+      if (!parent.getName().equals(parent1.getName()))
         return false;
     }
     if (!getArchitecture().equals(obj1.getArchitecture())) {

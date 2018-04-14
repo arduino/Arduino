@@ -44,7 +44,7 @@ public class DiscoveryManager {
   private final NetworkDiscovery networkDiscoverer = new NetworkDiscovery();
 
   public DiscoveryManager() {
-    discoverers = new ArrayList<Discovery>();
+    discoverers = new ArrayList<>();
     discoverers.add(serialDiscoverer);
     discoverers.add(networkDiscoverer);
 
@@ -76,7 +76,7 @@ public class DiscoveryManager {
   }
 
   public List<BoardPort> discovery() {
-    List<BoardPort> res = new ArrayList<BoardPort>();
+    List<BoardPort> res = new ArrayList<>();
     for (Discovery d : discoverers) {
       res.addAll(d.listDiscoveredBoards());
     }
@@ -84,7 +84,7 @@ public class DiscoveryManager {
   }
 
   public List<BoardPort> discovery(boolean complete) {
-    List<BoardPort> res = new ArrayList<BoardPort>();
+    List<BoardPort> res = new ArrayList<>();
     for (Discovery d : discoverers) {
       res.addAll(d.listDiscoveredBoards(complete));
     }

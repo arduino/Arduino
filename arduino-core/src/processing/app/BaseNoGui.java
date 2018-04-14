@@ -1,18 +1,15 @@
 package processing.app;
 
-import cc.arduino.Compiler;
 import cc.arduino.Constants;
-import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.SignatureVerificationFailedException;
+import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
+import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributedTool;
 import cc.arduino.contributions.packages.ContributionsIndexer;
-import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
-import cc.arduino.packages.Uploader;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 import org.apache.commons.logging.impl.NoOpLog;
@@ -24,11 +21,14 @@ import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
 
+import cc.arduino.files.DeleteFilesOnShutdown;
+import processing.app.helpers.FileUtils;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,9 +41,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10609;
+  public static final int REVISION = 10806;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.6.9";
+  public static final String VERSION_NAME = "1.8.6";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -61,11 +61,24 @@ public class BaseNoGui {
         //noop
       }
     }
+
+    File windowsStoreConfig = new File(getContentFile("lib"), "windowsStore.txt");
+    if (windowsStoreConfig.exists()) {
+      try {
+        PreferencesMap conf = new PreferencesMap(windowsStoreConfig);
+        PreferencesData.setBoolean("runtime.is-windows-store-app", true);
+        PreferencesData.set("runtime.windows-store-app.id", conf.get("appid"));
+        versionNameLong += " (Windows Store " + conf.get("version") + ")";
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
+    }
+
     VERSION_NAME_LONG = versionNameLong;
   }
 
-  private static DiscoveryManager discoveryManager = new DiscoveryManager();
-  
+  private static DiscoveryManager discoveryManager;
+
   // these are static because they're used by Sketch
   static private File examplesFolder;
   static private File toolsFolder;
@@ -87,6 +100,10 @@ public class BaseNoGui {
 
   public static ContributionsIndexer indexer;
   public static LibrariesIndexer librariesIndexer;
+
+  private static String boardManagerLink = "";
+
+  private static File buildCache;
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
@@ -114,33 +131,12 @@ public class BaseNoGui {
     return count;
   }
 
-  static public String getAvrBasePath() {
-    String path = getHardwarePath() + File.separator + "tools" +
-                  File.separator + "avr" + File.separator + "bin" + File.separator;
-    if (OSUtils.isLinux() && !(new File(path)).exists()) {
-      return "";  // use distribution provided avr tools if bundled tools missing
-    }
-    return path;
-  }
-
-  static public File getBuildFolder(SketchData data) throws IOException {
-    File buildFolder;
-    if (PreferencesData.get("build.path") != null) {
-      buildFolder = absoluteFile(PreferencesData.get("build.path"));
-      Files.createDirectories(buildFolder.toPath());
-    } else {
-      buildFolder = FileUtils.createTempFolder("build", DigestUtils.md5Hex(data.getMainFilePath()) + ".tmp");
-      DeleteFilesOnShutdown.add(buildFolder);
-    }
-    return buildFolder;
-  }
-
   static public PreferencesMap getBoardPreferences() {
     TargetBoard board = getTargetBoard();
     if (board == null)
       return null;
     String boardId = board.getId();
-    
+
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
 
     String extendedName = prefs.get("name");
@@ -160,6 +156,41 @@ public class BaseNoGui {
       }
     }
     prefs.put("name", extendedName);
+
+    // Resolve tools needed for this board
+    List<ContributedTool> requiredTools = new ArrayList<>();
+
+    // Add all tools dependencies specified in package index
+    ContributedPlatform p = indexer.getContributedPlaform(getTargetPlatform());
+    if (p != null)
+      requiredTools.addAll(p.getResolvedTools());
+
+    // Add all tools dependencies from the (possibily) referenced core
+    String core = prefs.get("build.core");
+    if (core != null && core.contains(":")) {
+      String split[] = core.split(":");
+      TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (referenced != null) {
+        ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
+        if (referencedPlatform != null)
+          requiredTools.addAll(referencedPlatform.getResolvedTools());
+      } else {
+        String msg = tr("The current selected board needs the core '{0}' that is not installed.");
+        System.out.println(I18n.format(msg, core));
+      }
+    }
+
+    String prefix = "runtime.tools.";
+    for (ContributedTool tool : requiredTools) {
+      File folder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
+      if (folder == null) {
+        continue;
+      }
+      String toolPath = folder.getAbsolutePath();
+      prefs.put(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
+    }
     return prefs;
   }
 
@@ -189,6 +220,9 @@ public class BaseNoGui {
   }
 
   public static DiscoveryManager getDiscoveryManager() {
+    if (discoveryManager == null) {
+      discoveryManager = new DiscoveryManager();
+    }
     return discoveryManager;
   }
 
@@ -225,6 +259,18 @@ public class BaseNoGui {
 
   static public String getPortableSketchbookFolder() {
     return portableSketchbookFolder;
+  }
+
+  static public File getCachePath() {
+    if (buildCache == null) {
+      try {
+        buildCache = FileUtils.createTempFolder("arduino_cache_");
+        DeleteFilesOnShutdown.add(buildCache);
+      } catch (IOException e) {
+        return null;
+      }
+    }
+    return buildCache;
   }
 
   /**
@@ -381,6 +427,21 @@ public class BaseNoGui {
     return libs.filterLibrariesInSubfolder(getSketchbookFolder());
   }
 
+  static public String getBoardManagerLink() {
+	  return boardManagerLink;
+  }
+
+  protected static PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(BaseNoGui.class);
+
+  public static void setBoardManagerLink(String temp) {
+	  boardManagerLink = temp;
+	  propertyChangeSupport.firePropertyChange("boardManagerLink", "", boardManagerLink);
+  }
+
+  public static void addPropertyChangeListener(PropertyChangeListener listener) {
+	  propertyChangeSupport.addPropertyChangeListener(listener);
+  }
+
   /**
    * Given a folder, return a list of the header files in that folder (but not
    * the header files in its sub-folders, as those should be included from
@@ -392,160 +453,6 @@ public class BaseNoGui {
       throw new IOException();
     }
     return list;
-  }
-
-  static public void init(String[] args) throws Exception {
-    CommandlineParser parser = new CommandlineParser(args);
-    parser.parseArgumentsPhase1();
-
-    String sketchbookPath = getSketchbookPath();
-  
-    // If no path is set, get the default sketchbook folder for this platform
-    if (sketchbookPath == null) {
-      if (BaseNoGui.getPortableFolder() != null)
-        PreferencesData.set("sketchbook.path", getPortableSketchbookFolder());
-      else
-        showError(tr("No sketchbook"), tr("Sketchbook path not defined"), null);
-    }
-
-    BaseNoGui.initPackages();
-    
-    // Setup board-dependent variables.
-    onBoardOrPortChange();
-
-    parser.parseArgumentsPhase2();
-
-    for (String path: parser.getFilenames()) {
-      // Correctly resolve relative paths
-      File file = absoluteFile(path);
-  
-      // Fix a problem with systems that use a non-ASCII languages. Paths are
-      // being passed in with 8.3 syntax, which makes the sketch loader code
-      // unhappy, since the sketch folder naming doesn't match up correctly.
-      // http://dev.processing.org/bugs/show_bug.cgi?id=1089
-      if (OSUtils.isWindows()) {
-        try {
-          file = file.getCanonicalFile();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-
-      if (!parser.isVerifyOrUploadMode() && !parser.isGetPrefMode())
-        showError(tr("Mode not supported"), tr("Only --verify, --upload or --get-pref are supported"), null);
-
-      if (!parser.isForceSavePrefs())
-        PreferencesData.setDoSave(false);
-      if (!file.exists()) {
-        String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
-        // Open failure is fatal in upload/verify mode
-        showError(null, mess, 2);
-      }
-    }
-  
-    // Save the preferences. For GUI mode, this happens in the quit
-    // handler, but for other modes we should also make sure to save
-    // them.
-    PreferencesData.save();
-
-    if (parser.isVerifyOrUploadMode()) {
-      // Set verbosity for command line build
-      PreferencesData.set("build.verbose", "" + parser.isDoVerboseBuild());
-      PreferencesData.set("upload.verbose", "" + parser.isDoVerboseUpload());
-
-      // Make sure these verbosity preferences are only for the
-      // current session
-      PreferencesData.setDoSave(false);
-
-      if (parser.isUploadMode()) {
-
-        if (parser.getFilenames().size() != 1)
-        {
-          showError(tr("Multiple files not supported"), tr("The --upload option supports only one file at a time"), null);
-        }
-
-        List<String> warningsAccumulator = new LinkedList<String>();
-        boolean success = false;
-        try {
-          // Editor constructor loads the sketch with handleOpenInternal() that
-          // creates a new Sketch that, in trun, calls load() inside its constructor
-          // This translates here as:
-          //   SketchData data = new SketchData(file);
-          //   File tempBuildFolder = getBuildFolder();
-          //   data.load();
-          SketchData data = new SketchData(absoluteFile(parser.getFilenames().get(0)));
-          File tempBuildFolder = getBuildFolder(data);
-          data.load();
-
-          // Sketch.exportApplet()
-          //  - calls Sketch.prepare() that calls Sketch.ensureExistence()
-          //  - calls Sketch.build(verbose=false) that calls Sketch.ensureExistence(), set progressListener and calls Compiler.build()
-          //  - calls Sketch.upload() (see later...)
-          if (!data.getFolder().exists()) {
-            showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-          }
-          String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
-          if (suggestedClassName == null) {
-            showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
-          }
-          showMessage(tr("Done compiling"), tr("Done compiling"));
-
-          Uploader uploader = new UploaderUtils().getUploaderByPreferences(parser.isNoUploadPort());
-          if (uploader.requiresAuthorization() && !PreferencesData.has(uploader.getAuthorizationKey())) showError("...", "...", null);
-          try {
-            success = new UploaderUtils().upload(data, uploader, tempBuildFolder.getAbsolutePath(), suggestedClassName, parser.isDoUseProgrammer(), parser.isNoUploadPort(), warningsAccumulator);
-            showMessage(tr("Done uploading"), tr("Done uploading"));
-          } finally {
-            if (uploader.requiresAuthorization() && !success) {
-              PreferencesData.remove(uploader.getAuthorizationKey());
-            }
-          }
-        } catch (Exception e) {
-          showError(tr("Error while verifying/uploading"), tr("An error occurred while verifying/uploading the sketch"), e);
-        }
-        for (String warning : warningsAccumulator) {
-          System.out.print(tr("Warning"));
-          System.out.print(": ");
-          System.out.println(warning);
-        }
-        if (!success) showError(tr("Error while uploading"), tr("An error occurred while uploading the sketch"), null);
-      } else {
-
-        for (String path : parser.getFilenames())
-        {
-          try {
-            // Editor constructor loads sketch with handleOpenInternal() that
-            // creates a new Sketch that calls load() in its constructor
-            // This translates here as:
-            //   SketchData data = new SketchData(file);
-            //   File tempBuildFolder = getBuildFolder();
-            //   data.load();
-            SketchData data = new SketchData(absoluteFile(path));
-            File tempBuildFolder = getBuildFolder(data);
-            data.load();
-
-            // Sketch.prepare() calls Sketch.ensureExistence()
-            // Sketch.build(verbose) calls Sketch.ensureExistence() and set progressListener and, finally, calls Compiler.build()
-            // This translates here as:
-            //    if (!data.getFolder().exists()) showError(...);
-            //    String ... = Compiler.build(data, tempBuildFolder.getAbsolutePath(), tempBuildFolder, null, verbose);
-            if (!data.getFolder().exists()) showError(tr("No sketch"), tr("Can't find the sketch in the specified path"), null);
-            String suggestedClassName = new Compiler(data, tempBuildFolder.getAbsolutePath()).build(null, false);
-            if (suggestedClassName == null) showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), null);
-            showMessage(tr("Done compiling"), tr("Done compiling"));
-          } catch (Exception e) {
-            showError(tr("Error while verifying"), tr("An error occurred while verifying the sketch"), e);
-          }
-        }
-
-      }
-
-      // No errors exit gracefully
-      System.exit(0);
-    }
-    else if (parser.isGetPrefMode()) {
-      dumpPrefs(parser);
-    }
   }
 
   protected static void dumpPrefs(CommandlineParser parser) {
@@ -573,72 +480,36 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
-    indexer = new ContributionsIndexer(BaseNoGui.getSettingsFolder(), BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-    File indexFile = indexer.getIndexFile("package_index.json");
-    File defaultPackageJsonFile = new File(getContentFile("dist"), "package_index.json");
-    if (!indexFile.isFile() || (defaultPackageJsonFile.isFile() && defaultPackageJsonFile.lastModified() > indexFile.lastModified())) {
-      FileUtils.copyFile(defaultPackageJsonFile, indexFile);
-    } else if (!indexFile.isFile()) {
-      // Otherwise create an empty packages index
-      FileOutputStream out = null;
-      try {
-        out = new FileOutputStream(indexFile);
-        out.write("{ \"packages\" : [ ] }".getBytes());
-      } finally {
-        IOUtils.closeQuietly(out);
-      }
-    }
-
-    File indexSignatureFile = indexer.getIndexFile("package_index.json.sig");
-    File defaultPackageJsonSignatureFile = new File(getContentFile("dist"), "package_index.json.sig");
-    if (!indexSignatureFile.isFile() || (defaultPackageJsonSignatureFile.isFile() && defaultPackageJsonSignatureFile.lastModified() > indexSignatureFile.lastModified())) {
-      FileUtils.copyFile(defaultPackageJsonSignatureFile, indexSignatureFile);
-    }
+    indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
+        new GPGDetachedSignatureVerifier());
 
     try {
       indexer.parseIndex();
     } catch (JsonProcessingException | SignatureVerificationFailedException e) {
+      File indexFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
+      File indexSignatureFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME + ".sig");
       FileUtils.deleteIfExists(indexFile);
       FileUtils.deleteIfExists(indexSignatureFile);
       throw e;
     }
-    indexer.syncWithFilesystem(getHardwareFolder());
+    indexer.syncWithFilesystem();
 
-    packages = new LinkedHashMap<String, TargetPackage>();
+    packages = new LinkedHashMap<>();
     loadHardware(getHardwareFolder());
     loadContributedHardware(indexer);
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
-    File librariesIndexFile = librariesIndexer.getIndexFile();
-    copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
+    librariesIndexer = new LibrariesIndexer(getSettingsFolder());
     try {
       librariesIndexer.parseIndex();
     } catch (JsonProcessingException e) {
+      File librariesIndexFile = librariesIndexer.getIndexFile();
       FileUtils.deleteIfExists(librariesIndexFile);
-      copyStockLibraryIndexIfUpstreamIsMissing(librariesIndexFile);
-      librariesIndexer.parseIndex();
     }
-  }
 
-  private static void copyStockLibraryIndexIfUpstreamIsMissing(File librariesIndexFile) throws IOException {
-    File defaultLibraryJsonFile = new File(getContentFile("dist"), "library_index.json");
-    if (!librariesIndexFile.isFile() || (defaultLibraryJsonFile.isFile() && defaultLibraryJsonFile.lastModified() > librariesIndexFile.lastModified())) {
-      if (defaultLibraryJsonFile.isFile()) {
-        FileUtils.copyFile(defaultLibraryJsonFile, librariesIndexFile);
-      } else {
-        FileOutputStream out = null;
-        try {
-          // Otherwise create an empty packages index
-          out = new FileOutputStream(librariesIndexFile);
-          out.write("{ \"libraries\" : [ ] }".getBytes());
-        } catch (IOException e) {
-          e.printStackTrace();
-        } finally {
-          IOUtils.closeQuietly(out);
-        }
-      }
+    if (discoveryManager == null) {
+      discoveryManager = new DiscoveryManager();
     }
   }
 
@@ -732,8 +603,8 @@ public class BaseNoGui {
       }
       String arch = subFolder.getName();
       try {
-        TargetPlatform platform = new LegacyTargetPlatform(arch, subFolder, targetPackage);
-        targetPackage.getPlatforms().put(arch, platform);
+        TargetPlatform p = new LegacyTargetPlatform(arch, subFolder, targetPackage);
+        targetPackage.getPlatforms().put(arch, p);
       } catch (TargetPlatformException e) {
         System.err.println(e.getMessage());
       }
@@ -751,29 +622,6 @@ public class BaseNoGui {
     String[] contents = PApplet.loadStrings(file);
     if (contents == null) return null;
     return PApplet.join(contents, "\n");
-  }
-
-  static public void main(String args[]) throws Exception {
-    if (args.length == 0) {
-      showError(tr("No parameters"), tr("No command line parameters found"), null);
-    }
-    System.setProperty("java.net.useSystemProxies", "true");
-
-    Thread deleteFilesOnShutdownThread = new Thread(DeleteFilesOnShutdown.INSTANCE);
-    deleteFilesOnShutdownThread.setName("DeleteFilesOnShutdown");
-    Runtime.getRuntime().addShutdownHook(deleteFilesOnShutdownThread);
-
-    initPlatform();
-
-    getPlatform().init();
-
-    initPortableFolder();
-    
-    initParameters(args);
-
-    checkInstallationFolder();
-
-    init(args);
   }
 
   public static void checkInstallationFolder() {
@@ -800,7 +648,7 @@ public class BaseNoGui {
   static public void onBoardOrPortChange() {
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-    librariesFolders = new ArrayList<File>();
+    librariesFolders = new ArrayList<>();
 
     // Add IDE libraries folder
     librariesFolders.add(getContentFile("libraries"));
@@ -830,15 +678,15 @@ public class BaseNoGui {
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    BaseNoGui.librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
-    BaseNoGui.librariesIndexer.setLibrariesFolders(librariesFolders);
-    BaseNoGui.librariesIndexer.rescanLibraries();
+    librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
+    librariesIndexer.setLibrariesFolders(librariesFolders);
+    librariesIndexer.rescanLibraries();
 
     populateImportToLibraryTable();
   }
 
-  static protected void loadContributedHardware(ContributionsIndexer indexer) {
-    for (TargetPackage pack : indexer.createTargetPackages()) {
+  static protected void loadContributedHardware(ContributionsIndexer idx) {
+    for (TargetPackage pack : idx.createTargetPackages()) {
       packages.put(pack.getId(), pack);
     }
   }
@@ -849,16 +697,29 @@ public class BaseNoGui {
       PreferencesData.removeAllKeysWithPrefix(prefix);
     }
 
+    Map<String, String> latestVersions = new HashMap<>();
+    VersionComparator comparator = new VersionComparator();
     for (ContributedTool tool : installedTools) {
       File installedFolder = tool.getDownloadableContribution(getPlatform()).getInstalledFolder();
-      String absolutePath;
+      String toolPath;
       if (installedFolder != null) {
-        absolutePath = installedFolder.getAbsolutePath();
+        toolPath = installedFolder.getAbsolutePath();
       } else {
-        absolutePath = Constants.PREF_REMOVE_PLACEHOLDER;
+        toolPath = Constants.PREF_REMOVE_PLACEHOLDER;
       }
-      PreferencesData.set(prefix + tool.getName() + ".path", absolutePath);
-      PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", absolutePath);
+      String toolName = tool.getName();
+      String toolVersion = tool.getVersion();
+      PreferencesData.set(prefix + toolName + "-" + toolVersion + ".path", toolPath);
+      PreferencesData.set(prefix + tool.getPackager() + "-" + toolName + "-" + toolVersion + ".path", toolPath);
+      // In the generic tool property put the path of the latest version if more are available
+      try {
+        if (!latestVersions.containsKey(toolName) || comparator.greaterThan(toolVersion, latestVersions.get(toolName))) {
+          latestVersions.put(toolName, toolVersion);
+          PreferencesData.set(prefix + toolName + ".path", toolPath);
+        }
+      } catch (Exception e) {
+        // Ignore invalid versions
+      }
     }
   }
 
@@ -867,7 +728,7 @@ public class BaseNoGui {
     // a list of libraries. Compiler.java will use only the first
     // library on each list. The others are used only to advise
     // user of ambiguously matched and duplicate libraries.
-    importToLibraryTable = new HashMap<String, LibraryList>();
+    importToLibraryTable = new HashMap<>();
     for (UserLibrary lib : librariesIndexer.getInstalledLibraries()) {
       try {
         String headers[] = headerListFromIncludePath(lib.getSrcFolder());
@@ -996,49 +857,6 @@ public class BaseNoGui {
   }
 
   /**
-   * Recursively remove all files within a directory,
-   * used with removeDir(), or when the contents of a dir
-   * should be removed, but not the directory itself.
-   * (i.e. when cleaning temp files from lib/build)
-   */
-  static public void removeDescendants(File dir) {
-    if (!dir.exists()) return;
-
-    String files[] = dir.list();
-    if (files == null) {
-      return;
-    }
-
-    for (String file : files) {
-      if (file.equals(".") || file.equals("..")) continue;
-      File dead = new File(dir, file);
-      if (!dead.isDirectory()) {
-        if (!PreferencesData.getBoolean("compiler.save_build_files")) {
-          if (!dead.delete()) {
-            // temporarily disabled
-            System.err.println(I18n.format(tr("Could not delete {0}"), dead));
-          }
-        }
-      } else {
-        removeDir(dead);
-        //dead.delete();
-      }
-    }
-  }
-
-  /**
-   * Remove all files in a directory and the directory itself.
-   */
-  static public void removeDir(File dir) {
-    if (dir.exists()) {
-      removeDescendants(dir);
-      if (!dir.delete()) {
-        System.err.println(I18n.format(tr("Could not delete {0}"), dir));
-      }
-    }
-  }
-
-  /**
    * Produce a sanitized name that fits our standards for likely to work.
    * <p/>
    * Java classes have a wider range of names that are technically allowed
@@ -1055,10 +873,6 @@ public class BaseNoGui {
     char c[] = origName.toCharArray();
     StringBuffer buffer = new StringBuffer();
 
-    // can't lead with a digit, so start with an underscore
-    if ((c[0] >= '0') && (c[0] <= '9')) {
-      buffer.append('_');
-    }
     for (int i = 0; i < c.length; i++) {
       if (((c[i] >= '0') && (c[i] <= '9')) ||
           ((c[i] >= 'a') && (c[i] <= 'z')) ||
@@ -1083,11 +897,22 @@ public class BaseNoGui {
   }
 
   /**
-   * Spew the contents of a String object out to a file.
+   * Save the content of a String into a file
+   * - Save the content into a temp file
+   * - Find the canonical path of the file (if it's a symlink, follow it)
+   * - Remove the original file
+   * - Move temp file to original path
+   * This ensures that the file is not getting truncated if the disk is full
    */
   static public void saveFile(String str, File file) throws IOException {
     File temp = File.createTempFile(file.getName(), null, file.getParentFile());
     PApplet.saveStrings(temp, new String[] { str });
+
+    try {
+      file = file.getCanonicalFile();
+    } catch (IOException e) {
+    }
+
     if (file.exists()) {
       boolean result = file.delete();
       if (!result) {

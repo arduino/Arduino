@@ -49,7 +49,7 @@ public class StringReplacer {
   public static String[] quotedSplit(String src, String quoteChars,
                                      boolean acceptEmptyArguments)
       throws Exception {
-    List<String> res = new ArrayList<String>();
+    List<String> res = new ArrayList<>();
     String escapedArg = null;
     String escapingChar = null;
     for (String i : src.split(" ")) {

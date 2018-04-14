@@ -48,7 +48,7 @@ public class DeleteFilesOnShutdown implements Runnable {
   private final List<File> files;
 
   public DeleteFilesOnShutdown() {
-    this.files = new LinkedList<File>();
+    this.files = new LinkedList<>();
   }
 
   public synchronized void addFile(File file) {
@@ -63,7 +63,7 @@ public class DeleteFilesOnShutdown implements Runnable {
     }
     List<File> copyOfFiles;
     synchronized (this) {
-      copyOfFiles = new LinkedList<File>(files);
+      copyOfFiles = new LinkedList<>(files);
     }
     Collections.reverse(copyOfFiles);
     for (File file : copyOfFiles) {

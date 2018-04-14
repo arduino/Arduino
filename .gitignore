@@ -18,7 +18,9 @@ build/*.tar.bz2
 build/windows/work/
 build/windows/*.zip
 build/windows/*.tgz
+build/windows/*.tar.bz2
 build/windows/libastylej*
+build/windows/liblistSerials*
 build/windows/arduino-*.zip
 build/windows/dist/*.tar.gz
 build/windows/dist/*.tar.bz2
@@ -49,6 +51,7 @@ build/linux/liblistSerials*
 build/shared/reference*.zip
 build/shared/Edison*.zip
 build/shared/Galileo*.zip
+build/shared/WiFi101-Updater-ArduinoIDE-Plugin*.zip
 test-bin
 *.iml
 .idea

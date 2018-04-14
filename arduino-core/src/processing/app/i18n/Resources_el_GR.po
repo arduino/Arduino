@@ -12,9 +12,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Dimitris Zervas <01ttouch@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
-# firewalker <firew4lker@gmail.com>, 2015
+# firewalker <firew4lker@gmail.com>, 2015-2016
 # Spyros Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
 # Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2016
 # Γιάννης Σφακιανάκης <ysfakianakis@gmail.com>, 2013,2016
@@ -23,7 +27,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-03-08 17:08+0000\n"
+"PO-Revision-Date: 2017-09-19 14:19+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/mbanzi/arduino-ide-15/language/el_GR/)\n"
 "MIME-Version: 1.0\n"
@@ -93,11 +97,6 @@ msgid ""
 "save, your changes will be lost."
 msgstr "<html> <head> <style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Θες να αποθηκεύσεις τις αλλαγές σε αυτό το σχέδιο<BR> πριν να κλείσεις;</b><p>Αν δεν αποθηκεύσεις, οι αλλαγές σου θα χαθούν."
 
-#: Sketch.java:398
-#, java-format
-msgid "A file named \"{0}\" already exists in \"{1}\""
-msgstr "Ένα αρχείο με όνομα «{0}» ήδη υπάρχει στο «{1}»"
-
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
@@ -127,6 +126,10 @@ msgstr "Ένας υποφάκελος του sketchbook σας δεν είναι
 msgid "About Arduino"
 msgstr "Περί του Arduino"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
+msgid "Acoli"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
 msgstr "Προσθήκη βιβλιοθήκης ZIP..."
@@ -146,6 +149,10 @@ msgstr "Επιπλέον URLs διαχειριστή πλακετών:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Αφρικάανς"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -305,7 +312,7 @@ msgstr "Αυτόματη ανίχνευση ρυθμίσεων διαμεσολ�
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Αυτόματα"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -337,11 +344,15 @@ msgstr "Λευκορωσικά"
 msgid "Board"
 msgstr "Πλακέτα"
 
+#: ../../../../../app//src/processing/app/Editor.java:2824
+msgid "Board Info"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Η πλακέτα {0} δεν είναι διαθέσιμη"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -412,14 +423,20 @@ msgstr "Γράψιμο Bootloader"
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
 msgstr "Εγγραφή του Bootloader στην πλακέτα Ι/Ο (ίσως χρειαστεί λίγο χρόνο)..."
 
-#: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:77
-msgid "CRC doesn't match. File is corrupted."
-msgstr "Ο CRC δεν ταιριάζει. Το αρχείο είναι κατεστραμένο."
+#: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
+msgid ""
+"CRC doesn't match, file is corrupted. It may be a temporary problem, please "
+"retry later."
+msgstr ""
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
 msgstr "Μπορεί να περάσει μόνο ένα από: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -434,10 +451,6 @@ msgstr "Γαλλικά Καναδά"
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
 msgstr "Ακύρωση"
-
-#: Sketch.java:455
-msgid "Cannot Rename"
-msgstr "Δεν μπορεί να μετονομαστεί"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
@@ -466,6 +479,10 @@ msgstr "Κινέζικα (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Κινέζικα (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -520,6 +537,11 @@ msgstr "Δεν μπορεί να προστεθεί το \"{0}\" στο σχέδ
 msgid "Could not copy to a proper location."
 msgstr "Δεν μπόρεσε να αντιγραφεί σε μία κατάλληλη τοποθεσία."
 
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:342
+#, java-format
+msgid "Could not create directory \"{0}\""
+msgstr ""
+
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
 msgstr "Δεν μπορεί να δημιουργηθεί ο φάκελος του σχεδίου."
@@ -537,11 +559,6 @@ msgstr "Δεν μπόρεσε να διαγραφεί το \"{0}\"."
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
 msgstr "Δεν μπόρεσε να διαγραφεί το υπάρχων \"{0}\" αρχείο."
-
-#: Base.java:2533 Base.java:2556
-#, java-format
-msgid "Could not delete {0}"
-msgstr "Δεν μπορεί να διαγραφεί το {0}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
@@ -598,23 +615,6 @@ msgstr "Δεν μπορεί να διαβάσει τις προεπιλεγμέ�
 #, java-format
 msgid "Could not remove old version of {0}"
 msgstr "Δεν μπορεί να διαγραφεί η παλιά εκδοση του {0}"
-
-#: Sketch.java:483 Sketch.java:528
-#, java-format
-msgid "Could not rename \"{0}\" to \"{1}\""
-msgstr "Δεν μπόρεσε να μετανομαστεί το {0} σε {1}"
-
-#: Sketch.java:475
-msgid "Could not rename the sketch. (0)"
-msgstr "Δεν μπόρεσε να γίνει μετονομασία του σχεδίου. (0)"
-
-#: Sketch.java:496
-msgid "Could not rename the sketch. (1)"
-msgstr "Δεν μπόρεσε να γίνει μετονομασία του σχεδίου. (1)"
-
-#: Sketch.java:503
-msgid "Could not rename the sketch. (2)"
-msgstr "Δεν μπόρεσε να γίνει μετονομασία του σχεδίου. (2)"
 
 #: Base.java:2492
 #, java-format
@@ -827,7 +827,7 @@ msgstr "Σφάλμα προσθήκης αρχείου"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Σφάλμα μεταγλώττισης για την πλακέτα {0}."
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -904,11 +904,6 @@ msgstr "Σφάλμα κατά την εγγραφή bootloader: Απουσία '
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Σφάλμα κατά την μεταγλώττιση: Απουσία '{0}' παραμέτρου διαμόρφωσης  "
 
-#: SketchCode.java:83
-#, java-format
-msgid "Error while loading code {0}"
-msgstr "Σφάλμα φόρτωσης κώδικα {0}"
-
 #: Editor.java:2567
 msgid "Error while printing."
 msgstr "Σφάλμα κατά την εκτύπωση."
@@ -949,13 +944,23 @@ msgstr "Εσθονικά (Εσθονία)"
 msgid "Examples"
 msgstr "Παραδείγματα"
 
+#: ../../../../../app/src/processing/app/Base.java:1185
+msgid "Examples for any board"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:1205
+#: ../../../../../app/src/processing/app/Base.java:1216
+#, java-format
+msgid "Examples for {0}"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
 msgstr "Παραδείγματα από προσαρμοσμένες βιβλιοθήκες"
 
-#: ../../../../../app/src/processing/app/Base.java:1222
-msgid "Examples from Libraries"
-msgstr "Παραδείγματα από βιβλιοθήκες"
+#: ../../../../../app/src/processing/app/Base.java:1329
+msgid "Examples from Other Libraries"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -970,6 +975,15 @@ msgstr "Εξαγωγή μεταγλωττισμένου δυαδικού"
 msgid "Failed to open sketch: \"{0}\""
 msgstr "Αποτυχία ανοίγματος του σχεδίου: \"{0}\""
 
+#: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
+#, java-format
+msgid "Failed to rename \"{0}\" to \"{1}\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:298
+msgid "Failed to rename sketch folder"
+msgstr ""
+
 #: Editor.java:491
 msgid "File"
 msgstr "Αρχείο"
@@ -977,7 +991,7 @@ msgstr "Αρχείο"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Το όνομα αρχείου {0} δεν είναι έγκυρο: αγνοήθηκε"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1059,6 +1073,10 @@ msgstr "Γεωργιανά"
 msgid "German"
 msgstr "Γερμανικά"
 
+#: ../../../../../app//src/processing/app/Editor.java:817
+msgid "Get Board Info"
+msgstr ""
+
 #: Editor.java:1054
 msgid "Getting Started"
 msgstr "Ξεκινώντας "
@@ -1116,6 +1134,10 @@ msgstr "Πολύ \"Borges\" από μέρους σας"
 #: Preferences.java:100
 msgid "Hungarian"
 msgstr "Ουγγαρέζικα"
+
+#: ../../../../../app/src/processing/app/Base.java:1319
+msgid "INCOMPATIBLE"
+msgstr ""
 
 #: FindReplace.java:96
 msgid "Ignore Case"
@@ -1199,7 +1221,7 @@ msgstr "Εγκατάσταση..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Κλίμακα Διασύνδεσης:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1218,6 +1240,10 @@ msgstr "Ιταλικά"
 #: Preferences.java:103
 msgid "Japanese"
 msgstr "Γιαπωνέζικα"
+
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
+msgid "Kazakh"
+msgstr ""
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1319,6 +1345,10 @@ msgstr "Πρέπει να καθορίσετε ακριβώς ένα αρχεί�
 msgid "Name for new file:"
 msgstr "Όνομα για νέο αρχείο:"
 
+#: ../../../../../app//src/processing/app/Editor.java:2809
+msgid "Native serial port, can't obtain info"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
 msgstr "Nepali"
@@ -1326,6 +1356,10 @@ msgstr "Nepali"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:601
 msgid "Network"
 msgstr "Δίκτυο"
+
+#: ../../../../../app//src/processing/app/Editor.java:2804
+msgid "Network port, can't obtain info"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1514,6 +1548,10 @@ msgstr "Παρακαλώ συμπεριλάβετε την βιβλιοθήκη 
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Παρακαλώ συμπεριλάβετε την βιβλιοθήκη Wire από το μενού Σχέδιο > Συμπερίληψη Βιβλιοθήκης."
 
+#: ../../../../../app//src/processing/app/Editor.java:2799
+msgid "Please select a port to obtain board info"
+msgstr ""
+
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
 msgid "Please select a programmer from Tools->Programmer menu"
@@ -1521,7 +1559,7 @@ msgstr "Παρακαλώ επιλέξτε έναν προγραμματιστή 
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Ο σχεδιογράφος δεν είναι διαθέσιμος όταν είναι ανοικτό η σειριακή οθόνη "
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1791,9 +1829,16 @@ msgstr "Παρακολούθηση σειριακής"
 msgid "Serial Plotter"
 msgstr "Σχεδιογράφος σειριακής"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Η σειριακή οθόνη δεν είναι διαθέσιμη όταν είναι ανοικτός ο σχεδιογράφος"
 
 #: Serial.java:194
 #, java-format
@@ -1891,6 +1936,11 @@ msgstr "Θέση Sketchbook:"
 msgid "Sketchbook path not defined"
 msgstr "Η διαδρομή του Sketchbook δεν είναι καθορισμένη."
 
+#: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
+#, java-format
+msgid "Skipping contributed index file {0}, parsing error occured:"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
 msgstr "Σλοβακικά"
@@ -1912,10 +1962,10 @@ msgid ""
 "need to re-save this sketch to another location."
 msgstr "Μερικά αρχεία είναι επισημασμένα \"μόνο για ανάγνωση\", οπότε\nθα χρειαστεί να αποθηκεύσετε πάλι το σχέδιο σε άλλη τοποθεσία"
 
-#: Sketch.java:457
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
-msgid "Sorry, a sketch (or folder) named \"{0}\" already exists."
-msgstr "Συγνώμη, αλλά ένα σχέδιο (ή φάκελος) με όνομα \"{0}\" υπάρχει ήδη."
+msgid "Sorry, the folder \"{0}\" already exists."
+msgstr ""
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1949,6 +1999,10 @@ msgstr "Talossan"
 msgid "Tamil"
 msgstr "Ταμίλ"
 
+#: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
+msgid "Telugu"
+msgstr ""
+
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
 msgstr "Ταϋλανδικά"
@@ -1980,6 +2034,10 @@ msgstr "Η κλάση Server έχει μετονομαστεί σε EthernetServ
 msgid "The Udp class has been renamed EthernetUdp."
 msgstr "Η κλάση Udp έχει μετονομαστεί σε EthernetUdp."
 
+#: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
+msgid "The current selected board needs the core '{0}' that is not installed."
+msgstr ""
+
 #: Editor.java:2147
 #, java-format
 msgid ""
@@ -1996,12 +2054,9 @@ msgid ""
 "(ASCII only and no spaces, and it cannot start with a number)"
 msgstr "Η βιβλιοθήκη \"{0}\" δεν μπορεί να χρησιμοποιηθεί.\nΤο όνομα της βιβλιοθήκης πρέπει να περιέχει μόνο βασικούς χαρακτήρες και αριθμους.\n(μόνο ASCII χωρίς κενά, και δεν μπορεί να αρχίζει με αριθμό)"
 
-#: Sketch.java:374
-msgid ""
-"The main file can't use an extension.\n"
-"(It may be time for your to graduate to a\n"
-"\"real\" programming environment)"
-msgstr "Το κυρίως αρχείο δεν μπορεί να χρησιμοποιήσει μία επέκταση.\n(Ίσως είναι καιρός να περάσετε σε ένα \"πραγματικό\" \nπεριβάλλον προγραμματισμού)"
+#: ../../../../../app/src/processing/app/SketchController.java:170
+msgid "The main file cannot use an extension"
+msgstr ""
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2023,6 +2078,11 @@ msgid ""
 "To get rid of this message, remove the sketch from\n"
 "{1}"
 msgstr "Το σχέδιο \"{0}\" δεν μπορεί να χρησιμοπειηθεί.\nΤα ονόματα των σχεδίων πρέπει να περιέχουν μόνο γράμματα και αριθμούς\n(ASCII- μόνο χωρίς κενά, και δεν μπορούν να ξεκινούν με αριθμό).\nΓια να μην ξαναεμφανιστεί αυτό το μήνυμα, αφαιρέστε το σχέδιο από το\n {1}"
+
+#: ../../../../../arduino-core/src/processing/app/Sketch.java:272
+#, java-format
+msgid "The sketch already contains a file named \"{0}\""
+msgstr ""
 
 #: Sketch.java:1755
 msgid ""
@@ -2052,13 +2112,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Ο καθορισμένος φάκελος του sketchbook περιέχει αντίγραφο του IDE.\nΠαρακαλώ επιλέξτε έναν διαφορετικό φάκελο για το sketchbook σας."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Το αρχείο αυτό έχει ήδη αντιγραφεί στην\nτοποθεσία στην οποία προσπαθείτε να το \nπροσθέσετε. Δεν θα κάνω τίποτε."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2122,7 +2175,7 @@ msgstr "Ουκρανικά"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "Αδυναμία σύνδεσης στο {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2167,6 +2220,10 @@ msgstr "Αναίρεση"
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
 msgstr "Ανεπίλυτος τύπος {0} στο βασικό πλαίσιο {1}"
+
+#: ../../../../../app//src/processing/app/Editor.java:2818
+msgid "Unknown board"
+msgstr ""
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2219,6 +2276,10 @@ msgstr "Ανέβασμα"
 #: EditorToolbar.java:46 Editor.java:553
 msgid "Upload Using Programmer"
 msgstr "Ανέβασμα μέσω προγραμματιστή"
+
+#: ../../../../../app//src/processing/app/Editor.java:2814
+msgid "Upload any sketch to obtain it"
+msgstr ""
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2395,29 +2456,9 @@ msgstr "Βρέθηκε λάθος μικροελεγκτής. Επιλέξατε
 msgid "Yes"
 msgstr "Ναι"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Δεν μπορεί να με γελάσεις"
-
-#: Sketch.java:411
-msgid "You can't have a .cpp file with the same name as the sketch."
-msgstr "Δεν μπορείτε να έχετε ένα αρχείο .cpp ίδιου ονόματος με το σχέδιο."
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Δεν μπορείτε να εισάγετε έναν φάκελο που περιέχει το sketchbook σας"
-
-#: Sketch.java:421
-msgid ""
-"You can't rename the sketch to \"{0}\"\n"
-"because the sketch already has a .cpp file with that name."
-msgstr "Δεν μπορείτε να μετονομάσετε το σχέδιο \"{0}\"\nεπειδή το σχέδιο έχει ήδη ένα .cpp αρχείο με το όνομα αυτό."
-
-#: ../../../../../app/src/processing/app/Sketch.java:659
-msgid ""
-"You can't save the sketch as \"{0}\"\n"
-"because the sketch already has a file with that name."
-msgstr "Δεν μπορείτε να αποθηκεύσετε το σχέδιο ως \"{0}\"\nεπειδή το σχέδιο έχει ένα αρχείο με το όνομα αυτό."
 
 #: Sketch.java:883
 msgid ""
@@ -2428,6 +2469,12 @@ msgstr "Δεν μπορείτε να αποθηκεύσετε το σχέδιο 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Ξέχασες το Sketchbook σου"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2536,10 +2583,6 @@ msgstr "μεταγλώττιση"
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
 msgstr "συνδεδεμένο!"
-
-#: Sketch.java:540
-msgid "createNewFile() returned false"
-msgstr "To createNewFile() επέστρεψε σφάλμα"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2678,3 +2721,8 @@ msgstr "{0}: Άγνωστη πλακέτα"
 #, java-format
 msgid "{0}: Unknown package"
 msgstr "{0}: Άγνωστο πακέτο"
+
+#: ../../../../../arduino-core/src/processing/app/Platform.java:223
+#, java-format
+msgid "{0}Install this package{1} to use your {2} board"
+msgstr ""

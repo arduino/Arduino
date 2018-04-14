@@ -32,7 +32,7 @@ import static processing.app.I18n.tr;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-
+import java.util.List;
 import javax.swing.*;
 
 import static processing.app.Theme.scale;
@@ -88,26 +88,24 @@ public class EditorHeader extends JComponent {
   public class Actions {
     public final Action newTab = new SimpleAction(tr("New Tab"),
         Keys.ctrlShift(KeyEvent.VK_N),
-        () -> editor.getSketch().handleNewCode());
+        () -> editor.getSketchController().handleNewCode());
 
     public final Action renameTab = new SimpleAction(tr("Rename"),
-        () -> editor.getSketch().handleRenameCode());
+        () -> editor.getSketchController().handleRenameCode());
 
     public final Action deleteTab = new SimpleAction(tr("Delete"), () -> {
       try {
-        editor.getSketch().handleDeleteCode();
+        editor.getSketchController().handleDeleteCode();
       } catch (IOException e) {
         e.printStackTrace();
       }
     });
 
     public final Action prevTab = new SimpleAction(tr("Previous Tab"),
-        Keys.ctrlAlt(KeyEvent.VK_LEFT),
-        () -> editor.sketch.handlePrevCode());
+        Keys.ctrlAlt(KeyEvent.VK_LEFT), () -> editor.selectPrevTab());
 
     public final Action nextTab = new SimpleAction(tr("Next Tab"),
-        Keys.ctrlAlt(KeyEvent.VK_RIGHT),
-        () -> editor.sketch.handleNextCode());
+        Keys.ctrlAlt(KeyEvent.VK_RIGHT), () -> editor.selectNextTab());
 
     Actions() {
       // Explicitly bind keybindings for the actions with accelerators above
@@ -181,10 +179,10 @@ public class EditorHeader extends JComponent {
             popup.show(EditorHeader.this, x, y);
 
           } else {
-            Sketch sketch = editor.getSketch();
-            for (int i = 0; i < sketch.getCodeCount(); i++) {
+            int numTabs = editor.getTabs().size();
+            for (int i = 0; i < numTabs; i++) {
               if ((x > tabLeft[i]) && (x < tabRight[i])) {
-                sketch.setCurrentCode(i);
+                editor.selectTab(i);
                 repaint();
               }
             }
@@ -197,7 +195,7 @@ public class EditorHeader extends JComponent {
   public void paintComponent(Graphics screen) {
     if (screen == null) return;
 
-    Sketch sketch = editor.getSketch();
+    SketchController sketch = editor.getSketchController();
     if (sketch == null) return;  // ??
 
     Dimension size = getSize();
@@ -235,21 +233,22 @@ public class EditorHeader extends JComponent {
     g.setColor(backgroundColor);
     g.fillRect(0, 0, imageW, imageH);
 
-    int codeCount = sketch.getCodeCount();
+    List<EditorTab> tabs = editor.getTabs();
+
+    int codeCount = tabs.size();
     if ((tabLeft == null) || (tabLeft.length < codeCount)) {
       tabLeft = new int[codeCount];
       tabRight = new int[codeCount];
     }
 
     int x = scale(6); // offset from left edge of the component
-    for (int i = 0; i < sketch.getCodeCount(); i++) {
-      SketchCode code = sketch.getCode(i);
-
-      String codeName = code.isExtension(sketch.getHiddenExtensions()) ?
-        code.getPrettyName() : code.getFileName();
+    int i = 0;
+    for (EditorTab tab : tabs) {
+      SketchFile file = tab.getSketchFile();
+      String filename = file.getPrettyName();
 
       // if modified, add the li'l glyph next to the name
-      String text = "  " + codeName + (code.isModified() ? " \u00A7" : "  ");
+      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
 
       int textWidth = (int)
         font.getStringBounds(text, g.getFontRenderContext()).getWidth();
@@ -257,7 +256,7 @@ public class EditorHeader extends JComponent {
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
 
-      int state = (code == sketch.getCurrentCode()) ? SELECTED : UNSELECTED;
+      int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
       g.drawImage(pieces[state][LEFT], x, 0, null);
       x += PIECE_WIDTH;
 
@@ -277,6 +276,7 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+      i++;
     }
 
     menuLeft = sizeW - (16 + menuButtons[0].getWidth(this));
@@ -322,13 +322,14 @@ public class EditorHeader extends JComponent {
     Sketch sketch = editor.getSketch();
     if (sketch != null) {
       menu.addSeparator();
+
       int i = 0;
-      for (SketchCode code : sketch.getCodes()) {
+      for (EditorTab tab : editor.getTabs()) {
+        SketchFile file = tab.getSketchFile();
         final int index = i++;
-        item = new JMenuItem(code.isExtension(sketch.getDefaultExtension()) ? 
-                             code.getPrettyName() : code.getFileName());
+        item = new JMenuItem(file.getPrettyName());
         item.addActionListener((ActionEvent e) -> {
-          editor.getSketch().setCurrentCode(index);
+          editor.selectTab(index);
         });
         menu.add(item);
       }
@@ -350,7 +351,7 @@ public class EditorHeader extends JComponent {
 
 
   public Dimension getMaximumSize() {
-    Dimension size = scale(new Dimension(3000, GRID_SIZE));
+    Dimension size = scale(new Dimension(30000, GRID_SIZE));
     if (OSUtils.isMacOS())
       size.height--;
     return size;

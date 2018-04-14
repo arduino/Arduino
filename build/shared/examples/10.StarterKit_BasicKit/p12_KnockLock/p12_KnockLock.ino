@@ -1,34 +1,33 @@
 /*
   Arduino Starter Kit example
- Project 12  - Knock Lock
+  Project 12 - Knock Lock
 
- This sketch is written to accompany Project 12 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 12 in the Arduino Starter Kit
 
- Parts required:
- 1 Megohm resistor
- 10 kilohm resistor
- three 220 ohm resistors
- piezo
- servo motor
- push button
- one red LED
- one yellow LED
- one green LED
- 100 uF capacitor
+  Parts required:
+  - 1 megohm resistor
+  - 10 kilohm resistor
+  - three 220 ohm resistors
+  - piezo
+  - servo motor
+  - push button
+  - one red LED
+  - one yellow LED
+  - one green LED
+  - 100 uF capacitor
 
- Created 18 September 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  created 18 Sep 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
 // import the library
 #include <Servo.h>
-// create an instance of the servo library
+// create an instance of the Servo library
 Servo myServo;
 
 const int piezo = A0;      // pin the piezo is attached to
@@ -72,7 +71,7 @@ void setup() {
   // move the servo to the unlocked position
   myServo.write(0);
 
-  // print status to the serial monitor
+  // print status to the Serial Monitor
   Serial.println("the box is unlocked!");
 }
 
@@ -146,11 +145,10 @@ void loop() {
   }
 }
 
-// this function checks to see if a
-// detected knock is within max and min range
+// this function checks to see if a detected knock is within max and min range
 boolean checkForKnock(int value) {
-  // if the value of the knock is greater than
-  // the minimum, and larger than the maximum
+  // if the value of the knock is greater than the minimum, and larger
+  // than the maximum
   if (value > quietKnock && value < loudKnock) {
     // turn the status LED on
     digitalWrite(yellowLed, HIGH);
@@ -171,4 +169,3 @@ boolean checkForKnock(int value) {
     return false;
   }
 }
-
