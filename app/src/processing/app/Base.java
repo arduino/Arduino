@@ -209,6 +209,20 @@ public class Base {
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
 
+    BaseNoGui.checkInstallationFolder();
+
+    // If no path is set, get the default sketchbook folder for this platform
+    if (BaseNoGui.getSketchbookPath() == null) {
+      File defaultFolder = getDefaultSketchbookFolderOrPromptForIt();
+      if (BaseNoGui.getPortableFolder() != null)
+        PreferencesData.set("sketchbook.path", BaseNoGui.getPortableSketchbookFolder());
+      else
+        PreferencesData.set("sketchbook.path", defaultFolder.getAbsolutePath());
+      if (!defaultFolder.exists()) {
+        defaultFolder.mkdirs();
+      }
+    }
+
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
       // Setup all notification widgets
@@ -242,20 +256,6 @@ public class Base {
     // Create a location for untitled sketches
     untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
-
-    BaseNoGui.checkInstallationFolder();
-
-    // If no path is set, get the default sketchbook folder for this platform
-    if (BaseNoGui.getSketchbookPath() == null) {
-      File defaultFolder = getDefaultSketchbookFolderOrPromptForIt();
-      if (BaseNoGui.getPortableFolder() != null)
-        PreferencesData.set("sketchbook.path", BaseNoGui.getPortableSketchbookFolder());
-      else
-        PreferencesData.set("sketchbook.path", defaultFolder.getAbsolutePath());
-      if (!defaultFolder.exists()) {
-        defaultFolder.mkdirs();
-      }
-    }
 
     splash.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
