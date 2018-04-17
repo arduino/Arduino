@@ -1,4 +1,4 @@
-/*
+/*  
   WString.cpp - String library for Wiring & Arduino
   ...mostly rewritten by Paul Stoffregen...
   Copyright (c) 2009-10 Hernando Barragan.  All rights reserved.
@@ -20,6 +20,7 @@
 */
 
 #include "WString.h"
+#include <limits>
 
 /*********************************************/
 /*  Constructors                             */
@@ -746,5 +747,5 @@ float String::toFloat(void) const
 double String::toDouble(void) const
 {
 	if (buffer) return atof(buffer);
-	return 0;
+	return std::numeric_limits<double>::quiet_NaN();
 }
