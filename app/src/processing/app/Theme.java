@@ -64,6 +64,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -267,7 +268,8 @@ public class Theme {
     }
     
     public String toString() {
-      return String.format("%s %s (%s)", this.getName(), this.getVersion(), this.file.getName());
+      String description = String.format("%s %s (%s)", this.getName(), this.getVersion(), this.file.getName());
+      return StringUtils.abbreviate(description, 40);
     }
     
     /**
