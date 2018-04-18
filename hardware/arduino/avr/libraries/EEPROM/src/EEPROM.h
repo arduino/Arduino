@@ -25,6 +25,12 @@
 #include <avr/eeprom.h>
 #include <avr/io.h>
 
+//! The action associated with the EERef assignment operator.
+//! Possible values are "write" and "update", unquoted.
+#ifndef EEPROM_REF_ASSIGN_MODE
+#define EEPROM_REF_ASSIGN_MODE write
+#endif
+
 /***
     EERef class.
     
@@ -44,7 +50,7 @@ struct EERef{
     
     //Assignment/write members.
     EERef &operator=( const EERef &ref ) { return *this = *ref; }
-    EERef &operator=( uint8_t in )       { return eeprom_write_byte( (uint8_t*) index, in ), *this;  }
+    EERef &operator=( uint8_t in )       { return EEPROM_REF_ASSIGN_MODE( in ); }
     EERef &operator +=( uint8_t in )     { return *this = **this + in; }
     EERef &operator -=( uint8_t in )     { return *this = **this - in; }
     EERef &operator *=( uint8_t in )     { return *this = **this * in; }
@@ -56,7 +62,8 @@ struct EERef{
     EERef &operator <<=( uint8_t in )    { return *this = **this << in; }
     EERef &operator >>=( uint8_t in )    { return *this = **this >> in; }
     
-    EERef &update( uint8_t in )          { return  in != *this ? *this = in : *this; }
+    EERef &update( uint8_t in )          { return  in != *this ? write( in ) : *this; }
+    EERef &write( uint8_t in )           { return eeprom_write_byte( (uint8_t*) index, in ), *this; }
     
     /** Prefix increment/decrement **/
     EERef& operator++()                  { return *this += 1; }
@@ -118,7 +125,7 @@ struct EEPROMClass{
     //Basic user access methods.
     EERef operator[]( const int idx )    { return idx; }
     uint8_t read( int idx )              { return EERef( idx ); }
-    void write( int idx, uint8_t val )   { (EERef( idx )) = val; }
+    void write( int idx, uint8_t val )   { EERef( idx ).write( val ); }
     void update( int idx, uint8_t val )  { EERef( idx ).update( val ); }
     
     //STL and C++11 iteration capability.
