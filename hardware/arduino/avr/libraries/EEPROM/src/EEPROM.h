@@ -25,12 +25,6 @@
 #include <avr/eeprom.h>
 #include <avr/io.h>
 
-//! The action associated with the EERef assignment operator.
-//! Possible values are "write" and "update", unquoted.
-#ifndef EEPROM_REF_ASSIGN_MODE
-#define EEPROM_REF_ASSIGN_MODE write
-#endif
-
 /***
     EERef class.
     
@@ -50,7 +44,7 @@ struct EERef{
     
     //Assignment/write members.
     EERef &operator=( const EERef &ref ) { return *this = *ref; }
-    EERef &operator=( uint8_t in )       { return EEPROM_REF_ASSIGN_MODE( in ); }
+    EERef &operator=( uint8_t in )       { return do_update ? update( in ) : write( in ); }
     EERef &operator +=( uint8_t in )     { return *this = **this + in; }
     EERef &operator -=( uint8_t in )     { return *this = **this - in; }
     EERef &operator *=( uint8_t in )     { return *this = **this * in; }
@@ -81,7 +75,9 @@ struct EERef{
     }
     
     int index; //Index of current EEPROM cell.
+    static bool do_update;
 };
+bool EERef::do_update = true;
 
 /***
     EEPtr class.
