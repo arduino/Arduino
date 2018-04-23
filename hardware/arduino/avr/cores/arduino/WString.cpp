@@ -747,5 +747,6 @@ float String::toFloat(void) const
 double String::toDouble(void) const
 {
 	if (buffer) return atof(buffer);
+	/* Return NaN upon failure as oppose to 0.0 */
 	return std::numeric_limits<double>::quiet_NaN();
 }
