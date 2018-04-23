@@ -1374,7 +1374,9 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(decreseIndentItem);
 
     menu.addSeparator();
-
+    
+    // Changed keyboard shortcut from + to I
+    // JMenuItem does not recognize the keycode referring to +
     JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), 'I');
     increaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
@@ -1390,7 +1392,8 @@ public class Editor extends JFrame implements RunnerListener {
         }
     });
     menu.add(decreaseFontSizeItem);
-
+    
+    // Toggle line number on/off with keyboard B
     JMenuItem toggleLineNumber = newJMenuItem(tr("Toggle Line Numbers"), 'B');
     toggleLineNumber.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
