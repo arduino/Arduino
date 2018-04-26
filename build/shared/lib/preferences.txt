@@ -24,6 +24,8 @@
 # You'll have problems running Processing if you incorrectly 
 # modify lines in this file.
 
+# DO NOT CHANGE THIS FILE if you want to edit autoformatter
+# Look for the file "formatter.conf" and follow instructions at top
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -112,7 +114,7 @@ editor.caret.blink=true
 editor.invalid=false
 
 # show line numbers in editor
-editor.linenumbers = false
+editor.linenumbers = true
 
 # enable ctrl-ins, shift-ins, shift-delete for cut/copy/paste
 # on windows and linux, but disable on the mac
