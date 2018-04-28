@@ -1374,10 +1374,8 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(decreseIndentItem);
 
     menu.addSeparator();
-    
-    // Changed keyboard shortcut from + to I
-    // JMenuItem does not recognize the keycode referring to +
-    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), 'I');
+
+    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), '+');
     increaseFontSizeItem.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           base.handleFontSizeChange(1);
@@ -1392,15 +1390,6 @@ public class Editor extends JFrame implements RunnerListener {
         }
     });
     menu.add(decreaseFontSizeItem);
-    
-    // Toggle line number on/off with keyboard B
-    JMenuItem toggleLineNumber = newJMenuItem(tr("Toggle Line Numbers"), 'B');
-    toggleLineNumber.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.toggleLineNumber();
-        }
-    });
-    menu.add(toggleLineNumber);
 
     menu.addSeparator();
 
@@ -1765,10 +1754,13 @@ public class Editor extends JFrame implements RunnerListener {
 
     @Override
     public void run() {
+      long startTime=System.currentTimeMillis();
       try {
         removeAllLineHighlights();
         sketchController.build(verbose, saveHex);
-        statusNotice(tr("Done compiling."));
+        long endTime=System.currentTimeMillis();
+        long time=endTime-startTime;
+        statusNotice(tr("Done compiling. Comiling time: "+time+"ms"));
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
                 tr("Error while compiling: missing '{0}' configuration parameter"),
