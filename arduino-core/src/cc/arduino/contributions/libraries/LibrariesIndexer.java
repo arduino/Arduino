@@ -102,8 +102,14 @@ public class LibrariesIndexer {
   }
 
   public void setLibrariesFolders(List<File> _librariesFolders) {
-    librariesFolders = _librariesFolders;
-    rescanLibraries();
+    if (librariesFolders != _librariesFolders && !librariesFolders.equals(_librariesFolders)) {
+      librariesFolders = _librariesFolders;
+      rescanLibraries();
+    }
+  }
+
+  public List<File> getLibrariesFolders() {
+    return librariesFolders;
   }
 
   public void rescanLibraries() {

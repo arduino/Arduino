@@ -87,7 +87,7 @@ public class BaseNoGui {
   public static Map<String, LibraryList> importToLibraryTable;
 
   // XXX: Remove this field
-  static private List<File> librariesFolders;
+  static private ArrayList<File> librariesFolders;
 
   static UserNotifier notifier = new BasicUserNotifier();
 
@@ -245,7 +245,7 @@ public class BaseNoGui {
     return getHardwareFolder().getAbsolutePath();
   }
 
-  static public List<File> getLibrariesPath() {
+  static public ArrayList<File> getLibrariesPath() {
     return librariesFolders;
   }
 
@@ -680,7 +680,6 @@ public class BaseNoGui {
     // other libraries with the same name.
     librariesIndexer.setSketchbookLibrariesFolder(getSketchbookLibrariesFolder());
     librariesIndexer.setLibrariesFolders(librariesFolders);
-    librariesIndexer.rescanLibraries();
 
     populateImportToLibraryTable();
   }
