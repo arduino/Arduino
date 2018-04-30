@@ -1392,7 +1392,14 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(decreaseFontSizeItem);
 
     menu.addSeparator();
-
+    
+    JMenuItem toggleLineNumber = newJMenuItemShift(tr("Toggle Line Numbers"), 'L');
+    toggleLineNumber.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        base.toggleLineNumber();
+      }
+    })
+    
     JMenuItem findItem = newJMenuItem(tr("Find..."), 'F');
     findItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
