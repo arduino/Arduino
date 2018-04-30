@@ -1,0 +1,13 @@
+The following links to a .zip file containing Arduino IDE's of different themes.
+
+Darkmode:
+https://drive.google.com/open?id=1FmHbchrEP4liQsDU9AirGmKO_shUO8vS
+
+Grayscale:
+https://drive.google.com/open?id=1Oju1h0spgkYQ_Jxcd5EgW7BOyjRl5_ou
+
+Inverted:
+https://drive.google.com/file/d/1jGh3BPdnRtl8RSeUdKsXvhmUfuQq0Nl8/view?usp=sharing
+
+All Themes:
+https://drive.google.com/file/d/1kCt66OMgP7BhYhgKw4M8smg2B1fR8_Qa/view?usp=sharing

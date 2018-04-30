@@ -1754,10 +1754,13 @@ public class Editor extends JFrame implements RunnerListener {
 
     @Override
     public void run() {
+      long startTime=System.currentTimeMillis();
       try {
         removeAllLineHighlights();
         sketchController.build(verbose, saveHex);
-        statusNotice(tr("Done compiling."));
+        long endTime=System.currentTimeMillis();
+        long time=endTime-startTime;
+        statusNotice(tr("Done compiling. Comiling time: "+time+"ms"));
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
                 tr("Error while compiling: missing '{0}' configuration parameter"),

@@ -1878,6 +1878,16 @@ public class Base {
     getEditors().forEach(Editor::applyPreferences);
   }
 
+  // Method turns line number on/off when triggered by keyboard shortcut
+  public void toggleLineNumber() {
+     if (PreferencesData.getBoolean("editor.linenumbers")) {
+        PreferencesData.setBoolean("editor.linenumbers", false);
+     } else {
+        PreferencesData.setBoolean("editor.linenumbers", true);
+     }
+     getEditors().forEach(Editor::applyPreferences);
+  }
+
   public List<JMenu> getBoardsCustomMenus() {
     return boardsCustomMenus;
   }
