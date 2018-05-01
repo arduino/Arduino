@@ -14,13 +14,15 @@
 # Translators:
 # Translators:
 # Translators:
-# Zdeno Sekerák <etrsek@gmail.com>, 2015-2016
+# Translators:
+# Translators:
+# Zdeno Sekerák <etrsek@gmail.com>, 2015-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-12-16 21:38+0000\n"
+"PO-Revision-Date: 2017-09-23 20:53+0000\n"
 "Last-Translator: Zdeno Sekerák <etrsek@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/mbanzi/arduino-ide-15/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -142,6 +144,10 @@ msgstr "Manažér Prídavných Dosiek URL:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Afrikánština"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Agresívne kompilované jadro cache"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -423,6 +429,10 @@ msgstr "CRC je nesprávne, súbor je poškodený. Môže se jednat o dočasný p
 msgid "Can only pass one of: {0}"
 msgstr "Je možná len jedna: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "Nemôžem zapnúť externý editor"
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -464,6 +474,10 @@ msgstr "Čínština (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Čínština (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "Vymazať výstup"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1810,6 +1824,13 @@ msgstr "Monitor Sériového Portu"
 msgid "Serial Plotter"
 msgstr "Sériový Zapisovač"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "Sériový monitor nieje podporovaný na sieťovom porte ako {0} pre {1} v tomto vydaní"
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "Monitor sériového portu je nedostupný pokiaľ je otvorený ploter"
@@ -2086,13 +2107,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Vybraný adresár s projektami obsahuje kópiu tvojho IDE.\nProsím vyber iný adresár pre tvoje projekty."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Tento súbor už bol nakopírovaný na miesto\nz ktorého si sa ho pokúšal pridať.\nNemôžem to urobiť."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2437,10 +2451,6 @@ msgstr "Nájdený zlý microcontroler. Vybrali ste správnu dosku (board) Nástr
 msgid "Yes"
 msgstr "Áno"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Mňa neprekabátiš"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Nemožno importovať zložku, ktorá obsahuje tvoj projekt"
@@ -2454,6 +2464,12 @@ msgstr "Nejde uložiť projekt do adresára vnútri seba samého.\nDošlo by k z
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Zabudol si svoj projekt"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "Máš neuložené zmeny!\nMusíš najprv uložiť všetky projekty než zapneš túto voľbu."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

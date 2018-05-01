@@ -30,7 +30,6 @@ import org.fife.ui.rsyntaxtextarea.TokenMap;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import processing.app.Base;
 import processing.app.BaseNoGui;
-import processing.app.legacy.PApplet;
 import processing.app.debug.TargetPlatform;
 
 import java.io.BufferedReader;
@@ -90,7 +89,7 @@ public class PdeKeywords {
         File platformKeywords = new File(tp.getFolder(), "keywords.txt");
         if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
       }
-      for (ContributedLibrary lib : Base.getLibraries()) {
+      for (ContributedLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {
         File keywords = new File(lib.getInstalledFolder(), "keywords.txt");
         if (keywords.exists()) {
           parseKeywordsTxt(keywords);
@@ -116,7 +115,7 @@ public class PdeKeywords {
           continue;
         }
 
-        String pieces[] = PApplet.split(line, '\t');
+        String pieces[] = line.split("\t");
 
         String keyword = pieces[0].trim();
         if (keyword.startsWith("\\#")) {

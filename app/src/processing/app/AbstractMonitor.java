@@ -20,7 +20,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   private BoardPort boardPort;
 
-  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000"};
+  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000", "500000", "1000000", "2000000"};
 
   public AbstractMonitor(BoardPort boardPort) {
     super(boardPort.getLabel());
@@ -59,17 +59,11 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     pack();
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    if (PreferencesData.get("last.screen.height") != null) {
-      // if screen size has changed, the window coordinates no longer
-      // make sense, so don't use them unless they're identical
-      int screenW = PreferencesData.getInteger("last.screen.width");
-      int screenH = PreferencesData.getInteger("last.screen.height");
-      if ((screen.width == screenW) && (screen.height == screenH)) {
-        String locationStr = PreferencesData.get("last.serial.location");
-        if (locationStr != null) {
-          int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
-          setPlacement(location);
-        }
+    String locationStr = PreferencesData.get("last.serial.location");
+    if (locationStr != null) {
+      int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
+      if (location[0] + location[2] <= screen.width && location[1] + location[3] <= screen.height) {
+        setPlacement(location);
       }
     }
 

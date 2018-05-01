@@ -14,13 +14,15 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Paulo Monteiro <b452042@gmail.com>, 2012
 # Luis Correia <buga@loide.net>, 2012
 # Manuel Menezes de Sequeira <MMSequeira@gmail.com>, 2016
 # n3okill <n3okill@hotmail.com>, 2014
 # nelsonduvall <nelsonduvall@gmail.com>, 2014
 # nelsonduvall <nelsonduvall@gmail.com>, 2012
-# Nigel Randsley <nigel.randsley@gmail.com>, 2012-2013,2015
+# Nigel Randsley <nigel.randsley@gmail.com>, 2012-2013,2015,2017
 # Nuno Santos <nuno.90.santos@gmail.com>, 2012
 # renatose <renatose.com@gmail.com>, 2015
 # renatose <renatose.com@gmail.com>, 2012
@@ -31,8 +33,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"Last-Translator: Nigel Randsley <nigel.randsley@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/mbanzi/arduino-ide-15/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -153,6 +155,10 @@ msgstr "URL Adicionais do Gestor de Placas:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Africânder"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -434,6 +440,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr "Só pode passar um de: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -475,6 +485,10 @@ msgstr "Chinês (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Chinês (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1173,7 +1187,7 @@ msgstr "Indonésio"
 
 #: ../../../../../app/src/processing/app/Base.java:295
 msgid "Initializing packages..."
-msgstr "Inicializando pacotes…"
+msgstr "A iniciar pacotes…"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:75
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:81
@@ -1199,17 +1213,17 @@ msgstr "Instalando placas…"
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
 #, java-format
 msgid "Installing library: {0}"
-msgstr "Instalando biblioteca: {0}"
+msgstr "A instalar biblioteca: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
 msgid "Installing tools ({0}/{1})..."
-msgstr "Instalando ferramentas ({0}/{1})..."
+msgstr "A instalar ferramentas ({0}/{1})..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:239
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:172
 msgid "Installing..."
-msgstr "Instalando…"
+msgstr "A instalar…"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
@@ -1251,7 +1265,7 @@ msgstr "Gestor de Bibliotecas"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
-msgstr "Biblioteca adicionada às suas bibliotecas. Confira no menu «Incluir biblioteca»"
+msgstr "Biblioteca adicionada às suas bibliotecas. Confirme no menu «Incluir biblioteca»"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
@@ -1272,12 +1286,12 @@ msgstr "Lituano"
 
 #: ../../../../../app/src/processing/app/Base.java:132
 msgid "Loading configuration..."
-msgstr "Carregando configuração…"
+msgstr "A carregar configuração…"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr "Procurando receitas como {0}*{1}"
+msgstr "À procura de receitas como {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1551,7 +1565,7 @@ msgstr "Por favor seleccione um programador do menu Ferramentas->Programador"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr "O desenhador não está disponível enquanto o monitor série estiver aberto"
+msgstr "O plotter não está disponível enquanto o monitor série estiver aberto"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1659,7 +1673,7 @@ msgstr "Sair"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
-msgstr "RETIRADO"
+msgstr "REFORMADO"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:26
 msgid "Recommended"
@@ -1680,12 +1694,12 @@ msgstr "Remover"
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
 #, java-format
 msgid "Removing library: {0}"
-msgstr "Removendo biblioteca: {0}"
+msgstr "A remover biblioteca: {0}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr "Removendo…"
+msgstr "A remover…"
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -1714,7 +1728,7 @@ msgstr "Substituir com:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr "Retirado"
+msgstr "Reformado"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1723,12 +1737,12 @@ msgstr "Romeno"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:83
 #, java-format
 msgid "Running recipe: {0}"
-msgstr "Executando receita: {0}"
+msgstr "A executar receita: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:82
 #, java-format
 msgid "Running: {0}"
-msgstr "Executando: {0}"
+msgstr "A executar: {0}"
 
 #: Preferences.java:114
 msgid "Russian"
@@ -1819,11 +1833,18 @@ msgstr "Monitor Série"
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr "Desenhador Série"
+msgstr "Plotter Série"
+
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr "O monitor série não está disponível enquanto o desenhador estiver aberto"
+msgstr "O monitor série não está disponível enquanto o plotter estiver aberto"
 
 #: Serial.java:194
 #, java-format
@@ -1924,7 +1945,7 @@ msgstr "Caminho do bloco de rascunhos não está definido"
 #: ../../../../../arduino-core//src/cc/arduino/contributions/packages/ContributionsIndexer.java:96
 #, java-format
 msgid "Skipping contributed index file {0}, parsing error occured:"
-msgstr "Saltando ficheiro de arquivo contribuído {0}, ocorreu um erro de sintaxe:"
+msgstr "A saltar o ficheiro de arquivo contribuído {0}, ocorreu um erro de sintaxe:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:185
 msgid "Slovak"
@@ -1962,7 +1983,7 @@ msgstr "A pasta ou ficheiro ZIP especificado não contém uma biblioteca válida
 
 #: ../../../../../app/src/processing/app/Base.java:466
 msgid "Starting..."
-msgstr "Iniciando…"
+msgstr "A iniciar…"
 
 #: Base.java:540
 msgid "Sunshine"
@@ -2098,18 +2119,11 @@ msgid ""
 "Please choose a different folder for your sketchbook."
 msgstr "A pasta de bloco de rascunhos especificada contém a sua cópia do IDE.\nPor favor escolha uma outra pasta para o seu bloco de rascunhos."
 
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Este ficheiro já tinha sido copiado para a⏎ localização onde estás a tentar adicioná-lo.⏎ Não vou fazer nadinha."
-
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr "Esta biblioteca não está listada no Gestor de Bibliotecas. Não conseguirá reinstalá-la a partir daqui.\nQuer mesmo removê-la?"
+msgstr "Esta biblioteca não está listada no Gestor de Bibliotecas. Não conseguirá reinstalá-la a partir daqui.\nQuer mesmo apagá-la?"
 
 #: ../../../../../app/src/processing/app/EditorStatus.java:349
 msgid ""
@@ -2193,12 +2207,12 @@ msgstr "Erro ao abrir o monitor série."
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr "Não foi possível abrir o desenhador série"
+msgstr "Não foi possível abrir o plotter série"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Unable to reach Arduino.cc due to possible network issues."
-msgstr "Impossível ligar a Arduino.cc possivelmente devido a problemas de rede."
+msgstr "Impossível ligar à Arduino.cc possivelmente devido a problemas de rede."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
@@ -2259,7 +2273,7 @@ msgstr "Disponíveis actualizações para algumas das suas {0}bibliotecas{1}"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:167
 msgid "Updating list of installed libraries"
-msgstr "Actualizando a lista das bibliotecas instaladas"
+msgstr "A actualizar a lista das bibliotecas instaladas"
 
 #: EditorToolbar.java:41 Editor.java:545
 msgid "Upload"
@@ -2305,7 +2319,7 @@ msgstr "Nome de utilizador:"
 #: ../../../processing/app/debug/Compiler.java:410
 #, java-format
 msgid "Using library {0} at version {1} in folder: {2} {3}"
-msgstr "Utilizando a biblioteca {0} com a versão {1} na pasta: {2} {3}"
+msgstr "A utilizar a biblioteca {0} com a versão {1} na pasta: {2} {3}"
 
 #: ../../../processing/app/debug/Compiler.java:94
 #, java-format
@@ -2331,15 +2345,15 @@ msgstr "Verificar/Compilar"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
-msgstr "Verificando e carregando…"
+msgstr "A verificar e carregar…"
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:71
 msgid "Verifying archive integrity..."
-msgstr "Verificando a integridade do arquivo…"
+msgstr "A verificar a integridade do arquivo…"
 
 #: ../../../../../app/src/processing/app/Base.java:454
 msgid "Verifying..."
-msgstr "Verificando…"
+msgstr "A verificar…"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/ContributedLibraryTableCell.java:328
 #, java-format
@@ -2407,7 +2421,7 @@ msgstr "Aviso: forçado a executar script não confiável ({0})"
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:212
 #, java-format
 msgid "Warning: non trusted contribution, skipping script execution ({0})"
-msgstr "Aviso: contribuição não confiável, ignorando execução do script ({0})"
+msgstr "Aviso: contribuição não confiável, a ignorar a execução do script ({0})"
 
 #: ../../../processing/app/debug/LegacyTargetPlatform.java:158
 #, java-format
@@ -2448,10 +2462,6 @@ msgstr "Foi encontrado o micro-controlador errado. Selecionaste a placa certa no
 msgid "Yes"
 msgstr "Sim"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Não me consegues enganar"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Não pode importar uma pasta que contenha os seus blocos de rascunhos"
@@ -2465,6 +2475,12 @@ msgstr "Não podes guardar o rascunho num directorio\ndentro de si próprio. Ist
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Esqueceste-te do teu bloco de rascunhos"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

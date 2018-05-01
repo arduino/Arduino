@@ -24,6 +24,8 @@
   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
   <condition property="platform" value="linuxarm"><os family="unix" arch="arm" /></condition>
 
+  <condition property="windows_host" value="true"><os family="windows" /></condition>
+
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
   <condition property="windows"><equals arg1="${platform}" arg2="windows" /></condition>
   <condition property="linux32"><equals arg1="${platform}" arg2="linux32" /></condition>
@@ -85,11 +87,11 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.3.23" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.3.25" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
-  <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.3-arduino2" />
-  <property name="AVRDUDE-VERSION" value="6.3.0-arduino8" />
-  <property name="arduinoOTA-VERSION" value="1.0.0" />
+  <property name="AVRGCC-VERSION" value="4.9.2-atmel3.5.4-arduino2" />
+  <property name="AVRDUDE-VERSION" value="6.3.0-arduino9" />
+  <property name="arduinoOTA-VERSION" value="1.1.1" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -187,8 +189,8 @@
 
     <!-- Add WiFi101 updater tool -->
     <antcall target="unzip">
-      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.8.3.zip" />
-      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.8.3/WiFi101-Updater-ArduinoIDE-Plugin-0.8.3.zip" />
+      <param name="archive_file" value="shared/WiFi101-Updater-ArduinoIDE-Plugin-0.9.2.zip" />
+      <param name="archive_url" value="https://github.com/arduino-libraries/WiFi101-FirmwareUpdater-Plugin/releases/download/v0.9.2/WiFi101-Updater-ArduinoIDE-Plugin-0.9.2.zip" />
       <param name="final_folder" value="${target.path}/tools/WiFi101" />
       <param name="dest_folder" value="${target.path}/tools/" />
     </antcall>
@@ -226,22 +228,25 @@
       <fileset dir="../libraries"/>
     </copy>
 
-    <download-library name="Firmata" version="2.5.4"/>
+    <download-library name="Firmata" version="2.5.6"/>
     <download-library name="Bridge" version="1.6.3"/>
-    <download-library name="Robot_Control" version="1.0.2"/>
-    <download-library name="Robot_Motor" version="1.0.2"/>
-    <download-library name="RobotIRremote" version="1.0.2"/>
+    <download-library name="Robot_Control" version="1.0.4"/>
+    <download-library name="Robot_Motor" version="1.0.3"/>
+    <download-library name="RobotIRremote" version="2.0.0"/>
     <download-library name="SpacebrewYun" version="1.0.1"/>
-    <download-library name="Temboo" version="1.1.8"/>
+    <download-library name="Temboo" version="1.2.1"/>
     <download-library name="Esplora" version="1.0.4"/>
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.1"/>
     <download-library name="SD" version="1.1.1"/>
-    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.4"/>
+    <download-library name="Servo" version="1.1.2"/>
+    <download-library name="LiquidCrystal" version="1.0.7"/>
+    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.6.8" foldername="Adafruit_Circuit_Playground"/>
   </target>
 
   <macrodef name="download-library">
     <attribute name="name"/>
+    <attribute name="foldername" default="@{name}"/>
     <attribute name="version"/>
     <attribute name="tag" default="@{version}"/>
     <attribute name="githubuser" default="arduino-libraries"/>
@@ -252,7 +257,7 @@
         <param name="final_folder" value="${target.path}/libraries/@{name}-@{version}"/>
         <param name="dest_folder" value="${target.path}/libraries"/>
       </antcall>
-      <move file="${target.path}/libraries/@{name}-@{version}" tofile="${target.path}/libraries/@{name}"/>
+      <move file="${target.path}/libraries/@{name}-@{version}" tofile="${target.path}/libraries/@{foldername}"/>
     </sequential>
   </macrodef>
 
@@ -402,10 +407,8 @@
       <classpath refid="runtime.jars"/>
 
       <option value="-Dapple.awt.application.name=Arduino"/>
-      <option value="-Dapple.laf.useScreenMenuBar=true"/>
       <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
       <option value="-Dcom.apple.smallTabs=true"/>
-      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
 
@@ -487,7 +490,7 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-osx.tar.bz2"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-darwin_amd64.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
 
@@ -634,6 +637,7 @@
     <chmod perm="ugo+x">
         <fileset dir="linux/work" includes="arduino" />
         <fileset dir="linux/work" includes="**/*.sh" />
+        <fileset dir="linux/work/lib" includes="**/*desktop*" />
     </chmod>
   </target>
 
@@ -700,7 +704,7 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linuxarm.tar.bz2"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux_arm.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
@@ -718,7 +722,7 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux32.tar.bz2"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux_386.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
@@ -736,7 +740,7 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux64.tar.bz2"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-linux_amd64.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
@@ -854,6 +858,19 @@
     <echo>Unzipping ${archive_file} into folder ${dest_folder}</echo>
     <mkdir dir="${dest_folder}" />
     <unzip src="${archive_file}" dest="${dest_folder}"/>
+  </target>
+
+  <!-- Ensure that the executable flag is set in all enviroments/OS -->
+  <target name="make-file-executable" depends="make-file-executable-windows">
+    <chmod perm="755" file="${file}" />
+  </target>
+
+  <target name="make-file-executable-windows" if="windows_host">
+    <exec executable="icacls" failonerror="false">
+      <arg value="${file}"/>
+      <arg value="/grant"/>
+      <arg value="Everyone:(RX)"/>
+    </exec>
   </target>
 
   <target name="linux-dist" depends="build"
@@ -982,7 +999,9 @@
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
     <copy file="windows/liblistSerials-${LIBLISTSERIAL-VERSION}/windows/listSerialsj.dll" todir="windows/work/lib/" />
-    <chmod perm="755" file="windows/work/lib/listSerialsj.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/listSerialsj.dll" />
+    </antcall>
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-windows"/>
@@ -993,13 +1012,58 @@
       <param name="dest_folder" value="${staging_folder}/arduino-builder-windows" />
     </antcall>
     <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
-    <chmod perm="755" file="windows/work/arduino-builder.exe" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/arduino-builder.exe" />
+    </antcall>
     <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino11/ctags.exe" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/tools-builder/ctags/5.8-arduino11/ctags.exe" />
+    </antcall>
     <copy todir="windows/work/hardware" overwrite="true">
       <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
     </copy>
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
+
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jna-4.2.2.jar" />
+      <arg value="com/sun/jna/win32-x86/jnidispatch.dll" />
+    </exec>
+    <move file="windows/work/lib/jnidispatch.dll" tofile="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
+    </antcall>
+
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jssc-2.8.0-arduino1.jar" />
+      <arg value="libs/windows/jSSC-2.8_x86.dll" />
+    </exec>
+    <move file="windows/work/lib/jSSC-2.8_x86.dll" tofile="windows/work/lib/jSSC-2.8_x86.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jSSC-2.8_x86.dll" />
+    </antcall>
+    <exec executable="unzip" failonerror="true">
+      <arg value="-q" />
+      <arg value="-n" />
+      <arg value="-j" />
+      <arg value="-d" />
+      <arg value="windows/work/lib" />
+      <arg value="../arduino-core/lib/jssc-2.8.0-arduino1.jar" />
+      <arg value="libs/windows/jSSC-2.8_x86_64.dll" />
+    </exec>
+    <move file="windows/work/lib/jSSC-2.8_x86_64.dll" tofile="windows/work/lib/jSSC-2.8_x86_64.dll" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/lib/jSSC-2.8_x86_64.dll" />
+    </antcall>
 
     <antcall target="assemble">
       <param name="target.path" value="windows/work" />
@@ -1055,7 +1119,7 @@
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.zip"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-windows.zip"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-windows_386.zip"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
   </target>
@@ -1153,7 +1217,7 @@
 
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
     <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
-    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA/" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
+    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/arduinoOTA/arduinoOTA/" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
 
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
     <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.arduinoOTA=${arduinoOTA_version}${line.separator}"/>

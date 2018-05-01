@@ -1,17 +1,19 @@
 /*
   String to Integer conversion
 
- Reads a serial input string until it sees a newline, then converts
- the string to a number if the characters are digits.
+  Reads a serial input string until it sees a newline, then converts the string
+  to a number if the characters are digits.
 
- The circuit:
- No external components needed.
+  The circuit:
+  - No external components needed.
 
- created 29 Nov 2010
- by Tom Igoe
+  created 29 Nov 2010
+  by Tom Igoe
 
- This example code is in the public domain.
- */
+  This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/StringToInt
+*/
 
 String inString = "";    // string to hold input
 
@@ -32,12 +34,10 @@ void loop() {
   while (Serial.available() > 0) {
     int inChar = Serial.read();
     if (isDigit(inChar)) {
-      // convert the incoming byte to a char
-      // and add it to the string:
+      // convert the incoming byte to a char and add it to the string:
       inString += (char)inChar;
     }
-    // if you get a newline, print the string,
-    // then the string's value:
+    // if you get a newline, print the string, then the string's value:
     if (inChar == '\n') {
       Serial.print("Value:");
       Serial.println(inString.toInt());
@@ -48,4 +48,3 @@ void loop() {
     }
   }
 }
-

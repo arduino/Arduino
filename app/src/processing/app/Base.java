@@ -133,6 +133,10 @@ public class Base {
     System.setProperty("java.net.useSystemProxies", "true");
 
     if (OSUtils.isMacOS()) {
+      System.setProperty("apple.laf.useScreenMenuBar",
+        String.valueOf(!System.getProperty("os.version").startsWith("10.13")
+          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+
       ThinkDifferent.init();
     }
 
@@ -261,6 +265,10 @@ public class Base {
     if (!isCommandLine()) {
       rebuildBoardsMenu();
       rebuildProgrammerMenu();
+    } else {
+      TargetBoard lastSelectedBoard = BaseNoGui.getTargetBoard();
+      if (lastSelectedBoard != null)
+        BaseNoGui.selectBoard(lastSelectedBoard);
     }
 
     // Setup board-dependent variables.
@@ -277,7 +285,9 @@ public class Base {
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
-    PreferencesData.save();
+    if (parser.isForceSavePrefs()) {
+      PreferencesData.save();
+    }
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(
@@ -382,6 +392,7 @@ public class Base {
         outputFile = new Compiler(sketch).build(progress -> {}, false);
       } catch (Exception e) {
         // Error during build
+        e.printStackTrace();
         System.exit(1);
       }
 
@@ -516,16 +527,21 @@ public class Base {
     return (opened > 0);
   }
 
+  /**
+   * Store screen dimensions on last close
+   */
+  protected void storeScreenDimensions() {
+    // Save the width and height of the screen
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    PreferencesData.setInteger("last.screen.width", screen.width);
+    PreferencesData.setInteger("last.screen.height", screen.height);
+  }
 
   /**
    * Store list of sketches that are currently open.
    * Called when the application is quitting and documents are still open.
    */
   protected void storeSketches() {
-    // Save the width and height of the screen
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    PreferencesData.setInteger("last.screen.width", screen.width);
-    PreferencesData.setInteger("last.screen.height", screen.height);
 
     // If there is only one sketch opened save his position as default
     if (editors.size() == 1) {
@@ -897,6 +913,7 @@ public class Base {
     }
 
     if (editors.size() == 1) {
+      storeScreenDimensions();
       storeSketches();
 
       // This will store the sketch count as zero
@@ -943,6 +960,7 @@ public class Base {
   public boolean handleQuit() {
     // If quit is canceled, this will be replaced anyway
     // by a later handleQuit() that is not canceled.
+    storeScreenDimensions();
     storeSketches();
     try {
       Editor.serialMonitor.close();
@@ -954,7 +972,7 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      if (!OSUtils.isMacOS()) {
+      if (!OSUtils.hasMacOSStyleMenus()) {
         // If this was fired from the menu or an AppleEvent (the Finder),
         // then Mac OS X will send the terminate signal itself.
         System.exit(0);
@@ -1057,6 +1075,10 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
+    // Ctrl+Shift+I on Windows and Linux, Command+Shift+I on macOS
+    menu.setAccelerator(KeyStroke.getKeyStroke('I',
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+        ActionEvent.SHIFT_MASK));
     menu.addActionListener(e -> openLibraryManager("", ""));
     importMenu.add(menu);
     importMenu.addSeparator();
@@ -1080,12 +1102,13 @@ public class Base {
       List<ContributedLibrary> libs = getSortedLibraries();
       String lastLibType = null;
       for (ContributedLibrary lib : libs) {
-        if (lastLibType == null || !lastLibType.equals(lib.getTypes().get(0))) {
+        String libType = lib.getTypes().get(0);
+        if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {
             importMenu.addSeparator();
           }
-          lastLibType = lib.getTypes().get(0);
-          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), lastLibType));
+          lastLibType = libType;
+          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), tr(lastLibType)));
           platformItem.setEnabled(false);
           importMenu.add(platformItem);
         }
@@ -1155,7 +1178,7 @@ public class Base {
     // any incompatible sketchbook libs further divided into their own list.
     // The 7th list of "other" libraries should always be empty, but serves
     // as a safety feature to prevent any library from vanishing.
-    LibraryList allLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     LibraryList ideLibs = new LibraryList();
     LibraryList retiredIdeLibs = new LibraryList();
     LibraryList platformLibs = new LibraryList();
@@ -1386,7 +1409,7 @@ public class Base {
     // The first custom menu is the "Board" selection submenu
     JMenu boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu);
+    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
     boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
@@ -1837,9 +1860,22 @@ public class Base {
     dialog.setVisible(true);
   }
 
-  // XXX: Remove this method and make librariesIndexer non-static
-  static public LibraryList getLibraries() {
-    return BaseNoGui.librariesIndexer.getInstalledLibraries();
+  /**
+   * Adjust font size
+   */
+  public void handleFontSizeChange(int change) {
+    String pieces[] = PreferencesData.get("editor.font").split(",");
+    try {
+      int newSize = Integer.parseInt(pieces[2]) + change;
+      if (newSize < 4)
+        newSize = 4;
+      pieces[2] = String.valueOf(newSize);
+    } catch (NumberFormatException e) {
+      // ignore
+      return;
+    }
+    PreferencesData.set("editor.font", StringUtils.join(pieces, ','));
+    getEditors().forEach(Editor::applyPreferences);
   }
 
   public List<JMenu> getBoardsCustomMenus() {

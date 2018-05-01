@@ -1,1 +1,1 @@
-Two-axis acceleromoter.
+Two-axis accelerometer.

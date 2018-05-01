@@ -64,6 +64,7 @@ public class Compiler implements MessageConsumer {
   //used by transifex integration
   static {
     tr("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
+    tr("Archiving built core (caching) in: {0}");
     tr("Board {0} (platform {1}, package {2}) is unknown");
     tr("Bootloader file specified but missing: {0}");
     tr("Build options changed, rebuilding all");
@@ -138,6 +139,7 @@ public class Compiler implements MessageConsumer {
   private final File pathToSketch;
   private final Sketch sketch;
   private String buildPath;
+  private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
 
@@ -152,7 +154,14 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+    List<CompilerProgressListener> listeners = new ArrayList<>();
+    listeners.add(progListener);
+    return this.build(listeners, exportHex);
+  }
+
+  public String build(List<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
+    this.buildCache = BaseNoGui.getCachePath();
 
     TargetBoard board = BaseNoGui.getTargetBoard();
     if (board == null) {
@@ -165,7 +174,7 @@ public class Compiler implements MessageConsumer {
 
     PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
 
-    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListener), "\n");
+    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
     callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);
@@ -251,6 +260,11 @@ public class Compiler implements MessageConsumer {
     cmd.add("-build-path");
     cmd.add(buildPath);
     cmd.add("-warnings=" + PreferencesData.get("compiler.warning_level"));
+
+    if (PreferencesData.getBoolean("compiler.cache_core") == true && buildCache != null) {
+      cmd.add("-build-cache");
+      cmd.add(buildCache.getAbsolutePath());
+    }
 
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
@@ -501,7 +515,17 @@ public class Compiler implements MessageConsumer {
     String[] pieces = PApplet.match(s, ERROR_FORMAT);
 
     if (pieces != null) {
-      String error = pieces[pieces.length - 1], msg = "";
+      String msg = "";
+      int errorIdx = pieces.length - 1;
+      String error = pieces[errorIdx];
+      String filename = pieces[1];
+      int line = PApplet.parseInt(pieces[2]);
+      int col;
+      if (errorIdx > 3) {
+        col = PApplet.parseInt(pieces[3].substring(1));
+      } else {
+        col = -1;
+      }
 
       if (error.trim().equals("SPI.h: No such file or directory")) {
         error = tr("Please import the SPI library from the Sketch > Import Library menu.");
@@ -555,18 +579,23 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
-      RunnerException exception = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+      RunnerException ex = placeException(error, filename, line - 1, col);
 
-      if (exception != null) {
-        String fileName = exception.getCodeFile().getPrettyName();
-        int lineNum = exception.getCodeLine() + 1;
-        s = fileName + ":" + lineNum + ": error: " + error + msg;
+      if (ex != null) {
+        String fileName = ex.getCodeFile().getPrettyName();
+        int lineNum = ex.getCodeLine() + 1;
+        int colNum = ex.getCodeColumn();
+        if (colNum != -1) {
+          s = fileName + ":" + lineNum + ":" + colNum + ": error: " + error + msg;
+        } else {
+          s = fileName + ":" + lineNum + ": error: " + error + msg;
+        }
       }
 
-      if (exception != null) {
-        if (this.exception == null || this.exception.getMessage().equals(exception.getMessage())) {
-          this.exception = exception;
-          this.exception.hideStackTrace();
+      if (ex != null) {
+        if (exception == null || exception.getMessage().equals(ex.getMessage())) {
+          exception = ex;
+          exception.hideStackTrace();
         }
       }
     }
@@ -586,10 +615,10 @@ public class Compiler implements MessageConsumer {
     System.err.println(s);
   }
 
-  private RunnerException placeException(String message, String fileName, int line) {
+  private RunnerException placeException(String message, String fileName, int line, int col) {
     for (SketchFile file : sketch.getFiles()) {
       if (new File(fileName).getName().equals(file.getFileName())) {
-        return new RunnerException(message, file, line);
+        return new RunnerException(message, file, line, col);
       }
     }
     return null;

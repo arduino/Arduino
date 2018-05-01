@@ -14,7 +14,9 @@
 # Translators:
 # Translators:
 # Translators:
-# Ettore Atalan <atalanttore@googlemail.com>, 2014-2016
+# Translators:
+# Translators:
+# Ettore Atalan <atalanttore@googlemail.com>, 2014-2017
 # Lukas Bestle, 2016
 # Lukas Bestle, 2013,2015-2016
 # Dr. Mathias Wilhelm <mathias.wilhelm@freenet.de>, 2012
@@ -23,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-22 18:04+0000\n"
+"PO-Revision-Date: 2017-09-23 18:37+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -145,6 +147,10 @@ msgstr "Zusätzliche Boardverwalter-URLs: "
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Afrikaans"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -426,6 +432,10 @@ msgstr "CRC stimmt nicht überein, Datei ist beschädigt. Es kann ein temporäre
 msgid "Can only pass one of: {0}"
 msgstr "Kann nur eine übergeben von: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "Externer Editor kann nicht aktiviert werden"
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -467,6 +477,10 @@ msgstr "Chinesisch (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Chinesisch (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "Ausgabe löschen"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1813,6 +1827,13 @@ msgstr "Serieller Monitor"
 msgid "Serial Plotter"
 msgstr "Serieller Plotter"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "Serieller Monitor auf Netzwerkports wie {0} für {1} in dieser Version wird nicht unterstützt"
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "Serieller Monitor nicht verfügbar, während der Plotter offen ist"
@@ -2089,13 +2110,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Der angegebene Sketchbook-Ordner enthält Ihre Kopie der IDE.\nBitte wählen Sie einen anderen Ordner für Ihr Sketchbook aus."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Diese Datei wurde bereits an den Ort kopiert,\nvon dem Sie versuchen, sie hinzuzufügen.\nIch mache erst einmal nichts."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2440,10 +2454,6 @@ msgstr "Falscher Mikrocontroller gefunden. Ist das richtige Board im Menü Werkz
 msgid "Yes"
 msgstr "Ja"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "So leicht kann man mich nicht täuschen"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Sie können keinen Ordner importieren, der Ihr Sketchbook enthält"
@@ -2457,6 +2467,12 @@ msgstr "Sie können den Sketch nicht in seinem\neigenen Ordner speichern.\nDas w
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Sie haben Ihr Sketchbook vergessen"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "Sie haben nicht gespeicherte Änderungen!\nSie müssen all Ihre Sketches speichern, um diese Option zu aktivieren."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

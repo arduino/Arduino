@@ -85,6 +85,9 @@ simple_install_f() {
   mkdir -p "${HOME}/.local/share/applications"
   cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${HOME}/.local/share/applications/"
 
+  mkdir -p "${HOME}/.local/share/metainfo"
+  cp "${SCRIPT_PATH}/lib/appdata.xml" "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml"
+
   # Copy desktop icon if desktop dir exists (was found)
   if [ -d "${XDG_DESKTOP_DIR}" ]; then
    cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${XDG_DESKTOP_DIR}/"
@@ -137,12 +140,22 @@ xdg_uninstall_f() {
 # Uninstall by simply removing desktop files (fallback), incl. old one
 simple_uninstall_f() {
 
+  # delete legacy cruft .desktop file
   if [ -f "${HOME}/.local/share/applications/arduino.desktop" ]; then
     rm "${HOME}/.local/share/applications/arduino.desktop"
   fi
 
+  # delete another legacy .desktop file
+  if [ -f "${HOME}/.local/share/applications/arduino-arduinoide.desktop" ]; then
+    rm "${HOME}/.local/share/applications/arduino-arduinoide.desktop"
+  fi
+
   if [ -f "${HOME}/.local/share/applications/${RESOURCE_NAME}.desktop" ]; then
     rm "${HOME}/.local/share/applications/${RESOURCE_NAME}.desktop"
+  fi
+
+  if [ -f "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml" ]; then
+    rm "${HOME}/.local/share/metainfo/${RESOURCE_NAME}.appdata.xml"
   fi
 
   if [ -f "${XDG_DESKTOP_DIR}/arduino.desktop" ]; then

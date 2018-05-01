@@ -1,16 +1,16 @@
 /*
   String replace()
 
- Examples of how to replace characters or substrings of a string
+  Examples of how to replace characters or substrings of a String
 
- created 27 July 2010
- modified 2 Apr 2012
- by Tom Igoe
+  created 27 Jul 2010
+  modified 2 Apr 2012
+  by Tom Igoe
 
- http://www.arduino.cc/en/Tutorial/StringReplace
+  This example code is in the public domain.
 
- This example code is in the public domain.
- */
+  http://www.arduino.cc/en/Tutorial/StringReplace
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -20,7 +20,7 @@ void setup() {
   }
 
   // send an intro:
-  Serial.println("\n\nString  replace:\n");
+  Serial.println("\n\nString replace:\n");
   Serial.println();
 }
 
@@ -28,7 +28,7 @@ void loop() {
   String stringOne = "<html><head><body>";
   Serial.println(stringOne);
   // replace() changes all instances of one substring with another:
-  // first, make a copy of th original string:
+  // first, make a copy of the original string:
   String stringTwo = stringOne;
   // then perform the replacements:
   stringTwo.replace("<", "</");

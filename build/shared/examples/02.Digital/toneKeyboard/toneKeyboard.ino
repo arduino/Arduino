@@ -1,22 +1,21 @@
 /*
-  keyboard
+  Keyboard
 
- Plays a pitch that changes based on a changing analog input
+  Plays a pitch that changes based on a changing analog input
 
- circuit:
- * 3 force-sensing resistors from +5V to analog in 0 through 5
- * 3 10K resistors from analog in 0 through 5 to ground
- * 8-ohm speaker on digital pin 8
+  circuit:
+  - three force-sensing resistors from +5V to analog in 0 through 5
+  - three 10 kilohm resistors from analog in 0 through 5 to ground
+  - 8 ohm speaker on digital pin 8
 
- created 21 Jan 2010
- modified 9 Apr 2012
- by Tom Igoe
+  created 21 Jan 2010
+  modified 9 Apr 2012
+  by Tom Igoe
 
-This example code is in the public domain.
+  This example code is in the public domain.
 
- http://www.arduino.cc/en/Tutorial/Tone3
-
- */
+  http://www.arduino.cc/en/Tutorial/Tone3
+*/
 
 #include "pitches.h"
 

@@ -14,9 +14,11 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
-# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2016
+# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2017
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
 # shibaboy <shibaboy@gmail.com>, 2014
 msgid ""
@@ -24,7 +26,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-24 03:16+0000\n"
+"PO-Revision-Date: 2017-09-23 18:43+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -146,6 +148,10 @@ msgstr "추가적인 보드 매니저 URLs"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "아프리칸스어"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Aggressively cache compiled core"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -427,6 +433,10 @@ msgstr "CRC가 일치하지 않습니다. 파일이 손상되었습니다. 일�
 msgid "Can only pass one of: {0}"
 msgstr "Can only pass one of: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "외부 편집기를 활성화 할 수 없습니다."
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -468,6 +478,10 @@ msgstr "중국어(대만)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "중국어(대만)(Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "출력 지우기"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1814,6 +1828,13 @@ msgstr "시리얼 모니터"
 msgid "Serial Plotter"
 msgstr "시리얼 플로터"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "이 릴리스의 {1}에 대한 {0}과 같은 네트워크 포트에서 시리얼 모니터가 지원되지 않습니다."
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "플로터가 열려있으면 시리얼 모니터를 사용할 수 없습니다"
@@ -2090,13 +2111,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "지정된 스케치북 폴더는 IDE의 사본을 포함합니다.\n다른 폴더를 선택하십시오."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "이 파일은 이미 당신이 추가하려는\n장소에 복사되었습니다.\n더 이상 진행 할 수 없습니다."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2441,10 +2455,6 @@ msgstr "잘못된 마이크로콘트롤러 발견. 툴 > 보드 메뉴에서 올
 msgid "Yes"
 msgstr "예"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "You can't fool me"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "스케치북을 포함하는 폴더를 가져올 수 없습니다"
@@ -2458,6 +2468,12 @@ msgstr "스케치를 그 자체의 폴더에 저장할 수 없습니다.\n무한
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "스케치북을 잊었습니다"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "변경 사항을 저장하지 않았습니다!\n이 옵션을 사용하려면 모든 스케치를 저장해야합니다."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

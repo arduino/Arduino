@@ -1,32 +1,33 @@
 /*
   JoystickMouseControl
 
- Controls the mouse from a joystick on an Arduino Leonardo, Micro or Due.
- Uses a pushbutton to turn on and off mouse control, and
- a second pushbutton to click the left mouse button
+  Controls the mouse from a joystick on an Arduino Leonardo, Micro or Due.
+  Uses a pushbutton to turn on and off mouse control, and a second pushbutton
+  to click the left mouse button.
 
- Hardware:
- * 2-axis joystick connected to pins A0 and A1
- * pushbuttons connected to pin D2 and D3
+  Hardware:
+  - 2-axis joystick connected to pins A0 and A1
+  - pushbuttons connected to pin D2 and D3
 
- The mouse movement is always relative. This sketch reads
- two analog inputs that range from 0 to 1023 (or less on either end)
- and translates them into ranges of -6 to 6.
- The sketch assumes that the joystick resting values are around the
- middle of the range, but that they vary within a threshold.
+  The mouse movement is always relative. This sketch reads two analog inputs
+  that range from 0 to 1023 (or less on either end) and translates them into
+  ranges of -6 to 6.
+  The sketch assumes that the joystick resting values are around the middle of
+  the range, but that they vary within a threshold.
 
- WARNING:  When you use the Mouse.move() command, the Arduino takes
- over your mouse!  Make sure you have control before you use the command.
- This sketch includes a pushbutton to toggle the mouse control state, so
- you can turn on and off mouse control.
+  WARNING: When you use the Mouse.move() command, the Arduino takes over your
+  mouse! Make sure you have control before you use the command. This sketch
+  includes a pushbutton to toggle the mouse control state, so you can turn on
+  and off mouse control.
 
- created 15 Sept 2011
- updated 28 Mar 2012
- by Tom Igoe
+  created 15 Sep 2011
+  updated 28 Mar 2012
+  by Tom Igoe
 
- this code is in the public domain
+  This example code is in the public domain.
 
- */
+  http://www.arduino.cc/en/Tutorial/JoystickMouseControl
+*/
 
 #include "Mouse.h"
 
@@ -96,9 +97,9 @@ void loop() {
 }
 
 /*
-  reads an axis (0 or 1 for x or y) and scales the
- analog input range to a range from 0 to <range>
- */
+  reads an axis (0 or 1 for x or y) and scales the analog input range to a range
+  from 0 to <range>
+*/
 
 int readAxis(int thisAxis) {
   // read the analog input:
@@ -107,8 +108,7 @@ int readAxis(int thisAxis) {
   // map the reading from the analog input range to the output range:
   reading = map(reading, 0, 1023, 0, range);
 
-  // if the output reading is outside from the
-  // rest position threshold,  use it:
+  // if the output reading is outside from the rest position threshold, use it:
   int distance = reading - center;
 
   if (abs(distance) < threshold) {
@@ -118,6 +118,3 @@ int readAxis(int thisAxis) {
   // return the distance for this axis:
   return distance;
 }
-
-
-

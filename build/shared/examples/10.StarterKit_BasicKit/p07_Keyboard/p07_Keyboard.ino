@@ -1,28 +1,26 @@
 /*
   Arduino Starter Kit example
- Project 7  - Keyboard
+  Project 7 - Keyboard
 
- This sketch is written to accompany Project 7 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 7 in the Arduino Starter Kit
 
- Parts required:
- two 10 kilohm resistors
- 1 Megohm resistor
- 220 ohm resistor
- 4 pushbuttons
- piezo
+  Parts required:
+  - two 10 kilohm resistors
+  - 1 megohm resistor
+  - 220 ohm resistor
+  - four pushbuttons
+  - piezo
 
- Created 13 September 2012
- by Scott Fitzgerald
+  created 13 Sep 2012
+  by Scott Fitzgerald
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
+  This example code is part of the public domain.
 */
 
 // create an array of notes
-// the numbers below correspond to
-// the frequencies of middle C, D, E, and F
+// the numbers below correspond to the frequencies of middle C, D, E, and F
 int notes[] = {262, 294, 330, 349};
 
 void setup() {
@@ -54,4 +52,3 @@ void loop() {
     noTone(8);
   }
 }
-

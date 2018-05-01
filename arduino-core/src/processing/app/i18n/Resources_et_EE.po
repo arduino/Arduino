@@ -14,21 +14,23 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Cougar <cougar@random.ee>, 2012
 # Cougar <transifex@lost.data.ee>, 2013
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Georg, 2014
 # Georg, 2014
 # Hasso Tepper <hasso.tepper@gmail.com>, 2016
-# Lauri Võsandi <lauri.vosandi@gmail.com>, 2015
+# Lauri Võsandi <inactive+v6sa@transifex.com>, 2015
 # Triin Taveter <taveter@ut.ee>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-12-30 03:45+0000\n"
-"Last-Translator: Hasso Tepper <hasso.tepper@gmail.com>\n"
+"PO-Revision-Date: 2017-09-23 18:37+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -149,6 +151,10 @@ msgstr "Lisa URL-id plaatide halduseks: "
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Afrikaani"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -430,6 +436,10 @@ msgstr "CRC ei kattu ja fail on rikutud. See võib olla ajutine probleem, proovi
 msgid "Can only pass one of: {0}"
 msgstr "Ainult üht neist saab korraga kasutada: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -471,6 +481,10 @@ msgstr "Hiina (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Hiina (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1817,6 +1831,13 @@ msgstr "Jadapordi monitor"
 msgid "Serial Plotter"
 msgstr "Jadapordi plotter"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "Jadapordi monitori ei saa kasutada, kui plotter on avatud."
@@ -2093,13 +2114,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Valitud visandite kaustas on su IDE koopia.\nPalun vali oma visandite hoidmiseks mõni teine kaust."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "See fail on juba kopeeritud kohta, kust sa seda\nkopeerida üritad. Seega ei pea ma midagi tegema."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2444,10 +2458,6 @@ msgstr "Mikrokontroller on vale tüüpi. Kas sa valisid Tööriistad > Plaat men
 msgid "Yes"
 msgstr "Jah"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Mind sa ei lollita"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Kausta, mis sisaldab su visandeid, importida ei saa."
@@ -2461,6 +2471,12 @@ msgstr "Sa ei saa salvestada visandit kausta,\nmis on sama kausta sees."
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Sa unustasid oma visandid"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

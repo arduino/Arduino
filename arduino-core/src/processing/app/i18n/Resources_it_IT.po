@@ -14,19 +14,21 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2013-2016
 # Davide Velluto <davide.network@gmail.com>, 2012
 # Federico Fissore <f.fissore@arduino.cc>, 2015
 # Giovanni Spadaro <giovannispd@gmail.com>, 2012
 # Michele Michielin <michele.michielin@gmail.com>, 2012
-# Michele Michielin <michele.michielin@gmail.com>, 2013-2016
-# Sebastiano Pistore <olatusrooc@virgilio.it>, 2016
+# Michele Michielin <michele.michielin@gmail.com>, 2013-2017
+# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-22 20:39+0000\n"
+"PO-Revision-Date: 2017-09-23 18:37+0000\n"
 "Last-Translator: Michele Michielin <michele.michielin@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/mbanzi/arduino-ide-15/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -148,6 +150,10 @@ msgstr "URL aggiuntive per il Gestore schede:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Afrikaans"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Core compilato con cache aggressiva"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -422,12 +428,16 @@ msgstr "Sto scrivendo il bootloader sulla scheda di I/O (potrebbe richiedere qua
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr "Il CRC non corrisponde, il file è rovinato. Potrebbe essere solo un problema temporaneo, riprova dopo."
+msgstr "Il CRC non corrisponde, il file è rovinato. Potrebbe essere un problema temporaneo, riprova dopo"
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
 msgstr "Si può usare solo uno tra: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "Impossibile abilitare l'editor esterno"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -470,6 +480,10 @@ msgstr "Cinese (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Cinese (Taiwan - Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "Ripulisci l'output"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -1816,6 +1830,13 @@ msgstr "Monitor seriale"
 msgid "Serial Plotter"
 msgstr "Plotter seriale"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "Il monitor seriale non è supportato su porte di rete come {0} per {1} in questa versione"
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "Il monitor seriale non è disponibile quando il plotter è aperto"
@@ -1945,7 +1966,7 @@ msgstr "Alcuni file sono impostati come \"sola lettura\" quindi\ndevi salvare nu
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
 msgid "Sorry, the folder \"{0}\" already exists."
-msgstr "La cartella \"{0}\" esiste già."
+msgstr "Spiacente, la cartella \"{0}\" esiste già"
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -2062,7 +2083,7 @@ msgstr "Lo sketch \"{0}\" non può essere usato.\nIl nome dello sketch può cont
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr "Lo sketch contiene già un file con nome \"{0}\""
+msgstr "Lo sketch contiene già un file di nome \"{0}\""
 
 #: Sketch.java:1755
 msgid ""
@@ -2092,13 +2113,6 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "La cartella degli sketch indicata contiene la tua copia dell'IDE.\nScegli un'altra cartella per i tuoi sketch."
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Questo file è già stato copiato nella posizione\ndove stai cercando di aggiungerlo.\nNon farò un bel nulla"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2443,10 +2457,6 @@ msgstr "Trovato microcontrollore errato. Hai selezionato il tipo corretto di sch
 msgid "Yes"
 msgstr "Sì"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Non puoi prendermi in giro"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Non puoi importare una cartella che contiene la tua cartella degli sketch"
@@ -2460,6 +2470,12 @@ msgstr "Non puoi salvare lo sketch in una cartella\nall'interno di sé stessa. Q
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Hai dimenticato la tua cartella degli sketch"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "Ci sono modifiche non salvate.\nDevi salvare tutti i tuoi sketch per abilitare questa opzione."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

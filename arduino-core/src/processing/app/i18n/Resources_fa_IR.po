@@ -14,13 +14,16 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
 # Ali Mirjamali <ali.mirjamali@gmail.com>, 2013
+# Seyyed Mohammad Amin Mousavi <inoaaa2011@gmail.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2017-09-19 22:28+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Persian (Iran) (http://www.transifex.com/mbanzi/arduino-ide-15/language/fa_IR/)\n"
 "MIME-Version: 1.0\n"
@@ -31,52 +34,52 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr ""
+msgstr "(آردوینو باید راه اندازی مجدد شود)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "استفاده نشده: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "استفاده شده: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "\"کیبوردی\" پیدا نشد. آیا اسکچ شما خط\n\"#include<Keyboard.h> را شامل می شود؟"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "\"ماوس\" پیدا نشد. آیا اسکچ شما خط\n\"#include>Mouse.h< را شامل می شود؟"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "پوشه ی arch دیگر پشتیبانی نمی شود! برای اطلاعات بیشتر به آدرس زیر مراجعه کنید:\nhttp://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr ""
+msgstr "(تنها در صورتی ویرایش شود که آردوینو در حال اجرا نیست)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(قدیمی)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "--curdir\nدیگر پشتیبانی نمی شود"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose,--verbose-upload , --verbose-build\nتنها می توانند با یکدیگر و با \n--verify\nیا \n--upload\nاستفاده شوند"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -141,6 +144,10 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
 msgstr ""
 
 #: ../../../processing/app/Preferences.java:96
@@ -423,6 +430,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr ""
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -463,6 +474,10 @@ msgstr "چینی (تایوان)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
@@ -1810,6 +1825,13 @@ msgstr ""
 msgid "Serial Plotter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr ""
@@ -2085,13 +2107,6 @@ msgstr ""
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr ""
-
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
@@ -2437,10 +2452,6 @@ msgstr ""
 msgid "Yes"
 msgstr "بله"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "نمی‌توانی من را سر کار بگذاری"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr ""
@@ -2453,6 +2464,12 @@ msgstr ""
 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
 msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
