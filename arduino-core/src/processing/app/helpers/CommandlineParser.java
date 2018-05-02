@@ -85,10 +85,6 @@ public class CommandlineParser {
           }
           libraryToInstall = args[i];
         }
-        if (a == ACTION.VERSION) {
-          BaseNoGui.showMessage("Arduino", BaseNoGui.VERSION_NAME_LONG);
-          System.exit(0);
-        }
         action = a;
         continue;
       }
@@ -343,6 +339,10 @@ public class CommandlineParser {
 
   public boolean isInstallLibrary() {
     return action == ACTION.INSTALL_LIBRARY;
+  }
+
+  public boolean isVersionMode() {
+    return action == ACTION.VERSION;
   }
 
   public String getBoardToInstall() {
