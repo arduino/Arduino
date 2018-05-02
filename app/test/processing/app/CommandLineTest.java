@@ -144,4 +144,19 @@ public class CommandLineTest {
     Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
       .matches("Arduino: \\d+\\.\\d+\\.\\d+.*");
   }
+
+  @Test
+  public void testCommandLineMultipleAction() throws Exception {
+    Runtime rt = Runtime.getRuntime();
+    Process pr = rt.exec(new String[]{
+      arduinoPath.getAbsolutePath(),
+      "--version",
+      "--verify",
+    });
+    pr.waitFor();
+
+    Assertions.assertThat(pr.exitValue())
+      .as("Multiple Action will be rejected")
+      .isEqualTo(3);
+  }
 }
