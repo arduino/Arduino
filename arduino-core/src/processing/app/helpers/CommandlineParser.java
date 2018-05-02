@@ -16,7 +16,7 @@ import static processing.app.I18n.tr;
 public class CommandlineParser {
 
   private enum ACTION {
-    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
+    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library"), VERSION("--version");
 
     final String value;
 
@@ -52,6 +52,7 @@ public class CommandlineParser {
     actions.put("--get-pref", ACTION.GET_PREF);
     actions.put("--install-boards", ACTION.INSTALL_BOARD);
     actions.put("--install-library", ACTION.INSTALL_LIBRARY);
+    actions.put("--version", ACTION.VERSION);
   }
 
   public void parseArgumentsPhase1() {
@@ -83,6 +84,10 @@ public class CommandlineParser {
             BaseNoGui.showError(null, I18n.format(tr("Argument required for {0}"), a.value), 3);
           }
           libraryToInstall = args[i];
+        }
+        if (a == ACTION.VERSION) {
+          BaseNoGui.showMessage("Arduino", BaseNoGui.VERSION_NAME_LONG);
+          System.exit(0);
         }
         action = a;
         continue;
