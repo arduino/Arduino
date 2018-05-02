@@ -23,6 +23,14 @@
 #include <Arduino.h>
 #include "PluggableUSB.h"
 
+// The HID class provided in this library is a basic mechanism, designed to let enthusiasts get
+// a quick start with their projects.  If you need more than what's implemented here (such as
+// bi-directional communication with the host), then you should investigate other user-contributed
+// libraries.  In particular, have a look at: https://github.com/NicoHood/HID/wiki.
+// This library contains a number of implementations for Mice, Keyboards and game controllers,
+// perhaps one will work directly for you.  If not, there are also base classes that you can use
+// to get a jump-start on your design.
+
 #if defined(USBCON)
 
 #define _USING_HID
