@@ -67,6 +67,7 @@ xdg_install_f() {
   xdg-mime default ${RESOURCE_NAME}.desktop text/x-arduino
 
   # Add symlink for arduino so it's in users path
+  echo "" # Ensure password request message is on new line
   sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
 
   # Clean up
@@ -102,6 +103,7 @@ simple_install_f() {
   fi
 
   # Add symlink for arduino so it's in users path
+  echo "" # Ensure password request message is on new line
   sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
 
   # Clean up temp dir
@@ -145,6 +147,7 @@ xdg_uninstall_f() {
   xdg-mime uninstall "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
 
   # Remove symlink for arduino
+  echo "" # Ensure password request message is on new line
   sudo rm /usr/local/bin/arduino
 
 }
@@ -179,6 +182,7 @@ simple_uninstall_f() {
   fi
 
   # Remove symlink for arduino
+  echo "" # Ensure password request message is on new line
   sudo rm /usr/local/bin/arduino
 
 }
