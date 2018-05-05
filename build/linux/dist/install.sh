@@ -66,6 +66,9 @@ xdg_install_f() {
   # Make Arduino IDE the default application for *.ino
   xdg-mime default ${RESOURCE_NAME}.desktop text/x-arduino
 
+  # Add symlink for arduino so it's in users path
+  sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
+
   # Clean up
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
   rmdir "$TMP_DIR"
@@ -97,6 +100,9 @@ simple_install_f() {
    # Altering file permissions to avoid "Untrusted Application Launcher" error on Ubuntu
    chmod u+x "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
   fi
+
+  # Add symlink for arduino so it's in users path
+  sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
 
   # Clean up temp dir
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
@@ -138,6 +144,9 @@ xdg_uninstall_f() {
   # Remove Arduino MIME type
   xdg-mime uninstall "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
 
+  # Remove symlink for arduino
+  sudo rm /usr/local/bin/arduino
+
 }
 
 # Uninstall by simply removing desktop files (fallback), incl. old one
@@ -168,6 +177,9 @@ simple_uninstall_f() {
   if [ -f "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop" ]; then
     rm "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
   fi
+
+  # Remove symlink for arduino
+  sudo rm /usr/local/bin/arduino
 
 }
 
