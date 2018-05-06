@@ -28,7 +28,11 @@ void initVariant() __attribute__((weak));
 void initVariant() { }
 
 void setupUSB() __attribute__((weak));
-void setupUSB() { }
+void setupUSB() {
+#if defined(USBCON) && defined(DYNAMIC_USB_CORE_INCLUDE))
+	USBDevice.attach();
+#endif
+}
 
 int main(void)
 {
@@ -37,7 +41,7 @@ int main(void)
 	initVariant();
 
 #if defined(USBCON)
-	USBDevice.attach();
+	setupUSB();
 #endif
 	
 	setup();

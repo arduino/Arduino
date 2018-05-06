@@ -862,4 +862,8 @@ bool USBDevice_::wakeupHost()
 	return false;
 }
 
+void setupUSB() {
+	USBDevice.attach();
+}
+
 #endif /* if defined(USBCON) */
