@@ -221,7 +221,7 @@ size_t Serial_::write(const uint8_t *buffer, size_t size)
 	// TODO - ZE - check behavior on different OSes and test what happens if an
 	// open connection isn't broken cleanly (cable is yanked out, host dies
 	// or locks up, or host virtual serial port hangs)
-	if (_usbLineInfo.lineState > 0)	{
+	if (USBDevice.configured() && availableForWrite())	{
 		int r = USB_Send(CDC_TX,buffer,size);
 		if (r > 0) {
 			return r;
