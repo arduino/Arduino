@@ -318,7 +318,7 @@ public class Theme {
   /**
    * Available zipped themes 
    */
-  static private final Map<String, ZippedTheme> availableThemes = new TreeMap<String, ZippedTheme>();
+  static private final Map<String, ZippedTheme> availableThemes = new TreeMap<>();
   
   /**
    * Zip file containing user-defined theme elements 
@@ -352,12 +352,12 @@ public class Theme {
   }
   
   static private void refreshAvailableThemes() {
-    Map<String, ZippedTheme> discoveredThemes = new TreeMap<String, ZippedTheme>();
+    Map<String, ZippedTheme> discoveredThemes = new TreeMap<>();
     
     refreshAvailableThemes(discoveredThemes, NAMESPACE_APP, new File(BaseNoGui.getContentFile("lib"), THEME_DIR));
     refreshAvailableThemes(discoveredThemes, NAMESPACE_USER, new File(BaseNoGui.getSketchbookFolder(), THEME_DIR));
     
-    synchronized(availableThemes) {
+    synchronized (availableThemes) {
       availableThemes.clear();
       availableThemes.putAll(discoveredThemes);
     }
@@ -378,7 +378,7 @@ public class Theme {
   
   public static Collection<ZippedTheme> getAvailablethemes() {
     refreshAvailableThemes();
-    return Collections.<ZippedTheme>unmodifiableCollection(availableThemes.values());
+    return Collections.unmodifiableCollection(availableThemes.values());
   }
 
   static public String get(String attribute) {
