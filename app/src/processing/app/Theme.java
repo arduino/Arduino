@@ -21,6 +21,7 @@
 
 package processing.app;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 import java.awt.Color;
@@ -298,6 +299,8 @@ public class Theme {
           return new ZippedTheme(namespace, file, zip, name, version);
         }
       } catch (Exception ex) {
+        System.err.println(format(tr("Error loading theme {0}: {1}"),
+                                  file.getAbsolutePath(), ex.getMessage()));
         IOUtils.closeQuietly(zip);
       }
       
