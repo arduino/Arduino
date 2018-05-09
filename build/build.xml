@@ -1108,7 +1108,7 @@
   <target name="windows-build-avr-toolchain">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="unzip"/>
-      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-mingw32.zip"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-w64-mingw32.zip"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-w64-mingw32.zip"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
