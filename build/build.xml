@@ -91,7 +91,7 @@
   <property name="LIBLISTSERIAL-VERSION" value="1.4.0" />
   <property name="AVRGCC-VERSION" value="5.4.0-atmel3.6.1-arduino2" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino14" />
-  <property name="AVRCORE-VERSION" value="1.6.21" />
+  <property name="AVRCORE-VERSION" value="1.6.22" />
   <property name="arduinoOTA-VERSION" value="1.2.1" />
 
   <!-- Libraries required for running arduino -->
