@@ -271,6 +271,7 @@
       <param name="final_folder" value="${target.path}/hardware/arduino/avr"/>
       <param name="dest_folder" value="${target.path}/hardware/arduino"/>
     </antcall>
+    <copy file="../hardware/package_index_bundled.json" todir="${target.path}/hardware/" />
   </target>
 
   <!-- - - - - - - - - -->
