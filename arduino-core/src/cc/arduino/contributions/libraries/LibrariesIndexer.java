@@ -52,6 +52,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -151,8 +152,11 @@ public class LibrariesIndexer {
         .filter(l -> l.getTypes().contains("Contributed")) //
         .filter(l -> l.getLocation() == Location.CORE || l.getLocation() == Location.REFERENCED_CORE) //
         .forEach(l -> {
-          ContributedPlatform platform = BaseNoGui.indexer.getPlatformByFolder(l.getInstalledFolder());
-          l.setTypes(Collections.singletonList(platform.getCategory()));
+          File libFolder = l.getInstalledFolder();
+          Optional<ContributedPlatform> platform = BaseNoGui.indexer.getPlatformByFolder(libFolder);
+          if (platform.isPresent()) {
+            l.setTypes(Collections.singletonList(platform.get().getCategory()));
+          }
         });
   }
 

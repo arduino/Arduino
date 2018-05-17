@@ -461,13 +461,11 @@ public class ContributionsIndexer {
     return index.getInstalledPlatforms();
   }
 
-  public ContributedPlatform getPlatformByFolder(final File folder) {
-    Optional<ContributedPlatform> platformOptional = getInstalledPlatforms().stream().filter(contributedPlatform -> {
+  public Optional<ContributedPlatform> getPlatformByFolder(final File folder) {
+    return getInstalledPlatforms().stream().filter(contributedPlatform -> {
       assert contributedPlatform.getInstalledFolder() != null;
       return FileUtils.isSubDirectory(contributedPlatform.getInstalledFolder(), folder);
     }).findFirst();
-
-    return platformOptional.orElse(null);
   }
 
   public ContributedPlatform getContributedPlaform(TargetPlatform targetPlatform) {
