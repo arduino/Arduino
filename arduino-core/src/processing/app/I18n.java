@@ -19,16 +19,36 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class I18n {
+
+  static {
+    tr("Arduino");
+    tr("Partner");
+    tr("Recommended");
+    tr("Contributed");
+    tr("Retired");
+
+    tr("Display");
+    tr("Communication");
+    tr("Signal Input/Output");
+    tr("Sensors");
+    tr("Device Control");
+    tr("Timing");
+    tr("Data Storage");
+    tr("Data Processing");
+    tr("Other");
+    tr("Uncategorized");
+  }
+
   // start using current locale but still allow using the dropdown list later
   private static ResourceBundle i18n;
 
   // prompt text stuff
 
-  static String PROMPT_YES;
-  static String PROMPT_NO;
-  static String PROMPT_CANCEL;
-  static String PROMPT_OK;
-  static String PROMPT_BROWSE;
+  public static String PROMPT_YES;
+  public static String PROMPT_NO;
+  public static String PROMPT_CANCEL;
+  public static String PROMPT_OK;
+  public static String PROMPT_BROWSE;
 
   static protected void init(String language) throws MissingResourceException {
     String[] languageParts = language.split("_");
@@ -43,14 +63,14 @@ public class I18n {
     // there might be a null pointer exception ... most likely will never happen but the jvm gets mad
     Locale.setDefault(locale);
     i18n = ResourceBundle.getBundle("processing.app.i18n.Resources", Locale.getDefault());
-    PROMPT_YES = _("Yes");
-    PROMPT_NO = _("No");
-    PROMPT_CANCEL = _("Cancel");
-    PROMPT_OK = _("OK");
-    PROMPT_BROWSE = _("Browse");
+    PROMPT_YES = tr("Yes");
+    PROMPT_NO = tr("No");
+    PROMPT_CANCEL = tr("Cancel");
+    PROMPT_OK = tr("OK");
+    PROMPT_BROWSE = tr("Browse");
   }
 
-  public static String _(String s) {
+  public static String tr(String s) {
     String res;
     try {
       if (i18n == null)
@@ -82,15 +102,15 @@ public class I18n {
 
   /**
    * Does nothing.
-   * <p/>
+   * <p>
    * This method is an hack to extract words with gettext tool.
    */
   protected static void unusedStrings() {
     // These phrases are defined in the "platform.txt".
-    _("Arduino AVR Boards");
-    _("Arduino ARM (32-bits) Boards");
+    tr("Arduino AVR Boards");
+    tr("Arduino ARM (32-bits) Boards");
 
     // This word is defined in the "boards.txt".
-    _("Processor");
+    tr("Processor");
   }
 }

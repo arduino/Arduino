@@ -22,15 +22,13 @@
 
 package processing.app.linux;
 
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.Executor;
 import processing.app.PreferencesData;
-import processing.app.debug.TargetPackage;
-import processing.app.tools.ExternalProcessExecutor;
 import processing.app.legacy.PConstants;
 
-import java.io.*;
-import java.util.Map;
+import java.awt.Font;
+import java.io.File;
+
+import javax.swing.UIManager;
 
 
 /**
@@ -41,27 +39,20 @@ public class Platform extends processing.app.Platform {
 
   // TODO Need to be smarter here since KDE people ain't gonna like that GTK.
   //      It may even throw a weird exception at 'em for their trouble.
+  @Override
   public void setLookAndFeel() throws Exception {
-    // Linux is by default even uglier than metal (Motif?).
-    // Actually, i'm using native menus, so they're even uglier
-    // and Motif-looking (Lesstif?). Ick. Need to fix this.
-    //String lfname = UIManager.getCrossPlatformLookAndFeelClassName();
-    //UIManager.setLookAndFeel(lfname);
-
-    // For 0120, trying out the gtk+ look and feel as the default.
-    // This is available in Java 1.4.2 and later, and it can't possibly
-    // be any worse than Metal. (Ocean might also work, but that's for
-    // Java 1.5, and we aren't going there yet)
-    //UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+    GTKLookAndFeelFixer.installGtkPopupBugWorkaround();
   }
 
 
+  @Override
   public File getDefaultSketchbookFolder() throws Exception {
     File home = new File(System.getProperty("user.home"));
     return new File(home, "Arduino");
   }
 
 
+  @Override
   public void openURL(String url) throws Exception {
     if (openFolderAvailable()) {
       String launcher = PreferencesData.get("launcher");
@@ -72,6 +63,7 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public boolean openFolderAvailable() {
     if (PreferencesData.get("launcher") != null) {
       return true;
@@ -106,6 +98,7 @@ public class Platform extends processing.app.Platform {
   }
 
 
+  @Override
   public void openFolder(File file) throws Exception {
     if (openFolderAvailable()) {
       String launcher = PreferencesData.get("launcher");
@@ -128,27 +121,18 @@ public class Platform extends processing.app.Platform {
     return PConstants.platformNames[PConstants.LINUX];
   }
 
+  private int detectedDpi = -1;
+
   @Override
-  public Map<String, Object> resolveDeviceAttachedTo(String serial, Map<String, TargetPackage> packages, String devicesListOutput) {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    Executor executor = new ExternalProcessExecutor(baos);
+  public int getSystemDPI() {
+    if (detectedDpi != -1)
+      return detectedDpi;
 
-    try {
-      CommandLine toDevicePath = CommandLine.parse("udevadm info -q path -n " + serial);
-      executor.execute(toDevicePath);
-      String devicePath = new String(baos.toByteArray());
-      baos.reset();
-      CommandLine commandLine = CommandLine.parse("udevadm info --query=property -p " + devicePath);
-      executor.execute(commandLine);
-      String vidPid = new UDevAdmParser().extractVIDAndPID(new String(baos.toByteArray()));
-
-      if (vidPid == null) {
-        return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-      }
-
-      return super.resolveDeviceByVendorIdProductId(packages, vidPid);
-    } catch (IOException e) {
-      return super.resolveDeviceAttachedTo(serial, packages, devicesListOutput);
-    }
+    // we observed that JMenu fonts in java follows the
+    // System DPI settings, so we compare it to the standard
+    // font size (12) to obtain a rough estimate of DPI.
+    Font menuFont = UIManager.getFont("Menu.font");
+    detectedDpi = menuFont.getSize() * 96 / 12;
+    return detectedDpi;
   }
 }

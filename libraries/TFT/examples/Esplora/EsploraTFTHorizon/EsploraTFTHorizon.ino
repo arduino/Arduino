@@ -10,7 +10,7 @@
 
  Created 15 April 2013 by Scott Fitzgerald
 
- http://arduino.cc/en/Tutorial/EsploraTFTHorizon
+ http://www.arduino.cc/en/Tutorial/EsploraTFTHorizon
 
  */
 
@@ -33,8 +33,7 @@ void setup() {
   EsploraTFT.background(0, 0, 0);
 }
 
-void loop()
-{
+void loop() {
   // read the x-axis of te accelerometer
   int tilt = Esplora.readAccelerometer(X_AXIS);
 

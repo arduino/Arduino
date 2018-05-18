@@ -31,181 +31,162 @@ package cc.arduino.packages.discoverers;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
-import cc.arduino.packages.discoverers.network.NetworkChecker;
 import processing.app.BaseNoGui;
-import processing.app.helpers.NetUtils;
-import processing.app.helpers.PreferencesMap;
-import processing.app.zeroconf.jmdns.ArduinoDNSTaskStarter;
 
 import javax.jmdns.*;
-import javax.jmdns.impl.DNSTaskStarter;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
-public class NetworkDiscovery implements Discovery, ServiceListener, cc.arduino.packages.discoverers.network.NetworkTopologyListener {
+public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
-  private Timer timer;
-  private final List<BoardPort> ports;
-  private final Map<InetAddress, JmDNS> mappedJmDNSs;
+  private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
+  private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
+  private JmmDNS jmdns = null;
 
-  public NetworkDiscovery() {
-    DNSTaskStarter.Factory.setClassDelegate(new ArduinoDNSTaskStarter());
-    this.ports = new ArrayList<BoardPort>();
-    this.mappedJmDNSs = new Hashtable<InetAddress, JmDNS>();
-  }
-
-  @Override
-  public List<BoardPort> discovery() {
-    List<BoardPort> boardPorts = clonePortsList();
-    Iterator<BoardPort> boardPortIterator = boardPorts.iterator();
-    while (boardPortIterator.hasNext()) {
-      try {
-        BoardPort board = boardPortIterator.next();
-
-        InetAddress inetAddress = InetAddress.getByName(board.getAddress());
-        int broadcastedPort = Integer.valueOf(board.getPrefs().get("port"));
-
-        List<Integer> ports = new LinkedList<Integer>();
-        ports.add(broadcastedPort);
-
-        //dirty code: allows non up to date yuns to be discovered. Newer yuns will broadcast port 22
-        if (broadcastedPort == 80) {
-          ports.add(0, 22);
+  private void removeDuplicateBoards(BoardPort newBoard) {
+    synchronized (boardPortsDiscoveredWithJmDNS) {
+      Iterator<BoardPort> iterator = boardPortsDiscoveredWithJmDNS.iterator();
+      while (iterator.hasNext()) {
+        BoardPort board = iterator.next();
+        if (newBoard.getAddress().equals(board.getAddress())) {
+          iterator.remove();
         }
-
-        boolean reachable = NetUtils.isReachable(inetAddress, ports);
-        if (!reachable) {
-          boardPortIterator.remove();
-        }
-      } catch (UnknownHostException e) {
-        boardPortIterator.remove();
       }
     }
-    return boardPorts;
-  }
-
-  private List<BoardPort> clonePortsList() {
-    synchronized (this) {
-      return new ArrayList<BoardPort>(this.ports);
-    }
-  }
-
-  @Override
-  public void setPreferences(PreferencesMap options) {
-  }
-
-  @Override
-  public void start() throws IOException {
-    this.timer = new Timer(this.getClass().getName() + " timer");
-    new NetworkChecker(this, NetworkTopologyDiscovery.Factory.getInstance()).start(timer);
-  }
-
-  @Override
-  public void stop() throws IOException {
-    timer.purge();
-    // we don't close each JmDNS instance as it's too slow
   }
 
   @Override
   public void serviceAdded(ServiceEvent serviceEvent) {
-    String type = serviceEvent.getType();
-    String name = serviceEvent.getName();
-
-    JmDNS dns = serviceEvent.getDNS();
-
-    dns.requestServiceInfo(type, name);
-    ServiceInfo serviceInfo = dns.getServiceInfo(type, name);
-    if (serviceInfo != null) {
-      dns.requestServiceInfo(type, name);
-    }
   }
 
   @Override
   public void serviceRemoved(ServiceEvent serviceEvent) {
     String name = serviceEvent.getName();
-    synchronized (this) {
-      for (BoardPort port : ports) {
-        if (port.getBoardName().equals(name))
-          ports.remove(port);
-      }
+    synchronized (boardPortsDiscoveredWithJmDNS) {
+      boardPortsDiscoveredWithJmDNS.stream().filter(port -> port.getBoardName().equals(name)).forEach(boardPortsDiscoveredWithJmDNS::remove);
     }
   }
 
   @Override
   public void serviceResolved(ServiceEvent serviceEvent) {
+    while (BaseNoGui.packages == null) {
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+
     ServiceInfo info = serviceEvent.getInfo();
+
     for (InetAddress inetAddress : info.getInet4Addresses()) {
       String address = inetAddress.getHostAddress();
       String name = serviceEvent.getName();
 
-      PreferencesMap prefs = null;
+      BoardPort port = new BoardPort();
+
       String board = null;
+      String description = null;
       if (info.hasData()) {
-        prefs = new PreferencesMap();
         board = info.getPropertyString("board");
-        prefs.put("board", board);
-        prefs.put("distro_version", info.getPropertyString("distro_version"));
+        description = info.getPropertyString("description");
+        port.getPrefs().put("board", board);
+        port.getPrefs().put("distro_version", info.getPropertyString("distro_version"));
+        port.getPrefs().put("port", "" + info.getPort());
+
+        //Add additional fields to permit generic ota updates
+        //and make sure we do not intefere with Arduino boards
+        // define "ssh_upload=no" TXT property to use generic uploader
+        // define "tcp_check=no" TXT property if you are not using TCP
+        // define "auth_upload=yes" TXT property if you want to use authenticated generic upload
+        String useSSH = info.getPropertyString("ssh_upload");
+        String checkTCP = info.getPropertyString("tcp_check");
+        String useAuth = info.getPropertyString("auth_upload");
+        if(useSSH == null || !useSSH.contentEquals("no")) useSSH = "yes";
+        if(checkTCP == null || !checkTCP.contentEquals("no")) checkTCP = "yes";
+        if(useAuth == null || !useAuth.contentEquals("yes")) useAuth = "no";
+        port.getPrefs().put("ssh_upload", useSSH);
+        port.getPrefs().put("tcp_check", checkTCP);
+        port.getPrefs().put("auth_upload", useAuth);
       }
 
-      prefs.put("port", "" + info.getPort());
-
       String label = name + " at " + address;
-      if (board != null) {
+      if (board != null && BaseNoGui.packages != null) {
         String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
         if (boardName != null) {
           label += " (" + boardName + ")";
         }
+      } else if (description != null) {
+        label += " (" + description + ")";
       }
 
-      BoardPort port = new BoardPort();
       port.setAddress(address);
       port.setBoardName(name);
       port.setProtocol("network");
-      port.setPrefs(prefs);
       port.setLabel(label);
 
-      synchronized (this) {
+      synchronized (boardPortsDiscoveredWithJmDNS) {
         removeDuplicateBoards(port);
-        ports.add(port);
+        boardPortsDiscoveredWithJmDNS.add(port);
       }
     }
   }
 
-  private void removeDuplicateBoards(BoardPort newBoard) {
-    Iterator<BoardPort> iterator = ports.iterator();
-    while (iterator.hasNext()) {
-      BoardPort board = iterator.next();
-      if (newBoard.getAddress().equals(board.getAddress())) {
-        iterator.remove();
-      }
-    }
+  public NetworkDiscovery() {
+
   }
 
   @Override
-  public void inetAddressAdded(InetAddress address) {
-    if (mappedJmDNSs.containsKey(address)) {
-      return;
+  public void run() {
+    start();
+  }
+
+  @Override
+  public void start() {
+    System.getProperties().setProperty("net.dns.ttl", "10");
+    jmdns = JmmDNS.Factory.getInstance();
+    jmdns.addServiceListener("_arduino._tcp.local.", this);
+  }
+
+  @Override
+  public void stop() {
+    if (jmdns != null) {
+      jmdns.unregisterAllServices();
     }
+    // we don't close the JmmDNS instance as it's too slow
+    /*
     try {
-      JmDNS jmDNS = JmDNS.create(address);
-      jmDNS.addServiceListener("_arduino._tcp.local.", this);
-      mappedJmDNSs.put(address, jmDNS);
-    } catch (Exception e) {
+      jmdns.close();
+    } catch (IOException e) {
       e.printStackTrace();
     }
+    */
   }
 
   @Override
-  public void inetAddressRemoved(InetAddress address) {
-    JmDNS jmDNS = mappedJmDNSs.remove(address);
-    if (jmDNS != null) {
-      try {
-        jmDNS.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+  public List<BoardPort> listDiscoveredBoards() {
+      synchronized (reachableBoardPorts) {
+      return getBoardPortsDiscoveredWithJmDNS();
+    }
+  }
+
+  @Override
+  public List<BoardPort> listDiscoveredBoards(boolean complete) {
+    synchronized (reachableBoardPorts) {
+      return new LinkedList<>(reachableBoardPorts);
+    }
+  }
+
+  public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
+    synchronized (reachableBoardPorts) {
+      this.reachableBoardPorts.clear();
+      this.reachableBoardPorts.addAll(newReachableBoardPorts);
+    }
+  }
+
+  public List<BoardPort> getBoardPortsDiscoveredWithJmDNS() {
+    synchronized (boardPortsDiscoveredWithJmDNS) {
+      return new LinkedList<>(boardPortsDiscoveredWithJmDNS);
     }
   }
 }

@@ -39,7 +39,7 @@ public class Event extends ActionEvent {
 
   public Event(Object source, int id, String command) {
     super(source, id, command);
-    this.payload = new HashMap<String, Object>();
+    this.payload = new HashMap<>();
   }
 
   public Map<String, Object> getPayload() {
@@ -48,10 +48,7 @@ public class Event extends ActionEvent {
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append(super.toString());
-    sb.append("\n").append(payload.toString());
-    return sb.toString();
+    return super.toString() + "\n" + payload.toString();
   }
 
 }

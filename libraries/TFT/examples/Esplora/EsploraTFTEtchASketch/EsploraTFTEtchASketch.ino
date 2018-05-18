@@ -11,7 +11,7 @@
 
  Created 15 April 2013 by Scott Fitzgerald
 
- http://arduino.cc/en/Tutorial/EsploraTFTEtchASketch
+ http://www.arduino.cc/en/Tutorial/EsploraTFTEtchASketch
 
  */
 
@@ -31,8 +31,7 @@ void setup() {
   EsploraTFT.background(0, 0, 0);
 }
 
-void loop()
-{
+void loop() {
 
   int xAxis = Esplora.readJoystickX();    // read the X axis
   int yAxis = Esplora.readJoystickY();    // read the Y axis
@@ -41,14 +40,12 @@ void loop()
   // depending on the position of the joystick
   if (xAxis < 10 && xAxis > -10) {
     xPos = xPos;
-  }
-  else {
+  } else {
     xPos = xPos + (map(xAxis, -512, 512, 2, -2));
   }
   if (yAxis < 10 && yAxis > -10) {
     yAxis = yAxis;
-  }
-  else {
+  } else {
     yPos = yPos + (map(yAxis, -512, 512, -2, 2));
   }
 

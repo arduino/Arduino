@@ -30,11 +30,15 @@
 
 #define DUMMY_DATA  0xFF
 
-#define WAIT_FOR_SLAVE_SELECT()	 \
-	SpiDrv::waitForSlaveReady(); \
+#define WAIT_FOR_SLAVE_SELECT()	      \
+	if (!initialized) {           \
+		SpiDrv::begin();      \
+		initialized = true;   \
+	}                             \
+	SpiDrv::waitForSlaveReady();  \
 	SpiDrv::spiSlaveSelect();
 
-
+static bool initialized = false;
 
 class SpiDrv
 {

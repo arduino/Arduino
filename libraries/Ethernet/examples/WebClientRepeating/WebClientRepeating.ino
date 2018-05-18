@@ -17,7 +17,7 @@
  modified 21 Jan 2014
  by Federico Vanzati
 
- http://arduino.cc/en/Tutorial/WebClientRepeating
+ http://www.arduino.cc/en/Tutorial/WebClientRepeating
  This code is in the public domain.
 
  */
@@ -51,7 +51,7 @@ void setup() {
   // start serial port:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // give the ethernet module time to boot up:
@@ -89,7 +89,7 @@ void httpRequest() {
   // if there's a successful connection:
   if (client.connect(server, 80)) {
     Serial.println("connecting...");
-    // send the HTTP PUT request:
+    // send the HTTP GET request:
     client.println("GET /latest.txt HTTP/1.1");
     client.println("Host: www.arduino.cc");
     client.println("User-Agent: arduino-ethernet");
@@ -98,11 +98,8 @@ void httpRequest() {
 
     // note the time that the connection was made:
     lastConnectionTime = millis();
-  }
-  else {
+  } else {
     // if you couldn't make a connection:
     Serial.println("connection failed");
   }
 }
-
-

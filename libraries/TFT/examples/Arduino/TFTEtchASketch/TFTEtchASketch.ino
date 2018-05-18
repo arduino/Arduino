@@ -10,7 +10,7 @@
 
  Created 15 April 2013 by Scott Fitzgerald
 
- http://arduino.cc/en/Tutorial/TFTEtchASketch
+ http://www.arduino.cc/en/Tutorial/TFTEtchASketch
 
  */
 
@@ -45,8 +45,7 @@ void setup() {
   TFTscreen.background(0, 0, 0);
 }
 
-void loop()
-{
+void loop() {
   // read the potentiometers on A0 and A1
   int xValue = analogRead(A0);
   int yValue = analogRead(A1);

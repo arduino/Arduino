@@ -96,6 +96,7 @@ public class Sizer implements MessageConsumer {
     return new long[] { textSize, dataSize, eepromSize };
   }
   
+  @Override
   public void message(String s) {
     if (firstLine == null)
       firstLine = s;

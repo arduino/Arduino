@@ -7,7 +7,7 @@
  Circuit:
  * GSM shield
  * Voice circuit. Refer to to the GSM shield getting started guide
-   at http://arduino.cc/en/Guide/ArduinoGSMShield#toc11
+   at http://www.arduino.cc/en/Guide/ArduinoGSMShield#toc11
  * SIM card that can accept voice calls
 
  With no voice circuit the call will connect, but will not send or receive sound
@@ -17,7 +17,7 @@
 
  This example is in the public domain.
 
- http://arduino.cc/en/Tutorial/GSMExamplesReceiveVoiceCall
+ http://www.arduino.cc/en/Tutorial/GSMExamplesReceiveVoiceCall
 
  */
 
@@ -34,12 +34,11 @@ GSMVoiceCall vcs;
 // Array to hold the number for the incoming call
 char numtel[20];
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   Serial.println("Receive Voice Call");
@@ -49,12 +48,10 @@ void setup()
 
   // Start GSM shield
   // If your SIM has PIN, pass it as a parameter of begin() in quotes
-  while (notConnected)
-  {
-    if (gsmAccess.begin(PINNUMBER) == GSM_READY)
+  while (notConnected) {
+    if (gsmAccess.begin(PINNUMBER) == GSM_READY) {
       notConnected = false;
-    else
-    {
+    } else {
       Serial.println("Not connected");
       delay(1000);
     }
@@ -66,11 +63,9 @@ void setup()
   Serial.println("Waiting for a call");
 }
 
-void loop()
-{
+void loop() {
   // Check the status of the voice call
-  switch (vcs.getvoiceCallStatus())
-  {
+  switch (vcs.getvoiceCallStatus()) {
     case IDLE_CALL: // Nothing is happening
 
       break;
@@ -93,8 +88,9 @@ void loop()
     case TALKING:  // In this case the call would be established
 
       Serial.println("TALKING. Press enter to hang up.");
-      while (Serial.read() != '\n')
+      while (Serial.read() != '\n') {
         delay(100);
+      }
       vcs.hangCall();
       Serial.println("Hanging up and waiting for the next call.");
       break;

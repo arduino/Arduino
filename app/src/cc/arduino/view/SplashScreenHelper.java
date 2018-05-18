@@ -35,51 +35,78 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
+import processing.app.Theme;
+
 public class SplashScreenHelper {
 
+  private static final int X_OFFSET = 0;
+  private static final int Y_OFFSET = 300;
+  private static final int TEXTAREA_HEIGHT = 30;
+  private static final int TEXTAREA_WIDTH = 475;
+
   private final Map desktopHints;
-  private SplashScreen splash;
+  private final SplashScreen splash;
   private Rectangle2D.Double splashTextArea;
   private Graphics2D splashGraphics;
 
   public SplashScreenHelper(SplashScreen splash) {
     this.splash = splash;
-    Toolkit tk = Toolkit.getDefaultToolkit();
-    desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
+    if (splash != null) {
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
+    } else {
+      desktopHints = null;
+    }
   }
 
-  public void splashText(String str) {
+  public void splashText(String text) {
     if (splash == null) {
-      printText(str);
+      printText(text);
       return;
     }
+
     if (!splash.isVisible()) {
       return;
     }
 
     if (splashTextArea == null) {
-      // stake out some area for our status information
-      splashTextArea = new Rectangle2D.Double(0, 300, 520, 30);
-
-      // create the Graphics environment for drawing status info
-      splashGraphics = splash.createGraphics();
-
-      if (desktopHints != null) {
-        splashGraphics.addRenderingHints(desktopHints);
-      }
+      prepareTextAreaAndGraphics();
     }
 
-    // erase the last status text
-    splashGraphics.setPaint(new Color(245, 245, 245));
-    splashGraphics.fill(splashTextArea);
+    eraseLastStatusText();
 
-    // draw the text
+    drawText(text);
+
+    ensureTextIsDiplayed();
+  }
+
+  private void ensureTextIsDiplayed() {
+    synchronized (SplashScreen.class) {
+      if (splash.isVisible()) {
+        splash.update();
+      }
+    }
+  }
+
+  private void drawText(String str) {
     splashGraphics.setPaint(Color.BLACK);
     FontMetrics metrics = splashGraphics.getFontMetrics();
-    splashGraphics.drawString(str, (int) splashTextArea.getX() + 10, (int) splashTextArea.getY() + (30 - metrics.getHeight()) + 4);
+    splashGraphics.drawString(str, (int) splashTextArea.getX() + 10, (int) splashTextArea.getY() + (TEXTAREA_HEIGHT - metrics.getHeight()) + 5);
+  }
 
-    // make sure it's displayed
-    splash.update();
+  private void eraseLastStatusText() {
+    splashGraphics.setPaint(new Color(229, 229, 229));
+    splashGraphics.fill(splashTextArea);
+  }
+
+  private void prepareTextAreaAndGraphics() {
+    splashTextArea = new Rectangle2D.Double(X_OFFSET, Y_OFFSET, TEXTAREA_WIDTH, TEXTAREA_HEIGHT);
+
+    splashGraphics = Theme.setupGraphics2D(splash.createGraphics());
+
+    if (desktopHints != null) {
+      splashGraphics.addRenderingHints(desktopHints);
+    }
   }
 
   public void close() {
@@ -89,8 +116,8 @@ public class SplashScreenHelper {
     splash.close();
   }
 
-  public void printText(String str) {
-    System.out.println(str);
+  private void printText(String str) {
+    System.err.println(str);
   }
 
 }

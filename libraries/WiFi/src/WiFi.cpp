@@ -1,6 +1,6 @@
 /*
   WiFi.cpp - Library for Arduino Wifi shield.
-  Copyright (c) 2011-2014 Arduino.  All right reserved.
+  Copyright (c) 2011-2014 Arduino LLC.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -32,8 +32,6 @@ uint16_t 	WiFiClass::_server_port[MAX_SOCK_NUM] = { 0, 0, 0, 0 };
 
 WiFiClass::WiFiClass()
 {
-	// Driver initialization
-	init();
 }
 
 void WiFiClass::init()

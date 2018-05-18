@@ -1,6 +1,6 @@
 /*
   WiFiClient.cpp - Library for Arduino Wifi shield.
-  Copyright (c) 2011-2014 Arduino.  All right reserved.
+  Copyright (c) 2011-2014 Arduino LLC.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -140,8 +140,7 @@ int WiFiClient::peek() {
 }
 
 void WiFiClient::flush() {
-  while (available())
-    read();
+  // TODO: a real check to ensure transmission has been completed
 }
 
 void WiFiClient::stop() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 by Cristian Maglie <c.maglie@arduino.cc>
+ * Copyright (c) 2010 by Arduino LLC. All rights reserved.
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of either the GNU General Public License version 2
@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "utility/w5100.h"
+#include "w5100.h"
 
 // W5100 controller instance
 W5100Class W5100;
@@ -26,14 +26,14 @@ void W5100Class::init(void)
 {
   delay(300);
 
-#if defined(ARDUINO_ARCH_AVR)
+#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   SPI.begin();
   initSS();
 #else
-  SPI.begin(SPI_CS);
+  SPI.begin(ETHERNET_SHIELD_SPI_CS);
   // Set clock to 4Mhz (W5100 should support up to about 14Mhz)
-  SPI.setClockDivider(SPI_CS, 21);
-  SPI.setDataMode(SPI_CS, SPI_MODE0);
+  SPI.setClockDivider(ETHERNET_SHIELD_SPI_CS, 21);
+  SPI.setDataMode(ETHERNET_SHIELD_SPI_CS, SPI_MODE0);
 #endif
   SPI.beginTransaction(SPI_ETHERNET_SETTINGS);
   writeMR(1<<RST);
@@ -136,7 +136,7 @@ void W5100Class::read_data(SOCKET s, volatile uint16_t src, volatile uint8_t *ds
 
 uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
 {
-#if defined(ARDUINO_ARCH_AVR)
+#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   setSS();  
   SPI.transfer(0xF0);
   SPI.transfer(_addr >> 8);
@@ -144,10 +144,10 @@ uint8_t W5100Class::write(uint16_t _addr, uint8_t _data)
   SPI.transfer(_data);
   resetSS();
 #else
-  SPI.transfer(SPI_CS, 0xF0, SPI_CONTINUE);
-  SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-  SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-  SPI.transfer(SPI_CS, _data);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0xF0, SPI_CONTINUE);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _data);
 #endif
   return 1;
 }
@@ -156,7 +156,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
 {
   for (uint16_t i=0; i<_len; i++)
   {
-#if defined(ARDUINO_ARCH_AVR)
+#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
     setSS();    
     SPI.transfer(0xF0);
     SPI.transfer(_addr >> 8);
@@ -165,10 +165,10 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
     SPI.transfer(_buf[i]);
     resetSS();
 #else
-	SPI.transfer(SPI_CS, 0xF0, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _buf[i]);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0xF0, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _buf[i]);
     _addr++;
 #endif
   }
@@ -177,7 +177,7 @@ uint16_t W5100Class::write(uint16_t _addr, const uint8_t *_buf, uint16_t _len)
 
 uint8_t W5100Class::read(uint16_t _addr)
 {
-#if defined(ARDUINO_ARCH_AVR)
+#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
   setSS();  
   SPI.transfer(0x0F);
   SPI.transfer(_addr >> 8);
@@ -185,10 +185,10 @@ uint8_t W5100Class::read(uint16_t _addr)
   uint8_t _data = SPI.transfer(0);
   resetSS();
 #else
-  SPI.transfer(SPI_CS, 0x0F, SPI_CONTINUE);
-  SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-  SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-  uint8_t _data = SPI.transfer(SPI_CS, 0);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+  SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+  uint8_t _data = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
 #endif
   return _data;
 }
@@ -197,7 +197,7 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
 {
   for (uint16_t i=0; i<_len; i++)
   {
-#if defined(ARDUINO_ARCH_AVR)
+#if !defined(SPI_HAS_EXTENDED_CS_PIN_HANDLING)
     setSS();
     SPI.transfer(0x0F);
     SPI.transfer(_addr >> 8);
@@ -206,10 +206,10 @@ uint16_t W5100Class::read(uint16_t _addr, uint8_t *_buf, uint16_t _len)
     _buf[i] = SPI.transfer(0);
     resetSS();
 #else
-	SPI.transfer(SPI_CS, 0x0F, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr >> 8, SPI_CONTINUE);
-	SPI.transfer(SPI_CS, _addr & 0xFF, SPI_CONTINUE);
-    _buf[i] = SPI.transfer(SPI_CS, 0);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0x0F, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr >> 8, SPI_CONTINUE);
+    SPI.transfer(ETHERNET_SHIELD_SPI_CS, _addr & 0xFF, SPI_CONTINUE);
+    _buf[i] = SPI.transfer(ETHERNET_SHIELD_SPI_CS, 0);
     _addr++;
 #endif
   }

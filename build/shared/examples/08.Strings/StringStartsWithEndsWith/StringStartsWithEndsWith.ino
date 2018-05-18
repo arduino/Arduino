@@ -1,22 +1,22 @@
 /*
   String startWith() and endsWith()
 
- Examples of how to use startsWith() and endsWith() in a String
+  Examples of how to use startsWith() and endsWith() in a String
 
- created 27 July 2010
- modified 2 Apr 2012
- by Tom Igoe
+  created 27 Jul 2010
+  modified 2 Apr 2012
+  by Tom Igoe
 
- http://arduino.cc/en/Tutorial/StringStartsWithEndsWith
+  This example code is in the public domain.
 
- This example code is in the public domain.
- */
+  http://www.arduino.cc/en/Tutorial/StringStartsWithEndsWith
+*/
 
 void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
-    ; // wait for serial port to connect. Needed for Leonardo only
+    ; // wait for serial port to connect. Needed for native USB port only
   }
 
   // send an intro:
@@ -41,11 +41,10 @@ void loop() {
   // endsWith() checks to see if a String ends with a particular character:
   String sensorReading = "sensor = ";
   sensorReading += analogRead(A0);
-  Serial.print (sensorReading);
+  Serial.print(sensorReading);
   if (sensorReading.endsWith("0")) {
     Serial.println(". This reading is divisible by ten");
-  }
-  else {
+  } else {
     Serial.println(". This reading is not divisible by ten");
   }
 

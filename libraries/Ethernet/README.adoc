@@ -3,11 +3,11 @@
 With the Arduino Ethernet Shield, this library allows an Arduino board to connect to the internet.
 
 For more information about this library please visit us at
-http://arduino.cc/en/Reference/Ethernet
+http://www.arduino.cc/en/Reference/Ethernet
 
 == License ==
 
-Copyright (c) Arduino LLC. All right reserved.
+Copyright (c) 2010 Arduino LLC. All right reserved.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

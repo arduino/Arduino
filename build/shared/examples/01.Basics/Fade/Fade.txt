@@ -1,0 +1,1 @@
+Demonstrates the use of analogWrite() to fade an LED.

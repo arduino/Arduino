@@ -12,7 +12,7 @@
  modified 21 Nov 2012
  by Tom Igoe
 
- http://arduino.cc/en/Tutorial/GSMToolsTestModem
+ http://www.arduino.cc/en/Tutorial/GSMToolsTestModem
 
  This sample code is part of the public domain
 
@@ -27,8 +27,7 @@ GSMModem modem;
 // IMEI variable
 String IMEI = "";
 
-void setup()
-{
+void setup() {
   // initialize serial communications and wait for port to open:
   Serial.begin(9600);
   while (!Serial) {
@@ -37,38 +36,32 @@ void setup()
 
   // start modem test (reset and check response)
   Serial.print("Starting modem test...");
-  if (modem.begin())
+  if (modem.begin()) {
     Serial.println("modem.begin() succeeded");
-  else
+  } else {
     Serial.println("ERROR, no modem answer.");
+  }
 }
 
-void loop()
-{
+void loop() {
   // get modem IMEI
   Serial.print("Checking IMEI...");
   IMEI = modem.getIMEI();
 
   // check IMEI response
-  if (IMEI != NULL)
-  {
+  if (IMEI != NULL) {
     // show IMEI in serial monitor
     Serial.println("Modem's IMEI: " + IMEI);
     // reset modem to check booting:
     Serial.print("Resetting modem...");
     modem.begin();
     // get and check IMEI one more time
-    if (modem.getIMEI() != NULL)
-    {
+    if (modem.getIMEI() != NULL) {
       Serial.println("Modem is functoning properly");
-    }
-    else
-    {
+    } else {
       Serial.println("Error: getIMEI() failed after modem.begin()");
     }
-  }
-  else
-  {
+  } else {
     Serial.println("Error: Could not get IMEI");
   }
   // do nothing:

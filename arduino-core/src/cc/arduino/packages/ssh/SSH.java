@@ -33,6 +33,7 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +41,7 @@ import java.io.PrintStream;
 
 public class SSH {
 
-  protected final Session session;
+  final Session session;
 
   public SSH(Session session) {
     this.session = session;
@@ -70,19 +71,15 @@ public class SSH {
       return exitCode == 0;
 
     } finally {
-      if (stdout != null) {
-        stdout.close();
-      }
-      if (stderr != null) {
-        stderr.close();
-      }
+      IOUtils.closeQuietly(stdout);
+      IOUtils.closeQuietly(stderr);
       if (channel != null) {
         channel.disconnect();
       }
     }
   }
 
-  protected int consumeOutputSyncAndReturnExitCode(Channel channel, InputStream stdout, PrintStream stdoutConsumer, InputStream stderr, PrintStream stderrConsumer) throws IOException {
+  private int consumeOutputSyncAndReturnExitCode(Channel channel, InputStream stdout, PrintStream stdoutConsumer, InputStream stderr, PrintStream stderrConsumer) throws IOException {
     byte[] tmp = new byte[102400];
     while (true) {
       consumeStream(tmp, stdout, stdoutConsumer);
@@ -99,7 +96,7 @@ public class SSH {
     }
   }
 
-  protected void consumeStream(byte[] buffer, InputStream in, PrintStream out) throws IOException {
+  private void consumeStream(byte[] buffer, InputStream in, PrintStream out) throws IOException {
     while (in.available() > 0) {
       int length = in.read(buffer, 0, buffer.length);
       if (length < 0) {

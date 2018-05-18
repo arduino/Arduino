@@ -31,86 +31,73 @@ package cc.arduino.packages.discoverers;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
-import processing.app.BaseNoGui;
-import processing.app.Platform;
-import processing.app.Serial;
-import processing.app.debug.TargetBoard;
-import processing.app.helpers.PreferencesMap;
+import cc.arduino.packages.discoverers.serial.SerialBoardsLister;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Timer;
 
-import static processing.app.I18n._;
+public class SerialDiscovery implements Discovery, Runnable {
 
-public class SerialDiscovery implements Discovery {
+  private Timer serialBoardsListerTimer;
+  private final List<BoardPort> serialBoardPorts;
+  private SerialBoardsLister serialBoardsLister = new SerialBoardsLister(this);
 
-  static {
-    //makes transifex happy
-    _("Uncertified");
+  public SerialDiscovery() {
+    this.serialBoardPorts = new LinkedList<>();
   }
 
   @Override
-  public List<BoardPort> discovery() {
-    Platform os = BaseNoGui.getPlatform();
-    String devicesListOutput = os.preListAllCandidateDevices();
+  public List<BoardPort> listDiscoveredBoards() {
+    return getSerialBoardPorts(false);
+  }
 
-    List<BoardPort> res = new ArrayList<BoardPort>();
+  @Override
+  public List<BoardPort> listDiscoveredBoards(boolean complete) {
+    return getSerialBoardPorts(complete);
+  }
 
-    List<String> ports = Serial.list();
-
-    for (String port : ports) {
-      Map<String, Object> boardData = os.resolveDeviceAttachedTo(port, BaseNoGui.packages, devicesListOutput);
-
-      BoardPort boardPort = new BoardPort();
-      boardPort.setAddress(port);
-      boardPort.setProtocol("serial");
-
-      String label = port;
-
-      PreferencesMap prefs = new PreferencesMap();
-
-      if (boardData != null) {
-        prefs.put("vid", boardData.get("vid").toString());
-        prefs.put("pid", boardData.get("pid").toString());
-
-        TargetBoard board = (TargetBoard) boardData.get("board");
-        if (board != null) {
-          String warningKey = "vid." + boardData.get("vid").toString() + ".warning";
-          String warning = board.getPreferences().get(warningKey);
-          prefs.put("warning", warning);
-
-          String boardName = board.getName();
-          if (boardName != null) {
-            if (warning != null) {
-              label += " (" + boardName + " - " + _(warning) + ")";
-            } else {
-              label += " (" + boardName + ")";
-            }
-          }
-          boardPort.setBoardName(boardName);
+  private List<BoardPort> getSerialBoardPorts(boolean complete) {
+      if (complete) {
+        return new LinkedList<>(serialBoardPorts);
+      }
+      List<BoardPort> onlineBoardPorts = new LinkedList<>();
+      for (BoardPort port : serialBoardPorts) {
+        if (port.isOnline() == true) {
+          onlineBoardPorts.add(port);
         }
       }
-
-      boardPort.setLabel(label);
-      boardPort.setPrefs(prefs);
-
-      res.add(boardPort);
-    }
-    return res;
+      return onlineBoardPorts;
   }
 
+  public void setSerialBoardPorts(List<BoardPort> newSerialBoardPorts) {
+      serialBoardPorts.clear();
+      serialBoardPorts.addAll(newSerialBoardPorts);
+  }
+
+  public void forceRefresh() {
+    serialBoardsLister.retriggerDiscovery(false);
+  }
+
+  public void setUploadInProgress(boolean param) {
+    serialBoardsLister.uploadInProgress = param;
+  }
+
+  public void pausePolling(boolean param) { serialBoardsLister.pausePolling = param;}
+
   @Override
-  public void setPreferences(PreferencesMap options) {
+  public void run() {
+    start();
   }
 
   @Override
   public void start() {
+    this.serialBoardsListerTimer = new Timer(SerialBoardsLister.class.getName());
+    serialBoardsLister.start(serialBoardsListerTimer);
   }
 
   @Override
   public void stop() {
+    this.serialBoardsListerTimer.purge();
   }
-
 }

@@ -21,17 +21,14 @@
  */
 package processing.app.helpers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import processing.app.legacy.PApplet;
+
+import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import processing.app.legacy.PApplet;
 
 @SuppressWarnings("serial")
 public class PreferencesMap extends LinkedHashMap<String, String> {
@@ -71,7 +68,13 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
    * @throws IOException
    */
   public void load(File file) throws IOException {
-    load(new FileInputStream(file));
+    FileInputStream fileInputStream = null;
+    try {
+      fileInputStream = new FileInputStream(file);
+      load(fileInputStream);
+    } finally {
+      IOUtils.closeQuietly(fileInputStream);
+    }
   }
 
   protected String processPlatformSuffix(String key, String suffix, boolean isCurrentPlatform) {
@@ -179,7 +182,7 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
    * @return
    */
   public Map<String, PreferencesMap> firstLevelMap() {
-    Map<String, PreferencesMap> res = new LinkedHashMap<String, PreferencesMap>();
+    Map<String, PreferencesMap> res = new LinkedHashMap<>();
     for (String key : keySet()) {
       int dot = key.indexOf('.');
       if (dot == -1)
@@ -243,7 +246,7 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
 
   public String toString(String indent) {
     String res = indent + "{\n";
-    SortedSet<String> treeSet = new TreeSet<String>(keySet());
+    SortedSet<String> treeSet = new TreeSet<>(keySet());
     for (String k : treeSet)
       res += indent + k + " = " + get(k) + "\n";
     return res;
@@ -311,7 +314,7 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
    *         insensitive compared), <b>false</b> in any other case
    */
   public boolean getBoolean(String key) {
-    return new Boolean(get(key));
+    return Boolean.valueOf(get(key));
   }
 
   /**

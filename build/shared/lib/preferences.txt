@@ -71,6 +71,11 @@ platform.auto_file_type_associations = true
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
+# GUI - Scaling, edit this to scale to higher dots-per-inch displays
+# "auto" means autodetect.
+gui.scale=auto
+#gui.scale=200
+
 # default size for the main window
 editor.window.width.default = 500
 editor.window.height.default = 600
@@ -86,13 +91,15 @@ editor.window.height.min = 290
 # tested to be 515 on Windows XP, this leaves some room
 #editor.window.height.min.windows = 530
 
+# Enable code folding 
+editor.code_folding=false
 
 # font size for editor
 editor.font=Monospaced,plain,12
 # Monaco is nicer on Mac OS X, so use that explicitly
-editor.font.macosx = Monaco,plain,10
+editor.font.macosx = Monaco,plain,12
 
-# anti-aliased text, turned off by default
+# anti-aliased text, turned on by default
 editor.antialias=true
 
 # color to be used for background when 'external editor' enabled
@@ -116,11 +123,8 @@ editor.keys.alternative_cut_copy_paste.macosx = false
 # false if shift-backspace just means backspace
 editor.keys.shift_backspace_is_delete = true
 
-# home and end keys should only travel to the start/end of the current line
-editor.keys.home_and_end_travel_far = false
-# the OS X HI Guidelines say that home/end are relative to the document
-# if you don't like it, this is the preference to change
-editor.keys.home_and_end_travel_far.macosx = true
+# if set to true, home/end keys will go to the start/end of current line
+editor.keys.home_and_end_beginning_end_of_doc = false
 
 console			 = true
 console.output.file      = stdout.txt
@@ -141,6 +145,9 @@ editor.tabs.size   = 2
 
 # automatically indent each line
 editor.indent = true
+
+# enable/disable auto-close of curly brace
+editor.auto_close_braces = true
 
 # size of divider between editing area and the console
 editor.divider.size = 0
@@ -265,8 +272,16 @@ serial.databits=8
 serial.stopbits=1
 serial.parity=N
 serial.debug_rate=9600
+serial.line_ending=1
 
 # I18 Preferences
 
 # default chosen language (none for none)
 editor.languages.current = 
+
+# Debugging/Development Preferences
+# ---------------------------------
+
+# Disable signature check on packages_index.json, use only for
+# development/debugging purposes. Do not enable in production.
+#allow_insecure_packages=true
