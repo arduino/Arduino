@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Bao Phan <baophan94@icloud.com>, 2016
@@ -26,7 +27,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 17:47+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/mbanzi/arduino-ide-15/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -213,6 +214,11 @@ msgstr "Lưu trữ sketch dưới dạng:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Đã hủy việc lưu trữ sketch."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -662,6 +668,10 @@ msgstr "Xử Lý Dữ Liệu"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Dung Lượng Bộ Nhớ"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1169,6 +1179,10 @@ msgstr "Thư viện bao gồm"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Sai thư mục cài đặt IDE"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2090,11 +2104,10 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Thư mục sketch đã đi bụi.\nSẽ cố gắng lưu lại lần nữa ở cùng địa chỉ,\nnhưng tất cả mọi thứ ngoại trừ mã nguồn sẽ bị đi bụi theo luôn."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
+"of ASCII characters and numbers and be less than 64 characters long."
 msgstr ""
 
 #: Base.java:259

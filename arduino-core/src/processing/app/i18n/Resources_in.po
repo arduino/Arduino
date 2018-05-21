@@ -16,19 +16,21 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ade Malsasa Akbar <teknoloid@gmail.com>, 2013
 # adih bin asman <adih.venanda@gmail.com>, 2016
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Johannes Sutiktio <mitratrikarya@gmail.com>, 2015
 # Joshua Adiel Wijaya <ultima_aw@msn.com>, 2015
+# Laurensius Dede Suhardiman <burglar.tea@gmail.com>, 2018
 # Rendiyono Wahyu Saputro <rendi.7936@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 14:19+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-04-14 08:42+0000\n"
+"Last-Translator: Laurensius Dede Suhardiman <burglar.tea@gmail.com>\n"
 "Language-Team: Indonesian (http://www.transifex.com/mbanzi/arduino-ide-15/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +67,7 @@ msgstr "'Mouse' tidak ditemukan.  apakah anda memasukkan garis pada sketsa anda 
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "'arch' folder sudah tidak mendukung! Lihat http://goo.gl/gfFJzU untuk informasi lainnya"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
@@ -73,7 +75,7 @@ msgstr "(sunting hanya ketika Arduino tidak berjalan)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(legacy)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -116,7 +118,7 @@ msgstr "Sebuah versi baru Arduino telah ada,\nanda ingin mengunjungi halaman und
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "{0} package terbaru telah tersedia"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
@@ -162,7 +164,7 @@ msgstr "Bahasa Albania"
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:187
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #: tools/FixEncoding.java:77
 msgid ""
@@ -173,7 +175,7 @@ msgstr "Sebuah galat terjadi ketika mencoba memperbaiki pengkodean berkas.\nDo n
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "Galat terjadi ketika memperbaharui indeks pustaka!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -215,6 +217,11 @@ msgstr "Arsip sketsa sebagai:"
 msgid "Archive sketch canceled."
 msgstr "Arsip sketsa dibatalkan."
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
+
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
@@ -223,7 +230,7 @@ msgstr "Pengarsipan sketsa telah dibatalkan karena\nsketsa tidak bisa disimpan d
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -308,15 +315,15 @@ msgstr "Format Otomatis selesai."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Deteksi otomatis setelan proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Otomatis"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "URL konfigurasi proxy otomatis :"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -346,13 +353,13 @@ msgstr "Papan"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Info Papan"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "Papan pada {0} tidak tersedia"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -405,7 +412,7 @@ msgstr "Opsi bangun berubah, membangun kembali semuanya"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "Carriage return"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
@@ -662,6 +669,10 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
 msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
@@ -1169,6 +1180,10 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
 msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
@@ -2091,11 +2106,10 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr ""
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
+"of ASCII characters and numbers and be less than 64 characters long."
 msgstr ""
 
 #: Base.java:259

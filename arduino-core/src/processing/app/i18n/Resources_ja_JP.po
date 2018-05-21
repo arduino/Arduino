@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Masanori Ohgita <mp@ohgita.info>, 2013,2015
 # Shigeru Kanemoto <sgk@switch-science.com>, 2015
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2017-10-27 08:57+0000\n"
 "Last-Translator: Takumi Funada\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -215,6 +216,11 @@ msgstr "スケッチをアーカイブする名前："
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "スケッチのアーカイブを中止しました"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "{0}にビルドされたコア（キャッシュ）をアーカイブ中です"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -664,6 +670,10 @@ msgstr "データ処理"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "データ保存"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "フォントサイズを小さく"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1171,6 +1181,10 @@ msgstr "ライブラリをインクルード"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "IDEのインストールフォルダが間違っています"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "フォントサイズを大きく"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2092,12 +2106,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "スケッチを保存してあったフォルダが無くなってしまいました。\n同じ場所に保存しなおしますが、このスケッチと一緒に保存してあった\nファイルは無くなるかもしれません。"
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "スケッチ名を変更する必要があります。\nスケッチ名はASCII文字と数字のみで構成されなくてはなりません（ただし数字で始めることはできません）。\nまた、64文字未満でなくてはなりません。"
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr "スケッチ名を変更しなければなりませんでした。\nスケッチ名はASCII文字と数字のみで構成され、64文字未満でなくてはなりません。"
 
 #: Base.java:259
 msgid ""

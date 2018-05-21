@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Bjørn Andreas, 2014
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Kaare Jenssen, 2015
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 14:20+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/mbanzi/arduino-ide-15/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -214,6 +215,11 @@ msgstr "Arkiver skissen som:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Arkivering av skissen avbrutt."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -662,6 +668,10 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
 msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
@@ -1170,6 +1180,10 @@ msgstr "Inkluder Bibliotek"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Feil IDE installasjons mappe"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2091,12 +2105,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Skissemappen har forsvunnet.\n Vil forsøke å lagre på nytt i samme lokasjon,\nmen alt utenom kildekoden vil gå tapt."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Skissenavnet måtte endres. Skissenavn kan kun inneholde\nASCII karakterer og tall (men ikke starte med tall).\nDet må også være kortere enn 64 tegn."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""

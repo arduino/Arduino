@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # benewfy <benewfy@gmail.com>, 2015-2017
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 14:19+0000\n"
+"PO-Revision-Date: 2017-10-19 16:57+0000\n"
 "Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -214,6 +215,11 @@ msgstr "Vázlat archiválása másként:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Vázlat archiválása megszakítva."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Épített mag archiválás (cachelés) ebben: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -663,6 +669,10 @@ msgstr "Adatfeldolgozás"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Adattárolás"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Betűméret csökkentése"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1170,6 +1180,10 @@ msgstr "Könyvtár tartalmazása"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Helytelen IDE telepítési mappa"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Betűméret növelése"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2091,12 +2105,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "A vázlat mappa eltűnt.\n Újramentés megkísérlésre ugyanarra a helyre,\nde a kódon kívül minden elveszik."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "A vázlat név módosítva lett. Vázlat nevek csak ASCII karaktereket\nés számokat tartalmazhatnak (de nem kezdődhetnek számmal).\n64 karakternél kevesebbnek is kellene lenniük."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr "A vázlat név módosítva lett. Vázlat nevek csak ASCII karaktereket\nés számokat tartalmazhatnak és legyenek rövidebbek 64 karakternél."
 
 #: Base.java:259
 msgid ""

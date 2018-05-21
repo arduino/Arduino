@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anıl Özbek <ozbekanil@gmail.com>, 2013
 # Ayse Gokce Bor <aysegokcebor@gmail.com>, 2012
 # b <burakguelsen@gmail.com>, 2015
@@ -46,7 +47,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Turkish (http://www.transifex.com/mbanzi/arduino-ide-15/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -233,6 +234,11 @@ msgstr "Taslağı şu şekilde arşivle:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Taslağı arşivleme iptal edildi."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -682,6 +688,10 @@ msgstr "Veri İşleme"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Veri Depolama"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1189,6 +1199,10 @@ msgstr "library ekle"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Yanlış IDE kurulum dosyası"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2110,12 +2124,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Taslak klasörü kayboldu.\nAynı konuma tekrar kaydetme denemesi yapılacak,\nfakat onun haricindeki kodlar kaybolacak."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Program ismi değiştirildi.\nProgram isimleri sadece ASCII karakterlerden ve rakamlardan meydana gelebilir (ancak bir rakam ile başlayamazlar)\nAynı zamanda program isimleri en fazla 64 karakter uzunluğunda olabilir."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""

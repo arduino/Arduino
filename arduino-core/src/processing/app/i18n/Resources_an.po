@@ -16,13 +16,14 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Daniel Martinez <entaltoaragon@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Aragonese (http://www.transifex.com/mbanzi/arduino-ide-15/language/an/)\n"
 "MIME-Version: 1.0\n"
@@ -209,6 +210,11 @@ msgstr "Archivar programa como:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Archivación de programa cancelada."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -657,6 +663,10 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
 msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
@@ -1164,6 +1174,10 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
 msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
@@ -2086,12 +2100,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "A carpeta d'o programa ha desapareixiu\nIntentaré salvar-lo de nuevo en a mesma ubicación\npero brenca mas que o codigo se perderá."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "O nombre d'o prochecto debe estar modificau. O nombre d'o prochecto debe consistir solament de caracters ASCII y numeros (pero no puede prencipiar con un numero).\nAdemas debe contener menos de 64 caracters."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""

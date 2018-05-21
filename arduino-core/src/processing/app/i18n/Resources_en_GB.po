@@ -16,7 +16,8 @@
 # Translators:
 # Translators:
 # Translators:
-# Andi Chandler <andi@gowling.com>, 2013-2016
+# Translators:
+# Andi Chandler <andi@gowling.com>, 2013-2017
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # dani987452 <danimonre234@gmail.com>, 2017
 msgid ""
@@ -24,7 +25,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 19:35+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/mbanzi/arduino-ide-15/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -125,7 +126,7 @@ msgstr "About Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -149,7 +150,7 @@ msgstr "Afrikaans"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
 msgid "Aggressively cache compiled core"
-msgstr ""
+msgstr "Aggressively cache compiled core"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -211,6 +212,11 @@ msgstr "Archive sketch as:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Archive sketch canceled."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -433,7 +439,7 @@ msgstr "Can only pass one of: {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
 msgid "Can't enable external editor"
-msgstr ""
+msgstr "Can't enable external editor"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -479,7 +485,7 @@ msgstr "Chinese (Taiwan) (Big5)"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
 msgid "Clear output"
-msgstr ""
+msgstr "Clear output"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -660,6 +666,10 @@ msgstr "Data Processing"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Data Storage"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1168,6 +1178,10 @@ msgstr "Include Library"
 msgid "Incorrect IDE installation folder"
 msgstr "Incorrect IDE installation folder"
 
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
+
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
 msgstr "Increase Indent"
@@ -1240,7 +1254,7 @@ msgstr "Japanese"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1831,7 +1845,7 @@ msgstr "Serial Plotter"
 msgid ""
 "Serial monitor is not supported on network ports such as {0} for the {1} in "
 "this release"
-msgstr ""
+msgstr "Serial monitor is not supported on network ports such as {0} for the {1} in this release"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
@@ -1998,7 +2012,7 @@ msgstr "Tamil"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2088,12 +2102,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "The sketch folder has disappeared.\n Will attempt to re-save in the same location,\nbut anything besides the code will be lost."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "The sketch name had to be modified. Sketch names can only consist\nof ASCII characters and numbers (but cannot start with a number).\nThey should also be less than 64 characters long."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2471,7 +2484,7 @@ msgstr "You forgot your sketchbook"
 msgid ""
 "You have unsaved changes!\n"
 "You must save all your sketches to enable this option."
-msgstr ""
+msgstr "You have unsaved changes!\nYou must save all your sketches to enable this option."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""

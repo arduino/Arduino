@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # alsadi <alsadi@gmail.com>, 2012
 # amas89 <amas89@gmail.com>, 2012
 # belal affouri <belal@eshtre.com>, 2015
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 14:19+0000\n"
+"PO-Revision-Date: 2017-10-13 08:54+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Arabic (http://www.transifex.com/mbanzi/arduino-ide-15/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -216,6 +217,11 @@ msgstr "ارشفة الشيفرة البرمجية ك:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "الغاء ارشفة الشيفرة البرمجية"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -665,6 +671,10 @@ msgstr "معالجة البيانات"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "تخزين البيانات"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1172,6 +1182,10 @@ msgstr "إدراج مكتبة"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "خطأ مجلد التثبيت لبيئة التطوير"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2093,12 +2107,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "مجلد الشيفرة البرمجية اختفى.\nحاول اعادة حفظه في نفس المكان,\nولكن  سيتم فقدان الكود."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "اسم الشيفرة البرمجية توجب تعديله. أسماء الشيفرات البرمجية يحتوي على\nحروف وأرقام ترميز الآسكي (لكن لايمكن أن يبدأ برقم). ويتوجب أيضا أن\nيكون طوله أقل من 64 رمزا."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr ""
 
 #: Base.java:259
 msgid ""

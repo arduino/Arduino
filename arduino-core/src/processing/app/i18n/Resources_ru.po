@@ -16,6 +16,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2017
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
@@ -30,13 +31,13 @@
 # Егор Макаренко, 2016
 # Михаил Турусов <god_mihail@mail.ru>, 2015
 # Руслан <nasretdinov.r.r@ya.ru>, 2013
-# Яков Маслов <jan.s.maslov@gmail.com>, 2015
+# Jan Maslov <jan.s.maslov@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2017-10-13 11:12+0000\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -223,6 +224,11 @@ msgstr "Архивировать скетч как:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Архивация скетча отменена."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Архивирование откомпилированного ядра (кэширование) в: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -672,6 +678,10 @@ msgstr "Обработка данных"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Хранилище данных"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Уменьшить размер шрифта"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1179,6 +1189,10 @@ msgstr "Подключить библиотеку"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Неверная папка установки IDE"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Увеличить размер шрифта"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2100,12 +2114,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Папка скетчей исчезла. Будет попытка повторно сохранить в том же месте, но всё, кроме кода, будет потеряно."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Недопустимое имя скетча. Имя может содержать\nсимволы ASCII и цифры (и не должно начинаться с цифры).\nДлина имени не должна превышать 64 символов."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr "Имя скетча нужно изменить. Имена могут содержать только\nсимволы ASCII и числа. Длина должна быть меньше 64 символов."
 
 #: Base.java:259
 msgid ""

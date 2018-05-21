@@ -16,7 +16,9 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2017
+# Luca Gronmaier <Dark_Forest@t-online.de>, 2017
 # Lukas Bestle, 2016
 # Lukas Bestle, 2013,2015-2016
 # Dr. Mathias Wilhelm <mathias.wilhelm@freenet.de>, 2012
@@ -25,8 +27,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:37+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"PO-Revision-Date: 2017-10-22 18:58+0000\n"
+"Last-Translator: Luca Gronmaier <Dark_Forest@t-online.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -212,6 +214,11 @@ msgstr "Archiviere den Sketch unter:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Archivierung des Sketches abgebrochen."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -661,6 +668,10 @@ msgstr "Datenverarbeitung"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
 msgstr "Datenspeicher"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Schriftgröße verringern"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -1168,6 +1179,10 @@ msgstr "Bibliothek einbinden"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Falscher IDE-Installationsordner"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Schriftgröße erhöhen"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -2089,12 +2104,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Der Sketch-Ordner ist verschwunden.\nEs wird versucht, den Sketch am selben Ort zu speichern,\naber außer dem Quelltext ist alles Andere verloren."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:828
 msgid ""
 "The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Der Sketch-Name musste geändert werden. Sketch-Namen können nur aus\nASCII-Zeichen und Zahlen bestehen (aber nicht mit einer Zahl beginnen).\nSie sollten auch weniger als 64 Zeichen lang sein."
+"of ASCII characters and numbers and be less than 64 characters long."
+msgstr "Der Sketchname musste geändert werden! Sketchnamen dürfen nur aus ASCII-Zeichen und Nummern bestehen und nicht länger als 64 Zeichen sein."
 
 #: Base.java:259
 msgid ""
