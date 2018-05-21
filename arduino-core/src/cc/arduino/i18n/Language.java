@@ -41,6 +41,7 @@ public class Language {
     this.isoCode = isoCode;
   }
 
+  @Override
   public String toString() {
     if (originalName.length() == 0) {
       return name;
