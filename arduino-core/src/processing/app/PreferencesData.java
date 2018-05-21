@@ -1,6 +1,8 @@
 package processing.app;
 
 import org.apache.commons.compress.utils.IOUtils;
+
+import cc.arduino.i18n.Languages;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
 import processing.app.legacy.PApplet;
@@ -78,8 +80,13 @@ public class PreferencesData {
     }
 
     // load the I18n module for internationalization
+    String lang = get("editor.languages.current");
+    if (lang == null || !Languages.have(lang)) {
+      lang = "";
+      set("editor.languages.current", "");
+    }
     try {
-      I18n.init(get("editor.languages.current"));
+      I18n.init(lang);
     } catch (MissingResourceException e) {
       I18n.init("en");
       set("editor.languages.current", "en");

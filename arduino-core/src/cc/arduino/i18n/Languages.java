@@ -35,6 +35,15 @@ public class Languages {
 
   public static final Language[] languages;
 
+  public static boolean have(String isoCode) {
+    for (Language language : languages) {
+      if (language.getIsoCode().equals(isoCode)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   static {
     languages = new Language[]{
       new Language(tr("System Default"), "", ""),
