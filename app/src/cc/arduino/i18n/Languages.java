@@ -63,7 +63,6 @@ public class Languages {
       new Language(tr("English"), "English", "en"),
       new Language(tr("English (United Kingdom)"), "English (United Kingdom)", "en_GB"),
       new Language(tr("Estonian"), "Eesti", "et"),
-      new Language(tr("Estonian (Estonia)"), "Eesti keel", "et_EE"),
       new Language(tr("Filipino"), "Pilipino", "fil"),
       new Language(tr("Finnish"), "Suomi", "fi"),
       new Language(tr("French"), "Français", "fr"),
