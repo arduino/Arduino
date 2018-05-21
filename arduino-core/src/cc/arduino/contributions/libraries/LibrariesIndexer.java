@@ -113,7 +113,7 @@ public class LibrariesIndexer {
     return librariesFolders;
   }
 
-  private UserLibraryPriorityComparator priorityComparator;
+  private UserLibraryPriorityComparator priorityComparator = new UserLibraryPriorityComparator(null);
 
   public void addToInstalledLibraries(UserLibrary lib) {
     UserLibrary toReplace = installedLibraries.getByName(lib.getName());
@@ -129,9 +129,11 @@ public class LibrariesIndexer {
     installedLibraries.add(lib);
   }
 
-  public void rescanLibraries() {
-    priorityComparator = new UserLibraryPriorityComparator(BaseNoGui.getTargetPlatform().getId());
+  public void setArchitecturePriority(String arch) {
+    priorityComparator = new UserLibraryPriorityComparator(arch);
+  }
 
+  public void rescanLibraries() {
     // Clear all installed flags
     installedLibraries.clear();
 

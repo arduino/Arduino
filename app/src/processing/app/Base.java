@@ -339,6 +339,7 @@ public class Base {
       LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
       indexer.parseIndex();
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesFolders());
+      indexer.rescanLibraries();
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");

@@ -37,6 +37,7 @@ public class UpdatableLibraryTest {
     BaseNoGui.librariesIndexer = indexer;
     indexer.parseIndex();
     indexer.setLibrariesFolders(folders);
+    indexer.rescanLibraries();
 
     ContributedLibrary sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
@@ -63,6 +64,7 @@ public class UpdatableLibraryTest {
     BaseNoGui.librariesIndexer = indexer;
     indexer.parseIndex();
     indexer.setLibrariesFolders(folders);
+    indexer.rescanLibraries();
 
     ContributedLibrary l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
