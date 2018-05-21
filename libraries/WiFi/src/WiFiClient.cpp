@@ -116,7 +116,9 @@ int WiFiClient::read() {
   if (!available())
     return -1;
 
-  ServerDrv::getData(_sock, &b);
+  if (!ServerDrv::getData(_sock, &b))
+    return -1;
+
   return b;
 }
 
