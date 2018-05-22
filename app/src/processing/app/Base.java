@@ -488,7 +488,7 @@ public class Base {
     } else if (parser.isGetPrefMode()) {
       BaseNoGui.dumpPrefs(parser);
     } else if (parser.isVersionMode()) {
-      System.out.print("Arduino: " + BaseNoGui.VERSION_NAME_LONG);
+      System.out.println("Arduino: " + BaseNoGui.VERSION_NAME_LONG);
       System.exit(0);
     }
   }
