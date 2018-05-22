@@ -218,8 +218,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, tr("Installing..."));
         installer.install(lib, mayReplaced, this::setProgress);
-        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-        //getContribModel().updateLibrary(lib);
+        onIndexesUpdated();
+        // TODO: Do a better job in refreshing only the needed element
+        ((LibrariesIndexTableModel) contribModel).update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -246,8 +247,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, tr("Removing..."));
         installer.remove(lib, this::setProgress);
-        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-        //getContribModel().updateLibrary(lib);
+        onIndexesUpdated();
+        // TODO: Do a better job in refreshing only the needed element
+        ((LibrariesIndexTableModel) contribModel).update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
