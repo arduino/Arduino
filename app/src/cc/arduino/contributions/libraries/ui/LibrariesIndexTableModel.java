@@ -145,8 +145,12 @@ public class LibrariesIndexTableModel
     }
 
     ContributedLibrary latest = lib.getLatest();
-    String compoundTargetSearchText = latest.getName() + "\n" + latest.getParagraph()
-                                      + "\n" + latest.getSentence();
+    String compoundTargetSearchText = latest.getName() + " "
+                                      + latest.getParagraph() + " "
+                                      + latest.getSentence();
+    if (latest.getProvidesIncludes() != null) {
+      compoundTargetSearchText += " " + latest.getProvidesIncludes();
+    }
     if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
       return false;
     }
