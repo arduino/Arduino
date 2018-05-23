@@ -68,7 +68,9 @@ xdg_install_f() {
 
   # Add symlink for arduino so it's in users path
   echo "" # Ensure password request message is on new line
-  sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
+  if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
+      echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
 
   # Clean up
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
@@ -104,7 +106,9 @@ simple_install_f() {
 
   # Add symlink for arduino so it's in users path
   echo "" # Ensure password request message is on new line
-  sudo ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino
+  if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
+      echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
 
   # Clean up temp dir
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
@@ -148,7 +152,9 @@ xdg_uninstall_f() {
 
   # Remove symlink for arduino
   echo "" # Ensure password request message is on new line
-  sudo rm /usr/local/bin/arduino
+  if ! rm /usr/local/bin/arduino; then
+      echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
 
 }
 
@@ -183,7 +189,9 @@ simple_uninstall_f() {
 
   # Remove symlink for arduino
   echo "" # Ensure password request message is on new line
-  sudo rm /usr/local/bin/arduino
+  if ! rm /usr/local/bin/arduino; then
+      echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
 
 }
 
