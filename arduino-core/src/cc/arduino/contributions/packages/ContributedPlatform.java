@@ -30,6 +30,8 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.File;
@@ -47,6 +49,8 @@ public abstract class ContributedPlatform extends DownloadableContribution {
 
   @Override
   public abstract String getChecksum();
+
+  public abstract List<ContributedLibraryDependency> getLibrariesDependencies();
 
   public abstract List<ContributedToolReference> getToolsDependencies();
 
