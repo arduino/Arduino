@@ -35,6 +35,7 @@ import processing.app.packages.UserLibrary;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static processing.app.I18n.tr;
@@ -163,22 +164,12 @@ public abstract class ContributedLibrary extends DownloadableContribution {
       return false;
     }
     ContributedLibrary other = (ContributedLibrary) obj;
-    String thisVersion = getParsedVersion();
-    String otherVersion = other.getParsedVersion();
+    return Objects.equals(getParsedVersion(), other.getParsedVersion()) &&
+           Objects.equals(getName(), other.getName());
+  }
 
-    boolean versionEquals = (thisVersion != null && otherVersion != null
-                             && thisVersion.equals(otherVersion));
-
-    // Important: for legacy libs, versions are null. Two legacy libs must
-    // always pass this test.
-    if (thisVersion == null && otherVersion == null)
-      versionEquals = true;
-
-    String thisName = getName();
-    String otherName = other.getName();
-
-    boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
-
-    return versionEquals && nameEquals;
+  @Override
+  public int hashCode() {
+    return Objects.hash(getParsedVersion(), getName());
   }
 }
