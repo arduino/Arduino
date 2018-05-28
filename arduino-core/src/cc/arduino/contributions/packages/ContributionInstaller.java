@@ -34,6 +34,9 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
+import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -65,10 +68,12 @@ public class ContributionInstaller {
 
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
+  private final LibraryInstaller libraryInstaller;
 
-  public ContributionInstaller(SignatureVerifier signatureVerifier) {
+  public ContributionInstaller(LibraryInstaller libraryInstaller, SignatureVerifier signatureVerifier) {
     this.platform = BaseNoGui.getPlatform();
     this.signatureVerifier = signatureVerifier;
+    this.libraryInstaller = libraryInstaller;
   }
 
   public synchronized List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
@@ -90,10 +95,19 @@ public class ContributionInstaller {
       }
     }
 
+    List<ContributedLibrary> libraries = new ArrayList<>();
+    for (ContributedLibraryDependency dep : contributedPlatform.getLibrariesDependencies()) {
+      ContributedLibrary lib = BaseNoGui.librariesIndexer.getIndex().find(dep);
+      if (lib == null) {
+        throw new Exception(format(tr("Required library {0} is not available."), dep.toString()));
+      }
+      libraries.add(lib);
+    }
+
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
 
     // Calculate progress increases
-    MultiStepProgress progress = new MultiStepProgress((tools.size() + 1) * 2);
+    MultiStepProgress progress = new MultiStepProgress(tools.size() * 2 + 2 + libraries.size() * 3 + 1);
 
     // Download all
     try {
@@ -149,6 +163,10 @@ public class ContributionInstaller {
       tool.setInstalledFolder(destFolder.toFile());
       progress.stepDone();
     }
+
+    // Install the libraries required by the platform
+    progress.setStatus(tr("Installing libraries..."));
+    libraryInstaller.install(libraries, progressListener, progress);
 
     // Unpack platform on the correct location
     progress.setStatus(tr("Installing boards..."));

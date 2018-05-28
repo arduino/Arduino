@@ -278,8 +278,8 @@ public class Base {
     pdeKeywords = new PdeKeywords();
     pdeKeywords.reload();
 
-    contributionInstaller = new ContributionInstaller(new GPGDetachedSignatureVerifier());
     libraryInstaller = new LibraryInstaller();
+    contributionInstaller = new ContributionInstaller(libraryInstaller, new GPGDetachedSignatureVerifier());
 
     parser.parseArgumentsPhase2();
 
