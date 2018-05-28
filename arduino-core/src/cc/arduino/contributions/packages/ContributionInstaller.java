@@ -66,8 +66,8 @@ public class ContributionInstaller {
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
 
-  public ContributionInstaller(Platform platform, SignatureVerifier signatureVerifier) {
-    this.platform = platform;
+  public ContributionInstaller(SignatureVerifier signatureVerifier) {
+    this.platform = BaseNoGui.getPlatform();
     this.signatureVerifier = signatureVerifier;
   }
 
@@ -80,7 +80,7 @@ public class ContributionInstaller {
     // Do not download already installed tools
     List<ContributedTool> tools = new ArrayList<>();
     for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
-      DownloadableContribution downloadable = tool.getDownloadableContribution(platform);
+      DownloadableContribution downloadable = tool.getDownloadableContribution();
       if (downloadable == null) {
         throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
@@ -106,7 +106,7 @@ public class ContributionInstaller {
       for (ContributedTool tool : tools) {
         String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
+        downloader.download(tool.getDownloadableContribution(), progress, msg, progressListener);
         progress.stepDone();
       }
     } catch (InterruptedException e) {
@@ -137,9 +137,9 @@ public class ContributionInstaller {
 
       Files.createDirectories(destFolder);
 
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
+      DownloadableContribution toolContrib = tool.getDownloadableContribution();
       assert toolContrib.getDownloadedFile() != null;
-      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
+      new ArchiveExtractor().extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
         findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
       } catch (IOException e) {
@@ -156,7 +156,7 @@ public class ContributionInstaller {
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
     Files.createDirectories(destFolder.toPath());
-    new ArchiveExtractor(platform).extract(contributedPlatform.getDownloadedFile(), destFolder, 1);
+    new ArchiveExtractor().extract(contributedPlatform.getDownloadedFile(), destFolder, 1);
     contributedPlatform.setInstalled(true);
     contributedPlatform.setInstalledFolder(destFolder);
     try {

@@ -30,7 +30,6 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
-import processing.app.Platform;
 
 import java.io.File;
 import java.util.List;
@@ -87,9 +86,9 @@ public abstract class ContributedTool {
     return contributedPackage.getName();
   }
 
-  public DownloadableContribution getDownloadableContribution(Platform platform) {
+  public DownloadableContribution getDownloadableContribution() {
     for (HostDependentDownloadableContribution c : getSystems()) {
-      if (c.isCompatible(platform))
+      if (c.isCompatible())
         return c;
     }
     return null;
@@ -97,17 +96,11 @@ public abstract class ContributedTool {
 
   @Override
   public String toString() {
-    return toString(null);
-  }
-
-  public String toString(Platform platform) {
     String res;
     res = "Tool name : " + getName() + " " + getVersion() + "\n";
     for (HostDependentDownloadableContribution sys : getSystems()) {
       res += "     sys";
-      if (platform != null) {
-        res += sys.isCompatible(platform) ? "*" : " ";
-      }
+      res += sys.isCompatible() ? "*" : " ";
       res += " : " + sys + "\n";
     }
     return res;

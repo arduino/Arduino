@@ -37,7 +37,6 @@ import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
-import processing.app.Platform;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
@@ -49,12 +48,6 @@ import java.util.List;
 import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
-
-  private final Platform platform;
-
-  public LibraryInstaller(Platform platform) {
-    this.platform = platform;
-  }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
@@ -129,7 +122,7 @@ public class LibraryInstaller {
     File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
-      new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
+      new ArchiveExtractor().extract(lib.getDownloadedFile(), tmpFolder, 1);
     } catch (Exception e) {
       if (tmpFolder.exists())
         FileUtils.recursiveDelete(tmpFolder);

@@ -40,7 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.I18n;
-import processing.app.Platform;
 import processing.app.PreferencesData;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -64,14 +63,12 @@ public class ContributionsIndexer {
   private final File stagingFolder;
   private final File preferencesFolder;
   private final File builtInHardwareFolder;
-  private final Platform platform;
   private final SignatureVerifier signatureVerifier;
   private final ContributionsIndex index;
 
-  public ContributionsIndexer(File preferencesFolder, File builtInHardwareFolder, Platform platform, SignatureVerifier signatureVerifier) {
+  public ContributionsIndexer(File preferencesFolder, File builtInHardwareFolder, SignatureVerifier signatureVerifier) {
     this.preferencesFolder = preferencesFolder;
     this.builtInHardwareFolder = builtInHardwareFolder;
-    this.platform = platform;
     this.signatureVerifier = signatureVerifier;
     index = new EmptyContributionIndex();
     packagesFolder = new File(preferencesFolder, "packages");
@@ -306,7 +303,7 @@ public class ContributionsIndexer {
     if (tool == null) {
       return null;
     }
-    DownloadableContribution contrib = tool.getDownloadableContribution(platform);
+    DownloadableContribution contrib = tool.getDownloadableContribution();
     if (contrib == null) {
       System.err.println(tool + " seems to have no downloadable contributions for your operating system, but it is installed in\n" + installationFolder);
       return null;

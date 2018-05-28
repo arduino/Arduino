@@ -30,7 +30,6 @@
 package cc.arduino.contributions.packages;
 
 import cc.arduino.contributions.DownloadableContribution;
-import processing.app.Platform;
 
 public abstract class HostDependentDownloadableContribution extends DownloadableContribution {
 
@@ -41,12 +40,13 @@ public abstract class HostDependentDownloadableContribution extends Downloadable
     return getHost() + " " + super.toString();
   }
 
-  public boolean isCompatible(Platform platform) {
-    String osName = platform.getOsName();
-    assert osName != null;
-    String osArch = platform.getOsArch();
-    assert osArch != null;
+  public boolean isCompatible() {
+    String osName = System.getProperty("os.name");
+    String osArch = System.getProperty("os.arch");
+    return isCompatible(osName, osArch);
+  }
 
+  public boolean isCompatible(String osName, String osArch) {
     String host = getHost();
 
     if (osName.contains("Linux")) {

@@ -37,6 +37,8 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
+
+import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
 
@@ -50,9 +52,8 @@ public class ArchiveExtractor {
 
   private final Platform platform;
 
-  public ArchiveExtractor(Platform platform) {
-    assert platform != null;
-    this.platform = platform;
+  public ArchiveExtractor() {
+    platform = BaseNoGui.getPlatform();
   }
 
   /**

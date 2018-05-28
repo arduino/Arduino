@@ -476,8 +476,7 @@ public class BaseNoGui {
   }
 
   static public void initPackages() throws Exception {
-    indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
-        new GPGDetachedSignatureVerifier());
+    indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), new GPGDetachedSignatureVerifier());
 
     try {
       indexer.parseIndex();
