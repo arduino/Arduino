@@ -85,7 +85,10 @@ public class LibraryInstaller {
 
   public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
     MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
+    install(libs, progressListener, progress);
+  }
 
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     for (ContributedLibrary lib : libs) {
       // Do install library (3 steps)
       performInstall(lib, progressListener, progress);
