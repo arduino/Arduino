@@ -100,6 +100,9 @@ public class LibraryInstaller {
 
   private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isLibraryInstalled()) {
+      progress.stepDone();
+      progress.stepDone();
+      progress.stepDone();
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
