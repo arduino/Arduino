@@ -44,7 +44,7 @@ int responseDelay = 5;        // response delay of the mouse, in ms
 int threshold = range / 4;    // resting threshold
 int center = range / 2;       // resting position value
 
-boolean mouseIsActive = false;    // whether or not to control the mouse
+bool mouseIsActive = false;    // whether or not to control the mouse
 int lastSwitchState = LOW;        // previous switch state
 
 void setup() {
