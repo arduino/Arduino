@@ -742,7 +742,7 @@
 
   <target name="linuxaarch64-build" depends="linux-libastyle-aarch64" description="Build Linux (AArch64) version">
     <antcall target="linux-jvm-${linux-bundle-jvm-task}">
-      <param name="JVM" value="${LINUXARM_BUNDLED_JVM}"/>
+      <param name="JVM" value="${LINUXAARCH64_BUNDLED_JVM}"/>
     </antcall>
 
     <antcall target="build-arduino-builder" />
