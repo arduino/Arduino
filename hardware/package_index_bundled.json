@@ -81,6 +81,13 @@
               "url": "http://downloads.arduino.cc/tools/avr-gcc-5.4.0-atmel3.6.1-arduino2-armhf-pc-linux-gnu.tar.bz2"
             },
             {
+              "size": "33141295",
+              "checksum": "SHA-256:0fa9e4f2d6d09782dbc84dd91a302849cde2f192163cb9f29484c5f32785269a",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avr-gcc-5.4.0-atmel3.6.1-arduino2-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-5.4.0-atmel3.6.1-arduino2-aarch64-pc-linux-gnu.tar.bz2"
+            },
+            {
               "size": "31894498",
               "checksum": "SHA-256:abc50137543ba73e227b4d1b8510fff50a474bacd24f2c794f852904963849f8",
               "host": "i386-apple-darwin11",
@@ -120,6 +127,13 @@
               "host": "arm-linux-gnueabihf",
               "archiveFileName": "avrdude-6.3.0-arduino14-armhf-pc-linux-gnu.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino14-armhf-pc-linux-gnu.tar.bz2"
+            },
+            {
+              "size": "229688",
+              "checksum": "SHA-256:439f5de150695e3732dd598bb182dae6ec1e3a5cdb580f855d9b58e485e84e66",
+              "host": "aarch64-linux-gnu",
+              "archiveFileName": "avrdude-6.3.0-arduino14-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino14-aarch64-pc-linux-gnu.tar.bz2"
             },
             {
               "size": "256917",
@@ -173,6 +187,13 @@
               "size": "2093132",
               "checksum": "SHA-256:ad54b3dcd586212941fd992bab573b53d13207a419a3f2981c970a085ae0e9e0",
               "host": "arm-linux-gnueabihf",
+              "archiveFileName": "arduinoOTA-1.2.1-linux_arm.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.1-linux_arm.tar.bz2"
+            },
+            {
+              "size": "2093132",
+              "checksum": "SHA-256:ad54b3dcd586212941fd992bab573b53d13207a419a3f2981c970a085ae0e9e0",
+              "host": "aarch64-linux-gnu",
               "archiveFileName": "arduinoOTA-1.2.1-linux_arm.tar.bz2",
               "url": "http://downloads.arduino.cc/tools/arduinoOTA-1.2.1-linux_arm.tar.bz2"
             },
