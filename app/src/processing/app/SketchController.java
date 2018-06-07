@@ -438,7 +438,7 @@ public class SketchController {
     //editor.sketchbook.rebuildMenusAsync();
     editor.base.rebuildSketchbookMenus();
     editor.header.rebuild();
-
+    editor.updateTitle();
     // Make sure that it's not an untitled sketch
     setUntitled(false);
 
