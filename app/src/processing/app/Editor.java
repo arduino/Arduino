@@ -1970,7 +1970,7 @@ public class Editor extends JFrame implements RunnerListener {
     return true;
   }
 
-  private void updateTitle() {
+  public void updateTitle() {
     if (sketchController == null) {
       return;
     }
