@@ -306,6 +306,8 @@ public class Compiler implements MessageConsumer {
       cmd.add("-verbose");
     }
 
+    cmd.add("-experimental");
+
     cmd.add(pathToSketch.getAbsolutePath());
 
     if (verbose) {
