@@ -33,6 +33,7 @@ public class ArduinoBuilder {
     List<String> cmd = new ArrayList<>();
     cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
     cmd.add("-daemon");
+    cmd.add("-experimental");
     builder = ProcessUtils.exec(cmd.toArray(new String[0]));
     builderOut = new MessageSiphon(builder.getInputStream(), (msg) -> {
       System.out.println(msg);
