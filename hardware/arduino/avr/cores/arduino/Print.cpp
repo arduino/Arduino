@@ -125,7 +125,7 @@ size_t Print::print(const Printable& x)
 
 size_t Print::println(void)
 {
-  return write("\r\n");
+  return write(line_ending);
 }
 
 size_t Print::println(const String &s)
@@ -196,6 +196,10 @@ size_t Print::println(const Printable& x)
   size_t n = print(x);
   n += println();
   return n;
+}
+
+void Print::set_line_ending(const char * ending){
+        line_ending = ending;
 }
 
 // Private Methods /////////////////////////////////////////////////////////////
