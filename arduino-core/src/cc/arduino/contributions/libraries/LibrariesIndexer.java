@@ -178,8 +178,8 @@ public class LibrariesIndexer {
           badLibNotified.add(subfolderName);
 
           String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
-              + "Library names must contain only basic letters and numbers.\n"
-              + "(ASCII only and no spaces, and it cannot start with a number)"),
+              + "Library folder names must start with a letter or number, followed by letters,\n"
+              + "numbers, dashes, dots and underscores. Maximum length is 63 characters."),
               subfolderName);
           BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
         }
