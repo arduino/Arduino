@@ -846,8 +846,9 @@ public class SketchController {
 
     if (!newName.equals(origName)) {
       String msg =
-        tr("The sketch name had to be modified. Sketch names can only consist\n" +
-          "of ASCII characters and numbers and be less than 64 characters long.");
+        tr("The sketch name had to be modified.\n" +
+          "Sketch names must start with a letter or number, followed by letters,\n" +
+          "numbers, dashes, dots and underscores. Maximum length is 63 characters.");
       System.out.println(msg);
     }
     return newName;
