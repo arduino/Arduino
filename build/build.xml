@@ -287,6 +287,7 @@
           <containsregex pattern="archiveFileName.*&quot;avr-.......?tar.bz2"/>
           <replaceregex pattern=".*avr-(.*).tar.bz2.*" flags="g" replace="\1"/>
         </tokenfilter>
+        <striplinebreaks/>
         <tailfilter lines="1"/>
       </filterchain>
     </loadfile>
