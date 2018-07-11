@@ -37,23 +37,17 @@ import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
-import processing.app.Platform;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
-
-  private final Platform platform;
-
-  public LibraryInstaller(Platform platform) {
-    this.platform = platform;
-  }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
@@ -83,15 +77,37 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
+  public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
+    List<ContributedLibrary> libs = new ArrayList<>();
+    libs.add(lib);
+    install(libs, progressListener);
+  }
+
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
+    MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
+    install(libs, progressListener, progress);
+  }
+
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
+    for (ContributedLibrary lib : libs) {
+      // Do install library (3 steps)
+      performInstall(lib, progressListener, progress);
+    }
+
+    // Rescan index (1 step)
+    rescanLibraryIndex(progress, progressListener);
+  }
+
+  private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isLibraryInstalled()) {
+      progress.stepDone();
+      progress.stepDone();
+      progress.stepDone();
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
-
-    final MultiStepProgress progress = new MultiStepProgress(3);
 
     // Step 1: Download library
     try {
@@ -100,6 +116,7 @@ public class LibraryInstaller {
       // Download interrupted... just exit
       return;
     }
+    progress.stepDone();
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
@@ -111,24 +128,25 @@ public class LibraryInstaller {
     File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
-      new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
+      new ArchiveExtractor().extract(lib.getDownloadedFile(), tmpFolder, 1);
     } catch (Exception e) {
       if (tmpFolder.exists())
         FileUtils.recursiveDelete(tmpFolder);
     }
     progress.stepDone();
 
-    // Step 3: Remove replaced library and move installed one to the correct location
-    // TODO: Fix progress bar...
-    if (mayReplacedLib.isPresent()) {
-      remove(mayReplacedLib.get(), progressListener);
-    }
+    // Step 3: Remove replaced library (if any) and move installed one to the correct location
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
+    // Check if we are replacing an already installed library
+    LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
+    for (ContributedLibrary l : index.find(lib.getName())) {
+      if (l.isLibraryInstalled() && l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) {
+        remove(l, progressListener);
+        break;
+      }
+    }
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
-
-    // Step 4: Rescan index
-    rescanLibraryIndex(progress, progressListener);
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {

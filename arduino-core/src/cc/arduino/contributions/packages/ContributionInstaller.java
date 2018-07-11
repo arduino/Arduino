@@ -34,6 +34,9 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
+import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -65,10 +68,12 @@ public class ContributionInstaller {
 
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
+  private final LibraryInstaller libraryInstaller;
 
-  public ContributionInstaller(Platform platform, SignatureVerifier signatureVerifier) {
-    this.platform = platform;
+  public ContributionInstaller(LibraryInstaller libraryInstaller, SignatureVerifier signatureVerifier) {
+    this.platform = BaseNoGui.getPlatform();
     this.signatureVerifier = signatureVerifier;
+    this.libraryInstaller = libraryInstaller;
   }
 
   public synchronized List<String> install(ContributedPlatform contributedPlatform, ProgressListener progressListener) throws Exception {
@@ -80,7 +85,7 @@ public class ContributionInstaller {
     // Do not download already installed tools
     List<ContributedTool> tools = new ArrayList<>();
     for (ContributedTool tool : contributedPlatform.getResolvedTools()) {
-      DownloadableContribution downloadable = tool.getDownloadableContribution(platform);
+      DownloadableContribution downloadable = tool.getDownloadableContribution();
       if (downloadable == null) {
         throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
@@ -90,10 +95,19 @@ public class ContributionInstaller {
       }
     }
 
+    List<ContributedLibrary> libraries = new ArrayList<>();
+    for (ContributedLibraryDependency dep : contributedPlatform.getLibrariesDependencies()) {
+      ContributedLibrary lib = BaseNoGui.librariesIndexer.getIndex().find(dep);
+      if (lib == null) {
+        throw new Exception(format(tr("Required library {0} is not available."), dep.toString()));
+      }
+      libraries.add(lib);
+    }
+
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
 
     // Calculate progress increases
-    MultiStepProgress progress = new MultiStepProgress((tools.size() + 1) * 2);
+    MultiStepProgress progress = new MultiStepProgress(tools.size() * 2 + 2 + libraries.size() * 3 + 1);
 
     // Download all
     try {
@@ -106,7 +120,7 @@ public class ContributionInstaller {
       for (ContributedTool tool : tools) {
         String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
+        downloader.download(tool.getDownloadableContribution(), progress, msg, progressListener);
         progress.stepDone();
       }
     } catch (InterruptedException e) {
@@ -137,9 +151,9 @@ public class ContributionInstaller {
 
       Files.createDirectories(destFolder);
 
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
+      DownloadableContribution toolContrib = tool.getDownloadableContribution();
       assert toolContrib.getDownloadedFile() != null;
-      new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
+      new ArchiveExtractor().extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
         findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
       } catch (IOException e) {
@@ -150,13 +164,17 @@ public class ContributionInstaller {
       progress.stepDone();
     }
 
+    // Install the libraries required by the platform
+    progress.setStatus(tr("Installing libraries..."));
+    libraryInstaller.install(libraries, progressListener, progress);
+
     // Unpack platform on the correct location
     progress.setStatus(tr("Installing boards..."));
     progressListener.onProgress(progress);
     File platformFolder = new File(packageFolder, "hardware" + File.separator + contributedPlatform.getArchitecture());
     File destFolder = new File(platformFolder, contributedPlatform.getParsedVersion());
     Files.createDirectories(destFolder.toPath());
-    new ArchiveExtractor(platform).extract(contributedPlatform.getDownloadedFile(), destFolder, 1);
+    new ArchiveExtractor().extract(contributedPlatform.getDownloadedFile(), destFolder, 1);
     contributedPlatform.setInstalled(true);
     contributedPlatform.setInstalledFolder(destFolder);
     try {

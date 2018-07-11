@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -245,6 +246,11 @@ public class SketchFile {
   @Override
   public boolean equals(Object o) {
     return (o instanceof SketchFile) && file.equals(((SketchFile) o).file);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(file);
   }
 
   /**

@@ -30,7 +30,6 @@
 package cc.arduino.packages.contributions;
 
 import org.junit.Test;
-import processing.app.Platform;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,19 +45,7 @@ public class HostDependentDownloadableContributionTest {
       }
     };
 
-    Platform platform = new Platform() {
-      @Override
-      public String getOsName() {
-        return "Mac OS X";
-      }
-
-      @Override
-      public String getOsArch() {
-        return "x86_64";
-      }
-    };
-
-    assertTrue(contribution.isCompatible(platform));
+    assertTrue(contribution.isCompatible("Mac OS X", "x86_64"));
   }
 
   @Test
@@ -70,19 +57,7 @@ public class HostDependentDownloadableContributionTest {
       }
     };
 
-    Platform platform = new Platform() {
-      @Override
-      public String getOsName() {
-        return "Linux";
-      }
-
-      @Override
-      public String getOsArch() {
-        return "amd64";
-      }
-    };
-
-    assertFalse(contribution.isCompatible(platform));
+    assertFalse(contribution.isCompatible("Linux", "amd64"));
   }
 
   @Test
@@ -94,19 +69,7 @@ public class HostDependentDownloadableContributionTest {
       }
     };
 
-    Platform platform = new Platform() {
-      @Override
-      public String getOsName() {
-        return "Mac OS X";
-      }
-
-      @Override
-      public String getOsArch() {
-        return "i686";
-      }
-    };
-
-    assertFalse(contribution.isCompatible(platform));
+    assertFalse(contribution.isCompatible("Mac OS X", "i686"));
   }
 
 }

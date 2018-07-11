@@ -59,6 +59,15 @@ public abstract class LibrariesIndex {
     return null;
   }
 
+  public ContributedLibrary find(ContributedLibraryDependency dep) {
+    if (dep.getVersion() == null) {
+      return find(dep.getName()).stream(). //
+          reduce(ContributedLibrary::max). //
+          orElseGet(null);
+    }
+    return find(dep.getName(), dep.getVersion());
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();

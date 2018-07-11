@@ -278,8 +278,8 @@ public class Base {
     pdeKeywords = new PdeKeywords();
     pdeKeywords.reload();
 
-    contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
+    libraryInstaller = new LibraryInstaller();
+    contributionInstaller = new ContributionInstaller(libraryInstaller, new GPGDetachedSignatureVerifier());
 
     parser.parseArgumentsPhase2();
 
@@ -293,7 +293,7 @@ public class Base {
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(
           BaseNoGui.getSettingsFolder(), BaseNoGui.getHardwareFolder(),
-          BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
+          new GPGDetachedSignatureVerifier());
       ProgressListener progressListener = new ConsoleProgressListener();
 
       List<String> downloadedPackageIndexFiles = contributionInstaller.updateIndex(progressListener);
@@ -366,7 +366,7 @@ public class Base {
                       library, mayInstalled.get().getParsedVersion())));
           libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, mayInstalled, progressListener);
+          libraryInstaller.install(selected, progressListener);
         }
       }
 
