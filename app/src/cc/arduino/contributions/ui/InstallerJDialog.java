@@ -127,10 +127,6 @@ public abstract class InstallerJDialog<T> extends JDialog {
             contribTable.getCellEditor().stopCellEditing();
           }
           updateIndexFilter(filters, categoryFilter);
-          if (contribModel.getRowCount() == 1) {
-            // TODO: understand why it doesn't work
-            //contribTable.addRowSelectionInterval(0, 0);
-          }
         }
       };
 
