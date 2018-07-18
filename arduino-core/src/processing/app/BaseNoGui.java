@@ -189,6 +189,7 @@ public class BaseNoGui {
       }
       String toolPath = folder.getAbsolutePath();
       prefs.put(prefix + tool.getName() + ".path", toolPath);
+      prefs.put(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
       PreferencesData.set(prefix + tool.getName() + ".path", toolPath);
       PreferencesData.set(prefix + tool.getName() + "-" + tool.getVersion() + ".path", toolPath);
     }
