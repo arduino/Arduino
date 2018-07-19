@@ -200,7 +200,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, "");
         installer.updateIndex(this::setProgress);
-        //onIndexesUpdated();
+        onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -223,6 +223,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
           contribTable.getCellEditor().stopCellEditing();
         }
         ((LibrariesIndexTableModel) contribModel).update();
+        onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -254,6 +255,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
           contribTable.getCellEditor().stopCellEditing();
         }
         ((LibrariesIndexTableModel) contribModel).update();
+        onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -263,5 +265,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.setName("LibraryManager Remove Thread");
     installerThread.setUncaughtExceptionHandler(new InstallerJDialogUncaughtExceptionHandler(this, noConnectionErrorMessage));
     installerThread.start();
+  }
+
+  protected void onIndexesUpdated() throws Exception {
+    // Empty
   }
 }
