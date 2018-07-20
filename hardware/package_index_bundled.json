@@ -74,11 +74,11 @@
           "version": "5.4.0-atmel3.6.1-arduino2",
           "systems": [
             {
-              "size": "30644597",
-              "checksum": "SHA-256:b4e2ce5c70b88d3a0f7e303a0a3cc7e5a39a96a5e7f9ea7ea0af3ccfda0f60cc",
+              "size": "31449123",
+              "checksum": "SHA-256:6741f95cc3182a8729cf9670eb13d8dc5a19e881639ca61e53a2d78346a4e99f",
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "avr-gcc-5.4.0-atmel3.6.1-arduino1-armhf-pc-linux-gnu.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-5.4.0-atmel3.6.1-arduino1-armhf-pc-linux-gnu.tar.bz2"
+              "archiveFileName": "avr-gcc-5.4.0-atmel3.6.1-arduino2-armhf-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-5.4.0-atmel3.6.1-arduino2-armhf-pc-linux-gnu.tar.bz2"
             },
             {
               "size": "31894498",
