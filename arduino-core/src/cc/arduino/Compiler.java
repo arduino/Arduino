@@ -266,6 +266,10 @@ public class Compiler implements MessageConsumer {
       cmd.add(buildCache.getAbsolutePath());
     }
 
+    if (PreferencesData.getBoolean("builder.use_platform_sketch_txt")) {
+      cmd.add("-use-platform-sketch-txt");
+    }
+
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
       .entrySet()
