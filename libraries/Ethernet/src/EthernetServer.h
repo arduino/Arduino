@@ -10,6 +10,7 @@ public Server {
 private:
   uint16_t _port;
   void accept();
+  int _lastReturnedSocket = -1; 
 public:
   EthernetServer(uint16_t);
   EthernetClient available();

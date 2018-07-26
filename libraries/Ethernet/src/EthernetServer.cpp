@@ -52,13 +52,17 @@ EthernetClient EthernetServer::available()
 {
   accept();
 
-  for (int sock = 0; sock < MAX_SOCK_NUM; sock++) {
-    EthernetClient client(sock);
-    if (EthernetClass::_server_port[sock] == _port) {
+  for (int i = 0; i < MAX_SOCK_NUM; i++) {
+    // increment _lastReturnedSocket to avoid returning the same socket again
+    _lastReturnedSocket = (_lastReturnedSocket + 1) % MAX_SOCK_NUM;
+
+    EthernetClient client(_lastReturnedSocket);
+    if (EthernetClass::_server_port[_lastReturnedSocket] == _port) {
       uint8_t s = client.status();
       if (s == SnSR::ESTABLISHED || s == SnSR::CLOSE_WAIT) {
         if (client.available()) {
-          // XXX: don't always pick the lowest numbered socket.
+          // doesn't always pick the lowest numbered socket, because of
+          // _lastReturnedSocket + 1 at the beginning
           return client;
         }
       }
