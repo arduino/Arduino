@@ -29,7 +29,7 @@
 #define WINDOWS 1
 #define UBUNTU 2
 
-#include "Keyboard.h"
+#include <Keyboard.h>
 
 // change this to match your platform:
 int platform = OSX;

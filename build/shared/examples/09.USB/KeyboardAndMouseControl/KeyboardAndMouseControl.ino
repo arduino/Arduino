@@ -21,8 +21,8 @@
   http://www.arduino.cc/en/Tutorial/KeyboardAndMouseControl
 */
 
-#include "Keyboard.h"
-#include "Mouse.h"
+#include <Keyboard.h>
+#include <Mouse.h>
 
 // set pin numbers for the five buttons:
 const int upButton = 2;

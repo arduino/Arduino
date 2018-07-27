@@ -25,7 +25,7 @@
   http://www.arduino.cc/en/Tutorial/KeyboardReprogram
 */
 
-#include "Keyboard.h"
+#include <Keyboard.h>
 
 // use this option for OSX.
 // Comment it out if using Windows or Linux:
