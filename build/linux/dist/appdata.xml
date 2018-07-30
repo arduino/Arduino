@@ -3,6 +3,7 @@
 <component type="desktop-application">
   <id>cc.arduino.arduinoide.desktop</id>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <project_license>LGPL-2.1</project_license>
   <developer_name>Arduino LLC</developer_name>
 
   <name>Arduino IDE</name>
