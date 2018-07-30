@@ -33,6 +33,8 @@
     </screenshot>
   </screenshots>
 
+  <content_rating type="oars-1.1" />
+
   <releases>
     <release date="2017-10-02" version="1.8.5"/>
     <release date="2017-08-21" version="1.8.4"/>
