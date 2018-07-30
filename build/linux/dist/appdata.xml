@@ -33,6 +33,14 @@
     </screenshot>
   </screenshots>
 
+  <releases>
+    <release date="2017-10-02" version="1.8.5"/>
+    <release date="2017-08-21" version="1.8.4"/>
+    <release date="2017-06-05" version="1.8.3"/>
+    <release date="2017-03-22" version="1.8.2"/>
+    <release date="2017-01-09" version="1.8.1"/>
+  </releases>
+
   <url type="homepage">http://www.arduino.cc/</url>
   <url type="help">https://www.arduino.cc/en/Guide/HomePage</url>
   <url type="bugtracker">https://github.com/arduino/Arduino/issues</url>
