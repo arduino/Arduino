@@ -141,7 +141,7 @@ public class UserLibrary {
     }
 
     List<String> includes = null;
-    if (properties.containsKey("includes")) {
+    if (properties.containsKey("includes") && !properties.get("includes").trim().isEmpty()) {
       includes = new ArrayList<>();
       for (String i : properties.get("includes").split(","))
         includes.add(i.trim());
