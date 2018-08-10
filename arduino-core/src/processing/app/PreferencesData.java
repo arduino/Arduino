@@ -1,14 +1,9 @@
 package processing.app;
 
-import org.apache.commons.compress.utils.IOUtils;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
-import cc.arduino.i18n.Languages;
-import processing.app.helpers.PreferencesHelper;
-import processing.app.helpers.PreferencesMap;
-import processing.app.legacy.PApplet;
-import processing.app.legacy.PConstants;
-
-import java.awt.*;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +13,13 @@ import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n.tr;
+import org.apache.commons.compress.utils.IOUtils;
+
+import cc.arduino.i18n.Languages;
+import processing.app.helpers.PreferencesHelper;
+import processing.app.helpers.PreferencesMap;
+import processing.app.legacy.PApplet;
+import processing.app.legacy.PConstants;
 
 
 public class PreferencesData {
@@ -136,6 +137,9 @@ public class PreferencesData {
       }
 
       writer.flush();
+    } catch (Throwable e) {
+      System.err.println(format(tr("Could not write preferences file: {0}"), e.getMessage()));
+      return;
     } finally {
       IOUtils.closeQuietly(writer);
     }
