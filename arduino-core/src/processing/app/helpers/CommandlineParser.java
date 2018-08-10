@@ -265,7 +265,7 @@ public class CommandlineParser {
         if (!targetBoard.hasMenu(key))
           BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for board \"{1}\""), key, targetBoard.getId()), 3);
         if (targetBoard.getMenuLabel(key, value) == null)
-          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for \"{1}\" option for board \"{2}\""), value, key, targetBoard.getId()), 3);
+          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid value for option \"{1}\" for board \"{2}\""), value, key, targetBoard.getId()), 3);
 
         PreferencesData.set("custom_" + key, targetBoard.getId() + "_" + value);
       }
