@@ -181,7 +181,7 @@ public class LibrariesIndexer {
               + "Library folder names must start with a letter or number, followed by letters,\n"
               + "numbers, dashes, dots and underscores. Maximum length is 63 characters."),
               subfolderName);
-          BaseNoGui.showMessage(tr("Ignoring bad library name"), mess);
+          BaseNoGui.showMessage(tr("Ignoring library with bad name"), mess);
         }
         continue;
       }
