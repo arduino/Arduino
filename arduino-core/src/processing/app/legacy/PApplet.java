@@ -552,23 +552,20 @@ public class PApplet {
   /**
    * I want to print lines to a file. I have RSI from typing these
    * eight lines of code so many times.
+   * @throws IOException
    */
-  static public PrintWriter createWriter(File file) {
+  static public PrintWriter createWriter(File file) throws IOException {
+    createPath(file);  // make sure in-between folders exist
+    OutputStream output = new FileOutputStream(file);
     try {
-      createPath(file);  // make sure in-between folders exist
-      OutputStream output = new FileOutputStream(file);
       if (file.getName().toLowerCase().endsWith(".gz")) {
         output = new GZIPOutputStream(output);
       }
-      return createWriter(output);
-
-    } catch (Exception e) {
-      if (file == null) {
-        throw new RuntimeException("File passed to createWriter() was null");
-      } else {
-        throw new RuntimeException("Couldn't create a writer for " + file.getAbsolutePath(), e);
-      }
+    } catch (IOException e) {
+      output.close();
+      throw e;
     }
+    return createWriter(output);
   }
 
 
