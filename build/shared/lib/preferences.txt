@@ -279,6 +279,9 @@ serial.line_ending=1
 # default chosen language (none for none)
 editor.languages.current = 
 
+# Disable saving of preferences.txt file (settings will not survive Arduino IDE reboot)
+preferences.readonly=false
+
 # Debugging/Development Preferences
 # ---------------------------------
 

@@ -114,6 +114,9 @@ public class PreferencesData {
     if (!doSave)
       return;
 
+    if (getBoolean("preferences.readonly"))
+      return;
+
     // on startup, don't worry about it
     // this is trying to update the prefs for who is open
     // before Preferences.init() has been called.
