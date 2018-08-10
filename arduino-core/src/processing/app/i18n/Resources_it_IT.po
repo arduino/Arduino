@@ -17,7 +17,8 @@
 # Translators:
 # Translators:
 # Translators:
-# Cristian Maglie <c.maglie@arduino.cc>, 2013-2016
+# Translators:
+# Cristian Maglie <c.maglie@arduino.cc>, 2013-2016,2018
 # Davide Velluto <davide.network@gmail.com>, 2012
 # Federico Fissore <f.fissore@arduino.cc>, 2015
 # Giovanni Spadaro <giovannispd@gmail.com>, 2012
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-10-13 08:54+0000\n"
+"PO-Revision-Date: 2018-08-10 09:12+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/mbanzi/arduino-ide-15/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -673,7 +674,7 @@ msgstr "Archiviazione dati"
 
 #: ../../../../../app/src/processing/app/Editor.java:1386
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Riduci dimensione testo"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -682,6 +683,10 @@ msgstr "Diminuisci indentazione"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "Pochi"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -858,6 +863,11 @@ msgstr "Errore con la cartella dati di Arduino"
 msgid "Error inside Serial.{0}()"
 msgstr "Errore in Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -945,10 +955,6 @@ msgstr "Errore durante la verifica/caricamento"
 
 #: Preferences.java:93
 msgid "Estonian"
-msgstr "Estone"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
 msgstr "Estone"
 
 #: Editor.java:516
@@ -1154,8 +1160,8 @@ msgstr "INCOMPATIBILE"
 msgid "Ignore Case"
 msgstr "Ignora maiuscole / minuscole"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
 msgstr "Ignoro la libreria con nome non valido"
 
 #: Base.java:1436
@@ -1184,7 +1190,7 @@ msgstr "La cartella di installazione dell'IDE non è corretta"
 
 #: ../../../../../app/src/processing/app/Editor.java:1378
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Aumenta dimensione testo"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1219,10 +1225,10 @@ msgstr "Installata"
 msgid "Installing boards..."
 msgstr "Sto installando la scheda..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Sto installando la libreria {0}..."
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1280,10 +1286,10 @@ msgstr "Libreria aggiunta alle tue librerie. Controlla il menù \"Inclusione lib
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "La libreria non può usare sia la cartella 'src' che la cartella 'utility'. Controlla {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Libreria già installata: {0} versione {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1700,10 +1706,10 @@ msgstr "Guida di riferimento"
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Sto rimuovendo la libreria {0}..."
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1890,6 +1896,10 @@ msgstr "Problemi nelle impostazioni"
 msgid "Show Sketch Folder"
 msgstr "Apri cartella dello sketch"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Mostra un output dettagliato durante:"
@@ -2061,6 +2071,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Il file \"{0}\" deve essere all''interno\ndi una cartella sketch di nome \"{1}\".\nCreo questa cartella, sposto il file e continuo?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2106,10 +2124,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "La cartella dello sketch è sparita.\nProverò a salvare nuovamente nella stessa posizione,\nma qualsiasi cosa in aggiunta al codice andrà persa."
 
-#: ../../../../../app/src/processing/app/SketchController.java:828
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers and be less than 64 characters long."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
 msgstr ""
 
 #: Base.java:259
@@ -2126,6 +2145,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "La cartella degli sketch indicata contiene la tua copia dell'IDE.\nScegli un'altra cartella per i tuoi sketch."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2706,11 +2729,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: nome della scheda non valido, dovrebbe essere nel formato \"package:arch:board\" oppure \"package:arch:board:opzioni\""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: valore non valido per l'opzione \"{1}\" della scheda \"{2}\""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2720,6 +2738,11 @@ msgstr "{0}: opzione non valida per la scheda \"{1}\""
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: opzione non valida, dovrebbe essere nel formato \"nome=valore\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

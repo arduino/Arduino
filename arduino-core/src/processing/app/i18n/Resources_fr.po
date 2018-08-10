@@ -17,6 +17,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 #   Alexis Morin <mail@alexismorin.com>, 2012
 # Aestan <anthony.margerand@gmail.com>, 2018
 # AntoineM <antoine.meillet+transifex@gmail.com>, 2012
@@ -41,8 +42,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-02-11 17:05+0000\n"
-"Last-Translator: Aestan <anthony.margerand@gmail.com>\n"
+"PO-Revision-Date: 2018-08-10 09:08+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: French (http://www.transifex.com/mbanzi/arduino-ide-15/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -695,6 +696,10 @@ msgstr "Réduire l'indentation"
 msgid "Default"
 msgstr "Défaut"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Supprimer"
@@ -870,6 +875,11 @@ msgstr "Problème d'obtention du dossier de données d'Arduino"
 msgid "Error inside Serial.{0}()"
 msgstr "Erreur dans Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -958,10 +968,6 @@ msgstr "Erreur lors de la vérification et du transfert."
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "estonien"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "estonien (Estonie)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1166,9 +1172,9 @@ msgstr "INCOMPATIBLE"
 msgid "Ignore Case"
 msgstr "Ignorer la casse"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Ignore la bibliothèque mal nommée"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1231,10 +1237,10 @@ msgstr "Installé"
 msgid "Installing boards..."
 msgstr "Installation des cartes..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Installation de la biliothèque: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1292,10 +1298,10 @@ msgstr "La bibliothèque a été ajoutée à votre dossier de bibliothèques. Ve
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "Une bibliothèque ne peut utiliser les dossiers 'src' et 'utility' en même temps. Double vérification {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "La bibliothèque est déja installé: {0} version {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1712,10 +1718,10 @@ msgstr "Référence"
 msgid "Remove"
 msgstr "Supprimer "
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Suppression de la bibliothèque: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1902,6 +1908,10 @@ msgstr "Problèmes de paramètres"
 msgid "Show Sketch Folder"
 msgstr "Afficher le dossier des croquis"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Afficher les résultats détaillés pendant : "
@@ -2073,6 +2083,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Le fichier « {0} » doit résider dans\nun dossier de croquis nommé « {1} ».\nCréer ce dossier, déplacer le fichier et continuer ?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2118,11 +2136,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Le dossier croquis a disparu.\nNous allons essayer de réenregistrer au même emplacement,\nmais seul le code sera conservé."
 
-#: ../../../../../app/src/processing/app/SketchController.java:828
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers and be less than 64 characters long."
-msgstr "Le nom du croquis a dû être modifié. Les noms de croquis ne peuvent contenir que\ndes caractères et de chiffres ASCII et avoir moins de 64 caractères."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2138,6 +2157,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Le dossier de votre carnet de croquis spécifié contiens votre IDE.\nVeuillez choisir un dossier différent."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2718,11 +2741,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0} : nom de carte incorrect, il doit être de la forme \"paquet:arch:carte\" ou \"paquet:arch:carte:options\""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0} : Paramètre incorrect de l''option « {1} » pour la carte « {2} »"
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2732,6 +2750,11 @@ msgstr "{0} : Option incorrecte pour la carte « {1} »"
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0} : Option incorrecte, elle doit être de la forme « nom=valeur »"
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

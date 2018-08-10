@@ -17,6 +17,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2013
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012
 # Giorgi Maghlakelidze <acidlabz@gmail.com>, 2012-2013
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-10-13 08:54+0000\n"
+"PO-Revision-Date: 2018-08-10 09:08+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
@@ -682,6 +683,10 @@ msgstr "დაშორების შემცირება"
 msgid "Default"
 msgstr "ნაგულისხმები"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "წაშლა"
@@ -857,6 +862,11 @@ msgstr "Arduino მონაცემთა საქაღალდის წ�
 msgid "Error inside Serial.{0}()"
 msgstr "შეცდომა Serial.{0}()-ში"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -945,10 +955,6 @@ msgstr "შეცდომა გადამოწმება/ატვირ�
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "ესტონური"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "ესტონური (ესტონეთი)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1153,9 +1159,9 @@ msgstr ""
 msgid "Ignore Case"
 msgstr "რეგისტრი უმნიშვნელოა"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "ბიბლიოთეკის ბათილი სახელი უგულებელყოფილია"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1218,9 +1224,9 @@ msgstr ""
 msgid "Installing boards..."
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
+msgid "Installing library: {0}:{1}"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
@@ -1279,9 +1285,9 @@ msgstr ""
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
+msgid "Library is already installed: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
@@ -1699,9 +1705,9 @@ msgstr "ცნობარი"
 msgid "Remove"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
+msgid "Removing library: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
@@ -1889,6 +1895,10 @@ msgstr "მომართვის დაბრკოლება"
 msgid "Show Sketch Folder"
 msgstr "ალბომის საქაღალდის გახსნა"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "დაწვრილებითი გამომავალის ჩვენება:"
@@ -2060,6 +2070,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "ფაილი \"{0}\" უნდა იყოს მოთავსებული\nჩანახატის საქაღალდეში \"{1}\".\nგსურთ შექმნათ საქაღალდე, გადაიტანოთ მასში ფაილი და გააგრძელოთ?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2105,10 +2123,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "ჩანახატის საქაღალდე არ მოიძებნა.\nშევეცდები იგივე ადგილას შენახვას, მაგრამ\nყველაფერი მოცემული კოდის გარდა დაიკარგება."
 
-#: ../../../../../app/src/processing/app/SketchController.java:828
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers and be less than 64 characters long."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
 msgstr ""
 
 #: Base.java:259
@@ -2124,6 +2143,10 @@ msgstr "ალბომის საქაღალდე აღარ არს
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
@@ -2705,11 +2728,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr ""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2718,6 +2736,11 @@ msgstr ""
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
 msgstr ""
 
 #: ../../../processing/app/Base.java:486

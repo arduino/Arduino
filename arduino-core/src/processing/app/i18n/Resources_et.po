@@ -17,6 +17,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cougar <cougar@random.ee>, 2012
 # Cougar <transifex@lost.data.ee>, 2013
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
@@ -30,8 +31,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-05-18 16:41+0000\n"
-"Last-Translator: Hasso Tepper <hasso.tepper@gmail.com>\n"
+"PO-Revision-Date: 2018-08-10 09:08+0000\n"
+"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Estonian (http://www.transifex.com/mbanzi/arduino-ide-15/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -684,6 +685,10 @@ msgstr "Vähenda taanet"
 msgid "Default"
 msgstr "Vaikeväärtus"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Kustuta"
@@ -859,6 +864,11 @@ msgstr "Viga Arduino andmekausta leidmisel."
 msgid "Error inside Serial.{0}()"
 msgstr "Viga Serial.{0}() sees."
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -947,10 +957,6 @@ msgstr "Viga kontrollimisel/üleslaadimisel"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Eesti"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Eesti (Eesti)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1155,9 +1161,9 @@ msgstr "MITTEKOMPATIIBEL"
 msgid "Ignore Case"
 msgstr "Tähesuuruse ignoreerimine"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Vigase nimega teegi eiramine"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1220,10 +1226,10 @@ msgstr "Paigaldatud"
 msgid "Installing boards..."
 msgstr "Plaatide paigaldamine ..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Teegi paigaldamine: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1281,10 +1287,10 @@ msgstr "Teek lisati su teekide hulka. Veendu selles „Lisa teek“ menüüs."
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "Teek ei saa kasutada korraga „src“ ja „utility“ kaustu. Vaata {0} üle."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Teek on juba paigaldatud: {0} versioon {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1701,10 +1707,10 @@ msgstr "Baasdokumentatsioon"
 msgid "Remove"
 msgstr "Eemalda"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Teegi eemaldamine: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1891,6 +1897,10 @@ msgstr "Probleem seadetega"
 msgid "Show Sketch Folder"
 msgstr "Näita visandite kausta"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Detailsem väljund:"
@@ -2062,6 +2072,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "\"{0}\" peab asuma visandite kaustas \"{1}\".\nKas tekitan selle kausta ning liigutan faili sinna?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2107,11 +2125,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Visandi kaust on haihtunud.\nPüüan samasse kohta uuesti salvestada,\nkuid kõik peale selle koodi on kadunud."
 
-#: ../../../../../app/src/processing/app/SketchController.java:828
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers and be less than 64 characters long."
-msgstr "Visandi nime oli vaja muuta. Nimes tohib kasutada ainult ASCII tähti ja numbreid ning nimi peab olema lühem kui 64 sümbolit."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2127,6 +2146,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Valitud visandite kaustas on su IDE koopia.\nPalun vali oma visandite hoidmiseks mõni teine kaust."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2707,11 +2730,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: Vigane plaadi nimi. See peab olema vormingus „pakk:arhitektuur:plaat“ või „pakk:arhitektuur:plaat:valikparameetrid“"
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Vigane parameeter plaadi „{2}“ valikparameetrile „{1}“"
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2721,6 +2739,11 @@ msgstr "{0}: Plaadi „{1}“ jaoks vigane valikparameeter"
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: Vigane valikparameeter, see peab olema vormingus „nimi=väärtus“"
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

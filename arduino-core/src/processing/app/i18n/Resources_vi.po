@@ -17,6 +17,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Anh Phan <vietnamesel10n@gmail.com>, 2013
 # Bao Phan <baophan94@icloud.com>, 2016
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-10-13 08:54+0000\n"
+"PO-Revision-Date: 2018-08-10 09:08+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/mbanzi/arduino-ide-15/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -681,6 +682,10 @@ msgstr "Giảm khoảng cách"
 msgid "Default"
 msgstr "Mặc định"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Xóa"
@@ -856,6 +861,11 @@ msgstr "Xảy ra lỗi khi tiếp nhận thư mục dữ liệu Arduino"
 msgid "Error inside Serial.{0}()"
 msgstr "Lỗi ở bên trong Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -944,10 +954,6 @@ msgstr "Lỗi khi biên dịch/tải lên"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Estonian"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Estonian (Estonia)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1152,9 +1158,9 @@ msgstr "KHÔNG TƯƠNG THÍCH"
 msgid "Ignore Case"
 msgstr "Bỏ qua trường hợp viết hoa"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Bỏ qua tên thư viện không hợp lệ"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1217,10 +1223,10 @@ msgstr "Đã cài đặt"
 msgid "Installing boards..."
 msgstr "Đang cài đặt cho bo..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Đang cài thư viện: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1278,10 +1284,10 @@ msgstr "Thư viện mới đã được thêm vào thư viện hệ thống. Hã
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "Thư viện không thể dùng cả hai thư mục 'src' và 'utility'. Kiểm tra lại {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Thư viện đã được cài đặt: {0} phiên bản {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1698,9 +1704,9 @@ msgstr "Tham chiếu"
 msgid "Remove"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
+msgid "Removing library: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
@@ -1888,6 +1894,10 @@ msgstr "Các vấn đề về thiết lập"
 msgid "Show Sketch Folder"
 msgstr "Hiển thị thư mục Sketch"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Hiển thị verbose trong suốt quá trình nhập dữ liệu:"
@@ -2059,6 +2069,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Tập tin \"{0}\" cần được đặt trong\nmột thư mục sketch được đặt tên \"{1}\".\nTạo thư mục này, sau đó di chuyển tập tin vào trong, và tiếp tục?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2104,10 +2122,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Thư mục sketch đã đi bụi.\nSẽ cố gắng lưu lại lần nữa ở cùng địa chỉ,\nnhưng tất cả mọi thứ ngoại trừ mã nguồn sẽ bị đi bụi theo luôn."
 
-#: ../../../../../app/src/processing/app/SketchController.java:828
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers and be less than 64 characters long."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
 msgstr ""
 
 #: Base.java:259
@@ -2123,6 +2142,10 @@ msgstr "Thư mục sketchbook không còn hiện hữu trong hệ thống.\nArdu
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
@@ -2704,11 +2727,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr ""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2717,6 +2735,11 @@ msgstr ""
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
 msgstr ""
 
 #: ../../../processing/app/Base.java:486
