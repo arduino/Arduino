@@ -566,12 +566,9 @@ public class PApplet {
       if (file == null) {
         throw new RuntimeException("File passed to createWriter() was null");
       } else {
-        e.printStackTrace();
-        throw new RuntimeException("Couldn't create a writer for " +
-                                   file.getAbsolutePath());
+        throw new RuntimeException("Couldn't create a writer for " + file.getAbsolutePath(), e);
       }
     }
-    //return null;
   }
 
 
