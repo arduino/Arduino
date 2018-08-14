@@ -15,14 +15,16 @@
   created 15 Mar 2012
   modified 27 Mar 2012
   by Tom Igoe
+  modified 26 Jul 2018
+  by Steven Conaway
 
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/KeyboardAndMouseControl
 */
 
-#include "Keyboard.h"
-#include "Mouse.h"
+#include <Keyboard.h>
+#include <Mouse.h>
 
 // set pin numbers for the five buttons:
 const int upButton = 2;

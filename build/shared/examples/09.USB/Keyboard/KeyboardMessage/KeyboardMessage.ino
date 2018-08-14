@@ -14,13 +14,15 @@
   by Tom Igoe
   modified 11 Nov 2013
   by Scott Fitzgerald
+  modified 26 Jul 2018
+  by Steven Conaway
 
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/KeyboardMessage
 */
 
-#include "Keyboard.h"
+#include <Keyboard.h>
 
 const int buttonPin = 4;          // input pin for pushbutton
 int previousButtonState = HIGH;   // for checking the state of a pushButton

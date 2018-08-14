@@ -23,13 +23,15 @@
   created 15 Sep 2011
   updated 28 Mar 2012
   by Tom Igoe
+  modified 26 Jul 2018
+  by Steven Conaway
 
   This example code is in the public domain.
 
   http://www.arduino.cc/en/Tutorial/JoystickMouseControl
 */
 
-#include "Mouse.h"
+#include <Mouse.h>
 
 // set pin numbers for switch, joystick axes, and LED:
 const int switchPin = 2;      // switch to turn on and off mouse control

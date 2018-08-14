@@ -159,7 +159,7 @@
 void pulse(int pin, int times);
 
 #ifdef USE_HARDWARE_SPI
-#include "SPI.h"
+#include <SPI.h>
 #else
 
 #define SPI_MODE0 0x00

@@ -19,6 +19,8 @@
   created 6 Mar 2012
   modified 27 Mar 2012
   by Tom Igoe
+  modified 26 Jul 2018
+  by Steven Conaway
 
   This example is in the public domain.
 
@@ -29,7 +31,7 @@
 #define WINDOWS 1
 #define UBUNTU 2
 
-#include "Keyboard.h"
+#include <Keyboard.h>
 
 // change this to match your platform:
 int platform = OSX;
