@@ -143,10 +143,6 @@ public class FileDownloader extends Observable {
     }
   }
 
-  private void downloadFile() throws InterruptedException {
-    downloadFile(false);
-  }
-
   private void downloadFile(boolean noResume) throws InterruptedException {
     RandomAccessFile file = null;
 
