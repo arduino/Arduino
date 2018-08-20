@@ -22,36 +22,25 @@
 
 package processing.app;
 
-import cc.arduino.packages.BoardPort;
-import cc.arduino.packages.MonitorFactory;
-import cc.arduino.packages.Uploader;
-import cc.arduino.packages.uploaders.SerialUploader;
-import cc.arduino.view.GoToLineNumber;
-import cc.arduino.view.StubMenuListener;
-import cc.arduino.view.findreplace.FindReplace;
-import cc.arduino.CompilerProgressListener;
-import com.jcraft.jsch.JSchException;
-import jssc.SerialPortException;
-import processing.app.debug.RunnerException;
-import processing.app.forms.PasswordAuthorizationDialog;
-import processing.app.helpers.DocumentTextChangeListener;
-import processing.app.helpers.Keys;
-import processing.app.helpers.OSUtils;
-import processing.app.helpers.PreferencesMapException;
-import processing.app.helpers.StringReplacer;
-import processing.app.legacy.PApplet;
-import processing.app.syntax.PdeKeywords;
-import processing.app.syntax.SketchTextArea;
-import processing.app.tools.MenuScroller;
-import processing.app.tools.Tool;
+import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.BadLocationException;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -62,17 +51,64 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.ArrayList;
 
-import static processing.app.I18n.tr;
-import static processing.app.Theme.scale;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import javax.swing.text.BadLocationException;
 
+import com.jcraft.jsch.JSchException;
+
+import cc.arduino.CompilerProgressListener;
+import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.MonitorFactory;
+import cc.arduino.packages.Uploader;
+import cc.arduino.packages.uploaders.SerialUploader;
+import cc.arduino.view.Event;
+import cc.arduino.view.GoToLineNumber;
+import cc.arduino.view.StubMenuListener;
+import cc.arduino.view.findreplace.FindReplace;
+import jssc.SerialPortException;
+import processing.app.debug.RunnerException;
+import processing.app.forms.PasswordAuthorizationDialog;
+import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.FileUtils;
+import processing.app.helpers.Keys;
+import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.helpers.StringReplacer;
+import processing.app.legacy.PApplet;
+import processing.app.syntax.PdeKeywords;
+import processing.app.syntax.SketchTextArea;
+import processing.app.tools.MenuScroller;
+import processing.app.tools.Tool;
 
 /**
  * Main editor panel for the Processing Development Environment.
@@ -534,37 +570,28 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.setMnemonic(KeyEvent.VK_F);
 
     item = newJMenuItem(tr("New"), 'N');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          try {
-            base.handleNew();
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
-        }
-      });
+    item.addActionListener(event -> {
+      try {
+        base.handleNew();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    });
     fileMenu.add(item);
 
     item = Editor.newJMenuItem(tr("Open..."), 'O');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          try {
-            base.handleOpenPrompt();
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
-        }
-      });
+    item.addActionListener(event -> {
+      try {
+        base.handleOpenPrompt();
+      } catch (Exception e1) {
+        e1.printStackTrace();
+      }
+    });
     fileMenu.add(item);
 
     base.rebuildRecentSketchesMenuItems();
     recentSketchesMenu = new JMenu(tr("Open Recent"));
-    SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        rebuildRecentSketchesMenu();
-      }
-    });
+    SwingUtilities.invokeLater(() -> rebuildRecentSketchesMenu());
     fileMenu.add(recentSketchesMenu);
 
     if (sketchbookMenu == null) {
@@ -582,45 +609,25 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.add(examplesMenu);
 
     item = Editor.newJMenuItem(tr("Close"), 'W');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleClose(Editor.this);
-        }
-      });
+    item.addActionListener(event -> base.handleClose(Editor.this));
     fileMenu.add(item);
 
     saveMenuItem = newJMenuItem(tr("Save"), 'S');
-    saveMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSave(false);
-        }
-      });
+    saveMenuItem.addActionListener(event -> handleSave(false));
     fileMenu.add(saveMenuItem);
 
     saveAsMenuItem = newJMenuItemShift(tr("Save As..."), 'S');
-    saveAsMenuItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleSaveAs();
-        }
-      });
+    saveAsMenuItem.addActionListener(event -> handleSaveAs());
     fileMenu.add(saveAsMenuItem);
 
     fileMenu.addSeparator();
 
     item = newJMenuItemShift(tr("Page Setup"), 'P');
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        handlePageSetup();
-      }
-    });
+    item.addActionListener(event -> handlePageSetup());
     fileMenu.add(item);
 
     item = newJMenuItem(tr("Print"), 'P');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handlePrint();
-        }
-      });
+    item.addActionListener(event -> handlePrint());
     fileMenu.add(item);
 
     // macosx already has its own preferences and quit menu
@@ -628,21 +635,13 @@ public class Editor extends JFrame implements RunnerListener {
       fileMenu.addSeparator();
 
       item = newJMenuItem(tr("Preferences"), ',');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handlePrefs();
-          }
-        });
+      item.addActionListener(event -> base.handlePrefs());
       fileMenu.add(item);
 
       fileMenu.addSeparator();
 
       item = newJMenuItem(tr("Quit"), 'Q');
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleQuit();
-          }
-        });
+      item.addActionListener(event -> base.handleQuit());
       fileMenu.add(item);
     }
     return fileMenu;
@@ -659,58 +658,35 @@ public class Editor extends JFrame implements RunnerListener {
     sketchMenu.removeAll();
 
     JMenuItem item = newJMenuItem(tr("Verify/Compile"), 'R');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleRun(false, Editor.this.presentHandler, Editor.this.runHandler);
-        }
-      });
+    item.addActionListener(event -> handleRun(false, presentHandler, runHandler));
     sketchMenu.add(item);
 
     item = newJMenuItem(tr("Upload"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(false);
-        }
-      });
+    item.addActionListener(event -> handleExport(false));
     sketchMenu.add(item);
 
     item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          handleExport(true);
-        }
-      });
+    item.addActionListener(event -> handleExport(true));
     sketchMenu.add(item);
 
-
     item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (new ShouldSaveReadOnly().test(sketchController) && !handleSave(true)) {
-            System.out.println(tr("Export canceled, changes must first be saved."));
-            return;
-          }
-          handleRun(false, new ShouldSaveReadOnly(), Editor.this.presentAndSaveHandler, Editor.this.runAndSaveHandler);
-        }
-      });
+    item.addActionListener(event -> {
+      if (new ShouldSaveReadOnly().test(sketchController) && !handleSave(true)) {
+        System.out.println(tr("Export canceled, changes must first be saved."));
+        return;
+      }
+      handleRun(false, new ShouldSaveReadOnly(), presentAndSaveHandler, runAndSaveHandler);
+    });
     sketchMenu.add(item);
 
 //    item = new JMenuItem("Stop");
-//    item.addActionListener(new ActionListener() {
-//        public void actionPerformed(ActionEvent e) {
-//          handleStop();
-//        }
-//      });
+//    item.addActionListener(event -> handleStop());
 //    sketchMenu.add(item);
 
     sketchMenu.addSeparator();
 
     item = newJMenuItem(tr("Show Sketch Folder"), 'K');
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.openFolder(sketch.getFolder());
-      }
-    });
+    item.addActionListener(event -> Base.openFolder(sketch.getFolder()));
     sketchMenu.add(item);
     item.setEnabled(Base.openFolderAvailable());
 
@@ -722,11 +698,7 @@ public class Editor extends JFrame implements RunnerListener {
     sketchMenu.add(importMenu);
 
     item = new JMenuItem(tr("Add File..."));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        sketchController.handleAddFile();
-      }
-    });
+    item.addActionListener(event -> sketchController.handleAddFile());
     sketchMenu.add(item);
   }
 
@@ -900,11 +872,9 @@ public class Editor extends JFrame implements RunnerListener {
 
         String title = tool.getMenuTitle();
         JMenuItem item = new JMenuItem(title);
-        item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(tool);
-            //new Thread(tool).start();
-          }
+        item.addActionListener(event -> {
+          SwingUtilities.invokeLater(tool);
+          //new Thread(tool).start();
         });
         //menu.add(item);
         toolItems.put(title, item);
@@ -975,11 +945,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       tool.init(Editor.this);
 
-      item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          SwingUtilities.invokeLater(tool);
-        }
-      });
+      item.addActionListener(event -> SwingUtilities.invokeLater(tool));
       return item;
 
     } catch (Exception e) {
@@ -1132,78 +1098,23 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private JMenu buildHelpMenu() {
-    // To deal with a Mac OS X 10.5 bug, add an extra space after the name
-    // so that the OS doesn't try to insert its slow help menu.
     JMenu menu = new JMenu(tr("Help"));
     menu.setMnemonic(KeyEvent.VK_H);
-    JMenuItem item;
 
-    /*
-    // testing internal web server to serve up docs from a zip file
-    item = new JMenuItem("Web Server Test");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //WebServer ws = new WebServer();
-          SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-              try {
-                int port = WebServer.launch("/Users/fry/coconut/processing/build/shared/reference.zip");
-                Base.openURL("http://127.0.0.1:" + port + "/reference/setup_.html");
-
-              } catch (IOException e1) {
-                e1.printStackTrace();
-              }
-            }
-          });
-        }
-      });
-    menu.add(item);
-    */
-
-    /*
-    item = new JMenuItem("Browser Test");
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          //Base.openURL("http://processing.org/learning/gettingstarted/");
-          //JFrame browserFrame = new JFrame("Browser");
-          BrowserStartup bs = new BrowserStartup("jar:file:/Users/fry/coconut/processing/build/shared/reference.zip!/reference/setup_.html");
-          bs.initUI();
-          bs.launch();
-        }
-      });
-    menu.add(item);
-    */
-
-    item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showArduinoGettingStarted();
-        }
-      });
+    JMenuItem item = new JMenuItem(tr("Getting Started"));
+    item.addActionListener(event -> Base.showArduinoGettingStarted());
     menu.add(item);
 
     item = new JMenuItem(tr("Environment"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showEnvironment();
-      }
-    });
+    item.addActionListener(event -> Base.showEnvironment());
     menu.add(item);
 
     item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showTroubleshooting();
-      }
-    });
+    item.addActionListener(event -> Base.showTroubleshooting());
     menu.add(item);
 
     item = new JMenuItem(tr("Reference"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showReference();
-      }
-    });
+    item.addActionListener(event -> Base.showReference());
     menu.add(item);
 
     menu.addSeparator();
@@ -1213,18 +1124,11 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showReference("reference/Galileo_help_files", "ArduinoIDE_guide_galileo");
-      }
-    });
+    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "ArduinoIDE_guide_galileo"));
     menu.add(item);
+
     item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showReference("reference/Galileo_help_files", "Guide_Troubleshooting_Galileo");
-      }
-    });
+    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "Guide_Troubleshooting_Galileo"));
     menu.add(item);
 
     menu.addSeparator();
@@ -1234,51 +1138,32 @@ public class Editor extends JFrame implements RunnerListener {
     menu.add(item);
 
     item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showReference("reference/Edison_help_files", "ArduinoIDE_guide_edison");
-      }
-    });
+    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "ArduinoIDE_guide_edison"));
     menu.add(item);
+
     item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.showReference("reference/Edison_help_files", "Guide_Troubleshooting_Edison");
-      }
-    });
+    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "Guide_Troubleshooting_Edison"));
     menu.add(item);
 
     menu.addSeparator();
 
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
-    item.addActionListener(this::handleFindReference);
+    item.addActionListener(event -> handleFindReference(event));
     menu.add(item);
 
     item = new JMenuItem(tr("Frequently Asked Questions"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.showFAQ();
-        }
-      });
+    item.addActionListener(event -> Base.showFAQ());
     menu.add(item);
 
     item = new JMenuItem(tr("Visit Arduino.cc"));
-    item.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          Base.openURL(tr("http://www.arduino.cc/"));
-        }
-      });
+    item.addActionListener(event -> Base.openURL(tr("http://www.arduino.cc/")));
     menu.add(item);
 
     // macosx already has its own about menu
     if (!OSUtils.hasMacOSStyleMenus()) {
       menu.addSeparator();
       item = new JMenuItem(tr("About Arduino"));
-      item.addActionListener(new ActionListener() {
-          public void actionPerformed(ActionEvent e) {
-            base.handleAbout();
-          }
-        });
+      item.addActionListener(event -> base.handleAbout());
       menu.add(item);
     }
 
@@ -1293,7 +1178,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     undoItem = newJMenuItem(tr("Undo"), 'Z');
     undoItem.setName("menuEditUndo");
-    undoItem.addActionListener(e -> getCurrentTab().handleUndo());
+    undoItem.addActionListener(event -> getCurrentTab().handleUndo());
     menu.add(undoItem);
 
     if (!OSUtils.isMacOS()) {
@@ -1302,61 +1187,37 @@ public class Editor extends JFrame implements RunnerListener {
         redoItem = newJMenuItemShift(tr("Redo"), 'Z');
     }
     redoItem.setName("menuEditRedo");
-    redoItem.addActionListener(e -> getCurrentTab().handleRedo());
+    redoItem.addActionListener(event -> getCurrentTab().handleRedo());
     menu.add(redoItem);
 
     menu.addSeparator();
 
     JMenuItem cutItem = newJMenuItem(tr("Cut"), 'X');
-    cutItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleCut();
-        }
-      });
+    cutItem.addActionListener(event -> getCurrentTab().handleCut());
     menu.add(cutItem);
 
     JMenuItem copyItem = newJMenuItem(tr("Copy"), 'C');
-    copyItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().getTextArea().copy();
-        }
-      });
+    copyItem.addActionListener(event -> getCurrentTab().getTextArea().copy());
     menu.add(copyItem);
 
     JMenuItem copyForumItem = newJMenuItemShift(tr("Copy for Forum"), 'C');
-    copyForumItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleDiscourseCopy();
-        }
-      });
+    copyForumItem.addActionListener(event -> getCurrentTab().handleDiscourseCopy());
     menu.add(copyForumItem);
 
     JMenuItem copyHTMLItem = newJMenuItemAlt(tr("Copy as HTML"), 'C');
-    copyHTMLItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleHTMLCopy();
-        }
-      });
+    copyHTMLItem.addActionListener(event -> getCurrentTab().handleHTMLCopy());
     menu.add(copyHTMLItem);
 
     JMenuItem pasteItem = newJMenuItem(tr("Paste"), 'V');
-    pasteItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handlePaste();
-        }
-      });
+    pasteItem.addActionListener(event -> getCurrentTab().handlePaste());
     menu.add(pasteItem);
 
     JMenuItem selectAllItem = newJMenuItem(tr("Select All"), 'A');
-    selectAllItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleSelectAll();
-        }
-      });
+    selectAllItem.addActionListener(event -> getCurrentTab().handleSelectAll());
     menu.add(selectAllItem);
 
     JMenuItem gotoLine = newJMenuItem(tr("Go to line..."), 'L');
-    gotoLine.addActionListener(e -> {
+    gotoLine.addActionListener(event -> {
       GoToLineNumber goToLineNumber = new GoToLineNumber(Editor.this);
       goToLineNumber.setLocationRelativeTo(Editor.this);
       goToLineNumber.setVisible(true);
@@ -1366,96 +1227,78 @@ public class Editor extends JFrame implements RunnerListener {
     menu.addSeparator();
 
     JMenuItem commentItem = newJMenuItem(tr("Comment/Uncomment"), PreferencesData.get("editor.keys.shortcut_comment", "/").charAt(0));
-    commentItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleCommentUncomment();
-        }
-    });
+    commentItem.addActionListener(event -> getCurrentTab().handleCommentUncomment());
     menu.add(commentItem);
 
     JMenuItem increaseIndentItem = new JMenuItem(tr("Increase Indent"));
     increaseIndentItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
-    increaseIndentItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleIndentOutdent(true);
-        }
-    });
+    increaseIndentItem.addActionListener(event -> getCurrentTab().handleIndentOutdent(true));
     menu.add(increaseIndentItem);
 
     JMenuItem decreseIndentItem = new JMenuItem(tr("Decrease Indent"));
     decreseIndentItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK));
     decreseIndentItem.setName("menuDecreaseIndent");
-    decreseIndentItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          getCurrentTab().handleIndentOutdent(false);
-        }
-    });
+    decreseIndentItem.addActionListener(event -> getCurrentTab().handleIndentOutdent(false));
     menu.add(decreseIndentItem);
 
     menu.addSeparator();
 
-    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), '+');
-    increaseFontSizeItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleFontSizeChange(1);
-        }
-    });
+    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
+    increaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(1));
     menu.add(increaseFontSizeItem);
-
-    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), '-');
-    decreaseFontSizeItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          base.handleFontSizeChange(-1);
-        }
+    // Add alternative shortcut "CTRL SHIFT =" for keyboards that haven't the "+" key
+    // in the base layer. This workaround covers all the keyboards that have the "+"
+    // key available as "SHIFT =" that seems to be very common.
+    KeyStroke ctrlShiftEq = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK);
+    menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlShiftEq, "IncreaseFontSize");
+    menu.getActionMap().put("IncreaseFontSize", new AbstractAction() {
+      public void actionPerformed(ActionEvent e) {
+        base.handleFontSizeChange(1);
+      }
     });
+
+    JMenuItem decreaseFontSizeItem = newJMenuItem(tr("Decrease Font Size"), KeyEvent.VK_MINUS);
+    decreaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(-1));
     menu.add(decreaseFontSizeItem);
 
     menu.addSeparator();
 
     JMenuItem findItem = newJMenuItem(tr("Find..."), 'F');
-    findItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (find == null) {
-          find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
-        }
-        if (!OSUtils.isMacOS()) {
-          find.setFindText(getCurrentTab().getSelectedText());
-        }
-        find.setLocationRelativeTo(Editor.this);
-        find.setVisible(true);
+    findItem.addActionListener(event -> {
+      if (find == null) {
+        find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
       }
+      if (!OSUtils.isMacOS()) {
+        find.setFindText(getCurrentTab().getSelectedText());
+      }
+      find.setLocationRelativeTo(Editor.this);
+      find.setVisible(true);
     });
     menu.add(findItem);
 
     JMenuItem findNextItem = newJMenuItem(tr("Find Next"), 'G');
-    findNextItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (find != null) {
-          find.findNext();
-        }
+    findNextItem.addActionListener(event -> {
+      if (find != null) {
+        find.findNext();
       }
     });
     menu.add(findNextItem);
 
     JMenuItem findPreviousItem = newJMenuItemShift(tr("Find Previous"), 'G');
-    findPreviousItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        if (find != null) {
-          find.findPrevious();
-        }
+    findPreviousItem.addActionListener(event -> {
+      if (find != null) {
+        find.findPrevious();
       }
     });
     menu.add(findPreviousItem);
 
     if (OSUtils.isMacOS()) {
       JMenuItem useSelectionForFindItem = newJMenuItem(tr("Use Selection For Find"), 'E');
-      useSelectionForFindItem.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-          if (find == null) {
-            find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
-          }
-          find.setFindText(getCurrentTab().getSelectedText());
+      useSelectionForFindItem.addActionListener(event -> {
+        if (find == null) {
+          find = new FindReplace(Editor.this, Base.FIND_DIALOG_STATE);
         }
+        find.setFindText(getCurrentTab().getSelectedText());
       });
       menu.add(useSelectionForFindItem);
     }
