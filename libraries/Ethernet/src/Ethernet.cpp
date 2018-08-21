@@ -10,6 +10,11 @@ uint16_t EthernetClass::_server_port[MAX_SOCK_NUM] = {
 
 int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned long responseTimeout)
 {
+  return begin(mac_address, NULL, timeout, responseTimeout);
+}
+
+int EthernetClass::begin(uint8_t *mac_address, const char *hostname, unsigned long timeout, unsigned long responseTimeout)
+{
   static DhcpClass s_dhcp;
   _dhcp = &s_dhcp;
 
@@ -22,7 +27,7 @@ int EthernetClass::begin(uint8_t *mac_address, unsigned long timeout, unsigned l
   SPI.endTransaction();
 
   // Now try to get our config info from a DHCP server
-  int ret = _dhcp->beginWithDHCP(mac_address, timeout, responseTimeout);
+  int ret = _dhcp->beginWithDHCP(mac_address, hostname, timeout, responseTimeout);
   if(ret == 1)
   {
     // We've successfully found a DHCP server and got our configuration info, so set things
@@ -131,6 +136,11 @@ IPAddress EthernetClass::gatewayIP()
 IPAddress EthernetClass::dnsServerIP()
 {
   return _dnsServerAddress;
+}
+
+const char* EthernetClass::hostname() const
+{
+  return _dhcp ? _dhcp->getHostname() : "";
 }
 
 EthernetClass Ethernet;

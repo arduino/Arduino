@@ -11,6 +11,11 @@
 
 int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout)
 {
+    return beginWithDHCP(mac, NULL, timeout, responseTimeout);
+}
+
+int DhcpClass::beginWithDHCP(uint8_t *mac, const char *hostname, unsigned long timeout, unsigned long responseTimeout)
+{
     _dhcpLeaseTime=0;
     _dhcpT1=0;
     _dhcpT2=0;
@@ -20,6 +25,20 @@ int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long 
     // zero out _dhcpMacAddr
     memset(_dhcpMacAddr, 0, 6); 
     reset_DHCP_lease();
+
+    if (NULL == hostname)
+    {
+      strcpy(_dhcpHostname, HOST_NAME);
+      int offset = strlen(HOST_NAME);
+      printByte((char*)&(_dhcpHostname[offset + 0]), mac[3]);
+      printByte((char*)&(_dhcpHostname[offset + 2]), mac[4]);
+      printByte((char*)&(_dhcpHostname[offset + 4]), mac[5]);
+      _dhcpHostname[offset + 6] = 0;
+    }
+    else
+    {
+      strlcpy(_dhcpHostname, hostname, MAX_HOST_NAME_LENGTH + 1);
+    }
 
     memcpy((void*)_dhcpMacAddr, (void*)mac, 6);
     _dhcp_state = STATE_DHCP_START;
@@ -204,12 +223,8 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
 
     // OPT - host name
     buffer[16] = hostName;
-    buffer[17] = strlen(HOST_NAME) + 6; // length of hostname + last 3 bytes of mac address
-    strcpy((char*)&(buffer[18]), HOST_NAME);
-
-    printByte((char*)&(buffer[24]), _dhcpMacAddr[3]);
-    printByte((char*)&(buffer[26]), _dhcpMacAddr[4]);
-    printByte((char*)&(buffer[28]), _dhcpMacAddr[5]);
+    buffer[17] = strlen(_dhcpHostname); // length of hostname
+    strcpy((char*)&(buffer[18]), _dhcpHostname);
 
     //put data in W5100 transmit buffer
     _dhcpUdpSocket.write(buffer, 30);
@@ -457,6 +472,11 @@ IPAddress DhcpClass::getDhcpServerIp()
 IPAddress DhcpClass::getDnsServerIp()
 {
     return IPAddress(_dhcpDnsServerIp);
+}
+
+const char* DhcpClass::getHostname() const
+{
+    return _dhcpHostname;
 }
 
 void DhcpClass::printByte(char * buf, uint8_t n ) {
