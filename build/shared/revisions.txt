@@ -1,13 +1,39 @@
 ARDUINO 1.8.6
 
 [ide]
+* Updated arduino-builder to 1.4.0:
+  - parallel build (improve compile speed)
+  - better reuse of already compiled files
+  - Windows: fixed build for sketch stored under OneDrive cloud folders
 * Added translations for library types. Thanks @ReAlUA
 * Added scroller in programmers menu.
 * Added "accelerator" in scrollable menu, press "a" key while scrolling
 * Keep "Board Manager" menu item always as first in the menu
+* "Manage Libraries" is now also in the "Tools" menu. Thanks @feikname
+* Compiler errors now have both column and line
+* Serial monitor how has "Show Timestamp" option. Thanks @MichalSy
+* Improved DPI detection for hi-resolution montior on Linux
+* Added copy/paste contextual menu in Find/Replace text fields
+* Fixed long IDE startup time when some virtual/not-connected network interfaces are present
+* Fixed inconsistent line-endings when saving files on Windows
+* mdns: Make board disappear via TTL instead of reachability. Thanks @kurtgo
+* Library Manager: display install/remove buttons with mouse on-hover instead of mouse click
+* Board Manager: fixed some rare case with corrupted index download
+* Windows: removed some debug output when running the IDE from command line
+* Support selectable user-defined themes. User's theme are zip files inside the sketchbook "theme" folder
+* Library Manager: library search now search also for headers (.h) declared by the library in library.properties
+* Added "--version" to the CLI. Thanks @yohsuke
+* Fixed Serial Plotter/Monitor permanently disabled if Plotter fails to open
+* Fixed window title that sometimes is not updated on "Save as...". Thanks @JxJxJxMxNxS
+* Fixed keybindings for Increase/Decrease font size
+* Improved accessibility in the Preferences dialog. Thanks @coreyknapp
 
 [core]
-* AVR: Set Optiboot as default bootloader for Nano. This is the bootloader installed on new Arduino Nano boards. If you have a Nano with the old bootloader you must select Tools > Processor > ATmega328P (Old Bootloader) to upload.
+* AVR: Set Optiboot as default bootloader for Nano. This is the bootloader installed on new
+       Arduino Nano boards. If you have a Nano with the old bootloader you must select
+       Tools > Processor > ATmega328P (Old Bootloader) to upload.
+* AVR core has been moved to its own repository: https://github.com/arduino/ArduinoCore-avr
+* Updated toolchain to gcc 5.4.0
 
 [wifi101-firmware]
 * SECURITY FIX: Released fix for WPA2 KRACK vulnerability (latest WINC1500 firmware 19.5.2).
