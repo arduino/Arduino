@@ -1793,6 +1793,7 @@ public class Editor extends JFrame implements RunnerListener {
 
       } else {
         String properParent = fileName.substring(0, fileName.length() - 4);
+        File properFolder;
 
         Object[] options = {tr("OK"), tr("Cancel")};
         String prompt = I18n.format(tr("The file \"{0}\" needs to be inside\n" +
@@ -1801,35 +1802,60 @@ public class Editor extends JFrame implements RunnerListener {
           fileName,
           properParent);
 
-        int result = JOptionPane.showOptionDialog(this, prompt, tr("Moving"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        properFolder = new File(sketchFile.getParent(), properParent);
+
+        int result;
+        if (parentFolderContainsSketchName(sketchFile, properParent)) {
+
+          // properFolder needs to be created one level above
+          properFolder = new File(new File(sketchFile.getParent()).getParent(), properParent);
+
+          // ask for different confirmation
+          prompt = I18n.format(tr("The file \"{0}\" needs to be inside\n" +
+              "a sketch folder named \"{1}\".\n" +
+              "Renaming folder \"{2}\" into \"{3}\"\n" +
+              "Continue?"),
+            fileName,
+            properParent,
+            sketchFile.getParent(),
+            properFolder);
+
+          result = JOptionPane.showOptionDialog(this, prompt, tr("Renaming"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        } else {
+          result = JOptionPane.showOptionDialog(this, prompt, tr("Moving"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        }
 
         if (result != JOptionPane.YES_OPTION) {
           return false;
         }
 
-        // create properly named folder
-        File properFolder = new File(sketchFile.getParent(), properParent);
         if (properFolder.exists()) {
           Base.showWarning(tr("Error"), I18n.format(tr("A folder named \"{0}\" already exists. " +
             "Can't open sketch."), properParent), null);
           return false;
         }
-        if (!properFolder.mkdirs()) {
-          //throw new IOException("Couldn't create sketch folder");
-          Base.showWarning(tr("Error"), tr("Could not create the sketch folder."), null);
-          return false;
-        }
+
         // copy the sketch inside
         File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          Base.copyFile(sketchFile, properPdeFile);
+          if (parentFolderContainsSketchName(sketchFile, properParent)) {
+            File dir = new File(sketchFile.getParent());
+            dir.renameTo(properFolder);
+          } else {
+            // Create folder
+            if (!properFolder.mkdirs()) {
+              //throw new IOException("Couldn't create sketch folder");
+              Base.showWarning(tr("Error"), tr("Could not create the sketch folder."), null);
+              return false;
+            }
+            Base.copyFile(sketchFile, properPdeFile);
+            // remove the original file, so user doesn't get confused
+            sketchFile.delete();
+          }
         } catch (IOException e) {
           Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
         }
-
-        // remove the original file, so user doesn't get confused
-        sketchFile.delete();
 
         // update with the new path
         file = properPdeFile;
@@ -1851,6 +1877,11 @@ public class Editor extends JFrame implements RunnerListener {
 
     // opening was successful
     return true;
+  }
+
+  private boolean parentFolderContainsSketchName(File sketchFile, String sketchName) {
+    String dir = sketchFile.getParent().toLowerCase();
+    return dir.contains(sketchName.toLowerCase());
   }
 
   public void updateTitle() {
