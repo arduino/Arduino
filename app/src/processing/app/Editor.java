@@ -1754,46 +1754,15 @@ public class Editor extends JFrame implements RunnerListener {
       } else {
         String properParent = fileName.substring(0, fileName.length() - 4);
 
-        Object[] options = {tr("OK"), tr("Cancel")};
+        Object[] options = {tr("OK")};
         String prompt = I18n.format(tr("The file \"{0}\" needs to be inside\n" +
-            "a sketch folder named \"{1}\".\n" +
-            "Create this folder, move the file, and continue?"),
+            "a sketch folder named \"{1}\".\n"),
           fileName,
           properParent);
 
-        int result = JOptionPane.showOptionDialog(this, prompt, tr("Moving"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int result = JOptionPane.showOptionDialog(this, prompt, tr("Error"), JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE, null, options, options[0]);
 
-        if (result != JOptionPane.YES_OPTION) {
-          return false;
-        }
-
-        // create properly named folder
-        File properFolder = new File(sketchFile.getParent(), properParent);
-        if (properFolder.exists()) {
-          Base.showWarning(tr("Error"), I18n.format(tr("A folder named \"{0}\" already exists. " +
-            "Can't open sketch."), properParent), null);
-          return false;
-        }
-        if (!properFolder.mkdirs()) {
-          //throw new IOException("Couldn't create sketch folder");
-          Base.showWarning(tr("Error"), tr("Could not create the sketch folder."), null);
-          return false;
-        }
-        // copy the sketch inside
-        File properPdeFile = new File(properFolder, sketchFile.getName());
-        try {
-          FileUtils.copy(new File(sketchFile.getParent()), properFolder);
-        } catch (IOException e) {
-          Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
-          return false;
-        }
-
-        // remove the original file, so user doesn't get confused
-        sketchFile.delete();
-
-        // update with the new path
-        file = properPdeFile;
-
+        return false;
       }
     }
 
