@@ -25,9 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
-import javax.swing.text.Document;
 
 import cc.arduino.packages.BoardPort;
 
@@ -182,6 +180,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
       Date t = new Date();
       String now;
       StringBuilder out = new StringBuilder(16384);
+      boolean isStartingLine = false;
 
       public void run() {
         if (addTimeStampBox.isSelected()) {
@@ -189,29 +188,16 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
           now = logDateFormat.format(t);
           out.setLength(0);
 
-          boolean isStartingLine;
-          try {
-            Document doc = textArea.getDocument();
-            isStartingLine = doc.getLength() == 0 || ((int) doc.getText(doc.getLength() - 1, 1).charAt(0) == 10);
-          } catch (BadLocationException e) {
-            // Should not happen but...
-            e.printStackTrace();
-            return;
-          }
-
           StringTokenizer tokenizer = new StringTokenizer(s, "\n", true);
           while (tokenizer.hasMoreTokens()) {
             if (isStartingLine) {
               out.append(now);
               out.append(" -> ");
             }
-            out.append(tokenizer.nextToken());
-
-            // Check if we have a "\n" token
-            if (tokenizer.hasMoreTokens()) {
-              out.append(tokenizer.nextToken());
-              isStartingLine = true;
-            }
+            String token = tokenizer.nextToken();
+            out.append(token);
+            // tokenizer returns "\n" as a single token
+            isStartingLine = token.charAt(0) == '\n';
           }
 
           textArea.append(out.toString());
