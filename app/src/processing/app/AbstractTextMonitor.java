@@ -47,7 +47,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   
   public AbstractTextMonitor(BoardPort boardPort) {
     super(boardPort);
-    logDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+    logDateFormat = new SimpleDateFormat("HH:mm:ss.SSS -> ");
   }
   
   protected void onCreateWindow(Container mainPane) {
@@ -192,7 +192,6 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
           while (tokenizer.hasMoreTokens()) {
             if (isStartingLine) {
               out.append(now);
-              out.append(" -> ");
             }
             String token = tokenizer.nextToken();
             out.append(token);
