@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.StringTokenizer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -177,21 +178,43 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   
   public void message(final String s) {
     SwingUtilities.invokeLater(new Runnable() {
+      // Pre-allocate all objects used for streaming data
+      Date t = new Date();
+      String now;
+      StringBuilder out = new StringBuilder(16384);
+
       public void run() {
         if (addTimeStampBox.isSelected()) {
-          String[] lines = s.split("(?<=\\n)");
-          Document doc = textArea.getDocument();
-          for (String currentLine : lines) {
-            try {
-              if (doc.getLength() == 0 || ((int) doc.getText(doc.getLength() - 1, 1).charAt(0) == 10)) {
-                textArea.append(logDateFormat.format(new Date()) + " -> " + currentLine);
-              } else {
-                textArea.append(currentLine);
-              }
-            } catch (BadLocationException e) {
-              e.printStackTrace();
+          t.setTime(System.currentTimeMillis());
+          now = logDateFormat.format(t);
+          out.setLength(0);
+
+          boolean isStartingLine;
+          try {
+            Document doc = textArea.getDocument();
+            isStartingLine = doc.getLength() == 0 || ((int) doc.getText(doc.getLength() - 1, 1).charAt(0) == 10);
+          } catch (BadLocationException e) {
+            // Should not happen but...
+            e.printStackTrace();
+            return;
+          }
+
+          StringTokenizer tokenizer = new StringTokenizer(s, "\n", true);
+          while (tokenizer.hasMoreTokens()) {
+            if (isStartingLine) {
+              out.append(now);
+              out.append(" -> ");
+            }
+            out.append(tokenizer.nextToken());
+
+            // Check if we have a "\n" token
+            if (tokenizer.hasMoreTokens()) {
+              out.append(tokenizer.nextToken());
+              isStartingLine = true;
             }
           }
+
+          textArea.append(out.toString());
         } else {
           textArea.append(s);
         }
