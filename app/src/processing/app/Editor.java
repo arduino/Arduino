@@ -38,7 +38,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
@@ -91,7 +90,6 @@ import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.uploaders.SerialUploader;
-import cc.arduino.view.Event;
 import cc.arduino.view.GoToLineNumber;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
@@ -99,7 +97,6 @@ import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.DocumentTextChangeListener;
-import processing.app.helpers.FileUtils;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
@@ -1782,7 +1779,7 @@ public class Editor extends JFrame implements RunnerListener {
         // copy the sketch inside
         File properPdeFile = new File(properFolder, sketchFile.getName());
         try {
-          FileUtils.copy(new File(sketchFile.getParent()), properFolder);
+          Base.copyFile(sketchFile, properPdeFile);
         } catch (IOException e) {
           Base.showWarning(tr("Error"), tr("Could not copy to a proper location."), e);
           return false;
