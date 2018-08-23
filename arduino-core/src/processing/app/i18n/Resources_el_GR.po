@@ -21,7 +21,7 @@
 # Dimitris Zervas <01ttouch@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # firewalker <firew4lker@gmail.com>, 2015-2016
-# Spyros Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
+# Spyros Papanastasiou <spyros_ladon@zoho.eu>, 2015
 # Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2016
 # Γιάννης Σφακιανάκης <ysfakianakis@gmail.com>, 2013,2016
 msgid ""

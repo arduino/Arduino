@@ -20,7 +20,7 @@
 # Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
-# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2017
+# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2018
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
 # shibaboy <shibaboy@gmail.com>, 2014
 msgid ""
@@ -28,8 +28,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-10 09:08+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-08-13 03:04+0000\n"
+"Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -684,7 +684,7 @@ msgstr "디폴트"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr ""
+msgstr "디폴트 테마"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -864,7 +864,7 @@ msgstr "시리얼 내부 에러.{0}()"
 #: ../../../../../app/src/processing/app/Theme.java:302
 #, java-format
 msgid "Error loading theme {0}: {1}"
-msgstr ""
+msgstr "테마 {0}를 로딩하는 중 에러: {1}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -1160,7 +1160,7 @@ msgstr "대소문자 무시"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
-msgstr ""
+msgstr "잘못된 이름의 라이브러리를 무시함"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1226,7 +1226,7 @@ msgstr "보드 설치..."
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
 msgid "Installing library: {0}:{1}"
-msgstr ""
+msgstr "라이브러리 설치: {0}:{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1287,7 +1287,7 @@ msgstr "라이브러리는 'src' 와 'utility' 폴더에 동시에 사용될 수
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
-msgstr ""
+msgstr "라이브러리가 이미 설치됐습니다: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1707,7 +1707,7 @@ msgstr "제거"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
 msgid "Removing library: {0}:{1}"
-msgstr ""
+msgstr "라이브러리 제거: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1896,7 +1896,7 @@ msgstr "스케치 폴더 보이기"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
 msgid "Show timestamp"
-msgstr ""
+msgstr "타임스탬프 표시"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2075,7 +2075,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library folder names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "\"{0}\"라이브러리를 사용할 수 없습니다.\n라이브러리 폴더 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2127,7 +2127,7 @@ msgid ""
 "The sketch name had to be modified.\n"
 "Sketch names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "스케치 이름이 수정되야 합니다.\n스케치 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
 
 #: Base.java:259
 msgid ""
@@ -2146,7 +2146,7 @@ msgstr "지정된 스케치북 폴더는 IDE의 사본을 포함합니다.\n다�
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
 msgid "Theme: "
-msgstr ""
+msgstr "테마:"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2740,7 +2740,7 @@ msgstr "{0}: 잘못 된 옵션, \"이름=값\"의 형태여야 합니다."
 #: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
 #, java-format
 msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
-msgstr ""
+msgstr "{0}: \"{2}\" 보드의 옵션 \"{1}\" 이 잘못 됨"
 
 #: ../../../processing/app/Base.java:486
 #, java-format

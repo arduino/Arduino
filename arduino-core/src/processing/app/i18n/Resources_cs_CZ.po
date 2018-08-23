@@ -20,7 +20,7 @@
 # Translators:
 # horcicaa <horcicaa@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
-# fatalwir <fatalwir@seznam.cz>, 2014
+# fatalwir <fatalwir@seznam.cz>, 2014,2018
 # Michal Kočer <mcha@4makers.cz>, 2012
 # Michal Kočer <mcha@4makers.cz>, 2012
 # Michal Kočer <mcha@4makers.cz>, 2013-2014
@@ -31,8 +31,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-10 09:08+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-08-10 11:26+0000\n"
+"Last-Translator: fatalwir <fatalwir@seznam.cz>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/mbanzi/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -687,7 +687,7 @@ msgstr "Default"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr ""
+msgstr "Výchozí motiv"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -867,7 +867,7 @@ msgstr "Chyba v Serial.{0}()"
 #: ../../../../../app/src/processing/app/Theme.java:302
 #, java-format
 msgid "Error loading theme {0}: {1}"
-msgstr ""
+msgstr "Chyba při načítání motivu {0}: {1}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -1163,7 +1163,7 @@ msgstr "Ignoruj velikost písmen"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
-msgstr ""
+msgstr "Ignoruji knihovnu s nesprávným názvem"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1229,7 +1229,7 @@ msgstr "Instalace desek..."
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
 msgid "Installing library: {0}:{1}"
-msgstr ""
+msgstr "Instalace knihovny: {0}:{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1290,7 +1290,7 @@ msgstr "Knihovna nemůže být použitá součastne v adresářích 'src' a 'uti
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
-msgstr ""
+msgstr "Knihovna je již nainstalována: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1710,7 +1710,7 @@ msgstr "Vymazat"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
 msgid "Removing library: {0}:{1}"
-msgstr ""
+msgstr "Odstraňování knihovny: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1899,7 +1899,7 @@ msgstr "Zobraz adresář s projekty"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
 msgid "Show timestamp"
-msgstr ""
+msgstr "Zobrazit časové razítko"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2078,7 +2078,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library folder names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "Knihovnu \"{0}\" nelze použít.\nNázev složky knihovny musí začínat písmenem nebo číslem a může obsahovat pouze písmena, číslice, pomlčky, tečky a podtržítka. Maximální délka názvu je 63 znaků."
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2130,7 +2130,7 @@ msgid ""
 "The sketch name had to be modified.\n"
 "Sketch names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "Neplatný název projektu.\nNázev projektu musí začínat písmenem nebo číslem a může obsahovat pouze písmena, číslice, pomlčky, tečky a podtržítka. Maximální délka názvu je 63 znaků."
 
 #: Base.java:259
 msgid ""
@@ -2149,7 +2149,7 @@ msgstr "Specifikovaný projektový adresář obsahuje kopii tvého IDE.\nProsím
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
 msgid "Theme: "
-msgstr ""
+msgstr "Motiv:"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2743,7 +2743,7 @@ msgstr "{0}: Chybná volba, měla by být ve formě \"nazev=hodnota\""
 #: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
 #, java-format
 msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
-msgstr ""
+msgstr "{0}: Neplatná hodnota parametru \"{1}\" desky \"{2}\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
