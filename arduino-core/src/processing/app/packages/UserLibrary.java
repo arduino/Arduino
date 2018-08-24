@@ -28,6 +28,9 @@
  */
 package processing.app.packages;
 
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,7 +45,6 @@ import com.github.zafarkhaja.semver.Version;
 import cc.arduino.Constants;
 import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.ContributedLibraryReference;
-import processing.app.I18n;
 import processing.app.helpers.PreferencesMap;
 import processing.app.packages.UserLibraryFolder.Location;
 
@@ -152,8 +154,8 @@ public class UserLibrary {
     String declaredVersion = properties.get("version").trim();
     Optional<Version> version = VersionHelper.valueOf(declaredVersion);
     if (!version.isPresent()) {
-      System.err.println(
-          I18n.format("Invalid version '{0}' for library in: {1}", declaredVersion, libFolder.getAbsolutePath()));
+      System.out.println(
+          format(tr("Invalid version '{0}' for library in: {1}"), declaredVersion, libFolder.getAbsolutePath()));
     }
 
     UserLibrary res = new UserLibrary();
