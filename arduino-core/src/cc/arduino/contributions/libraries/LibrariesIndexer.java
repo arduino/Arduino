@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class LibrariesIndexer {
@@ -203,7 +204,7 @@ public class LibrariesIndexer {
       LegacyUserLibrary lib = LegacyUserLibrary.create(folderDesc);
       String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
       if (headers.length == 0) {
-        throw new IOException(lib.getSrcFolder().getAbsolutePath());
+        throw new IOException(format(tr("no headers files (.h) found in {0}"), lib.getSrcFolder()));
       }
       addToInstalledLibraries(lib);
       return;
@@ -213,7 +214,7 @@ public class LibrariesIndexer {
     UserLibrary lib = UserLibrary.create(folderDesc);
     String[] headers = BaseNoGui.headerListFromIncludePath(lib.getSrcFolder());
     if (headers.length == 0) {
-      throw new IOException(lib.getSrcFolder().getAbsolutePath());
+      throw new IOException(format(tr("no headers files (.h) found in {0}"), lib.getSrcFolder()));
     }
     addToInstalledLibraries(lib);
 
