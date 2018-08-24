@@ -32,6 +32,7 @@ package cc.arduino.contributions;
 import com.github.zafarkhaja.semver.Version;
 
 import java.io.File;
+import java.util.Optional;
 
 public abstract class DownloadableContribution {
 
@@ -66,10 +67,10 @@ public abstract class DownloadableContribution {
   }
 
   public String getParsedVersion() {
-    Version version = VersionHelper.valueOf(getVersion());
-    if (version == null) {
-      return null;
+    Optional<Version> version = VersionHelper.valueOf(getVersion());
+    if (version.isPresent()) {
+      return version.get().toString();
     }
-    return version.toString();
+    return null;
   }
 }
