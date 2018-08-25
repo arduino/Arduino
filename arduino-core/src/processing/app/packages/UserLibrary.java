@@ -149,6 +149,10 @@ public class UserLibrary {
 
     String declaredVersion = properties.get("version").trim();
     Version version = VersionHelper.valueOf(declaredVersion);
+    if (version == null) {
+      System.err.println("Can't parse library version in " + propertiesFile.toString());
+      version = VersionHelper.valueOf("0.0.1"); // version must not be null
+    }
 
     UserLibrary res = new UserLibrary();
     res.installedFolder = libFolder;
