@@ -508,7 +508,7 @@ public class Editor extends JFrame implements RunnerListener {
         if (!components.contains(sketchbookMenu)) {
           fileMenu.insert(sketchbookMenu, 3);
         }
-        if (!components.contains(sketchbookMenu)) {
+        if (!components.contains(examplesMenu)) {
           fileMenu.insert(examplesMenu, 4);
         }
         fileMenu.revalidate();
