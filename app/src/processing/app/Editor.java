@@ -262,8 +262,6 @@ public class Editor extends JFrame implements RunnerListener {
         // added for 1.0.5
         // http://dev.processing.org/bugs/show_bug.cgi?id=1260
         public void windowDeactivated(WindowEvent e) {
-          fileMenu.remove(sketchbookMenu);
-          fileMenu.remove(examplesMenu);
           List<Component> toolsMenuItemsToRemove = new LinkedList<>();
           for (Component menuItem : toolsMenu.getMenuComponents()) {
             if (menuItem instanceof JComponent) {
@@ -504,7 +502,7 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.addMenuListener(new StubMenuListener() {
       @Override
       public void menuSelected(MenuEvent e) {
-        List<Component> components = Arrays.asList(fileMenu.getComponents());
+        List<Component> components = Arrays.asList(fileMenu.getMenuComponents());
         if (!components.contains(sketchbookMenu)) {
           fileMenu.insert(sketchbookMenu, 3);
         }
@@ -537,7 +535,7 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.addMenuListener(new StubMenuListener() {
       @Override
       public void menuSelected(MenuEvent e) {
-        List<Component> components = Arrays.asList(toolsMenu.getComponents());
+        List<Component> components = Arrays.asList(toolsMenu.getMenuComponents());
         int offset = 0;
         for (JMenu menu : base.getBoardsCustomMenus()) {
           if (!components.contains(menu)) {
