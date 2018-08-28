@@ -51,12 +51,9 @@ public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLi
 
   @Override
   public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
-      @Override
-      public boolean test(ContributedLibraryReleases rel) {
-        ContributedLibrary lib = rel.getLatest();
-        return category.equals(lib.getCategory());
-      }
+    return rel -> {
+      ContributedLibrary lib = rel.getLatest();
+      return category.equals(lib.getCategory());
     };
   }
 

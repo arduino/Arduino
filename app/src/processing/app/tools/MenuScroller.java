@@ -296,19 +296,9 @@ public class MenuScroller {
     menu.addPopupMenuListener(menuListener);
     menu.addMouseWheelListener(mouseWheelListener);
 
-    ActionListener accel = new ActionListener() {
-      @Override
-        public void actionPerformed(ActionEvent e) {
-          accelerator = 6;
-      }
-    };
+    ActionListener accel = e -> accelerator = 6;
 
-    ActionListener decel = new ActionListener() {
-      @Override
-        public void actionPerformed(ActionEvent e) {
-          accelerator = 1;
-      }
-    };
+    ActionListener decel = e -> accelerator = 1;
 
     KeyStroke keystroke_accel = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false);
     KeyStroke keystroke_decel = KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true);

@@ -88,10 +88,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
   }
 
   public boolean isIDEBuiltIn() {
-    if (!installedLib.isPresent()) {
-      return false;
-    }
-    return installedLib.get().isIDEBuiltIn();
+    return installedLib.map(UserLibrary::isIDEBuiltIn).orElse(false);
   }
 
   /**

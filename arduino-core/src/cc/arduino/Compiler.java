@@ -49,10 +49,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -274,7 +271,7 @@ public class Compiler implements MessageConsumer {
 
     cmd.add("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
 
-    for (Map.Entry<String, String> entry : BaseNoGui.getBoardPreferences().entrySet()) {
+    for (Map.Entry<String, String> entry : Objects.requireNonNull(BaseNoGui.getBoardPreferences()).entrySet()) {
         if (entry.getKey().startsWith("runtime.tools")) {
           cmd.add("-prefs=" + entry.getKey() + "=" + entry.getValue());
         }
@@ -390,8 +387,7 @@ public class Compiler implements MessageConsumer {
   }
 
   private void runActions(String recipeClass, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
-    List<String> patterns = prefs.keySet().stream().filter(key -> key.startsWith("recipe." + recipeClass) && key.endsWith(".pattern")).collect(Collectors.toList());
-    Collections.sort(patterns);
+    List<String> patterns = prefs.keySet().stream().filter(key -> key.startsWith("recipe." + recipeClass) && key.endsWith(".pattern")).sorted().collect(Collectors.toList());
     for (String recipe : patterns) {
       runRecipe(recipe, prefs);
     }

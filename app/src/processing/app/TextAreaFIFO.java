@@ -45,11 +45,7 @@ public class TextAreaFIFO extends JTextArea implements DocumentListener {
   public void insertUpdate(DocumentEvent e) {
     if (++updateCount > 150 && doTrim) {
       updateCount = 0;
-      SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-          trimDocument();
-        }
-      });
+      SwingUtilities.invokeLater(() -> trimDocument());
     }
   }
 

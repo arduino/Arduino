@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions;
 
+import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import processing.app.Base;
 import processing.app.BaseNoGui;
@@ -36,6 +37,7 @@ import processing.app.I18n;
 import processing.app.PreferencesData;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,14 +68,14 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
 
     List<ContributedPlatform> contributedPlatforms = BaseNoGui.indexer
         .getPackages().stream() //
-        .map(pack -> pack.getPlatforms()) //
-        .flatMap(platfs -> platfs.stream()) //
+        .map(ContributedPackage::getPlatforms) //
+        .flatMap(Collection::stream) //
         .collect(Collectors.toList());
 
     Optional<ContributedPlatform> mayInstalledBuiltIn = contributedPlatforms
         .stream() //
-        .filter(p -> p.isInstalled()) //
-        .filter(p -> p.isBuiltIn()) //
+        .filter(ContributedPlatform::isInstalled) //
+        .filter(ContributedPlatform::isBuiltIn) //
         .findFirst();
     if (!mayInstalledBuiltIn.isPresent()) {
       return;

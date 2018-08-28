@@ -888,14 +888,11 @@ public class Base {
     recentSketchesMenuItems.clear();
     for (final File recentSketch : recentSketches) {
       JMenuItem recentSketchMenuItem = new JMenuItem(recentSketch.getParentFile().getName());
-      recentSketchMenuItem.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent actionEvent) {
-          try {
-            handleOpen(recentSketch);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+      recentSketchMenuItem.addActionListener(actionEvent -> {
+        try {
+          handleOpen(recentSketch);
+        } catch (Exception e) {
+          e.printStackTrace();
         }
       });
       recentSketchesMenuItems.add(recentSketchMenuItem);
@@ -1012,13 +1009,11 @@ public class Base {
   public void rebuildSketchbookMenus() {
     //System.out.println("async enter");
     //new Exception().printStackTrace();
-    SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        //System.out.println("starting rebuild");
-        rebuildSketchbookMenu(Editor.sketchbookMenu);
-        rebuildToolbarMenu(Editor.toolbarMenu);
-        //System.out.println("done with rebuild");
-      }
+    SwingUtilities.invokeLater(() -> {
+      //System.out.println("starting rebuild");
+      rebuildSketchbookMenu(Editor.sketchbookMenu);
+      rebuildToolbarMenu(Editor.toolbarMenu);
+      //System.out.println("done with rebuild");
     });
     //System.out.println("async exit");
   }
@@ -1030,13 +1025,11 @@ public class Base {
 
     // Add the single "Open" item
     item = Editor.newJMenuItem(tr("Open..."), 'O');
-    item.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        try {
-          handleOpenPrompt();
-        } catch (Exception e1) {
-          e1.printStackTrace();
-        }
+    item.addActionListener(e -> {
+      try {
+        handleOpenPrompt();
+      } catch (Exception e1) {
+        e1.printStackTrace();
       }
     });
     menu.add(item);
@@ -1072,6 +1065,7 @@ public class Base {
     return installedLibraries;
   }
 
+  @SuppressWarnings("MagicConstant")
   public void rebuildImportMenu(JMenu importMenu) {
     if (importMenu == null)
       return;
@@ -1087,14 +1081,12 @@ public class Base {
     importMenu.addSeparator();
 
     JMenuItem addLibraryMenuItem = new JMenuItem(tr("Add .ZIP Library..."));
-    addLibraryMenuItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        Base.this.handleAddLibrary();
-        BaseNoGui.librariesIndexer.rescanLibraries();
-        Base.this.onBoardOrPortChange();
-        Base.this.rebuildImportMenu(Editor.importMenu);
-        Base.this.rebuildExamplesMenu(Editor.examplesMenu);
-      }
+    addLibraryMenuItem.addActionListener(e -> {
+      Base.this.handleAddLibrary();
+      BaseNoGui.librariesIndexer.rescanLibraries();
+      Base.this.onBoardOrPortChange();
+      Base.this.rebuildImportMenu(Editor.importMenu);
+      Base.this.rebuildExamplesMenu(Editor.examplesMenu);
     });
     importMenu.add(addLibraryMenuItem);
     importMenu.addSeparator();
@@ -1679,12 +1671,7 @@ public class Base {
     if (files == null) return false;
 
     // Alphabetize files, since it's not always alpha order
-    Arrays.sort(files, new Comparator<File>() {
-      @Override
-      public int compare(File file, File file2) {
-        return file.getName().compareToIgnoreCase(file2.getName());
-      }
-    });
+    Arrays.sort(files, (file, file2) -> file.getName().compareToIgnoreCase(file2.getName()));
 
     boolean ifound = false;
 
@@ -1709,22 +1696,20 @@ public class Base {
 
   private boolean addSketchesSubmenu(JMenu menu, String name, File folder) {
 
-    ActionListener listener = new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        String path = e.getActionCommand();
-        File file = new File(path);
-        if (file.exists()) {
-          try {
-            handleOpen(file);
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
-        } else {
-          showWarning(tr("Sketch Does Not Exist"),
-                  tr("The selected sketch no longer exists.\n"
-                          + "You may need to restart Arduino to update\n"
-                          + "the sketchbook menu."), null);
+    ActionListener listener = e -> {
+      String path = e.getActionCommand();
+      File file = new File(path);
+      if (file.exists()) {
+        try {
+          handleOpen(file);
+        } catch (Exception e1) {
+          e1.printStackTrace();
         }
+      } else {
+        showWarning(tr("Sketch Does Not Exist"),
+                tr("The selected sketch no longer exists.\n"
+                        + "You may need to restart Arduino to update\n"
+                        + "the sketchbook menu."), null);
       }
     };
 
@@ -2273,7 +2258,8 @@ public class Base {
           ZipDeflater zipDeflater = new ZipDeflater(sourceFile, tmpFolder);
           zipDeflater.deflate();
           File[] foldersInTmpFolder = tmpFolder.listFiles(new OnlyDirs());
-          if (foldersInTmpFolder.length != 1) {
+          /*if (Objects.requireNonNull(foldersInTmpFolder).length != 1) {*/
+          if (foldersInTmpFolder != null && foldersInTmpFolder.length != 1) {
             throw new IOException(tr("Zip doesn't contain a library"));
           }
           sourceFile = foldersInTmpFolder[0];

@@ -83,7 +83,7 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
+  public synchronized void install(ContributedLibrary lib, @SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
     if (lib.isLibraryInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;

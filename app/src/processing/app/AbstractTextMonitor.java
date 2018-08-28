@@ -107,11 +107,9 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     noLineEndingAlert.setMinimumSize(minimumSize);
 
     lineEndings = new JComboBox(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
-    lineEndings.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
-        noLineEndingAlert.setForeground(pane.getBackground());
-      }
+    lineEndings.addActionListener(event -> {
+      PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
+      noLineEndingAlert.setForeground(pane.getBackground());
     });
     if (PreferencesData.get("serial.line_ending") != null) {
       lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
@@ -119,11 +117,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     if (PreferencesData.get("serial.show_timestamp") != null) {
       addTimeStampBox.setSelected(PreferencesData.getBoolean("serial.show_timestamp"));
     }
-    addTimeStampBox.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected());
-      }
-    });
+    addTimeStampBox.addActionListener(e -> PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected()));
 
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 

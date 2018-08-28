@@ -110,7 +110,7 @@ import processing.app.tools.Tool;
 /**
  * Main editor panel for the Processing Development Environment.
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({"serial", "MagicConstant"})
 public class Editor extends JFrame implements RunnerListener {
 
   public static final int MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR = 10000;
@@ -588,7 +588,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     base.rebuildRecentSketchesMenuItems();
     recentSketchesMenu = new JMenu(tr("Open Recent"));
-    SwingUtilities.invokeLater(() -> rebuildRecentSketchesMenu());
+    SwingUtilities.invokeLater(this::rebuildRecentSketchesMenu);
     fileMenu.add(recentSketchesMenu);
 
     if (sketchbookMenu == null) {
@@ -794,15 +794,13 @@ public class Editor extends JFrame implements RunnerListener {
 
     Map<String, JMenuItem> toolItems = new HashMap<>();
 
-    File[] folders = sourceFolder.listFiles(new FileFilter() {
-      public boolean accept(File folder) {
-        if (folder.isDirectory()) {
-          //System.out.println("checking " + folder);
-          File subfolder = new File(folder, "tool");
-          return subfolder.exists();
-        }
-        return false;
+    File[] folders = sourceFolder.listFiles(folder -> {
+      if (folder.isDirectory()) {
+        //System.out.println("checking " + folder);
+        File subfolder = new File(folder, "tool");
+        return subfolder.exists();
       }
+      return false;
     });
 
     if (folders == null || folders.length == 0) {
@@ -817,14 +815,10 @@ public class Editor extends JFrame implements RunnerListener {
         //urlList.add(toolDirectory.toURL());
 
         // add .jar files to classpath
-        File[] archives = toolDirectory.listFiles(new FilenameFilter() {
-          public boolean accept(File dir, String name) {
-            return (name.toLowerCase().endsWith(".jar") ||
-              name.toLowerCase().endsWith(".zip"));
-          }
-        });
+        File[] archives = toolDirectory.listFiles((dir, name) -> (name.toLowerCase().endsWith(".jar") ||
+          name.toLowerCase().endsWith(".zip")));
 
-        URL[] urlList = new URL[archives.length];
+        URL[] urlList = archives != null ? new URL[archives.length] : new URL[0];
         for (int j = 0; j < urlList.length; j++) {
           urlList[j] = archives[j].toURI().toURL();
         }
@@ -1057,12 +1051,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     ports = platform.filterPorts(ports, PreferencesData.getBoolean("serial.ports.showall"));
 
-    Collections.sort(ports, new Comparator<BoardPort>() {
-      @Override
-      public int compare(BoardPort o1, BoardPort o2) {
-        return BOARD_PROTOCOLS_ORDER.indexOf(o1.getProtocol()) - BOARD_PROTOCOLS_ORDER.indexOf(o2.getProtocol());
-      }
-    });
+    ports.sort(Comparator.comparingInt(o -> BOARD_PROTOCOLS_ORDER.indexOf(o.getProtocol())));
 
     String lastProtocol = null;
     String lastProtocolTranslated;
@@ -1145,7 +1134,7 @@ public class Editor extends JFrame implements RunnerListener {
     menu.addSeparator();
 
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
-    item.addActionListener(event -> handleFindReference(event));
+    item.addActionListener(this::handleFindReference);
     menu.add(item);
 
     item = new JMenuItem(tr("Frequently Asked Questions"));
@@ -1166,6 +1155,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     return menu;
   }
+
 
 
   private JMenu buildEditMenu() {

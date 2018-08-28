@@ -37,6 +37,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static processing.app.I18n.tr;
@@ -173,7 +174,7 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
   public void setText(String text) {
     Collection<String> urls = splitAndTrim(text, ",");
-    additionalBoardsManagerURLs.setText(urls.stream().filter(s -> s != null).collect(Collectors.joining("\n")));
+    additionalBoardsManagerURLs.setText(urls.stream().filter(Objects::nonNull).collect(Collectors.joining("\n")));
   }
 
   private Collection<String> splitAndTrim(String text, String separator) {
@@ -183,7 +184,7 @@ public class AdditionalBoardsManagerURLTextArea extends javax.swing.JDialog {
 
   public String getText() {
     Collection<String> urls = splitAndTrim(additionalBoardsManagerURLs.getText(), "\n");
-    return urls.stream().filter(s -> s != null).collect(Collectors.joining(","));
+    return urls.stream().filter(Objects::nonNull).collect(Collectors.joining(","));
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

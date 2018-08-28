@@ -63,7 +63,7 @@ public class SerialDiscovery implements Discovery, Runnable {
       }
       List<BoardPort> onlineBoardPorts = new LinkedList<>();
       for (BoardPort port : serialBoardPorts) {
-        if (port.isOnline() == true) {
+        if (port.isOnline()) {
           onlineBoardPorts.add(port);
         }
       }

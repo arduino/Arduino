@@ -45,7 +45,7 @@ public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
   public static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
     contribs = new LinkedList<>(contribs);
     final VersionComparator versionComparator = new VersionComparator();
-    Collections.sort(contribs, (contrib1, contrib2) -> versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion()));
+    contribs.sort((contrib1, contrib2) -> versionComparator.compare(contrib1.getParsedVersion(), contrib2.getParsedVersion()));
 
     if (contribs.isEmpty()) {
       return null;

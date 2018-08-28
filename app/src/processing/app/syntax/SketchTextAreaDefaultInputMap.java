@@ -11,6 +11,7 @@ import javax.swing.text.DefaultEditorKit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+@SuppressWarnings("MagicConstant")
 public class SketchTextAreaDefaultInputMap extends RSyntaxTextAreaDefaultInputMap {
 
   public SketchTextAreaDefaultInputMap() {

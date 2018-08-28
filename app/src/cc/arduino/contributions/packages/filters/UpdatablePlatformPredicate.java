@@ -49,8 +49,6 @@ public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform
     }
 
     List<ContributedPlatform> platforms = BaseNoGui.indexer.getIndex().findPlatforms(packageName, architecture);
-    return platforms.stream()
-      .filter(platform -> VersionComparator.greaterThan(platform.getParsedVersion(), installed.getParsedVersion()))
-      .count() > 0;
+    return platforms.stream().anyMatch(platform -> VersionComparator.greaterThan(platform.getParsedVersion(), installed.getParsedVersion()));
   }
 }

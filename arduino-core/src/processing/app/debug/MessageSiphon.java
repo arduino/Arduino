@@ -112,17 +112,15 @@ public class MessageSiphon implements Runnable {
         currentLine.setLength(0);
       }
       //EditorConsole.systemOut.println("messaging thread done");
-    } catch (NullPointerException npe) {
+    } catch (NullPointerException | SocketException npe) {
       // Fairly common exception during shutdown
-    } catch (SocketException e) {
-      // socket has been close while we were wainting for data. nothing to see here, move along
     } catch (Exception e) {
       // On Linux and sometimes on Mac OS X, a "bad file descriptor"
       // message comes up when closing an applet that's run externally.
       // That message just gets supressed here..
       String mess = e.getMessage();
       if ((mess != null) &&
-              (mess.indexOf("Bad file descriptor") != -1)) {
+              (mess.contains("Bad file descriptor"))) {
         //if (e.getMessage().indexOf("Bad file descriptor") == -1) {
         //System.err.println("MessageSiphon err " + e);
         //e.printStackTrace();

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.Objects;
 import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
@@ -68,7 +69,7 @@ public class ZipDeflater {
   }
 
   private void deleteUndesiredFoldersAndFiles(File folder) {
-    for (File file : folder.listFiles()) {
+    for (File file : Objects.requireNonNull(folder.listFiles())) {
       if (file.isDirectory() && "__MACOSX".equals(file.getName())) {
         FileUtils.recursiveDelete(file);
       } else if (file.getName().startsWith(".")) {
@@ -89,7 +90,7 @@ public class ZipDeflater {
   private void ensureOneLevelFolder(File folder) {
     File[] files = folder.listFiles();
 
-    if (files.length != 1) {
+    if (Objects.requireNonNull(files).length != 1) {
       folder.renameTo(new File(folder.getParentFile(), folderNameFromZip()));
       return;
     }
