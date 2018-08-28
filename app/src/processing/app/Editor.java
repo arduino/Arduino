@@ -1240,7 +1240,7 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
+    JMenuItem increaseFontSizeItem = newJMenuItemShift(tr("Increase Font Size"), KeyEvent.VK_PLUS);
     increaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(1));
     menu.add(increaseFontSizeItem);
     // Add alternative shortcut "CTRL SHIFT =" for keyboards that haven't the "+" key
