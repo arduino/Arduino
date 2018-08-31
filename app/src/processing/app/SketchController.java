@@ -709,6 +709,10 @@ public class SketchController {
 
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+    if (uploader == null) {
+      editor.statusError(tr("Please select a Port before Upload"));
+      return false;
+    }
 
     EditorConsole.setCurrentEditorConsole(editor.console);
 
