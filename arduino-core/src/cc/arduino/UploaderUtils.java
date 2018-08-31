@@ -55,11 +55,6 @@ public class UploaderUtils {
         return null;
       }
       boardPort = BaseNoGui.getDiscoveryManager().find(port);
-      //if (boardPort == null) {
-        // Is there ever a reason to attempt upload when
-        // the Port is not found by DiscoveryManager?
-        //return null;
-      //}
     }
 
     return new UploaderFactory().newUploader(target.getBoards().get(board), boardPort, noUploadPort);
