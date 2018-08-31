@@ -402,7 +402,7 @@
             mainclassname="processing.app.Base"
             copyright="Arduino LLC"
             applicationCategory="public.app-category.education"
-            minimumsystemversion="10.7"
+            minimumsystemversion="10.8"
             highresolutioncapable="true">
 
       <runtime dir="${MACOSX_BUNDLED_JVM}"/>
