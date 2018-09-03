@@ -73,11 +73,14 @@ public class LibrariesIndexer {
   }
 
   public void parseIndex() throws IOException {
+    index = new EmptyLibrariesIndex(); // Fallback
+
     if (!indexFile.exists()) {
-      index = new EmptyLibrariesIndex();
-    } else {
-      parseIndex(indexFile);
+      return;
     }
+
+    parseIndex(indexFile);
+
     // TODO: resolve libraries inner references
   }
 
