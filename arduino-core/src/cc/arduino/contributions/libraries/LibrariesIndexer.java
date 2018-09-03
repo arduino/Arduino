@@ -31,7 +31,10 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.packages.ContributedPlatform;
+
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
@@ -101,8 +104,12 @@ public class LibrariesIndexer {
         .forEach(library -> library.setCategory("Uncategorized"));
 
       index = newIndex;
+    } catch (JsonParseException | JsonMappingException e) {
+      System.err.println(
+          format(tr("Error parsing libraries index: {0}\nTry to open the Library Manager to update the libraries index."),
+              e.getMessage()));
     } catch (Exception e) {
-      System.err.println("Error parsing library.index:" + e.getMessage());
+      System.err.println(format(tr("Error reading libraries index: {0}"), e.getMessage()));
     } finally {
       IOUtils.closeQuietly(indexIn);
     }
