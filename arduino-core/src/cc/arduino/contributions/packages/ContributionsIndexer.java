@@ -55,6 +55,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 
@@ -100,13 +101,17 @@ public class ContributionsIndexer {
     // Overlay 3rd party indexes
     File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
-    for (File indexFile : indexFiles) {
-      try {
-	      mergeContributions(indexFile);
-      } catch (JsonProcessingException e) {
-        System.err.println(I18n.format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
-        System.err.println(e);
+    if (indexFiles != null) {
+      for (File indexFile : indexFiles) {
+        try {
+          mergeContributions(indexFile);
+        } catch (JsonProcessingException e) {
+          System.err.println(format(tr("Skipping contributed index file {0}, parsing error occured:"), indexFile));
+          System.err.println(e);
+        }
       }
+    } else {
+      System.err.println(format(tr("Error reading package indexes folder: {0}\n(maybe a permission problem?)"), preferencesFolder));
     }
 
     // Fill tools and toolsDependency cross references
