@@ -100,7 +100,7 @@ public class ContributionsIndexer {
     // Overlay 3rd party indexes
     File[] indexFiles = preferencesFolder.listFiles(new TestPackageIndexFilenameFilter(new PackageIndexFilenameFilter(Constants.DEFAULT_INDEX_FILE_NAME)));
 
-    for (File indexFile : indexFiles) {
+    for (File indexFile : Objects.requireNonNull(indexFiles)) {
       try {
 	      mergeContributions(indexFile);
       } catch (JsonProcessingException e) {
@@ -399,7 +399,7 @@ public class ContributionsIndexer {
     }
     for (ContributedPackage pack : index.getPackages()) {
       Collection<ContributedPlatform> platforms = pack.getPlatforms().stream() //
-          .filter(p -> p.isInstalled()) //
+          .filter(ContributedPlatform::isInstalled) //
           .collect(Collectors.toList());
       Map<String, List<ContributedPlatform>> platformsByName = platforms.stream().collect(Collectors.groupingBy(ContributedPlatform::getName));
 

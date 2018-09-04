@@ -45,61 +45,41 @@ public class ThinkDifferent {
 
   static public void init() {
     Application application = Application.getApplication();
-    application.setAboutHandler(new AboutHandler() {
-      @Override
-      public void handleAbout(AppEvent.AboutEvent aboutEvent) {
-        new Thread(() -> {
-          if (waitForBase()) {
-            Base.INSTANCE.handleAbout();
-          }
-        }).start();
+    application.setAboutHandler(aboutEvent -> new Thread(() -> {
+      if (waitForBase()) {
+        Base.INSTANCE.handleAbout();
       }
-    });
-    application.setPreferencesHandler(new PreferencesHandler() {
-      @Override
-      public void handlePreferences(AppEvent.PreferencesEvent preferencesEvent) {
-        new Thread(() -> {
-          if (waitForBase()) {
-            Base.INSTANCE.handlePrefs();
-          }
-        }).start();
+    }).start());
+    application.setPreferencesHandler(preferencesEvent -> new Thread(() -> {
+      if (waitForBase()) {
+        Base.INSTANCE.handlePrefs();
       }
-    });
-    application.setOpenFileHandler(new OpenFilesHandler() {
-      @Override
-      public void openFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
-        new Thread(() -> {
-          if (waitForBase()) {
-            for (File file : openFilesEvent.getFiles()) {
-              System.out.println(file);
-              try {
-                Base.INSTANCE.handleOpen(file);
-                List<Editor> editors = Base.INSTANCE.getEditors();
-                if (editors.size() == 2 && editors.get(0).getSketchController().isUntitled()) {
-                  Base.INSTANCE.handleClose(editors.get(0));
-                }
-              } catch (Exception e) {
-                throw new RuntimeException(e);
-              }
+    }).start());
+    application.setOpenFileHandler(openFilesEvent -> new Thread(() -> {
+      if (waitForBase()) {
+        for (File file : openFilesEvent.getFiles()) {
+          System.out.println(file);
+          try {
+            Base.INSTANCE.handleOpen(file);
+            List<Editor> editors = Base.INSTANCE.getEditors();
+            if (editors.size() == 2 && editors.get(0).getSketchController().isUntitled()) {
+              Base.INSTANCE.handleClose(editors.get(0));
             }
+          } catch (Exception e) {
+            throw new RuntimeException(e);
           }
-        }).start();
+        }
       }
-    });
-    application.setQuitHandler(new QuitHandler() {
-      @Override
-      public void handleQuitRequestWith(AppEvent.QuitEvent quitEvent, QuitResponse quitResponse) {
-        new Thread(() -> {
-          if (waitForBase()) {
-            if (Base.INSTANCE.handleQuit()) {
-              quitResponse.performQuit();
-            } else {
-              quitResponse.cancelQuit();
-            }
-          }
-        }).start();
+    }).start());
+    application.setQuitHandler((quitEvent, quitResponse) -> new Thread(() -> {
+      if (waitForBase()) {
+        if (Base.INSTANCE.handleQuit()) {
+          quitResponse.performQuit();
+        } else {
+          quitResponse.cancelQuit();
+        }
       }
-    });
+    }).start());
   }
 
   private static boolean waitForBase() {

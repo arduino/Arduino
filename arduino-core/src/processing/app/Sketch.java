@@ -31,15 +31,12 @@ public class Sketch {
 
   private File buildPath;
 
-  public static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = new Comparator<SketchFile>() {
-    @Override
-    public int compare(SketchFile x, SketchFile y) {
-      if (x.isPrimary() && !y.isPrimary())
-        return -1;
-      if (y.isPrimary() && !x.isPrimary())
-        return 1;
-      return x.getFileName().compareTo(y.getFileName());
-    }
+  public static final Comparator<SketchFile> CODE_DOCS_COMPARATOR = (x, y) -> {
+    if (x.isPrimary() && !y.isPrimary())
+      return -1;
+    if (y.isPrimary() && !x.isPrimary())
+      return 1;
+    return x.getFileName().compareTo(y.getFileName());
   };
 
   /**
@@ -316,7 +313,7 @@ public class Sketch {
     // Add a new sketchFile
     SketchFile sketchFile = new SketchFile(this, newFile);
     files.add(sketchFile);
-    Collections.sort(files, CODE_DOCS_COMPARATOR);
+    files.sort(CODE_DOCS_COMPARATOR);
 
     return sketchFile;
   }

@@ -42,15 +42,9 @@ public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedL
 
   @Override
   public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
-      @Override
-      public boolean test(ContributedLibraryReleases lib) {
-        Optional<ContributedLibrary> mayInstalled = lib.getInstalled();
-        if (!mayInstalled.isPresent()) {
-          return false;
-        }
-        return !lib.getLatest().equals(mayInstalled.get());
-      }
+    return lib -> {
+      Optional<ContributedLibrary> mayInstalled = lib.getInstalled();
+      return mayInstalled.filter(contributedLibrary -> !lib.getLatest().equals(contributedLibrary)).isPresent();
     };
   }
 

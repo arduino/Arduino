@@ -51,12 +51,9 @@ public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrar
 
   @Override
   public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
-      @Override
-      public boolean test(ContributedLibraryReleases lib) {
-        List<String> types = lib.getLatest().getTypes();
-        return types != null && types.contains(type);
-      }
+    return lib -> {
+      List<String> types = lib.getLatest().getTypes();
+      return types != null && types.contains(type);
     };
   }
 

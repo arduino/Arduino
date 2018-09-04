@@ -90,7 +90,7 @@ public class ExternalProcessOutputParser {
     List<String> additionalArgs = new LinkedList<>();
 
     if (argsAsString.charAt(argsAsString.length() - 1) == ' ') {
-      String allArgsButEndingSpacesAsString = args.stream().collect(Collectors.joining(" "));
+      String allArgsButEndingSpacesAsString = String.join(" ", args);
       String endingSpacesOnly = argsAsString.replace(allArgsButEndingSpacesAsString, "");
       for (int i = 0; i < endingSpacesOnly.length(); i++) {
         additionalArgs.add("");

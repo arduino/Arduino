@@ -89,8 +89,8 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
         .collect(Collectors.toList());
 
     List<ContributedPlatform> installedBuiltIn = releases.stream() //
-        .filter(p -> p.isInstalled()) //
-        .filter(p -> p.isBuiltIn()) //
+        .filter(ContributedPlatform::isInstalled) //
+        .filter(ContributedPlatform::isBuiltIn) //
         .collect(Collectors.toList());
 
     if (installed != null && !installedBuiltIn.contains(installed)) {

@@ -77,6 +77,7 @@ public class ContributedLibraryReleases {
     selected = latest;
   }
 
+  @SuppressWarnings("OptionalGetWithoutIsPresent")
   public Optional<ContributedLibrary> getInstalled() {
     return releases.stream() //
         .filter(ContributedLibrary::isLibraryInstalled) //

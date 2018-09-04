@@ -44,12 +44,7 @@ public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLib
 
   @Override
   public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
-      @Override
-      public boolean test(ContributedLibraryReleases t) {
-        return t.getInstalled().isPresent();
-      }
-    };
+    return t -> t.getInstalled().isPresent();
   }
 
 }

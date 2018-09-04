@@ -56,7 +56,7 @@ public class FileUtils {
   }
 
   public static void copy(File sourceFolder, File destFolder) throws IOException {
-    for (File file : sourceFolder.listFiles()) {
+    for (File file : Objects.requireNonNull(sourceFolder.listFiles())) {
       File destFile = new File(destFolder, file.getName());
       if (file.isDirectory() && !SOURCE_CONTROL_FOLDERS.contains(file.getName())) {
         if (!destFile.exists() && !destFile.mkdir()) {
@@ -142,7 +142,7 @@ public class FileUtils {
     String prefix = "";
     String root = File.separator;
 
-    if (System.getProperty("os.name").indexOf("Windows") != -1) {
+    if (System.getProperty("os.name").contains("Windows")) {
       if (origin.startsWith("\\\\") || target.startsWith("\\\\")) {
         // Windows UNC path not supported.
         return null;
@@ -211,19 +211,13 @@ public class FileUtils {
 
   public static List<String> readFileToListOfStrings(File file) throws IOException {
     List<String> strings = new LinkedList<>();
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new FileReader(file));
+    try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = reader.readLine()) != null) {
         line = line.replaceAll("\r", "").replaceAll("\n", "").replaceAll(" ", "");
         strings.add(line);
       }
       return strings;
-    } finally {
-      if (reader != null) {
-        reader.close();
-      }
     }
   }
 

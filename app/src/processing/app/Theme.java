@@ -47,13 +47,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -371,7 +365,7 @@ public class Theme {
       return;
     }
     
-    for (File zipFile : folder.listFiles((dir, name) -> name.endsWith(".zip"))) {
+    for (File zipFile : Objects.requireNonNull(folder.listFiles((dir, name) -> name.endsWith(".zip")))) {
       ZippedTheme theme = ZippedTheme.load(namespace, zipFile);
       if (theme != null) {
         discoveredThemes.put(theme.getKey(), theme);
@@ -605,8 +599,8 @@ public class Theme {
   private static Image imageFromSVG(URL url, int width, int height)
       throws TranscoderException {
     Transcoder t = new PNGTranscoder();
-    t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, new Float(width));
-    t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, new Float(height));
+    t.addTranscodingHint(PNGTranscoder.KEY_WIDTH, (float) width);
+    t.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, (float) height);
 
     TranscoderInput input = new TranscoderInput(url.toString());
     ByteArrayOutputStream ostream = new ByteArrayOutputStream();

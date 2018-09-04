@@ -43,16 +43,10 @@ public class MergeSketchWithBooloader {
     mergedSketch.remove(mergedSketch.size() - 1);
     mergedSketch.addAll(FileUtils.readFileToListOfStrings(bootloader));
 
-    FileWriter writer = null;
-    try {
-      writer = new FileWriter(sketch);
+    try (FileWriter writer = new FileWriter(sketch)) {
       for (String line : mergedSketch) {
         writer.write(line);
         writer.write("\n");
-      }
-    } finally {
-      if (writer != null) {
-        writer.close();
       }
     }
   }

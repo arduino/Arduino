@@ -70,9 +70,9 @@ public class ContributedPlatformReleases {
 
   public ContributedPlatform getInstalled() {
     List<ContributedPlatform> installedReleases = releases.stream()
-        .filter(p -> p.isInstalled()) //
+        .filter(ContributedPlatform::isInstalled) //
         .collect(Collectors.toList());
-    Collections.sort(installedReleases, ContributedPlatform.BUILTIN_AS_LAST);
+    installedReleases.sort(ContributedPlatform.BUILTIN_AS_LAST);
 
     if (installedReleases.isEmpty()) {
       return null;

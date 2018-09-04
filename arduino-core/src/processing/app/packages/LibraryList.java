@@ -88,12 +88,12 @@ public class LibraryList extends LinkedList<UserLibrary> {
     return new Collector<UserLibrary, LibraryList, LibraryList>() {
       @Override
       public Supplier<LibraryList> supplier() {
-        return () -> new LibraryList();
+        return LibraryList::new;
       }
 
       @Override
       public BiConsumer<LibraryList, UserLibrary> accumulator() {
-        return (libs, lib) -> libs.add(lib);
+        return LinkedList::add;
       }
 
       @Override

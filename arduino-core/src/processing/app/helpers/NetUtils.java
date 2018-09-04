@@ -35,21 +35,12 @@ public abstract class NetUtils {
   }
 
   private static boolean isPortOpen(InetAddress address, int port) {
-    Socket socket = null;
-    try {
-      socket = new Socket();
+    try (Socket socket = new Socket()) {
       socket.connect(new InetSocketAddress(address, port), 1000);
       return true;
     } catch (IOException e) {
       return false;
-    } finally {
-      if (socket != null) {
-        try {
-          socket.close();
-        } catch (IOException e) {
-          // noop
-        }
-      }
     }
+    // noop
   }
 }

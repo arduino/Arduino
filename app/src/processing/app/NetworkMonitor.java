@@ -34,18 +34,16 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
   public NetworkMonitor(BoardPort port) {
     super(port);
 
-    onSendCommand(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        try {
-          OutputStream out = channel.getOutputStream();
-          out.write(textField.getText().getBytes());
-          out.write('\n');
-          out.flush();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        textField.setText("");
+    onSendCommand(event -> {
+      try {
+        OutputStream out = channel.getOutputStream();
+        out.write(textField.getText().getBytes());
+        out.write('\n');
+        out.flush();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
+      textField.setText("");
     });
   }
 
@@ -101,20 +99,15 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
     new MessageSiphon(errStream, this);
 
     if (connectionAttempts > 1) {
-      SwingUtilities.invokeLater(new Runnable() {
-
-        @Override
-        public void run() {
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException e) {
-            // ignore
-          }
-          if (channel.isConnected()) {
-            NetworkMonitor.this.message(tr("connected!") + '\n');
-          }
+      SwingUtilities.invokeLater(() -> {
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+          // ignore
         }
-
+        if (channel.isConnected()) {
+          NetworkMonitor.this.message(tr("connected!") + '\n');
+        }
       });
     }
   }
@@ -132,16 +125,13 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
       if (connectionAttempts < MAX_CONNECTION_ATTEMPTS) {
         s = "\n" + tr("Unable to connect: retrying") + " (" + connectionAttempts + ")... ";
 
-        SwingUtilities.invokeLater(new Runnable() {
-          @Override
-          public void run() {
-            try {
-              NetworkMonitor.this.tryConnect();
-            } catch (JSchException e) {
-              e.printStackTrace();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+        SwingUtilities.invokeLater(() -> {
+          try {
+            NetworkMonitor.this.tryConnect();
+          } catch (JSchException e) {
+            e.printStackTrace();
+          } catch (IOException e) {
+            e.printStackTrace();
           }
         });
       } else {
