@@ -56,7 +56,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
-    final MultiStepProgress progress = new MultiStepProgress(2);
+    final MultiStepProgress progress = new MultiStepProgress(3);
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
@@ -79,7 +79,10 @@ public class LibraryInstaller {
     if (!tmpFile.renameTo(outputFile))
       throw new Exception(tr("An error occurred while updating libraries index!"));
 
-    // Step 2: Rescan index
+    // Step 2: Parse index
+    BaseNoGui.librariesIndexer.parseIndex();
+
+    // Step 3: Rescan index
     rescanLibraryIndex(progress, progressListener);
   }
 
