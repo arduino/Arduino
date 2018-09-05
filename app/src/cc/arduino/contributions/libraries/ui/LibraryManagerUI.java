@@ -200,6 +200,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, "");
         installer.updateIndex(this::setProgress);
+        ((LibrariesIndexTableModel) contribModel).update();
         onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
