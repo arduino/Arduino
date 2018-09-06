@@ -628,6 +628,11 @@ msgstr "Ezin izango litzateke kendu bertsio zaharra{0}"
 msgid "Could not replace {0}"
 msgstr "Ezin izango luke ordeztu {0}"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Ezin izan da eskema artxibatu"
@@ -884,6 +889,25 @@ msgstr "''{0}'' hutseko irekierako serieko ataka."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
 msgstr ""
 
 #: Preferences.java:277
@@ -1253,6 +1277,11 @@ msgstr " {0}: {1}-etan aurkitutako liburutegi okerra"
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr ""
 
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "Italiera"
@@ -1567,6 +1596,10 @@ msgstr "SPI-liburutegia inportatu Eskema > Erantsi liburutegia menutik."
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Wire liburutegia  Eskema > Erantsi liburutegia menutik inportatu ezazu."
+
+#: ../../../../../app/src/processing/app/SketchController.java:713
+msgid "Please select a Port before Upload"
+msgstr ""
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2640,6 +2673,12 @@ msgstr "Letra-tamaina elbarria {0} ez ikusi egin"
 #: Editor.java:936 Editor.java:943
 msgid "name is null"
 msgstr "Izen nulu"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
 
 #: Editor.java:932
 msgid "serialMenu is null"

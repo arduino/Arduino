@@ -627,6 +627,11 @@ msgstr "{0}의 이전 버젼을 삭제할 수 없습니다"
 msgid "Could not replace {0}"
 msgstr "{0}를 바꿀 수 없습니다"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "스케치를 보관 할 수 없습니다"
@@ -884,6 +889,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "시리얼 포트''{0}' 열기 에러'. 다음의 문서를 참고하세요 http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr ""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1252,6 +1276,11 @@ msgstr "잘못된 라이브러리가 {0}에서 발견: {1}"
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
 
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "이탈리아어"
@@ -1566,6 +1595,10 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러�
 #: ../../../processing/app/debug/Compiler.java:529
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
+
+#: ../../../../../app/src/processing/app/SketchController.java:713
+msgid "Please select a Port before Upload"
+msgstr ""
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2639,6 +2672,12 @@ msgstr "잘못된 글꼴 크기 {0}를 무시"
 #: Editor.java:936 Editor.java:943
 msgid "name is null"
 msgstr "name 이 null입니다."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
 
 #: Editor.java:932
 msgid "serialMenu is null"
