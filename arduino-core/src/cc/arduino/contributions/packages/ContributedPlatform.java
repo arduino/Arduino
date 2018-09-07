@@ -87,7 +87,7 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   public static final Comparator<ContributedPlatform> BUILTIN_AS_LAST = (x, y) -> {
     int px = x.isBuiltIn() ? 1 : -1;
     int py = y.isBuiltIn() ? 1 : -1;
-    return py - px;
+    return px - py;
   };
 
   private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
