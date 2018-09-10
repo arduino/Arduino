@@ -5,11 +5,17 @@ ARDUINO 1.8.7 2018.09.11
 [ide]
 * Fixed: IDE doesn't start if library_index.json is corruped.
 * Fixed: IDE doesn't start if a library with invalid version is found.
+* Fixed: Rare build errors in very complex sketches (like Marlin firmware).
 * Fixed: Better dialog explaining that MacOSX 10.8 is now required. Thanks @PaulStoffregen
 * Fixed: Slow "File" and "Tools" menus in MacOSX
 * Fixed: Weird Board Manager behaviour if AVR core is downgraded to a version earlier than 1.6.22
 * Improved first-use usability if the user don't select the serial port. Thanks @PaulStoffregen
 * Custom "Tools" menu now keeps the order as defined in boards.txt.
+
+[core]
+* AVR: Fixed EEPROM warnings. Thanks @bxparks
+* AVR: Treat "narrowing conversion" as warning, not error. This will make some libraries
+       to compile again. Thanks @PaulStoffregen
 
 ARDUINO 1.8.6 2018.08.23
 
