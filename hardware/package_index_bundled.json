@@ -12,15 +12,15 @@
         {
           "name": "Arduino AVR Boards",
           "architecture": "avr",
-          "version": "1.6.22",
+          "version": "1.6.23",
           "category": "Arduino",
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.6.22.tar.bz2",
-          "archiveFileName": "avr-1.6.22.tar.bz2",
-          "checksum": "SHA-256:e6399b2a687dd8485cbbfcbfbbd4f8e2e15fe535bbcfd1d81bf93d01e31f7d76",
-          "size": "4907422",
+          "url": "http://downloads.arduino.cc/cores/avr-1.6.23.tar.bz2",
+          "archiveFileName": "avr-1.6.23.tar.bz2",
+          "checksum": "SHA-256:18618d7f256f26cd77c35f4c888d5d1b2334f07925094fdc99ac3188722284aa",
+          "size": "5001988",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino/Genuino Uno"},
