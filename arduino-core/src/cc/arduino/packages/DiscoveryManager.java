@@ -29,13 +29,20 @@
 
 package cc.arduino.packages;
 
-import cc.arduino.packages.discoverers.NetworkDiscovery;
-import cc.arduino.packages.discoverers.SerialDiscovery;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static processing.app.I18n.tr;
+import cc.arduino.packages.discoverers.PluggableDiscovery;
+import cc.arduino.packages.discoverers.NetworkDiscovery;
+import cc.arduino.packages.discoverers.SerialDiscovery;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
+import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.StringReplacer;
 
 public class DiscoveryManager {
 
@@ -43,17 +50,46 @@ public class DiscoveryManager {
   private final SerialDiscovery serialDiscoverer = new SerialDiscovery();
   private final NetworkDiscovery networkDiscoverer = new NetworkDiscovery();
 
-  public DiscoveryManager() {
+//  private final Map<String, TargetPackage> packages;
+
+  public DiscoveryManager(Map<String, TargetPackage> packages) {
+//    this.packages = packages;
+
     discoverers = new ArrayList<>();
     discoverers.add(serialDiscoverer);
     discoverers.add(networkDiscoverer);
+
+    // Search for discoveries in installed packages
+    for (TargetPackage targetPackage : packages.values()) {
+      for (TargetPlatform platform: targetPackage.getPlatforms().values()) {
+        //System.out.println("installed: "+platform);
+        PreferencesMap prefs = platform.getPreferences().subTree("discovery");
+        for (String discoveryName : prefs.firstLevelMap().keySet()) {
+          PreferencesMap discoveryPrefs = prefs.subTree(discoveryName);
+
+          String pattern = discoveryPrefs.get("pattern");
+          if (pattern == null) {
+            System.out.println(format(tr("No recipes defined for discovery '{0}'"),discoveryName));
+            continue;
+          }
+          try {
+            System.out.println("found discovery: " + discoveryName + " -> " + pattern);
+            System.out.println("with preferencess -> " + discoveryPrefs);
+            String[] cmd = StringReplacer.formatAndSplit(pattern, discoveryPrefs);
+            discoverers.add(new PluggableDiscovery(discoveryName, cmd));
+          } catch (Exception e) {
+            System.out.println(format(tr("Could not start discovery '{0}': {1}"), discoveryName, e.getMessage()));
+          }
+        }
+      }
+    }
 
     // Start all discoverers
     for (Discovery d : discoverers) {
       try {
         new Thread(d).start();
       } catch (Exception e) {
-        System.err.println(tr("Error starting discovery method: ") + d.getClass());
+        System.err.println(tr("Error starting discovery method: ") + d.toString());
         e.printStackTrace();
       }
     }

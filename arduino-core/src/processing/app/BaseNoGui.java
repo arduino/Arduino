@@ -223,7 +223,7 @@ public class BaseNoGui {
 
   public static DiscoveryManager getDiscoveryManager() {
     if (discoveryManager == null) {
-      discoveryManager = new DiscoveryManager();
+      discoveryManager = new DiscoveryManager(packages);
     }
     return discoveryManager;
   }
@@ -506,7 +506,7 @@ public class BaseNoGui {
     }
 
     if (discoveryManager == null) {
-      discoveryManager = new DiscoveryManager();
+      discoveryManager = new DiscoveryManager(packages);
     }
   }
 
