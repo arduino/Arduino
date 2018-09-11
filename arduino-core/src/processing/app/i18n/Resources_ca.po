@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # dplanella <david.planella@softcatala.cat>, 2017
 # Enric Verdaguer <verdaga@hotmail.com>, 2016
 # Francesc Famadas <kiski97@gmail.com>, 2015
@@ -34,7 +35,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-10 09:08+0000\n"
+"PO-Revision-Date: 2018-09-06 13:55+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Catalan (http://www.transifex.com/mbanzi/arduino-ide-15/language/ca/)\n"
 "MIME-Version: 1.0\n"

@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2013-2016,2018
 # Davide Velluto <davide.network@gmail.com>, 2012
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -30,7 +31,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-12 19:40+0000\n"
+"PO-Revision-Date: 2018-09-07 07:30+0000\n"
 "Last-Translator: Michele Michielin <michele.michielin@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/mbanzi/arduino-ide-15/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -632,7 +633,7 @@ msgstr "Impossibile sostituire {0}"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "Impossibile scrivere il file delle preferenze: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -679,7 +680,7 @@ msgstr "Archiviazione dati"
 
 #: ../../../../../app/src/processing/app/Editor.java:1386
 msgid "Decrease Font Size"
-msgstr "Riduci dimensione testo"
+msgstr "Riduci la dimensione del testo"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -691,7 +692,7 @@ msgstr "Pochi"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr "Tema di default"
+msgstr "Tema predefinito"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -871,7 +872,7 @@ msgstr "Errore in Serial.{0}()"
 #: ../../../../../app/src/processing/app/Theme.java:302
 #, java-format
 msgid "Error loading theme {0}: {1}"
-msgstr "Errore durante il caricamento del tema {0}: {1}"
+msgstr "Errore nel caricamento del tema {0}: {1}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -897,19 +898,19 @@ msgstr "Errore nell'apertura della porta seriale \"{0}\". Prova a consultare la 
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "Errore in lettura dell'indice delle librerie: {0}\nProva ad aprire il \"Gestore librerie\" per aggiornarlo."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "Errore in lettura dell'indice delle librerie: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "Errore in lettura della cartella degli indici dei pacchetti: {0}\n(forse un problema di permessi?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1186,7 +1187,7 @@ msgstr "Ignora maiuscole / minuscole"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
-msgstr "Ignoro la libreria con nome non valido"
+msgstr "Ignoro la libreria con nome non corretto"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1214,7 +1215,7 @@ msgstr "La cartella di installazione dell'IDE non è corretta"
 
 #: ../../../../../app/src/processing/app/Editor.java:1378
 msgid "Increase Font Size"
-msgstr "Aumenta dimensione testo"
+msgstr "Aumenta la dimensione del testo"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1281,7 +1282,7 @@ msgstr "Virgolettato non valido: carattere di chiusura [{0}] non trovato."
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "Versione non valida '{0}' per la libreria in: {1}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1600,7 +1601,7 @@ msgstr "Importa la libreria Wire tramite il menu \"Sketch > Importa libreria\""
 
 #: ../../../../../app/src/processing/app/SketchController.java:713
 msgid "Please select a Port before Upload"
-msgstr ""
+msgstr "Seleziona una porta prima del caricamento"
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -1737,17 +1738,17 @@ msgstr "Guida di riferimento"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
-msgstr "Rimuovi"
+msgstr "Elimina"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
 msgid "Removing library: {0}:{1}"
-msgstr "Sto rimuovendo la libreria {0}:{1}..."
+msgstr "Sto eliminando la libreria {0}:{1}..."
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr "Sto rimuovendo..."
+msgstr "Sto eliminando..."
 
 #: EditorHeader.java:300
 msgid "Rename"
@@ -2187,7 +2188,7 @@ msgstr "Tema:"
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr "Questa libreria non è elencata nel Library manager. Non sarai in grado di reinstallarla da qui.\nSei sicuro di volerla cancellare?"
+msgstr "Questa libreria non è elencata nel \"Getore librerie\". Non sarai in grado di reinstallarla da qui.\nSei sicuro di volerla cancellare?"
 
 #: ../../../../../app/src/processing/app/EditorStatus.java:349
 msgid ""
@@ -2498,7 +2499,7 @@ msgstr "Attenzione: platform.txt del core '{0}' contiene la stringa deprecata {1
 msgid ""
 "Warning: platform.txt from core '{0}' misses property '{1}', using default "
 "value '{2}'. Consider upgrading this core."
-msgstr "Attenzione: in platform.txt del core '{0}' manca la proprietà '{1}', uso il valore di default '{2}'. Verifica la disponibilità di un aggiornamento per questo core."
+msgstr "Attenzione: in platform.txt del core '{0}' manca la proprietà '{1}', uso il valore predefinito '{2}'. Verifica la disponibilità di un aggiornamento per questo core."
 
 #: ../../../../../app/src/processing/app/Preferences.java:190
 msgid "Western Frisian"
@@ -2561,13 +2562,13 @@ msgstr "Hai raggiunto il limite giornaliero per la generazione automatica\ndei n
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr "La tua copia dell'IDE è installata in una sottocartella della tua cartella delle impostazioni.\nPer favore sposta l'IDE in un'altra cartella."
+msgstr "La tua copia dell'IDE è installata in una sottocartella della tua cartella delle impostazioni.\nSposta l'IDE in un'altra cartella."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your sketchbook.\n"
 "Please move the IDE to another folder."
-msgstr "La tua copia dell'IDE è installata in una sottocartella della tua cartella degli sketch.\nPer favore sposta l'IDE in un'altra cartella."
+msgstr "La tua copia dell'IDE è installata in una sottocartella della tua cartella degli sketch.\nSposta l'IDE in un'altra cartella."
 
 #: Base.java:2638
 msgid "ZIP files or folders"
@@ -2679,7 +2680,7 @@ msgstr "name è nullo"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
 #, java-format
 msgid "no headers files (.h) found in {0}"
-msgstr ""
+msgstr "Nessun header file (.h) trovato in {0}"
 
 #: Editor.java:932
 msgid "serialMenu is null"

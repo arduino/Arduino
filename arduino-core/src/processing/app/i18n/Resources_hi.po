@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Federico Fissore <f.fissore@arduino.cc>, 2015
 # Gaurav Waghmare <gauravwaghmare30@gmail.com>, 2015
 # Nishant Sood <nishant@winacro.com>, 2012
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-10 09:08+0000\n"
+"PO-Revision-Date: 2018-09-06 13:55+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Hindi (http://www.transifex.com/mbanzi/arduino-ide-15/language/hi/)\n"
 "MIME-Version: 1.0\n"

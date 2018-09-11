@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2018
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
@@ -38,7 +39,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-30 06:15+0000\n"
+"PO-Revision-Date: 2018-09-06 23:43+0000\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -640,7 +641,7 @@ msgstr "{0} не заменяется"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "Не могу сохранить файл настроек: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -905,19 +906,19 @@ msgstr "Ошибка при открытии последовательного 
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "Ошибка разбора списка библиотек: {0}\nПопробуйте открыть Менеджер библиотек, чтобы обновить список библиотек."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "Ошибка при чтении списка библиотек: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "Ошибка при чтении папки индексов пакетов: {0}\n(возможно проблема разрешений?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1289,7 +1290,7 @@ msgstr "Неверная расстановка [{0}] - нет закрываю�
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "Неверная версия '{0}' для библиотеки в: {1}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1608,7 +1609,7 @@ msgstr "Пожалуйста, импортируйте библиотеку Wire
 
 #: ../../../../../app/src/processing/app/SketchController.java:713
 msgid "Please select a Port before Upload"
-msgstr ""
+msgstr "Пожалуйста, выберите порт до загрузки"
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2687,7 +2688,7 @@ msgstr "Не установлено имя"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
 #, java-format
 msgid "no headers files (.h) found in {0}"
-msgstr ""
+msgstr "нет заголовочных файлов (.h), найденных в {0}"
 
 #: Editor.java:932
 msgid "serialMenu is null"

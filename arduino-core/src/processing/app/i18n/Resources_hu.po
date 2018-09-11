@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # benewfy <benewfy@gmail.com>, 2015-2018
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Federico Fissore <f.fissore@arduino.cc>, 2015
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-17 20:33+0000\n"
+"PO-Revision-Date: 2018-09-09 21:08+0000\n"
 "Last-Translator: benewfy <benewfy@gmail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -631,7 +632,7 @@ msgstr "Nem lehet lecserélni: {0}"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "A beállítások nem írhatóak: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -1599,7 +1600,7 @@ msgstr "Kérlek importáld a Wire könyvtárat a Vázlat > Könyvtár importál�
 
 #: ../../../../../app/src/processing/app/SketchController.java:713
 msgid "Please select a Port before Upload"
-msgstr ""
+msgstr "Kérlek válassz portot feltöltés előtt"
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"

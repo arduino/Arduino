@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2018
 # Freddy Koschinsky <schollator@burning.name>, 2018
 # Luca Gronmaier <Dark_Forest@t-online.de>, 2017
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-11 16:40+0000\n"
+"PO-Revision-Date: 2018-09-06 20:39+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -631,7 +632,7 @@ msgstr "{0} konnte nicht ersetzt werden"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "Voreinstellungsdatei konnte nicht geschrieben werden: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -896,19 +897,19 @@ msgstr "Fehler beim Öffnen des seriellen Ports ''{0}''. Schauen Sie in die Doku
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "Fehler beim Parsen des Bibliotheksindexes: {0}\nVersuchen Sie die Bibliotheksverwaltung zu öffnen, um den Bibliotheksindex zu aktualisieren."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "Fehler beim Lesen des Bibliotheksindexes: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "Fehler beim Lesen des Paketindizes-Ordners: {0}\n(vielleicht ein Berechtigungsproblem?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1280,7 +1281,7 @@ msgstr "Ungültige Quotierung: Es konnte kein schließender [{0}]-Charakter gefu
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "Ungültige Version '{0}' für Bibliothek in: {1}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1599,7 +1600,7 @@ msgstr "Bitte importieren Sie die Wire-Bibliothek aus dem Sketch > Bibliothek im
 
 #: ../../../../../app/src/processing/app/SketchController.java:713
 msgid "Please select a Port before Upload"
-msgstr ""
+msgstr "Bitte wählen Sie vor dem Hochladen einen Port aus"
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2678,7 +2679,7 @@ msgstr "name ist null"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
 #, java-format
 msgid "no headers files (.h) found in {0}"
-msgstr ""
+msgstr "keine Header-Dateien (.h) in {0} gefunden"
 
 #: Editor.java:932
 msgid "serialMenu is null"

@@ -18,6 +18,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2018
@@ -28,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-08-13 03:04+0000\n"
+"PO-Revision-Date: 2018-09-07 07:10+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -630,7 +631,7 @@ msgstr "{0}를 바꿀 수 없습니다"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "설정 파일을 쓸 수 없습니다: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -895,19 +896,19 @@ msgstr "시리얼 포트''{0}' 열기 에러'. 다음의 문서를 참고하세�
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "라이브러리 색인 구문 분석 오류 : {0}\n라이브러리 관리자를 열어 라이브러리 색인을 업데이트하십시오."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "라이브러리 색인 불러오기 에러: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "패키지 색인 폴더를 읽는 중 오류가 발생했습니다 : {0}\n(권한 문제입니까?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1279,7 +1280,7 @@ msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1598,7 +1599,7 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 �
 
 #: ../../../../../app/src/processing/app/SketchController.java:713
 msgid "Please select a Port before Upload"
-msgstr ""
+msgstr "업로드하기 전에 포트를 선택하십시오"
 
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
@@ -2677,7 +2678,7 @@ msgstr "name 이 null입니다."
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
 #, java-format
 msgid "no headers files (.h) found in {0}"
-msgstr ""
+msgstr "{0}에 헤더 파일 (.h)이 없습니다"
 
 #: Editor.java:932
 msgid "serialMenu is null"
