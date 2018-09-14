@@ -136,6 +136,8 @@ public class Preferences extends javax.swing.JDialog {
     checkUpdatesBox = new javax.swing.JCheckBox();
     updateExtensionBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
+    enableBoardsBarBox = new javax.swing.JCheckBox();
+    enableSerialBarBox = new javax.swing.JCheckBox();
     jLabel1 = new javax.swing.JLabel();
     jLabel2 = new javax.swing.JLabel();
     scaleSpinner = new javax.swing.JSpinner();
@@ -288,6 +290,12 @@ public class Preferences extends javax.swing.JDialog {
 
     saveVerifyUploadBox.setText(tr("Save when verifying or uploading"));
     checkboxesContainer.add(saveVerifyUploadBox);
+    
+    enableBoardsBarBox.setText(tr("Enable boards shortcut bar"));
+    checkboxesContainer.add(enableBoardsBarBox);
+    
+    enableSerialBarBox.setText(tr("Enable serial ports shortcut bar"));
+    checkboxesContainer.add(enableSerialBarBox);
 
     jLabel1.setText(tr("Interface scale:"));
 
@@ -755,6 +763,8 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.ButtonGroup proxyTypeButtonGroup;
   private javax.swing.JLabel requiresRestartLabel;
   private javax.swing.JCheckBox saveVerifyUploadBox;
+  private javax.swing.JCheckBox enableBoardsBarBox;
+  private javax.swing.JCheckBox enableSerialBarBox;
   private javax.swing.JSpinner scaleSpinner;
   private javax.swing.JLabel showVerboseLabel;
   private javax.swing.JTextField sketchbookLocationField;
@@ -840,8 +850,10 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("editor.update_extension", updateExtensionBox.isSelected());
 
-    PreferencesData.setBoolean("editor.save_on_verify", saveVerifyUploadBox.isSelected());
-
+    PreferencesData.setBoolean("editor.enable_boards_bar", enableBoardsBarBox.isSelected());
+    
+    PreferencesData.setBoolean("editor.enable_serial_bar", enableSerialBarBox.isSelected());
+    
     PreferencesData.set("boardsmanager.additional.urls", additionalBoardsManagerField.getText().replace("\r\n", "\n").replace("\r", "\n").replace("\n", ","));
 
     PreferencesData.set(Constants.PREF_PROXY_TYPE, proxyTypeButtonGroup.getSelection().getActionCommand());
@@ -913,7 +925,11 @@ public class Preferences extends javax.swing.JDialog {
     updateExtensionBox.setSelected(PreferencesData.get("editor.update_extension") == null || PreferencesData.getBoolean("editor.update_extension"));
 
     saveVerifyUploadBox.setSelected(PreferencesData.getBoolean("editor.save_on_verify"));
-
+    
+    enableBoardsBarBox.setSelected(PreferencesData.getBoolean("editor.enable_boards_bar"));
+    
+    enableSerialBarBox.setSelected(PreferencesData.getBoolean("editor.enable_serial_bar"));
+    
     additionalBoardsManagerField.setText(PreferencesData.get("boardsmanager.additional.urls"));
 
     disableAllProxyFields();

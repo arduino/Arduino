@@ -1510,7 +1510,7 @@ public class Base {
       public void actionPerformed(ActionEvent actionevent) {
         BaseNoGui.selectBoard((TargetBoard) getValue("b"));
         filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
-
+        BoardsBar.addBoardPreference(board.getId(), targetPlatform.getId(), targetPackage.getId());
         onBoardOrPortChange();
         rebuildImportMenu(Editor.importMenu);
         rebuildExamplesMenu(Editor.examplesMenu);

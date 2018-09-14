@@ -179,6 +179,8 @@ public class Editor extends JFrame implements RunnerListener {
   public boolean avoidMultipleOperations = false;
 
   private final EditorToolbar toolbar;
+  private SerialBar toolbar2;
+  private BoardsBar toolbar3;
   // these menus are shared so that they needn't be rebuilt for all windows
   // each time a sketch is created, renamed, or moved.
   static JMenu toolbarMenu;
@@ -281,7 +283,7 @@ public class Editor extends JFrame implements RunnerListener {
     //PdeKeywords keywords = new PdeKeywords();
     //sketchbook = new Sketchbook(this);
 
-    buildMenuBar();
+    //buildMenuBar();
 
     // For rev 0120, placing things inside a JPanel
     Container contentPain = getContentPane();
@@ -299,6 +301,20 @@ public class Editor extends JFrame implements RunnerListener {
     }
     toolbar = new EditorToolbar(this, toolbarMenu);
     upper.add(toolbar);
+    
+    if (PreferencesData.getBoolean("editor.enable_boards_bar"))
+    {
+      toolbar3 = new BoardsBar(this);
+      upper.add(toolbar3);
+    }
+
+    if (PreferencesData.getBoolean("editor.enable_serial_bar"))
+    {
+      toolbar2 = new SerialBar(this);
+      upper.add(toolbar2);
+    }
+
+    buildMenuBar();
 
     header = new EditorHeader(this);
     upper.add(header);
@@ -998,7 +1014,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   }
 
-  private void selectSerialPort(String name) {
+  public void selectSerialPort(String name) {
     if(portMenu == null) {
       System.out.println(tr("serialMenu is null"));
       return;
@@ -2598,6 +2614,7 @@ public class Editor extends JFrame implements RunnerListener {
       lineStatus.setBoardName("-");
     lineStatus.setSerialPort(PreferencesData.get("serial.port"));
     lineStatus.repaint();
+    if (toolbar3 != null) toolbar3.refresh(false);
   }
 
   public void addCompilerProgressListener(CompilerProgressListener listener){
