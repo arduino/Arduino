@@ -47,6 +47,18 @@ public class BoardPort {
     this.prefs = new PreferencesMap();
   }
 
+  public BoardPort(BoardPort bp) {
+    prefs = new PreferencesMap();
+    // TODO: copy bp.prefs to prefs
+    address = bp.address;
+    protocol = bp.protocol;
+    boardName = bp.boardName;
+    vid = bp.vid;
+    pid = bp.pid;
+    iserial = bp.iserial;
+    label = bp.label;
+  }
+
   public String getAddress() {
     return address;
   }
