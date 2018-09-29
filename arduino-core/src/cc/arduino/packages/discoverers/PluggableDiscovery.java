@@ -56,7 +56,7 @@ public class PluggableDiscovery implements Discovery {
     this.cmd = cmd;
     this.discoveryName = discoveryName;
     portList = new LinkedList<>();
-    System.out.println("Starting: " + PApplet.join(cmd, " "));
+    System.out.println(discoveryName + ": Starting: " + PApplet.join(cmd, " "));
   }
 
   @Override
@@ -74,19 +74,25 @@ public class PluggableDiscovery implements Discovery {
       while (program != null && program.isAlive()) {
         BoardPort port = mapper.readValue(parser, BoardPort.class);
         if (port != null) {
-          System.out.println(discoveryName + " received json");
-          //
-          // TODO: check for START_SYNC not supported, call startPolling()
-          //
-          update(port);
+          System.out.println(discoveryName + ": received json");
+          String address = port.getAddress();
+          if (address != null) {
+            if (address.equals("Error: START_SYNC not supported")) {
+              if (pollingThread == null) {
+                startPolling();
+              }
+            } else {
+              update(port);
+            }
+          }
         }
       }
-      System.out.println("thread exit normally");
+      System.out.println(discoveryName + ": thread exit normally");
     } catch (InterruptedException e) {
-      System.out.println("thread exit by interrupt");
+      System.out.println(discoveryName + ": thread exit by interrupt");
       e.printStackTrace();
     } catch (Exception e) {
-      System.out.println("thread exit other exception");
+      System.out.println(discoveryName + ": thread exit other exception");
       e.printStackTrace();
     }
     try {
@@ -160,9 +166,6 @@ public class PluggableDiscovery implements Discovery {
     // avoid changing the list while it's being accessed by
     // another thread.
     String address = port.getAddress();
-    if (address == null) {
-      return; // address is required
-    }
     for (BoardPort bp : portList) {
       if (address.equals(bp.getAddress())) {
         // if address already on the list, discard old info
@@ -191,8 +194,7 @@ public class PluggableDiscovery implements Discovery {
     // a clean copy.
     final List<BoardPort> portListCopy = new ArrayList<>();
     for (BoardPort bp : portList) {
-      //portListCopy.add(new BoardPort(bp));
-      portListCopy.add(bp);
+      portListCopy.add(new BoardPort(bp));
     }
     return portListCopy;
   }
