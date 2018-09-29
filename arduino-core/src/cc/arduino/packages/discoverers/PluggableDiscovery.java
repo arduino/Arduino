@@ -30,66 +30,178 @@
 package cc.arduino.packages.discoverers;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
 import processing.app.legacy.PApplet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+
 public class PluggableDiscovery implements Discovery {
 
-  private String discoveryName;
+  private final String discoveryName;
+  private final String[] cmd;
+  private final List<BoardPort> portList;
+  private Process program=null;
+  private Thread pollingThread;
 
   public PluggableDiscovery(String discoveryName, String[] cmd) {
+    this.cmd = cmd;
     this.discoveryName = discoveryName;
+    portList = new LinkedList<>();
     System.out.println("Starting: " + PApplet.join(cmd, " "));
   }
 
   @Override
   public void run() {
-    // TODO this method is started as a new thread, it will constantly
-    // communicate with the discovery tool and keep track of the discovered
-    // port to be returned from listDiscoveredBoard()
+    // this method is started as a new thread, it will constantly listen
+    // to the discovery tool and keep track of the discovered ports
     try {
       start();
-      while (true) { // TODO: Find a better way to terminate discovery
-        System.out.println(discoveryName + ": looping...");
-        Thread.sleep(500);
+      InputStream input = program.getInputStream();
+      JsonFactory factory = new JsonFactory();
+      JsonParser parser = factory.createParser(input);
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+      while (program != null && program.isAlive()) {
+        BoardPort port = mapper.readValue(parser, BoardPort.class);
+        if (port != null) {
+          System.out.println(discoveryName + " received json");
+          //
+          // TODO: check for START_SYNC not supported, call startPolling()
+          //
+          update(port);
+        }
       }
-      // stop();
+      System.out.println("thread exit normally");
     } catch (InterruptedException e) {
+      System.out.println("thread exit by interrupt");
       e.printStackTrace();
     } catch (Exception e) {
+      System.out.println("thread exit other exception");
       e.printStackTrace();
+    }
+    try {
+      stop();
+    } catch (Exception e) {
     }
   }
 
   @Override
   public void start() throws Exception {
-    // TODO send a START_SYNC command to the discovery tool
-    // or fallback to START if not available
+    System.out.println(discoveryName + ": start");
+    try {
+      program = Runtime.getRuntime().exec(cmd);
+    } catch (Exception e) {
+      program = null;
+      return;
+    }
+    write("START_SYNC\n");
+    pollingThread = null;
+  }
+
+  private void startPolling() {
+    // Discovery tools not supporting START_SYNC require a periodic
+    // LIST command.  A second thread is created to send these
+    // commands, while the run() thread above listens for the
+    // discovery tool output.
+    write("START\n");
+    Thread pollingThread = new Thread() {
+      public void run() {
+        try {
+          while (program != null && program.isAlive()) {
+            write("LIST\n");
+            sleep(2500);
+          }
+        } catch (Exception e) {
+        }
+      }
+    };
+    pollingThread.start();
   }
 
   @Override
   public void stop() throws Exception {
-    // TODO send a STOP to the discovery
+    if (pollingThread != null) {
+      pollingThread.interrupt();
+      pollingThread = null;
+    }
+    write("STOP\n");
+    if (program != null) {
+      program.destroy();
+      program = null;
+    }
+  }
+
+  private void write(String command) {
+    if (program != null && program.isAlive()) {
+      OutputStream out = program.getOutputStream();
+      try {
+        out.write(command.getBytes());
+        out.flush();
+      } catch (Exception e) {
+      }
+    }
+  }
+
+  private synchronized void update(BoardPort port) {
+    // Update the list of discovered ports, which may involve
+    // adding a new port, replacing the info for a previously
+    // discovered port, or removing a port.  This function
+    // must be synchronized with listDiscoveredBoards(), to
+    // avoid changing the list while it's being accessed by
+    // another thread.
+    String address = port.getAddress();
+    if (address == null) {
+      return; // address is required
+    }
+    for (BoardPort bp : portList) {
+      if (address.equals(bp.getAddress())) {
+        // if address already on the list, discard old info
+        portList.remove(bp);
+      }
+    }
+    if (port.isOnline()) {
+      if (port.getLabel() == null) {
+        // if no label, use address
+        port.setLabel(address);
+      }
+      if (port.getProtocol() == null) {
+        // if no protocol, assume serial
+        port.setProtocol("serial");
+      }
+      portList.add(port);
+    }
   }
 
   @Override
-  public List<BoardPort> listDiscoveredBoards() {
-    // TODO return the ports discovered so far
-    final List<BoardPort> empty = new ArrayList<>();
-    return empty;
+  public synchronized List<BoardPort> listDiscoveredBoards() {
+    // return the ports discovered so far.  Because the list of
+    // ports may change at any moment, a copy of the list is
+    // returned for use by the rest of the IDE.  This copy
+    // operation must be synchronized with update() to assure
+    // a clean copy.
+    final List<BoardPort> portListCopy = new ArrayList<>();
+    for (BoardPort bp : portList) {
+      //portListCopy.add(new BoardPort(bp));
+      portListCopy.add(bp);
+    }
+    return portListCopy;
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards(boolean complete) {
     // XXX: parameter "complete "is really needed?
     // should be checked on all existing discoveries
-
-    // TODO
-    final List<BoardPort> empty = new ArrayList<>();
-    return empty;
+    return listDiscoveredBoards();
   }
 
   @Override
