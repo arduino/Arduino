@@ -72,17 +72,17 @@ public class PluggableDiscovery implements Discovery {
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
       while (program != null && program.isAlive()) {
-        BoardPort port = mapper.readValue(parser, BoardPort.class);
-        if (port != null) {
+        PluggableDiscoveryMessage msg = mapper.readValue(parser, PluggableDiscoveryMessage.class);
+        if (msg != null) {
           System.out.println(discoveryName + ": received json");
-          String address = port.getAddress();
-          if (address != null) {
-            if (address.equals("Error: START_SYNC not supported")) {
+          String event = msg.getEventType();
+          if (event != null) {
+            if (event.equals("Error: START_SYNC not supported")) {
               if (pollingThread == null) {
                 startPolling();
               }
             } else {
-              update(port);
+              update(msg);
             }
           }
         }
@@ -158,7 +158,7 @@ public class PluggableDiscovery implements Discovery {
     }
   }
 
-  private synchronized void update(BoardPort port) {
+  private synchronized void update(PluggableDiscoveryMessage port) {
     // Update the list of discovered ports, which may involve
     // adding a new port, replacing the info for a previously
     // discovered port, or removing a port.  This function
@@ -166,13 +166,14 @@ public class PluggableDiscovery implements Discovery {
     // avoid changing the list while it's being accessed by
     // another thread.
     String address = port.getAddress();
+    if (address == null) return; // address required for "add" & "remove"
     for (BoardPort bp : portList) {
       if (address.equals(bp.getAddress())) {
         // if address already on the list, discard old info
         portList.remove(bp);
       }
     }
-    if (port.isOnline()) {
+    if (port.getEventType().equals("add")) {
       if (port.getLabel() == null) {
         // if no label, use address
         port.setLabel(address);
