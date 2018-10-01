@@ -1021,22 +1021,20 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println(item.getLabel());
 
     BaseNoGui.selectSerialPort(name);
-    if (serialMonitor != null) {
-      try {
+    try {
+      boolean reopenMonitor = ((serialMonitor != null && serialMonitor.isVisible()) ||
+                                serialPlotter != null && serialPlotter.isVisible());
+      if (serialMonitor != null) {
         serialMonitor.close();
-        serialMonitor.setVisible(false);
-      } catch (Exception e) {
-        // ignore
       }
-    }
-
-    if (serialPlotter != null) {
-      try {
+      if (serialPlotter != null) {
         serialPlotter.close();
-        serialPlotter.setVisible(false);
-      } catch (Exception e) {
-        // ignore
       }
+      if (reopenMonitor) {
+        handleSerial();
+      }
+    } catch (Exception e) {
+      // ignore
     }
 
     onBoardOrPortChange();
