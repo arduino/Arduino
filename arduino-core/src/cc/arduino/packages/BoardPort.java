@@ -33,30 +33,24 @@ import processing.app.helpers.PreferencesMap;
 
 public class BoardPort {
 
-  private String address;
-  private String protocol;
+  private String address;   // unique name for this port, used by Preferences
+  private String protocol;  // how to communicate, used for Ports menu sections
   private String boardName;
-  private String vid;
-  private String pid;
-  private String iserial;
-  private String label;
-  private final PreferencesMap prefs;
-  private boolean online;
+  private String label;     // friendly name shown in Ports menu
+  private final PreferencesMap prefs; // "vendorId", "productId", "serialNumber"
+  private boolean online;   // used by SerialBoardsLister (during upload??)
 
   public BoardPort() {
     this.prefs = new PreferencesMap();
   }
 
   public BoardPort(BoardPort bp) {
-    prefs = new PreferencesMap();
-    // TODO: copy bp.prefs to prefs
+    prefs = new PreferencesMap(bp.prefs);
     address = bp.address;
     protocol = bp.protocol;
     boardName = bp.boardName;
-    vid = bp.vid;
-    pid = bp.pid;
-    iserial = bp.iserial;
     label = bp.label;
+    online = bp.online;
   }
 
   public String getAddress() {
@@ -104,27 +98,39 @@ public class BoardPort {
   }
 
   public void setVIDPID(String vid, String pid) {
-    this.vid = vid;
-    this.pid = pid;
+    if (vid == null) {
+      prefs.remove("vendorId");
+    } else {
+      prefs.put("vendorId", vid);
+    }
+    if (pid == null) {
+      prefs.remove("productId");
+    } else {
+      prefs.put("productId", pid);
+    }
   }
 
   public String getVID() {
-    return vid;
+    return prefs.get("vendorId");
   }
 
   public String getPID() {
-    return pid;
+    return prefs.get("productId");
   }
 
   public void setISerial(String iserial) {
-    this.iserial = iserial;
+    if (iserial == null) {
+      prefs.remove("serialNumber");
+    } else {
+      prefs.put("serialNumber", iserial);
+    }
   }
   public String getISerial() {
-    return iserial;
+    return prefs.get("serialNumber");
   }
 
   @Override
   public String toString() {
-    return this.address+"_"+this.vid+"_"+this.pid;
+    return this.address+"_"+getVID()+"_"+getPID();
   }
 }
