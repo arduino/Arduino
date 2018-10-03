@@ -29,6 +29,10 @@
 
 package cc.arduino.packages;
 
+import processing.app.BaseNoGui;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
 
 public class BoardPort {
@@ -37,15 +41,18 @@ public class BoardPort {
   private String protocol;  // how to communicate, used for Ports menu sections
   private String boardName;
   private String label;     // friendly name shown in Ports menu
+  private final PreferencesMap identificationPrefs; // data to match with boards.txt
   private final PreferencesMap prefs; // "vendorId", "productId", "serialNumber"
   private boolean online;   // used by SerialBoardsLister (during upload??)
 
   public BoardPort() {
     this.prefs = new PreferencesMap();
+    this.identificationPrefs = new PreferencesMap();
   }
 
   public BoardPort(BoardPort bp) {
     prefs = new PreferencesMap(bp.prefs);
+    identificationPrefs = new PreferencesMap(bp.identificationPrefs);
     address = bp.address;
     protocol = bp.protocol;
     boardName = bp.boardName;
@@ -133,4 +140,39 @@ public class BoardPort {
   public String toString() {
     return this.address+"_"+getVID()+"_"+getPID();
   }
+
+  // Search for the board which matches identificationPrefs.
+  // If found, boardName is set to the name from boards.txt
+  // and the board is returned.  If not found, null is returned.
+  public TargetBoard searchMatchingBoard() {
+    if (identificationPrefs.isEmpty()) return null;
+    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
+      for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
+        for (TargetBoard board : targetPlatform.getBoards().values()) {
+          if (matchesIdentificationPrefs(board)) {
+            setBoardName(board.getName());
+            return board;
+          }
+        }
+      }
+    }
+    return null;
+  }
+  // Check whether a board matches all identificationPrefs fields
+  private boolean matchesIdentificationPrefs(TargetBoard board) {
+    for (String key : identificationPrefs.keySet()) {
+      if (!matchesIdentificationPref(board, key)) return false;
+    }
+    return true;
+  }
+  // Check whether a board matches a single identificationPrefs field
+  private boolean matchesIdentificationPref(TargetBoard board, String key) {
+    String value = identificationPrefs.get(key);
+    if (value == null) return false;
+    for (String property : board.getPreferences().subTree(key).values()) {
+      if (property.equalsIgnoreCase(value)) return true;
+    }
+    return false;
+  }
+
 }

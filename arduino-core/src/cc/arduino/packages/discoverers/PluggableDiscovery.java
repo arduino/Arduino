@@ -43,6 +43,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
 public class PluggableDiscovery implements Discovery {
 
@@ -69,6 +71,8 @@ public class PluggableDiscovery implements Discovery {
       JsonFactory factory = new JsonFactory();
       JsonParser parser = factory.createParser(input);
       ObjectMapper mapper = new ObjectMapper();
+      mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+      mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
       while (program != null && program.isAlive()) {
@@ -82,6 +86,9 @@ public class PluggableDiscovery implements Discovery {
                 startPolling();
               }
             } else {
+              if (event.equals("add")) {
+                msg.searchMatchingBoard();
+              }
               update(msg);
             }
           }
@@ -175,8 +182,13 @@ public class PluggableDiscovery implements Discovery {
     }
     if (port.getEventType().equals("add")) {
       if (port.getLabel() == null) {
-        // if no label, use address
-        port.setLabel(address);
+        // if no label, use address & name, or just address if no name
+        String name = port.getBoardName();
+        if (name == null) {
+          port.setLabel(address);
+        } else {
+          port.setLabel(address + " (" + name + ")");
+        }
       }
       if (port.getProtocol() == null) {
         // if no protocol, assume serial
