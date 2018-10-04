@@ -136,16 +136,13 @@ public class SerialBoardsLister extends TimerTask {
       if (boardData != null) {
         boardPort.getPrefs().put("vid", boardData.get("vid").toString());
         boardPort.getPrefs().put("pid", boardData.get("pid").toString());
-        boardPort.setVIDPID(parts[1], parts[2]);
 
         String iserial = boardData.get("iserial").toString();
         if (iserial.length() >= 10) {
           boardPort.getPrefs().put("iserial", iserial);
-          boardPort.setISerial(iserial);
         }
         if (uploadInProgress && oldUploadBoardPort!=null) {
           oldUploadBoardPort.getPrefs().put("iserial", iserial);
-          oldUploadBoardPort.setISerial(iserial);
         }
 
         TargetBoard board = (TargetBoard) boardData.get("board");
@@ -158,12 +155,14 @@ public class SerialBoardsLister extends TimerTask {
         }
       } else {
         if (!parts[1].equals("0000")) {
-          boardPort.setVIDPID(parts[1], parts[2]);
+          boardPort.getPrefs().put("vid", parts[1]);
+          boardPort.getPrefs().put("pid", parts[2]);
           // ask Cloud API to match the board with known VID/PID pair
           platform.getBoardWithMatchingVidPidFromCloud(parts[1], parts[2]);
         } else {
-          boardPort.setVIDPID("0000", "0000");
-          boardPort.setISerial("");
+          boardPort.getPrefs().put("vid", "0000");
+          boardPort.getPrefs().put("pid", "0000");
+          boardPort.getPrefs().put("iserial", "");
         }
       }
 

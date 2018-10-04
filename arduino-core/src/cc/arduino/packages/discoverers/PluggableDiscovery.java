@@ -78,7 +78,7 @@ public class PluggableDiscovery implements Discovery {
       while (program != null && program.isAlive()) {
         PluggableDiscoveryMessage msg = mapper.readValue(parser, PluggableDiscoveryMessage.class);
         if (msg != null) {
-          System.out.println(discoveryName + ": received json: vid=" + msg.getVID() + ", pid=" + msg.getPID() + ", sernum=" + msg.getISerial());
+          System.out.println(discoveryName + ": received json: " + msg.getPrefs());
           String event = msg.getEventType();
           if (event != null) {
             if (event.equals("Error: START_SYNC not supported")) {

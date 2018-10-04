@@ -2392,9 +2392,9 @@ public class Editor extends JFrame implements RunnerListener {
     for (BoardPort port : ports) {
       if (port.getAddress().equals(selectedPort)) {
         label = port.getBoardName();
-        vid = port.getVID();
-        pid = port.getPID();
-        iserial = port.getISerial();
+        vid = port.getPrefs().get("vid");
+        pid = port.getPrefs().get("pid");
+        iserial = port.getPrefs().get("iserial");
         protocol = port.getProtocol();
         found = true;
         break;

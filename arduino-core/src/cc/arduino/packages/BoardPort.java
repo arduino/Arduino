@@ -104,41 +104,9 @@ public class BoardPort {
     return online;
   }
 
-  public void setVIDPID(String vid, String pid) {
-    if (vid == null) {
-      prefs.remove("vendorId");
-    } else {
-      prefs.put("vendorId", vid);
-    }
-    if (pid == null) {
-      prefs.remove("productId");
-    } else {
-      prefs.put("productId", pid);
-    }
-  }
-
-  public String getVID() {
-    return prefs.get("vendorId");
-  }
-
-  public String getPID() {
-    return prefs.get("productId");
-  }
-
-  public void setISerial(String iserial) {
-    if (iserial == null) {
-      prefs.remove("serialNumber");
-    } else {
-      prefs.put("serialNumber", iserial);
-    }
-  }
-  public String getISerial() {
-    return prefs.get("serialNumber");
-  }
-
   @Override
   public String toString() {
-    return this.address+"_"+getVID()+"_"+getPID();
+    return this.address;
   }
 
   // Search for the board which matches identificationPrefs.
