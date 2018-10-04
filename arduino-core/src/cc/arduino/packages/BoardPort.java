@@ -88,6 +88,10 @@ public class BoardPort {
     return prefs;
   }
 
+  public PreferencesMap getIdentificationPrefs() {
+    return identificationPrefs;
+  }
+
   public void setLabel(String label) {
     this.label = label;
   }
@@ -117,7 +121,7 @@ public class BoardPort {
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
-          if (matchesIdentificationPrefs(board)) {
+          if (matchesBoard(board)) {
             setBoardName(board.getName());
             return board;
           }
@@ -126,21 +130,44 @@ public class BoardPort {
     }
     return null;
   }
-  // Check whether a board matches all identificationPrefs fields
-  private boolean matchesIdentificationPrefs(TargetBoard board) {
-    for (String key : identificationPrefs.keySet()) {
-      if (!matchesIdentificationPref(board, key)) return false;
+
+  public boolean matchesBoard(TargetBoard board) {
+    PreferencesMap identificationProps = getIdentificationPrefs();
+    PreferencesMap boardProps = board.getPreferences();
+
+    // Identification properties are defined in boards.txt with a ".N" suffix
+    // for example:
+    //
+    // uno.name=Arduino/Genuino Uno
+    // uno.vid.0=0x2341
+    // uno.pid.0=0x0043
+    // uno.vid.1=0x2341
+    // uno.pid.1=0x0001
+    // uno.vid.2=0x2A03
+    // uno.pid.2=0x0043
+    // uno.vid.3=0x2341
+    // uno.pid.3=0x0243
+    //
+    // so we must search starting from suffix ".0" and increasing until we
+    // found a match or the board has no more identification properties defined
+
+    for (int suffix = 0;; suffix++) {
+      boolean found = true;
+      for (String prop : identificationProps.keySet()) {
+        String value = identificationProps.get(prop);
+        prop += "." + suffix;
+        if (!boardProps.containsKey(prop)) {
+          return false;
+        }
+        if (!value.equalsIgnoreCase(boardProps.get(prop))) {
+          found = false;
+          break;
+        }
+      }
+      if (found) {
+        return true;
+      }
     }
-    return true;
-  }
-  // Check whether a board matches a single identificationPrefs field
-  private boolean matchesIdentificationPref(TargetBoard board, String key) {
-    String value = identificationPrefs.get(key);
-    if (value == null) return false;
-    for (String property : board.getPreferences().subTree(key).values()) {
-      if (property.equalsIgnoreCase(value)) return true;
-    }
-    return false;
   }
 
 }
