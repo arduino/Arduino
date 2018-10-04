@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 import cc.arduino.packages.discoverers.PluggableDiscovery;
+import cc.arduino.packages.discoverers.serial.SerialDiscovery;
 import cc.arduino.packages.discoverers.NetworkDiscovery;
-import cc.arduino.packages.discoverers.SerialDiscovery;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
