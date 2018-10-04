@@ -162,19 +162,18 @@ public class SerialDiscovery implements Discovery, Runnable {
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
       BoardPort boardPort = null;
-      boolean updatingInfos = false;
       int i = 0;
       // create new board or update existing
       for (BoardPort board : boardPorts) {
         if (board.toString().equals(newPort)) {
-          updatingInfos = true;
           boardPort = boardPorts.get(i);
           break;
         }
         i++;
       }
-      if (!updatingInfos) {
+      if (boardPort == null) {
         boardPort = new BoardPort();
+        boardPorts.add(boardPort);
       }
       boardPort.setAddress(port);
       boardPort.setProtocol("serial");
@@ -216,9 +215,6 @@ public class SerialDiscovery implements Discovery, Runnable {
       }
 
       boardPort.setLabel(label);
-      if (!updatingInfos) {
-        boardPorts.add(boardPort);
-      }
     }
     setSerialBoardPorts(boardPorts);
   }
