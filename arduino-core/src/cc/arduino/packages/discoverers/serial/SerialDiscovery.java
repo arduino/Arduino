@@ -76,10 +76,6 @@ public class SerialDiscovery implements Discovery, Runnable {
       serialBoardPorts.addAll(newSerialBoardPorts);
   }
 
-  public void forceRefresh() {
-    retriggerDiscovery(false);
-  }
-
   public void setUploadInProgress(boolean param) {
     uploadInProgress = param;
   }
@@ -99,9 +95,9 @@ public class SerialDiscovery implements Discovery, Runnable {
     serialBoardsListerTimer.schedule(new TimerTask() {
       @Override
       public void run() {
-         if (BaseNoGui.packages != null) {
-           retriggerDiscovery(true);
-         }
+        if (BaseNoGui.packages != null && !pausePolling) {
+          forceRefresh();
+        }
       }
     }, 0, 1000);
   }
@@ -111,13 +107,9 @@ public class SerialDiscovery implements Discovery, Runnable {
     serialBoardsListerTimer.cancel();
   }
 
-  public synchronized void retriggerDiscovery(boolean polled) {
+  public synchronized void forceRefresh() {
     Platform platform = BaseNoGui.getPlatform();
     if (platform == null) {
-      return;
-    }
-
-    if (polled && pausePolling) {
       return;
     }
 
