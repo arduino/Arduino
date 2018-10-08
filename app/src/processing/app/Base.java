@@ -41,6 +41,9 @@ import cc.arduino.view.SplashScreenHelper;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import com.github.zafarkhaja.semver.Version;
+
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -304,8 +307,9 @@ public class Base {
       String[] boardToInstallParts = parser.getBoardToInstall().split(":");
 
       ContributedPlatform selected = null;
-      if (boardToInstallParts.length == 3) {
-        selected = indexer.getIndex().findPlatform(boardToInstallParts[0], boardToInstallParts[1], VersionHelper.valueOf(boardToInstallParts[2]).toString());
+      if (boardToInstallParts.length == 3 && VersionHelper.valueOf(boardToInstallParts[2]).isPresent()) {
+        Version vs = VersionHelper.valueOf(boardToInstallParts[2]).get();
+        selected = indexer.getIndex().findPlatform(boardToInstallParts[0], boardToInstallParts[1], vs.toString());
       } else if (boardToInstallParts.length == 2) {
         List<ContributedPlatform> platformsByName = indexer.getIndex().findPlatforms(boardToInstallParts[0], boardToInstallParts[1]);
         Collections.sort(platformsByName, new DownloadableContributionVersionComparator());
