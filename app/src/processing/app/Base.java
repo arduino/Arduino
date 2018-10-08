@@ -464,7 +464,7 @@ public class Base {
         if (!parser.isForceSavePrefs())
           PreferencesData.setDoSave(true);
         if (handleOpen(file, retrieveSketchLocation(".default"), false) == null) {
-          String mess = I18n.format(tr("Failed to open sketch: \"{0}\""), path);
+          String mess = format(tr("Failed to open sketch: \"{0}\""), path);
           // Open failure is fatal in upload/verify mode
           if (parser.isVerifyOrUploadMode())
             showError(null, mess, 2);
@@ -1126,7 +1126,7 @@ public class Base {
             importMenu.addSeparator();
           }
           lastLibType = libType;
-          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), tr(lastLibType)));
+          JMenuItem platformItem = new JMenuItem(format(tr("{0} libraries"), tr(lastLibType)));
           platformItem.setEnabled(false);
           importMenu.add(platformItem);
         }
@@ -1137,7 +1137,7 @@ public class Base {
             try {
               activeEditor.getSketchController().importLibrary(l);
             } catch (IOException e) {
-              showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
+              showWarning(tr("Error"), format("Unable to list header files in {0}", l.getSrcFolder()), e);
             }
           }
         };
@@ -1269,7 +1269,7 @@ public class Base {
     if (!platformLibs.isEmpty()) {
       menu.addSeparator();
       platformLibs.sort();
-      label = new JMenuItem(I18n.format(tr("Examples for {0}"), boardId));
+      label = new JMenuItem(format(tr("Examples for {0}"), boardId));
       label.setEnabled(false);
       menu.add(label);
       for (UserLibrary lib : platformLibs) {
@@ -1280,7 +1280,7 @@ public class Base {
     if (!referencedPlatformLibs.isEmpty()) {
       menu.addSeparator();
       referencedPlatformLibs.sort();
-      label = new JMenuItem(I18n.format(tr("Examples for {0}"), referencedPlatformName));
+      label = new JMenuItem(format(tr("Examples for {0}"), referencedPlatformName));
       label.setEnabled(false);
       menu.add(label);
       for (UserLibrary lib : referencedPlatformLibs) {
@@ -1798,7 +1798,7 @@ public class Base {
           try {
             activeEditor.getSketchController().importLibrary(l);
           } catch (IOException e) {
-            showWarning(tr("Error"), I18n.format("Unable to list header files in {0}", l.getSrcFolder()), e);
+            showWarning(tr("Error"), format("Unable to list header files in {0}", l.getSrcFolder()), e);
           }
         }
       };
@@ -1948,10 +1948,9 @@ public class Base {
   static public void openURL(String url) {
     try {
       BaseNoGui.getPlatform().openURL(url);
-
     } catch (Exception e) {
       showWarning(tr("Problem Opening URL"),
-              I18n.format(tr("Could not open the URL\n{0}"), url), e);
+                  format(tr("Could not open the URL\n{0}"), url), e);
     }
   }
 
@@ -1973,10 +1972,9 @@ public class Base {
   static public void openFolder(File file) {
     try {
       BaseNoGui.getPlatform().openFolder(file);
-
     } catch (Exception e) {
       showWarning(tr("Problem Opening Folder"),
-              I18n.format(tr("Could not open the folder\n{0}"), file.getAbsolutePath()), e);
+                  format(tr("Could not open the folder\n{0}"), file.getAbsolutePath()), e);
     }
   }
 
@@ -2054,7 +2052,7 @@ public class Base {
     if(referenceFile.exists()){
       openURL(referenceFile.getAbsolutePath());
     }else{
-      showWarning(tr("Problem Opening URL"), I18n.format(tr("Could not open the URL\n{0}"), referenceFile), null);
+      showWarning(tr("Problem Opening URL"), format(tr("Could not open the URL\n{0}"), referenceFile), null);
     }
   }
 
@@ -2310,7 +2308,7 @@ public class Base {
 
       String libName = libFolder.getName();
       if (!BaseNoGui.isSanitaryName(libName)) {
-        String mess = I18n.format(tr("The library \"{0}\" cannot be used.\n"
+        String mess = format(tr("The library \"{0}\" cannot be used.\n"
                         + "Library names must contain only basic letters and numbers.\n"
                         + "(ASCII only and no spaces, and it cannot start with a number)"),
                 libName);
@@ -2334,7 +2332,7 @@ public class Base {
       // copy folder
       File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder().folder, sourceFile.getName());
       if (!destinationFolder.mkdir()) {
-        activeEditor.statusError(I18n.format(tr("A library named {0} already exists"), sourceFile.getName()));
+        activeEditor.statusError(format(tr("A library named {0} already exists"), sourceFile.getName()));
         return;
       }
       try {
