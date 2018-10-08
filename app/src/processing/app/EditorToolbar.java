@@ -376,12 +376,14 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         // launch a timeout timer which can reenable to upload button functionality an
         if (!editor.avoidMultipleOperations) {
           editor.handleExport(e.isShiftDown());
-          editor.avoidMultipleOperations = true;
         }
         break;
 
       case SERIAL:
         editor.handleSerial();
+        break;
+
+      default:
         break;
     }
   }
@@ -448,7 +450,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
 
   public Dimension getMaximumSize() {
-    return new Dimension(scale(3000), BUTTON_HEIGHT);
+    return new Dimension(scale(30000), BUTTON_HEIGHT);
   }
 
   public boolean dispatchKeyEvent(final KeyEvent e) {

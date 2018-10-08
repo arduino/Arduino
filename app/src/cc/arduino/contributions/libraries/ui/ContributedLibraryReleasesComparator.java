@@ -30,6 +30,7 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 
 import java.util.Comparator;
 
@@ -43,8 +44,8 @@ public class ContributedLibraryReleasesComparator implements Comparator<Contribu
 
   @Override
   public int compare(ContributedLibraryReleases o1, ContributedLibraryReleases o2) {
-    ContributedLibrary lib1 = o1.getLibrary();
-    ContributedLibrary lib2 = o2.getLibrary();
+    ContributedLibrary lib1 = o1.getLatest();
+    ContributedLibrary lib2 = o2.getLatest();
 
     if (lib1.getTypes() == null || lib2.getTypes() == null) {
       return compareName(lib1, lib2);

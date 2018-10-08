@@ -34,7 +34,6 @@ import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.SignatureVerifier;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.filters.FileExecutablePredicate;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
@@ -86,7 +85,7 @@ public class ContributionInstaller {
         throw new Exception(format(tr("Tool {0} is not available for your operating system."), tool.getName()));
       }
       // Download the tool if it's not installed or it's a built-in tool
-      if (!downloadable.isInstalled() || downloadable.isReadOnly()) {
+      if (!tool.isInstalled() || tool.isBuiltIn()) {
         tools.add(tool);
       }
     }
@@ -122,11 +121,11 @@ public class ContributionInstaller {
     // once everything is successfully unpacked. If the operation fails remove
     // all the temporary folders and abort installation.
 
-    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform.getResolvedToolReferences().entrySet()
-      .stream()
-      .filter((entry) -> !entry.getValue().getDownloadableContribution(platform).isInstalled()
-          || entry.getValue().getDownloadableContribution(platform).isReadOnly())
-      .collect(Collectors.toList());
+    List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform
+        .getResolvedToolReferences().entrySet().stream()
+        .filter((entry) -> !entry.getValue().isInstalled()
+                           || entry.getValue().isBuiltIn())
+        .collect(Collectors.toList());
 
     int i = 1;
     for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {
@@ -134,10 +133,11 @@ public class ContributionInstaller {
       progressListener.onProgress(progress);
       i++;
       ContributedTool tool = entry.getValue();
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       Path destFolder = Paths.get(BaseNoGui.indexer.getPackagesFolder().getAbsolutePath(), entry.getKey().getPackager(), "tools", tool.getName(), tool.getVersion());
 
       Files.createDirectories(destFolder);
+
+      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
       assert toolContrib.getDownloadedFile() != null;
       new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
@@ -145,8 +145,8 @@ public class ContributionInstaller {
       } catch (IOException e) {
         errors.add(tr("Error running post install script"));
       }
-      toolContrib.setInstalled(true);
-      toolContrib.setInstalledFolder(destFolder.toFile());
+      tool.setInstalled(true);
+      tool.setInstalledFolder(destFolder.toFile());
       progress.stepDone();
     }
 
@@ -235,8 +235,7 @@ public class ContributionInstaller {
   }
 
   public synchronized List<String> remove(ContributedPlatform contributedPlatform) {
-    BaseNoGui.indexer.getPackages().stream().flatMap(p -> p.getPlatforms().stream()).filter(new InstalledPredicate()).collect(Collectors.toList());
-    if (contributedPlatform == null || contributedPlatform.isReadOnly()) {
+    if (contributedPlatform == null || contributedPlatform.isBuiltIn()) {
       return new LinkedList<>();
     }
     List<String> errors = new LinkedList<>();
@@ -253,15 +252,14 @@ public class ContributionInstaller {
         continue;
 
       // Do not remove built-in tools
-      DownloadableContribution toolContrib = tool.getDownloadableContribution(platform);
-      if (toolContrib.isReadOnly())
+      if (tool.isBuiltIn())
         continue;
 
       // Ok, delete the tool
-      File destFolder = toolContrib.getInstalledFolder();
+      File destFolder = tool.getInstalledFolder();
       FileUtils.recursiveDelete(destFolder);
-      toolContrib.setInstalled(false);
-      toolContrib.setInstalledFolder(null);
+      tool.setInstalled(false);
+      tool.setInstalledFolder(null);
 
       // We removed the version folder (.../tools/TOOL_NAME/VERSION)
       // now try to remove the containing TOOL_NAME folder
@@ -292,13 +290,13 @@ public class ContributionInstaller {
       packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
     }
 
-    for (String packageIndexURL : packageIndexURLs) {
+    packageIndexURLs.parallelStream().forEach(packageIndexURL -> {
       try {
         downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
       } catch (Exception e) {
         System.err.println(e.getMessage());
       }
-    }
+    });
 
     progress.stepDone();
 
@@ -331,7 +329,8 @@ public class ContributionInstaller {
     File outputFile = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
     File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
-    downloader.download(url, tmpFile, progress, statusText, progressListener);
+    boolean noResume = true;
+    downloader.download(url, tmpFile, progress, statusText, progressListener, noResume);
 
     Files.deleteIfExists(outputFile.toPath());
     Files.move(tmpFile.toPath(), outputFile.toPath());

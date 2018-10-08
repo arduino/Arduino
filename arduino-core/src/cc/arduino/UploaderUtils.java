@@ -50,7 +50,11 @@ public class UploaderUtils {
 
     BoardPort boardPort = null;
     if (!noUploadPort) {
-      boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+      String port = PreferencesData.get("serial.port");
+      if (port == null || port.isEmpty()) {
+        return null;
+      }
+      boardPort = BaseNoGui.getDiscoveryManager().find(port);
     }
 
     return new UploaderFactory().newUploader(target.getBoards().get(board), boardPort, noUploadPort);

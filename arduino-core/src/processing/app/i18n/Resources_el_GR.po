@@ -14,10 +14,15 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Dimitris Zervas <01ttouch@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # firewalker <firew4lker@gmail.com>, 2015-2016
-# Spyros Papanastasiou <spyridon.papanastasiou@gmail.com>, 2015
+# Spyros Papanastasiou <spyros_ladon@zoho.eu>, 2015
 # Vangelis Skarmoutsos <skarmoutsosv@gmail.com>, 2016
 # Γιάννης Σφακιανάκης <ysfakianakis@gmail.com>, 2013,2016
 msgid ""
@@ -25,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2018-09-06 13:55+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Greek (Greece) (http://www.transifex.com/mbanzi/arduino-ide-15/language/el_GR/)\n"
 "MIME-Version: 1.0\n"
@@ -148,6 +153,10 @@ msgstr "Επιπλέον URLs διαχειριστή πλακετών:"
 msgid "Afrikaans"
 msgstr "Αφρικάανς"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr ""
+
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
 msgstr "Αλβανικά"
@@ -208,6 +217,11 @@ msgstr "Αρχειοθέτηση σχεδίου ως:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Ακυρώθηκε η αρχειοθέτηση σχεδίου."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -428,6 +442,10 @@ msgstr ""
 msgid "Can only pass one of: {0}"
 msgstr "Μπορεί να περάσει μόνο ένα από: {0}"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr ""
+
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
@@ -469,6 +487,10 @@ msgstr "Κινέζικα (Taiwan)"
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Κινέζικα (Taiwan) (Big5)"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
@@ -607,6 +629,11 @@ msgstr "Δεν μπορεί να διαγραφεί η παλιά εκδοση �
 msgid "Could not replace {0}"
 msgstr "Δεν μπορεί να αντικατασταθεί το {0}"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Δεν μπόρεσε να γίνει αρχειοθέτηση του σχεδίου"
@@ -650,6 +677,10 @@ msgstr "Επεξεργασία δεδομένων"
 msgid "Data Storage"
 msgstr "Αποθήκευση δεδομένων"
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Μείωση εσοχής"
@@ -657,6 +688,10 @@ msgstr "Μείωση εσοχής"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "Προεπιλογή"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -833,6 +868,11 @@ msgstr "Λάθος κατα την λήψη του φακέλου δεδομέν
 msgid "Error inside Serial.{0}()"
 msgstr "Σφάλμα μέσα στο Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -851,6 +891,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "Σφάλμα ανοίγματος της σειριακής θύρας \"{0}\". Συμβουλευτείτε την τεκμηρίωση στο http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr ""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -921,10 +980,6 @@ msgstr "Σφάλμα κατά την επικύρωση/ανέβασμα"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Εσθονικά"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Εσθονικά (Εσθονία)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1129,9 +1184,9 @@ msgstr ""
 msgid "Ignore Case"
 msgstr "Αγνόησε την κεφαλαιοποίηση"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Το λάθος όνομα της βιβλιοθήκης αγνοήθηκε"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1156,6 +1211,10 @@ msgstr "Συμπερίληψη βιβλιοθήκης"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Εσφαλμένος φάκελος εγκατάστασης IDE"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1190,10 +1249,10 @@ msgstr "Εγκατεστημένο"
 msgid "Installing boards..."
 msgstr "Εγκατάσταση πλακετών..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Εγκατάσταση βιβλιοθήκης:{0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1218,6 +1277,11 @@ msgstr "Βρέθηκε μη έγγυρη βιβλιοθήκη στο {0}: {1}"
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "Μη έγγυρη παράθεση: δεν βρέθηκε χαρακτήρας [{0}] κλεισίματος."
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1251,10 +1315,10 @@ msgstr "Η βιβλιοθήκη προστέθηκε στις βιβλιοθήκ
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "Η βιβλιοθήκη δεν μπορεί να χρησιμοποιεί και τον φάκελο 'src' και τον 'utility'. Ελέγξτε το {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Η βιβλιοθήκη είναι ήδη εγκατεστημένη: {0} έκδοση {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1534,6 +1598,10 @@ msgstr "Παρακαλώ συμπεριλάβετε την βιβλιοθήκη 
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Παρακαλώ συμπεριλάβετε την βιβλιοθήκη Wire από το μενού Σχέδιο > Συμπερίληψη Βιβλιοθήκης."
 
+#: ../../../../../app/src/processing/app/SketchController.java:713
+msgid "Please select a Port before Upload"
+msgstr ""
+
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr ""
@@ -1671,10 +1739,10 @@ msgstr "Αναφορά"
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Αφαίρεση βιβλιοθήκης: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1815,6 +1883,13 @@ msgstr "Παρακολούθηση σειριακής"
 msgid "Serial Plotter"
 msgstr "Σχεδιογράφος σειριακής"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
 msgstr "Η σειριακή οθόνη δεν είναι διαθέσιμη όταν είναι ανοικτός ο σχεδιογράφος"
@@ -1853,6 +1928,10 @@ msgstr "Προβλήματα επιλογών"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Εμφάνιση φακέλου του σχεδίου"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2025,6 +2104,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Το αρχείο \"{0}\" χρειάζεται να είναι μέσα σε έναν\nφάκελο σχεδίου με ονομασία \"{1}\". Δημιουργία αυτού\nτου φακέλου, μετακίνηση του αρχείου και συνέχεια; "
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2070,12 +2157,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Ο φάκελος του σχεδίου έχει εξαφανιστεί.\nΘα γίνει προσπάθεια αποθήκευσης στην ίδια τοποθεσία,\nαλλά οτιδήποτε εκτός του κώδικα θα χαθεί."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Το όνομα του σχεδίου πρέπει να τροποποιηθεί. Τα ονόματα των Σχεδίων\nμπορεί να περιέχουν ASCII χαρακτήρες και αριθμούς (αλλά δεν μπορούν\nνα αρχίζουν με αριθμό). Πρέπει να είναι και μικρότερα από 64 χαρακτήρες."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2092,12 +2179,9 @@ msgid ""
 "Please choose a different folder for your sketchbook."
 msgstr "Ο καθορισμένος φάκελος του sketchbook περιέχει αντίγραφο του IDE.\nΠαρακαλώ επιλέξτε έναν διαφορετικό φάκελο για το sketchbook σας."
 
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Το αρχείο αυτό έχει ήδη αντιγραφεί στην\nτοποθεσία στην οποία προσπαθείτε να το \nπροσθέσετε. Δεν θα κάνω τίποτε."
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2442,10 +2526,6 @@ msgstr "Βρέθηκε λάθος μικροελεγκτής. Επιλέξατε
 msgid "Yes"
 msgstr "Ναι"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Δεν μπορεί να με γελάσεις"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Δεν μπορείτε να εισάγετε έναν φάκελο που περιέχει το sketchbook σας"
@@ -2459,6 +2539,12 @@ msgstr "Δεν μπορείτε να αποθηκεύσετε το σχέδιο 
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Ξέχασες το Sketchbook σου"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr ""
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2589,6 +2675,12 @@ msgstr "αγνόηση μη έγκυρου μεγέθους γραμματοσε
 msgid "name is null"
 msgstr "το όνομα είναι κενό"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "το σειριακόΜενού είναι κενό"
@@ -2676,11 +2768,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: Μη έγκυρο όνομα πλακέτας, πρέπει να έχει την μορφή \"package:arch:board\"  ή \"package:arch:board:options\""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Μη έγκυρη επιλογή \"{1}\" για την πλακέτα \"{2}\""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2690,6 +2777,11 @@ msgstr "{0}: Μη έγκυρη επιλογή για την πλακέτα \"{1}
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: Μη έγκυρη επιλογή, πρέπει να είναι της μορφής \"όνομα=τιμή\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

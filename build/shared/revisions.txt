@@ -1,7 +1,164 @@
-ARDUINO 1.6.14
+ARDUINO 1.8.7 2018.09.11
+
+(bugfix service release)
+
 [ide]
+* Fixed: IDE doesn't start if library_index.json is corruped.
+* Fixed: IDE doesn't start if a library with invalid version is found.
+* Fixed: Rare build errors in very complex sketches (like Marlin firmware).
+* Fixed: Better dialog explaining that MacOSX 10.8 is now required. Thanks @PaulStoffregen
+* Fixed: Slow "File" and "Tools" menus in MacOSX
+* Fixed: Weird Board Manager behaviour if AVR core is downgraded to a version earlier than 1.6.22
+* Improved first-use usability if the user don't select the serial port. Thanks @PaulStoffregen
+* Custom "Tools" menu now keeps the order as defined in boards.txt.
 
 [core]
+* AVR: Fixed EEPROM warnings. Thanks @bxparks
+* AVR: Treat "narrowing conversion" as warning, not error. This will make some libraries
+       to compile again. Thanks @PaulStoffregen
+
+ARDUINO 1.8.6 2018.08.23
+
+[ide]
+* Updated arduino-builder to 1.4.0:
+  - parallel build (improve compile speed)
+  - better reuse of already compiled files
+  - Windows: fixed build for sketch stored under OneDrive cloud folders
+* Added translations for library types. Thanks @ReAlUA
+* Added scroller in programmers menu.
+* Added "accelerator" in scrollable menu, press "a" key while scrolling
+* Keep "Board Manager" menu item always as first in the menu
+* "Manage Libraries" is now also in the "Tools" menu. Thanks @feikname
+* Compiler errors now have both column and line
+* Serial monitor how has "Show Timestamp" option. Thanks @MichalSy
+* Improved DPI detection for hi-resolution montior on Linux
+* Added copy/paste contextual menu in Find/Replace text fields
+* Fixed long IDE startup time when some virtual/not-connected network interfaces are present
+* Fixed inconsistent line-endings when saving files on Windows
+* mdns: Make board disappear via TTL instead of reachability. Thanks @kurtgo
+* Library Manager: display install/remove buttons with mouse on-hover instead of mouse click
+* Board Manager: fixed some rare case with corrupted index download
+* Windows: removed some debug output when running the IDE from command line
+* Support selectable user-defined themes. User's theme are zip files inside the sketchbook "theme" folder
+* Library Manager: library search now search also for headers (.h) declared by the library in library.properties
+* Added "--version" to the CLI. Thanks @yohsuke
+* Fixed Serial Plotter/Monitor permanently disabled if Plotter fails to open
+* Fixed window title that sometimes is not updated on "Save as...". Thanks @JxJxJxMxNxS
+* Fixed keybindings for Increase/Decrease font size
+* Improved accessibility in the Preferences dialog. Thanks @coreyknapp
+
+[core]
+* AVR: Set Optiboot as default bootloader for Nano. This is the bootloader installed on new
+       Arduino Nano boards. If you have a Nano with the old bootloader you must select
+       Tools > Processor > ATmega328P (Old Bootloader) to upload.
+* AVR core has been moved to its own repository: https://github.com/arduino/ArduinoCore-avr
+* Updated toolchain to gcc 5.4.0
+
+[wifi101-firmware]
+* SECURITY FIX: Released fix for WPA2 KRACK vulnerability (latest WINC1500 firmware 19.5.2).
+
+ARDUINO 1.8.5 2017.09.29
+
+(bugfix service release)
+
+[ide]
+* Added workaround for menu visibility bug in MacOSX 10.13 beta. Thanks @puybaret
+* Fixed bug for negative-font-size.
+* New/Rename tabs now allows names starting with a number.
+
+ARDUINO 1.8.4 2017.08.23
+
+[ide]
+* IDE Toolbar can now go full width on 4K display.
+* Environment variable LIBRARY_INDEX_URL is now correctly parsed (LIBRARY_INDEX_URL_GZ can also be optinally specified). Thanks @xardael
+* Added per-board generic option in config file boards.txt for disabling control of dtr+rts. Thanks @d-a-v
+* CLI: fixed missing "runtime.platform.path" when running without the `--board` option
+* Linux: fixed desktop icon not launching the IDE in certain Window Managers (thanks @herrold)
+* Allow setting low values for console size (correctly applies console.lines=x in preferences.txt)
+* Make Preference window fit 600px height displays
+* Fix error when renaming an unsaved, newly added file. Thanks @matthijskooijman
+* Added the ability to increase/decrease font size via keyboard + mouse shortcuts (Ctrl + MouseWheel)
+* Sketch names starting with a digit are now allowed
+* Serial monitor is opened on a default position if the multi-monitor setup change (this should fix cases
+  when the serial monitor is opened outside of the visibile space)
+
+[libraries]
+* Fixed wrong folder name for "Adafruit Circuit Playground" library, now it can be updated cleanly.
+* Fixed wrong include for "RobotIRRemote", now it should not interfere anymore with the real IRRemote.
+
+ARDUINO 1.8.3 2017.05.31
+
+(bugfix service release)
+
+[ide]
+* Fixed RESOURCE_NAME in install.sh script
+* Serial Monitor: added "Clear output" button. Thanks @MichaelSy
+* added options in preferences.txt for: custom title, comment/uncomment shortcut, always show file extensions. Thanks @MichaelSy
+* added options in preferences.txt to enable/disable typing assistance (auto close brace, auto indent)
+* Enabling "Use external editor" option now requires to save all sketches.
+
+[core]
+* AVR: added availableForWrite() method in generic Stream class. Thanks @eric-wieser
+* AVR: moved flush() method up in the class hierarchy from Stream to Print class. Thanks @matthijskooijman
+
+[other]
+* Update Wifi101 Firmware Updater plugin
+
+ARDUINO 1.8.2 2017.03.22
+
+[ide]
+* Fix command line: works again with relative paths (regression)
+* Fix command line: "--save-prefs" works again (regression)
+* AVR toolchain has been updated with a tentative fix for the ld-returned-5-exit-status bug
+* Update arduino-builder to 1.3.25
+  - avoid name clashing for libraries
+  - cache core archives to speedup compilation consistently
+* Allow BoardManager to fetch FreeBSD tools (thanks @kevans91)
+* Serial monitor: the input string box is automatically focused when window is selected
+* Serial monitor: now can not be opened during upload
+* Serial monitor: now properly decodes UTF8 characters (thanks @aknrdureegaesr)
+* Serial monitor: added 500k, 1M and 2M baudrates (thanks @dsstutts)
+* Updated RSyntaxTextArea to 2.6.1 (textarea component)
+* Updated jmdsn (mDNS discovery)
+* Allow plugins to attach a listener to compile progress (thanks @tomneutens)
+
+[core]
+* Add Atmel-ICE and JTAGICE3 programmers for AVR chips (thanks @matthijskooijman)
+* AVR: Set unused bits of extended fuse to 1, should remove some avrdude warning during burn bootloader (thanks @descampsa)
+* AVR: USB: send ZLP when needed (allows full 64 bytes packets)
+* AVR: USB: use IAD descriptors instead than Generic (thanks @cuitoldfish)
+
+[other]
+* SAM platform source code has been moved to its own repository (https://github.com/arduino/ArduinoCore-sam) - all PRs and issues have been moved as well
+* Update Wifi101 Firmware Updater plugin
+
+ARDUINO 1.8.1 - 2017.01.09
+
+[ide]
+* Fixed font rendering not anti-aliased on Windows (regression)
+* Increased number of colors on serial plotter to 8, thanks @cousteaulecommandant
+
+[libraries]
+* Fixed regression in SD library. Thanks @greiman
+
+ARDUINO 1.8.0 - 2016.12.20
+
+[ide]
+* Linux: running in command line mode doesn't require an X11 display anymore
+* "Save as" now clears the "modified" status
+* builder: Paths with strange UTF8 chars are now correctly handled
+* builder: .hpp and .hh file extensions are now considered valid sketch extension
+* builder: core.a is not rebuild if not needed (improve build time in particular for big projects)
+* Fixed swapped actions "Copy for Forum" and "Copy as HTML"
+* Linux/osx: If an editor tab is a symbolic link it is no more replaced with a real file when saving (see #5478)
+* Increased the upload timeout to 5 minutes (it was 2 min, but it may be not sufficient when uploading via UART a big sketch)
+
+[core]
+* Added Arduino.org boards
+* Added Adafruit Circuit Playground board
+* Added "-g" option to linker to keep debug information in the .elf file (see #5539)
+* avrdude: Added fake configuration for EFUSE on atmega8 part. This solves a long standing issue with "Burn bootloader".
+  Thanks @rigelinorion, @awatterott
 
 ARDUINO 1.6.13 - 2016.11.22
 

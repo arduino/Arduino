@@ -73,22 +73,18 @@ public class ContributionsSelfCheck extends TimerTask {
     updateContributionIndex();
     updateLibrariesIndex();
 
-    long updatablePlatforms = BaseNoGui.indexer.getPackages().stream()
-      .flatMap(pack -> pack.getPlatforms().stream())
-      .filter(new UpdatablePlatformPredicate()).count();
+    boolean updatablePlatforms = checkForUpdatablePlatforms();
 
-    long updatableLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries().stream()
-      .filter(new UpdatableLibraryPredicate())
-      .count();
+    boolean updatableLibraries = checkForUpdatableLibraries();
 
-    if (updatableLibraries <= 0 && updatablePlatforms <= 0) {
+    if (!updatableLibraries && !updatablePlatforms) {
       return;
     }
 
     String text;
-    if (updatableLibraries > 0 && updatablePlatforms <= 0) {
+    if (updatableLibraries && !updatablePlatforms) {
       text = I18n.format(tr("Updates available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
-    } else if (updatableLibraries <= 0 && updatablePlatforms > 0) {
+    } else if (!updatableLibraries && updatablePlatforms) {
       text = I18n.format(tr("Updates available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>");
     } else {
       text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>", "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
@@ -124,6 +120,17 @@ public class ContributionsSelfCheck extends TimerTask {
       for (Editor e : base.getEditors())
         e.addWindowFocusListener(wfl);
     });
+  }
+
+  static boolean checkForUpdatablePlatforms() {
+    return BaseNoGui.indexer.getPackages().stream()
+      .flatMap(pack -> pack.getPlatforms().stream())
+      .anyMatch(new UpdatablePlatformPredicate());
+  }
+
+  static boolean checkForUpdatableLibraries() {
+    return BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
+      .anyMatch(new UpdatableLibraryPredicate());
   }
 
   @Override

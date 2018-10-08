@@ -26,7 +26,9 @@ package processing.app;
 import cc.arduino.Compiler;
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.UploaderUtils;
+import cc.arduino.builder.ArduinoBuilder;
 import cc.arduino.packages.Uploader;
+import cc.arduino.view.NotificationPopup;
 import processing.app.debug.RunnerException;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.FileUtils;
@@ -37,6 +39,8 @@ import processing.app.packages.UserLibrary;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,10 +62,18 @@ import static processing.app.I18n.tr;
 public class SketchController {
   private final Editor editor;
   private final Sketch sketch;
+  private final ArduinoBuilder builder;
 
   public SketchController(Editor _editor, Sketch _sketch) {
+    ArduinoBuilder _builder = null;
+    try {
+      _builder = new ArduinoBuilder();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
     editor = _editor;
     sketch = _sketch;
+    builder = _builder;
   }
 
   private boolean renamingCode;
@@ -75,7 +87,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -107,7 +119,7 @@ public class SketchController {
     }
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -225,7 +237,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -253,11 +265,19 @@ public class SketchController {
         sketch.delete();
         editor.base.handleClose(editor);
       } else {
+
+        boolean neverSavedTab = !current.fileExists();
+
         // delete the file
-        if (!current.delete(sketch.getBuildPath().toPath())) {
+        if (!current.delete(sketch.getBuildPath().toPath()) && !neverSavedTab) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
+        }
+
+        if (neverSavedTab) {
+          // remove the file from the sketch list
+          sketch.removeFile(current);
         }
 
         editor.removeTab(current);
@@ -295,7 +315,7 @@ public class SketchController {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       Base.showMessage(tr("Sketch is read-only"),
         tr("Some files are marked \"read-only\", so you'll\n" +
           "need to re-save this sketch to another location."));
@@ -359,7 +379,7 @@ public class SketchController {
   protected boolean saveAs() throws IOException {
     // get new name for folder
     FileDialog fd = new FileDialog(editor, tr("Save sketch folder as..."), FileDialog.SAVE);
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath()) || isUntitled()) {
+    if (isReadOnly() || isUntitled()) {
       // default to the sketchbook folder
       fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
@@ -379,7 +399,14 @@ public class SketchController {
     if (newName == null) return false;
     newName = SketchController.checkName(newName);
 
-    File newFolder = new File(newParentDir, newName);
+    File newFolder;
+    // User may want to overwrite a .ino
+    // check if the parent folder name ends with the sketch name
+    if (newName.endsWith(".ino") && newParentDir.endsWith(newName.substring(0, newName.lastIndexOf('.'))+ File.separator)) {
+      newFolder = new File(newParentDir);
+    } else {
+      newFolder = new File(newParentDir, newName);
+    }
 
     // check if the paths are identical
     if (newFolder.equals(sketch.getFolder())) {
@@ -423,7 +450,7 @@ public class SketchController {
     //editor.sketchbook.rebuildMenusAsync();
     editor.base.rebuildSketchbookMenus();
     editor.header.rebuild();
-
+    editor.updateTitle();
     // Make sure that it's not an untitled sketch
     setUntitled(false);
 
@@ -441,7 +468,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -495,61 +522,64 @@ public class SketchController {
       isData = true;
     }
 
-    // check whether this file already exists
-    if (destFile.exists()) {
-      Object[] options = { tr("OK"), tr("Cancel") };
-      String prompt = I18n.format(tr("Replace the existing version of {0}?"), filename);
-      int result = JOptionPane.showOptionDialog(editor,
-                                                prompt,
-                                                tr("Replace"),
-                                                JOptionPane.YES_NO_OPTION,
-                                                JOptionPane.QUESTION_MESSAGE,
-                                                null,
-                                                options,
-                                                options[0]);
-      if (result == JOptionPane.YES_OPTION) {
-        replacement = true;
-      } else {
-        return false;
-      }
-    }
-
-    // If it's a replacement, delete the old file first,
-    // otherwise case changes will not be preserved.
-    // http://dev.processing.org/bugs/show_bug.cgi?id=969
-    if (replacement) {
-      boolean muchSuccess = destFile.delete();
-      if (!muchSuccess) {
-        Base.showWarning(tr("Error adding file"),
-                         I18n.format(tr("Could not delete the existing ''{0}'' file."), filename),
-			 null);
-        return false;
-      }
-    }
-
-    // make sure they aren't the same file
-    if (isData && sourceFile.equals(destFile)) {
-      Base.showWarning(tr("You can't fool me"),
-                       tr("This file has already been copied to the\n" +
-                         "location from which where you're trying to add it.\n" +
-                         "I ain't not doin nuthin'."), null);
-      return false;
-    }
-
-    // in case the user is "adding" the code in an attempt
-    // to update the sketch's tabs
     if (!sourceFile.equals(destFile)) {
+      // The typical case here is adding a file from somewhere else.
+      // This however fails if the source and destination are equal
+
+      // check whether this file already exists
+      if (destFile.exists()) {
+        Object[] options = { tr("OK"), tr("Cancel") };
+        String prompt = I18n.format(tr("Replace the existing version of {0}?"), filename);
+        int result = JOptionPane.showOptionDialog(editor,
+                                                  prompt,
+                                                  tr("Replace"),
+                                                  JOptionPane.YES_NO_OPTION,
+                                                  JOptionPane.QUESTION_MESSAGE,
+                                                  null,
+                                                  options,
+                                                  options[0]);
+        if (result == JOptionPane.YES_OPTION) {
+          replacement = true;
+        } else {
+          return false;
+        }
+      }
+
+      // If it's a replacement, delete the old file first,
+      // otherwise case changes will not be preserved.
+      // http://dev.processing.org/bugs/show_bug.cgi?id=969
+      if (replacement) {
+        if (!destFile.delete()) {
+          Base.showWarning(tr("Error adding file"),
+                           I18n.format(tr("Could not delete the existing ''{0}'' file."), filename),
+                           null);
+          return false;
+        }
+      }
+
+      // perform the copy
       try {
         Base.copyFile(sourceFile, destFile);
 
       } catch (IOException e) {
         Base.showWarning(tr("Error adding file"),
                          I18n.format(tr("Could not add ''{0}'' to the sketch."), filename),
-			 e);
+                         e);
         return false;
       }
     }
+    else {
+      // If the source and destination are equal, a code file is handled
+      //   - as a replacement, if there is a corresponding tab,
+      //    (eg. user wants to update the file after modifying it outside the editor)
+      //   - as an addition, otherwise.
+      //    (eg. the user copied the file to the sketch folder and wants to edit it)
+      // For a data file, this is a no-op.
+      if (editor.findTabIndex(destFile) >= 0)
+        replacement = true;
+    }
 
+    // open/refresh the tab
     if (!isData) {
       int tabIndex;
       if (replacement) {
@@ -624,11 +654,14 @@ public class SketchController {
    */
   public String build(boolean verbose, boolean save) throws RunnerException, PreferencesMapException, IOException {
     // run the preprocessor
-    editor.status.progressUpdate(20);
+    for (CompilerProgressListener progressListener : editor.status.getCompilerProgressListeners()){
+      progressListener.progress(20);
+    }
+
+    EditorConsole.setCurrentEditorConsole(editor.console);
 
     ensureExistence();
-
-    CompilerProgressListener progressListener = editor.status::progressUpdate;
+       
 
     boolean deleteTemp = false;
     File pathToSketch = sketch.getPrimaryFile().getFile();
@@ -640,7 +673,7 @@ public class SketchController {
     }
 
     try {
-      return new Compiler(pathToSketch, sketch).build(progressListener, save);
+      return new Compiler(pathToSketch, sketch).build(editor.status.getCompilerProgressListeners(), save);
     } finally {
       // Make sure we clean up any temporary sketch copy
       if (deleteTemp)
@@ -657,6 +690,66 @@ public class SketchController {
     }
 
     return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toFile();
+  }
+
+  /**
+   * Preprocess sketch and obtain code-completions.
+   *
+   * @return null if compilation failed, main class name if not
+   */
+  public String codeComplete(SketchFile file, int line, int col) throws RunnerException, PreferencesMapException, IOException {
+    // run the preprocessor
+    for (CompilerProgressListener progressListener : editor.status.getCompilerProgressListeners()){
+      progressListener.progress(20);
+    }
+
+    ensureExistence();
+
+    boolean deleteTemp = false;
+    File pathToSketch = sketch.getPrimaryFile().getFile();
+    File requestedFile = file.getFile();
+    if (sketch.isModified()) {
+      // If any files are modified, make a copy of the sketch with the changes
+      // saved, so arduino-builder will see the modifications.
+      pathToSketch = saveSketchInTempFolder();
+      // This takes into account when the sketch is copied into a temporary folder
+      requestedFile = new File(pathToSketch.getParent(), requestedFile.getName());
+      deleteTemp = true;
+    }
+
+    try {
+      return builder.codeComplete(BaseNoGui.getTargetBoard(), pathToSketch, requestedFile, line, col);
+      //return new Compiler(pathToSketch, sketch).codeComplete(editor.status.getCompilerProgressListeners(), requestedFile, line, col);
+    } catch (Exception x) {
+
+      // Try getting some more useful information about the error;
+      // Launch the same command in non-daemon mode, overriding verbosity to
+      // print the actual call
+      // TODO: override verbosity
+      try {
+        // Gather command line and preprocesor output
+        String out = new Compiler(pathToSketch, sketch)
+            .codeComplete(editor.status.getCompilerProgressListeners(),
+                          requestedFile, line, col);
+        System.out.println("autocomplete failure output:\n" + out);
+
+        SwingUtilities.invokeLater(() -> {
+          NotificationPopup notificationPopup = new NotificationPopup(editor,
+              null, tr("Code complete is not available. Try increasing ulimit."),
+              true);
+          notificationPopup.beginWhenFocused();
+        });
+
+        return "";
+      } catch (Exception e) {
+        // Ignore
+        return "";
+      }
+    } finally {
+      // Make sure we clean up any temporary sketch copy
+      if (deleteTemp)
+        FileUtils.recursiveDelete(pathToSketch.getParentFile());
+    }
   }
 
   /**
@@ -688,6 +781,12 @@ public class SketchController {
 
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+    if (uploader == null) {
+      editor.statusError(tr("Please select a Port before Upload"));
+      return false;
+    }
+
+    EditorConsole.setCurrentEditorConsole(editor.console);
 
     boolean success = false;
     do {
@@ -768,7 +867,9 @@ public class SketchController {
    * examples directory, or when sketches are loaded from read-only
    * volumes or folders without appropriate permissions.
    */
-  public boolean isReadOnly(LibraryList libraries, String examplesPath) {
+  public boolean isReadOnly() {
+    LibraryList libraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
+    String examplesPath = BaseNoGui.getExamplesPath();
     String apath = sketch.getFolder().getAbsolutePath();
 
     Optional<UserLibrary> libraryThatIncludesSketch = libraries.stream().filter(lib -> apath.startsWith(lib.getInstalledFolder().getAbsolutePath())).findFirst();
@@ -821,9 +922,9 @@ public class SketchController {
 
     if (!newName.equals(origName)) {
       String msg =
-        tr("The sketch name had to be modified. Sketch names can only consist\n" +
-          "of ASCII characters and numbers (but cannot start with a number).\n" +
-          "They should also be less than 64 characters long.");
+        tr("The sketch name had to be modified.\n" +
+          "Sketch names must start with a letter or number, followed by letters,\n" +
+          "numbers, dashes, dots and underscores. Maximum length is 63 characters.");
       System.out.println(msg);
     }
     return newName;

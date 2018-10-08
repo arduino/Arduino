@@ -74,16 +74,22 @@ public class Constants {
     if (extenalPackageIndexUrl != null && !"".equals(extenalPackageIndexUrl)) {
       PACKAGE_INDEX_URL = extenalPackageIndexUrl;
     } else {
-      PACKAGE_INDEX_URL = "http://downloads.arduino.cc/packages/package_index.json";
+      PACKAGE_INDEX_URL = "https://downloads.arduino.cc/packages/package_index.json";
     }
 
     String externalLibraryIndexUrl = System.getProperty("LIBRARY_INDEX_URL");
-    if (externalLibraryIndexUrl != null && !"".equals(externalLibraryIndexUrl)) {
+    if (externalLibraryIndexUrl != null && !externalLibraryIndexUrl.isEmpty()) {
       LIBRARY_INDEX_URL = externalLibraryIndexUrl;
+      String externalLibraryIndexUrlGz = System.getProperty("LIBRARY_INDEX_URL_GZ");
+      if (externalLibraryIndexUrlGz != null && !externalLibraryIndexUrlGz.isEmpty()) {
+        LIBRARY_INDEX_URL_GZ = externalLibraryIndexUrlGz;
+      } else {
+        LIBRARY_INDEX_URL_GZ = "";
+      }
     } else {
-      LIBRARY_INDEX_URL = "http://downloads.arduino.cc/libraries/library_index.json";
+      LIBRARY_INDEX_URL = "https://downloads.arduino.cc/libraries/library_index.json";
+      LIBRARY_INDEX_URL_GZ = "https://downloads.arduino.cc/libraries/library_index.json.gz";
     }
-    LIBRARY_INDEX_URL_GZ = "http://downloads.arduino.cc/libraries/library_index.json.gz";
   }
 
 }

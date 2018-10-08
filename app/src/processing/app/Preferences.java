@@ -76,11 +76,6 @@ public class Preferences {
   static final int GUI_SMALL = 6;
 
   @Deprecated
-  protected static void save() {
-    PreferencesData.save();
-  }
-
-  @Deprecated
   public static String get(String attribute) {
     return PreferencesData.get(attribute);
   }

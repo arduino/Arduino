@@ -14,20 +14,27 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # corneliu.e <corneliueva@yahoo.com>, 2013-2014
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # kobalt <kobalt_mstr@yahoo.it>, 2012
 # Liviu Roman, 2015
 # micuadriandanut <micu.adrian.danut@outlook.com>, 2015
 # Pop Gheorghe <office@roroid.ro>, 2013
-# Pop Gheorghe <office@roroid.ro>, 2013-2015
-# Vlăduţ Ilie <vladilie94@gmail.com>, 2015
+# Popescu Robert <popescu.robert.adrian@gmail.com>, 2017
+# Pop Gheorghe <office@roroid.ro>, 2013-2015,2017
+# Sorin Bancila <bancila49@gmail.com>, 2018
+# Vlăduț Ilie <vladilie94@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2016-11-21 17:09+0000\n"
+"PO-Revision-Date: 2018-09-06 13:55+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Romanian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +135,7 @@ msgstr "Despre Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -149,6 +156,10 @@ msgstr "Alte adrese URL Boards Manager:"
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
 msgstr "Africană"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
+msgid "Aggressively cache compiled core"
+msgstr "Salvarea agresivă în cache a nucleului compilat"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
@@ -210,6 +221,11 @@ msgstr "Arhivez schiţa ca:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Arhivarea schiţei a fost anulată"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Se stochează nucleul compilat (caching) în: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -308,7 +324,7 @@ msgstr "Auto detectare setări proxy"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "Automat"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -342,13 +358,13 @@ msgstr "Placă"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "Info despre placă"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "La {0} nu este disponibilă nici o placa"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -423,12 +439,16 @@ msgstr "Se încarcă bootloader-ul în placa de dezvoltare (acest lucru o sa dur
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr ""
+msgstr "CRC-ul nu se potrivește, fișierul este corupt. Poate fi o problemă temporară, așa că vă rugăm să încercați mai târziu."
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
 msgstr "Poate trece doar una din: {0}"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
+msgid "Can't enable external editor"
+msgstr "Nu se poate activa editorul extern"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
@@ -472,6 +492,10 @@ msgstr "Chineză (Taiwan)"
 msgid "Chinese (Taiwan) (Big5)"
 msgstr "Chineză (Taiwan) (Big5)"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
+msgid "Clear output"
+msgstr "Curăță output"
+
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
 msgstr "Click pentru o listă de URL-uri neoficiale pentru placi."
@@ -486,7 +510,7 @@ msgstr "Pune comentariu/Elimină comentariu"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Comunicare"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -498,7 +522,7 @@ msgstr "Compilez schiţa..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Contribuit"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
@@ -528,7 +552,7 @@ msgstr "Nu am putut copia către locaţia adecvată."
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "Nu am putut crea directorul \"{0}\""
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
@@ -609,6 +633,11 @@ msgstr "Nu se poate înlătura vechea versiune pentru {0}"
 msgid "Could not replace {0}"
 msgstr "Nu se poate înlocui {0}"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Nu am putut arhiva schiţa"
@@ -646,11 +675,15 @@ msgstr "Daneză (Danemarca)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "Procesare date"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "Stocare date"
+
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Redu mărime font"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -660,13 +693,17 @@ msgstr "Redu spaţiere"
 msgid "Default"
 msgstr "Implicit"
 
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
+
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
 msgstr "Ştergere"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "Control dispozitiv"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -680,7 +717,7 @@ msgstr "Anulează toate modificările şi reiniţializează schiţa?"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "Ecran"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -815,7 +852,7 @@ msgstr "Eroare la adăugarea fişierului"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "Eroare de compilare pentru placa {0}."
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
@@ -835,6 +872,11 @@ msgstr "Eroare la preluarea directorului cu date pentru Arduino"
 msgid "Error inside Serial.{0}()"
 msgstr "Eroare în Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -853,6 +895,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "Eroare la deschiderea portului serial ''{0}''. Încercați să consultați documentația la http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr ""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -924,23 +985,19 @@ msgstr "Eroare în timpul verificării/încărcării."
 msgid "Estonian"
 msgstr "Estoniană"
 
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Estonă (Estonia)"
-
 #: Editor.java:516
 msgid "Examples"
 msgstr "Exemple"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "Exemple pentru orice placă"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
 #, java-format
 msgid "Examples for {0}"
-msgstr ""
+msgstr "Exemple pentru {0}"
 
 #: ../../../../../app/src/processing/app/Base.java:1244
 msgid "Examples from Custom Libraries"
@@ -948,7 +1005,7 @@ msgstr "Exemple din librării realizate de comunitate"
 
 #: ../../../../../app/src/processing/app/Base.java:1329
 msgid "Examples from Other Libraries"
-msgstr ""
+msgstr "Exemple din alte biblioteci"
 
 #: ../../../../../app/src/processing/app/Editor.java:753
 msgid "Export canceled, changes must first be saved."
@@ -966,11 +1023,11 @@ msgstr "Nu am reușit să deschid schița : \"{0}\""
 #: ../../../../../arduino-core/src/processing/app/SketchFile.java:183
 #, java-format
 msgid "Failed to rename \"{0}\" to \"{1}\""
-msgstr ""
+msgstr "Nu a fost redenumit \"{0}\" la \"{1}\""
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:298
 msgid "Failed to rename sketch folder"
-msgstr ""
+msgstr "Nu a putut fi redenumit directorul schiței"
 
 #: Editor.java:491
 msgid "File"
@@ -979,7 +1036,7 @@ msgstr "Fişier"
 #: ../../../../../arduino-core/src/processing/app/SketchData.java:139
 #, java-format
 msgid "File name {0} is invalid: ignored"
-msgstr ""
+msgstr "Numele fișierului {0} este nevalid: ignorat"
 
 #: Preferences.java:94
 msgid "Filipino"
@@ -1063,7 +1120,7 @@ msgstr "Germană"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Preia info despre placă"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1125,15 +1182,15 @@ msgstr "Maghiară"
 
 #: ../../../../../app/src/processing/app/Base.java:1319
 msgid "INCOMPATIBLE"
-msgstr ""
+msgstr "Incompatibil(ă)"
 
 #: FindReplace.java:96
 msgid "Ignore Case"
 msgstr "Ignora majuscule"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Se ignora biblioteca cu numele greşit"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1158,6 +1215,10 @@ msgstr "Încărcare bibliotecă"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Director de instalare a IDE-ului greșit"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Creşte mărime font"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1192,10 +1253,10 @@ msgstr "Instalat"
 msgid "Installing boards..."
 msgstr "Instalare plăci..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Instalare bibliotecă: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1209,7 +1270,7 @@ msgstr "Instalare..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:256
 msgid "Interface scale:"
-msgstr ""
+msgstr "Scalare interfață:"
 
 #: ../../../processing/app/Base.java:1204
 #, java-format
@@ -1221,6 +1282,11 @@ msgstr "Bibliotecă invalidă în {0}: {1}"
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "Bloc invalid: caracterul  [{0}] de închidere nu a fost găsit."
 
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "Italiană"
@@ -1231,7 +1297,7 @@ msgstr "Japoneză"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "Kazakh"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1251,12 +1317,12 @@ msgstr "Fișier adăugat în bibliotecă. Verifică meniul \"Include biblioteca\
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
-msgstr ""
+msgstr "Biblioteca nu poate utiliza folderele \"src\" și \"utility\". Confirmați {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Biblioteca este deja instalată: {0} versiunea {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1335,7 +1401,7 @@ msgstr "Numele noului fişier"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "Portul serial nativ, nu se poate obţine info"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1347,7 +1413,7 @@ msgstr "Rețea"
 
 #: ../../../../../app//src/processing/app/Editor.java:2804
 msgid "Network port, can't obtain info"
-msgstr ""
+msgstr "Portul de rețea, nu se pot obține informații"
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Network ports"
@@ -1489,7 +1555,7 @@ msgstr "Deschide..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "Altul"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1497,7 +1563,7 @@ msgstr "Iniţializare pagină"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "Partener"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1536,9 +1602,13 @@ msgstr "Te rog importa biblioteca SPI din meniul Schiţe > Importă bibliotecă.
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Te rog importă biblioteca Wire din meniul Schiţă > Imporă bibliotecă"
 
+#: ../../../../../app/src/processing/app/SketchController.java:713
+msgid "Please select a Port before Upload"
+msgstr ""
+
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
-msgstr ""
+msgstr "Va rog selectaţi un port pentru a obţine informaţii despre placă"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:217
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:262
@@ -1547,7 +1617,7 @@ msgstr "Te rog selectează un programator din Instrumente->Meniu programator"
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Vizualizarea grafică nu este disponibilă în timp ce monitorul serial este deschis"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1620,7 +1690,7 @@ msgstr "Nu se poate accesa folderul /www/sd"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:206
 #, java-format
 msgid "Problem accessing files in folder \"{0}\""
-msgstr ""
+msgstr "Problemă de accesare a fișierelor din dosarul \"{0}\""
 
 #: Base.java:1673
 msgid "Problem getting data folder"
@@ -1673,10 +1743,10 @@ msgstr "Instrucţiuni"
 msgid "Remove"
 msgstr "Înlătură"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Înlăturare bibliotecă: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1710,7 +1780,7 @@ msgstr "Înlocuire cu:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr ""
+msgstr "Retras"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1807,7 +1877,7 @@ msgstr "Trimite"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "Senzori"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1817,9 +1887,16 @@ msgstr "Terminal serial"
 msgid "Serial Plotter"
 msgstr "Serial Plotter"
 
+#: ../../../../../app/src/processing/app/Editor.java:2325
+#, java-format
+msgid ""
+"Serial monitor is not supported on network ports such as {0} for the {1} in "
+"this release"
+msgstr "Serial monitor nu este disponibil pentru porturile đin rețea, cum ar {0} pentru {1} în această versiune."
+
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Monitorul serial nu este disponibilă în timp ce  este deschisă vizualizarea grafică"
 
 #: Serial.java:194
 #, java-format
@@ -1856,13 +1933,17 @@ msgstr "Probleme la setări"
 msgid "Show Sketch Folder"
 msgstr "Deschide directorul schiţei"
 
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
+
 #: Preferences.java:387
 msgid "Show verbose output during: "
 msgstr "Detaliază informaţiile de ieşire a compilatorului:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "Semnal intrare/ieşire"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1946,7 +2027,7 @@ msgstr "Unele schiţe sunt \"doar în citire\". Va trebui\nsă salvaţi aceste s
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:246
 #, java-format
 msgid "Sorry, the folder \"{0}\" already exists."
-msgstr ""
+msgstr "Îmi pare rău, un director cu numele \"{0}\" există deja."
 
 #: Preferences.java:115
 msgid "Spanish"
@@ -1982,11 +2063,11 @@ msgstr "Tamilă"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "Telugu"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
-msgstr ""
+msgstr "Tailandeză"
 
 #: debug/Compiler.java:414
 msgid "The 'BYTE' keyword is no longer supported."
@@ -2017,7 +2098,7 @@ msgstr "Clasa Udp a fost redenumită în EthernetUdp."
 
 #: ../../../../../arduino-core/src/processing/app/BaseNoGui.java:177
 msgid "The current selected board needs the core '{0}' that is not installed."
-msgstr ""
+msgstr "Placa de dezvoltare selectată are nevoie de nucleul '{0}', care nu este instalat."
 
 #: Editor.java:2147
 #, java-format
@@ -2026,6 +2107,14 @@ msgid ""
 "a sketch folder named \"{1}\".\n"
 "Create this folder, move the file, and continue?"
 msgstr "Fişierul \"{0}\" trebuie sa fie în interiorul\nunui director numit \"{1}\".\nDoreşti să creez directorul să mut fişierul şi să continui?"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2037,7 +2126,7 @@ msgstr "Biblioteca \\\"{0}\\\" nu poate fi folosită.\nNumele bibliotecii trebui
 
 #: ../../../../../app/src/processing/app/SketchController.java:170
 msgid "The main file cannot use an extension"
-msgstr ""
+msgstr "Fișierul principal nu poate utiliza o extensie"
 
 #: Sketch.java:356
 msgid "The name cannot start with a period."
@@ -2063,7 +2152,7 @@ msgstr "Schita \\\"{0}\\\" nu poate fi folosită.\nNumele schiţei trebuie să c
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:272
 #, java-format
 msgid "The sketch already contains a file named \"{0}\""
-msgstr ""
+msgstr "Schița conține deja un fișier numit \"{0}\""
 
 #: Sketch.java:1755
 msgid ""
@@ -2072,12 +2161,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Directorul schiţei a dispărut.\nVoi încerca să salvez din nou în aceiaşi locaţie,\ndar se vor pierde orice alte informaţii, mai puţin codul."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "A fost necesar să modific numele schiţei. Numele unei schiţe poate conţine\ndoar caractere ASCII şi numere (dar nu poate începe cu un număr).\nDe asemenea nu poate avea mai mult de 64 caractere."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2086,7 +2175,7 @@ msgid ""
 "location, and create a new sketchbook folder if\n"
 "necessary. Arduino will then stop talking about\n"
 "himself in the third person."
-msgstr "Dosarul cu schiţe nu mai exista.\nArduino v-a comuta pe locaţia implicită a directorului\nde schiţe, şi dacă e necesar v-a crea un nou dosar cu schiţe.\nArduino nu va mai vorbi despre el la persoana a trei-a."
+msgstr "Dosarul cu schiţe nu mai exista.\nArduino v-a comuta pe locaţia implicită a directorului\nde schiţe, şi dacă e necesar v-a crea un nou dosar cu schiţe."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:514
 msgid ""
@@ -2094,12 +2183,9 @@ msgid ""
 "Please choose a different folder for your sketchbook."
 msgstr "Directorul de schițe specificat conține o copie a IDE-ului.\nVă rugăm să alegeți un alt folder pentru schița dumneavoastră."
 
-#: Sketch.java:1075
-msgid ""
-"This file has already been copied to the\n"
-"location from which where you're trying to add it.\n"
-"I ain't not doin nuthin'."
-msgstr "Acest fişier a fost deja copiat în\nlocaţia în care încerci să-l adaugi.\nMă opresc aici."
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2120,7 +2206,7 @@ msgstr "E timpul pentru o pauză"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "Sincronizare"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2163,7 +2249,7 @@ msgstr "Ucrainiană"
 #: ../../../../../arduino-core/src/cc/arduino/packages/uploaders/SSHUploader.java:142
 #, java-format
 msgid "Unable to connect to {0}"
-msgstr ""
+msgstr "Nu se poate conecta la {0}"
 
 #: ../../../processing/app/Editor.java:2524
 #: ../../../processing/app/NetworkMonitor.java:145
@@ -2198,7 +2284,7 @@ msgstr "Nu se poate accesa Arduino.cc din cauza unei posibile probleme de rețea
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "Fără categorie"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2211,7 +2297,7 @@ msgstr "Tipul {0} este neprocesat în contextul cheie {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
-msgstr ""
+msgstr "Placă necunoscută"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:86
 #, java-format
@@ -2267,7 +2353,7 @@ msgstr "Încarcă folosind programatorul"
 
 #: ../../../../../app//src/processing/app/Editor.java:2814
 msgid "Upload any sketch to obtain it"
-msgstr ""
+msgstr "Încarcaţi orice schiţă pentru a o obţine"
 
 #: Editor.java:2403 Editor.java:2439
 msgid "Upload canceled."
@@ -2444,10 +2530,6 @@ msgstr "Microcontrolerul găsit nu este cel corect.  Ai selectat placa de dezvol
 msgid "Yes"
 msgstr "Da"
 
-#: Sketch.java:1074
-msgid "You can't fool me"
-msgstr "Nu mă poţi păcăli"
-
 #: ../../../../../app/src/processing/app/Base.java:2312
 msgid "You can't import a folder that contains your sketchbook"
 msgstr "Nu se poate importa un dosar care conține caietul de schițe."
@@ -2461,6 +2543,12 @@ msgstr "Nu poţi salva o schiă într-o altă schiţă.\nAcest lucru ar putea du
 #: Base.java:1888
 msgid "You forgot your sketchbook"
 msgstr "Ai uitat dosarul cu schiţe"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:252
+msgid ""
+"You have unsaved changes!\n"
+"You must save all your sketches to enable this option."
+msgstr "Aveți modificări nesalvate!\nTrebuie să salvați toate schițele pentru a activa această opțiune."
 
 #: ../../../processing/app/AbstractMonitor.java:92
 msgid ""
@@ -2505,7 +2593,7 @@ msgid ""
 "older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
 " to update the sketch to use UTF-8 encoding. If not, you may need to delete "
 "the bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" conține caracterele nerecunoscute. Dacă acest cod a fost creat utilizând o versiune mai veche de editorului Arduino, puteți să utilizați Unelte -> Corectare codare & reîncărcare pentru a actualiza sketch-ul în codarea UTF-8. În caz contrar, trebuie să ștergeți caracterele nerecunoscute pentru a elimina această atenționare."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2591,6 +2679,12 @@ msgstr "ignoră dimensiunea incorectă pentru fontul {0}"
 msgid "name is null"
 msgstr "numele este inexistent"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu este inexistent"
@@ -2649,7 +2743,7 @@ msgstr "{0} trebuie să fie un director"
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr ""
+msgstr "{0} pe {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format
@@ -2678,11 +2772,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: nume board incorect, ar trebui să fie de forma \"package:arch:board\" sau \"package:arch:board:options\""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: opțiune nevalidă pentru opțiunea \"{1}\" pentru board \"{2}\""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2692,6 +2781,11 @@ msgstr "{0}: Opțiune invalidă pentru board \"{1}\""
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: Opțiune invalidă, ar trebuii să fie de forma \"name=value\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
@@ -2711,4 +2805,4 @@ msgstr "{0}: Pachet necunoscut"
 #: ../../../../../arduino-core/src/processing/app/Platform.java:223
 #, java-format
 msgid "{0}Install this package{1} to use your {2} board"
-msgstr ""
+msgstr "{0}Instalaţi pachetul {1} pentru a folosi placa dumneavoastră {2} "

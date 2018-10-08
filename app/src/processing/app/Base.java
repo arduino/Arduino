@@ -45,6 +45,7 @@ import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.*;
+import processing.app.helpers.OSUtils;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
@@ -52,6 +53,7 @@ import processing.app.legacy.PApplet;
 import processing.app.macosx.ThinkDifferent;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
+import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextAreaDefaultInputMap;
 import processing.app.tools.MenuScroller;
@@ -109,6 +111,8 @@ public class Base {
   //  int editorCount;
   List<Editor> editors = Collections.synchronizedList(new ArrayList<Editor>());
   Editor activeEditor;
+  
+  private static JMenu boardMenu;
 
   // these menus are shared so that the board and serial port selections
   // are the same for all windows (since the board and serial port that are
@@ -120,11 +124,23 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
 
   static public void main(String args[]) throws Exception {
-    System.setProperty("awt.useSystemAAFontSettings", "on");
-    System.setProperty("swing.aatext", "true");
+    if (!OSUtils.isWindows()) {
+      // Those properties helps enabling anti-aliasing on Linux
+      // (but not on Windows where they made things worse actually
+      // and the font rendering becomes ugly).
+
+      // Those properties must be set before initializing any
+      // graphic object, otherwise they don't have any effect.
+      System.setProperty("awt.useSystemAAFontSettings", "on");
+      System.setProperty("swing.aatext", "true");
+    }
     System.setProperty("java.net.useSystemProxies", "true");
 
     if (OSUtils.isMacOS()) {
+      System.setProperty("apple.laf.useScreenMenuBar",
+        String.valueOf(!System.getProperty("os.version").startsWith("10.13")
+          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+
       ThinkDifferent.init();
     }
 
@@ -197,6 +213,20 @@ public class Base {
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
 
+    BaseNoGui.checkInstallationFolder();
+
+    // If no path is set, get the default sketchbook folder for this platform
+    if (BaseNoGui.getSketchbookPath() == null) {
+      File defaultFolder = getDefaultSketchbookFolderOrPromptForIt();
+      if (BaseNoGui.getPortableFolder() != null)
+        PreferencesData.set("sketchbook.path", BaseNoGui.getPortableSketchbookFolder());
+      else
+        PreferencesData.set("sketchbook.path", defaultFolder.getAbsolutePath());
+      if (!defaultFolder.exists()) {
+        defaultFolder.mkdirs();
+      }
+    }
+
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
       // Setup all notification widgets
@@ -231,20 +261,6 @@ public class Base {
     untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
 
-    BaseNoGui.checkInstallationFolder();
-
-    // If no path is set, get the default sketchbook folder for this platform
-    if (BaseNoGui.getSketchbookPath() == null) {
-      File defaultFolder = getDefaultSketchbookFolderOrPromptForIt();
-      if (BaseNoGui.getPortableFolder() != null)
-        PreferencesData.set("sketchbook.path", BaseNoGui.getPortableSketchbookFolder());
-      else
-        PreferencesData.set("sketchbook.path", defaultFolder.getAbsolutePath());
-      if (!defaultFolder.exists()) {
-        defaultFolder.mkdirs();
-      }
-    }
-
     splash.splashText(tr("Initializing packages..."));
     BaseNoGui.initPackages();
 
@@ -253,6 +269,10 @@ public class Base {
     if (!isCommandLine()) {
       rebuildBoardsMenu();
       rebuildProgrammerMenu();
+    } else {
+      TargetBoard lastSelectedBoard = BaseNoGui.getTargetBoard();
+      if (lastSelectedBoard != null)
+        BaseNoGui.selectBoard(lastSelectedBoard);
     }
 
     // Setup board-dependent variables.
@@ -269,7 +289,9 @@ public class Base {
     // Save the preferences. For GUI mode, this happens in the quit
     // handler, but for other modes we should also make sure to save
     // them.
-    PreferencesData.save();
+    if (parser.isForceSavePrefs()) {
+      PreferencesData.save();
+    }
 
     if (parser.isInstallBoard()) {
       ContributionsIndexer indexer = new ContributionsIndexer(
@@ -301,11 +323,11 @@ public class Base {
 
       ContributedPlatform installed = indexer.getInstalled(boardToInstallParts[0], boardToInstallParts[1]);
 
-      if (!selected.isReadOnly()) {
+      if (!selected.isBuiltIn()) {
         contributionInstaller.install(selected, progressListener);
       }
 
-      if (installed != null && !installed.isReadOnly()) {
+      if (installed != null && !installed.isBuiltIn()) {
         contributionInstaller.remove(installed);
       }
 
@@ -319,8 +341,8 @@ public class Base {
 
       LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
       indexer.parseIndex();
-      indexer.setSketchbookLibrariesFolder(BaseNoGui.getSketchbookLibrariesFolder());
-      indexer.setLibrariesFolders(BaseNoGui.getLibrariesPath());
+      indexer.setLibrariesFolders(BaseNoGui.getLibrariesFolders());
+      indexer.rescanLibraries();
 
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
@@ -340,11 +362,14 @@ public class Base {
           System.exit(1);
         }
 
-        ContributedLibrary installed = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
-        if (selected.isReadOnly()) {
-          libraryInstaller.remove(installed, progressListener);
+        Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
+        if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
+          System.out.println(tr(I18n
+              .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
+                      library, mayInstalled.get().getParsedVersion())));
+          libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, installed, progressListener);
+          libraryInstaller.install(selected, mayInstalled, progressListener);
         }
       }
 
@@ -368,12 +393,13 @@ public class Base {
         // Build
         splash.splashText(tr("Verifying..."));
 
-        File sketchFile = new File(parser.getFilenames().get(0));
+        File sketchFile = BaseNoGui.absoluteFile(parser.getFilenames().get(0));
         sketch = new Sketch(sketchFile);
 
         outputFile = new Compiler(sketch).build(progress -> {}, false);
       } catch (Exception e) {
         // Error during build
+        e.printStackTrace();
         System.exit(1);
       }
 
@@ -464,6 +490,9 @@ public class Base {
       System.exit(0);
     } else if (parser.isGetPrefMode()) {
       BaseNoGui.dumpPrefs(parser);
+    } else if (parser.isVersionMode()) {
+      System.out.println("Arduino: " + BaseNoGui.VERSION_NAME_LONG);
+      System.exit(0);
     }
   }
 
@@ -508,16 +537,21 @@ public class Base {
     return (opened > 0);
   }
 
+  /**
+   * Store screen dimensions on last close
+   */
+  protected void storeScreenDimensions() {
+    // Save the width and height of the screen
+    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+    PreferencesData.setInteger("last.screen.width", screen.width);
+    PreferencesData.setInteger("last.screen.height", screen.height);
+  }
 
   /**
    * Store list of sketches that are currently open.
    * Called when the application is quitting and documents are still open.
    */
   protected void storeSketches() {
-    // Save the width and height of the screen
-    Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    PreferencesData.setInteger("last.screen.width", screen.width);
-    PreferencesData.setInteger("last.screen.height", screen.height);
 
     // If there is only one sketch opened save his position as default
     if (editors.size() == 1) {
@@ -605,9 +639,6 @@ public class Base {
         System.err.println(e);
       }
     }
-
-    // set the current window to be the console that's getting output
-    EditorConsole.setCurrentEditorConsole(activeEditor.console);
   }
 
   protected int[] defaultEditorLocation() {
@@ -889,10 +920,14 @@ public class Base {
     }
 
     if (editors.size() == 1) {
+      storeScreenDimensions();
       storeSketches();
 
       // This will store the sketch count as zero
+      editor.setVisible(false);
+      //editor.dispose();
       editors.remove(editor);
+
       try {
         Editor.serialMonitor.close();
       } catch (Exception e) {
@@ -903,9 +938,10 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      // Since this wasn't an actual Quit event, call System.exit()
-      System.exit(0);
-
+      // Since this wasn't an actual Quit event, call System.exit() (not on OSX)
+      if (!OSUtils.isMacOS()) {
+        System.exit(0);
+      }
     } else {
       // More than one editor window open,
       // proceed with closing the current window.
@@ -935,6 +971,7 @@ public class Base {
   public boolean handleQuit() {
     // If quit is canceled, this will be replaced anyway
     // by a later handleQuit() that is not canceled.
+    storeScreenDimensions();
     storeSketches();
     try {
       Editor.serialMonitor.close();
@@ -946,7 +983,7 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      if (!OSUtils.isMacOS()) {
+      if (!OSUtils.hasMacOSStyleMenus()) {
         // If this was fired from the menu or an AppleEvent (the Finder),
         // then Mac OS X will send the terminate signal itself.
         System.exit(0);
@@ -1036,9 +1073,8 @@ public class Base {
     }
   }
 
-  private List<ContributedLibrary> getSortedLibraries() {
-    List<ContributedLibrary> installedLibraries = new LinkedList<>(BaseNoGui.librariesIndexer.getInstalledLibraries());
-    Collections.sort(installedLibraries, new LibraryByTypeComparator());
+  private LibraryList getSortedLibraries() {
+    LibraryList installedLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     Collections.sort(installedLibraries, new LibraryOfSameTypeComparator());
     return installedLibraries;
   }
@@ -1049,6 +1085,10 @@ public class Base {
     importMenu.removeAll();
 
     JMenuItem menu = new JMenuItem(tr("Manage Libraries..."));
+    // Ctrl+Shift+I on Windows and Linux, Command+Shift+I on macOS
+    menu.setAccelerator(KeyStroke.getKeyStroke('I',
+        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+        ActionEvent.SHIFT_MASK));
     menu.addActionListener(e -> openLibraryManager("", ""));
     importMenu.add(menu);
     importMenu.addSeparator();
@@ -1057,6 +1097,7 @@ public class Base {
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary();
+        BaseNoGui.librariesIndexer.rescanLibraries();
         Base.this.onBoardOrPortChange();
         Base.this.rebuildImportMenu(Editor.importMenu);
         Base.this.rebuildExamplesMenu(Editor.examplesMenu);
@@ -1069,15 +1110,16 @@ public class Base {
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
 
     if (targetPlatform != null) {
-      List<ContributedLibrary> libs = getSortedLibraries();
+      LibraryList libs = getSortedLibraries();
       String lastLibType = null;
-      for (ContributedLibrary lib : libs) {
-        if (lastLibType == null || !lastLibType.equals(lib.getTypes().get(0))) {
+      for (UserLibrary lib : libs) {
+        String libType = lib.getTypes().get(0);
+        if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {
             importMenu.addSeparator();
           }
-          lastLibType = lib.getTypes().get(0);
-          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), lastLibType));
+          lastLibType = libType;
+          JMenuItem platformItem = new JMenuItem(I18n.format(tr("{0} libraries"), tr(lastLibType)));
           platformItem.setEnabled(false);
           importMenu.add(platformItem);
         }
@@ -1119,10 +1161,6 @@ public class Base {
     }
 
     // Libraries can come from 4 locations: collect info about all four
-    File ideLibraryPath = BaseNoGui.getContentFile("libraries");
-    File sketchbookLibraryPath = BaseNoGui.getSketchbookLibrariesFolder();
-    File platformLibraryPath = null;
-    File referencedPlatformLibraryPath = null;
     String boardId = null;
     String referencedPlatformName = null;
     String myArch = null;
@@ -1130,14 +1168,12 @@ public class Base {
     if (targetPlatform != null) {
       myArch = targetPlatform.getId();
       boardId = BaseNoGui.getTargetBoard().getName();
-      platformLibraryPath = new File(targetPlatform.getFolder(), "libraries");
       String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
       if (core.contains(":")) {
         String refcore = core.split(":")[0];
         TargetPlatform referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
         if (referencedPlatform != null) {
           referencedPlatformName = referencedPlatform.getPreferences().get("name");
-          referencedPlatformLibraryPath = new File(referencedPlatform.getFolder(), "libraries");
         }
       }
     }
@@ -1147,7 +1183,7 @@ public class Base {
     // any incompatible sketchbook libs further divided into their own list.
     // The 7th list of "other" libraries should always be empty, but serves
     // as a safety feature to prevent any library from vanishing.
-    LibraryList allLibraries = new LibraryList(BaseNoGui.librariesIndexer.getInstalledLibraries());
+    LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
     LibraryList ideLibs = new LibraryList();
     LibraryList retiredIdeLibs = new LibraryList();
     LibraryList platformLibs = new LibraryList();
@@ -1157,7 +1193,7 @@ public class Base {
     LibraryList otherLibs = new LibraryList();
     for (UserLibrary lib : allLibraries) {
       // Get the library's location - used for sorting into categories
-      File libraryLocation = lib.getInstalledFolder().getParentFile();
+      Location location = lib.getLocation();
       // Is this library compatible?
       List<String> arch = lib.getArchitectures();
       boolean compatible;
@@ -1167,31 +1203,28 @@ public class Base {
         compatible = arch.contains(myArch);
       }
       // IDE Libaries (including retired)
-      if (libraryLocation.equals(ideLibraryPath)) {
+      if (location == Location.IDE_BUILTIN) {
         if (compatible) {
           // only compatible IDE libs are shown
-          boolean retired = false;
-          List<String> types = lib.getTypes();
-          if (types != null) retired = types.contains("Retired");
-          if (retired) {
+          if (lib.getTypes().contains("Retired")) {
             retiredIdeLibs.add(lib);
           } else {
             ideLibs.add(lib);
           }
         }
       // Platform Libraries
-      } else if (libraryLocation.equals(platformLibraryPath)) {
+      } else if (location == Location.CORE) {
         // all platform libs are assumed to be compatible
         platformLibs.add(lib);
       // Referenced Platform Libraries
-      } else if (libraryLocation.equals(referencedPlatformLibraryPath)) {
+      } else if (location == Location.REFERENCED_CORE) {
         // all referenced platform libs are assumed to be compatible
         referencedPlatformLibs.add(lib);
       // Sketchbook Libraries (including incompatible)
-      } else if (libraryLocation.equals(sketchbookLibraryPath)) {
+      } else if (location == Location.SKETCHBOOK) {
         if (compatible) {
           // libraries promoted from sketchbook (behave as builtin)
-          if (lib.getTypes() != null && lib.getTypes().contains("Arduino")
+          if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
               && lib.getArchitectures().contains("*")) {
             ideLibs.add(lib);
           } else {
@@ -1282,8 +1315,30 @@ public class Base {
 
   private static String priorPlatformFolder;
   private static boolean newLibraryImported;
+  
+  public void selectTargetBoard(TargetBoard targetBoard) {
+    for (int i = 0; i < boardMenu.getItemCount(); i++) {
+      JMenuItem menuItem = boardMenu.getItem(i);
+      if (!(menuItem instanceof JRadioButtonMenuItem)) {
+        continue;
+      }
+      
+      JRadioButtonMenuItem radioButtonMenuItem = ((JRadioButtonMenuItem) menuItem);
+      if (targetBoard.getName().equals(radioButtonMenuItem.getText())) {
+        radioButtonMenuItem.setSelected(true);
+        break;
+      }
+    }
+    
+    BaseNoGui.selectBoard(targetBoard);
+    filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, targetBoard, 1);
+  
+    onBoardOrPortChange();
+    rebuildImportMenu(Editor.importMenu);
+    rebuildExamplesMenu(Editor.examplesMenu);
+  }
 
-  public void onBoardOrPortChange() {
+  public synchronized void onBoardOrPortChange() {
     BaseNoGui.onBoardOrPortChange();
 
     // reload keywords when package/platform changes
@@ -1376,9 +1431,9 @@ public class Base {
     boardsCustomMenus = new LinkedList<>();
 
     // The first custom menu is the "Board" selection submenu
-    JMenu boardMenu = new JMenu(tr("Board"));
+    boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu);
+    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
     boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
@@ -1406,7 +1461,7 @@ public class Base {
     boardMenu.add(new JSeparator());
 
     // Generate custom menus for all platforms
-    Set<String> customMenusTitles = new HashSet<>();
+    Set<String> customMenusTitles = new LinkedHashSet<>();
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
         customMenusTitles.addAll(targetPlatform.getCustomMenus().values());
@@ -1444,6 +1499,8 @@ public class Base {
 
         // Cycle through all boards of this platform
         for (TargetBoard board : targetPlatform.getBoards().values()) {
+          if (board.getPreferences().get("hide") != null)
+            continue;
           JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
@@ -1480,12 +1537,26 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
-        BaseNoGui.selectBoard((TargetBoard) getValue("b"));
-        filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
 
-        onBoardOrPortChange();
-        rebuildImportMenu(Editor.importMenu);
-        rebuildExamplesMenu(Editor.examplesMenu);
+        new Thread()
+        {
+            public void run() {
+              if (activeEditor != null && activeEditor.isCompiling()) {
+                  // block until isCompiling becomes false, but aboid blocking the UI
+                  while (activeEditor.isCompiling()) {
+                    try {
+                      Thread.sleep(100);
+                    } catch (InterruptedException e) {}
+                  }
+              }
+
+              BaseNoGui.selectBoard((TargetBoard) getValue("b"));
+              filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
+              onBoardOrPortChange();
+              rebuildImportMenu(Editor.importMenu);
+              rebuildExamplesMenu(Editor.examplesMenu);
+            }
+        }.start();
       }
     };
     action.putValue("b", board);
@@ -1827,9 +1898,22 @@ public class Base {
     dialog.setVisible(true);
   }
 
-  // XXX: Remove this method and make librariesIndexer non-static
-  static public LibraryList getLibraries() {
-    return BaseNoGui.librariesIndexer.getInstalledLibraries();
+  /**
+   * Adjust font size
+   */
+  public void handleFontSizeChange(int change) {
+    String pieces[] = PreferencesData.get("editor.font").split(",");
+    try {
+      int newSize = Integer.parseInt(pieces[2]) + change;
+      if (newSize < 4)
+        newSize = 4;
+      pieces[2] = String.valueOf(newSize);
+    } catch (NumberFormatException e) {
+      // ignore
+      return;
+    }
+    PreferencesData.set("editor.font", StringUtils.join(pieces, ','));
+    getEditors().forEach(Editor::applyPreferences);
   }
 
   public List<JMenu> getBoardsCustomMenus() {
@@ -2264,8 +2348,10 @@ public class Base {
       }
 
       String[] headers;
-      if (new File(libFolder, "library.properties").exists()) {
-        headers = BaseNoGui.headerListFromIncludePath(UserLibrary.create(libFolder).getSrcFolder());
+      File libProp = new File(libFolder, "library.properties");
+      File srcFolder = new File(libFolder, "src");
+      if (libProp.exists() && srcFolder.isDirectory()) {
+        headers = BaseNoGui.headerListFromIncludePath(srcFolder);
       } else {
         headers = BaseNoGui.headerListFromIncludePath(libFolder);
       }
@@ -2275,7 +2361,7 @@ public class Base {
       }
 
       // copy folder
-      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder(), sourceFile.getName());
+      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder().folder, sourceFile.getName());
       if (!destinationFolder.mkdir()) {
         activeEditor.statusError(I18n.format(tr("A library named {0} already exists"), sourceFile.getName()));
         return;

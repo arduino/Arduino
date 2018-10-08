@@ -1,6 +1,7 @@
 package processing.app;
 
 import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.DiscoveryManager;
 import processing.app.legacy.PApplet;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
@@ -17,10 +19,11 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   private StringBuffer updateBuffer;
   private Timer updateTimer;
+  private Timer portExistsTimer;
 
   private BoardPort boardPort;
 
-  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000"};
+  protected String[] serialRateStrings = {"300", "1200", "2400", "4800", "9600", "19200", "38400", "57600", "74880", "115200", "230400", "250000", "500000", "1000000", "2000000"};
 
   public AbstractMonitor(BoardPort boardPort) {
     super(boardPort.getLabel());
@@ -59,23 +62,37 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     pack();
 
     Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-    if (PreferencesData.get("last.screen.height") != null) {
-      // if screen size has changed, the window coordinates no longer
-      // make sense, so don't use them unless they're identical
-      int screenW = PreferencesData.getInteger("last.screen.width");
-      int screenH = PreferencesData.getInteger("last.screen.height");
-      if ((screen.width == screenW) && (screen.height == screenH)) {
-        String locationStr = PreferencesData.get("last.serial.location");
-        if (locationStr != null) {
-          int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
-          setPlacement(location);
-        }
+    String locationStr = PreferencesData.get("last.serial.location");
+    if (locationStr != null) {
+      int[] location = PApplet.parseInt(PApplet.split(locationStr, ','));
+      if (location[0] + location[2] <= screen.width && location[1] + location[3] <= screen.height) {
+        setPlacement(location);
       }
     }
 
     updateBuffer = new StringBuffer(1048576);
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
+
+    ActionListener portExists = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent ae) {
+        try {
+          if (!Base.getDiscoveryManager().discovery().contains(boardPort)) {
+            if (!closed) {
+              suspend();
+            }
+          } else {
+            if (closed) {
+              resume(boardPort);
+            }
+          }
+        } catch (Exception e) {}
+      }
+    };
+
+    portExistsTimer = new Timer(1000, portExists);  // check if the port is still there every second
+    portExistsTimer.start();
 
     closed = false;
   }
@@ -94,6 +111,11 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     enableWindow(false);
 
     close();
+  }
+
+  public void dispose() {
+    super.dispose();
+    portExistsTimer.stop();
   }
 
   public void resume(BoardPort boardPort) throws Exception {

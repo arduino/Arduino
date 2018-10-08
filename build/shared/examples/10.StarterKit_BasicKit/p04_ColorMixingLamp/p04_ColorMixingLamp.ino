@@ -1,26 +1,25 @@
 /*
   Arduino Starter Kit example
- Project 4  - Color Mixing Lamp
+  Project 4 - Color Mixing Lamp
 
- This sketch is written to accompany Project 3 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 3 in the Arduino Starter Kit
 
- Parts required:
- 1 RGB LED
- three 10 kilohm resistors
- 3 220 ohm resistors
- 3 photoresistors
- red green and blue colored gels
+  Parts required:
+  - one RGB LED
+  - three 10 kilohm resistors
+  - three 220 ohm resistors
+  - three photoresistors
+  - red green and blue colored gels
 
- Created 13 September 2012
- Modified 14 November 2012
- by Scott Fitzgerald
- Thanks to Federico Vanzati for improvements
+  created 13 Sep 2012
+  modified 14 Nov 2012
+  by Scott Fitzgerald
+  Thanks to Federico Vanzati for improvements
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
 const int greenLEDPin = 9;    // LED connected to digital pin 9
 const int redLEDPin = 10;     // LED connected to digital pin 10
@@ -62,7 +61,7 @@ void loop() {
   // read the value from the blue-filtered photoresistor:
   blueSensorValue = analogRead(blueSensorPin);
 
-  // print out the values to the serial monitor
+  // print out the values to the Serial Monitor
   Serial.print("raw sensor Values \t red: ");
   Serial.print(redSensorValue);
   Serial.print("\t green: ");
@@ -71,16 +70,16 @@ void loop() {
   Serial.println(blueSensorValue);
 
   /*
-  In order to use the values from the sensor for the LED,
-  you need to do some math. The ADC provides a 10-bit number,
-  but analogWrite() uses 8 bits. You'll want to divide your
-  sensor readings by 4 to keep them in range of the output.
+    In order to use the values from the sensor for the LED, you need to do some
+    math. The ADC provides a 10-bit number, but analogWrite() uses 8 bits.
+    You'll want to divide your sensor readings by 4 to keep them in range
+    of the output.
   */
   redValue = redSensorValue / 4;
   greenValue = greenSensorValue / 4;
   blueValue = blueSensorValue / 4;
 
-  //  print out the mapped values
+  // print out the mapped values
   Serial.print("Mapped sensor Values \t red: ");
   Serial.print(redValue);
   Serial.print("\t green: ");
@@ -89,10 +88,9 @@ void loop() {
   Serial.println(blueValue);
 
   /*
-  Now that you have a usable value, it's time to PWM the LED.
+    Now that you have a usable value, it's time to PWM the LED.
   */
   analogWrite(redLEDPin, redValue);
   analogWrite(greenLEDPin, greenValue);
   analogWrite(blueLEDPin, blueValue);
 }
-

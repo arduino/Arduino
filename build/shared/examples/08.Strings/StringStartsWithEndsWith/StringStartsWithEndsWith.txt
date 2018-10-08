@@ -1,1 +1,1 @@
-Check which characters/substrings a given string starts or ends with. 
+Check which characters/substrings a given String starts or ends with. 

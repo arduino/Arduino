@@ -31,9 +31,11 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.I18n;
+import processing.app.packages.UserLibrary;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -63,7 +65,34 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<ContributedLibraryReference> getRequires();
 
+  public abstract List<String> getProvidesIncludes();
+
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+
+  private Optional<UserLibrary> installedLib = Optional.empty();
+
+  public Optional<UserLibrary> getInstalledLibrary() {
+    return installedLib;
+  }
+
+  public boolean isLibraryInstalled() {
+    return installedLib.isPresent();
+  }
+
+  public void setInstalledUserLibrary(UserLibrary installed) {
+    this.installedLib = Optional.of(installed);
+  }
+
+  public void unsetInstalledUserLibrary() {
+    installedLib = Optional.empty();
+  }
+
+  public boolean isIDEBuiltIn() {
+    if (!installedLib.isPresent()) {
+      return false;
+    }
+    return installedLib.get().isIDEBuiltIn();
+  }
 
   /**
    * Returns <b>true</b> if the library declares to support the specified
@@ -133,9 +162,9 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     if (!(obj instanceof ContributedLibrary)) {
       return false;
     }
-
+    ContributedLibrary other = (ContributedLibrary) obj;
     String thisVersion = getParsedVersion();
-    String otherVersion = ((ContributedLibrary) obj).getParsedVersion();
+    String otherVersion = other.getParsedVersion();
 
     boolean versionEquals = (thisVersion != null && otherVersion != null
                              && thisVersion.equals(otherVersion));
@@ -146,7 +175,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
       versionEquals = true;
 
     String thisName = getName();
-    String otherName = ((ContributedLibrary) obj).getName();
+    String otherName = other.getName();
 
     boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
 

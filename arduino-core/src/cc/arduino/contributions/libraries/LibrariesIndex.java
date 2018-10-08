@@ -29,11 +29,12 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
-import cc.arduino.contributions.libraries.filters.LibraryWithNamePredicate;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class LibrariesIndex {
@@ -41,7 +42,9 @@ public abstract class LibrariesIndex {
   public abstract List<ContributedLibrary> getLibraries();
 
   public List<ContributedLibrary> find(final String name) {
-    return getLibraries().stream().filter(new LibraryWithNamePredicate(name)).collect(Collectors.toList());
+    return getLibraries().stream() //
+        .filter(l -> name.equals(l.getName())) //
+        .collect(Collectors.toList());
   }
 
   public ContributedLibrary find(String name, String version) {
@@ -91,14 +94,8 @@ public abstract class LibrariesIndex {
     return types;
   }
 
-  public ContributedLibrary getInstalled(String name) {
-    List<ContributedLibrary> installedReleases = find(name).stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-    Collections.sort(installedReleases, new DownloadableContributionBuiltInAtTheBottomComparator());
-
-    if (installedReleases.isEmpty()) {
-      return null;
-    }
-
-    return installedReleases.get(0);
+  public Optional<ContributedLibrary> getInstalled(String name) {
+    ContributedLibraryReleases rel = new ContributedLibraryReleases(find(name));
+    return rel.getInstalled();
   }
 }

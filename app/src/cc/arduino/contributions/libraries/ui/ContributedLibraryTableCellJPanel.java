@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.util.Optional;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,6 +25,7 @@ import javax.swing.text.html.StyleSheet;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 import processing.app.Theme;
@@ -52,17 +54,23 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
-    downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(e -> {
+    downgradeChooser.setMaximumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.setMinimumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.addActionListener(e -> {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
-      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      boolean disableDowngrade = (downgradeChooser.getSelectedItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser
-        .setMaximumSize(versionToInstallChooser.getPreferredSize());
+        .setMaximumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
+    versionToInstallChooser
+        .setMinimumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
 
     makeNewDescription();
 
@@ -110,16 +118,16 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       return;
 
     ContributedLibrary selected = releases.getSelected();
-    ContributedLibrary installed = releases.getInstalled();
+    Optional<ContributedLibrary> mayInstalled = releases.getInstalled();
 
     boolean installable, upgradable;
-    if (installed == null) {
+    if (!mayInstalled.isPresent()) {
       installable = true;
       upgradable = false;
     } else {
       installable = false;
       upgradable = new DownloadableContributionVersionComparator()
-          .compare(selected, installed) > 0;
+          .compare(selected, mayInstalled.get()) > 0;
     }
     if (installable) {
       installButton.setText(tr("Install"));
@@ -145,7 +153,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     // Library name...
     desc += format("<b>{0}</b>", name);
-    if (installed != null && installed.isReadOnly()) {
+    if (mayInstalled.isPresent() && mayInstalled.get().isIDEBuiltIn()) {
       desc += " Built-In ";
     }
 
@@ -156,8 +164,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
 
     // ...version.
-    if (installed != null) {
-      String installedVer = installed.getParsedVersion();
+    if (mayInstalled.isPresent()) {
+      String installedVer = mayInstalled.get().getParsedVersion();
       if (installedVer == null) {
         desc += " " + tr("Version unknown");
       } else {
@@ -166,7 +174,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
     desc += "</font>";
 
-    if (installed != null) {
+    if (mayInstalled.isPresent()) {
       desc += " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
 

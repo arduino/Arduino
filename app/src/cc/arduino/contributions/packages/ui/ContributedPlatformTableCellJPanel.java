@@ -98,6 +98,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
       boolean disableDowngrade = (e.getItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
@@ -167,7 +170,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       upgradable = false;
     } else {
       installable = false;
-      removable = !installed.isReadOnly() && !hasBuiltInRelease;
+      removable = !installed.isBuiltIn() && !hasBuiltInRelease;
       upgradable = new DownloadableContributionVersionComparator()
           .compare(selected, installed) > 0;
     }
@@ -184,7 +187,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
     String desc = "<html><body>";
     desc += "<b>" + selected.getName() + "</b>";
-    if (installed != null && installed.isReadOnly()) {
+    if (installed != null && installed.isBuiltIn()) {
       desc += " Built-In ";
     }
 
