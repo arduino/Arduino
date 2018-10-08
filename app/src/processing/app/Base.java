@@ -74,6 +74,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 
@@ -307,9 +308,13 @@ public class Base {
       String[] boardToInstallParts = parser.getBoardToInstall().split(":");
 
       ContributedPlatform selected = null;
-      if (boardToInstallParts.length == 3 && VersionHelper.valueOf(boardToInstallParts[2]).isPresent()) {
-        Version vs = VersionHelper.valueOf(boardToInstallParts[2]).get();
-        selected = indexer.getIndex().findPlatform(boardToInstallParts[0], boardToInstallParts[1], vs.toString());
+      if (boardToInstallParts.length == 3) {
+        Optional<Version> version = VersionHelper.valueOf(boardToInstallParts[2]);
+        if (!version.isPresent()) {
+          System.out.println(format(tr("Invalid version {0}"), boardToInstallParts[2]));
+          System.exit(1);
+        }
+        selected = indexer.getIndex().findPlatform(boardToInstallParts[0], boardToInstallParts[1], version.get().toString());
       } else if (boardToInstallParts.length == 2) {
         List<ContributedPlatform> platformsByName = indexer.getIndex().findPlatforms(boardToInstallParts[0], boardToInstallParts[1]);
         Collections.sort(platformsByName, new DownloadableContributionVersionComparator());
@@ -350,7 +355,12 @@ public class Base {
 
         ContributedLibrary selected = null;
         if (libraryToInstallParts.length == 2) {
-          selected = indexer.getIndex().find(libraryToInstallParts[0], VersionHelper.valueOf(libraryToInstallParts[1]).toString());
+          Optional<Version> version = VersionHelper.valueOf(libraryToInstallParts[1]);
+          if (!version.isPresent()) {
+            System.out.println(format(tr("Invalid version {0}"), libraryToInstallParts[1]));
+            System.exit(1);
+          }
+          selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString());
         } else if (libraryToInstallParts.length == 1) {
           List<ContributedLibrary> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
           Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
