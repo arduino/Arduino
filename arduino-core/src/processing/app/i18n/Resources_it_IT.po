@@ -1284,6 +1284,12 @@ msgstr "Virgolettato non valido: carattere di chiusura [{0}] non trovato."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "Versione non valida '{0}' per la libreria in: {1}"
 
+#: ../../../../../app/src/processing/app/Base.java:314
+#: ../../../../../app/src/processing/app/Base.java:360
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "Italiano"

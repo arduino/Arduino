@@ -1303,6 +1303,12 @@ msgstr "Geçersiz alıntılama: kapatma işareti olan [{0}] bulunamadı."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Base.java:314
+#: ../../../../../app/src/processing/app/Base.java:360
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "İtalyanca"

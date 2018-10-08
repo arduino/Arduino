@@ -1283,6 +1283,12 @@ msgstr "Неправилни кавички: липсва затварящ зн�
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "Неправилна версия „{0}“ за библиотека в: {1}"
 
+#: ../../../../../app/src/processing/app/Base.java:314
+#: ../../../../../app/src/processing/app/Base.java:360
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "Италиански"

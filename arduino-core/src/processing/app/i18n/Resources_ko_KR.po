@@ -1282,6 +1282,12 @@ msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
 
+#: ../../../../../app/src/processing/app/Base.java:314
+#: ../../../../../app/src/processing/app/Base.java:360
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "이탈리아어"

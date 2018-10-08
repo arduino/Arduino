@@ -1292,6 +1292,12 @@ msgstr "Неверная расстановка [{0}] - нет закрываю�
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "Неверная версия '{0}' для библиотеки в: {1}"
 
+#: ../../../../../app/src/processing/app/Base.java:314
+#: ../../../../../app/src/processing/app/Base.java:360
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
+
 #: Preferences.java:102
 msgid "Italian"
 msgstr "Итальянский"
