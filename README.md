@@ -51,4 +51,9 @@ and code from [Processing](https://www.processing.org)
 and [Wiring](http://wiring.org.co).
 
 Icon and about image designed by [ToDo](https://www.todo.to.it/)
+PROJECTS:
+*For begginers you can start your own project or can take guidance from the following link:
+1.Instructables  https://www.instructables.com/
+2.hackster.io https://www.hackster.io/
+you can also submit your own projects at hackster.io and can get financial aid from arduino.cc.
 
