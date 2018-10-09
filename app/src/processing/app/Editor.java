@@ -181,7 +181,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private int numTools = 0;
 
-  public boolean avoidMultipleOperations = false;
+  static public boolean avoidMultipleOperations = false;
 
   private final EditorToolbar toolbar;
   // these menus are shared so that they needn't be rebuilt for all windows
