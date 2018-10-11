@@ -30,6 +30,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 | Arduino SAM Boards (Due) | [arduino/ArduinoCore-sam](https://github.com/arduino/ArduinoCore-sam/issues) |
 | AVR Toolchain for Arduino | [arduino/toolchain-avr](https://github.com/arduino/toolchain-avr/issues) |
 | Arduino's build of AVRDUDE | [arduino/avrdude-build-script](https://github.com/arduino/avrdude-build-script/issues) |
+| Security vulnerability | See: [Coordinated Vulnerability Disclosure Policy](https://github.com/arduino/arduino-cvd-policy) |
 | 3rd party libraries, hardware, or sketches | Report issues to the author of the software, *not* Arduino. |
 
 When you're not sure where your issue belongs, report it at [arduino/Arduino](https://github.com/arduino/Arduino) and we'll move it to where it belongs (but remember: Only bug reports and feature requests, do not ask for help with your own code there).
