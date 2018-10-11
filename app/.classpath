@@ -53,4 +53,7 @@
 	<classpathentry kind="lib" path="test-lib/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="test-lib/mockito-core-2.23.0.jar"/>
+	<classpathentry kind="lib" path="test-lib/byte-buddy-1.9.1.jar"/>
+	<classpathentry kind="lib" path="test-lib/objenesis-3.0.jar"/>
 </classpath>
