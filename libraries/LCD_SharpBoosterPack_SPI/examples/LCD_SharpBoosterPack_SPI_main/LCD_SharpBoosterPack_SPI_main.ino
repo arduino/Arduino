@@ -31,30 +31,40 @@ uint16_t myCount = 0;
 
 
 // Add setup code
-void setup() {
+void setup()
+{
     Serial.begin(9600);
 
     myScreen.begin();
     myScreen.clearBuffer();
-    
+
     myScreen.setFont(1);
     myScreen.text(10, 10, "Hello!");
     myScreen.flush();
-    
-    for (uint8_t i=0; i<20; i++) delay(100);
+
+    for (uint8_t i = 0; i < 20; i++)
+    {
+        delay(100);
+    }
     myScreen.reverseFlush();
-    for (uint8_t i=0; i<20; i++) delay(100);
-    
+    for (uint8_t i = 0; i < 20; i++)
+    {
+        delay(100);
+    }
+
     myScreen.clear();
-    
-    for (uint8_t i=0; i<4; i++)
+
+    for (uint8_t i = 0; i < 4; i++)
     {
         myScreen.setOrientation(i);
         myScreen.text(10, 10, String(i));
         myScreen.flush();
     }
-    for (uint8_t i=0; i<20; i++) delay(100);
-    
+    for (uint8_t i = 0; i < 20; i++)
+    {
+        delay(100);
+    }
+
     Serial.print("myCount = ");
 }
 
@@ -66,7 +76,7 @@ void loop()
     if (myCount > 16)
     {
         myOrientation++;
- //       if (myOrientation > 4) myOrientation = 0;
+//       if (myOrientation > 4) myOrientation = 0;
         myOrientation %= 4;
         myScreen.setOrientation(myOrientation);
         myCount = 0;
@@ -77,27 +87,29 @@ void loop()
     }
     myScreen.clearBuffer();
     myScreen.setFont(0);
-    
+
     myScreen.text(myCount, 10, "ABCDE", LCDWrapNone);
-    for (uint8_t i=10; i<LCD_HORIZONTAL_MAX-10; i++) {
-        myScreen.setXY(i,20,1);
+    for (uint8_t i = 10; i < LCD_HORIZONTAL_MAX - 10; i++)
+    {
+        myScreen.setXY(i, 20, 1);
     }
-    
-    myScreen.text(10,30,String(myCount,10));
-    
-    for (uint8_t i=0; i<=20; i++) {
-        myScreen.setXY(50+i,30,1);
+
+    myScreen.text(10, 30, String(myCount, 10));
+
+    for (uint8_t i = 0; i <= 20; i++)
+    {
+        myScreen.setXY(50 + i, 30, 1);
         //    }
         //    for (uint8_t i=0; i<=20; i++) {
-        myScreen.setXY(50,30+i,1);
+        myScreen.setXY(50, 30 + i, 1);
         //    }
         //    for (uint8_t i=0; i<=20; i++) {
-        myScreen.setXY(50+i,50,1);
+        myScreen.setXY(50 + i, 50, 1);
         //    }
         //    for (uint8_t i=0; i<=20; i++) {
-        myScreen.setXY(70,30+i,1);
+        myScreen.setXY(70, 30 + i, 1);
     }
-    
+
     myScreen.setFont(1);
     myScreen.setCharXY(10, 40);
     myScreen.print("ABC");
@@ -109,6 +121,9 @@ void loop()
     myScreen.println("Break!");
     myScreen.print("ABC\nabc");
     myScreen.flush();
-    
-    for (uint8_t i=0; i<2; i++) delay(100);
+
+    for (uint8_t i = 0; i < 2; i++)
+    {
+        delay(100);
+    }
 }
