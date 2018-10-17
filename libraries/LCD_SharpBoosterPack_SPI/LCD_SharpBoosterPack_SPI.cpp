@@ -215,6 +215,13 @@ void LCD_SharpBoosterPack_SPI::begin()
     _reverse = false;
 }
 
+
+void LCD_SharpBoosterPack_SPI::end()
+{
+	TA0_turnOff();
+}
+
+
 String LCD_SharpBoosterPack_SPI::WhoAmI()
 {
     return "Sharp LCD BoosterPack";

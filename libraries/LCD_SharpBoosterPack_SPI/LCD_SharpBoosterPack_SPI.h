@@ -86,6 +86,11 @@ class LCD_SharpBoosterPack_SPI : public Print
     void begin();
 
     ///
+    /// @brief	stop screen access
+    ///
+    void end();
+
+    ///
     /// @brief	Return a Who Am I string
     /// @return	Who Am I string
     ///
