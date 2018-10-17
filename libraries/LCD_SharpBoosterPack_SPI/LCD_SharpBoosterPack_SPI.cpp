@@ -23,6 +23,7 @@
 //
 //  Edited 2018-10-15 by ReiVilo
 //  Added support for Sharp 128 with minimal change
+//  Added flushReversed() for reversed display and preserved buffer
 //
 
 #include <Energia.h>
@@ -485,6 +486,43 @@ void LCD_SharpBoosterPack_SPI::flush(void)
     SPI.transfer((char)SHARP_LCD_TRAILER_BYTE);
     delayMicroseconds(10);
 
+    // Set P2.4 Low for CS
+    digitalWrite(_pinChipSelect, LOW);
+    // clear flag to indicate command transmit is free
+    flagSendToggleVCOMCommand &= ~SHARP_SEND_COMMAND_RUNNING;
+    SendToggleVCOMCommand(); // send toggle if required
+}
+
+void LCD_SharpBoosterPack_SPI::flushReversed(void)
+{
+    unsigned char *pucData = &DisplayBuffer[0];
+    long xi = 0;
+    long xj = 0;
+    //image update mode(1X000000b)
+    unsigned char command = SHARP_LCD_CMD_WRITE_LINE;
+    
+    // set flag to indicate command transmit is running
+    flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
+    //COM inversion bit
+    command |= VCOMbit;
+    // Set P2.4 High for CS
+    digitalWrite(_pinChipSelect, HIGH);
+    
+    SPI.transfer((char)command);
+    for (xj = 0; xj < lcd_vertical_max; xj++)
+    {
+        SPI.transfer((char)reverse(xj + 1));
+        
+        for (xi = 0; xi < (lcd_horizontal_max >> 3); xi++)
+        {
+            SPI.transfer(0xff ^((char) * (pucData++)));
+        }
+        SPI.transfer(SHARP_LCD_TRAILER_BYTE);
+    }
+    
+    SPI.transfer((char)SHARP_LCD_TRAILER_BYTE);
+    delayMicroseconds(10);
+    
     // Set P2.4 Low for CS
     digitalWrite(_pinChipSelect, LOW);
     // clear flag to indicate command transmit is free

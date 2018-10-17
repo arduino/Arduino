@@ -19,6 +19,7 @@
 //
 //  Edited 15 Oct 2018 by ReiVilo
 //  Added support for Sharp 128 with minimal change
+//  Added flushReversed() for reversed display and preserved buffer
 //
 
 #ifndef LCD_SharpBoosterPack_SPI_h
@@ -86,7 +87,7 @@ class LCD_SharpBoosterPack_SPI : public Print
     void begin();
 
     ///
-    /// @brief	stop screen access
+    /// @brief	Stop screen access
     ///
     void end();
 
@@ -122,6 +123,8 @@ class LCD_SharpBoosterPack_SPI : public Print
 
     ///
     /// @brief	Reverse and display the screen
+    /// @deprecated Use flushReversed() instead
+    /// @note   reverseFlush() alters the buffer
     ///
     void reverseFlush();
 
@@ -142,7 +145,19 @@ class LCD_SharpBoosterPack_SPI : public Print
     //void text(uint8_t x, uint8_t y, String s);
     void text(uint8_t x, uint8_t y, String s, tLCDWrapType wrap = LCDWrapNextLine);
     void text(uint8_t x, uint8_t y, uint8_t c) ;
+    
+    ///
+    /// @brief  Send to buffer to the screen
+    /// @note   flush() preserves the buffer
+    ///
     void flush();
+
+    ///
+    /// @brief  Send to buffer to the screen with reversed colours
+    /// @note   flushReversed() preserves the buffer
+    ///
+    void flushReversed();
+
     void setCharXY(uint8_t x, uint8_t y);
     void drawImage(const uint8_t * image, uint8_t x, uint8_t y);
 
