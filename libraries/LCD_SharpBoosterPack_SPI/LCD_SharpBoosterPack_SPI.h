@@ -45,6 +45,7 @@ tLCDWrapType;
 #define NUM_OF_FONTS 2
 typedef uint8_t tNumOfFontsType;
 
+
 ///
 /// @brief      Class for Sharp Memory Display BoosterPack
 /// @details    The screen uses a buffer.
@@ -57,6 +58,9 @@ class LCD_SharpBoosterPack_SPI : public Print
     /// @brief	Constructor
     /// @note   For Sharp Memory LCD BoosterPack
     /// @param  model default=SHARP_96 for compatibility, SHARP_128
+    /// @code
+    ///     LCD_SharpBoosterPack_SPI myScreen(SHARP_96);
+    /// @endcode
     ///
     LCD_SharpBoosterPack_SPI(uint8_t model = SHARP_96);
 
@@ -149,8 +153,8 @@ class LCD_SharpBoosterPack_SPI : public Print
     void TA0_turnOff();
     uint8_t _orientation;
     bool _reverse;
-    uint8_t LCD_VERTICAL_MAX;
-    uint8_t LCD_HORIZONTAL_MAX;
+    uint8_t lcd_vertical_max;
+    uint8_t lcd_horizontal_max;
 };
 #endif
 

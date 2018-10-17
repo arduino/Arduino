@@ -76,7 +76,7 @@ uint8_t lineSpacing[NUM_OF_FONTS] = {9, 16};
 
 uint16_t LCD_SharpBoosterPack_SPI::_index(uint8_t x, uint8_t y)
 {
-    return (uint16_t)(x * (LCD_HORIZONTAL_MAX >> 3) + y);
+    return (uint16_t)(x * (lcd_horizontal_max >> 3) + y);
 }
 
 LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI(uint8_t model)
@@ -86,11 +86,11 @@ LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI(uint8_t model)
     _pinVCC  = P_VCC;
     _autoVCOM = true;
 
-    LCD_VERTICAL_MAX = model;
-    LCD_HORIZONTAL_MAX = model;
+    lcd_vertical_max = model;
+    lcd_horizontal_max = model;
 
     static uint8_t * _frameBuffer;
-    _frameBuffer = new uint8_t[_index(LCD_VERTICAL_MAX, LCD_HORIZONTAL_MAX)];
+    _frameBuffer = new uint8_t[_index(lcd_vertical_max, lcd_horizontal_max)];
     DisplayBuffer = (uint8_t *) _frameBuffer;
 }
 
@@ -102,8 +102,8 @@ LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_
     _autoVCOM = autoVCOM;
 
     digitalWrite(RED_LED, HIGH);
-    LCD_VERTICAL_MAX = model;
-    LCD_HORIZONTAL_MAX = model;
+    lcd_vertical_max = model;
+    lcd_horizontal_max = model;
 }
 
 LCD_SharpBoosterPack_SPI::LCD_SharpBoosterPack_SPI(uint8_t pinChipSelect, uint8_t pinDISP, uint8_t pinVCC, uint8_t model)
@@ -123,14 +123,14 @@ void LCD_SharpBoosterPack_SPI::setReverse(bool reverse)
 
 uint8_t LCD_SharpBoosterPack_SPI::getSize()
 {
-    return LCD_HORIZONTAL_MAX;
+    return lcd_horizontal_max;
 }
 
 void LCD_SharpBoosterPack_SPI::reverseFlush()
 {
-    for (uint8_t i = 0; i < LCD_VERTICAL_MAX; i++)
+    for (uint8_t i = 0; i < lcd_vertical_max; i++)
     {
-        for (uint8_t j = 0; j < (LCD_HORIZONTAL_MAX >> 3); j++)
+        for (uint8_t j = 0; j < (lcd_horizontal_max >> 3); j++)
         {
             DisplayBuffer[_index(i, j)] = 0xff ^ DisplayBuffer[_index(i, j)];
         }
@@ -146,18 +146,18 @@ void LCD_SharpBoosterPack_SPI::setXY(uint8_t x, uint8_t y, uint8_t  ulValue)
     switch (_orientation)
     {
         case 1:
-            x0 = LCD_HORIZONTAL_MAX - 1 - y;
+            x0 = lcd_horizontal_max - 1 - y;
             y0 = x;
             break;
 
         case 2:
-            x0 = LCD_HORIZONTAL_MAX - 1 - x;
-            y0 = LCD_VERTICAL_MAX - 1   - y;
+            x0 = lcd_horizontal_max - 1 - x;
+            y0 = lcd_vertical_max - 1   - y;
             break;
 
         case 3:
             x0 = y;
-            y0 = LCD_VERTICAL_MAX - 1   - x;
+            y0 = lcd_vertical_max - 1   - x;
             break;
 
         default:
@@ -170,13 +170,13 @@ void LCD_SharpBoosterPack_SPI::setXY(uint8_t x, uint8_t y, uint8_t  ulValue)
     {
         ulValue = (ulValue == 0);
     }
-    if (x0 > LCD_HORIZONTAL_MAX - 1)
+    if (x0 > lcd_horizontal_max - 1)
     {
-        x0 = LCD_HORIZONTAL_MAX - 1;
+        x0 = lcd_horizontal_max - 1;
     }
-    if (y0 > LCD_VERTICAL_MAX - 1)
+    if (y0 > lcd_vertical_max - 1)
     {
-        y0 = LCD_VERTICAL_MAX - 1;
+        y0 = lcd_vertical_max - 1;
     }
 
     if (ulValue != 0)
@@ -251,8 +251,8 @@ void LCD_SharpBoosterPack_SPI::clear()
 
 void LCD_SharpBoosterPack_SPI::clearBuffer()
 {
-    for (uint8_t i = 0; i < LCD_VERTICAL_MAX; i++)
-        for (uint8_t j = 0; j < (LCD_HORIZONTAL_MAX >> 3); j++)
+    for (uint8_t i = 0; i < lcd_vertical_max; i++)
+        for (uint8_t j = 0; j < (lcd_horizontal_max >> 3); j++)
         {
             DisplayBuffer[_index(i, j)] = _reverse ? 0x00 : 0xff;
         }
@@ -290,11 +290,11 @@ void LCD_SharpBoosterPack_SPI::text(uint8_t x, uint8_t y, String s, tLCDWrapType
     for (j = 0; j < s.length(); j++)
     {
         c = s.charAt(j);
-        if ((wrap == LCDWrapLine)     && (textx + deltax > LCD_HORIZONTAL_MAX))
+        if ((wrap == LCDWrapLine)     && (textx + deltax > lcd_horizontal_max))
         {
             textx = textstartx;
         }
-        if ((wrap == LCDWrapNextLine) && (textx + deltax > LCD_HORIZONTAL_MAX))
+        if ((wrap == LCDWrapNextLine) && (textx + deltax > lcd_horizontal_max))
         {
             textx = textstartx;
             texty += deltay;
@@ -355,11 +355,11 @@ size_t LCD_SharpBoosterPack_SPI::write(uint8_t c)
         deltay = 16;
     }
 
-    if ((wrap == LCDWrapLine)     && (textx + deltax > LCD_HORIZONTAL_MAX))
+    if ((wrap == LCDWrapLine)     && (textx + deltax > lcd_horizontal_max))
     {
         textx = textstartx;
     }
-    if ((wrap == LCDWrapNextLine) && (textx + deltax > LCD_HORIZONTAL_MAX))
+    if ((wrap == LCDWrapNextLine) && (textx + deltax > lcd_horizontal_max))
     {
         textx = textstartx;
         texty += deltay;
@@ -464,11 +464,11 @@ void LCD_SharpBoosterPack_SPI::flush(void)
     digitalWrite(_pinChipSelect, HIGH);
 
     SPI.transfer((char)command);
-    for (xj = 0; xj < LCD_VERTICAL_MAX; xj++)
+    for (xj = 0; xj < lcd_vertical_max; xj++)
     {
         SPI.transfer((char)reverse(xj + 1));
 
-        for (xi = 0; xi < (LCD_HORIZONTAL_MAX >> 3); xi++)
+        for (xi = 0; xi < (lcd_horizontal_max >> 3); xi++)
         {
             SPI.transfer((char) * (pucData++));
         }
