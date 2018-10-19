@@ -41,6 +41,9 @@ public interface SSHClientSetupChainRing {
   /*
   Chain is actually useless as default JSCH behaviour is to follow SSH Server authentication methods list
    */
-  Session setup(BoardPort port, JSch jSch) throws JSchException, IOException;
+  Session setup(BoardPort boardPort, JSch jSch) throws JSchException, IOException;
 
+  String getIpAddress(BoardPort boardPort);
+
+  Integer getPortNumber(BoardPort boardPort);
 }

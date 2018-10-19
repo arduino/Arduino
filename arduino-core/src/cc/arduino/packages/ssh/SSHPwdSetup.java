@@ -35,16 +35,16 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import processing.app.PreferencesData;
 
-public class SSHPwdSetup implements SSHClientSetupChainRing {
+public class SSHPwdSetup extends SSHSetup {
 
   @Override
-  public Session setup(BoardPort port, JSch jSch) throws JSchException {
-    String ipAddress = port.getAddress();
+  public Session setup(BoardPort boardPort, JSch jSch) throws JSchException {
+    String ipAddress = getIpAddress(boardPort);
+    Integer portNumber = getPortNumber(boardPort);
 
-    Session session = jSch.getSession("root", ipAddress, 22);
+    Session session = jSch.getSession("root", ipAddress, portNumber);
     session.setPassword(PreferencesData.get("runtime.pwd." + ipAddress));
 
     return session;
   }
-
 }

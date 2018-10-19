@@ -84,6 +84,9 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
       String name = serviceEvent.getName();
 
       BoardPort port = new BoardPort();
+      port.setProtocol("network");
+      port.setAddress(address);
+      port.setBoardName(name);
 
       String board = null;
       String description = null;
@@ -100,6 +103,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
         // define "tcp_check=no" TXT property if you are not using TCP
         // define "auth_upload=yes" TXT property if you want to use authenticated generic upload
         String useSSH = info.getPropertyString("ssh_upload");
+        String SSHUploadPort = info.getPropertyString("ssh_upload_port");
         String checkTCP = info.getPropertyString("tcp_check");
         String useAuth = info.getPropertyString("auth_upload");
         if(useSSH == null || !useSSH.contentEquals("no")) useSSH = "yes";
@@ -108,6 +112,10 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
         port.getPrefs().put("ssh_upload", useSSH);
         port.getPrefs().put("tcp_check", checkTCP);
         port.getPrefs().put("auth_upload", useAuth);
+
+        if (SSHUploadPort != null) {
+          port.setAddress(address+":"+SSHUploadPort);
+        }
       }
 
       String label = name + " at " + address;
@@ -120,9 +128,6 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
         label += " (" + description + ")";
       }
 
-      port.setAddress(address);
-      port.setBoardName(name);
-      port.setProtocol("network");
       port.setLabel(label);
 
       synchronized (boardPortsDiscoveredWithJmDNS) {
