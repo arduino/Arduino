@@ -24,6 +24,7 @@
 //  Edited 2018-10-15 by ReiVilo
 //  Added support for Sharp 128 with minimal change
 //  Added flushReversed() for reversed display and preserved buffer
+//  Simplified Clear function
 //
 
 #include <Energia.h>
@@ -230,31 +231,8 @@ String LCD_SharpBoosterPack_SPI::WhoAmI()
 
 void LCD_SharpBoosterPack_SPI::clear()
 {
-
-    unsigned char command = SHARP_LCD_CMD_CLEAR_SCREEN;
-
-    // set flag to indicate command transmit is running
-    flagSendToggleVCOMCommand |= SHARP_SEND_COMMAND_RUNNING;
-
-    command |= VCOMbit;                    //COM inversion bit
-
-    // Set P2.4 High for CS
-    digitalWrite(_pinChipSelect, HIGH);
-
-    SPI.transfer(command);
-    SPI.transfer(SHARP_LCD_TRAILER_BYTE);
-
-    // Wait for last byte to be sent, then drop SCS
-    delayMicroseconds(10);
-
-    // Set P2.4 High for CS
-    digitalWrite(_pinChipSelect, LOW);
-
-    // clear flag to indicate command transmit is free
-    flagSendToggleVCOMCommand &= ~SHARP_SEND_COMMAND_RUNNING;
-    SendToggleVCOMCommand(); // send toggle if required
-
     clearBuffer();
+    flush();
 }
 
 void LCD_SharpBoosterPack_SPI::clearBuffer()
