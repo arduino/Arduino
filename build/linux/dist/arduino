@@ -24,6 +24,12 @@ if [ -x "$APPDIR/java/bin/java" ]; then
   JAVA=$APPDIR/java/bin/java
 fi
 
+GTK_LAF="-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
+if [ `ldconfig -p | grep libgtk-x11 | wc -l` -eq "0" ]; then
+GTK_LAF=""
+echo "Falling back to Java LookAndFeel, install libgtk2.0 to restore native"
+fi
+
 # Collect options to java in an array, to properly handle whitespace in options
 JAVA_OPTIONS=("-DAPP_DIR=$APPDIR" "-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel")
 
