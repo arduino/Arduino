@@ -1,14 +1,14 @@
 //
-//  Sharp BoosterPackLCD SPI
+//  Sharp128 BoosterPackLCD SPI
 //  Example for library for Sharp BoosterPack LCD with hardware SPI
 //
 //
 //  Author :  Stefan Schauer
-//  Date   :  Jan 29, 2014
+//  Date   :  Oct. 17, 2017
 //  Version:  1.00
-//  File   :  LCD_SharpBoosterPack_SPI_main.ino
+//  File   :  LCD_Sharp128BoosterPack_SPI_main.ino
 //
-//  Version:  1.01 : added support for CC3200
+//  Version:  1.00 : setup for Sharp128 Booster pack based on Sharp96 example
 //
 //  Based on the LCD5110 Library
 //  Created by Rei VILO on 28/05/12
@@ -25,7 +25,7 @@
 #include "LCD_SharpBoosterPack_SPI.h"
 
 // Variables
-LCD_SharpBoosterPack_SPI myScreen;
+LCD_SharpBoosterPack_SPI myScreen(SHARP_128);
 uint8_t myOrientation = 0;
 uint16_t myCount = 0;
 
