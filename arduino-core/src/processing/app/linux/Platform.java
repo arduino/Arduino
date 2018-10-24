@@ -37,10 +37,9 @@ import javax.swing.UIManager;
  */
 public class Platform extends processing.app.Platform {
 
-  // TODO Need to be smarter here since KDE people ain't gonna like that GTK.
-  //      It may even throw a weird exception at 'em for their trouble.
   @Override
   public void setLookAndFeel() throws Exception {
+    super.setLookAndFeel();
     GTKLookAndFeelFixer.installGtkPopupBugWorkaround();
   }
 
