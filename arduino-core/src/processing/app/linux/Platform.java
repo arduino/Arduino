@@ -39,6 +39,8 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public void setLookAndFeel() throws Exception {
+    // Override desktop check
+    System.setProperty("sun.desktop", "gnome");
     super.setLookAndFeel();
     GTKLookAndFeelFixer.installGtkPopupBugWorkaround();
   }
