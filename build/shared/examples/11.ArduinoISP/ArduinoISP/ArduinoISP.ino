@@ -333,7 +333,7 @@ void empty_reply() {
   if (CRC_EOP == getch()) {
     // clear RX buffer. No more host data expected until after SYNC.
     while(SERIAL.available())
-        SERIAL.read();
+      SERIAL.read();
     SERIAL.print((char)STK_INSYNC);
     SERIAL.print((char)STK_OK);
   } else {
