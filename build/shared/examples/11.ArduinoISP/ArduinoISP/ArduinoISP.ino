@@ -332,7 +332,7 @@ uint8_t spi_transaction(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
 void empty_reply() {
   if (CRC_EOP == getch()) {
     // clear RX buffer. No more host data expected until after SYNC.
-    while(SERIAL.available())
+    while (SERIAL.available())
       SERIAL.read();
     SERIAL.print((char)STK_INSYNC);
     SERIAL.print((char)STK_OK);
