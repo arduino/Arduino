@@ -16,6 +16,7 @@ public class UpdateTextAreaActionTest {
   @Before public void setUp() {
     textAreaFIFO = mock(TextAreaFIFO.class);
     text = ArgumentCaptor.forClass(String.class);
+    sendNewLineInOrderToHaveCleanTestStart();
   }
 
   @Test
@@ -64,4 +65,36 @@ public class UpdateTextAreaActionTest {
                                         + TIMESTAMP_REGEX + " -> line_2");
   }
 
+  @Test
+  public void newLinesAreRememberedWhenNewBufferIsUsed() {
+    // given #1
+    AbstractTextMonitor.UpdateTextAreaAction action;
+    action = new AbstractTextMonitor.UpdateTextAreaAction(
+        textAreaFIFO, true, false, "first line without newline");
+
+    // when #1
+    action.run();
+
+    //then #1
+    verify(textAreaFIFO, atLeastOnce()).append(text.capture());
+    assertThat(text.getValue()).matches(TIMESTAMP_REGEX + " -> first line without newline");
+
+    // given #2
+    action = new AbstractTextMonitor.UpdateTextAreaAction(
+        textAreaFIFO, true, false, "more text for first line");
+
+    // when #2
+    action.run();
+
+    //then #2
+    verify(textAreaFIFO, atLeastOnce()).append(text.capture());
+    assertThat(text.getValue()).matches("more text for first line");
+  }
+
+
+  private void sendNewLineInOrderToHaveCleanTestStart() {
+    AbstractTextMonitor.UpdateTextAreaAction action = new AbstractTextMonitor.UpdateTextAreaAction(
+        textAreaFIFO, true, false, "\n");
+    action.run();
+  }
 }

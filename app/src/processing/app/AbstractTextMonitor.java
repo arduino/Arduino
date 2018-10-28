@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -181,6 +182,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   static class UpdateTextAreaAction implements Runnable {
 
     private static final String LINE_SEPARATOR = "\n";
+    private static AtomicBoolean isStartingLine = new AtomicBoolean(true);
 
     private String msg;
     private boolean addTimeStamp;
@@ -209,16 +211,15 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     private String addTimestamps(String text) {
       String now = new SimpleDateFormat("HH:mm:ss.SSS -> ").format(new Date());
       final StringBuilder sb = new StringBuilder(text.length() + now.length());
-      boolean isStartingLine = true;
       StringTokenizer tokenizer = new StringTokenizer(text, LINE_SEPARATOR, true);
       while (tokenizer.hasMoreTokens()) {
-        if (isStartingLine) {
+        if (isStartingLine.get()) {
           sb.append(now);
         }
         String token = tokenizer.nextToken();
         sb.append(token);
         // tokenizer returns "\n" as a single token
-        isStartingLine = token.equals(LINE_SEPARATOR);
+        isStartingLine.set(token.equals(LINE_SEPARATOR));
       }
       return sb.toString();
     }
