@@ -133,11 +133,18 @@ public class Editor extends JFrame implements RunnerListener {
     }
   }
 
-  private static class ShouldSaveReadOnly implements Predicate<SketchController> {
+  private static class CanExportInSketchFolder
+      implements Predicate<SketchController> {
 
     @Override
-    public boolean test(SketchController sketch) {
-      return sketch.isReadOnly();
+    public boolean test(SketchController controller) {
+      if (controller.isReadOnly()) {
+        return false;
+      }
+      if (controller.getSketch().isModified()) {
+        return PreferencesData.getBoolean("editor.save_on_verify");
+      }
+      return true;
     }
   }
 
@@ -666,11 +673,12 @@ public class Editor extends JFrame implements RunnerListener {
 
     item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
     item.addActionListener(event -> {
-      if (new ShouldSaveReadOnly().test(sketchController) && !handleSave(true)) {
+      if (!(new CanExportInSketchFolder().test(sketchController))) {
         System.out.println(tr("Export canceled, changes must first be saved."));
         return;
       }
-      handleRun(false, new ShouldSaveReadOnly(), presentAndSaveHandler, runAndSaveHandler);
+      handleRun(false, new CanExportInSketchFolder(), presentAndSaveHandler, runAndSaveHandler);
+
     });
     sketchMenu.add(item);
 
