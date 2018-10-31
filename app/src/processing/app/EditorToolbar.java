@@ -187,7 +187,10 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       touchBarButtons[i].setImage(touchBarImages[i][ROLLOVER]);
       touchBarButtons[i].setAction(event -> handleSelectionPressed(selection));
       
-      touchBar.addItem(new TouchBarItem(title[i], touchBarButtons[i]));
+      TouchBarItem touchBarItem = new TouchBarItem(title[i], touchBarButtons[i], true);
+      touchBarItem.setCustomizationLabel(title[i]);
+      
+      touchBar.addItem(touchBarItem);
     }
   }
 
