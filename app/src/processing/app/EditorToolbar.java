@@ -167,7 +167,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   }
   
   private void buildTouchBar() {
-    loadTouchBarImages();
+    if (touchBarImages == null) {
+      loadTouchBarImages();
+    }
     
     touchBar = new JTouchBar();
     touchBarButtons = new TouchBarButton[BUTTON_COUNT];
