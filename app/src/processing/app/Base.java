@@ -26,6 +26,7 @@ import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
+import cc.arduino.packages.Uploader;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
@@ -959,6 +960,14 @@ public class Base {
       Editor.serialMonitor.close();
     } catch (Exception e) {
       // ignore
+    }
+
+    // kill uploader (if still alive)
+    UploaderUtils uploaderInstance = new UploaderUtils();
+    Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+    if (uploader != null && uploader.programmerPid != null && uploader.programmerPid.isAlive()) {
+        // kill the stuck programmer
+        uploader.programmerPid.destroyForcibly();
     }
 
     if (handleQuitEach()) {
