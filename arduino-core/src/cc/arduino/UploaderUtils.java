@@ -35,7 +35,7 @@ import cc.arduino.packages.UploaderFactory;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 import processing.app.Sketch;
-import processing.app.debug.TargetPlatform;
+import processing.app.debug.TargetBoard;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -45,9 +45,6 @@ import static processing.app.I18n.tr;
 public class UploaderUtils {
 
   public Uploader getUploaderByPreferences(boolean noUploadPort) {
-    TargetPlatform target = BaseNoGui.getTargetPlatform();
-    String board = PreferencesData.get("board");
-
     BoardPort boardPort = null;
     if (!noUploadPort) {
       String port = PreferencesData.get("serial.port");
@@ -57,7 +54,8 @@ public class UploaderUtils {
       boardPort = BaseNoGui.getDiscoveryManager().find(port);
     }
 
-    return new UploaderFactory().newUploader(target.getBoards().get(board), boardPort, noUploadPort);
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    return new UploaderFactory().newUploader(board, boardPort, noUploadPort);
   }
 
   public boolean upload(Sketch data, Uploader uploader, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
