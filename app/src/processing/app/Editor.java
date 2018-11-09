@@ -226,8 +226,8 @@ public class Editor extends JFrame implements RunnerListener {
   Runnable presentHandler;
   private Runnable runAndSaveHandler;
   private Runnable presentAndSaveHandler;
-  Runnable exportHandler;
-  private Runnable exportAppHandler;
+  private UploadHandler uploadHandler;
+  private UploadHandler uploadUsingProgrammerHandler;
   private Runnable timeoutUploadHandler;
 
   private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
@@ -1376,8 +1376,10 @@ public class Editor extends JFrame implements RunnerListener {
     presentHandler = new BuildHandler(true);
     runAndSaveHandler = new BuildHandler(false, true);
     presentAndSaveHandler = new BuildHandler(true, true);
-    exportHandler = new DefaultExportHandler();
-    exportAppHandler = new DefaultExportAppHandler();
+    uploadHandler = new UploadHandler();
+    uploadHandler.setUsingProgrammer(false);
+    uploadUsingProgrammerHandler = new UploadHandler();
+    uploadUsingProgrammerHandler.setUsingProgrammer(true);
     timeoutUploadHandler = new TimeoutUploadHandler();
   }
 
@@ -2007,13 +2009,17 @@ public class Editor extends JFrame implements RunnerListener {
     avoidMultipleOperations = true;
 
     new Thread(timeoutUploadHandler).start();
-    new Thread(usingProgrammer ? exportAppHandler : exportHandler).start();
+    new Thread(usingProgrammer ? uploadUsingProgrammerHandler : uploadHandler).start();
   }
 
-  // DAM: in Arduino, this is upload
-  class DefaultExportHandler implements Runnable {
-    public void run() {
+  class UploadHandler implements Runnable {
+    boolean usingProgrammer = false;
 
+    public void setUsingProgrammer(boolean usingProgrammer) {
+      this.usingProgrammer = usingProgrammer;
+    }
+
+    public void run() {
       try {
         removeAllLineHighlights();
         if (serialMonitor != null) {
@@ -2025,7 +2031,7 @@ public class Editor extends JFrame implements RunnerListener {
 
         uploading = true;
 
-        boolean success = sketchController.exportApplet(false);
+        boolean success = sketchController.exportApplet(usingProgrammer);
         if (success) {
           statusNotice(tr("Done uploading."));
         }
@@ -2106,55 +2112,6 @@ public class Editor extends JFrame implements RunnerListener {
         statusError(e);
       }
    }
-  }
-
-  // DAM: in Arduino, this is upload (with verbose output)
-  class DefaultExportAppHandler implements Runnable {
-    public void run() {
-
-      try {
-        if (serialMonitor != null) {
-          serialMonitor.suspend();
-        }
-        if (serialPlotter != null) {
-          serialPlotter.suspend();
-        }
-
-        uploading = true;
-
-        boolean success = sketchController.exportApplet(true);
-        if (success) {
-          statusNotice(tr("Done uploading."));
-        }
-      } catch (SerialNotFoundException e) {
-        if (portMenu.getItemCount() == 0) statusError(e);
-        else if (serialPrompt()) run();
-        else statusNotice(tr("Upload canceled."));
-      } catch (PreferencesMapException e) {
-        statusError(I18n.format(
-                    tr("Error while uploading: missing '{0}' configuration parameter"),
-                    e.getMessage()));
-      } catch (RunnerException e) {
-        //statusError("Error during upload.");
-        //e.printStackTrace();
-        status.unprogress();
-        statusError(e);
-      } catch (Exception e) {
-        e.printStackTrace();
-      } finally {
-        avoidMultipleOperations = false;
-        populatePortMenu();
-      }
-      status.unprogress();
-      uploading = false;
-      //toolbar.clear();
-      toolbar.deactivateExport();
-
-      resumeOrCloseSerialMonitor();
-      resumeOrCloseSerialPlotter();
-
-      base.onBoardOrPortChange();
-    }
   }
 
   class TimeoutUploadHandler implements Runnable {
