@@ -405,7 +405,7 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     String cmd = prefs.getOrExcept(recipe);
     try {
-      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict);
     } catch (Exception e) {
       throw new RunnerException(e);
     }

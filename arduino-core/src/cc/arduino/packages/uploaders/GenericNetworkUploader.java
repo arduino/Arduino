@@ -95,7 +95,7 @@ public class GenericNetworkUploader extends Uploader {
       pattern = prefs.get("upload.network_pattern");
       if(pattern == null)
         pattern = prefs.getOrExcept("upload.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
+      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
       uploadResult = executeUploadCommand(cmd);
     } catch (RunnerException e) {
       throw e;

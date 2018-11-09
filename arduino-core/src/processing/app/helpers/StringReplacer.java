@@ -27,16 +27,13 @@ import java.util.Map;
 
 public class StringReplacer {
 
-  public static String[] formatAndSplit(String src, Map<String, String> dict,
-                                        boolean recursive) throws Exception {
+  public static String[] formatAndSplit(String src, Map<String, String> dict) throws Exception {
     String res;
 
     // Recursive replace with a max depth of 10 levels.
     for (int i = 0; i < 10; i++) {
       // Do a replace with dictionary
       res = StringReplacer.replaceFromMapping(src, dict);
-      if (!recursive)
-        break;
       if (res.equals(src))
         break;
       src = res;
