@@ -41,6 +41,7 @@ import cc.arduino.packages.BoardPort;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
 
 import java.io.File;
@@ -105,17 +106,11 @@ public class SerialUploader extends Uploader {
       else
         prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
-      boolean uploadResult;
       try {
-        String pattern = prefs.getOrExcept("upload.pattern");
-        String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
-        uploadResult = executeUploadCommand(cmd);
-      } catch (Exception e) {
-        throw new RunnerException(e);
+        return runCommand("upload.pattern", prefs);
       } finally {
         BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
       }
-      return uploadResult;
     }
 
     // need to do a little dance for Leonardo and derivatives:
@@ -127,7 +122,7 @@ public class SerialUploader extends Uploader {
     boolean doTouch = prefs.getBoolean("upload.use_1200bps_touch");
     boolean waitForUploadPort = prefs.getBoolean("upload.wait_for_upload_port");
 
-    String userSelectedUploadPort = prefs.getOrExcept("serial.port");
+    String userSelectedUploadPort = prefs.get("serial.port", "");
     String actualUploadPort = null;
 
     if (doTouch) {
@@ -177,7 +172,7 @@ public class SerialUploader extends Uploader {
       Thread.sleep(100);
     }
 
-    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port", ""));
     try {
       prefs.put("serial.port.iserial", boardPort.getPrefs().getOrExcept("iserial"));
     } catch (Exception e) {
@@ -199,13 +194,7 @@ public class SerialUploader extends Uploader {
 
     boolean uploadResult;
     try {
-      String pattern = prefs.getOrExcept("upload.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
-      uploadResult = executeUploadCommand(cmd);
-    } catch (RunnerException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new RunnerException(e);
+      uploadResult = runCommand("upload.pattern", prefs);
     } finally {
       BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
     }
@@ -328,15 +317,7 @@ public class SerialUploader extends Uploader {
     else
       prefs.put("program.verify", prefs.get("program.params.noverify", ""));
 
-    try {
-      String pattern = prefs.getOrExcept("program.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
-      return executeUploadCommand(cmd);
-    } catch (RunnerException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new RunnerException(e);
-    }
+    return runCommand("program.pattern", prefs);
   }
 
   @Override
@@ -393,13 +374,27 @@ public class SerialUploader extends Uploader {
 
     new LoadVIDPIDSpecificPreferences().load(prefs);
 
-    String pattern = prefs.getOrExcept("erase.pattern");
-    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
-    if (!executeUploadCommand(cmd))
+    if (!runCommand("erase.pattern", prefs))
       return false;
 
-    pattern = prefs.getOrExcept("bootloader.pattern");
-    cmd = StringReplacer.formatAndSplit(pattern, prefs);
-    return executeUploadCommand(cmd);
+    return runCommand("bootloader.pattern", prefs);
+  }
+
+  private boolean runCommand(String patternKey, PreferencesMap prefs) throws Exception, RunnerException {
+    try {
+      String pattern = prefs.getOrExcept(patternKey);
+      StringReplacer.checkIfRequiredKeyIsMissingOrExcept("serial.port", pattern, prefs);
+      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
+      return executeUploadCommand(cmd);
+    } catch (RunnerException e) {
+      throw e;
+    } catch (PreferencesMapException e) {
+      if (e.getMessage().equals("serial.port")) {
+        throw new SerialNotFoundException(e);
+      }
+      throw e;
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
   }
 }

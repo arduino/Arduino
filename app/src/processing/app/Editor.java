@@ -2345,6 +2345,8 @@ public class Editor extends JFrame implements RunnerListener {
           SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader.")));
           // error message will already be visible
         }
+      } catch (SerialNotFoundException e) {
+        SwingUtilities.invokeLater(() -> statusError(tr("Error while burning bootloader: please select a serial port.")));
       } catch (PreferencesMapException e) {
         SwingUtilities.invokeLater(() -> {
           statusError(I18n.format(
