@@ -165,7 +165,7 @@ public class SSHUploader extends Uploader {
     }
 
     String pattern = prefs.getOrExcept("upload.pattern");
-    String command = StringUtils.join(StringReplacer.formatAndSplit(pattern, prefs, true), " ");
+    String command = StringUtils.join(StringReplacer.formatAndSplit(pattern, prefs), " ");
     if (verbose) {
       System.out.println(command);
     }
