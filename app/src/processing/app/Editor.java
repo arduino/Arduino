@@ -1961,25 +1961,23 @@ public class Editor extends JFrame implements RunnerListener {
       names[i] = portMenu.getItem(i).getText();
     }
 
-    // FIXME: This is horribly unreadable
-    String result = (String)
-    JOptionPane.showInputDialog(this,
-     I18n.format(
-      tr("Serial port {0} not found.\n" +
-       "Retry the upload with another serial port?"),
-      PreferencesData.get("serial.port")
-     ),
-     "Serial port not found",
-     JOptionPane.PLAIN_MESSAGE,
-     null,
-     names,
-     0);
-    if (result == null) return false;
+    String port = PreferencesData.get("serial.port");
+    String title;
+    if (port == null || port.isEmpty()) {
+      title = tr("Serial port not selected.");
+    } else {
+      title = I18n.format(tr("Serial port {0} not found."), port);
+    }
+    String question = tr("Retry the upload with another serial port?");
+    String result = (String) JOptionPane
+        .showInputDialog(this, title + "\n" + question, title,
+                         JOptionPane.PLAIN_MESSAGE, null, names, 0);
+    if (result == null)
+      return false;
     selectSerialPort(result);
     base.onBoardOrPortChange();
     return true;
   }
-
 
   /**
    * Called by Sketch &rarr; Export.
