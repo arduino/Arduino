@@ -332,12 +332,6 @@ public class SerialUploader extends Uploader {
       prefs.put("program.verify", prefs.get("program.params.noverify", ""));
 
     try {
-      // if (prefs.get("program.disable_flushing") == null
-      // || prefs.get("program.disable_flushing").toLowerCase().equals("false"))
-      // {
-      // flushSerialBuffer();
-      // }
-
       String pattern = prefs.getOrExcept("program.pattern");
       String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
       return executeUploadCommand(cmd);
