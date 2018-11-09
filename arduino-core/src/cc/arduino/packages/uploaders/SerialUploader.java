@@ -124,11 +124,8 @@ public class SerialUploader extends Uploader {
     // this wait a moment for the bootloader to enumerate. On Windows, also must
     // deal with the fact that the COM port number changes from bootloader to
     // sketch.
-    String t = prefs.get("upload.use_1200bps_touch");
-    boolean doTouch = t != null && t.equals("true");
-
-    t = prefs.get("upload.wait_for_upload_port");
-    boolean waitForUploadPort = (t != null) && t.equals("true");
+    boolean doTouch = prefs.getBoolean("upload.use_1200bps_touch");
+    boolean waitForUploadPort = prefs.getBoolean("upload.wait_for_upload_port");
 
     String userSelectedUploadPort = prefs.getOrExcept("serial.port");
     String actualUploadPort = null;
