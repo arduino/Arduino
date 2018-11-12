@@ -1060,7 +1060,8 @@ public class Editor extends JFrame implements RunnerListener {
     Collections.sort(ports, new Comparator<BoardPort>() {
       @Override
       public int compare(BoardPort o1, BoardPort o2) {
-        return BOARD_PROTOCOLS_ORDER.indexOf(o1.getProtocol()) - BOARD_PROTOCOLS_ORDER.indexOf(o2.getProtocol());
+        return (BOARD_PROTOCOLS_ORDER.indexOf(o1.getProtocol()) - BOARD_PROTOCOLS_ORDER.indexOf(o2.getProtocol())) * 10 +
+               o1.getAddress().compareTo(o2.getAddress());
       }
     });
 
