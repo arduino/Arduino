@@ -35,7 +35,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -983,21 +982,6 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
 
-  class SerialMenuListener implements ActionListener {
-
-    private final String serialPort;
-
-    public SerialMenuListener(String serialPort) {
-      this.serialPort = serialPort;
-    }
-
-    public void actionPerformed(ActionEvent e) {
-      selectSerialPort(serialPort);
-      base.onBoardOrPortChange();
-    }
-
-  }
-
   private void selectSerialPort(String name) {
     if(portMenu == null) {
       System.out.println(tr("serialMenu is null"));
@@ -1045,6 +1029,24 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println("set to " + get("serial.port"));
   }
 
+  class BoardPortJCheckBoxMenuItem extends JCheckBoxMenuItem {
+    private BoardPort port;
+
+    public BoardPortJCheckBoxMenuItem(BoardPort port) {
+      super(port.getLabel());
+      addActionListener(e -> {
+        selectSerialPort(port.getAddress());
+        base.onBoardOrPortChange();
+      });
+      this.port = port;
+    }
+
+    @Override
+    public String toString() {
+      // This is required for serialPrompt()
+      return port.getLabel();
+    }
+  }
 
   private void populatePortMenu() {
     portMenu.removeAll();
@@ -1081,10 +1083,9 @@ public class Editor extends JFrame implements RunnerListener {
         portMenu.add(lastProtocolMenuItem);
       }
       String address = port.getAddress();
-      String label = port.getLabel();
 
-      JCheckBoxMenuItem item = new JCheckBoxMenuItem(label, address.equals(selectedPort));
-      item.addActionListener(new SerialMenuListener(address));
+      BoardPortJCheckBoxMenuItem item = new BoardPortJCheckBoxMenuItem(port);
+      item.setSelected(address.equals(selectedPort));
       portMenu.add(item);
     }
 
@@ -1955,10 +1956,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private boolean serialPrompt() {
-    int count = portMenu.getItemCount();
-    Object[] names = new Object[count];
-    for (int i = 0; i < count; i++) {
-      names[i] = portMenu.getItem(i).getText();
+    List<BoardPortJCheckBoxMenuItem> items = new ArrayList<>();
+    for (int i = 0; i < portMenu.getItemCount(); i++) {
+      if (portMenu.getItem(i) instanceof BoardPortJCheckBoxMenuItem)
+        items.add((BoardPortJCheckBoxMenuItem) portMenu.getItem(i));
     }
 
     String port = PreferencesData.get("serial.port");
@@ -1969,12 +1970,12 @@ public class Editor extends JFrame implements RunnerListener {
       title = I18n.format(tr("Serial port {0} not found."), port);
     }
     String question = tr("Retry the upload with another serial port?");
-    String result = (String) JOptionPane
+    BoardPortJCheckBoxMenuItem result = (BoardPortJCheckBoxMenuItem) JOptionPane
         .showInputDialog(this, title + "\n" + question, title,
-                         JOptionPane.PLAIN_MESSAGE, null, names, 0);
+                         JOptionPane.PLAIN_MESSAGE, null, items.toArray(), 0);
     if (result == null)
       return false;
-    selectSerialPort(result);
+    result.doClick();
     base.onBoardOrPortChange();
     return true;
   }
