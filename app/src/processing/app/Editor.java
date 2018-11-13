@@ -2036,9 +2036,15 @@ public class Editor extends JFrame implements RunnerListener {
           statusNotice(tr("Done uploading."));
         }
       } catch (SerialNotFoundException e) {
-        if (portMenu.getItemCount() == 0) statusError(e);
-        else if (serialPrompt()) run();
-        else statusNotice(tr("Upload canceled."));
+        if (portMenu.getItemCount() == 0) {
+          statusError(tr("Serial port not selected."));
+        } else {
+          if (serialPrompt()) {
+            run();
+          } else {
+            statusNotice(tr("Upload canceled."));
+          }
+        }
       } catch (PreferencesMapException e) {
         statusError(I18n.format(
                     tr("Error while uploading: missing '{0}' configuration parameter"),
