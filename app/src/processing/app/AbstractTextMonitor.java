@@ -171,56 +171,37 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     serialRates.addActionListener(listener);
   }
 
-  public void message(final String msg) {
-    SwingUtilities.invokeLater(new UpdateTextAreaAction(textArea,
-                                                        addTimeStampBox.isSelected(),
-                                                        autoscrollBox.isSelected(),
-                                                        msg));
+  public void message(String msg) {
+    SwingUtilities.invokeLater(() -> updateTextArea(msg));
   }
 
-  static class UpdateTextAreaAction implements Runnable {
+  private static final String LINE_SEPARATOR = "\n";
+  private boolean isStartingLine = true;
 
-    private static final String LINE_SEPARATOR = "\n";
-
-    private String msg;
-    private boolean addTimeStamp;
-    private boolean doAutoscroll;
-    private TextAreaFIFO textArea;
-
-    UpdateTextAreaAction(TextAreaFIFO textArea, boolean addTimeStamp,
-                         boolean doAutoscroll, String msg) {
-      this.msg = msg;
-      this.textArea = textArea;
-      this.addTimeStamp = addTimeStamp;
-      this.doAutoscroll = doAutoscroll;
+  protected void updateTextArea(String msg) {
+    if (addTimeStampBox.isSelected()) {
+      textArea.append(addTimestamps(msg));
+    } else {
+      textArea.append(msg);
     }
-
-    public void run() {
-      if (addTimeStamp) {
-        textArea.append(addTimestamps(msg));
-      } else {
-        textArea.append(msg);
-      }
-      if (doAutoscroll) {
-        textArea.setCaretPosition(textArea.getDocument().getLength());
-      }
+    if (autoscrollBox.isSelected()) {
+      textArea.setCaretPosition(textArea.getDocument().getLength());
     }
+  }
 
-    private String addTimestamps(String text) {
-      String now = new SimpleDateFormat("HH:mm:ss.SSS -> ").format(new Date());
-      final StringBuilder sb = new StringBuilder(text.length() + now.length());
-      boolean isStartingLine = true;
-      StringTokenizer tokenizer = new StringTokenizer(text, LINE_SEPARATOR, true);
-      while (tokenizer.hasMoreTokens()) {
-        if (isStartingLine) {
-          sb.append(now);
-        }
-        String token = tokenizer.nextToken();
-        sb.append(token);
-        // tokenizer returns "\n" as a single token
-        isStartingLine = token.equals(LINE_SEPARATOR);
+  private String addTimestamps(String text) {
+    String now = new SimpleDateFormat("HH:mm:ss.SSS -> ").format(new Date());
+    final StringBuilder sb = new StringBuilder(text.length() + now.length());
+    StringTokenizer tokenizer = new StringTokenizer(text, LINE_SEPARATOR, true);
+    while (tokenizer.hasMoreTokens()) {
+      if (isStartingLine) {
+        sb.append(now);
       }
-      return sb.toString();
+      String token = tokenizer.nextToken();
+      sb.append(token);
+      // tokenizer returns "\n" as a single token
+      isStartingLine = token.equals(LINE_SEPARATOR);
     }
+    return sb.toString();
   }
 }
