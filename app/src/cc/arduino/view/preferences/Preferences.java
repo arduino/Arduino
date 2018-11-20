@@ -91,7 +91,7 @@ public class Preferences extends javax.swing.JDialog {
 
     Base.registerWindowCloseKeys(getRootPane(), this::cancelButtonActionPerformed);
 
-    showPrerefencesData();
+    showPreferencesData();
   }
 
   /**
@@ -180,7 +180,7 @@ public class Preferences extends javax.swing.JDialog {
 
     sketchbookLocationLabel.setText(tr("Sketchbook location:"));
     sketchbookLocationLabel.setLabelFor(sketchbookLocationField);
-    
+
     sketchbookLocationField.setColumns(40);
 
     browseButton.setText(I18n.PROMPT_BROWSE);
@@ -193,7 +193,7 @@ public class Preferences extends javax.swing.JDialog {
     comboLanguageLabel.setText(tr("Editor language: "));
 
     requiresRestartLabel.setText(tr("  (requires restart of Arduino)"));
-    
+
     comboLanguage.getAccessibleContext().setAccessibleName("Editor language (requires restart of Arduino)");
 
     fontSizeLabel.setText(tr("Editor font size: "));
@@ -307,7 +307,7 @@ public class Preferences extends javax.swing.JDialog {
     autoScaleCheckBox.getAccessibleContext().setAccessibleName("Automatic interface scale (requires restart of Arduino");
 
     jLabel3.setText("%");
-    
+
     comboThemeLabel.setText(tr("Theme: "));
 
     comboTheme.getAccessibleContext().setAccessibleName("Theme (requires restart of Arduino)");
@@ -793,7 +793,7 @@ public class Preferences extends javax.swing.JDialog {
 
     Language newLanguage = (Language) comboLanguage.getSelectedItem();
     PreferencesData.set("editor.languages.current", newLanguage.getIsoCode());
-    
+
     if (comboTheme.getSelectedIndex() == 0) {
       PreferencesData.set("theme.file", "");
     } else {
@@ -855,7 +855,7 @@ public class Preferences extends javax.swing.JDialog {
     PreferencesData.set(Constants.PREF_PROXY_AUTO_PASSWORD, String.valueOf(autoProxyPassword.getPassword()));
   }
 
-  private void showPrerefencesData() {
+  private void showPreferencesData() {
     sketchbookLocationField.setText(PreferencesData.get("sketchbook.path"));
 
     String currentLanguageISOCode = PreferencesData.get("editor.languages.current");
@@ -864,7 +864,7 @@ public class Preferences extends javax.swing.JDialog {
         comboLanguage.setSelectedItem(language);
       }
     }
-    
+
     String selectedTheme = PreferencesData.get("theme.file", "");
     Collection<ZippedTheme> availablethemes = Theme.getAvailablethemes();
     comboTheme.addItem(tr("Default theme"));
