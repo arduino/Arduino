@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import cc.arduino.packages.BoardPort;
 
@@ -672,6 +673,19 @@ public class BaseNoGui {
     // Add libraries folder for the sketchbook
     librariesFolders.add(getSketchbookLibrariesFolder());
 
+    // Adding several additional library directories, taken from preferences.txt
+    // additional_library_directories=path1[;path2[;...]]
+    Collection<String> additional_library_directories = splitAndTrim(PreferencesData.get("additional_library_directories"), ";");
+    for (String path : additional_library_directories) {
+       File fpath = new File(path);
+
+       if (fpath.isDirectory()) {
+	   librariesFolders.add(new UserLibraryFolder(fpath, Location.ADDITIONAL));
+       } else {
+           System.err.println(I18n.format(tr("Warning: additional_library_directories: directory '{0}' not found"), path));
+       }
+    }
+
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
@@ -947,6 +961,15 @@ public class BaseNoGui {
 
   static public void showError(String title, String message, Throwable e) {
     notifier.showError(title, message, e, 1);
+  }
+
+  static private Collection<String> splitAndTrim(String text, String separator) {
+    if ((text == null) || (text.length() == 0)) {
+      return Collections.emptyList() ;
+    }
+
+    Collection<String> parts = Arrays.asList(text.split(separator));
+    return parts.stream().map(String::trim).filter(part -> !part.isEmpty()).collect(Collectors.toList());
   }
 
   /**
