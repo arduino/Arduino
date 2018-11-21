@@ -199,9 +199,6 @@ public class SerialUploader extends Uploader {
       BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
     }
 
-    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
-    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
-
     String finalUploadPort = null;
     if (uploadResult && doTouch) {
       try {
@@ -210,16 +207,10 @@ public class SerialUploader extends Uploader {
           // sketch serial port reconnects (or timeout after a few seconds if the
           // sketch port never comes back). Doing this saves users from accidentally
           // opening Serial Monitor on the soon-to-be-orphaned bootloader port.
-          Thread.sleep(1000);
-          long started = System.currentTimeMillis();
-          while (System.currentTimeMillis() - started < 2000) {
-            List<String> portList = Serial.list();
-            if (portList.contains(userSelectedUploadPort)) {
-              finalUploadPort = userSelectedUploadPort;
-              break;
-            }
-            Thread.sleep(250);
-          }
+
+          // Reuse waitForUploadPort for this task, but this time we are simply waiting
+          // for one port to reappear. If no port reappears before the timeout, actualUploadPort is selected
+          finalUploadPort = waitForUploadPort(actualUploadPort, Serial.list(), false);
         }
       } catch (InterruptedException ex) {
         // noop
@@ -227,17 +218,21 @@ public class SerialUploader extends Uploader {
     }
 
     if (finalUploadPort == null) {
-      finalUploadPort = actualUploadPort;
-    }
-    if (finalUploadPort == null) {
       finalUploadPort = userSelectedUploadPort;
     }
     BaseNoGui.selectSerialPort(finalUploadPort);
+
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
 
     return uploadResult;
   }
 
   private String waitForUploadPort(String uploadPort, List<String> before) throws InterruptedException, RunnerException {
+	  return waitForUploadPort(uploadPort, before, verbose);
+  }
+
+  private String waitForUploadPort(String uploadPort, List<String> before, boolean verbose) throws InterruptedException, RunnerException {
     // Wait for a port to appear on the list
     int elapsed = 0;
     while (elapsed < 10000) {
