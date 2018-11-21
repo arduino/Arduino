@@ -136,10 +136,10 @@ void enableXtal()
 	/* Test the fault flag */
 	}while (SFRIFG1 & OFIFG);
 
-	/* If starting the XTAL timed out then fall back to VLO */
+	/* If starting the XTAL timed out then fall back to REFO */
 	if(!timeout) {
-		/* ACLK = VLO = ~ 12 KHz */
-		vlo_freq = 8000;
+		/* ACLK = REFO = ~ 32 KHz */
+		vlo_freq = 32768;
 		/* Source ACLK from REFO */
 		CSCTL4 |= SELA__REFOCLK;
 	}
