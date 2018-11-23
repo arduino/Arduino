@@ -958,6 +958,10 @@ msgstr "Erreur lors de la gravure de la séquence d'initialisation."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Erreur lors de la gravure de la séquence d'initialisation : le paramètre de configuration « {0} » est manquant"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Erreur lors de la compilation : le paramètre de configuration « {0} » est manquant"
@@ -1296,8 +1300,8 @@ msgstr "Guillement invalide: charactère [{0}] de fermeture non trouvé."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1617,10 +1621,6 @@ msgstr "Veuillez importer la bibliothèque SPI depuis le menu Croquis > Importer
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Veuillez importer la bibliothèque Wire depuis le menu Croquis > Importer bibliothèque..."
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "Veuillez sélectionner un port afin de récupérer les informations de la carte"
@@ -1797,6 +1797,10 @@ msgstr "Remplacer par :"
 msgid "Retired"
 msgstr "Retiré"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "roumain"
@@ -1920,12 +1924,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Port série « {0} » non trouvé. L''avez-vous bien sélectionné dans le menu Outils > Port série ?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Port série {0} introuvable.\nRéessayer le téléversement à partir d''un autre port série ?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

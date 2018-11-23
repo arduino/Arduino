@@ -944,6 +944,10 @@ msgstr "Lỗi khi đang burning bootloader."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Lỗi trong khi đang ghi dữ liệu phần nạp khởi động: thiếu thông số cấu hình '{0}'"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Lỗi biên dịch: thiếu tham số '{0}'"
@@ -1282,8 +1286,8 @@ msgstr ""
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1603,10 +1607,6 @@ msgstr "Nhập địa chỉ SPI từ Sketch > Nhập thư viện ở menu."
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr ""
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr ""
@@ -1783,6 +1783,10 @@ msgstr "Thay thế với:"
 msgid "Retired"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Romanian"
@@ -1906,12 +1910,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Cổng có số thứ tự ''{0}'' không được tìm thấy. Bạn đã chọn đúng cổng trong phần menu Công cụ > Số thứ tự cổng chưa?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Cổng có số hiệu {0} không được tìm thấy.\nThử lại việc tải dữ liệu vào bo mạch với một cổng có số hiệu khác?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

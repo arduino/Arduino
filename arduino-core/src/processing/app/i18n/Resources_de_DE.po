@@ -945,6 +945,10 @@ msgstr "Fehler beim Brennen des Bootloaders."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Fehler beim Brennen des Bootloaders: Konfigurationsparameter '{0}' fehlt"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Fehler beim Kompilieren: Konfigurationsparameter '{0}' fehlt"
@@ -1283,8 +1287,8 @@ msgstr "Ungültige Quotierung: Es konnte kein schließender [{0}]-Charakter gefu
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "Ungültige Version '{0}' für Bibliothek in: {1}"
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1604,10 +1608,6 @@ msgstr "Bitte importieren Sie die SPI-Bibliothek aus dem Sketch > Bibliothek imp
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Bitte importieren Sie die Wire-Bibliothek aus dem Sketch > Bibliothek importieren-Menü."
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr "Bitte wählen Sie vor dem Hochladen einen Port aus"
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "Bitte wählen Sie einen Port aus, um die Boardinformationen abzurufen"
@@ -1784,6 +1784,10 @@ msgstr "Ersetzen durch:"
 msgid "Retired"
 msgstr "Abgeschaltet"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Rumänisch"
@@ -1907,12 +1911,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Serieller Port \"{0}\" nicht gefunden. Wurde der richtige Port im Menü Werkzeuge > Serieller Port ausgewählt?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Serieller Port {0} nicht gefunden.\nMit einem anderen seriellen Port versuchen?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

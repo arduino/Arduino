@@ -35,8 +35,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-06 13:55+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-09-25 10:05+0000\n"
+"Last-Translator: Tomasz Pudło <wptom@wp.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -637,7 +637,7 @@ msgstr "Nie można zastąpić {0}"
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "Nie można zapisać pliku preferencji: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
@@ -902,19 +902,19 @@ msgstr "Błąd otwierania portu szeregowego ''{0}''. Spróbuj sprawdzić w dokum
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "Błąd przy analizie indeksu bibliotek: {0}\nSpróbuj otworzyć Menedżera Bibliotek aby uaktualnić indeks bibliotek."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "Błąd odczytu indeksu bibliotek: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "Błąd odczytu katalogu z indeksami pakietów: {0}\n(może problem z uprawnieniami?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -949,6 +949,10 @@ msgstr "Błąd przy wgrywaniu bootloadera."
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Błąd przy wgrywaniu bootloadera: brak '{0}' parametru konfiguracji"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1286,10 +1290,10 @@ msgstr "Nieprawidłowe cytowanie: nie znaleziono zamykającego znaku [{0}]."
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "Nieprawidłowa wersja '{0}' dla biblioteki w: {1}"
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1609,10 +1613,6 @@ msgstr "Proszę dołączyć bibliotekę SPI z menu Szkic > Dołącz bibliotekę.
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Proszę dołączyć bibliotekę Wire z menu Szkic > Dołącz bibliotekę."
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "Aby uzyskać informacje o płytce, proszę wybrać port"
@@ -1789,6 +1789,10 @@ msgstr "Zastąp:"
 msgid "Retired"
 msgstr "Wycofane"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "rumuński"
@@ -1912,12 +1916,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Nie znaleziono portu szeregowego ''{0}''. Czy wybrałeś właściwy z menu Narzędzia > Port?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Nie znaleziono portu szeregowego {0}.\nPonowić próbę wgrywania przez inny port?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -2121,7 +2128,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library folder names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "Biblioteka \"{0}\" nie może być użyta.\nNazwy katalogów bibliotek muszą zaczynać się literą lub cyfrą, a następnie\nskładać się z liter, cyfr, myślników, kropek i podkreśleń. Maksymalna długość to 63 znaki."
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2173,7 +2180,7 @@ msgid ""
 "The sketch name had to be modified.\n"
 "Sketch names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "Nazwa szkicu musiała zostać zmodyfikowana.\nNazwy szkiców muszą zaczynać się literą lub cyfrą, a następnie\nskładać się z liter, cyfr, myślników, kropek i podkreśleń. Maksymalna długość to 63 znaki"
 
 #: Base.java:259
 msgid ""
@@ -2690,7 +2697,7 @@ msgstr "name jest puste"
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
 #, java-format
 msgid "no headers files (.h) found in {0}"
-msgstr ""
+msgstr "brak plików nagłówkowych (.h) w {0}"
 
 #: Editor.java:932
 msgid "serialMenu is null"

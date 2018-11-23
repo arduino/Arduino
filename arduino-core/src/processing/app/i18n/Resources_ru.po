@@ -954,6 +954,10 @@ msgstr "Ошибка при записи загрузчика."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Ошибка при записи загрузчика: пропущен параметр конфигурации '{0}'"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Ошибка при компиляции: пропущен параметр конфигурации '{0}'"
@@ -1292,8 +1296,8 @@ msgstr "Неверная расстановка [{0}] - нет закрываю�
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "Неверная версия '{0}' для библиотеки в: {1}"
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1613,10 +1617,6 @@ msgstr "Пожалуйста, импортируйте библиотеку SPI 
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Пожалуйста, импортируйте библиотеку Wire из меню Скетч > Импорт библиотек."
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr "Пожалуйста, выберите порт до загрузки"
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "Пожалуйста, выберите порт для получения информации о плате "
@@ -1793,6 +1793,10 @@ msgstr "Чем:"
 msgid "Retired"
 msgstr "Выбыт"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Румынский"
@@ -1916,12 +1920,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Последовательный порт ''{0}'' не существует. Вы выбрали правильный в меню Инструменты > Порт ?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Последовательный порт {0} не обнаружен.\nПовторить загрузку через другой порт?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

@@ -947,6 +947,10 @@ msgstr "Chyba při vypalování zavaděče."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Chyba při vypalování bootloaderu: chybí konfigurační parametr '{0}'"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "Nastala chyba při kompilaci: chybejíci '{0}' konfigurační parametr"
@@ -1285,8 +1289,8 @@ msgstr "Neplatný znak úvodzovek: chýbějicí uzavírací znak [{0}]."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1606,10 +1610,6 @@ msgstr "Prosím importujte knihovnu SPI z Projektů (Sketch) > Import knihovny (
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "Importujte knihovnu pro Wire z menu:  Projekt > Vlož knihovnu."
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "Prosím vyber port ze kterého mám získat informace o desce"
@@ -1786,6 +1786,10 @@ msgstr "Nahraď za:"
 msgid "Retired"
 msgstr "Nepodporovaný"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Rumunština"
@@ -1909,12 +1913,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Seriový port ''{0}'' nebyl nalezen. Vybrali jste správný port v menu Nástroje > Seriový port?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Seriový port {0} nenalezen\nMám zkusit nahrávat na jiný seriový port?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

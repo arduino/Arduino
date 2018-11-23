@@ -948,6 +948,10 @@ msgstr "燒錄bootloader時發生錯誤。"
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "燒錄bootloader時發生錯誤：缺少配置參數 '{0}'"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "編譯時發生錯誤：沒有組態參數'{0}'"
@@ -1286,8 +1290,8 @@ msgstr "不正確的引號：沒找到代表結束的[{0}]字元"
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1607,10 +1611,6 @@ msgstr "請從選單「草稿碼>匯入程式庫」匯入SPI程式庫。"
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "請導入Wire從 草稿碼>導入函式庫。"
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "請選擇連接埠來取得板子資訊"
@@ -1787,6 +1787,10 @@ msgstr "置換為:"
 msgid "Retired"
 msgstr "已退役"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "羅馬尼亞語"
@@ -1910,12 +1914,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "找不到序列埠''{0}''。您在選單「工具>序列埠」裡的設定正確嗎？"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "沒找到序列埠{0}。\n以另一個序列埠再試著上傳嗎？"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

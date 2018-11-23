@@ -947,6 +947,10 @@ msgstr "حدث خطأ خلال تثبيت محمل برنامج الإقلاع"
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "خطأ عند حرق محمل الإقلاع:  '{0}' معامل الإعدادات مفقود"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "خطأ عند الترجمة:  '{0}' معامل الإعدادات مفقود"
@@ -1285,8 +1289,8 @@ msgstr "إقتباس غير صحيح: لم يعثر على [{0}] رمز إغلا
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1606,10 +1610,6 @@ msgstr "الرجاء استورد مكتبة الـ SPI من القائمة شي
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "الرجاء إستيراد مكتبة Wire من قائمة الشيفرة البرمجية > استيراد مكتبة"
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr ""
@@ -1786,6 +1786,10 @@ msgstr "استبدل بـ:"
 msgid "Retired"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "Romanian"
@@ -1909,12 +1913,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "المنفذ التسلسلي ''{0}'' غير موجود. هل قمت بإختيار المنفذ الصحيح من قائمة الادوات  > المنفذ التسلسلي"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "المنفذ التسلسلي {0} لم يتم العثور عليه.\nحاول الرفع باستخدام منفذ تلسلسي آخر ?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

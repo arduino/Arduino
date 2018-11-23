@@ -948,6 +948,10 @@ msgstr "אירעה שגיאה בעת צריבת תוכנת הפעלה."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "אירעה שגיאה במהלך צריבת ה-bootloader: חסר פרמטר הגדרות '{0}'"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "שגיאה במהלך ההידור: '{0}' הינו חסר בפרמטר ההגדרות"
@@ -1286,8 +1290,8 @@ msgstr "Invalid quoting: no closing [{0}] char found."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr ""
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1607,10 +1611,6 @@ msgstr "אנא ייבא את ספריית ה-SPI מתפריט סקיצה -> יי
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "אנא ייבא את ספריית ה-Wire מתפריט סקיצה > ייבא ספריה"
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr ""
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "אנא בחר פורט לקבלת מידע לוח"
@@ -1787,6 +1787,10 @@ msgstr "החלף עם:"
 msgid "Retired"
 msgstr "Retired"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "רומנית"
@@ -1910,12 +1914,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "פורט סיריאלי \"{0}\" לא נמצא. האם בחרת את הפורט הנכון בתפריט כלים > פורט סיריאלי ?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "פורט סיריאלי {0} לא נמצא.\nלנסות להעלות עם פורט סיריאלי אחר?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

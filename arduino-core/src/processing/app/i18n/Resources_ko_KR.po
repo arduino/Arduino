@@ -944,6 +944,10 @@ msgstr "부트로더 굽는중 에러발생"
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "부트로더를 구울때 오류: 설정 값'{0}' 이 없음"
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr "컴파일 오류: 설정 값'{0}' 이 없음"
@@ -1282,8 +1286,8 @@ msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
 msgid "Invalid version '{0}' for library in: {1}"
 msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
 
-#: ../../../../../app/src/processing/app/Base.java:314
-#: ../../../../../app/src/processing/app/Base.java:360
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
 msgstr ""
@@ -1603,10 +1607,6 @@ msgstr "스케치 > 라이브러리 가져오기 메뉴에서 SPI 라이브러�
 msgid "Please import the Wire library from the Sketch > Import Library menu."
 msgstr "스케치 > 라이브러리 가져오기 메뉴에서 Wire library를 가겨오기하십시오. "
 
-#: ../../../../../app/src/processing/app/SketchController.java:713
-msgid "Please select a Port before Upload"
-msgstr "업로드하기 전에 포트를 선택하십시오"
-
 #: ../../../../../app//src/processing/app/Editor.java:2799
 msgid "Please select a port to obtain board info"
 msgstr "보드 정보를 얻기위해 포트를 선택하세요"
@@ -1783,6 +1783,10 @@ msgstr "다음 내용으로 바꾸기:"
 msgid "Retired"
 msgstr "Retired"
 
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr ""
+
 #: Preferences.java:113
 msgid "Romanian"
 msgstr "루마니아어"
@@ -1906,12 +1910,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "시리얼 포트 ''{0}''를 찾을 수 없습니다. 툴 > 시리얼 포트 메뉴에서 올바른 포트를선택했나요?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "시리얼 포트 {0} 를 찾을 수 없습니다.\n다른 시리얼 포트로 업로드를 다시 시도하시겠습니까?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
