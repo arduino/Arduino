@@ -49,6 +49,7 @@ import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.*;
+import processing.app.helpers.OSUtils;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
@@ -931,15 +932,14 @@ public class Base {
     }
 
     if (editors.size() == 1) {
-
+      editor.setVisible(false);
+      editors.remove(editor);
       handleQuit();
-
     } else {
       // More than one editor window open,
       // proceed with closing the current window.
       editor.setVisible(false);
       editor.dispose();
-
       editors.remove(editor);
     }
     return true;
@@ -974,7 +974,7 @@ public class Base {
       // Save out the current prefs state
       PreferencesData.save();
 
-      if (!OSUtils.hasMacOSStyleMenus()) {
+      if (!OSUtils.isMacOS()) {
         // If this was fired from the menu or an AppleEvent (the Finder),
         // then Mac OS X will send the terminate signal itself.
         System.exit(0);
