@@ -26,6 +26,7 @@ import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
+import cc.arduino.packages.Uploader;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.*;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
@@ -925,45 +926,20 @@ public class Base {
    */
   public boolean handleClose(Editor editor) {
     // Check if modified
-//    boolean immediate = editors.size() == 1;
     if (!editor.checkModified()) {
       return false;
     }
 
     if (editors.size() == 1) {
-      storeScreenDimensions();
-      storeSketches();
 
-      // This will store the sketch count as zero
-      editors.remove(editor);
-      try {
-        Editor.serialMonitor.close();
-      } catch (Exception e) {
-        //ignore
-      }
-      rebuildRecentSketchesMenuItems();
-
-      // Save out the current prefs state
-      PreferencesData.save();
-
-      // Since this wasn't an actual Quit event, call System.exit()
-      System.exit(0);
+      handleQuit();
 
     } else {
       // More than one editor window open,
       // proceed with closing the current window.
       editor.setVisible(false);
       editor.dispose();
-//      for (int i = 0; i < editorCount; i++) {
-//        if (editor == editors[i]) {
-//          for (int j = i; j < editorCount-1; j++) {
-//            editors[j] = editors[j+1];
-//          }
-//          editorCount--;
-//          // Set to null so that garbage collection occurs
-//          editors[editorCount] = null;
-//        }
-//      }
+
       editors.remove(editor);
     }
     return true;
@@ -984,6 +960,14 @@ public class Base {
       Editor.serialMonitor.close();
     } catch (Exception e) {
       // ignore
+    }
+
+    // kill uploader (if still alive)
+    UploaderUtils uploaderInstance = new UploaderUtils();
+    Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+    if (uploader != null && uploader.programmerPid != null && uploader.programmerPid.isAlive()) {
+        // kill the stuck programmer
+        uploader.programmerPid.destroyForcibly();
     }
 
     if (handleQuitEach()) {
