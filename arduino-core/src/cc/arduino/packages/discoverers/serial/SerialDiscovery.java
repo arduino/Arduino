@@ -196,9 +196,6 @@ public class SerialDiscovery implements Discovery, Runnable {
         TargetBoard board = (TargetBoard) boardData.get("board");
         if (board != null) {
           String boardName = board.getName();
-          if (boardName != null) {
-            label += " (" + boardName + ")";
-          }
           boardPort.setBoardName(boardName);
         }
       } else {

@@ -1041,18 +1041,23 @@ public class Editor extends JFrame implements RunnerListener {
     private BoardPort port;
 
     public BoardPortJCheckBoxMenuItem(BoardPort port) {
-      super(port.getLabel());
+      super();
+      this.port = port;
+      setText(toString());
       addActionListener(e -> {
         selectSerialPort(port.getAddress());
         base.onBoardOrPortChange();
       });
-      this.port = port;
     }
 
     @Override
     public String toString() {
       // This is required for serialPrompt()
-      return port.getLabel();
+      String label = port.getLabel();
+      if (port.getBoardName() != null && !port.getBoardName().isEmpty()) {
+        label += " (" + port.getBoardName() + ")";
+      }
+      return label;
     }
   }
 
