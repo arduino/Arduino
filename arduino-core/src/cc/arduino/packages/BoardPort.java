@@ -39,6 +39,7 @@ public class BoardPort {
 
   private String address;   // unique name for this port, used by Preferences
   private String protocol;  // how to communicate, used for Ports menu sections
+  private String protocolLabel; // protocol extended name to display on GUI
   private String boardName;
   private String label;     // friendly name shown in Ports menu
   private final PreferencesMap identificationPrefs; // data to match with boards.txt
@@ -74,6 +75,14 @@ public class BoardPort {
 
   public void setProtocol(String protocol) {
     this.protocol = protocol;
+  }
+
+  public String getProtocolLabel() {
+    return protocolLabel;
+  }
+
+  public void setProtocolLabel(String protocolLabel) {
+    this.protocolLabel = protocolLabel;
   }
 
   public String getBoardName() {
