@@ -28,12 +28,16 @@
  */
 
 package cc.arduino.packages.discoverers;
-import cc.arduino.packages.BoardPort;
 
-public class PluggableDiscoveryMessage extends BoardPort {
-  private String eventType; // "add", "remove", "Error: START_SYNC not supported"
+public class PluggableDiscoveryMessage {
+  private String eventType; // "add", "remove", "error"
+  private String message; // optional message, e.g. "START_SYNC not supported"
+
   public String getEventType() {
     return eventType;
   }
-}
 
+  public String getMessage() {
+    return message;
+  }
+}

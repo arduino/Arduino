@@ -29,36 +29,43 @@
 
 package cc.arduino.packages.discoverers;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import static processing.app.I18n.format;
+
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
-import processing.app.legacy.PApplet;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import processing.app.PreferencesData;
+import processing.app.helpers.StringUtils;
 
 public class PluggableDiscovery implements Discovery {
 
   private final String discoveryName;
   private final String[] cmd;
-  private final List<BoardPort> portList;
+  private final List<BoardPort> portList = new ArrayList<>();
   private Process program=null;
   private Thread pollingThread;
+
+  private void debug(String x) {
+    if (PreferencesData.getBoolean("discovery.debug"))
+      System.out.println(discoveryName + ": " + x);
+  }
 
   public PluggableDiscovery(String discoveryName, String[] cmd) {
     this.cmd = cmd;
     this.discoveryName = discoveryName;
-    portList = new LinkedList<>();
-    System.out.println(discoveryName + ": Starting: " + PApplet.join(cmd, " "));
   }
 
   @Override
@@ -76,30 +83,23 @@ public class PluggableDiscovery implements Discovery {
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
       while (program != null && program.isAlive()) {
-        PluggableDiscoveryMessage msg = mapper.readValue(parser, PluggableDiscoveryMessage.class);
-        if (msg != null) {
-          System.out.println(discoveryName + ": received json: " + msg.getPrefs());
-          String event = msg.getEventType();
-          if (event != null) {
-            if (event.equals("Error: START_SYNC not supported")) {
-              if (pollingThread == null) {
-                startPolling();
-              }
-            } else {
-              if (event.equals("add")) {
-                msg.searchMatchingBoard();
-              }
-              update(msg);
-            }
+        JsonNode tree = mapper.readTree(parser);
+        if (tree == null) {
+          if (program != null && program.isAlive()) {
+            System.err.println(format("{0}: Invalid json message", discoveryName));
           }
+          break;
         }
+        debug("Received json: " + tree);
+
+        processJsonNode(mapper, tree);
       }
-      System.out.println(discoveryName + ": thread exit normally");
+      debug("thread exit normally");
     } catch (InterruptedException e) {
-      System.out.println(discoveryName + ": thread exit by interrupt");
+      debug("thread exit by interrupt");
       e.printStackTrace();
     } catch (Exception e) {
-      System.out.println(discoveryName + ": thread exit other exception");
+      debug("thread exit other exception");
       e.printStackTrace();
     }
     try {
@@ -108,15 +108,89 @@ public class PluggableDiscovery implements Discovery {
     }
   }
 
+  private void processJsonNode(ObjectMapper mapper, JsonNode node) {
+    JsonNode eventTypeNode = node.get("eventType");
+    if (eventTypeNode == null) {
+      System.err.println(format("{0}: Invalid message, missing eventType", discoveryName));
+      return;
+    }
+
+    switch (eventTypeNode.asText()) {
+    case "error":
+      try {
+        PluggableDiscoveryMessage msg = mapper.treeToValue(node, PluggableDiscoveryMessage.class);
+        debug("error: " + msg.getMessage());
+        if (msg.getMessage().contains("START_SYNC")) {
+          startPolling();
+        }
+      } catch (JsonProcessingException e) {
+        e.printStackTrace();
+      }
+      return;
+
+    case "list":
+      JsonNode portsNode = node.get("ports");
+      if (portsNode == null) {
+        System.err.println(format("{0}: Invalid message, missing ports list", discoveryName));
+        return;
+      }
+      if (!portsNode.isArray()) {
+        System.err.println(format("{0}: Invalid message, ports list should be an array", discoveryName));
+        return;
+      }
+
+      portList.clear();
+      portsNode.forEach(portNode -> {
+        try {
+          BoardPort port = mapper.treeToValue(portNode, BoardPort.class);
+          port.searchMatchingBoard();
+          addOrUpdate(port);
+        } catch (JsonProcessingException e) {
+          System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
+          e.printStackTrace();
+        }
+      });
+      return;
+
+    // Messages for SYNC updates
+
+    case "add":
+      try {
+        BoardPort port = mapper.treeToValue(node, BoardPort.class);
+        port.searchMatchingBoard();
+        addOrUpdate(port);
+      } catch (JsonProcessingException e) {
+        System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
+        e.printStackTrace();
+      }
+      return;
+
+    case "remove":
+      try {
+        BoardPort port = mapper.treeToValue(node, BoardPort.class);
+        remove(port);
+      } catch (JsonProcessingException e) {
+        System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
+        e.printStackTrace();
+      }
+      return;
+
+    default:
+      debug("Invalid event: " + eventTypeNode.asText());
+      return;
+    }
+  }
+
   @Override
   public void start() throws Exception {
-    System.out.println(discoveryName + ": start");
     try {
+      debug("Starting: " + StringUtils.join(cmd, " "));
       program = Runtime.getRuntime().exec(cmd);
     } catch (Exception e) {
       program = null;
       return;
     }
+    debug("START_SYNC");
     write("START_SYNC\n");
     pollingThread = null;
   }
@@ -126,11 +200,13 @@ public class PluggableDiscovery implements Discovery {
     // LIST command.  A second thread is created to send these
     // commands, while the run() thread above listens for the
     // discovery tool output.
+    debug("START");
     write("START\n");
     Thread pollingThread = new Thread() {
       public void run() {
         try {
           while (program != null && program.isAlive()) {
+            debug("LIST");
             write("LIST\n");
             sleep(2500);
           }
@@ -165,7 +241,7 @@ public class PluggableDiscovery implements Discovery {
     }
   }
 
-  private synchronized void update(PluggableDiscoveryMessage port) {
+  private synchronized void addOrUpdate(BoardPort port) {
     // Update the list of discovered ports, which may involve
     // adding a new port, replacing the info for a previously
     // discovered port, or removing a port.  This function
@@ -173,29 +249,24 @@ public class PluggableDiscovery implements Discovery {
     // avoid changing the list while it's being accessed by
     // another thread.
     String address = port.getAddress();
-    if (address == null) return; // address required for "add" & "remove"
-    for (BoardPort bp : portList) {
-      if (address.equals(bp.getAddress())) {
-        // if address already on the list, discard old info
-        portList.remove(bp);
-      }
+    if (address == null)
+      return; // address required for "add" & "remove"
+
+    // if address already on the list, discard old info
+    portList.removeIf(bp -> address.equals(bp.getAddress()));
+
+    // if no label, use address
+    if (port.getLabel() == null) {
+      port.setLabel(address);
     }
-    if (port.getEventType().equals("add")) {
-      if (port.getLabel() == null) {
-        // if no label, use address & name, or just address if no name
-        String name = port.getBoardName();
-        if (name == null) {
-          port.setLabel(address);
-        } else {
-          port.setLabel(address + " (" + name + ")");
-        }
-      }
-      if (port.getProtocol() == null) {
-        // if no protocol, assume serial
-        port.setProtocol("serial");
-      }
-      portList.add(port);
-    }
+    portList.add(port);
+  }
+
+  private synchronized void remove(BoardPort port) {
+    String address = port.getAddress();
+    if (address == null)
+      return; // address required for "add" & "remove"
+    portList.removeIf(bp -> address.equals(bp.getAddress()));
   }
 
   @Override
@@ -205,18 +276,14 @@ public class PluggableDiscovery implements Discovery {
     // returned for use by the rest of the IDE.  This copy
     // operation must be synchronized with update() to assure
     // a clean copy.
-    final List<BoardPort> portListCopy = new ArrayList<>();
-    for (BoardPort bp : portList) {
-      portListCopy.add(new BoardPort(bp));
-    }
-    return portListCopy;
+    return new ArrayList<>(portList);
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards(boolean complete) {
     // XXX: parameter "complete "is really needed?
     // should be checked on all existing discoveries
-    return listDiscoveredBoards();
+    return new ArrayList<>(portList);
   }
 
   @Override
