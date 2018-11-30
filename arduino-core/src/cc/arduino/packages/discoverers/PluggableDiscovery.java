@@ -156,7 +156,7 @@ public class PluggableDiscovery implements Discovery {
 
     case "add":
       try {
-        BoardPort port = mapper.treeToValue(node, BoardPort.class);
+        BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
         port.searchMatchingBoard();
         addOrUpdate(port);
       } catch (JsonProcessingException e) {
@@ -167,7 +167,7 @@ public class PluggableDiscovery implements Discovery {
 
     case "remove":
       try {
-        BoardPort port = mapper.treeToValue(node, BoardPort.class);
+        BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
         remove(port);
       } catch (JsonProcessingException e) {
         System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
