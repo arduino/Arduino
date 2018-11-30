@@ -139,7 +139,9 @@ public class PluggableDiscovery implements Discovery {
         return;
       }
 
-      portList.clear();
+      synchronized (portList) {
+        portList.clear();
+      }
       portsNode.forEach(portNode -> {
         BoardPort port = mapJsonNodeToBoardPort(mapper, node);
         if (port != null) {
@@ -246,45 +248,41 @@ public class PluggableDiscovery implements Discovery {
     }
   }
 
-  private synchronized void addOrUpdate(BoardPort port) {
-    // Update the list of discovered ports, which may involve
-    // adding a new port, replacing the info for a previously
-    // discovered port, or removing a port.  This function
-    // must be synchronized with listDiscoveredBoards(), to
-    // avoid changing the list while it's being accessed by
-    // another thread.
+  private void addOrUpdate(BoardPort port) {
     String address = port.getAddress();
     if (address == null)
       return; // address required for "add" & "remove"
 
-    // if address already on the list, discard old info
-    portList.removeIf(bp -> address.equals(bp.getAddress()));
-
-    portList.add(port);
+    synchronized (portList) {
+      // if address already on the list, discard old info
+      portList.removeIf(bp -> address.equals(bp.getAddress()));
+      portList.add(port);
+    }
   }
 
-  private synchronized void remove(BoardPort port) {
+  private void remove(BoardPort port) {
     String address = port.getAddress();
     if (address == null)
       return; // address required for "add" & "remove"
-    portList.removeIf(bp -> address.equals(bp.getAddress()));
+    synchronized (portList) {
+      portList.removeIf(bp -> address.equals(bp.getAddress()));
+    }
   }
 
   @Override
-  public synchronized List<BoardPort> listDiscoveredBoards() {
-    // return the ports discovered so far.  Because the list of
-    // ports may change at any moment, a copy of the list is
-    // returned for use by the rest of the IDE.  This copy
-    // operation must be synchronized with update() to assure
-    // a clean copy.
-    return new ArrayList<>(portList);
+  public List<BoardPort> listDiscoveredBoards() {
+    synchronized (portList) {
+      return new ArrayList<>(portList);
+    }
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards(boolean complete) {
     // XXX: parameter "complete "is really needed?
     // should be checked on all existing discoveries
-    return new ArrayList<>(portList);
+    synchronized (portList) {
+      return new ArrayList<>(portList);
+    }
   }
 
   @Override
