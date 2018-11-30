@@ -1286,6 +1286,7 @@ public class Base {
     if (!sketchbookIncompatibleLibs.isEmpty()) {
       sketchbookIncompatibleLibs.sort();
       JMenu incompatible = new JMenu(tr("INCOMPATIBLE"));
+      MenuScroller.setScrollerFor(incompatible);
       menu.add(incompatible);
       for (UserLibrary lib : sketchbookIncompatibleLibs) {
         addSketchesSubmenu(incompatible, lib);
