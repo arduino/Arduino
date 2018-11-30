@@ -173,6 +173,10 @@ public class PluggableDiscovery implements Discovery {
   private BoardPort mapJsonNodeToBoardPort(ObjectMapper mapper, JsonNode node) {
     try {
       BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
+      // if no label, use address
+      if (port.getLabel() == null || port.getLabel().isEmpty()) {
+        port.setLabel(port.getAddress());
+      }
       port.searchMatchingBoard();
       return port;
     } catch (JsonProcessingException e) {
@@ -256,10 +260,6 @@ public class PluggableDiscovery implements Discovery {
     // if address already on the list, discard old info
     portList.removeIf(bp -> address.equals(bp.getAddress()));
 
-    // if no label, use address
-    if (port.getLabel() == null) {
-      port.setLabel(address);
-    }
     portList.add(port);
   }
 
