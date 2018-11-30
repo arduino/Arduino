@@ -126,7 +126,7 @@ public class BoardPort {
   // If found, boardName is set to the name from boards.txt
   // and the board is returned.  If not found, null is returned.
   public TargetBoard searchMatchingBoard() {
-    if (identificationPrefs.isEmpty()) return null;
+    if (identificationPrefs == null || identificationPrefs.isEmpty()) return null;
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
         for (TargetBoard board : targetPlatform.getBoards().values()) {

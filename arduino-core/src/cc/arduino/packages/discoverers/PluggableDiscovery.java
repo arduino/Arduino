@@ -141,13 +141,9 @@ public class PluggableDiscovery implements Discovery {
 
       portList.clear();
       portsNode.forEach(portNode -> {
-        try {
-          BoardPort port = mapper.treeToValue(portNode, BoardPort.class);
-          port.searchMatchingBoard();
+        BoardPort port = mapJsonNodeToBoardPort(mapper, node);
+        if (port != null) {
           addOrUpdate(port);
-        } catch (JsonProcessingException e) {
-          System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
-          e.printStackTrace();
         }
       });
       return;
@@ -155,29 +151,34 @@ public class PluggableDiscovery implements Discovery {
     // Messages for SYNC updates
 
     case "add":
-      try {
-        BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
-        port.searchMatchingBoard();
-        addOrUpdate(port);
-      } catch (JsonProcessingException e) {
-        System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
-        e.printStackTrace();
+      BoardPort addedPort = mapJsonNodeToBoardPort(mapper, node);
+      if (addedPort != null) {
+        addOrUpdate(addedPort);
       }
       return;
 
     case "remove":
-      try {
-        BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
-        remove(port);
-      } catch (JsonProcessingException e) {
-        System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
-        e.printStackTrace();
+      BoardPort removedPort = mapJsonNodeToBoardPort(mapper, node);
+      if (removedPort != null) {
+        remove(removedPort);
       }
       return;
 
     default:
       debug("Invalid event: " + eventTypeNode.asText());
       return;
+    }
+  }
+
+  private BoardPort mapJsonNodeToBoardPort(ObjectMapper mapper, JsonNode node) {
+    try {
+      BoardPort port = mapper.treeToValue(node.get("port"), BoardPort.class);
+      port.searchMatchingBoard();
+      return port;
+    } catch (JsonProcessingException e) {
+      System.err.println(format("{0}: Invalid BoardPort message", discoveryName));
+      e.printStackTrace();
+      return null;
     }
   }
 
