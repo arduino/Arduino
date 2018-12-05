@@ -1,3 +1,20 @@
+ARDUINO 1.8.8 2018.12.07
+
+[ide]
+* Fixed: command line parsing of version parameters when installing cores/libraries
+* Platform indexes are now downloaded using https
+* Fixed: on some newer linux distrubitions, NPE when loading GTK look-and-feel without libgtk2 installed
+* MacOSX: added touch bar support
+* MacOSX: do not exit app after closing last window
+* Fixed: serial monitor timestamps not always printed. Thanks @nitram509
+* Kill active programmer if still alive after closing last IDE window
+* Fixed: "Export compiled binary" now works also with unsaved sketches
+* Improved automatic port re-selection after upload
+* Added scroller to "INCOMPATIBLE" examples menu
+
+[wifi-firmware]
+* Added firmware upgrade for NINA-based boards
+
 ARDUINO 1.8.7 2018.09.11
 
 (bugfix service release)
