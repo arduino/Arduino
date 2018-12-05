@@ -19,6 +19,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Anton Stoychev <antitoxic@gmail.com>, 2013
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Gabriel Radev <gabosss@gmail.com>, 2017
@@ -30,7 +31,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-10 06:54+0000\n"
+"PO-Revision-Date: 2018-11-23 17:39+0000\n"
 "Last-Translator: Любомир Василев\n"
 "Language-Team: Bulgarian (http://www.transifex.com/mbanzi/arduino-ide-15/language/bg/)\n"
 "MIME-Version: 1.0\n"
@@ -947,7 +948,7 @@ msgstr "Грешка при записа на зареждащата прогр�
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Грешка при записа на зареждащата програма. Моля, изберете сериен порт."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1291,7 +1292,7 @@ msgstr "Неправилна версия „{0}“ за библиотека в
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "Неправилна версия {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1786,7 +1787,7 @@ msgstr "Изтеглени от употреба"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Искате ли да опитате качване чрез друг сериен порт?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1914,12 +1915,12 @@ msgstr "Серийният порт „{0}“ не е намерен. Избра
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Не е избран сериен порт."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Серийният порт {0} не е намерен."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

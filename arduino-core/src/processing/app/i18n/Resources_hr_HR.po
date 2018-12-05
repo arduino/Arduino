@@ -19,6 +19,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Dubravko Penezic <dpenezic@gmail.com>, 2012
 # Dubravko Penezic <dpenezic@gmail.com>, 2013
 # mbruck <mladen.bruck@gmail.com>, 2014
@@ -27,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-06 13:55+0000\n"
+"PO-Revision-Date: 2018-11-23 15:06+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"

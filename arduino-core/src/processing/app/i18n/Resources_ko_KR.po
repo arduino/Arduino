@@ -19,6 +19,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
 # Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2018
@@ -29,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-07 07:10+0000\n"
+"PO-Revision-Date: 2018-11-27 05:46+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -946,7 +947,7 @@ msgstr "부트로더를 구울때 오류: 설정 값'{0}' 이 없음"
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "부트로더 굽는중 에러발생: 시리얼 포트를 선택하세요."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1290,7 +1291,7 @@ msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "잘못된 버전 {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1785,7 +1786,7 @@ msgstr "Retired"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "다른 시리얼 포트로 업로드 하시겠습니까?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1913,12 +1914,12 @@ msgstr "시리얼 포트 ''{0}''를 찾을 수 없습니다. 툴 > 시리얼 포
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "시리얼 포트가 선택되지 않았습니다."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "시리얼 포트 {0}를 찾을 수 없습니다."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

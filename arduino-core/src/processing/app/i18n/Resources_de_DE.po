@@ -19,6 +19,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Ettore Atalan <atalanttore@googlemail.com>, 2014-2018
 # Freddy Koschinsky <schollator@burning.name>, 2018
 # Luca Gronmaier <Dark_Forest@t-online.de>, 2017
@@ -30,7 +31,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-06 20:39+0000\n"
+"PO-Revision-Date: 2018-11-24 12:42+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/mbanzi/arduino-ide-15/language/de_DE/)\n"
 "MIME-Version: 1.0\n"
@@ -947,7 +948,7 @@ msgstr "Fehler beim Brennen des Bootloaders: Konfigurationsparameter '{0}' fehlt
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Fehler beim Brennen des Bootloaders: Bitte wählen Sie einen seriellen Port aus."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1291,7 +1292,7 @@ msgstr "Ungültige Version '{0}' für Bibliothek in: {1}"
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "Ungültige Version {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1786,7 +1787,7 @@ msgstr "Abgeschaltet"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Das Hochladen mit einem anderen seriellen Port erneut versuchen?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1914,12 +1915,12 @@ msgstr "Serieller Port \"{0}\" nicht gefunden. Wurde der richtige Port im Menü 
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Serieller Port nicht ausgewählt."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Serieller Port {0} nicht gefunden."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

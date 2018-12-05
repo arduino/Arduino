@@ -19,6 +19,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2018
 # angry_snake <inactive+angry_snake@transifex.com>, 2014
@@ -39,7 +40,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-09-06 23:43+0000\n"
+"PO-Revision-Date: 2018-11-23 22:46+0000\n"
 "Last-Translator: AlexL <loginov.alex.valer@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/mbanzi/arduino-ide-15/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -956,7 +957,7 @@ msgstr "Ошибка при записи загрузчика: пропущен 
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Ошибка при записи загрузчика: пожалуйста, выберите последовательный порт."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1300,7 +1301,7 @@ msgstr "Неверная версия '{0}' для библиотеки в: {1}"
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "Неверная версия {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1795,7 +1796,7 @@ msgstr "Выбыт"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Повторить загрузку через другой последовательный порт?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1923,12 +1924,12 @@ msgstr "Последовательный порт ''{0}'' не существу�
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Последовательный порт не выбран."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Последовательный порт {0} не найден."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
