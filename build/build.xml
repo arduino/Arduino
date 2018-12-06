@@ -71,11 +71,13 @@
   <property name="LINUX32_BUNDLED_JVM" value="none"/>
   <property name="LINUX64_BUNDLED_JVM" value="none"/>
   <property name="LINUXARM_BUNDLED_JVM" value="none"/>
+  <property name="LINUXAARCH64_BUNDLED_JVM" value="none"/>
   <condition property="linux-bundle-jvm-task" value="noop">
     <and>
       <equals arg1="${LINUX32_BUNDLED_JVM}" arg2="none"/>
       <equals arg1="${LINUX64_BUNDLED_JVM}" arg2="none"/>
       <equals arg1="${LINUXARM_BUNDLED_JVM}" arg2="none"/>
+      <equals arg1="${LINUXAARCH64_BUNDLED_JVM}" arg2="none"/>
     </and>
   </condition>
   <condition property="linux-bundle-jvm-task" value="bundle">
@@ -88,6 +90,9 @@
       </not>
       <not>
         <equals arg1="${LINUXARM_BUNDLED_JVM}" arg2="none"/>
+      </not>
+      <not>
+        <equals arg1="${LINUXAARCH64_BUNDLED_JVM}" arg2="none"/>
       </not>
     </or>
   </condition>
