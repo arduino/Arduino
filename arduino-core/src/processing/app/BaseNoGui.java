@@ -42,9 +42,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10808;
+  public static final int REVISION = 10809;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.8.8";
+  public static final String VERSION_NAME = "1.8.9";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
