@@ -51,7 +51,7 @@ public class EditorLineStatus extends JComponent {
 
   String text = "";
   String name = "";
-  String serialport = "";
+  String port = "";
   String serialnumber = "";
 
   public EditorLineStatus() {
@@ -92,13 +92,13 @@ public class EditorLineStatus extends JComponent {
 
   public void paintComponent(Graphics graphics) {
     Graphics2D g = Theme.setupGraphics2D(graphics);
-    if (name.isEmpty() && serialport.isEmpty()) {
+    if (name.isEmpty() && port.isEmpty()) {
       PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
       if (boardPreferences != null)
         setBoardName(boardPreferences.get("name"));
       else
         setBoardName("-");
-      setSerialPort(PreferencesData.get("serial.port"));
+      setPort(PreferencesData.get("serial.port"));
     }
     g.setColor(background);
     Dimension size = getSize();
@@ -112,8 +112,8 @@ public class EditorLineStatus extends JComponent {
     g.setColor(messageForeground);
 
     String statusText;
-    if (serialport != null && !serialport.isEmpty()) {
-      statusText = I18n.format(tr("{0} on {1}"), name, serialport);
+    if (port != null && !port.isEmpty()) {
+      statusText = I18n.format(tr("{0} on {1}"), name, port);
     } else {
       statusText = name;
     }
@@ -132,8 +132,8 @@ public class EditorLineStatus extends JComponent {
     this.name = name;
   }
 
-  public void setSerialPort(String serialport) {
-    this.serialport = serialport;
+  public void setPort(String port) {
+    this.port = port;
   }
 
   public void setSerialNumber(String serialnumber) {

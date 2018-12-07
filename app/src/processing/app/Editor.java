@@ -2585,7 +2585,7 @@ public class Editor extends JFrame implements RunnerListener {
       lineStatus.setBoardName(boardPreferences.get("name"));
     else
       lineStatus.setBoardName("-");
-    lineStatus.setSerialPort(PreferencesData.get("serial.port"));
+    lineStatus.setPort(PreferencesData.get("serial.port"));
     lineStatus.repaint();
   }
 
