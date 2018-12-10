@@ -61,6 +61,10 @@ public class VersionComparator implements Comparator<String> {
   public static boolean greaterThan(String a, String b) {
     return compareTo(a, b) > 0;
   }
+  
+  public static boolean greaterThanOrEqual(String a, String b) {
+    return compareTo(a, b) >= 0;
+  }
 
   public static String max(String a, String b) {
     return greaterThan(a, b) ? a : b;
