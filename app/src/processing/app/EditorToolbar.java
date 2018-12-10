@@ -31,6 +31,7 @@ import com.thizzer.jtouchbar.JTouchBar;
 import com.thizzer.jtouchbar.item.TouchBarItem;
 import com.thizzer.jtouchbar.item.view.TouchBarButton;
 
+import cc.arduino.contributions.VersionComparator;
 import processing.app.helpers.OSUtils;
 
 import java.awt.*;
@@ -149,7 +150,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
     statusFont = Theme.getFont("buttons.status.font");
     statusColor = Theme.getColor("buttons.status.color");
 
-    if (OSUtils.isMacOS()) {
+    if (OSUtils.isMacOS() && VersionComparator.greaterThan(OSUtils.version(), "10.11")) {
       editor.addWindowListener(new WindowAdapter() {
         public void windowActivated(WindowEvent e) {
           if (touchBar == null) {
