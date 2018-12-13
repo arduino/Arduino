@@ -105,6 +105,8 @@
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
   <property name="AVRCORE-VERSION" value="1.8.2" />
   <property name="arduinoOTA-VERSION" value="1.3.0" />
+  <property name="SERIALDISCOVER-VERSION" value="0.0.2" />
+  <property name="MDNSDISCOVER-VERSION" value="0.0.1" />
 
   <!-- Libraries required for running arduino -->
   <fileset dir=".." id="runtime.jars">
@@ -205,6 +207,11 @@
     <!-- copy shared examples folder -->
     <copy todir="${target.path}/examples">
       <fileset dir="shared/examples" />
+    </copy>
+
+    <!-- copy discoverers fake platform -->
+    <copy todir="${staging_folder}/work/${staging_hardware_folder}/discoverers">
+      <fileset dir="shared/discoverers"/>
     </copy>
 
     <mkdir dir="${target.path}/reference"/>
@@ -487,6 +494,24 @@
     <copy file="macosx/liblistSerials-${LIBLISTSERIAL-VERSION}/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
 
+    <antcall target="unzip">
+      <param name="archive_file" value="./serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="macosx/serial-discovery-${SERIALDISCOVER-VERSION}/darwin/serial-discovery" todir="macosx/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../tools/serial-discovery" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="macosx/mdns-discovery-${MDNSDISCOVER-VERSION}/darwin/mdns-discovery" todir="macosx/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../tools/mdns-discovery" />
+
     <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed" />
     <antcall target="build-arduino-builder" />
 
@@ -678,6 +703,24 @@
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/linux${arch-bits}/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
 
+    <antcall target="unzip">
+      <param name="archive_file" value="./serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/serial-discovery-${SERIALDISCOVER-VERSION}/linux${arch-bits}/serial-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/serial-discovery" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/mdns-discovery-${MDNSDISCOVER-VERSION}/linux${arch-bits}/mdns-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/mdns-discovery" />
+
   </target>
 
   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
@@ -702,6 +745,24 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/arm/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/serial-discovery-${SERIALDISCOVER-VERSION}/linuxarm/serial-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/serial-discovery" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/mdns-discovery-${MDNSDISCOVER-VERSION}/linuxarm/mdns-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/mdns-discovery" />
 
   </target>
 
@@ -745,6 +806,25 @@
     </antcall>
     <copy file="linux/liblistSerials-${LIBLISTSERIAL-VERSION}/aarch64/liblistSerialsj.so" todir="linux/work/lib/" />
     <chmod perm="755" file="linux/work/lib/liblistSerialsj.so" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/serial-discovery-${SERIALDISCOVER-VERSION}/linuxarm64/serial-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/serial-discovery" />
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="linux/mdns-discovery-${MDNSDISCOVER-VERSION}/linuxarm64/mdns-discovery" todir="linux/work/${staging_hardware_folder}/../tools/" />
+    <chmod perm="755" file="linux/work/${staging_hardware_folder}/../tools/mdns-discovery" />
+
   </target>
 
   <target name="linuxaarch64-build" depends="linux-libastyle-aarch64" description="Build Linux (AArch64) version">
@@ -1063,6 +1143,28 @@
     <copy file="windows/liblistSerials-${LIBLISTSERIAL-VERSION}/windows/listSerialsj.dll" todir="windows/work/lib/" />
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/listSerialsj.dll" />
+    </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/serial-discovery-${SERIALDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/serial-discovery-${SERIALDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="windows/serial-discovery-${SERIALDISCOVER-VERSION}/windows/serial-discovery.exe" todir="windows/work/tools/" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/tools/serial-discovery.exe" />
+    </antcall>
+
+    <antcall target="unzip">
+      <param name="archive_file" value="./mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/tools/mdns-discovery-${MDNSDISCOVER-VERSION}.zip" />
+      <param name="final_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+      <param name="dest_folder" value="${staging_folder}/mdns-discovery-${MDNSDISCOVER-VERSION}" />
+    </antcall>
+    <copy file="windows/mdns-discovery-${MDNSDISCOVER-VERSION}/windows/mdns-discovery.exe" todir="windows/work/tools/" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/tools/mdns-discovery.exe" />
     </antcall>
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>

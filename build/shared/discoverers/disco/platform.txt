@@ -1,0 +1,2 @@
+discovery.serial.pattern={runtime.ide.path}/tools/serial-discovery
+discovery.mdns.pattern={runtime.ide.path}/tools/mdns-discovery
