@@ -39,6 +39,7 @@ import java.util.Map;
 import cc.arduino.packages.discoverers.PluggableDiscovery;
 import cc.arduino.packages.discoverers.serial.SerialDiscovery;
 import cc.arduino.packages.discoverers.NetworkDiscovery;
+import processing.app.PreferencesData;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
@@ -75,6 +76,7 @@ public class DiscoveryManager {
           try {
             System.out.println("found discovery: " + discoveryName + " -> " + pattern);
             System.out.println("with preferencess -> " + discoveryPrefs);
+            pattern = StringReplacer.replaceFromMapping(pattern, PreferencesData.getMap());
             String[] cmd = StringReplacer.formatAndSplit(pattern, discoveryPrefs);
             discoverers.add(new PluggableDiscovery(discoveryName, cmd));
           } catch (Exception e) {
