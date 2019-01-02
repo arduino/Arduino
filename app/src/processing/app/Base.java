@@ -932,9 +932,10 @@ public class Base {
     }
 
     if (editors.size() == 1) {
+      handleQuit();
+      // Everything called after handleQuit will only affect OSX
       editor.setVisible(false);
       editors.remove(editor);
-      handleQuit();
     } else {
       // More than one editor window open,
       // proceed with closing the current window.
