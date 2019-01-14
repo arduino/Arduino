@@ -98,27 +98,27 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     editorCell.downgradeChooser.addItem(tr("Select version"));
 
     final List<ContributedLibrary> notInstalledPrevious = new LinkedList<>();
-    final List<ContributedLibrary> notIInstalledNewer = new LinkedList<>();
+    final List<ContributedLibrary> notInstalledNewer = new LinkedList<>();
 
     notInstalled.stream().forEach(input -> {
       if (!mayInstalled.isPresent()
           || VersionComparator.greaterThan(mayInstalled.get(), input)) {
         notInstalledPrevious.add(input);
       } else {
-        notIInstalledNewer.add(input);
+        notInstalledNewer.add(input);
       }
     });
-    notIInstalledNewer.forEach(editorCell.downgradeChooser::addItem);
+    notInstalledNewer.forEach(editorCell.downgradeChooser::addItem);
     notInstalledPrevious.forEach(editorCell.downgradeChooser::addItem);
 
     editorCell.downgradeChooser
         .setVisible(mayInstalled.isPresent()
                     && (!notInstalledPrevious.isEmpty()
-                        || notIInstalledNewer.size() > 1));
+                        || notInstalledNewer.size() > 1));
     editorCell.downgradeButton
         .setVisible(mayInstalled.isPresent()
                     && (!notInstalledPrevious.isEmpty()
-                        || notIInstalledNewer.size() > 1));
+                        || notInstalledNewer.size() > 1));
 
     editorCell.versionToInstallChooser.removeAllItems();
     notInstalled.forEach(editorCell.versionToInstallChooser::addItem);
