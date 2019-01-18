@@ -25,6 +25,13 @@
   <condition property="platform" value="linuxarm"><os family="unix" arch="arm" /></condition>
   <condition property="platform" value="linuxaarch64"><os family="unix" arch="aarch64" /></condition>
 
+  <condition property="platform_ext" value="macOS_64bit"  ><equals arg1="${platform}" arg2="macosx"       /></condition>
+  <condition property="platform_ext" value="Windows_32bit"><equals arg1="${platform}" arg2="windows"      /></condition>
+  <condition property="platform_ext" value="Linux_32bit"  ><equals arg1="${platform}" arg2="linux32"      /></condition>
+  <condition property="platform_ext" value="Linux_64bit"  ><equals arg1="${platform}" arg2="linux64"      /></condition>
+  <condition property="platform_ext" value="Linux_ARMv7"  ><equals arg1="${platform}" arg2="linuxarm"     /></condition>
+  <condition property="platform_ext" value="Linux_ARM64"  ><equals arg1="${platform}" arg2="linuxaarch64" /></condition>
+
   <condition property="windows_host" value="true"><os family="windows" /></condition>
 
   <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
@@ -100,6 +107,7 @@
   <property name="portable" value="false" />
 
   <property name="ARDUINO-BUILDER-VERSION" value="1.5.4" />
+  <property name="ARDUINO-CLI-VERSION" value="0.6.0" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.2-2" />
   <property name="AVRGCC-VERSION" value="7.3.0-atmel3.6.1-arduino7" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
@@ -492,6 +500,7 @@
 
     <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed" />
     <antcall target="build-arduino-builder" />
+    <antcall target="build-arduino-cli" />
 
     <antcall target="portable-${portable}">
       <param name="parentdir" value="macosx/work/${staging_hardware_folder}/.." />
@@ -714,6 +723,7 @@
     </antcall>
 
     <antcall target="build-arduino-builder" />
+    <antcall target="build-arduino-cli" />
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar-native"/>
@@ -756,6 +766,7 @@
     </antcall>
 
     <antcall target="build-arduino-builder" />
+    <antcall target="build-arduino-cli" />
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar-native"/>
@@ -774,6 +785,7 @@
     </antcall>
 
     <antcall target="build-arduino-builder" />
+    <antcall target="build-arduino-cli" />
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar-native"/>
@@ -792,6 +804,7 @@
     </antcall>
 
     <antcall target="build-arduino-builder" />
+    <antcall target="build-arduino-cli" />
 
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar-native"/>
@@ -838,6 +851,20 @@
 
   <target name="linuxaarch64-start">
     <exec executable="./linux/work/arduino" spawn="false" failonerror="true"/>
+  </target>
+
+  <target name="build-arduino-cli" unless="no_arduino_cli">
+    <delete dir="${staging_folder}/arduino-cli-${platform}" includeemptydirs="true"/>
+    <mkdir dir="${staging_folder}/arduino-cli-${platform}"/>
+    <antcall target="untar-native">
+      <param name="archive_file" value="./arduino-cli_${ARDUINO-CLI-VERSION}_${platform_ext}.tar.bz2" />
+      <param name="archive_url" value="https://downloads.arduino.cc/arduino-cli/arduino-cli_${ARDUINO-CLI-VERSION}_${platform_ext}.tar.gz" />
+      <param name="final_folder" value="${staging_folder}/arduino-cli-${platform}/arduino-cli" />
+      <param name="dest_folder" value="${staging_folder}/arduino-cli-${platform}" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-cli-${platform}/arduino-cli" tofile="${staging_folder}/work/${staging_hardware_folder}/../arduino-cli" />
+    <chmod perm="755" file="${staging_folder}/work/${staging_hardware_folder}/../arduino-cli" />
+    <delete dir="${staging_folder}/arduino-cli-${platform}" includeemptydirs="true"/>
   </target>
 
   <target name="build-arduino-builder" unless="no_arduino_builder">
@@ -1089,12 +1116,27 @@
     </copy>
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
 
+    <delete dir="${staging_folder}/arduino-cli-windows" includeemptydirs="true"/>
+    <mkdir dir="${staging_folder}/arduino-cli-windows"/>
+    <antcall target="unzip">
+      <param name="archive_file" value="./arduino-cli_${ARDUINO-CLI-VERSION}_Windows_32bit.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/arduino-cli/arduino-cli_${ARDUINO-CLI-VERSION}_Windows_32bit.zip" />
+      <param name="final_folder" value="${staging_folder}/arduino-cli-windows/arduino-cli_${ARDUINO-CLI-VERSION}_Windows_32bit.exe" />
+      <param name="dest_folder" value="${staging_folder}/arduino-cli-windows" />
+    </antcall>
+    <copy file="${staging_folder}/arduino-cli-windows/arduino-cli.exe" tofile="windows/work/arduino-cli.exe" />
+    <antcall target="make-file-executable">
+      <param name="file" value="windows/work/arduino-cli.exe" />
+    </antcall>
+    <delete dir="${staging_folder}/arduino-cli-windows" includeemptydirs="true"/>
+
     <unzip src="../arduino-core/lib/jna-4.2.2.jar" dest="windows/work/lib">
       <patternset>
         <include name="com/sun/jna/win32-x86/jnidispatch.dll"/>
       </patternset>
       <mapper type="flatten"/>
     </unzip>
+
     <move file="windows/work/lib/jnidispatch.dll" tofile="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
