@@ -80,7 +80,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent ae) {
         try {
-          if (!Base.getDiscoveryManager().discovery().contains(boardPort)) {
+          if (Base.getDiscoveryManager().find(boardPort.getAddress()) == null) {
             if (!closed) {
               suspend();
             }
