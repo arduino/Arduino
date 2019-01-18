@@ -344,6 +344,9 @@ public class FileUtils {
   public static List<File> listFiles(File folder, boolean recursive,
                                      List<String> extensions) {
     List<File> result = new ArrayList<>();
+    if (!folder.exists()) {
+      return result;
+    }
 
     for (File file : folder.listFiles()) {
       if (isSCCSOrHiddenFile(file))
