@@ -845,14 +845,8 @@
     <delete dir="${staging_folder}/arduino-cli-${platform}" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-cli-${platform}"/>
     <antcall target="untar">
-<!--
       <param name="archive_file" value="./arduino-cli-${ARDUINO-CLI-VERSION}-${platform}.tar.bz2" />
       <param name="archive_url" value="https://downloads.arduino.cc/arduino-cli/arduino-cli-${ARDUINO-CLI-VERSION}-${platform}.tar.bz2" />
-      <param name="final_folder" value="${staging_folder}/arduino-cli-${platform}/arduino-cli" />
-      <param name="dest_folder" value="${staging_folder}/arduino-cli-${platform}" />
--->
-      <param name="archive_file" value="./arduino-cli-${ARDUINO-CLI-VERSION}-${platform}.tar.bz2" />
-      <param name="archive_url" value="https://downloads.arduino.cc/PR/arduino-cli/arduino-cli-${ARDUINO-CLI-VERSION}-${platform}.tar.bz2" />
       <param name="final_folder" value="${staging_folder}/arduino-cli-${platform}/arduino-cli" />
       <param name="dest_folder" value="${staging_folder}/arduino-cli-${platform}" />
     </antcall>

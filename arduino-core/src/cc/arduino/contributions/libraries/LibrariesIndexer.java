@@ -29,15 +29,28 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.Constants;
-import cc.arduino.contributions.packages.ContributedPlatform;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.compress.utils.IOUtils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.mrbean.MrBeanModule;
-import org.apache.commons.compress.utils.IOUtils;
+
+import cc.arduino.Constants;
+import cc.arduino.contributions.packages.ContributedPlatform;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.helpers.ProcessUtils;
@@ -48,17 +61,6 @@ import processing.app.packages.UserLibrary;
 import processing.app.packages.UserLibraryFolder;
 import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.packages.UserLibraryPriorityComparator;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
 
 public class LibrariesIndexer {
 
@@ -86,6 +88,7 @@ public class LibrariesIndexer {
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
       mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+      mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
       LibrariesIndex newIndex = mapper.readValue(indexIn, LibrariesIndex.class);
 
       newIndex.getLibraries().forEach(r -> {
