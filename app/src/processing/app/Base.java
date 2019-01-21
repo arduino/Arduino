@@ -285,7 +285,7 @@ public class Base {
     pdeKeywords.reload();
 
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), new GPGDetachedSignatureVerifier());
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
+    libraryInstaller = new LibraryInstaller();
 
     parser.parseArgumentsPhase2();
 
@@ -364,10 +364,9 @@ public class Base {
           }
           selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString());
         } else if (libraryToInstallParts.length == 1) {
-          List<ContributedLibrary> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
-          Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
-          if (!librariesByName.isEmpty()) {
-            selected = librariesByName.get(librariesByName.size() - 1);
+          ContributedLibraryReleases releases = indexer.getIndex().find(libraryToInstallParts[0]);
+          if (releases != null) {
+            selected = releases.getLatest();
           }
         }
         if (selected == null) {
@@ -375,15 +374,7 @@ public class Base {
           System.exit(1);
         }
 
-        Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
-        if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
-          System.out.println(tr(I18n
-              .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
-                      library, mayInstalled.get().getParsedVersion())));
-          libraryInstaller.remove(mayInstalled.get(), progressListener);
-        } else {
-          libraryInstaller.install(selected, mayInstalled, progressListener);
-        }
+        libraryInstaller.install(selected, progressListener);
       }
 
       System.exit(0);

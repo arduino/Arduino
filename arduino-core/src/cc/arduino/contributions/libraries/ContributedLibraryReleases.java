@@ -29,56 +29,23 @@
 
 package cc.arduino.contributions.libraries;
 
+import java.util.Map;
+import java.util.Optional;
+
 import cc.arduino.contributions.VersionComparator;
 import processing.app.packages.UserLibraryFolder.Location;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+public abstract class ContributedLibraryReleases {
 
-public class ContributedLibraryReleases {
+  public abstract String getName();
 
-  private List<ContributedLibrary> releases = new LinkedList<>();
-  private List<String> versions = new LinkedList<>();
+  public abstract Map<String, ContributedLibrary> getReleases();
+
   private ContributedLibrary latest = null;
   private ContributedLibrary selected = null;
 
-  public ContributedLibraryReleases(ContributedLibrary library) {
-    add(library);
-  }
-
-  public ContributedLibraryReleases(List<ContributedLibrary> libraries) {
-    libraries.forEach(this::add);
-  }
-
-  public List<ContributedLibrary> getReleases() {
-    return releases;
-  }
-
-  public boolean shouldContain(ContributedLibrary lib) {
-    if (latest == null) {
-      return true;
-    }
-    return lib.getName().equals(latest.getName());
-  }
-
-  public void add(ContributedLibrary library) {
-    if (latest == null) {
-      latest = library;
-    }
-    releases.add(library);
-    String version = library.getParsedVersion();
-    if (version != null) {
-      versions.add(version);
-    }
-    if (VersionComparator.greaterThan(version, latest.getParsedVersion())) {
-      latest = library;
-    }
-    selected = latest;
-  }
-
   public Optional<ContributedLibrary> getInstalled() {
-    return releases.stream() //
+    return getReleases().values().stream() //
         .filter(ContributedLibrary::isLibraryInstalled) //
         .reduce((x, y) -> {
           Location lx = x.getInstalledLibrary().get().getLocation();
@@ -91,19 +58,23 @@ public class ContributedLibraryReleases {
   }
 
   public ContributedLibrary getLatest() {
+    if (latest == null) {
+      String latestVersion = getReleases().keySet().stream().reduce(VersionComparator::max).orElse(null);
+      latest = getReleases().get(latestVersion);
+    }
     return latest;
   }
 
   public ContributedLibrary getSelected() {
+    if (selected == null) {
+      selected = getLatest();
+    }
     return selected;
   }
 
   public void select(ContributedLibrary lib) {
-    for (ContributedLibrary r : releases) {
-      if (r == lib) {
-        selected = r;
-        return;
-      }
+    if (getReleases().containsValue(lib)) {
+      selected = lib;
     }
   }
 }

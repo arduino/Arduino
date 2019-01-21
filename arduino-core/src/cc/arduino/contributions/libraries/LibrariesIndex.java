@@ -29,73 +29,74 @@
 
 package cc.arduino.contributions.libraries;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public abstract class LibrariesIndex {
 
-  public abstract List<ContributedLibrary> getLibraries();
+  public abstract List<ContributedLibraryReleases> getLibraries();
 
-  public List<ContributedLibrary> find(final String name) {
+  public ContributedLibraryReleases find(final String name) {
     return getLibraries().stream() //
-        .filter(l -> name.equals(l.getName())) //
-        .collect(Collectors.toList());
+        .filter(l -> l.getName().equals(name)) //
+        .findAny() //
+        .orElse(null);
   }
 
   public ContributedLibrary find(String name, String version) {
-    if (name == null || version == null) {
+    if (version == null || name == null) {
       return null;
     }
-    for (ContributedLibrary lib : find(name)) {
-      if (version.equals(lib.getParsedVersion())) {
-        return lib;
-      }
+    ContributedLibraryReleases releases = find(name);
+    if (releases == null) {
+      return null;
     }
-    return null;
+    return releases.getReleases().get(version);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (ContributedLibrary library : getLibraries()) {
+    for (ContributedLibraryReleases library : getLibraries()) {
       sb.append(library.toString());
     }
     return sb.toString();
   }
 
   public List<String> getCategories() {
-    List<String> categories = new LinkedList<>();
-    for (ContributedLibrary lib : getLibraries()) {
-      if (lib.getCategory() != null && !categories.contains(lib.getCategory())) {
-        categories.add(lib.getCategory());
-      }
-    }
+    List<String> categories = new ArrayList<>();
+    getLibraries().forEach(r -> {
+      r.getReleases().forEach((v, lib) -> {
+        if (lib.getCategory() != null && !categories.contains(lib.getCategory())) {
+          categories.add(lib.getCategory());
+        }
+      });
+    });
     Collections.sort(categories);
-
     return categories;
   }
 
   public List<String> getTypes() {
     Collection<String> typesAccumulator = new HashSet<>();
-    for (ContributedLibrary lib : getLibraries()) {
-      if (lib.getTypes() != null) {
-        typesAccumulator.addAll(lib.getTypes());
-      }
-    }
+    getLibraries().forEach(r -> {
+      r.getReleases().forEach((v, lib) -> {
+        if (lib.getTypes() != null) {
+          typesAccumulator.addAll(lib.getTypes());
+        }
+      });
+    });
 
-    List<String> types = new LinkedList<>(typesAccumulator);
+    List<String> types = new ArrayList<>(typesAccumulator);
     Collections.sort(types);
 
     return types;
   }
 
   public Optional<ContributedLibrary> getInstalled(String name) {
-    ContributedLibraryReleases rel = new ContributedLibraryReleases(find(name));
-    return rel.getInstalled();
+    return find(name).getInstalled();
   }
 }

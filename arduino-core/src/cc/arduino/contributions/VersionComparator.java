@@ -75,10 +75,10 @@ public class VersionComparator implements Comparator<String> {
   }
 
   public static boolean greaterThan(ContributedLibrary a, ContributedLibrary b) {
-    return greaterThan(a.getParsedVersion(), b.getParsedVersion());
+    return greaterThan(a.getVersion(), b.getVersion());
   }
 
   public static int compareTo(ContributedLibrary a, ContributedLibrary b) {
-    return compareTo(a.getParsedVersion(), b.getParsedVersion());
+    return compareTo(a.getVersion(), b.getVersion());
   }
 }

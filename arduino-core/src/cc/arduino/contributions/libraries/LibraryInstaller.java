@@ -29,55 +29,32 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.Constants;
-import cc.arduino.contributions.DownloadableContributionsDownloader;
-import cc.arduino.contributions.GZippedJsonDownloader;
+import static processing.app.I18n.tr;
+
+import java.util.Optional;
+
 import cc.arduino.contributions.ProgressListener;
-import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
-import processing.app.Platform;
-import processing.app.helpers.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
-
-import static processing.app.I18n.tr;
+import processing.app.helpers.ProcessUtils;
 
 public class LibraryInstaller {
-
-  private final Platform platform;
-
-  public LibraryInstaller(Platform platform) {
-    this.platform = platform;
-  }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(3);
 
-    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
-    // Step 1: Download index
-    File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
-    File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
-    try {
-      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(Constants.LIBRARY_INDEX_URL), new URL(Constants.LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."), progressListener);
-    } catch (InterruptedException e) {
-      // Download interrupted... just exit
-      return;
+    progress.setStatus(tr("Updating library index"));
+    progress.stepDone();
+    progressListener.onProgress(progress);
+
+    Process pr = ProcessUtils.exec(new String[] { //
+        BaseNoGui.getArduinoCliPath(), "lib", "update-index" });
+    int exitCode = pr.waitFor();
+    if (exitCode != 0) {
+      throw new Exception(tr("An error occurred while updating libraries index!"));
     }
     progress.stepDone();
-
-    // TODO: Check downloaded index
-
-    // Replace old index with the updated one
-    if (outputFile.exists())
-      outputFile.delete();
-    if (!tmpFile.renameTo(outputFile))
-      throw new Exception(tr("An error occurred while updating libraries index!"));
 
     // Step 2: Parse index
     BaseNoGui.librariesIndexer.parseIndex();
@@ -86,65 +63,55 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
-    if (lib.isLibraryInstalled()) {
-      System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
-      return;
+  public synchronized void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
+    if (lib.isIDEBuiltIn()) {
+      // If the desired library is available as builtin in the IDE just remove
+      // the other installed in sketchbook...
+      Optional<ContributedLibrary> current = lib.getReleases().getInstalled();
+      if (current.isPresent()) {
+        System.out.println(
+          I18n.format(tr("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook..."),
+            lib.getName() + ":" + lib.getVersion(), current.get().getVersion()));
+        remove(current.get(), progressListener);
+        return;
+      }
+      // ...otherwise output "library already installed"
     }
 
-    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
+    if (lib.isLibraryInstalled()) {
+      System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getVersion()));
+      return;
+    }
 
     final MultiStepProgress progress = new MultiStepProgress(3);
 
     // Step 1: Download library
-    try {
-      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener);
-    } catch (InterruptedException e) {
-      // Download interrupted... just exit
-      return;
+    String libTag = lib.getName() + "@" + lib.getVersion();
+    Process pr = ProcessUtils.exec(new String[] { //
+        BaseNoGui.getArduinoCliPath(), "lib", "install", libTag });
+    int exitCode = pr.waitFor();
+    if (exitCode != 0) {
+      throw new Exception(tr("An error occurred while installing library!"));
     }
-
-    // TODO: Extract to temporary folders and move to the final destination only
-    // once everything is successfully unpacked. If the operation fails remove
-    // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(I18n.format(tr("Installing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
-    progressListener.onProgress(progress);
-    File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
-    File tmpFolder = FileUtils.createTempFolder(libsFolder);
-    try {
-      new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
-    } catch (Exception e) {
-      if (tmpFolder.exists())
-        FileUtils.recursiveDelete(tmpFolder);
-    }
     progress.stepDone();
 
-    // Step 3: Remove replaced library and move installed one to the correct location
-    // TODO: Fix progress bar...
-    if (mayReplacedLib.isPresent()) {
-      remove(mayReplacedLib.get(), progressListener);
-    }
-    File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
-    tmpFolder.renameTo(destFolder);
-    progress.stepDone();
-
-    // Step 4: Rescan index
+    // Step 3: Rescan index
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
-    if (lib.isIDEBuiltIn()) {
-      return;
-    }
-
+  public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(I18n.format(tr("Removing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
-    progressListener.onProgress(progress);
-    FileUtils.recursiveDelete(lib.getInstalledLibrary().get().getInstalledFolder());
+    String libTag = lib.getName() + "@" + lib.getVersion();
+    Process pr = ProcessUtils.exec(new String[] { //
+        BaseNoGui.getArduinoCliPath(), "lib", "uninstall", libTag });
+    int exitCode = pr.waitFor();
+    if (exitCode != 0) {
+      throw new Exception(tr("An error occurred while uninstalling library!"));
+    }
     progress.stepDone();
 
     // Step 2: Rescan index
@@ -156,5 +123,12 @@ public class LibraryInstaller {
     progressListener.onProgress(progress);
     BaseNoGui.librariesIndexer.rescanLibraries();
     progress.stepDone();
+  }
+
+  // TODO: legacy messages already translated, keeping here until reused
+  static {
+    I18n.format(tr("Downloading library: {0}"), "libname");
+    I18n.format(tr("Installing library: {0}:{1}"), "libname", "libversion");
+    I18n.format(tr("Removing library: {0}:{1}"), "libname", "libversion");
   }
 }

@@ -29,19 +29,19 @@
 
 package cc.arduino.contributions.libraries;
 
-import cc.arduino.contributions.DownloadableContribution;
-import processing.app.I18n;
-import processing.app.packages.UserLibrary;
+import static processing.app.I18n.tr;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static processing.app.I18n.tr;
+import processing.app.I18n;
+import processing.app.packages.UserLibrary;
 
-public abstract class ContributedLibrary extends DownloadableContribution {
+public abstract class ContributedLibrary {
 
-  public abstract String getName();
+  public String getName() {
+    return releases.getName();
+  }
 
   public abstract String getMaintainer();
 
@@ -59,6 +59,8 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract String getSentence();
 
+  public abstract String getVersion();
+
   public abstract List<String> getArchitectures();
 
   public abstract List<String> getTypes();
@@ -67,9 +69,9 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   public abstract List<String> getProvidesIncludes();
 
-  public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
-
   private Optional<UserLibrary> installedLib = Optional.empty();
+
+  private ContributedLibraryReleases releases;
 
   public Optional<UserLibrary> getInstalledLibrary() {
     return installedLib;
@@ -123,7 +125,7 @@ public abstract class ContributedLibrary extends DownloadableContribution {
 
   @Override
   public String toString() {
-    return I18n.format(tr("Version {0}"), getParsedVersion());
+    return I18n.format(tr("Version {0}"), getVersion());
   }
 
   public String info() {
@@ -131,8 +133,8 @@ public abstract class ContributedLibrary extends DownloadableContribution {
     res += "  ContributedLibrary : " + getName() + "\n";
     res += "              author : " + getAuthor() + "\n";
     res += "          maintainer : " + getMaintainer() + "\n";
-    res += "             version : " + getParsedVersion() + "\n";
-    res += "             website : " + getUrl() + "\n";
+    res += "             version : " + getVersion() + "\n";
+    res += "             website : " + getWebsite() + "\n";
     res += "            category : " + getCategory() + "\n";
     res += "             license : " + getLicense() + "\n";
     res += "             descrip : " + getSentence() + "\n";
@@ -150,35 +152,14 @@ public abstract class ContributedLibrary extends DownloadableContribution {
         res += "                       " + r;
       }
     res += "\n";
-
-    // DownloadableContribution
-    res += super.toString();
-
     return res;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (!(obj instanceof ContributedLibrary)) {
-      return false;
-    }
-    ContributedLibrary other = (ContributedLibrary) obj;
-    String thisVersion = getParsedVersion();
-    String otherVersion = other.getParsedVersion();
+  public void setReleases(ContributedLibraryReleases releases) {
+    this.releases = releases;
+  }
 
-    boolean versionEquals = (thisVersion != null && otherVersion != null
-                             && thisVersion.equals(otherVersion));
-
-    // Important: for legacy libs, versions are null. Two legacy libs must
-    // always pass this test.
-    if (thisVersion == null && otherVersion == null)
-      versionEquals = true;
-
-    String thisName = getName();
-    String otherName = other.getName();
-
-    boolean nameEquals = thisName == null || otherName == null || thisName.equals(otherName);
-
-    return versionEquals && nameEquals;
+  public ContributedLibraryReleases getReleases() {
+    return releases;
   }
 }

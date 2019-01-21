@@ -41,7 +41,7 @@ public class UpdatableLibraryTest {
 
     ContributedLibrary sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
-    assertEquals("SD installed version", "1.1.1", sdLib.getParsedVersion());
+    assertEquals("SD installed version", "1.1.1", sdLib.getVersion());
 
     assertTrue(ContributionsSelfCheck.checkForUpdatableLibraries());
 
@@ -50,7 +50,7 @@ public class UpdatableLibraryTest {
 
     sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
-    assertEquals("SD installed version", "1.2.1", sdLib.getParsedVersion());
+    assertEquals("SD installed version", "1.2.1", sdLib.getVersion());
 
     assertFalse(ContributionsSelfCheck.checkForUpdatableLibraries());
   }
@@ -68,7 +68,7 @@ public class UpdatableLibraryTest {
 
     ContributedLibrary l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
-    assertEquals("Bridge installed version", "1.6.3", l.getParsedVersion());
+    assertEquals("Bridge installed version", "1.6.3", l.getVersion());
 
     assertTrue(ContributionsSelfCheck.checkForUpdatableLibraries());
 
@@ -77,7 +77,7 @@ public class UpdatableLibraryTest {
 
     l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
-    assertEquals("Bridge installed version", "1.7.0", l.getParsedVersion());
+    assertEquals("Bridge installed version", "1.7.0", l.getVersion());
 
     assertFalse(ContributionsSelfCheck.checkForUpdatableLibraries());
   }

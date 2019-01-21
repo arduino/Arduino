@@ -40,6 +40,7 @@ import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
+import processing.app.helpers.ProcessUtils;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.packages.LegacyUserLibrary;
 import processing.app.packages.LibraryList;
@@ -49,7 +50,6 @@ import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.packages.UserLibraryPriorityComparator;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -65,32 +65,22 @@ public class LibrariesIndexer {
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
   private List<UserLibraryFolder> librariesFolders;
-  private final File indexFile;
-  private final File stagingFolder;
 
   private final List<String> badLibNotified = new ArrayList<>();
 
   public LibrariesIndexer(File preferencesFolder) {
-    indexFile = new File(preferencesFolder, "library_index.json");
-    stagingFolder = new File(new File(preferencesFolder, "staging"), "libraries");
+    // TODO: use specified preferencesFolder when running cli
   }
 
   public void parseIndex() throws IOException {
     index = new EmptyLibrariesIndex(); // Fallback
 
-    if (!indexFile.exists()) {
-      return;
-    }
+    Process process = ProcessUtils.exec(new String[] {
+        BaseNoGui.getArduinoCliPath(), "lib", "search", "--format", "json" });
 
-    parseIndex(indexFile);
-
-    // TODO: resolve libraries inner references
-  }
-
-  private void parseIndex(File file) throws IOException {
     InputStream indexIn = null;
     try {
-      indexIn = new FileInputStream(file);
+      indexIn = process.getInputStream();
       ObjectMapper mapper = new ObjectMapper();
       mapper.registerModule(new MrBeanModule());
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -98,12 +88,21 @@ public class LibrariesIndexer {
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
       LibrariesIndex newIndex = mapper.readValue(indexIn, LibrariesIndex.class);
 
-      newIndex.getLibraries()
-        .stream()
+      newIndex.getLibraries().forEach(r -> {
+        r.getReleases().values().stream()
         .filter(library -> library.getCategory() == null || "".equals(library.getCategory()) || !Constants.LIBRARY_CATEGORIES.contains(library.getCategory()))
         .forEach(library -> library.setCategory("Uncategorized"));
+      });
 
+      // Populate ContributedLibraries inner cross-references
+      newIndex.getLibraries().forEach(r -> {
+        r.getReleases().forEach((v, l) -> {
+          l.setReleases(r);
+        });
+      });
       index = newIndex;
+    } catch (NullPointerException e) {
+      e.printStackTrace();
     } catch (JsonParseException | JsonMappingException e) {
       System.err.println(
           format(tr("Error parsing libraries index: {0}\nTry to open the Library Manager to update the libraries index."),
@@ -152,9 +151,9 @@ public class LibrariesIndexer {
       return;
     }
 
-    for (ContributedLibrary lib : index.getLibraries()) {
-      lib.unsetInstalledUserLibrary();
-    }
+    index.getLibraries().forEach(r -> {
+      r.getReleases().forEach((v, lib) -> lib.unsetInstalledUserLibrary());
+    });
 
     // Rescan libraries
     for (UserLibraryFolder folderDesc : librariesFolders) {
@@ -254,13 +253,5 @@ public class LibrariesIndexer {
 
   public LibraryList getInstalledLibraries() {
     return new LibraryList(installedLibraries);
-  }
-
-  public File getStagingFolder() {
-    return stagingFolder;
-  }
-
-  public File getIndexFile() {
-    return indexFile;
   }
 }

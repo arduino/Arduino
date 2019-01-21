@@ -30,7 +30,6 @@
 package cc.arduino.contributions;
 
 import cc.arduino.contributions.libraries.LibraryInstaller;
-import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.filters.UpdatablePlatformPredicate;
 import cc.arduino.view.NotificationPopup;
@@ -130,7 +129,7 @@ public class ContributionsSelfCheck extends TimerTask {
 
   static boolean checkForUpdatableLibraries() {
     return BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
-      .anyMatch(new UpdatableLibraryPredicate());
+      .anyMatch(r -> r.getInstalled().isPresent() && !r.getLatest().isLibraryInstalled());
   }
 
   @Override

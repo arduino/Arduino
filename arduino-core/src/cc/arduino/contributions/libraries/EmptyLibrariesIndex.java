@@ -34,10 +34,10 @@ import java.util.List;
 
 public class EmptyLibrariesIndex extends LibrariesIndex {
 
-  private List<ContributedLibrary> list = new ArrayList<>();
+  private List<ContributedLibraryReleases> list = new ArrayList<>();
 
   @Override
-  public List<ContributedLibrary> getLibraries() {
+  public List<ContributedLibraryReleases> getLibraries() {
     return list;
   }
 

@@ -158,51 +158,8 @@ public class LibrariesIndexTableModel
     return true;
   }
 
-  public void updateLibrary(ContributedLibrary lib) {
-    // Find the row interested in the change
-    int row = -1;
-    for (ContributedLibraryReleases releases : contributions) {
-      if (releases.shouldContain(lib))
-        row = contributions.indexOf(releases);
-    }
-
-    updateContributions();
-
-    // If the library is found in the list send update event
-    // or insert event on the specific row...
-    for (ContributedLibraryReleases releases : contributions) {
-      if (releases.shouldContain(lib)) {
-        if (row == -1) {
-          row = contributions.indexOf(releases);
-          fireTableRowsInserted(row, row);
-        } else {
-          fireTableRowsUpdated(row, row);
-        }
-        return;
-      }
-    }
-    // ...otherwise send a row deleted event
-    fireTableRowsDeleted(row, row);
-  }
-
-  private List<ContributedLibraryReleases> rebuildContributionsFromIndex() {
-    List<ContributedLibraryReleases> res = new ArrayList<>();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries(). //
-        forEach(lib -> {
-          for (ContributedLibraryReleases contribution : res) {
-            if (!contribution.shouldContain(lib))
-              continue;
-            contribution.add(lib);
-            return;
-          }
-
-          res.add(new ContributedLibraryReleases(lib));
-        });
-    return res;
-  }
-
   private void updateContributions() {
-    List<ContributedLibraryReleases> all = rebuildContributionsFromIndex();
+    List<ContributedLibraryReleases> all = BaseNoGui.librariesIndexer.getIndex().getLibraries();
     contributions.clear();
     all.stream().filter(this::filterCondition).forEach(contributions::add);
     Collections.sort(contributions,

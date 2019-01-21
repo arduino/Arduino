@@ -39,7 +39,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import javax.swing.Box;
@@ -81,12 +80,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   protected InstallerTableCell createCellEditor() {
     return new ContributedLibraryTableCellEditor() {
       @Override
-      protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
-        if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
-          onRemovePressed(mayInstalledLibrary.get());
-        } else {
-          onInstallPressed(selectedLibrary, mayInstalledLibrary);
-        }
+      protected void onInstall(ContributedLibrary selectedLibrary) {
+        onInstallPressed(selectedLibrary);
       }
 
       @Override
@@ -213,12 +208,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final Optional<ContributedLibrary> mayReplaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, mayReplaced, this::setProgress);
+        installer.install(lib, this::setProgress);
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

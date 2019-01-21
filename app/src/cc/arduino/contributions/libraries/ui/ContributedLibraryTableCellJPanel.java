@@ -23,7 +23,7 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
-import cc.arduino.contributions.DownloadableContributionVersionComparator;
+import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
@@ -126,8 +126,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       upgradable = false;
     } else {
       installable = false;
-      upgradable = new DownloadableContributionVersionComparator()
-          .compare(selected, mayInstalled.get()) > 0;
+      upgradable = VersionComparator.greaterThan(selected, mayInstalled.get());
     }
     if (installable) {
       installButton.setText(tr("Install"));
@@ -165,7 +164,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     // ...version.
     if (mayInstalled.isPresent()) {
-      String installedVer = mayInstalled.get().getParsedVersion();
+      String installedVer = mayInstalled.get().getVersion();
       if (installedVer == null) {
         desc += " " + tr("Version unknown");
       } else {
