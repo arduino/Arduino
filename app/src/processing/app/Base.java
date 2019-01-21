@@ -926,10 +926,6 @@ public class Base {
    * @return true if succeeded in closing, false if canceled.
    */
   public boolean handleClose(Editor editor) {
-    // Check if modified
-    if (!editor.checkModified()) {
-      return false;
-    }
 
     if (editors.size() == 1) {
       handleQuit();
@@ -939,6 +935,10 @@ public class Base {
     } else {
       // More than one editor window open,
       // proceed with closing the current window.
+      // Check if modified
+      if (!editor.checkModified()) {
+        return false;
+      }
       editor.setVisible(false);
       editor.dispose();
       editors.remove(editor);
