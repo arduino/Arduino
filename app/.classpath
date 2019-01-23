@@ -52,6 +52,6 @@
 	<classpathentry kind="lib" path="test-lib/fest-swing-1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/jtouchbar-0.2.0-20180827.120213-5.jar"/>
+	<classpathentry kind="lib" path="lib/jtouchbar-1.0.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
