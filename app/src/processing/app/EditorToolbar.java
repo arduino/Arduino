@@ -188,7 +188,15 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
       
       touchBarButtons[i] = new TouchBarButton();
       touchBarButtons[i].setImage(touchBarImages[i][ROLLOVER]);
-      touchBarButtons[i].setAction(event -> handleSelectionPressed(selection));
+      touchBarButtons[i].setAction(event -> {
+        // Run event handler later to prevent hanging if a dialog needs to be open
+        EventQueue.invokeLater(new Runnable() {
+          @Override
+          public void run() {
+            handleSelectionPressed(selection);
+          }
+        });
+      });
       
       TouchBarItem touchBarItem = new TouchBarItem(title[i], touchBarButtons[i], true);
       touchBarItem.setCustomizationLabel(title[i]);
