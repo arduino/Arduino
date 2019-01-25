@@ -138,6 +138,8 @@ public class Base {
       System.setProperty("swing.aatext", "true");
     }
     System.setProperty("java.net.useSystemProxies", "true");
+    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 
     if (OSUtils.isMacOS()) {
       System.setProperty("apple.laf.useScreenMenuBar",
