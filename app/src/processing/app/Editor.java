@@ -82,6 +82,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
 
+import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
+
 import com.jcraft.jsch.JSchException;
 
 import cc.arduino.CompilerProgressListener;
@@ -1648,8 +1650,17 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   public void addLineHighlight(int line) throws BadLocationException {
-    getCurrentTab().getTextArea().addLineHighlight(line, new Color(1, 0, 0, 0.2f));
-    getCurrentTab().getTextArea().setCaretPosition(getCurrentTab().getTextArea().getLineStartOffset(line));
+    SketchTextArea textArea = getCurrentTab().getTextArea();
+    FoldManager foldManager = textArea.getFoldManager();
+    if (foldManager.isLineHidden(line)) {
+      for (int i = 0; i < foldManager.getFoldCount(); i++) {
+        if (foldManager.getFold(i).containsLine(line)) {
+          foldManager.getFold(i).setCollapsed(false);
+        }
+      }
+    }
+    textArea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+    textArea.setCaretPosition(textArea.getLineStartOffset(line));
   }
 
 
