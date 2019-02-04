@@ -928,7 +928,9 @@ public class Base {
   public boolean handleClose(Editor editor) {
 
     if (editors.size() == 1) {
-      handleQuit();
+      if (!handleQuit()) {
+        return false;
+      }
       // Everything called after handleQuit will only affect OSX
       editor.setVisible(false);
       editors.remove(editor);
