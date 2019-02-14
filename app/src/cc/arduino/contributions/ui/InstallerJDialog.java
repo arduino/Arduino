@@ -320,6 +320,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       listener.focusGained(new FocusEvent(filterField, FocusEvent.FOCUS_GAINED));
     }
     filterField.setText(filterText);
+    filterField.applyFilter();
   }
 
   public void selectDropdownItemByClassName(String dropdownItem) {
