@@ -43,6 +43,7 @@ public class FilterJTextField extends JTextField {
   private final String filterHint;
 
   private boolean showingHint;
+  private Timer timer;
 
   public FilterJTextField(String hint) {
     super(hint);
@@ -50,6 +51,13 @@ public class FilterJTextField extends JTextField {
 
     showingHint = true;
     updateStyle();
+    timer = new Timer(1000, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        applyFilter();
+        timer.stop();
+      }
+    });
 
     addFocusListener(new FocusListener() {
       public void focusLost(FocusEvent focusEvent) {
@@ -68,12 +76,36 @@ public class FilterJTextField extends JTextField {
       }
     });
 
+    getDocument().addDocumentListener(new DocumentListener() {
+      public void removeUpdate(DocumentEvent e) {
+        spawnTimer();
+      }
+
+      public void insertUpdate(DocumentEvent e) {
+        spawnTimer();
+      }
+
+      public void changedUpdate(DocumentEvent e) {
+
+      }
+    });
+
     addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+        if (timer.isRunning()) {
+          timer.stop();
+        }
         applyFilter();
       }
     });
+  }
+
+  private void spawnTimer() {
+    if (timer.isRunning()) {
+      timer.stop();
+    }
+    timer.start();
   }
 
   public void applyFilter() {
