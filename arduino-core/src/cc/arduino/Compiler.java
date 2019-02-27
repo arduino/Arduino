@@ -64,6 +64,7 @@ public class Compiler implements MessageConsumer {
   //used by transifex integration
   static {
     tr("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
+    tr("Archiving built core (caching) in: {0}");
     tr("Board {0} (platform {1}, package {2}) is unknown");
     tr("Bootloader file specified but missing: {0}");
     tr("Build options changed, rebuilding all");
@@ -133,7 +134,7 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
+  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*(fatal)?\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
   private final File pathToSketch;
   private final Sketch sketch;
@@ -153,12 +154,12 @@ public class Compiler implements MessageConsumer {
   }
 
   public String build(CompilerProgressListener progListener, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
-    ArrayList<CompilerProgressListener> listeners = new ArrayList<>();
+    List<CompilerProgressListener> listeners = new ArrayList<>();
     listeners.add(progListener);
     return this.build(listeners, exportHex);
   }
 
-  public String build(ArrayList<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
+  public String build(List<CompilerProgressListener> progListeners, boolean exportHex) throws RunnerException, PreferencesMapException, IOException {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
     this.buildCache = BaseNoGui.getCachePath();
 
@@ -246,7 +247,7 @@ public class Compiler implements MessageConsumer {
     addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
-    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
+    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     cmd.add("-fqbn=" + fqbn);
@@ -404,7 +405,7 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     String cmd = prefs.getOrExcept(recipe);
     try {
-      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict);
     } catch (Exception e) {
       throw new RunnerException(e);
     }
@@ -514,7 +515,17 @@ public class Compiler implements MessageConsumer {
     String[] pieces = PApplet.match(s, ERROR_FORMAT);
 
     if (pieces != null) {
-      String error = pieces[pieces.length - 1], msg = "";
+      String msg = "";
+      int errorIdx = pieces.length - 1;
+      String error = pieces[errorIdx];
+      String filename = pieces[1];
+      int line = PApplet.parseInt(pieces[2]);
+      int col;
+      if (errorIdx > 3) {
+        col = PApplet.parseInt(pieces[3].substring(1));
+      } else {
+        col = -1;
+      }
 
       if (error.trim().equals("SPI.h: No such file or directory")) {
         error = tr("Please import the SPI library from the Sketch > Import Library menu.");
@@ -568,12 +579,17 @@ public class Compiler implements MessageConsumer {
         //msg = _("\nThe 'Keyboard' class is only supported on the Arduino Leonardo.\n\n");
       }
 
-      RunnerException ex = placeException(error, pieces[1], PApplet.parseInt(pieces[2]) - 1);
+      RunnerException ex = placeException(error, filename, line - 1, col);
 
       if (ex != null) {
         String fileName = ex.getCodeFile().getPrettyName();
         int lineNum = ex.getCodeLine() + 1;
-        s = fileName + ":" + lineNum + ": error: " + error + msg;
+        int colNum = ex.getCodeColumn();
+        if (colNum != -1) {
+          s = fileName + ":" + lineNum + ":" + colNum + ": error: " + error + msg;
+        } else {
+          s = fileName + ":" + lineNum + ": error: " + error + msg;
+        }
       }
 
       if (ex != null) {
@@ -599,10 +615,10 @@ public class Compiler implements MessageConsumer {
     System.err.println(s);
   }
 
-  private RunnerException placeException(String message, String fileName, int line) {
+  private RunnerException placeException(String message, String fileName, int line, int col) {
     for (SketchFile file : sketch.getFiles()) {
       if (new File(fileName).getName().equals(file.getFileName())) {
-        return new RunnerException(message, file, line);
+        return new RunnerException(message, file, line, col);
       }
     }
     return null;

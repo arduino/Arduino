@@ -1,30 +1,28 @@
 /*
   Arduino Starter Kit example
- Project 13  - Touch Sensor Lamp
+  Project 13 - Touch Sensor Lamp
 
- This sketch is written to accompany Project 13 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 13 in the Arduino Starter Kit
 
- Parts required:
- 1 Megohm resistor
- metal foil or copper mesh
- 220 ohm resistor
- LED
+  Parts required:
+  - 1 megohm resistor
+  - metal foil or copper mesh
+  - 220 ohm resistor
+  - LED
 
- Software required :
- CapacitiveSensor library by Paul Badger
- http://www.arduino.cc/playground/Main/CapacitiveSensor
+  Software required :
+  - CapacitiveSensor library by Paul Badger
+    http://www.arduino.cc/playground/Main/CapacitiveSensor
 
- Created 18 September 2012
- by Scott Fitzgerald
+  created 18 Sep 2012
+  by Scott Fitzgerald
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
-// import the library (must be located in the
-// Arduino/libraries directory)
+// import the library (must be located in the Arduino/libraries directory)
 #include <CapacitiveSensor.h>
 
 // create an instance of the library
@@ -66,6 +64,3 @@ void loop() {
 
   delay(10);
 }
-
-
-

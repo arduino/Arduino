@@ -316,21 +316,12 @@ public class EditorStatus extends JPanel {
           editField.setCaretPosition(start + 1);
           event.consume();
 
-
         } else if ((c == '_') || (c == '.') || ((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z'))) { // allow .pde and .java
           // these are ok, allow them through
 
         } else if ((c >= '0') && (c <= '9')) {
-          // getCaretPosition == 0 means that it's the first char
-          // and the field is empty.
-          // getSelectionStart means that it *will be* the first
-          // char, because the selection is about to be replaced
-          // with whatever is typed.
-          if ((editField.getCaretPosition() == 0) ||
-            (editField.getSelectionStart() == 0)) {
-            // number not allowed as first digit
-            event.consume();
-          }
+          // these are ok, allow them through
+
         } else {
           event.consume();
         }

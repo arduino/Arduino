@@ -41,6 +41,7 @@ import cc.arduino.packages.BoardPort;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
+import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
 
 import java.io.File;
@@ -105,17 +106,11 @@ public class SerialUploader extends Uploader {
       else
         prefs.put("upload.verify", prefs.get("upload.params.noverify", ""));
 
-      boolean uploadResult;
       try {
-        String pattern = prefs.getOrExcept("upload.pattern");
-        String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-        uploadResult = executeUploadCommand(cmd);
-      } catch (Exception e) {
-        throw new RunnerException(e);
+        return runCommand("upload.pattern", prefs);
       } finally {
         BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
       }
-      return uploadResult;
     }
 
     // need to do a little dance for Leonardo and derivatives:
@@ -124,13 +119,10 @@ public class SerialUploader extends Uploader {
     // this wait a moment for the bootloader to enumerate. On Windows, also must
     // deal with the fact that the COM port number changes from bootloader to
     // sketch.
-    String t = prefs.get("upload.use_1200bps_touch");
-    boolean doTouch = t != null && t.equals("true");
+    boolean doTouch = prefs.getBoolean("upload.use_1200bps_touch");
+    boolean waitForUploadPort = prefs.getBoolean("upload.wait_for_upload_port");
 
-    t = prefs.get("upload.wait_for_upload_port");
-    boolean waitForUploadPort = (t != null) && t.equals("true");
-
-    String userSelectedUploadPort = prefs.getOrExcept("serial.port");
+    String userSelectedUploadPort = prefs.get("serial.port", "");
     String actualUploadPort = null;
 
     if (doTouch) {
@@ -180,7 +172,7 @@ public class SerialUploader extends Uploader {
       Thread.sleep(100);
     }
 
-    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
+    BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port", ""));
     try {
       prefs.put("serial.port.iserial", boardPort.getPrefs().getOrExcept("iserial"));
     } catch (Exception e) {
@@ -202,19 +194,10 @@ public class SerialUploader extends Uploader {
 
     boolean uploadResult;
     try {
-      String pattern = prefs.getOrExcept("upload.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-      uploadResult = executeUploadCommand(cmd);
-    } catch (RunnerException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new RunnerException(e);
+      uploadResult = runCommand("upload.pattern", prefs);
     } finally {
       BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
     }
-
-    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
-    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
 
     String finalUploadPort = null;
     if (uploadResult && doTouch) {
@@ -224,16 +207,10 @@ public class SerialUploader extends Uploader {
           // sketch serial port reconnects (or timeout after a few seconds if the
           // sketch port never comes back). Doing this saves users from accidentally
           // opening Serial Monitor on the soon-to-be-orphaned bootloader port.
-          Thread.sleep(1000);
-          long started = System.currentTimeMillis();
-          while (System.currentTimeMillis() - started < 2000) {
-            List<String> portList = Serial.list();
-            if (portList.contains(userSelectedUploadPort)) {
-              finalUploadPort = userSelectedUploadPort;
-              break;
-            }
-            Thread.sleep(250);
-          }
+
+          // Reuse waitForUploadPort for this task, but this time we are simply waiting
+          // for one port to reappear. If no port reappears before the timeout, actualUploadPort is selected
+          finalUploadPort = waitForUploadPort(actualUploadPort, Serial.list(), false);
         }
       } catch (InterruptedException ex) {
         // noop
@@ -241,17 +218,21 @@ public class SerialUploader extends Uploader {
     }
 
     if (finalUploadPort == null) {
-      finalUploadPort = actualUploadPort;
-    }
-    if (finalUploadPort == null) {
       finalUploadPort = userSelectedUploadPort;
     }
     BaseNoGui.selectSerialPort(finalUploadPort);
+
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().setUploadInProgress(false);
+    BaseNoGui.getDiscoveryManager().getSerialDiscoverer().pausePolling(false);
 
     return uploadResult;
   }
 
   private String waitForUploadPort(String uploadPort, List<String> before) throws InterruptedException, RunnerException {
+	  return waitForUploadPort(uploadPort, before, verbose);
+  }
+
+  private String waitForUploadPort(String uploadPort, List<String> before, boolean verbose) throws InterruptedException, RunnerException {
     // Wait for a port to appear on the list
     int elapsed = 0;
     while (elapsed < 10000) {
@@ -331,21 +312,7 @@ public class SerialUploader extends Uploader {
     else
       prefs.put("program.verify", prefs.get("program.params.noverify", ""));
 
-    try {
-      // if (prefs.get("program.disable_flushing") == null
-      // || prefs.get("program.disable_flushing").toLowerCase().equals("false"))
-      // {
-      // flushSerialBuffer();
-      // }
-
-      String pattern = prefs.getOrExcept("program.pattern");
-      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-      return executeUploadCommand(cmd);
-    } catch (RunnerException e) {
-      throw e;
-    } catch (Exception e) {
-      throw new RunnerException(e);
-    }
+    return runCommand("program.pattern", prefs);
   }
 
   @Override
@@ -402,13 +369,27 @@ public class SerialUploader extends Uploader {
 
     new LoadVIDPIDSpecificPreferences().load(prefs);
 
-    String pattern = prefs.getOrExcept("erase.pattern");
-    String[] cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-    if (!executeUploadCommand(cmd))
+    if (!runCommand("erase.pattern", prefs))
       return false;
 
-    pattern = prefs.getOrExcept("bootloader.pattern");
-    cmd = StringReplacer.formatAndSplit(pattern, prefs, true);
-    return executeUploadCommand(cmd);
+    return runCommand("bootloader.pattern", prefs);
+  }
+
+  private boolean runCommand(String patternKey, PreferencesMap prefs) throws Exception, RunnerException {
+    try {
+      String pattern = prefs.getOrExcept(patternKey);
+      StringReplacer.checkIfRequiredKeyIsMissingOrExcept("serial.port", pattern, prefs);
+      String[] cmd = StringReplacer.formatAndSplit(pattern, prefs);
+      return executeUploadCommand(cmd);
+    } catch (RunnerException e) {
+      throw e;
+    } catch (PreferencesMapException e) {
+      if (e.getMessage().equals("serial.port")) {
+        throw new SerialNotFoundException(e);
+      }
+      throw e;
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
   }
 }

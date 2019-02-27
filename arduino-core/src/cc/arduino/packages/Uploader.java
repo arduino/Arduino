@@ -106,7 +106,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   // static field for last executed programmer process ID
-  static protected Process programmerPid;
+  static public Process programmerPid;
 
   protected boolean executeUploadCommand(Collection<String> command) throws Exception {
     return executeUploadCommand(command.toArray(new String[command.size()]));

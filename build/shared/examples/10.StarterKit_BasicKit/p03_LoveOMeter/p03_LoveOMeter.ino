@@ -1,26 +1,25 @@
 /*
   Arduino Starter Kit example
- Project 3  - Love-O-Meter
+  Project 3 - Love-O-Meter
 
- This sketch is written to accompany Project 3 in the
- Arduino Starter Kit
+  This sketch is written to accompany Project 3 in the Arduino Starter Kit
 
- Parts required:
- 1 TMP36 temperature sensor
- 3 red LEDs
- 3 220 ohm resistors
+  Parts required:
+  - one TMP36 temperature sensor
+  - three red LEDs
+  - three 220 ohm resistors
 
- Created 13 September 2012
- by Scott Fitzgerald
+  created 13 Sep 2012
+  by Scott Fitzgerald
 
- http://www.arduino.cc/starterKit
+  http://www.arduino.cc/starterKit
 
- This example code is part of the public domain
- */
+  This example code is part of the public domain.
+*/
 
 // named constant for the pin the sensor is connected to
 const int sensorPin = A0;
-// room temperature in Celcius
+// room temperature in Celsius
 const float baselineTemp = 20.0;
 
 void setup() {
@@ -35,8 +34,7 @@ void setup() {
 }
 
 void loop() {
-  // read the value on AnalogIn pin 0
-  // and store it in a variable
+  // read the value on AnalogIn pin 0 and store it in a variable
   int sensorVal = analogRead(sensorPin);
 
   // send the 10-bit sensor value out the serial port
@@ -53,13 +51,12 @@ void loop() {
   // convert the voltage to temperature in degrees C
   // the sensor changes 10 mV per degree
   // the datasheet says there's a 500 mV offset
-  // ((volatge - 500mV) times 100)
+  // ((voltage - 500 mV) times 100)
   Serial.print(", degrees C: ");
   float temperature = (voltage - .5) * 100;
   Serial.println(temperature);
 
-  // if the current temperature is lower than the baseline
-  // turn off all LEDs
+  // if the current temperature is lower than the baseline turn off all LEDs
   if (temperature < baselineTemp + 2) {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);

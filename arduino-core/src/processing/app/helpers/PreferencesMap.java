@@ -248,7 +248,8 @@ public class PreferencesMap extends LinkedHashMap<String, String> {
     String res = indent + "{\n";
     SortedSet<String> treeSet = new TreeSet<>(keySet());
     for (String k : treeSet)
-      res += indent + k + " = " + get(k) + "\n";
+      res += indent + "  " + k + " = " + get(k) + "\n";
+    res += indent + "}\n";
     return res;
   }
 

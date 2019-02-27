@@ -37,13 +37,14 @@ import java.util.List;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Shell32;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 
 public class Platform extends processing.app.Platform {
 
   private File settingsFolder;
-  private File defaultSketchbookFolder;
+  private File defaultSketchbookFolder = null;
 
   @Override
   public void init() throws Exception {
@@ -51,7 +52,6 @@ public class Platform extends processing.app.Platform {
 
     checkPath();
     recoverSettingsFolderPath();
-    recoverDefaultSketchbookFolder();
   }
 
   private void recoverSettingsFolderPath() throws Exception {
@@ -118,6 +118,7 @@ public class Platform extends processing.app.Platform {
 
   @Override
   public File getDefaultSketchbookFolder() throws Exception {
+    recoverDefaultSketchbookFolder();
     return defaultSketchbookFolder;
   }
 
@@ -129,10 +130,14 @@ public class Platform extends processing.app.Platform {
       if (file.exists()) {
         // in this case convert the path to a "file:" url
         url = file.toURI().toString();
-
-        // this allows to open the file on Windows 10 that
-        // has a more strict permission policy for cmd.exe
       }
+    }
+    if (url.startsWith("http") || url.startsWith("file:")) {
+      // this allows to open the file on Windows 10 that
+      // has a more strict permission policy for cmd.exe
+      final int SW_SHOW = 5;
+      Shell32.INSTANCE.ShellExecute(null, null, url, null, null, SW_SHOW);
+      return;
     }
 
     // this is not guaranteed to work, because who knows if the
@@ -150,18 +155,12 @@ public class Platform extends processing.app.Platform {
     // "Access is denied" in both cygwin and the "dos" prompt.
     //Runtime.getRuntime().exec("cmd /c " + currentDir + "\\reference\\" +
     //                    referenceFile + ".html");
-    if (url.startsWith("http") || url.startsWith("file:")) {
-      // open dos prompt, give it 'start' command, which will
-      // open the url properly. start by itself won't work since
-      // it appears to need cmd
-      Runtime.getRuntime().exec("cmd /c start \"\" \"" + url + "\"");
-    } else {
-      // just launching the .html file via the shell works
-      // but make sure to chmod +x the .html files first
-      // also place quotes around it in case there's a space
-      // in the user.dir part of the url
-      Runtime.getRuntime().exec("cmd /c \"" + url + "\"");
-    }
+
+    // just launching the .html file via the shell works
+    // but make sure to chmod +x the .html files first
+    // also place quotes around it in case there's a space
+    // in the user.dir part of the url
+    Runtime.getRuntime().exec("cmd /c \"" + url + "\"");
   }
 
 
@@ -290,7 +289,6 @@ public class Platform extends processing.app.Platform {
       return ExtUser32.INSTANCE.GetDpiForSystem();
     } catch (Throwable e) {
       // DPI detection failed, fall back with default
-      System.out.println("DPI detection failed, fallback to 96 dpi");
       return -1;
     }
   }

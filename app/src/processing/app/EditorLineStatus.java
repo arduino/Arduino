@@ -110,11 +110,17 @@ public class EditorLineStatus extends JComponent {
     g.drawString(text, scale(6), baseline);
 
     g.setColor(messageForeground);
-    String tmp = I18n.format(tr("{0} on {1}"), name, serialport);
-    
-    Rectangle2D bounds = g.getFontMetrics().getStringBounds(tmp, null);
-    
-    g.drawString(tmp, size.width - (int) bounds.getWidth() - RESIZE_IMAGE_SIZE,
+
+    String statusText;
+    if (serialport != null && !serialport.isEmpty()) {
+      statusText = I18n.format(tr("{0} on {1}"), name, serialport);
+    } else {
+      statusText = name;
+    }
+
+    Rectangle2D bounds = g.getFontMetrics().getStringBounds(statusText, null);
+
+    g.drawString(statusText, size.width - (int) bounds.getWidth() - RESIZE_IMAGE_SIZE,
                  baseline);
 
     if (OSUtils.isMacOS()) {

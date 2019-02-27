@@ -1,12 +1,9 @@
 package processing.app;
 
-import org.apache.commons.compress.utils.IOUtils;
-import processing.app.helpers.PreferencesHelper;
-import processing.app.helpers.PreferencesMap;
-import processing.app.legacy.PApplet;
-import processing.app.legacy.PConstants;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
-import java.awt.*;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +13,13 @@ import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
-import static processing.app.I18n.tr;
+import org.apache.commons.compress.utils.IOUtils;
+
+import cc.arduino.i18n.Languages;
+import processing.app.helpers.PreferencesHelper;
+import processing.app.helpers.PreferencesMap;
+import processing.app.legacy.PApplet;
+import processing.app.legacy.PConstants;
 
 
 public class PreferencesData {
@@ -78,8 +81,13 @@ public class PreferencesData {
     }
 
     // load the I18n module for internationalization
+    String lang = get("editor.languages.current");
+    if (lang == null || !Languages.have(lang)) {
+      lang = "";
+      set("editor.languages.current", "");
+    }
     try {
-      I18n.init(get("editor.languages.current"));
+      I18n.init(lang);
     } catch (MissingResourceException e) {
       I18n.init("en");
       set("editor.languages.current", "en");
@@ -107,6 +115,9 @@ public class PreferencesData {
     if (!doSave)
       return;
 
+    if (getBoolean("preferences.readonly"))
+      return;
+
     // on startup, don't worry about it
     // this is trying to update the prefs for who is open
     // before Preferences.init() has been called.
@@ -126,6 +137,9 @@ public class PreferencesData {
       }
 
       writer.flush();
+    } catch (Throwable e) {
+      System.err.println(format(tr("Could not write preferences file: {0}"), e.getMessage()));
+      return;
     } finally {
       IOUtils.closeQuietly(writer);
     }
@@ -176,6 +190,13 @@ public class PreferencesData {
     prefs.remove(attribute);
   }
 
+  static public boolean getBoolean(String attribute, boolean defaultValue) {
+    if (has(attribute)) {
+      return getBoolean(attribute);
+    }
+
+    return defaultValue;
+  }
 
   static public boolean getBoolean(String attribute) {
     return prefs.getBoolean(attribute);

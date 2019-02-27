@@ -62,9 +62,6 @@ public class Platform extends processing.app.Platform {
   @Override
   public void init() throws Exception {
     super.init();
-
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
-
     discoverRealOsArch();
   }
 

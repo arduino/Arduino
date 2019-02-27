@@ -32,14 +32,9 @@ package cc.arduino.contributions;
 import com.github.zafarkhaja.semver.Version;
 
 import java.io.File;
+import java.util.Optional;
 
 public abstract class DownloadableContribution {
-
-  private boolean installed;
-  private File installedFolder;
-
-  private boolean downloaded;
-  private File downloadedFile;
 
   public abstract String getUrl();
 
@@ -51,6 +46,8 @@ public abstract class DownloadableContribution {
 
   public abstract String getArchiveFileName();
 
+  private boolean downloaded;
+
   public boolean isDownloaded() {
     return downloaded;
   }
@@ -58,6 +55,8 @@ public abstract class DownloadableContribution {
   public void setDownloaded(boolean downloaded) {
     this.downloaded = downloaded;
   }
+
+  private File downloadedFile;
 
   public File getDownloadedFile() {
     return downloadedFile;
@@ -67,46 +66,11 @@ public abstract class DownloadableContribution {
     this.downloadedFile = downloadedFile;
   }
 
-  public boolean isInstalled() {
-    return installed;
-  }
-
-  public void setInstalled(boolean installed) {
-    this.installed = installed;
-  }
-
-  public File getInstalledFolder() {
-    return installedFolder;
-  }
-
-  public void setInstalledFolder(File installedFolder) {
-    this.installedFolder = installedFolder;
-  }
-
-  private boolean readOnly;
-
-  public boolean isReadOnly() {
-    return readOnly;
-  }
-
-  public void setReadOnly(boolean readOnly) {
-    this.readOnly = readOnly;
-  }
-
   public String getParsedVersion() {
-    Version version = VersionHelper.valueOf(getVersion());
-    if (version == null) {
-      return null;
+    Optional<Version> version = VersionHelper.valueOf(getVersion());
+    if (version.isPresent()) {
+      return version.get().toString();
     }
-    return version.toString();
-  }
-
-  @Override
-  public String toString() {
-    String res = "";
-    if (installed) {
-      res += "installed on " + installedFolder.getAbsolutePath() + " (" + getSize() + " bytes)";
-    }
-    return res;
+    return null;
   }
 }

@@ -1,28 +1,27 @@
-
 /*
   ButtonMouseControl
 
- For Leonardo and Due boards only.
+  For Leonardo and Due boards only.
 
- Controls the mouse from five pushbuttons on an Arduino Leonardo, Micro or Due.
+  Controls the mouse from five pushbuttons on an Arduino Leonardo, Micro or Due.
 
- Hardware:
- * 5 pushbuttons attached to D2, D3, D4, D5, D6
+  Hardware:
+  - five pushbuttons attached to D2, D3, D4, D5, D6
 
+  The mouse movement is always relative. This sketch reads four pushbuttons,
+  and uses them to set the movement of the mouse.
 
- The mouse movement is always relative. This sketch reads
- four pushbuttons, and uses them to set the movement of the mouse.
+  WARNING: When you use the Mouse.move() command, the Arduino takes over your
+  mouse! Make sure you have control before you use the mouse commands.
 
- WARNING:  When you use the Mouse.move() command, the Arduino takes
- over your mouse!  Make sure you have control before you use the mouse commands.
+  created 15 Mar 2012
+  modified 27 Mar 2012
+  by Tom Igoe
 
- created 15 Mar 2012
- modified 27 Mar 2012
- by Tom Igoe
+  This example code is in the public domain.
 
- this code is in the public domain
-
- */
+  http://www.arduino.cc/en/Tutorial/ButtonMouseControl
+*/
 
 #include "Mouse.h"
 

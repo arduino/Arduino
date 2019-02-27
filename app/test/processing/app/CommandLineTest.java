@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.apache.commons.compress.utils.IOUtils;
+import org.fest.assertions.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -59,7 +60,7 @@ public class CommandLineTest {
       arduinoPath = new File(buildPath, "build/linux/work/arduino");
     }
     if (OSUtils.isWindows()) {
-      arduinoPath = new File(buildPath, "build/windows/work/arduino");
+      arduinoPath = new File(buildPath, "build/windows/work/arduino.exe");
     }
     if (OSUtils.isMacOS()) {
       arduinoPath = new File(buildPath,
@@ -126,5 +127,36 @@ public class CommandLineTest {
 
     prefs = new PreferencesMap(prefFile);
     assertEquals("preference should be saved", "xxx", prefs.get("test_pref"));
-}
+  }
+
+  @Test
+  public void testCommandLineVersion() throws Exception {
+    Runtime rt = Runtime.getRuntime();
+    Process pr = rt.exec(new String[]{
+      arduinoPath.getAbsolutePath(),
+      "--version",
+    });
+    pr.waitFor();
+
+    Assertions.assertThat(pr.exitValue())
+      .as("Process will finish with exit code 0 in --version")
+      .isEqualTo(0);
+    Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
+      .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\n");
+  }
+
+  @Test
+  public void testCommandLineMultipleAction() throws Exception {
+    Runtime rt = Runtime.getRuntime();
+    Process pr = rt.exec(new String[]{
+      arduinoPath.getAbsolutePath(),
+      "--version",
+      "--verify",
+    });
+    pr.waitFor();
+
+    Assertions.assertThat(pr.exitValue())
+      .as("Multiple Action will be rejected")
+      .isEqualTo(3);
+  }
 }

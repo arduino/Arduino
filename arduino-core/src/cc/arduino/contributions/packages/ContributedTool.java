@@ -32,6 +32,7 @@ package cc.arduino.contributions.packages;
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
+import java.io.File;
 import java.util.List;
 
 public abstract class ContributedTool {
@@ -41,6 +42,36 @@ public abstract class ContributedTool {
   public abstract String getVersion();
 
   public abstract List<HostDependentDownloadableContribution> getSystems();
+
+  private boolean installed;
+
+  public boolean isInstalled() {
+    return installed;
+  }
+
+  public void setInstalled(boolean installed) {
+    this.installed = installed;
+  }
+
+  private File installedFolder;
+
+  public File getInstalledFolder() {
+    return installedFolder;
+  }
+
+  public void setInstalledFolder(File installedFolder) {
+    this.installedFolder = installedFolder;
+  }
+
+  private boolean builtIn;
+
+  public boolean isBuiltIn() {
+    return builtIn;
+  }
+
+  public void setBuiltIn(boolean builtIn) {
+    this.builtIn = builtIn;
+  }
 
   private ContributedPackage contributedPackage;
 

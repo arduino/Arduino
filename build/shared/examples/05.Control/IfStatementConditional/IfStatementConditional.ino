@@ -1,29 +1,28 @@
 /*
   Conditionals - If statement
 
- This example demonstrates the use of if() statements.
- It reads the state of a potentiometer (an analog input) and turns on an LED
- only if the potentiometer goes above a certain threshold level. It prints the analog value
- regardless of the level.
+  This example demonstrates the use of if() statements.
+  It reads the state of a potentiometer (an analog input) and turns on an LED
+  only if the potentiometer goes above a certain threshold level. It prints the
+  analog value regardless of the level.
 
- The circuit:
- * potentiometer connected to analog pin 0.
- Center pin of the potentiometer goes to the analog pin.
- side pins of the potentiometer go to +5V and ground
- * LED connected from digital pin 13 to ground
+  The circuit:
+  - potentiometer
+    Center pin of the potentiometer goes to analog pin 0.
+    Side pins of the potentiometer go to +5V and ground.
+  - LED connected from digital pin 13 to ground
 
- * Note: On most Arduino boards, there is already an LED on the board
- connected to pin 13, so you don't need any extra components for this example.
+  - Note: On most Arduino boards, there is already an LED on the board connected
+    to pin 13, so you don't need any extra components for this example.
 
- created 17 Jan 2009
- modified 9 Apr 2012
- by Tom Igoe
+  created 17 Jan 2009
+  modified 9 Apr 2012
+  by Tom Igoe
 
-This example code is in the public domain.
+  This example code is in the public domain.
 
-http://www.arduino.cc/en/Tutorial/IfStatement
-
- */
+  http://www.arduino.cc/en/Tutorial/IfStatement
+*/
 
 // These constants won't change:
 const int analogPin = A0;    // pin that the sensor is attached to
@@ -52,4 +51,3 @@ void loop() {
   Serial.println(analogValue);
   delay(1);        // delay in between reads for stability
 }
-

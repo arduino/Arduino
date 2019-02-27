@@ -60,7 +60,7 @@ public class Sizer implements MessageConsumer {
     int r = 0;
     try {
       String pattern = prefs.get("recipe.size.pattern");
-      String cmd[] = StringReplacer.formatAndSplit(pattern, prefs, true);
+      String cmd[] = StringReplacer.formatAndSplit(pattern, prefs);
 
       exception = null;
       textSize = -1;

@@ -43,6 +43,7 @@ import processing.app.helpers.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
@@ -55,7 +56,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
-    final MultiStepProgress progress = new MultiStepProgress(2);
+    final MultiStepProgress progress = new MultiStepProgress(3);
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
@@ -78,13 +79,16 @@ public class LibraryInstaller {
     if (!tmpFile.renameTo(outputFile))
       throw new Exception(tr("An error occurred while updating libraries index!"));
 
-    // Step 2: Rescan index
+    // Step 2: Parse index
+    BaseNoGui.librariesIndexer.parseIndex();
+
+    // Step 3: Rescan index
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
-    if (lib.isInstalled()) {
-      System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
+  public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {
+    if (lib.isLibraryInstalled()) {
+      System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
@@ -105,9 +109,9 @@ public class LibraryInstaller {
     // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Installing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
-    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
+    File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
@@ -119,7 +123,9 @@ public class LibraryInstaller {
 
     // Step 3: Remove replaced library and move installed one to the correct location
     // TODO: Fix progress bar...
-    remove(replacedLib, progressListener);
+    if (mayReplacedLib.isPresent()) {
+      remove(mayReplacedLib.get(), progressListener);
+    }
     File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
@@ -129,16 +135,16 @@ public class LibraryInstaller {
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
-    if (lib == null || lib.isReadOnly()) {
+    if (lib.isIDEBuiltIn()) {
       return;
     }
 
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Removing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
-    FileUtils.recursiveDelete(lib.getInstalledFolder());
+    FileUtils.recursiveDelete(lib.getInstalledLibrary().get().getInstalledFolder());
     progress.stepDone();
 
     // Step 2: Rescan index

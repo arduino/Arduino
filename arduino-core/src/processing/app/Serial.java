@@ -64,27 +64,35 @@ public class Serial implements SerialPortEventListener {
       PreferencesData.getInteger("serial.debug_rate", 9600),
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(int irate) throws SerialException {
     this(PreferencesData.get("serial.port"), irate,
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname, int irate) throws SerialException {
     this(iname, irate, PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public Serial(String iname) throws SerialException {
     this(iname, PreferencesData.getInteger("serial.debug_rate", 9600),
       PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1));
+      PreferencesData.getFloat("serial.stopbits", 1),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
   }
 
   public static boolean touchForCDCReset(String iname) throws SerialException {
@@ -108,7 +116,7 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
-  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits) throws SerialException {
+  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
     //if (port != null) port.close();
     //this.parent = parent;
     //parent.attach(this);
@@ -126,7 +134,7 @@ public class Serial implements SerialPortEventListener {
     try {
       port = new SerialPort(iname);
       port.openPort();
-      boolean res = port.setParams(irate, idatabits, stopbits, parity, true, true);
+      boolean res = port.setParams(irate, idatabits, stopbits, parity, setRTS, setDTR);
       if (!res) {
         System.err.println(format(tr("Error while setting serial port parameters: {0} {1} {2} {3}"),
                                   irate, iparity, idatabits, istopbits));

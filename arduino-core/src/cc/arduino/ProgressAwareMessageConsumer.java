@@ -29,19 +29,19 @@
 
 package cc.arduino;
 
+import java.util.List;
+import java.util.Map;
+
 import cc.arduino.i18n.ExternalProcessOutputParser;
 import processing.app.debug.MessageConsumer;
-
-import java.util.Map;
-import java.util.ArrayList;
 
 public class ProgressAwareMessageConsumer implements MessageConsumer {
 
   private final MessageConsumer parent;
-  private ArrayList<CompilerProgressListener> progressListeners;
+  private List<CompilerProgressListener> progressListeners;
   private final ExternalProcessOutputParser parser;
 
-  public ProgressAwareMessageConsumer(MessageConsumer parent, ArrayList<CompilerProgressListener> progressListeners) {
+  public ProgressAwareMessageConsumer(MessageConsumer parent, List<CompilerProgressListener> progressListeners) {
     this.parent = parent;
     this.progressListeners = progressListeners;
     this.parser = new ExternalProcessOutputParser();

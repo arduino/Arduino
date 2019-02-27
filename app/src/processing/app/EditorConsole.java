@@ -58,6 +58,9 @@ public class EditorConsole extends JScrollPane {
   private final DefaultStyledDocument document;
   private final JTextPane consoleTextPane;
 
+  private SimpleAttributeSet stdOutStyle;
+  private SimpleAttributeSet stdErrStyle;
+
   public EditorConsole() {
     document = new DefaultStyledDocument();
 
@@ -74,7 +77,7 @@ public class EditorConsole extends JScrollPane {
     Font editorFont = PreferencesData.getFont("editor.font");
     Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
 
-    SimpleAttributeSet stdOutStyle = new SimpleAttributeSet();
+    stdOutStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdOutStyle, Theme.getColor("console.output.color"));
     StyleConstants.setBackground(stdOutStyle, backgroundColour);
     StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
@@ -84,7 +87,7 @@ public class EditorConsole extends JScrollPane {
 
     consoleTextPane.setParagraphAttributes(stdOutStyle, true);
 
-    SimpleAttributeSet stdErrStyle = new SimpleAttributeSet();
+    stdErrStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdErrStyle, Theme.getColor("console.error.color"));
     StyleConstants.setBackground(stdErrStyle, backgroundColour);
     StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
@@ -103,11 +106,22 @@ public class EditorConsole extends JScrollPane {
     FontMetrics metrics = getFontMetrics(actualFont);
     int height = metrics.getAscent() + metrics.getDescent();
     int lines = PreferencesData.getInteger("console.lines");
-    int sizeFudge = 6; //10; // unclear why this is necessary, but it is
-    setPreferredSize(new Dimension(100, (height * lines) + sizeFudge));
-    setMinimumSize(new Dimension(100, (height * 5) + sizeFudge));
+    setPreferredSize(new Dimension(100, (height * lines)));
+    setMinimumSize(new Dimension(100, (height * lines)));
 
     EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
+  }
+
+  public void applyPreferences() {
+    Font consoleFont = Theme.getFont("console.font");
+    Font editorFont = PreferencesData.getFont("editor.font");
+    Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
+
+    StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
+    StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
+
+    out.setAttibutes(stdOutStyle);
+    err.setAttibutes(stdErrStyle);
   }
 
   public void clear() {

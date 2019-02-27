@@ -32,6 +32,7 @@ package cc.arduino.contributions.packages;
 import cc.arduino.contributions.DownloadableContribution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.File;
 import java.util.*;
 
 public abstract class ContributedPlatform extends DownloadableContribution {
@@ -52,6 +53,42 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   public abstract List<ContributedBoard> getBoards();
 
   public abstract ContributedHelp getHelp();
+
+  private boolean installed;
+
+  public boolean isInstalled() {
+    return installed;
+  }
+
+  public void setInstalled(boolean installed) {
+    this.installed = installed;
+  }
+
+  private File installedFolder;
+
+  public File getInstalledFolder() {
+    return installedFolder;
+  }
+
+  public void setInstalledFolder(File installedFolder) {
+    this.installedFolder = installedFolder;
+  }
+
+  private boolean builtIn;
+
+  public boolean isBuiltIn() {
+    return builtIn;
+  }
+
+  public void setBuiltIn(boolean builtIn) {
+    this.builtIn = builtIn;
+  }
+
+  public static final Comparator<ContributedPlatform> BUILTIN_AS_LAST = (x, y) -> {
+    int px = x.isBuiltIn() ? 1 : -1;
+    int py = y.isBuiltIn() ? 1 : -1;
+    return px - py;
+  };
 
   private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
 

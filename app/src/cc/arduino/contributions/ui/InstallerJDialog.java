@@ -43,8 +43,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -88,6 +89,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
   private final JButton closeButton;
   private final JButton dismissErrorMessageButton;
 
+  protected int previousRowAtPoint = -1;
+
   abstract protected FilteredAbstractTableModel<T> createContribModel();
 
   abstract protected TableCellRenderer createCellRenderer();
@@ -118,15 +121,12 @@ public abstract class InstallerJDialog<T> extends JDialog {
       filterField = new FilterJTextField(tr("Filter your search...")) {
         @Override
         protected void onFilter(String[] _filters) {
+          previousRowAtPoint = -1;
           filters = _filters;
           if (contribTable.getCellEditor() != null) {
             contribTable.getCellEditor().stopCellEditing();
           }
           updateIndexFilter(filters, categoryFilter);
-          if (contribModel.getRowCount() == 1) {
-            // TODO: understand why it doesn't work
-            //contribTable.addRowSelectionInterval(0, 0);
-          }
         }
       };
 
@@ -165,6 +165,25 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
         contribTable.editCellAt(contribTable.getSelectedRow(), contribTable.getSelectedColumn());
       }
+    });
+
+    contribTable.addMouseMotionListener(new MouseMotionListener() {
+
+        public void mouseDragged(MouseEvent e) {}
+
+        public void mouseMoved(MouseEvent e) {
+            // avoid firing edits events until the mouse changes cell or the user is back on the cell after selecting a dropdown
+            int rowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            if (!InstallerTableCell.isDropdownSelected() && rowAtPoint != previousRowAtPoint) {
+              contribTable.editCellAt(rowAtPoint, 0);
+              previousRowAtPoint = rowAtPoint;
+              InstallerTableCell.dropdownSelected(false);
+            }
+            if (InstallerTableCell.isDropdownSelected() && rowAtPoint == previousRowAtPoint) {
+              // back to the original cell, can drop dropdown selector lock
+              InstallerTableCell.dropdownSelected(false);
+            }
+        }
     });
 
     {
@@ -241,9 +260,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
     SwingUtilities.invokeLater(InstallerJDialog.this::onUpdatePressed);
   }
 
-  public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
-    Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
-    contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
+  public void updateIndexFilter(String[] filters, Predicate<T> additionalFilter) {
+    contribModel.updateIndexFilter(filters, additionalFilter);
   }
 
   public void setErrorMessage(String message) {
@@ -286,7 +304,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
-      if (categoryFilter == null || !categoryFilter.equals(selected)) {
+      previousRowAtPoint = -1;
+      if (selected != null && categoryFilter != selected.getFilterPredicate()) {
         categoryFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
