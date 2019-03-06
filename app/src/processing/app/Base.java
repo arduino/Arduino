@@ -117,6 +117,11 @@ public class Base {
   Editor activeEditor;
 
   private static JMenu boardMenu;
+  private static ButtonGroup boardsButtonGroup;
+  private static ButtonGroup recentBoardsButtonGroup;
+  private static Map<String, ButtonGroup> buttonGroupsMap;
+  private static List<JMenuItem> menuItemsToClickAfterStartup;
+  private static MenuScroller boardMenuScroller;
 
   // these menus are shared so that the board and serial port selections
   // are the same for all windows (since the board and serial port that are
@@ -1365,6 +1370,42 @@ public class Base {
     rebuildImportMenu(Editor.importMenu);
     rebuildExamplesMenu(Editor.examplesMenu);
     rebuildProgrammerMenu();
+
+    try {
+      rebuildRecentBoardsMenu();
+    } catch (Exception e) {
+      // fail silently
+    }
+  }
+
+  public void rebuildRecentBoardsMenu() throws Exception {
+
+    Enumeration<AbstractButton> btns = recentBoardsButtonGroup.getElements();
+    while (btns.hasMoreElements()) {
+      AbstractButton x = btns.nextElement();
+      if (x.isSelected()) {
+        return;
+      }
+    }
+    btns = recentBoardsButtonGroup.getElements();
+    while (btns.hasMoreElements()) {
+      AbstractButton x = btns.nextElement();
+      boardMenu.remove(x);
+    }
+    int index = 0;
+    for (TargetBoard board : BaseNoGui.getRecentlyUsedBoards()) {
+      JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
+              buttonGroupsMap,
+              board, board.getContainerPlatform(), board.getContainerPlatform().getContainerPackage());
+      boardMenu.insert(item, 3);
+      item.setAccelerator(KeyStroke.getKeyStroke('0' + index,
+         Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+         ActionEvent.SHIFT_MASK));
+      recentBoardsButtonGroup.add(item);
+      boardsButtonGroup.add(item);
+      index ++;
+    }
+    boardMenuScroller.setTopFixedCount(3 + index);
   }
 
   public void onBoardOrPortChange() {
@@ -1462,7 +1503,8 @@ public class Base {
     // The first custom menu is the "Board" selection submenu
     boardMenu = new JMenu(tr("Board"));
     boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
+    boardMenuScroller = MenuScroller.setScrollerFor(boardMenu);
+    boardMenuScroller.setTopFixedCount(1);
 
     boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
       public void actionPerformed(ActionEvent actionevent) {
@@ -1502,10 +1544,18 @@ public class Base {
       }
     }
 
-    List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<>();
+    menuItemsToClickAfterStartup = new LinkedList<>();
+    boardsButtonGroup = new ButtonGroup();
+    recentBoardsButtonGroup = new ButtonGroup();
+    buttonGroupsMap = new HashMap<>();
 
-    ButtonGroup boardsButtonGroup = new ButtonGroup();
-    Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
+    if (BaseNoGui.getRecentlyUsedBoards() != null) {
+      JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
+      recentLabel.setEnabled(false);
+      boardMenu.add(recentLabel);
+      rebuildRecentBoardsMenu();
+      //rebuildRecentBoardsMenu(null);
+    }
 
     List<JMenu> platformMenus = new ArrayList<>();
 
@@ -1609,6 +1659,9 @@ public class Base {
     for (final String menuId : customMenus.keySet()) {
       String title = customMenus.get(menuId);
       JMenu menu = getBoardCustomMenu(tr(title), getPlatformUniqueId(targetPlatform));
+      if (menu == null) {
+        continue;
+      }
 
       if (board.hasMenu(menuId)) {
         PreferencesMap boardCustomMenu = board.getMenuLabels(menuId);
@@ -1684,7 +1737,7 @@ public class Base {
         return menu;
       }
     }
-    throw new Exception("Custom menu not found!");
+    return null;
   }
 
   public List<JMenuItem> getProgrammerMenus() {
