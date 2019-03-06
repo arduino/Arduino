@@ -33,8 +33,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -51,12 +49,9 @@ public class FilterJTextField extends JTextField {
 
     showingHint = true;
     updateStyle();
-    timer = new Timer(1000, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        applyFilter();
-        timer.stop();
-      }
+    timer = new Timer(1000, e -> {
+      applyFilter();
+      timer.stop();
     });
 
     addFocusListener(new FocusListener() {
@@ -90,14 +85,11 @@ public class FilterJTextField extends JTextField {
       }
     });
 
-    addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (timer.isRunning()) {
-          timer.stop();
-        }
-        applyFilter();
+    addActionListener(e -> {
+      if (timer.isRunning()) {
+        timer.stop();
       }
+      applyFilter();
     });
   }
 
