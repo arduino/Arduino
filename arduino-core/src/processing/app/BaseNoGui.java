@@ -915,6 +915,12 @@ public class BaseNoGui {
     }
   }
 
+  static private LinkedList<TargetBoard> recentlyUsedBoards = new LinkedList<TargetBoard>();
+
+  static public LinkedList<TargetBoard> getRecentlyUsedBoards() {
+	  return recentlyUsedBoards;
+  }
+
   static public void selectBoard(TargetBoard targetBoard) {
     TargetPlatform targetPlatform = targetBoard.getContainerPlatform();
     TargetPackage targetPackage = targetPlatform.getContainerPackage();
@@ -926,6 +932,13 @@ public class BaseNoGui {
     File platformFolder = targetPlatform.getFolder();
     PreferencesData.set("runtime.platform.path", platformFolder.getAbsolutePath());
     PreferencesData.set("runtime.hardware.path", platformFolder.getParentFile().getAbsolutePath());
+
+    if (!recentlyUsedBoards.contains(targetBoard)) {
+      recentlyUsedBoards.add(targetBoard);
+    }
+    if (recentlyUsedBoards.size() > 4) {
+      recentlyUsedBoards.remove();
+    }
   }
 
   public static void selectSerialPort(String port) {
