@@ -52,7 +52,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -96,6 +95,7 @@ import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
 import jssc.SerialPortException;
 import processing.app.debug.RunnerException;
+import processing.app.debug.TargetBoard;
 import processing.app.forms.PasswordAuthorizationDialog;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.helpers.Keys;
@@ -148,9 +148,6 @@ public class Editor extends JFrame implements RunnerListener {
       return true;
     }
   }
-
-  private final static List<String> BOARD_PROTOCOLS_ORDER = Arrays.asList("serial", "network");
-  private final static List<String> BOARD_PROTOCOLS_ORDER_TRANSLATIONS = Arrays.asList(tr("Serial ports"), tr("Network ports"));
 
   final Base base;
 
@@ -1043,22 +1040,30 @@ public class Editor extends JFrame implements RunnerListener {
     private BoardPort port;
 
     public BoardPortJCheckBoxMenuItem(BoardPort port) {
-      super(port.getLabel());
+      super();
+      this.port = port;
+      setText(toString());
       addActionListener(e -> {
         selectSerialPort(port.getAddress());
         base.onBoardOrPortChange();
       });
-      this.port = port;
     }
 
     @Override
     public String toString() {
       // This is required for serialPrompt()
-      return port.getLabel();
+      String label = port.getLabel();
+      if (port.getBoardName() != null && !port.getBoardName().isEmpty()) {
+        label += " (" + port.getBoardName() + ")";
+      }
+      return label;
     }
   }
 
   private void populatePortMenu() {
+    final List<String> PROTOCOLS_ORDER = Arrays.asList("serial", "network");
+    final List<String> PROTOCOLS_LABELS = Arrays.asList(tr("Serial ports"), tr("Network ports"));
+
     portMenu.removeAll();
 
     String selectedPort = PreferencesData.get("serial.port");
@@ -1067,31 +1072,43 @@ public class Editor extends JFrame implements RunnerListener {
 
     ports = platform.filterPorts(ports, PreferencesData.getBoolean("serial.ports.showall"));
 
-    Collections.sort(ports, new Comparator<BoardPort>() {
-      @Override
-      public int compare(BoardPort o1, BoardPort o2) {
-        return (BOARD_PROTOCOLS_ORDER.indexOf(o1.getProtocol()) - BOARD_PROTOCOLS_ORDER.indexOf(o2.getProtocol())) * 10 +
-               o1.getAddress().compareTo(o2.getAddress());
-      }
+    ports.stream() //
+        .filter(port -> port.getProtocolLabel() == null || port.getProtocolLabel().isEmpty())
+        .forEach(port -> {
+          int labelIdx = PROTOCOLS_ORDER.indexOf(port.getProtocol());
+          if (labelIdx != -1) {
+            port.setProtocolLabel(PROTOCOLS_LABELS.get(labelIdx));
+          } else {
+            port.setProtocolLabel(port.getProtocol());
+          }
+        });
+
+    Collections.sort(ports, (port1, port2) -> {
+      String pr1 = port1.getProtocol();
+      String pr2 = port2.getProtocol();
+      int prIdx1 = PROTOCOLS_ORDER.contains(pr1) ? PROTOCOLS_ORDER.indexOf(pr1) : 999;
+      int prIdx2 = PROTOCOLS_ORDER.contains(pr2) ? PROTOCOLS_ORDER.indexOf(pr2) : 999;
+      int r = prIdx1 - prIdx2;
+      if (r != 0)
+        return r;
+      r = port1.getProtocolLabel().compareTo(port2.getProtocolLabel());
+      if (r != 0)
+        return r;
+      return port1.getAddress().compareTo(port2.getAddress());
     });
 
-    String lastProtocol = null;
-    String lastProtocolTranslated;
+    String lastProtocol = "";
+    String lastProtocolLabel = "";
     for (BoardPort port : ports) {
-      if (lastProtocol == null || !port.getProtocol().equals(lastProtocol)) {
-        if (lastProtocol != null) {
+      if (!port.getProtocol().equals(lastProtocol) || !port.getProtocolLabel().equals(lastProtocolLabel)) {
+        if (!lastProtocol.isEmpty()) {
           portMenu.addSeparator();
         }
         lastProtocol = port.getProtocol();
-
-        if (BOARD_PROTOCOLS_ORDER.indexOf(port.getProtocol()) != -1) {
-          lastProtocolTranslated = BOARD_PROTOCOLS_ORDER_TRANSLATIONS.get(BOARD_PROTOCOLS_ORDER.indexOf(port.getProtocol()));
-        } else {
-          lastProtocolTranslated = port.getProtocol();
-        }
-        JMenuItem lastProtocolMenuItem = new JMenuItem(tr(lastProtocolTranslated));
-        lastProtocolMenuItem.setEnabled(false);
-        portMenu.add(lastProtocolMenuItem);
+        lastProtocolLabel = port.getProtocolLabel();
+        JMenuItem item = new JMenuItem(tr(lastProtocolLabel));
+        item.setEnabled(false);
+        portMenu.add(item);
       }
       String address = port.getAddress();
 
@@ -2403,9 +2420,9 @@ public class Editor extends JFrame implements RunnerListener {
     for (BoardPort port : ports) {
       if (port.getAddress().equals(selectedPort)) {
         label = port.getBoardName();
-        vid = port.getVID();
-        pid = port.getPID();
-        iserial = port.getISerial();
+        vid = port.getPrefs().get("vid");
+        pid = port.getPrefs().get("pid");
+        iserial = port.getPrefs().get("iserial");
         protocol = port.getProtocol();
         found = true;
         break;
@@ -2575,12 +2592,12 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   protected void onBoardOrPortChange() {
-    Map<String, String> boardPreferences = BaseNoGui.getBoardPreferences();
-    if (boardPreferences != null)
-      lineStatus.setBoardName(boardPreferences.get("name"));
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    if (board != null)
+      lineStatus.setBoardName(board.getName());
     else
       lineStatus.setBoardName("-");
-    lineStatus.setSerialPort(PreferencesData.get("serial.port"));
+    lineStatus.setPort(PreferencesData.get("serial.port"));
     lineStatus.repaint();
   }
 

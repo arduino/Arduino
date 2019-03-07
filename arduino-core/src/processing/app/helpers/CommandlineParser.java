@@ -41,6 +41,7 @@ public class CommandlineParser {
   private String getPref;
   private String boardToInstall;
   private String libraryToInstall;
+  private Optional<String> uploadPort = Optional.empty();
   private final List<String> filenames = new LinkedList<>();
 
   public CommandlineParser(String[] args) {
@@ -141,7 +142,7 @@ public class CommandlineParser {
         i++;
         if (i >= args.length)
           BaseNoGui.showError(null, tr("Argument required for --port"), 3);
-        BaseNoGui.selectSerialPort(args[i]);
+        uploadPort = Optional.of(args[i]);
         if (action == ACTION.GUI)
           action = ACTION.NOOP;
         continue;
@@ -355,5 +356,9 @@ public class CommandlineParser {
 
   public boolean isPreserveTempFiles() {
     return preserveTempFiles;
+  }
+
+  public Optional<String> getUploadPort() {
+    return uploadPort;
   }
 }

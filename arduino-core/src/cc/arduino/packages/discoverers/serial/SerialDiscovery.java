@@ -29,38 +29,87 @@
 
 package cc.arduino.packages.discoverers.serial;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import cc.arduino.packages.BoardPort;
-import cc.arduino.packages.discoverers.SerialDiscovery;
+import cc.arduino.packages.Discovery;
 import processing.app.BaseNoGui;
 import processing.app.Platform;
 import processing.app.debug.TargetBoard;
 
-import java.util.*;
+public class SerialDiscovery implements Discovery, Runnable {
 
-public class SerialBoardsLister extends TimerTask {
-
-  private final SerialDiscovery serialDiscovery;
-  private final List<BoardPort> boardPorts = new LinkedList<>();
-  private List<String> oldPorts = new LinkedList<>();
+  private Timer serialBoardsListerTimer;
+  private final List<BoardPort> serialBoardPorts = new ArrayList<>();
+  private final List<BoardPort> boardPorts = new ArrayList<>();
+  private final List<String> oldPorts = new ArrayList<>();
   public boolean uploadInProgress = false;
   public boolean pausePolling = false;
   private BoardPort oldUploadBoardPort = null;
 
-  public SerialBoardsLister(SerialDiscovery serialDiscovery) {
-    this.serialDiscovery = serialDiscovery;
+
+  @Override
+  public List<BoardPort> listDiscoveredBoards() {
+    return listDiscoveredBoards(false);
   }
 
-  public void start(Timer timer) {
-    timer.schedule(this, 0, 1000);
+  @Override
+  public List<BoardPort> listDiscoveredBoards(boolean complete) {
+      if (complete) {
+        return new ArrayList<>(serialBoardPorts);
+      }
+      List<BoardPort> onlineBoardPorts = new ArrayList<>();
+      for (BoardPort port : serialBoardPorts) {
+        if (port.isOnline() == true) {
+          onlineBoardPorts.add(port);
+        }
+      }
+      return onlineBoardPorts;
   }
 
-  public synchronized void retriggerDiscovery(boolean polled) {
+  public void setSerialBoardPorts(List<BoardPort> newSerialBoardPorts) {
+      serialBoardPorts.clear();
+      serialBoardPorts.addAll(newSerialBoardPorts);
+  }
+
+  public void setUploadInProgress(boolean param) {
+    uploadInProgress = param;
+  }
+
+  public void pausePolling(boolean param) {
+    pausePolling = param;
+  }
+
+  @Override
+  public void run() {
+    start();
+  }
+
+  @Override
+  public void start() {
+    serialBoardsListerTimer = new Timer(SerialDiscovery.class.getName());
+    serialBoardsListerTimer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        if (BaseNoGui.packages != null && !pausePolling) {
+          forceRefresh();
+        }
+      }
+    }, 0, 1000);
+  }
+
+  @Override
+  public void stop() {
+    serialBoardsListerTimer.cancel();
+  }
+
+  public synchronized void forceRefresh() {
     Platform platform = BaseNoGui.getPlatform();
     if (platform == null) {
-      return;
-    }
-
-    if (polled && pausePolling) {
       return;
     }
 
@@ -113,19 +162,18 @@ public class SerialBoardsLister extends TimerTask {
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
       BoardPort boardPort = null;
-      boolean updatingInfos = false;
       int i = 0;
       // create new board or update existing
       for (BoardPort board : boardPorts) {
         if (board.toString().equals(newPort)) {
-          updatingInfos = true;
           boardPort = boardPorts.get(i);
           break;
         }
         i++;
       }
-      if (!updatingInfos) {
+      if (boardPort == null) {
         boardPort = new BoardPort();
+        boardPorts.add(boardPort);
       }
       boardPort.setAddress(port);
       boardPort.setProtocol("serial");
@@ -136,50 +184,35 @@ public class SerialBoardsLister extends TimerTask {
       if (boardData != null) {
         boardPort.getPrefs().put("vid", boardData.get("vid").toString());
         boardPort.getPrefs().put("pid", boardData.get("pid").toString());
-        boardPort.setVIDPID(parts[1], parts[2]);
 
         String iserial = boardData.get("iserial").toString();
         if (iserial.length() >= 10) {
           boardPort.getPrefs().put("iserial", iserial);
-          boardPort.setISerial(iserial);
         }
         if (uploadInProgress && oldUploadBoardPort!=null) {
           oldUploadBoardPort.getPrefs().put("iserial", iserial);
-          oldUploadBoardPort.setISerial(iserial);
         }
 
         TargetBoard board = (TargetBoard) boardData.get("board");
         if (board != null) {
           String boardName = board.getName();
-          if (boardName != null) {
-            label += " (" + boardName + ")";
-          }
           boardPort.setBoardName(boardName);
         }
       } else {
         if (!parts[1].equals("0000")) {
-          boardPort.setVIDPID(parts[1], parts[2]);
+          boardPort.getPrefs().put("vid", parts[1]);
+          boardPort.getPrefs().put("pid", parts[2]);
           // ask Cloud API to match the board with known VID/PID pair
           platform.getBoardWithMatchingVidPidFromCloud(parts[1], parts[2]);
         } else {
-          boardPort.setVIDPID("0000", "0000");
-          boardPort.setISerial("");
+          boardPort.getPrefs().put("vid", "0000");
+          boardPort.getPrefs().put("pid", "0000");
+          boardPort.getPrefs().put("iserial", "");
         }
       }
 
       boardPort.setLabel(label);
-      if (!updatingInfos) {
-        boardPorts.add(boardPort);
-      }
     }
-    serialDiscovery.setSerialBoardPorts(boardPorts);
-  }
-
-  @Override
-  public void run() {
-     if (BaseNoGui.packages == null) {
-        return;
-     }
-     retriggerDiscovery(true);
+    setSerialBoardPorts(boardPorts);
   }
 }

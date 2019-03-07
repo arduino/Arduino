@@ -113,15 +113,12 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
       String label = name + " at " + address;
       if (board != null && BaseNoGui.packages != null) {
         String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
-        if (boardName != null) {
-          label += " (" + boardName + ")";
-        }
+        port.setBoardName(boardName);
       } else if (description != null) {
         label += " (" + description + ")";
       }
 
       port.setAddress(address);
-      port.setBoardName(name);
       port.setProtocol("network");
       port.setLabel(label);
 
@@ -165,7 +162,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   @Override
   public List<BoardPort> listDiscoveredBoards() {
-      synchronized (reachableBoardPorts) {
+    synchronized (reachableBoardPorts) {
       return getBoardPortsDiscoveredWithJmDNS();
     }
   }
@@ -179,8 +176,8 @@ public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
     synchronized (reachableBoardPorts) {
-      this.reachableBoardPorts.clear();
-      this.reachableBoardPorts.addAll(newReachableBoardPorts);
+      reachableBoardPorts.clear();
+      reachableBoardPorts.addAll(newReachableBoardPorts);
     }
   }
 
