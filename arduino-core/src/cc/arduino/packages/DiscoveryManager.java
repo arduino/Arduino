@@ -57,8 +57,8 @@ public class DiscoveryManager {
 //    this.packages = packages;
 
     discoverers = new ArrayList<>();
-    discoverers.add(serialDiscoverer);
-    discoverers.add(networkDiscoverer);
+    //discoverers.add(serialDiscoverer);
+    //discoverers.add(networkDiscoverer);
 
     // Search for discoveries in installed packages
     for (TargetPackage targetPackage : packages.values()) {
