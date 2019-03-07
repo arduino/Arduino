@@ -1367,7 +1367,7 @@ public class Base {
               buttonGroupsMap,
               board, board.getContainerPlatform(), board.getContainerPlatform().getContainerPackage());
       boardMenu.insert(item, 3);
-      item.setAccelerator(KeyStroke.getKeyStroke('0' + index,
+      item.setAccelerator(KeyStroke.getKeyStroke('1' + index,
          Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
          ActionEvent.SHIFT_MASK));
       recentBoardsButtonGroup.add(item);
@@ -1513,18 +1513,14 @@ public class Base {
       boardsCustomMenus.add(customMenu);
     }
 
-    menuItemsToClickAfterStartup = new LinkedList<>();
+    List<JMenuItem> _menuItemsToClickAfterStartup = new LinkedList<>();
     boardsButtonGroup = new ButtonGroup();
     recentBoardsButtonGroup = new ButtonGroup();
     buttonGroupsMap = new HashMap<>();
 
-    if (BaseNoGui.getRecentlyUsedBoards() != null) {
-      JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
-      recentLabel.setEnabled(false);
-      boardMenu.add(recentLabel);
-      rebuildRecentBoardsMenu();
-      //rebuildRecentBoardsMenu(null);
-    }
+    JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
+    recentLabel.setEnabled(false);
+    boardMenu.add(recentLabel);
 
     // Cycle through all packages
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
@@ -1546,7 +1542,7 @@ public class Base {
         for (TargetBoard board : targetPlatform.getBoards().values()) {
           if (board.getPreferences().get("hide") != null)
             continue;
-          JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
+          JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, _menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
           boardMenu.add(item);
@@ -1555,14 +1551,16 @@ public class Base {
       }
     }
 
-    if (menuItemsToClickAfterStartup.isEmpty()) {
-      menuItemsToClickAfterStartup.add(selectFirstEnabledMenuItem(boardMenu));
+    if (_menuItemsToClickAfterStartup.isEmpty()) {
+      _menuItemsToClickAfterStartup.add(selectFirstEnabledMenuItem(boardMenu));
     }
 
-    for (JMenuItem menuItemToClick : menuItemsToClickAfterStartup) {
+    for (JMenuItem menuItemToClick : _menuItemsToClickAfterStartup) {
       menuItemToClick.setSelected(true);
       menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
     }
+
+    menuItemsToClickAfterStartup = _menuItemsToClickAfterStartup;
   }
 
   private JRadioButtonMenuItem createBoardMenusAndCustomMenus(
