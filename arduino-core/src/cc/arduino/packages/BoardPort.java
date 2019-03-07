@@ -144,6 +144,16 @@ public class BoardPort {
     PreferencesMap identificationProps = getIdentificationPrefs();
     PreferencesMap boardProps = board.getPreferences();
 
+    String wildMatcher = identificationProps.get(".");
+    if (wildMatcher != null) {
+      if (wildMatcher.equals(board.getId())) {
+        return true;
+      }
+      if (wildMatcher.equals(board.getFQBN())) {
+        return true;
+      }
+    }
+
     // Identification properties are defined in boards.txt with a ".N" suffix
     // for example:
     //
