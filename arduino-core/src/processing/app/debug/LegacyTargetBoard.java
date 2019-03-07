@@ -100,4 +100,8 @@ public class LegacyTargetBoard implements TargetBoard {
     return containerPlatform;
   }
 
+  @Override
+  public String getFQBN() {
+    return getContainerPlatform().getContainerPackage().getId() + ":" + getContainerPlatform().getId() + ":" + getId();
+  }
 }
