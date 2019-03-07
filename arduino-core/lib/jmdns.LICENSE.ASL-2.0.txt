@@ -1,0 +1,1 @@
+https://github.com/jmdns/jmdns/blob/jmdns-3.5.3/LICENSE
