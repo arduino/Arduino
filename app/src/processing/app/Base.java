@@ -559,6 +559,36 @@ public class Base {
     return (opened > 0);
   }
 
+  protected boolean restoreRecentlyUsedBoards() throws Exception {
+    // Iterate through all sketches that were open last time p5 was running.
+    // If !windowPositionValid, then ignore the coordinates found for each.
+
+    // Save the sketch path and window placement for each open sketch
+    int count = PreferencesData.getInteger("last.recent_boards.count");
+    int opened = 0;
+    for (int i = count - 1; i >= 0; i--) {
+      String fqbn = PreferencesData.get("last.recent_board" + i + ".fqbn");
+      if (fqbn == null) {
+        continue;
+      }
+      //selectTargetBoard(new TargetBoard());
+    }
+    return count != 0;
+  }
+
+  /**
+   * Store list of sketches that are currently open.
+   * Called when the application is quitting and documents are still open.
+   */
+  protected void storeRecentlyUsedBoards() {
+    int i = 0;
+    for (TargetBoard board : BaseNoGui.getRecentlyUsedBoards()) {
+      PreferencesData.set("last.recent_board" + i + ".fqbn", board.getFQBN());
+      i++;
+    }
+    PreferencesData.setInteger("last.recent_boards.count", BaseNoGui.getRecentlyUsedBoards().size());
+  }
+
   /**
    * Store screen dimensions on last close
    */
