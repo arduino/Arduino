@@ -1518,9 +1518,13 @@ public class Base {
     recentBoardsButtonGroup = new ButtonGroup();
     buttonGroupsMap = new HashMap<>();
 
-    JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
-    recentLabel.setEnabled(false);
-    boardMenu.add(recentLabel);
+    boolean hasRecentBoardsMenu =  (PreferencesData.getInteger("editor.recent_boards.size", 4) != 0);
+
+    if (hasRecentBoardsMenu) {
+      JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
+      recentLabel.setEnabled(false);
+      boardMenu.add(recentLabel);
+    }
 
     // Cycle through all packages
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {

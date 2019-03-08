@@ -936,7 +936,7 @@ public class BaseNoGui {
     if (!recentlyUsedBoards.contains(targetBoard)) {
       recentlyUsedBoards.add(targetBoard);
     }
-    if (recentlyUsedBoards.size() > 4) {
+    if (recentlyUsedBoards.size() > PreferencesData.getInteger("editor.recent_boards.size", 4)) {
       recentlyUsedBoards.remove();
     }
   }
