@@ -22,6 +22,9 @@ import cc.arduino.packages.BoardPort;
 import processing.app.legacy.PApplet;
 
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 import static processing.app.I18n.tr;
@@ -57,8 +60,14 @@ public class SerialMonitor extends AbstractTextMonitor {
       send(textField.getText());
       textField.setText("");
     });
-    
+
     onClearCommand((ActionEvent event) -> textArea.setText(""));
+
+    onCopyCommand((ActionEvent event) -> {
+      String text = textArea.getText();
+      Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+      clipboard.setContents(new StringSelection(text), null);
+    });
   }
 
   private void send(String s) {
