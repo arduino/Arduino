@@ -248,7 +248,7 @@ public class Preferences extends javax.swing.JDialog {
     arduinoNotRunningLabel.setForeground(Color.GRAY);
     arduinoNotRunningLabel.setText(tr("(edit only when Arduino is not running)"));
 
-    checkboxesContainer.setLayout(new javax.swing.BoxLayout(checkboxesContainer, javax.swing.BoxLayout.Y_AXIS));
+    checkboxesContainer.setLayout(new GridLayout(0,2));
 
     displayLineNumbersBox.setText(tr("Display line numbers"));
     checkboxesContainer.add(displayLineNumbersBox);
