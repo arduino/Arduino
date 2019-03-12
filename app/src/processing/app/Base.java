@@ -247,6 +247,8 @@ public class Base {
         // ignore
       }
 
+      UIHelper.scaleElements((float)(Theme.getScale()) / 100.0f);
+
       // Use native popups so they don't look so crappy on osx
       JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     } else {
