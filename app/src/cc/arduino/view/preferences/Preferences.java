@@ -132,9 +132,7 @@ public class Preferences extends javax.swing.JDialog {
     enableCodeFoldingBox = new javax.swing.JCheckBox();
     verifyUploadBox = new javax.swing.JCheckBox();
     externalEditorBox = new javax.swing.JCheckBox();
-    cacheCompiledCore = new javax.swing.JCheckBox();
     checkUpdatesBox = new javax.swing.JCheckBox();
-    updateExtensionBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
     jLabel1 = new javax.swing.JLabel();
     jLabel2 = new javax.swing.JLabel();
@@ -277,14 +275,8 @@ public class Preferences extends javax.swing.JDialog {
 
     checkboxesContainer.add(externalEditorBox);
 
-    cacheCompiledCore.setText(tr("Aggressively cache compiled core"));
-    checkboxesContainer.add(cacheCompiledCore);
-
     checkUpdatesBox.setText(tr("Check for updates on startup"));
     checkboxesContainer.add(checkUpdatesBox);
-
-    updateExtensionBox.setText(tr("Update sketch files to new extension on save (.pde -> .ino)"));
-    checkboxesContainer.add(updateExtensionBox);
 
     saveVerifyUploadBox.setText(tr("Save when verifying or uploading"));
     checkboxesContainer.add(saveVerifyUploadBox);
@@ -730,7 +722,6 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JCheckBox enableCodeFoldingBox;
   private javax.swing.JButton extendedAdditionalUrlFieldWindow;
   private javax.swing.JCheckBox externalEditorBox;
-  private javax.swing.JCheckBox cacheCompiledCore;
   private javax.swing.JTextField fontSizeField;
   private javax.swing.JLabel fontSizeLabel;
   private javax.swing.JLabel jLabel1;
@@ -759,7 +750,6 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JLabel showVerboseLabel;
   private javax.swing.JTextField sketchbookLocationField;
   private javax.swing.JLabel sketchbookLocationLabel;
-  private javax.swing.JCheckBox updateExtensionBox;
   private javax.swing.JCheckBox verboseCompilationBox;
   private javax.swing.JCheckBox verboseUploadBox;
   private javax.swing.JCheckBox verifyUploadBox;
@@ -834,11 +824,7 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("editor.external", externalEditorBox.isSelected());
 
-    PreferencesData.setBoolean("compiler.cache_core", cacheCompiledCore.isSelected());
-
     PreferencesData.setBoolean("update.check", checkUpdatesBox.isSelected());
-
-    PreferencesData.setBoolean("editor.update_extension", updateExtensionBox.isSelected());
 
     PreferencesData.setBoolean("editor.save_on_verify", saveVerifyUploadBox.isSelected());
 
@@ -906,11 +892,15 @@ public class Preferences extends javax.swing.JDialog {
 
     externalEditorBox.setSelected(PreferencesData.getBoolean("editor.external"));
 
-    cacheCompiledCore.setSelected(PreferencesData.get("compiler.cache_core") == null || PreferencesData.getBoolean("compiler.cache_core"));
+    if (PreferencesData.get("compiler.cache_core") == null) {
+      PreferencesData.setBoolean("compiler.cache_core", true);
+    }
 
     checkUpdatesBox.setSelected(PreferencesData.getBoolean("update.check"));
 
-    updateExtensionBox.setSelected(PreferencesData.get("editor.update_extension") == null || PreferencesData.getBoolean("editor.update_extension"));
+    if (PreferencesData.get("editor.update_extension") == null) {
+      PreferencesData.setBoolean("editor.update_extension", true);
+    }
 
     saveVerifyUploadBox.setSelected(PreferencesData.getBoolean("editor.save_on_verify"));
 
