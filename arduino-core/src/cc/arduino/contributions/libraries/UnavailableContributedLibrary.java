@@ -38,7 +38,7 @@ public class UnavailableContributedLibrary extends ContributedLibrary {
   private String version;
 
   public UnavailableContributedLibrary(ContributedLibraryDependency dependency) {
-    this(dependency.getName(), dependency.getVersionRequired());
+    this(dependency.getName(), dependency.getVersion());
   }
 
   public UnavailableContributedLibrary(String _name, String _version) {
@@ -101,7 +101,7 @@ public class UnavailableContributedLibrary extends ContributedLibrary {
   }
 
   @Override
-  public List<ContributedLibraryDependency> getRequires() {
+  public List<ContributedLibraryDependency> getDependencies() {
     return new ArrayList<>();
   }
 

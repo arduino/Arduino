@@ -33,10 +33,10 @@ public abstract class ContributedLibraryDependency {
 
   public abstract String getName();
 
-  public abstract String getVersionRequired();
+  public abstract String getVersion();
 
   @Override
   public String toString() {
-    return getName() + " " + getVersionRequired();
+    return getName() + " " + getVersion();
   }
 }
