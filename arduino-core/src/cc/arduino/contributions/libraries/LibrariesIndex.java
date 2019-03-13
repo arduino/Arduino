@@ -112,7 +112,7 @@ public abstract class LibrariesIndex {
 
   public boolean resolveDependeciesOf(List<ContributedLibrary> solution,
                                       ContributedLibrary library) {
-    List<ContributedLibraryDependency> requirements = library.getRequires();
+    List<ContributedLibraryDependency> requirements = library.getDependencies();
     if (requirements == null) {
       // No deps for this library, great!
       return true;
@@ -160,7 +160,7 @@ public abstract class LibrariesIndex {
 
   private List<ContributedLibrary> findMatchingDependencies(ContributedLibraryDependency dep) {
     List<ContributedLibrary> available = find(dep.getName());
-    if (dep.getVersionRequired() == null || dep.getVersionRequired().isEmpty())
+    if (dep.getVersion() == null || dep.getVersion().isEmpty())
       return available;
 
     // XXX: The following part is actually never reached. The use of version
