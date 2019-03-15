@@ -74,13 +74,17 @@ public class DiscoveryManager {
             continue;
           }
           try {
-            System.out.println("found discovery: " + discoveryName + " -> " + pattern);
-            System.out.println("with preferencess -> " + discoveryPrefs);
+            if (PreferencesData.getBoolean("discovery.debug")) {
+              System.out.println("found discovery: " + discoveryName + " -> " + pattern);
+              System.out.println("with preferencess -> " + discoveryPrefs);
+            }
             pattern = StringReplacer.replaceFromMapping(pattern, PreferencesData.getMap());
             String[] cmd = StringReplacer.formatAndSplit(pattern, discoveryPrefs);
             discoverers.add(new PluggableDiscovery(discoveryName, cmd));
           } catch (Exception e) {
-            System.out.println(format(tr("Could not start discovery '{0}': {1}"), discoveryName, e.getMessage()));
+            if (PreferencesData.getBoolean("discovery.debug")) {
+              System.out.println(format(tr("Could not start discovery '{0}': {1}"), discoveryName, e.getMessage()));
+            }
           }
         }
       }
