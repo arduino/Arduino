@@ -1,5 +1,21 @@
-ARDUINO 1.8.9 ????
+ARDUINO 1.8.9 2091.03.15
 
+[ide]
+* New target! ARM64 boards are now fully supported (Nvidia Jetson and RaspberryPi3 with 64bit operating system)
+* Fix UTF8 related bugs on Windows
+* Fixed: can now compile again using OpenJDK (removed dependency on JavaFx)
+* Fixed: only use touchBar on OSX 10.12 or higher
+* PluggableDiscovery: easily add your own discoverer and make it available in Boards/Port menu (thanks @PaulStoffregen for the idea and the initial implementation)
+* LibManager: reduce slowdown when searching
+* Fixed: ensure a sketch line is visible when it contains an error and must be highlighted
+* Linux: the installer now tries to install a symlink is /usr/local/bin (this doesn't affect usual non-systemwide installation) Thanks @2E0PGS
+
+[wifi-updater]
+* Fix firmware upgrade not being available for 3rd party WINC boards
+
+[arduino-builder]
+* Use lexicographic distance as last chance to spot the right library (if every other tecnique failed)
+* Fix some prototypes being inserted in the middle of a function
 
 ARDUINO 1.8.8 2018.12.07
 
