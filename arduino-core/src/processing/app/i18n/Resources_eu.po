@@ -25,7 +25,7 @@
 # Ivan Barquero <ibarquero@outlook.es>, 2014
 # iñigo Gebara <Gebara99@gmail.com>, 2018
 # Ivan Barquero <ibarquero@outlook.es>, 2014
-# José Miguel Andonegi <jm.andonegi@gmail.com>, 2017-2018
+# José Miguel Andonegi <jm.andonegi@gmail.com>, 2017-2019
 # Jose Zabala <jose.zabala.arizmendi@gmail.com>, 2018
 # Jose Zabala <jose.zabala.arizmendi@gmail.com>, 2018
 # Zylu <rarodiez@gmail.com>, 2014
@@ -35,8 +35,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2019-01-05 18:53+0000\n"
+"Last-Translator: José Miguel Andonegi <jm.andonegi@gmail.com>\n"
 "Language-Team: Basque (http://www.transifex.com/mbanzi/arduino-ide-15/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -952,7 +952,7 @@ msgstr "Errorea abiarazte-kudeatzailea kargatzean: '{0}' konfigurazio-parametroa
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Errorea gertatu da abiarazte-kudeatzailea kargatzean: serie-ataka bat aukeratu."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1296,7 +1296,7 @@ msgstr " '{0}' liburutegiaren bertsio baliogabea: {1}"
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "{0} bertsio baliogabea"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1791,7 +1791,7 @@ msgstr "Erretiratua"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Berriro igo beste serie ataka baten bidez?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1919,12 +1919,12 @@ msgstr "Ez da aurkitu ''{0}'' serieko ataka. Tresnak > Serieko ataka menuan egok
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Ez da aukeratu serie ataka."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Ez da aurkitu {0} serie ataka."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"

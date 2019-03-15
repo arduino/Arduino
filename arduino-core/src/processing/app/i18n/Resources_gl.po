@@ -24,13 +24,14 @@
 # Diego Prado Gesto <>, 2012
 # Marce Villarino <mvillarino@gmail.com>, 2013
 # Marce Villarino <mvillarino@kde-espana.es>, 2013
+# Suso Martínez <chu_vigo@hotmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-12-16 16:59+0000\n"
+"Last-Translator: Suso Martínez <chu_vigo@hotmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,33 +46,33 @@ msgstr "  (require reiniciar Arduino)"
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "Non usado: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "Usado: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "Non se atopa 'Keyboard'. Tal vez esqueciches incluir a liña '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "Non se atopa 'Mouse'. Tal vez esqueciches incluir a liña '#include <Mouse.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "O cartafol 'arch' xa non está soportada! Máis información en http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(editar só cando Arduino non se esté a executar)"
+msgstr "(editar só cando Arduino non se estea a executar)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"

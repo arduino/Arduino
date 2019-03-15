@@ -29,7 +29,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-12-05 11:02+0000\n"
+"PO-Revision-Date: 2018-12-05 12:55+0000\n"
 "Last-Translator: Alejandro Dafonte <alejandrodafonte@outlook.com>\n"
 "Language-Team: Galician (Spain) (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -1913,12 +1913,12 @@ msgstr ""
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Porto serie non seleccionado."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Porto serie {0} non atopado."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1943,7 +1943,7 @@ msgstr "Mostra cartafol sketch"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
 msgid "Show timestamp"
-msgstr ""
+msgstr "Mostrar marca de tempo"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "

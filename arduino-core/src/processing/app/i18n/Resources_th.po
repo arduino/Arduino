@@ -20,14 +20,15 @@
 # Translators:
 # Translators:
 # Translators:
+# Sippawit Thammawiset <sippathamm@gmail.com>, 2018
 # Tony Wong <ytn2002@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2018-12-29 12:09+0000\n"
+"Last-Translator: Sippawit Thammawiset <sippathamm@gmail.com>\n"
 "Language-Team: Thai (http://www.transifex.com/mbanzi/arduino-ide-15/language/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,56 +38,56 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr ""
+msgstr "(จำเป็นต้องรีสตาร์ท Arduino)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "ยังไม่ถูกใช้: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr ""
+msgstr "ถูกใช้แล้ว: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "ไม่พบ 'Keyboard' โปรดตรวจสอบว่า sketch ของคุณได้ทำการเพิ่มบรรทัด '#include <Keyboard.h>' เข้ามาแล้ว"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "ไม่พบ 'Mouse' โปรดตรวจสอบว่า sketch ของคุณได้ทำการเพิ่มบรรทัด '#include <Mouse.h>' เข้ามาแล้ว"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
 "'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more "
 "information"
-msgstr ""
+msgstr "ไม่สนับสนุนโฟลเดอร์ 'arch' อีกต่อไป! ดูข้อมูลเพิ่มเติม http://goo.gl/gfFJzU"
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "เฉพาะแก้ไขเท่านั้น เมื่ออดุยโน่ไม่ทำงาน"
+msgstr "(แก้ไขเท่านั้นเมื่อ Arduino ไม่ทำงาน)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(ดั้งเดิม)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
-msgstr ""
+msgstr "ไม่สนับสนุน --curdir อีกต่อไป"
 
 #: ../../../processing/app/Base.java:468
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload และ --verbose-build สามารถใช้ได้พร้อมกับ --verify หรือ --upload เท่านั้น"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
-msgstr ""
+msgstr ".pde -> .ino"
 
 #: Editor.java:2053
 msgid ""
@@ -94,68 +95,68 @@ msgid ""
 " font: 11pt \"Lucida Grande\"; margin-top: 8px }</style> </head><b>Do you "
 "want to save changes to this sketch<BR> before closing?</b><p>If you don't "
 "save, your changes will be lost."
-msgstr ""
+msgstr "<html><head><style type=\"text/css\">b { font: 13pt \"Lucida Grande\" }p { font: 11pt \"Lucida Grande\"; margin-top: 8px }</style></head><b>คุณต้องการบันทึก sketch นี้<BR>ก่อนปิดหรือไม่? </b><p>หากคุณไม่บันทึกการเปลี่ยนแปลงทั้งหมดจะสูญหาย"
 
 #: Editor.java:2169
 #, java-format
 msgid "A folder named \"{0}\" already exists. Can't open sketch."
-msgstr ""
+msgstr "มีไฟลเดอร์ชื่อ \"{0}\" อยู่แล้ว ไม่สามารถเปิด sketch ได้"
 
 #: Base.java:2690
 #, java-format
 msgid "A library named {0} already exists"
-msgstr ""
+msgstr "มีไลบรารีชื่อ {0} อยู่แล้ว"
 
 #: UpdateCheck.java:103
 msgid ""
 "A new version of Arduino is available,\n"
 "would you like to visit the Arduino download page?"
-msgstr ""
+msgstr "Arduino เวอร์ชันใหม่พร้อมใช้งานแล้ว\nคุณต้องการไปที่หน้าดาวน์โหลด Arduino หรือไม่?"
 
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "แพ็กเกจที่ใหม่กว่า {0} พร้อมใช้งานแล้ว"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
-msgstr ""
+msgstr "โฟลเดอร์ย่อย sketchbook ของคุณเป็นไลบรารีที่ไม่ถูกต้อง"
 
 #: Editor.java:1116
 msgid "About Arduino"
-msgstr "เกี่ยวกับ อาดุยโน่"
+msgstr "เกี่ยวกับ Arduino"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "Acoli"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr "เพิ่มไฟล์ไลบารี"
+msgstr "เพิ่มไลบรารี .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
-msgstr "เพิ่มไฟล์"
+msgstr "เพิ่มไฟล์..."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "เพิ่ม URLs การจัดการบอร์ด"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "เพิ่ม URLs การจัดการบอร์ด:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
-msgstr "แอฟริกาใต้"
+msgstr "Afrikaans"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:248
 msgid "Aggressively cache compiled core"
-msgstr ""
+msgstr "มีแคชคอมไพล์ core มากเกินไป"
 
 #: ../../../processing/app/Preferences.java:96
 msgid "Albanian"
-msgstr ""
+msgstr "Albanian"
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/DropdownAllItem.java:42
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownAllCoresItem.java:43
@@ -168,795 +169,795 @@ msgid ""
 "An error occurred while trying to fix the file encoding.\n"
 "Do not attempt to save this sketch as it may overwrite\n"
 "the old version. Use Open to re-open the sketch and try again.\n"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะพยายามจะแก้ไขไฟล์การเข้ารหัส\nอย่าพยายามบันทึก sketch นี้ เพราะอาจเขียนทับ\nไฟล์อันเก่าได้ ลองเปิด sketch นี้ใหม่อีกครั้ง\n"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะอัปเดตดัชนีไลบรารี!"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะอัปเดต sketch"
 
 #: ../../../processing/app/BaseNoGui.java:506
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "An error occurred while verifying the sketch"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะตรวจสอบ sketch"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "An error occurred while verifying/uploading the sketch"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะอัปเดต/ตรวจสอบ sketch"
 
 #: Base.java:228
 msgid ""
 "An unknown error occurred while trying to load\n"
 "platform-specific code for your machine."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดที่ไม่ทราบสาเหตุขณะกำลังโหลด\nโค้ดแพลทฟอร์มที่เฉพาะสำหรับเครื่องของคุณ"
 
 #: Preferences.java:85
 msgid "Arabic"
-msgstr "ตัวอาราบิค (ภาษาอาหรับ)"
+msgstr "อาราบิค"
 
 #: Preferences.java:86
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragonese"
 
 #: tools/Archiver.java:48
 msgid "Archive Sketch"
-msgstr ""
+msgstr "เอกสาร sketch"
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr ""
+msgstr "เอกสาร sketch เป็น:"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
-msgstr ""
+msgstr "เอกสาร sketch ถูกยกเลิก"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 #, java-format
 msgid "Archiving built core (caching) in: {0}"
-msgstr ""
+msgstr "สร้าง core เอกสาร (caching) ใน: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
 "the sketch couldn't save properly."
-msgstr ""
+msgstr "เอกสาร sketch ถูกยกเลิกเนื่องจากไม่สามารถบันทึกข้อมูลได้"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr "อดุยโน่"
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
-msgstr "บอร์ดอดุยโน่ เอ อาร์ เอ็ม (32บิต)"
+msgstr "บอร์ด Arduino ARM (32 บิต)"
 
 #: ../../../processing/app/I18n.java:82
 msgid "Arduino AVR Boards"
-msgstr "บอร์ดอดุยโน่ เอ วี อาร์"
+msgstr "บอร์ด Arduino ARM"
 
 #: Editor.java:2137
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "Arduino สามารถเปิดไฟล์ sketch ของ Arduino ได้เท่านั้น\nและไฟล์อื่น ๆ ที่เป็น .ino หรือ .pde"
 
 #: Base.java:1682
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your settings."
-msgstr ""
+msgstr "ไม่สามารถเริ่ม Arduino ได้เนื่องจากไม่สามารถสร้าง\nโฟลเดอร์ที่จะเก็บตามการตั้งค่าของคุณ"
 
 #: Base.java:1889
 msgid ""
 "Arduino cannot run because it could not\n"
 "create a folder to store your sketchbook."
-msgstr ""
+msgstr "ไม่สามารถเริ่ม Arduino ได้เนื่องจากไม่สามารถสร้าง\nโฟลเดอร์ที่จะเก็บใน sketchbook ของคุณ"
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr ""
+msgstr "Arduino:"
 
 #: Sketch.java:588
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr ""
+msgstr "คุณแน่ใจแล้วที่จะลบ \"{0}\"?"
 
 #: Sketch.java:587
 msgid "Are you sure you want to delete this sketch?"
-msgstr ""
+msgstr "คุณแน่ใจแล้วที่จะลบ sketch นี้?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
-msgstr ""
+msgstr "Argument ที่จำเป็นสำหรับ --board"
 
 #: ../../../processing/app/Base.java:363
 msgid "Argument required for --port"
-msgstr ""
+msgstr "Argument ที่จำเป็นสำหรับ --port"
 
 #: ../../../processing/app/Base.java:377
 msgid "Argument required for --pref"
-msgstr ""
+msgstr "Argument ที่จำเป็นสำหรับ --pref"
 
 #: ../../../processing/app/Base.java:384
 msgid "Argument required for --preferences-file"
-msgstr ""
+msgstr "Argument ที่จำเป็นสำหรับ --preferences-file"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:76
 #: ../../../processing/app/helpers/CommandlineParser.java:83
 #, java-format
 msgid "Argument required for {0}"
-msgstr ""
+msgstr "Argument ที่จำเป็นสำหรับ {0}"
 
 #: ../../../processing/app/Preferences.java:137
 msgid "Armenian"
-msgstr ""
+msgstr "Armenian"
 
 #: ../../../processing/app/Preferences.java:138
 msgid "Asturian"
-msgstr "อัสตูเรียส"
+msgstr "Asturian"
 
 #: ../../../processing/app/debug/Compiler.java:145
 msgid "Authorization required"
-msgstr ""
+msgstr "จำเป็นต้องอนุญาต"
 
 #: tools/AutoFormat.java:91
 msgid "Auto Format"
-msgstr ""
+msgstr "การฟอร์แมทอัตโนมัติ"
 
 #: tools/AutoFormat.java:944
 msgid "Auto Format finished."
-msgstr ""
+msgstr "การฟอร์แมทอัตโนมัติเสร็จสิ้น"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "ป้องกันการตั้งค่าพร็อกซีอัตโนมัติ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "อัตโนมัติ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "เปลี่ยน URL พร็อกซีอัตโนมัติ:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
-msgstr ""
+msgstr "เลื่อนอัตโนมัติ"
 
 #: Editor.java:2619
 #, java-format
 msgid "Bad error line: {0}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดบรรทัด: {0}"
 
 #: Editor.java:2136
 msgid "Bad file selected"
-msgstr ""
+msgstr "การเลือกไฟล์ที่ไม่ถูกต้อง"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Basque"
-msgstr ""
+msgstr "Basque"
 
 #: ../../../processing/app/Preferences.java:139
 msgid "Belarusian"
-msgstr ""
+msgstr "Belarusian"
 
 #: ../../../processing/app/Base.java:1433
 #: ../../../processing/app/Editor.java:707
 msgid "Board"
-msgstr ""
+msgstr "บอร์ด"
 
 #: ../../../../../app//src/processing/app/Editor.java:2824
 msgid "Board Info"
-msgstr ""
+msgstr "ข้อมูลบอร์ด"
 
 #: ../../../../../app/src/processing/app/Editor.java:2545
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "บอร์ด {0} ที่ไม่พร้อมใช้งาน"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
 msgid "Board {0} (platform {1}, package {2}) is unknown"
-msgstr ""
+msgstr "ไม่รู้จักบอร์ด {0} (แพลทฟอร์ม {1}, แพ็กเกจ {2})"
 
 #: ../../../processing/app/debug/TargetBoard.java:42
 #, java-format
 msgid ""
 "Board {0}:{1}:{2} doesn''t define a ''build.board'' preference. Auto-set to:"
 " {3}"
-msgstr ""
+msgstr "บอร์ด {0}:{1}:{2} ไม่ได้นิยาม ''build.board'' ตั้งค่าอัตโนมัติเป็น: {3}"
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr ""
+msgstr "บอร์ด:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "การจัดการบอร์ด"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "การจัดการบอร์ด..."
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "เพิ่มบอร์ดในแพ็กเกจนี้:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
 msgid "Bootloader file specified but missing: {0}"
-msgstr ""
+msgstr "สูญเสียไฟล์ Bootloader ที่เฉพาะ: {0}"
 
 #: ../../../processing/app/Preferences.java:140
 msgid "Bosnian"
-msgstr ""
+msgstr "Bosnian"
 
 #: SerialMonitor.java:112
 msgid "Both NL & CR"
-msgstr ""
+msgstr "ทั้ง NL & CR"
 
 #: Preferences.java:81
 msgid "Browse"
-msgstr ""
+msgstr "ค้นดู"
 
 #: ../../../processing/app/Sketch.java:1530
 msgid "Build options changed, rebuilding all"
-msgstr ""
+msgstr "การตั้งค่า Build ถูกเปลี่ยนแปลง, rebuilding ใหม่ทั้งหมด"
 
 #: ../../../../../app/src/processing/app/Base.java:1210
 msgid "Built-in Examples"
-msgstr ""
+msgstr "ตัวอย่าง Built-in"
 
 #: ../../../processing/app/Preferences.java:80
 msgid "Bulgarian"
-msgstr ""
+msgstr "Bulgarian"
 
 #: ../../../processing/app/Preferences.java:141
 msgid "Burmese (Myanmar)"
-msgstr ""
+msgstr "Burmese (Myanmar)"
 
 #: Editor.java:708
 msgid "Burn Bootloader"
-msgstr ""
+msgstr "การเบิร์น Bootloader"
 
 #: Editor.java:2504
 msgid "Burning bootloader to I/O Board (this may take a minute)..."
-msgstr ""
+msgstr "กำลังเบิร์น bootloader ไปยังบอร์ด I/O (อาจใช้เวลานาน)..."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/DownloadableContributionsDownloader.java:91
 msgid ""
 "CRC doesn't match, file is corrupted. It may be a temporary problem, please "
 "retry later."
-msgstr ""
+msgstr "CRC ที่ไม่เข้ากัน, ไฟล์ไม่ถูกต้อง อาจเป็นปัญหาเพียงชั่วคราว โปรดลองใหม่อีกครั้ง"
 
 #: ../../../processing/app/Base.java:379
 #, java-format
 msgid "Can only pass one of: {0}"
-msgstr ""
+msgstr "สามารถข้าม: {0} ได้เท่านั้น"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:254
 msgid "Can't enable external editor"
-msgstr ""
+msgstr "ไม่สามารถใช้ตัวแก้ไขภายนอก"
 
 #: ../../../processing/app/BaseNoGui.java:504
 #: ../../../processing/app/BaseNoGui.java:549
 msgid "Can't find the sketch in the specified path"
-msgstr ""
+msgstr "ไม่พบ sketch ในเส้นทางที่เฉพาะ"
 
 #: ../../../processing/app/Preferences.java:92
 msgid "Canadian French"
-msgstr ""
+msgstr "Canadian French"
 
 #: Preferences.java:79 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2064 Editor.java:2145 Editor.java:2465
 msgid "Cancel"
-msgstr ""
+msgstr "ยกเลิก"
 
 #: ../../../processing/app/Base.java:465
 msgid "Cannot specify any sketch files"
-msgstr ""
+msgstr "ไม่สามารถกำหนดไฟล์ sketch ใด ๆ"
 
 #: SerialMonitor.java:112
 msgid "Carriage return"
-msgstr ""
+msgstr "Carriage return"
 
 #: Preferences.java:87
 msgid "Catalan"
-msgstr ""
+msgstr "Catalan"
 
 #: Preferences.java:419
 msgid "Check for updates on startup"
-msgstr ""
+msgstr "ตรวจสอบการอัปเดทเมื่อเริ่ม"
 
 #: ../../../processing/app/Preferences.java:142
 msgid "Chinese (China)"
-msgstr ""
+msgstr "Chinese (China)"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Chinese (Taiwan)"
-msgstr ""
+msgstr "Chinese (Taiwan)"
 
 #: ../../../processing/app/Preferences.java:143
 msgid "Chinese (Taiwan) (Big5)"
-msgstr ""
+msgstr "Chinese (Taiwan) (Big5)"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
 msgid "Clear output"
-msgstr ""
+msgstr "ล้างขาออก"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "คลิกเพื่อดูบอร์ดที่ไม่เป็นทางการซึ่งสนับสนุน URLs"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
-msgstr ""
+msgstr "ปิด"
 
 #: Editor.java:1208 Editor.java:2749
 msgid "Comment/Uncomment"
-msgstr ""
+msgstr "คอมเมนท์/ยกเลิกคอมเมนท์"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "การสื่อสาร"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "การคอมไพเลอร์แจ้งเตือน:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
-msgstr ""
+msgstr "กำลังคอมไพล์ sketch..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:27
 msgid "Contributed"
-msgstr ""
+msgstr "Contributed"
 
 #: Editor.java:1157 Editor.java:2707
 msgid "Copy"
-msgstr ""
+msgstr "คัดลอก"
 
 #: Editor.java:1177 Editor.java:2723
 msgid "Copy as HTML"
-msgstr ""
+msgstr "คัดลอกเป็น HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "คัดลอกข้อความข้อผิดผลาด"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
-msgstr ""
+msgstr "คัดลอกเพื่อ Forum"
 
 #: Sketch.java:1089
 #, java-format
 msgid "Could not add ''{0}'' to the sketch."
-msgstr ""
+msgstr "ไม่สามารถเพิ่ม \"{0}\" ไปยัง sketch"
 
 #: Editor.java:2188
 msgid "Could not copy to a proper location."
-msgstr ""
+msgstr "ไม่สามรถคัดลอกไปยังที่ตั้งข้อมูล"
 
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "ไม่สามารถสร้างแฟ้ม \"{0}\""
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
-msgstr ""
+msgstr "ไม่สามารถสร้างโฟลเดอร์ sketch"
 
 #: Editor.java:2206
 msgid "Could not create the sketch."
-msgstr ""
+msgstr "ไม่สามารถสร้าง sketch"
 
 #: Sketch.java:617
 #, java-format
 msgid "Could not delete \"{0}\"."
-msgstr ""
+msgstr "ไม่สามารถลบ \"{0}\""
 
 #: Sketch.java:1066
 #, java-format
 msgid "Could not delete the existing ''{0}'' file."
-msgstr ""
+msgstr "ไม่สามรถลบไฟล์ \"{0}\" ที่มีอยู่แล้ว"
 
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
 msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
-msgstr ""
+msgstr "ไม่พบ boards.txt ใน {0} เป็น pre-1.5 ใช่หรือไม่?"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
 msgid "Could not find tool {0}"
-msgstr ""
+msgstr "ไม่พบเครื่องมือ {0}"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:278
 #, java-format
 msgid "Could not find tool {0} from package {1}"
-msgstr ""
+msgstr "ไม่พบเครื่องมือ {0} จากแพ็กเกจ {1}"
 
 #: Base.java:1934
 #, java-format
 msgid ""
 "Could not open the URL\n"
 "{0}"
-msgstr ""
+msgstr "ไม่สามารถเปิด URL\n{0}"
 
 #: Base.java:1958
 #, java-format
 msgid ""
 "Could not open the folder\n"
 "{0}"
-msgstr ""
+msgstr "ไม่สามารถเปิดโฟล์เดอร์\n{0}"
 
 #: Sketch.java:1769
 msgid ""
 "Could not properly re-save the sketch. You may be in trouble at this point,\n"
 "and it might be time to copy and paste your code to another text editor."
-msgstr ""
+msgstr "ไม่สามารถบันทึกข้อมูล sketch ได้อีกครั้ง คุณอาจมีปัญหาที่จุดนี้\nและอาจเป็นที่คุณคัดลอกและวางโค้ดของคุณไปยังตัวแก้ไขอื่น"
 
 #: Sketch.java:1768
 msgid "Could not re-save sketch"
-msgstr ""
+msgstr "ไม่สามารถบันทึก sketch ได้อีกครั้ง"
 
 #: Theme.java:52
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "ไม่สามารถอ่านการตั้งค่าธีมสี\nคุณต้องติดตั้ง Arduino ใหม่อีกครั้ง"
 
 #: Preferences.java:219
 msgid ""
 "Could not read default settings.\n"
 "You'll need to reinstall Arduino."
-msgstr ""
+msgstr "ไม่สามารถอ่านการตั้งค่าพื้นฐาน\nคุณต้องติดตั้ง Arduino ใหม่อีกครั้ง"
 
 #: Base.java:2482
 #, java-format
 msgid "Could not remove old version of {0}"
-msgstr ""
+msgstr "ไม่สามารถลบเวอร์ชันเก่าของ {0}"
 
 #: Base.java:2492
 #, java-format
 msgid "Could not replace {0}"
-msgstr ""
+msgstr "ไม่สามารถวาง {0} ทับได้"
 
 #: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
 #, java-format
 msgid "Could not write preferences file: {0}"
-msgstr ""
+msgstr "ไม่สามารถเขียนไฟล์ preferences: {0}"
 
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
-msgstr ""
+msgstr "ไม่สามารถเขียนเอกสาร sketch"
 
 #: Sketch.java:1647
 msgid "Couldn't determine program size: {0}"
-msgstr ""
+msgstr "ไม่สามารถกำหนดขนาดโปรแกรม: {0}"
 
 #: Sketch.java:616
 msgid "Couldn't do it"
-msgstr ""
+msgstr "ไม่สามาถกระทำได้"
 
 #: debug/BasicUploader.java:209
 msgid ""
 "Couldn't find a Board on the selected port. Check that you have the correct "
 "port selected.  If it is correct, try pressing the board's reset button "
 "after initiating the upload."
-msgstr ""
+msgstr "ไม่พบบอร์ดบนพอร์ทที่เลือก โปรดตรวจสอบว่าคุณได้เลือกพอร์ทที่ถูกต้องแล้ว หากเป็นไปตามนั้น ลองกดปุ่มรีเซ็ทของบอร์ดหลังจากการอัปโหลดเสร็จสิ้น"
 
 #: ../../../processing/app/Preferences.java:82
 msgid "Croatian"
-msgstr ""
+msgstr "Croatian"
 
 #: Editor.java:1149 Editor.java:2699
 msgid "Cut"
-msgstr ""
+msgstr "ตัด"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Czech (Czech Republic)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danish (Denmark)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "กำลังประมวลผลข้อมูล"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "ที่จัดเก็บข้อมูล"
 
 #: ../../../../../app/src/processing/app/Editor.java:1386
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "ลบขนาดฟอนท์ลง"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
-msgstr ""
+msgstr "ลดย่อหน้า"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr ""
+msgstr "พื้นฐาน"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr ""
+msgstr "ธีมพื้นฐาน"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
-msgstr ""
+msgstr "ลบ"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "ควบคุมอุปกรณ์"
 
 #: debug/Uploader.java:199
 msgid ""
 "Device is not responding, check the right serial port is selected or RESET "
 "the board right before exporting"
-msgstr ""
+msgstr "อุปกรณ์ไม่ตอบสนอง, โปรดตรวจสอบว่าคุณได้เลือกซีเรียลพอร์ทที่ถูกต้องแล้วหรือกดปุ่มรีเซ็ทก่อนการส่งออก"
 
 #: tools/FixEncoding.java:57
 msgid "Discard all changes and reload sketch?"
-msgstr ""
+msgstr "ละทิ้งการเปลี่ยนแปลงทั้งหมดและโหลด sketch ใหม่อีกครั้ง"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "การแสดงผล"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
-msgstr ""
+msgstr "การแสดงเลขบรรทัด"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:195
 #, java-format
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "คุณต้องการลบ {0}?\nหากเป็นเช่นนั้น คุณไม่ต้องการใช้ {0} อีกต่อไป"
 
 #: Editor.java:2064
 msgid "Don't Save"
-msgstr ""
+msgstr "ไม่ต้องบันทึก"
 
 #: Editor.java:2275 Editor.java:2311
 msgid "Done Saving."
-msgstr ""
+msgstr "การบันทึกเสร็จสิ้น"
 
 #: Editor.java:2510
 msgid "Done burning bootloader."
-msgstr ""
+msgstr "การเบิร์น bootloader เสร็จสิ้น"
 
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "การคอมไพล์เสร็จสิ้น"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
-msgstr ""
+msgstr "การคอมไพล์เสร็จสิ้น"
 
 #: Editor.java:2564
 msgid "Done printing."
-msgstr ""
+msgstr "การพิมพ์เสร็จสิ้น"
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "การอัปโหลดเสร็จสิ้น"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
-msgstr ""
+msgstr "การอัปโหลดเสร็จสิ้น"
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "ดาวน์โหลดแล้ว {0}kb จาก {1}kb"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
-msgstr ""
+msgstr "การดาวน์โหลดบอร์ด"
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:86
 msgid "Downloading libraries index..."
-msgstr ""
+msgstr "กำลังดาวน์โหลดดัชนีไลบรารี..."
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:115
 #, java-format
 msgid "Downloading library: {0}"
-msgstr ""
+msgstr "การดาวน์โหลดไลบรารี: {0}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:318
 msgid "Downloading platforms index..."
-msgstr ""
+msgstr "กำลังดาวน์โหลดดัชนีแพลทฟอร์ม..."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:113
 #, java-format
 msgid "Downloading tools ({0}/{1})."
-msgstr ""
+msgstr "กำลังดาวน์โหลดเครื่องมือ ({0}/{1})"
 
 #: Preferences.java:91
 msgid "Dutch"
-msgstr ""
+msgstr "Dutch"
 
 #: ../../../processing/app/Preferences.java:144
 msgid "Dutch (Netherlands)"
-msgstr ""
+msgstr "Dutch (Netherlands)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1309
 msgid "Edison Help"
-msgstr ""
+msgstr "ช่วยเหลือ Edison "
 
 #: Editor.java:1130
 msgid "Edit"
-msgstr ""
+msgstr "แก้ไข"
 
 #: Preferences.java:370
 msgid "Editor font size: "
-msgstr ""
+msgstr "ขนาดฟอนท์ตัวแก้ไข:"
 
 #: Preferences.java:353
 msgid "Editor language: "
-msgstr ""
+msgstr "ภาษาตัวแก้ไข:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "ใช้งานโค้ด Folding"
 
 #: Preferences.java:92
 msgid "English"
-msgstr ""
+msgstr "English"
 
 #: ../../../processing/app/Preferences.java:145
 msgid "English (United Kingdom)"
-msgstr ""
+msgstr "English (United Kingdom)"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:269
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:271
 msgid "Enter a comma separated list of urls"
-msgstr ""
+msgstr "ใส่เครื่องหมายคอมมาแยกรายการ urls"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:96
 msgid "Enter additional URLs, one for each row"
-msgstr ""
+msgstr "เพิ่ม URLS, บรรทัดละอัน"
 
 #: Editor.java:1062
 msgid "Environment"
-msgstr ""
+msgstr "สภาพแวดล้อม"
 
 #: Base.java:2147 Preferences.java:256 Sketch.java:475 Sketch.java:481
 #: Sketch.java:496 Sketch.java:503 Sketch.java:526 Sketch.java:543
 #: Editor.java:2167 Editor.java:2178 Editor.java:2188 Editor.java:2206
 msgid "Error"
-msgstr ""
+msgstr "เกิดข้อผิดผลาด"
 
 #: Sketch.java:1065 Sketch.java:1088
 msgid "Error adding file"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการเพิ่มไฟล์"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:272
 #, java-format
 msgid "Error compiling for board {0}."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการคอมไพล์บอร์ด {0}"
 
 #: debug/Compiler.java:369
 msgid "Error compiling."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการคอมไพล์"
 
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการดาวน์โหลด {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการรับโฟลเดอร์ข้อมูล Arduino"
 
 #: Serial.java:593
 #, java-format
 msgid "Error inside Serial.{0}()"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดภายใน Serail.{0}()"
 
 #: ../../../../../app/src/processing/app/Theme.java:302
 #, java-format
 msgid "Error loading theme {0}: {1}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการโหลดธีม {0}: {1}"
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
 #, java-format
 msgid "Error loading {0}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการโหลด {0}"
 
 #: Serial.java:181
 #, java-format
 msgid "Error opening serial port ''{0}''."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการเปิดซีเรียลพอร์ท \"{0}\""
 
 #: ../../../processing/app/Serial.java:119
 #, java-format
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการเปิดซีเรียลพอร์ท \"{0}\" ดูเอกสารที่ http://playground.arduino.cc/Linux/All#Permission"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
 #, java-format
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการแจกแจงรูปประโยคดัชนีไลบรารี: {0}\nลองเปิดการจัดการไลบรารีเพื่ออัปเดทดัชนีไลบรารี"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการอ่านดัชนีไลบรารี: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการอ่านโฟลเดอร์ดัชนีแพ็กเกจ: {0}\n(อาจเป็นปัญหาการเข้าถึง?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการอ่าน preferences"
 
 #: Preferences.java:279
 #, java-format
 msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการอ่านไฟล์ preference โปรดลบ (หรือย้าย)\n{0} และรีสตาร์ท Arduino"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:245
 msgid "Error running post install script"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการเริ่มประกาศติดตั้งรหัส"
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr ""
+msgstr "เกิดข้อผิดผลาดการเริ่มวิธีการค้นพบ"
 
 #: Serial.java:125
 #, java-format
 msgid "Error touching serial port ''{0}''."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดเกี่ยวกับซีเรียลพอร์ท \"{0}\""
 
 #: Editor.java:2512 Editor.java:2516 Editor.java:2520
 msgid "Error while burning bootloader."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะเบิร์น bootloader"
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะเบิร์น bootloader: สูญเสีย '{0}' โครงแบบพารามิเตอร์"
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะเบิร์น bootloader: โปรดเลือกซีเรียลพอร์ท"
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะคอมไพล์: สูญเสีย '{0}' โครงแบบพารามิเตอร์"
 
 #: Editor.java:2567
 msgid "Error while printing."
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะพิมพ์"
 
 #: ../../../../../arduino-core/src/processing/app/Serial.java:117
 #, java-format
 msgid "Error while setting serial port parameters: {0} {1} {2} {3}"
-msgstr ""
+msgstr "เกิดข้อผิดผลาดขณะตั้งค่าพารามิเตอร์ซีเรียลพอร์ท: {0} {1} {2} {3}"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
@@ -1710,7 +1711,7 @@ msgstr ""
 
 #: Editor.java:704
 msgid "Programmer"
-msgstr "นักเขียนโปรแกรม"
+msgstr "โปรแกรมเมอร์"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:80
 #, java-format
@@ -1719,7 +1720,7 @@ msgstr ""
 
 #: Base.java:783 Editor.java:593
 msgid "Quit"
-msgstr "เลิก"
+msgstr "ออก"
 
 #: ../../../../../app/src/processing/app/Base.java:1233
 msgid "RETIRED"
@@ -1739,7 +1740,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:85
 msgid "Remove"
-msgstr "ย้าย"
+msgstr "ลบ"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
@@ -1749,7 +1750,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
 msgid "Removing..."
-msgstr "เคลื่อนย้าย"
+msgstr "กำลังลบ..."
 
 #: EditorHeader.java:300
 msgid "Rename"

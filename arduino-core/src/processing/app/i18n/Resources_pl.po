@@ -28,7 +28,7 @@
 # Mateusz Żochowski <matizochol@gmail.com>, 2015
 # Michal <toyorg@windowslive.com>, 2015
 # Szymon Borecki <szymex73@gmail.com>, 2015
-# Tomasz Pudło <wptom@wp.pl>, 2015-2018
+# Tomasz Pudło <wptom@wp.pl>, 2015-2019
 # Tomasz Pudło <wptom@wp.pl>, 2015
 # Voltinus <voltinusmail@gmail.com>, 2015
 msgid ""
@@ -36,8 +36,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2019-02-27 09:35+0000\n"
+"Last-Translator: Tomasz Pudło <wptom@wp.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -953,7 +953,7 @@ msgstr "Błąd przy wgrywaniu bootloadera: brak '{0}' parametru konfiguracji"
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr ""
+msgstr "Błąd przy wgrywaniu bootloadera: proszę wybrać port szeregowy."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1297,7 +1297,7 @@ msgstr "Nieprawidłowa wersja '{0}' dla biblioteki w: {1}"
 #: ../../../../../app/src/processing/app/Base.java:362
 #, java-format
 msgid "Invalid version {0}"
-msgstr ""
+msgstr "Błędna wersja {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1792,7 +1792,7 @@ msgstr "Wycofane"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr "Powtórzyć wgrywanie na innym porcie szeregowym?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1920,12 +1920,12 @@ msgstr "Nie znaleziono portu szeregowego ''{0}''. Czy wybrałeś właściwy z me
 #: ../../../../../app/src/processing/app/Editor.java:1969
 #: ../../../../../app/src/processing/app/Editor.java:2040
 msgid "Serial port not selected."
-msgstr ""
+msgstr "Nie wybrano portu szeregowego."
 
 #: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
 msgid "Serial port {0} not found."
-msgstr ""
+msgstr "Port szeregowy {0} nie istnieje."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -2800,7 +2800,7 @@ msgstr "{0}: Niewłaściwa opcja, powinna być formatu \"name=value\""
 #: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
 #, java-format
 msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
-msgstr "{0}: błędna wartość dla opcji \"{1}\" dla płytki \"{2}\""
+msgstr "{0}: błędna wartość w opcji \"{1}\" dla płytki \"{2}\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format
