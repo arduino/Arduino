@@ -33,7 +33,6 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -60,39 +59,28 @@ public class Serial implements SerialPortEventListener {
   private CharBuffer outToMessage = CharBuffer.allocate(OUT_BUFFER_CAPACITY);
 
   public Serial() throws SerialException {
-    this(PreferencesData.get("serial.port"),
-      PreferencesData.getInteger("serial.debug_rate", 9600),
-      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
-      PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
+    this(PreferencesData.get("serial.port"), PreferencesData.getInteger("serial.debug_rate", 9600));
   }
 
   public Serial(int irate) throws SerialException {
-    this(PreferencesData.get("serial.port"), irate,
-      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
-      PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
+  this(PreferencesData.get("serial.port"), irate);
+  }
+
+  public Serial(String iname) throws SerialException {
+    this(iname, PreferencesData.getInteger("serial.debug_rate", 9600));
   }
 
   public Serial(String iname, int irate) throws SerialException {
+    this(iname, irate, Charset.defaultCharset());
+  }
+
+  public Serial(String iname, int irate, Charset charset) throws SerialException {
     this(iname, irate, PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
       PreferencesData.getInteger("serial.databits", 8),
       PreferencesData.getFloat("serial.stopbits", 1),
       !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
-  }
-
-  public Serial(String iname) throws SerialException {
-    this(iname, PreferencesData.getInteger("serial.debug_rate", 9600),
-      PreferencesData.getNonEmpty("serial.parity", "N").charAt(0),
-      PreferencesData.getInteger("serial.databits", 8),
-      PreferencesData.getFloat("serial.stopbits", 1),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableRTS"),
-      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"));
+      !BaseNoGui.getBoardPreferences().getBoolean("serial.disableDTR"),
+      charset);
   }
 
   public static boolean touchForCDCReset(String iname) throws SerialException {
@@ -116,12 +104,13 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
-  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
+  private Serial(String iname, int irate, char iparity, int idatabits,
+      float istopbits, boolean setRTS, boolean setDTR, Charset charset) throws SerialException {
     //if (port != null) port.close();
     //this.parent = parent;
     //parent.attach(this);
 
-    resetDecoding(StandardCharsets.UTF_8);
+    resetDecoding(charset);
 
     int parity = SerialPort.PARITY_NONE;
     if (iparity == 'E') parity = SerialPort.PARITY_EVEN;
@@ -175,24 +164,32 @@ public class Serial implements SerialPortEventListener {
     if (serialEvent.isRXCHAR()) {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
-        int next = 0;
-        while(next < buf.length) {
-          while(next < buf.length && outToMessage.hasRemaining()) {
-            int spaceInIn = inFromSerial.remaining();
-            int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
-            inFromSerial.put(buf, next, copyNow);
-            next += copyNow;
-            inFromSerial.flip();
-            bytesToStrings.decode(inFromSerial, outToMessage, false);
-            inFromSerial.compact();
+        if (bytesToStrings == null) {
+          char[] chars = new char[buf.length];
+          for (int i = 0; i < buf.length; i++) {
+            chars[i] = (char) buf[i];
           }
-          outToMessage.flip();
-          if(outToMessage.hasRemaining()) {
-            char[] chars = new char[outToMessage.remaining()];
-            outToMessage.get(chars);
-            message(chars, chars.length);
+          message(chars, chars.length);
+        } else {
+          int next = 0;
+          while(next < buf.length) {
+            while(next < buf.length && outToMessage.hasRemaining()) {
+              int spaceInIn = inFromSerial.remaining();
+              int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
+              inFromSerial.put(buf, next, copyNow);
+              next += copyNow;
+              inFromSerial.flip();
+              bytesToStrings.decode(inFromSerial, outToMessage, false);
+              inFromSerial.compact();
+            }
+            outToMessage.flip();
+            if(outToMessage.hasRemaining()) {
+              char[] chars = new char[outToMessage.remaining()];
+              outToMessage.get(chars);
+              message(chars, chars.length);
+            }
+            outToMessage.clear();
           }
-          outToMessage.clear();
         }
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
@@ -264,13 +261,23 @@ public class Serial implements SerialPortEventListener {
 
   /**
    * Reset the encoding used to convert the bytes coming in
-   * before they are handed as Strings to {@Link #message(char[], int)}.
+   * before they are handed as char arrays to {@Link #message(char[], int)}.
+   * @param charset - The character set that will be used for conversion or null to not perform conversion,
+   * in which case bytes are simply cast to chars.
    */
   public synchronized void resetDecoding(Charset charset) {
-    bytesToStrings = charset.newDecoder()
+    bytesToStrings = charset == null ? null : charset.newDecoder()
                       .onMalformedInput(CodingErrorAction.REPLACE)
                       .onUnmappableCharacter(CodingErrorAction.REPLACE)
                       .replaceWith("\u2e2e");
+  }
+
+  /**
+   * Get the {@link Charset} used to convert the incoming bytes to chars.
+   * @return The {@link Charset} or null when no conversion is performed, in which case bytes are simply cast to chars.
+   */
+  public Charset getCharset() {
+    return bytesToStrings == null ? null : bytesToStrings.charset();
   }
 
   static public List<String> list() {

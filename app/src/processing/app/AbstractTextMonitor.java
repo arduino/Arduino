@@ -40,6 +40,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JButton clearButton;
   protected JCheckBox autoscrollBox;
   protected JCheckBox addTimeStampBox;
+  protected JComboBox<String> sendEncoding;
+  protected JComboBox<String> receiveEncoding;
   protected JComboBox<String> lineEndings;
   protected JComboBox<String> serialRates;
 
@@ -105,6 +107,44 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
+    String sendAs = tr("Send as") + " ";
+    sendEncoding = new JComboBox<>(new String[] {
+        sendAs + EncodingOption.SYSTEM_DEFAULT,
+        sendAs + EncodingOption.BYTES,
+        sendAs + EncodingOption.UTF_8,
+        sendAs + EncodingOption.UTF_16,
+        sendAs + EncodingOption.UTF_16BE,
+        sendAs + EncodingOption.UTF_16LE,
+        sendAs + EncodingOption.ISO_8859_1,
+        sendAs + EncodingOption.US_ASCII});
+    sendEncoding.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent event) {
+        PreferencesData.set("serial.send_encoding", sendEncoding.getItemAt(
+            sendEncoding.getSelectedIndex()).substring(sendAs.length()));
+      }
+    });
+    String sendEncodingStr = PreferencesData.get("serial.send_encoding");
+    if (sendEncodingStr != null) {
+      sendEncoding.setSelectedItem(sendAs + sendEncodingStr);
+    }
+    sendEncoding.setMaximumSize(sendEncoding.getMinimumSize());
+
+    String receiveAs = tr("Receive as") + " ";
+    receiveEncoding = new JComboBox<>(new String[] {
+        receiveAs + EncodingOption.SYSTEM_DEFAULT,
+        receiveAs + EncodingOption.BYTES,
+        receiveAs + EncodingOption.UTF_8,
+        receiveAs + EncodingOption.UTF_16,
+        receiveAs + EncodingOption.UTF_16BE,
+        receiveAs + EncodingOption.UTF_16LE,
+        receiveAs + EncodingOption.ISO_8859_1,
+        receiveAs + EncodingOption.US_ASCII});
+    String receiveEncodingStr = PreferencesData.get("serial.receive_encoding");
+    if (receiveEncodingStr != null) {
+      receiveEncoding.setSelectedItem(receiveAs + receiveEncodingStr);
+    }
+    receiveEncoding.setMaximumSize(receiveEncoding.getMinimumSize());
+
     lineEndings = new JComboBox<String>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
     lineEndings.addActionListener((ActionEvent event) -> {
       PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
@@ -127,6 +167,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.add(Box.createHorizontalGlue());
     pane.add(noLineEndingAlert);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(sendEncoding);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(receiveEncoding);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(lineEndings);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
@@ -139,8 +183,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   }
 
   @Override
-  protected void onEnableWindow(boolean enable)
-  {
+  protected void onEnableWindow(boolean enable) {
     textArea.setEnabled(enable);
     clearButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
@@ -148,6 +191,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     sendButton.setEnabled(enable);
     autoscrollBox.setEnabled(enable);
     addTimeStampBox.setEnabled(enable);
+    sendEncoding.setEnabled(enable);
+    receiveEncoding.setEnabled(enable);
     lineEndings.setEnabled(enable);
     serialRates.setEnabled(enable);
   }
@@ -163,6 +208,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
   public void onSerialRateChange(ActionListener listener) {
     serialRates.addActionListener(listener);
+  }
+
+  public void onReceiveEncodingChange(ActionListener listener) {
+    receiveEncoding.addActionListener(listener);
   }
 
   @Override
