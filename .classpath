@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="app/lib/slf4j-api-1.7.22.jar"/>
 	<classpathentry kind="lib" path="app/lib/java-semver-0.8.0.jar"/>
 	<classpathentry kind="lib" path="app/lib/jsch-0.1.50.jar"/>
-	<classpathentry kind="lib" path="app/lib/jssc-2.8.0-arduino2.jar"/>
+	<classpathentry kind="lib" path="app/lib/jssc-2.8.0-arduino3.jar"/>
 	<classpathentry kind="lib" path="app/lib/jtouchbar-1.0.0.jar"/>
 	<classpathentry kind="lib" path="app/lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="app/lib/bcprov-jdk15on-152.jar"/>
