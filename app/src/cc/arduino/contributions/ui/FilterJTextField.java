@@ -124,4 +124,23 @@ public class FilterJTextField extends JTextField {
       setFont(getFont().deriveFont(Font.PLAIN));
     }
   }
+
+  @Override
+  public void paste() {
+
+    // Same precondition check as JTextComponent#paste().
+    if (!isEditable() || !isEnabled()) {
+      return;
+    }
+
+    // Disable hint to prevent the focus handler from clearing the pasted text.
+    if (showingHint) {
+      showingHint = false;
+      setText("");
+      updateStyle();
+    }
+
+    // Perform the paste.
+    super.paste();
+  }
 }

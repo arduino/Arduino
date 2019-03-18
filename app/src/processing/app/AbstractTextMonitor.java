@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,11 +22,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.packages.BoardPort;
 
@@ -81,6 +84,23 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
         textField.requestFocusInWindow();
       }
     });
+
+    // Add cut/copy/paste contextual menu to the text input field.
+    JPopupMenu menu = new JPopupMenu();
+
+    Action cut = new DefaultEditorKit.CutAction();
+    cut.putValue(Action.NAME, tr("Cut"));
+    menu.add(cut);
+
+    Action copy = new DefaultEditorKit.CopyAction();
+    copy.putValue(Action.NAME, tr("Copy"));
+    menu.add(copy);
+
+    Action paste = new DefaultEditorKit.PasteAction();
+    paste.putValue(Action.NAME, tr("Paste"));
+    menu.add(paste);
+
+    textField.setComponentPopupMenu(menu);
 
     sendButton = new JButton(tr("Send"));
     clearButton = new JButton(tr("Clear output"));

@@ -45,8 +45,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
 import java.util.function.Predicate;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -54,6 +56,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -64,6 +67,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
 import processing.app.Base;
@@ -129,6 +133,31 @@ public abstract class InstallerJDialog<T> extends JDialog {
           updateIndexFilter(filters, categoryFilter);
         }
       };
+
+      // Add cut/copy/paste contextual menu to the search filter input field.
+      JPopupMenu menu = new JPopupMenu();
+
+      Action cut = new DefaultEditorKit.CutAction();
+      cut.putValue(Action.NAME, tr("Cut"));
+      menu.add(cut);
+
+      Action copy = new DefaultEditorKit.CopyAction();
+      copy.putValue(Action.NAME, tr("Copy"));
+      menu.add(copy);
+
+      Action paste = new DefaultEditorKit.PasteAction();
+      paste.putValue(Action.NAME, tr("Paste"));
+      menu.add(paste);
+
+      filterField.setComponentPopupMenu(menu);
+      
+      // Focus the filter field when the window opens.
+      addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowOpened(WindowEvent e) {
+          filterField.requestFocus();
+        }
+      });
 
       filtersContainer = new JPanel();
       filtersContainer.setLayout(new BoxLayout(filtersContainer, BoxLayout.X_AXIS));
