@@ -764,7 +764,20 @@ public class Base {
     if (!newbieFile.createNewFile()) {
       throw new IOException();
     }
-    FileUtils.copyFile(new File(getContentFile("examples"), "01.Basics" + File.separator + "BareMinimum" + File.separator + "BareMinimum.ino"), newbieFile);
+
+    // Initialize the pde file with the BareMinimum sketch.
+    // Apply user-defined tab settings.
+    String sketch = FileUtils.readFileToString(
+        new File(getContentFile("examples"), "01.Basics" + File.separator
+            + "BareMinimum" + File.separator + "BareMinimum.ino"));
+    String currentTab = "  ";
+    String newTab = (PreferencesData.getBoolean("editor.tabs.expand")
+        ? StringUtils.repeat(" ",
+            PreferencesData.getInteger("editor.tabs.size"))
+        : "\t");
+    sketch = sketch.replaceAll(
+        "(?<=(^|\n)(" + currentTab + "){0,50})" + currentTab, newTab);
+    FileUtils.writeStringToFile(newbieFile, sketch);
     return newbieFile;
   }
 

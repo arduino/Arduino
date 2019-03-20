@@ -8,6 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -143,6 +146,34 @@ public class FileUtils {
       return sb.toString();
     } finally {
       IOUtils.closeQuietly(reader);
+    }
+  }
+
+  /**
+   * Writes the given data to the given file, creating the file if it does not exist.
+   * This method is equivalent to calling {@code writeStringToFile(file, data, StandardCharsets.UTF_8)}.
+   * @param file - The file to write to.
+   * @param data - The string to write.
+   * @throws IOException If an I/O error occurs.
+   */
+  public static void writeStringToFile(File file, String data) throws IOException {
+    writeStringToFile(file, data, StandardCharsets.UTF_8);
+  }
+
+  /**
+   * Writes the given data to the given file, creating the file if it does not exist.
+   * @param file - The file to write to.
+   * @param data - The string to write.
+   * @param charset - The charset used to convert the string to bytes.
+   * @throws IOException If an I/O error occurs.
+   */
+  public static void writeStringToFile(File file, String data, Charset charset) throws IOException {
+    OutputStream out = null;
+    try {
+      out = new FileOutputStream(file);
+      out.write(data.getBytes(charset));
+    } finally {
+      IOUtils.closeQuietly(out);
     }
   }
 
