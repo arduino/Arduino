@@ -29,19 +29,19 @@
 
 package cc.arduino.packages.uploaders;
 
-import processing.app.helpers.FileUtils;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 
 public class MergeSketchWithBooloader {
 
   public void merge(File sketch, File bootloader) throws IOException {
-    List<String> mergedSketch = FileUtils.readFileToListOfStrings(sketch);
+    List<String> mergedSketch = Files.readAllLines(sketch.toPath(), StandardCharsets.UTF_8);
     mergedSketch.remove(mergedSketch.size() - 1);
-    mergedSketch.addAll(FileUtils.readFileToListOfStrings(bootloader));
+    mergedSketch.addAll(Files.readAllLines(bootloader.toPath(), StandardCharsets.UTF_8));
 
     FileWriter writer = null;
     try {

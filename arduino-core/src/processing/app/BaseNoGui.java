@@ -485,8 +485,8 @@ public class BaseNoGui {
     } catch (JsonProcessingException | SignatureVerificationFailedException e) {
       File indexFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
       File indexSignatureFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME + ".sig");
-      FileUtils.deleteIfExists(indexFile);
-      FileUtils.deleteIfExists(indexSignatureFile);
+      indexFile.delete();
+      indexSignatureFile.delete();
       throw e;
     }
     indexer.syncWithFilesystem();
@@ -502,7 +502,7 @@ public class BaseNoGui {
       librariesIndexer.parseIndex();
     } catch (JsonProcessingException e) {
       File librariesIndexFile = librariesIndexer.getIndexFile();
-      FileUtils.deleteIfExists(librariesIndexFile);
+      librariesIndexFile.delete();
     }
 
     if (discoveryManager == null) {

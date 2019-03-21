@@ -1691,19 +1691,12 @@ public class Base {
     });
 
     boolean ifound = false;
-
     for (File subfolder : files) {
-      if (FileUtils.isSCCSOrHiddenFile(subfolder)) {
-        continue;
-      }
-
-      if (!subfolder.isDirectory()) continue;
-
-      if (addSketchesSubmenu(menu, subfolder.getName(), subfolder)) {
+      if (!FileUtils.isSCCSOrHiddenFile(subfolder) && subfolder.isDirectory()
+          && addSketchesSubmenu(menu, subfolder.getName(), subfolder)) {
         ifound = true;
       }
     }
-
     return ifound;
   }
 
