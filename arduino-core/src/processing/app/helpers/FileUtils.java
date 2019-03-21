@@ -2,16 +2,22 @@ package processing.app.helpers;
 
 import org.apache.commons.compress.utils.IOUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class FileUtils {
 
   private static final List<String> SOURCE_CONTROL_FOLDERS = Arrays.asList("CVS", "RCS", ".git", ".svn", ".hg", ".bzr");
-  private static final Pattern BACKSLASH = Pattern.compile("\\\\");
 
   /**
    * Checks, whether the child directory is a subdirectory of the base directory.
@@ -109,75 +115,6 @@ public class FileUtils {
     return Files.createDirectories(Paths.get(parent.getAbsolutePath(), prefix + suffix)).toFile();
   }
 
-  //
-  // Compute relative path to "target" from a directory "origin".
-  //
-  // If "origin" is not absolute, it is relative from the current directory.
-  // If "target" is not absolute, it is relative from "origin".
-  //
-  // by Shigeru KANEMOTO at SWITCHSCIENCE.
-  //
-  public static String relativePath(String origin, String target) {
-    try {
-      origin = (new File(origin)).getCanonicalPath();
-      File targetFile = new File(target);
-      if (targetFile.isAbsolute())
-        target = targetFile.getCanonicalPath();
-      else
-        target = (new File(origin, target)).getCanonicalPath();
-    } catch (IOException e) {
-      return null;
-    }
-
-    if (origin.equals(target)) {
-      // origin and target is identical.
-      return ".";
-    }
-
-    if (origin.equals(File.separator)) {
-      // origin is root.
-      return "." + target;
-    }
-
-    String prefix = "";
-    String root = File.separator;
-
-    if (System.getProperty("os.name").indexOf("Windows") != -1) {
-      if (origin.startsWith("\\\\") || target.startsWith("\\\\")) {
-        // Windows UNC path not supported.
-        return null;
-      }
-
-      char originLetter = origin.charAt(0);
-      char targetLetter = target.charAt(0);
-      if (Character.isLetter(originLetter) && Character.isLetter(targetLetter)) {
-        // Windows only
-        if (originLetter != targetLetter) {
-          // Drive letters differ
-          return null;
-        }
-      }
-
-      prefix = "" + originLetter + ':';
-      root = prefix + File.separator;
-    }
-
-    String relative = "";
-    while (!target.startsWith(origin + File.separator)) {
-      origin = (new File(origin)).getParent();
-      if (origin.equals(root))
-        origin = prefix;
-      relative += "..";
-      relative += File.separator;
-    }
-
-    return relative + target.substring(origin.length() + 1);
-  }
-
-  public static String getLinuxPathFrom(File file) {
-    return BACKSLASH.matcher(file.getAbsolutePath()).replaceAll("/");
-  }
-
   public static boolean isSCCSOrHiddenFile(File file) {
     return isSCCSFolder(file) || isHiddenFile(file);
   }
@@ -209,25 +146,6 @@ public class FileUtils {
     }
   }
 
-  public static List<String> readFileToListOfStrings(File file) throws IOException {
-    List<String> strings = new LinkedList<>();
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new FileReader(file));
-      String line;
-      while ((line = reader.readLine()) != null) {
-        line = line.replaceAll("\r", "").replaceAll("\n", "").replaceAll(" ", "");
-        strings.add(line);
-      }
-      return strings;
-    } finally {
-      if (reader != null) {
-        reader.close();
-      }
-    }
-  }
-
-
   /**
    * Returns true if the given file has any of the given extensions.
    *
@@ -236,10 +154,6 @@ public class FileUtils {
    *                   dot). Should all be lowercase, case insensitive matching
    *                   is used.
    */
-  public static boolean hasExtension(File file, String... extensions) {
-    return hasExtension(file, Arrays.asList(extensions));
-  }
-
   public static boolean hasExtension(File file, List<String> extensions) {
     String extension = splitFilename(file).extension;
     return extensions.contains(extension.toLowerCase());
@@ -362,23 +276,6 @@ public class FileUtils {
         result.add(file);
     }
     return result;
-  }
-
-  public static File newFile(File parent, String... parts) {
-    File result = parent;
-    for (String part : parts) {
-      result = new File(result, part);
-    }
-
-    return result;
-  }
-
-  public static boolean deleteIfExists(File file) {
-    if (file == null) {
-      return true;
-    }
-
-    return file.delete();
   }
 
 }
