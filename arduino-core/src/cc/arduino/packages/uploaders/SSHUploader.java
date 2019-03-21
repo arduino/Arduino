@@ -44,7 +44,6 @@ import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
-import processing.app.helpers.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +52,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import static processing.app.I18n.tr;
 

@@ -36,6 +36,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -48,7 +50,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
 import processing.app.PreferencesData;
-import processing.app.helpers.StringUtils;
 
 public class PluggableDiscovery implements Discovery {
 
