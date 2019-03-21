@@ -114,6 +114,22 @@
     <include name="arduino-core/lib/*.jar" />
   </fileset>
 
+  <!-- Remove all default excludes for directory tasks (see https://ant.apache.org/manual/dirtasks.html#defaultexcludes) -->
+  <defaultexcludes remove="**/.git"/>
+  <defaultexcludes remove="**/.git/**"/>
+  <defaultexcludes remove="**/.gitattributes"/>
+  <defaultexcludes remove="**/.gitignore"/>
+  <defaultexcludes remove="**/.gitmodules"/>
+  <defaultexcludes remove="**/.hg"/>
+  <defaultexcludes remove="**/.hg/**"/>
+  <defaultexcludes remove="**/.hgignore"/>
+  <defaultexcludes remove="**/.hgsub"/>
+  <defaultexcludes remove="**/.hgsubstate"/>
+  <defaultexcludes remove="**/.hgtags"/>
+  <defaultexcludes remove="**/.bzr"/>
+  <defaultexcludes remove="**/.bzr/**"/>
+  <defaultexcludes remove="**/.bzrignore"/>
+
   <target name="build" description="Build Arduino.">
     <antcall target="${platform}-build" />
 
