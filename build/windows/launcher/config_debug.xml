@@ -33,7 +33,7 @@
     <cp>%EXEDIR%/lib/commons-compress-1.8.jar</cp>
     <cp>%EXEDIR%/lib/commons-exec-1.1.jar</cp>
     <cp>%EXEDIR%/lib/commons-httpclient-3.1.jar</cp>
-    <cp>%EXEDIR%/lib/commons-lang3-3.3.2.jar</cp>
+    <cp>%EXEDIR%/lib/commons-lang3-3.8.1.jar</cp>
     <cp>%EXEDIR%/lib/commons-logging-1.0.4.jar</cp>
     <cp>%EXEDIR%/lib/commons-net-3.3.jar</cp>
     <cp>%EXEDIR%/lib/jackson-annotations-2.9.5.jar</cp>
