@@ -1409,7 +1409,7 @@ msgstr "\"{0}\" 对应多个库"
 
 #: ../../../processing/app/Base.java:395
 msgid "Must specify exactly one sketch file"
-msgstr "必须制定一个项目文件"
+msgstr "必须指定一个项目文件"
 
 #: Sketch.java:282
 msgid "Name for new file:"
