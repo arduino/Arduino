@@ -512,7 +512,7 @@
   <!-- Unzip AVR tools -->
   <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i386-apple-darwin11.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
@@ -725,7 +725,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
@@ -767,7 +767,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
@@ -785,7 +785,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
@@ -803,7 +803,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
@@ -852,7 +852,7 @@
   <target name="build-arduino-builder" unless="no_arduino_builder">
     <delete dir="${staging_folder}/arduino-builder-${platform}" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-${platform}"/>
-    <antcall target="untar">
+    <antcall target="untar-native">
       <param name="archive_file" value="./arduino-builder-${platform}-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
       <param name="archive_url" value="https://downloads.arduino.cc/tools/arduino-builder-${platform}-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
       <param name="final_folder" value="${staging_folder}/arduino-builder-${platform}/arduino-builder" />
@@ -914,6 +914,14 @@
   <target name="untar-bz2" depends="untar-unzip-checksum" unless="${archive_file}_installed">
     <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
     <untar src="${archive_file}" dest="${dest_folder}" compression="bzip2"/>
+  </target>
+  <target name="untar-native" depends="untar-unzip-checksum" unless="${archive_file}_installed">
+    <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
+    <exec executable="tar" failonerror="true">
+      <arg value="xf"/>
+      <arg value="${archive_file}"/>
+      <arg value="--directory=${dest_folder}"/>
+    </exec>
   </target>
 
   <target name="unzip" depends="untar-unzip-checksum" unless="${archive_file}_installed">
@@ -1005,7 +1013,7 @@
   </target>
 
   <target name="download-launch4j-linux">
-    <antcall target="untar">
+    <antcall target="untar-native">
       <param name="archive_file" value="windows/launch4j-3.9-linux.tgz"/>
       <param name="archive_url" value="https://downloads.arduino.cc/tools/launch4j-3.9-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
