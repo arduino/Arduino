@@ -139,10 +139,10 @@ public class CommandLineTest {
     pr.waitFor();
 
     Assertions.assertThat(pr.exitValue())
-      .as("Process will finish with exit code 0 in --version")
-      .isEqualTo(0);
+        .as("Process will finish with exit code 0 in --version")
+        .isEqualTo(0);
     Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
-      .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\n");
+        .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
   }
 
   @Test
@@ -156,7 +156,7 @@ public class CommandLineTest {
     pr.waitFor();
 
     Assertions.assertThat(pr.exitValue())
-      .as("Multiple Action will be rejected")
-      .isEqualTo(3);
+        .as("Multiple Action will be rejected")
+        .isEqualTo(3);
   }
 }
