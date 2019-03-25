@@ -45,14 +45,15 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JButton clearButton;
   protected JCheckBox autoscrollBox;
   protected JCheckBox addTimeStampBox;
-  protected JComboBox lineEndings;
-  protected JComboBox serialRates;
+  protected JComboBox<String> lineEndings;
+  protected JComboBox<String> serialRates;
 
   public AbstractTextMonitor(Base base, BoardPort boardPort) {
     super(boardPort);
     this.base = base;
   }
 
+  @Override
   protected void onCreateWindow(Container mainPane) {
 
     mainPane.setLayout(new BorderLayout());
@@ -111,6 +112,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     textField = new JTextField(40);
     // textField is selected every time the window is focused
     addWindowFocusListener(new WindowAdapter() {
+      @Override
       public void windowGainedFocus(WindowEvent e) {
         textField.requestFocusInWindow();
       }
@@ -139,22 +141,17 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
-    lineEndings = new JComboBox(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
-    lineEndings.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
-        noLineEndingAlert.setForeground(pane.getBackground());
-      }
+    lineEndings = new JComboBox<String>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
+    lineEndings.addActionListener((ActionEvent event) -> {
+      PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
+      noLineEndingAlert.setForeground(pane.getBackground());
     });
-    addTimeStampBox.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected());
-      }
-    });
+    addTimeStampBox.addActionListener((ActionEvent event) ->
+        PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected()));
 
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
-    serialRates = new JComboBox();
+    serialRates = new JComboBox<String>();
     for (String rate : serialRateStrings) {
       serialRates.addItem(rate + " " + tr("baud"));
     }
@@ -177,6 +174,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     mainPane.add(pane, BorderLayout.SOUTH);
   }
 
+  @Override
   protected void onEnableWindow(boolean enable)
   {
     textArea.setEnabled(enable);
@@ -203,6 +201,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     serialRates.addActionListener(listener);
   }
 
+  @Override
   public void message(String msg) {
     SwingUtilities.invokeLater(() -> updateTextArea(msg));
   }
