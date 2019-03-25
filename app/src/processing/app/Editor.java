@@ -495,6 +495,9 @@ public class Editor extends JFrame implements RunnerListener {
       tab.applyPreferences();
     }
     console.applyPreferences();
+    if (serialMonitor != null) {
+      serialMonitor.applyPreferences();
+    }
   }
 
 
@@ -2211,7 +2214,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
-    serialMonitor = new MonitorFactory().newMonitor(port);
+    serialMonitor = new MonitorFactory().newMonitor(base, port);
 
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");

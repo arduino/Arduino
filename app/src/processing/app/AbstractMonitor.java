@@ -173,4 +173,13 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
       message(s);
     }
   }
+
+  /**
+   * Read and apply new values from the preferences, either because
+   * the app is just starting up, or the user just finished messing
+   * with things in the Preferences window.
+   */
+  public void applyPreferences() {
+    // Empty.
+  };
 }
