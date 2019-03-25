@@ -21,9 +21,8 @@ package processing.app;
 import cc.arduino.packages.BoardPort;
 import processing.app.legacy.PApplet;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static processing.app.I18n.tr;
 
@@ -38,36 +37,28 @@ public class SerialMonitor extends AbstractTextMonitor {
 
     serialRate = PreferencesData.getInteger("serial.debug_rate");
     serialRates.setSelectedItem(serialRate + " " + tr("baud"));
-    onSerialRateChange(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        String wholeString = (String) serialRates.getSelectedItem();
-        String rateString = wholeString.substring(0, wholeString.indexOf(' '));
-        serialRate = Integer.parseInt(rateString);
-        PreferencesData.set("serial.debug_rate", rateString);
-        try {
-          close();
-          Thread.sleep(100); // Wait for serial port to properly close
-          open();
-        } catch (InterruptedException e) {
-          // noop
-        } catch (Exception e) {
-          System.err.println(e);
-        }
+    onSerialRateChange((ActionEvent event) -> {
+      String wholeString = (String) serialRates.getSelectedItem();
+      String rateString = wholeString.substring(0, wholeString.indexOf(' '));
+      serialRate = Integer.parseInt(rateString);
+      PreferencesData.set("serial.debug_rate", rateString);
+      try {
+        close();
+        Thread.sleep(100); // Wait for serial port to properly close
+        open();
+      } catch (InterruptedException e) {
+        // noop
+      } catch (Exception e) {
+        System.err.println(e);
       }
     });
 
-    onSendCommand(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        send(textField.getText());
-        textField.setText("");
-      }
+    onSendCommand((ActionEvent event) -> {
+      send(textField.getText());
+      textField.setText("");
     });
     
-    onClearCommand(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        textArea.setText("");
-      }
-    });
+    onClearCommand((ActionEvent event) -> textArea.setText(""));
   }
 
   private void send(String s) {
@@ -93,6 +84,7 @@ public class SerialMonitor extends AbstractTextMonitor {
     }
   }
 
+  @Override
   public void open() throws Exception {
     super.open();
 
@@ -106,6 +98,7 @@ public class SerialMonitor extends AbstractTextMonitor {
     };
   }
 
+  @Override
   public void close() throws Exception {
     super.close();
     if (serial != null) {

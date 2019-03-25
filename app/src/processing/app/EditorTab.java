@@ -110,7 +110,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
-	textarea.addMouseWheelListener(this);
+    textarea.addMouseWheelListener(this);
   }
 
   private RSyntaxDocument createDocument(String contents) {
