@@ -1270,12 +1270,14 @@ public class Editor extends JFrame implements RunnerListener {
     JMenuItem increaseFontSizeItem = newJMenuItem(tr("Increase Font Size"), KeyEvent.VK_PLUS);
     increaseFontSizeItem.addActionListener(event -> base.handleFontSizeChange(1));
     menu.add(increaseFontSizeItem);
-    // Add alternative shortcut "CTRL SHIFT =" for keyboards that haven't the "+" key
-    // in the base layer. This workaround covers all the keyboards that have the "+"
-    // key available as "SHIFT =" that seems to be very common.
+    // Many keyboards have '+' and '=' on the same key. Allowing "CTRL +",
+    // "CTRL SHIFT +" and "CTRL =" covers the generally expected behavior.
     KeyStroke ctrlShiftEq = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, SHORTCUT_KEY_MASK | ActionEvent.SHIFT_MASK);
     menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlShiftEq, "IncreaseFontSize");
+    KeyStroke ctrlEq = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, SHORTCUT_KEY_MASK);
+    menu.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(ctrlEq, "IncreaseFontSize");
     menu.getActionMap().put("IncreaseFontSize", new AbstractAction() {
+      @Override
       public void actionPerformed(ActionEvent e) {
         base.handleFontSizeChange(1);
       }
