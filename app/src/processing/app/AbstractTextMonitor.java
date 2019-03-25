@@ -8,6 +8,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,8 @@ import cc.arduino.packages.BoardPort;
 @SuppressWarnings("serial")
 public abstract class AbstractTextMonitor extends AbstractMonitor {
 
+  private final Base base;
+
   protected JLabel noLineEndingAlert;
   protected TextAreaFIFO textArea;
   protected JScrollPane scrollPane;
@@ -43,14 +48,12 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JComboBox lineEndings;
   protected JComboBox serialRates;
 
-  public AbstractTextMonitor(BoardPort boardPort) {
+  public AbstractTextMonitor(Base base, BoardPort boardPort) {
     super(boardPort);
+    this.base = base;
   }
 
   protected void onCreateWindow(Container mainPane) {
-    Font consoleFont = Theme.getFont("console.font");
-    Font editorFont = PreferencesData.getFont("editor.font");
-    Font font = Theme.scale(new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize()));
 
     mainPane.setLayout(new BorderLayout());
 
@@ -58,11 +61,44 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     textArea.setRows(16);
     textArea.setColumns(40);
     textArea.setEditable(false);
-    textArea.setFont(font);
 
     // don't automatically update the caret.  that way we can manually decide
     // whether or not to do so based on the autoscroll checkbox.
     ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+    // Add "CTRL scroll" hotkey for font size adjustment.
+    textArea.addMouseWheelListener((MouseWheelEvent e) -> {
+      if (e.isControlDown()) {
+        if (e.getWheelRotation() < 0) {
+          base.handleFontSizeChange(1);
+        } else {
+          base.handleFontSizeChange(-1);
+        }
+      } else {
+        e.getComponent().getParent().dispatchEvent(e);
+      }
+    });
+
+    // Add "CTRL (SHIFT) =/+" and "CTRL -" hotkeys for font size adjustment.
+    textArea.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
+            || e.getModifiersEx() == (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK)) {
+          switch (e.getKeyCode()) {
+            case KeyEvent.VK_PLUS:
+            case KeyEvent.VK_EQUALS:
+              base.handleFontSizeChange(1);
+              break;
+            case KeyEvent.VK_MINUS:
+              if (!e.isShiftDown()) {
+                base.handleFontSizeChange(-1);
+              }
+              break;
+          }
+        }
+      }
+    });
 
     scrollPane = new JScrollPane(textArea);
 
@@ -110,12 +146,6 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
         noLineEndingAlert.setForeground(pane.getBackground());
       }
     });
-    if (PreferencesData.get("serial.line_ending") != null) {
-      lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
-    }
-    if (PreferencesData.get("serial.show_timestamp") != null) {
-      addTimeStampBox.setSelected(PreferencesData.getBoolean("serial.show_timestamp"));
-    }
     addTimeStampBox.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected());
@@ -141,6 +171,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.add(serialRates);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(clearButton);
+
+    applyPreferences();
 
     mainPane.add(pane, BorderLayout.SOUTH);
   }
@@ -186,6 +218,26 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     }
     if (autoscrollBox.isSelected()) {
       textArea.setCaretPosition(textArea.getDocument().getLength());
+    }
+  }
+
+  @Override
+  public void applyPreferences() {
+
+    // Apply font.
+    Font consoleFont = Theme.getFont("console.font");
+    Font editorFont = PreferencesData.getFont("editor.font");
+    textArea.setFont(Theme.scale(new Font(
+        consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize())));
+
+    // Apply line endings.
+    if (PreferencesData.get("serial.line_ending") != null) {
+      lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
+    }
+
+    // Apply timestamp visibility.
+    if (PreferencesData.get("serial.show_timestamp") != null) {
+      addTimeStampBox.setSelected(PreferencesData.getBoolean("serial.show_timestamp"));
     }
   }
 

@@ -30,23 +30,24 @@
 package cc.arduino.packages;
 
 import processing.app.AbstractMonitor;
+import processing.app.Base;
 import processing.app.NetworkMonitor;
 import processing.app.SerialMonitor;
 
 public class MonitorFactory {
 
-  public AbstractMonitor newMonitor(BoardPort port) {
+  public AbstractMonitor newMonitor(Base base, BoardPort port) {
     if ("network".equals(port.getProtocol())) {
       if ("yes".equals(port.getPrefs().get("ssh_upload"))) {
         // the board is SSH capable
-        return new NetworkMonitor(port); 
+        return new NetworkMonitor(base, port); 
       } else {
         // SSH not supported, no monitor support
         return null;
       }
     }
 
-    return new SerialMonitor(port);
+    return new SerialMonitor(base, port);
   }
 
 }
