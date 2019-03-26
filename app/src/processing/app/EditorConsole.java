@@ -113,15 +113,49 @@ public class EditorConsole extends JScrollPane {
   }
 
   public void applyPreferences() {
+
+    // Update the console text pane font from the preferences.
     Font consoleFont = Theme.getFont("console.font");
     Font editorFont = PreferencesData.getFont("editor.font");
     Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
 
+    AttributeSet stdOutStyleOld = stdOutStyle.copyAttributes();
+    AttributeSet stdErrStyleOld = stdErrStyle.copyAttributes();
     StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
     StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
 
-    out.setAttibutes(stdOutStyle);
-    err.setAttibutes(stdErrStyle);
+    // Re-insert console text with the new preferences if there were changes.
+    // This assumes that the document has single-child paragraphs (default).
+    if (!stdOutStyle.isEqual(stdOutStyleOld) || !stdErrStyle.isEqual(stdOutStyleOld)) {
+      out.setAttibutes(stdOutStyle);
+      err.setAttibutes(stdErrStyle);
+
+      int start;
+      for (int end = document.getLength() - 1; end >= 0; end = start - 1) {
+        Element elem = document.getParagraphElement(end);
+        start = elem.getStartOffset();
+        AttributeSet attrs = elem.getElement(0).getAttributes();
+        AttributeSet newAttrs;
+        if (attrs.isEqual(stdErrStyleOld)) {
+          newAttrs = stdErrStyle;
+        } else if (attrs.isEqual(stdOutStyleOld)) {
+          newAttrs = stdOutStyle;
+        } else {
+          continue;
+        }
+        try {
+          String text = document.getText(start, end - start);
+          document.remove(start, end - start);
+          document.insertString(start, text, newAttrs);
+        } catch (BadLocationException e) {
+          // Should only happen when text is async removed (through clear()).
+          // Accept this case, but throw an error when text could mess up.
+          if (document.getLength() != 0) {
+            throw new Error(e);
+          }
+        }
+      }
+    }
   }
 
   public void clear() {
