@@ -68,7 +68,7 @@ import processing.app.tools.DiscourseFormat;
 /**
  * Single tab, editing a single file, in the main window.
  */
-public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWheelListener {
+public class EditorTab extends JPanel implements SketchFile.TextStorage {
   protected Editor editor;
   protected SketchTextArea textarea;
   protected RTextScrollPane scrollPane;
@@ -110,7 +110,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
-    textarea.addMouseWheelListener(this);
+    editor.base.addEditorFontResizeMouseWheelListener(textarea);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -181,18 +181,6 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
 
     configurePopupMenu(textArea);
     return textArea;
-  }
-  
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.isControlDown()) {
-      if (e.getWheelRotation() < 0) {
-        editor.base.handleFontSizeChange(1);
-      } else {
-        editor.base.handleFontSizeChange(-1);
-      }
-    } else {
-      e.getComponent().getParent().dispatchEvent(e);
-    }
   }
 
   private void configurePopupMenu(final SketchTextArea textarea){

@@ -8,9 +8,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
@@ -35,8 +32,6 @@ import cc.arduino.packages.BoardPort;
 @SuppressWarnings("serial")
 public abstract class AbstractTextMonitor extends AbstractMonitor {
 
-  private final Base base;
-
   protected JLabel noLineEndingAlert;
   protected TextAreaFIFO textArea;
   protected JScrollPane scrollPane;
@@ -50,7 +45,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
   public AbstractTextMonitor(Base base, BoardPort boardPort) {
     super(boardPort);
-    this.base = base;
+
+    // Add font size adjustment listeners. This has to be done here due to
+    // super(boardPort) invoking onCreateWindow(...) before we can store base.
+    base.addEditorFontResizeListeners(textArea);
   }
 
   @Override
@@ -66,40 +64,6 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     // don't automatically update the caret.  that way we can manually decide
     // whether or not to do so based on the autoscroll checkbox.
     ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-
-    // Add "CTRL scroll" hotkey for font size adjustment.
-    textArea.addMouseWheelListener((MouseWheelEvent e) -> {
-      if (e.isControlDown()) {
-        if (e.getWheelRotation() < 0) {
-          base.handleFontSizeChange(1);
-        } else {
-          base.handleFontSizeChange(-1);
-        }
-      } else {
-        e.getComponent().getParent().dispatchEvent(e);
-      }
-    });
-
-    // Add "CTRL (SHIFT) =/+" and "CTRL -" hotkeys for font size adjustment.
-    textArea.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
-            || e.getModifiersEx() == (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK)) {
-          switch (e.getKeyCode()) {
-            case KeyEvent.VK_PLUS:
-            case KeyEvent.VK_EQUALS:
-              base.handleFontSizeChange(1);
-              break;
-            case KeyEvent.VK_MINUS:
-              if (!e.isShiftDown()) {
-                base.handleFontSizeChange(-1);
-              }
-              break;
-          }
-        }
-      }
-    });
 
     scrollPane = new JScrollPane(textArea);
 

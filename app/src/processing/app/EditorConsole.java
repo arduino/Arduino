@@ -26,9 +26,6 @@ import cc.arduino.ConsoleOutputStream;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseWheelEvent;
 import java.io.PrintStream;
 
 import static processing.app.Theme.scale;
@@ -64,7 +61,7 @@ public class EditorConsole extends JScrollPane {
   private SimpleAttributeSet stdOutStyle;
   private SimpleAttributeSet stdErrStyle;
 
-  public EditorConsole(final Base base) {
+  public EditorConsole(Base base) {
     document = new DefaultStyledDocument();
 
     consoleTextPane = new JTextPane(document);
@@ -114,39 +111,8 @@ public class EditorConsole extends JScrollPane {
 
     EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
 
-    // Add "CTRL scroll" hotkey for font size adjustment.
-    consoleTextPane.addMouseWheelListener((MouseWheelEvent e) -> {
-      if (e.isControlDown()) {
-        if (e.getWheelRotation() < 0) {
-          base.handleFontSizeChange(1);
-        } else {
-          base.handleFontSizeChange(-1);
-        }
-      } else {
-        e.getComponent().getParent().dispatchEvent(e);
-      }
-    });
-
-    // Add "CTRL (SHIFT) =/+" and "CTRL -" hotkeys for font size adjustment.
-    consoleTextPane.addKeyListener(new KeyAdapter() {
-      @Override
-      public void keyPressed(KeyEvent e) {
-        if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
-            || e.getModifiersEx() == (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK)) {
-          switch (e.getKeyCode()) {
-            case KeyEvent.VK_PLUS:
-            case KeyEvent.VK_EQUALS:
-              base.handleFontSizeChange(1);
-              break;
-            case KeyEvent.VK_MINUS:
-              if (!e.isShiftDown()) {
-                base.handleFontSizeChange(-1);
-              }
-              break;
-          }
-        }
-      }
-    });
+    // Add font size adjustment listeners.
+    base.addEditorFontResizeListeners(consoleTextPane);
   }
 
   public void applyPreferences() {
