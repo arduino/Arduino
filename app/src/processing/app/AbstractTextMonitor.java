@@ -116,7 +116,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     minimumSize.setSize(minimumSize.getWidth() / 3, minimumSize.getHeight());
     noLineEndingAlert.setMinimumSize(minimumSize);
 
-    lineEndings = new JComboBox<String>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
+    lineEndings = new JComboBox<>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
     lineEndings.addActionListener((ActionEvent event) -> {
       PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
       noLineEndingAlert.setForeground(pane.getBackground());
@@ -126,7 +126,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
-    serialRates = new JComboBox<String>();
+    serialRates = new JComboBox<>();
     for (String rate : serialRateStrings) {
       serialRates.addItem(rate + " " + tr("baud"));
     }

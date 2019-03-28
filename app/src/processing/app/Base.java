@@ -1870,9 +1870,6 @@ public class Base {
     getEditors().forEach(Editor::applyPreferences);
   }
 
-  private MouseWheelListener editorFontResizeMouseWheelListener = null;
-  private KeyListener editorFontResizeKeyListener = null;
-
   /**
    * Adds a {@link MouseWheelListener} and {@link KeyListener} to the given
    * component that will make "CTRL scroll" and "CTRL +/-"
@@ -1884,8 +1881,8 @@ public class Base {
    * @param comp - The component to add the listener to.
    */
   public void addEditorFontResizeListeners(Component comp) {
-    this.addEditorFontResizeMouseWheelListener(comp);
-    this.addEditorFontResizeKeyListener(comp);
+    addEditorFontResizeMouseWheelListener(comp);
+    addEditorFontResizeKeyListener(comp);
   }
 
   /**
@@ -1897,20 +1894,17 @@ public class Base {
    * @param comp - The component to add the listener to.
    */
   public void addEditorFontResizeMouseWheelListener(Component comp) {
-    if (this.editorFontResizeMouseWheelListener == null) {
-      this.editorFontResizeMouseWheelListener = (MouseWheelEvent e) -> {
-        if (e.isControlDown()) {
-          if (e.getWheelRotation() < 0) {
-            this.handleFontSizeChange(1);
-          } else {
-            this.handleFontSizeChange(-1);
-          }
+    comp.addMouseWheelListener(e -> {
+      if (e.isControlDown()) {
+        if (e.getWheelRotation() < 0) {
+          this.handleFontSizeChange(1);
         } else {
-          e.getComponent().getParent().dispatchEvent(e);
+          this.handleFontSizeChange(-1);
         }
-      };
-    }
-    comp.addMouseWheelListener(this.editorFontResizeMouseWheelListener);
+      } else {
+        e.getComponent().getParent().dispatchEvent(e);
+      }
+    });
   }
 
   /**
@@ -1920,29 +1914,26 @@ public class Base {
    * @param comp - The component to add the listener to.
    */
   public void addEditorFontResizeKeyListener(Component comp) {
-    if (this.editorFontResizeKeyListener == null) {
-      this.editorFontResizeKeyListener = new KeyAdapter() {
-        @Override
-        public void keyPressed(KeyEvent e) {
-          if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
-              || e.getModifiersEx() == (KeyEvent.CTRL_DOWN_MASK
-                  | KeyEvent.SHIFT_DOWN_MASK)) {
-            switch (e.getKeyCode()) {
-              case KeyEvent.VK_PLUS:
-              case KeyEvent.VK_EQUALS:
-                Base.this.handleFontSizeChange(1);
-                break;
-              case KeyEvent.VK_MINUS:
-                if (!e.isShiftDown()) {
-                  Base.this.handleFontSizeChange(-1);
-                }
-                break;
+    comp.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
+            || e.getModifiersEx() == (KeyEvent.CTRL_DOWN_MASK
+                                      | KeyEvent.SHIFT_DOWN_MASK)) {
+          switch (e.getKeyCode()) {
+          case KeyEvent.VK_PLUS:
+          case KeyEvent.VK_EQUALS:
+            Base.this.handleFontSizeChange(1);
+            break;
+          case KeyEvent.VK_MINUS:
+            if (!e.isShiftDown()) {
+              Base.this.handleFontSizeChange(-1);
             }
+            break;
           }
         }
-      };
-    }
-    comp.addKeyListener(this.editorFontResizeKeyListener);
+      }
+    });
   }
 
   public List<JMenu> getBoardsCustomMenus() {
