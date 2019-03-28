@@ -32,8 +32,8 @@ public class SerialMonitor extends AbstractTextMonitor {
   private Serial serial;
   private int serialRate;
 
-  public SerialMonitor(Base base, BoardPort port) {
-    super(base, port);
+  public SerialMonitor(BoardPort port) {
+    super(port);
 
     serialRate = PreferencesData.getInteger("serial.debug_rate");
     serialRates.setSelectedItem(serialRate + " " + tr("baud"));

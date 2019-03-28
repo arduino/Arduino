@@ -31,8 +31,8 @@ public class NetworkMonitor extends AbstractTextMonitor implements MessageConsum
   private Channel channel;
   private int connectionAttempts;
 
-  public NetworkMonitor(Base base, BoardPort port) {
-    super(base, port);
+  public NetworkMonitor(BoardPort port) {
+    super(port);
 
     onSendCommand(new ActionListener() {
       public void actionPerformed(ActionEvent event) {
