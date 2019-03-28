@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
@@ -46,12 +48,21 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JComboBox<String> lineEndings;
   protected JComboBox<String> serialRates;
 
-  public AbstractTextMonitor(Base base, BoardPort boardPort) {
+  public AbstractTextMonitor(BoardPort boardPort) {
     super(boardPort);
+  }
 
-    // Add font size adjustment listeners. This has to be done here due to
-    // super(boardPort) invoking onCreateWindow(...) before we can store base.
-    base.addEditorFontResizeListeners(textArea);
+  @Override
+  public synchronized void addMouseWheelListener(MouseWheelListener l) {
+    super.addMouseWheelListener(l);
+    textArea.addMouseWheelListener(l);
+  }
+
+  @Override
+  public synchronized void addKeyListener(KeyListener l) {
+    super.addKeyListener(l);
+    textArea.addKeyListener(l);
+    textField.addKeyListener(l);
   }
 
   @Override

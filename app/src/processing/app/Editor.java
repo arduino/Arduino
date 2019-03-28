@@ -2212,7 +2212,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
-    serialMonitor = new MonitorFactory().newMonitor(base, port);
+    serialMonitor = new MonitorFactory().newMonitor(port);
 
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");
@@ -2221,6 +2221,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
+    base.addEditorFontResizeListeners(serialMonitor);
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later
