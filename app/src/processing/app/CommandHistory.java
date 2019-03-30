@@ -1,7 +1,7 @@
 package processing.app;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * Keeps track of command history in console-like applications.
@@ -9,9 +9,10 @@ import java.util.List;
  */
 public class CommandHistory {
 
-  private List<String> commandHistory = new ArrayList<String>();
-  private int selectedCommandIndex = 0;
+  private final LinkedList<String> commandHistory = new LinkedList<String>();
   private final int maxHistorySize;
+  private ListIterator<String> iterator = null;
+  private boolean iteratorAsc;
 
   /**
    * Create a new {@link CommandHistory}.
@@ -19,26 +20,41 @@ public class CommandHistory {
    */
   public CommandHistory(int maxHistorySize) {
     this.maxHistorySize = (maxHistorySize < 0 ? 0 : maxHistorySize);
-    this.commandHistory.add(""); // Current command placeholder.
+    this.commandHistory.addLast(""); // Current command placeholder.
   }
 
   /**
    * Adds the given command to the history and resets the history traversal
-   * position to the latest command. If the max history size is exceeded,
-   * the oldest command will be removed from the history.
+   * position to the latest command. If the latest command in the history is
+   * equal to the given command, it will not be added to the history.
+   * If the max history size is exceeded, the oldest command will be removed
+   * from the history.
    * @param command - The command to add.
    */
   public void addCommand(String command) {
-
-    // Remove the oldest command if the max history size is exceeded.
-    if(this.commandHistory.size() >= this.maxHistorySize + 1) {
-      this.commandHistory.remove(0);
+    if (this.maxHistorySize == 0) {
+      return;
     }
 
-    // Add the new command, reset the 'current' command and reset the index.
-    this.commandHistory.set(this.commandHistory.size() - 1, command);
-    this.commandHistory.add(""); // Current command placeholder.
-    this.selectedCommandIndex = this.commandHistory.size() - 1;
+    // Remove 'current' command.
+    this.commandHistory.removeLast();
+
+    // Add new command if it differs from the latest command.
+    if (this.commandHistory.isEmpty()
+        || !this.commandHistory.getLast().equals(command)) {
+
+      // Remove oldest command if max history size is exceeded.
+      if (this.commandHistory.size() >= this.maxHistorySize) {
+        this.commandHistory.removeFirst();
+      }
+
+      // Add new command and reset 'current' command.
+      this.commandHistory.addLast(command);
+    }
+
+    // Re-add 'current' command and reset command iterator.
+    this.commandHistory.addLast(""); // Current command placeholder.
+    this.iterator = null;
   }
 
   /**
@@ -47,7 +63,14 @@ public class CommandHistory {
    * returns {@code false} otherwise.
    */
   public boolean hasNextCommand() {
-    return this.selectedCommandIndex + 1 < this.commandHistory.size();
+    if (this.iterator == null) {
+      return false;
+    }
+    if (!this.iteratorAsc) {
+      this.iterator.next(); // Current command, ascending.
+      this.iteratorAsc = true;
+    }
+    return this.iterator.hasNext();
   }
 
   /**
@@ -55,8 +78,20 @@ public class CommandHistory {
    * @return The next command or {@code null} if no next command is available.
    */
   public String getNextCommand() {
-    return this.hasNextCommand()
-        ? this.commandHistory.get(++this.selectedCommandIndex) : null;
+
+    // Return null if there is no next command available.
+    if (!this.hasNextCommand()) {
+      return null;
+    }
+
+    // Get next command.
+    String next = this.iterator.next();
+
+    // Reset 'current' command when at the end of the list.
+    if (this.iterator.nextIndex() == this.commandHistory.size()) {
+      this.iterator.set(""); // Reset 'current' command.
+    }
+    return next;
   }
 
   /**
@@ -65,15 +100,22 @@ public class CommandHistory {
    * returns {@code false} otherwise.
    */
   public boolean hasPreviousCommand() {
-    return this.selectedCommandIndex > 0;
+    if (this.iterator == null) {
+      return this.commandHistory.size() > 1;
+    }
+    if (this.iteratorAsc) {
+      this.iterator.previous(); // Current command, descending.
+      this.iteratorAsc = false;
+    }
+    return this.iterator.hasPrevious();
   }
 
   /**
    * Gets the previous (older) command from the history.
    * When this method is called while the most recent command in the history is
    * selected, this will store the current command as temporary latest command
-   * so that {@link #getNextCommand()} will return it. This temporary latest
-   * command gets reset when this case occurs again or when
+   * so that {@link #getNextCommand()} will return it once. This temporary
+   * latest command gets reset when this case occurs again or when
    * {@link #addCommand(String)} is invoked.
    * @param currentCommand - The current unexecuted command.
    * @return The previous command or {@code null} if no previous command is
@@ -86,14 +128,21 @@ public class CommandHistory {
       return null;
     }
 
-    // Store current unexecuted command if not traversing already.
-    if (this.selectedCommandIndex == this.commandHistory.size() - 1) {
-      this.commandHistory.set(this.commandHistory.size() - 1,
-          (currentCommand == null ? "" : currentCommand));
+    // Store current unexecuted command and create iterator if not traversing.
+    if (this.iterator == null) {
+      this.iterator =
+          this.commandHistory.listIterator(this.commandHistory.size());
+      this.iterator.previous(); // Last element, descending.
+      this.iteratorAsc = false;
+    }
+
+    // Store current unexecuted command if on 'current' index.
+    if (this.iterator.nextIndex() == this.commandHistory.size() - 1) {
+      this.iterator.set(currentCommand == null ? "" : currentCommand);
     }
 
     // Return the previous command.
-    return this.commandHistory.get(--this.selectedCommandIndex);
+    return this.iterator.previous();
   }
 
   /**
@@ -103,7 +152,7 @@ public class CommandHistory {
    * was set.
    */
   public String resetHistoryLocation() {
-    this.selectedCommandIndex = this.commandHistory.size() - 1;
+    this.iterator = null;
     return this.commandHistory.set(this.commandHistory.size() - 1, "");
   }
 
@@ -111,8 +160,8 @@ public class CommandHistory {
    * Clears the command history.
    */
   public void clear() {
+    this.iterator = null;
     this.commandHistory.clear();
-    this.commandHistory.add(""); // Current command placeholder.
-    this.selectedCommandIndex = 0;
+    this.commandHistory.addLast(""); // Current command placeholder.
   }
 }
