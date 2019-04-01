@@ -208,6 +208,9 @@ public class Platform {
     try {
       URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/v1/boards/0x"+vid+"/0x"+pid);
       URLConnection connection = jsonUrl.openConnection();
+      String userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
+                  + System.getProperty("java.version");
+      connection.setRequestProperty("User-agent", userAgent);
       connection.connect();
       HttpURLConnection httpConnection = (HttpURLConnection) connection;
       int code = httpConnection.getResponseCode();
