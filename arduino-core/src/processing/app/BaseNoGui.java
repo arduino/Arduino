@@ -893,7 +893,7 @@ public class BaseNoGui {
     PApplet.saveStrings(temp, strArray);
 
     try {
-      file = file.getCanonicalFile();
+      file = file.toPath().toRealPath().toFile().getCanonicalFile();
     } catch (IOException e) {
     }
 
