@@ -16,7 +16,6 @@
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.8.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.9.5.jar"/>
@@ -24,5 +23,6 @@
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
