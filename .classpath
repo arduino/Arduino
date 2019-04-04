@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="processing/app/tools/format/|processing/app/tools/format/src/|processing/app/Trace.java|processing/app/RunnerClassLoader.java" kind="src" path="app/src"/>
 	<classpathentry kind="src" path="app/test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="arduino-core/lib/apple.jar"/>
