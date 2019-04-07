@@ -53,6 +53,22 @@
 #define SPI_CLOCK 		(1000000/6)
 
 
+// With an Genuino/Uno board, uncomment following line to generate a 4 MHz clock
+// signal on pin 3 (only available on Uno / ATmega*8)
+// 
+// Can be useful to recover an AVR chip with fuses setup for an external clock
+
+// #define ENABLE_CLOCK_GEN
+
+#ifdef ENABLE_CLOCK_GEN
+
+#if defined(__AVR_ATmega328__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega88__)
+#define CLOCK_GEN_ENABLED
+#endif
+
+#endif
+
+
 // Select hardware or software SPI, depending on SPI clock.
 // Currently only for AVR, for other architectures (Due, Zero,...), hardware SPI
 // is probably too fast anyway.
@@ -216,6 +232,19 @@ static BitBangedSPI SPI;
 
 #endif
 
+#ifdef CLOCK_GEN_ENABLED
+
+// ouput a 4MHz clock on pin 3 (Uno) using fast PWM
+void setup_clock_gen(){
+  pinMode(3, OUTPUT);
+  TCCR2A = 0x23;
+  TCCR2B = 0x09;
+  OCR2A = 3;
+  OCR2B = 1;
+}
+
+#endif
+
 void setup() {
   SERIAL.begin(BAUDRATE);
 
@@ -225,6 +254,10 @@ void setup() {
   pulse(LED_ERR, 2);
   pinMode(LED_HB, OUTPUT);
   pulse(LED_HB, 2);
+
+#ifdef CLOCK_GEN_ENABLED
+  setup_clock_gen();
+#endif
 
 }
 
