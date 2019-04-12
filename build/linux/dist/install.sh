@@ -152,8 +152,8 @@ xdg_uninstall_f() {
 
   # Remove symlink for arduino
   echo "" # Ensure password request message is on new line
-  if ! rm /usr/local/bin/arduino; then
-      echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  if [ -f /usr/local/bin/arduino ]; then
+      rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
 
 }
@@ -189,8 +189,8 @@ simple_uninstall_f() {
 
   # Remove symlink for arduino
   echo "" # Ensure password request message is on new line
-  if ! rm /usr/local/bin/arduino; then
-      echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  if [ -f /usr/local/bin/arduino ]; then
+      rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
 
 }
