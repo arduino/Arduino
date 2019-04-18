@@ -2,7 +2,7 @@
 # Copyright (C) 2015 Arduino Srl
 #
 # Author : Arturo Rinaldi
-# E-mail : arturo@arduino.org
+# E-mail : arty.net2@gmail.com
 # Project URL : https://github.com/artynet/arduino-linux-setup
 #
 # This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+# Release v10 changelog :
+#
+#   + Adding support for Slackware
+#   + Changed distribution not supported message
+#   + Changed distribution check sort order (thanks to thenktor @github.com)
+#   + Small fix for ArchLinux
+#
+# Release v9 changelog :
+#
+#   + Adding support for ArchLinux
+#   + Adding support for systemd
+#   + Fixing a couple of wrong kernel entries
 #
 # Release v8 changelog :
 #
@@ -48,7 +61,7 @@
 #	+ now the script checks for SUDO permissions
 #
 
-#! /bin/bash
+#!/bin/bash
 
 # if [[ $EUID != 0 ]] ; then
 #   echo This must be run as root!
@@ -61,9 +74,15 @@ refreshudev () {
     echo "Restarting udev"
     echo ""
 
-    sudo service udev restart
     sudo udevadm control --reload-rules
     sudo udevadm trigger
+
+    if [ -d /lib/systemd/ ]
+    then
+        sudo systemctl restart systemd-udevd
+    else
+        sudo service udev restart
+    fi
 
 }
 
@@ -73,10 +92,11 @@ groupsfunc () {
     echo "******* Add User to dialout,tty, uucp, plugdev groups *******"
     echo ""
 
+    sudo groupadd plugdev
+    sudo groupadd dialout
     sudo usermod -a -G tty $1
     sudo usermod -a -G dialout $1
     sudo usermod -a -G uucp $1
-    sudo groupadd plugdev
     sudo usermod -a -G plugdev $1
 
 }
@@ -88,8 +108,8 @@ acmrules () {
     echo ""
 
 cat <<EOF
-"KERNEL="ttyUSB[0-9]*", TAG+="udev-acl", TAG+="uaccess", OWNER="$1"
-"KERNEL="ttyACM[0-9]*", TAG+="udev-acl", TAG+="uaccess", OWNER="$1"
+KERNEL=="ttyUSB[0-9]*", TAG+="udev-acl", TAG+="uaccess", OWNER="$1"
+KERNEL=="ttyACM[0-9]*", TAG+="udev-acl", TAG+="uaccess", OWNER="$1"
 EOF
 
 }
@@ -168,11 +188,7 @@ removemm () {
     echo "******* Removing modem manager *******"
     echo ""
 
-    if [ -f /etc/lsb-release -a ! -f /etc/SuSE-release ] || [ -f /etc/debian_version ] || [ -f /etc/linuxmint/info ]
-    then
-        #Only for Ubuntu/Mint/Debian
-        sudo apt-get -y remove modemmanager
-    elif [ -f /etc/SuSE-release ]
+    if [ -f /etc/SuSE-release ]
     then
         #Only for Suse
         sudo zypper remove modemmanager
@@ -180,9 +196,21 @@ removemm () {
     then
         #Only for Red Hat/Fedora/CentOS
         sudo yum remove modemmanager
+    elif [ -f /etc/arch-release ]
+    then
+        #Only for ArchLinux
+        sudo pacman -Rdd modemmanager
+    elif [ -f /etc/slackware-version ]
+    then
+        #Only for Slackware
+        sudo removepkg ModemManager
+    elif [ -f /etc/lsb-release ] || [ -f /etc/debian_version ] || [ -f /etc/linuxmint/info ]
+    then
+        #Only for Ubuntu/Mint/Debian
+        sudo apt-get -y remove modemmanager
     else
         echo ""
-        echo "Your system is not supported, please take care of it with your package manager"
+        echo "Your system is not supported, please remove the ModemManager package with your package manager!"
         echo ""
     fi
 
