@@ -66,6 +66,10 @@ xdg_install_f() {
   # Make Arduino IDE the default application for *.ino
   xdg-mime default ${RESOURCE_NAME}.desktop text/x-arduino
 
+  if [ x${SUDO_USER} != x ]; then
+   chown ${SUDO_USER} "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+  fi
+
   # Add symlink for arduino so it's in users path
   echo "" # Ensure password request message is on new line
   if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
@@ -102,6 +106,9 @@ simple_install_f() {
    cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${XDG_DESKTOP_DIR}/"
    # Altering file permissions to avoid "Untrusted Application Launcher" error on Ubuntu
    chmod u+x "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+   if [ x${SUDO_USER} != x ]; then
+    chown ${SUDO_USER} "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+   fi
   fi
 
   # Add symlink for arduino so it's in users path
