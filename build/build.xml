@@ -114,6 +114,22 @@
     <include name="arduino-core/lib/*.jar" />
   </fileset>
 
+  <!-- Remove all default excludes for directory tasks (see https://ant.apache.org/manual/dirtasks.html#defaultexcludes) -->
+  <defaultexcludes remove="**/.git"/>
+  <defaultexcludes remove="**/.git/**"/>
+  <defaultexcludes remove="**/.gitattributes"/>
+  <defaultexcludes remove="**/.gitignore"/>
+  <defaultexcludes remove="**/.gitmodules"/>
+  <defaultexcludes remove="**/.hg"/>
+  <defaultexcludes remove="**/.hg/**"/>
+  <defaultexcludes remove="**/.hgignore"/>
+  <defaultexcludes remove="**/.hgsub"/>
+  <defaultexcludes remove="**/.hgsubstate"/>
+  <defaultexcludes remove="**/.hgtags"/>
+  <defaultexcludes remove="**/.bzr"/>
+  <defaultexcludes remove="**/.bzr/**"/>
+  <defaultexcludes remove="**/.bzrignore"/>
+
   <target name="build" description="Build Arduino.">
     <antcall target="${platform}-build" />
 
@@ -282,7 +298,7 @@
   <!-- copy hardware folder -->
   <target name="assemble-hardware" unless="light_bundle">
     <mkdir dir="${target.path}/hardware/arduino" />
-    <antcall target="untar">
+    <antcall target="untar-bz2">
       <param name="archive_file" value="avr-${AVRCORE-VERSION}.tar.bz2"/>
       <param name="archive_url" value="https://downloads.arduino.cc/cores/avr-${AVRCORE-VERSION}.tar.bz2"/>
       <param name="final_folder" value="${target.path}/hardware/arduino/avr"/>
@@ -496,7 +512,7 @@
   <!-- Unzip AVR tools -->
   <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i386-apple-darwin11.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i386-apple-darwin11.tar.bz2"/>
@@ -528,9 +544,7 @@
     <delete dir="macosx/work/Arduino.app" />
 
     <!-- Unzip unsigned app into working dir -->
-    <exec executable="unzip" dir="macosx/work" failonerror="true">
-      <arg line="../arduino-${version}-${platform}.zip" />
-    </exec>
+    <unzip src="../arduino-${version}-${platform}.zip" dest="macosx/work"/>
 
     <!-- Unlock keychain file -->
     <exec executable="security" dir="macosx/work" failonerror="true">
@@ -711,7 +725,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-armhf-pc-linux-gnu.tar.bz2"/>
@@ -753,7 +767,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-aarch64-pc-linux-gnu.tar.bz2"/>
@@ -771,7 +785,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-i686-pc-linux-gnu.tar.bz2"/>
@@ -789,7 +803,7 @@
     <antcall target="build-arduino-builder" />
 
     <antcall target="avr-toolchain-bundle">
-      <param name="unpack_target" value="untar"/>
+      <param name="unpack_target" value="untar-native"/>
       <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
       <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-pc-linux-gnu.tar.bz2"/>
@@ -838,7 +852,7 @@
   <target name="build-arduino-builder" unless="no_arduino_builder">
     <delete dir="${staging_folder}/arduino-builder-${platform}" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-${platform}"/>
-    <antcall target="untar">
+    <antcall target="untar-native">
       <param name="archive_file" value="./arduino-builder-${platform}-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
       <param name="archive_url" value="https://downloads.arduino.cc/tools/arduino-builder-${platform}-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
       <param name="final_folder" value="${staging_folder}/arduino-builder-${platform}/arduino-builder" />
@@ -895,6 +909,14 @@
   <!-- Ensure that the tool is downloaded and test checksums, if everything's ok unzip it on the tools folder  -->
   <target name="untar" depends="untar-unzip-checksum" unless="${archive_file}_installed">
     <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
+    <untar src="${archive_file}" dest="${dest_folder}"/>
+  </target>
+  <target name="untar-bz2" depends="untar-unzip-checksum" unless="${archive_file}_installed">
+    <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
+    <untar src="${archive_file}" dest="${dest_folder}" compression="bzip2"/>
+  </target>
+  <target name="untar-native" depends="untar-unzip-checksum" unless="${archive_file}_installed">
+    <echo>Untarring ${archive_file} into folder ${dest_folder}</echo>
     <exec executable="tar" failonerror="true">
       <arg value="xf"/>
       <arg value="${archive_file}"/>
@@ -903,18 +925,6 @@
   </target>
 
   <target name="unzip" depends="untar-unzip-checksum" unless="${archive_file}_installed">
-    <echo>Unzipping ${archive_file} into folder ${dest_folder}</echo>
-    <mkdir dir="${dest_folder}" />
-    <exec executable="unzip" failonerror="true">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-d" />
-      <arg value="${dest_folder}" />
-      <arg value="${archive_file}" />
-    </exec>
-  </target>
-
-  <target name="unzip-with-ant-task" depends="untar-unzip-checksum" unless="${archive_file}_installed">
     <echo>Unzipping ${archive_file} into folder ${dest_folder}</echo>
     <mkdir dir="${dest_folder}" />
     <unzip src="${archive_file}" dest="${dest_folder}"/>
@@ -994,7 +1004,7 @@
   </target>
 
   <target name="download-launch4j-windows">
-    <antcall target="unzip-with-ant-task">
+    <antcall target="unzip">
       <param name="archive_file" value="windows/launch4j-3.9-win32.zip"/>
       <param name="archive_url" value="https://downloads.arduino.cc/tools/launch4j-3.9-win32.zip"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
@@ -1003,7 +1013,7 @@
   </target>
 
   <target name="download-launch4j-linux">
-    <antcall target="untar">
+    <antcall target="untar-native">
       <param name="archive_file" value="windows/launch4j-3.9-linux.tgz"/>
       <param name="archive_url" value="https://downloads.arduino.cc/tools/launch4j-3.9-linux.tgz"/>
       <param name="final_folder" value="windows/launcher/launch4j"/>
@@ -1068,7 +1078,7 @@
 
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-windows"/>
-    <antcall target="unzip-with-ant-task">
+    <antcall target="unzip">
       <param name="archive_file" value="./arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
       <param name="archive_url" value="https://downloads.arduino.cc/tools/arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
       <param name="final_folder" value="${staging_folder}/arduino-builder-windows/arduino-builder.exe" />
@@ -1087,42 +1097,33 @@
     </copy>
     <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
 
-    <exec executable="unzip" failonerror="true">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-j" />
-      <arg value="-d" />
-      <arg value="windows/work/lib" />
-      <arg value="../arduino-core/lib/jna-4.2.2.jar" />
-      <arg value="com/sun/jna/win32-x86/jnidispatch.dll" />
-    </exec>
+    <unzip src="../arduino-core/lib/jna-4.2.2.jar" dest="windows/work/lib">
+      <patternset>
+        <include name="com/sun/jna/win32-x86/jnidispatch.dll"/>
+      </patternset>
+      <mapper type="flatten"/>
+    </unzip>
     <move file="windows/work/lib/jnidispatch.dll" tofile="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
     </antcall>
 
-    <exec executable="unzip" failonerror="true">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-j" />
-      <arg value="-d" />
-      <arg value="windows/work/lib" />
-      <arg value="../arduino-core/lib/jssc-2.8.0-arduino3.jar" />
-      <arg value="libs/windows/jSSC-2.8_x86.dll" />
-    </exec>
+    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino3.jar" dest="windows/work/lib">
+      <patternset>
+        <include name="libs/windows/jSSC-2.8_x86.dll"/>
+      </patternset>
+      <mapper type="flatten"/>
+    </unzip>
     <move file="windows/work/lib/jSSC-2.8_x86.dll" tofile="windows/work/lib/jSSC-2.8_x86.dll" />
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/jSSC-2.8_x86.dll" />
     </antcall>
-    <exec executable="unzip" failonerror="true">
-      <arg value="-q" />
-      <arg value="-n" />
-      <arg value="-j" />
-      <arg value="-d" />
-      <arg value="windows/work/lib" />
-      <arg value="../arduino-core/lib/jssc-2.8.0-arduino3.jar" />
-      <arg value="libs/windows/jSSC-2.8_x86_64.dll" />
-    </exec>
+    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino3.jar" dest="windows/work/lib">
+      <patternset>
+        <include name="libs/windows/jSSC-2.8_x86_64.dll"/>
+      </patternset>
+      <mapper type="flatten"/>
+    </unzip>
     <move file="windows/work/lib/jSSC-2.8_x86_64.dll" tofile="windows/work/lib/jSSC-2.8_x86_64.dll" />
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/jSSC-2.8_x86_64.dll" />
