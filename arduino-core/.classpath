@@ -17,8 +17,8 @@
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-core-2.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/jackson-databind-2.9.5.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.9.8.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.9.8.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-module-mrbean-2.9.5.jar"/>
 	<classpathentry kind="lib" path="lib/java-semver-0.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/jna-4.2.2.jar"/>
