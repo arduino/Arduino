@@ -6,7 +6,6 @@ Thanks for your interest in contributing to this free open source project! Ardui
 | - Support request<br/>- Question<br/>- Problem with your Arduino<br/>- Discussion | Post on the [Arduino Forum](http://forum.arduino.cc) |
 | - Bug report<br/>- [Arduino website](https://www.arduino.cc/) issue or improvement<br/>- Feature request | Issue report (read the [issue guidelines](#issues)) |
 | - Bug fix<br/>- Enhancement | Pull Request (read the [pull request guidelines](#pull-requests)) |
-| [Arduino Playground](http://playground.arduino.cc/) | This is a publicly editable wiki. Feel free to make edits or create a post on the [forum](http://forum.arduino.cc/index.php?board=24.0) to discuss changes. |
 | Translations for the Arduino IDE | [transifex](https://www.transifex.com/mbanzi/arduino-ide-15/) |
 | Translations for the [Language Reference](https://www.arduino.cc/reference) | [Reference repositories](https://github.com/arduino?q=reference-) |
 | Monetary | - [Donate](https://www.arduino.cc/en/Main/Contribute)<br/>- [Buy official products](https://store.arduino.cc) |
@@ -19,7 +18,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 
 | Issue topic | Report at |
 |-|-|
-| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Playground or forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
+| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
 | [Language Reference](https://www.arduino.cc/reference) | [Reference repositories](https://github.com/arduino?q=reference-) |
 | Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
