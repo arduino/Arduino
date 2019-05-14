@@ -1539,11 +1539,16 @@ public class Base {
           @SuppressWarnings("serial")
           Action subAction = new AbstractAction(tr(boardCustomMenu.get(customMenuOption))) {
             public void actionPerformed(ActionEvent e) {
-              PreferencesData.set("custom_" + menuId, ((TargetBoard) getValue("board")).getId() + "_" + getValue("custom_menu_option"));
+              PreferencesData.set("custom_" + menuId, ((List<TargetBoard>) getValue("board")).get(0).getId() + "_" + getValue("custom_menu_option"));
               onBoardOrPortChange();
             }
           };
-          subAction.putValue("board", board);
+          List<TargetBoard> boards = (List<TargetBoard>) subAction.getValue("board");
+          if (boards == null) {
+            boards = new ArrayList<TargetBoard>();
+          }
+          boards.add(board);
+          subAction.putValue("board", boards);
           subAction.putValue("custom_menu_option", customMenuOption);
 
           if (!buttonGroupsMap.containsKey(menuId)) {
@@ -1571,7 +1576,9 @@ public class Base {
       JMenu menu = boardsCustomMenus.get(i);
       for (int m = 0; m < menu.getItemCount(); m++) {
         JMenuItem menuItem = menu.getItem(m);
-        menuItem.setVisible(menuItem.getAction().getValue("board").equals(board));
+        for (TargetBoard t_board : (List<TargetBoard>)menuItem.getAction().getValue("board")) {
+          menuItem.setVisible(t_board.equals(board));
+        }
       }
       menu.setVisible(ifThereAreVisibleItemsOn(menu));
 
