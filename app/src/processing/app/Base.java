@@ -1436,16 +1436,15 @@ public class Base {
     boardMenu.add(new JSeparator());
 
     // Generate custom menus for all platforms
-    Set<String> customMenusTitles = new LinkedHashSet<>();
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
-        customMenusTitles.addAll(targetPlatform.getCustomMenus().values());
+        for (String customMenuTitle : targetPlatform.getCustomMenus().values()) {
+          JMenu customMenu = new JMenu(tr(customMenuTitle));
+          customMenu.putClientProperty("platform", targetPlatform.getId());
+          customMenu.putClientProperty("removeOnWindowDeactivation", true);
+          boardsCustomMenus.add(customMenu);
+        }
       }
-    }
-    for (String customMenuTitle : customMenusTitles) {
-      JMenu customMenu = new JMenu(tr(customMenuTitle));
-      customMenu.putClientProperty("removeOnWindowDeactivation", true);
-      boardsCustomMenus.add(customMenu);
     }
 
     List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<>();
@@ -1532,7 +1531,7 @@ public class Base {
     PreferencesMap customMenus = targetPlatform.getCustomMenus();
     for (final String menuId : customMenus.keySet()) {
       String title = customMenus.get(menuId);
-      JMenu menu = getBoardCustomMenu(tr(title));
+      JMenu menu = getBoardCustomMenu(tr(title), targetPlatform.getId());
 
       if (board.hasMenu(menuId)) {
         PreferencesMap boardCustomMenu = board.getMenuLabels(menuId);
@@ -1595,9 +1594,9 @@ public class Base {
     return false;
   }
 
-  private JMenu getBoardCustomMenu(String label) throws Exception {
+  private JMenu getBoardCustomMenu(String label, String platform) throws Exception {
     for (JMenu menu : boardsCustomMenus) {
-      if (label.equals(menu.getText())) {
+      if (label.equals(menu.getText()) && platform.equals(menu.getClientProperty("platform"))) {
         return menu;
       }
     }
