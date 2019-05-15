@@ -1440,7 +1440,7 @@ public class Base {
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
         for (String customMenuTitle : targetPlatform.getCustomMenus().values()) {
           JMenu customMenu = new JMenu(tr(customMenuTitle));
-          customMenu.putClientProperty("platform", targetPlatform.getId());
+          customMenu.putClientProperty("platform", getPlatformUniqueId(targetPlatform));
           customMenu.putClientProperty("removeOnWindowDeactivation", true);
           boardsCustomMenus.add(customMenu);
         }
@@ -1494,6 +1494,10 @@ public class Base {
     }
   }
 
+  private String getPlatformUniqueId(TargetPlatform platform) {
+    return platform.getId() + "_" + platform.getFolder();
+  }
+
   private JRadioButtonMenuItem createBoardMenusAndCustomMenus(
           final List<JMenu> boardsCustomMenus, List<JMenuItem> menuItemsToClickAfterStartup,
           Map<String, ButtonGroup> buttonGroupsMap,
@@ -1531,7 +1535,7 @@ public class Base {
     PreferencesMap customMenus = targetPlatform.getCustomMenus();
     for (final String menuId : customMenus.keySet()) {
       String title = customMenus.get(menuId);
-      JMenu menu = getBoardCustomMenu(tr(title), targetPlatform.getId());
+      JMenu menu = getBoardCustomMenu(tr(title), getPlatformUniqueId(targetPlatform));
 
       if (board.hasMenu(menuId)) {
         PreferencesMap boardCustomMenu = board.getMenuLabels(menuId);
@@ -1601,9 +1605,9 @@ public class Base {
     return false;
   }
 
-  private JMenu getBoardCustomMenu(String label, String platform) throws Exception {
+  private JMenu getBoardCustomMenu(String label, String platformUniqueId) throws Exception {
     for (JMenu menu : boardsCustomMenus) {
-      if (label.equals(menu.getText()) && platform.equals(menu.getClientProperty("platform"))) {
+      if (label.equals(menu.getText()) && menu.getClientProperty("platform").equals(platformUniqueId)) {
         return menu;
       }
     }
