@@ -215,7 +215,7 @@ public class ContributionsIndexer {
   }
 
   private void syncBuiltInHardware() throws IOException {
-    if (index == null) {
+    if (index == null || builtInHardwareFolder == null) {
       return;
     }
     for (File folder : builtInHardwareFolder.listFiles(ONLY_DIRS)) {
