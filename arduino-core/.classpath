@@ -26,5 +26,44 @@
 	<classpathentry kind="lib" path="lib/commons-lang3-3.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/jssc-2.8.0-arduino4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/animal-sniffer-annotations-1.17.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/annotations-4.1.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/checker-compat-qual-2.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/error_prone_annotations-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/google-auth-library-credentials-0.13.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-all-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-auth-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-context-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-core-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-netty-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-okhttp-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-protobuf-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-protobuf-lite-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-protobuf-nano-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-stub-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/grpc-testing-1.20.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/gson-2.7.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/guava-26.0-android.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/j2objc-annotations-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/jsr305-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-buffer-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-codec-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-codec-http-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-codec-http2-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-codec-socks-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-common-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-handler-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-handler-proxy-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-resolver-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/netty-transport-4.1.34.Final.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/okhttp-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/okio-1.13.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/opencensus-api-0.19.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/opencensus-contrib-grpc-metrics-0.19.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/proto-google-common-protos-1.12.0.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/protobuf-javanano-3.0.0-alpha-5.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/protobuf-java-3.9.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
