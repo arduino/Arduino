@@ -968,11 +968,9 @@ public class Base {
     }
 
     // kill uploader (if still alive)
-    UploaderUtils uploaderInstance = new UploaderUtils();
-    Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
-    if (uploader != null && uploader.programmerPid != null && uploader.programmerPid.isAlive()) {
+    if (Uploader.programmerPid != null && Uploader.programmerPid.isAlive()) {
         // kill the stuck programmer
-        uploader.programmerPid.destroyForcibly();
+        Uploader.programmerPid.destroyForcibly();
     }
 
     if (handleQuitEach()) {

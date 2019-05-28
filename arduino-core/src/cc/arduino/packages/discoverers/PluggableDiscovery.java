@@ -211,6 +211,7 @@ public class PluggableDiscovery implements Discovery {
     debug("START");
     write("START\n");
     Thread pollingThread = new Thread() {
+      @Override
       public void run() {
         try {
           while (program != null && program.isAlive()) {
