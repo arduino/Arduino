@@ -18,7 +18,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 
 | Issue topic | Report at |
 |-|-|
-| Arduino IDE, Arduino AVR Boards, arduino.cc (but not the Arduino Forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
+| Arduino IDE, arduino.cc (but not the Arduino Forum), Library Manager additions | [arduino/Arduino](https://github.com/arduino/Arduino/issues) |
 | [Language Reference](https://www.arduino.cc/reference) | [Reference repositories](https://github.com/arduino?q=reference-) |
 | Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
@@ -37,8 +37,8 @@ When you're not sure where your issue belongs, report it at [arduino/Arduino](ht
 - Search [existing pull requests and issues](https://github.com/arduino/Arduino/issues?q=) to be sure it hasn't already been reported. If you have additional information to provide about an existing issue then please comment on that issue. If you simply want to express your support then use the [Reactions feature](https://github.com/blog/2119-add-reactions-to-pull-requests-issues-and-comments).
 - State the newest version of the Arduino IDE you have verified the issue with and which operating system you are using.
 - The issue title should be concise yet descriptive. Vague titles make it difficult to know the purpose of the issue when looking through the list of reports and may cause your issue to not be given proper attention.
-- Describe the issue and what behavior you were expecting. Post complete error messages using [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples).
-- Provide a full set of steps necessary to reproduce the issue. Demonstration code should be complete, correct, and simplified to the minimum amount of code necessary to reproduce the issue. Please use [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) when posting code.
+- Describe the issue and what behavior you were expecting. Post complete error messages using [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) (ex: 3 back-ticks before and after code blocks: \`\`\`my code here\`\`\`).
+- Provide a full set of steps necessary to reproduce the issue. Demonstration code should be complete, correct, and simplified to the minimum amount of code necessary to reproduce the issue. Please use [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) (ex: 3 back-ticks before and after code blocks: \`\`\`my code here\`\`\`) when posting code.
 - Be responsive. We may need you to provide more information, please respond as soon as possible.
 - If you find a solution to your problem update your issue report with an explanation of how you were able to fix it and close the issue.
 - Library Manager submissions: make sure your library meets all the requirements listed in the [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ).
