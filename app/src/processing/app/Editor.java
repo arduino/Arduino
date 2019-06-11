@@ -704,6 +704,10 @@ public class Editor extends JFrame implements RunnerListener {
     item = new JMenuItem(tr("Add File..."));
     item.addActionListener(event -> sketchController.handleAddFile());
     sketchMenu.add(item);
+	
+	item = newJMenuItem(tr("Generate Arduino Class"),' ');
+   	item.addActionListener( event -> ClassGeneratorInterface.generateLibrary(sketchController,getCurrentTab(),getCurrentTab().getSketchFile(),tabs,status));
+	sketchMenu.add(item);
   }
 
 
@@ -1626,25 +1630,19 @@ public class Editor extends JFrame implements RunnerListener {
     // placed on the event thread and causes a hang--bad idea all around.
     new Thread(verbose ? verboseHandler : nonVerboseHandler).start();
   }
-
   class BuildHandler implements Runnable {
-
     private final boolean verbose;
     private final boolean saveHex;
-
     public BuildHandler() {
       this(false);
     }
-
     public BuildHandler(boolean verbose) {
       this(verbose, false);
     }
-
     public BuildHandler(boolean verbose, boolean saveHex) {
       this.verbose = verbose;
       this.saveHex = saveHex;
     }
-
     @Override
     public void run() {
       try {
