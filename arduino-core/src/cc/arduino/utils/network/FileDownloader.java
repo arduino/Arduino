@@ -30,7 +30,6 @@
 package cc.arduino.utils.network;
 
 import org.apache.commons.compress.utils.IOUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.app.BaseNoGui;
@@ -40,12 +39,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Optional;
-import java.util.logging.Level;
 
 public class FileDownloader extends Observable {
   private static Logger log = LoggerFactory.getLogger(FileDownloader.class);
@@ -186,6 +186,7 @@ public class FileDownloader extends Observable {
       final int resp = connection.getResponseCode();
 
       if (resp < 200 || resp >= 300) {
+        Files.delete(outputFile.toPath());
         throw new IOException("Received invalid http status code from server: " + resp);
       }
 

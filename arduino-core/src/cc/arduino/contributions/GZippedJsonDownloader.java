@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions;
 
+import cc.arduino.Constants;
 import cc.arduino.utils.Progress;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
@@ -36,6 +37,7 @@ import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class GZippedJsonDownloader {
 
@@ -50,17 +52,20 @@ public class GZippedJsonDownloader {
   }
 
   public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
+    File gzipTmpFile = null;
     try {
-      File gzipTmpFile = new File(tmpFile.getParentFile(), GzipUtils.getCompressedFilename(tmpFile.getName()));
+      gzipTmpFile = File.createTempFile(new URL(Constants.LIBRARY_INDEX_URL_GZ).getPath(), GzipUtils.getCompressedFilename(tmpFile.getName()));
       // remove eventual leftovers from previous downloads
-      if (gzipTmpFile.exists()) {
-        gzipTmpFile.delete();
-      }
+      Files.deleteIfExists(gzipTmpFile.toPath());
+
       new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener);
       decompress(gzipTmpFile, tmpFile);
-      gzipTmpFile.delete();
     } catch (Exception e) {
       new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
+    } finally {
+      if (gzipTmpFile != null) {
+        Files.deleteIfExists(gzipTmpFile.toPath());
+      }
     }
   }
 

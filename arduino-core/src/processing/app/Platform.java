@@ -26,8 +26,6 @@ import cc.arduino.packages.BoardPort;
 import cc.arduino.utils.network.HttpConnectionManager;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -60,7 +58,6 @@ import static processing.app.I18n.tr;
  * know if name is proper Java package syntax.)
  */
 public class Platform {
-  private static Logger log = LoggerFactory.getLogger(Platform.class);
 
   /**
    * Set the default L & F. While I enjoy the bounty of the sixteen possible

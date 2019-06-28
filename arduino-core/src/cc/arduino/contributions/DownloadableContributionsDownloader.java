@@ -30,20 +30,23 @@
 package cc.arduino.contributions;
 
 import cc.arduino.utils.FileHash;
+import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
 import cc.arduino.utils.network.FileDownloader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import processing.app.BaseNoGui;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.List;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class DownloadableContributionsDownloader {
+  private static Logger log = LoggerFactory.getLogger(DownloadableContributionsDownloader.class);
 
   private final File stagingFolder;
 
@@ -140,4 +143,59 @@ public class DownloadableContributionsDownloader {
     }
   }
 
+  public void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedFilesAccumulator, String packageIndexUrlString, ProgressListener progressListener, SignatureVerifier signatureVerifier) throws Exception {
+
+    // Extract the file name from the url
+    URL packageIndexUrl = new URL(packageIndexUrlString);
+    URL packageIndexSignatureUrl = new URL(packageIndexUrlString + ".sig");
+    String[] urlPathParts = packageIndexUrl.getFile().split("/");
+    File packageIndex = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
+    // Signature file name
+    File packageIndexSignature = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1] + ".sig");
+
+    final String statusText = tr("Downloading platforms index...");
+    downloadedFilesAccumulator.add(packageIndex.getName());
+
+    // Create temp files
+    File packageIndexTemp = File.createTempFile(packageIndexUrl.getPath(), ".tmp");
+    File packageIndexSignatureTemp = File.createTempFile(packageIndexSignatureUrl.getPath(), ".tmp");
+    try {
+      // Download package index
+      download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true);
+      try {
+        // Download signature
+        download(packageIndexSignatureUrl, packageIndexSignatureTemp, progress, statusText, progressListener, true);
+
+        // Verify the signature before move the files
+        boolean signatureVerified = signatureVerifier.isSigned(packageIndexTemp, packageIndexSignatureTemp);
+        if (signatureVerified) {
+          // Move if the signature is ok
+          Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
+          Files.move(packageIndexSignatureTemp.toPath(), packageIndexSignature.toPath(), StandardCopyOption.REPLACE_EXISTING);
+          downloadedFilesAccumulator.add(packageIndexSignature.getName());
+        } else {
+          downloadedFilesAccumulator.remove(packageIndex.getName());
+          log.error("{} file signature verification failed. File ignored.", packageIndexSignatureUrl);
+          System.err.println(format(tr("{0} file signature verification failed. File ignored."), packageIndexUrlString));
+
+        }
+      } catch (Exception e) {
+        log.error("Cannot download the signature from {} the package will be install in any case", packageIndexSignatureUrl, e);
+        if (packageIndexTemp.length() > 0) {
+          Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } else {
+          log.error("The temporarily package index file is empty (path:{},url:{}), It cannot be move there {} ",
+            packageIndexTemp.toPath(), packageIndexUrlString, packageIndex.toPath());
+        }
+      }
+
+    } catch (Exception e) {
+      downloadedFilesAccumulator.remove(packageIndex.getName());
+      throw e;
+    } finally {
+      // Delete useless temp file
+      Files.deleteIfExists(packageIndexTemp.toPath());
+      Files.deleteIfExists(packageIndexSignatureTemp.toPath());
+    }
+  }
 }
