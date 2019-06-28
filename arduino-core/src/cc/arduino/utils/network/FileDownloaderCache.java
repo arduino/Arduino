@@ -1,6 +1,5 @@
 package cc.arduino.utils.network;
 
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import processing.app.PreferencesData;
@@ -26,7 +25,7 @@ public class FileDownloaderCache {
   private String eTag;
 
   // BaseNoGui.getSettingsFolder()
-  public FileDownloaderCache(@NotNull String cacheFolder, @NotNull URL remoteURL) {
+  public FileDownloaderCache(String cacheFolder, URL remoteURL) {
     this.remoteURL = remoteURL;
     String[] splitPath = remoteURL.getPath().split("/");
     if (splitPath.length > 0) {

@@ -1,7 +1,6 @@
 package cc.arduino.utils.network;
 
 import cc.arduino.net.CustomProxySelector;
-import com.sun.istack.internal.NotNull;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.httpclient.CircularRedirectException;
 import org.apache.commons.lang3.StringUtils;
@@ -50,7 +49,7 @@ public class HttpConnectionManager {
 
   }
 
-  public HttpURLConnection makeConnection(@NotNull Consumer<HttpURLConnection> beforeConnection)
+  public HttpURLConnection makeConnection(Consumer<HttpURLConnection> beforeConnection)
     throws IOException, NoSuchMethodException, ScriptException, URISyntaxException {
     return makeConnection(this.requestURL, 0, beforeConnection);
   }
@@ -61,8 +60,8 @@ public class HttpConnectionManager {
     return makeConnection(this.requestURL, 0, (c) -> {});
   }
 
-  private HttpURLConnection makeConnection(@NotNull URL requestURL, int movedTimes,
-                                           @NotNull Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
+  private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
+                                           Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
     log.info("Prepare http request to " + requestURL);
     if (movedTimes > 3) {
       log.warn("Too many redirect " + requestURL);
