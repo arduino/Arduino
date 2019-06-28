@@ -23,6 +23,11 @@
 package processing.app;
 
 import cc.arduino.packages.BoardPort;
+import cc.arduino.utils.network.HttpConnectionManager;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -31,19 +36,10 @@ import processing.app.legacy.PConstants;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
 
 import static processing.app.I18n.tr;
 
@@ -64,7 +60,7 @@ import static processing.app.I18n.tr;
  * know if name is proper Java package syntax.)
  */
 public class Platform {
-
+  private static Logger log = LoggerFactory.getLogger(Platform.class);
 
   /**
    * Set the default L & F. While I enjoy the bounty of the sixteen possible
@@ -207,12 +203,9 @@ public class Platform {
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     try {
       URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/v1/boards/0x"+vid+"/0x"+pid);
-      URLConnection connection = jsonUrl.openConnection();
-      String userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
-                  + System.getProperty("java.version");
-      connection.setRequestProperty("User-agent", userAgent);
-      connection.connect();
-      HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+      final HttpURLConnection httpConnection = new HttpConnectionManager(jsonUrl)
+        .makeConnection();
       int code = httpConnection.getResponseCode();
       if (code == 404) {
         return;
@@ -228,6 +221,7 @@ public class Platform {
     } catch (Exception e) {
       // No connection no problem, fail silently
       //e.printStackTrace();
+
     }
   }
 

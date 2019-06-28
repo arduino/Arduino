@@ -1,7 +1,12 @@
 package cc.arduino.utils.network;
 
 import cc.arduino.net.CustomProxySelector;
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.httpclient.CircularRedirectException;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 
@@ -12,12 +17,9 @@ import java.net.Proxy;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HttpConnectionManager {
-  private static Logger log = Logger
-    .getLogger(HttpConnectionManager.class.getName());
+  private static Logger log = LoggerFactory.getLogger(HttpConnectionManager.class);
   private final URL requestURL;
   private final String userAgent;
   private int connectTimeout;
@@ -41,38 +43,35 @@ public class HttpConnectionManager {
         Integer.parseInt(
           PreferencesData.get("http.connection_timeout", "5000"));
     } catch (NumberFormatException e) {
-      log.log(Level.WARNING,
+      log.warn(
         "Cannot parse the http.connection_timeout configuration switch to default 5000 milliseconds", e.getCause());
       this.connectTimeout = 5000;
     }
 
   }
 
-  public HttpURLConnection makeConnection(Consumer<HttpURLConnection> beforeConnection)
-    throws URISyntaxException, NoSuchMethodException, IOException,
-    ScriptException {
+  public HttpURLConnection makeConnection(@NotNull Consumer<HttpURLConnection> beforeConnection)
+    throws IOException, NoSuchMethodException, ScriptException, URISyntaxException {
     return makeConnection(this.requestURL, 0, beforeConnection);
   }
 
-  private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
-                                           Consumer<HttpURLConnection> beforeConnection)
-    throws NoSuchMethodException, ScriptException, IOException,
-    URISyntaxException {
+
+  public HttpURLConnection makeConnection()
+    throws IOException, NoSuchMethodException, ScriptException, URISyntaxException {
+    return makeConnection(this.requestURL, 0, (c) -> {});
+  }
+
+  private HttpURLConnection makeConnection(@NotNull URL requestURL, int movedTimes,
+                                           @NotNull Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
     log.info("Prepare http request to " + requestURL);
-    if (requestURL == null) {
-      log.warning("Invalid request url is null");
-      throw new RuntimeException("Invalid request url is null");
-    }
     if (movedTimes > 3) {
-      log.warning("Too many redirect " + requestURL);
-      throw new RuntimeException("Too many redirect " + requestURL);
+      log.warn("Too many redirect " + requestURL);
+      throw new CircularRedirectException("Too many redirect " + requestURL);
     }
 
     Proxy proxy = new CustomProxySelector(PreferencesData.getMap())
       .getProxyFor(requestURL.toURI());
-    if ("true".equals(System.getProperty("DEBUG"))) {
-      System.err.println("Using proxy " + proxy);
-    }
+    log.debug("Using proxy {}", proxy);
 
     HttpURLConnection connection = (HttpURLConnection) requestURL
       .openConnection(proxy);
@@ -89,7 +88,7 @@ public class HttpConnectionManager {
     beforeConnection.accept(connection);
 
     // Connect
-    log.info("Connect to " + requestURL);
+    log.info("Connect to {} with method {}", requestURL, connection.getRequestMethod());
 
     connection.connect();
     int resp = connection.getResponseCode();
@@ -102,7 +101,7 @@ public class HttpConnectionManager {
 
       return this.makeConnection(newUrl, movedTimes + 1, beforeConnection);
     }
-    log.info("The response code was" + resp);
+    log.info("The response code {}, headers {}", resp, StringUtils.join(connection.getHeaderFields()));
 
     return connection;
   }

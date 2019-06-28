@@ -1,6 +1,8 @@
 package cc.arduino.utils.network;
 
 import com.sun.istack.internal.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.app.PreferencesData;
 import processing.app.helpers.FileUtils;
 
@@ -15,12 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 public class FileDownloaderCache {
-  private static Logger log = Logger
-    .getLogger(FileDownloaderCache.class.getName());
-  private final String cacheFolder;
+  private static Logger log = LoggerFactory.getLogger(FileDownloaderCache.class);
   private final URL remoteURL;
   private final Path cacheFilePath;
   // Will be initialized by call the checkIfTheFileIsChanged function
@@ -28,11 +27,10 @@ public class FileDownloaderCache {
 
   // BaseNoGui.getSettingsFolder()
   public FileDownloaderCache(@NotNull String cacheFolder, @NotNull URL remoteURL) {
-    this.cacheFolder = cacheFolder;
     this.remoteURL = remoteURL;
     String[] splitPath = remoteURL.getPath().split("/");
     if (splitPath.length > 0) {
-      this.cacheFilePath = Paths.get(cacheFolder, splitPath[splitPath.length - 1]);
+      this.cacheFilePath = Paths.get(cacheFolder, splitPath);
     } else {
       this.cacheFilePath = null;
     }
@@ -47,13 +45,14 @@ public class FileDownloaderCache {
         try {
           connection.setRequestMethod("HEAD");
         } catch (ProtocolException e) {
-          throw new RuntimeException(e);
+          log.error("Invalid protocol", e);
         }
       });
     final int responseCode = headRequest.getResponseCode();
+    headRequest.disconnect();
     // Something bad is happening return a conservative true to try to download the file
     if (responseCode < 200 || responseCode >= 300) {
-      log.warning("The head request return a bad response code " + responseCode);
+      log.warn("The head request return a bad response code " + responseCode);
       return true;
     }
 
@@ -71,10 +70,8 @@ public class FileDownloaderCache {
   }
 
   public Optional<File> getFileFromCache() {
-    if (Optional.ofNullable(cacheFilePath).isPresent()) {
-      if (Files.exists(cacheFilePath)) {
-        return Optional.of(new File(cacheFilePath.toUri()));
-      }
+    if (Optional.ofNullable(cacheFilePath).isPresent() && Files.exists(cacheFilePath)) {
+      return Optional.of(new File(cacheFilePath.toUri()));
     }
     return Optional.empty();
 
@@ -86,9 +83,8 @@ public class FileDownloaderCache {
 
       PreferencesData.set(getPreferencesDataKey(), eTag);
       // If the cache directory does not exist create it
-      final Path cachePath = Paths.get(cacheFolder);
-      if (!Files.exists(cachePath)) {
-        Files.createDirectory(cachePath);
+      if (!Files.exists(cacheFilePath.getParent())) {
+        Files.createDirectories(cacheFilePath.getParent());
       }
       FileUtils.copyFile(fileToCache, cacheFilePath.toFile());
     }

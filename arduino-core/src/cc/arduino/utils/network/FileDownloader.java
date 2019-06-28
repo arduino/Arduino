@@ -31,6 +31,8 @@ package cc.arduino.utils.network;
 
 import org.apache.commons.compress.utils.IOUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import processing.app.BaseNoGui;
 import processing.app.helpers.FileUtils;
 
@@ -44,11 +46,9 @@ import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Optional;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class FileDownloader extends Observable {
-  private static Logger log = Logger
-    .getLogger(FileDownloader.class.getName());
+  private static Logger log = LoggerFactory.getLogger(FileDownloader.class);
 
   public enum Status {
     CONNECTING, //
@@ -163,7 +163,7 @@ public class FileDownloader extends Observable {
             return;
           }
         } catch (Exception e) {
-          log.log(Level.WARNING,
+          log.warn(
             "Cannot get the file from the cache, will be downloaded a new one ", e.getCause());
 
         }
@@ -219,6 +219,7 @@ public class FileDownloader extends Observable {
           throw new Exception("Incomplete download");
       }
       // Set the cache whe it finish to download the file
+      IOUtils.closeQuietly(randomAccessOutputFile);
       fileDownloaderCache.fillCache(outputFile);
       setStatus(Status.COMPLETE);
     } catch (InterruptedException e) {
