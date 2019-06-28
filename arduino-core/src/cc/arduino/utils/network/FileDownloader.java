@@ -29,26 +29,26 @@
 
 package cc.arduino.utils.network;
 
-import cc.arduino.net.CustomProxySelector;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
 
 import processing.app.BaseNoGui;
-import processing.app.PreferencesData;
+import processing.app.helpers.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Observable;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileDownloader extends Observable {
+  private static Logger log = Logger
+    .getLogger(FileDownloader.class.getName());
 
   public enum Status {
     CONNECTING, //
@@ -68,15 +68,12 @@ public class FileDownloader extends Observable {
   private final File outputFile;
   private InputStream stream = null;
   private Exception error;
-  private String userAgent;
 
   public FileDownloader(URL url, File file) {
     downloadUrl = url;
     outputFile = file;
     downloaded = 0;
     initialSize = 0;
-    userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
-                + System.getProperty("java.version");
   }
 
   public long getInitialSize() {
@@ -144,12 +141,37 @@ public class FileDownloader extends Observable {
   }
 
   private void downloadFile(boolean noResume) throws InterruptedException {
-    RandomAccessFile file = null;
+    RandomAccessFile randomAccessOutputFile = null;
 
     try {
+      setStatus(Status.CONNECTING);
+
+      final File settingsFolder = BaseNoGui.getPlatform().getSettingsFolder();
+      final String cacheFolder = Paths.get(settingsFolder.getPath(), "cache").toString();
+      final FileDownloaderCache fileDownloaderCache =
+        new FileDownloaderCache(cacheFolder, downloadUrl);
+
+      final boolean isChanged = fileDownloaderCache.checkIfTheFileIsChanged();
+
+      if (!isChanged) {
+        try {
+          final Optional<File> fileFromCache =
+            fileDownloaderCache.getFileFromCache();
+          if (fileFromCache.isPresent()) {
+            FileUtils.copyFile(fileFromCache.get(), outputFile);
+            setStatus(Status.COMPLETE);
+            return;
+          }
+        } catch (Exception e) {
+          log.log(Level.WARNING,
+            "Cannot get the file from the cache, will be downloaded a new one ", e.getCause());
+
+        }
+      }
+
       // Open file and seek to the end of it
-      file = new RandomAccessFile(outputFile, "rw");
-      initialSize = file.length();
+      randomAccessOutputFile = new RandomAccessFile(outputFile, "rw");
+      initialSize = randomAccessOutputFile.length();
 
       if (noResume && initialSize > 0) {
         // delete file and restart downloading
@@ -157,49 +179,11 @@ public class FileDownloader extends Observable {
         initialSize = 0;
       }
 
-      file.seek(initialSize);
+      randomAccessOutputFile.seek(initialSize);
 
-      setStatus(Status.CONNECTING);
-
-      Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(downloadUrl.toURI());
-      if ("true".equals(System.getProperty("DEBUG"))) {
-        System.err.println("Using proxy " + proxy);
-      }
-
-      HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
-      connection.setRequestProperty("User-agent", userAgent);
-      if (downloadUrl.getUserInfo() != null) {
-        String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
-        connection.setRequestProperty("Authorization", auth);
-      }
-
-      connection.setRequestProperty("Range", "bytes=" + initialSize + "-");
-      connection.setConnectTimeout(5000);
-      setDownloaded(0);
-
-      // Connect
-      connection.connect();
-      int resp = connection.getResponseCode();
-
-      if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
-        URL newUrl = new URL(connection.getHeaderField("Location"));
-
-        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
-
-        // open the new connnection again
-        connection = (HttpURLConnection) newUrl.openConnection(proxy);
-        connection.setRequestProperty("User-agent", userAgent);
-        if (downloadUrl.getUserInfo() != null) {
-          String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
-          connection.setRequestProperty("Authorization", auth);
-        }
-
-        connection.setRequestProperty("Range", "bytes=" + initialSize + "-");
-        connection.setConnectTimeout(5000);
-
-        connection.connect();
-        resp = connection.getResponseCode();
-      }
+      final HttpURLConnection connection = new HttpConnectionManager(downloadUrl)
+        .makeConnection((c) -> setDownloaded(0));
+      final int resp = connection.getResponseCode();
 
       if (resp < 200 || resp >= 300) {
         throw new IOException("Received invalid http status code from server: " + resp);
@@ -221,11 +205,11 @@ public class FileDownloader extends Observable {
         if (read == -1)
           break;
 
-        file.write(buffer, 0, read);
+        randomAccessOutputFile.write(buffer, 0, read);
         setDownloaded(getDownloaded() + read);
 
         if (Thread.interrupted()) {
-          file.close();
+          randomAccessOutputFile.close();
           throw new InterruptedException();
         }
       }
@@ -234,6 +218,8 @@ public class FileDownloader extends Observable {
         if (getDownloaded() < getDownloadSize())
           throw new Exception("Incomplete download");
       }
+      // Set the cache whe it finish to download the file
+      fileDownloaderCache.fillCache(outputFile);
       setStatus(Status.COMPLETE);
     } catch (InterruptedException e) {
       setStatus(Status.CANCELLED);
@@ -249,7 +235,7 @@ public class FileDownloader extends Observable {
       setError(e);
 
     } finally {
-      IOUtils.closeQuietly(file);
+      IOUtils.closeQuietly(randomAccessOutputFile);
 
       synchronized (this) {
         IOUtils.closeQuietly(stream);
