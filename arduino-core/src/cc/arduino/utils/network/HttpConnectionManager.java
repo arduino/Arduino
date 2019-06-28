@@ -2,7 +2,6 @@ package cc.arduino.utils.network;
 
 import cc.arduino.net.CustomProxySelector;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.httpclient.CircularRedirectException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +64,7 @@ public class HttpConnectionManager {
     log.info("Prepare http request to " + requestURL);
     if (movedTimes > 3) {
       log.warn("Too many redirect " + requestURL);
-      throw new CircularRedirectException("Too many redirect " + requestURL);
+      throw new IOException("Too many redirect " + requestURL);
     }
 
     Proxy proxy = new CustomProxySelector(PreferencesData.getMap())
