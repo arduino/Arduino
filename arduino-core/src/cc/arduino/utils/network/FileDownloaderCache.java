@@ -19,25 +19,28 @@ import java.util.Optional;
 
 public class FileDownloaderCache {
   private static Logger log = LoggerFactory.getLogger(FileDownloaderCache.class);
-  private final URL remoteURL;
   private final Path cacheFilePath;
-  // Will be initialized by call the checkIfTheFileIsChanged function
-  private String eTag;
+  private final String remoteETag;
+  private final String preferencesDataKey;
 
   // BaseNoGui.getSettingsFolder()
-  public FileDownloaderCache(String cacheFolder, URL remoteURL) {
-    this.remoteURL = remoteURL;
-    String[] splitPath = remoteURL.getPath().split("/");
-    if (splitPath.length > 0) {
-      this.cacheFilePath = Paths.get(cacheFolder, splitPath);
-    } else {
-      this.cacheFilePath = null;
-    }
+  private FileDownloaderCache(Path cacheFilePath, String remoteETag, String preferencesDataKey) {
+    this.cacheFilePath = cacheFilePath;
+    this.remoteETag = remoteETag;
+    this.preferencesDataKey = preferencesDataKey;
   }
 
-  public boolean checkIfTheFileIsChanged()
-    throws NoSuchMethodException, ScriptException, IOException,
-    URISyntaxException {
+  public static FileDownloaderCache getFileCached(String cacheFolder, URL remoteURL)
+    throws IOException, NoSuchMethodException, ScriptException, URISyntaxException {
+
+    final String[] splitPath = remoteURL.getPath().split("/");
+    final String preferencesDataKey = "cache.file." + remoteURL.getPath();
+    final Path cacheFilePath;
+    if (splitPath.length > 0) {
+      cacheFilePath = Paths.get(cacheFolder, splitPath);
+    } else {
+      cacheFilePath = null;
+    }
 
     final HttpURLConnection headRequest = new HttpConnectionManager(remoteURL)
       .makeConnection((connection) -> {
@@ -52,20 +55,30 @@ public class FileDownloaderCache {
     // Something bad is happening return a conservative true to try to download the file
     if (responseCode < 200 || responseCode >= 300) {
       log.warn("The head request return a bad response code " + responseCode);
-      return true;
+      // if something bad happend
+      return new FileDownloaderCache(cacheFilePath, null, preferencesDataKey);
     }
 
     final String remoteETag = headRequest.getHeaderField("ETag");
-    final String localETag = PreferencesData.get(getPreferencesDataKey());
+    String remoteETagClean = null;
+    if (remoteETag != null) {
+      remoteETagClean = remoteETag.trim().replace("\"", "");
+    }
+
+    return new FileDownloaderCache(cacheFilePath, remoteETagClean, preferencesDataKey);
+  }
+
+  public boolean isChange() {
+
+    final String localETag = PreferencesData.get(preferencesDataKey);
 
     // If the header doesn't exist or the local cache doesn't exist you need to download the file
-    if (remoteETag == null || localETag == null) {
+    if (cacheFilePath == null || remoteETag == null || localETag == null) {
       return true;
     }
-    eTag = remoteETag.trim().replace("\"", "");
 
     // If are different means that the file is change
-    return !eTag.equals(localETag);
+    return !remoteETag.equals(localETag);
   }
 
   public Optional<File> getFileFromCache() {
@@ -77,10 +90,10 @@ public class FileDownloaderCache {
   }
 
   public void fillCache(File fileToCache) throws Exception {
-    if (Optional.ofNullable(eTag).isPresent() &&
+    if (Optional.ofNullable(remoteETag).isPresent() &&
       Optional.ofNullable(cacheFilePath).isPresent()) {
 
-      PreferencesData.set(getPreferencesDataKey(), eTag);
+      PreferencesData.set(preferencesDataKey, remoteETag);
       // If the cache directory does not exist create it
       if (!Files.exists(cacheFilePath.getParent())) {
         Files.createDirectories(cacheFilePath.getParent());
@@ -89,7 +102,4 @@ public class FileDownloaderCache {
     }
   }
 
-  private String getPreferencesDataKey() {
-    return "cache.file." + remoteURL.getPath();
-  }
 }

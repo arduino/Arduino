@@ -148,12 +148,9 @@ public class FileDownloader extends Observable {
 
       final File settingsFolder = BaseNoGui.getPlatform().getSettingsFolder();
       final String cacheFolder = Paths.get(settingsFolder.getPath(), "cache").toString();
-      final FileDownloaderCache fileDownloaderCache =
-        new FileDownloaderCache(cacheFolder, downloadUrl);
+      final FileDownloaderCache fileDownloaderCache = FileDownloaderCache.getFileCached(cacheFolder, downloadUrl);
 
-      final boolean isChanged = fileDownloaderCache.checkIfTheFileIsChanged();
-
-      if (!isChanged) {
+      if (!fileDownloaderCache.isChange()) {
         try {
           final Optional<File> fileFromCache =
             fileDownloaderCache.getFileFromCache();
@@ -165,20 +162,17 @@ public class FileDownloader extends Observable {
         } catch (Exception e) {
           log.warn(
             "Cannot get the file from the cache, will be downloaded a new one ", e.getCause());
-
         }
       }
 
-      // Open file and seek to the end of it
-      randomAccessOutputFile = new RandomAccessFile(outputFile, "rw");
-      initialSize = randomAccessOutputFile.length();
-
+      initialSize = outputFile.length();
       if (noResume && initialSize > 0) {
         // delete file and restart downloading
-        Files.delete(outputFile.toPath());
+        Files.deleteIfExists(outputFile.toPath());
         initialSize = 0;
       }
-
+      // Open file and seek to the end of it
+      randomAccessOutputFile = new RandomAccessFile(outputFile, "rw");
       randomAccessOutputFile.seek(initialSize);
 
       final HttpURLConnection connection = new HttpConnectionManager(downloadUrl)
@@ -186,7 +180,8 @@ public class FileDownloader extends Observable {
       final int resp = connection.getResponseCode();
 
       if (resp < 200 || resp >= 300) {
-        Files.delete(outputFile.toPath());
+        IOUtils.closeQuietly(randomAccessOutputFile);
+        Files.deleteIfExists(outputFile.toPath());
         throw new IOException("Received invalid http status code from server: " + resp);
       }
 
