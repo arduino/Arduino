@@ -170,6 +170,8 @@ public class DownloadableContributionsDownloader {
           downloadedFilesAccumulator.remove(packageIndex.getName());
         }
       } else {
+        // Move the package index to the destination when the signature is not necessary
+        Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
         log.info("The domain is not selected to verify the signature. packageIndex: {}", packageIndexUrl);
       }
     } catch (Exception e) {
