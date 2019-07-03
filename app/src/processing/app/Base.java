@@ -207,6 +207,8 @@ public class Base {
     BaseNoGui.getPlatform().init();
 
     BaseNoGui.initPortableFolder();
+    // This configure the logs root folder
+    System.setProperty("log4j.saveDirectory", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     // Look for a possible "--preferences-file" parameter and load preferences
     BaseNoGui.initParameters(args);
@@ -287,7 +289,7 @@ public class Base {
 
     final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
+    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
 
     parser.parseArgumentsPhase2();
 
