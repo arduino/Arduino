@@ -93,16 +93,16 @@ public class FileDownloaderCache {
     if (fileCachedOpt.isChange() || !enableCache) {
       // Update remote etag and cache control header
       return FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
-          // Check cache control data
-          if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
-            log.warn("The file {} must not be cache due to cache control header {}",
-              remoteURL, cacheControl);
-            return Optional.empty();
-          }
+        // Check cache control data
+        if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
+          log.warn("The file {} must not be cache due to cache control header {}",
+            remoteURL, cacheControl);
+          return Optional.empty();
+        }
         fileCachedOpt.setLastETag(remoteETagClean);
         fileCachedOpt.setCacheControl(cacheControl);
-          return Optional.of(fileCachedOpt);
-        });
+        return Optional.of(fileCachedOpt);
+      });
     }
     return Optional.of(fileCachedOpt);
   }

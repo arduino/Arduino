@@ -26,15 +26,19 @@ public class CacheControl {
       Matcher matcher = PATTERN.matcher(value);
       while (matcher.find()) {
         switch (matcher.group(1).toLowerCase()) {
-        case "max-age":
-          cc.setMaxAge(Integer.parseInt(matcher.group(3))); break;
-        case "must-revalidate":
-          cc.setMustRevalidate(true); break;
-        case "no-cache":
-          cc.setNoCache(true); break;
-        case "no-store":
-          cc.setNoStore(true); break;
-        default: //ignore
+          case "max-age":
+            cc.setMaxAge(Integer.parseInt(matcher.group(3)));
+            break;
+          case "must-revalidate":
+            cc.setMustRevalidate(true);
+            break;
+          case "no-cache":
+            cc.setNoCache(true);
+            break;
+          case "no-store":
+            cc.setNoStore(true);
+            break;
+          default: //ignore
         }
       }
     }

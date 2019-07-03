@@ -67,7 +67,8 @@ public class HttpConnectionManager {
 
   public HttpURLConnection makeConnection()
     throws IOException, NoSuchMethodException, ScriptException, URISyntaxException {
-    return makeConnection(this.requestURL, 0, (c) -> {});
+    return makeConnection(this.requestURL, 0, (c) -> {
+    });
   }
 
   private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
@@ -102,7 +103,7 @@ public class HttpConnectionManager {
     beforeConnection.accept(connection);
 
     // Connect
-    log.info("Connect to {}, method={}, request id={}", requestURL, connection.getRequestMethod(),requestId);
+    log.info("Connect to {}, method={}, request id={}", requestURL, connection.getRequestMethod(), requestId);
 
     connection.connect();
     int resp = connection.getResponseCode();
@@ -110,7 +111,7 @@ public class HttpConnectionManager {
       requestURL, connection.getRequestMethod(), resp, requestId, StringUtils.join(connection.getHeaderFields()));
 
     if (resp == HttpURLConnection.HTTP_MOVED_PERM
-        || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
+      || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
 
       URL newUrl = new URL(connection.getHeaderField("Location"));
       log.info("The response code was a 301,302 so try again with the new URL " + newUrl);
