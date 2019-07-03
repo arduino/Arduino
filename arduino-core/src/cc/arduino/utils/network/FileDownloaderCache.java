@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
+import processing.app.PreferencesData;
 import processing.app.helpers.FileUtils;
 
 import javax.script.ScriptException;
@@ -37,6 +38,7 @@ public class FileDownloaderCache {
   private static Map<String, FileCached> cachedFiles = Collections
     .synchronizedMap(new HashMap<>());
   private static String cacheFolder;
+  private static boolean enableCache;
 
   static {
     final File settingsFolder;
@@ -63,42 +65,46 @@ public class FileDownloaderCache {
     } catch (Exception e) {
       log.error("Cannot initialized the cache", e);
     }
+    enableCache = Boolean.valueOf(PreferencesData.get("cache.enable", "true"));
+    if (!enableCache) {
+      log.info("The cache is disable cache.enable=false");
+    }
   }
 
   public static Optional<FileCached> getFileCached(URL remoteURL)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
 
-    final Optional<FileCached> fileCachedOpt;
-
-    // The file info must exist in the cachedFiles map but also the real file must exist in the file system
-    if (cachedFiles.containsKey(remoteURL.toString()) && cachedFiles.get(remoteURL.toString()).exists()) {
-      fileCachedOpt = Optional.of(cachedFiles.get(remoteURL.toString()));
-    } else {
-      // Update
-      fileCachedOpt = FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
-        // Check cache control data
-        if (cacheControl.isNoCache() || cacheControl.isMustRevalidate()) {
-          log.warn("The file must not be cache due to cache control header {}",
-            cacheControl);
-          return Optional.empty();
-        }
-
-        final String[] splitPath = remoteURL.getPath().split("/");
-        final Path cacheFilePath;
-        if (splitPath.length > 0) {
-          Deque<String> addFirstRemoteURL = new LinkedList<>(Arrays.asList(splitPath));
-          addFirstRemoteURL.addFirst(remoteURL.getHost());
-          cacheFilePath = Paths.get(cacheFolder, addFirstRemoteURL.toArray(new String[0]));
-          return Optional.of(
-            new FileCached(remoteETagClean, remoteURL.toString(), cacheFilePath.toString(),
-              cacheControl));
-        }
-        log.warn("The remote path as no file name {}", remoteURL);
-        return Optional.empty();
-      });
+    final String[] splitPath = remoteURL.getPath().split("/");
+    if (splitPath.length == 0) {
+      log.warn("The remote path as no file name {}", remoteURL);
+      return Optional.empty();
     }
-    return fileCachedOpt;
+
+    // Take from the cache the file info or build from scratch
+    final FileCached fileCachedOpt = Optional.ofNullable(cachedFiles.get(remoteURL.toString()))
+      .orElseGet(() -> {
+        Deque<String> addFirstRemoteURL = new LinkedList<>(Arrays.asList(splitPath));
+        addFirstRemoteURL.addFirst(remoteURL.getHost());
+        final Path cacheFilePath = Paths.get(cacheFolder, addFirstRemoteURL.toArray(new String[0]));
+        return new FileCached(remoteURL.toString(), cacheFilePath.toString());
+      });
+    // If the file is change of the cache is disable run the HEAD request to check if the file is changed
+    if (fileCachedOpt.isChange() || !enableCache) {
+      // Update remote etag and cache control header
+      return FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
+          // Check cache control data
+          if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
+            log.warn("The file {} must not be cache due to cache control header {}",
+              remoteURL, cacheControl);
+            return Optional.empty();
+          }
+        fileCachedOpt.setLastETag(remoteETagClean);
+        fileCachedOpt.setCacheControl(cacheControl);
+          return Optional.of(fileCachedOpt);
+        });
+    }
+    return Optional.of(fileCachedOpt);
   }
 
   private static Optional<FileCached> updateCacheInfo(URL remoteURL, BiFunction<String, CacheControl, Optional<FileCached>> getNewFile)
@@ -159,27 +165,22 @@ public class FileDownloaderCache {
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   static class FileCached {
-    private String eTag;
-    @JsonIgnore
-    private final String lastETag;
     private final String remoteURL;
     private final String localPath;
+    private String eTag;
+    private String lastETag;
     private String md5;
     private String createdAt;
-    private final CacheControl cacheControl;
+    private CacheControl cacheControl;
 
     FileCached() {
-      this.lastETag = null;
       this.remoteURL = null;
       this.localPath = null;
-      this.cacheControl = null;
     }
 
-    FileCached(String lastETag, String remoteURL, String localPath, CacheControl cacheControl) {
-      this.lastETag = lastETag;
+    FileCached(String remoteURL, String localPath) {
       this.remoteURL = remoteURL;
       this.localPath = localPath;
-      this.cacheControl = cacheControl;
     }
 
     @JsonIgnore
@@ -293,6 +294,18 @@ public class FileDownloaderCache {
 
     public CacheControl getCacheControl() {
       return cacheControl;
+    }
+
+    public void seteTag(String eTag) {
+      this.eTag = eTag;
+    }
+
+    public void setLastETag(String lastETag) {
+      this.lastETag = lastETag;
+    }
+
+    public void setCacheControl(CacheControl cacheControl) {
+      this.cacheControl = cacheControl;
     }
 
     @Override
