@@ -41,8 +41,8 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -63,7 +63,7 @@ import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
-  private static Logger log = LoggerFactory.getLogger(ContributionInstaller.class);
+  private static Logger log = LogManager.getLogger(ContributionInstaller.class);
 
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
@@ -267,10 +267,11 @@ public class ContributionInstaller {
       // now try to remove the containing TOOL_NAME folder
       // (and silently fail if another version of the tool is installed)
       try {
-        Files.deleteIfExists(destFolder.getParentFile().toPath());
+        Files.delete(destFolder.getParentFile().toPath());
       } catch (Exception e) {
         // ignore
-        log.error(e.getMessage(), e);
+        log.info("The directory is not empty there is another version installed. directory {}",
+          destFolder.getParentFile().toPath(),  e);
       }
     }
 
