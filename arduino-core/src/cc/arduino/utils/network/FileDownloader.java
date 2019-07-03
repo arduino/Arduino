@@ -30,9 +30,8 @@
 package cc.arduino.utils.network;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import processing.app.BaseNoGui;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
@@ -48,7 +47,7 @@ import java.util.Observable;
 import java.util.Optional;
 
 public class FileDownloader extends Observable {
-  private static Logger log = LoggerFactory.getLogger(FileDownloader.class);
+  private static Logger log = LogManager.getLogger(FileDownloader.class);
 
   public enum Status {
     CONNECTING, //
@@ -146,15 +145,14 @@ public class FileDownloader extends Observable {
     try {
       setStatus(Status.CONNECTING);
 
-      final File settingsFolder = BaseNoGui.getPlatform().getSettingsFolder();
-      final String cacheFolder = Paths.get(settingsFolder.getPath(), "cache").toString();
-      final FileDownloaderCache fileDownloaderCache = FileDownloaderCache.getFileCached(cacheFolder, downloadUrl);
+      final Optional<FileDownloaderCache.FileCached> fileCached = FileDownloaderCache.getFileCached(downloadUrl);
 
-      if (!fileDownloaderCache.isChange()) {
+      if (fileCached.isPresent() && !fileCached.get().isChange()) {
         try {
           final Optional<File> fileFromCache =
-            fileDownloaderCache.getFileFromCache();
+            fileCached.get().getFileFromCache();
           if (fileFromCache.isPresent()) {
+            log.info("No need to download using cached file: {}", fileCached.get());
             FileUtils.copyFile(fileFromCache.get(), outputFile);
             setStatus(Status.COMPLETE);
             return;
@@ -195,7 +193,7 @@ public class FileDownloader extends Observable {
       synchronized (this) {
         stream = connection.getInputStream();
       }
-      byte buffer[] = new byte[10240];
+      byte[] buffer = new byte[10240];
       while (status == Status.DOWNLOADING) {
         int read = stream.read(buffer);
         if (read == -1)
@@ -216,7 +214,9 @@ public class FileDownloader extends Observable {
       }
       // Set the cache whe it finish to download the file
       IOUtils.closeQuietly(randomAccessOutputFile);
-      fileDownloaderCache.fillCache(outputFile);
+      if (fileCached.isPresent()) {
+        fileCached.get().updateCacheFile(outputFile);
+      }
       setStatus(Status.COMPLETE);
     } catch (InterruptedException e) {
       setStatus(Status.CANCELLED);
