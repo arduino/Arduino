@@ -40,7 +40,7 @@ public class HttpConnectionManager {
     try {
       connectTimeoutFromConfig =
         Integer.parseInt(
-          PreferencesData.get("http.connection_timeout", "5000"));
+          PreferencesData.get("http.connection_timeout_ms", "5000"));
     } catch (NumberFormatException e) {
       log.warn(
         "Cannot parse the http.connection_timeout configuration switch to default {} milliseconds", connectTimeoutFromConfig, e.getCause());
