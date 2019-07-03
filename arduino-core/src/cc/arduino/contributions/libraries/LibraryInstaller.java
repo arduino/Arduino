@@ -87,20 +87,25 @@ public class LibraryInstaller {
     progress.stepDone();
 
     URL signatureUrl = new URL(libraryURL.toString() + ".sig");
-    if (downloader.checkSignature(progress, downloadedFilesAccumulator, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
-      // Replace old index with the updated one
-      if (libraryIndexTemp.length() > 0) {
-        Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    if (downloader.verifyDomain(signatureUrl)) {
+      if (downloader.checkSignature(progress, downloadedFilesAccumulator, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
+        // Replace old index with the updated one
+        if (libraryIndexTemp.length() > 0) {
+          Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+
+        // Step 2: Parse index
+        BaseNoGui.librariesIndexer.parseIndex();
+
+        // Step 3: Rescan index
+        rescanLibraryIndex(progress, progressListener);
+      } else {
+        log.error("Fail to verify the signature of {}", libraryURL);
       }
-
-      // Step 2: Parse index
-      BaseNoGui.librariesIndexer.parseIndex();
-
-      // Step 3: Rescan index
-      rescanLibraryIndex(progress, progressListener);
     } else {
-      log.error("Fail to verify the signature of {}", libraryURL);
+      log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
     }
+
   }
 
   public synchronized void install(ContributedLibrary lib, Optional<ContributedLibrary> mayReplacedLib, ProgressListener progressListener) throws Exception {

@@ -160,11 +160,8 @@ public class DownloadableContributionsDownloader {
     try {
       // Download package index
       download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true);
-      final List<String> domain = new LinkedList<>(PreferencesData.getCollection("http.signature_verify_domains"));
-      // Default domain
-      domain.add("downloads.arduino.cc");
 
-      if (domain.contains(packageIndexUrl.getHost())) {
+      if (verifyDomain(packageIndexUrl)) {
         URL signatureUrl = new URL(packageIndexUrl.toString() + ".sig");
 
         if (checkSignature(progress, downloadedFilesAccumulator, signatureUrl, progressListener, signatureVerifier, statusText, packageIndexTemp)) {
@@ -173,7 +170,7 @@ public class DownloadableContributionsDownloader {
           downloadedFilesAccumulator.remove(packageIndex.getName());
         }
       } else {
-        log.info("The domain is not selected to verify the signature. domain list: {}, packageIndex: {}", domain, packageIndexUrl);
+        log.info("The domain is not selected to verify the signature. packageIndex: {}", packageIndexUrl);
       }
     } catch (Exception e) {
       downloadedFilesAccumulator.remove(packageIndex.getName());
@@ -181,6 +178,20 @@ public class DownloadableContributionsDownloader {
     } finally {
       // Delete useless temp file
       Files.deleteIfExists(packageIndexTemp.toPath());
+    }
+  }
+
+  public boolean verifyDomain(URL url) {
+    final List<String> domain = new LinkedList<>(PreferencesData.getCollection("http.signature_verify_domains"));
+    if (domain.size() == 0) {
+      // Default domain
+      domain.add("downloads.arduino.cc");
+    }
+    if (domain.contains(url.getHost())) {
+      return true;
+    } else {
+      log.info("The domain is not selected to verify the signature. domain list: {}, url: {}", domain, url);
+      return false;
     }
   }
 
