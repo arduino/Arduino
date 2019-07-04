@@ -43,6 +43,8 @@
     <cp>%EXEDIR%/lib/java-semver-0.8.0.jar</cp>
     <cp>%EXEDIR%/lib/jmdns-3.5.3.jar</cp>
     <cp>%EXEDIR%/lib/jtouchbar-1.0.0.jar</cp>
+    <cp>%EXEDIR%/lib/log4j-api-2.12.0.jar</cp>
+    <cp>%EXEDIR%/lib/log4j-core-2.12.0.jar</cp>
     <cp>%EXEDIR%/lib/slf4j-simple-1.7.22.jar</cp>
     <cp>%EXEDIR%/lib/slf4j-api-1.7.22.jar</cp>
     <cp>%EXEDIR%/lib/jna-4.2.2.jar</cp>
