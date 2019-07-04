@@ -173,8 +173,10 @@ public class FileDownloaderCache {
     if (cachedFiles != null) {
       synchronized (cachedFiles) {
         ObjectMapper mapper = new ObjectMapper();
+        // Generate a pretty json
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         final ObjectNode objectNode = mapper.createObjectNode();
+        // Generate a json {"files":[...{files_info}...]}
         objectNode.putArray("files").addAll(
           cachedFiles.values().stream()
             .map((v) -> mapper.convertValue(v, JsonNode.class))
@@ -184,6 +186,7 @@ public class FileDownloaderCache {
         if (Files.notExists(cachedFileInfo)) {
           Files.createDirectories(cachedFileInfo.getParent());
         }
+        // Write to cache.json
         mapper.writeValue(cachedFileInfo.toFile(), objectNode);
       }
     }
