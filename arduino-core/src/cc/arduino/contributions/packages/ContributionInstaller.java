@@ -53,6 +53,7 @@ import processing.app.helpers.filefilters.OnlyDirs;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -282,22 +283,26 @@ public class ContributionInstaller {
     return errors;
   }
 
-  public synchronized List<String> updateIndex(ProgressListener progressListener) throws Exception {
+  public synchronized List<String> updateIndex(ProgressListener progressListener) {
     MultiStepProgress progress = new MultiStepProgress(1);
 
-    List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
     final DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
-    downloader.downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL, progressListener, signatureVerifier);
 
-    Set<String> packageIndexURLs = new HashSet<>();
-    String additionalURLs = PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "");
-    if (!"".equals(additionalURLs)) {
-      packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
-    }
+    final Set<String> packageIndexURLs = new HashSet<>(
+      PreferencesData.getCollection(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS)
+    );
+    packageIndexURLs.add(Constants.PACKAGE_INDEX_URL);
+    List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
 
-    for (String packageIndexURL : packageIndexURLs) {
+    for (String packageIndexURLString : packageIndexURLs) {
       try {
-        downloader.downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener, signatureVerifier);
+        // Extract the file name from the URL
+        final URL packageIndexURL = new URL(packageIndexURLString);
+        String[] urlPathParts = packageIndexURL.getPath().split("/");
+        downloadedPackageIndexFilesAccumulator.add(BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]).getName());
+
+        log.info("Start download and signature check of={}", packageIndexURLs);
+        downloader.downloadIndexAndSignature(progress, packageIndexURL, progressListener, signatureVerifier);
       } catch (Exception e) {
         log.error(e.getMessage(), e);
         System.err.println(e.getMessage());
@@ -305,7 +310,7 @@ public class ContributionInstaller {
     }
 
     progress.stepDone();
-
+    log.info("Downloaded package index URL={}", packageIndexURLs);
     return downloadedPackageIndexFilesAccumulator;
   }
 
@@ -315,8 +320,11 @@ public class ContributionInstaller {
     if (additionalPackageIndexFiles == null) {
       return;
     }
+    log.info("Check unknown files. Additional package index folder files={}, Additional package index url downloaded={}", downloadedPackageIndexFiles, additionalPackageIndexFiles);
+
     for (File additionalPackageIndexFile : additionalPackageIndexFiles) {
       if (!downloadedPackageIndexFiles.contains(additionalPackageIndexFile.getName())) {
+        log.info("Delete this unknown file={} because not included in this list={}", additionalPackageIndexFile, additionalPackageIndexFiles);
         Files.delete(additionalPackageIndexFile.toPath());
       }
     }

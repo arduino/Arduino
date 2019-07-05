@@ -68,8 +68,6 @@ public class LibraryInstaller {
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
     final MultiStepProgress progress = new MultiStepProgress(3);
 
-    List<String> downloadedFilesAccumulator = new LinkedList<>();
-
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
     File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
@@ -88,7 +86,7 @@ public class LibraryInstaller {
 
     URL signatureUrl = new URL(libraryURL.toString() + ".sig");
     if (downloader.verifyDomain(signatureUrl)) {
-      if (downloader.checkSignature(progress, downloadedFilesAccumulator, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
+      if (downloader.checkSignature(progress, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
         // Replace old index with the updated one
         if (libraryIndexTemp.length() > 0) {
           Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
