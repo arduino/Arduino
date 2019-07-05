@@ -41,8 +41,8 @@ import processing.app.PreferencesData;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.*;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
@@ -184,7 +184,12 @@ public class DownloadableContributionsDownloader {
   }
 
   public boolean verifyDomain(URL url) {
-    final List<String> domain = new LinkedList<>(PreferencesData.getCollection("http.signature_verify_domains"));
+    final List<String> domain = PreferencesData.
+      getCollection("http.signature_verify_domains")
+      .stream()
+      // Remove empty strings from the collection
+      .filter((v) -> !v.trim().isEmpty())
+      .collect(Collectors.toList());
     if (domain.size() == 0) {
       // Default domain
       domain.add("downloads.arduino.cc");
