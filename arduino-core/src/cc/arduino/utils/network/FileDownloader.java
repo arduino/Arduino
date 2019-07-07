@@ -147,7 +147,7 @@ public class FileDownloader extends Observable {
 
       final Optional<FileDownloaderCache.FileCached> fileCached = FileDownloaderCache.getFileCached(downloadUrl);
 
-      if (fileCached.isPresent() && !fileCached.get().isChange()) {
+      if (fileCached.isPresent() && fileCached.get().isNotChange()) {
         try {
           final Optional<File> fileFromCache =
             fileCached.get().getFileFromCache();
@@ -156,11 +156,17 @@ public class FileDownloader extends Observable {
             FileUtils.copyFile(fileFromCache.get(), outputFile);
             setStatus(Status.COMPLETE);
             return;
+          } else {
+            log.info(
+              "The file in the cache is not in the path or the md5 validation failed: path={}, file exist={}, md5 validation={}",
+              fileCached.get().getLocalPath(), fileCached.get().exists(), fileCached.get().md5Check());
           }
         } catch (Exception e) {
           log.warn(
-            "Cannot get the file from the cache, will be downloaded a new one ", e.getCause());
+            "Cannot get the file from the cache, will be downloaded a new one ", e);
         }
+      } else {
+        log.info("The file is change {}", fileCached);
       }
 
       initialSize = outputFile.length();
@@ -226,10 +232,12 @@ public class FileDownloader extends Observable {
     } catch (SocketTimeoutException e) {
       setStatus(Status.CONNECTION_TIMEOUT_ERROR);
       setError(e);
+      log.error(e);
 
     } catch (Exception e) {
       setStatus(Status.ERROR);
       setError(e);
+      log.error(e);
 
     } finally {
       IOUtils.closeQuietly(randomAccessOutputFile);

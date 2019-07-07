@@ -170,6 +170,7 @@ public class DownloadableContributionsDownloader {
         log.info("The domain is not selected to verify the signature. will be copied into this path {}, packageIndex url: {}", packageIndex, packageIndexUrl);
       }
     } catch (Exception e) {
+      log.error("Cannot download the package index from {} the package will be discard", packageIndexUrl, e);
       throw e;
     } finally {
       // Delete useless temp file

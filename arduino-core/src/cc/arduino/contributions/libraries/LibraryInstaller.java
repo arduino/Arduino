@@ -48,8 +48,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 
 import static processing.app.I18n.tr;

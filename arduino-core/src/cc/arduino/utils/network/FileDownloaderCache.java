@@ -63,20 +63,34 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class FileDownloaderCache {
+  private final static String CACHE_ENABLE_PREFERENCE_KEY = "cache.enable";
   private final static Logger log = LogManager
     .getLogger(FileDownloaderCache.class);
-  private static Map<String, FileCached> cachedFiles = Collections
+  private final static Map<String, FileCached> cachedFiles = Collections
     .synchronizedMap(new HashMap<>());
-  private static String cacheFolder;
+  private final static String cacheFolder;
   private static boolean enableCache;
 
   static {
+    enableCache = Boolean.valueOf(PreferencesData.get(CACHE_ENABLE_PREFERENCE_KEY, "true"));
+    if (!enableCache) {
+      log.info("The cache is disable cache.enable=false");
+    }
+    PreferencesData.set(CACHE_ENABLE_PREFERENCE_KEY, Boolean.toString(enableCache));
+
     final File settingsFolder;
-    try {
-      settingsFolder = BaseNoGui.getPlatform().getSettingsFolder();
+    settingsFolder = BaseNoGui.getSettingsFolder();
+    if (settingsFolder != null) {
       cacheFolder = Paths.get(settingsFolder.getPath(), "cache")
         .toString();
-      final Path pathCacheInfo = getCachedInfoPath();
+    } else {
+      enableCache = false;
+      cacheFolder = null;
+      log.error("The cache will disable because the setting folder is null, cannot generate the cache path");
+    }
+    final Path pathCacheInfo = getCachedInfoPath();
+    log.info("Cache folder {}", cacheFolder);
+    try {
       if (Files.exists(pathCacheInfo)) {
         ObjectMapper mapper = new ObjectMapper();
         final JsonNode jsonNode = mapper.readTree(pathCacheInfo.toFile());
@@ -87,54 +101,72 @@ public class FileDownloaderCache {
         final List<FileCached> files = mapper
           .readValue(mapper.treeAsTokens(jsonNode.get("files")), typeRef);
 
-        // Create a map with the remote url as a key and the file cache info as a value
-        cachedFiles = Collections
-          .synchronizedMap(files.stream().collect(
-            Collectors.toMap(FileCached::getRemoteURL, Function.identity())));
+        // Update the map with the remote url as a key and the file cache info as a value
+        cachedFiles.putAll(Collections
+          .synchronizedMap(files
+            .stream()
+            .filter(FileCached::exists)
+            .collect(Collectors.toMap(FileCached::getRemoteURL, Function.identity()))
+          )
+        );
+        log.info("Number of file already in the cache {}", cachedFiles.size());
+
       }
     } catch (Exception e) {
       log.error("Cannot initialized the cache", e);
     }
-    enableCache = Boolean.valueOf(PreferencesData.get("cache.enable", "true"));
-    if (!enableCache) {
-      log.info("The cache is disable cache.enable=false");
-    }
   }
 
-  public static Optional<FileCached> getFileCached(URL remoteURL)
+  public static Optional<FileCached> getFileCached(final URL remoteURL)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
-
+    // Return always and empty file if the cache is not enable
+    if (!enableCache) {
+      log.info("The cache is not enable.");
+      return Optional.empty();
+    }
     final String[] splitPath = remoteURL.getPath().split("/");
     if (splitPath.length == 0) {
       log.warn("The remote path as no file name {}", remoteURL);
       return Optional.empty();
     }
+    // Create the path where the cached file should exist
+    final Deque<String> addFirstRemoteURL = new LinkedList<>(Arrays.asList(splitPath));
+    addFirstRemoteURL.addFirst(remoteURL.getHost());
+    final Path cacheFilePath = Paths.get(cacheFolder, addFirstRemoteURL.toArray(new String[0]));
 
     // Take from the cache the file info or build from scratch
-    final FileCached fileCachedOpt = Optional.ofNullable(cachedFiles.get(remoteURL.toString()))
-      .orElseGet(() -> {
-        Deque<String> addFirstRemoteURL = new LinkedList<>(Arrays.asList(splitPath));
-        addFirstRemoteURL.addFirst(remoteURL.getHost());
-        final Path cacheFilePath = Paths.get(cacheFolder, addFirstRemoteURL.toArray(new String[0]));
-        return new FileCached(remoteURL.toString(), cacheFilePath.toString());
-      });
+    final FileCached fileCached = Optional.ofNullable(cachedFiles.get(remoteURL.toString()))
+      .orElseGet(() -> new FileCached(remoteURL.toString(), cacheFilePath.toString()));
+
     // If the file is change of the cache is disable run the HEAD request to check if the file is changed
-    if (fileCachedOpt.isChange() || !enableCache) {
+    if (fileCached.isExpire() || !fileCached.exists()) {
       // Update remote etag and cache control header
-      return FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
-        // Check cache control data
-        if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
-          log.warn("The file {} must not be cache due to cache control header {}",
-            remoteURL, cacheControl);
-          return Optional.empty();
-        }
-        fileCachedOpt.setLastETag(remoteETagClean);
-        fileCachedOpt.setCacheControl(cacheControl);
-        return Optional.of(fileCachedOpt);
-      });
+      final Optional<FileCached> fileCachedInfoUpdated =
+        FileDownloaderCache.updateCacheInfo(remoteURL, (remoteETagClean, cacheControl) -> {
+          // Check cache control data
+          if (cacheControl.isNoCache() || cacheControl.isMustRevalidate() || cacheControl.isNoStore()) {
+            log.warn("The file {} must not be cache due to cache control header {}",
+              remoteURL, cacheControl);
+            return Optional.empty();
+          }
+          log.info("Update cached info of {}, createdAt {}, previous eTag {}, last eTag {}, cache control header {} ",
+            remoteURL, fileCached.createdAt, fileCached.eTag, remoteETagClean, cacheControl);
+          final FileCached fileCachedUpdateETag = new FileCached(
+            remoteURL.toString(),
+            cacheFilePath.toString(),
+            fileCached.eTag,
+            remoteETagClean, // Set the lastETag
+            fileCached.md5,
+            cacheControl // Set the new cache control
+          );
+          cachedFiles.put(remoteURL.toString(), fileCachedUpdateETag);
+          return Optional.of(fileCachedUpdateETag);
+        });
+      FileDownloaderCache.updateCacheFilesInfo();
+      return fileCachedInfoUpdated;
     }
-    return Optional.of(fileCachedOpt);
+    return Optional.of(fileCached);
   }
 
   private static Optional<FileCached> updateCacheInfo(URL remoteURL, BiFunction<String, CacheControl, Optional<FileCached>> getNewFile)
@@ -169,27 +201,24 @@ public class FileDownloaderCache {
     return Optional.empty();
   }
 
-  private static void updateCacheFilesInfo() throws IOException {
-    if (cachedFiles != null) {
-      synchronized (cachedFiles) {
-        ObjectMapper mapper = new ObjectMapper();
-        // Generate a pretty json
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        final ObjectNode objectNode = mapper.createObjectNode();
-        // Generate a json {"files":[...{files_info}...]}
-        objectNode.putArray("files").addAll(
-          cachedFiles.values().stream()
-            .map((v) -> mapper.convertValue(v, JsonNode.class))
-            .collect(Collectors.toList()));
-        // Create the path Arduino15/cache
-        Path cachedFileInfo = getCachedInfoPath();
-        if (Files.notExists(cachedFileInfo)) {
-          Files.createDirectories(cachedFileInfo.getParent());
-        }
-        // Write to cache.json
-        mapper.writeValue(cachedFileInfo.toFile(), objectNode);
-      }
+  private synchronized static void updateCacheFilesInfo() throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    // Generate a pretty json
+    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    final ObjectNode objectNode = mapper.createObjectNode();
+    // Generate a json {"files":[...{files_info}...]}
+    objectNode.putArray("files").addAll(
+      cachedFiles.values().stream()
+        .map((v) -> mapper.convertValue(v, JsonNode.class))
+        .collect(Collectors.toList()));
+    // Create the path Arduino15/cache
+    Path cachedFileInfo = getCachedInfoPath();
+    if (Files.notExists(cachedFileInfo)) {
+      Files.createDirectories(cachedFileInfo.getParent());
     }
+    log.info("Update cache file info in {}, number of cached files is {}", cachedFileInfo.toFile(), cachedFiles.size());
+    // Write to cache.json
+    mapper.writeValue(cachedFileInfo.toFile(), objectNode);
   }
 
   private static Path getCachedInfoPath() {
@@ -200,27 +229,59 @@ public class FileDownloaderCache {
   static class FileCached {
     private final String remoteURL;
     private final String localPath;
-    private String eTag;
-    private String lastETag;
-    private String md5;
-    private String createdAt;
-    private CacheControl cacheControl;
+    private final String eTag;
+    private final String lastETag;
+    private final String md5;
+    private final String createdAt;
+    private final CacheControl cacheControl;
 
     FileCached() {
       this.remoteURL = null;
       this.localPath = null;
+      lastETag = null;
+      eTag = null;
+      md5 = null;
+      createdAt = null;
+      cacheControl = null;
     }
 
     FileCached(String remoteURL, String localPath) {
       this.remoteURL = remoteURL;
       this.localPath = localPath;
+      lastETag = null;
+      eTag = null;
+      md5 = null;
+      createdAt = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+      cacheControl = null;
+    }
+
+    public FileCached(String remoteURL, String localPath, String eTag, String lastETag, String md5, CacheControl cacheControl) {
+      this.remoteURL = remoteURL;
+      this.localPath = localPath;
+      this.eTag = eTag;
+      this.lastETag = lastETag;
+      this.md5 = md5;
+      this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
+      this.cacheControl = cacheControl;
+    }
+
+    @JsonIgnore
+    public boolean isExpire() {
+      // Check if the file is expire
+      return this.getExpiresTime().isBefore(LocalDateTime.now());
+    }
+
+    @JsonIgnore
+    public boolean isNotChange() {
+      return !isChange();
     }
 
     @JsonIgnore
     public boolean isChange() {
       // Check if the file is expire
-      if (this.getExpiresTime().isAfter(LocalDateTime.now())) {
-        log.info("The file \"{}\" is no expire, the etag will not be checked. Expire time: {}", localPath, this.getExpiresTime().toString());
+      if (!isExpire()) {
+        log.debug("The file \"{}\" is no expire, the eTag will not be checked. Expire time: {}", localPath,
+          this.getExpiresTime().format(DateTimeFormatter.ISO_DATE_TIME));
         return false;
       }
 
@@ -232,52 +293,63 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    public boolean exists() throws IOException {
-      if (localPath != null && Files.exists(Paths.get(localPath))) {
-        try {
-          final String md5Local = FileHash.hash(Paths.get(localPath).toFile(), "MD5");
-          if (md5Local.equals(md5)) {
-            return true;
-          }
-        } catch (NoSuchAlgorithmException e) {
-          log.error("MD5 algorithm is not supported", e);
-        }
-      }
-      return false;
+    public boolean exists() {
+      return localPath != null && Files.exists(Paths.get(localPath));
     }
 
     @JsonIgnore
     public Optional<File> getFileFromCache() {
-      if (localPath != null && Files.exists(Paths.get(localPath))) {
-        return Optional.of(new File(localPath));
+      if (md5Check()) {
+        return Optional.of(Paths.get(localPath).toFile());
       }
       return Optional.empty();
 
     }
 
-    public void updateCacheFile(File fileToCache) throws Exception {
-      if (Optional.ofNullable(lastETag).isPresent() && Optional
-        .ofNullable(localPath).isPresent()) {
-        Path cacheFilePath = Paths.get(localPath);
+    public synchronized void updateCacheFile(File fileToCache) throws Exception {
+      Path cacheFilePath = Paths.get(localPath);
 
-        // If the cache directory does not exist create it
-        if (!Files.exists(cacheFilePath.getParent())) {
-          Files.createDirectories(cacheFilePath.getParent());
-        }
-        final File cacheFile = cacheFilePath.toFile();
-        FileUtils.copyFile(fileToCache, cacheFile);
-        eTag = lastETag;
-        createdAt = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);
-        updateMD5();
+      // If the cache directory does not exist create it
+      if (!Files.exists(cacheFilePath.getParent())) {
+        Files.createDirectories(cacheFilePath.getParent());
       }
-      log.info("Update cache file: {}", this);
-      cachedFiles.put(remoteURL, this);
+      FileUtils.copyFile(fileToCache, cacheFilePath.toFile());
+      final String md5 = this.calculateMD5();
+      final String eTag;
+      if (lastETag == null) {
+        log.warn("The eTag was not calculate this time, is not the right behaviour fileCached={}, md5={}", this, md5);
+        eTag = this.eTag;
+      } else {
+        eTag = this.lastETag;
+      }
+      FileCached newFileCached = new FileCached(
+        this.remoteURL,
+        this.localPath,
+        eTag, // Initialize the right eTag with the last eTag because the file was updated
+        eTag,
+        md5,
+        this.cacheControl
+      );
+      log.info("Update cache file: {}", newFileCached);
+      cachedFiles.put(remoteURL, newFileCached);
       updateCacheFilesInfo();
+
     }
 
-    private void updateMD5() throws IOException, NoSuchAlgorithmException {
-      if (localPath != null) {
-        md5 = FileHash.hash(Paths.get(localPath).toFile(), "MD5");
+    private String calculateMD5() throws IOException, NoSuchAlgorithmException {
+      if (exists()) {
+        return FileHash.hash(Paths.get(localPath).toFile(), "MD5");
+      }
+      return null;
+    }
+
+    @JsonIgnore
+    public boolean md5Check() {
+      try {
+        return !Objects.isNull(getMD5()) && Objects.equals(calculateMD5(), getMD5());
+      } catch (Exception e) {
+        log.error("Fail to calculate the MD5. file={}", this, e);
+        return false;
       }
     }
 
@@ -317,28 +389,12 @@ public class FileDownloaderCache {
       return localPath;
     }
 
-    public void setMd5(String md5) {
-      this.md5 = md5;
-    }
-
     public String getCreatedAt() {
       return createdAt;
     }
 
     public CacheControl getCacheControl() {
       return cacheControl;
-    }
-
-    public void seteTag(String eTag) {
-      this.eTag = eTag;
-    }
-
-    public void setLastETag(String lastETag) {
-      this.lastETag = lastETag;
-    }
-
-    public void setCacheControl(CacheControl cacheControl) {
-      this.cacheControl = cacheControl;
     }
 
     @Override
