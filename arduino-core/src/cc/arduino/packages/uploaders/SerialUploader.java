@@ -210,9 +210,9 @@ public class SerialUploader extends Uploader {
 
           // Reuse waitForUploadPort for this task, but this time we are simply waiting
           // for one port to reappear. If no port reappears before the timeout, actualUploadPort is selected
-          finalUploadPort = waitForUploadPort(actualUploadPort, Serial.list(), false);
+          finalUploadPort = waitForUploadPort(actualUploadPort, Serial.list(), false, 2000);
         }
-      } catch (InterruptedException ex) {
+      } catch (RunnerException ex) {
         // noop
       }
     }
@@ -229,13 +229,13 @@ public class SerialUploader extends Uploader {
   }
 
   private String waitForUploadPort(String uploadPort, List<String> before) throws InterruptedException, RunnerException {
-	  return waitForUploadPort(uploadPort, before, verbose);
+	  return waitForUploadPort(uploadPort, before, verbose, 10000);
   }
 
-  private String waitForUploadPort(String uploadPort, List<String> before, boolean verbose) throws InterruptedException, RunnerException {
+  private String waitForUploadPort(String uploadPort, List<String> before, boolean verbose, int timeout) throws InterruptedException, RunnerException {
     // Wait for a port to appear on the list
     int elapsed = 0;
-    while (elapsed < 10000) {
+    while (elapsed < timeout) {
       List<String> now = Serial.list();
       List<String> diff = new ArrayList<>(now);
       diff.removeAll(before);
