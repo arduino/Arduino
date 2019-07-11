@@ -102,7 +102,7 @@ public class ContributionInstaller {
     // Download all
     try {
       // Download platform
-      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener);
+      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener, false);
       progress.stepDone();
 
       // Download tools
@@ -110,7 +110,7 @@ public class ContributionInstaller {
       for (ContributedTool tool : tools) {
         String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
+        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener, false);
         progress.stepDone();
       }
     } catch (InterruptedException e) {

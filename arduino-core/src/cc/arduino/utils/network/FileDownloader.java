@@ -117,15 +117,12 @@ public class FileDownloader extends Observable {
     notifyObservers();
   }
 
-  public void download() throws InterruptedException {
-    download(false);
-  }
 
-  public void download(boolean noResume) throws InterruptedException {
+  public void download(boolean noResume, boolean allowCache) throws InterruptedException {
     if ("file".equals(downloadUrl.getProtocol())) {
       saveLocalFile();
     } else {
-      downloadFile(noResume);
+      downloadFile(noResume, allowCache);
     }
   }
 
@@ -139,7 +136,7 @@ public class FileDownloader extends Observable {
     }
   }
 
-  private void downloadFile(boolean noResume) throws InterruptedException {
+  private void downloadFile(boolean noResume, boolean allowCache) throws InterruptedException {
     RandomAccessFile randomAccessOutputFile = null;
 
     try {
@@ -220,8 +217,11 @@ public class FileDownloader extends Observable {
       }
       // Set the cache whe it finish to download the file
       IOUtils.closeQuietly(randomAccessOutputFile);
-      if (fileCached.isPresent()) {
+      if (fileCached.isPresent() && allowCache) {
         fileCached.get().updateCacheFile(outputFile);
+      }
+      if (!allowCache) {
+        log.info("The file {} was not cached because allow cache is false", downloadUrl);
       }
       setStatus(Status.COMPLETE);
     } catch (InterruptedException e) {
@@ -232,12 +232,12 @@ public class FileDownloader extends Observable {
     } catch (SocketTimeoutException e) {
       setStatus(Status.CONNECTION_TIMEOUT_ERROR);
       setError(e);
-      log.error(e);
+      log.error("The request went in socket timeout", e);
 
     } catch (Exception e) {
       setStatus(Status.ERROR);
       setError(e);
-      log.error(e);
+      log.error("The request stop", e);
 
     } finally {
       IOUtils.closeQuietly(randomAccessOutputFile);

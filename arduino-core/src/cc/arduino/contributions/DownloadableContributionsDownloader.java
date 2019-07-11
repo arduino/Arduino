@@ -56,11 +56,11 @@ public class DownloadableContributionsDownloader {
     stagingFolder = _stagingFolder;
   }
 
-  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener) throws Exception {
-    return download(contribution, progress, statusText, progressListener, false);
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
+    return download(contribution, progress, statusText, progressListener, false, allowCache);
   }
 
-  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean noResume) throws Exception {
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
     URL url = new URL(contribution.getUrl());
     Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
 
@@ -75,7 +75,7 @@ public class DownloadableContributionsDownloader {
     while (true) {
       // Need to download or resume downloading?
       if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
-        download(url, outputFile.toFile(), progress, statusText, progressListener, noResume);
+        download(url, outputFile.toFile(), progress, statusText, progressListener, noResume, allowCache);
         downloaded = true;
       }
 
@@ -121,11 +121,11 @@ public class DownloadableContributionsDownloader {
     return algo != null && !algo.isEmpty();
   }
 
-  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
-    download(url, tmpFile, progress, statusText, progressListener, false);
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
+    download(url, tmpFile, progress, statusText, progressListener, false, allowCache);
   }
 
-  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume) throws Exception {
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
     FileDownloader downloader = new FileDownloader(url, tmpFile);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
@@ -139,7 +139,7 @@ public class DownloadableContributionsDownloader {
       progress.setProgress(me.getProgress());
       progressListener.onProgress(progress);
     });
-    downloader.download(noResume);
+    downloader.download(noResume, allowCache);
     if (!downloader.isCompleted()) {
       throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
@@ -157,7 +157,7 @@ public class DownloadableContributionsDownloader {
     File packageIndexTemp = File.createTempFile(indexFileName, ".tmp");
     try {
       // Download package index
-      download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true);
+      download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true, true);
 
       if (verifyDomain(packageIndexUrl)) {
         URL signatureUrl = new URL(packageIndexUrl.toString() + ".sig");

@@ -77,7 +77,7 @@ public class LibraryInstaller {
     final String statusText = tr("Downloading libraries index...");
     try {
       GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, libraryURL, new URL(Constants.LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(libraryIndexTemp, progress, statusText, progressListener);
+      gZippedJsonDownloader.download(libraryIndexTemp, progress, statusText, progressListener, true);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
@@ -118,7 +118,7 @@ public class LibraryInstaller {
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener);
+      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener, false);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;

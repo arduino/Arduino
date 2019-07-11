@@ -52,7 +52,7 @@ public class GZippedJsonDownloader {
     this.gzippedUrl = gzippedUrl;
   }
 
-  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
+  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
     File gzipTmpFile = null;
     try {
       String tmpFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL_GZ).getPath());
@@ -60,10 +60,10 @@ public class GZippedJsonDownloader {
       // remove eventual leftovers from previous downloads
       Files.deleteIfExists(gzipTmpFile.toPath());
 
-      new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener);
+      new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener, allowCache);
       decompress(gzipTmpFile, tmpFile);
     } catch (Exception e) {
-      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
+      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener, allowCache);
     } finally {
       if (gzipTmpFile != null) {
         Files.deleteIfExists(gzipTmpFile.toPath());
