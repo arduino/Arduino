@@ -65,14 +65,15 @@ public class FileDownloader extends Observable {
   private final URL downloadUrl;
 
   private final File outputFile;
-  private InputStream stream = null;
+  private final boolean allowCache;
   private Exception error;
 
-  public FileDownloader(URL url, File file) {
-    downloadUrl = url;
-    outputFile = file;
-    downloaded = 0;
-    initialSize = 0;
+  public FileDownloader(URL url, File file, boolean allowCache) {
+    this.downloadUrl = url;
+    this.outputFile = file;
+    this.allowCache = allowCache;
+    this.downloaded = 0;
+    this.initialSize = 0;
   }
 
   public long getInitialSize() {
@@ -118,11 +119,11 @@ public class FileDownloader extends Observable {
   }
 
 
-  public void download(boolean noResume, boolean allowCache) throws InterruptedException {
+  public void download(boolean noResume) throws InterruptedException {
     if ("file".equals(downloadUrl.getProtocol())) {
       saveLocalFile();
     } else {
-      downloadFile(noResume, allowCache);
+      downloadFile(noResume);
     }
   }
 
@@ -136,56 +137,100 @@ public class FileDownloader extends Observable {
     }
   }
 
-  private void downloadFile(boolean noResume, boolean allowCache) throws InterruptedException {
-    RandomAccessFile randomAccessOutputFile = null;
+  private void downloadFile(boolean noResume) throws InterruptedException {
 
     try {
       setStatus(Status.CONNECTING);
 
       final Optional<FileDownloaderCache.FileCached> fileCached = FileDownloaderCache.getFileCached(downloadUrl);
-
       if (fileCached.isPresent() && fileCached.get().isNotChange()) {
-        try {
-          final Optional<File> fileFromCache =
-            fileCached.get().getFileFromCache();
-          if (fileFromCache.isPresent()) {
-            log.info("No need to download using cached file: {}", fileCached.get());
-            FileUtils.copyFile(fileFromCache.get(), outputFile);
-            setStatus(Status.COMPLETE);
-            return;
-          } else {
-            log.info(
-              "The file in the cache is not in the path or the md5 validation failed: path={}, file exist={}, md5 validation={}",
-              fileCached.get().getLocalPath(), fileCached.get().exists(), fileCached.get().md5Check());
-          }
-        } catch (Exception e) {
-          log.warn(
-            "Cannot get the file from the cache, will be downloaded a new one ", e);
-        }
-      } else {
-        log.info("The file is change {}", fileCached);
-      }
+        final Optional<File> fileFromCache = getFileCached(fileCached.get());
+        if (fileFromCache.isPresent()) {
+          // Copy the cached file in the destination file
+          FileUtils.copyFile(fileFromCache.get(), outputFile);
+        } else {
+          openConnectionAndFillTheFile(noResume);
 
-      initialSize = outputFile.length();
-      if (noResume && initialSize > 0) {
-        // delete file and restart downloading
-        Files.deleteIfExists(outputFile.toPath());
-        initialSize = 0;
+          if (allowCache) {
+            fileCached.get().updateCacheFile(outputFile);
+          } else {
+            log.info("The file {} was not cached because allow cache is false", downloadUrl);
+          }
+        }
       }
+      setStatus(Status.COMPLETE);
+
+    } catch (InterruptedException e) {
+      setStatus(Status.CANCELLED);
+      // lets InterruptedException go up to the caller
+      throw e;
+
+    } catch (SocketTimeoutException e) {
+      setStatus(Status.CONNECTION_TIMEOUT_ERROR);
+      setError(e);
+      log.error("The request went in socket timeout", e);
+
+    } catch (Exception e) {
+      setStatus(Status.ERROR);
+      setError(e);
+      log.error("The request stop", e);
+    }
+
+  }
+
+  private Optional<File> getFileCached(FileDownloaderCache.FileCached fileCached) {
+
+    try {
+      final Optional<File> fileFromCache =
+        fileCached.getFileFromCache();
+      if (fileFromCache.isPresent()) {
+        log.info("No need to download using cached file: {}", fileCached);
+        return fileFromCache;
+      } else {
+        log.info(
+          "The file in the cache is not in the path or the md5 validation failed: path={}, file exist={}, md5 validation={}",
+          fileCached.getLocalPath(), fileCached.exists(), fileCached.md5Check());
+      }
+    } catch (Exception e) {
+      log.warn(
+        "Cannot get the file from the cache, will be downloaded a new one ", e);
+    }
+    log.info("The file is change {}", fileCached);
+    return Optional.empty();
+  }
+
+  private void openConnectionAndFillTheFile(boolean noResume) throws Exception {
+    initialSize = outputFile.length();
+    if (noResume && initialSize > 0) {
+      // delete file and restart downloading
+      Files.deleteIfExists(outputFile.toPath());
+      initialSize = 0;
+    }
+
+    final HttpURLConnection connection = new HttpConnectionManager(downloadUrl)
+      .makeConnection((c) -> setDownloaded(0));
+    final int resp = connection.getResponseCode();
+
+    if (resp < 200 || resp >= 300) {
+      Files.deleteIfExists(outputFile.toPath());
+      throw new IOException("Received invalid http status code from server: " + resp);
+    }
+
+    RandomAccessFile randomAccessOutputFile = null;
+    try {
       // Open file and seek to the end of it
       randomAccessOutputFile = new RandomAccessFile(outputFile, "rw");
       randomAccessOutputFile.seek(initialSize);
+      readStreamCopyTo(randomAccessOutputFile, connection);
+    } finally {
+      IOUtils.closeQuietly(randomAccessOutputFile);
+    }
 
-      final HttpURLConnection connection = new HttpConnectionManager(downloadUrl)
-        .makeConnection((c) -> setDownloaded(0));
-      final int resp = connection.getResponseCode();
+  }
 
-      if (resp < 200 || resp >= 300) {
-        IOUtils.closeQuietly(randomAccessOutputFile);
-        Files.deleteIfExists(outputFile.toPath());
-        throw new IOException("Received invalid http status code from server: " + resp);
-      }
-
+  private void readStreamCopyTo(RandomAccessFile randomAccessOutputFile, HttpURLConnection connection) throws Exception {
+    InputStream stream = null;
+    try {
       // Check for valid content length.
       long len = connection.getContentLength();
       if (len >= 0) {
@@ -193,9 +238,8 @@ public class FileDownloader extends Observable {
       }
       setStatus(Status.DOWNLOADING);
 
-      synchronized (this) {
-        stream = connection.getInputStream();
-      }
+      stream = connection.getInputStream();
+
       byte[] buffer = new byte[10240];
       while (status == Status.DOWNLOADING) {
         int read = stream.read(buffer);
@@ -215,36 +259,8 @@ public class FileDownloader extends Observable {
         if (getDownloaded() < getDownloadSize())
           throw new Exception("Incomplete download");
       }
-      // Set the cache whe it finish to download the file
-      IOUtils.closeQuietly(randomAccessOutputFile);
-      if (fileCached.isPresent() && allowCache) {
-        fileCached.get().updateCacheFile(outputFile);
-      }
-      if (!allowCache) {
-        log.info("The file {} was not cached because allow cache is false", downloadUrl);
-      }
-      setStatus(Status.COMPLETE);
-    } catch (InterruptedException e) {
-      setStatus(Status.CANCELLED);
-      // lets InterruptedException go up to the caller
-      throw e;
-
-    } catch (SocketTimeoutException e) {
-      setStatus(Status.CONNECTION_TIMEOUT_ERROR);
-      setError(e);
-      log.error("The request went in socket timeout", e);
-
-    } catch (Exception e) {
-      setStatus(Status.ERROR);
-      setError(e);
-      log.error("The request stop", e);
-
     } finally {
-      IOUtils.closeQuietly(randomAccessOutputFile);
-
-      synchronized (this) {
-        IOUtils.closeQuietly(stream);
-      }
+      IOUtils.closeQuietly(stream);
     }
   }
 

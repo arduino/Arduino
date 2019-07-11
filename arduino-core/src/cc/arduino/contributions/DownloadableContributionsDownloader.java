@@ -126,7 +126,7 @@ public class DownloadableContributionsDownloader {
   }
 
   public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
-    FileDownloader downloader = new FileDownloader(url, tmpFile);
+    FileDownloader downloader = new FileDownloader(url, tmpFile, allowCache);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
       String msg = "";
@@ -139,7 +139,7 @@ public class DownloadableContributionsDownloader {
       progress.setProgress(me.getProgress());
       progressListener.onProgress(progress);
     });
-    downloader.download(noResume, allowCache);
+    downloader.download(noResume);
     if (!downloader.isCompleted()) {
       throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
