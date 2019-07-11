@@ -50,8 +50,10 @@ public class HttpConnectionManager {
   private static Logger log = LogManager.getLogger(HttpConnectionManager.class);
   private static final String userAgent;
   private static final int connectTimeout;
+  private static final int maxRedirectNumber;
   private final URL requestURL;
   private final String id;
+
 
   static {
     final String defaultUserAgent = String.format(
@@ -75,6 +77,17 @@ public class HttpConnectionManager {
         "Cannot parse the http.connection_timeout configuration switch to default {} milliseconds", connectTimeoutFromConfig, e.getCause());
     }
     connectTimeout = connectTimeoutFromConfig;
+    // Set by default 20 max redirect to follow
+    int maxRedirectNumberConfig = 20;
+    try {
+      maxRedirectNumberConfig =
+        Integer.parseInt(
+          PreferencesData.get("http.max_redirect_number", "20"));
+    } catch (NumberFormatException e) {
+      log.warn(
+        "Cannot parse the http.max_redirect_number configuration switch to default {}", maxRedirectNumberConfig, e.getCause());
+    }
+    maxRedirectNumber = maxRedirectNumberConfig;
   }
 
   public HttpConnectionManager(URL requestURL) {
@@ -102,7 +115,7 @@ public class HttpConnectionManager {
 
   private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
                                            Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
-    if (movedTimes > 3) {
+    if (movedTimes > maxRedirectNumber) {
       log.warn("Too many redirect " + requestURL);
       throw new IOException("Too many redirect " + requestURL);
     }
