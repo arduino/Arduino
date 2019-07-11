@@ -33,6 +33,7 @@ import cc.arduino.utils.FileHash;
 import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
 import cc.arduino.utils.network.FileDownloader;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
@@ -147,13 +148,13 @@ public class DownloadableContributionsDownloader {
   public void downloadIndexAndSignature(MultiStepProgress progress, URL packageIndexUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier) throws Exception {
 
     // Extract the file name from the url
-    String[] urlPathParts = packageIndexUrl.getFile().split("/");
-    File packageIndex = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
+    String indexFileName = FilenameUtils.getName(packageIndexUrl.getPath());
+    File packageIndex = BaseNoGui.indexer.getIndexFile(indexFileName);
 
     final String statusText = tr("Downloading platforms index...");
 
     // Create temp files
-    File packageIndexTemp = File.createTempFile(packageIndexUrl.getPath(), ".tmp");
+    File packageIndexTemp = File.createTempFile(indexFileName, ".tmp");
     try {
       // Download package index
       download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true);
@@ -195,10 +196,11 @@ public class DownloadableContributionsDownloader {
 
   public boolean checkSignature(MultiStepProgress progress, URL signatureUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier, String statusText, File fileToVerify) throws Exception {
 
-    File packageIndexSignatureTemp = File.createTempFile(signatureUrl.getPath(), ".tmp");
     // Signature file name
-    String[] urlPathParts = signatureUrl.getFile().split("/");
-    File packageIndexSignature = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
+    String signatureFileName = FilenameUtils.getName(signatureUrl.getPath());
+    File packageIndexSignature = BaseNoGui.indexer.getIndexFile(signatureFileName);
+    File packageIndexSignatureTemp = File.createTempFile(signatureFileName, ".tmp");
+
 
     try {
       // Download signature

@@ -36,6 +36,7 @@ import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
@@ -70,7 +71,8 @@ public class LibraryInstaller {
     // Step 1: Download index
     File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
     // Create temp files
-    File libraryIndexTemp = File.createTempFile(new URL(Constants.LIBRARY_INDEX_URL).getPath(), ".tmp");
+    String signatureFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL).getPath());
+    File libraryIndexTemp = File.createTempFile(signatureFileName, ".tmp");
     final URL libraryURL = new URL(Constants.LIBRARY_INDEX_URL);
     final String statusText = tr("Downloading libraries index...");
     try {

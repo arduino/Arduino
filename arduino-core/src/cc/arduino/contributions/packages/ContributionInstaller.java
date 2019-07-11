@@ -41,6 +41,7 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
@@ -298,8 +299,8 @@ public class ContributionInstaller {
       try {
         // Extract the file name from the URL
         final URL packageIndexURL = new URL(packageIndexURLString);
-        String[] urlPathParts = packageIndexURL.getPath().split("/");
-        downloadedPackageIndexFilesAccumulator.add(BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]).getName());
+        String indexFileName = FilenameUtils.getName(packageIndexURL.getPath());
+        downloadedPackageIndexFilesAccumulator.add(BaseNoGui.indexer.getIndexFile(indexFileName).getName());
 
         log.info("Start download and signature check of={}", packageIndexURLs);
         downloader.downloadIndexAndSignature(progress, packageIndexURL, progressListener, signatureVerifier);

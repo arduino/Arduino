@@ -34,6 +34,7 @@ import cc.arduino.utils.Progress;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -54,7 +55,8 @@ public class GZippedJsonDownloader {
   public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
     File gzipTmpFile = null;
     try {
-      gzipTmpFile = File.createTempFile(new URL(Constants.LIBRARY_INDEX_URL_GZ).getPath(), GzipUtils.getCompressedFilename(tmpFile.getName()));
+      String tmpFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL_GZ).getPath());
+      gzipTmpFile = File.createTempFile(tmpFileName, GzipUtils.getCompressedFilename(tmpFile.getName()));
       // remove eventual leftovers from previous downloads
       Files.deleteIfExists(gzipTmpFile.toPath());
 
