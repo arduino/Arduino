@@ -120,8 +120,14 @@ public class FileDownloaderCache {
   static Optional<FileCached> getFileCached(final URL remoteURL)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
+    return getFileCached(remoteURL, true);
+  }
+
+  static Optional<FileCached> getFileCached(final URL remoteURL, boolean enableCache)
+    throws URISyntaxException, NoSuchMethodException, ScriptException,
+    IOException {
     // Return always and empty file if the cache is not enable
-    if (!enableCache) {
+    if (!(enableCache && FileDownloaderCache.enableCache)) {
       log.info("The cache is not enable.");
       return Optional.empty();
     }

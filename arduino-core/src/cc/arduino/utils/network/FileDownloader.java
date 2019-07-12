@@ -164,7 +164,7 @@ public class FileDownloader extends Observable {
     try {
       setStatus(Status.CONNECTING);
 
-      final Optional<FileDownloaderCache.FileCached> fileCachedOpt = FileDownloaderCache.getFileCached(downloadUrl);
+      final Optional<FileDownloaderCache.FileCached> fileCachedOpt = FileDownloaderCache.getFileCached(downloadUrl, allowCache);
       if (fileCachedOpt.isPresent()) {
         final FileDownloaderCache.FileCached fileCached = fileCachedOpt.get();
 
@@ -175,11 +175,7 @@ public class FileDownloader extends Observable {
         } else {
           openConnectionAndFillTheFile(noResume);
 
-          if (allowCache) {
-            fileCached.updateCacheFile(outputFile);
-          } else {
-            log.info("The file {} was not cached because allow cache is false", downloadUrl);
-          }
+          fileCached.updateCacheFile(outputFile);
         }
       } else {
         openConnectionAndFillTheFile(noResume);
