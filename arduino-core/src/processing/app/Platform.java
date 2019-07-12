@@ -257,11 +257,9 @@ public class Platform {
   }
 
   public static class BoardCloudAPIid {
-    public BoardCloudAPIid() {
-    }
 
-    private String name;
     private String fqbn;
+    private String name;
     private String architecture;
     private String id;
 

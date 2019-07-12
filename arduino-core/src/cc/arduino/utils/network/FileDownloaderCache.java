@@ -117,13 +117,13 @@ public class FileDownloaderCache {
     }
   }
 
-  static Optional<FileCached> getFileCached(final URL remoteURL)
+  public static Optional<FileCached> getFileCached(final URL remoteURL)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
     return getFileCached(remoteURL, true);
   }
 
-  static Optional<FileCached> getFileCached(final URL remoteURL, boolean enableCache)
+  public static Optional<FileCached> getFileCached(final URL remoteURL, boolean enableCache)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
     // Return always and empty file if the cache is not enable
@@ -305,7 +305,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    Optional<File> getFileFromCache() {
+    public Optional<File> getFileFromCache() {
       if (md5Check()) {
         return Optional.of(Paths.get(localPath).toFile());
       }
@@ -313,7 +313,7 @@ public class FileDownloaderCache {
 
     }
 
-    synchronized void updateCacheFile(File fileToCache) throws Exception {
+    public synchronized void updateCacheFile(File fileToCache) throws Exception {
       Path cacheFilePath = Paths.get(localPath);
 
       // If the cache directory does not exist create it
@@ -343,7 +343,7 @@ public class FileDownloaderCache {
 
     }
 
-    synchronized void invalidateCache() throws IOException {
+    public synchronized void invalidateCache() throws IOException {
       cachedFiles.remove(remoteURL);
       Files.deleteIfExists(Paths.get(localPath));
     }
@@ -356,7 +356,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    boolean md5Check() {
+    public boolean md5Check() {
       try {
         return !Objects.isNull(getMD5()) && Objects.equals(calculateMD5(), getMD5());
       } catch (Exception e) {
@@ -366,7 +366,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    LocalDateTime getExpiresTime() {
+    public LocalDateTime getExpiresTime() {
       final int maxAge;
       if (cacheControl != null) {
         maxAge = cacheControl.getMaxAge();
