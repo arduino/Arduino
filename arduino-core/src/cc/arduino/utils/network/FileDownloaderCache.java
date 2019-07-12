@@ -117,7 +117,7 @@ public class FileDownloaderCache {
     }
   }
 
-  public static Optional<FileCached> getFileCached(final URL remoteURL)
+  static Optional<FileCached> getFileCached(final URL remoteURL)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
     // Return always and empty file if the cache is not enable
@@ -268,7 +268,8 @@ public class FileDownloaderCache {
     @JsonIgnore
     public boolean isExpire() {
       // Check if the file is expire
-      return this.getExpiresTime().isBefore(LocalDateTime.now());
+      final LocalDateTime now = LocalDateTime.now();
+      return this.getExpiresTime().isBefore(now) || this.getExpiresTime().isEqual(now);
     }
 
     @JsonIgnore
@@ -298,7 +299,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    public Optional<File> getFileFromCache() {
+    Optional<File> getFileFromCache() {
       if (md5Check()) {
         return Optional.of(Paths.get(localPath).toFile());
       }
@@ -306,7 +307,7 @@ public class FileDownloaderCache {
 
     }
 
-    public synchronized void updateCacheFile(File fileToCache) throws Exception {
+    synchronized void updateCacheFile(File fileToCache) throws Exception {
       Path cacheFilePath = Paths.get(localPath);
 
       // If the cache directory does not exist create it
@@ -336,6 +337,11 @@ public class FileDownloaderCache {
 
     }
 
+    synchronized void invalidateCache() throws IOException {
+      cachedFiles.remove(remoteURL);
+      Files.deleteIfExists(Paths.get(localPath));
+    }
+
     private String calculateMD5() throws IOException, NoSuchAlgorithmException {
       if (exists()) {
         return FileHash.hash(Paths.get(localPath).toFile(), "MD5");
@@ -344,7 +350,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    public boolean md5Check() {
+    boolean md5Check() {
       try {
         return !Objects.isNull(getMD5()) && Objects.equals(calculateMD5(), getMD5());
       } catch (Exception e) {
@@ -354,7 +360,7 @@ public class FileDownloaderCache {
     }
 
     @JsonIgnore
-    public LocalDateTime getExpiresTime() {
+    LocalDateTime getExpiresTime() {
       final int maxAge;
       if (cacheControl != null) {
         maxAge = cacheControl.getMaxAge();

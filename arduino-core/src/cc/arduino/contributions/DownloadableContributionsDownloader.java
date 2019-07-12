@@ -126,7 +126,7 @@ public class DownloadableContributionsDownloader {
   }
 
   public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
-    FileDownloader downloader = new FileDownloader(url, tmpFile, allowCache);
+    final FileDownloader downloader = new FileDownloader(url, tmpFile, allowCache);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
       String msg = "";
@@ -148,22 +148,24 @@ public class DownloadableContributionsDownloader {
   public void downloadIndexAndSignature(MultiStepProgress progress, URL packageIndexUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier) throws Exception {
 
     // Extract the file name from the url
-    String indexFileName = FilenameUtils.getName(packageIndexUrl.getPath());
-    File packageIndex = BaseNoGui.indexer.getIndexFile(indexFileName);
+    final String indexFileName = FilenameUtils.getName(packageIndexUrl.getPath());
+    final File packageIndex = BaseNoGui.indexer.getIndexFile(indexFileName);
 
     final String statusText = tr("Downloading platforms index...");
 
     // Create temp files
-    File packageIndexTemp = File.createTempFile(indexFileName, ".tmp");
+    final File packageIndexTemp = File.createTempFile(indexFileName, ".tmp");
     try {
       // Download package index
       download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true, true);
+      final URL signatureUrl = new URL(packageIndexUrl.toString() + ".sig");
 
       if (verifyDomain(packageIndexUrl)) {
-        URL signatureUrl = new URL(packageIndexUrl.toString() + ".sig");
-
         if (checkSignature(progress, signatureUrl, progressListener, signatureVerifier, statusText, packageIndexTemp)) {
           Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } else {
+          log.info("The cached files have been removed. {} {}", packageIndexUrl, signatureUrl);
+          FileDownloader.invalidateFiles(packageIndexUrl, signatureUrl);
         }
       } else {
         // Move the package index to the destination when the signature is not necessary
@@ -196,10 +198,17 @@ public class DownloadableContributionsDownloader {
 
   public boolean checkSignature(MultiStepProgress progress, URL signatureUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier, String statusText, File fileToVerify) throws Exception {
 
+    final boolean allowInsecurePackages =
+      PreferencesData.getBoolean("allow_insecure_packages", false);
+    if (allowInsecurePackages) {
+      log.info("Allow insecure packages is true the signature will be skip and return always verified");
+      return true;
+    }
+
     // Signature file name
-    String signatureFileName = FilenameUtils.getName(signatureUrl.getPath());
-    File packageIndexSignature = BaseNoGui.indexer.getIndexFile(signatureFileName);
-    File packageIndexSignatureTemp = File.createTempFile(signatureFileName, ".tmp");
+    final String signatureFileName = FilenameUtils.getName(signatureUrl.getPath());
+    final File packageIndexSignature = BaseNoGui.indexer.getIndexFile(signatureFileName);
+    final File packageIndexSignatureTemp = File.createTempFile(signatureFileName, ".tmp");
 
 
     try {
@@ -207,7 +216,7 @@ public class DownloadableContributionsDownloader {
       download(signatureUrl, packageIndexSignatureTemp, progress, statusText, progressListener, true);
 
       // Verify the signature before move the files
-      boolean signatureVerified = signatureVerifier.isSigned(fileToVerify, packageIndexSignatureTemp);
+      final boolean signatureVerified = signatureVerifier.isSigned(fileToVerify, packageIndexSignatureTemp);
       if (signatureVerified) {
         log.info("Signature verified. url={}, signature url={}, file to verify={}, signature file={}", signatureUrl, signatureUrl, fileToVerify, packageIndexSignatureTemp);
         // Move if the signature is ok

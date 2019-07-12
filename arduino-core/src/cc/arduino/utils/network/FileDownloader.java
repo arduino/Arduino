@@ -34,15 +34,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import processing.app.helpers.FileUtils;
 
+import javax.script.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Optional;
 
@@ -137,26 +140,49 @@ public class FileDownloader extends Observable {
     }
   }
 
+  public static void invalidateFiles(URL... filesUrl) {
+    // For each file delete the file cached if exist
+    Arrays.stream(filesUrl).forEach(url -> {
+      try {
+        FileDownloaderCache.getFileCached(url).ifPresent(fileCached -> {
+          try {
+            log.info("Invalidate this file {} that comes from {}", fileCached.getLocalPath(), fileCached.getRemoteURL());
+            fileCached.invalidateCache();
+          } catch (Exception e) {
+            log.warn("Fail to invalidate cache", e);
+          }
+        });
+      } catch (URISyntaxException | NoSuchMethodException | ScriptException | IOException e) {
+        log.warn("Fail to get the file cached during the file invalidation", e);
+      }
+    });
+
+  }
+
   private void downloadFile(boolean noResume) throws InterruptedException {
 
     try {
       setStatus(Status.CONNECTING);
 
-      final Optional<FileDownloaderCache.FileCached> fileCached = FileDownloaderCache.getFileCached(downloadUrl);
-      if (fileCached.isPresent() && fileCached.get().isNotChange()) {
-        final Optional<File> fileFromCache = getFileCached(fileCached.get());
-        if (fileFromCache.isPresent()) {
+      final Optional<FileDownloaderCache.FileCached> fileCachedOpt = FileDownloaderCache.getFileCached(downloadUrl);
+      if (fileCachedOpt.isPresent()) {
+        final FileDownloaderCache.FileCached fileCached = fileCachedOpt.get();
+
+        final Optional<File> fileFromCache = getFileCached(fileCached);
+        if (fileCached.isNotChange() && fileFromCache.isPresent()) {
           // Copy the cached file in the destination file
           FileUtils.copyFile(fileFromCache.get(), outputFile);
         } else {
           openConnectionAndFillTheFile(noResume);
 
           if (allowCache) {
-            fileCached.get().updateCacheFile(outputFile);
+            fileCached.updateCacheFile(outputFile);
           } else {
             log.info("The file {} was not cached because allow cache is false", downloadUrl);
           }
         }
+      } else {
+        openConnectionAndFillTheFile(noResume);
       }
       setStatus(Status.COMPLETE);
 

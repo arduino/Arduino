@@ -36,6 +36,7 @@ import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
+import cc.arduino.utils.network.FileDownloader;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,9 +75,10 @@ public class LibraryInstaller {
     String signatureFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL).getPath());
     File libraryIndexTemp = File.createTempFile(signatureFileName, ".tmp");
     final URL libraryURL = new URL(Constants.LIBRARY_INDEX_URL);
+    final URL libraryGzURL = new URL(Constants.LIBRARY_INDEX_URL_GZ);
     final String statusText = tr("Downloading libraries index...");
     try {
-      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, libraryURL, new URL(Constants.LIBRARY_INDEX_URL_GZ));
+      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, libraryURL, libraryGzURL);
       gZippedJsonDownloader.download(libraryIndexTemp, progress, statusText, progressListener, true);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
@@ -98,7 +100,8 @@ public class LibraryInstaller {
         // Step 3: Rescan index
         rescanLibraryIndex(progress, progressListener);
       } else {
-        log.error("Fail to verify the signature of {}", libraryURL);
+        FileDownloader.invalidateFiles(libraryGzURL, libraryURL, signatureUrl);
+        log.error("Fail to verify the signature of {} the cached files have been removed", libraryURL);
       }
     } else {
       log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
