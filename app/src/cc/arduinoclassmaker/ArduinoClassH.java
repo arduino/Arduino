@@ -1,4 +1,4 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 /** Name: Jacob Smith
  Date: May 13 2019
@@ -23,30 +23,13 @@ public class ArduinoClassH extends ArduinoClassMaster {
 	 * Creates a new ArduinoClassH object from necessary strings containing
 	 * information like supported boards and author name
 	 * */
-	public ArduinoClassH(String className, String author, String organization,
-			String headerComments, String supportedBoards, String variables,
+	public ArduinoClassH(String className, libraryOptionalFields fields,
+			String headerComments, String variables,
 			String privateMethods, String publicMethods) {
 		// call super constructor to create header comment
-		super(className, author, organization, headerComments, supportedBoards);
+		super(className, fields, headerComments);
 		initKeywords(className);
-		init(className, supportedBoards, variables, privateMethods,
-				publicMethods);
-	}
-
-	/**
-	 * Creates a new ArduinoClassH object from necessary strings containing
-	 * information like supported boards and author name with hardcoded date for
-	 * testing purposes
-	 * */
-	public ArduinoClassH(String className, String author, String organization,
-			boolean hardCodeDate, String headerComments,
-			String supportedBoards, String variables, String privateMethods,
-			String publicMethods) {
-		// call super constructor to create header comment
-		super(className, author, organization, hardCodeDate, headerComments,
-				supportedBoards);
-		initKeywords(className);
-		init(className, supportedBoards, variables, privateMethods,
+		init(className, fields.getSupportedBoards(), variables, privateMethods,
 				publicMethods);
 	}
 
@@ -63,9 +46,8 @@ public class ArduinoClassH extends ArduinoClassMaster {
 		arduinoClass += "  private:\n";
 		arduinoClass += generateVariables(variables);
 		arduinoClass += generateMethods(className, privateMethods, false);
-		// add an automatic comment for the constructor
-		publicMethods = "|" + className + "||Creates a new " + className
-				+ " object|\n" + publicMethods;
+		//get the standard begin and constructor methods
+		publicMethods=super.getConstructorAndBegin(className)+publicMethods;
 		arduinoClass += "  public:\n";
 		arduinoClass += generateMethods(className, publicMethods, true);
 		arduinoClass += "};\n";
@@ -143,7 +125,7 @@ public class ArduinoClassH extends ArduinoClassMaster {
 		varLine += readerB.next("var name") + ";\n";// var Name
 		String comment=readerB.next("comment");
 		//generate to do message if there is no variable comment
-		if(comment.equals("")) {
+		if("".equals(comment)) {
 			comment=TODOs.Variable.toString();
 		}
 		varLine = "    //" + comment + "\n" + varLine;// comment
@@ -157,7 +139,7 @@ public class ArduinoClassH extends ArduinoClassMaster {
 		String methodString = "";
 		//add comment
 		methodString += "    //" + methodParts[3] + "\n";// comment
-		if (!methodParts[0].equals("")) {
+		if (!"".equals(methodParts[0])) {
 			methodString += " ";
 		}
 		// use this spot in parsing to generate keywords list of public methods
@@ -180,7 +162,7 @@ public class ArduinoClassH extends ArduinoClassMaster {
 	 */
 	private String generateBoardDefFinal(String className,String supportedBoards) {
 		// if className is all, just close the normal class end if and return
-		if (supportedBoards.equals("ALL")) {
+		if ("ALL".equals(supportedBoards)|supportedBoards==null) {
 			return "#endif";
 		}
 		// otherwise, return the moer complicated error handling definitions
@@ -228,12 +210,13 @@ public class ArduinoClassH extends ArduinoClassMaster {
 		// The user can decide how these string will be inputted
 		// These fields are the minimum required to generate an arudino class
 
+		//create object to hold optional fields
+		libraryOptionalFields fields=new libraryOptionalFields(ArduinoClassExample.AUTHOR.toString(),
+				ArduinoClassExample.ORGANIZATION.toString(), true,ArduinoClassExample.SUPPORTEDBOARDS.toString());
+		
 		ArduinoClassH template = new ArduinoClassH(
-				ArduinoClassExample.CLASSNAME.toString(),
-				ArduinoClassExample.AUTHOR.toString(),
-				ArduinoClassExample.ORGANIZATION.toString(), true,
+				ArduinoClassExample.CLASSNAME.toString(),fields,
 				ArduinoClassExample.HEADERCOMMENTS.toString(),
-				ArduinoClassExample.SUPPORTEDBOARDS.toString(),
 				ArduinoClassExample.VARIABLES.toString(),
 				ArduinoClassExample.PRIVATEMETHODS.toString(),
 				ArduinoClassExample.PUBLICMETHODS.toString());

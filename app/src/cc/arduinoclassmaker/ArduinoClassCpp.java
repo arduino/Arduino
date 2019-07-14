@@ -1,4 +1,4 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 /** Name: Jacob Smith
 Date: May 12 2019
@@ -15,9 +15,9 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 	* Loads an example class into memory with hardcoded date
 	* and parses it into header comment, methods, header file
 	*/
-	public ArduinoClassCpp(String className,String author,String organization,boolean hardCodeDate,String headerComments,String supportedBoards,String variables,String privateMethods,String publicMethods){
-		super(className,author,organization,hardCodeDate,headerComments,supportedBoards);
-		init(className,supportedBoards,variables,publicMethods,privateMethods);
+	public ArduinoClassCpp(String className,libraryOptionalFields fields,String headerComments,String variables,String privateMethods,String publicMethods){
+		super(className,fields,headerComments);
+		init(className,fields.getSupportedBoards(),variables,publicMethods,privateMethods);
 		
 	}
 	
@@ -25,9 +25,9 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 	* Loads an example class into memory with automatic date
 	* and parses it into header comment, methods, header file
 	*/
-	public ArduinoClassCpp(String className,String author,String organization,String headerComments,String supportedBoards,String variables,String privateMethods,String publicMethods){
-		super(className,author,organization,headerComments,supportedBoards);
-		init(className,supportedBoards,variables,publicMethods,privateMethods);
+	public ArduinoClassCpp(String className,String author,libraryOptionalFields fields,String headerComments,String variables,String privateMethods,String publicMethods){
+		super(className,fields,headerComments);
+		init(className,fields.toString(),variables,publicMethods,privateMethods);
 		
 	}
 	
@@ -37,19 +37,19 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 	private void init(String className,String supportedBoards,String variables,String publicMethods, String privateMethods){
 		arduinoClass+=super.generateBoardDefInitial(supportedBoards);
 		arduinoClass+=super.startLibraryIncludes(variables, className)+"\n";
-		publicMethods=generateConstructor(className,variables)+publicMethods;
-		arduinoClass+=generateMethods(className,publicMethods,true);
+		String publicMethodsWithHeader=generateConstructorandBegin(className,variables)+publicMethods;
+		arduinoClass+=generateMethods(className,publicMethodsWithHeader,true);
 		arduinoClass+=generateMethods(className,privateMethods,false);	
-		arduinoClass+=generateBoardDefFinal();
+		arduinoClass+=generateBoardDefFinal(supportedBoards);
 	}
 		
 	/**
 	 * Generates the body of the class constructor
 	 * @return the formatted method of a constructor
 	 */
-	private String generateConstructor(String className,String variables) {
+	private String generateConstructorandBegin(String className,String variables) {
 		//add an automatic comment for the constructor
-		String constructor="|"+className+"||Creates a new "+className+" object|\n";
+		String constructorAndBegin=super.getConstructorAndBegin(className);
 		MiniScanner varReader=new MiniScanner();
 		MiniScanner valReader=new MiniScanner();
 		varReader.prime(variables, "\n");
@@ -71,17 +71,17 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 				val=TODOs.VariableValue.toString();
 			}
 			
-			if(val.equals("")) {
+			if("".equals(val)) {
 				val="0";
 			}
 			//if there is no comment, generate the todo comment from enum
-			if(comment.equals("")) {
+			if("".equals(comment)) {
 				comment=TODOs.Variable.toString();
 			}
-			constructor+="//"+comment+"\n"+name+" = "+val+";\n";
+			constructorAndBegin+="//"+comment+"\n"+name+" = "+val+";\n";
 			
 		}
-		return constructor;
+		return constructorAndBegin;
 		
 	}
 	
@@ -92,7 +92,7 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 		methodString+="//"+methodParts[3]+"\n";//comment
 		methodString+=methodParts[0];//data type
 		//remove extra space for constructor
-		if(!methodParts[0].equals("")) {
+		if(!"".equals(methodParts[0])) {
 			methodString+=" ";
 		}
 		methodString+=className+"::"+methodParts[1]+"("+methodParts[2]+") {";//name
@@ -102,8 +102,12 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 		
 	}
 	
-	/** Generates the final board definition which generates errors if the wrong board is used*/
-	private String generateBoardDefFinal(){
+	/** Generates the final board definition which generates errors if the wrong board is used
+	 * param supportedBoards needed endif clause*/
+	private String generateBoardDefFinal(String supportedBoards){
+		if("ALL".equals(supportedBoards)|supportedBoards==null) {
+			return "";
+		}
 		return "#endif";
 	}
 	/**
@@ -113,13 +117,13 @@ public class ArduinoClassCpp extends ArduinoClassMaster{
 		// This example generates a class represented as a string
 		// The user can decide how these string will be inputted
 		// These fields are the minimum required to generate an arudino class
-
+		//create new object to contain fields
+		libraryOptionalFields fields=new libraryOptionalFields(ArduinoClassExample.AUTHOR.toString(),
+				ArduinoClassExample.ORGANIZATION.toString(),true,ArduinoClassExample.SUPPORTEDBOARDS.toString());
+		
 		ArduinoClassCpp template = new ArduinoClassCpp(ArduinoClassExample.CLASSNAME.toString(),
-			ArduinoClassExample.AUTHOR.toString(),
-			ArduinoClassExample.ORGANIZATION.toString(), 
-			true,
+			fields, 
 			ArduinoClassExample.HEADERCOMMENTS.toString(), 
-			ArduinoClassExample.SUPPORTEDBOARDS.toString(),
 			ArduinoClassExample.VARIABLES.toString(),
 			ArduinoClassExample.PRIVATEMETHODS.toString(),
 			ArduinoClassExample.PUBLICMETHODS.toString());

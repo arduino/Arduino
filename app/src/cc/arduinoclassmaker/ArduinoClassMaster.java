@@ -1,4 +1,4 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 /** Name: Jacob Smith
 Date: May 12 2019
 Assignment: Personal study, allows the user to edit an arduino library using a template, 
@@ -20,62 +20,54 @@ public abstract class ArduinoClassMaster{
 	// list of supported types, a library needs to be included for any other
 	// type
 	protected String[] supportedTypes = { "char", "byte", "int", "unsigned int",
-			"long", "unsigned long", "float", "double", "String","const char*","String []"};
+			"long", "unsigned long", "float", "double", "String","const int","const char*","String []"};
 		
 	protected MiniScanner reader;
 	protected String arduinoClass;
 	//determines whether the date will be hard coded, necessary for testing the class
 	//with example file made on may 15 2019
-	boolean hardCodeDate;
+	private boolean hardCodeDate;
 	
 	/**
 	* Loads an example class into memory given date for testing purposes
 	* and parses it into header comment, methods, header file
 	*/
 	
-	public ArduinoClassMaster(String className,String author,String organization,boolean hardCodeDate,String headerComments,String supportedBoards){
-		this.hardCodeDate=hardCodeDate;
-		init(className,author,organization,headerComments,supportedBoards);
+	public ArduinoClassMaster(String className,libraryOptionalFields fields,String headerComments){
+		this.hardCodeDate=fields.getHardCodeDate();
+		init(className,fields,headerComments);
 		
 	}
 	
-	/**
-	* Loads an example class into memory given date
-	* and parses it into header comment, methods, header file
-	*/
-	
-	public ArduinoClassMaster(String className,String author,String organization,String headerComments,String supportedBoards){
-		init(className,author,organization,headerComments,supportedBoards);
-	}
 	
 	/** 
 	 * initializes an ArduinoClassMaster class
 	 * this isn't a constructor to get aroudn the 
 	 * chaining must be first line error
 	 */
-	private void init(String className,String author,String organization,String headerComments,String supportedBoards){
+	private void init(String className,libraryOptionalFields fields,String headerComments){
 		reader=new MiniScanner();
 		arduinoClass="";
-		arduinoClass+=generateHeaderComment(author,organization,headerComments,supportedBoards);
+		arduinoClass+=generateHeaderComment(fields,headerComments);
 	}
 	
 	/** Generates the header comment of an arduino class given
 	necessary strings*/
-	protected String generateHeaderComment(String author,String organization, String headerComments,String supportedBoards){
+	protected String generateHeaderComment(libraryOptionalFields fields, String headerComments){
 		String headerComment="";
 		//if header comment is null or blank, insert auto generated todo
-		if(headerComments==null|headerComments.equals("")) {
+		if(headerComments==null|"".equals(headerComments)) {
 			headerComments=TODOs.HeaderComment.toString();
 		}
 		String date=genDate();
 		//if author or organization is null, just add the header comment
 		//this ensures flexibility in creating libraries
-		if(author==null |organization==null) {
+		if(fields.getAuthor()==null |fields.getOrganization()==null) {
 			headerComment="/*"+headerComments+" "+date+"*/\n\n";
 		}else {
-			headerComment="/* Written by "+author+" for "+organization+" "+date+"\n";
+			headerComment="/* Written by "+fields.getAuthor()+" for "+fields.getOrganization()+" "+date+"\n";
 			headerComment+=headerComments+"\n";
-			headerComment+="Boards supported: "+supportedBoards+"*/\n\n";
+			headerComment+="Boards supported: "+fields.getSupportedBoards()+"*/\n\n";
 		}
 		return headerComment;	
 	}
@@ -100,7 +92,7 @@ public abstract class ArduinoClassMaster{
 	/** Generates the board definition that allows a class to not cause compilation errors for the long board*/
 	protected String generateBoardDefInitial(String supportedBoards){
 		//check if all boards are allowed, if not go to more complicated helper method
-		if(supportedBoards.equals("ALL")){
+		if("ALL".equals(supportedBoards)){
 			return "//this should work on all boards, so there is no preprocessor directive here\n\n";
 		}else{
 			return generateBoardDef(supportedBoards);
@@ -140,7 +132,7 @@ public abstract class ArduinoClassMaster{
 	/** Generate method bodies based on input Strings*/
 	protected String generateMethods(String className,String methods,boolean isPublic){
 		//return a blank string if inputs are null,useful because a class could not have any private methods
-		if(methods==null | methods.equals("null")){return "";}
+		if(methods==null | "null".equals(methods)){return "";}
 		String methodString="";
 		String [] methodParts;
 		reader.prime(methods,"\n\n");
@@ -153,6 +145,15 @@ public abstract class ArduinoClassMaster{
 		return methodString;
 	}
 	
+	/** returns the formatted strings for the class constructor and begin method
+	* @param className the name of the class
+	*/
+	protected String getConstructorAndBegin(String className) {
+		String constructorAndBegin="|"+className+"||Creates a new "+className+" object|\n\n";
+		constructorAndBegin+="void|"+"begin"+"||Initializes the class, can't always be done at same time as constructor|\n";
+		return constructorAndBegin;
+	}
+	
 	/** parses a method into a body, dataType, comment*/
 	protected String [] parseMethod(String methodInfo){
 		MiniScanner methodReader=new MiniScanner();
@@ -163,7 +164,7 @@ public abstract class ArduinoClassMaster{
 		methodParts[2]=methodReader.next("parameters");//parameters
 		methodParts[3]=methodReader.next("comment");//comment
 		//prepare for if method comment isn't there
-		if(methodParts[3].equals("")) {
+		if("".equals(methodParts[3])) {
 			methodParts[3]=TODOs.Method.toString();
 		}
 		String methodBody;

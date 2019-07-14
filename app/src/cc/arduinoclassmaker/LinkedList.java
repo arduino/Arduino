@@ -8,7 +8,7 @@
   *Rights: Copyright (C) 2019 Jacob Smith
   * 	   License is GPL-3.0, included in License.txt of this github project
   */
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 public class LinkedList {
 	
@@ -80,20 +80,20 @@ public class LinkedList {
 	 */
 	public void switchNodes(LinkedListNode node1,LinkedListNode node2) {
 		//check if node 1 and 2 aren't consecutive
-		if(node1.getNext()!=node2) {
+		if(!node1.getNext().equals(node2)) {
 			throw new IllegalArgumentException("Node1 and 2 must be consecutive");
 		}
 		
 		//make sure tail is updated
-		if(tail==node1) {
+		if(tail.equals(node1)) {
 			tail=node2;
-		}else if (tail==node2) {
+		}else if (tail.equals(node2)) {
 			tail=node1;
 		}
 		//make sure head is updated
-		if(head==node1) {
+		if(head.equals(node1)) {
 			head=node2;
-		}else if (head==node2) {
+		}else if (head.equals(node2)) {
 			head=node1;
 		}
 		//store adjacent nodes in memory

@@ -1,4 +1,4 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 /** Name: Jacob Smith
  *  Email:jsmith2021@brandeis.edu

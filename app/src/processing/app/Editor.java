@@ -706,7 +706,7 @@ public class Editor extends JFrame implements RunnerListener {
     sketchMenu.add(item);
 	
 	item = newJMenuItem(tr("Generate Arduino Class"),' ');
-   	item.addActionListener( event -> ClassGeneratorInterface.generateLibrary(sketchController,getCurrentTab(),getCurrentTab().getSketchFile(),tabs,status));
+   	item.addActionListener( event -> ClassMakerInterface.generateLibrary(sketchController,getCurrentTab(),getCurrentTab().getSketchFile(),tabs,status,this));
 	sketchMenu.add(item);
   }
 

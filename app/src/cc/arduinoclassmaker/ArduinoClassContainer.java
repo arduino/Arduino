@@ -9,7 +9,7 @@
  *  Rights: Copyright (C) 2019 Jacob Smith
  *  		License is GPL-3.0, included in License.txt of this github project
  */
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 public class ArduinoClassContainer {
 	/**
@@ -31,26 +31,24 @@ public class ArduinoClassContainer {
 	/**
 	 * creates a new ArduinoClassContainer Object
 	 */
-	public ArduinoClassContainer(String className, String author, String organization,boolean hardCodeDate,
-			String headerComments, String supportedBoards, String variables,
+	public ArduinoClassContainer(String className,String headerComments,libraryOptionalFields fields, String variables,
 			String privateMethods, String publicMethods,String exampleMethods){
-		
 		//generate and store body file
-		ArduinoClassCpp cppMaker=new ArduinoClassCpp(className, author, organization,hardCodeDate,
-				headerComments, supportedBoards,variables,
+		ArduinoClassCpp cppMaker=new ArduinoClassCpp(className,fields,
+				headerComments,variables,
 				privateMethods,publicMethods);
 		body=cppMaker.toString();
 		
 		//generate and store header file
-		ArduinoClassH headerMaker=new ArduinoClassH(className, author, organization,hardCodeDate,
-				headerComments, supportedBoards,variables,
+		ArduinoClassH headerMaker=new ArduinoClassH(className, fields,
+				headerComments,variables,
 				privateMethods,publicMethods);
 		header=headerMaker.getHeader();
 		//store keywords file
 		keywords=headerMaker.getKeywords();
 		
 		//generate and store examples file
-		ArduinoClassExampleSketch exampleMaker=new ArduinoClassExampleSketch(className,author,organization,true,headerComments,supportedBoards,exampleMethods,publicMethods);
+		ArduinoClassExampleSketch exampleMaker=new ArduinoClassExampleSketch(className,fields,headerComments,exampleMethods,publicMethods);
 		example=exampleMaker.toString();
 	}
 	

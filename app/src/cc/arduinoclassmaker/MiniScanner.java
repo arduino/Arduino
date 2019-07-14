@@ -1,4 +1,4 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 /** Name: Jacob Smith
  Date: May 13 2019
@@ -108,7 +108,7 @@ public class MiniScanner {
 		}
 		//if the first token is a space
 		int offset=0;
-		if(curIndex==0 | !token.equals(" ")) {
+		if(curIndex==0 | !" ".equals(token)) {
 			offset=token.length()-1;
 		}
 		int nextIndex=base.indexOf(token,curIndex+offset);
@@ -122,7 +122,7 @@ public class MiniScanner {
 			//if the token is a space, ignore multiple of them
 			//because spaces are more likely to be direct user input while
 			//bars are processed input
-			if(!token.equals(" ")) {return true;}
+			if(!" ".equals(token)) {return true;}
 			while(base.indexOf(token,nextIndex+1)==nextIndex+1) {
 				curIndex++;
 				nextIndex++;

@@ -8,7 +8,7 @@
   *Rights: Copyright (C) 2019 Jacob Smith
   *  	   License is GPL-3.0, included in License.txt of this github project
   */
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
 public class SketchMethods {
 	/**
@@ -43,15 +43,15 @@ public class SketchMethods {
 	 */
 	public static String parseHeaderComment(String temp,MiniScanner scanner) {
 		String headerComment="";
-		temp=ArduinoParser.removeSpecialChars(temp);
+		String tempCleaned=ArduinoParser.removeSpecialChars(temp);
 		//keep adding the comment until the temp file is contained
-		while(!temp.contains("*/")) {
-			headerComment+=temp+"\n";
-			temp=scanner.next().replaceAll("\n", "");
+		while(!tempCleaned.contains("*/")) {
+			headerComment+=tempCleaned+"\n";
+			tempCleaned=scanner.next().replaceAll("\n", "");
 		}
 		//add the last comment
-		temp=ArduinoParser.removeSpecialChars(temp);
-		headerComment+=temp;
+		tempCleaned=ArduinoParser.removeSpecialChars(tempCleaned);
+		headerComment+=tempCleaned;
 		//remove formatting characters from header comment
 		headerComment=ArduinoParser.removeWhiteSpace(headerComment);
 		return headerComment;
@@ -111,9 +111,6 @@ public class SketchMethods {
 	 * @return the variables with problem characters removed
 	 */
 	public static String cleanVariables(String variables) {
-		variables=variables.replaceAll("\r","");
-		variables=variables.replaceAll(";", "");
-		variables=variables.replaceAll("\r\r\r", "");
-		return variables;
+		return variables.replaceAll("\r","").replaceAll(";", "").replaceAll("\r\r\r", "");
 	}
 }

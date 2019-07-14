@@ -1,6 +1,6 @@
-package cc.ArduinoClassGenerator;
+package cc.arduinoclassmaker;
 
-import cc.ArduinoClassGenerator.MiniScanner;
+import cc.arduinoclassmaker.MiniScanner;
 
 /** Name: Jacob Smith
  *  Email:jsmith2021@brandeis.edu
@@ -104,10 +104,7 @@ public class ArduinoParser {
 	 */
 	public static String removeSpecialChars(String temp) {
 		//remove comment characters
-		temp=temp.replace("/","");
-		temp=temp.replace("*","");
-		temp=temp.replace("\\","");
-		return temp;
+		return temp.replace("/","").replace("*","").replace("\\","");
 	}
 	
 	/**
@@ -118,11 +115,8 @@ public class ArduinoParser {
 	public static String removeWhiteSpace(String base) {
 		//trim any tab characters or extra spaces from comment 
 		//the newline character ensures that  nested brackets won't be flattened
-		base=base.replaceAll("\n  ","\n");
-		base=base.replaceAll("\n\t","\n");
 		//trim whitespace from comment
-		base=base.trim();
-		return base;
+		return base.replaceAll("\n  ","\n").replaceAll("\n\t","\n").trim();
 	}
 	
 	/**
