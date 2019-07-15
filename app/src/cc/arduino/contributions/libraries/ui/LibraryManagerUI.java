@@ -221,6 +221,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     if (!depsInstalled) {
       MultiLibraryInstallDialog dialog;
       dialog = new MultiLibraryInstallDialog(this, lib, deps);
+      dialog.setLocationRelativeTo(this);
       dialog.setVisible(true);
       installDeps = dialog.getInstallDepsResult();
       if (installDeps == Result.CANCEL)
