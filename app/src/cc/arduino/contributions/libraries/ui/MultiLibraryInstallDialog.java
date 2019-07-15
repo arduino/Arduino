@@ -62,7 +62,7 @@ public class MultiLibraryInstallDialog extends JDialog {
     ALL, NONE, CANCEL
   }
 
-  Result result = Result.CANCEL;
+  private Result result = Result.CANCEL;
 
   public MultiLibraryInstallDialog(Window parent, ContributedLibrary lib,
                                    List<ContributedLibrary> dependencies) {

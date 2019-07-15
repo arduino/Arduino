@@ -73,6 +73,7 @@ public class UnavailableContributedLibrary extends ContributedLibrary {
 
   @Override
   public void setCategory(String category) {
+    // Empty
   }
 
   @Override

@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import cc.arduino.contributions.VersionComparator;
+
 public abstract class LibrariesIndex {
 
   public abstract List<ContributedLibrary> getLibraries();
@@ -121,11 +123,8 @@ public abstract class LibrariesIndex {
     for (ContributedLibraryDependency dep : requirements) {
 
       // If the current solution already contains this dependency, skip over
-      boolean alreadyInSolution = false;
-      for (ContributedLibrary c : solution) {
-        if (c.getName().equals(dep.getName()))
-          alreadyInSolution = true;
-      }
+      boolean alreadyInSolution = solution.stream()
+          .anyMatch(l -> l.getName().equals(dep.getName()));
       if (alreadyInSolution)
         continue;
 
@@ -146,7 +145,7 @@ public abstract class LibrariesIndex {
         selected = installed.get();
       } else {
         // otherwise pick the latest version
-        selected = possibleDeps.stream().reduce((a, b) -> b.isBefore(a) ? a : b).get();
+        selected = possibleDeps.stream().reduce(VersionComparator::max).get();
       }
 
       // Add dependency to the solution and process recursively
