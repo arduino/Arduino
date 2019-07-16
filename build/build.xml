@@ -1108,7 +1108,7 @@
       <param name="file" value="windows/work/lib/jnidispatch-4.2.2-win32-x86.dll" />
     </antcall>
 
-    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino3.jar" dest="windows/work/lib">
+    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino4.jar" dest="windows/work/lib">
       <patternset>
         <include name="libs/windows/jSSC-2.8_x86.dll"/>
       </patternset>
@@ -1118,7 +1118,7 @@
     <antcall target="make-file-executable">
       <param name="file" value="windows/work/lib/jSSC-2.8_x86.dll" />
     </antcall>
-    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino3.jar" dest="windows/work/lib">
+    <unzip src="../arduino-core/lib/jssc-2.8.0-arduino4.jar" dest="windows/work/lib">
       <patternset>
         <include name="libs/windows/jSSC-2.8_x86_64.dll"/>
       </patternset>
