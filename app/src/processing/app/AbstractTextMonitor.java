@@ -41,6 +41,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JTextField textField;
   protected JButton sendButton;
   protected JButton clearButton;
+  protected JButton copyButton;
   protected JCheckBox autoscrollBox;
   protected JCheckBox addTimeStampBox;
   protected JComboBox<String> lineEndings;
@@ -104,6 +105,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     sendButton = new JButton(tr("Send"));
     clearButton = new JButton(tr("Clear output"));
+    copyButton = new JButton(tr("Copy output"));
 
     upperPane.add(textField);
     upperPane.add(Box.createRigidArea(new Dimension(4, 0)));
@@ -151,6 +153,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(serialRates);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
+    pane.add(copyButton);
+    pane.add(Box.createRigidArea(new Dimension(8, 0)));
     pane.add(clearButton);
 
     applyPreferences();
@@ -163,6 +167,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   {
     textArea.setEnabled(enable);
     clearButton.setEnabled(enable);
+    copyButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
@@ -179,6 +184,10 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
   public void onClearCommand(ActionListener listener) {
     clearButton.addActionListener(listener);
+  }
+
+  public void onCopyCommand(ActionListener listener) {
+    copyButton.addActionListener(listener);
   }
 
   public void onSerialRateChange(ActionListener listener) {
