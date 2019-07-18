@@ -24,6 +24,8 @@
 # You'll have problems running Processing if you incorrectly 
 # modify lines in this file.
 
+# This file DOES NOT CONTAIN settings for autoformatter (A-Style).
+# Look for the file "formatter.conf" and follow instructions at top.
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
