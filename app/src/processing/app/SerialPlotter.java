@@ -46,6 +46,7 @@ public class SerialPlotter extends AbstractMonitor {
   private static class Graph {
     public CircularBuffer buffer;
     private Color color;
+    public String label;
 
     public Graph(int id) {
       buffer = new CircularBuffer(BUFFER_CAPACITY);
@@ -185,12 +186,24 @@ public class SerialPlotter extends AbstractMonitor {
         
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
       float xstep = (float) (bounds.width - xOffset - xPadding) / (float) BUFFER_CAPACITY;
-      int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
 
+      // draw legend
+      int legendXOffset = 0;
       for(int i = 0; i < graphs.size(); ++i) {
         graphs.get(i).paint(g, xstep, minY, maxY, rangeY, bounds.height);
-        if(graphs.size() > 1) {    
-          g.fillRect(bounds.width - (xOffset + legendLength + 10) + i * 13, 10, 10, 10);
+        if(graphs.size() > 1) {
+          //draw legend rectangle
+          g.fillRect(10 + legendXOffset, 10, 10, 10);
+          legendXOffset += 13;
+          //draw label
+          g.setColor(boundsColor);
+          String s = graphs.get(i).label;
+          if(s != null && s.length() > 0) {
+            Rectangle2D fBounds = fm.getStringBounds(s, g);
+            int sWidth = (int)fBounds.getWidth();
+            g.drawString(s, 10 + legendXOffset, 10 + (int)fBounds.getHeight() /2);
+            legendXOffset += sWidth + 3;
+          }
         }
       }
     }
@@ -282,17 +295,60 @@ public class SerialPlotter extends AbstractMonitor {
       }
 
       int validParts = 0;
+      int validLabels = 0;
       for(int i = 0; i < parts.length; ++i) {
-        try {          
-          double value = Double.valueOf(parts[i]);
+        Double value = null;
+        String label = null;
+        
+        // column formated name value pair
+        if(parts[i].contains(":")) {
+          // get label
+          String[] subString = parts[i].split("[:]+");
+            
+          if(subString.length > 0) {
+            int labelLength = subString[0].length();
+              
+            if(labelLength > 32) {
+                labelLength = 32;
+            }
+            label = subString[0].substring(0, labelLength);
+          } else {
+            label = "";
+          }
+            
+          if(subString.length > 1) {
+            parts[i] = subString[1];
+          } else {
+            parts[i] = "";
+          }
+        }
+
+        try {
+          value = Double.valueOf(parts[i]);
+        } catch (NumberFormatException e) {
+          // ignored
+        }
+        //CSV header
+        if(label == null && value == null) {
+          label = parts[i];
+        }
+        
+        if(value != null) {
           if(validParts >= graphs.size()) {
             graphs.add(new Graph(validParts));
           }
           graphs.get(validParts).buffer.add(value);
           validParts++;
-        } catch (NumberFormatException e) {
-          // ignore
         }
+        if(label != null) {
+          if(validLabels >= graphs.size()) {
+            graphs.add(new Graph(validLabels));
+          }
+          graphs.get(validLabels).label = label;
+          validLabels++;
+        }
+        if(validParts > validLabels) validLabels = validParts;
+        else if(validLabels > validParts) validParts = validLabels;
       }
     }
 

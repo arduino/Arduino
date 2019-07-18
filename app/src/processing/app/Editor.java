@@ -181,7 +181,7 @@ public class Editor extends JFrame implements RunnerListener {
 
   private int numTools = 0;
 
-  public boolean avoidMultipleOperations = false;
+  static public boolean avoidMultipleOperations = false;
 
   private final EditorToolbar toolbar;
   // these menus are shared so that they needn't be rebuilt for all windows
@@ -1015,22 +1015,20 @@ public class Editor extends JFrame implements RunnerListener {
     //System.out.println(item.getLabel());
 
     BaseNoGui.selectSerialPort(name);
-    if (serialMonitor != null) {
-      try {
+    try {
+      boolean reopenMonitor = ((serialMonitor != null && serialMonitor.isVisible()) ||
+                                serialPlotter != null && serialPlotter.isVisible());
+      if (serialMonitor != null) {
         serialMonitor.close();
-        serialMonitor.setVisible(false);
-      } catch (Exception e) {
-        // ignore
       }
-    }
-
-    if (serialPlotter != null) {
-      try {
+      if (serialPlotter != null) {
         serialPlotter.close();
-        serialPlotter.setVisible(false);
-      } catch (Exception e) {
-        // ignore
       }
+      if (reopenMonitor) {
+        handleSerial();
+      }
+    } catch (Exception e) {
+      // ignore
     }
 
     onBoardOrPortChange();
@@ -2214,7 +2212,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
-    serialMonitor = new MonitorFactory().newMonitor(base, port);
+    serialMonitor = new MonitorFactory().newMonitor(port);
 
     if (serialMonitor == null) {
       String board = port.getPrefs().get("board");
@@ -2223,6 +2221,7 @@ public class Editor extends JFrame implements RunnerListener {
       return;
     }
 
+    base.addEditorFontResizeListeners(serialMonitor);
     Base.setIcon(serialMonitor);
 
     // If currently uploading, disable the monitor (it will be later

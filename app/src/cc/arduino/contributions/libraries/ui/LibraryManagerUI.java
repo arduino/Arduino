@@ -52,6 +52,7 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
+import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownItem;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import cc.arduino.contributions.ui.InstallerJDialog;
@@ -85,7 +86,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
           onRemovePressed(mayInstalledLibrary.get());
         } else {
-          onInstallPressed(selectedLibrary, mayInstalledLibrary);
+          onInstallPressed(selectedLibrary);
         }
       }
 
@@ -213,12 +214,30 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final Optional<ContributedLibrary> mayReplaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
+    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
+    Result installDeps;
+    if (!depsInstalled) {
+      MultiLibraryInstallDialog dialog;
+      dialog = new MultiLibraryInstallDialog(this, lib, deps);
+      dialog.setLocationRelativeTo(this);
+      dialog.setVisible(true);
+      installDeps = dialog.getInstallDepsResult();
+      if (installDeps == Result.CANCEL)
+        return;
+    } else {
+      installDeps = Result.NONE;
+    }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, mayReplaced, this::setProgress);
+        if (installDeps == Result.ALL) {
+          installer.install(deps, this::setProgress);
+        } else {
+          installer.install(lib, this::setProgress);
+        }
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

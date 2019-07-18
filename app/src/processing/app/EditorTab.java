@@ -30,8 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
 
 import java.io.IOException;
 
