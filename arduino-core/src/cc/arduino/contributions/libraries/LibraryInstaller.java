@@ -93,12 +93,6 @@ public class LibraryInstaller {
         if (libraryIndexTemp.length() > 0) {
           Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
-
-        // Step 2: Parse index
-        BaseNoGui.librariesIndexer.parseIndex();
-
-        // Step 3: Rescan index
-        rescanLibraryIndex(progress, progressListener);
       } else {
         FileDownloader.invalidateFiles(libraryGzURL, libraryURL, signatureUrl);
         log.error("Fail to verify the signature of {} the cached files have been removed", libraryURL);
@@ -106,6 +100,12 @@ public class LibraryInstaller {
     } else {
       log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
     }
+
+    // Step 2: Parse index
+    BaseNoGui.librariesIndexer.parseIndex();
+
+    // Step 3: Rescan index
+    rescanLibraryIndex(progress, progressListener);
 
   }
 
