@@ -14,7 +14,7 @@ public class UpdateTextAreaActionTest {
 
   class DummyTextMonitor extends AbstractTextMonitor {
     public DummyTextMonitor(BoardPort boardPort) {
-      super(Base.INSTANCE, boardPort);
+      super(boardPort);
     }
   }
 
