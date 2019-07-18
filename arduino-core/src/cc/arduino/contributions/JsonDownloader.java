@@ -44,9 +44,9 @@ public class JsonDownloader {
     this.url = url;
   }
 
-  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
+  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
     try {
-      downloader.download(url, tmpFile, progress, statusText, progressListener);
+      downloader.download(url, tmpFile, progress, statusText, progressListener, allowCache);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
     }

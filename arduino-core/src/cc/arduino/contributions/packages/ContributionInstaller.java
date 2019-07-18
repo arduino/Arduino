@@ -41,6 +41,9 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -62,6 +65,7 @@ import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class ContributionInstaller {
+  private static Logger log = LogManager.getLogger(ContributionInstaller.class);
 
   private final Platform platform;
   private final SignatureVerifier signatureVerifier;
@@ -98,7 +102,7 @@ public class ContributionInstaller {
     // Download all
     try {
       // Download platform
-      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener);
+      downloader.download(contributedPlatform, progress, tr("Downloading boards definitions."), progressListener, false);
       progress.stepDone();
 
       // Download tools
@@ -106,7 +110,7 @@ public class ContributionInstaller {
       for (ContributedTool tool : tools) {
         String msg = format(tr("Downloading tools ({0}/{1})."), i, tools.size());
         i++;
-        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener);
+        downloader.download(tool.getDownloadableContribution(platform), progress, msg, progressListener, false);
         progress.stepDone();
       }
     } catch (InterruptedException e) {
@@ -122,10 +126,10 @@ public class ContributionInstaller {
     // all the temporary folders and abort installation.
 
     List<Map.Entry<ContributedToolReference, ContributedTool>> resolvedToolReferences = contributedPlatform
-        .getResolvedToolReferences().entrySet().stream()
-        .filter((entry) -> !entry.getValue().isInstalled()
-                           || entry.getValue().isBuiltIn())
-        .collect(Collectors.toList());
+      .getResolvedToolReferences().entrySet().stream()
+      .filter((entry) -> !entry.getValue().isInstalled()
+        || entry.getValue().isBuiltIn())
+      .collect(Collectors.toList());
 
     int i = 1;
     for (Map.Entry<ContributedToolReference, ContributedTool> entry : resolvedToolReferences) {
@@ -268,6 +272,8 @@ public class ContributionInstaller {
         Files.delete(destFolder.getParentFile().toPath());
       } catch (Exception e) {
         // ignore
+        log.info("The directory is not empty there is another version installed. directory {}",
+          destFolder.getParentFile().toPath(),  e);
       }
     }
 
@@ -278,64 +284,35 @@ public class ContributionInstaller {
     return errors;
   }
 
-  public synchronized List<String> updateIndex(ProgressListener progressListener) throws Exception {
+  public synchronized List<String> updateIndex(ProgressListener progressListener) {
     MultiStepProgress progress = new MultiStepProgress(1);
 
+    final DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
+
+    final Set<String> packageIndexURLs = new HashSet<>(
+      PreferencesData.getCollection(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS)
+    );
+    packageIndexURLs.add(Constants.PACKAGE_INDEX_URL);
     List<String> downloadedPackageIndexFilesAccumulator = new LinkedList<>();
-    downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, Constants.PACKAGE_INDEX_URL, progressListener);
 
-    Set<String> packageIndexURLs = new HashSet<>();
-    String additionalURLs = PreferencesData.get(Constants.PREF_BOARDS_MANAGER_ADDITIONAL_URLS, "");
-    if (!"".equals(additionalURLs)) {
-      packageIndexURLs.addAll(Arrays.asList(additionalURLs.split(",")));
-    }
-
-    for (String packageIndexURL : packageIndexURLs) {
+    for (String packageIndexURLString : packageIndexURLs) {
       try {
-        downloadIndexAndSignature(progress, downloadedPackageIndexFilesAccumulator, packageIndexURL, progressListener);
+        // Extract the file name from the URL
+        final URL packageIndexURL = new URL(packageIndexURLString);
+        String indexFileName = FilenameUtils.getName(packageIndexURL.getPath());
+        downloadedPackageIndexFilesAccumulator.add(BaseNoGui.indexer.getIndexFile(indexFileName).getName());
+
+        log.info("Start download and signature check of={}", packageIndexURLs);
+        downloader.downloadIndexAndSignature(progress, packageIndexURL, progressListener, signatureVerifier);
       } catch (Exception e) {
+        log.error(e.getMessage(), e);
         System.err.println(e.getMessage());
       }
     }
 
     progress.stepDone();
-
+    log.info("Downloaded package index URL={}", packageIndexURLs);
     return downloadedPackageIndexFilesAccumulator;
-  }
-
-  private void downloadIndexAndSignature(MultiStepProgress progress, List<String> downloadedPackagedIndexFilesAccumulator, String packageIndexUrl, ProgressListener progressListener) throws Exception {
-    File packageIndex = download(progress, packageIndexUrl, progressListener);
-    downloadedPackagedIndexFilesAccumulator.add(packageIndex.getName());
-    try {
-      File packageIndexSignature = download(progress, packageIndexUrl + ".sig", progressListener);
-      boolean signatureVerified = signatureVerifier.isSigned(packageIndex);
-      if (signatureVerified) {
-        downloadedPackagedIndexFilesAccumulator.add(packageIndexSignature.getName());
-      } else {
-        downloadedPackagedIndexFilesAccumulator.remove(packageIndex.getName());
-        Files.delete(packageIndex.toPath());
-        Files.delete(packageIndexSignature.toPath());
-        System.err.println(I18n.format(tr("{0} file signature verification failed. File ignored."), packageIndexUrl));
-      }
-    } catch (Exception e) {
-      //ignore errors
-    }
-  }
-
-  private File download(MultiStepProgress progress, String packageIndexUrl, ProgressListener progressListener) throws Exception {
-    String statusText = tr("Downloading platforms index...");
-    URL url = new URL(packageIndexUrl);
-    String[] urlPathParts = url.getFile().split("/");
-    File outputFile = BaseNoGui.indexer.getIndexFile(urlPathParts[urlPathParts.length - 1]);
-    File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
-    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.indexer.getStagingFolder());
-    boolean noResume = true;
-    downloader.download(url, tmpFile, progress, statusText, progressListener, noResume);
-
-    Files.deleteIfExists(outputFile.toPath());
-    Files.move(tmpFile.toPath(), outputFile.toPath());
-
-    return outputFile;
   }
 
   public synchronized void deleteUnknownFiles(List<String> downloadedPackageIndexFiles) throws IOException {
@@ -344,8 +321,11 @@ public class ContributionInstaller {
     if (additionalPackageIndexFiles == null) {
       return;
     }
+    log.info("Check unknown files. Additional package index folder files={}, Additional package index url downloaded={}", downloadedPackageIndexFiles, additionalPackageIndexFiles);
+
     for (File additionalPackageIndexFile : additionalPackageIndexFiles) {
       if (!downloadedPackageIndexFiles.contains(additionalPackageIndexFile.getName())) {
+        log.info("Delete this unknown file={} because not included in this list={}", additionalPackageIndexFile, additionalPackageIndexFiles);
         Files.delete(additionalPackageIndexFile.toPath());
       }
     }

@@ -438,6 +438,7 @@
       <option value="-Dcom.apple.smallTabs=true"/>
       <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
       <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
+      <option value="-Djava.net.preferIPv4Stack=true"/>
 
       <!--
       <option value="-Dapple.awt.showGrowBox=false"/>

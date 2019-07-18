@@ -265,7 +265,10 @@ public class PreferencesData {
   }
 
   public static Collection<String> getCollection(String key) {
-    return Arrays.asList(get(key, "").split(","));
+    return Arrays.stream(get(key, "").split(","))
+      // Remove empty strings from the collection
+      .filter((v) -> !v.trim().isEmpty())
+      .collect(Collectors.toList());
   }
 
   public static void setCollection(String key, Collection<String> values) {

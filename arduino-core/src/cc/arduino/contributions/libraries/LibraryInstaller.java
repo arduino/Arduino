@@ -31,10 +31,15 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
+import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
+import cc.arduino.utils.network.FileDownloader;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -43,6 +48,8 @@ import processing.app.helpers.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +57,14 @@ import java.util.Optional;
 import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
+  private static Logger log = LogManager.getLogger(LibraryInstaller.class);
 
   private final Platform platform;
+  private final GPGDetachedSignatureVerifier signatureVerifier;
 
-  public LibraryInstaller(Platform platform) {
+  public LibraryInstaller(Platform platform, GPGDetachedSignatureVerifier signatureVerifier) {
     this.platform = platform;
+    this.signatureVerifier = signatureVerifier;
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
@@ -63,29 +73,42 @@ public class LibraryInstaller {
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
     File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
-    File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
+    // Create temp files
+    String signatureFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL).getPath());
+    File libraryIndexTemp = File.createTempFile(signatureFileName, ".tmp");
+    final URL libraryURL = new URL(Constants.LIBRARY_INDEX_URL);
+    final URL libraryGzURL = new URL(Constants.LIBRARY_INDEX_URL_GZ);
+    final String statusText = tr("Downloading libraries index...");
     try {
-      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(Constants.LIBRARY_INDEX_URL), new URL(Constants.LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."), progressListener);
+      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, libraryURL, libraryGzURL);
+      gZippedJsonDownloader.download(libraryIndexTemp, progress, statusText, progressListener, true);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
     }
     progress.stepDone();
 
-    // TODO: Check downloaded index
-
-    // Replace old index with the updated one
-    if (outputFile.exists())
-      outputFile.delete();
-    if (!tmpFile.renameTo(outputFile))
-      throw new Exception(tr("An error occurred while updating libraries index!"));
+    URL signatureUrl = new URL(libraryURL.toString() + ".sig");
+    if (downloader.verifyDomain(signatureUrl)) {
+      if (downloader.checkSignature(progress, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
+        // Replace old index with the updated one
+        if (libraryIndexTemp.length() > 0) {
+          Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+      } else {
+        FileDownloader.invalidateFiles(libraryGzURL, libraryURL, signatureUrl);
+        log.error("Fail to verify the signature of {} the cached files have been removed", libraryURL);
+      }
+    } else {
+      log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
+    }
 
     // Step 2: Parse index
     BaseNoGui.librariesIndexer.parseIndex();
 
     // Step 3: Rescan index
     rescanLibraryIndex(progress, progressListener);
+
   }
 
   public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
@@ -129,7 +152,7 @@ public class LibraryInstaller {
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener);
+      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener, false);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
