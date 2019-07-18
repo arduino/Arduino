@@ -38,7 +38,7 @@ When you're not sure where your issue belongs, report it at [arduino/Arduino](ht
 - State the newest version of the Arduino IDE you have verified the issue with and which operating system you are using.
 - The issue title should be concise yet descriptive. Vague titles make it difficult to know the purpose of the issue when looking through the list of reports and may cause your issue to not be given proper attention.
 - Describe the issue and what behavior you were expecting. Post complete error messages using [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples).
-- Provide a full set of steps necessary to reproduce the issue. The demonstration code should be complete, correct, and simplified to the minimum amount of code necessary to reproduce the issue. Please use [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) when posting code.
+- Provide a full set of steps necessary to reproduce the issue. Demonstration code should be complete, correct, and simplified to the minimum amount of code necessary to reproduce the issue. Please use [Markdown code fencing](https://guides.github.com/features/mastering-markdown/#examples) when posting code.
 - Be responsive. We may need you to provide more information, please respond as soon as possible.
 - If you find a solution to your problem update your issue report with an explanation of how you were able to fix it and close the issue.
 - Library Manager submissions: make sure your library meets all the requirements listed in the [Library Manager FAQ](https://github.com/arduino/Arduino/wiki/Library-Manager-FAQ).
