@@ -219,7 +219,7 @@ public class Editor extends JFrame implements RunnerListener {
   private JMenuItem saveAsMenuItem;
 
   //boolean presenting;
-  private boolean uploading;
+  static private boolean uploading;
 
   // undo fellers
   private JMenuItem undoItem;
@@ -2108,6 +2108,10 @@ public class Editor extends JFrame implements RunnerListener {
       resumeOrCloseSerialPlotter();
       base.onBoardOrPortChange();
     }
+  }
+
+  static public boolean isUploading() {
+    return uploading;
   }
 
   private void resumeOrCloseSerialMonitor() {
