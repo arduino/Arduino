@@ -1210,7 +1210,7 @@
 
     <delete dir="${staging_folder}/arduino-cli-windows" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-cli-windows"/>
-    <antcall target="unzip-with-ant-task">
+    <antcall target="unzip">
       <param name="archive_file" value="./arduino-cli-${ARDUINO-CLI-VERSION}-windows.zip" />
       <param name="archive_url" value="https://downloads.arduino.cc/arduino-cli/arduino-cli-${ARDUINO-CLI-VERSION}-windows.zip" />
       <param name="final_folder" value="${staging_folder}/arduino-cli-windows/arduino-cli-${ARDUINO-CLI-VERSION}-windows.exe" />
