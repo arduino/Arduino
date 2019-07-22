@@ -286,17 +286,19 @@ public class FileDownloaderCache {
     @JsonIgnore
     public boolean isChange() {
       // Check if the file is expire
-      if (!isExpire()) {
-        log.debug("The file \"{}\" is no expire, the eTag will not be checked. Expire time: {}", localPath,
+      boolean isChange = false;
+      if (isExpire()) {
+        log.debug("The file \"{}\" is expire. Expire time: {}", localPath,
           this.getExpiresTime().format(DateTimeFormatter.ISO_DATE_TIME));
-        return false;
+        isChange = true;
       }
 
-      if (lastETag != null) {
+      if (lastETag != null && !lastETag.equals(eTag)) {
         // If are different means that the file is change
-        return !lastETag.equals(eTag);
+        log.debug("The file \"{}\" is changed last ETag != now Etag ({}!={})", localPath, lastETag, eTag);
+        isChange = true;
       }
-      return true;
+      return isChange;
     }
 
     @JsonIgnore
