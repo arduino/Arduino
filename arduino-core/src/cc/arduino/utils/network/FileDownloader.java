@@ -171,6 +171,7 @@ public class FileDownloader extends Observable {
         final Optional<File> fileFromCache = getFileCached(fileCached);
         if (fileCached.isNotChange() && fileFromCache.isPresent()) {
           // Copy the cached file in the destination file
+          log.info("The file will be taken from the cache {}", fileFromCache);
           FileUtils.copyFile(fileFromCache.get(), outputFile);
         } else {
           openConnectionAndFillTheFile(noResume);
