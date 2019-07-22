@@ -146,6 +146,7 @@ public class FileDownloaderCache {
       .orElseGet(() -> new FileCached(remoteURL.toString(), cacheFilePath.toString()));
 
     // If the file is change of the cache is disable run the HEAD request to check if the file is changed
+    log.info("Get file cached is expire {}, exist {}, info {} ", fileCached.isExpire(), fileCached.exists(), fileCached);
     if (fileCached.isExpire() || !fileCached.exists()) {
       // Update remote etag and cache control header
       final Optional<FileCached> fileCachedInfoUpdated =
