@@ -1927,7 +1927,9 @@ public class Base {
           this.handleFontSizeChange(-1);
         }
       } else {
-        e.getComponent().getParent().dispatchEvent(e);
+        if (e.getComponent() != null && e.getComponent().getParent() != null) {
+          e.getComponent().getParent().dispatchEvent(e);
+        }
       }
     });
   }

@@ -2060,6 +2060,8 @@ public class Editor extends JFrame implements RunnerListener {
 
     public void run() {
       try {
+        uploading = true;
+
         removeAllLineHighlights();
         if (serialMonitor != null) {
           serialMonitor.suspend();
@@ -2067,8 +2069,6 @@ public class Editor extends JFrame implements RunnerListener {
         if (serialPlotter != null) {
           serialPlotter.suspend();
         }
-
-        uploading = true;
 
         boolean success = sketchController.exportApplet(usingProgrammer);
         if (success) {
