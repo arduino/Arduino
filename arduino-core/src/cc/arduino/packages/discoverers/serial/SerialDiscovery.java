@@ -29,17 +29,14 @@
 
 package cc.arduino.packages.discoverers.serial;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import cc.arduino.packages.BoardPort;
 import cc.arduino.packages.Discovery;
 import processing.app.BaseNoGui;
 import processing.app.Platform;
 import processing.app.debug.TargetBoard;
+import processing.app.helpers.BoardCloudResolver;
+
+import java.util.*;
 
 public class SerialDiscovery implements Discovery, Runnable {
 
@@ -50,6 +47,7 @@ public class SerialDiscovery implements Discovery, Runnable {
   public boolean uploadInProgress = false;
   public boolean pausePolling = false;
   private BoardPort oldUploadBoardPort = null;
+  private final BoardCloudResolver boardCloudResolver = new BoardCloudResolver();
 
 
   @Override
@@ -203,7 +201,7 @@ public class SerialDiscovery implements Discovery, Runnable {
           boardPort.getPrefs().put("vid", parts[1]);
           boardPort.getPrefs().put("pid", parts[2]);
           // ask Cloud API to match the board with known VID/PID pair
-          platform.getBoardWithMatchingVidPidFromCloud(parts[1], parts[2]);
+          boardCloudResolver.getBoardBy(parts[1], parts[2]);
         } else {
           boardPort.getPrefs().put("vid", "0000");
           boardPort.getPrefs().put("pid", "0000");
