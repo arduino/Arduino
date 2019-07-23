@@ -208,7 +208,8 @@ public class Base {
 
     BaseNoGui.initPortableFolder();
     // This configure the logs root folder
-    System.setProperty("log4j.saveDirectory", BaseNoGui.getSettingsFolder().getAbsolutePath());
+    System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
+    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     // Look for a possible "--preferences-file" parameter and load preferences
     BaseNoGui.initParameters(args);
