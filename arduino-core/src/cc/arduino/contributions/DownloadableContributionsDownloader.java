@@ -215,6 +215,7 @@ public class DownloadableContributionsDownloader {
       download(signatureUrl, packageIndexSignatureTemp, progress, statusText, progressListener, true);
 
       if (skipVerification) {
+        Files.move(packageIndexSignatureTemp.toPath(), packageIndexSignature.toPath(), StandardCopyOption.REPLACE_EXISTING);
         log.info("Allowing insecure packages because allow_insecure_packages is set to true in preferences.txt" +
           " but the signature was download");
         return true;
