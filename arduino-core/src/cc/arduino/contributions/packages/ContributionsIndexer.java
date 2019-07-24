@@ -33,7 +33,6 @@ import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.SignatureVerifier;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -87,7 +86,7 @@ public class ContributionsIndexer {
     File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
     if (defaultIndexFile.exists()) {
       // Check main index signature
-      if (!PreferencesData.getBoolean("allow_insecure_packages") && !signatureVerifier.isSigned(defaultIndexFile)) {
+      if (!PreferencesData.getBoolean(Constants.ALLOW_INSECURE_PACKAGES) && !signatureVerifier.isSigned(defaultIndexFile)) {
         throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
       }
 

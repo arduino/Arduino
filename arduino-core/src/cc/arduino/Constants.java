@@ -37,6 +37,7 @@ public class Constants {
   public static final String PREF_REMOVE_PLACEHOLDER = "___REMOVE___";
   public static final String PREF_BOARDS_MANAGER_ADDITIONAL_URLS = "boardsmanager.additional.urls";
   public static final String PREF_CONTRIBUTIONS_TRUST_ALL = "contributions.trust.all";
+  public static final String ALLOW_INSECURE_PACKAGES = "allow_insecure_packages";
 
   public static final String DEFAULT_INDEX_FILE_NAME = "package_index.json";
   public static final String BUNDLED_INDEX_FILE_NAME = "package_index_bundled.json";
