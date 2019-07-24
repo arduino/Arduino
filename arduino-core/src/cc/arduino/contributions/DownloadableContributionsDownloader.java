@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions;
 
-import cc.arduino.Constants;
 import cc.arduino.utils.FileHash;
 import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
@@ -199,10 +198,6 @@ public class DownloadableContributionsDownloader {
 
   public boolean checkSignature(MultiStepProgress progress, URL signatureUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier, String statusText, File fileToVerify) throws Exception {
 
-    final boolean allowInsecurePackages =
-      PreferencesData.getBoolean(Constants.ALLOW_INSECURE_PACKAGES, false);
-    final boolean trustAll = PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL);
-    final boolean skipVerification = allowInsecurePackages || trustAll;
 
     // Signature file name
     final String signatureFileName = FilenameUtils.getName(signatureUrl.getPath());
@@ -214,7 +209,7 @@ public class DownloadableContributionsDownloader {
       // Download signature
       download(signatureUrl, packageIndexSignatureTemp, progress, statusText, progressListener, true);
 
-      if (skipVerification) {
+      if (PreferencesData.areInsecurePackagesAllowed()) {
         Files.move(packageIndexSignatureTemp.toPath(), packageIndexSignature.toPath(), StandardCopyOption.REPLACE_EXISTING);
         log.info("Allowing insecure packages because allow_insecure_packages is set to true in preferences.txt" +
           " but the signature was download");

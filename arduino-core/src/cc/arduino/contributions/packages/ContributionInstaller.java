@@ -145,7 +145,7 @@ public class ContributionInstaller {
       assert toolContrib.getDownloadedFile() != null;
       new ArchiveExtractor(platform).extract(toolContrib.getDownloadedFile(), destFolder.toFile(), 1);
       try {
-        findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+        findAndExecutePostInstallScriptIfAny(destFolder.toFile(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.areInsecurePackagesAllowed());
       } catch (IOException e) {
         errors.add(tr("Error running post install script"));
       }
@@ -164,7 +164,7 @@ public class ContributionInstaller {
     contributedPlatform.setInstalled(true);
     contributedPlatform.setInstalledFolder(destFolder);
     try {
-      findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+      findAndExecutePostInstallScriptIfAny(destFolder, contributedPlatform.getParentPackage().isTrusted(), PreferencesData.areInsecurePackagesAllowed());
     } catch (IOException e) {
       e.printStackTrace();
       errors.add(tr("Error running post install script"));
@@ -244,7 +244,7 @@ public class ContributionInstaller {
     }
     List<String> errors = new LinkedList<>();
     try {
-      findAndExecutePreUninstallScriptIfAny(contributedPlatform.getInstalledFolder(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL));
+      findAndExecutePreUninstallScriptIfAny(contributedPlatform.getInstalledFolder(), contributedPlatform.getParentPackage().isTrusted(), PreferencesData.areInsecurePackagesAllowed());
     } catch (IOException e) {
       errors.add(tr("Error running post install script"));
     }

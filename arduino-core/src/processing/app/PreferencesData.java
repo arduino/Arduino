@@ -1,9 +1,14 @@
 package processing.app;
 
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
+import cc.arduino.Constants;
+import cc.arduino.i18n.Languages;
+import org.apache.commons.compress.utils.IOUtils;
+import processing.app.helpers.PreferencesHelper;
+import processing.app.helpers.PreferencesMap;
+import processing.app.legacy.PApplet;
+import processing.app.legacy.PConstants;
 
-import java.awt.Font;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,13 +18,8 @@ import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
-import org.apache.commons.compress.utils.IOUtils;
-
-import cc.arduino.i18n.Languages;
-import processing.app.helpers.PreferencesHelper;
-import processing.app.helpers.PreferencesMap;
-import processing.app.legacy.PApplet;
-import processing.app.legacy.PConstants;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 
 public class PreferencesData {
@@ -274,5 +274,12 @@ public class PreferencesData {
   public static void setCollection(String key, Collection<String> values) {
     String value = values.stream().collect(Collectors.joining(","));
     set(key, value);
+  }
+
+  public static boolean areInsecurePackagesAllowed() {
+    if (getBoolean(Constants.ALLOW_INSECURE_PACKAGES, false)) {
+      return true;
+    }
+    return getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL, false);
   }
 }

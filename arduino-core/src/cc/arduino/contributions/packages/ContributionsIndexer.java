@@ -86,7 +86,7 @@ public class ContributionsIndexer {
     File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
     if (defaultIndexFile.exists()) {
       // Check main index signature
-      if (!PreferencesData.getBoolean(Constants.ALLOW_INSECURE_PACKAGES) && !signatureVerifier.isSigned(defaultIndexFile)) {
+      if (!PreferencesData.areInsecurePackagesAllowed() && !signatureVerifier.isSigned(defaultIndexFile)) {
         throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
       }
 
@@ -142,7 +142,7 @@ public class ContributionsIndexer {
 
     ContributionsIndex contributionsIndex = parseIndex(indexFile);
     boolean signed = signatureVerifier.isSigned(indexFile);
-    boolean trustall = PreferencesData.getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL);
+    boolean trustall = PreferencesData.areInsecurePackagesAllowed();
 
     for (ContributedPackage contributedPackage : contributionsIndex.getPackages()) {
       contributedPackage.setTrusted(signed || trustall);
