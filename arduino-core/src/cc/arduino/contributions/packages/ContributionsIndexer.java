@@ -86,8 +86,12 @@ public class ContributionsIndexer {
     File defaultIndexFile = getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
     if (defaultIndexFile.exists()) {
       // Check main index signature
-      if (!PreferencesData.areInsecurePackagesAllowed() && !signatureVerifier.isSigned(defaultIndexFile)) {
-        throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
+      if (!signatureVerifier.isSigned(defaultIndexFile)) {
+        if (PreferencesData.areInsecurePackagesAllowed()) {
+          System.err.println(format(tr("Warning: forced trusting untrusted contributions")));
+        } else {
+          throw new SignatureVerificationFailedException(Constants.DEFAULT_INDEX_FILE_NAME);
+        }
       }
 
       mergeContributions(defaultIndexFile);
