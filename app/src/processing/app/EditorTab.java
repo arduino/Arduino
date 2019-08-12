@@ -30,7 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.Action;
@@ -174,6 +175,15 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
       int lineEnd = root.getElementIndex(e.getDot());
 
       editor.lineStatus.set(lineStart, lineEnd);
+    });
+    textArea.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        Element root = textArea.getDocument().getDefaultRootElement();
+        int lineStart = root.getElementIndex(textArea.getCaret().getMark());
+        int lineEnd = root.getElementIndex(textArea.getCaret().getDot());
+        editor.lineStatus.set(lineStart, lineEnd);
+      };
+      public void focusLost(FocusEvent e) {};
     });
     ToolTipManager.sharedInstance().registerComponent(textArea);
 
