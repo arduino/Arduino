@@ -230,6 +230,8 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
     desc += "</body></html>";
     description.setText(desc);
+    // copy description to accessibility context for screen readers to use
+    description.getAccessibleContext().setAccessibleDescription(desc);
     description.setBackground(Color.WHITE);
 
     // for modelToView to work, the text area has to be sized. It doesn't
