@@ -2,7 +2,6 @@ package processing.app;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
-import cc.arduino.contributions.SignatureVerificationFailedException;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -482,7 +481,7 @@ public class BaseNoGui {
 
     try {
       indexer.parseIndex();
-    } catch (JsonProcessingException | SignatureVerificationFailedException e) {
+    } catch (JsonProcessingException e) {
       File indexFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME);
       File indexSignatureFile = indexer.getIndexFile(Constants.DEFAULT_INDEX_FILE_NAME + ".sig");
       indexFile.delete();
