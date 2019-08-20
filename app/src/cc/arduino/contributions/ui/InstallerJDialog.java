@@ -133,6 +133,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
           updateIndexFilter(filters, categoryFilter);
         }
       };
+      filterField.getAccessibleContext().setAccessibleDescription(tr("Search Filter"));
 
       // Add cut/copy/paste contextual menu to the search filter input field.
       JPopupMenu menu = new JPopupMenu();
