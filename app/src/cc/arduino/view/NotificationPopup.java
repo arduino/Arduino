@@ -50,6 +50,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkListener;
 
 import cc.arduino.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.PreferencesData;
 import processing.app.Theme;
 
