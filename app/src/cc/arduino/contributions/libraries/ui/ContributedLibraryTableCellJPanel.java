@@ -28,10 +28,12 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 public class ContributedLibraryTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
   final JButton installButton;
   final Component installButtonPlaceholder;
   final JComboBox downgradeChooser;
@@ -46,6 +48,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+    moreInfoButton = new JButton(tr("More info"));
+    moreInfoButton.setVisible(false);
     installButton = new JButton(tr("Install"));
     int width = installButton.getPreferredSize().width;
     installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
@@ -79,6 +83,9 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    buttonsPanel.add(moreInfoButton);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(Box.createHorizontalStrut(15));
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -141,7 +148,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     String name = selected.getName();
     String author = selected.getAuthor();
     // String maintainer = selectedLib.getMaintainer();
-    String website = selected.getWebsite();
+    final String website = selected.getWebsite();
     String sentence = selected.getSentence();
     String paragraph = selected.getParagraph();
     // String availableVer = selectedLib.getVersion();
@@ -188,7 +195,16 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       desc += "<br />";
     }
     if (author != null && !author.isEmpty()) {
-      desc += format("<a href=\"{0}\">More info</a>", website);
+      boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+      if (accessibleIDE) {
+        moreInfoButton.setVisible(true);
+        moreInfoButton.addActionListener(e -> {
+          Base.openURL(website);
+        });
+      }
+      else {
+        desc += format("<a href=\"{0}\">More info</a>", website);
+      }
     }
 
     desc += "</body></html>";
