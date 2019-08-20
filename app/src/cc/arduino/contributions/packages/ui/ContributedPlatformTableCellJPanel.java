@@ -57,11 +57,14 @@ import cc.arduino.contributions.packages.ContributedHelp;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
+  final JButton onlineHelpButton;
   final JButton installButton;
   final JButton removeButton;
   final Component removeButtonPlaceholder;
@@ -79,6 +82,10 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
     {
       installButton = new JButton(tr("Install"));
+      moreInfoButton = new JButton(tr("More Info"));
+      moreInfoButton.setVisible(false);
+      onlineHelpButton = new JButton(tr("Online Help"));
+      onlineHelpButton.setVisible(false);
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
@@ -115,6 +122,11 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    buttonsPanel.add(onlineHelpButton);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(moreInfoButton);
+    buttonsPanel.add(Box.createHorizontalStrut(5));
+    buttonsPanel.add(Box.createHorizontalStrut(15));
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -216,16 +228,35 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     } else if (selected.getParentPackage().getHelp() != null) {
       help = selected.getParentPackage().getHelp();
     }
+
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+
     if (help != null) {
       String url = help.getOnline();
       if (url != null && !url.isEmpty()) {
-        desc += " " + format("<a href=\"{0}\">Online help</a><br/>", url);
+        if (accessibleIDE) {
+          onlineHelpButton.setVisible(true);
+          onlineHelpButton.addActionListener(e -> {
+            Base.openURL(url);
+          });
+        }
+        else {
+          desc += " " + format("<a href=\"{0}\">Online help</a><br/>", url);
+        }
       }
     }
 
     String url = selected.getParentPackage().getWebsiteURL();
     if (url != null && !url.isEmpty()) {
-      desc += " " + format("<a href=\"{0}\">More info</a>", url);
+      if (accessibleIDE) {
+        moreInfoButton.setVisible(true);
+        moreInfoButton.addActionListener(e -> {
+          Base.openURL(url);
+        });
+      }
+      else {
+        desc += " " + format("<a href=\"{0}\">More info</a>", url);
+      }
     }
 
     desc += "</body></html>";
