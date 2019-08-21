@@ -42,13 +42,14 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  private final String moreInfoLbl = tr("More info");
 
   public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
                                            boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-    moreInfoButton = new JButton(tr("More info"));
+    moreInfoButton = new JButton(moreInfoLbl);
     moreInfoButton.setVisible(false);
     installButton = new JButton(tr("Install"));
     int width = installButton.getPreferredSize().width;
@@ -197,16 +198,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       desc += "<br />";
     }
     if (author != null && !author.isEmpty()) {
-      boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
-      if (accessibleIDE) {
-        moreInfoButton.setVisible(true);
-        moreInfoButton.addActionListener(e -> {
-          Base.openURL(website);
-        });
-      }
-      else {
-        desc += format("<a href=\"{0}\">More info</a>", website);
-      }
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, website);
     }
 
     desc += "</body></html>";
@@ -231,6 +223,25 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       setBackground(parentTable.getBackground());
       setForeground(parentTable.getForeground());
     }
+  }
+
+  // same function as in ContributedPlatformTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
+
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
+    }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += format("<a href=\"{0}\">{1}</a>", url, label);
+    }
+
+    return retString;
   }
 
   // TODO Make this a method of Theme

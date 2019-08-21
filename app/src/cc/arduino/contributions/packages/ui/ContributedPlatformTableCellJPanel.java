@@ -75,6 +75,8 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  private final String moreInfoLbl = tr("More Info");
+  private final String onlineHelpLbl = tr("Online Help");
 
   public ContributedPlatformTableCellJPanel() {
     super();
@@ -82,9 +84,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
     {
       installButton = new JButton(tr("Install"));
-      moreInfoButton = new JButton(tr("More Info"));
+      moreInfoButton = new JButton(moreInfoLbl);
       moreInfoButton.setVisible(false);
-      onlineHelpButton = new JButton(tr("Online Help"));
+      onlineHelpButton = new JButton(onlineHelpLbl);
       onlineHelpButton.setVisible(false);
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
@@ -163,6 +165,25 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     add(Box.createVerticalStrut(15));
   }
 
+  // same function as in ContributedLibraryTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
+
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
+    }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += " " + format("<a href=\"{0}\">{1}</a>", url, label);
+    }
+
+    return retString;
+  }
+
   void update(JTable parentTable, Object value, boolean isSelected,
               boolean hasBuiltInRelease) {
     ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
@@ -231,34 +252,16 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       help = selected.getParentPackage().getHelp();
     }
 
-    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
-
     if (help != null) {
       String url = help.getOnline();
       if (url != null && !url.isEmpty()) {
-        if (accessibleIDE) {
-          onlineHelpButton.setVisible(true);
-          onlineHelpButton.addActionListener(e -> {
-            Base.openURL(url);
-          });
-        }
-        else {
-          desc += " " + format("<a href=\"{0}\">Online help</a><br/>", url);
-        }
+        desc = setButtonOrLink(onlineHelpButton, desc, onlineHelpLbl, url);
       }
     }
 
     String url = selected.getParentPackage().getWebsiteURL();
     if (url != null && !url.isEmpty()) {
-      if (accessibleIDE) {
-        moreInfoButton.setVisible(true);
-        moreInfoButton.addActionListener(e -> {
-          Base.openURL(url);
-        });
-      }
-      else {
-        desc += " " + format("<a href=\"{0}\">More info</a>", url);
-      }
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, url);
     }
 
     desc += "</body></html>";
