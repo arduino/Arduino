@@ -83,9 +83,11 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
-    buttonsPanel.add(moreInfoButton);
-    buttonsPanel.add(Box.createHorizontalStrut(5));
-    buttonsPanel.add(Box.createHorizontalStrut(15));
+    if (PreferencesData.getBoolean("ide.accessible")) {
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);

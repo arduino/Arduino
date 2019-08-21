@@ -122,11 +122,13 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
-    buttonsPanel.add(onlineHelpButton);
-    buttonsPanel.add(Box.createHorizontalStrut(5));
-    buttonsPanel.add(moreInfoButton);
-    buttonsPanel.add(Box.createHorizontalStrut(5));
-    buttonsPanel.add(Box.createHorizontalStrut(15));
+    if (PreferencesData.getBoolean("ide.accessible")) { // only add the buttons if needed
+      buttonsPanel.add(onlineHelpButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
