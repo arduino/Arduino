@@ -178,7 +178,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     }
     else {
       // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
-      retString += " " + format("<a href=\"{0}\">{1}</a>", url, label);
+      retString += " " + format("<a href=\"{0}\">{1}</a><br/>", url, label);
     }
 
     return retString;
