@@ -117,7 +117,7 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
     } else if (!updatableLibraries && updatablePlatforms) {
       text = I18n.format(tr("Updates available for some of your {0}boards{1}"), openAnchorBoards, closeAnchorBoards);
     } else {
-      text = I18n.format(tr("Updates available for some of your {0}libraries{1} and {2}libraries{3}"), openAnchorBoards, closeAnchorBoards, openAnchorLibraries, closeAnchorLibraries);
+      text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), openAnchorBoards, closeAnchorBoards, openAnchorLibraries, closeAnchorLibraries);
     }
 
     if (cancelled) {
