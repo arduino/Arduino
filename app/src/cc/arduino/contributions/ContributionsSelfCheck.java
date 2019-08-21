@@ -29,32 +29,34 @@
 
 package cc.arduino.contributions;
 
+import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.filters.UpdatablePlatformPredicate;
 import cc.arduino.view.NotificationPopup;
-import processing.app.Base;
-import processing.app.BaseNoGui;
-import processing.app.Editor;
-import processing.app.I18n;
+import org.apache.logging.log4j.LogManager;
+import processing.app.*;
 
 import javax.swing.*;
 import javax.swing.event.HyperlinkListener;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.net.URL;
 import java.util.TimerTask;
 
 import static processing.app.I18n.tr;
 
-public class ContributionsSelfCheck extends TimerTask {
+public class ContributionsSelfCheck extends TimerTask implements NotificationPopup.OptionalButtonCallbacks {
 
   private final Base base;
   private final HyperlinkListener hyperlinkListener;
   private final ContributionInstaller contributionInstaller;
   private final LibraryInstaller libraryInstaller;
   private final ProgressListener progressListener;
+  private final String boardsManagerURL  = "http://boardsmanager/DropdownUpdatableCoresItem";
+  private final String libraryManagerURL = "http://librarymanager/DropdownUpdatableLibrariesItem";
 
   private volatile boolean cancelled;
   private volatile NotificationPopup notificationPopup;
@@ -81,13 +83,41 @@ public class ContributionsSelfCheck extends TimerTask {
       return;
     }
 
-    String text;
+    boolean setAccessible = PreferencesData.getBoolean("ide.accessible");
+    final String text;
+    final String button1Name;
+    final String button2Name;
+    String openAnchorBoards  = "<a href=\"" + boardsManagerURL + "\">";
+    String closeAnchorBoards = "</a>";
+    String openAnchorLibraries  = "<a href=\"" + libraryManagerURL + "\">";
+    String closeAnchorLibraries = "</a>";
+
+    // if accessibility mode and board updates are available set the button name and clear the anchors
+    if(setAccessible && updatablePlatforms) {
+        button1Name = tr("Boards");
+        openAnchorBoards = "";
+        closeAnchorBoards = "";
+    }
+    else { // when not accessibility mode or no boards to update no button is needed
+      button1Name = null;
+    }
+
+    // if accessibility mode and libraries updates are available set the button name and clear the anchors
+    if (setAccessible && updatableLibraries) {
+      button2Name = tr("Libraries");
+      openAnchorLibraries = "";
+      closeAnchorLibraries = "";
+    }
+    else { // when not accessibility mode or no libraries to update no button is needed
+      button2Name = null;
+    }
+
     if (updatableLibraries && !updatablePlatforms) {
-      text = I18n.format(tr("Updates available for some of your {0}libraries{1}"), "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
+      text = I18n.format(tr("Updates available for some of your {0}libraries{1}"), openAnchorLibraries, closeAnchorLibraries);
     } else if (!updatableLibraries && updatablePlatforms) {
-      text = I18n.format(tr("Updates available for some of your {0}boards{1}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>");
+      text = I18n.format(tr("Updates available for some of your {0}boards{1}"), openAnchorBoards, closeAnchorBoards);
     } else {
-      text = I18n.format(tr("Updates available for some of your {0}boards{1} and {2}libraries{3}"), "<a href=\"http://boardsmanager/DropdownUpdatableCoresItem\">", "</a>", "<a href=\"http://librarymanager/DropdownUpdatableLibrariesItem\">", "</a>");
+      text = I18n.format(tr("Updates available for some of your {0}libraries{1} and {2}libraries{3}"), openAnchorBoards, closeAnchorBoards, openAnchorLibraries, closeAnchorLibraries);
     }
 
     if (cancelled) {
@@ -96,7 +126,13 @@ public class ContributionsSelfCheck extends TimerTask {
 
     SwingUtilities.invokeLater(() -> {
       Editor ed = base.getActiveEditor();
-      notificationPopup = new NotificationPopup(ed, hyperlinkListener, text);
+      boolean accessibleIde = PreferencesData.getBoolean("ide.accessible");
+      if (accessibleIde) {
+        notificationPopup = new NotificationPopup(ed, hyperlinkListener, text, false, this, button1Name, button2Name);
+      }
+      else {  // if not accessible view leave it the same
+        notificationPopup = new NotificationPopup(ed, hyperlinkListener, text);
+      }
       if (ed.isFocused()) {
         notificationPopup.begin();
         return;
@@ -120,6 +156,24 @@ public class ContributionsSelfCheck extends TimerTask {
       for (Editor e : base.getEditors())
         e.addWindowFocusListener(wfl);
     });
+  }
+
+  private void goToManager(String link) {
+    try {
+      ((UpdatableBoardsLibsFakeURLsHandler) hyperlinkListener).openBoardLibManager(new URL(link));
+    }
+      catch (Exception e){
+        LogManager.getLogger(ContributionsSelfCheck.class).warn("Exception while attempting to go to board manager", e);
+    }
+  }
+  // callback for boards button
+  public void onOptionalButton1Callback() {
+    goToManager(boardsManagerURL);
+  }
+
+  // callback for libraries button
+  public void onOptionalButton2Callback() {
+    goToManager(libraryManagerURL);
   }
 
   static boolean checkForUpdatablePlatforms() {
