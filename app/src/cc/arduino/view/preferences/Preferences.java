@@ -831,8 +831,6 @@ public class Preferences extends javax.swing.JDialog {
 
     PreferencesData.setBoolean("update.check", checkUpdatesBox.isSelected());
 
-    PreferencesData.setBoolean("editor.save_on_verify", saveVerifyUploadBox.isSelected());
-
     PreferencesData.setBoolean("ide.accessible", accessibleIDEBox.isSelected());
 
     PreferencesData.set("boardsmanager.additional.urls", additionalBoardsManagerField.getText().replace("\r\n", "\n").replace("\r", "\n").replace("\n", ","));
