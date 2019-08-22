@@ -28,10 +28,12 @@ import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 public class ContributedLibraryTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
   final JButton installButton;
   final Component installButtonPlaceholder;
   final JComboBox downgradeChooser;
@@ -40,12 +42,15 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  private final String moreInfoLbl = tr("More info");
 
   public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
                                            boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+    moreInfoButton = new JButton(moreInfoLbl);
+    moreInfoButton.setVisible(false);
     installButton = new JButton(tr("Install"));
     int width = installButton.getPreferredSize().width;
     installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
@@ -79,6 +84,11 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    if (PreferencesData.getBoolean("ide.accessible")) {
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -141,7 +151,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     String name = selected.getName();
     String author = selected.getAuthor();
     // String maintainer = selectedLib.getMaintainer();
-    String website = selected.getWebsite();
+    final String website = selected.getWebsite();
     String sentence = selected.getSentence();
     String paragraph = selected.getParagraph();
     // String availableVer = selectedLib.getVersion();
@@ -188,7 +198,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       desc += "<br />";
     }
     if (author != null && !author.isEmpty()) {
-      desc += format("<a href=\"{0}\">More info</a>", website);
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, website);
     }
 
     desc += "</body></html>";
@@ -213,6 +223,25 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       setBackground(parentTable.getBackground());
       setForeground(parentTable.getForeground());
     }
+  }
+
+  // same function as in ContributedPlatformTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
+
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
+    }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += format("<a href=\"{0}\">{1}</a><br/>", url, label);
+    }
+
+    return retString;
   }
 
   // TODO Make this a method of Theme

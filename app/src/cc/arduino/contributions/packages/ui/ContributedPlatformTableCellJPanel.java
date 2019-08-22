@@ -57,11 +57,14 @@ import cc.arduino.contributions.packages.ContributedHelp;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
+  final JButton onlineHelpButton;
   final JButton installButton;
   final JButton removeButton;
   final Component removeButtonPlaceholder;
@@ -72,6 +75,8 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  private final String moreInfoLbl = tr("More Info");
+  private final String onlineHelpLbl = tr("Online Help");
 
   public ContributedPlatformTableCellJPanel() {
     super();
@@ -79,6 +84,10 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
     {
       installButton = new JButton(tr("Install"));
+      moreInfoButton = new JButton(moreInfoLbl);
+      moreInfoButton.setVisible(false);
+      onlineHelpButton = new JButton(onlineHelpLbl);
+      onlineHelpButton.setVisible(false);
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
@@ -115,6 +124,13 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    if (PreferencesData.getBoolean("ide.accessible")) { // only add the buttons if needed
+      buttonsPanel.add(onlineHelpButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -147,6 +163,25 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     add(inactiveButtonsPanel);
 
     add(Box.createVerticalStrut(15));
+  }
+
+  // same function as in ContributedLibraryTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
+
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
+    }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += " " + format("<a href=\"{0}\">{1}</a><br/>", url, label);
+    }
+
+    return retString;
   }
 
   void update(JTable parentTable, Object value, boolean isSelected,
@@ -216,16 +251,17 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     } else if (selected.getParentPackage().getHelp() != null) {
       help = selected.getParentPackage().getHelp();
     }
+
     if (help != null) {
       String url = help.getOnline();
       if (url != null && !url.isEmpty()) {
-        desc += " " + format("<a href=\"{0}\">Online help</a><br/>", url);
+        desc = setButtonOrLink(onlineHelpButton, desc, onlineHelpLbl, url);
       }
     }
 
     String url = selected.getParentPackage().getWebsiteURL();
     if (url != null && !url.isEmpty()) {
-      desc += " " + format("<a href=\"{0}\">More info</a>", url);
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, url);
     }
 
     desc += "</body></html>";
