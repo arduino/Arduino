@@ -3,6 +3,8 @@
  */
 package processing.app.tools;
 
+import processing.app.PreferencesData;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -278,6 +280,9 @@ public class MenuScroller {
       scrollCount = autoSizeScrollCount;
     }
 
+//    if (PreferencesData.getBoolean("ide.accessible")) {
+//      interval = 1000;
+//    }
     if (scrollCount <= 0 || interval <= 0) {
       throw new IllegalArgumentException("scrollCount and interval must be greater than 0");
     }
@@ -567,6 +572,29 @@ public class MenuScroller {
         public void actionPerformed(ActionEvent e) {
           firstIndex += increment * accelerator;
           refreshMenu();
+          if (PreferencesData.getBoolean("ide.accessible")) {
+            String    itemClassName;
+            int keyEvent;
+            if (increment > 0) {
+              itemClassName = menuItems[firstIndex + scrollCount - 1].getClass().getName();
+              keyEvent = KeyEvent.VK_UP;
+            }
+            else {
+              itemClassName = menuItems[firstIndex].getClass().getName();
+              keyEvent = KeyEvent.VK_DOWN;
+            }
+
+            // if next item is a separator just go on like normal, otherwise move the cursor back to that item is read
+            // by a screen reader and the user can continue to use their arrow keys to navigate the list
+            if (!itemClassName.equals(JSeparator.class.getName()) ) {
+              KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+              Component comp = manager.getFocusOwner();
+              KeyEvent event = new KeyEvent(comp,
+                KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0,
+                keyEvent, KeyEvent.CHAR_UNDEFINED);
+              comp.dispatchEvent(event);
+            }
+          }
         }
       });
     }
