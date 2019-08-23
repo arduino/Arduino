@@ -252,6 +252,7 @@ public class NotificationPopup extends JDialog {
     if (autoClose) {
       autoCloseTimer.cancel();
     }
+    setModal(false);
     dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
   }
 
