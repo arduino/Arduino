@@ -545,7 +545,9 @@
     <delete dir="macosx/work/Arduino.app" />
 
     <!-- Unzip unsigned app into working dir -->
-    <unzip src="../arduino-${version}-${platform}.zip" dest="macosx/work"/>
+    <exec executable="unzip" dir="macosx/work" failonerror="true">
+      <arg line="../arduino-${version}-${platform}.zip" />
+    </exec>
 
     <!-- Unlock keychain file -->
     <exec executable="security" dir="macosx/work" failonerror="true">
