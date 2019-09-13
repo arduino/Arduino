@@ -36,6 +36,7 @@
   <content_rating type="oars-1.1" />
 
   <releases>
+    <release date="2019-09-13" version="1.8.10"/>
     <release date="2019-03-15" version="1.8.9"/>
     <release date="2018-12-06" version="1.8.8"/>
     <release date="2018-09-11" version="1.8.7"/>
