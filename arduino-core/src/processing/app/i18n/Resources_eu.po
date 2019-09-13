@@ -35,7 +35,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2019-01-05 18:53+0000\n"
+"PO-Revision-Date: 2019-06-30 22:48+0000\n"
 "Last-Translator: José Miguel Andonegi <jm.andonegi@gmail.com>\n"
 "Language-Team: Basque (http://www.transifex.com/mbanzi/arduino-ide-15/language/eu/)\n"
 "MIME-Version: 1.0\n"
@@ -46,17 +46,17 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr "(Arduinoa berrabiarazi behar da)"
+msgstr " (Arduinoa berrabiarazi behar da)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr "Erabili gabe: {0}"
+msgstr " Erabili gabe: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
 msgid " Used: {0}"
-msgstr "Erabilia: {0}"
+msgstr " Erabilia: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:558
 msgid ""
@@ -152,7 +152,7 @@ msgstr "Plaka kudeatzaile gehigarrien URLak"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr "Plaka kudeatzaile gehigarrien URLak:"
+msgstr "Plaka kudeatzaile gehigarrien URLak: "
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -266,7 +266,7 @@ msgstr "Arduinok ezin du funtzionatu ezin izan duelako\nzure programa bilduma go
 
 #: ../../../processing/app/EditorStatus.java:471
 msgid "Arduino: "
-msgstr "Arduino:"
+msgstr "Arduino: "
 
 #: Sketch.java:588
 #, java-format
@@ -381,7 +381,7 @@ msgstr "{0}:{1}:{2} plakak ez du ''build.board'' hobespena definitzen. Balio hau
 
 #: ../../../processing/app/EditorStatus.java:472
 msgid "Board: "
-msgstr "Plaka:"
+msgstr "Plaka: "
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
@@ -515,7 +515,7 @@ msgstr "Komunikazioa"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr "Konpiladorearen abisuak:"
+msgstr "Konpiladorearen abisuak: "
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
@@ -566,7 +566,7 @@ msgstr "Ezin izan da programa sortu"
 #: Sketch.java:617
 #, java-format
 msgid "Could not delete \"{0}\"."
-msgstr " Ezin izan da \"{0}\" ezabatu."
+msgstr "Ezin izan da \"{0}\" ezabatu."
 
 #: Sketch.java:1066
 #, java-format
@@ -616,7 +616,7 @@ msgstr "Ezin izan da programa berriz gorde"
 msgid ""
 "Could not read color theme settings.\n"
 "You'll need to reinstall Arduino."
-msgstr "Ezin izan dira kolore itxuraren ezarpenak irakurri.\nArduino berriz instalatu beharko duzu. "
+msgstr "Ezin izan dira kolore itxuraren ezarpenak irakurri.\nArduino berriz instalatu beharko duzu."
 
 #: Preferences.java:219
 msgid ""
@@ -809,11 +809,11 @@ msgstr "Editatu"
 
 #: Preferences.java:370
 msgid "Editor font size: "
-msgstr " Editorearen letra-tamaina:"
+msgstr "Editorearen letra-tamaina: "
 
 #: Preferences.java:353
 msgid "Editor language: "
-msgstr "Editorearen lengoaia:"
+msgstr "Editorearen lengoaia: "
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
@@ -925,7 +925,7 @@ msgstr "Errorea hobespenak irakurtzean"
 msgid ""
 "Error reading the preferences file. Please delete (or move)\n"
 "{0} and restart Arduino."
-msgstr "Errorea hobespenen fitxategia irakurtzean. Ezabatu (edo lekuz aldatu) \n{0} eta Arduino berrabiarazi."
+msgstr "Errorea hobespenen fitxategia irakurtzean. Ezabatu (edo lekuz aldatu) \n{0} eta berrabiarazi Arduino."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:146
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:166
@@ -935,7 +935,7 @@ msgstr "Errorea instalazio ondorengo script-a exekutatzean"
 
 #: ../../../cc/arduino/packages/DiscoveryManager.java:25
 msgid "Error starting discovery method: "
-msgstr "Errorea aurkikuntza-metodoa hastean:"
+msgstr "Errorea aurkikuntza-metodoa abiaraztean: "
 
 #: Serial.java:125
 #, java-format
@@ -952,7 +952,7 @@ msgstr "Errorea abiarazte-kudeatzailea kargatzean: '{0}' konfigurazio-parametroa
 
 #: ../../../../../app/src/processing/app/Editor.java:2355
 msgid "Error while burning bootloader: please select a serial port."
-msgstr "Errorea gertatu da abiarazte-kudeatzailea kargatzean: serie-ataka bat aukeratu."
+msgstr "Errorea gertatu da abiarazte-kudeatzailea kargatzean: aukeratu serie-ataka bat."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -1175,7 +1175,7 @@ msgstr "Ostalari-izena:"
 msgid ""
 "How about saving the sketch first \n"
 "before trying to rename it?"
-msgstr "Oraindik ez duzu programa gorde. Izena aldatu aurretik gorde nahi duzu?"
+msgstr "Oraindik ez duzu programa gorde. \nIzena aldatu aurretik gorde nahi duzu?"
 
 #: Sketch.java:882
 msgid "How very Borges of you"
@@ -1280,7 +1280,7 @@ msgstr "Interfazearen eskala:"
 #: ../../../processing/app/Base.java:1204
 #, java-format
 msgid "Invalid library found in {0}: {1}"
-msgstr " Liburutegi baliogabea aurkitu da {0}(e)n: {1}"
+msgstr "Liburutegi baliogabea aurkitu da {0}(e)n: {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
@@ -1290,7 +1290,7 @@ msgstr "Komatxoen formatu baliogabea: ez da topatu [{0}] itxiera karakterea."
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr " '{0}' liburutegiaren bertsio baliogabea: {1}"
+msgstr "Liburutegiaren '{0}' bertsio baliogabea hemen: {1}"
 
 #: ../../../../../app/src/processing/app/Base.java:316
 #: ../../../../../app/src/processing/app/Base.java:362
@@ -1432,7 +1432,7 @@ msgstr "Sareko atakak"
 
 #: ../../../cc/arduino/packages/uploaders/SSHUploader.java:51
 msgid "Network upload using programmer not supported"
-msgstr " Ez da onartzen sareko karga programatzailea erabiliz"
+msgstr "Ez da onartzen sareko karga programatzailea erabiliz"
 
 #: EditorToolbar.java:41 Editor.java:493
 msgid "New"
@@ -1523,7 +1523,7 @@ msgstr "Bat ere ez"
 
 #: ../../../processing/app/Preferences.java:108
 msgid "Norwegian Bokmål"
-msgstr " Norvegiera (Bokmål)"
+msgstr "Norvegiera (Bokmål)"
 
 #: ../../../processing/app/Sketch.java:1656
 msgid ""
@@ -1827,7 +1827,7 @@ msgstr "Gordetzea bertan behera utzi da."
 #: Editor.java:2020
 #, java-format
 msgid "Save changes to \"{0}\"?  "
-msgstr "\"{0}\"-(r)i egindako aldaketak gorde?"
+msgstr "\"{0}\"-(r)i egindako aldaketak gorde? "
 
 #: Sketch.java:825
 msgid "Save sketch folder as..."
@@ -1953,7 +1953,7 @@ msgstr "Erakutsi denbora-zigilua"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
-msgstr "Erakutsi irteera xehatua honetan zehar:"
+msgstr "Erakutsi irteera xehatua honetan zehar: "
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
@@ -1981,7 +1981,7 @@ msgstr "Programak ez du izenik"
 
 #: Sketch.java:720
 msgid "Sketch is read-only"
-msgstr "Programa irakurtzeko-soilik da "
+msgstr "Programa irakurtzeko-soilik da"
 
 #: Sketch.java:1653
 msgid ""
@@ -2120,7 +2120,7 @@ msgid ""
 "The file \"{0}\" needs to be inside\n"
 "a sketch folder named \"{1}\".\n"
 "Create this folder, move the file, and continue?"
-msgstr "{0} fitxategiak {1} izendatutako programa karpeta \nbarruan egon behar du. \nSortu karpeta hau, mugitu fitxategia eta jarraitu?"
+msgstr "{0} fitxategiak {1} izendatutako programa karpeta \nbarruan egon behar du. \nSortu karpeta hau, eraman fitxategia eta jarraitu?"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
 #, java-format
@@ -2195,11 +2195,11 @@ msgstr "Programa bildumaren karpeta ez da existitzen.\nArduino programa bilduma 
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
-msgstr "Zehaztutako programa bilduma karpetaren barruan garapen ingurunearen (IDE) kopia dago.\nBeste karpeta bat aukeratu zure programa bilduma gordetzeko."
+msgstr "Zehaztutako programa bilduma karpetaren barruan garapen ingurunearen (IDE) kopia dago.\nAukeratu beste karpeta bat zure programa bilduma gordetzeko."
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
 msgid "Theme: "
-msgstr "Itxura:"
+msgstr "Itxura: "
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2281,7 +2281,7 @@ msgstr "Ezin da konektatu: pasahitz okerra?"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:65
 #, java-format
 msgid "Unable to find {0} in {1}"
-msgstr "Ezin da {0} aurkitu {1}(e)n: "
+msgstr "Ezin da {0} aurkitu {1}(e)n:"
 
 #: ../../../processing/app/Editor.java:2512
 msgid "Unable to open serial monitor"
@@ -2484,7 +2484,7 @@ msgstr "Abisua"
 msgid ""
 "Warning: This core does not support exporting sketches. Please consider "
 "upgrading it or contacting its author"
-msgstr "Abisua: nukleo honek ez du programarik esportatzen uzten. Mesedez, saiatu bertsio-berritzen edo egilearekin harremanetan jartzen."
+msgstr "Abisua: nukleo honek ez du programarik esportatzen uzten. Saiatu bertsio-berritzen edo egilearekin harremanetan jartzen."
 
 #: ../../../cc/arduino/utils/ArchiveExtractor.java:197
 #, java-format
@@ -2579,7 +2579,7 @@ msgstr "Gaurkoz, programa berrietan izena automatikoki ezartzeko \nmekanismoaren
 msgid ""
 "Your copy of the IDE is installed in a subfolder of your settings folder.\n"
 "Please move the IDE to another folder."
-msgstr "Zure ezarpenak gordetzeko karpetaren azpikarpeta batean instalatu da IDE-aren zure kopia. Mesedez, mugitu IDE-a beste karpeta batera."
+msgstr "Zure ezarpenak gordetzeko karpetaren azpikarpeta batean instalatu da IDE-aren zure kopia. \nEraman IDE-a beste karpeta batera."
 
 #: ../../../processing/app/BaseNoGui.java:771
 msgid ""
@@ -2623,7 +2623,7 @@ msgid ""
 "As of Arduino 1.0, the 'BYTE' keyword is no longer supported.\n"
 "Please use Serial.write() instead.\n"
 "\n"
-msgstr "\nArduino 1.0an, 'BYTE' gako-hitza jada ez da onartzen.\nMesedez erabili Serial.write() bere ordez.\n\n"
+msgstr "\nArduino 1.0an, 'BYTE' gako-hitza jada ez da onartzen.\nErabili Serial.write() bere ordez.\n\n"
 
 #: debug/Compiler.java:427
 msgid ""
@@ -2651,7 +2651,7 @@ msgid ""
 "\n"
 "As of Arduino 1.0, the Wire.receive() function was renamed to Wire.read() for consistency with other libraries.\n"
 "\n"
-msgstr "\n 1.0 Arduino-tik aurrera, Wire.receive() funtzioa, beste libraries batzuekiko funtserako Wire.read() etara berrizendatu zuten.\n"
+msgstr "\nArduino  1.0-tik aurrera, Wire.receive() funtzioa Wire.read()-ra aldatu zen beste liburutegi batzuekiko bateragarritasuna bermatzeko.\n\n"
 
 #: debug/Compiler.java:439
 msgid ""
@@ -2666,7 +2666,7 @@ msgstr "baud"
 
 #: Preferences.java:389
 msgid "compilation "
-msgstr "konpilazio"
+msgstr "konpilazioa "
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
@@ -2777,14 +2777,14 @@ msgstr "{0} | Arduino {1}"
 #: ../../../processing/app/Base.java:519
 #, java-format
 msgid "{0}: Invalid argument to --pref, should be of the form \"pref=value\""
-msgstr "{0}: Argumentu baliogabea --pref aukerarentzat, \"pref=balioa\" modukoa izan behar luke"
+msgstr "{0}: Argumentu baliogabea --pref aukerarentzat, \"pref=balioa\" modukoa izan behar du"
 
 #: ../../../processing/app/Base.java:476
 #, java-format
 msgid ""
 "{0}: Invalid board name, it should be of the form \"package:arch:board\" or "
 "\"package:arch:board:options\""
-msgstr "{0}: plakaren izen baliogabea, \"package:arch:board\" edo \"package:arch:board:options\" modukoa izan behar luke."
+msgstr "{0}: plakaren izen baliogabea, \"package:arch:board\" edo \"package:arch:board:options\" modukoa izan behar du"
 
 #: ../../../processing/app/Base.java:507
 #, java-format
@@ -2794,7 +2794,7 @@ msgstr "{0}: {1} plakarentzako aukera baliogabea"
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
-msgstr "{0}: Aukera baliogabea, \"name=value\" modukoa izan behar luke"
+msgstr "{0}: Aukera baliogabea, \"name=value\" modukoa izan behar du"
 
 #: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
 #, java-format

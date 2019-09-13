@@ -26,7 +26,7 @@
 # Giovanni Spadaro <giovannispd@gmail.com>, 2012
 # Michele Michielin <michele.michielin@gmail.com>, 2012
 # Michele Michielin <michele.michielin@gmail.com>, 2013-2018
-# Sebastiano Pistore <SebastianoPistore.info@protonmail.ch>, 2016
+# SebastianoPistore <SebastianoPistore.info@protonmail.ch>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"

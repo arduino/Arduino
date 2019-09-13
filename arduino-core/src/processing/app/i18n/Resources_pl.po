@@ -25,11 +25,11 @@
 # Jan Bielak <sharkie103@gmail.com>, 2013-2014,2016-2017
 # Krzysztof Zbudniewek <krzysztof.zbudniewek@gmail.com>, 2015
 # Maciej Wójciga <eadrom@gmail.com>, 2016
-# Mateusz Żochowski <matizochol@gmail.com>, 2015
+# f4026438bc140eb8251ee8a7e846d473, 2015
 # Michal <toyorg@windowslive.com>, 2015
 # Szymon Borecki <szymex73@gmail.com>, 2015
-# Tomasz Pudło <wptom@wp.pl>, 2015-2019
-# Tomasz Pudło <wptom@wp.pl>, 2015
+# tombox <wptom@wp.pl>, 2015-2019
+# tombox <wptom@wp.pl>, 2015
 # Voltinus <voltinusmail@gmail.com>, 2015
 msgid ""
 msgstr ""
@@ -37,7 +37,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
 "PO-Revision-Date: 2019-02-27 09:35+0000\n"
-"Last-Translator: Tomasz Pudło <wptom@wp.pl>\n"
+"Last-Translator: tombox <wptom@wp.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/mbanzi/arduino-ide-15/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

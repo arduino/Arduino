@@ -21,13 +21,14 @@
 # Translators:
 # Translators:
 # debconf <prach.by@gmail.com>, 2013-2014,2016-2017
+# Viktar Vauchkevich, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2019-07-10 06:49+0000\n"
+"Last-Translator: Viktar Vauchkevich\n"
 "Language-Team: Belarusian (http://www.transifex.com/mbanzi/arduino-ide-15/language/be/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +73,7 @@ msgstr "(рэдагаваць толькі калі Arduino не запушча�
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(застарэлы)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -139,11 +140,11 @@ msgstr "Дадаць Файл"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:73
 msgid "Additional Boards Manager URLs"
-msgstr ""
+msgstr "Дадатковыя URL'ы Кіраўніка платамі"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:268
 msgid "Additional Boards Manager URLs: "
-msgstr ""
+msgstr "Дадатковыя URL'ы Кіраўніка платамі:"
 
 #: ../../../../../app/src/processing/app/Preferences.java:161
 msgid "Afrikaans"
@@ -227,7 +228,7 @@ msgstr "Архіваванне скетчу было скасавана, бо с
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:24
 msgid "Arduino"
-msgstr ""
+msgstr "Arduino"
 
 #: ../../../processing/app/I18n.java:83
 msgid "Arduino ARM (32-bits) Boards"
@@ -312,7 +313,7 @@ msgstr "Аўтафармат скончаны"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:457
 msgid "Auto-detect proxy settings"
-msgstr ""
+msgstr "Аўтаматычна вызначаць налады проксі"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
@@ -320,7 +321,7 @@ msgstr "Аўтаматычна"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
-msgstr ""
+msgstr "URL аўтаматычнай канфігурацыі проксі:"
 
 #: SerialMonitor.java:110
 msgid "Autoscroll"
@@ -376,15 +377,15 @@ msgstr "Плата:"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
 msgid "Boards Manager"
-msgstr ""
+msgstr "Кіраўнік платамі"
 
 #: ../../../../../app/src/processing/app/Base.java:1320
 msgid "Boards Manager..."
-msgstr ""
+msgstr "Кіраўнік платамі…"
 
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:328
 msgid "Boards included in this package:"
-msgstr ""
+msgstr "Дошкі, уключаныя ў гэты пакет:"
 
 #: ../../../processing/app/debug/Compiler.java:1273
 #, java-format
@@ -486,11 +487,11 @@ msgstr "Кітайская (Тайвань) (Big5)"
 
 #: ../../../../../app/src/processing/app/AbstractTextMonitor.java:80
 msgid "Clear output"
-msgstr ""
+msgstr "Ачысціць вывад"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/AdditionalBoardsManagerURLTextArea.java:98
 msgid "Click for a list of unofficial boards support URLs"
-msgstr ""
+msgstr "Націсніце, каб атрымаць спіс неафіцыйных URL падтрымкі плат"
 
 #: Editor.java:521 Editor.java:2024
 msgid "Close"
@@ -502,7 +503,7 @@ msgstr "Закаментаваць/Раскаментаваць"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "Камунікацыя"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -683,11 +684,11 @@ msgstr "Паменьшыць водступ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
-msgstr ""
+msgstr "Агаданыя"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
 msgid "Default theme"
-msgstr ""
+msgstr "Агаданая тэма"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -886,14 +887,14 @@ msgstr "Памылка адчынення паслядоўнага порту ''
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr "Памылка адчынення паслядоўнага порту ''{0}''. Азнаёмцеся з дакументацыяй наhttp://playground.arduino.cc/Linux/All#Permission"
+msgstr "Памылка адкрыцця паслядоўнага порту ''{0}''. Азнаёмцеся з дакументацыяй на http://playground.arduino.cc/Linux/All#Permission"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
 #, java-format
 msgid ""
 "Error parsing libraries index: {0}\n"
 "Try to open the Library Manager to update the libraries index."
-msgstr ""
+msgstr "Памылка разбору індэксу бібліятэк: {0}\nПаспрабуйце адкрыць Кіраўніка бібліятэк, каб абнавіць індэкс бібліятэк."
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
@@ -1116,7 +1117,7 @@ msgstr "Нямецкая"
 
 #: ../../../../../app//src/processing/app/Editor.java:817
 msgid "Get Board Info"
-msgstr ""
+msgstr "Атрымаць звесткі аб плаце"
 
 #: Editor.java:1054
 msgid "Getting Started"
@@ -1160,7 +1161,7 @@ msgstr "Хіндзі"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:489
 msgid "Host name:"
-msgstr ""
+msgstr "Назва вузла:"
 
 #: Sketch.java:295
 msgid ""
@@ -1186,7 +1187,7 @@ msgstr "Ігнараваць рэгістр"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
 msgid "Ignoring library with bad name"
-msgstr ""
+msgstr "Ігнарую бібліятэку з кепскай назвай"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1247,7 +1248,7 @@ msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
-msgstr ""
+msgstr "Усталёўка плат…"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
@@ -1311,7 +1312,7 @@ msgstr "Латвіская"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:93
 msgid "Library Manager"
-msgstr ""
+msgstr "Кіраўнік бібліятэкамі"
 
 #: ../../../../../app/src/processing/app/Base.java:2349
 msgid "Library added to your libraries. Check \"Include library\" menu"
@@ -1541,7 +1542,7 @@ msgstr "Адчыніць"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
-msgstr ""
+msgstr "Адкрыць нядаўняе"
 
 #: Editor.java:2688
 msgid "Open URL"
@@ -1615,7 +1616,7 @@ msgstr "Калі ласка выберыце праграматар з меню 
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "Плотар недаступны, калі адкрыты serial-манітор"
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1647,7 +1648,7 @@ msgstr "Наладкі"
 
 #: ../../../../../app/src/processing/app/Base.java:297
 msgid "Preparing boards..."
-msgstr ""
+msgstr "Падрыхтоўка плат…"
 
 #: FindReplace.java:123 FindReplace.java:128
 msgid "Previous"
@@ -1898,7 +1899,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "Serial-манітор недаступны, калі адкрыты плотар"
 
 #: Serial.java:194
 #, java-format
@@ -2196,7 +2197,7 @@ msgstr ""
 msgid ""
 "This library is not listed on Library Manager. You won't be able to reinstall it from here.\n"
 "Are you sure you want to delete it?"
-msgstr ""
+msgstr "Гэтая бібліятэка не прысутнічае ў Кіраўніка бібліятэкамі. Вы не зможаце пераўсталяваць яе адсюль.\nВы ўпэўнены, што хочаце выдаліць яе?"
 
 #: ../../../../../app/src/processing/app/EditorStatus.java:349
 msgid ""
@@ -2280,7 +2281,7 @@ msgstr "Немагчыма адчыніць serial-манітор"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "Немагчыма адкрыць serial-плотар"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
@@ -2332,12 +2333,12 @@ msgstr "Аднавіць пашырэнні імён скетчаў падчас
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:88
 #, java-format
 msgid "Updates available for some of your {0}boards{1}"
-msgstr ""
+msgstr "Даступныя абнаўленні для некаторых вашых {0}плат{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:90
 #, java-format
 msgid "Updates available for some of your {0}boards{1} and {2}libraries{3}"
-msgstr ""
+msgstr "Даступныя абнаўленні для некаторых вашых {0}плат{1} і {2}бібліятэк{3}"
 
 #: ../../../../../app/src/cc/arduino/contributions/ContributionsSelfCheck.java:86
 #, java-format
@@ -2414,7 +2415,7 @@ msgstr "Спаўдзіць код пасля выгрузкі"
 
 #: ../../../../../app/src/processing/app/Editor.java:725
 msgid "Verify/Compile"
-msgstr "Правевыць/Кампіляваць"
+msgstr "Праверыць/кампіляваць"
 
 #: ../../../../../app/src/processing/app/Base.java:451
 msgid "Verifying and uploading..."
