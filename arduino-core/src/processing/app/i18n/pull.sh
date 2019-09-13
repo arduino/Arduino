@@ -31,7 +31,7 @@ if [ "$langs" = "" ]; then
 fi
 
 
-python python/pull.py $langs
+python2 python/pull.py $langs
 
 if [ "$ALL" = "y" ]; then
   # We must do this until java Locale class is updated...
