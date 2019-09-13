@@ -273,9 +273,9 @@
     <download-library name="Mouse" version="1.0.1"/>
     <download-library name="Keyboard" version="1.0.2"/>
     <download-library name="SD" version="1.2.3"/>
-    <download-library name="Servo" version="1.1.3"/>
+    <download-library name="Servo" version="1.1.5"/>
     <download-library name="LiquidCrystal" version="1.0.7"/>
-    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.8.1" foldername="Adafruit_Circuit_Playground"/>
+    <download-library githubuser="Adafruit" name="Adafruit_CircuitPlayground" version="1.8.6" foldername="Adafruit_Circuit_Playground"/>
   </target>
 
   <macrodef name="download-library">
