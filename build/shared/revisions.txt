@@ -1,5 +1,27 @@
-ARDUINO 1.8.10 ????
+ARDUINO 1.8.10 2019.09.13
 
+[ide]
+* Live font resize now applies to console and serial monitor too @Pieter12345
+* Make it easier to build the IDE from sources on Windows @Pieter12345
+* Smaller Preference window, suitable for supersmall screens
+* Cache downloaded json and only retrieve them when changed @mattiabertorello
+* Suspend serial monitor if the board gets disconnected abruptly
+* Libraries can now declare dependencies that will be proposed during lib installation
+* SerialPlotter: allow adding labels @chromhelm
+* Support tar.xz archives for Board Manager @vowstar
+* SerialMonitor: add command history (via arrow keys) @Pieter12345
+* Accessibility: add checkbox to enable accessibility in Preferences @joew46167
+    This mode enables a plethora of improvements on voiceover and keyboard navigation.
+    eg. links become accessible buttons, lists are scrollable via arrow keys without much pain
+
+[wifi-updater]
+* Add latest NINA firmware
+
+[hardware]
+* Bundle new avr toolchain (fixes lto issue with 5.4.0 and 64bit compatibility with upcoming macOS Catalina)
+
+[arduino-buidler]
+* update to 1.4.7 (based on the new arduino-cli)
 
 ARDUINO 1.8.9 2019.03.15
 
