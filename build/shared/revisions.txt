@@ -20,7 +20,7 @@ ARDUINO 1.8.10 2019.09.13
 [hardware]
 * Bundle new avr toolchain (fixes lto issue with 5.4.0 and 64bit compatibility with upcoming macOS Catalina)
 
-[arduino-buidler]
+[arduino-builder]
 * update to 1.4.7 (based on the new arduino-cli)
 
 ARDUINO 1.8.9 2019.03.15
