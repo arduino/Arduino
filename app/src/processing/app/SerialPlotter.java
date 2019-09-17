@@ -289,6 +289,10 @@ public class SerialPlotter extends AbstractMonitor {
       messageBuffer.delete(0, linebreak + 1);
 
       line = line.trim();
+      if (line.length() == 0) {
+        // the line only contained trimmable characters
+        continue;
+      }
       String[] parts = line.split("[, \t]+");
       if(parts.length == 0) {
         continue;
