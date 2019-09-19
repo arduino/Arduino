@@ -74,6 +74,21 @@ void loop() {
   stringOne = String(5.698, 2);
   Serial.println(stringOne);
 
+  #if ARDUINO_API_VERSION >= 10000
+  // Using an explicit length argument to to use only a part of a
+  // string:
+  char *to_add = "use this but not this";
+  stringOne = String(to_add, 8);
+  Serial.println(stringOne);   // prints "use this"
+
+  // using explicit length argument to add a non-zero-terminated string
+  // / char array (note that it will be terminated inside the String
+  // object).
+  char unterminated[] = {'n', 'o', 'n', 'u', 'l'};
+  stringTwo = String(unterminated, sizeof(unterminated));
+  Serial.println(stringTwo); // prints "nonul"
+  #endif // ARDUINO_API_VERSION
+
   // do nothing while true:
   while (true);
 

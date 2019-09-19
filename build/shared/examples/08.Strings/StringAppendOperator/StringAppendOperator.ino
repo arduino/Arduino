@@ -67,6 +67,23 @@ void loop() {
   stringTwo.concat(millis());
   Serial.println(stringTwo); // prints "The millis(): 43534" or whatever the value of the millis() is
 
+  #if ARDUINO_API_VERSION >= 10000
+  // using concat with an explicit length argument to add only a part of
+  // a string:
+  stringOne = "Only part: ";
+  char *to_add = "use this but not this";
+  stringOne.concat(to_add, 8);
+  Serial.println(stringOne);   // prints "Only part: use this"
+
+  // using concat with an explicit length argument to add a
+  // non-zero-terminated string / char array (note that it will be
+  // terminated inside the String object).
+  stringTwo = "Unterminated: ";
+  char unterminated[] = {'n', 'o', 'n', 'u', 'l'};
+  stringTwo.concat(unterminated, sizeof(unterminated));
+  Serial.println(stringTwo); // prints "Unterminated: nonul"
+  #endif // ARDUINO_API_VERSION
+
   // do nothing while true:
   while (true);
 }
