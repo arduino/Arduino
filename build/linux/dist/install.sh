@@ -29,7 +29,7 @@ xdg_install_f() {
   TMP_DIR=`mktemp --directory`
 
   # Create *.desktop file using the existing template file
-  sed -e "s,<BINARY_LOCATION>,${SCRIPT_PATH}/arduino,g" \
+  sed -e "s,<BINARY_LOCATION>,\"${SCRIPT_PATH}/arduino\",g" \
       -e "s,<ICON_NAME>,${RESOURCE_NAME},g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
   # Install the icon files using name and resolutions
