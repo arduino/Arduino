@@ -1511,10 +1511,21 @@ public class Base {
     }
 
     JMenuItem firstBoardItem = null;
-    for (JMenu platformMenu : platformMenus) {
-      if (firstBoardItem == null && platformMenu.getItemCount() > 0)
-        firstBoardItem = platformMenu.getItem(0);
-      boardMenu.add(platformMenu);
+    if (platformMenus.size() == 1) {
+      // When just one platform exists, add the board items directly,
+      // rather than using a submenu
+      for (Component boardItem : platformMenus.get(0).getMenuComponents()) {
+        boardMenu.add(boardItem);
+        if (firstBoardItem == null)
+          firstBoardItem = (JMenuItem)boardItem;
+      }
+    } else {
+      // For multiple platforms, use submenus
+      for (JMenu platformMenu : platformMenus) {
+        if (firstBoardItem == null && platformMenu.getItemCount() > 0)
+          firstBoardItem = platformMenu.getItem(0);
+        boardMenu.add(platformMenu);
+      }
     }
 
     if (firstBoardItem == null) {
