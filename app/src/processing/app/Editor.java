@@ -761,6 +761,20 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.add(item);
 
     toolsMenu.addMenuListener(new StubMenuListener() {
+      public JMenuItem getSelectedItemRecursive(JMenu menu) {
+        int count = menu.getItemCount();
+        for (int i=0; i < count; i++) {
+          JMenuItem item = menu.getItem(i);
+
+          if ((item instanceof JMenu))
+            item = getSelectedItemRecursive((JMenu)item);
+
+          if (item != null && item.isSelected())
+            return item;
+        }
+        return null;
+      }
+
       public void menuSelected(MenuEvent e) {
         //System.out.println("Tools menu selected.");
         populatePortMenu();
@@ -772,15 +786,9 @@ public class Editor extends JFrame implements RunnerListener {
             String basename = name;
             int index = name.indexOf(':');
             if (index > 0) basename = name.substring(0, index);
-            String sel = null;
-            int count = menu.getItemCount();
-            for (int i=0; i < count; i++) {
-              JMenuItem item = menu.getItem(i);
-              if (item != null && item.isSelected()) {
-                sel = item.getText();
-                if (sel != null) break;
-              }
-            }
+
+            JMenuItem item = getSelectedItemRecursive(menu);
+            String sel = item != null ? item.getText() : null;
             if (sel == null) {
               if (!name.equals(basename)) menu.setText(basename);
             } else {
