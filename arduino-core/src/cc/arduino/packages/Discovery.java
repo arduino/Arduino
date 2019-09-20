@@ -31,7 +31,7 @@ package cc.arduino.packages;
 
 import java.util.List;
 
-public interface Discovery {
+public interface Discovery extends Runnable {
 
   /**
    * Start discovery service

@@ -37,13 +37,10 @@ import javax.jmdns.*;
 import java.net.InetAddress;
 import java.util.*;
 
-import cc.arduino.packages.discoverers.network.BoardReachabilityFilter;
-
-public class NetworkDiscovery implements Discovery, ServiceListener {
+public class NetworkDiscovery implements Discovery, ServiceListener, Runnable {
 
   private final List<BoardPort> reachableBoardPorts = new LinkedList<>();
   private final List<BoardPort> boardPortsDiscoveredWithJmDNS = new LinkedList<>();
-  private Timer reachabilityTimer;
   private JmmDNS jmdns = null;
 
   private void removeDuplicateBoards(BoardPort newBoard) {
@@ -81,6 +78,7 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
     }
 
     ServiceInfo info = serviceEvent.getInfo();
+
     for (InetAddress inetAddress : info.getInet4Addresses()) {
       String address = inetAddress.getHostAddress();
       String name = serviceEvent.getName();
@@ -115,15 +113,12 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
       String label = name + " at " + address;
       if (board != null && BaseNoGui.packages != null) {
         String boardName = BaseNoGui.getPlatform().resolveDeviceByBoardID(BaseNoGui.packages, board);
-        if (boardName != null) {
-          label += " (" + boardName + ")";
-        }
+        port.setBoardName(boardName);
       } else if (description != null) {
         label += " (" + description + ")";
       }
 
       port.setAddress(address);
-      port.setBoardName(name);
       port.setProtocol("network");
       port.setLabel(label);
 
@@ -139,16 +134,22 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
   }
 
   @Override
+  public void run() {
+    start();
+  }
+
+  @Override
   public void start() {
+    System.getProperties().setProperty("net.dns.ttl", "10");
     jmdns = JmmDNS.Factory.getInstance();
     jmdns.addServiceListener("_arduino._tcp.local.", this);
-    reachabilityTimer =  new Timer();
-    new BoardReachabilityFilter(this).start(reachabilityTimer);
   }
 
   @Override
   public void stop() {
-    jmdns.unregisterAllServices();
+    if (jmdns != null) {
+      jmdns.unregisterAllServices();
+    }
     // we don't close the JmmDNS instance as it's too slow
     /*
     try {
@@ -157,13 +158,12 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
       e.printStackTrace();
     }
     */
-    reachabilityTimer.cancel();
   }
 
   @Override
   public List<BoardPort> listDiscoveredBoards() {
-      synchronized (reachableBoardPorts) {
-      return new LinkedList<>(reachableBoardPorts);
+    synchronized (reachableBoardPorts) {
+      return getBoardPortsDiscoveredWithJmDNS();
     }
   }
 
@@ -176,8 +176,8 @@ public class NetworkDiscovery implements Discovery, ServiceListener {
 
   public void setReachableBoardPorts(List<BoardPort> newReachableBoardPorts) {
     synchronized (reachableBoardPorts) {
-      this.reachableBoardPorts.clear();
-      this.reachableBoardPorts.addAll(newReachableBoardPorts);
+      reachableBoardPorts.clear();
+      reachableBoardPorts.addAll(newReachableBoardPorts);
     }
   }
 

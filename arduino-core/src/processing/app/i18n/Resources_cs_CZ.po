@@ -16,27 +16,31 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # horcicaa <horcicaa@gmail.com>, 2012
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
-# fatalwir <fatalwir@seznam.cz>, 2014
+# fatalwir <fatalwir@seznam.cz>, 2014,2018
 # Michal Kočer <mcha@4makers.cz>, 2012
 # Michal Kočer <mcha@4makers.cz>, 2012
 # Michal Kočer <mcha@4makers.cz>, 2013-2014
-# Ondrej Novy <novy@ondrej.org>, 2015
-# Zdeno Sekerák <etrsek@gmail.com>, 2015-2017
+# Ondřej Nový <novy@ondrej.org>, 2015
+# Zdeno Sekerák <etrsek@gmail.com>, 2015-2017,2019
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2019-02-13 13:34+0000\n"
 "Last-Translator: Zdeno Sekerák <etrsek@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/mbanzi/arduino-ide-15/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
@@ -216,6 +220,11 @@ msgstr "Archivuj projekt jako:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Archivování projektu bylo přerušeno."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Archivace přeloženého jádra (dočasne uloženého) v: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -623,6 +632,11 @@ msgstr "Nemohu smazat starou verzi {0}"
 msgid "Could not replace {0}"
 msgstr "Nemohu změnit {0}"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr "Nemůžu zapsat nastavení do souboru: {0}"
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Projekt nebylo možné archivovat"
@@ -666,6 +680,10 @@ msgstr "Zpracování dát"
 msgid "Data Storage"
 msgstr "Uložení dát"
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "Zmenšení fontu písma"
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Zmenšit odsazení"
@@ -673,6 +691,10 @@ msgstr "Zmenšit odsazení"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "Default"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr "Výchozí motiv"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -849,6 +871,11 @@ msgstr "Chyba v přistupu do datového adresáře Arduina."
 msgid "Error inside Serial.{0}()"
 msgstr "Chyba v Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr "Chyba při načítání motivu {0}: {1}"
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -867,6 +894,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "Chyba pri otevření sériového portu ''{0}''. Zkus se podívat na dokumentaci která je na http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr "Chyba pri parsování indexu knihoven: {0}\nPokuste se otevřít správce knihoven a aktualizujte její index."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr "Nastala chyba pri čtení indexu knihoven: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr "Chyba při čtení indexu ve složce balíků: {0}\n(možná problém s přístupovými právami?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -901,6 +947,10 @@ msgstr "Chyba při vypalování zavaděče."
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Chyba při vypalování bootloaderu: chybí konfigurační parametr '{0}'"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr "Chyba pri vypalování bootloader: prosím vyberte sériový port."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -937,10 +987,6 @@ msgstr "Nastala chyby při verifykaci/nahrávání."
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Estonština"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Estónština (Estónsko)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1145,9 +1191,9 @@ msgstr "NEKOMPAKTIBILNÍ"
 msgid "Ignore Case"
 msgstr "Ignoruj velikost písmen"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Ignoruji chybný název knihovny"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr "Ignoruji knihovnu s nesprávným názvem"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1172,6 +1218,10 @@ msgstr "Přidat knihovnu"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "Nesprávný adresář pro instalaci IDE"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "Zvětšení fontu písma"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1206,10 +1256,10 @@ msgstr "Instalováno"
 msgid "Installing boards..."
 msgstr "Instalace desek..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Instaluji knihovnu: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr "Instalace knihovny: {0}:{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1234,6 +1284,17 @@ msgstr "Nalezena neplatná knihovna v {0}: {1}"
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "Neplatný znak úvodzovek: chýbějicí uzavírací znak [{0}]."
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr "Neplatná verze knihovny '{0}' v: {1}"
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
+msgstr "Neplatná verze {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1267,10 +1328,10 @@ msgstr "Knihovna přidána do tvých knihoven. Zkontroluj menu \"Zahrnuté kniho
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "Knihovna nemůže být použitá součastne v adresářích 'src' a 'utility'. Zdvojená kontrola {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Knihovna je již instalovaná: {0} verze {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr "Knihovna je již nainstalována: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1687,10 +1748,10 @@ msgstr "Reference"
 msgid "Remove"
 msgstr "Vymazat"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Mažu knihovnu: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr "Odstraňování knihovny: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1725,6 +1786,10 @@ msgstr "Nahraď za:"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
 msgstr "Nepodporovaný"
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr "Chcete opakovat nahrávání s jiným sériovým portem?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1849,12 +1914,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Seriový port ''{0}'' nebyl nalezen. Vybrali jste správný port v menu Nástroje > Seriový port?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr "Nebyl vybrán sériový port."
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Seriový port {0} nenalezen\nMám zkusit nahrávat na jiný seriový port?"
+msgid "Serial port {0} not found."
+msgstr "Sériový port {0} se nenašel."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1876,6 +1944,10 @@ msgstr "Problém s Nastavením"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Zobraz adresář s projekty"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr "Zobrazit časové razítko"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2048,6 +2120,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Soubor \"{0}\" musí být uložen \nv adresáři pro projekty pojmenovaném \"{1}\".\nMám vytvořit adresář, přesunout tam soubor a pokračovat?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "Knihovnu \"{0}\" nelze použít.\nNázev složky knihovny musí začínat písmenem nebo číslem a může obsahovat pouze písmena, číslice, pomlčky, tečky a podtržítka. Maximální délka názvu je 63 znaků."
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2093,12 +2173,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Projekt zmizel.\nPokusím se znovu uložit na stejné místo,\nale krom kódu bude všechno ostatní ztraceno!"
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Název projektu je potřeba změnit. Název projektu je možné složit pouze z ASCII znaků a čísel (číslem však nemůže začínat). Název musí mít délku méně jak 64 znaků."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "Neplatný název projektu.\nNázev projektu musí začínat písmenem nebo číslem a může obsahovat pouze písmena, číslice, pomlčky, tečky a podtržítka. Maximální délka názvu je 63 znaků."
 
 #: Base.java:259
 msgid ""
@@ -2114,6 +2194,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Specifikovaný projektový adresář obsahuje kopii tvého IDE.\nProsím vyber pro svůj projekt jiný adresář."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr "Motiv:"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2607,6 +2691,12 @@ msgstr "ignoruji nepovolenou velikost fontu {0}"
 msgid "name is null"
 msgstr "jméno je null"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr "nenalezeny hlavičkové soubory (.h) v {0}"
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu je null"
@@ -2694,11 +2784,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: Chybně zvolený název vývojové desky; měl by mít formu \"package:arch:board\" či \"package:arch:board:options\""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Chybná volba pro  \"{1}\" volbu pro vývojovou desku \"{2}\""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2708,6 +2793,11 @@ msgstr "{0}: Chybná volba pro vývojovou desku  \"{1}\""
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: Chybná volba, měla by být ve formě \"nazev=hodnota\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr "{0}: Neplatná hodnota parametru \"{1}\" desky \"{2}\""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

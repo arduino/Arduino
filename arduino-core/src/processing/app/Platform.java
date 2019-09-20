@@ -31,19 +31,7 @@ import processing.app.legacy.PConstants;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.HttpURLConnection;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import java.io.InputStream;
+import java.util.*;
 
 import static processing.app.I18n.tr;
 
@@ -64,8 +52,7 @@ import static processing.app.I18n.tr;
  * know if name is proper Java package syntax.)
  */
 public class Platform {
-
-
+  // DO NOT USE log4j here otherwise the root path of the logs will no be initialize correctly
   /**
    * Set the default L & F. While I enjoy the bounty of the sixteen possible
    * exception types that this UIManager method might throw, I feel that in
@@ -170,6 +157,7 @@ public class Platform {
   }
 
   private native String resolveDeviceAttachedToNative(String serial);
+
   private native String[] listSerialsNative();
 
   public String preListAllCandidateDevices() {
@@ -180,52 +168,12 @@ public class Platform {
     return new ArrayList<>(Arrays.asList(listSerialsNative()));
   }
 
-  public  List<String> listSerialsNames(){
+  public List<String> listSerialsNames() {
     List<String> list = new LinkedList<>();
     for (String port : listSerialsNative()) {
       list.add(port.split("_")[0]);
     }
     return list;
-  }
-
-  public static class BoardCloudAPIid {
-    public BoardCloudAPIid() {   }
-    private String name;
-    private String architecture;
-    private String id;
-    public String getName() { return name; }
-    public String getArchitecture() { return architecture; }
-    public String getId() { return id; }
-    public void setName(String tmp) { name = tmp; }
-    public void setArchitecture(String tmp) { architecture = tmp; }
-    public void setId(String tmp) { id = tmp; }
-  }
-
-  public synchronized void getBoardWithMatchingVidPidFromCloud(String vid, String pid) {
-    // this method is less useful in Windows < WIN10 since you need drivers to be already installed
-    ObjectMapper mapper = new ObjectMapper();
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    try {
-      URL jsonUrl = new URL("http", "api-builder.arduino.cc", 80, "/builder/v1/boards/0x"+vid+"/0x"+pid);
-      URLConnection connection = jsonUrl.openConnection();
-      connection.connect();
-      HttpURLConnection httpConnection = (HttpURLConnection) connection;
-      int code = httpConnection.getResponseCode();
-      if (code == 404) {
-        return;
-      }
-      InputStream is = httpConnection.getInputStream();
-      BoardCloudAPIid board = mapper.readValue(is, BoardCloudAPIid.class);
-      // Launch a popup with a link to boardmanager#board.getName()
-      // replace spaces with &
-      String realBoardName = board.getName().replaceAll("\\(.*?\\)", "").trim();
-      String boardNameReplaced = realBoardName.replaceAll(" ", "&");
-      String message = I18n.format(tr("{0}Install this package{1} to use your {2} board"), "<a href=\"http://boardsmanager/all#"+boardNameReplaced+"\">", "</a>", realBoardName);
-      BaseNoGui.setBoardManagerLink(message);
-    } catch (Exception e) {
-      // No connection no problem, fail silently
-      //e.printStackTrace();
-    }
   }
 
   public synchronized Map<String, Object> resolveDeviceByVendorIdProductId(String serial, Map<String, TargetPackage> packages) {
@@ -256,7 +204,7 @@ public class Platform {
                 boardData.put("board", board);
                 boardData.put("vid", vids.get(i));
                 boardData.put("pid", pids.get(i));
-                String extrafields = vid_pid_iSerial.substring(vidPid.length()+1);
+                String extrafields = vid_pid_iSerial.substring(vidPid.length() + 1);
                 String[] parts = extrafields.split("_");
                 boardData.put("iserial", parts[0]);
                 return boardData;

@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.filters.NoopPredicate;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.DropdownItem;
 
@@ -45,11 +44,7 @@ public class DropdownAllCoresItem implements DropdownItem<ContributedPlatform> {
 
   @Override
   public Predicate<ContributedPlatform> getFilterPredicate() {
-    return new NoopPredicate<>();
+    return x -> true;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownAllCoresItem;
-  }
 }

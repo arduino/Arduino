@@ -16,6 +16,10 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # zepyur <jrvezh@yahoo.com>, 2012
 # Levon <deimusmeister@gmail.com>, 2015
@@ -24,7 +28,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 14:23+0000\n"
+"PO-Revision-Date: 2018-11-23 15:06+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Armenian (http://www.transifex.com/mbanzi/arduino-ide-15/language/hy/)\n"
 "MIME-Version: 1.0\n"
@@ -211,6 +215,11 @@ msgstr "Արխիվացնել գծանկարը որպես:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Գծանկարի արխիվացումը չեղարկել"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -618,6 +627,11 @@ msgstr "Հնարավոր չէր ջնջել {0}-ի հին տարբերակը "
 msgid "Could not replace {0}"
 msgstr "{0}-ն չեղավ փոխարինել"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Հնարավոր չէր արխիվացնել գծագիրը"
@@ -661,6 +675,10 @@ msgstr ""
 msgid "Data Storage"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Փոքրացնել տարածությունը"
@@ -668,6 +686,10 @@ msgstr "Փոքրացնել տարածությունը"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "Լռելյայն"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -844,6 +866,11 @@ msgstr "Սխալ Արդունոի տվյալներ պանակը բեռնելիս
 msgid "Error inside Serial.{0}()"
 msgstr "Սխալ սերիալում.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -862,6 +889,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "Սխալ ''{0}' սերիալ պորտը բացելիս: Նայիր փաստաթղթերը այտեղ http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr ""
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -896,6 +942,10 @@ msgstr "Սխալ bootloader-ի վառման ընթացքում:"
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "Սխալ bootloader-ը վառելիս: պակասող '{0}' կոնֆիգուրացիոն պարամետր"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -932,10 +982,6 @@ msgstr "Սխալ ստուգման/վերբեռնման ընթացքում"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Էստոներեն"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "Էստոներեն (Էստոնիա)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1140,9 +1186,9 @@ msgstr ""
 msgid "Ignore Case"
 msgstr "Անտեսել մեծատառ/փոքրատառը"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Անտեսվում է գրադարանի վատ անվանումը"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1167,6 +1213,10 @@ msgstr "Ներառել գրադարան"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "IDE-ի սխալ տեղադրման պանակ"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1201,10 +1251,10 @@ msgstr "Տեղադրված"
 msgid "Installing boards..."
 msgstr "Հարտակները տեղադրվում են..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Տեղադրվում է գրադարանը: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1229,6 +1279,17 @@ msgstr "Սխալ գրադարան է հայտնաբերվել {0}-ում: {1}"
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "Անվավեր մեջբերում: Փակման [{0}] նշանը չի հայտնաբերվել:"
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
+msgstr ""
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1262,10 +1323,10 @@ msgstr "Գրադարանը ավելացվեց ձեր գրադարանին. Ստ�
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "Գրադարանը արդեն տեղադրված է: {0} տարբերակ {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1682,10 +1743,10 @@ msgstr "Հղում"
 msgid "Remove"
 msgstr "Ջնջել"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "Ջնջվում է գրադարանը: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1719,6 +1780,10 @@ msgstr "Փոխարինել:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
 msgstr ""
 
 #: Preferences.java:113
@@ -1844,12 +1909,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "''{0}'' սերիալ պորտը չի գտնված: Դուք ընտրել եք ճիշտ օրինակը Գործիքներ > Սերիալ Պորտ մենյուից?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "''{0}'' սերիալ պորտը չի գտնված:\nԿրկին փորձել վերբեռնել այլ սերիալ պորտով?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1871,6 +1939,10 @@ msgstr "Կարգավորումների խնդիրներ"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Ցուցադրել գծագրերի պանակը"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2043,6 +2115,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "\"{0}\" ֆայլը պետք է լինի\n\"{1}\" անվամբ պանակի մեջ:\nՍտեղծել այդ պանակը, տեղափոխել ֆայլը, եւ շարունակել?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2088,12 +2168,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Գծագրի պանակը անհետացել է:\nՄենք կփորձենք վերապահել նույն տեղում,\nսակայն կոդից բացի ամեն ինչ կկորի:"
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "Գծագրի անունը պետք է փոփոխվի: Գծագրի անունը կարող է բաղկացած լինել միայն ASCII տառատեսակներից եւ թվերից (չի կարող սկսվել թվով):\nԱյն պետք է նաեւ 64 սիմվոլից պակաս լինի:"
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
 
 #: Base.java:259
 msgid ""
@@ -2109,6 +2189,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "Նշված գծանկարների գրքի պանակը պարունակում է ձեր IDE-ի պատճենը:\nԽնդրում ենք ընտրել մեկ այլ պանակ ձեր գծանկարների գրքի համար:"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2602,6 +2686,12 @@ msgstr "Անվավեր տառատեսակի չափը {0} անտեսվում է"
 msgid "name is null"
 msgstr "անունը null է"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu-ն null է"
@@ -2689,11 +2779,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: Սխալ հարթակի անուն, պետք է լինի \"package:arch:board\" կամ \"package:arch:board:options\" ֆորմատով"
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: Անվավեր տարբերակ \"{1}\", \"{2}\" տարբերակ հարթակի համար"
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2703,6 +2788,11 @@ msgstr "{0}: Անվավեր տարբերակ \"{1}\" հարթակի համար"
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: Անվավեր տարբերակ, պետք է լինի հետեւյալ ձեւով \"name=value\""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr ""
 
 #: ../../../processing/app/Base.java:486
 #, java-format

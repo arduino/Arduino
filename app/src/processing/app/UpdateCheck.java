@@ -66,14 +66,14 @@ public class UpdateCheck implements Runnable {
   public void run() {
     //System.out.println("checking for updates...");
 
-    // generate a random id in case none exists yet
-    Random r = new Random();
-    long id = r.nextLong();
-
+    long id;
     String idString = PreferencesData.get("update.id");
     if (idString != null) {
       id = Long.parseLong(idString);
     } else {
+      // generate a random id in case none exists yet
+      Random r = new Random();
+      id = r.nextLong();
       PreferencesData.set("update.id", String.valueOf(id));
     }
 

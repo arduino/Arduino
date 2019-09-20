@@ -72,7 +72,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       @Override
       protected void onInstall(ContributedPlatform selected,
                                ContributedPlatform installed) {
-        if (selected.isReadOnly()) {
+        if (selected.isBuiltIn()) {
           onRemovePressed(installed, false);
         } else {
           onInstallPressed(selected, installed);
@@ -98,14 +98,13 @@ public class ContributionManagerUI extends InstallerJDialog {
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
 
-    categoryFilter = null;
-    categoryChooser.removeAllItems();
-
     filterField.setEnabled(getContribModel().getRowCount() > 0);
 
     categoryChooser.addActionListener(categoryChooserActionListener);
 
     // Enable categories combo only if there are two or more choices
+    categoryFilter = x -> true;
+    categoryChooser.removeAllItems();
     categoryChooser.addItem(new DropdownAllCoresItem());
     categoryChooser.addItem(new DropdownUpdatableCoresItem());
     Collection<String> categories = BaseNoGui.indexer.getCategories();
@@ -167,7 +166,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       List<String> errors = new LinkedList<>();
       try {
         setProgressVisible(true, tr("Installing..."));
-        if (platformToRemove != null && !platformToRemove.isReadOnly()) {
+        if (platformToRemove != null && !platformToRemove.isBuiltIn()) {
           errors.addAll(installer.remove(platformToRemove));
         }
         errors.addAll(installer.install(platformToInstall, this::setProgress));

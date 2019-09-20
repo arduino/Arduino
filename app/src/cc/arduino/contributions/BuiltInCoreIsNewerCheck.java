@@ -29,9 +29,6 @@
 
 package cc.arduino.contributions;
 
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
-import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import processing.app.Base;
 import processing.app.BaseNoGui;
@@ -39,8 +36,8 @@ import processing.app.I18n;
 import processing.app.PreferencesData;
 
 import javax.swing.*;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static processing.app.I18n.tr;
@@ -67,13 +64,21 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       return;
     }
 
-    List<ContributedPlatform> contributedPlatforms = BaseNoGui.indexer.getPackages().stream().map(ContributedPackage::getPlatforms).flatMap(Collection::stream).collect(Collectors.toList());
+    List<ContributedPlatform> contributedPlatforms = BaseNoGui.indexer
+        .getPackages().stream() //
+        .map(pack -> pack.getPlatforms()) //
+        .flatMap(platfs -> platfs.stream()) //
+        .collect(Collectors.toList());
 
-    List<ContributedPlatform> installedBuiltInPlatforms = contributedPlatforms.stream().filter(new InstalledPredicate()).filter(new BuiltInPredicate()).collect(Collectors.toList());
-    if (installedBuiltInPlatforms.size() != 1) {
+    Optional<ContributedPlatform> mayInstalledBuiltIn = contributedPlatforms
+        .stream() //
+        .filter(p -> p.isInstalled()) //
+        .filter(p -> p.isBuiltIn()) //
+        .findFirst();
+    if (!mayInstalledBuiltIn.isPresent()) {
       return;
     }
-    final ContributedPlatform installedBuiltIn = installedBuiltInPlatforms.get(0);
+    final ContributedPlatform installedBuiltIn = mayInstalledBuiltIn.get();
 
     ContributedPlatform installedNotBuiltIn = BaseNoGui.indexer.getInstalled(installedBuiltIn.getParentPackage().getName(), installedBuiltIn.getArchitecture());
     if (installedNotBuiltIn == null) {
@@ -84,7 +89,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       Thread.sleep(100);
     }
 
-    if (VersionHelper.valueOf(installedBuiltIn.getParsedVersion()).greaterThan(VersionHelper.valueOf(installedNotBuiltIn.getParsedVersion()))) {
+    if (VersionComparator.greaterThan(installedBuiltIn.getParsedVersion(), installedNotBuiltIn.getParsedVersion())) {
       SwingUtilities.invokeLater(() -> {
         PreferencesData.setInteger("builtin_platform_is_newer", BaseNoGui.REVISION);
         assert base.hasActiveEditor();

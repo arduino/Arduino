@@ -16,7 +16,7 @@ import static processing.app.I18n.tr;
 public class CommandlineParser {
 
   private enum ACTION {
-    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library");
+    GUI, NOOP, VERIFY("--verify"), UPLOAD("--upload"), GET_PREF("--get-pref"), INSTALL_BOARD("--install-boards"), INSTALL_LIBRARY("--install-library"), VERSION("--version");
 
     final String value;
 
@@ -41,6 +41,7 @@ public class CommandlineParser {
   private String getPref;
   private String boardToInstall;
   private String libraryToInstall;
+  private Optional<String> uploadPort = Optional.empty();
   private final List<String> filenames = new LinkedList<>();
 
   public CommandlineParser(String[] args) {
@@ -52,6 +53,7 @@ public class CommandlineParser {
     actions.put("--get-pref", ACTION.GET_PREF);
     actions.put("--install-boards", ACTION.INSTALL_BOARD);
     actions.put("--install-library", ACTION.INSTALL_LIBRARY);
+    actions.put("--version", ACTION.VERSION);
   }
 
   public void parseArgumentsPhase1() {
@@ -140,7 +142,7 @@ public class CommandlineParser {
         i++;
         if (i >= args.length)
           BaseNoGui.showError(null, tr("Argument required for --port"), 3);
-        BaseNoGui.selectSerialPort(args[i]);
+        uploadPort = Optional.of(args[i]);
         if (action == ACTION.GUI)
           action = ACTION.NOOP;
         continue;
@@ -264,7 +266,7 @@ public class CommandlineParser {
         if (!targetBoard.hasMenu(key))
           BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for board \"{1}\""), key, targetBoard.getId()), 3);
         if (targetBoard.getMenuLabel(key, value) == null)
-          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid option for \"{1}\" option for board \"{2}\""), value, key, targetBoard.getId()), 3);
+          BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid value for option \"{1}\" for board \"{2}\""), value, key, targetBoard.getId()), 3);
 
         PreferencesData.set("custom_" + key, targetBoard.getId() + "_" + value);
       }
@@ -340,6 +342,10 @@ public class CommandlineParser {
     return action == ACTION.INSTALL_LIBRARY;
   }
 
+  public boolean isVersionMode() {
+    return action == ACTION.VERSION;
+  }
+
   public String getBoardToInstall() {
     return this.boardToInstall;
   }
@@ -350,5 +356,9 @@ public class CommandlineParser {
 
   public boolean isPreserveTempFiles() {
     return preserveTempFiles;
+  }
+
+  public Optional<String> getUploadPort() {
+    return uploadPort;
   }
 }

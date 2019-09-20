@@ -29,22 +29,36 @@
 
 package cc.arduino.packages;
 
+import processing.app.BaseNoGui;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
+import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
 
 public class BoardPort {
 
-  private String address;
-  private String protocol;
+  private String address;   // unique name for this port, used by Preferences
+  private String protocol;  // how to communicate, used for Ports menu sections
+  private String protocolLabel; // protocol extended name to display on GUI
   private String boardName;
-  private String vid;
-  private String pid;
-  private String iserial;
-  private String label;
-  private final PreferencesMap prefs;
-  private boolean online;
+  private String label;     // friendly name shown in Ports menu
+  private final PreferencesMap identificationPrefs; // data to match with boards.txt
+  private final PreferencesMap prefs; // "vendorId", "productId", "serialNumber"
+  private boolean online;   // used by SerialBoardsLister (during upload??)
 
   public BoardPort() {
     this.prefs = new PreferencesMap();
+    this.identificationPrefs = new PreferencesMap();
+  }
+
+  public BoardPort(BoardPort bp) {
+    prefs = new PreferencesMap(bp.prefs);
+    identificationPrefs = new PreferencesMap(bp.identificationPrefs);
+    address = bp.address;
+    protocol = bp.protocol;
+    boardName = bp.boardName;
+    label = bp.label;
+    online = bp.online;
   }
 
   public String getAddress() {
@@ -63,6 +77,14 @@ public class BoardPort {
     this.protocol = protocol;
   }
 
+  public String getProtocolLabel() {
+    return protocolLabel;
+  }
+
+  public void setProtocolLabel(String protocolLabel) {
+    this.protocolLabel = protocolLabel;
+  }
+
   public String getBoardName() {
     return boardName;
   }
@@ -73,6 +95,10 @@ public class BoardPort {
 
   public PreferencesMap getPrefs() {
     return prefs;
+  }
+
+  public PreferencesMap getIdentificationPrefs() {
+    return identificationPrefs;
   }
 
   public void setLabel(String label) {
@@ -91,28 +117,76 @@ public class BoardPort {
     return online;
   }
 
-  public void setVIDPID(String vid, String pid) {
-    this.vid = vid;
-    this.pid = pid;
-  }
-
-  public String getVID() {
-    return vid;
-  }
-
-  public String getPID() {
-    return pid;
-  }
-
-  public void setISerial(String iserial) {
-    this.iserial = iserial;
-  }
-  public String getISerial() {
-    return iserial;
-  }
-
   @Override
   public String toString() {
-    return this.address+"_"+this.vid+"_"+this.pid;
+    return this.address;
   }
+
+  // Search for the board which matches identificationPrefs.
+  // If found, boardName is set to the name from boards.txt
+  // and the board is returned.  If not found, null is returned.
+  public TargetBoard searchMatchingBoard() {
+    if (identificationPrefs == null || identificationPrefs.isEmpty()) return null;
+    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
+      for (TargetPlatform targetPlatform : targetPackage.getPlatforms().values()) {
+        for (TargetBoard board : targetPlatform.getBoards().values()) {
+          if (matchesBoard(board)) {
+            setBoardName(board.getName());
+            return board;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  public boolean matchesBoard(TargetBoard board) {
+    PreferencesMap identificationProps = getIdentificationPrefs();
+    PreferencesMap boardProps = board.getPreferences();
+
+    String wildMatcher = identificationProps.get(".");
+    if (wildMatcher != null) {
+      if (wildMatcher.equals(board.getId())) {
+        return true;
+      }
+      if (wildMatcher.equals(board.getFQBN())) {
+        return true;
+      }
+    }
+
+    // Identification properties are defined in boards.txt with a ".N" suffix
+    // for example:
+    //
+    // uno.name=Arduino/Genuino Uno
+    // uno.vid.0=0x2341
+    // uno.pid.0=0x0043
+    // uno.vid.1=0x2341
+    // uno.pid.1=0x0001
+    // uno.vid.2=0x2A03
+    // uno.pid.2=0x0043
+    // uno.vid.3=0x2341
+    // uno.pid.3=0x0243
+    //
+    // so we must search starting from suffix ".0" and increasing until we
+    // found a match or the board has no more identification properties defined
+
+    for (int suffix = 0;; suffix++) {
+      boolean found = true;
+      for (String prop : identificationProps.keySet()) {
+        String value = identificationProps.get(prop);
+        prop += "." + suffix;
+        if (!boardProps.containsKey(prop)) {
+          return false;
+        }
+        if (!value.equalsIgnoreCase(boardProps.get(prop))) {
+          found = false;
+          break;
+        }
+      }
+      if (found) {
+        return true;
+      }
+    }
+  }
+
 }

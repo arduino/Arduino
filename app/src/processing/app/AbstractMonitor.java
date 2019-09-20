@@ -1,6 +1,7 @@
 package processing.app;
 
 import cc.arduino.packages.BoardPort;
+import cc.arduino.packages.DiscoveryManager;
 import processing.app.legacy.PApplet;
 
 import javax.swing.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
@@ -17,6 +19,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
 
   private StringBuffer updateBuffer;
   private Timer updateTimer;
+  private Timer portExistsTimer;
 
   private BoardPort boardPort;
 
@@ -27,6 +30,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     this.boardPort = boardPort;
 
     addWindowListener(new WindowAdapter() {
+      @Override
       public void windowClosing(WindowEvent event) {
         try {
           closed = true;
@@ -41,6 +45,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     KeyStroke wc = Editor.WINDOW_CLOSE_KEYSTROKE;
     getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(wc, "close");
     getRootPane().getActionMap().put("close", (new AbstractAction() {
+      @Override
       public void actionPerformed(ActionEvent event) {
         try {
           close();
@@ -71,6 +76,26 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     updateTimer = new Timer(33, this);  // redraw serial monitor at 30 Hz
     updateTimer.start();
 
+    ActionListener portExists = new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent ae) {
+        try {
+          if (Base.getDiscoveryManager().find(boardPort.getAddress()) == null) {
+            if (!closed) {
+              suspend();
+            }
+          } else {
+            if (closed && (Editor.isUploading() == false)) {
+              resume(boardPort);
+            }
+          }
+        } catch (Exception e) {}
+      }
+    };
+
+    portExistsTimer = new Timer(1000, portExists);  // check if the port is still there every second
+    portExistsTimer.start();
+
     closed = false;
   }
 
@@ -88,6 +113,11 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     enableWindow(false);
 
     close();
+  }
+
+  public void dispose() {
+    super.dispose();
+    portExistsTimer.stop();
   }
 
   public void resume(BoardPort boardPort) throws Exception {
@@ -165,6 +195,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
     return s;
   }
 
+  @Override
   public void actionPerformed(ActionEvent e) {
     String s = consumeUpdateBuffer();
     if (s.isEmpty()) {
@@ -173,4 +204,13 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
       message(s);
     }
   }
+
+  /**
+   * Read and apply new values from the preferences, either because
+   * the app is just starting up, or the user just finished messing
+   * with things in the Preferences window.
+   */
+  public void applyPreferences() {
+    // Empty.
+  };
 }

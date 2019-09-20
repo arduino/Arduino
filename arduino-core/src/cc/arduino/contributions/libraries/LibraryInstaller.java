@@ -31,10 +31,15 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
+import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
 import cc.arduino.utils.MultiStepProgress;
+import cc.arduino.utils.network.FileDownloader;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -43,71 +48,124 @@ import processing.app.helpers.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static processing.app.I18n.tr;
 
 public class LibraryInstaller {
+  private static Logger log = LogManager.getLogger(LibraryInstaller.class);
 
   private final Platform platform;
+  private final GPGDetachedSignatureVerifier signatureVerifier;
 
-  public LibraryInstaller(Platform platform) {
+  public LibraryInstaller(Platform platform, GPGDetachedSignatureVerifier signatureVerifier) {
     this.platform = platform;
+    this.signatureVerifier = signatureVerifier;
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
-    final MultiStepProgress progress = new MultiStepProgress(2);
+    final MultiStepProgress progress = new MultiStepProgress(3);
 
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
     File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
-    File tmpFile = new File(outputFile.getAbsolutePath() + ".tmp");
+    // Create temp files
+    String signatureFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL).getPath());
+    File libraryIndexTemp = File.createTempFile(signatureFileName, ".tmp");
+    final URL libraryURL = new URL(Constants.LIBRARY_INDEX_URL);
+    final URL libraryGzURL = new URL(Constants.LIBRARY_INDEX_URL_GZ);
+    final String statusText = tr("Downloading libraries index...");
     try {
-      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, new URL(Constants.LIBRARY_INDEX_URL), new URL(Constants.LIBRARY_INDEX_URL_GZ));
-      gZippedJsonDownloader.download(tmpFile, progress, tr("Downloading libraries index..."), progressListener);
+      GZippedJsonDownloader gZippedJsonDownloader = new GZippedJsonDownloader(downloader, libraryURL, libraryGzURL);
+      gZippedJsonDownloader.download(libraryIndexTemp, progress, statusText, progressListener, true);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
     }
     progress.stepDone();
 
-    // TODO: Check downloaded index
+    URL signatureUrl = new URL(libraryURL.toString() + ".sig");
+    if (downloader.verifyDomain(signatureUrl)) {
+      if (downloader.checkSignature(progress, signatureUrl, progressListener, signatureVerifier, statusText, libraryIndexTemp)) {
+        // Replace old index with the updated one
+        if (libraryIndexTemp.length() > 0) {
+          Files.move(libraryIndexTemp.toPath(), outputFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+      } else {
+        FileDownloader.invalidateFiles(libraryGzURL, libraryURL, signatureUrl);
+        log.error("Fail to verify the signature of {} the cached files have been removed", libraryURL);
+      }
+    } else {
+      log.info("The domain is not selected to verify the signature. library index: {}", signatureUrl);
+    }
 
-    // Replace old index with the updated one
-    if (outputFile.exists())
-      outputFile.delete();
-    if (!tmpFile.renameTo(outputFile))
-      throw new Exception(tr("An error occurred while updating libraries index!"));
+    // Step 2: Parse index
+    BaseNoGui.librariesIndexer.parseIndex();
 
-    // Step 2: Rescan index
+    // Step 3: Rescan index
+    rescanLibraryIndex(progress, progressListener);
+
+  }
+
+  public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
+    ArrayList<ContributedLibrary> libs = new ArrayList<>();
+    libs.add(lib);
+    install(libs, progressListener);
+  }
+
+  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
+    MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
+
+    for (ContributedLibrary lib : libs) {
+      // Do install library (3 steps)
+      performInstall(lib, progressListener, progress);
+    }
+
+    // Rescan index (1 step)
     rescanLibraryIndex(progress, progressListener);
   }
 
-  public synchronized void install(ContributedLibrary lib, ContributedLibrary replacedLib, ProgressListener progressListener) throws Exception {
-    if (lib.isInstalled()) {
-      System.out.println(I18n.format(tr("Library is already installed: {0} version {1}"), lib.getName(), lib.getParsedVersion()));
+  private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
+    if (lib.isLibraryInstalled()) {
+      System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
     }
 
-    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
+    File libsFolder = BaseNoGui.getSketchbookLibrariesFolder().folder;
+    File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
 
-    final MultiStepProgress progress = new MultiStepProgress(3);
+    // Check if we are replacing an already installed lib
+    LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
+    Optional<ContributedLibrary> replacedLib = index.find(lib.getName()).stream() //
+        .filter(l -> l.getInstalledLibrary().isPresent()) //
+        .filter(l -> l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) //
+        .findAny();
+    if (!replacedLib.isPresent() && destFolder.exists()) {
+      System.out.println(I18n.format(tr("Library {0} is already installed in: {1}"), lib.getName(), destFolder));
+      return;
+    }
+    DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
 
     // Step 1: Download library
     try {
-      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener);
+      downloader.download(lib, progress, I18n.format(tr("Downloading library: {0}"), lib.getName()), progressListener, false);
     } catch (InterruptedException e) {
       // Download interrupted... just exit
       return;
     }
+    progress.stepDone();
 
     // TODO: Extract to temporary folders and move to the final destination only
     // once everything is successfully unpacked. If the operation fails remove
     // all the temporary folders and abort installation.
 
     // Step 2: Unpack library on the correct location
-    progress.setStatus(I18n.format(tr("Installing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Installing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
-    File libsFolder = BaseNoGui.librariesIndexer.getSketchbookLibrariesFolder();
     File tmpFolder = FileUtils.createTempFolder(libsFolder);
     try {
       new ArchiveExtractor(platform).extract(lib.getDownloadedFile(), tmpFolder, 1);
@@ -119,26 +177,24 @@ public class LibraryInstaller {
 
     // Step 3: Remove replaced library and move installed one to the correct location
     // TODO: Fix progress bar...
-    remove(replacedLib, progressListener);
-    File destFolder = new File(libsFolder, lib.getName().replaceAll(" ", "_"));
+    if (replacedLib.isPresent()) {
+      remove(replacedLib.get(), progressListener);
+    }
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
-
-    // Step 4: Rescan index
-    rescanLibraryIndex(progress, progressListener);
   }
 
   public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
-    if (lib == null || lib.isReadOnly()) {
+    if (lib.isIDEBuiltIn()) {
       return;
     }
 
     final MultiStepProgress progress = new MultiStepProgress(2);
 
     // Step 1: Remove library
-    progress.setStatus(I18n.format(tr("Removing library: {0}"), lib.getName()));
+    progress.setStatus(I18n.format(tr("Removing library: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
     progressListener.onProgress(progress);
-    FileUtils.recursiveDelete(lib.getInstalledFolder());
+    FileUtils.recursiveDelete(lib.getInstalledLibrary().get().getInstalledFolder());
     progress.stepDone();
 
     // Step 2: Rescan index

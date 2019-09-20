@@ -34,8 +34,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.ContributedPackage;
 import cc.arduino.contributions.packages.ContributedPlatform;
 
@@ -72,10 +70,9 @@ public class ContributedPlatformReleases {
 
   public ContributedPlatform getInstalled() {
     List<ContributedPlatform> installedReleases = releases.stream()
-        .filter(new InstalledPredicate()).collect(Collectors.toList());
-    Collections
-        .sort(installedReleases,
-              new DownloadableContributionBuiltInAtTheBottomComparator());
+        .filter(p -> p.isInstalled()) //
+        .collect(Collectors.toList());
+    Collections.sort(installedReleases, ContributedPlatform.BUILTIN_AS_LAST);
 
     if (installedReleases.isEmpty()) {
       return null;

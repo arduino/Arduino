@@ -29,26 +29,28 @@
 
 package cc.arduino.utils.network;
 
-import cc.arduino.net.CustomProxySelector;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import processing.app.helpers.FileUtils;
 
-import processing.app.BaseNoGui;
-import processing.app.PreferencesData;
-
+import javax.script.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
-import java.net.Proxy;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Observable;
+import java.util.Optional;
 
 public class FileDownloader extends Observable {
+  private static Logger log = LogManager.getLogger(FileDownloader.class);
 
   public enum Status {
     CONNECTING, //
@@ -66,17 +68,15 @@ public class FileDownloader extends Observable {
   private final URL downloadUrl;
 
   private final File outputFile;
-  private InputStream stream = null;
+  private final boolean allowCache;
   private Exception error;
-  private String userAgent;
 
-  public FileDownloader(URL url, File file) {
-    downloadUrl = url;
-    outputFile = file;
-    downloaded = 0;
-    initialSize = 0;
-    userAgent = "ArduinoIDE/" + BaseNoGui.VERSION_NAME + " Java/"
-                + System.getProperty("java.version");
+  public FileDownloader(URL url, File file, boolean allowCache) {
+    this.downloadUrl = url;
+    this.outputFile = file;
+    this.allowCache = allowCache;
+    this.downloaded = 0;
+    this.initialSize = 0;
   }
 
   public long getInitialSize() {
@@ -121,11 +121,12 @@ public class FileDownloader extends Observable {
     notifyObservers();
   }
 
-  public void download() throws InterruptedException {
+
+  public void download(boolean noResume) throws InterruptedException {
     if ("file".equals(downloadUrl.getProtocol())) {
       saveLocalFile();
     } else {
-      downloadFile();
+      downloadFile(noResume);
     }
   }
 
@@ -139,91 +140,49 @@ public class FileDownloader extends Observable {
     }
   }
 
-  private void downloadFile() throws InterruptedException {
-    RandomAccessFile file = null;
+  public static void invalidateFiles(URL... filesUrl) {
+    // For each file delete the file cached if exist
+    Arrays.stream(filesUrl).forEach(url -> {
+      try {
+        FileDownloaderCache.getFileCached(url).ifPresent(fileCached -> {
+          try {
+            log.info("Invalidate this file {} that comes from {}", fileCached.getLocalPath(), fileCached.getRemoteURL());
+            fileCached.invalidateCache();
+          } catch (Exception e) {
+            log.warn("Fail to invalidate cache", e);
+          }
+        });
+      } catch (URISyntaxException | NoSuchMethodException | ScriptException | IOException e) {
+        log.warn("Fail to get the file cached during the file invalidation", e);
+      }
+    });
+
+  }
+
+  private void downloadFile(boolean noResume) throws InterruptedException {
 
     try {
-      // Open file and seek to the end of it
-      file = new RandomAccessFile(outputFile, "rw");
-      initialSize = file.length();
-      file.seek(initialSize);
-
       setStatus(Status.CONNECTING);
 
-      Proxy proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(downloadUrl.toURI());
-      if ("true".equals(System.getProperty("DEBUG"))) {
-        System.err.println("Using proxy " + proxy);
-      }
+      final Optional<FileDownloaderCache.FileCached> fileCachedOpt = FileDownloaderCache.getFileCached(downloadUrl, allowCache);
+      if (fileCachedOpt.isPresent()) {
+        final FileDownloaderCache.FileCached fileCached = fileCachedOpt.get();
 
-      HttpURLConnection connection = (HttpURLConnection) downloadUrl.openConnection(proxy);
-      connection.setRequestProperty("User-agent", userAgent);
-      if (downloadUrl.getUserInfo() != null) {
-        String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
-        connection.setRequestProperty("Authorization", auth);
-      }
+        final Optional<File> fileFromCache = getFileCached(fileCached);
+        if (fileCached.isNotChange() && fileFromCache.isPresent()) {
+          // Copy the cached file in the destination file
+          log.info("The file will be taken from the cache {}", fileFromCache);
+          FileUtils.copyFile(fileFromCache.get(), outputFile);
+        } else {
+          openConnectionAndFillTheFile(noResume);
 
-      connection.setRequestProperty("Range", "bytes=" + initialSize + "-");
-      connection.setConnectTimeout(5000);
-      setDownloaded(0);
-
-      // Connect
-      connection.connect();
-      int resp = connection.getResponseCode();
-
-      if (resp == HttpURLConnection.HTTP_MOVED_PERM || resp == HttpURLConnection.HTTP_MOVED_TEMP) {
-        URL newUrl = new URL(connection.getHeaderField("Location"));
-
-        proxy = new CustomProxySelector(PreferencesData.getMap()).getProxyFor(newUrl.toURI());
-
-        // open the new connnection again
-        connection = (HttpURLConnection) newUrl.openConnection(proxy);
-        connection.setRequestProperty("User-agent", userAgent);
-        if (downloadUrl.getUserInfo() != null) {
-          String auth = "Basic " + new String(new Base64().encode(downloadUrl.getUserInfo().getBytes()));
-          connection.setRequestProperty("Authorization", auth);
+          fileCached.updateCacheFile(outputFile);
         }
-
-        connection.setRequestProperty("Range", "bytes=" + initialSize + "-");
-        connection.setConnectTimeout(5000);
-
-        connection.connect();
-        resp = connection.getResponseCode();
-      }
-
-      if (resp < 200 || resp >= 300) {
-        throw new IOException("Received invalid http status code from server: " + resp);
-      }
-
-      // Check for valid content length.
-      long len = connection.getContentLength();
-      if (len >= 0) {
-        setDownloadSize(len);
-      }
-      setStatus(Status.DOWNLOADING);
-
-      synchronized (this) {
-        stream = connection.getInputStream();
-      }
-      byte buffer[] = new byte[10240];
-      while (status == Status.DOWNLOADING) {
-        int read = stream.read(buffer);
-        if (read == -1)
-          break;
-
-        file.write(buffer, 0, read);
-        setDownloaded(getDownloaded() + read);
-
-        if (Thread.interrupted()) {
-          file.close();
-          throw new InterruptedException();
-        }
-      }
-
-      if (getDownloadSize() != null) {
-        if (getDownloaded() < getDownloadSize())
-          throw new Exception("Incomplete download");
+      } else {
+        openConnectionAndFillTheFile(noResume);
       }
       setStatus(Status.COMPLETE);
+
     } catch (InterruptedException e) {
       setStatus(Status.CANCELLED);
       // lets InterruptedException go up to the caller
@@ -232,17 +191,99 @@ public class FileDownloader extends Observable {
     } catch (SocketTimeoutException e) {
       setStatus(Status.CONNECTION_TIMEOUT_ERROR);
       setError(e);
+      log.error("The request went in socket timeout", e);
 
     } catch (Exception e) {
       setStatus(Status.ERROR);
       setError(e);
+      log.error("The request stop", e);
+    }
 
-    } finally {
-      IOUtils.closeQuietly(file);
+  }
 
-      synchronized (this) {
-        IOUtils.closeQuietly(stream);
+  private Optional<File> getFileCached(FileDownloaderCache.FileCached fileCached) {
+
+    try {
+      final Optional<File> fileFromCache =
+        fileCached.getFileFromCache();
+      if (fileFromCache.isPresent()) {
+        log.info("No need to download using cached file: {}", fileCached);
+        return fileFromCache;
+      } else {
+        log.info(
+          "The file in the cache is not in the path or the md5 validation failed: path={}, file exist={}, md5 validation={}",
+          fileCached.getLocalPath(), fileCached.exists(), fileCached.md5Check());
       }
+    } catch (Exception e) {
+      log.warn(
+        "Cannot get the file from the cache, will be downloaded a new one ", e);
+    }
+    log.info("The file is change {}", fileCached);
+    return Optional.empty();
+  }
+
+  private void openConnectionAndFillTheFile(boolean noResume) throws Exception {
+    initialSize = outputFile.length();
+    if (noResume && initialSize > 0) {
+      // delete file and restart downloading
+      Files.deleteIfExists(outputFile.toPath());
+      initialSize = 0;
+    }
+
+    final HttpURLConnection connection = new HttpConnectionManager(downloadUrl)
+      .makeConnection((c) -> setDownloaded(0));
+    final int resp = connection.getResponseCode();
+
+    if (resp < 200 || resp >= 300) {
+      Files.deleteIfExists(outputFile.toPath());
+      throw new IOException("Received invalid http status code from server: " + resp);
+    }
+
+    RandomAccessFile randomAccessOutputFile = null;
+    try {
+      // Open file and seek to the end of it
+      randomAccessOutputFile = new RandomAccessFile(outputFile, "rw");
+      randomAccessOutputFile.seek(initialSize);
+      readStreamCopyTo(randomAccessOutputFile, connection);
+    } finally {
+      IOUtils.closeQuietly(randomAccessOutputFile);
+    }
+
+  }
+
+  private void readStreamCopyTo(RandomAccessFile randomAccessOutputFile, HttpURLConnection connection) throws Exception {
+    InputStream stream = null;
+    try {
+      // Check for valid content length.
+      long len = connection.getContentLength();
+      if (len >= 0) {
+        setDownloadSize(len);
+      }
+      setStatus(Status.DOWNLOADING);
+
+      stream = connection.getInputStream();
+
+      byte[] buffer = new byte[10240];
+      while (status == Status.DOWNLOADING) {
+        int read = stream.read(buffer);
+        if (read == -1)
+          break;
+
+        randomAccessOutputFile.write(buffer, 0, read);
+        setDownloaded(getDownloaded() + read);
+
+        if (Thread.interrupted()) {
+          randomAccessOutputFile.close();
+          throw new InterruptedException();
+        }
+      }
+
+      if (getDownloadSize() != null) {
+        if (getDownloaded() < getDownloadSize())
+          throw new Exception("Incomplete download");
+      }
+    } finally {
+      IOUtils.closeQuietly(stream);
     }
   }
 

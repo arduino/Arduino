@@ -134,7 +134,7 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
+  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*(fatal)?\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
   private final File pathToSketch;
   private final Sketch sketch;
@@ -247,7 +247,7 @@ public class Compiler implements MessageConsumer {
     addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
-    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
+    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     cmd.add("-fqbn=" + fqbn);
@@ -405,7 +405,7 @@ public class Compiler implements MessageConsumer {
     String[] cmdArray;
     String cmd = prefs.getOrExcept(recipe);
     try {
-      cmdArray = StringReplacer.formatAndSplit(cmd, dict, true);
+      cmdArray = StringReplacer.formatAndSplit(cmd, dict);
     } catch (Exception e) {
       throw new RunnerException(e);
     }

@@ -29,13 +29,15 @@
 
 package cc.arduino.contributions;
 
+import java.util.Optional;
+
 import com.github.zafarkhaja.semver.Version;
 
 public class VersionHelper {
 
-  public static Version valueOf(String ver) {
+  public static Optional<Version> valueOf(String ver) {
     if (ver == null) {
-      return null;
+      return Optional.empty();
     }
     try {
       // Allow x.y-something, assuming x.y.0-something
@@ -49,7 +51,7 @@ public class VersionHelper {
       }
       String[] parts = version.split("\\.");
       if (parts.length >= 3) {
-        return Version.valueOf(ver);
+        return Optional.of(Version.valueOf(ver));
       }
       if (parts.length == 2) {
         version += ".0";
@@ -57,11 +59,13 @@ public class VersionHelper {
       if (parts.length == 1) {
         version += ".0.0";
       }
-      return Version.valueOf(version + extra);
+      return Optional.of(Version.valueOf(version + extra));
     } catch (Exception e) {
-      System.err.println("Invalid version found: " + ver);
-      return null;
+      return Optional.empty();
     }
   }
 
+  public static int compare(String a, String b) {
+    return valueOf(a).get().compareTo(valueOf(b).get());
+  }
 }

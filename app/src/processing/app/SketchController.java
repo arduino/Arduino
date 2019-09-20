@@ -75,7 +75,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -107,7 +107,7 @@ public class SketchController {
     }
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -225,7 +225,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -253,11 +253,19 @@ public class SketchController {
         sketch.delete();
         editor.base.handleClose(editor);
       } else {
+
+        boolean neverSavedTab = !current.fileExists();
+
         // delete the file
-        if (!current.delete(sketch.getBuildPath().toPath())) {
+        if (!current.delete(sketch.getBuildPath().toPath()) && !neverSavedTab) {
           Base.showMessage(tr("Couldn't do it"),
                            I18n.format(tr("Could not delete \"{0}\"."), current.getFileName()));
           return;
+        }
+
+        if (neverSavedTab) {
+          // remove the file from the sketch list
+          sketch.removeFile(current);
         }
 
         editor.removeTab(current);
@@ -295,7 +303,7 @@ public class SketchController {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       Base.showMessage(tr("Sketch is read-only"),
         tr("Some files are marked \"read-only\", so you'll\n" +
           "need to re-save this sketch to another location."));
@@ -359,7 +367,7 @@ public class SketchController {
   protected boolean saveAs() throws IOException {
     // get new name for folder
     FileDialog fd = new FileDialog(editor, tr("Save sketch folder as..."), FileDialog.SAVE);
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath()) || isUntitled()) {
+    if (isReadOnly() || isUntitled()) {
       // default to the sketchbook folder
       fd.setDirectory(BaseNoGui.getSketchbookFolder().getAbsolutePath());
     } else {
@@ -379,7 +387,14 @@ public class SketchController {
     if (newName == null) return false;
     newName = SketchController.checkName(newName);
 
-    File newFolder = new File(newParentDir, newName);
+    File newFolder;
+    // User may want to overwrite a .ino
+    // check if the parent folder name ends with the sketch name
+    if (newName.endsWith(".ino") && newParentDir.endsWith(newName.substring(0, newName.lastIndexOf('.'))+ File.separator)) {
+      newFolder = new File(newParentDir);
+    } else {
+      newFolder = new File(newParentDir, newName);
+    }
 
     // check if the paths are identical
     if (newFolder.equals(sketch.getFolder())) {
@@ -423,7 +438,7 @@ public class SketchController {
     //editor.sketchbook.rebuildMenusAsync();
     editor.base.rebuildSketchbookMenus();
     editor.header.rebuild();
-
+    editor.updateTitle();
     // Make sure that it's not an untitled sketch
     setUntitled(false);
 
@@ -441,7 +456,7 @@ public class SketchController {
     ensureExistence();
 
     // if read-only, give an error
-    if (isReadOnly(BaseNoGui.librariesIndexer.getInstalledLibraries(), BaseNoGui.getExamplesPath())) {
+    if (isReadOnly()) {
       // if the files are read-only, need to first do a "save as".
       Base.showMessage(tr("Sketch is Read-Only"),
                        tr("Some files are marked \"read-only\", so you'll\n" +
@@ -631,6 +646,8 @@ public class SketchController {
       progressListener.progress(20);
     }
 
+    EditorConsole.setCurrentEditorConsole(editor.console);
+
     ensureExistence();
        
 
@@ -657,7 +674,7 @@ public class SketchController {
     FileUtils.copy(sketch.getFolder(), tempFolder);
 
     for (SketchFile file : Stream.of(sketch.getFiles()).filter(SketchFile::isModified).collect(Collectors.toList())) {
-      Files.write(Paths.get(tempFolder.getAbsolutePath(), file.getFileName()), file.getProgram().getBytes());
+      Files.write(Paths.get(tempFolder.getAbsolutePath(), file.getFileName()), file.getProgram().getBytes("UTF-8"));
     }
 
     return Paths.get(tempFolder.getAbsolutePath(), sketch.getPrimaryFile().getFileName()).toFile();
@@ -692,6 +709,8 @@ public class SketchController {
 
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
+
+    EditorConsole.setCurrentEditorConsole(editor.console);
 
     boolean success = false;
     do {
@@ -772,7 +791,9 @@ public class SketchController {
    * examples directory, or when sketches are loaded from read-only
    * volumes or folders without appropriate permissions.
    */
-  public boolean isReadOnly(LibraryList libraries, String examplesPath) {
+  public boolean isReadOnly() {
+    LibraryList libraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
+    String examplesPath = BaseNoGui.getExamplesPath();
     String apath = sketch.getFolder().getAbsolutePath();
 
     Optional<UserLibrary> libraryThatIncludesSketch = libraries.stream().filter(lib -> apath.startsWith(lib.getInstalledFolder().getAbsolutePath())).findFirst();
@@ -825,8 +846,9 @@ public class SketchController {
 
     if (!newName.equals(origName)) {
       String msg =
-        tr("The sketch name had to be modified. Sketch names can only consist\n" +
-          "of ASCII characters and numbers and be less than 64 characters long.");
+        tr("The sketch name had to be modified.\n" +
+          "Sketch names must start with a letter or number, followed by letters,\n" +
+          "numbers, dashes, dots and underscores. Maximum length is 63 characters.");
       System.out.println(msg);
     }
     return newName;

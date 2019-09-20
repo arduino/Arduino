@@ -118,28 +118,80 @@ PROGMEM	LITERAL1	Constants	RESERVED_WORD_2
 
 abs	KEYWORD2	Abs
 acos	KEYWORD2	ACos
+acosf	KEYWORD2
 asin	KEYWORD2	ASin
+asinf	KEYWORD2
 atan	KEYWORD2	ATan
 atan2	KEYWORD2	ATan2
+atan2f	KEYWORD2
+atanf	KEYWORD2
+cbrt	KEYWORD2
+cbrtf	KEYWORD2
 ceil	KEYWORD2	Ceil
+ceilf	KEYWORD2
 constrain	KEYWORD2	Constrain
+copysign	KEYWORD2
+copysignf	KEYWORD2
 cos	KEYWORD2	Cos
+cosf	KEYWORD2
+cosh	KEYWORD2
+coshf	KEYWORD2
 degrees	KEYWORD2
 exp	KEYWORD2	Exp
+expf	KEYWORD2
+fabs	KEYWORD2
+fabsf	KEYWORD2
+fdim	KEYWORD2
+fdimf	KEYWORD2
 floor	KEYWORD2	Floor
+floorf	KEYWORD2
+fma	KEYWORD2
+fmaf	KEYWORD2
+fmax	KEYWORD2
+fmaxf	KEYWORD2
+fmin	KEYWORD2
+fminf	KEYWORD2
+fmod	KEYWORD2
+fmodf	KEYWORD2
+hypot	KEYWORD2
+hypotf	KEYWORD2
+isfinite	KEYWORD2
+isinf	KEYWORD2
+isnan	KEYWORD2
+ldexp	KEYWORD2
+ldexpf	KEYWORD2
 log	KEYWORD2	Log
+log10	KEYWORD2
+log10f	KEYWORD2
+logf	KEYWORD2
+lrint	KEYWORD2
+lrintf	KEYWORD2
+lround	KEYWORD2
+lroundf	KEYWORD2
 map	KEYWORD2	Map
 max	KEYWORD2	Max
 min	KEYWORD2	Min
+pow	KEYWORD2	Pow
+powf	KEYWORD2
 radians	KEYWORD2
 random	KEYWORD2	Random
 randomSeed	KEYWORD2	RandomSeed
 round	KEYWORD2
+roundf	KEYWORD2
+signbit	KEYWORD2
 sin	KEYWORD2	Sin
+sinf	KEYWORD2
+sinh	KEYWORD2
+sinhf	KEYWORD2
 sq	KEYWORD2	Sq
 sqrt	KEYWORD2	Sqrt
+sqrtf	KEYWORD2
 tan	KEYWORD2	Tan
-pow	KEYWORD2	Pow
+tanf	KEYWORD2
+tanh	KEYWORD2
+tanhf	KEYWORD2
+trunc	KEYWORD2
+truncf	KEYWORD2
 
 bitRead	KEYWORD2	BitRead
 bitWrite	KEYWORD2	BitWrite

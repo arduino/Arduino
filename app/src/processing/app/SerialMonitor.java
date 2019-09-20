@@ -21,9 +21,11 @@ package processing.app;
 import cc.arduino.packages.BoardPort;
 import processing.app.legacy.PApplet;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import static processing.app.I18n.tr;
 
@@ -33,39 +35,66 @@ public class SerialMonitor extends AbstractTextMonitor {
   private Serial serial;
   private int serialRate;
 
+  private static final int COMMAND_HISTORY_SIZE = 100;
+  private final CommandHistory commandHistory =
+      new CommandHistory(COMMAND_HISTORY_SIZE);
+
   public SerialMonitor(BoardPort port) {
     super(port);
 
     serialRate = PreferencesData.getInteger("serial.debug_rate");
     serialRates.setSelectedItem(serialRate + " " + tr("baud"));
-    onSerialRateChange(new ActionListener() {
-      public void actionPerformed(ActionEvent event) {
-        String wholeString = (String) serialRates.getSelectedItem();
-        String rateString = wholeString.substring(0, wholeString.indexOf(' '));
-        serialRate = Integer.parseInt(rateString);
-        PreferencesData.set("serial.debug_rate", rateString);
-        try {
-          close();
-          Thread.sleep(100); // Wait for serial port to properly close
-          open();
-        } catch (InterruptedException e) {
-          // noop
-        } catch (Exception e) {
-          System.err.println(e);
-        }
+    onSerialRateChange((ActionEvent event) -> {
+      String wholeString = (String) serialRates.getSelectedItem();
+      String rateString = wholeString.substring(0, wholeString.indexOf(' '));
+      serialRate = Integer.parseInt(rateString);
+      PreferencesData.set("serial.debug_rate", rateString);
+      try {
+        close();
+        Thread.sleep(100); // Wait for serial port to properly close
+        open();
+      } catch (InterruptedException e) {
+        // noop
+      } catch (Exception e) {
+        System.err.println(e);
       }
     });
 
-    onSendCommand(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        send(textField.getText());
-        textField.setText("");
-      }
+    onSendCommand((ActionEvent event) -> {
+      String command = textField.getText();
+      send(command);
+      commandHistory.addCommand(command);
+      textField.setText("");
     });
-    
-    onClearCommand(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        textArea.setText("");
+
+    onClearCommand((ActionEvent event) -> textArea.setText(""));
+
+    // Add key listener to UP, DOWN, ESC keys for command history traversal.
+    textField.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+
+          // Select previous command.
+          case KeyEvent.VK_UP:
+            if (commandHistory.hasPreviousCommand()) {
+              textField.setText(
+                  commandHistory.getPreviousCommand(textField.getText()));
+            }
+            break;
+
+          // Select next command.
+          case KeyEvent.VK_DOWN:
+            if (commandHistory.hasNextCommand()) {
+              textField.setText(commandHistory.getNextCommand());
+            }
+            break;
+
+          // Reset history location, restoring the last unexecuted command.
+          case KeyEvent.VK_ESCAPE:
+            textField.setText(commandHistory.resetHistoryLocation());
+            break;
+        }
       }
     });
   }
@@ -93,6 +122,7 @@ public class SerialMonitor extends AbstractTextMonitor {
     }
   }
 
+  @Override
   public void open() throws Exception {
     super.open();
 
@@ -106,6 +136,7 @@ public class SerialMonitor extends AbstractTextMonitor {
     };
   }
 
+  @Override
   public void close() throws Exception {
     super.close();
     if (serial != null) {

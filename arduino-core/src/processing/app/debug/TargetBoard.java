@@ -92,4 +92,6 @@ public interface TargetBoard {
 
   public TargetPlatform getContainerPlatform();
 
+  public String getFQBN();
+
 }
