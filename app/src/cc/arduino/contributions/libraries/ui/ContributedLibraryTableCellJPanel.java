@@ -3,21 +3,12 @@ package cc.arduino.contributions.libraries.ui;
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
 import java.util.Optional;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
@@ -128,6 +119,9 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       return;
 
     ContributedLibrary selected = releases.getSelected();
+    TitledBorder titledBorder = BorderFactory.createTitledBorder(selected.getName());
+    titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+    setBorder(titledBorder);
     Optional<ContributedLibrary> mayInstalled = releases.getInstalled();
 
     boolean installable, upgradable;

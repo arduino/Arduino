@@ -189,7 +189,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     ContributedPlatform selected = releases.getSelected();
     TitledBorder titledBorder = BorderFactory.createTitledBorder(selected.getName());
     titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
-    this.setBorder(titledBorder);
+    setBorder(titledBorder);
     ContributedPlatform installed = releases.getInstalled();
 
     boolean removable, installable, upgradable;
@@ -215,7 +215,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     removeButtonPlaceholder.setVisible(!removable);
 
     String desc = "<html><body>";
-//    desc += "<b>" + selected.getName() + "</b>";
+    desc += "<b>" + selected.getName() + "</b>";
     if (installed != null && installed.isBuiltIn()) {
       desc += " Built-In ";
     }
