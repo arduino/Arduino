@@ -312,4 +312,10 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     inactiveButtonsPanel.setVisible(!enabled);
   }
 
+  public void setForeground(Color c) {
+    super.setForeground(c);
+    // The description is not opaque, so copy our foreground color to it.
+    if (description != null)
+      description.setForeground(c);
+  }
 }
