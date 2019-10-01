@@ -215,7 +215,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     removeButtonPlaceholder.setVisible(!removable);
 
     String desc = "<html><body>";
-    desc += "<b>" + selected.getName() + "</b>";
+//    desc += "<b>" + selected.getName() + "</b>";
     if (installed != null && installed.isBuiltIn()) {
       desc += " Built-In ";
     }
