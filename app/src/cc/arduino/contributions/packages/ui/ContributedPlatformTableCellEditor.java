@@ -129,7 +129,7 @@ public class ContributedPlatformTableCellEditor extends InstallerTableCell {
     cell.versionToInstallChooser
         .setVisible(installed == null && uninstalledReleases.size() > 1);
 
-    cell.update(table, _value, true, !installedBuiltIn.isEmpty());
+    cell.update(table, _value, !installedBuiltIn.isEmpty());
     cell.setBackground(new Color(218, 227, 227)); // #dae3e3
     return cell;
   }

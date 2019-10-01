@@ -205,7 +205,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     description.setText(desc);
     // copy description to accessibility context for screen readers to use
     description.getAccessibleContext().setAccessibleDescription(desc);
-    description.setBackground(Color.WHITE);
 
     // for modelToView to work, the text area has to be sized. It doesn't
     // matter if it's visible or not.
@@ -215,14 +214,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     InstallerTableCell
         .setJTextPaneDimensionToFitContainedText(description,
                                                  parentTable.getBounds().width);
-
-    if (isSelected) {
-      setBackground(parentTable.getSelectionBackground());
-      setForeground(parentTable.getSelectionForeground());
-    } else {
-      setBackground(parentTable.getBackground());
-      setForeground(parentTable.getForeground());
-    }
   }
 
   // same function as in ContributedPlatformTableCellJPanel - is there a utils file this can move to?

@@ -184,8 +184,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     return retString;
   }
 
-  void update(JTable parentTable, Object value, boolean isSelected,
-              boolean hasBuiltInRelease) {
+  void update(JTable parentTable, Object value, boolean hasBuiltInRelease) {
     ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
 
     JTextPane description = makeNewDescription();
@@ -268,7 +267,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     description.setText(desc);
     // copy description to accessibility context for screen readers to use
     description.getAccessibleContext().setAccessibleDescription(desc);
-    description.setBackground(Color.WHITE);
 
     // for modelToView to work, the text area has to be sized. It doesn't
     // matter if it's visible or not.
@@ -278,14 +276,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     int width = parentTable.getBounds().width;
     InstallerTableCell.setJTextPaneDimensionToFitContainedText(description,
                                                                width);
-
-    if (isSelected) {
-      setBackground(parentTable.getSelectionBackground());
-      setForeground(parentTable.getSelectionForeground());
-    } else {
-      setBackground(parentTable.getBackground());
-      setForeground(parentTable.getForeground());
-    }
   }
 
   private JTextPane makeNewDescription() {
