@@ -75,6 +75,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  final JTextPane description;
   private final String moreInfoLbl = tr("More Info");
   private final String onlineHelpLbl = tr("Online Help");
 
@@ -117,7 +118,8 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     versionToInstallChooser
         .setMaximumSize(versionToInstallChooser.getPreferredSize());
 
-    makeNewDescription();
+    description = makeNewDescription();
+    add(description);
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
@@ -186,8 +188,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
 
   void update(JTable parentTable, Object value, boolean hasBuiltInRelease) {
     ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
-
-    JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
     if (releases == null) {
@@ -279,9 +279,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   }
 
   private JTextPane makeNewDescription() {
-    if (getComponentCount() > 0) {
-      remove(0);
-    }
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
     Insets margin = description.getMargin();
@@ -305,7 +302,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
         Base.openURL(e.getDescription());
       }
     });
-    add(description, 0);
     return description;
   }
 

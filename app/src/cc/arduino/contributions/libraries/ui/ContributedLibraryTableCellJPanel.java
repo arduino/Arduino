@@ -42,6 +42,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  final JTextPane description;
   private final String moreInfoLbl = tr("More info");
 
   public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
@@ -77,7 +78,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     versionToInstallChooser
         .setMinimumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
 
-    makeNewDescription();
+    description = makeNewDescription();
+    add(description);
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
@@ -121,7 +123,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     add(Box.createVerticalStrut(15));
 
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
-    JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
     if (releases == null)
@@ -237,9 +238,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
   // TODO Make this a method of Theme
   private JTextPane makeNewDescription() {
-    if (getComponentCount() > 0) {
-      remove(0);
-    }
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
     Insets margin = description.getMargin();
@@ -265,7 +263,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       }
     });
     // description.addKeyListener(new DelegatingKeyListener(parentTable));
-    add(description, 0);
     return description;
   }
 
