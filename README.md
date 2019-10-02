@@ -42,7 +42,7 @@ Detailed instructions for installation in popular operating systems can be found
 
 ## Credits
 
-Arduino is an open source project, supported by many.
+Arduino is an open source project, makers of the Arduino boards do not just include the base company itself but many other companies also create modified or add extra features to Arduino boards. Some of these companies are SparkFun and MakerUNO. 
 
 The Arduino team is composed of Massimo Banzi, David Cuartielles, Tom Igoe
 and David A. Mellis.
