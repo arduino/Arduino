@@ -9,6 +9,11 @@ can be connected to software on your computer (e.g. Flash, Processing and MaxMSP
 The boards can be assembled by hand or purchased preassembled; the open-source
 IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en/Main/Software)
 
+## A tip for Linux users(beginners)
+We suggest you to download Arduino software from the above suggested site, rather than the terminal.
+Because, the possibility of the Arduino board to receive from the serial port is less due to
+some malfunctioning in the process of installing through terminal.
+
 ## More info at
 
 -  [Our website](https://www.arduino.cc/)
