@@ -208,7 +208,6 @@ public class Base {
 
     BaseNoGui.initPortableFolder();
     // This configure the logs root folder
-    System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
     System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     // Look for a possible "--preferences-file" parameter and load preferences
@@ -217,6 +216,17 @@ public class Base {
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
+
+    if (!parser.isGuiMode()) {
+      try {
+        // This can return null or raise an exception
+        SplashScreen s = SplashScreen.getSplashScreen();
+        if (s != null) {
+          s.close();
+        }
+      } catch (UnsupportedOperationException e) {
+      }
+    }
 
     BaseNoGui.checkInstallationFolder();
 
