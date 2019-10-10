@@ -35,11 +35,13 @@
 package cc.arduino.packages.uploaders;
 
 import cc.arduino.LoadVIDPIDSpecificPreferences;
+import cc.arduino.contributions.VersionComparator;
 import cc.arduino.packages.Uploader;
 import processing.app.*;
 import cc.arduino.packages.BoardPort;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
+import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
@@ -135,7 +137,11 @@ public class SerialUploader extends Uploader {
               I18n.format(tr("Forcing reset using 1200bps open/close on port {0}"), userSelectedUploadPort));
           Serial.touchForCDCReset(userSelectedUploadPort);
         }
-        Thread.sleep(400);
+        // It looks like MacOS Catalina (10.15) is too fast enumerating the bootloader port
+        // Let's skip the initial sleep to get a faster response and eventually an enumeration
+        if (!(OSUtils.isMacOS() && VersionComparator.greaterThanOrEqual(OSUtils.version(), "10.15"))) {
+          Thread.sleep(400);
+        }
         if (waitForUploadPort) {
           // Scanning for available ports seems to open the port or
           // otherwise assert DTR, which would cancel the WDT reset if
