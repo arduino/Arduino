@@ -99,7 +99,7 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.4.9" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.5.0" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.2" />
   <property name="AVRGCC-VERSION" value="7.3.0-atmel3.6.1-arduino5" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
