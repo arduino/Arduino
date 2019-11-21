@@ -1,6 +1,8 @@
 package processing.app;
 
 import cc.arduino.Constants;
+import cc.arduino.cli.ArduinoCore;
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -104,6 +106,21 @@ public class BaseNoGui {
   private static String boardManagerLink = "";
 
   private static File buildCache;
+
+  private static ArduinoCoreInstance arduinoCoreInstance;
+
+  public static void initArduinoCoreService() {
+    try {
+      ArduinoCore core = new ArduinoCore();
+      arduinoCoreInstance = core.init(getSettingsFolder(), getSketchbookFolder());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static ArduinoCoreInstance getArduinoCoreService() {
+    return arduinoCoreInstance;
+  }
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current

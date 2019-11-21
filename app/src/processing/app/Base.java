@@ -240,6 +240,8 @@ public class Base {
       }
     }
 
+    BaseNoGui.initArduinoCoreService();
+
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
       // Setup all notification widgets
