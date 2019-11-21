@@ -113,20 +113,20 @@ public class HttpConnectionManager {
     });
   }
 
-  private HttpURLConnection makeConnection(URL requestURL, int movedTimes,
+  private HttpURLConnection makeConnection(URL url, int movedTimes,
                                            Consumer<HttpURLConnection> beforeConnection) throws IOException, URISyntaxException, ScriptException, NoSuchMethodException {
     if (movedTimes > maxRedirectNumber) {
-      log.warn("Too many redirect " + requestURL);
-      throw new IOException("Too many redirect " + requestURL);
+      log.warn("Too many redirect " + url);
+      throw new IOException("Too many redirect " + url);
     }
 
     Proxy proxy = new CustomProxySelector(PreferencesData.getMap())
-      .getProxyFor(requestURL.toURI());
+      .getProxyFor(url.toURI());
     log.debug("Using proxy {}", proxy);
 
     final String requestId = UUID.randomUUID().toString()
       .toUpperCase().replace("-", "").substring(0, 16);
-    HttpURLConnection connection = (HttpURLConnection) requestURL
+    HttpURLConnection connection = (HttpURLConnection) url
       .openConnection(proxy);
 
     // see https://github.com/arduino/Arduino/issues/10264
@@ -138,9 +138,9 @@ public class HttpConnectionManager {
     if (id != null) {
       connection.setRequestProperty("X-ID", id);
     }
-    if (requestURL.getUserInfo() != null) {
+    if (url.getUserInfo() != null) {
       String auth = "Basic " + new String(
-        new Base64().encode(requestURL.getUserInfo().getBytes()));
+        new Base64().encode(url.getUserInfo().getBytes()));
       connection.setRequestProperty("Authorization", auth);
     }
 
@@ -150,12 +150,12 @@ public class HttpConnectionManager {
     beforeConnection.accept(connection);
 
     // Connect
-    log.info("Connect to {}, method={}, request id={}", requestURL, connection.getRequestMethod(), requestId);
+    log.info("Connect to {}, method={}, request id={}", url, connection.getRequestMethod(), requestId);
 
     connection.connect();
     int resp = connection.getResponseCode();
     log.info("Request complete URL=\"{}\", method={}, response code={}, request id={}, headers={}",
-      requestURL, connection.getRequestMethod(), resp, requestId, StringUtils.join(connection.getHeaderFields()));
+      url, connection.getRequestMethod(), resp, requestId, StringUtils.join(connection.getHeaderFields()));
 
     if (resp == HttpURLConnection.HTTP_MOVED_PERM
       || resp == HttpURLConnection.HTTP_MOVED_TEMP) {

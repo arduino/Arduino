@@ -61,7 +61,7 @@ import static processing.app.I18n.tr;
 public class SSHUploader extends Uploader {
 
   private static final Set<String> FILES_NOT_TO_COPY =
-      Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(".DS_Store", ".Trash", "Thumbs.db", "__MACOSX")));
+      Collections.unmodifiableSet(new HashSet<>(Arrays.asList(".DS_Store", ".Trash", "Thumbs.db", "__MACOSX")));
 
   private final BoardPort port;
 

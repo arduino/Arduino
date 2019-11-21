@@ -81,8 +81,6 @@ import javax.swing.TransferHandler;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 
@@ -238,7 +236,7 @@ public class Editor extends JFrame implements RunnerListener {
   private UploadHandler uploadUsingProgrammerHandler;
   private Runnable timeoutUploadHandler;
 
-  private Map<String, Tool> internalToolCache = new HashMap<String, Tool>();
+  private Map<String, Tool> internalToolCache = new HashMap<>();
 
   public Editor(Base ibase, File file, int[] storedLocation, int[] defaultLocation, Platform platform) throws Exception {
     super("Arduino");
@@ -1841,7 +1839,7 @@ public class Editor extends JFrame implements RunnerListener {
     SketchFile current = getCurrentTab().getSketchFile();
     String customFormat = PreferencesData.get("editor.custom_title_format");
     if (customFormat != null && !customFormat.trim().isEmpty()) {
-      Map<String, String> titleMap = new HashMap<String, String>();
+      Map<String, String> titleMap = new HashMap<>();
       titleMap.put("file", current.getFileName());
       String path = sketch.getFolder().getAbsolutePath();
       titleMap.put("folder", path);

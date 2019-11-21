@@ -1995,6 +1995,7 @@ public class Base {
    */
   public void addEditorFontResizeKeyListener(Component comp) {
     comp.addKeyListener(new KeyAdapter() {
+      @SuppressWarnings("incomplete-switch")
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK

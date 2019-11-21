@@ -241,14 +241,14 @@ public class SerialUploader extends Uploader {
 	  return waitForUploadPort(uploadPort, before, verbose, 10000);
   }
 
-  private String waitForUploadPort(String uploadPort, List<String> before, boolean verbose, int timeout) throws InterruptedException, RunnerException {
+  private String waitForUploadPort(String uploadPort, List<String> before, boolean verboseDebug, int timeout) throws InterruptedException, RunnerException {
     // Wait for a port to appear on the list
     int elapsed = 0;
     while (elapsed < timeout) {
       List<String> now = Serial.list();
       List<String> diff = new ArrayList<>(now);
       diff.removeAll(before);
-      if (verbose) {
+      if (verboseDebug) {
         System.out.print("PORTS {");
         for (String p : before)
           System.out.print(p + ", ");
@@ -262,7 +262,7 @@ public class SerialUploader extends Uploader {
       }
       if (diff.size() > 0) {
         String newPort = diff.get(0);
-        if (verbose)
+        if (verboseDebug)
           System.out.println("Found upload port: " + newPort);
         return newPort;
       }
@@ -276,7 +276,7 @@ public class SerialUploader extends Uploader {
       // come back, so use a time out before assuming that the selected port is the
       // bootloader (not the sketch).
       if (elapsed >= 5000 && now.contains(uploadPort)) {
-        if (verbose)
+        if (verboseDebug)
           System.out.println("Uploading using selected port: " + uploadPort);
         return uploadPort;
       }
