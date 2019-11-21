@@ -461,9 +461,9 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
   private void handleSelectionPressed(int sel, boolean isShiftDown, int x, int y) {
     switch (sel) {
       case RUN:
-        if (!editor.avoidMultipleOperations) {
+        if (!Editor.avoidMultipleOperations) {
           editor.handleRun(false, editor.presentHandler, editor.runHandler);
-          editor.avoidMultipleOperations = true;
+          Editor.avoidMultipleOperations = true;
         }
         break;
 
@@ -494,7 +494,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
 
       case EXPORT:
         // launch a timeout timer which can reenable to upload button functionality an
-        if (!editor.avoidMultipleOperations) {
+        if (!Editor.avoidMultipleOperations) {
           editor.handleExport(isShiftDown);
         }
         break;

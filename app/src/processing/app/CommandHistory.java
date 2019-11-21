@@ -9,7 +9,7 @@ import java.util.ListIterator;
  */
 public class CommandHistory {
 
-  private final LinkedList<String> commandHistory = new LinkedList<String>();
+  private final LinkedList<String> commandHistory = new LinkedList<>();
   private final int maxHistorySize;
   private ListIterator<String> iterator = null;
   private boolean iteratorAsc;

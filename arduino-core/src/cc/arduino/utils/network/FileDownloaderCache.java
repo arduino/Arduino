@@ -64,9 +64,9 @@ import java.util.stream.Collectors;
 
 public class FileDownloaderCache {
   private final static String CACHE_ENABLE_PREFERENCE_KEY = "cache.enable";
-  private final static Logger log = LogManager
+  final static Logger log = LogManager
     .getLogger(FileDownloaderCache.class);
-  private final static Map<String, FileCached> cachedFiles = Collections
+  final static Map<String, FileCached> cachedFiles = Collections
     .synchronizedMap(new HashMap<>());
   private final static String cacheFolder;
   private static boolean enableCache;
@@ -123,11 +123,11 @@ public class FileDownloaderCache {
     return getFileCached(remoteURL, true);
   }
 
-  public static Optional<FileCached> getFileCached(final URL remoteURL, boolean enableCache)
+  public static Optional<FileCached> getFileCached(final URL remoteURL, boolean _enableCache)
     throws URISyntaxException, NoSuchMethodException, ScriptException,
     IOException {
     // Return always and empty file if the cache is not enable
-    if (!(enableCache && FileDownloaderCache.enableCache)) {
+    if (!(_enableCache && FileDownloaderCache.enableCache)) {
       log.info("The cache is not enable.");
       return Optional.empty();
     }
@@ -208,7 +208,7 @@ public class FileDownloaderCache {
     return Optional.empty();
   }
 
-  private synchronized static void updateCacheFilesInfo() throws IOException {
+  synchronized static void updateCacheFilesInfo() throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     // Generate a pretty json
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -236,10 +236,10 @@ public class FileDownloaderCache {
   static class FileCached {
     private final String remoteURL;
     private final String localPath;
-    private final String eTag;
+    final String eTag;
     private final String lastETag;
-    private final String md5;
-    private final String createdAt;
+    final String md5;
+    final String createdAt;
     private final CacheControl cacheControl;
 
     FileCached() {
@@ -324,20 +324,20 @@ public class FileDownloaderCache {
         Files.createDirectories(cacheFilePath.getParent());
       }
       FileUtils.copyFile(fileToCache, cacheFilePath.toFile());
-      final String md5 = this.calculateMD5();
-      final String eTag;
+      final String _md5 = this.calculateMD5();
+      final String _eTag;
       if (lastETag == null) {
-        log.warn("The eTag was not calculate this time, is not the right behaviour fileCached={}, md5={}", this, md5);
-        eTag = this.eTag;
+        log.warn("The eTag was not calculate this time, is not the right behaviour fileCached={}, md5={}", this, _md5);
+        _eTag = this.eTag;
       } else {
-        eTag = this.lastETag;
+        _eTag = this.lastETag;
       }
       FileCached newFileCached = new FileCached(
         this.remoteURL,
         this.localPath,
-        eTag, // Initialize the right eTag with the last eTag because the file was updated
-        eTag,
-        md5,
+        _eTag, // Initialize the right eTag with the last eTag because the file was updated
+        _eTag,
+        _md5,
         this.cacheControl
       );
       log.info("Update cache file: {}", newFileCached);

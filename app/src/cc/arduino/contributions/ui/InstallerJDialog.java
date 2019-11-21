@@ -71,7 +71,6 @@ import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
 import processing.app.Base;
-import processing.app.Theme;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 

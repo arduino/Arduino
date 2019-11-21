@@ -56,10 +56,10 @@ public class PluggableDiscovery implements Discovery {
   private final String discoveryName;
   private final String[] cmd;
   private final List<BoardPort> portList = new ArrayList<>();
-  private Process program=null;
+  Process program = null;
   private Thread pollingThread;
 
-  private void debug(String x) {
+  void debug(String x) {
     if (PreferencesData.getBoolean("discovery.debug"))
       System.out.println(discoveryName + ": " + x);
   }
@@ -211,6 +211,7 @@ public class PluggableDiscovery implements Discovery {
     debug("START");
     write("START\n");
     Thread pollingThread = new Thread() {
+      @Override
       public void run() {
         try {
           while (program != null && program.isAlive()) {
@@ -238,7 +239,7 @@ public class PluggableDiscovery implements Discovery {
     }
   }
 
-  private void write(String command) {
+  void write(String command) {
     if (program != null && program.isAlive()) {
       OutputStream out = program.getOutputStream();
       try {
