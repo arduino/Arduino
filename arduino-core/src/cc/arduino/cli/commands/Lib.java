@@ -6334,6 +6334,2509 @@ public final class Lib {
 
   }
 
+  public interface LibraryResolveDependenciesReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.LibraryResolveDependenciesReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    boolean hasInstance();
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    cc.arduino.cli.commands.Common.Instance getInstance();
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
+
+    /**
+     * <code>string name = 2;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>string version = 3;</code>
+     */
+    java.lang.String getVersion();
+    /**
+     * <code>string version = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.LibraryResolveDependenciesReq}
+   */
+  public  static final class LibraryResolveDependenciesReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.LibraryResolveDependenciesReq)
+      LibraryResolveDependenciesReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LibraryResolveDependenciesReq.newBuilder() to construct.
+    private LibraryResolveDependenciesReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LibraryResolveDependenciesReq() {
+      name_ = "";
+      version_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LibraryResolveDependenciesReq();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LibraryResolveDependenciesReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              cc.arduino.cli.commands.Common.Instance.Builder subBuilder = null;
+              if (instance_ != null) {
+                subBuilder = instance_.toBuilder();
+              }
+              instance_ = input.readMessage(cc.arduino.cli.commands.Common.Instance.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(instance_);
+                instance_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              version_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.class, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.Builder.class);
+    }
+
+    public static final int INSTANCE_FIELD_NUMBER = 1;
+    private cc.arduino.cli.commands.Common.Instance instance_;
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    public boolean hasInstance() {
+      return instance_ != null;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    public cc.arduino.cli.commands.Common.Instance getInstance() {
+      return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+      return getInstance();
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 2;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object version_;
+    /**
+     * <code>string version = 3;</code>
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        version_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string version = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (instance_ != null) {
+        output.writeMessage(1, getInstance());
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, version_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (instance_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getInstance());
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, version_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq other = (cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq) obj;
+
+      if (hasInstance() != other.hasInstance()) return false;
+      if (hasInstance()) {
+        if (!getInstance()
+            .equals(other.getInstance())) return false;
+      }
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasInstance()) {
+        hash = (37 * hash) + INSTANCE_FIELD_NUMBER;
+        hash = (53 * hash) + getInstance().hashCode();
+      }
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.LibraryResolveDependenciesReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.LibraryResolveDependenciesReq)
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.class, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+        name_ = "";
+
+        version_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq build() {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq buildPartial() {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq result = new cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq(this);
+        if (instanceBuilder_ == null) {
+          result.instance_ = instance_;
+        } else {
+          result.instance_ = instanceBuilder_.build();
+        }
+        result.name_ = name_;
+        result.version_ = version_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq) {
+          return mergeFrom((cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq other) {
+        if (other == cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.getDefaultInstance()) return this;
+        if (other.hasInstance()) {
+          mergeInstance(other.getInstance());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getVersion().isEmpty()) {
+          version_ = other.version_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Common.Instance instance_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public boolean hasInstance() {
+        return instanceBuilder_ != null || instance_ != null;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.Instance getInstance() {
+        if (instanceBuilder_ == null) {
+          return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        } else {
+          return instanceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          instance_ = value;
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(
+          cc.arduino.cli.commands.Common.Instance.Builder builderForValue) {
+        if (instanceBuilder_ == null) {
+          instance_ = builderForValue.build();
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (instance_ != null) {
+            instance_ =
+              cc.arduino.cli.commands.Common.Instance.newBuilder(instance_).mergeFrom(value).buildPartial();
+          } else {
+            instance_ = value;
+          }
+          onChanged();
+        } else {
+          instanceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder clearInstance() {
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+          onChanged();
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
+        
+        onChanged();
+        return getInstanceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+        if (instanceBuilder_ != null) {
+          return instanceBuilder_.getMessageOrBuilder();
+        } else {
+          return instance_ == null ?
+              cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> 
+          getInstanceFieldBuilder() {
+        if (instanceBuilder_ == null) {
+          instanceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder>(
+                  getInstance(),
+                  getParentForChildren(),
+                  isClean());
+          instance_ = null;
+        }
+        return instanceBuilder_;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 2;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object version_ = "";
+      /**
+       * <code>string version = 3;</code>
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          version_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder clearVersion() {
+        
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string version = 3;</code>
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.LibraryResolveDependenciesReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.LibraryResolveDependenciesReq)
+    private static final cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq();
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LibraryResolveDependenciesReq>
+        PARSER = new com.google.protobuf.AbstractParser<LibraryResolveDependenciesReq>() {
+      @java.lang.Override
+      public LibraryResolveDependenciesReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LibraryResolveDependenciesReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LibraryResolveDependenciesReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LibraryResolveDependenciesReq> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface LibraryResolveDependenciesRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.LibraryResolveDependenciesResp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> 
+        getDependenciesList();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index);
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    int getDependenciesCount();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
+        getDependenciesOrBuilderList();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.LibraryResolveDependenciesResp}
+   */
+  public  static final class LibraryResolveDependenciesResp extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.LibraryResolveDependenciesResp)
+      LibraryResolveDependenciesRespOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LibraryResolveDependenciesResp.newBuilder() to construct.
+    private LibraryResolveDependenciesResp(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LibraryResolveDependenciesResp() {
+      dependencies_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LibraryResolveDependenciesResp();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LibraryResolveDependenciesResp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                dependencies_ = new java.util.ArrayList<cc.arduino.cli.commands.Lib.LibraryDependencyStatus>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              dependencies_.add(
+                  input.readMessage(cc.arduino.cli.commands.Lib.LibraryDependencyStatus.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          dependencies_ = java.util.Collections.unmodifiableList(dependencies_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.class, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.Builder.class);
+    }
+
+    public static final int DEPENDENCIES_FIELD_NUMBER = 1;
+    private java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> dependencies_;
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> getDependenciesList() {
+      return dependencies_;
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
+        getDependenciesOrBuilderList() {
+      return dependencies_;
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    public int getDependenciesCount() {
+      return dependencies_.size();
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index) {
+      return dependencies_.get(index);
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+     */
+    public cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
+        int index) {
+      return dependencies_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < dependencies_.size(); i++) {
+        output.writeMessage(1, dependencies_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < dependencies_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, dependencies_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp other = (cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp) obj;
+
+      if (!getDependenciesList()
+          .equals(other.getDependenciesList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getDependenciesCount() > 0) {
+        hash = (37 * hash) + DEPENDENCIES_FIELD_NUMBER;
+        hash = (53 * hash) + getDependenciesList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.LibraryResolveDependenciesResp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.LibraryResolveDependenciesResp)
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesRespOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.class, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getDependenciesFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (dependenciesBuilder_ == null) {
+          dependencies_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          dependenciesBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp build() {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp buildPartial() {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp result = new cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp(this);
+        int from_bitField0_ = bitField0_;
+        if (dependenciesBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            dependencies_ = java.util.Collections.unmodifiableList(dependencies_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.dependencies_ = dependencies_;
+        } else {
+          result.dependencies_ = dependenciesBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp) {
+          return mergeFrom((cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp other) {
+        if (other == cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.getDefaultInstance()) return this;
+        if (dependenciesBuilder_ == null) {
+          if (!other.dependencies_.isEmpty()) {
+            if (dependencies_.isEmpty()) {
+              dependencies_ = other.dependencies_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureDependenciesIsMutable();
+              dependencies_.addAll(other.dependencies_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.dependencies_.isEmpty()) {
+            if (dependenciesBuilder_.isEmpty()) {
+              dependenciesBuilder_.dispose();
+              dependenciesBuilder_ = null;
+              dependencies_ = other.dependencies_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              dependenciesBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getDependenciesFieldBuilder() : null;
+            } else {
+              dependenciesBuilder_.addAllMessages(other.dependencies_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> dependencies_ =
+        java.util.Collections.emptyList();
+      private void ensureDependenciesIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          dependencies_ = new java.util.ArrayList<cc.arduino.cli.commands.Lib.LibraryDependencyStatus>(dependencies_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Lib.LibraryDependencyStatus, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder, cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> dependenciesBuilder_;
+
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> getDependenciesList() {
+        if (dependenciesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(dependencies_);
+        } else {
+          return dependenciesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public int getDependenciesCount() {
+        if (dependenciesBuilder_ == null) {
+          return dependencies_.size();
+        } else {
+          return dependenciesBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index) {
+        if (dependenciesBuilder_ == null) {
+          return dependencies_.get(index);
+        } else {
+          return dependenciesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder setDependencies(
+          int index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus value) {
+        if (dependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDependenciesIsMutable();
+          dependencies_.set(index, value);
+          onChanged();
+        } else {
+          dependenciesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder setDependencies(
+          int index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder builderForValue) {
+        if (dependenciesBuilder_ == null) {
+          ensureDependenciesIsMutable();
+          dependencies_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          dependenciesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder addDependencies(cc.arduino.cli.commands.Lib.LibraryDependencyStatus value) {
+        if (dependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDependenciesIsMutable();
+          dependencies_.add(value);
+          onChanged();
+        } else {
+          dependenciesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder addDependencies(
+          int index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus value) {
+        if (dependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureDependenciesIsMutable();
+          dependencies_.add(index, value);
+          onChanged();
+        } else {
+          dependenciesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder addDependencies(
+          cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder builderForValue) {
+        if (dependenciesBuilder_ == null) {
+          ensureDependenciesIsMutable();
+          dependencies_.add(builderForValue.build());
+          onChanged();
+        } else {
+          dependenciesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder addDependencies(
+          int index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder builderForValue) {
+        if (dependenciesBuilder_ == null) {
+          ensureDependenciesIsMutable();
+          dependencies_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          dependenciesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder addAllDependencies(
+          java.lang.Iterable<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatus> values) {
+        if (dependenciesBuilder_ == null) {
+          ensureDependenciesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, dependencies_);
+          onChanged();
+        } else {
+          dependenciesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder clearDependencies() {
+        if (dependenciesBuilder_ == null) {
+          dependencies_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          dependenciesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public Builder removeDependencies(int index) {
+        if (dependenciesBuilder_ == null) {
+          ensureDependenciesIsMutable();
+          dependencies_.remove(index);
+          onChanged();
+        } else {
+          dependenciesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder getDependenciesBuilder(
+          int index) {
+        return getDependenciesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
+          int index) {
+        if (dependenciesBuilder_ == null) {
+          return dependencies_.get(index);  } else {
+          return dependenciesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
+           getDependenciesOrBuilderList() {
+        if (dependenciesBuilder_ != null) {
+          return dependenciesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(dependencies_);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder addDependenciesBuilder() {
+        return getDependenciesFieldBuilder().addBuilder(
+            cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder addDependenciesBuilder(
+          int index) {
+        return getDependenciesFieldBuilder().addBuilder(
+            index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder> 
+           getDependenciesBuilderList() {
+        return getDependenciesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Lib.LibraryDependencyStatus, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder, cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
+          getDependenciesFieldBuilder() {
+        if (dependenciesBuilder_ == null) {
+          dependenciesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cc.arduino.cli.commands.Lib.LibraryDependencyStatus, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder, cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder>(
+                  dependencies_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          dependencies_ = null;
+        }
+        return dependenciesBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.LibraryResolveDependenciesResp)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.LibraryResolveDependenciesResp)
+    private static final cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp();
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LibraryResolveDependenciesResp>
+        PARSER = new com.google.protobuf.AbstractParser<LibraryResolveDependenciesResp>() {
+      @java.lang.Override
+      public LibraryResolveDependenciesResp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LibraryResolveDependenciesResp(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LibraryResolveDependenciesResp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LibraryResolveDependenciesResp> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface LibraryDependencyStatusOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.LibraryDependencyStatus)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string name = 1;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>string versionRequired = 2;</code>
+     */
+    java.lang.String getVersionRequired();
+    /**
+     * <code>string versionRequired = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionRequiredBytes();
+
+    /**
+     * <code>string versionInstalled = 3;</code>
+     */
+    java.lang.String getVersionInstalled();
+    /**
+     * <code>string versionInstalled = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getVersionInstalledBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.LibraryDependencyStatus}
+   */
+  public  static final class LibraryDependencyStatus extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.LibraryDependencyStatus)
+      LibraryDependencyStatusOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use LibraryDependencyStatus.newBuilder() to construct.
+    private LibraryDependencyStatus(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private LibraryDependencyStatus() {
+      name_ = "";
+      versionRequired_ = "";
+      versionInstalled_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new LibraryDependencyStatus();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private LibraryDependencyStatus(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              versionRequired_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              versionInstalled_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Lib.LibraryDependencyStatus.class, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder.class);
+    }
+
+    public static final int NAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 1;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSIONREQUIRED_FIELD_NUMBER = 2;
+    private volatile java.lang.Object versionRequired_;
+    /**
+     * <code>string versionRequired = 2;</code>
+     */
+    public java.lang.String getVersionRequired() {
+      java.lang.Object ref = versionRequired_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        versionRequired_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string versionRequired = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionRequiredBytes() {
+      java.lang.Object ref = versionRequired_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        versionRequired_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSIONINSTALLED_FIELD_NUMBER = 3;
+    private volatile java.lang.Object versionInstalled_;
+    /**
+     * <code>string versionInstalled = 3;</code>
+     */
+    public java.lang.String getVersionInstalled() {
+      java.lang.Object ref = versionInstalled_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        versionInstalled_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string versionInstalled = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getVersionInstalledBytes() {
+      java.lang.Object ref = versionInstalled_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        versionInstalled_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+      }
+      if (!getVersionRequiredBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, versionRequired_);
+      }
+      if (!getVersionInstalledBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, versionInstalled_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+      }
+      if (!getVersionRequiredBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, versionRequired_);
+      }
+      if (!getVersionInstalledBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, versionInstalled_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Lib.LibraryDependencyStatus)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Lib.LibraryDependencyStatus other = (cc.arduino.cli.commands.Lib.LibraryDependencyStatus) obj;
+
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersionRequired()
+          .equals(other.getVersionRequired())) return false;
+      if (!getVersionInstalled()
+          .equals(other.getVersionInstalled())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSIONREQUIRED_FIELD_NUMBER;
+      hash = (53 * hash) + getVersionRequired().hashCode();
+      hash = (37 * hash) + VERSIONINSTALLED_FIELD_NUMBER;
+      hash = (53 * hash) + getVersionInstalled().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Lib.LibraryDependencyStatus prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.LibraryDependencyStatus}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.LibraryDependencyStatus)
+        cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Lib.LibraryDependencyStatus.class, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Lib.LibraryDependencyStatus.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        name_ = "";
+
+        versionRequired_ = "";
+
+        versionInstalled_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Lib.internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus build() {
+        cc.arduino.cli.commands.Lib.LibraryDependencyStatus result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Lib.LibraryDependencyStatus buildPartial() {
+        cc.arduino.cli.commands.Lib.LibraryDependencyStatus result = new cc.arduino.cli.commands.Lib.LibraryDependencyStatus(this);
+        result.name_ = name_;
+        result.versionRequired_ = versionRequired_;
+        result.versionInstalled_ = versionInstalled_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Lib.LibraryDependencyStatus) {
+          return mergeFrom((cc.arduino.cli.commands.Lib.LibraryDependencyStatus)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Lib.LibraryDependencyStatus other) {
+        if (other == cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance()) return this;
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getVersionRequired().isEmpty()) {
+          versionRequired_ = other.versionRequired_;
+          onChanged();
+        }
+        if (!other.getVersionInstalled().isEmpty()) {
+          versionInstalled_ = other.versionInstalled_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Lib.LibraryDependencyStatus parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Lib.LibraryDependencyStatus) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 1;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object versionRequired_ = "";
+      /**
+       * <code>string versionRequired = 2;</code>
+       */
+      public java.lang.String getVersionRequired() {
+        java.lang.Object ref = versionRequired_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          versionRequired_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string versionRequired = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionRequiredBytes() {
+        java.lang.Object ref = versionRequired_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          versionRequired_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string versionRequired = 2;</code>
+       */
+      public Builder setVersionRequired(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        versionRequired_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string versionRequired = 2;</code>
+       */
+      public Builder clearVersionRequired() {
+        
+        versionRequired_ = getDefaultInstance().getVersionRequired();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string versionRequired = 2;</code>
+       */
+      public Builder setVersionRequiredBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        versionRequired_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object versionInstalled_ = "";
+      /**
+       * <code>string versionInstalled = 3;</code>
+       */
+      public java.lang.String getVersionInstalled() {
+        java.lang.Object ref = versionInstalled_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          versionInstalled_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string versionInstalled = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getVersionInstalledBytes() {
+        java.lang.Object ref = versionInstalled_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          versionInstalled_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string versionInstalled = 3;</code>
+       */
+      public Builder setVersionInstalled(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        versionInstalled_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string versionInstalled = 3;</code>
+       */
+      public Builder clearVersionInstalled() {
+        
+        versionInstalled_ = getDefaultInstance().getVersionInstalled();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string versionInstalled = 3;</code>
+       */
+      public Builder setVersionInstalledBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        versionInstalled_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.LibraryDependencyStatus)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.LibraryDependencyStatus)
+    private static final cc.arduino.cli.commands.Lib.LibraryDependencyStatus DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Lib.LibraryDependencyStatus();
+    }
+
+    public static cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<LibraryDependencyStatus>
+        PARSER = new com.google.protobuf.AbstractParser<LibraryDependencyStatus>() {
+      @java.lang.Override
+      public LibraryDependencyStatus parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new LibraryDependencyStatus(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<LibraryDependencyStatus> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<LibraryDependencyStatus> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface LibrarySearchReqOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.LibrarySearchReq)
       com.google.protobuf.MessageOrBuilder {
@@ -17908,6 +20411,21 @@ public final class Lib {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cc_arduino_cli_commands_LibraryUpgradeAllResp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cc_arduino_cli_commands_LibrarySearchReq_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -17994,53 +20512,61 @@ public final class Lib {
       "lResp\022;\n\010progress\030\001 \001(\0132).cc.arduino.cli" +
       ".commands.DownloadProgress\022<\n\rtask_progr" +
       "ess\030\002 \001(\0132%.cc.arduino.cli.commands.Task" +
-      "Progress\"V\n\020LibrarySearchReq\0223\n\010instance" +
-      "\030\001 \001(\0132!.cc.arduino.cli.commands.Instanc" +
-      "e\022\r\n\005query\030\002 \001(\t\"P\n\021LibrarySearchResp\022;\n" +
-      "\tlibraries\030\001 \003(\0132(.cc.arduino.cli.comman" +
-      "ds.SearchedLibrary\"\374\001\n\017SearchedLibrary\022\014" +
-      "\n\004name\030\001 \001(\t\022H\n\010releases\030\002 \003(\01326.cc.ardu" +
-      "ino.cli.commands.SearchedLibrary.Release" +
-      "sEntry\0227\n\006latest\030\003 \001(\0132\'.cc.arduino.cli." +
-      "commands.LibraryRelease\032X\n\rReleasesEntry" +
-      "\022\013\n\003key\030\001 \001(\t\0226\n\005value\030\002 \001(\0132\'.cc.arduin" +
-      "o.cli.commands.LibraryRelease:\0028\001\"\361\001\n\016Li" +
-      "braryRelease\022\016\n\006author\030\001 \001(\t\022\017\n\007version\030" +
-      "\002 \001(\t\022\022\n\nmaintainer\030\003 \001(\t\022\020\n\010sentence\030\004 " +
-      "\001(\t\022\021\n\tparagraph\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022" +
-      "\020\n\010category\030\007 \001(\t\022\025\n\rarchitectures\030\010 \003(\t" +
-      "\022\r\n\005types\030\t \003(\t\022<\n\tresources\030\n \001(\0132).cc." +
-      "arduino.cli.commands.DownloadResource\"k\n" +
-      "\020DownloadResource\022\013\n\003url\030\001 \001(\t\022\027\n\017archiv" +
-      "efilename\030\002 \001(\t\022\020\n\010checksum\030\003 \001(\t\022\014\n\004siz" +
-      "e\030\004 \001(\003\022\021\n\tcachepath\030\005 \001(\t\"e\n\016LibraryLis" +
-      "tReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli." +
-      "commands.Instance\022\013\n\003all\030\002 \001(\010\022\021\n\tupdata" +
-      "ble\030\003 \001(\010\"W\n\017LibraryListResp\022D\n\021installe" +
-      "d_library\030\001 \003(\0132).cc.arduino.cli.command" +
-      "s.InstalledLibrary\"\177\n\020InstalledLibrary\0221" +
-      "\n\007library\030\001 \001(\0132 .cc.arduino.cli.command" +
-      "s.Library\0228\n\007release\030\002 \001(\0132\'.cc.arduino." +
-      "cli.commands.LibraryRelease\"\244\004\n\007Library\022" +
-      "\014\n\004name\030\001 \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n\nmaintai" +
-      "ner\030\003 \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tparagraph" +
-      "\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022\020\n\010category\030\007 \001(" +
-      "\t\022\025\n\rarchitectures\030\010 \003(\t\022\r\n\005types\030\t \003(\t\022" +
-      "\023\n\013install_dir\030\n \001(\t\022\022\n\nsource_dir\030\013 \001(\t" +
-      "\022\023\n\013utility_dir\030\014 \001(\t\022\020\n\010location\030\r \001(\t\022" +
-      "\032\n\022container_platform\030\016 \001(\t\022\016\n\006layout\030\017 " +
-      "\001(\t\022\021\n\treal_name\030\020 \001(\t\022\025\n\rdot_a_linkage\030" +
-      "\021 \001(\010\022\023\n\013precompiled\030\022 \001(\010\022\020\n\010ld_flags\030\023" +
-      " \001(\t\022\021\n\tis_legacy\030\024 \001(\010\022\017\n\007version\030\025 \001(\t" +
-      "\022\017\n\007license\030\026 \001(\t\022D\n\nproperties\030\027 \003(\01320." +
-      "cc.arduino.cli.commands.Library.Properti" +
-      "esEntry\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022" +
-      "\r\n\005value\030\002 \001(\t:\0028\001*6\n\rLibraryLayout\022\017\n\013f" +
-      "lat_layout\020\000\022\024\n\020recursive_layout\020\001*i\n\017Li" +
-      "braryLocation\022\017\n\013ide_builtin\020\000\022\024\n\020platfo" +
-      "rm_builtin\020\001\022\037\n\033referenced_platform_buil" +
-      "tin\020\002\022\016\n\nsketchbook\020\003B-Z+github.com/ardu" +
-      "ino/arduino-cli/rpc/commandsb\006proto3"
+      "Progress\"s\n\035LibraryResolveDependenciesRe" +
+      "q\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli.com" +
+      "mands.Instance\022\014\n\004name\030\002 \001(\t\022\017\n\007version\030" +
+      "\003 \001(\t\"h\n\036LibraryResolveDependenciesResp\022" +
+      "F\n\014dependencies\030\001 \003(\01320.cc.arduino.cli.c" +
+      "ommands.LibraryDependencyStatus\"Z\n\027Libra" +
+      "ryDependencyStatus\022\014\n\004name\030\001 \001(\t\022\027\n\017vers" +
+      "ionRequired\030\002 \001(\t\022\030\n\020versionInstalled\030\003 " +
+      "\001(\t\"V\n\020LibrarySearchReq\0223\n\010instance\030\001 \001(" +
+      "\0132!.cc.arduino.cli.commands.Instance\022\r\n\005" +
+      "query\030\002 \001(\t\"P\n\021LibrarySearchResp\022;\n\tlibr" +
+      "aries\030\001 \003(\0132(.cc.arduino.cli.commands.Se" +
+      "archedLibrary\"\374\001\n\017SearchedLibrary\022\014\n\004nam" +
+      "e\030\001 \001(\t\022H\n\010releases\030\002 \003(\01326.cc.arduino.c" +
+      "li.commands.SearchedLibrary.ReleasesEntr" +
+      "y\0227\n\006latest\030\003 \001(\0132\'.cc.arduino.cli.comma" +
+      "nds.LibraryRelease\032X\n\rReleasesEntry\022\013\n\003k" +
+      "ey\030\001 \001(\t\0226\n\005value\030\002 \001(\0132\'.cc.arduino.cli" +
+      ".commands.LibraryRelease:\0028\001\"\361\001\n\016Library" +
+      "Release\022\016\n\006author\030\001 \001(\t\022\017\n\007version\030\002 \001(\t" +
+      "\022\022\n\nmaintainer\030\003 \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021" +
+      "\n\tparagraph\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022\020\n\010ca" +
+      "tegory\030\007 \001(\t\022\025\n\rarchitectures\030\010 \003(\t\022\r\n\005t" +
+      "ypes\030\t \003(\t\022<\n\tresources\030\n \001(\0132).cc.ardui" +
+      "no.cli.commands.DownloadResource\"k\n\020Down" +
+      "loadResource\022\013\n\003url\030\001 \001(\t\022\027\n\017archivefile" +
+      "name\030\002 \001(\t\022\020\n\010checksum\030\003 \001(\t\022\014\n\004size\030\004 \001" +
+      "(\003\022\021\n\tcachepath\030\005 \001(\t\"e\n\016LibraryListReq\022" +
+      "3\n\010instance\030\001 \001(\0132!.cc.arduino.cli.comma" +
+      "nds.Instance\022\013\n\003all\030\002 \001(\010\022\021\n\tupdatable\030\003" +
+      " \001(\010\"W\n\017LibraryListResp\022D\n\021installed_lib" +
+      "rary\030\001 \003(\0132).cc.arduino.cli.commands.Ins" +
+      "talledLibrary\"\177\n\020InstalledLibrary\0221\n\007lib" +
+      "rary\030\001 \001(\0132 .cc.arduino.cli.commands.Lib" +
+      "rary\0228\n\007release\030\002 \001(\0132\'.cc.arduino.cli.c" +
+      "ommands.LibraryRelease\"\244\004\n\007Library\022\014\n\004na" +
+      "me\030\001 \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n\nmaintainer\030\003" +
+      " \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tparagraph\030\005 \001(" +
+      "\t\022\017\n\007website\030\006 \001(\t\022\020\n\010category\030\007 \001(\t\022\025\n\r" +
+      "architectures\030\010 \003(\t\022\r\n\005types\030\t \003(\t\022\023\n\013in" +
+      "stall_dir\030\n \001(\t\022\022\n\nsource_dir\030\013 \001(\t\022\023\n\013u" +
+      "tility_dir\030\014 \001(\t\022\020\n\010location\030\r \001(\t\022\032\n\022co" +
+      "ntainer_platform\030\016 \001(\t\022\016\n\006layout\030\017 \001(\t\022\021" +
+      "\n\treal_name\030\020 \001(\t\022\025\n\rdot_a_linkage\030\021 \001(\010" +
+      "\022\023\n\013precompiled\030\022 \001(\010\022\020\n\010ld_flags\030\023 \001(\t\022" +
+      "\021\n\tis_legacy\030\024 \001(\010\022\017\n\007version\030\025 \001(\t\022\017\n\007l" +
+      "icense\030\026 \001(\t\022D\n\nproperties\030\027 \003(\01320.cc.ar" +
+      "duino.cli.commands.Library.PropertiesEnt" +
+      "ry\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
+      "lue\030\002 \001(\t:\0028\001*6\n\rLibraryLayout\022\017\n\013flat_l" +
+      "ayout\020\000\022\024\n\020recursive_layout\020\001*i\n\017Library" +
+      "Location\022\017\n\013ide_builtin\020\000\022\024\n\020platform_bu" +
+      "iltin\020\001\022\037\n\033referenced_platform_builtin\020\002" +
+      "\022\016\n\nsketchbook\020\003B-Z+github.com/arduino/a" +
+      "rduino-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -18095,20 +20621,38 @@ public final class Lib {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibraryUpgradeAllResp_descriptor,
         new java.lang.String[] { "Progress", "TaskProgress", });
-    internal_static_cc_arduino_cli_commands_LibrarySearchReq_descriptor =
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor =
       getDescriptor().getMessageTypes().get(8);
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesReq_descriptor,
+        new java.lang.String[] { "Instance", "Name", "Version", });
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_LibraryResolveDependenciesResp_descriptor,
+        new java.lang.String[] { "Dependencies", });
+    internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_LibraryDependencyStatus_descriptor,
+        new java.lang.String[] { "Name", "VersionRequired", "VersionInstalled", });
+    internal_static_cc_arduino_cli_commands_LibrarySearchReq_descriptor =
+      getDescriptor().getMessageTypes().get(11);
     internal_static_cc_arduino_cli_commands_LibrarySearchReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibrarySearchReq_descriptor,
         new java.lang.String[] { "Instance", "Query", });
     internal_static_cc_arduino_cli_commands_LibrarySearchResp_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_cc_arduino_cli_commands_LibrarySearchResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibrarySearchResp_descriptor,
         new java.lang.String[] { "Libraries", });
     internal_static_cc_arduino_cli_commands_SearchedLibrary_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_cc_arduino_cli_commands_SearchedLibrary_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_SearchedLibrary_descriptor,
@@ -18120,37 +20664,37 @@ public final class Lib {
         internal_static_cc_arduino_cli_commands_SearchedLibrary_ReleasesEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_cc_arduino_cli_commands_LibraryRelease_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_cc_arduino_cli_commands_LibraryRelease_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibraryRelease_descriptor,
         new java.lang.String[] { "Author", "Version", "Maintainer", "Sentence", "Paragraph", "Website", "Category", "Architectures", "Types", "Resources", });
     internal_static_cc_arduino_cli_commands_DownloadResource_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_cc_arduino_cli_commands_DownloadResource_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_DownloadResource_descriptor,
         new java.lang.String[] { "Url", "Archivefilename", "Checksum", "Size", "Cachepath", });
     internal_static_cc_arduino_cli_commands_LibraryListReq_descriptor =
-      getDescriptor().getMessageTypes().get(13);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_cc_arduino_cli_commands_LibraryListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibraryListReq_descriptor,
         new java.lang.String[] { "Instance", "All", "Updatable", });
     internal_static_cc_arduino_cli_commands_LibraryListResp_descriptor =
-      getDescriptor().getMessageTypes().get(14);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_cc_arduino_cli_commands_LibraryListResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibraryListResp_descriptor,
         new java.lang.String[] { "InstalledLibrary", });
     internal_static_cc_arduino_cli_commands_InstalledLibrary_descriptor =
-      getDescriptor().getMessageTypes().get(15);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_cc_arduino_cli_commands_InstalledLibrary_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_InstalledLibrary_descriptor,
         new java.lang.String[] { "Library", "Release", });
     internal_static_cc_arduino_cli_commands_Library_descriptor =
-      getDescriptor().getMessageTypes().get(16);
+      getDescriptor().getMessageTypes().get(19);
     internal_static_cc_arduino_cli_commands_Library_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_Library_descriptor,
