@@ -80,8 +80,8 @@ public class ArduinoCore {
     ManagedChannel channel = ManagedChannelBuilder //
         .forAddress("127.0.0.1", 50051) //
         .usePlaintext() //
+        .maxInboundMessageSize(Integer.MAX_VALUE) //
         .build();
-
     blocking = ArduinoCoreGrpc.newBlockingStub(channel);
     // async = ArduinoCoreGrpc.newStub(channel);
   }
