@@ -734,6 +734,38 @@ public final class ArduinoCoreGrpc {
      return getLibraryUpgradeAllMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq,
+      cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> getLibraryResolveDependenciesMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "LibraryResolveDependencies",
+      requestType = cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.class,
+      responseType = cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq,
+      cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> getLibraryResolveDependenciesMethod() {
+    io.grpc.MethodDescriptor<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> getLibraryResolveDependenciesMethod;
+    if ((getLibraryResolveDependenciesMethod = ArduinoCoreGrpc.getLibraryResolveDependenciesMethod) == null) {
+      synchronized (ArduinoCoreGrpc.class) {
+        if ((getLibraryResolveDependenciesMethod = ArduinoCoreGrpc.getLibraryResolveDependenciesMethod) == null) {
+          ArduinoCoreGrpc.getLibraryResolveDependenciesMethod = getLibraryResolveDependenciesMethod = 
+              io.grpc.MethodDescriptor.<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq, cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "cc.arduino.cli.commands.ArduinoCore", "LibraryResolveDependencies"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp.getDefaultInstance()))
+                  .setSchemaDescriptor(new ArduinoCoreMethodDescriptorSupplier("LibraryResolveDependencies"))
+                  .build();
+          }
+        }
+     }
+     return getLibraryResolveDependenciesMethod;
+  }
+
   private static volatile io.grpc.MethodDescriptor<cc.arduino.cli.commands.Lib.LibrarySearchReq,
       cc.arduino.cli.commands.Lib.LibrarySearchResp> getLibrarySearchMethod;
 
@@ -1002,6 +1034,13 @@ public final class ArduinoCoreGrpc {
 
     /**
      */
+    public void libraryResolveDependencies(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq request,
+        io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> responseObserver) {
+      asyncUnimplementedUnaryCall(getLibraryResolveDependenciesMethod(), responseObserver);
+    }
+
+    /**
+     */
     public void librarySearch(cc.arduino.cli.commands.Lib.LibrarySearchReq request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibrarySearchResp> responseObserver) {
       asyncUnimplementedUnaryCall(getLibrarySearchMethod(), responseObserver);
@@ -1170,6 +1209,13 @@ public final class ArduinoCoreGrpc {
                 cc.arduino.cli.commands.Lib.LibraryUpgradeAllReq,
                 cc.arduino.cli.commands.Lib.LibraryUpgradeAllResp>(
                   this, METHODID_LIBRARY_UPGRADE_ALL)))
+          .addMethod(
+            getLibraryResolveDependenciesMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq,
+                cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp>(
+                  this, METHODID_LIBRARY_RESOLVE_DEPENDENCIES)))
           .addMethod(
             getLibrarySearchMethod(),
             asyncUnaryCall(
@@ -1405,6 +1451,14 @@ public final class ArduinoCoreGrpc {
 
     /**
      */
+    public void libraryResolveDependencies(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq request,
+        io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getLibraryResolveDependenciesMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
     public void librarySearch(cc.arduino.cli.commands.Lib.LibrarySearchReq request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibrarySearchResp> responseObserver) {
       asyncUnaryCall(
@@ -1629,6 +1683,13 @@ public final class ArduinoCoreGrpc {
 
     /**
      */
+    public cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp libraryResolveDependencies(cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq request) {
+      return blockingUnaryCall(
+          getChannel(), getLibraryResolveDependenciesMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
     public cc.arduino.cli.commands.Lib.LibrarySearchResp librarySearch(cc.arduino.cli.commands.Lib.LibrarySearchReq request) {
       return blockingUnaryCall(
           getChannel(), getLibrarySearchMethod(), getCallOptions(), request);
@@ -1738,6 +1799,14 @@ public final class ArduinoCoreGrpc {
 
     /**
      */
+    public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp> libraryResolveDependencies(
+        cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq request) {
+      return futureUnaryCall(
+          getChannel().newCall(getLibraryResolveDependenciesMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
     public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.commands.Lib.LibrarySearchResp> librarySearch(
         cc.arduino.cli.commands.Lib.LibrarySearchReq request) {
       return futureUnaryCall(
@@ -1775,8 +1844,9 @@ public final class ArduinoCoreGrpc {
   private static final int METHODID_LIBRARY_INSTALL = 19;
   private static final int METHODID_LIBRARY_UNINSTALL = 20;
   private static final int METHODID_LIBRARY_UPGRADE_ALL = 21;
-  private static final int METHODID_LIBRARY_SEARCH = 22;
-  private static final int METHODID_LIBRARY_LIST = 23;
+  private static final int METHODID_LIBRARY_RESOLVE_DEPENDENCIES = 22;
+  private static final int METHODID_LIBRARY_SEARCH = 23;
+  private static final int METHODID_LIBRARY_LIST = 24;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -1883,6 +1953,10 @@ public final class ArduinoCoreGrpc {
           serviceImpl.libraryUpgradeAll((cc.arduino.cli.commands.Lib.LibraryUpgradeAllReq) request,
               (io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibraryUpgradeAllResp>) responseObserver);
           break;
+        case METHODID_LIBRARY_RESOLVE_DEPENDENCIES:
+          serviceImpl.libraryResolveDependencies((cc.arduino.cli.commands.Lib.LibraryResolveDependenciesReq) request,
+              (io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibraryResolveDependenciesResp>) responseObserver);
+          break;
         case METHODID_LIBRARY_SEARCH:
           serviceImpl.librarySearch((cc.arduino.cli.commands.Lib.LibrarySearchReq) request,
               (io.grpc.stub.StreamObserver<cc.arduino.cli.commands.Lib.LibrarySearchResp>) responseObserver);
@@ -1974,6 +2048,7 @@ public final class ArduinoCoreGrpc {
               .addMethod(getLibraryInstallMethod())
               .addMethod(getLibraryUninstallMethod())
               .addMethod(getLibraryUpgradeAllMethod())
+              .addMethod(getLibraryResolveDependenciesMethod())
               .addMethod(getLibrarySearchMethod())
               .addMethod(getLibraryListMethod())
               .build();

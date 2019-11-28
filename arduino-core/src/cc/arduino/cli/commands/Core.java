@@ -6694,6 +6694,11 @@ public final class Core {
      */
     com.google.protobuf.ByteString
         getSearchArgsBytes();
+
+    /**
+     * <code>bool all_versions = 3;</code>
+     */
+    boolean getAllVersions();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.PlatformSearchReq}
@@ -6758,6 +6763,11 @@ public final class Core {
               java.lang.String s = input.readStringRequireUtf8();
 
               searchArgs_ = s;
+              break;
+            }
+            case 24: {
+
+              allVersions_ = input.readBool();
               break;
             }
             default: {
@@ -6847,6 +6857,15 @@ public final class Core {
       }
     }
 
+    public static final int ALL_VERSIONS_FIELD_NUMBER = 3;
+    private boolean allVersions_;
+    /**
+     * <code>bool all_versions = 3;</code>
+     */
+    public boolean getAllVersions() {
+      return allVersions_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -6867,6 +6886,9 @@ public final class Core {
       if (!getSearchArgsBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, searchArgs_);
       }
+      if (allVersions_ != false) {
+        output.writeBool(3, allVersions_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -6882,6 +6904,10 @@ public final class Core {
       }
       if (!getSearchArgsBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, searchArgs_);
+      }
+      if (allVersions_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, allVersions_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -6905,6 +6931,8 @@ public final class Core {
       }
       if (!getSearchArgs()
           .equals(other.getSearchArgs())) return false;
+      if (getAllVersions()
+          != other.getAllVersions()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -6922,6 +6950,9 @@ public final class Core {
       }
       hash = (37 * hash) + SEARCH_ARGS_FIELD_NUMBER;
       hash = (53 * hash) + getSearchArgs().hashCode();
+      hash = (37 * hash) + ALL_VERSIONS_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getAllVersions());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -7063,6 +7094,8 @@ public final class Core {
         }
         searchArgs_ = "";
 
+        allVersions_ = false;
+
         return this;
       }
 
@@ -7095,6 +7128,7 @@ public final class Core {
           result.instance_ = instanceBuilder_.build();
         }
         result.searchArgs_ = searchArgs_;
+        result.allVersions_ = allVersions_;
         onBuilt();
         return result;
       }
@@ -7149,6 +7183,9 @@ public final class Core {
         if (!other.getSearchArgs().isEmpty()) {
           searchArgs_ = other.searchArgs_;
           onChanged();
+        }
+        if (other.getAllVersions() != false) {
+          setAllVersions(other.getAllVersions());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -7361,6 +7398,32 @@ public final class Core {
   checkByteStringIsUtf8(value);
         
         searchArgs_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean allVersions_ ;
+      /**
+       * <code>bool all_versions = 3;</code>
+       */
+      public boolean getAllVersions() {
+        return allVersions_;
+      }
+      /**
+       * <code>bool all_versions = 3;</code>
+       */
+      public Builder setAllVersions(boolean value) {
+        
+        allVersions_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool all_versions = 3;</code>
+       */
+      public Builder clearAllVersions() {
+        
+        allVersions_ = false;
         onChanged();
         return this;
       }
@@ -12212,23 +12275,23 @@ public final class Core {
       "\220\001\n\023PlatformUpgradeResp\022;\n\010progress\030\001 \001(" +
       "\0132).cc.arduino.cli.commands.DownloadProg" +
       "ress\022<\n\rtask_progress\030\002 \001(\0132%.cc.arduino" +
-      ".cli.commands.TaskProgress\"]\n\021PlatformSe" +
+      ".cli.commands.TaskProgress\"s\n\021PlatformSe" +
       "archReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.c" +
       "li.commands.Instance\022\023\n\013search_args\030\002 \001(" +
-      "\t\"N\n\022PlatformSearchResp\0228\n\rsearch_output" +
-      "\030\001 \003(\0132!.cc.arduino.cli.commands.Platfor" +
-      "m\"^\n\017PlatformListReq\0223\n\010instance\030\001 \001(\0132!" +
-      ".cc.arduino.cli.commands.Instance\022\026\n\016upd" +
-      "atable_only\030\002 \001(\010\"Q\n\020PlatformListResp\022=\n" +
-      "\022installed_platform\030\001 \003(\0132!.cc.arduino.c" +
-      "li.commands.Platform\"\253\001\n\010Platform\022\n\n\002ID\030" +
-      "\001 \001(\t\022\021\n\tInstalled\030\002 \001(\t\022\016\n\006Latest\030\003 \001(\t" +
-      "\022\014\n\004Name\030\004 \001(\t\022\022\n\nMaintainer\030\005 \001(\t\022\017\n\007We" +
-      "bsite\030\006 \001(\t\022\r\n\005Email\030\007 \001(\t\022.\n\006Boards\030\010 \003" +
-      "(\0132\036.cc.arduino.cli.commands.Board\"#\n\005Bo" +
-      "ard\022\014\n\004name\030\001 \001(\t\022\014\n\004fqbn\030\002 \001(\tB-Z+githu" +
-      "b.com/arduino/arduino-cli/rpc/commandsb\006" +
-      "proto3"
+      "\t\022\024\n\014all_versions\030\003 \001(\010\"N\n\022PlatformSearc" +
+      "hResp\0228\n\rsearch_output\030\001 \003(\0132!.cc.arduin" +
+      "o.cli.commands.Platform\"^\n\017PlatformListR" +
+      "eq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli.co" +
+      "mmands.Instance\022\026\n\016updatable_only\030\002 \001(\010\"" +
+      "Q\n\020PlatformListResp\022=\n\022installed_platfor" +
+      "m\030\001 \003(\0132!.cc.arduino.cli.commands.Platfo" +
+      "rm\"\253\001\n\010Platform\022\n\n\002ID\030\001 \001(\t\022\021\n\tInstalled" +
+      "\030\002 \001(\t\022\016\n\006Latest\030\003 \001(\t\022\014\n\004Name\030\004 \001(\t\022\022\n\n" +
+      "Maintainer\030\005 \001(\t\022\017\n\007Website\030\006 \001(\t\022\r\n\005Ema" +
+      "il\030\007 \001(\t\022.\n\006Boards\030\010 \003(\0132\036.cc.arduino.cl" +
+      "i.commands.Board\"#\n\005Board\022\014\n\004name\030\001 \001(\t\022" +
+      "\014\n\004fqbn\030\002 \001(\tB-Z+github.com/arduino/ardu" +
+      "ino-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -12288,7 +12351,7 @@ public final class Core {
     internal_static_cc_arduino_cli_commands_PlatformSearchReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_PlatformSearchReq_descriptor,
-        new java.lang.String[] { "Instance", "SearchArgs", });
+        new java.lang.String[] { "Instance", "SearchArgs", "AllVersions", });
     internal_static_cc_arduino_cli_commands_PlatformSearchResp_descriptor =
       getDescriptor().getMessageTypes().get(9);
     internal_static_cc_arduino_cli_commands_PlatformSearchResp_fieldAccessorTable = new

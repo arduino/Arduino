@@ -9182,7 +9182,7 @@ public final class Commands {
       "Instance\"`\n\030UpdateLibrariesIndexResp\022D\n\021" +
       "download_progress\030\001 \001(\0132).cc.arduino.cli" +
       ".commands.DownloadProgress\"\014\n\nVersionReq" +
-      "\"\036\n\013VersionResp\022\017\n\007version\030\001 \001(\t2\252\023\n\013Ard" +
+      "\"\036\n\013VersionResp\022\017\n\007version\030\001 \001(\t2\272\024\n\013Ard" +
       "uinoCore\022O\n\004Init\022 .cc.arduino.cli.comman" +
       "ds.InitReq\032!.cc.arduino.cli.commands.Ini" +
       "tResp\"\0000\001\022V\n\007Destroy\022#.cc.arduino.cli.co" +
@@ -9239,14 +9239,17 @@ public final class Commands {
       "mmands.LibraryUninstallResp0\001\022t\n\021Library" +
       "UpgradeAll\022-.cc.arduino.cli.commands.Lib" +
       "raryUpgradeAllReq\032..cc.arduino.cli.comma" +
-      "nds.LibraryUpgradeAllResp0\001\022f\n\rLibrarySe" +
-      "arch\022).cc.arduino.cli.commands.LibrarySe" +
-      "archReq\032*.cc.arduino.cli.commands.Librar" +
-      "ySearchResp\022`\n\013LibraryList\022\'.cc.arduino." +
-      "cli.commands.LibraryListReq\032(.cc.arduino" +
-      ".cli.commands.LibraryListRespB-Z+github." +
-      "com/arduino/arduino-cli/rpc/commandsb\006pr" +
-      "oto3"
+      "nds.LibraryUpgradeAllResp0\001\022\215\001\n\032LibraryR" +
+      "esolveDependencies\0226.cc.arduino.cli.comm" +
+      "ands.LibraryResolveDependenciesReq\0327.cc." +
+      "arduino.cli.commands.LibraryResolveDepen" +
+      "denciesResp\022f\n\rLibrarySearch\022).cc.arduin" +
+      "o.cli.commands.LibrarySearchReq\032*.cc.ard" +
+      "uino.cli.commands.LibrarySearchResp\022`\n\013L" +
+      "ibraryList\022\'.cc.arduino.cli.commands.Lib" +
+      "raryListReq\032(.cc.arduino.cli.commands.Li" +
+      "braryListRespB-Z+github.com/arduino/ardu" +
+      "ino-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
