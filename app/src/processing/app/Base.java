@@ -141,7 +141,7 @@ public class Base {
     if (OSUtils.isMacOS()) {
       System.setProperty("apple.laf.useScreenMenuBar",
         String.valueOf(!System.getProperty("os.version").startsWith("10.13")
-          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+          || isMacOsAboutMenuItemPresent()));
 
       ThinkDifferent.init();
     }
@@ -152,6 +152,11 @@ public class Base {
       e.printStackTrace(System.err);
       System.exit(255);
     }
+  }
+
+  @SuppressWarnings("deprecation")
+  public static boolean isMacOsAboutMenuItemPresent() {
+    return com.apple.eawt.Application.getApplication().isAboutMenuItemPresent();
   }
 
   static public void initLogger() {
