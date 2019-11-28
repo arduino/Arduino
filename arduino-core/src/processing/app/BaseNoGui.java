@@ -520,13 +520,8 @@ public class BaseNoGui {
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(getSettingsFolder());
-    try {
-      librariesIndexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      File librariesIndexFile = librariesIndexer.getIndexFile();
-      librariesIndexFile.delete();
-    }
+    librariesIndexer = new LibrariesIndexer(BaseNoGui.getArduinoCoreService());
+    librariesIndexer.regenerateIndex();
 
     if (discoveryManager == null) {
       discoveryManager = new DiscoveryManager(packages);

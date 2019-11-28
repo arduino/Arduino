@@ -32,151 +32,60 @@ package cc.arduino.contributions.libraries;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import cc.arduino.contributions.VersionComparator;
+import java.util.Set;
 
 public class LibrariesIndex {
 
-  private ArrayList<ContributedLibraryRelease> list = new ArrayList<>();
+  // name -> library map
+  private Map<String, ContributedLibrary> libraries = new HashMap<>();
+  private Set<String> categories = new HashSet<>();
+  private Set<String> types = new HashSet<>();
 
-  public List<ContributedLibraryRelease> getLibraries() {
-    return list;
+  public Collection<ContributedLibrary> getLibraries() {
+    return libraries.values();
   }
 
-  public List<ContributedLibraryRelease> find(final String name) {
-    return getLibraries().stream() //
-        .filter(l -> name.equals(l.getName())) //
-        .collect(Collectors.toList());
+  public void add(ContributedLibrary library) {
+    libraries.put(library.getName(), library);
+    library.getReleases().forEach(rel -> {
+      categories.add(rel.getCategory());
+      types.addAll(rel.getTypes());
+    });
   }
 
-  public ContributedLibraryRelease find(String name, String version) {
-    if (name == null || version == null) {
-      return null;
-    }
-    for (ContributedLibraryRelease lib : find(name)) {
-      if (version.equals(lib.getParsedVersion())) {
-        return lib;
-      }
-    }
-    return null;
+  public Optional<ContributedLibrary> find(String name) {
+    return Optional.ofNullable(libraries.get(name));
   }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    for (ContributedLibraryRelease library : getLibraries()) {
-      sb.append(library.toString());
+  public Optional<ContributedLibraryRelease> find(String name, String version) {
+    if (libraries.containsKey(name)) {
+      return libraries.get(name).getVersion(version);
     }
-    return sb.toString();
+    return Optional.empty();
   }
 
   public List<String> getCategories() {
-    List<String> categories = new LinkedList<>();
-    for (ContributedLibraryRelease lib : getLibraries()) {
-      if (lib.getCategory() != null && !categories.contains(lib.getCategory())) {
-        categories.add(lib.getCategory());
-      }
-    }
-    Collections.sort(categories);
-
-    return categories;
+    List<String> res = new ArrayList<>(categories);
+    Collections.sort(res);
+    return res;
   }
 
   public List<String> getTypes() {
-    Collection<String> typesAccumulator = new HashSet<>();
-    for (ContributedLibraryRelease lib : getLibraries()) {
-      if (lib.getTypes() != null) {
-        typesAccumulator.addAll(lib.getTypes());
-      }
-    }
-
-    List<String> types = new LinkedList<>(typesAccumulator);
-    Collections.sort(types);
-
-    return types;
+    List<String> res = new ArrayList<>(types);
+    Collections.sort(res);
+    return res;
   }
 
   public Optional<ContributedLibraryRelease> getInstalled(String name) {
-    ContributedLibrary rel = new ContributedLibrary(find(name));
-    return rel.getInstalled();
-  }
-
-  public List<ContributedLibraryRelease> resolveDependeciesOf(ContributedLibraryRelease library) {
-    List<ContributedLibraryRelease> solution = new ArrayList<>();
-    solution.add(library);
-    if (resolveDependeciesOf(solution, library)) {
-      return solution;
-    } else {
-      return null;
+    if (libraries.containsKey(name)) {
+      return libraries.get(name).getInstalled();
     }
+    return Optional.empty();
   }
 
-  public boolean resolveDependeciesOf(List<ContributedLibraryRelease> solution,
-                                      ContributedLibraryRelease library) {
-    List<ContributedLibraryDependency> requirements = library.getDependencies();
-    if (requirements == null) {
-      // No deps for this library, great!
-      return true;
-    }
-
-    for (ContributedLibraryDependency dep : requirements) {
-
-      // If the current solution already contains this dependency, skip over
-      boolean alreadyInSolution = solution.stream()
-          .anyMatch(l -> l.getName().equals(dep.getName()));
-      if (alreadyInSolution)
-        continue;
-
-      // Generate possible matching dependencies
-      List<ContributedLibraryRelease> possibleDeps = findMatchingDependencies(dep);
-
-      // If there are no dependencies available add as "missing" lib
-      if (possibleDeps.isEmpty()) {
-        solution.add(new UnavailableContributedLibrary(dep));
-        continue;
-      }
-
-      // Pick the installed version if available
-      ContributedLibraryRelease selected;
-      Optional<ContributedLibraryRelease> installed = possibleDeps.stream()
-          .filter(l -> l.getInstalledLibrary().isPresent()).findAny();
-      if (installed.isPresent()) {
-        selected = installed.get();
-      } else {
-        // otherwise pick the latest version
-        selected = possibleDeps.stream().reduce(VersionComparator::max).get();
-      }
-
-      // Add dependency to the solution and process recursively
-      solution.add(selected);
-      if (!resolveDependeciesOf(solution, selected)) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  private List<ContributedLibraryRelease> findMatchingDependencies(ContributedLibraryDependency dep) {
-    List<ContributedLibraryRelease> available = find(dep.getName());
-    if (dep.getVersion() == null || dep.getVersion().isEmpty())
-      return available;
-
-    // XXX: The following part is actually never reached. The use of version
-    // constraints requires a much complex backtracking algorithm, the following
-    // is just a draft placeholder.
-
-//    List<ContributedLibrary> match = available.stream()
-//        // TODO: add more complex version comparators (> >= < <= ~ 1.0.* 1.*...)
-//        .filter(candidate -> candidate.getParsedVersion()
-//            .equals(dep.getVersionRequired()))
-//        .collect(Collectors.toList());
-//    return match;
-
-    return available;
-  }
 }

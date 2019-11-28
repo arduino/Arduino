@@ -125,7 +125,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     if (releases == null)
       return;
 
-    ContributedLibraryRelease selected = releases.getSelected();
+    ContributedLibraryRelease selected = releases.getSelected().get();
     titledBorder.setTitle(selected.getName());
     Optional<ContributedLibraryRelease> mayInstalled = releases.getInstalled();
 

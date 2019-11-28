@@ -27,6 +27,7 @@ import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.*;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
@@ -298,7 +299,7 @@ public class Base {
 
     final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
+    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
 
     parser.parseArgumentsPhase2();
 
@@ -358,15 +359,15 @@ public class Base {
       BaseNoGui.onBoardOrPortChange();
 
       ProgressListener progressListener = new ConsoleProgressListener();
-      libraryInstaller.updateIndex(progressListener);
+      BaseNoGui.getArduinoCoreService().updateLibrariesIndex(progressListener);
 
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
-      indexer.parseIndex();
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getArduinoCoreService());
+      indexer.regenerateIndex();
       indexer.setLibrariesFolders(BaseNoGui.getLibrariesFolders());
       indexer.rescanLibraries();
 
-      for (String library : parser.getLibraryToInstall().split(",")) {
-        String[] libraryToInstallParts = library.split(":");
+      for (String libraryArg : parser.getLibraryToInstall().split(",")) {
+        String[] libraryToInstallParts = libraryArg.split(":");
 
         ContributedLibraryRelease selected = null;
         if (libraryToInstallParts.length == 2) {
@@ -375,12 +376,11 @@ public class Base {
             System.out.println(format(tr("Invalid version {0}"), libraryToInstallParts[1]));
             System.exit(1);
           }
-          selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString());
+          selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString()).orElse(null);
         } else if (libraryToInstallParts.length == 1) {
-          List<ContributedLibraryRelease> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
-          Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
-          if (!librariesByName.isEmpty()) {
-            selected = librariesByName.get(librariesByName.size() - 1);
+          ContributedLibrary library = indexer.getIndex().find(libraryToInstallParts[0]).orElse(null);
+          if (library != null) {
+            selected = library.getLatest().orElse(null);
           }
         }
         if (selected == null) {
@@ -392,7 +392,7 @@ public class Base {
         if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
           System.out.println(tr(I18n
               .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
-                      library, mayInstalled.get().getParsedVersion())));
+                      libraryArg, mayInstalled.get().getParsedVersion())));
           libraryInstaller.remove(mayInstalled.get(), progressListener);
         } else {
           libraryInstaller.install(selected, progressListener);

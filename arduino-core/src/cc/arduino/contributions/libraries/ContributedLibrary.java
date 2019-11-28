@@ -29,56 +29,52 @@
 
 package cc.arduino.contributions.libraries;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import cc.arduino.contributions.VersionComparator;
 import processing.app.packages.UserLibraryFolder.Location;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
 public class ContributedLibrary {
 
-  private List<ContributedLibraryRelease> releases = new LinkedList<>();
-  private List<String> versions = new LinkedList<>();
-  private ContributedLibraryRelease latest = null;
-  private ContributedLibraryRelease selected = null;
+  private String name;
+  // version -> release map
+  private Map<String, ContributedLibraryRelease> releases = new HashMap<>();
+  private Optional<ContributedLibraryRelease> latest = Optional.empty();
+  private Optional<ContributedLibraryRelease> selected = Optional.empty();
 
-  public ContributedLibrary(ContributedLibraryRelease release) {
-    add(release);
+  public ContributedLibrary(String name) {
+    this.name = name;
   }
 
-  public ContributedLibrary(List<ContributedLibraryRelease> releases) {
-    releases.forEach(this::add);
+  public String getName() {
+    return name;
   }
 
-  public List<ContributedLibraryRelease> getReleases() {
-    return releases;
+  public Collection<ContributedLibraryRelease> getReleases() {
+    return releases.values();
   }
 
-  public boolean shouldContain(ContributedLibraryRelease release) {
-    if (latest == null) {
-      return true;
+  public Optional<ContributedLibraryRelease> getVersion(String version) {
+    return Optional.ofNullable(releases.get(version));
+  }
+
+  public void addRelease(ContributedLibraryRelease release) {
+    if (!latest.isPresent()) {
+      latest = Optional.of(release);
     }
-    return release.getName().equals(latest.getName());
-  }
-
-  public void add(ContributedLibraryRelease release) {
-    if (latest == null) {
-      latest = release;
-    }
-    releases.add(release);
     String version = release.getParsedVersion();
-    if (version != null) {
-      versions.add(version);
-    }
-    if (VersionComparator.greaterThan(version, latest.getParsedVersion())) {
-      latest = release;
+    releases.put(version, release);
+    if (VersionComparator.greaterThan(version, latest.get().getParsedVersion())) {
+      latest = Optional.of(release);
     }
     selected = latest;
   }
 
   public Optional<ContributedLibraryRelease> getInstalled() {
-    return releases.stream() //
+    return releases.values().stream() //
         .filter(ContributedLibraryRelease::isLibraryInstalled) //
         .reduce((x, y) -> {
           Location lx = x.getInstalledLibrary().get().getLocation();
@@ -90,18 +86,18 @@ public class ContributedLibrary {
         });
   }
 
-  public ContributedLibraryRelease getLatest() {
+  public Optional<ContributedLibraryRelease> getLatest() {
     return latest;
   }
 
-  public ContributedLibraryRelease getSelected() {
+  public Optional<ContributedLibraryRelease> getSelected() {
     return selected;
   }
 
   public void select(ContributedLibraryRelease lib) {
-    for (ContributedLibraryRelease r : releases) {
+    for (ContributedLibraryRelease r : releases.values()) {
       if (r == lib) {
-        selected = r;
+        selected = Optional.of(r);
         return;
       }
     }

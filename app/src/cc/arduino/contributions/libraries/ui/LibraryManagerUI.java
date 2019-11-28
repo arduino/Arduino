@@ -200,7 +200,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        installer.updateIndex(this::setProgress);
+        BaseNoGui.getArduinoCoreService().updateLibrariesIndex(this::setProgress);
         onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
@@ -218,7 +218,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public void onInstallPressed(final ContributedLibraryRelease lib) {
-    List<ContributedLibraryRelease> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    List<ContributedLibraryRelease> deps = BaseNoGui.getArduinoCoreService().libraryResolveDependecies(lib);
     boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
     Result installDeps;
     if (!depsInstalled) {

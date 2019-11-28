@@ -60,16 +60,14 @@ public class LibraryInstaller {
   private static Logger log = LogManager.getLogger(LibraryInstaller.class);
 
   private final Platform platform;
-  private final GPGDetachedSignatureVerifier signatureVerifier;
 
-  public LibraryInstaller(Platform platform, GPGDetachedSignatureVerifier signatureVerifier) {
+  public LibraryInstaller(Platform platform) {
     this.platform = platform;
-    this.signatureVerifier = signatureVerifier;
   }
 
   public synchronized void updateIndex(ProgressListener progressListener) throws Exception {
+  /* 
     final MultiStepProgress progress = new MultiStepProgress(3);
-
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
     // Step 1: Download index
     File outputFile = BaseNoGui.librariesIndexer.getIndexFile();
@@ -104,11 +102,11 @@ public class LibraryInstaller {
     }
 
     // Step 2: Parse index
-    BaseNoGui.librariesIndexer.parseIndex();
+    BaseNoGui.librariesIndexer.regenerateIndex();
 
     // Step 3: Rescan index
     rescanLibraryIndex(progress, progressListener);
-
+ */
   }
 
   public void install(ContributedLibraryRelease lib, ProgressListener progressListener) throws Exception {
@@ -118,6 +116,7 @@ public class LibraryInstaller {
   }
 
   public synchronized void install(List<ContributedLibraryRelease> libs, ProgressListener progressListener) throws Exception {
+/*
     MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
 
     for (ContributedLibraryRelease lib : libs) {
@@ -127,9 +126,11 @@ public class LibraryInstaller {
 
     // Rescan index (1 step)
     rescanLibraryIndex(progress, progressListener);
+*/
   }
 
   private void performInstall(ContributedLibraryRelease lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
+    /*
     if (lib.isLibraryInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
@@ -140,12 +141,28 @@ public class LibraryInstaller {
 
     // Check if we are replacing an already installed lib
     LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
-    Optional<ContributedLibraryRelease> replacedLib = index.find(lib.getName()).stream() //
-        .filter(l -> l.getInstalledLibrary().isPresent()) //
-        .filter(l -> l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) //
-        .findAny();
+    Optional<ContributedLibraryRelease> mayReplacedLib = lib.getLibrary()
+        .getInstalled();
+    if (mayReplacedLib.isPresent()) {
+      if (mayReplacedLib.get().getInstalledLibrary().get().getInstalledFolder()
+          .equals(destFolder) && destFolder.exists()) {
+        System.out
+            .println(I18n.format(tr("Library {0} is already installed in: {1}"),
+                                 lib.getName(), destFolder));
+        return;
+
+      }
+    }
+    // TODO: Check correctness
+    // Optional<ContributedLibraryRelease> mayReplacedLib =
+    // index.find(lib.getName());
+    // .filter(l ->
+    // l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) //
+    // .findAny();
     if (!replacedLib.isPresent() && destFolder.exists()) {
-      System.out.println(I18n.format(tr("Library {0} is already installed in: {1}"), lib.getName(), destFolder));
+      System.out
+          .println(I18n.format(tr("Library {0} is already installed in: {1}"),
+                               lib.getName(), destFolder));
       return;
     }
     DownloadableContributionsDownloader downloader = new DownloadableContributionsDownloader(BaseNoGui.librariesIndexer.getStagingFolder());
@@ -182,9 +199,11 @@ public class LibraryInstaller {
     }
     tmpFolder.renameTo(destFolder);
     progress.stepDone();
+    */
   }
 
   public synchronized void remove(ContributedLibraryRelease lib, ProgressListener progressListener) throws IOException {
+/*
     if (lib.isIDEBuiltIn()) {
       return;
     }
@@ -199,6 +218,7 @@ public class LibraryInstaller {
 
     // Step 2: Rescan index
     rescanLibraryIndex(progress, progressListener);
+*/
   }
 
   private void rescanLibraryIndex(MultiStepProgress progress, ProgressListener progressListener) {

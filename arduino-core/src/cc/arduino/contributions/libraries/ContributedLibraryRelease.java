@@ -35,7 +35,6 @@ import processing.app.packages.UserLibrary;
 import static processing.app.I18n.tr;
 
 import java.util.Comparator;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,61 +42,136 @@ import cc.arduino.contributions.VersionHelper;
 
 public class ContributedLibraryRelease extends DownloadableContribution {
 
-  private String url;
-  private String version;
-  private String checksum;
-  private long size;
-  private String archiveFileName;
-  private String name;
-  private String maintainer;
-  private String author;
-  private String website;
-  private String category;
-  private String licence;
-  private String paragraph;
-  private String sentence;
-  private ArrayList<String> architectures;
-  private ArrayList<String> types;
-  private ArrayList<ContributedLibraryDependency> dependencies;
-  private ArrayList<String> providesIncludes;
+  final private ContributedLibrary library;
+  final private String maintainer;
+  final private String author;
+  final private String website;
+  final private String category;
+  final private String license;
+  final private String paragraph;
+  final private String sentence;
+  final private List<String> architectures;
+  final private List<String> types;
+  final private List<ContributedLibraryDependency> dependencies;
+  final private List<String> providesIncludes;
 
-  public String getUrl() { return url; }
+  public ContributedLibraryRelease(ContributedLibrary library,
+                                   String maintainer, String author,
+                                   String website, String category,
+                                   String license, String paragraph,
+                                   String sentence, List<String> architectures,
+                                   List<String> types,
+                                   List<ContributedLibraryDependency> dependencies,
+                                   List<String> providesIncludes, //
+                                   //
+                                   String url, String version, String checksum,
+                                   long size, String archiveFileName) {
+    this.library = library;
+    this.maintainer = maintainer;
+    this.author = author;
+    this.website = website;
+    this.category = category;
+    this.license = license;
+    this.paragraph = paragraph;
+    this.sentence = sentence;
+    this.architectures = architectures;
+    this.types = types;
+    this.dependencies = dependencies;
+    this.providesIncludes = providesIncludes;
 
-  public String getVersion() { return version; }
+    this.url = url;
+    this.version = version;
+    this.checksum = checksum;
+    this.size = size;
+    this.archiveFileName = archiveFileName;
+  }
 
-  public String getChecksum() { return checksum; }
+  public ContributedLibrary getLibrary() {
+    return library;
+  }
 
-  public long getSize() { return size; }
+  public String getName() {
+    return library.getName();
+  }
 
-  public String getArchiveFileName() { return archiveFileName; }
+  public String getMaintainer() {
+    return maintainer;
+  }
 
-  public String getName() { return name; }
+  public String getAuthor() {
+    return author;
+  }
 
-  public String getMaintainer() { return maintainer; }
+  public String getWebsite() {
+    return website;
+  }
 
-  public String getAuthor() { return author; }
+  public String getCategory() {
+    return category;
+  }
 
-  public String getWebsite() { return website; }
+  public String getLicense() {
+    return license;
+  }
 
-  public String getCategory() { return category; }
+  public String getParagraph() {
+    return paragraph;
+  }
 
-  public void setCategory(String category) { this.category = category; }
+  public String getSentence() {
+    return sentence;
+  }
 
-  public String getLicense() { return licence; }
+  public List<String> getArchitectures() {
+    return architectures;
+  }
 
-  public String getParagraph() { return paragraph; }
+  public List<String> getTypes() {
+    return types;
+  }
 
-  public String getSentence() { return sentence; }
+  public List<ContributedLibraryDependency> getDependencies() {
+    return dependencies;
+  }
 
-  public List<String> getArchitectures() { return architectures; }
+  public List<String> getProvidesIncludes() {
+    return providesIncludes;
+  }
 
-  public List<String> getTypes() { return types; }
+  // Implementation of DownloadableResource
+  final private String url;
+  final private String version;
+  final private String checksum;
+  final private long size;
+  final private String archiveFileName;
 
-  public List<ContributedLibraryDependency> getDependencies() { return dependencies; }
+  @Override
+  public String getUrl() {
+    return url;
+  }
 
-  public List<String> getProvidesIncludes() { return providesIncludes; }
+  @Override
+  public String getVersion() {
+    return version;
+  }
 
-  public static final Comparator<ContributedLibraryRelease> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
+  @Override
+  public String getChecksum() {
+    return checksum;
+  }
+
+  @Override
+  public long getSize() {
+    return size;
+  }
+
+  @Override
+  public String getArchiveFileName() {
+    return archiveFileName;
+  }
+  public static final Comparator<ContributedLibraryRelease> //
+  CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName()
+      .compareToIgnoreCase(o2.getName());
 
   private Optional<UserLibrary> installedLib = Optional.empty();
 
@@ -132,14 +206,16 @@ public class ContributedLibraryRelease extends DownloadableContribution {
    * @return
    */
   public boolean supportsArchitecture(String reqArch) {
-    return getArchitectures().contains(reqArch) || getArchitectures().contains("*");
+    return getArchitectures().contains(reqArch)
+           || getArchitectures().contains("*");
   }
 
   /**
    * Returns <b>true</b> if the library declares to support at least one of the
    * specified architectures.
    *
-   * @param reqArchs A List of architectures to check
+   * @param reqArchs
+   *          A List of architectures to check
    * @return
    */
   public boolean supportsArchitecture(List<String> reqArchs) {
