@@ -151,4 +151,9 @@ public class ArduinoCoreInstance {
       throw e.getStatus().asException();
     }
   }
+
+  public List<ContributedLibraryRelease> libraryResolveDependecies(ContributedLibraryRelease lib) {
+    return new ArrayList<>();
+  }
+
 }

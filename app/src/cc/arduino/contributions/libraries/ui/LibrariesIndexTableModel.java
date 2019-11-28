@@ -36,6 +36,7 @@ import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
@@ -131,7 +132,7 @@ public class LibrariesIndexTableModel
   }
 
   public ContributedLibraryRelease getSelectedRelease(int row) {
-    return contributions.get(row).getSelected();
+    return contributions.get(row).getSelected().get();
   }
 
   public void update() {
@@ -144,7 +145,7 @@ public class LibrariesIndexTableModel
       return false;
     }
 
-    ContributedLibraryRelease latest = lib.getLatest();
+    ContributedLibraryRelease latest = lib.getLatest().get();
     String compoundTargetSearchText = latest.getName() + " "
                                       + latest.getParagraph() + " "
                                       + latest.getSentence();
@@ -158,55 +159,12 @@ public class LibrariesIndexTableModel
     return true;
   }
 
-  public void updateLibrary(ContributedLibraryRelease lib) {
-    // Find the row interested in the change
-    int row = -1;
-    for (ContributedLibrary releases : contributions) {
-      if (releases.shouldContain(lib))
-        row = contributions.indexOf(releases);
-    }
-
-    updateContributions();
-
-    // If the library is found in the list send update event
-    // or insert event on the specific row...
-    for (ContributedLibrary releases : contributions) {
-      if (releases.shouldContain(lib)) {
-        if (row == -1) {
-          row = contributions.indexOf(releases);
-          fireTableRowsInserted(row, row);
-        } else {
-          fireTableRowsUpdated(row, row);
-        }
-        return;
-      }
-    }
-    // ...otherwise send a row deleted event
-    fireTableRowsDeleted(row, row);
-  }
-
-  private List<ContributedLibrary> rebuildContributionsFromIndex() {
-    List<ContributedLibrary> res = new ArrayList<>();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries(). //
-        forEach(lib -> {
-          for (ContributedLibrary contribution : res) {
-            if (!contribution.shouldContain(lib))
-              continue;
-            contribution.add(lib);
-            return;
-          }
-
-          res.add(new ContributedLibrary(lib));
-        });
-    return res;
-  }
-
   private void updateContributions() {
-    List<ContributedLibrary> all = rebuildContributionsFromIndex();
+    Collection<ContributedLibrary> all = BaseNoGui.librariesIndexer.getIndex().getLibraries();
     contributions.clear();
     all.stream().filter(this::filterCondition).forEach(contributions::add);
     Collections.sort(contributions,
-                     new ContributedLibraryReleasesComparator("Arduino"));
+                     new ContributedLibraryComparatorWithTypePriority("Arduino"));
   }
 
 }

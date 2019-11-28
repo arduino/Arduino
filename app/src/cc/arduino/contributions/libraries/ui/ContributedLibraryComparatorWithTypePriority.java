@@ -36,18 +36,18 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ContributedLibraryReleasesComparator implements Comparator<ContributedLibrary> {
+public class ContributedLibraryComparatorWithTypePriority implements Comparator<ContributedLibrary> {
 
   private final String firstType;
 
-  public ContributedLibraryReleasesComparator(String firstType) {
+  public ContributedLibraryComparatorWithTypePriority(String firstType) {
     this.firstType = firstType;
   }
 
   @Override
   public int compare(ContributedLibrary o1, ContributedLibrary o2) {
-    ContributedLibraryRelease lib1 = o1.getLatest();
-    ContributedLibraryRelease lib2 = o2.getLatest();
+    ContributedLibraryRelease lib1 = o1.getLatest().get();
+    ContributedLibraryRelease lib2 = o2.getLatest().get();
 
     List<String> types1 = lib1.getTypes();
     List<String> types2 = lib2.getTypes();
