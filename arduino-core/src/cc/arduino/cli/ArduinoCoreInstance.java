@@ -29,24 +29,32 @@
 
 package cc.arduino.cli;
 
+import static processing.app.I18n.tr;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.google.protobuf.ByteString;
 
+import cc.arduino.cli.commands.ArduinoCoreGrpc.ArduinoCoreBlockingStub;
 import cc.arduino.cli.commands.Board.BoardDetailsReq;
 import cc.arduino.cli.commands.Board.BoardDetailsResp;
 import cc.arduino.cli.commands.Commands.DestroyReq;
 import cc.arduino.cli.commands.Commands.RescanReq;
+import cc.arduino.cli.commands.Commands.UpdateLibrariesIndexReq;
+import cc.arduino.cli.commands.Commands.UpdateLibrariesIndexResp;
+import cc.arduino.cli.commands.Common.DownloadProgress;
 import cc.arduino.cli.commands.Common.Instance;
 import cc.arduino.cli.commands.Compile.CompileReq;
 import cc.arduino.cli.commands.Compile.CompileResp;
 import cc.arduino.cli.commands.Lib.LibrarySearchReq;
 import cc.arduino.cli.commands.Lib.LibrarySearchResp;
 import cc.arduino.cli.commands.Lib.SearchedLibrary;
+import cc.arduino.contributions.ProgressListener;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import io.grpc.StatusException;
 import io.grpc.StatusRuntimeException;
-import cc.arduino.cli.commands.ArduinoCoreGrpc.ArduinoCoreBlockingStub;
 
 public class ArduinoCoreInstance {
 
@@ -106,6 +114,24 @@ public class ArduinoCoreInstance {
     try {
       stub.destroy(DestroyReq.newBuilder() //
           .setInstance(instance).build());
+    } catch (StatusRuntimeException e) {
+      throw e.getStatus().asException();
+    }
+  }
+
+  public void updateLibrariesIndex(ProgressListener progressListener)
+      throws StatusException {
+    try {
+      Iterator<UpdateLibrariesIndexResp> stream = stub
+          .updateLibrariesIndex(UpdateLibrariesIndexReq.newBuilder()
+              .setInstance(instance).build());
+      ProgressWrapper p = new ProgressWrapper(progressListener);
+      while (stream.hasNext()) {
+        UpdateLibrariesIndexResp resp = stream.next();
+        DownloadProgress progress = resp.getDownloadProgress().toBuilder()
+            .setFile(tr("Downloading libraries index...")).build();
+        p.update(progress);
+      }
     } catch (StatusRuntimeException e) {
       throw e.getStatus().asException();
     }
