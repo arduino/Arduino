@@ -48,6 +48,9 @@ import cc.arduino.cli.commands.Common.DownloadProgress;
 import cc.arduino.cli.commands.Common.Instance;
 import cc.arduino.cli.commands.Compile.CompileReq;
 import cc.arduino.cli.commands.Compile.CompileResp;
+import cc.arduino.cli.commands.Lib.InstalledLibrary;
+import cc.arduino.cli.commands.Lib.LibraryListReq;
+import cc.arduino.cli.commands.Lib.LibraryListResp;
 import cc.arduino.cli.commands.Lib.LibrarySearchReq;
 import cc.arduino.cli.commands.Lib.LibrarySearchResp;
 import cc.arduino.cli.commands.Lib.SearchedLibrary;
@@ -147,6 +150,18 @@ public class ArduinoCoreInstance {
           .setQuery(query) //
           .build());
       return resp.getLibrariesList();
+    } catch (StatusRuntimeException e) {
+      throw e.getStatus().asException();
+    }
+  }
+
+  public List<InstalledLibrary> libraryList(boolean listAll) throws StatusException {
+    try {
+      LibraryListResp resp = stub.libraryList(LibraryListReq.newBuilder() //
+          .setInstance(instance) //
+          .setAll(listAll) //
+          .build());
+      return resp.getInstalledLibraryList();
     } catch (StatusRuntimeException e) {
       throw e.getStatus().asException();
     }
