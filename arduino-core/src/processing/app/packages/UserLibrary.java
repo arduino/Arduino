@@ -47,7 +47,6 @@ import cc.arduino.Constants;
 import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.ContributedLibraryDependency;
 import processing.app.helpers.PreferencesMap;
-import processing.app.packages.UserLibraryFolder.Location;
 
 public class UserLibrary {
 
@@ -66,12 +65,14 @@ public class UserLibrary {
   private boolean onGoingDevelopment;
   private Collection<String> includes;
   protected File installedFolder;
-  protected Location location;
 
-  public static UserLibrary create(UserLibraryFolder libFolderDesc) throws IOException {
-    File libFolder = libFolderDesc.folder;
-    String location = libFolderDesc.location.toString();
+  public static final String LOCATION_IDE = "ide";
+  public static final String LOCATION_SKETCHBOOK = "sketchbook";
+  public static final String LOCATION_CORE = "platform";
+  public static final String LOCATION_REF_CORE = "ref-platform";
+  protected String location;
 
+  public static UserLibrary create(File libFolder, String location) throws IOException {
     // Parse metadata
     File propertiesFile = new File(libFolder, "library.properties");
     PreferencesMap properties = new PreferencesMap();
@@ -211,15 +212,12 @@ public class UserLibrary {
     this.declaredTypes = declaredTypes;
     this.onGoingDevelopment = onGoingDevelopment;
     this.includes = includes;
+    this.location = location;
     switch (location) {
-    case "ide":
-      this.location = Location.IDE_BUILTIN;
-      break;
-    case "sketchbook":
-      this.location = Location.SKETCHBOOK;
-      break;
-    case "platform":
-      this.location = Location.CORE;
+    case LOCATION_IDE:
+    case LOCATION_SKETCHBOOK:
+    case LOCATION_CORE:
+    case LOCATION_REF_CORE:
       break;
     default:
       throw new IllegalArgumentException(
@@ -316,12 +314,12 @@ public class UserLibrary {
     return (layout == LibraryLayout.RECURSIVE);
   }
 
-  public Location getLocation() {
+  public String getLocation() {
     return location;
   }
 
   public boolean isIDEBuiltIn() {
-    return getLocation() == Location.IDE_BUILTIN;
+    return getLocation().equals(LOCATION_IDE);
   }
 
   @Override
