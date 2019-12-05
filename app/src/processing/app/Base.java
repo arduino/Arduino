@@ -32,6 +32,7 @@ import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryOfSameTypeComparator;
+import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;

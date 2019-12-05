@@ -70,7 +70,7 @@ public class UserLibrary {
 
   public static UserLibrary create(UserLibraryFolder libFolderDesc) throws IOException {
     File libFolder = libFolderDesc.folder;
-    Location location = libFolderDesc.location;
+    String location = libFolderDesc.location.toString();
 
     // Parse metadata
     File propertiesFile = new File(libFolder, "library.properties");
@@ -98,15 +98,15 @@ public class UserLibrary {
         throw new IOException("Missing '" + p + "' from library");
 
     // Check layout
-    LibraryLayout layout;
+    String layout;
     File srcFolder = new File(libFolder, "src");
 
     if (srcFolder.exists() && srcFolder.isDirectory()) {
       // Layout with a single "src" folder and recursive compilation
-      layout = LibraryLayout.RECURSIVE;
+      layout = "recursive";
     } else {
       // Layout with source code on library's root and "utility" folders
-      layout = LibraryLayout.FLAT;
+      layout = "flat";
     }
 
     // Warn if root folder contains development leftovers
@@ -159,24 +159,72 @@ public class UserLibrary {
           format(tr("Invalid version '{0}' for library in: {1}"), declaredVersion, libFolder.getAbsolutePath()));
     }
 
-    UserLibrary res = new UserLibrary();
-    res.installedFolder = libFolder;
-    res.name = properties.get("name").trim();
-    res.version = version.isPresent() ? version.get().toString() : declaredVersion;
-    res.author = properties.get("author").trim();
-    res.maintainer = properties.get("maintainer").trim();
-    res.sentence = properties.get("sentence").trim();
-    res.paragraph = properties.get("paragraph").trim();
-    res.website = properties.get("url").trim();
-    res.category = category.trim();
-    res.license = license.trim();
-    res.architectures = archs;
-    res.layout = layout;
-    res.declaredTypes = typesList;
-    res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
-    res.includes = includes;
-    res.location = location;
+    UserLibrary res = new UserLibrary( //
+        libFolder, //
+        properties.get("name").trim(), //
+        version.isPresent() ? version.get().toString() : declaredVersion, //
+        properties.get("author").trim(), //
+        properties.get("maintainer").trim(), //
+        properties.get("sentence").trim(), //
+        properties.get("paragraph").trim(), //
+        properties.get("url").trim(), //
+        category.trim(), //
+        license.trim(), //
+        archs, //
+        layout, //
+        typesList, //
+        Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE)), //
+        includes, //
+        location //
+    );
     return res;
+  }
+
+  public UserLibrary(File installedFolder, String name, String version,
+                     String author, String maintainer, String sentence,
+                     String paraghraph, String website, String category,
+                     String license, Collection<String> architectures,
+                     String layout, Collection<String> declaredTypes,
+                     boolean onGoingDevelopment, Collection<String> includes,
+                     String location) {
+    this.installedFolder = installedFolder;
+    this.name = name;
+    this.version = version;
+    this.author = author;
+    this.maintainer = maintainer;
+    this.sentence = sentence;
+    this.paragraph = paraghraph;
+    this.website = website;
+    this.category = category;
+    this.license = license;
+    this.architectures = architectures;
+    switch (layout) {
+    case "recursive":
+      this.layout = LibraryLayout.RECURSIVE;
+      break;
+    case "flat":
+      this.layout = LibraryLayout.FLAT;
+      break;
+    default:
+      throw new IllegalArgumentException("Invalid library layout: " + layout);
+    }
+    this.declaredTypes = declaredTypes;
+    this.onGoingDevelopment = onGoingDevelopment;
+    this.includes = includes;
+    switch (location) {
+    case "ide":
+      this.location = Location.IDE_BUILTIN;
+      break;
+    case "sketchbook":
+      this.location = Location.SKETCHBOOK;
+      break;
+    case "platform":
+      this.location = Location.CORE;
+      break;
+    default:
+      throw new IllegalArgumentException(
+          "Invalid library location: " + location);
+    }
   }
 
   public String getName() {
