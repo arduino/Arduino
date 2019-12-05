@@ -49,7 +49,6 @@ import processing.app.debug.TargetPlatform;
 import processing.app.helpers.FileUtils;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder;
 import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.packages.UserLibraryPriorityComparator;
 
@@ -57,7 +56,6 @@ public class LibrariesIndexer {
 
   private LibrariesIndex index;
   private final LibraryList installedLibraries = new LibraryList();
-  private List<UserLibraryFolder> librariesFolders;
 
   private ArduinoCoreInstance core;
 
@@ -101,19 +99,6 @@ public class LibrariesIndexer {
 //     format(tr("Error parsing libraries index: {0}\nTry to open the Library Manager to update the libraries index."),
 //     System.err.println(format(tr("Error reading libraries index: {0}"),
     rescanLibraries();
-  }
-
-  public void setLibrariesFolders(List<UserLibraryFolder> folders) {
-    this.librariesFolders = folders;
-  }
-
-  public void setLibrariesFoldersAndRescan(List<UserLibraryFolder> folders) {
-    setLibrariesFolders(folders);
-    rescanLibraries();
-  }
-
-  public List<UserLibraryFolder> getLibrariesFolders() {
-    return librariesFolders;
   }
 
   private Comparator<UserLibrary> priorityComparator = new UserLibraryPriorityComparator(

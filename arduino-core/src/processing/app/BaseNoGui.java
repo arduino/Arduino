@@ -88,9 +88,6 @@ public class BaseNoGui {
   // maps #included files to their library folder
   public static Map<String, LibraryList> importToLibraryTable;
 
-  // XXX: Remove this field
-  static private List<UserLibraryFolder> librariesFolders;
-
   static UserNotifier notifier = new BasicUserNotifier();
 
   static public Map<String, TargetPackage> packages;
@@ -261,10 +258,6 @@ public class BaseNoGui {
 
   static public String getHardwarePath() {
     return getHardwareFolder().getAbsolutePath();
-  }
-
-  static public List<UserLibraryFolder> getLibrariesFolders() {
-    return librariesFolders;
   }
 
   static public Platform getPlatform() {
@@ -656,37 +649,10 @@ public class BaseNoGui {
   static public void onBoardOrPortChange() {
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-    librariesFolders = new ArrayList<>();
-
-    // Add IDE libraries folder
-    librariesFolders.add(new UserLibraryFolder(getContentFile("libraries"), Location.IDE_BUILTIN));
-
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform != null) {
-      String core = getBoardPreferences().get("build.core", "arduino");
-      if (core.contains(":")) {
-        String referencedCore = core.split(":")[0];
-        TargetPlatform referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.getId());
-        if (referencedPlatform != null) {
-          File referencedPlatformFolder = referencedPlatform.getFolder();
-          // Add libraries folder for the referenced platform
-          File folder = new File(referencedPlatformFolder, "libraries");
-          librariesFolders.add(new UserLibraryFolder(folder, Location.REFERENCED_CORE));
-        }
-      }
-      File platformFolder = targetPlatform.getFolder();
-      // Add libraries folder for the selected platform
-      File folder = new File(platformFolder, "libraries");
-      librariesFolders.add(new UserLibraryFolder(folder, Location.CORE));
-    }
-
-    // Add libraries folder for the sketchbook
-    librariesFolders.add(getSketchbookLibrariesFolder());
 
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    librariesIndexer.setLibrariesFolders(librariesFolders);
     if (getTargetPlatform() != null) {
       librariesIndexer.setArchitecturePriority(getTargetPlatform().getId());
     }
