@@ -31,6 +31,9 @@ package cc.arduino.contributions.libraries;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
+import static processing.app.packages.UserLibrary.LOCATION_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_REF_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +52,6 @@ import processing.app.debug.TargetPlatform;
 import processing.app.helpers.FileUtils;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.packages.UserLibraryPriorityComparator;
 
 public class LibrariesIndexer {
@@ -206,8 +208,8 @@ public class LibrariesIndexer {
                                        lib.getSrcFolder()));
         }
 
-        Location loc = lib.getLocation();
-        if (loc != Location.CORE && loc != Location.REFERENCED_CORE) {
+        String loc = lib.getLocation();
+        if (!loc.equals(LOCATION_CORE) && !loc.equals(LOCATION_REF_CORE)) {
           // Check if we can find the same library in the index
           // and mark it as installed
           index.find(lib.getName(), lib.getVersion()).ifPresent(foundLib -> {
@@ -216,7 +218,7 @@ public class LibrariesIndexer {
           });
         }
 
-        if (lib.getTypes().isEmpty() && loc == Location.SKETCHBOOK) {
+        if (lib.getTypes().isEmpty() && loc.equals(LOCATION_SKETCHBOOK)) {
           lib.setTypes(lib.getDeclaredTypes());
         }
 
@@ -233,8 +235,8 @@ public class LibrariesIndexer {
     // TODO: Should be done on the CLI?
     installedLibraries.stream() //
         .filter(l -> l.getTypes().contains("Contributed")) //
-        .filter(l -> l.getLocation() == Location.CORE
-                     || l.getLocation() == Location.REFERENCED_CORE) //
+        .filter(l -> l.getLocation().equals(LOCATION_CORE)
+                     || l.getLocation().equals(LOCATION_REF_CORE)) //
         .forEach(l -> {
           File libFolder = l.getInstalledFolder();
           Optional<ContributedPlatform> platform = BaseNoGui.indexer

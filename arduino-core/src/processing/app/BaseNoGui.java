@@ -21,8 +21,6 @@ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder;
-import processing.app.packages.UserLibraryFolder.Location;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
 
@@ -343,7 +341,7 @@ public class BaseNoGui {
     return new File(getSketchbookFolder(), "hardware");
   }
 
-  static public UserLibraryFolder getSketchbookLibrariesFolder() {
+  static public File getSketchbookLibrariesFolder() {
     File libdir = new File(getSketchbookFolder(), "libraries");
     if (!libdir.exists()) {
       FileWriter freadme = null;
@@ -357,7 +355,7 @@ public class BaseNoGui {
         IOUtils.closeQuietly(freadme);
       }
     }
-    return new UserLibraryFolder(libdir, Location.SKETCHBOOK);
+    return libdir;
   }
 
   static public String getSketchbookPath() {

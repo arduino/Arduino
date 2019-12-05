@@ -249,7 +249,7 @@ public class Compiler implements MessageConsumer {
     addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
-    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
+    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
 
     String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
     cmd.add("-fqbn=" + fqbn);

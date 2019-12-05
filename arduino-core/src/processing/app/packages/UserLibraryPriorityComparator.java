@@ -32,16 +32,19 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import processing.app.packages.UserLibraryFolder.Location;
+import static processing.app.packages.UserLibrary.LOCATION_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_IDE;
+import static processing.app.packages.UserLibrary.LOCATION_REF_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 public class UserLibraryPriorityComparator implements Comparator<UserLibrary> {
 
-  private final static Map<Location, Integer> priorities = new HashMap<>();
+  private final static Map<String, Integer> priorities = new HashMap<>();
   static {
-    priorities.put(Location.SKETCHBOOK, 4);
-    priorities.put(Location.CORE, 3);
-    priorities.put(Location.REFERENCED_CORE, 2);
-    priorities.put(Location.IDE_BUILTIN, 1);
+    priorities.put(LOCATION_SKETCHBOOK, 4);
+    priorities.put(LOCATION_CORE, 3);
+    priorities.put(LOCATION_REF_CORE, 2);
+    priorities.put(LOCATION_IDE, 1);
   }
 
   private String arch;

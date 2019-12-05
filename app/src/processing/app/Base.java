@@ -57,7 +57,6 @@ import processing.app.legacy.PApplet;
 import processing.app.macosx.ThinkDifferent;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextAreaDefaultInputMap;
 import processing.app.tools.MenuScroller;
@@ -78,6 +77,10 @@ import java.util.stream.Stream;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
+import static processing.app.packages.UserLibrary.LOCATION_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_IDE;
+import static processing.app.packages.UserLibrary.LOCATION_REF_CORE;
+import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 
 /**
@@ -1218,7 +1221,7 @@ public class Base {
     LibraryList otherLibs = new LibraryList();
     for (UserLibrary lib : allLibraries) {
       // Get the library's location - used for sorting into categories
-      Location location = lib.getLocation();
+      String location = lib.getLocation();
       // Is this library compatible?
       Collection<String> arch = lib.getArchitectures();
       boolean compatible;
@@ -1228,7 +1231,7 @@ public class Base {
         compatible = arch.contains(myArch);
       }
       // IDE Libaries (including retired)
-      if (location == Location.IDE_BUILTIN) {
+      if (location.equals(LOCATION_IDE)) {
         if (compatible) {
           // only compatible IDE libs are shown
           if (lib.getTypes().contains("Retired")) {
@@ -1238,15 +1241,15 @@ public class Base {
           }
         }
       // Platform Libraries
-      } else if (location == Location.CORE) {
+      } else if (location.equals(LOCATION_CORE)) {
         // all platform libs are assumed to be compatible
         platformLibs.add(lib);
       // Referenced Platform Libraries
-      } else if (location == Location.REFERENCED_CORE) {
+      } else if (location.equals(LOCATION_REF_CORE)) {
         // all referenced platform libs are assumed to be compatible
         referencedPlatformLibs.add(lib);
       // Sketchbook Libraries (including incompatible)
-      } else if (location == Location.SKETCHBOOK) {
+      } else if (location.equals(LOCATION_SKETCHBOOK)) {
         if (compatible) {
           // libraries promoted from sketchbook (behave as builtin)
           if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
@@ -2462,7 +2465,7 @@ public class Base {
       }
 
       // copy folder
-      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder().folder, sourceFile.getName());
+      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder(), sourceFile.getName());
       if (!destinationFolder.mkdir()) {
         activeEditor.statusError(format(tr("A library named {0} already exists"), sourceFile.getName()));
         return;
