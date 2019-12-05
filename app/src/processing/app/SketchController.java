@@ -43,6 +43,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -599,7 +600,7 @@ public class SketchController {
     // make sure the user didn't hide the sketch folder
     ensureExistence();
 
-    List<String> list = lib.getIncludes();
+    Collection<String> list = lib.getIncludes();
     if (list == null) {
       File srcFolder = lib.getSrcFolder();
       String[] headers = Base.headerListFromIncludePath(srcFolder);

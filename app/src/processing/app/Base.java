@@ -1136,7 +1136,7 @@ public class Base {
       LibraryList libs = getSortedLibraries();
       String lastLibType = null;
       for (UserLibrary lib : libs) {
-        String libType = lib.getTypes().get(0);
+        String libType = lib.getTypes().iterator().next();
         if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {
             importMenu.addSeparator();
@@ -1221,7 +1221,7 @@ public class Base {
       // Get the library's location - used for sorting into categories
       Location location = lib.getLocation();
       // Is this library compatible?
-      List<String> arch = lib.getArchitectures();
+      Collection<String> arch = lib.getArchitectures();
       boolean compatible;
       if (myArch == null || arch == null || arch.contains("*")) {
         compatible = true;
