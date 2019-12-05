@@ -38,7 +38,7 @@ public abstract class DownloadableContribution {
 
   public abstract String getUrl();
 
-  public abstract String getVersion();
+  public abstract String getVersion(); // TODO: Move outside of DownloadableContribution
 
   public abstract String getChecksum();
 
