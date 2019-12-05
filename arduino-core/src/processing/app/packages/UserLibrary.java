@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -59,11 +60,11 @@ public class UserLibrary {
   private String website;
   private String category;
   private String license;
-  private List<String> architectures;
-  private List<String> types = new ArrayList<>();
-  private List<String> declaredTypes;
+  private Collection<String> architectures;
+  private Collection<String> types = new ArrayList<>();
+  private Collection<String> declaredTypes;
   private boolean onGoingDevelopment;
-  private List<String> includes;
+  private Collection<String> includes;
   protected File installedFolder;
   protected Location location;
 
@@ -182,7 +183,7 @@ public class UserLibrary {
     return name;
   }
 
-  public List<String> getArchitectures() {
+  public Collection<String> getArchitectures() {
     return architectures;
   }
 
@@ -206,11 +207,11 @@ public class UserLibrary {
     return category;
   }
 
-  public List<String> getTypes() {
+  public Collection<String> getTypes() {
     return types;
   }
 
-  public void setTypes(List<String> types) {
+  public void setTypes(Collection<String> types) {
     this.types = types;
   }
 
@@ -234,7 +235,7 @@ public class UserLibrary {
     return null;
   }
 
-  public List<String> getDeclaredTypes() {
+  public Collection<String> getDeclaredTypes() {
     return declaredTypes;
   }
 
@@ -242,7 +243,7 @@ public class UserLibrary {
     return onGoingDevelopment;
   }
 
-  public List<String> getIncludes() {
+  public Collection<String> getIncludes() {
     return includes;
   }
 

@@ -115,7 +115,7 @@ public class LibrariesIndexer {
     return librariesFolders;
   }
 
-  private UserLibraryPriorityComparator priorityComparator = new UserLibraryPriorityComparator(
+  private Comparator<UserLibrary> priorityComparator = new UserLibraryPriorityComparator(
       null);
 
   public void addToInstalledLibraries(UserLibrary lib) {

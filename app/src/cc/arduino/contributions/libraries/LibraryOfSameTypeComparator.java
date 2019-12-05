@@ -46,8 +46,10 @@ public class LibraryOfSameTypeComparator implements Comparator<UserLibrary> {
     if (o2.getTypes().isEmpty()) {
       return -1;
     }
-    if (!o1.getTypes().get(0).equals(o2.getTypes().get(0))) {
-      return o1.getTypes().get(0).compareTo(o2.getTypes().get(0));
+    String t1 = o1.getTypes().iterator().next();
+    String t2 = o2.getTypes().iterator().next();
+    if (!t1.equals(t2)) {
+      return t1.compareTo(t2);
     }
     return o1.getName().compareTo(o2.getName());
   }
