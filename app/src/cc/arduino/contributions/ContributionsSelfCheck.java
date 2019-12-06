@@ -30,7 +30,7 @@
 package cc.arduino.contributions;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
-import cc.arduino.contributions.libraries.LibraryInstaller;
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.packages.filters.UpdatablePlatformPredicate;
@@ -53,7 +53,7 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
   private final Base base;
   private final HyperlinkListener hyperlinkListener;
   private final ContributionInstaller contributionInstaller;
-  private final LibraryInstaller libraryInstaller;
+  private final ArduinoCoreInstance core;
   private final ProgressListener progressListener;
   private final String boardsManagerURL  = "http://boardsmanager/DropdownUpdatableCoresItem";
   private final String libraryManagerURL = "http://librarymanager/DropdownUpdatableLibrariesItem";
@@ -61,11 +61,11 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
   private volatile boolean cancelled;
   private volatile NotificationPopup notificationPopup;
 
-  public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionInstaller contributionInstaller, LibraryInstaller libraryInstaller) {
+  public ContributionsSelfCheck(Base base, HyperlinkListener hyperlinkListener, ContributionInstaller contributionInstaller, ArduinoCoreInstance core) {
     this.base = base;
     this.hyperlinkListener = hyperlinkListener;
     this.contributionInstaller = contributionInstaller;
-    this.libraryInstaller = libraryInstaller;
+    this.core = core;
     this.progressListener = new NoopProgressListener();
     this.cancelled = false;
   }
@@ -176,13 +176,13 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
     goToManager(libraryManagerURL);
   }
 
-  static boolean checkForUpdatablePlatforms() {
+  boolean checkForUpdatablePlatforms() {
     return BaseNoGui.indexer.getPackages().stream()
       .flatMap(pack -> pack.getPlatforms().stream())
       .anyMatch(new UpdatablePlatformPredicate());
   }
 
-  static boolean checkForUpdatableLibraries() {
+  boolean checkForUpdatableLibraries() {
     return BaseNoGui.librariesIndexer.getIndex().getLibraries().stream()
       .anyMatch(new UpdatableLibraryPredicate());
   }
@@ -201,7 +201,7 @@ public class ContributionsSelfCheck extends TimerTask implements NotificationPop
       return;
     }
     try {
-      libraryInstaller.updateIndex(progressListener);
+      core.updateLibrariesIndex(progressListener);
     } catch (Exception e) {
       // ignore
     }
