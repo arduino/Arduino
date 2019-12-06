@@ -30,7 +30,6 @@ import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
-import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryOfSameTypeComparator;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -98,7 +97,6 @@ public class Base {
 
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
-  private final LibraryInstaller libraryInstaller;
   private ContributionsSelfCheck contributionsSelfCheck;
 
   // set to true after the first time the menu is built.
@@ -302,7 +300,6 @@ public class Base {
 
     final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform());
 
     parser.parseArgumentsPhase2();
 
@@ -395,9 +392,9 @@ public class Base {
           System.out.println(tr(I18n
               .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
                       libraryArg, mayInstalled.get().getParsedVersion())));
-          libraryInstaller.remove(mayInstalled.get(), progressListener);
+          BaseNoGui.getArduinoCoreService().libraryRemove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, progressListener);
+          BaseNoGui.getArduinoCoreService().libraryInstall(selected, progressListener);
         }
       }
 
@@ -1374,7 +1371,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, libraryInstaller) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.getArduinoCoreService()) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();

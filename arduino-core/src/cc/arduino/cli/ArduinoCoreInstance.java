@@ -46,13 +46,18 @@ import cc.arduino.cli.commands.Commands.UpdateLibrariesIndexReq;
 import cc.arduino.cli.commands.Commands.UpdateLibrariesIndexResp;
 import cc.arduino.cli.commands.Common.DownloadProgress;
 import cc.arduino.cli.commands.Common.Instance;
+import cc.arduino.cli.commands.Common.TaskProgress;
 import cc.arduino.cli.commands.Compile.CompileReq;
 import cc.arduino.cli.commands.Compile.CompileResp;
 import cc.arduino.cli.commands.Lib.InstalledLibrary;
+import cc.arduino.cli.commands.Lib.LibraryInstallReq;
+import cc.arduino.cli.commands.Lib.LibraryInstallResp;
 import cc.arduino.cli.commands.Lib.LibraryListReq;
 import cc.arduino.cli.commands.Lib.LibraryListResp;
 import cc.arduino.cli.commands.Lib.LibrarySearchReq;
 import cc.arduino.cli.commands.Lib.LibrarySearchResp;
+import cc.arduino.cli.commands.Lib.LibraryUninstallReq;
+import cc.arduino.cli.commands.Lib.LibraryUninstallResp;
 import cc.arduino.cli.commands.Lib.SearchedLibrary;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
@@ -155,7 +160,8 @@ public class ArduinoCoreInstance {
     }
   }
 
-  public List<InstalledLibrary> libraryList(boolean listAll) throws StatusException {
+  public List<InstalledLibrary> libraryList(boolean listAll)
+      throws StatusException {
     try {
       LibraryListResp resp = stub.libraryList(LibraryListReq.newBuilder() //
           .setInstance(instance) //
@@ -171,4 +177,35 @@ public class ArduinoCoreInstance {
     return new ArrayList<>();
   }
 
+  public void libraryInstall(ContributedLibraryRelease lib,
+                             ProgressListener progressListener) {
+    Iterator<LibraryInstallResp> stream = stub
+        .libraryInstall(LibraryInstallReq.newBuilder() //
+            .setInstance(instance) //
+            .setName(lib.getName()) //
+            .setVersion(lib.getVersion()) //
+            .build());
+    ProgressWrapper p = new ProgressWrapper(progressListener);
+    while (stream.hasNext()) {
+      LibraryInstallResp resp = stream.next();
+      DownloadProgress progress = resp.getProgress();
+      p.update(progress);
+    }
+  }
+
+  public void libraryRemove(ContributedLibraryRelease lib,
+                            ProgressListener progressListener) {
+    Iterator<LibraryUninstallResp> stream = stub
+        .libraryUninstall(LibraryUninstallReq.newBuilder() //
+            .setInstance(instance) //
+            .setName(lib.getName()) //
+            .setVersion(lib.getVersion()) //
+            .build());
+    ProgressWrapper p = new ProgressWrapper(progressListener);
+    while (stream.hasNext()) {
+      LibraryUninstallResp resp = stream.next();
+      TaskProgress progress = resp.getTaskProgress();
+      p.update(progress);
+    }
+  }
 }

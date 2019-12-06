@@ -49,8 +49,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownItem;
@@ -64,8 +64,8 @@ import processing.app.BaseNoGui;
 @SuppressWarnings("serial")
 public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
+  private final ArduinoCoreInstance core;
   private final JComboBox typeChooser;
-  private final LibraryInstaller installer;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -100,9 +100,9 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     };
   }
 
-  public LibraryManagerUI(Frame parent, LibraryInstaller installer) {
+  public LibraryManagerUI(Frame parent, ArduinoCoreInstance core) {
     super(parent, tr("Library Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.installer = installer;
+    this.core = core;
 
     filtersContainer.add(new JLabel(tr("Topic")), 1);
     filtersContainer.remove(2);
@@ -218,7 +218,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public void onInstallPressed(final ContributedLibraryRelease lib) {
-    List<ContributedLibraryRelease> deps = BaseNoGui.getArduinoCoreService().libraryResolveDependecies(lib);
+    List<ContributedLibraryRelease> deps = core.libraryResolveDependecies(lib);
     boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
     Result installDeps;
     if (!depsInstalled) {
@@ -237,9 +237,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
       try {
         setProgressVisible(true, tr("Installing..."));
         if (installDeps == Result.ALL) {
-          installer.install(deps, this::setProgress);
+          deps.forEach(dep -> {
+            core.libraryInstall(dep, this::setProgress);
+          });
         } else {
-          installer.install(lib, this::setProgress);
+          core.libraryInstall(lib, this::setProgress);
         }
         onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
@@ -271,7 +273,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Removing..."));
-        installer.remove(lib, this::setProgress);
+        core.libraryRemove(lib, this::setProgress);
         onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

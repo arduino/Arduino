@@ -33,6 +33,7 @@ import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 import cc.arduino.cli.commands.Common.DownloadProgress;
+import cc.arduino.cli.commands.Common.TaskProgress;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
@@ -76,6 +77,19 @@ class ProgressWrapper {
                          + " of " + totalSize + ")");
       progress.setProgress(((float) downloaded / totalSize) * 100);
     }
+    progressListener.onProgress(progress);
+  }
+
+  String taskName;
+
+  public void update(TaskProgress t) {
+    String name = t.getName();
+    if (!name.isEmpty()) {
+      taskName = name;
+    }
+
+    progress.setProgress(t.getCompleted() ? 100 : 0);
+    progress.setStatus(taskName + " " + t.getMessage());
     progressListener.onProgress(progress);
   }
 }
