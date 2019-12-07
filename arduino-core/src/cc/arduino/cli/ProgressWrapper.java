@@ -83,6 +83,10 @@ class ProgressWrapper {
   String taskName;
 
   public void update(TaskProgress t) {
+    if (t == null) {
+      return;
+    }
+
     String name = t.getName();
     if (!name.isEmpty()) {
       taskName = name;
