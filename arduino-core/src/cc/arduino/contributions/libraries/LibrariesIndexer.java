@@ -183,7 +183,7 @@ public class LibrariesIndexer {
 
       UserLibrary lib = new UserLibrary( //
           new File(l.getInstallDir()), //
-          l.getName(), //
+          l.getRealName(), //
           l.getVersion(), //
           l.getAuthor(), //
           l.getMaintainer(), //
