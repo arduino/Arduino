@@ -28,25 +28,12 @@
  */
 package processing.app.packages;
 
-import static processing.app.I18n.format;
-import static processing.app.I18n.tr;
-
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
-import com.github.zafarkhaja.semver.Version;
-
-import cc.arduino.Constants;
-import cc.arduino.contributions.VersionHelper;
 import cc.arduino.contributions.libraries.ContributedLibraryDependency;
-import processing.app.helpers.PreferencesMap;
 
 public class UserLibrary {
 
@@ -71,115 +58,6 @@ public class UserLibrary {
   public static final String LOCATION_CORE = "platform";
   public static final String LOCATION_REF_CORE = "ref-platform";
   protected String location;
-
-  public static UserLibrary create(File libFolder, String location) throws IOException {
-    // Parse metadata
-    File propertiesFile = new File(libFolder, "library.properties");
-    PreferencesMap properties = new PreferencesMap();
-    properties.load(propertiesFile);
-
-    // Library sanity checks
-    // ---------------------
-
-    // Compatibility with 1.5 rev.1 libraries:
-    // "email" field changed to "maintainer"
-    if (!properties.containsKey("maintainer") && properties.containsKey("email")) {
-      properties.put("maintainer", properties.get("email"));
-    }
-
-    // Compatibility with 1.5 rev.1 libraries:
-    // "arch" folder no longer supported
-    File archFolder = new File(libFolder, "arch");
-    if (archFolder.isDirectory())
-      throw new IOException("'arch' folder is no longer supported! See http://goo.gl/gfFJzU for more information");
-
-    // Check mandatory properties
-    for (String p : Constants.LIBRARY_MANDATORY_PROPERTIES)
-      if (!properties.containsKey(p))
-        throw new IOException("Missing '" + p + "' from library");
-
-    // Check layout
-    String layout;
-    File srcFolder = new File(libFolder, "src");
-
-    if (srcFolder.exists() && srcFolder.isDirectory()) {
-      // Layout with a single "src" folder and recursive compilation
-      layout = "recursive";
-    } else {
-      // Layout with source code on library's root and "utility" folders
-      layout = "flat";
-    }
-
-    // Warn if root folder contains development leftovers
-    File[] files = libFolder.listFiles();
-    if (files == null) {
-      throw new IOException("Unable to list files of library in " + libFolder);
-    }
-
-    // Extract metadata info
-    String architectures = properties.get("architectures");
-    if (architectures == null)
-      architectures = "*"; // defaults to "any"
-    List<String> archs = new ArrayList<>();
-    for (String arch : architectures.split(","))
-      archs.add(arch.trim());
-
-    String category = properties.get("category");
-    if (category == null) {
-      category = "Uncategorized";
-    }
-    if (!Constants.LIBRARY_CATEGORIES.contains(category)) {
-      category = "Uncategorized";
-    }
-
-    String license = properties.get("license");
-    if (license == null) {
-      license = "Unspecified";
-    }
-
-    String types = properties.get("types");
-    if (types == null) {
-      types = "Contributed";
-    }
-    List<String> typesList = new LinkedList<>();
-    for (String type : types.split(",")) {
-      typesList.add(type.trim());
-    }
-
-    List<String> includes = null;
-    if (properties.containsKey("includes") && !properties.get("includes").trim().isEmpty()) {
-      includes = new ArrayList<>();
-      for (String i : properties.get("includes").split(","))
-        includes.add(i.trim());
-    }
-
-    String declaredVersion = properties.get("version").trim();
-    Optional<Version> version = VersionHelper.valueOf(declaredVersion);
-    if (!version.isPresent()) {
-      System.out.println(
-          format(tr("Invalid version '{0}' for library in: {1}"), declaredVersion, libFolder.getAbsolutePath()));
-    }
-
-    UserLibrary res = new UserLibrary( //
-        libFolder, //
-        properties.get("name").trim(), //
-        version.isPresent() ? version.get().toString() : declaredVersion, //
-        properties.get("author").trim(), //
-        properties.get("maintainer").trim(), //
-        properties.get("sentence").trim(), //
-        properties.get("paragraph").trim(), //
-        properties.get("url").trim(), //
-        category.trim(), //
-        license.trim(), //
-        archs, //
-        layout, //
-        typesList, //
-        Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE)), //
-        includes, //
-        location //
-    );
-    return res;
-  }
 
   public UserLibrary(File installedFolder, String name, String version,
                      String author, String maintainer, String sentence,
