@@ -514,11 +514,11 @@
   <target name="macosx-build-avr-toolchain" unless="light_bundle">
     <antcall target="avr-toolchain-bundle">
       <param name="unpack_target" value="untar-native"/>
-      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-apple-darwin14.tar.bz2"/>
+      <param name="gcc_archive_file" value="avr-gcc-${AVRGCC-VERSION}-x86_64-apple-darwin14-signed.tar.bz2"/>
       <param name="gcc_version" value="${AVRGCC-VERSION}"/>
-      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-apple-darwin12.tar.bz2"/>
+      <param name="avrdude_archive_file" value="avrdude-${AVRDUDE-VERSION}-x86_64-apple-darwin12-signed.tar.bz2"/>
       <param name="avrdude_version" value="${AVRDUDE-VERSION}"/>
-      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-darwin_amd64.tar.bz2"/>
+      <param name="arduinoOTA_archive_file" value="arduinoOTA-${arduinoOTA-VERSION}-darwin_amd64-signed.tar.bz2"/>
       <param name="arduinoOTA_version" value="${arduinoOTA-VERSION}"/>
     </antcall>
 
@@ -556,7 +556,7 @@
 
     <!-- Sign app -->
     <exec executable="codesign" dir="macosx/work" failonerror="true">
-      <arg line="--keychain &quot;${macosx-sign-keychain}&quot; --force -s &quot;${macosx-sign-id}&quot; --deep -v Arduino.app/" />
+      <arg line="--keychain &quot;${macosx-sign-keychain}&quot; --force -s &quot;${macosx-sign-id}&quot; --timestamp --options runtime --deep -v Arduino.app/" />
     </exec>
 
     <!-- Check for successful signing -->
