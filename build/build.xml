@@ -484,8 +484,8 @@
     </antcall>
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -672,8 +672,8 @@
 
   <target name="linux-libastyle-x86" depends="linux-build" description="Download libastyle.so for x86/x64 arch">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -697,8 +697,8 @@
 
   <target name="linux-libastyle-arm" depends="linux-build" description="Download libastyle.so for ARM">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -740,8 +740,8 @@
 
   <target name="linux-libastyle-aarch64" depends="linux-build" description="Download libastyle.so for AArch64">
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
@@ -1059,8 +1059,8 @@
     <antcall target="windows-build-avr-toolchain" />
 
     <antcall target="unzip">
-      <param name="archive_file" value="./libastylej-2.05.1-4.zip" />
-      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-4.zip" />
+      <param name="archive_file" value="./libastylej-2.05.1-5.zip" />
+      <param name="archive_url" value="https://downloads.arduino.cc/libastylej-2.05.1-5.zip" />
       <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
