@@ -854,6 +854,7 @@
   </target>
 
   <target name="build-arduino-builder" unless="no_arduino_builder">
+    <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="" /> <!-- default if not set already -->
     <delete dir="${staging_folder}/arduino-builder-${platform}" includeemptydirs="true"/>
     <mkdir dir="${staging_folder}/arduino-builder-${platform}"/>
     <antcall target="untar-native">
