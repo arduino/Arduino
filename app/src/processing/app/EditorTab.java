@@ -442,6 +442,9 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     } finally {
       caret.setUpdatePolicy(policy);
     }
+    // A trick to force textarea to recalculate the bracket matching rectangle.
+    // In the worst case scenario, this should be ineffective.
+    textarea.setLineWrap(textarea.getLineWrap());
   }
 
   /**
