@@ -1146,34 +1146,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     menu.addSeparator();
 
-    item = new JMenuItem(tr("Galileo Help"));
-    item.setEnabled(false);
-    menu.add(item);
-
-    item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "ArduinoIDE_guide_galileo"));
-    menu.add(item);
-
-    item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "Guide_Troubleshooting_Galileo"));
-    menu.add(item);
-
-    menu.addSeparator();
-
-    item = new JMenuItem(tr("Edison Help"));
-    item.setEnabled(false);
-    menu.add(item);
-
-    item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "ArduinoIDE_guide_edison"));
-    menu.add(item);
-
-    item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "Guide_Troubleshooting_Edison"));
-    menu.add(item);
-
-    menu.addSeparator();
-
     item = newJMenuItemShift(tr("Find in Reference"), 'F');
     item.addActionListener(event -> handleFindReference(event));
     menu.add(item);
