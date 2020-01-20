@@ -35,6 +35,7 @@ import static processing.app.I18n.tr;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.io.File;
 
 import cc.arduino.packages.discoverers.PluggableDiscovery;
 import cc.arduino.packages.discoverers.serial.SerialDiscovery;
@@ -65,6 +66,10 @@ public class DiscoveryManager {
       for (TargetPlatform platform: targetPackage.getPlatforms().values()) {
         //System.out.println("installed: "+platform);
         PreferencesMap prefs = platform.getPreferences().subTree("discovery");
+        PreferencesMap pathPrefs = new PreferencesMap();
+        File platformFolder = platform.getFolder();
+        pathPrefs.put("runtime.platform.path", platformFolder.getAbsolutePath());
+        pathPrefs.put("runtime.hardware.path", platformFolder.getParentFile().getAbsolutePath());
         for (String discoveryName : prefs.firstLevelMap().keySet()) {
           PreferencesMap discoveryPrefs = prefs.subTree(discoveryName);
 
@@ -76,9 +81,11 @@ public class DiscoveryManager {
           try {
             if (PreferencesData.getBoolean("discovery.debug")) {
               System.out.println("found discovery: " + discoveryName + " -> " + pattern);
+              System.out.println("with pathnames -> " + pathPrefs);
               System.out.println("with preferencess -> " + discoveryPrefs);
             }
             pattern = StringReplacer.replaceFromMapping(pattern, PreferencesData.getMap());
+            pattern = StringReplacer.replaceFromMapping(pattern, pathPrefs);
             String[] cmd = StringReplacer.formatAndSplit(pattern, discoveryPrefs);
             discoverers.add(new PluggableDiscovery(discoveryName, cmd));
           } catch (Exception e) {
