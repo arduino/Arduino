@@ -172,8 +172,6 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
   @Override
   protected void onEnableWindow(boolean enable) {
-    Thread.dumpStack();
-    System.out.println("onEnableWindow " + enable);
     // never actually disable textArea, so people can
     // still select & copy text, even when the port
     // is closed or disconnected
