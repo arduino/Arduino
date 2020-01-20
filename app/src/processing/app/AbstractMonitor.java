@@ -1,7 +1,6 @@
 package processing.app;
 
 import cc.arduino.packages.BoardPort;
-import cc.arduino.packages.DiscoveryManager;
 import processing.app.legacy.PApplet;
 
 import javax.swing.*;
@@ -10,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class AbstractMonitor extends JFrame implements ActionListener {
@@ -85,7 +83,7 @@ public abstract class AbstractMonitor extends JFrame implements ActionListener {
               suspend();
             }
           } else {
-            if (closed && (Editor.isUploading() == false)) {
+            if (closed && !Editor.isUploading()) {
               resume(boardPort);
             }
           }
