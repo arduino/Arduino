@@ -14,1271 +14,9 @@ public final class Commands {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface ConfigurationOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.Configuration)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <pre>
-     * dataDir represents the current root of the arduino tree (defaulted to
-     * `$HOME/.arduino15` on linux).
-     * </pre>
-     *
-     * <code>string dataDir = 1;</code>
-     */
-    java.lang.String getDataDir();
-    /**
-     * <pre>
-     * dataDir represents the current root of the arduino tree (defaulted to
-     * `$HOME/.arduino15` on linux).
-     * </pre>
-     *
-     * <code>string dataDir = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getDataDirBytes();
-
-    /**
-     * <pre>
-     * sketchbookDir represents the current root of the sketchbooks tree
-     * (defaulted to `$HOME/Arduino`).
-     * </pre>
-     *
-     * <code>string sketchbookDir = 2;</code>
-     */
-    java.lang.String getSketchbookDir();
-    /**
-     * <pre>
-     * sketchbookDir represents the current root of the sketchbooks tree
-     * (defaulted to `$HOME/Arduino`).
-     * </pre>
-     *
-     * <code>string sketchbookDir = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getSketchbookDirBytes();
-
-    /**
-     * <pre>
-     * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-     * together with it.
-     * </pre>
-     *
-     * <code>string downloadsDir = 3;</code>
-     */
-    java.lang.String getDownloadsDir();
-    /**
-     * <pre>
-     * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-     * together with it.
-     * </pre>
-     *
-     * <code>string downloadsDir = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getDownloadsDirBytes();
-
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    java.util.List<java.lang.String>
-        getBoardManagerAdditionalUrlsList();
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    int getBoardManagerAdditionalUrlsCount();
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    java.lang.String getBoardManagerAdditionalUrls(int index);
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getBoardManagerAdditionalUrlsBytes(int index);
-  }
-  /**
-   * <pre>
-   * Configuration contains information to instantiate an Arduino Platform Service
-   * </pre>
-   *
-   * Protobuf type {@code cc.arduino.cli.commands.Configuration}
-   */
-  public  static final class Configuration extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.Configuration)
-      ConfigurationOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use Configuration.newBuilder() to construct.
-    private Configuration(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private Configuration() {
-      dataDir_ = "";
-      sketchbookDir_ = "";
-      downloadsDir_ = "";
-      boardManagerAdditionalUrls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new Configuration();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private Configuration(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              dataDir_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              sketchbookDir_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              downloadsDir_ = s;
-              break;
-            }
-            case 34: {
-              java.lang.String s = input.readStringRequireUtf8();
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                boardManagerAdditionalUrls_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000001;
-              }
-              boardManagerAdditionalUrls_.add(s);
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          boardManagerAdditionalUrls_ = boardManagerAdditionalUrls_.getUnmodifiableView();
-        }
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return cc.arduino.cli.commands.Commands.internal_static_cc_arduino_cli_commands_Configuration_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return cc.arduino.cli.commands.Commands.internal_static_cc_arduino_cli_commands_Configuration_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              cc.arduino.cli.commands.Commands.Configuration.class, cc.arduino.cli.commands.Commands.Configuration.Builder.class);
-    }
-
-    public static final int DATADIR_FIELD_NUMBER = 1;
-    private volatile java.lang.Object dataDir_;
-    /**
-     * <pre>
-     * dataDir represents the current root of the arduino tree (defaulted to
-     * `$HOME/.arduino15` on linux).
-     * </pre>
-     *
-     * <code>string dataDir = 1;</code>
-     */
-    public java.lang.String getDataDir() {
-      java.lang.Object ref = dataDir_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        dataDir_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * dataDir represents the current root of the arduino tree (defaulted to
-     * `$HOME/.arduino15` on linux).
-     * </pre>
-     *
-     * <code>string dataDir = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDataDirBytes() {
-      java.lang.Object ref = dataDir_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        dataDir_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int SKETCHBOOKDIR_FIELD_NUMBER = 2;
-    private volatile java.lang.Object sketchbookDir_;
-    /**
-     * <pre>
-     * sketchbookDir represents the current root of the sketchbooks tree
-     * (defaulted to `$HOME/Arduino`).
-     * </pre>
-     *
-     * <code>string sketchbookDir = 2;</code>
-     */
-    public java.lang.String getSketchbookDir() {
-      java.lang.Object ref = sketchbookDir_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        sketchbookDir_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * sketchbookDir represents the current root of the sketchbooks tree
-     * (defaulted to `$HOME/Arduino`).
-     * </pre>
-     *
-     * <code>string sketchbookDir = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getSketchbookDirBytes() {
-      java.lang.Object ref = sketchbookDir_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        sketchbookDir_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int DOWNLOADSDIR_FIELD_NUMBER = 3;
-    private volatile java.lang.Object downloadsDir_;
-    /**
-     * <pre>
-     * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-     * together with it.
-     * </pre>
-     *
-     * <code>string downloadsDir = 3;</code>
-     */
-    public java.lang.String getDownloadsDir() {
-      java.lang.Object ref = downloadsDir_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        downloadsDir_ = s;
-        return s;
-      }
-    }
-    /**
-     * <pre>
-     * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-     * together with it.
-     * </pre>
-     *
-     * <code>string downloadsDir = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDownloadsDirBytes() {
-      java.lang.Object ref = downloadsDir_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        downloadsDir_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int BOARDMANAGERADDITIONALURLS_FIELD_NUMBER = 4;
-    private com.google.protobuf.LazyStringList boardManagerAdditionalUrls_;
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    public com.google.protobuf.ProtocolStringList
-        getBoardManagerAdditionalUrlsList() {
-      return boardManagerAdditionalUrls_;
-    }
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    public int getBoardManagerAdditionalUrlsCount() {
-      return boardManagerAdditionalUrls_.size();
-    }
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    public java.lang.String getBoardManagerAdditionalUrls(int index) {
-      return boardManagerAdditionalUrls_.get(index);
-    }
-    /**
-     * <pre>
-     * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-     * packages
-     * </pre>
-     *
-     * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getBoardManagerAdditionalUrlsBytes(int index) {
-      return boardManagerAdditionalUrls_.getByteString(index);
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getDataDirBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, dataDir_);
-      }
-      if (!getSketchbookDirBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, sketchbookDir_);
-      }
-      if (!getDownloadsDirBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, downloadsDir_);
-      }
-      for (int i = 0; i < boardManagerAdditionalUrls_.size(); i++) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, boardManagerAdditionalUrls_.getRaw(i));
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getDataDirBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, dataDir_);
-      }
-      if (!getSketchbookDirBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, sketchbookDir_);
-      }
-      if (!getDownloadsDirBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, downloadsDir_);
-      }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < boardManagerAdditionalUrls_.size(); i++) {
-          dataSize += computeStringSizeNoTag(boardManagerAdditionalUrls_.getRaw(i));
-        }
-        size += dataSize;
-        size += 1 * getBoardManagerAdditionalUrlsList().size();
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof cc.arduino.cli.commands.Commands.Configuration)) {
-        return super.equals(obj);
-      }
-      cc.arduino.cli.commands.Commands.Configuration other = (cc.arduino.cli.commands.Commands.Configuration) obj;
-
-      if (!getDataDir()
-          .equals(other.getDataDir())) return false;
-      if (!getSketchbookDir()
-          .equals(other.getSketchbookDir())) return false;
-      if (!getDownloadsDir()
-          .equals(other.getDownloadsDir())) return false;
-      if (!getBoardManagerAdditionalUrlsList()
-          .equals(other.getBoardManagerAdditionalUrlsList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + DATADIR_FIELD_NUMBER;
-      hash = (53 * hash) + getDataDir().hashCode();
-      hash = (37 * hash) + SKETCHBOOKDIR_FIELD_NUMBER;
-      hash = (53 * hash) + getSketchbookDir().hashCode();
-      hash = (37 * hash) + DOWNLOADSDIR_FIELD_NUMBER;
-      hash = (53 * hash) + getDownloadsDir().hashCode();
-      if (getBoardManagerAdditionalUrlsCount() > 0) {
-        hash = (37 * hash) + BOARDMANAGERADDITIONALURLS_FIELD_NUMBER;
-        hash = (53 * hash) + getBoardManagerAdditionalUrlsList().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Commands.Configuration parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(cc.arduino.cli.commands.Commands.Configuration prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * <pre>
-     * Configuration contains information to instantiate an Arduino Platform Service
-     * </pre>
-     *
-     * Protobuf type {@code cc.arduino.cli.commands.Configuration}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.Configuration)
-        cc.arduino.cli.commands.Commands.ConfigurationOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return cc.arduino.cli.commands.Commands.internal_static_cc_arduino_cli_commands_Configuration_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return cc.arduino.cli.commands.Commands.internal_static_cc_arduino_cli_commands_Configuration_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                cc.arduino.cli.commands.Commands.Configuration.class, cc.arduino.cli.commands.Commands.Configuration.Builder.class);
-      }
-
-      // Construct using cc.arduino.cli.commands.Commands.Configuration.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        dataDir_ = "";
-
-        sketchbookDir_ = "";
-
-        downloadsDir_ = "";
-
-        boardManagerAdditionalUrls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return cc.arduino.cli.commands.Commands.internal_static_cc_arduino_cli_commands_Configuration_descriptor;
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Commands.Configuration getDefaultInstanceForType() {
-        return cc.arduino.cli.commands.Commands.Configuration.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Commands.Configuration build() {
-        cc.arduino.cli.commands.Commands.Configuration result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Commands.Configuration buildPartial() {
-        cc.arduino.cli.commands.Commands.Configuration result = new cc.arduino.cli.commands.Commands.Configuration(this);
-        int from_bitField0_ = bitField0_;
-        result.dataDir_ = dataDir_;
-        result.sketchbookDir_ = sketchbookDir_;
-        result.downloadsDir_ = downloadsDir_;
-        if (((bitField0_ & 0x00000001) != 0)) {
-          boardManagerAdditionalUrls_ = boardManagerAdditionalUrls_.getUnmodifiableView();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        }
-        result.boardManagerAdditionalUrls_ = boardManagerAdditionalUrls_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cc.arduino.cli.commands.Commands.Configuration) {
-          return mergeFrom((cc.arduino.cli.commands.Commands.Configuration)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(cc.arduino.cli.commands.Commands.Configuration other) {
-        if (other == cc.arduino.cli.commands.Commands.Configuration.getDefaultInstance()) return this;
-        if (!other.getDataDir().isEmpty()) {
-          dataDir_ = other.dataDir_;
-          onChanged();
-        }
-        if (!other.getSketchbookDir().isEmpty()) {
-          sketchbookDir_ = other.sketchbookDir_;
-          onChanged();
-        }
-        if (!other.getDownloadsDir().isEmpty()) {
-          downloadsDir_ = other.downloadsDir_;
-          onChanged();
-        }
-        if (!other.boardManagerAdditionalUrls_.isEmpty()) {
-          if (boardManagerAdditionalUrls_.isEmpty()) {
-            boardManagerAdditionalUrls_ = other.boardManagerAdditionalUrls_;
-            bitField0_ = (bitField0_ & ~0x00000001);
-          } else {
-            ensureBoardManagerAdditionalUrlsIsMutable();
-            boardManagerAdditionalUrls_.addAll(other.boardManagerAdditionalUrls_);
-          }
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        cc.arduino.cli.commands.Commands.Configuration parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cc.arduino.cli.commands.Commands.Configuration) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object dataDir_ = "";
-      /**
-       * <pre>
-       * dataDir represents the current root of the arduino tree (defaulted to
-       * `$HOME/.arduino15` on linux).
-       * </pre>
-       *
-       * <code>string dataDir = 1;</code>
-       */
-      public java.lang.String getDataDir() {
-        java.lang.Object ref = dataDir_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          dataDir_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * dataDir represents the current root of the arduino tree (defaulted to
-       * `$HOME/.arduino15` on linux).
-       * </pre>
-       *
-       * <code>string dataDir = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDataDirBytes() {
-        java.lang.Object ref = dataDir_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          dataDir_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * dataDir represents the current root of the arduino tree (defaulted to
-       * `$HOME/.arduino15` on linux).
-       * </pre>
-       *
-       * <code>string dataDir = 1;</code>
-       */
-      public Builder setDataDir(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        dataDir_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * dataDir represents the current root of the arduino tree (defaulted to
-       * `$HOME/.arduino15` on linux).
-       * </pre>
-       *
-       * <code>string dataDir = 1;</code>
-       */
-      public Builder clearDataDir() {
-        
-        dataDir_ = getDefaultInstance().getDataDir();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * dataDir represents the current root of the arduino tree (defaulted to
-       * `$HOME/.arduino15` on linux).
-       * </pre>
-       *
-       * <code>string dataDir = 1;</code>
-       */
-      public Builder setDataDirBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        dataDir_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object sketchbookDir_ = "";
-      /**
-       * <pre>
-       * sketchbookDir represents the current root of the sketchbooks tree
-       * (defaulted to `$HOME/Arduino`).
-       * </pre>
-       *
-       * <code>string sketchbookDir = 2;</code>
-       */
-      public java.lang.String getSketchbookDir() {
-        java.lang.Object ref = sketchbookDir_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          sketchbookDir_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * sketchbookDir represents the current root of the sketchbooks tree
-       * (defaulted to `$HOME/Arduino`).
-       * </pre>
-       *
-       * <code>string sketchbookDir = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getSketchbookDirBytes() {
-        java.lang.Object ref = sketchbookDir_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          sketchbookDir_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * sketchbookDir represents the current root of the sketchbooks tree
-       * (defaulted to `$HOME/Arduino`).
-       * </pre>
-       *
-       * <code>string sketchbookDir = 2;</code>
-       */
-      public Builder setSketchbookDir(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        sketchbookDir_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * sketchbookDir represents the current root of the sketchbooks tree
-       * (defaulted to `$HOME/Arduino`).
-       * </pre>
-       *
-       * <code>string sketchbookDir = 2;</code>
-       */
-      public Builder clearSketchbookDir() {
-        
-        sketchbookDir_ = getDefaultInstance().getSketchbookDir();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * sketchbookDir represents the current root of the sketchbooks tree
-       * (defaulted to `$HOME/Arduino`).
-       * </pre>
-       *
-       * <code>string sketchbookDir = 2;</code>
-       */
-      public Builder setSketchbookDirBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        sketchbookDir_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object downloadsDir_ = "";
-      /**
-       * <pre>
-       * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-       * together with it.
-       * </pre>
-       *
-       * <code>string downloadsDir = 3;</code>
-       */
-      public java.lang.String getDownloadsDir() {
-        java.lang.Object ref = downloadsDir_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          downloadsDir_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <pre>
-       * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-       * together with it.
-       * </pre>
-       *
-       * <code>string downloadsDir = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDownloadsDirBytes() {
-        java.lang.Object ref = downloadsDir_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          downloadsDir_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <pre>
-       * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-       * together with it.
-       * </pre>
-       *
-       * <code>string downloadsDir = 3;</code>
-       */
-      public Builder setDownloadsDir(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        downloadsDir_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-       * together with it.
-       * </pre>
-       *
-       * <code>string downloadsDir = 3;</code>
-       */
-      public Builder clearDownloadsDir() {
-        
-        downloadsDir_ = getDefaultInstance().getDownloadsDir();
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * ArduinoIDEDirectory is the directory of the Arduino IDE if the CLI runs
-       * together with it.
-       * </pre>
-       *
-       * <code>string downloadsDir = 3;</code>
-       */
-      public Builder setDownloadsDirBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        downloadsDir_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.LazyStringList boardManagerAdditionalUrls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureBoardManagerAdditionalUrlsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
-          boardManagerAdditionalUrls_ = new com.google.protobuf.LazyStringArrayList(boardManagerAdditionalUrls_);
-          bitField0_ |= 0x00000001;
-         }
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public com.google.protobuf.ProtocolStringList
-          getBoardManagerAdditionalUrlsList() {
-        return boardManagerAdditionalUrls_.getUnmodifiableView();
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public int getBoardManagerAdditionalUrlsCount() {
-        return boardManagerAdditionalUrls_.size();
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public java.lang.String getBoardManagerAdditionalUrls(int index) {
-        return boardManagerAdditionalUrls_.get(index);
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getBoardManagerAdditionalUrlsBytes(int index) {
-        return boardManagerAdditionalUrls_.getByteString(index);
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public Builder setBoardManagerAdditionalUrls(
-          int index, java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureBoardManagerAdditionalUrlsIsMutable();
-        boardManagerAdditionalUrls_.set(index, value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public Builder addBoardManagerAdditionalUrls(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  ensureBoardManagerAdditionalUrlsIsMutable();
-        boardManagerAdditionalUrls_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public Builder addAllBoardManagerAdditionalUrls(
-          java.lang.Iterable<java.lang.String> values) {
-        ensureBoardManagerAdditionalUrlsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, boardManagerAdditionalUrls_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public Builder clearBoardManagerAdditionalUrls() {
-        boardManagerAdditionalUrls_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        onChanged();
-        return this;
-      }
-      /**
-       * <pre>
-       * BoardManagerAdditionalUrls contains the additional URL for 3rd party
-       * packages
-       * </pre>
-       *
-       * <code>repeated string boardManagerAdditionalUrls = 4;</code>
-       */
-      public Builder addBoardManagerAdditionalUrlsBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        ensureBoardManagerAdditionalUrlsIsMutable();
-        boardManagerAdditionalUrls_.add(value);
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.Configuration)
-    }
-
-    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.Configuration)
-    private static final cc.arduino.cli.commands.Commands.Configuration DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Commands.Configuration();
-    }
-
-    public static cc.arduino.cli.commands.Commands.Configuration getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<Configuration>
-        PARSER = new com.google.protobuf.AbstractParser<Configuration>() {
-      @java.lang.Override
-      public Configuration parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Configuration(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<Configuration> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Configuration> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public cc.arduino.cli.commands.Commands.Configuration getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface InitReqOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.InitReq)
       com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    boolean hasConfiguration();
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    cc.arduino.cli.commands.Commands.Configuration getConfiguration();
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    cc.arduino.cli.commands.Commands.ConfigurationOrBuilder getConfigurationOrBuilder();
 
     /**
      * <code>bool library_manager_only = 2;</code>
@@ -1330,19 +68,6 @@ public final class Commands {
             case 0:
               done = true;
               break;
-            case 10: {
-              cc.arduino.cli.commands.Commands.Configuration.Builder subBuilder = null;
-              if (configuration_ != null) {
-                subBuilder = configuration_.toBuilder();
-              }
-              configuration_ = input.readMessage(cc.arduino.cli.commands.Commands.Configuration.parser(), extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(configuration_);
-                configuration_ = subBuilder.buildPartial();
-              }
-
-              break;
-            }
             case 16: {
 
               libraryManagerOnly_ = input.readBool();
@@ -1380,27 +105,6 @@ public final class Commands {
               cc.arduino.cli.commands.Commands.InitReq.class, cc.arduino.cli.commands.Commands.InitReq.Builder.class);
     }
 
-    public static final int CONFIGURATION_FIELD_NUMBER = 1;
-    private cc.arduino.cli.commands.Commands.Configuration configuration_;
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    public boolean hasConfiguration() {
-      return configuration_ != null;
-    }
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    public cc.arduino.cli.commands.Commands.Configuration getConfiguration() {
-      return configuration_ == null ? cc.arduino.cli.commands.Commands.Configuration.getDefaultInstance() : configuration_;
-    }
-    /**
-     * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-     */
-    public cc.arduino.cli.commands.Commands.ConfigurationOrBuilder getConfigurationOrBuilder() {
-      return getConfiguration();
-    }
-
     public static final int LIBRARY_MANAGER_ONLY_FIELD_NUMBER = 2;
     private boolean libraryManagerOnly_;
     /**
@@ -1424,9 +128,6 @@ public final class Commands {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (configuration_ != null) {
-        output.writeMessage(1, getConfiguration());
-      }
       if (libraryManagerOnly_ != false) {
         output.writeBool(2, libraryManagerOnly_);
       }
@@ -1439,10 +140,6 @@ public final class Commands {
       if (size != -1) return size;
 
       size = 0;
-      if (configuration_ != null) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, getConfiguration());
-      }
       if (libraryManagerOnly_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, libraryManagerOnly_);
@@ -1462,11 +159,6 @@ public final class Commands {
       }
       cc.arduino.cli.commands.Commands.InitReq other = (cc.arduino.cli.commands.Commands.InitReq) obj;
 
-      if (hasConfiguration() != other.hasConfiguration()) return false;
-      if (hasConfiguration()) {
-        if (!getConfiguration()
-            .equals(other.getConfiguration())) return false;
-      }
       if (getLibraryManagerOnly()
           != other.getLibraryManagerOnly()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
@@ -1480,10 +172,6 @@ public final class Commands {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (hasConfiguration()) {
-        hash = (37 * hash) + CONFIGURATION_FIELD_NUMBER;
-        hash = (53 * hash) + getConfiguration().hashCode();
-      }
       hash = (37 * hash) + LIBRARY_MANAGER_ONLY_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getLibraryManagerOnly());
@@ -1620,12 +308,6 @@ public final class Commands {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        if (configurationBuilder_ == null) {
-          configuration_ = null;
-        } else {
-          configuration_ = null;
-          configurationBuilder_ = null;
-        }
         libraryManagerOnly_ = false;
 
         return this;
@@ -1654,11 +336,6 @@ public final class Commands {
       @java.lang.Override
       public cc.arduino.cli.commands.Commands.InitReq buildPartial() {
         cc.arduino.cli.commands.Commands.InitReq result = new cc.arduino.cli.commands.Commands.InitReq(this);
-        if (configurationBuilder_ == null) {
-          result.configuration_ = configuration_;
-        } else {
-          result.configuration_ = configurationBuilder_.build();
-        }
         result.libraryManagerOnly_ = libraryManagerOnly_;
         onBuilt();
         return result;
@@ -1708,9 +385,6 @@ public final class Commands {
 
       public Builder mergeFrom(cc.arduino.cli.commands.Commands.InitReq other) {
         if (other == cc.arduino.cli.commands.Commands.InitReq.getDefaultInstance()) return this;
-        if (other.hasConfiguration()) {
-          mergeConfiguration(other.getConfiguration());
-        }
         if (other.getLibraryManagerOnly() != false) {
           setLibraryManagerOnly(other.getLibraryManagerOnly());
         }
@@ -1741,123 +415,6 @@ public final class Commands {
           }
         }
         return this;
-      }
-
-      private cc.arduino.cli.commands.Commands.Configuration configuration_;
-      private com.google.protobuf.SingleFieldBuilderV3<
-          cc.arduino.cli.commands.Commands.Configuration, cc.arduino.cli.commands.Commands.Configuration.Builder, cc.arduino.cli.commands.Commands.ConfigurationOrBuilder> configurationBuilder_;
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public boolean hasConfiguration() {
-        return configurationBuilder_ != null || configuration_ != null;
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public cc.arduino.cli.commands.Commands.Configuration getConfiguration() {
-        if (configurationBuilder_ == null) {
-          return configuration_ == null ? cc.arduino.cli.commands.Commands.Configuration.getDefaultInstance() : configuration_;
-        } else {
-          return configurationBuilder_.getMessage();
-        }
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public Builder setConfiguration(cc.arduino.cli.commands.Commands.Configuration value) {
-        if (configurationBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          configuration_ = value;
-          onChanged();
-        } else {
-          configurationBuilder_.setMessage(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public Builder setConfiguration(
-          cc.arduino.cli.commands.Commands.Configuration.Builder builderForValue) {
-        if (configurationBuilder_ == null) {
-          configuration_ = builderForValue.build();
-          onChanged();
-        } else {
-          configurationBuilder_.setMessage(builderForValue.build());
-        }
-
-        return this;
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public Builder mergeConfiguration(cc.arduino.cli.commands.Commands.Configuration value) {
-        if (configurationBuilder_ == null) {
-          if (configuration_ != null) {
-            configuration_ =
-              cc.arduino.cli.commands.Commands.Configuration.newBuilder(configuration_).mergeFrom(value).buildPartial();
-          } else {
-            configuration_ = value;
-          }
-          onChanged();
-        } else {
-          configurationBuilder_.mergeFrom(value);
-        }
-
-        return this;
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public Builder clearConfiguration() {
-        if (configurationBuilder_ == null) {
-          configuration_ = null;
-          onChanged();
-        } else {
-          configuration_ = null;
-          configurationBuilder_ = null;
-        }
-
-        return this;
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public cc.arduino.cli.commands.Commands.Configuration.Builder getConfigurationBuilder() {
-        
-        onChanged();
-        return getConfigurationFieldBuilder().getBuilder();
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      public cc.arduino.cli.commands.Commands.ConfigurationOrBuilder getConfigurationOrBuilder() {
-        if (configurationBuilder_ != null) {
-          return configurationBuilder_.getMessageOrBuilder();
-        } else {
-          return configuration_ == null ?
-              cc.arduino.cli.commands.Commands.Configuration.getDefaultInstance() : configuration_;
-        }
-      }
-      /**
-       * <code>.cc.arduino.cli.commands.Configuration configuration = 1;</code>
-       */
-      private com.google.protobuf.SingleFieldBuilderV3<
-          cc.arduino.cli.commands.Commands.Configuration, cc.arduino.cli.commands.Commands.Configuration.Builder, cc.arduino.cli.commands.Commands.ConfigurationOrBuilder> 
-          getConfigurationFieldBuilder() {
-        if (configurationBuilder_ == null) {
-          configurationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-              cc.arduino.cli.commands.Commands.Configuration, cc.arduino.cli.commands.Commands.Configuration.Builder, cc.arduino.cli.commands.Commands.ConfigurationOrBuilder>(
-                  getConfiguration(),
-                  getParentForChildren(),
-                  isClean());
-          configuration_ = null;
-        }
-        return configurationBuilder_;
       }
 
       private boolean libraryManagerOnly_ ;
@@ -9078,11 +7635,6 @@ public final class Commands {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cc_arduino_cli_commands_Configuration_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cc_arduino_cli_commands_Configuration_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cc_arduino_cli_commands_InitReq_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -9155,101 +7707,97 @@ public final class Commands {
       "i.commands\032\025commands/common.proto\032\024comma" +
       "nds/board.proto\032\026commands/compile.proto\032" +
       "\023commands/core.proto\032\025commands/upload.pr" +
-      "oto\032\022commands/lib.proto\"q\n\rConfiguration" +
-      "\022\017\n\007dataDir\030\001 \001(\t\022\025\n\rsketchbookDir\030\002 \001(\t" +
-      "\022\024\n\014downloadsDir\030\003 \001(\t\022\"\n\032boardManagerAd" +
-      "ditionalUrls\030\004 \003(\t\"f\n\007InitReq\022=\n\rconfigu" +
-      "ration\030\001 \001(\0132&.cc.arduino.cli.commands.C" +
-      "onfiguration\022\034\n\024library_manager_only\030\002 \001" +
-      "(\010\"\202\002\n\010InitResp\0223\n\010instance\030\001 \001(\0132!.cc.a" +
-      "rduino.cli.commands.Instance\022\036\n\026platform" +
-      "s_index_errors\030\002 \003(\t\022\035\n\025libraries_index_" +
-      "error\030\003 \001(\t\022D\n\021download_progress\030\004 \001(\0132)" +
-      ".cc.arduino.cli.commands.DownloadProgres" +
-      "s\022<\n\rtask_progress\030\005 \001(\0132%.cc.arduino.cl" +
-      "i.commands.TaskProgress\"A\n\nDestroyReq\0223\n" +
+      "oto\032\022commands/lib.proto\"\'\n\007InitReq\022\034\n\024li" +
+      "brary_manager_only\030\002 \001(\010\"\202\002\n\010InitResp\0223\n" +
       "\010instance\030\001 \001(\0132!.cc.arduino.cli.command" +
-      "s.Instance\"\r\n\013DestroyResp\"@\n\tRescanReq\0223" +
-      "\n\010instance\030\001 \001(\0132!.cc.arduino.cli.comman" +
-      "ds.Instance\"K\n\nRescanResp\022\036\n\026platforms_i" +
-      "ndex_errors\030\001 \003(\t\022\035\n\025libraries_index_err" +
-      "or\030\002 \001(\t\"E\n\016UpdateIndexReq\0223\n\010instance\030\001" +
-      " \001(\0132!.cc.arduino.cli.commands.Instance\"" +
-      "W\n\017UpdateIndexResp\022D\n\021download_progress\030" +
+      "s.Instance\022\036\n\026platforms_index_errors\030\002 \003" +
+      "(\t\022\035\n\025libraries_index_error\030\003 \001(\t\022D\n\021dow" +
+      "nload_progress\030\004 \001(\0132).cc.arduino.cli.co" +
+      "mmands.DownloadProgress\022<\n\rtask_progress" +
+      "\030\005 \001(\0132%.cc.arduino.cli.commands.TaskPro" +
+      "gress\"A\n\nDestroyReq\0223\n\010instance\030\001 \001(\0132!." +
+      "cc.arduino.cli.commands.Instance\"\r\n\013Dest" +
+      "royResp\"@\n\tRescanReq\0223\n\010instance\030\001 \001(\0132!" +
+      ".cc.arduino.cli.commands.Instance\"K\n\nRes" +
+      "canResp\022\036\n\026platforms_index_errors\030\001 \003(\t\022" +
+      "\035\n\025libraries_index_error\030\002 \001(\t\"E\n\016Update" +
+      "IndexReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino." +
+      "cli.commands.Instance\"W\n\017UpdateIndexResp" +
+      "\022D\n\021download_progress\030\001 \001(\0132).cc.arduino" +
+      ".cli.commands.DownloadProgress\"N\n\027Update" +
+      "LibrariesIndexReq\0223\n\010instance\030\001 \001(\0132!.cc" +
+      ".arduino.cli.commands.Instance\"`\n\030Update" +
+      "LibrariesIndexResp\022D\n\021download_progress\030" +
       "\001 \001(\0132).cc.arduino.cli.commands.Download" +
-      "Progress\"N\n\027UpdateLibrariesIndexReq\0223\n\010i" +
-      "nstance\030\001 \001(\0132!.cc.arduino.cli.commands." +
-      "Instance\"`\n\030UpdateLibrariesIndexResp\022D\n\021" +
-      "download_progress\030\001 \001(\0132).cc.arduino.cli" +
-      ".commands.DownloadProgress\"\014\n\nVersionReq" +
-      "\"\036\n\013VersionResp\022\017\n\007version\030\001 \001(\t2\272\024\n\013Ard" +
-      "uinoCore\022O\n\004Init\022 .cc.arduino.cli.comman" +
-      "ds.InitReq\032!.cc.arduino.cli.commands.Ini" +
-      "tResp\"\0000\001\022V\n\007Destroy\022#.cc.arduino.cli.co" +
-      "mmands.DestroyReq\032$.cc.arduino.cli.comma" +
-      "nds.DestroyResp\"\000\022S\n\006Rescan\022\".cc.arduino" +
-      ".cli.commands.RescanReq\032#.cc.arduino.cli" +
-      ".commands.RescanResp\"\000\022d\n\013UpdateIndex\022\'." +
-      "cc.arduino.cli.commands.UpdateIndexReq\032(" +
-      ".cc.arduino.cli.commands.UpdateIndexResp" +
-      "\"\0000\001\022\177\n\024UpdateLibrariesIndex\0220.cc.arduin" +
-      "o.cli.commands.UpdateLibrariesIndexReq\0321" +
-      ".cc.arduino.cli.commands.UpdateLibraries" +
-      "IndexResp\"\0000\001\022V\n\007Version\022#.cc.arduino.cl" +
-      "i.commands.VersionReq\032$.cc.arduino.cli.c" +
-      "ommands.VersionResp\"\000\022c\n\014BoardDetails\022(." +
-      "cc.arduino.cli.commands.BoardDetailsReq\032" +
-      ").cc.arduino.cli.commands.BoardDetailsRe" +
-      "sp\022b\n\013BoardAttach\022\'.cc.arduino.cli.comma" +
-      "nds.BoardAttachReq\032(.cc.arduino.cli.comm" +
-      "ands.BoardAttachResp0\001\022Z\n\tBoardList\022%.cc" +
-      ".arduino.cli.commands.BoardListReq\032&.cc." +
-      "arduino.cli.commands.BoardListResp\022c\n\014Bo" +
-      "ardListAll\022(.cc.arduino.cli.commands.Boa" +
-      "rdListAllReq\032).cc.arduino.cli.commands.B" +
-      "oardListAllResp\022V\n\007Compile\022#.cc.arduino." +
-      "cli.commands.CompileReq\032$.cc.arduino.cli" +
-      ".commands.CompileResp0\001\022n\n\017PlatformInsta" +
-      "ll\022+.cc.arduino.cli.commands.PlatformIns" +
-      "tallReq\032,.cc.arduino.cli.commands.Platfo" +
-      "rmInstallResp0\001\022q\n\020PlatformDownload\022,.cc" +
-      ".arduino.cli.commands.PlatformDownloadRe" +
-      "q\032-.cc.arduino.cli.commands.PlatformDown" +
-      "loadResp0\001\022t\n\021PlatformUninstall\022-.cc.ard" +
-      "uino.cli.commands.PlatformUninstallReq\032." +
-      ".cc.arduino.cli.commands.PlatformUninsta" +
-      "llResp0\001\022n\n\017PlatformUpgrade\022+.cc.arduino" +
-      ".cli.commands.PlatformUpgradeReq\032,.cc.ar" +
-      "duino.cli.commands.PlatformUpgradeResp0\001" +
-      "\022S\n\006Upload\022\".cc.arduino.cli.commands.Upl" +
-      "oadReq\032#.cc.arduino.cli.commands.UploadR" +
-      "esp0\001\022i\n\016PlatformSearch\022*.cc.arduino.cli" +
-      ".commands.PlatformSearchReq\032+.cc.arduino" +
-      ".cli.commands.PlatformSearchResp\022c\n\014Plat" +
-      "formList\022(.cc.arduino.cli.commands.Platf" +
-      "ormListReq\032).cc.arduino.cli.commands.Pla" +
-      "tformListResp\022n\n\017LibraryDownload\022+.cc.ar" +
-      "duino.cli.commands.LibraryDownloadReq\032,." +
-      "cc.arduino.cli.commands.LibraryDownloadR" +
-      "esp0\001\022k\n\016LibraryInstall\022*.cc.arduino.cli" +
-      ".commands.LibraryInstallReq\032+.cc.arduino" +
-      ".cli.commands.LibraryInstallResp0\001\022q\n\020Li" +
-      "braryUninstall\022,.cc.arduino.cli.commands" +
-      ".LibraryUninstallReq\032-.cc.arduino.cli.co" +
-      "mmands.LibraryUninstallResp0\001\022t\n\021Library" +
-      "UpgradeAll\022-.cc.arduino.cli.commands.Lib" +
-      "raryUpgradeAllReq\032..cc.arduino.cli.comma" +
-      "nds.LibraryUpgradeAllResp0\001\022\215\001\n\032LibraryR" +
-      "esolveDependencies\0226.cc.arduino.cli.comm" +
-      "ands.LibraryResolveDependenciesReq\0327.cc." +
-      "arduino.cli.commands.LibraryResolveDepen" +
-      "denciesResp\022f\n\rLibrarySearch\022).cc.arduin" +
-      "o.cli.commands.LibrarySearchReq\032*.cc.ard" +
-      "uino.cli.commands.LibrarySearchResp\022`\n\013L" +
-      "ibraryList\022\'.cc.arduino.cli.commands.Lib" +
-      "raryListReq\032(.cc.arduino.cli.commands.Li" +
-      "braryListRespB-Z+github.com/arduino/ardu" +
-      "ino-cli/rpc/commandsb\006proto3"
+      "Progress\"\014\n\nVersionReq\"\036\n\013VersionResp\022\017\n" +
+      "\007version\030\001 \001(\t2\272\024\n\013ArduinoCore\022O\n\004Init\022 " +
+      ".cc.arduino.cli.commands.InitReq\032!.cc.ar" +
+      "duino.cli.commands.InitResp\"\0000\001\022V\n\007Destr" +
+      "oy\022#.cc.arduino.cli.commands.DestroyReq\032" +
+      "$.cc.arduino.cli.commands.DestroyResp\"\000\022" +
+      "S\n\006Rescan\022\".cc.arduino.cli.commands.Resc" +
+      "anReq\032#.cc.arduino.cli.commands.RescanRe" +
+      "sp\"\000\022d\n\013UpdateIndex\022\'.cc.arduino.cli.com" +
+      "mands.UpdateIndexReq\032(.cc.arduino.cli.co" +
+      "mmands.UpdateIndexResp\"\0000\001\022\177\n\024UpdateLibr" +
+      "ariesIndex\0220.cc.arduino.cli.commands.Upd" +
+      "ateLibrariesIndexReq\0321.cc.arduino.cli.co" +
+      "mmands.UpdateLibrariesIndexResp\"\0000\001\022V\n\007V" +
+      "ersion\022#.cc.arduino.cli.commands.Version" +
+      "Req\032$.cc.arduino.cli.commands.VersionRes" +
+      "p\"\000\022c\n\014BoardDetails\022(.cc.arduino.cli.com" +
+      "mands.BoardDetailsReq\032).cc.arduino.cli.c" +
+      "ommands.BoardDetailsResp\022b\n\013BoardAttach\022" +
+      "\'.cc.arduino.cli.commands.BoardAttachReq" +
+      "\032(.cc.arduino.cli.commands.BoardAttachRe" +
+      "sp0\001\022Z\n\tBoardList\022%.cc.arduino.cli.comma" +
+      "nds.BoardListReq\032&.cc.arduino.cli.comman" +
+      "ds.BoardListResp\022c\n\014BoardListAll\022(.cc.ar" +
+      "duino.cli.commands.BoardListAllReq\032).cc." +
+      "arduino.cli.commands.BoardListAllResp\022V\n" +
+      "\007Compile\022#.cc.arduino.cli.commands.Compi" +
+      "leReq\032$.cc.arduino.cli.commands.CompileR" +
+      "esp0\001\022n\n\017PlatformInstall\022+.cc.arduino.cl" +
+      "i.commands.PlatformInstallReq\032,.cc.ardui" +
+      "no.cli.commands.PlatformInstallResp0\001\022q\n" +
+      "\020PlatformDownload\022,.cc.arduino.cli.comma" +
+      "nds.PlatformDownloadReq\032-.cc.arduino.cli" +
+      ".commands.PlatformDownloadResp0\001\022t\n\021Plat" +
+      "formUninstall\022-.cc.arduino.cli.commands." +
+      "PlatformUninstallReq\032..cc.arduino.cli.co" +
+      "mmands.PlatformUninstallResp0\001\022n\n\017Platfo" +
+      "rmUpgrade\022+.cc.arduino.cli.commands.Plat" +
+      "formUpgradeReq\032,.cc.arduino.cli.commands" +
+      ".PlatformUpgradeResp0\001\022S\n\006Upload\022\".cc.ar" +
+      "duino.cli.commands.UploadReq\032#.cc.arduin" +
+      "o.cli.commands.UploadResp0\001\022i\n\016PlatformS" +
+      "earch\022*.cc.arduino.cli.commands.Platform" +
+      "SearchReq\032+.cc.arduino.cli.commands.Plat" +
+      "formSearchResp\022c\n\014PlatformList\022(.cc.ardu" +
+      "ino.cli.commands.PlatformListReq\032).cc.ar" +
+      "duino.cli.commands.PlatformListResp\022n\n\017L" +
+      "ibraryDownload\022+.cc.arduino.cli.commands" +
+      ".LibraryDownloadReq\032,.cc.arduino.cli.com" +
+      "mands.LibraryDownloadResp0\001\022k\n\016LibraryIn" +
+      "stall\022*.cc.arduino.cli.commands.LibraryI" +
+      "nstallReq\032+.cc.arduino.cli.commands.Libr" +
+      "aryInstallResp0\001\022q\n\020LibraryUninstall\022,.c" +
+      "c.arduino.cli.commands.LibraryUninstallR" +
+      "eq\032-.cc.arduino.cli.commands.LibraryUnin" +
+      "stallResp0\001\022t\n\021LibraryUpgradeAll\022-.cc.ar" +
+      "duino.cli.commands.LibraryUpgradeAllReq\032" +
+      "..cc.arduino.cli.commands.LibraryUpgrade" +
+      "AllResp0\001\022\215\001\n\032LibraryResolveDependencies" +
+      "\0226.cc.arduino.cli.commands.LibraryResolv" +
+      "eDependenciesReq\0327.cc.arduino.cli.comman" +
+      "ds.LibraryResolveDependenciesResp\022f\n\rLib" +
+      "rarySearch\022).cc.arduino.cli.commands.Lib" +
+      "rarySearchReq\032*.cc.arduino.cli.commands." +
+      "LibrarySearchResp\022`\n\013LibraryList\022\'.cc.ar" +
+      "duino.cli.commands.LibraryListReq\032(.cc.a" +
+      "rduino.cli.commands.LibraryListRespB-Z+g" +
+      "ithub.com/arduino/arduino-cli/rpc/comman" +
+      "dsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -9261,80 +7809,74 @@ public final class Commands {
           cc.arduino.cli.commands.Upload.getDescriptor(),
           cc.arduino.cli.commands.Lib.getDescriptor(),
         });
-    internal_static_cc_arduino_cli_commands_Configuration_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_cc_arduino_cli_commands_Configuration_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cc_arduino_cli_commands_Configuration_descriptor,
-        new java.lang.String[] { "DataDir", "SketchbookDir", "DownloadsDir", "BoardManagerAdditionalUrls", });
     internal_static_cc_arduino_cli_commands_InitReq_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_cc_arduino_cli_commands_InitReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_InitReq_descriptor,
-        new java.lang.String[] { "Configuration", "LibraryManagerOnly", });
+        new java.lang.String[] { "LibraryManagerOnly", });
     internal_static_cc_arduino_cli_commands_InitResp_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_cc_arduino_cli_commands_InitResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_InitResp_descriptor,
         new java.lang.String[] { "Instance", "PlatformsIndexErrors", "LibrariesIndexError", "DownloadProgress", "TaskProgress", });
     internal_static_cc_arduino_cli_commands_DestroyReq_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(2);
     internal_static_cc_arduino_cli_commands_DestroyReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_DestroyReq_descriptor,
         new java.lang.String[] { "Instance", });
     internal_static_cc_arduino_cli_commands_DestroyResp_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(3);
     internal_static_cc_arduino_cli_commands_DestroyResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_DestroyResp_descriptor,
         new java.lang.String[] { });
     internal_static_cc_arduino_cli_commands_RescanReq_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(4);
     internal_static_cc_arduino_cli_commands_RescanReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_RescanReq_descriptor,
         new java.lang.String[] { "Instance", });
     internal_static_cc_arduino_cli_commands_RescanResp_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_cc_arduino_cli_commands_RescanResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_RescanResp_descriptor,
         new java.lang.String[] { "PlatformsIndexErrors", "LibrariesIndexError", });
     internal_static_cc_arduino_cli_commands_UpdateIndexReq_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_cc_arduino_cli_commands_UpdateIndexReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UpdateIndexReq_descriptor,
         new java.lang.String[] { "Instance", });
     internal_static_cc_arduino_cli_commands_UpdateIndexResp_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_cc_arduino_cli_commands_UpdateIndexResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UpdateIndexResp_descriptor,
         new java.lang.String[] { "DownloadProgress", });
     internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexReq_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexReq_descriptor,
         new java.lang.String[] { "Instance", });
     internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexResp_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(9);
     internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UpdateLibrariesIndexResp_descriptor,
         new java.lang.String[] { "DownloadProgress", });
     internal_static_cc_arduino_cli_commands_VersionReq_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_cc_arduino_cli_commands_VersionReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_VersionReq_descriptor,
         new java.lang.String[] { });
     internal_static_cc_arduino_cli_commands_VersionResp_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_cc_arduino_cli_commands_VersionResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_VersionResp_descriptor,

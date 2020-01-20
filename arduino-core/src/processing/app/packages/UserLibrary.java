@@ -54,7 +54,7 @@ public class UserLibrary {
   protected File installedFolder;
 
   public static final String LOCATION_IDE = "ide";
-  public static final String LOCATION_SKETCHBOOK = "sketchbook";
+  public static final String LOCATION_SKETCHBOOK = "user";
   public static final String LOCATION_CORE = "platform";
   public static final String LOCATION_REF_CORE = "ref-platform";
   protected String location;
