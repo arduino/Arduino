@@ -142,7 +142,6 @@ public class SerialMonitor extends AbstractTextMonitor {
       int[] location = getPlacement();
       String locationStr = PApplet.join(PApplet.str(location), ",");
       PreferencesData.set("last.serial.location", locationStr);
-      textArea.setText("");
       serial.dispose();
       serial = null;
     }

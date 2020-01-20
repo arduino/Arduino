@@ -3,6 +3,7 @@ package processing.app;
 import static processing.app.I18n.tr;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -170,9 +171,27 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   }
 
   @Override
-  protected void onEnableWindow(boolean enable)
-  {
-    textArea.setEnabled(enable);
+  protected void onEnableWindow(boolean enable) {
+    Thread.dumpStack();
+    System.out.println("onEnableWindow " + enable);
+    // never actually disable textArea, so people can
+    // still select & copy text, even when the port
+    // is closed or disconnected
+    textArea.setEnabled(true);
+    if (enable) {
+      // setting these to null for system default
+      // gives a wrong gray background on Windows
+      // so assume black text on white background
+      textArea.setForeground(Color.BLACK);
+      textArea.setBackground(Color.WHITE);
+    } else {
+      // In theory, UIManager.getDefaults() should
+      // give us the system's colors for disabled
+      // windows.  But it doesn't seem to work.  :(
+      textArea.setForeground(new Color(64, 64, 64));
+      textArea.setBackground(new Color(238, 238, 238));
+    }
+    textArea.invalidate();
     clearButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
     textField.setEnabled(enable);
