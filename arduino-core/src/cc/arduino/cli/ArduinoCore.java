@@ -35,10 +35,15 @@ import java.util.Iterator;
 
 import cc.arduino.cli.commands.ArduinoCoreGrpc;
 import cc.arduino.cli.commands.ArduinoCoreGrpc.ArduinoCoreBlockingStub;
-import cc.arduino.cli.commands.Commands.Configuration;
 import cc.arduino.cli.commands.Commands.InitReq;
 import cc.arduino.cli.commands.Commands.InitResp;
 import cc.arduino.cli.commands.Common.Instance;
+import cc.arduino.cli.settings.SettingsGrpc;
+import cc.arduino.cli.settings.SettingsOuterClass;
+import cc.arduino.cli.settings.SettingsOuterClass.GetAllRequest;
+import cc.arduino.cli.settings.SettingsOuterClass.RawData;
+import cc.arduino.cli.settings.SettingsOuterClass.SetValueResponse;
+import cc.arduino.cli.settings.SettingsGrpc.SettingsBlockingStub;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import processing.app.BaseNoGui;
@@ -48,7 +53,8 @@ import processing.app.helpers.ProcessUtils;
 public class ArduinoCore {
 
   private Process cliProcess;
-  private ArduinoCoreBlockingStub blocking;
+  private ArduinoCoreBlockingStub coreBlocking;
+  private SettingsBlockingStub settingsBlocking;
   // private ArduinoCoreStub async;
 
   public ArduinoCore() throws IOException {
@@ -82,17 +88,35 @@ public class ArduinoCore {
         .usePlaintext() //
         .maxInboundMessageSize(Integer.MAX_VALUE) //
         .build();
-    blocking = ArduinoCoreGrpc.newBlockingStub(channel);
+    coreBlocking = ArduinoCoreGrpc.newBlockingStub(channel);
+    settingsBlocking = SettingsGrpc.newBlockingStub(channel);
     // async = ArduinoCoreGrpc.newStub(channel);
   }
 
+  public void setDataDir(File dataDir) {
+    settingsBlocking
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"data\": \"" + dataDir.getAbsolutePath() + "\" }") //
+            .build());
+    File downloadsDir = new File(dataDir, "staging");
+    settingsBlocking
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"downloads\": \"" + downloadsDir.getAbsolutePath()
+                         + "\" }") //
+            .build());
+  }
+
+  public void setSketchbookDir(File dataDir) {
+    settingsBlocking
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"user\": \"" + dataDir.getAbsolutePath() + "\" }") //
+            .build());
+  }
+
   public ArduinoCoreInstance init(File dataDir, File sketchbookDir) {
-    InitReq req = InitReq.newBuilder()
-        .setConfiguration(Configuration.newBuilder() //
-            .setDataDir(dataDir.getAbsolutePath()) //
-            .setSketchbookDir(sketchbookDir.getAbsolutePath()))
-        .build();
-    Iterator<InitResp> resp = blocking.init(req);
+    setDataDir(dataDir);
+    setSketchbookDir(sketchbookDir);
+    Iterator<InitResp> resp = coreBlocking.init(InitReq.getDefaultInstance());
     Instance instance = null;
     while (resp.hasNext()) {
       InitResp r = resp.next();
@@ -110,14 +134,14 @@ public class ArduinoCore {
         instance = r.getInstance();
       }
     }
-    return new ArduinoCoreInstance(instance, blocking);
+    return new ArduinoCoreInstance(instance, coreBlocking);
   }
 
   public static void main(String[] args) {
     try {
       ArduinoCore core = new ArduinoCore();
-      ArduinoCoreInstance instance = core.init(new File("/mnt/ramdisk"),
-                                               new File("/mnt/ramdisk/sketchbook"));
+      ArduinoCoreInstance instance = core
+          .init(new File("/mnt/ramdisk"), new File("/mnt/ramdisk/sketchbook"));
       instance.boardDetails("arduino:samd:mkr1000");
       instance.compile("arduino:samd:mkr1000",
                        "/home/megabug/Arduino/alloc_check");
