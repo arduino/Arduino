@@ -62,7 +62,9 @@ public class DownloadableContributionsDownloader {
 
   public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
     URL url = new URL(contribution.getUrl());
-    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
+    // Filter out paths from file name
+    String filename = new File(contribution.getArchiveFileName()).getName();
+    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), filename);
 
     // Ensure the existence of staging folder
     Files.createDirectories(stagingFolder.toPath());
