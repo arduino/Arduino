@@ -64,7 +64,10 @@ public class DownloadableContributionsDownloader {
     URL url = new URL(contribution.getUrl());
     // Filter out paths from file name
     String filename = new File(contribution.getArchiveFileName()).getName();
-    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), filename);
+    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), filename).normalize();
+    if (outputFile.toFile().isDirectory()) {
+      throw new Exception(format("Can't download {0}: invalid filename or exinsting directory", contribution.getArchiveFileName()));
+    }
 
     // Ensure the existence of staging folder
     Files.createDirectories(stagingFolder.toPath());
