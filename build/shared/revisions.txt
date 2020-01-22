@@ -1,5 +1,27 @@
-ARDUINO 1.8.11 ????
+ARDUINO 1.8.11 2020.01.2x
 
+[ide]
+* FIX: Serial plotter do not hang if empty lines are received
+* A lot of accessibility improvements in Libs and Board managers GUI for screen readers (thanks @joew46167)
+* Sligtly improved support for themes in Libs and Board managers (thanks @matthijskooijman)
+* Serial plotter: added serial input text field (thanks @cactorium)
+* MacOSX: support for notarization (thanks @PaulStoffregen for the support)
+* Fix wrong bracket match rectangle on auto format (thanks @magedrifaat)
+* Pluggable discoveries: runtime.platform.path and runtime.hardware.path are now available as variables (thanks @PaulStoffregen)
+
+[arduino-builder]
+* FIX: missed library-detection cache (forcing lib detection on each build)
+* FIX: Windows: the build folder may reside on a different partition
+* FIX: Segfault in arduino-builder with -dump-prefs if no sketch is specified
+* FIX: Allow loading of global user-define platform.txt
+* FIX: Fixed nil pointer exception on some rare case with multiple libs
+* FIX: Print "multiple libraries found for header.h" message only when it really happens
+
+[hardware]
+* updated AVR core to 1.8.2
+
+[wifi-updater]
+* updated to 0.10.10
 
 ARDUINO 1.8.10 2019.09.13
 
