@@ -16,6 +16,7 @@ ARDUINO 1.8.11 2020.01.2x
 * FIX: Allow loading of global user-define platform.txt
 * FIX: Fixed nil pointer exception on some rare case with multiple libs
 * FIX: Print "multiple libraries found for header.h" message only when it really happens
+* FIX: Fixed library priorities on some rare circumstances
 
 [hardware]
 * updated AVR core to 1.8.2
