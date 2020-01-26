@@ -1481,24 +1481,21 @@ public class Base {
     ButtonGroup boardsButtonGroup = new ButtonGroup();
     Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
 
+    List<JMenu> platformMenus = new ArrayList<JMenu>();
+
     // Cycle through all packages
-    boolean first = true;
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       // For every package cycle through all platform
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
 
-        // Add a separator from the previous platform
-        if (!first)
-          boardMenu.add(new JSeparator());
-        first = false;
-
         // Add a title for each platform
         String platformLabel = targetPlatform.getPreferences().get("name");
-        if (platformLabel != null && !targetPlatform.getBoards().isEmpty()) {
-          JMenuItem menuLabel = new JMenuItem(tr(platformLabel));
-          menuLabel.setEnabled(false);
-          boardMenu.add(menuLabel);
-        }
+        if (platformLabel == null)
+          platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
+
+        JMenu platformBoardsMenu = new JMenu(tr(platformLabel));
+        MenuScroller.setScrollerFor(platformBoardsMenu);
+        platformMenus.add(platformBoardsMenu);
 
         // Cycle through all boards of this platform
         for (TargetBoard board : targetPlatform.getBoards().values()) {
@@ -1507,14 +1504,27 @@ public class Base {
           JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
-          boardMenu.add(item);
+          platformBoardsMenu.add(item);
           boardsButtonGroup.add(item);
         }
       }
     }
 
+    JMenuItem firstBoardItem = null;
+    for (JMenu platformMenu : platformMenus) {
+      if (firstBoardItem == null && platformMenu.getItemCount() > 0)
+        firstBoardItem = platformMenu.getItem(0);
+      boardMenu.add(platformMenu);
+    }
+
+    if (firstBoardItem == null) {
+      throw new IllegalStateException("No available boards");
+    }
+
+    // If there is no current board yet (first startup, or selected
+    // board no longer defined), select first available board.
     if (menuItemsToClickAfterStartup.isEmpty()) {
-      menuItemsToClickAfterStartup.add(selectFirstEnabledMenuItem(boardMenu));
+      menuItemsToClickAfterStartup.add(firstBoardItem);
     }
 
     for (JMenuItem menuItemToClick : menuItemsToClickAfterStartup) {
@@ -1666,16 +1676,6 @@ public class Base {
       return firstVisible;
     }
 
-    throw new IllegalStateException("Menu has no enabled items");
-  }
-
-  private static JMenuItem selectFirstEnabledMenuItem(JMenu menu) {
-    for (int i = 1; i < menu.getItemCount(); i++) {
-      JMenuItem item = menu.getItem(i);
-      if (item != null && item.isEnabled()) {
-        return item;
-      }
-    }
     throw new IllegalStateException("Menu has no enabled items");
   }
 
