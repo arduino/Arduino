@@ -1,4 +1,4 @@
-ARDUINO 1.8.11 2020.01.2x
+ARDUINO 1.8.11 2020.01.27
 
 [ide]
 * FIX: Serial plotter do not hang if empty lines are received
