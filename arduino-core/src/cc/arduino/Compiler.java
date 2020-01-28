@@ -134,7 +134,7 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*(fatal)?\\s*error:\\s*(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
+  private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*((fatal)?\\s*error:\\s*)(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
 
   private final File pathToSketch;
   private final Sketch sketch;
@@ -522,7 +522,8 @@ public class Compiler implements MessageConsumer {
       if (pieces[3] != null) {
         col = PApplet.parseInt(pieces[3].substring(1));
       }
-      String error = pieces[5];
+      String errorPrefix = pieces[4];
+      String error = pieces[6];
 
       if (error.trim().equals("SPI.h: No such file or directory")) {
         error = tr("Please import the SPI library from the Sketch > Import Library menu.");
@@ -583,7 +584,7 @@ public class Compiler implements MessageConsumer {
         int lineNum = ex.getCodeLine() + 1;
         int colNum = ex.getCodeColumn();
         String column = (colNum != -1) ? (":" + colNum) : "";
-        s = fileName + ":" + lineNum + column + ": error: " + error + msg;
+        s = fileName + ":" + lineNum + column + ": " + errorPrefix + error + msg;
       }
 
       if (ex != null) {
