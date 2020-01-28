@@ -516,16 +516,13 @@ public class Compiler implements MessageConsumer {
 
     if (pieces != null) {
       String msg = "";
-      int errorIdx = pieces.length - 1;
-      String error = pieces[errorIdx];
       String filename = pieces[1];
       int line = PApplet.parseInt(pieces[2]);
-      int col;
-      if (errorIdx > 3) {
+      int col = -1;
+      if (pieces[3] != null) {
         col = PApplet.parseInt(pieces[3].substring(1));
-      } else {
-        col = -1;
       }
+      String error = pieces[5];
 
       if (error.trim().equals("SPI.h: No such file or directory")) {
         error = tr("Please import the SPI library from the Sketch > Import Library menu.");
