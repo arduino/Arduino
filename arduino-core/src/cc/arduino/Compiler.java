@@ -582,11 +582,8 @@ public class Compiler implements MessageConsumer {
         String fileName = ex.getCodeFile().getPrettyName();
         int lineNum = ex.getCodeLine() + 1;
         int colNum = ex.getCodeColumn();
-        if (colNum != -1) {
-          s = fileName + ":" + lineNum + ":" + colNum + ": error: " + error + msg;
-        } else {
-          s = fileName + ":" + lineNum + ": error: " + error + msg;
-        }
+        String column = (colNum != -1) ? (":" + colNum) : "";
+        s = fileName + ":" + lineNum + column + ": error: " + error + msg;
       }
 
       if (ex != null) {
