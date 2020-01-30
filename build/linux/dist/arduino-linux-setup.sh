@@ -19,6 +19,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+# Release v11 changelog :
+#
+#   + Fixing ModemManager removal for Fedora Core
+#   + Adding Atmel ICE Debugger CMSIS-DAP rule
+#
 # Release v10 changelog :
 #
 #   + Adding support for Slackware
@@ -62,6 +67,8 @@
 #	+ now the script checks for SUDO permissions
 #
 
+#!/bin/bash
+
 # if [[ $EUID != 0 ]] ; then
 #   echo This must be run as root!
 #   exit 1
@@ -91,8 +98,11 @@ groupsfunc () {
     echo "******* Add User to dialout,tty, uucp, plugdev groups *******"
     echo ""
 
-    sudo groupadd plugdev
+    sudo groupadd tty
     sudo groupadd dialout
+    sudo groupadd uucp
+    sudo groupadd plugdev
+
     sudo usermod -a -G tty $1
     sudo usermod -a -G dialout $1
     sudo usermod -a -G uucp $1
@@ -116,7 +126,7 @@ EOF
 openocdrules () {
 
     echo ""
-    echo "# Adding Arduino M0/M0 Pro, Primo UDEV Rules for CMSIS-DAP port"
+    echo "# Adding Arduino M0/M0 Pro, Primo, Atmel ICE Debugger UDEV Rules for CMSIS-DAP port"
     echo ""
 
 cat <<EOF
@@ -124,6 +134,9 @@ ACTION!="add|change", GOTO="openocd_rules_end"
 SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
 
 #Please keep this list sorted by VID:PID
+
+#Atmel ICE Debugger
+ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2141", MODE="664", GROUP="plugdev", TAG+="uaccess"
 
 #CMSIS-DAP compatible adapters
 ATTRS{product}=="*CMSIS-DAP*", MODE="664", GROUP="plugdev"
@@ -194,7 +207,8 @@ removemm () {
     elif [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]
     then
         #Only for Red Hat/Fedora/CentOS
-        sudo yum remove modemmanager
+        sudo rpm -e --nodeps ModemManager
+        sudo rpm -e --nodeps ModemManager-glib
     elif [ -f /etc/arch-release ]
     then
         #Only for ArchLinux
@@ -206,7 +220,7 @@ removemm () {
     elif [ -f /etc/lsb-release ] || [ -f /etc/debian_version ] || [ -f /etc/linuxmint/info ]
     then
         #Only for Ubuntu/Mint/Debian
-        sudo apt-get -y remove modemmanager
+        sudo apt-get -y purge modemmanager
     else
         echo ""
         echo "Your system is not supported, please remove the ModemManager package with your package manager!"
