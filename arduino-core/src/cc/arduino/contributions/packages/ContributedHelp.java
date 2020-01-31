@@ -29,8 +29,9 @@
 
 package cc.arduino.contributions.packages;
 
-public abstract class ContributedHelp {
+public class ContributedHelp {
 
-  public abstract String getOnline();
+  private String online;
+  public String getOnline() { return online; }
 
 }

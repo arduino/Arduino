@@ -35,24 +35,42 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.File;
 import java.util.*;
 
-public abstract class ContributedPlatform extends DownloadableContribution {
+public class ContributedPlatform extends DownloadableContribution {
 
-  public abstract String getName();
+  private String url;
+  public String getUrl() { return url; }
 
-  public abstract String getCategory();
+  private String version;
+  public String getVersion() { return version; }
 
-  public abstract void setCategory(String category);
+  private long size;
+  public long getSize() { return size; }
 
-  public abstract String getArchitecture();
+  private String archiveFileName;
+  public String getArchiveFileName() { return archiveFileName; }
 
+  private String name;
+  public String getName() { return name; }
+
+  private String category;
+  public String getCategory() { return category; }
+  public void setCategory(String category) { this.category = category; }
+
+  private String architecture;
+  public String getArchitecture() { return architecture; }
+
+  private String checksum;
   @Override
-  public abstract String getChecksum();
+  public String getChecksum() { return checksum; }
 
-  public abstract List<ContributedToolReference> getToolsDependencies();
+  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
+  public List<ContributedToolReference> getToolsDependencies() { return toolsDependencies; }
 
-  public abstract List<ContributedBoard> getBoards();
+  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
+  public List<ContributedBoard> getBoards() { return boards; }
 
-  public abstract ContributedHelp getHelp();
+  private ContributedHelp help;
+  public ContributedHelp getHelp() { return help; }
 
   private boolean installed;
 

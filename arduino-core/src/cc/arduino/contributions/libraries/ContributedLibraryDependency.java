@@ -29,11 +29,13 @@
 
 package cc.arduino.contributions.libraries;
 
-public abstract class ContributedLibraryDependency {
+public class ContributedLibraryDependency {
 
-  public abstract String getName();
+  private String name;
+  public String getName() { return name; }
 
-  public abstract String getVersion();
+  private String version;
+  public String getVersion() { return version; }
 
   @Override
   public String toString() {

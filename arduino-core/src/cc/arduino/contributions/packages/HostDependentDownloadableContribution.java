@@ -32,9 +32,25 @@ package cc.arduino.contributions.packages;
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
-public abstract class HostDependentDownloadableContribution extends DownloadableContribution {
+public class HostDependentDownloadableContribution extends DownloadableContribution {
 
-  public abstract String getHost();
+  private String url;
+  public String getUrl() { return url; }
+
+  private String version;
+  public String getVersion() { return version; }
+
+  private String checksum;
+  public String getChecksum() { return checksum; }
+
+  private long size;
+  public long getSize() { return size; }
+
+  private String archiveFileName;
+  public String getArchiveFileName() { return archiveFileName; }
+
+  private String host;
+  public String getHost() { return host; }
 
   @Override
   public String toString() {

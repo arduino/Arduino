@@ -35,38 +35,69 @@ import processing.app.packages.UserLibrary;
 import static processing.app.I18n.tr;
 
 import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import cc.arduino.contributions.VersionHelper;
 
-public abstract class ContributedLibrary extends DownloadableContribution {
+public class ContributedLibrary extends DownloadableContribution {
 
-  public abstract String getName();
+  private String url;
+  public String getUrl() { return url; }
 
-  public abstract String getMaintainer();
+  private String version;
+  public String getVersion() { return version; }
 
-  public abstract String getAuthor();
+  private String checksum;
+  public String getChecksum() { return checksum; }
 
-  public abstract String getWebsite();
+  private long size;
+  public long getSize() { return size; }
 
-  public abstract String getCategory();
+  private String archiveFileName;
+  public String getArchiveFileName() { return archiveFileName; }
 
-  public abstract void setCategory(String category);
 
-  public abstract String getLicense();
 
-  public abstract String getParagraph();
+  private String name;
+  public String getName() { return name; }
 
-  public abstract String getSentence();
+  private String maintainer;
+  public String getMaintainer() { return maintainer; }
 
-  public abstract List<String> getArchitectures();
+  private String author;
+  public String getAuthor() { return author; }
 
-  public abstract List<String> getTypes();
+  private String website;
+  public String getWebsite() { return website; }
 
-  public abstract List<ContributedLibraryDependency> getDependencies();
+  private String category;
+  public String getCategory() { return category; }
+  public void setCategory(String category) { this.category = category; }
 
-  public abstract List<String> getProvidesIncludes();
+  private String licence;
+  public String getLicense() { return licence; }
+
+  private String paragraph;
+  public String getParagraph() { return paragraph; }
+
+  private String sentence;
+  public String getSentence() { return sentence; }
+
+  private ArrayList<String> architectures;
+  public List<String> getArchitectures() { return architectures; }
+
+  private ArrayList<String> types;
+  public List<String> getTypes() { return types; }
+
+  private ArrayList<ContributedLibraryDependency> dependencies;
+  public List<ContributedLibraryDependency> getDependencies() { return dependencies; }
+
+  private ArrayList<String> providesIncludes;
+  public List<String> getProvidesIncludes() { return providesIncludes; }
+
+
 
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 
