@@ -35,27 +35,27 @@ import java.util.List;
 public class ContributedPackage {
 
   private String name;
+  private String maintainer;
+  private String websiteURL;
+  private String email;
+  private ArrayList<ContributedPlatform> platforms = new ArrayList<ContributedPlatform>();
+  private ArrayList<ContributedTool> tools = new ArrayList<ContributedTool>();
+  private ContributedHelp help;
+  private boolean trusted;
+
   public String getName() { return name; }
 
-  private String maintainer;
   public String getMaintainer() { return maintainer; }
 
-  private String websiteURL;
   public String getWebsiteURL() { return websiteURL; }
 
-  private String email;
   public String getEmail() { return email; }
 
-  private ArrayList<ContributedPlatform> platforms = new ArrayList<ContributedPlatform>();
   public List<ContributedPlatform> getPlatforms() { return platforms; }
 
-  private ArrayList<ContributedTool> tools = new ArrayList<ContributedTool>();
   public List<ContributedTool> getTools() { return tools; }
 
-  private ContributedHelp help;
   public ContributedHelp getHelp() { return help; }
-
-  private boolean trusted;
 
   public ContributedPlatform findPlatform(String architecture, String version) {
     if (architecture == null || version == null) {

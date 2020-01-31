@@ -34,12 +34,13 @@ import java.util.Collection;
 public class ContributedToolReference {
 
   private String name;
+  private String version;
+  private String packager;
+
   public String getName() { return name; }
 
-  private String version;
   public String getVersion() { return version; }
 
-  private String packager;
   public String getPackager() { return packager; }
 
   public ContributedTool resolve(Collection<ContributedPackage> packages) {
