@@ -142,7 +142,7 @@ public class CommandLineTest {
         .as("Process will finish with exit code 0 in --version")
         .isEqualTo(0);
     Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
-        .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
+        .matches(".*\nArduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
   }
 
   @Test
