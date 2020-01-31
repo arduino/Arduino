@@ -38,8 +38,13 @@ public class GzippedJsonDownloaderTest {
 
   @Test
   public void testJsonDownload() throws Exception {
-    new GZippedJsonDownloader(downloader, new URL("http://downloads.arduino.cc/libraries/library_index.json"),
-      new URL("http://downloads.arduino.cc/libraries/library_index.json.gz"))
+    // URL url = new URL("http://downloads.arduino.cc/libraries/library_index.json")
+    // URL gzUrl = new URL("http://downloads.arduino.cc/libraries/library_index.json.gz")
+
+    URL url = GZippedJsonDownloader.class.getResource("/library_index.json");
+    URL gzUrl = GZippedJsonDownloader.class.getResource("/library_index.json.gz");
+
+    new GZippedJsonDownloader(downloader, url, gzUrl)
       .download(tempFile, new MultiStepProgress(1), "", new NoopProgressListener(), true);
 
     InputStream indexIn = new FileInputStream(tempFile);
