@@ -29,23 +29,31 @@
 
 package cc.arduino.contributions.packages;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ContributedPackage {
+public class ContributedPackage {
 
-  public abstract String getName();
+  private String name;
+  public String getName() { return name; }
 
-  public abstract String getMaintainer();
+  private String maintainer;
+  public String getMaintainer() { return maintainer; }
 
-  public abstract String getWebsiteURL();
+  private String websiteURL;
+  public String getWebsiteURL() { return websiteURL; }
 
-  public abstract String getEmail();
+  private String email;
+  public String getEmail() { return email; }
 
-  public abstract List<ContributedPlatform> getPlatforms();
+  private ArrayList<ContributedPlatform> platforms = new ArrayList<ContributedPlatform>();
+  public List<ContributedPlatform> getPlatforms() { return platforms; }
 
-  public abstract List<ContributedTool> getTools();
+  private ArrayList<ContributedTool> tools = new ArrayList<ContributedTool>();
+  public List<ContributedTool> getTools() { return tools; }
 
-  public abstract ContributedHelp getHelp();
+  private ContributedHelp help;
+  public ContributedHelp getHelp() { return help; }
 
   private boolean trusted;
 

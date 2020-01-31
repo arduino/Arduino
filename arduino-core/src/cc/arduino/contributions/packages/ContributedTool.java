@@ -33,15 +33,19 @@ import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ContributedTool {
+public class ContributedTool {
 
-  public abstract String getName();
+  private String name;
+  public String getName() { return name; }
 
-  public abstract String getVersion();
+  private String version;
+  public String getVersion() { return version; }
 
-  public abstract List<HostDependentDownloadableContribution> getSystems();
+  private ArrayList<HostDependentDownloadableContribution> systems = new ArrayList<HostDependentDownloadableContribution>();
+  public List<HostDependentDownloadableContribution> getSystems() { return systems; }
 
   private boolean installed;
 
