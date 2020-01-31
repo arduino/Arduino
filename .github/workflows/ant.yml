@@ -15,7 +15,9 @@ jobs:
         java-version: 1.8
     - name: Build with Ant
       working-directory: ./build
-      run: ant clean dist
+      run: |
+        sed -i 's#<input .*/>##' build.xml
+        ant clean dist
     - name: Run tests
       working-directory: ./app
       run: ant test
