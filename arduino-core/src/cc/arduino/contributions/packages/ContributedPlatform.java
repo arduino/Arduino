@@ -38,41 +38,46 @@ import java.util.*;
 public class ContributedPlatform extends DownloadableContribution {
 
   private String url;
+  private String version;
+  private long size;
+  private String archiveFileName;
+  private String name;
+  private String category;
+  private String architecture;
+  private String checksum;
+  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
+  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
+  private ContributedHelp help;
+  private boolean installed;
+  private File installedFolder;
+  private boolean builtIn;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+  private ContributedPackage parentPackage;
+
   public String getUrl() { return url; }
 
-  private String version;
   public String getVersion() { return version; }
 
-  private long size;
   public long getSize() { return size; }
 
-  private String archiveFileName;
   public String getArchiveFileName() { return archiveFileName; }
 
-  private String name;
   public String getName() { return name; }
 
-  private String category;
   public String getCategory() { return category; }
+
   public void setCategory(String category) { this.category = category; }
 
-  private String architecture;
   public String getArchitecture() { return architecture; }
 
-  private String checksum;
   @Override
   public String getChecksum() { return checksum; }
 
-  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
   public List<ContributedToolReference> getToolsDependencies() { return toolsDependencies; }
 
-  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
   public List<ContributedBoard> getBoards() { return boards; }
 
-  private ContributedHelp help;
   public ContributedHelp getHelp() { return help; }
-
-  private boolean installed;
 
   public boolean isInstalled() {
     return installed;
@@ -82,8 +87,6 @@ public class ContributedPlatform extends DownloadableContribution {
     this.installed = installed;
   }
 
-  private File installedFolder;
-
   public File getInstalledFolder() {
     return installedFolder;
   }
@@ -91,8 +94,6 @@ public class ContributedPlatform extends DownloadableContribution {
   public void setInstalledFolder(File installedFolder) {
     this.installedFolder = installedFolder;
   }
-
-  private boolean builtIn;
 
   public boolean isBuiltIn() {
     return builtIn;
@@ -107,10 +108,6 @@ public class ContributedPlatform extends DownloadableContribution {
     int py = y.isBuiltIn() ? 1 : -1;
     return px - py;
   };
-
-  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
-
-  private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
     return new LinkedList<>(resolvedToolReferences.values());

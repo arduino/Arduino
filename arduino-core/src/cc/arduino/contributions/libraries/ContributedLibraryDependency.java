@@ -32,9 +32,10 @@ package cc.arduino.contributions.libraries;
 public class ContributedLibraryDependency {
 
   private String name;
+  private String version;
+
   public String getName() { return name; }
 
-  private String version;
   public String getVersion() { return version; }
 
   @Override

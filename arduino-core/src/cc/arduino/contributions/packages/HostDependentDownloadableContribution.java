@@ -35,21 +35,22 @@ import processing.app.Platform;
 public class HostDependentDownloadableContribution extends DownloadableContribution {
 
   private String url;
+  private String version;
+  private String checksum;
+  private long size;
+  private String archiveFileName;
+  private String host;
+
   public String getUrl() { return url; }
 
-  private String version;
   public String getVersion() { return version; }
 
-  private String checksum;
   public String getChecksum() { return checksum; }
 
-  private long size;
   public long getSize() { return size; }
 
-  private String archiveFileName;
   public String getArchiveFileName() { return archiveFileName; }
 
-  private String host;
   public String getHost() { return host; }
 
   @Override

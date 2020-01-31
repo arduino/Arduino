@@ -44,60 +44,58 @@ import cc.arduino.contributions.VersionHelper;
 public class ContributedLibrary extends DownloadableContribution {
 
   private String url;
+  private String version;
+  private String checksum;
+  private long size;
+  private String archiveFileName;
+  private String name;
+  private String maintainer;
+  private String author;
+  private String website;
+  private String category;
+  private String licence;
+  private String paragraph;
+  private String sentence;
+  private ArrayList<String> architectures;
+  private ArrayList<String> types;
+  private ArrayList<ContributedLibraryDependency> dependencies;
+  private ArrayList<String> providesIncludes;
+
   public String getUrl() { return url; }
 
-  private String version;
   public String getVersion() { return version; }
 
-  private String checksum;
   public String getChecksum() { return checksum; }
 
-  private long size;
   public long getSize() { return size; }
 
-  private String archiveFileName;
   public String getArchiveFileName() { return archiveFileName; }
 
-
-
-  private String name;
   public String getName() { return name; }
 
-  private String maintainer;
   public String getMaintainer() { return maintainer; }
 
-  private String author;
   public String getAuthor() { return author; }
 
-  private String website;
   public String getWebsite() { return website; }
 
-  private String category;
   public String getCategory() { return category; }
+
   public void setCategory(String category) { this.category = category; }
 
-  private String licence;
   public String getLicense() { return licence; }
 
-  private String paragraph;
   public String getParagraph() { return paragraph; }
 
-  private String sentence;
   public String getSentence() { return sentence; }
 
-  private ArrayList<String> architectures;
   public List<String> getArchitectures() { return architectures; }
 
-  private ArrayList<String> types;
   public List<String> getTypes() { return types; }
 
-  private ArrayList<ContributedLibraryDependency> dependencies;
   public List<ContributedLibraryDependency> getDependencies() { return dependencies; }
 
-  private ArrayList<String> providesIncludes;
   public List<String> getProvidesIncludes() { return providesIncludes; }
-
-
 
   public static final Comparator<ContributedLibrary> CASE_INSENSITIVE_ORDER = (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName());
 

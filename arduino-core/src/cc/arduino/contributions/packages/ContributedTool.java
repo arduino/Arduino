@@ -39,15 +39,18 @@ import java.util.List;
 public class ContributedTool {
 
   private String name;
+  private String version;
+  private ArrayList<HostDependentDownloadableContribution> systems = new ArrayList<HostDependentDownloadableContribution>();
+  private boolean installed;
+  private File installedFolder;
+  private boolean builtIn;
+  private ContributedPackage contributedPackage;
+
   public String getName() { return name; }
 
-  private String version;
   public String getVersion() { return version; }
 
-  private ArrayList<HostDependentDownloadableContribution> systems = new ArrayList<HostDependentDownloadableContribution>();
   public List<HostDependentDownloadableContribution> getSystems() { return systems; }
-
-  private boolean installed;
 
   public boolean isInstalled() {
     return installed;
@@ -57,8 +60,6 @@ public class ContributedTool {
     this.installed = installed;
   }
 
-  private File installedFolder;
-
   public File getInstalledFolder() {
     return installedFolder;
   }
@@ -67,8 +68,6 @@ public class ContributedTool {
     this.installedFolder = installedFolder;
   }
 
-  private boolean builtIn;
-
   public boolean isBuiltIn() {
     return builtIn;
   }
@@ -76,8 +75,6 @@ public class ContributedTool {
   public void setBuiltIn(boolean builtIn) {
     this.builtIn = builtIn;
   }
-
-  private ContributedPackage contributedPackage;
 
   public ContributedPackage getPackage() {
     return contributedPackage;
