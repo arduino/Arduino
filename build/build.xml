@@ -487,7 +487,7 @@
     <copy file="macosx/liblistSerials-${LIBLISTSERIAL-VERSION}/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
 
-    <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed" />
+    <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed-2" />
     <antcall target="build-arduino-builder" />
 
     <antcall target="portable-${portable}">
