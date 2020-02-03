@@ -1510,6 +1510,8 @@ public class Base {
       }
     }
 
+    platformMenus.sort((x,y) -> x.getText().compareToIgnoreCase(y.getText()));
+
     JMenuItem firstBoardItem = null;
     if (platformMenus.size() == 1) {
       // When just one platform exists, add the board items directly,
