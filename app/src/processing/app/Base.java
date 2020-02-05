@@ -2337,21 +2337,27 @@ public class Base {
   }
 
   public void handleAddLibrary() {
-    JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
-    fileChooser.setDialogTitle(tr("Select a zip file or a folder containing the library you'd like to add"));
-    fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-    fileChooser.setFileFilter(new FileNameExtensionFilter(tr("ZIP files or folders"), "zip"));
-
-    Dimension preferredSize = fileChooser.getPreferredSize();
-    fileChooser.setPreferredSize(new Dimension(preferredSize.width + 200, preferredSize.height + 200));
-
-    int returnVal = fileChooser.showOpenDialog(activeEditor);
-
-    if (returnVal != JFileChooser.APPROVE_OPTION) {
-      return;
+    // get the frontmost window frame for placing file dialog
+    FileDialog fd = new FileDialog(activeEditor, tr("Select a zip file or a folder containing the library you'd like to add"), FileDialog.LOAD);
+    File home = new File(System.getProperty("user.home"));
+    if (home.isDirectory()) {
+      fd.setDirectory(home.getAbsolutePath());
     }
+    if (OSUtils.isWindows()) {
+      // Workaround: AWT FileDialog doesn't not support native file filters on Windows...
+      // https://stackoverflow.com/questions/12558413/how-to-filter-file-type-in-filedialog
+      fd.setFile("*.zip");
+    }
+    fd.setFilenameFilter((dir, name) -> name.toLowerCase().endsWith(".zip"));
+    fd.setVisible(true);
 
-    File sourceFile = fileChooser.getSelectedFile();
+    String directory = fd.getDirectory();
+    String filename = fd.getFile();
+
+    // User canceled selection
+    if (filename == null) return;
+
+    File sourceFile = new File(directory, filename);
     File tmpFolder = null;
 
     try {
