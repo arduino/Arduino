@@ -109,7 +109,7 @@
       <fileset dir="test" includes="**/*.pac" />
     </copy>
 
-    <junit printsummary="yes" dir="${work.dir}" fork="true">
+    <junit printsummary="yes" dir="${work.dir}" fork="true" showoutput="yes" failureproperty="test.failed">
       <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
       <jvmarg value="-DWORK_DIR=."/>
       <jvmarg value="-ea"/>
@@ -131,6 +131,7 @@
       </batchtest>
     </junit>
 
+    <fail if="test.failed"/>
   </target>
 
   <target name="build" depends="compile" description="Build PDE">
