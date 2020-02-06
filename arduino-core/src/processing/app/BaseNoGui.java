@@ -509,7 +509,7 @@ public class BaseNoGui {
     }
   }
 
-  static protected void initPlatform() {
+  static public void initPlatform() {
     try {
       Class<?> platformClass = Class.forName("processing.app.Platform");
       if (OSUtils.isMacOS()) {

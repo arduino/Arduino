@@ -8,6 +8,8 @@ import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import processing.app.BaseNoGui;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
@@ -38,6 +40,7 @@ public class JsonDownloaderTest {
 
   @Test
   public void testJsonDownload() throws Exception {
+    BaseNoGui.initPlatform();
     new JsonDownloader(downloader, new URL("http://downloads.arduino.cc/libraries/library_index.json"))
       .download(tempFile, new MultiStepProgress(1), "", new NoopProgressListener(), true);
 
