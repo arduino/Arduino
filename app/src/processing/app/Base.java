@@ -207,9 +207,6 @@ public class Base {
     BaseNoGui.getPlatform().init();
 
     BaseNoGui.initPortableFolder();
-    // This configure the logs root folder
-    System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
-    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     // Look for a possible "--preferences-file" parameter and load preferences
     BaseNoGui.initParameters(args);
@@ -217,6 +214,12 @@ public class Base {
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
+
+    // This configure the logs root folder
+    if (parser.isGuiMode()) {
+        System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
+    }
+    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     BaseNoGui.checkInstallationFolder();
 
