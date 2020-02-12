@@ -99,7 +99,7 @@
 
   <property name="portable" value="false" />
 
-  <property name="ARDUINO-BUILDER-VERSION" value="1.5.1" />
+  <property name="ARDUINO-BUILDER-VERSION" value="1.5.2" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.2-2" />
   <property name="AVRGCC-VERSION" value="7.3.0-atmel3.6.1-arduino5" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />
@@ -487,7 +487,7 @@
     <copy file="macosx/liblistSerials-${LIBLISTSERIAL-VERSION}/osx/liblistSerialsj.dylib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
     <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/liblistSerialsj.dylib" />
 
-    <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed-2" />
+    <property name="ARDUINO-BUILDER-EXTRA-VERSION" value="-signed" />
     <antcall target="build-arduino-builder" />
 
     <antcall target="portable-${portable}">
