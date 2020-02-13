@@ -1,5 +1,27 @@
-ARDUINO 1.8.12 ????
+ARDUINO 1.8.12 2020.02.13
 
+[ide]
+* Reverted the bundled Java JRE to the latest freely redistributable Oracle JRE for all
+  platforms except:
+    - macOS (due to notarization)
+    - aarch64 (due to missing graphical support)
+
+  Switching to AdoptJDK demonstrated to be more challenging than expected, bringing in
+  some corner case bugs that were not being caught by our testing procedures:
+    - https://github.com/arduino/Arduino/labels/OpenJDK
+
+  To guarantee the best user experience we decided to revert to the latest working JRE
+  until all the issues are resolved.
+
+* Improved visualization of compiler errors (@matthijskooijman)
+* Fixed: "Comparison method violates its original contract" error in library manager
+* Serial monitor is no more cleared during upload, so it can be copy/pasted (@PaulStoffregen)
+
+[arduino-builder]
+* FIX REGRESSION: library priority selection for bundled libraries (like SD or Ethernet) 
+* FIX REGRESSION: use AVR core installed via Board Manager (when present) instead of the one bundled in the IDE
+* Improved precompiled libraries handling
+* FIX: paths with spaces are now correctly printed in compiler output
 
 ARDUINO 1.8.11 2020.01.27
 
