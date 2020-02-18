@@ -20,6 +20,7 @@ public final class Common {
 
     /**
      * <code>int32 id = 1;</code>
+     * @return The id.
      */
     int getId();
   }
@@ -109,6 +110,7 @@ public final class Common {
     private int id_;
     /**
      * <code>int32 id = 1;</code>
+     * @return The id.
      */
     public int getId() {
       return id_;
@@ -419,12 +421,15 @@ public final class Common {
       private int id_ ;
       /**
        * <code>int32 id = 1;</code>
+       * @return The id.
        */
       public int getId() {
         return id_;
       }
       /**
        * <code>int32 id = 1;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
        */
       public Builder setId(int value) {
         
@@ -434,6 +439,7 @@ public final class Common {
       }
       /**
        * <code>int32 id = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearId() {
         
@@ -500,36 +506,43 @@ public final class Common {
 
     /**
      * <code>string url = 1;</code>
+     * @return The url.
      */
     java.lang.String getUrl();
     /**
      * <code>string url = 1;</code>
+     * @return The bytes for url.
      */
     com.google.protobuf.ByteString
         getUrlBytes();
 
     /**
      * <code>string file = 2;</code>
+     * @return The file.
      */
     java.lang.String getFile();
     /**
      * <code>string file = 2;</code>
+     * @return The bytes for file.
      */
     com.google.protobuf.ByteString
         getFileBytes();
 
     /**
      * <code>int64 total_size = 3;</code>
+     * @return The totalSize.
      */
     long getTotalSize();
 
     /**
      * <code>int64 downloaded = 4;</code>
+     * @return The downloaded.
      */
     long getDownloaded();
 
     /**
      * <code>bool completed = 5;</code>
+     * @return The completed.
      */
     boolean getCompleted();
   }
@@ -643,6 +656,7 @@ public final class Common {
     private volatile java.lang.Object url_;
     /**
      * <code>string url = 1;</code>
+     * @return The url.
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -658,6 +672,7 @@ public final class Common {
     }
     /**
      * <code>string url = 1;</code>
+     * @return The bytes for url.
      */
     public com.google.protobuf.ByteString
         getUrlBytes() {
@@ -677,6 +692,7 @@ public final class Common {
     private volatile java.lang.Object file_;
     /**
      * <code>string file = 2;</code>
+     * @return The file.
      */
     public java.lang.String getFile() {
       java.lang.Object ref = file_;
@@ -692,6 +708,7 @@ public final class Common {
     }
     /**
      * <code>string file = 2;</code>
+     * @return The bytes for file.
      */
     public com.google.protobuf.ByteString
         getFileBytes() {
@@ -711,6 +728,7 @@ public final class Common {
     private long totalSize_;
     /**
      * <code>int64 total_size = 3;</code>
+     * @return The totalSize.
      */
     public long getTotalSize() {
       return totalSize_;
@@ -720,6 +738,7 @@ public final class Common {
     private long downloaded_;
     /**
      * <code>int64 downloaded = 4;</code>
+     * @return The downloaded.
      */
     public long getDownloaded() {
       return downloaded_;
@@ -729,6 +748,7 @@ public final class Common {
     private boolean completed_;
     /**
      * <code>bool completed = 5;</code>
+     * @return The completed.
      */
     public boolean getCompleted() {
       return completed_;
@@ -1110,6 +1130,7 @@ public final class Common {
       private java.lang.Object url_ = "";
       /**
        * <code>string url = 1;</code>
+       * @return The url.
        */
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
@@ -1125,6 +1146,7 @@ public final class Common {
       }
       /**
        * <code>string url = 1;</code>
+       * @return The bytes for url.
        */
       public com.google.protobuf.ByteString
           getUrlBytes() {
@@ -1141,6 +1163,8 @@ public final class Common {
       }
       /**
        * <code>string url = 1;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrl(
           java.lang.String value) {
@@ -1154,6 +1178,7 @@ public final class Common {
       }
       /**
        * <code>string url = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUrl() {
         
@@ -1163,6 +1188,8 @@ public final class Common {
       }
       /**
        * <code>string url = 1;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrlBytes(
           com.google.protobuf.ByteString value) {
@@ -1179,6 +1206,7 @@ public final class Common {
       private java.lang.Object file_ = "";
       /**
        * <code>string file = 2;</code>
+       * @return The file.
        */
       public java.lang.String getFile() {
         java.lang.Object ref = file_;
@@ -1194,6 +1222,7 @@ public final class Common {
       }
       /**
        * <code>string file = 2;</code>
+       * @return The bytes for file.
        */
       public com.google.protobuf.ByteString
           getFileBytes() {
@@ -1210,6 +1239,8 @@ public final class Common {
       }
       /**
        * <code>string file = 2;</code>
+       * @param value The file to set.
+       * @return This builder for chaining.
        */
       public Builder setFile(
           java.lang.String value) {
@@ -1223,6 +1254,7 @@ public final class Common {
       }
       /**
        * <code>string file = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFile() {
         
@@ -1232,6 +1264,8 @@ public final class Common {
       }
       /**
        * <code>string file = 2;</code>
+       * @param value The bytes for file to set.
+       * @return This builder for chaining.
        */
       public Builder setFileBytes(
           com.google.protobuf.ByteString value) {
@@ -1248,12 +1282,15 @@ public final class Common {
       private long totalSize_ ;
       /**
        * <code>int64 total_size = 3;</code>
+       * @return The totalSize.
        */
       public long getTotalSize() {
         return totalSize_;
       }
       /**
        * <code>int64 total_size = 3;</code>
+       * @param value The totalSize to set.
+       * @return This builder for chaining.
        */
       public Builder setTotalSize(long value) {
         
@@ -1263,6 +1300,7 @@ public final class Common {
       }
       /**
        * <code>int64 total_size = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTotalSize() {
         
@@ -1274,12 +1312,15 @@ public final class Common {
       private long downloaded_ ;
       /**
        * <code>int64 downloaded = 4;</code>
+       * @return The downloaded.
        */
       public long getDownloaded() {
         return downloaded_;
       }
       /**
        * <code>int64 downloaded = 4;</code>
+       * @param value The downloaded to set.
+       * @return This builder for chaining.
        */
       public Builder setDownloaded(long value) {
         
@@ -1289,6 +1330,7 @@ public final class Common {
       }
       /**
        * <code>int64 downloaded = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDownloaded() {
         
@@ -1300,12 +1342,15 @@ public final class Common {
       private boolean completed_ ;
       /**
        * <code>bool completed = 5;</code>
+       * @return The completed.
        */
       public boolean getCompleted() {
         return completed_;
       }
       /**
        * <code>bool completed = 5;</code>
+       * @param value The completed to set.
+       * @return This builder for chaining.
        */
       public Builder setCompleted(boolean value) {
         
@@ -1315,6 +1360,7 @@ public final class Common {
       }
       /**
        * <code>bool completed = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCompleted() {
         
@@ -1381,26 +1427,31 @@ public final class Common {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string message = 2;</code>
+     * @return The message.
      */
     java.lang.String getMessage();
     /**
      * <code>string message = 2;</code>
+     * @return The bytes for message.
      */
     com.google.protobuf.ByteString
         getMessageBytes();
 
     /**
      * <code>bool completed = 3;</code>
+     * @return The completed.
      */
     boolean getCompleted();
   }
@@ -1504,6 +1555,7 @@ public final class Common {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -1519,6 +1571,7 @@ public final class Common {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -1538,6 +1591,7 @@ public final class Common {
     private volatile java.lang.Object message_;
     /**
      * <code>string message = 2;</code>
+     * @return The message.
      */
     public java.lang.String getMessage() {
       java.lang.Object ref = message_;
@@ -1553,6 +1607,7 @@ public final class Common {
     }
     /**
      * <code>string message = 2;</code>
+     * @return The bytes for message.
      */
     public com.google.protobuf.ByteString
         getMessageBytes() {
@@ -1572,6 +1627,7 @@ public final class Common {
     private boolean completed_;
     /**
      * <code>bool completed = 3;</code>
+     * @return The completed.
      */
     public boolean getCompleted() {
       return completed_;
@@ -1917,6 +1973,7 @@ public final class Common {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -1932,6 +1989,7 @@ public final class Common {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -1948,6 +2006,8 @@ public final class Common {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -1961,6 +2021,7 @@ public final class Common {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -1970,6 +2031,8 @@ public final class Common {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -1986,6 +2049,7 @@ public final class Common {
       private java.lang.Object message_ = "";
       /**
        * <code>string message = 2;</code>
+       * @return The message.
        */
       public java.lang.String getMessage() {
         java.lang.Object ref = message_;
@@ -2001,6 +2065,7 @@ public final class Common {
       }
       /**
        * <code>string message = 2;</code>
+       * @return The bytes for message.
        */
       public com.google.protobuf.ByteString
           getMessageBytes() {
@@ -2017,6 +2082,8 @@ public final class Common {
       }
       /**
        * <code>string message = 2;</code>
+       * @param value The message to set.
+       * @return This builder for chaining.
        */
       public Builder setMessage(
           java.lang.String value) {
@@ -2030,6 +2097,7 @@ public final class Common {
       }
       /**
        * <code>string message = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMessage() {
         
@@ -2039,6 +2107,8 @@ public final class Common {
       }
       /**
        * <code>string message = 2;</code>
+       * @param value The bytes for message to set.
+       * @return This builder for chaining.
        */
       public Builder setMessageBytes(
           com.google.protobuf.ByteString value) {
@@ -2055,12 +2125,15 @@ public final class Common {
       private boolean completed_ ;
       /**
        * <code>bool completed = 3;</code>
+       * @return The completed.
        */
       public boolean getCompleted() {
         return completed_;
       }
       /**
        * <code>bool completed = 3;</code>
+       * @param value The completed to set.
+       * @return This builder for chaining.
        */
       public Builder setCompleted(boolean value) {
         
@@ -2070,6 +2143,7 @@ public final class Common {
       }
       /**
        * <code>bool completed = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCompleted() {
         

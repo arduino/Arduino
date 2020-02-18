@@ -20,10 +20,12 @@ public final class SettingsOuterClass {
 
     /**
      * <code>string jsonData = 1;</code>
+     * @return The jsonData.
      */
     java.lang.String getJsonData();
     /**
      * <code>string jsonData = 1;</code>
+     * @return The bytes for jsonData.
      */
     com.google.protobuf.ByteString
         getJsonDataBytes();
@@ -116,6 +118,7 @@ public final class SettingsOuterClass {
     private volatile java.lang.Object jsonData_;
     /**
      * <code>string jsonData = 1;</code>
+     * @return The jsonData.
      */
     public java.lang.String getJsonData() {
       java.lang.Object ref = jsonData_;
@@ -131,6 +134,7 @@ public final class SettingsOuterClass {
     }
     /**
      * <code>string jsonData = 1;</code>
+     * @return The bytes for jsonData.
      */
     public com.google.protobuf.ByteString
         getJsonDataBytes() {
@@ -451,6 +455,7 @@ public final class SettingsOuterClass {
       private java.lang.Object jsonData_ = "";
       /**
        * <code>string jsonData = 1;</code>
+       * @return The jsonData.
        */
       public java.lang.String getJsonData() {
         java.lang.Object ref = jsonData_;
@@ -466,6 +471,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 1;</code>
+       * @return The bytes for jsonData.
        */
       public com.google.protobuf.ByteString
           getJsonDataBytes() {
@@ -482,6 +488,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 1;</code>
+       * @param value The jsonData to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonData(
           java.lang.String value) {
@@ -495,6 +503,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJsonData() {
         
@@ -504,6 +513,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 1;</code>
+       * @param value The bytes for jsonData to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonDataBytes(
           com.google.protobuf.ByteString value) {
@@ -575,20 +586,24 @@ public final class SettingsOuterClass {
 
     /**
      * <code>string key = 1;</code>
+     * @return The key.
      */
     java.lang.String getKey();
     /**
      * <code>string key = 1;</code>
+     * @return The bytes for key.
      */
     com.google.protobuf.ByteString
         getKeyBytes();
 
     /**
      * <code>string jsonData = 2;</code>
+     * @return The jsonData.
      */
     java.lang.String getJsonData();
     /**
      * <code>string jsonData = 2;</code>
+     * @return The bytes for jsonData.
      */
     com.google.protobuf.ByteString
         getJsonDataBytes();
@@ -688,6 +703,7 @@ public final class SettingsOuterClass {
     private volatile java.lang.Object key_;
     /**
      * <code>string key = 1;</code>
+     * @return The key.
      */
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
@@ -703,6 +719,7 @@ public final class SettingsOuterClass {
     }
     /**
      * <code>string key = 1;</code>
+     * @return The bytes for key.
      */
     public com.google.protobuf.ByteString
         getKeyBytes() {
@@ -722,6 +739,7 @@ public final class SettingsOuterClass {
     private volatile java.lang.Object jsonData_;
     /**
      * <code>string jsonData = 2;</code>
+     * @return The jsonData.
      */
     public java.lang.String getJsonData() {
       java.lang.Object ref = jsonData_;
@@ -737,6 +755,7 @@ public final class SettingsOuterClass {
     }
     /**
      * <code>string jsonData = 2;</code>
+     * @return The bytes for jsonData.
      */
     public com.google.protobuf.ByteString
         getJsonDataBytes() {
@@ -1074,6 +1093,7 @@ public final class SettingsOuterClass {
       private java.lang.Object key_ = "";
       /**
        * <code>string key = 1;</code>
+       * @return The key.
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -1089,6 +1109,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @return The bytes for key.
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -1105,6 +1126,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @param value The key to set.
+       * @return This builder for chaining.
        */
       public Builder setKey(
           java.lang.String value) {
@@ -1118,6 +1141,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearKey() {
         
@@ -1127,6 +1151,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @param value The bytes for key to set.
+       * @return This builder for chaining.
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -1143,6 +1169,7 @@ public final class SettingsOuterClass {
       private java.lang.Object jsonData_ = "";
       /**
        * <code>string jsonData = 2;</code>
+       * @return The jsonData.
        */
       public java.lang.String getJsonData() {
         java.lang.Object ref = jsonData_;
@@ -1158,6 +1185,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 2;</code>
+       * @return The bytes for jsonData.
        */
       public com.google.protobuf.ByteString
           getJsonDataBytes() {
@@ -1174,6 +1202,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 2;</code>
+       * @param value The jsonData to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonData(
           java.lang.String value) {
@@ -1187,6 +1217,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJsonData() {
         
@@ -1196,6 +1227,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string jsonData = 2;</code>
+       * @param value The bytes for jsonData to set.
+       * @return This builder for chaining.
        */
       public Builder setJsonDataBytes(
           com.google.protobuf.ByteString value) {
@@ -1685,10 +1718,12 @@ public final class SettingsOuterClass {
 
     /**
      * <code>string key = 1;</code>
+     * @return The key.
      */
     java.lang.String getKey();
     /**
      * <code>string key = 1;</code>
+     * @return The bytes for key.
      */
     com.google.protobuf.ByteString
         getKeyBytes();
@@ -1781,6 +1816,7 @@ public final class SettingsOuterClass {
     private volatile java.lang.Object key_;
     /**
      * <code>string key = 1;</code>
+     * @return The key.
      */
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
@@ -1796,6 +1832,7 @@ public final class SettingsOuterClass {
     }
     /**
      * <code>string key = 1;</code>
+     * @return The bytes for key.
      */
     public com.google.protobuf.ByteString
         getKeyBytes() {
@@ -2116,6 +2153,7 @@ public final class SettingsOuterClass {
       private java.lang.Object key_ = "";
       /**
        * <code>string key = 1;</code>
+       * @return The key.
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -2131,6 +2169,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @return The bytes for key.
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -2147,6 +2186,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @param value The key to set.
+       * @return This builder for chaining.
        */
       public Builder setKey(
           java.lang.String value) {
@@ -2160,6 +2201,7 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearKey() {
         
@@ -2169,6 +2211,8 @@ public final class SettingsOuterClass {
       }
       /**
        * <code>string key = 1;</code>
+       * @param value The bytes for key to set.
+       * @return This builder for chaining.
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {

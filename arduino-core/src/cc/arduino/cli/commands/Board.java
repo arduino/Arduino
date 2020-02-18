@@ -20,10 +20,12 @@ public final class Board {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -33,10 +35,12 @@ public final class Board {
 
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     com.google.protobuf.ByteString
         getFqbnBytes();
@@ -142,12 +146,14 @@ public final class Board {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -163,6 +169,7 @@ public final class Board {
     private volatile java.lang.Object fqbn_;
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     public java.lang.String getFqbn() {
       java.lang.Object ref = fqbn_;
@@ -178,6 +185,7 @@ public final class Board {
     }
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     public com.google.protobuf.ByteString
         getFqbnBytes() {
@@ -530,12 +538,14 @@ public final class Board {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -645,6 +655,7 @@ public final class Board {
       private java.lang.Object fqbn_ = "";
       /**
        * <code>string fqbn = 2;</code>
+       * @return The fqbn.
        */
       public java.lang.String getFqbn() {
         java.lang.Object ref = fqbn_;
@@ -660,6 +671,7 @@ public final class Board {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
        */
       public com.google.protobuf.ByteString
           getFqbnBytes() {
@@ -676,6 +688,8 @@ public final class Board {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbn(
           java.lang.String value) {
@@ -689,6 +703,7 @@ public final class Board {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFqbn() {
         
@@ -698,6 +713,8 @@ public final class Board {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbnBytes(
           com.google.protobuf.ByteString value) {
@@ -769,10 +786,12 @@ public final class Board {
 
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -940,6 +959,7 @@ public final class Board {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -955,6 +975,7 @@ public final class Board {
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -1457,6 +1478,7 @@ public final class Board {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -1472,6 +1494,7 @@ public final class Board {
       }
       /**
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -1488,6 +1511,8 @@ public final class Board {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -1501,6 +1526,7 @@ public final class Board {
       }
       /**
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -1510,6 +1536,8 @@ public final class Board {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -2061,20 +2089,24 @@ public final class Board {
 
     /**
      * <code>string option = 1;</code>
+     * @return The option.
      */
     java.lang.String getOption();
     /**
      * <code>string option = 1;</code>
+     * @return The bytes for option.
      */
     com.google.protobuf.ByteString
         getOptionBytes();
 
     /**
      * <code>string option_label = 2;</code>
+     * @return The optionLabel.
      */
     java.lang.String getOptionLabel();
     /**
      * <code>string option_label = 2;</code>
+     * @return The bytes for optionLabel.
      */
     com.google.protobuf.ByteString
         getOptionLabelBytes();
@@ -2212,6 +2244,7 @@ public final class Board {
     private volatile java.lang.Object option_;
     /**
      * <code>string option = 1;</code>
+     * @return The option.
      */
     public java.lang.String getOption() {
       java.lang.Object ref = option_;
@@ -2227,6 +2260,7 @@ public final class Board {
     }
     /**
      * <code>string option = 1;</code>
+     * @return The bytes for option.
      */
     public com.google.protobuf.ByteString
         getOptionBytes() {
@@ -2246,6 +2280,7 @@ public final class Board {
     private volatile java.lang.Object optionLabel_;
     /**
      * <code>string option_label = 2;</code>
+     * @return The optionLabel.
      */
     public java.lang.String getOptionLabel() {
       java.lang.Object ref = optionLabel_;
@@ -2261,6 +2296,7 @@ public final class Board {
     }
     /**
      * <code>string option_label = 2;</code>
+     * @return The bytes for optionLabel.
      */
     public com.google.protobuf.ByteString
         getOptionLabelBytes() {
@@ -2690,6 +2726,7 @@ public final class Board {
       private java.lang.Object option_ = "";
       /**
        * <code>string option = 1;</code>
+       * @return The option.
        */
       public java.lang.String getOption() {
         java.lang.Object ref = option_;
@@ -2705,6 +2742,7 @@ public final class Board {
       }
       /**
        * <code>string option = 1;</code>
+       * @return The bytes for option.
        */
       public com.google.protobuf.ByteString
           getOptionBytes() {
@@ -2721,6 +2759,8 @@ public final class Board {
       }
       /**
        * <code>string option = 1;</code>
+       * @param value The option to set.
+       * @return This builder for chaining.
        */
       public Builder setOption(
           java.lang.String value) {
@@ -2734,6 +2774,7 @@ public final class Board {
       }
       /**
        * <code>string option = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOption() {
         
@@ -2743,6 +2784,8 @@ public final class Board {
       }
       /**
        * <code>string option = 1;</code>
+       * @param value The bytes for option to set.
+       * @return This builder for chaining.
        */
       public Builder setOptionBytes(
           com.google.protobuf.ByteString value) {
@@ -2759,6 +2802,7 @@ public final class Board {
       private java.lang.Object optionLabel_ = "";
       /**
        * <code>string option_label = 2;</code>
+       * @return The optionLabel.
        */
       public java.lang.String getOptionLabel() {
         java.lang.Object ref = optionLabel_;
@@ -2774,6 +2818,7 @@ public final class Board {
       }
       /**
        * <code>string option_label = 2;</code>
+       * @return The bytes for optionLabel.
        */
       public com.google.protobuf.ByteString
           getOptionLabelBytes() {
@@ -2790,6 +2835,8 @@ public final class Board {
       }
       /**
        * <code>string option_label = 2;</code>
+       * @param value The optionLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setOptionLabel(
           java.lang.String value) {
@@ -2803,6 +2850,7 @@ public final class Board {
       }
       /**
        * <code>string option_label = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOptionLabel() {
         
@@ -2812,6 +2860,8 @@ public final class Board {
       }
       /**
        * <code>string option_label = 2;</code>
+       * @param value The bytes for optionLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setOptionLabelBytes(
           com.google.protobuf.ByteString value) {
@@ -3123,26 +3173,31 @@ public final class Board {
 
     /**
      * <code>string value = 1;</code>
+     * @return The value.
      */
     java.lang.String getValue();
     /**
      * <code>string value = 1;</code>
+     * @return The bytes for value.
      */
     com.google.protobuf.ByteString
         getValueBytes();
 
     /**
      * <code>string value_label = 2;</code>
+     * @return The valueLabel.
      */
     java.lang.String getValueLabel();
     /**
      * <code>string value_label = 2;</code>
+     * @return The bytes for valueLabel.
      */
     com.google.protobuf.ByteString
         getValueLabelBytes();
 
     /**
      * <code>bool selected = 3;</code>
+     * @return The selected.
      */
     boolean getSelected();
   }
@@ -3246,6 +3301,7 @@ public final class Board {
     private volatile java.lang.Object value_;
     /**
      * <code>string value = 1;</code>
+     * @return The value.
      */
     public java.lang.String getValue() {
       java.lang.Object ref = value_;
@@ -3261,6 +3317,7 @@ public final class Board {
     }
     /**
      * <code>string value = 1;</code>
+     * @return The bytes for value.
      */
     public com.google.protobuf.ByteString
         getValueBytes() {
@@ -3280,6 +3337,7 @@ public final class Board {
     private volatile java.lang.Object valueLabel_;
     /**
      * <code>string value_label = 2;</code>
+     * @return The valueLabel.
      */
     public java.lang.String getValueLabel() {
       java.lang.Object ref = valueLabel_;
@@ -3295,6 +3353,7 @@ public final class Board {
     }
     /**
      * <code>string value_label = 2;</code>
+     * @return The bytes for valueLabel.
      */
     public com.google.protobuf.ByteString
         getValueLabelBytes() {
@@ -3314,6 +3373,7 @@ public final class Board {
     private boolean selected_;
     /**
      * <code>bool selected = 3;</code>
+     * @return The selected.
      */
     public boolean getSelected() {
       return selected_;
@@ -3659,6 +3719,7 @@ public final class Board {
       private java.lang.Object value_ = "";
       /**
        * <code>string value = 1;</code>
+       * @return The value.
        */
       public java.lang.String getValue() {
         java.lang.Object ref = value_;
@@ -3674,6 +3735,7 @@ public final class Board {
       }
       /**
        * <code>string value = 1;</code>
+       * @return The bytes for value.
        */
       public com.google.protobuf.ByteString
           getValueBytes() {
@@ -3690,6 +3752,8 @@ public final class Board {
       }
       /**
        * <code>string value = 1;</code>
+       * @param value The value to set.
+       * @return This builder for chaining.
        */
       public Builder setValue(
           java.lang.String value) {
@@ -3703,6 +3767,7 @@ public final class Board {
       }
       /**
        * <code>string value = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -3712,6 +3777,8 @@ public final class Board {
       }
       /**
        * <code>string value = 1;</code>
+       * @param value The bytes for value to set.
+       * @return This builder for chaining.
        */
       public Builder setValueBytes(
           com.google.protobuf.ByteString value) {
@@ -3728,6 +3795,7 @@ public final class Board {
       private java.lang.Object valueLabel_ = "";
       /**
        * <code>string value_label = 2;</code>
+       * @return The valueLabel.
        */
       public java.lang.String getValueLabel() {
         java.lang.Object ref = valueLabel_;
@@ -3743,6 +3811,7 @@ public final class Board {
       }
       /**
        * <code>string value_label = 2;</code>
+       * @return The bytes for valueLabel.
        */
       public com.google.protobuf.ByteString
           getValueLabelBytes() {
@@ -3759,6 +3828,8 @@ public final class Board {
       }
       /**
        * <code>string value_label = 2;</code>
+       * @param value The valueLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setValueLabel(
           java.lang.String value) {
@@ -3772,6 +3843,7 @@ public final class Board {
       }
       /**
        * <code>string value_label = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearValueLabel() {
         
@@ -3781,6 +3853,8 @@ public final class Board {
       }
       /**
        * <code>string value_label = 2;</code>
+       * @param value The bytes for valueLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setValueLabelBytes(
           com.google.protobuf.ByteString value) {
@@ -3797,12 +3871,15 @@ public final class Board {
       private boolean selected_ ;
       /**
        * <code>bool selected = 3;</code>
+       * @return The selected.
        */
       public boolean getSelected() {
         return selected_;
       }
       /**
        * <code>bool selected = 3;</code>
+       * @param value The selected to set.
+       * @return This builder for chaining.
        */
       public Builder setSelected(boolean value) {
         
@@ -3812,6 +3889,7 @@ public final class Board {
       }
       /**
        * <code>bool selected = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSelected() {
         
@@ -3878,30 +3956,36 @@ public final class Board {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string version = 2;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 2;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
 
     /**
      * <code>string packager = 3;</code>
+     * @return The packager.
      */
     java.lang.String getPackager();
     /**
      * <code>string packager = 3;</code>
+     * @return The bytes for packager.
      */
     com.google.protobuf.ByteString
         getPackagerBytes();
@@ -4008,6 +4092,7 @@ public final class Board {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -4023,6 +4108,7 @@ public final class Board {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -4042,6 +4128,7 @@ public final class Board {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 2;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -4057,6 +4144,7 @@ public final class Board {
     }
     /**
      * <code>string version = 2;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -4076,6 +4164,7 @@ public final class Board {
     private volatile java.lang.Object packager_;
     /**
      * <code>string packager = 3;</code>
+     * @return The packager.
      */
     public java.lang.String getPackager() {
       java.lang.Object ref = packager_;
@@ -4091,6 +4180,7 @@ public final class Board {
     }
     /**
      * <code>string packager = 3;</code>
+     * @return The bytes for packager.
      */
     public com.google.protobuf.ByteString
         getPackagerBytes() {
@@ -4445,6 +4535,7 @@ public final class Board {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -4460,6 +4551,7 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -4476,6 +4568,8 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -4489,6 +4583,7 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -4498,6 +4593,8 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -4514,6 +4611,7 @@ public final class Board {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 2;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -4529,6 +4627,7 @@ public final class Board {
       }
       /**
        * <code>string version = 2;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -4545,6 +4644,8 @@ public final class Board {
       }
       /**
        * <code>string version = 2;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -4558,6 +4659,7 @@ public final class Board {
       }
       /**
        * <code>string version = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -4567,6 +4669,8 @@ public final class Board {
       }
       /**
        * <code>string version = 2;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -4583,6 +4687,7 @@ public final class Board {
       private java.lang.Object packager_ = "";
       /**
        * <code>string packager = 3;</code>
+       * @return The packager.
        */
       public java.lang.String getPackager() {
         java.lang.Object ref = packager_;
@@ -4598,6 +4703,7 @@ public final class Board {
       }
       /**
        * <code>string packager = 3;</code>
+       * @return The bytes for packager.
        */
       public com.google.protobuf.ByteString
           getPackagerBytes() {
@@ -4614,6 +4720,8 @@ public final class Board {
       }
       /**
        * <code>string packager = 3;</code>
+       * @param value The packager to set.
+       * @return This builder for chaining.
        */
       public Builder setPackager(
           java.lang.String value) {
@@ -4627,6 +4735,7 @@ public final class Board {
       }
       /**
        * <code>string packager = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPackager() {
         
@@ -4636,6 +4745,8 @@ public final class Board {
       }
       /**
        * <code>string packager = 3;</code>
+       * @param value The bytes for packager to set.
+       * @return This builder for chaining.
        */
       public Builder setPackagerBytes(
           com.google.protobuf.ByteString value) {
@@ -4707,10 +4818,12 @@ public final class Board {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -4720,30 +4833,36 @@ public final class Board {
 
     /**
      * <code>string board_uri = 2;</code>
+     * @return The boardUri.
      */
     java.lang.String getBoardUri();
     /**
      * <code>string board_uri = 2;</code>
+     * @return The bytes for boardUri.
      */
     com.google.protobuf.ByteString
         getBoardUriBytes();
 
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The bytes for sketchPath.
      */
     com.google.protobuf.ByteString
         getSketchPathBytes();
 
     /**
      * <code>string search_timeout = 4;</code>
+     * @return The searchTimeout.
      */
     java.lang.String getSearchTimeout();
     /**
      * <code>string search_timeout = 4;</code>
+     * @return The bytes for searchTimeout.
      */
     com.google.protobuf.ByteString
         getSearchTimeoutBytes();
@@ -4863,12 +4982,14 @@ public final class Board {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -4884,6 +5005,7 @@ public final class Board {
     private volatile java.lang.Object boardUri_;
     /**
      * <code>string board_uri = 2;</code>
+     * @return The boardUri.
      */
     public java.lang.String getBoardUri() {
       java.lang.Object ref = boardUri_;
@@ -4899,6 +5021,7 @@ public final class Board {
     }
     /**
      * <code>string board_uri = 2;</code>
+     * @return The bytes for boardUri.
      */
     public com.google.protobuf.ByteString
         getBoardUriBytes() {
@@ -4918,6 +5041,7 @@ public final class Board {
     private volatile java.lang.Object sketchPath_;
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The sketchPath.
      */
     public java.lang.String getSketchPath() {
       java.lang.Object ref = sketchPath_;
@@ -4933,6 +5057,7 @@ public final class Board {
     }
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The bytes for sketchPath.
      */
     public com.google.protobuf.ByteString
         getSketchPathBytes() {
@@ -4952,6 +5077,7 @@ public final class Board {
     private volatile java.lang.Object searchTimeout_;
     /**
      * <code>string search_timeout = 4;</code>
+     * @return The searchTimeout.
      */
     public java.lang.String getSearchTimeout() {
       java.lang.Object ref = searchTimeout_;
@@ -4967,6 +5093,7 @@ public final class Board {
     }
     /**
      * <code>string search_timeout = 4;</code>
+     * @return The bytes for searchTimeout.
      */
     public com.google.protobuf.ByteString
         getSearchTimeoutBytes() {
@@ -5353,12 +5480,14 @@ public final class Board {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -5468,6 +5597,7 @@ public final class Board {
       private java.lang.Object boardUri_ = "";
       /**
        * <code>string board_uri = 2;</code>
+       * @return The boardUri.
        */
       public java.lang.String getBoardUri() {
         java.lang.Object ref = boardUri_;
@@ -5483,6 +5613,7 @@ public final class Board {
       }
       /**
        * <code>string board_uri = 2;</code>
+       * @return The bytes for boardUri.
        */
       public com.google.protobuf.ByteString
           getBoardUriBytes() {
@@ -5499,6 +5630,8 @@ public final class Board {
       }
       /**
        * <code>string board_uri = 2;</code>
+       * @param value The boardUri to set.
+       * @return This builder for chaining.
        */
       public Builder setBoardUri(
           java.lang.String value) {
@@ -5512,6 +5645,7 @@ public final class Board {
       }
       /**
        * <code>string board_uri = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBoardUri() {
         
@@ -5521,6 +5655,8 @@ public final class Board {
       }
       /**
        * <code>string board_uri = 2;</code>
+       * @param value The bytes for boardUri to set.
+       * @return This builder for chaining.
        */
       public Builder setBoardUriBytes(
           com.google.protobuf.ByteString value) {
@@ -5537,6 +5673,7 @@ public final class Board {
       private java.lang.Object sketchPath_ = "";
       /**
        * <code>string sketch_path = 3;</code>
+       * @return The sketchPath.
        */
       public java.lang.String getSketchPath() {
         java.lang.Object ref = sketchPath_;
@@ -5552,6 +5689,7 @@ public final class Board {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @return The bytes for sketchPath.
        */
       public com.google.protobuf.ByteString
           getSketchPathBytes() {
@@ -5568,6 +5706,8 @@ public final class Board {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @param value The sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPath(
           java.lang.String value) {
@@ -5581,6 +5721,7 @@ public final class Board {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSketchPath() {
         
@@ -5590,6 +5731,8 @@ public final class Board {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @param value The bytes for sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPathBytes(
           com.google.protobuf.ByteString value) {
@@ -5606,6 +5749,7 @@ public final class Board {
       private java.lang.Object searchTimeout_ = "";
       /**
        * <code>string search_timeout = 4;</code>
+       * @return The searchTimeout.
        */
       public java.lang.String getSearchTimeout() {
         java.lang.Object ref = searchTimeout_;
@@ -5621,6 +5765,7 @@ public final class Board {
       }
       /**
        * <code>string search_timeout = 4;</code>
+       * @return The bytes for searchTimeout.
        */
       public com.google.protobuf.ByteString
           getSearchTimeoutBytes() {
@@ -5637,6 +5782,8 @@ public final class Board {
       }
       /**
        * <code>string search_timeout = 4;</code>
+       * @param value The searchTimeout to set.
+       * @return This builder for chaining.
        */
       public Builder setSearchTimeout(
           java.lang.String value) {
@@ -5650,6 +5797,7 @@ public final class Board {
       }
       /**
        * <code>string search_timeout = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSearchTimeout() {
         
@@ -5659,6 +5807,8 @@ public final class Board {
       }
       /**
        * <code>string search_timeout = 4;</code>
+       * @param value The bytes for searchTimeout to set.
+       * @return This builder for chaining.
        */
       public Builder setSearchTimeoutBytes(
           com.google.protobuf.ByteString value) {
@@ -5730,10 +5880,12 @@ public final class Board {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -5835,12 +5987,14 @@ public final class Board {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -6172,12 +6326,14 @@ public final class Board {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -6342,10 +6498,12 @@ public final class Board {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -6447,12 +6605,14 @@ public final class Board {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -6784,12 +6944,14 @@ public final class Board {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -7742,30 +7904,36 @@ public final class Board {
 
     /**
      * <code>string address = 1;</code>
+     * @return The address.
      */
     java.lang.String getAddress();
     /**
      * <code>string address = 1;</code>
+     * @return The bytes for address.
      */
     com.google.protobuf.ByteString
         getAddressBytes();
 
     /**
      * <code>string protocol = 2;</code>
+     * @return The protocol.
      */
     java.lang.String getProtocol();
     /**
      * <code>string protocol = 2;</code>
+     * @return The bytes for protocol.
      */
     com.google.protobuf.ByteString
         getProtocolBytes();
 
     /**
      * <code>string protocol_label = 3;</code>
+     * @return The protocolLabel.
      */
     java.lang.String getProtocolLabel();
     /**
      * <code>string protocol_label = 3;</code>
+     * @return The bytes for protocolLabel.
      */
     com.google.protobuf.ByteString
         getProtocolLabelBytes();
@@ -7910,6 +8078,7 @@ public final class Board {
     private volatile java.lang.Object address_;
     /**
      * <code>string address = 1;</code>
+     * @return The address.
      */
     public java.lang.String getAddress() {
       java.lang.Object ref = address_;
@@ -7925,6 +8094,7 @@ public final class Board {
     }
     /**
      * <code>string address = 1;</code>
+     * @return The bytes for address.
      */
     public com.google.protobuf.ByteString
         getAddressBytes() {
@@ -7944,6 +8114,7 @@ public final class Board {
     private volatile java.lang.Object protocol_;
     /**
      * <code>string protocol = 2;</code>
+     * @return The protocol.
      */
     public java.lang.String getProtocol() {
       java.lang.Object ref = protocol_;
@@ -7959,6 +8130,7 @@ public final class Board {
     }
     /**
      * <code>string protocol = 2;</code>
+     * @return The bytes for protocol.
      */
     public com.google.protobuf.ByteString
         getProtocolBytes() {
@@ -7978,6 +8150,7 @@ public final class Board {
     private volatile java.lang.Object protocolLabel_;
     /**
      * <code>string protocol_label = 3;</code>
+     * @return The protocolLabel.
      */
     public java.lang.String getProtocolLabel() {
       java.lang.Object ref = protocolLabel_;
@@ -7993,6 +8166,7 @@ public final class Board {
     }
     /**
      * <code>string protocol_label = 3;</code>
+     * @return The bytes for protocolLabel.
      */
     public com.google.protobuf.ByteString
         getProtocolLabelBytes() {
@@ -8439,6 +8613,7 @@ public final class Board {
       private java.lang.Object address_ = "";
       /**
        * <code>string address = 1;</code>
+       * @return The address.
        */
       public java.lang.String getAddress() {
         java.lang.Object ref = address_;
@@ -8454,6 +8629,7 @@ public final class Board {
       }
       /**
        * <code>string address = 1;</code>
+       * @return The bytes for address.
        */
       public com.google.protobuf.ByteString
           getAddressBytes() {
@@ -8470,6 +8646,8 @@ public final class Board {
       }
       /**
        * <code>string address = 1;</code>
+       * @param value The address to set.
+       * @return This builder for chaining.
        */
       public Builder setAddress(
           java.lang.String value) {
@@ -8483,6 +8661,7 @@ public final class Board {
       }
       /**
        * <code>string address = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAddress() {
         
@@ -8492,6 +8671,8 @@ public final class Board {
       }
       /**
        * <code>string address = 1;</code>
+       * @param value The bytes for address to set.
+       * @return This builder for chaining.
        */
       public Builder setAddressBytes(
           com.google.protobuf.ByteString value) {
@@ -8508,6 +8689,7 @@ public final class Board {
       private java.lang.Object protocol_ = "";
       /**
        * <code>string protocol = 2;</code>
+       * @return The protocol.
        */
       public java.lang.String getProtocol() {
         java.lang.Object ref = protocol_;
@@ -8523,6 +8705,7 @@ public final class Board {
       }
       /**
        * <code>string protocol = 2;</code>
+       * @return The bytes for protocol.
        */
       public com.google.protobuf.ByteString
           getProtocolBytes() {
@@ -8539,6 +8722,8 @@ public final class Board {
       }
       /**
        * <code>string protocol = 2;</code>
+       * @param value The protocol to set.
+       * @return This builder for chaining.
        */
       public Builder setProtocol(
           java.lang.String value) {
@@ -8552,6 +8737,7 @@ public final class Board {
       }
       /**
        * <code>string protocol = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearProtocol() {
         
@@ -8561,6 +8747,8 @@ public final class Board {
       }
       /**
        * <code>string protocol = 2;</code>
+       * @param value The bytes for protocol to set.
+       * @return This builder for chaining.
        */
       public Builder setProtocolBytes(
           com.google.protobuf.ByteString value) {
@@ -8577,6 +8765,7 @@ public final class Board {
       private java.lang.Object protocolLabel_ = "";
       /**
        * <code>string protocol_label = 3;</code>
+       * @return The protocolLabel.
        */
       public java.lang.String getProtocolLabel() {
         java.lang.Object ref = protocolLabel_;
@@ -8592,6 +8781,7 @@ public final class Board {
       }
       /**
        * <code>string protocol_label = 3;</code>
+       * @return The bytes for protocolLabel.
        */
       public com.google.protobuf.ByteString
           getProtocolLabelBytes() {
@@ -8608,6 +8798,8 @@ public final class Board {
       }
       /**
        * <code>string protocol_label = 3;</code>
+       * @param value The protocolLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setProtocolLabel(
           java.lang.String value) {
@@ -8621,6 +8813,7 @@ public final class Board {
       }
       /**
        * <code>string protocol_label = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearProtocolLabel() {
         
@@ -8630,6 +8823,8 @@ public final class Board {
       }
       /**
        * <code>string protocol_label = 3;</code>
+       * @param value The bytes for protocolLabel to set.
+       * @return This builder for chaining.
        */
       public Builder setProtocolLabelBytes(
           com.google.protobuf.ByteString value) {
@@ -8941,10 +9136,12 @@ public final class Board {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -8954,19 +9151,25 @@ public final class Board {
 
     /**
      * <code>repeated string search_args = 2;</code>
+     * @return A list containing the searchArgs.
      */
     java.util.List<java.lang.String>
         getSearchArgsList();
     /**
      * <code>repeated string search_args = 2;</code>
+     * @return The count of searchArgs.
      */
     int getSearchArgsCount();
     /**
      * <code>repeated string search_args = 2;</code>
+     * @param index The index of the element to return.
+     * @return The searchArgs at the given index.
      */
     java.lang.String getSearchArgs(int index);
     /**
      * <code>repeated string search_args = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the searchArgs at the given index.
      */
     com.google.protobuf.ByteString
         getSearchArgsBytes(int index);
@@ -9079,12 +9282,14 @@ public final class Board {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -9100,6 +9305,7 @@ public final class Board {
     private com.google.protobuf.LazyStringList searchArgs_;
     /**
      * <code>repeated string search_args = 2;</code>
+     * @return A list containing the searchArgs.
      */
     public com.google.protobuf.ProtocolStringList
         getSearchArgsList() {
@@ -9107,18 +9313,23 @@ public final class Board {
     }
     /**
      * <code>repeated string search_args = 2;</code>
+     * @return The count of searchArgs.
      */
     public int getSearchArgsCount() {
       return searchArgs_.size();
     }
     /**
      * <code>repeated string search_args = 2;</code>
+     * @param index The index of the element to return.
+     * @return The searchArgs at the given index.
      */
     public java.lang.String getSearchArgs(int index) {
       return searchArgs_.get(index);
     }
     /**
      * <code>repeated string search_args = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the searchArgs at the given index.
      */
     public com.google.protobuf.ByteString
         getSearchArgsBytes(int index) {
@@ -9481,12 +9692,14 @@ public final class Board {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -9602,6 +9815,7 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @return A list containing the searchArgs.
        */
       public com.google.protobuf.ProtocolStringList
           getSearchArgsList() {
@@ -9609,18 +9823,23 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @return The count of searchArgs.
        */
       public int getSearchArgsCount() {
         return searchArgs_.size();
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param index The index of the element to return.
+       * @return The searchArgs at the given index.
        */
       public java.lang.String getSearchArgs(int index) {
         return searchArgs_.get(index);
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the searchArgs at the given index.
        */
       public com.google.protobuf.ByteString
           getSearchArgsBytes(int index) {
@@ -9628,6 +9847,9 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The searchArgs to set.
+       * @return This builder for chaining.
        */
       public Builder setSearchArgs(
           int index, java.lang.String value) {
@@ -9641,6 +9863,8 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param value The searchArgs to add.
+       * @return This builder for chaining.
        */
       public Builder addSearchArgs(
           java.lang.String value) {
@@ -9654,6 +9878,8 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param values The searchArgs to add.
+       * @return This builder for chaining.
        */
       public Builder addAllSearchArgs(
           java.lang.Iterable<java.lang.String> values) {
@@ -9665,6 +9891,7 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSearchArgs() {
         searchArgs_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -9674,6 +9901,8 @@ public final class Board {
       }
       /**
        * <code>repeated string search_args = 2;</code>
+       * @param value The bytes of the searchArgs to add.
+       * @return This builder for chaining.
        */
       public Builder addSearchArgsBytes(
           com.google.protobuf.ByteString value) {
@@ -10533,20 +10762,24 @@ public final class Board {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string FQBN = 2;</code>
+     * @return The fQBN.
      */
     java.lang.String getFQBN();
     /**
      * <code>string FQBN = 2;</code>
+     * @return The bytes for fQBN.
      */
     com.google.protobuf.ByteString
         getFQBNBytes();
@@ -10646,6 +10879,7 @@ public final class Board {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -10661,6 +10895,7 @@ public final class Board {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -10680,6 +10915,7 @@ public final class Board {
     private volatile java.lang.Object fQBN_;
     /**
      * <code>string FQBN = 2;</code>
+     * @return The fQBN.
      */
     public java.lang.String getFQBN() {
       java.lang.Object ref = fQBN_;
@@ -10695,6 +10931,7 @@ public final class Board {
     }
     /**
      * <code>string FQBN = 2;</code>
+     * @return The bytes for fQBN.
      */
     public com.google.protobuf.ByteString
         getFQBNBytes() {
@@ -11032,6 +11269,7 @@ public final class Board {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -11047,6 +11285,7 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -11063,6 +11302,8 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -11076,6 +11317,7 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -11085,6 +11327,8 @@ public final class Board {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -11101,6 +11345,7 @@ public final class Board {
       private java.lang.Object fQBN_ = "";
       /**
        * <code>string FQBN = 2;</code>
+       * @return The fQBN.
        */
       public java.lang.String getFQBN() {
         java.lang.Object ref = fQBN_;
@@ -11116,6 +11361,7 @@ public final class Board {
       }
       /**
        * <code>string FQBN = 2;</code>
+       * @return The bytes for fQBN.
        */
       public com.google.protobuf.ByteString
           getFQBNBytes() {
@@ -11132,6 +11378,8 @@ public final class Board {
       }
       /**
        * <code>string FQBN = 2;</code>
+       * @param value The fQBN to set.
+       * @return This builder for chaining.
        */
       public Builder setFQBN(
           java.lang.String value) {
@@ -11145,6 +11393,7 @@ public final class Board {
       }
       /**
        * <code>string FQBN = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFQBN() {
         
@@ -11154,6 +11403,8 @@ public final class Board {
       }
       /**
        * <code>string FQBN = 2;</code>
+       * @param value The bytes for fQBN to set.
+       * @return This builder for chaining.
        */
       public Builder setFQBNBytes(
           com.google.protobuf.ByteString value) {

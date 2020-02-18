@@ -26,6 +26,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+     * @return Whether the monitorConfig field is set.
      */
     boolean hasMonitorConfig();
     /**
@@ -36,6 +37,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+     * @return The monitorConfig.
      */
     cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig getMonitorConfig();
     /**
@@ -55,6 +57,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>bytes data = 2;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
 
@@ -167,7 +170,8 @@ public final class MonitorOuterClass {
     private int contentCase_ = 0;
     private java.lang.Object content_;
     public enum ContentCase
-        implements com.google.protobuf.Internal.EnumLite {
+        implements com.google.protobuf.Internal.EnumLite,
+            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
       MONITORCONFIG(1),
       DATA(2),
       CONTENT_NOT_SET(0);
@@ -176,6 +180,8 @@ public final class MonitorOuterClass {
         this.value = value;
       }
       /**
+       * @param value The number of the enum to look for.
+       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -211,6 +217,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+     * @return Whether the monitorConfig field is set.
      */
     public boolean hasMonitorConfig() {
       return contentCase_ == 1;
@@ -223,6 +230,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+     * @return The monitorConfig.
      */
     public cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig getMonitorConfig() {
       if (contentCase_ == 1) {
@@ -253,6 +261,7 @@ public final class MonitorOuterClass {
      * </pre>
      *
      * <code>bytes data = 2;</code>
+     * @return The data.
      */
     public com.google.protobuf.ByteString getData() {
       if (contentCase_ == 2) {
@@ -646,6 +655,7 @@ public final class MonitorOuterClass {
        * </pre>
        *
        * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+       * @return Whether the monitorConfig field is set.
        */
       public boolean hasMonitorConfig() {
         return contentCase_ == 1;
@@ -658,6 +668,7 @@ public final class MonitorOuterClass {
        * </pre>
        *
        * <code>.cc.arduino.cli.monitor.MonitorConfig monitorConfig = 1;</code>
+       * @return The monitorConfig.
        */
       public cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig getMonitorConfig() {
         if (monitorConfigBuilder_ == null) {
@@ -832,6 +843,7 @@ public final class MonitorOuterClass {
        * </pre>
        *
        * <code>bytes data = 2;</code>
+       * @return The data.
        */
       public com.google.protobuf.ByteString getData() {
         if (contentCase_ == 2) {
@@ -845,6 +857,8 @@ public final class MonitorOuterClass {
        * </pre>
        *
        * <code>bytes data = 2;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -861,6 +875,7 @@ public final class MonitorOuterClass {
        * </pre>
        *
        * <code>bytes data = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         if (contentCase_ == 2) {
@@ -929,29 +944,35 @@ public final class MonitorOuterClass {
 
     /**
      * <code>string target = 1;</code>
+     * @return The target.
      */
     java.lang.String getTarget();
     /**
      * <code>string target = 1;</code>
+     * @return The bytes for target.
      */
     com.google.protobuf.ByteString
         getTargetBytes();
 
     /**
      * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+     * @return The enum numeric value on the wire for type.
      */
     int getTypeValue();
     /**
      * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+     * @return The type.
      */
     cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig.TargetType getType();
 
     /**
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+     * @return Whether the additionalConfig field is set.
      */
     boolean hasAdditionalConfig();
     /**
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+     * @return The additionalConfig.
      */
     com.google.protobuf.Struct getAdditionalConfig();
     /**
@@ -1095,6 +1116,8 @@ public final class MonitorOuterClass {
       }
 
       /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -1102,6 +1125,10 @@ public final class MonitorOuterClass {
         return forNumber(value);
       }
 
+      /**
+       * @param value The numeric wire value of the corresponding enum entry.
+       * @return The enum associated with the given numeric wire value.
+       */
       public static TargetType forNumber(int value) {
         switch (value) {
           case 0: return SERIAL;
@@ -1161,6 +1188,7 @@ public final class MonitorOuterClass {
     private volatile java.lang.Object target_;
     /**
      * <code>string target = 1;</code>
+     * @return The target.
      */
     public java.lang.String getTarget() {
       java.lang.Object ref = target_;
@@ -1176,6 +1204,7 @@ public final class MonitorOuterClass {
     }
     /**
      * <code>string target = 1;</code>
+     * @return The bytes for target.
      */
     public com.google.protobuf.ByteString
         getTargetBytes() {
@@ -1195,12 +1224,14 @@ public final class MonitorOuterClass {
     private int type_;
     /**
      * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+     * @return The enum numeric value on the wire for type.
      */
     public int getTypeValue() {
       return type_;
     }
     /**
      * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+     * @return The type.
      */
     public cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig.TargetType getType() {
       @SuppressWarnings("deprecation")
@@ -1212,12 +1243,14 @@ public final class MonitorOuterClass {
     private com.google.protobuf.Struct additionalConfig_;
     /**
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+     * @return Whether the additionalConfig field is set.
      */
     public boolean hasAdditionalConfig() {
       return additionalConfig_ != null;
     }
     /**
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+     * @return The additionalConfig.
      */
     public com.google.protobuf.Struct getAdditionalConfig() {
       return additionalConfig_ == null ? com.google.protobuf.Struct.getDefaultInstance() : additionalConfig_;
@@ -1585,6 +1618,7 @@ public final class MonitorOuterClass {
       private java.lang.Object target_ = "";
       /**
        * <code>string target = 1;</code>
+       * @return The target.
        */
       public java.lang.String getTarget() {
         java.lang.Object ref = target_;
@@ -1600,6 +1634,7 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>string target = 1;</code>
+       * @return The bytes for target.
        */
       public com.google.protobuf.ByteString
           getTargetBytes() {
@@ -1616,6 +1651,8 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>string target = 1;</code>
+       * @param value The target to set.
+       * @return This builder for chaining.
        */
       public Builder setTarget(
           java.lang.String value) {
@@ -1629,6 +1666,7 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>string target = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTarget() {
         
@@ -1638,6 +1676,8 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>string target = 1;</code>
+       * @param value The bytes for target to set.
+       * @return This builder for chaining.
        */
       public Builder setTargetBytes(
           com.google.protobuf.ByteString value) {
@@ -1654,12 +1694,15 @@ public final class MonitorOuterClass {
       private int type_ = 0;
       /**
        * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+       * @return The enum numeric value on the wire for type.
        */
       public int getTypeValue() {
         return type_;
       }
       /**
        * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+       * @param value The enum numeric value on the wire for type to set.
+       * @return This builder for chaining.
        */
       public Builder setTypeValue(int value) {
         type_ = value;
@@ -1668,6 +1711,7 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+       * @return The type.
        */
       public cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig.TargetType getType() {
         @SuppressWarnings("deprecation")
@@ -1676,6 +1720,8 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
        */
       public Builder setType(cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig.TargetType value) {
         if (value == null) {
@@ -1688,6 +1734,7 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>.cc.arduino.cli.monitor.MonitorConfig.TargetType type = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearType() {
         
@@ -1701,12 +1748,14 @@ public final class MonitorOuterClass {
           com.google.protobuf.Struct, com.google.protobuf.Struct.Builder, com.google.protobuf.StructOrBuilder> additionalConfigBuilder_;
       /**
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+       * @return Whether the additionalConfig field is set.
        */
       public boolean hasAdditionalConfig() {
         return additionalConfigBuilder_ != null || additionalConfig_ != null;
       }
       /**
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
+       * @return The additionalConfig.
        */
       public com.google.protobuf.Struct getAdditionalConfig() {
         if (additionalConfigBuilder_ == null) {
@@ -1871,6 +1920,7 @@ public final class MonitorOuterClass {
 
     /**
      * <code>bytes data = 1;</code>
+     * @return The data.
      */
     com.google.protobuf.ByteString getData();
   }
@@ -1964,6 +2014,7 @@ public final class MonitorOuterClass {
     private com.google.protobuf.ByteString data_;
     /**
      * <code>bytes data = 1;</code>
+     * @return The data.
      */
     public com.google.protobuf.ByteString getData() {
       return data_;
@@ -2277,12 +2328,15 @@ public final class MonitorOuterClass {
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes data = 1;</code>
+       * @return The data.
        */
       public com.google.protobuf.ByteString getData() {
         return data_;
       }
       /**
        * <code>bytes data = 1;</code>
+       * @param value The data to set.
+       * @return This builder for chaining.
        */
       public Builder setData(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -2295,6 +2349,7 @@ public final class MonitorOuterClass {
       }
       /**
        * <code>bytes data = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearData() {
         
