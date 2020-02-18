@@ -31,9 +31,6 @@ package cc.arduino.contributions.libraries;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
-import static processing.app.packages.UserLibrary.LOCATION_CORE;
-import static processing.app.packages.UserLibrary.LOCATION_REF_CORE;
-import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +42,7 @@ import java.util.Optional;
 import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.cli.commands.Lib.InstalledLibrary;
 import cc.arduino.cli.commands.Lib.Library;
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import io.grpc.StatusException;
 import processing.app.BaseNoGui;
@@ -208,8 +206,8 @@ public class LibrariesIndexer {
                                        lib.getSrcFolder()));
         }
 
-        String loc = lib.getLocation();
-        if (!loc.equals(LOCATION_CORE) && !loc.equals(LOCATION_REF_CORE)) {
+        LibraryLocation loc = lib.getLocation();
+        if (!loc.equals(LibraryLocation.platform_builtin) && !loc.equals(LibraryLocation.referenced_platform_builtin)) {
           // Check if we can find the same library in the index
           // and mark it as installed
           index.find(lib.getName(), lib.getVersion()).ifPresent(foundLib -> {
@@ -218,7 +216,7 @@ public class LibrariesIndexer {
           });
         }
 
-        if (lib.getTypes().isEmpty() && loc.equals(LOCATION_SKETCHBOOK)) {
+        if (lib.getTypes().isEmpty() && loc.equals(LibraryLocation.user)) {
           lib.setTypes(lib.getDeclaredTypes());
         }
 
@@ -235,8 +233,8 @@ public class LibrariesIndexer {
     // TODO: Should be done on the CLI?
     installedLibraries.stream() //
         .filter(l -> l.getTypes().contains("Contributed")) //
-        .filter(l -> l.getLocation().equals(LOCATION_CORE)
-                     || l.getLocation().equals(LOCATION_REF_CORE)) //
+        .filter(l -> l.getLocation().equals(LibraryLocation.platform_builtin)
+                     || l.getLocation().equals(LibraryLocation.referenced_platform_builtin)) //
         .forEach(l -> {
           File libFolder = l.getInstalledFolder();
           Optional<ContributedPlatform> platform = BaseNoGui.indexer
