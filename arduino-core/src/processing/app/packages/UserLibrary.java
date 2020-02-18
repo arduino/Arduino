@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 import cc.arduino.contributions.libraries.ContributedLibraryDependency;
 
 public class UserLibrary {
@@ -53,11 +54,7 @@ public class UserLibrary {
   private Collection<String> includes;
   protected File installedFolder;
 
-  public static final String LOCATION_IDE = "ide";
-  public static final String LOCATION_SKETCHBOOK = "user";
-  public static final String LOCATION_CORE = "platform";
-  public static final String LOCATION_REF_CORE = "ref-platform";
-  protected String location;
+  protected LibraryLocation location;
 
   public UserLibrary(File installedFolder, String name, String version,
                      String author, String maintainer, String sentence,
@@ -65,7 +62,7 @@ public class UserLibrary {
                      String license, Collection<String> architectures,
                      String layout, Collection<String> declaredTypes,
                      boolean onGoingDevelopment, Collection<String> includes,
-                     String location) {
+                     LibraryLocation location) {
     this.installedFolder = installedFolder;
     this.name = name;
     this.version = version;
@@ -91,16 +88,6 @@ public class UserLibrary {
     this.onGoingDevelopment = onGoingDevelopment;
     this.includes = includes;
     this.location = location;
-    switch (location) {
-    case LOCATION_IDE:
-    case LOCATION_SKETCHBOOK:
-    case LOCATION_CORE:
-    case LOCATION_REF_CORE:
-      break;
-    default:
-      throw new IllegalArgumentException(
-          "Invalid library location: " + location);
-    }
   }
 
   public String getName() {
@@ -192,12 +179,12 @@ public class UserLibrary {
     return (layout == LibraryLayout.RECURSIVE);
   }
 
-  public String getLocation() {
+  public LibraryLocation getLocation() {
     return location;
   }
 
   public boolean isIDEBuiltIn() {
-    return getLocation().equals(LOCATION_IDE);
+    return getLocation().equals(LibraryLocation.ide_builtin);
   }
 
   @Override

@@ -34,9 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 import cc.arduino.contributions.VersionComparator;
-
-import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 public class ContributedLibrary {
 
@@ -78,12 +77,12 @@ public class ContributedLibrary {
     return releases.values().stream() //
         .filter(ContributedLibraryRelease::isLibraryInstalled) //
         .reduce((x, y) -> {
-          String lx = x.getInstalledLibrary().get().getLocation();
-          String ly = y.getInstalledLibrary().get().getLocation();
+          LibraryLocation lx = x.getInstalledLibrary().get().getLocation();
+          LibraryLocation ly = y.getInstalledLibrary().get().getLocation();
           if (lx.equals(ly)) {
             return VersionComparator.max(x, y);
           }
-          return lx.equals(LOCATION_SKETCHBOOK) ? x : y;
+          return lx.equals(LibraryLocation.user) ? x : y;
         });
   }
 

@@ -26,6 +26,7 @@ import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
@@ -76,10 +77,6 @@ import java.util.stream.Stream;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
-import static processing.app.packages.UserLibrary.LOCATION_CORE;
-import static processing.app.packages.UserLibrary.LOCATION_IDE;
-import static processing.app.packages.UserLibrary.LOCATION_REF_CORE;
-import static processing.app.packages.UserLibrary.LOCATION_SKETCHBOOK;
 
 
 /**
@@ -1218,7 +1215,7 @@ public class Base {
     LibraryList otherLibs = new LibraryList();
     for (UserLibrary lib : allLibraries) {
       // Get the library's location - used for sorting into categories
-      String location = lib.getLocation();
+      LibraryLocation location = lib.getLocation();
       // Is this library compatible?
       Collection<String> arch = lib.getArchitectures();
       boolean compatible;
@@ -1228,7 +1225,7 @@ public class Base {
         compatible = arch.contains(myArch);
       }
       // IDE Libaries (including retired)
-      if (location.equals(LOCATION_IDE)) {
+      if (location.equals(LibraryLocation.ide_builtin)) {
         if (compatible) {
           // only compatible IDE libs are shown
           if (lib.getTypes().contains("Retired")) {
@@ -1238,15 +1235,15 @@ public class Base {
           }
         }
       // Platform Libraries
-      } else if (location.equals(LOCATION_CORE)) {
+      } else if (location.equals(LibraryLocation.platform_builtin)) {
         // all platform libs are assumed to be compatible
         platformLibs.add(lib);
       // Referenced Platform Libraries
-      } else if (location.equals(LOCATION_REF_CORE)) {
+      } else if (location.equals(LibraryLocation.referenced_platform_builtin)) {
         // all referenced platform libs are assumed to be compatible
         referencedPlatformLibs.add(lib);
       // Sketchbook Libraries (including incompatible)
-      } else if (location.equals(LOCATION_SKETCHBOOK)) {
+      } else if (location.equals(LibraryLocation.user)) {
         if (compatible) {
           // libraries promoted from sketchbook (behave as builtin)
           if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")

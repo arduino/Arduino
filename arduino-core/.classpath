@@ -63,7 +63,6 @@
 	<classpathentry kind="lib" path="lib/grpc/opencensus-api-0.19.2.jar"/>
 	<classpathentry kind="lib" path="lib/grpc/opencensus-contrib-grpc-metrics-0.19.2.jar"/>
 	<classpathentry kind="lib" path="lib/grpc/proto-google-common-protos-1.12.0.jar"/>
-	<classpathentry kind="lib" path="lib/grpc/protobuf-javanano-3.0.0-alpha-5.jar"/>
-	<classpathentry kind="lib" path="lib/grpc/protobuf-java-3.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/grpc/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
