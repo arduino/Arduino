@@ -20,6 +20,7 @@ public final class Commands {
 
     /**
      * <code>bool library_manager_only = 2;</code>
+     * @return The libraryManagerOnly.
      */
     boolean getLibraryManagerOnly();
   }
@@ -109,6 +110,7 @@ public final class Commands {
     private boolean libraryManagerOnly_;
     /**
      * <code>bool library_manager_only = 2;</code>
+     * @return The libraryManagerOnly.
      */
     public boolean getLibraryManagerOnly() {
       return libraryManagerOnly_;
@@ -420,12 +422,15 @@ public final class Commands {
       private boolean libraryManagerOnly_ ;
       /**
        * <code>bool library_manager_only = 2;</code>
+       * @return The libraryManagerOnly.
        */
       public boolean getLibraryManagerOnly() {
         return libraryManagerOnly_;
       }
       /**
        * <code>bool library_manager_only = 2;</code>
+       * @param value The libraryManagerOnly to set.
+       * @return This builder for chaining.
        */
       public Builder setLibraryManagerOnly(boolean value) {
         
@@ -435,6 +440,7 @@ public final class Commands {
       }
       /**
        * <code>bool library_manager_only = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLibraryManagerOnly() {
         
@@ -501,10 +507,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -514,39 +522,49 @@ public final class Commands {
 
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @return A list containing the platformsIndexErrors.
      */
     java.util.List<java.lang.String>
         getPlatformsIndexErrorsList();
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @return The count of platformsIndexErrors.
      */
     int getPlatformsIndexErrorsCount();
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @param index The index of the element to return.
+     * @return The platformsIndexErrors at the given index.
      */
     java.lang.String getPlatformsIndexErrors(int index);
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the platformsIndexErrors at the given index.
      */
     com.google.protobuf.ByteString
         getPlatformsIndexErrorsBytes(int index);
 
     /**
      * <code>string libraries_index_error = 3;</code>
+     * @return The librariesIndexError.
      */
     java.lang.String getLibrariesIndexError();
     /**
      * <code>string libraries_index_error = 3;</code>
+     * @return The bytes for librariesIndexError.
      */
     com.google.protobuf.ByteString
         getLibrariesIndexErrorBytes();
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+     * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+     * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
@@ -556,10 +574,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -708,12 +728,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -729,6 +751,7 @@ public final class Commands {
     private com.google.protobuf.LazyStringList platformsIndexErrors_;
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @return A list containing the platformsIndexErrors.
      */
     public com.google.protobuf.ProtocolStringList
         getPlatformsIndexErrorsList() {
@@ -736,18 +759,23 @@ public final class Commands {
     }
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @return The count of platformsIndexErrors.
      */
     public int getPlatformsIndexErrorsCount() {
       return platformsIndexErrors_.size();
     }
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @param index The index of the element to return.
+     * @return The platformsIndexErrors at the given index.
      */
     public java.lang.String getPlatformsIndexErrors(int index) {
       return platformsIndexErrors_.get(index);
     }
     /**
      * <code>repeated string platforms_index_errors = 2;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the platformsIndexErrors at the given index.
      */
     public com.google.protobuf.ByteString
         getPlatformsIndexErrorsBytes(int index) {
@@ -758,6 +786,7 @@ public final class Commands {
     private volatile java.lang.Object librariesIndexError_;
     /**
      * <code>string libraries_index_error = 3;</code>
+     * @return The librariesIndexError.
      */
     public java.lang.String getLibrariesIndexError() {
       java.lang.Object ref = librariesIndexError_;
@@ -773,6 +802,7 @@ public final class Commands {
     }
     /**
      * <code>string libraries_index_error = 3;</code>
+     * @return The bytes for librariesIndexError.
      */
     public com.google.protobuf.ByteString
         getLibrariesIndexErrorBytes() {
@@ -792,12 +822,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+     * @return Whether the downloadProgress field is set.
      */
     public boolean hasDownloadProgress() {
       return downloadProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+     * @return The downloadProgress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
@@ -813,12 +845,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -1263,12 +1297,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -1384,6 +1420,7 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @return A list containing the platformsIndexErrors.
        */
       public com.google.protobuf.ProtocolStringList
           getPlatformsIndexErrorsList() {
@@ -1391,18 +1428,23 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @return The count of platformsIndexErrors.
        */
       public int getPlatformsIndexErrorsCount() {
         return platformsIndexErrors_.size();
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param index The index of the element to return.
+       * @return The platformsIndexErrors at the given index.
        */
       public java.lang.String getPlatformsIndexErrors(int index) {
         return platformsIndexErrors_.get(index);
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the platformsIndexErrors at the given index.
        */
       public com.google.protobuf.ByteString
           getPlatformsIndexErrorsBytes(int index) {
@@ -1410,6 +1452,9 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param index The index to set the value at.
+       * @param value The platformsIndexErrors to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformsIndexErrors(
           int index, java.lang.String value) {
@@ -1423,6 +1468,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param value The platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addPlatformsIndexErrors(
           java.lang.String value) {
@@ -1436,6 +1483,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param values The platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addAllPlatformsIndexErrors(
           java.lang.Iterable<java.lang.String> values) {
@@ -1447,6 +1496,7 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformsIndexErrors() {
         platformsIndexErrors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -1456,6 +1506,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 2;</code>
+       * @param value The bytes of the platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addPlatformsIndexErrorsBytes(
           com.google.protobuf.ByteString value) {
@@ -1472,6 +1524,7 @@ public final class Commands {
       private java.lang.Object librariesIndexError_ = "";
       /**
        * <code>string libraries_index_error = 3;</code>
+       * @return The librariesIndexError.
        */
       public java.lang.String getLibrariesIndexError() {
         java.lang.Object ref = librariesIndexError_;
@@ -1487,6 +1540,7 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 3;</code>
+       * @return The bytes for librariesIndexError.
        */
       public com.google.protobuf.ByteString
           getLibrariesIndexErrorBytes() {
@@ -1503,6 +1557,8 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 3;</code>
+       * @param value The librariesIndexError to set.
+       * @return This builder for chaining.
        */
       public Builder setLibrariesIndexError(
           java.lang.String value) {
@@ -1516,6 +1572,7 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLibrariesIndexError() {
         
@@ -1525,6 +1582,8 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 3;</code>
+       * @param value The bytes for librariesIndexError to set.
+       * @return This builder for chaining.
        */
       public Builder setLibrariesIndexErrorBytes(
           com.google.protobuf.ByteString value) {
@@ -1543,12 +1602,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+       * @return Whether the downloadProgress field is set.
        */
       public boolean hasDownloadProgress() {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
+       * @return The downloadProgress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
         if (downloadProgressBuilder_ == null) {
@@ -1660,12 +1721,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -1830,10 +1893,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -1935,12 +2000,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -2272,12 +2339,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -2860,10 +2929,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -2965,12 +3036,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -3302,12 +3375,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -3472,29 +3547,37 @@ public final class Commands {
 
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @return A list containing the platformsIndexErrors.
      */
     java.util.List<java.lang.String>
         getPlatformsIndexErrorsList();
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @return The count of platformsIndexErrors.
      */
     int getPlatformsIndexErrorsCount();
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @param index The index of the element to return.
+     * @return The platformsIndexErrors at the given index.
      */
     java.lang.String getPlatformsIndexErrors(int index);
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the platformsIndexErrors at the given index.
      */
     com.google.protobuf.ByteString
         getPlatformsIndexErrorsBytes(int index);
 
     /**
      * <code>string libraries_index_error = 2;</code>
+     * @return The librariesIndexError.
      */
     java.lang.String getLibrariesIndexError();
     /**
      * <code>string libraries_index_error = 2;</code>
+     * @return The bytes for librariesIndexError.
      */
     com.google.protobuf.ByteString
         getLibrariesIndexErrorBytes();
@@ -3601,6 +3684,7 @@ public final class Commands {
     private com.google.protobuf.LazyStringList platformsIndexErrors_;
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @return A list containing the platformsIndexErrors.
      */
     public com.google.protobuf.ProtocolStringList
         getPlatformsIndexErrorsList() {
@@ -3608,18 +3692,23 @@ public final class Commands {
     }
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @return The count of platformsIndexErrors.
      */
     public int getPlatformsIndexErrorsCount() {
       return platformsIndexErrors_.size();
     }
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @param index The index of the element to return.
+     * @return The platformsIndexErrors at the given index.
      */
     public java.lang.String getPlatformsIndexErrors(int index) {
       return platformsIndexErrors_.get(index);
     }
     /**
      * <code>repeated string platforms_index_errors = 1;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the platformsIndexErrors at the given index.
      */
     public com.google.protobuf.ByteString
         getPlatformsIndexErrorsBytes(int index) {
@@ -3630,6 +3719,7 @@ public final class Commands {
     private volatile java.lang.Object librariesIndexError_;
     /**
      * <code>string libraries_index_error = 2;</code>
+     * @return The librariesIndexError.
      */
     public java.lang.String getLibrariesIndexError() {
       java.lang.Object ref = librariesIndexError_;
@@ -3645,6 +3735,7 @@ public final class Commands {
     }
     /**
      * <code>string libraries_index_error = 2;</code>
+     * @return The bytes for librariesIndexError.
      */
     public com.google.protobuf.ByteString
         getLibrariesIndexErrorBytes() {
@@ -4007,6 +4098,7 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @return A list containing the platformsIndexErrors.
        */
       public com.google.protobuf.ProtocolStringList
           getPlatformsIndexErrorsList() {
@@ -4014,18 +4106,23 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @return The count of platformsIndexErrors.
        */
       public int getPlatformsIndexErrorsCount() {
         return platformsIndexErrors_.size();
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param index The index of the element to return.
+       * @return The platformsIndexErrors at the given index.
        */
       public java.lang.String getPlatformsIndexErrors(int index) {
         return platformsIndexErrors_.get(index);
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the platformsIndexErrors at the given index.
        */
       public com.google.protobuf.ByteString
           getPlatformsIndexErrorsBytes(int index) {
@@ -4033,6 +4130,9 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The platformsIndexErrors to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformsIndexErrors(
           int index, java.lang.String value) {
@@ -4046,6 +4146,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param value The platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addPlatformsIndexErrors(
           java.lang.String value) {
@@ -4059,6 +4161,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param values The platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addAllPlatformsIndexErrors(
           java.lang.Iterable<java.lang.String> values) {
@@ -4070,6 +4174,7 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformsIndexErrors() {
         platformsIndexErrors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -4079,6 +4184,8 @@ public final class Commands {
       }
       /**
        * <code>repeated string platforms_index_errors = 1;</code>
+       * @param value The bytes of the platformsIndexErrors to add.
+       * @return This builder for chaining.
        */
       public Builder addPlatformsIndexErrorsBytes(
           com.google.protobuf.ByteString value) {
@@ -4095,6 +4202,7 @@ public final class Commands {
       private java.lang.Object librariesIndexError_ = "";
       /**
        * <code>string libraries_index_error = 2;</code>
+       * @return The librariesIndexError.
        */
       public java.lang.String getLibrariesIndexError() {
         java.lang.Object ref = librariesIndexError_;
@@ -4110,6 +4218,7 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 2;</code>
+       * @return The bytes for librariesIndexError.
        */
       public com.google.protobuf.ByteString
           getLibrariesIndexErrorBytes() {
@@ -4126,6 +4235,8 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 2;</code>
+       * @param value The librariesIndexError to set.
+       * @return This builder for chaining.
        */
       public Builder setLibrariesIndexError(
           java.lang.String value) {
@@ -4139,6 +4250,7 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLibrariesIndexError() {
         
@@ -4148,6 +4260,8 @@ public final class Commands {
       }
       /**
        * <code>string libraries_index_error = 2;</code>
+       * @param value The bytes for librariesIndexError to set.
+       * @return This builder for chaining.
        */
       public Builder setLibrariesIndexErrorBytes(
           com.google.protobuf.ByteString value) {
@@ -4219,10 +4333,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -4324,12 +4440,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -4661,12 +4779,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -4831,10 +4951,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
@@ -4936,12 +5058,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return Whether the downloadProgress field is set.
      */
     public boolean hasDownloadProgress() {
       return downloadProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return The downloadProgress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
@@ -5273,12 +5397,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+       * @return Whether the downloadProgress field is set.
        */
       public boolean hasDownloadProgress() {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+       * @return The downloadProgress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
         if (downloadProgressBuilder_ == null) {
@@ -5443,10 +5569,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -5548,12 +5676,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -5885,12 +6015,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -6055,10 +6187,12 @@ public final class Commands {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
@@ -6160,12 +6294,14 @@ public final class Commands {
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return Whether the downloadProgress field is set.
      */
     public boolean hasDownloadProgress() {
       return downloadProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+     * @return The downloadProgress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
@@ -6497,12 +6633,14 @@ public final class Commands {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+       * @return Whether the downloadProgress field is set.
        */
       public boolean hasDownloadProgress() {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
+       * @return The downloadProgress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress() {
         if (downloadProgressBuilder_ == null) {
@@ -7085,10 +7223,12 @@ public final class Commands {
 
     /**
      * <code>string version = 1;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 1;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -7181,6 +7321,7 @@ public final class Commands {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 1;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -7196,6 +7337,7 @@ public final class Commands {
     }
     /**
      * <code>string version = 1;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -7516,6 +7658,7 @@ public final class Commands {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 1;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -7531,6 +7674,7 @@ public final class Commands {
       }
       /**
        * <code>string version = 1;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -7547,6 +7691,8 @@ public final class Commands {
       }
       /**
        * <code>string version = 1;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -7560,6 +7706,7 @@ public final class Commands {
       }
       /**
        * <code>string version = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -7569,6 +7716,8 @@ public final class Commands {
       }
       /**
        * <code>string version = 1;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {

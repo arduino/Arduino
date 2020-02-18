@@ -49,6 +49,8 @@ public final class Lib {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -56,6 +58,10 @@ public final class Lib {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static LibraryLayout forNumber(int value) {
       switch (value) {
         case 0: return flat_layout;
@@ -122,17 +128,21 @@ public final class Lib {
      */
     ide_builtin(0),
     /**
-     * <code>platform_builtin = 1;</code>
+     * <pre>
+     * (sketchbook)
+     * </pre>
+     *
+     * <code>user = 1;</code>
      */
-    platform_builtin(1),
+    user(1),
     /**
-     * <code>referenced_platform_builtin = 2;</code>
+     * <code>platform_builtin = 2;</code>
      */
-    referenced_platform_builtin(2),
+    platform_builtin(2),
     /**
-     * <code>sketchbook = 3;</code>
+     * <code>referenced_platform_builtin = 3;</code>
      */
-    sketchbook(3),
+    referenced_platform_builtin(3),
     UNRECOGNIZED(-1),
     ;
 
@@ -141,17 +151,21 @@ public final class Lib {
      */
     public static final int ide_builtin_VALUE = 0;
     /**
-     * <code>platform_builtin = 1;</code>
+     * <pre>
+     * (sketchbook)
+     * </pre>
+     *
+     * <code>user = 1;</code>
      */
-    public static final int platform_builtin_VALUE = 1;
+    public static final int user_VALUE = 1;
     /**
-     * <code>referenced_platform_builtin = 2;</code>
+     * <code>platform_builtin = 2;</code>
      */
-    public static final int referenced_platform_builtin_VALUE = 2;
+    public static final int platform_builtin_VALUE = 2;
     /**
-     * <code>sketchbook = 3;</code>
+     * <code>referenced_platform_builtin = 3;</code>
      */
-    public static final int sketchbook_VALUE = 3;
+    public static final int referenced_platform_builtin_VALUE = 3;
 
 
     public final int getNumber() {
@@ -163,6 +177,8 @@ public final class Lib {
     }
 
     /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
      * @deprecated Use {@link #forNumber(int)} instead.
      */
     @java.lang.Deprecated
@@ -170,12 +186,16 @@ public final class Lib {
       return forNumber(value);
     }
 
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
     public static LibraryLocation forNumber(int value) {
       switch (value) {
         case 0: return ide_builtin;
-        case 1: return platform_builtin;
-        case 2: return referenced_platform_builtin;
-        case 3: return sketchbook;
+        case 1: return user;
+        case 2: return platform_builtin;
+        case 3: return referenced_platform_builtin;
         default: return null;
       }
     }
@@ -234,10 +254,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -247,20 +269,24 @@ public final class Lib {
 
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -373,12 +399,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -394,6 +422,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -409,6 +438,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -428,6 +458,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -443,6 +474,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -812,12 +844,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -927,6 +961,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -942,6 +977,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -958,6 +994,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -971,6 +1009,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -980,6 +1019,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -996,6 +1037,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 3;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -1011,6 +1053,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -1027,6 +1070,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -1040,6 +1085,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -1049,6 +1095,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -1120,10 +1168,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -1225,12 +1275,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -1562,12 +1614,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -1732,10 +1786,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -1745,20 +1801,24 @@ public final class Lib {
 
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -1871,12 +1931,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -1892,6 +1954,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -1907,6 +1970,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -1926,6 +1990,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -1941,6 +2006,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -2310,12 +2376,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -2425,6 +2493,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -2440,6 +2509,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -2456,6 +2526,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -2469,6 +2541,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -2478,6 +2551,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -2494,6 +2569,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 3;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -2509,6 +2585,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -2525,6 +2602,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -2538,6 +2617,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -2547,6 +2627,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -2618,10 +2700,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -2631,10 +2715,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -2749,12 +2835,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -2770,12 +2858,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -3137,12 +3227,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -3254,12 +3346,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -3424,10 +3518,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -3437,20 +3533,24 @@ public final class Lib {
 
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -3563,12 +3663,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -3584,6 +3686,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -3599,6 +3702,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -3618,6 +3722,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -3633,6 +3738,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -4002,12 +4108,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -4117,6 +4225,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -4132,6 +4241,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -4148,6 +4258,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -4161,6 +4273,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -4170,6 +4283,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -4186,6 +4301,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 3;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -4201,6 +4317,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -4217,6 +4334,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -4230,6 +4349,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -4239,6 +4359,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -4310,10 +4432,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -4415,12 +4539,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -4752,12 +4878,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -4922,10 +5050,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -5027,12 +5157,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -5364,12 +5496,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -5534,10 +5668,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -5547,10 +5683,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -5665,12 +5803,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -5686,12 +5826,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -6053,12 +6195,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -6170,12 +6314,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -6340,10 +6486,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -6353,20 +6501,24 @@ public final class Lib {
 
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -6479,12 +6631,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -6500,6 +6654,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 2;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -6515,6 +6670,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 2;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -6534,6 +6690,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 3;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -6549,6 +6706,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 3;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -6918,12 +7076,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -7033,6 +7193,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 2;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -7048,6 +7209,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -7064,6 +7226,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -7077,6 +7241,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -7086,6 +7251,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -7102,6 +7269,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 3;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -7117,6 +7285,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -7133,6 +7302,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -7146,6 +7317,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -7155,6 +7327,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -8014,30 +8188,36 @@ public final class Lib {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string versionRequired = 2;</code>
+     * @return The versionRequired.
      */
     java.lang.String getVersionRequired();
     /**
      * <code>string versionRequired = 2;</code>
+     * @return The bytes for versionRequired.
      */
     com.google.protobuf.ByteString
         getVersionRequiredBytes();
 
     /**
      * <code>string versionInstalled = 3;</code>
+     * @return The versionInstalled.
      */
     java.lang.String getVersionInstalled();
     /**
      * <code>string versionInstalled = 3;</code>
+     * @return The bytes for versionInstalled.
      */
     com.google.protobuf.ByteString
         getVersionInstalledBytes();
@@ -8144,6 +8324,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -8159,6 +8340,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -8178,6 +8360,7 @@ public final class Lib {
     private volatile java.lang.Object versionRequired_;
     /**
      * <code>string versionRequired = 2;</code>
+     * @return The versionRequired.
      */
     public java.lang.String getVersionRequired() {
       java.lang.Object ref = versionRequired_;
@@ -8193,6 +8376,7 @@ public final class Lib {
     }
     /**
      * <code>string versionRequired = 2;</code>
+     * @return The bytes for versionRequired.
      */
     public com.google.protobuf.ByteString
         getVersionRequiredBytes() {
@@ -8212,6 +8396,7 @@ public final class Lib {
     private volatile java.lang.Object versionInstalled_;
     /**
      * <code>string versionInstalled = 3;</code>
+     * @return The versionInstalled.
      */
     public java.lang.String getVersionInstalled() {
       java.lang.Object ref = versionInstalled_;
@@ -8227,6 +8412,7 @@ public final class Lib {
     }
     /**
      * <code>string versionInstalled = 3;</code>
+     * @return The bytes for versionInstalled.
      */
     public com.google.protobuf.ByteString
         getVersionInstalledBytes() {
@@ -8581,6 +8767,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -8596,6 +8783,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -8612,6 +8800,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -8625,6 +8815,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -8634,6 +8825,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -8650,6 +8843,7 @@ public final class Lib {
       private java.lang.Object versionRequired_ = "";
       /**
        * <code>string versionRequired = 2;</code>
+       * @return The versionRequired.
        */
       public java.lang.String getVersionRequired() {
         java.lang.Object ref = versionRequired_;
@@ -8665,6 +8859,7 @@ public final class Lib {
       }
       /**
        * <code>string versionRequired = 2;</code>
+       * @return The bytes for versionRequired.
        */
       public com.google.protobuf.ByteString
           getVersionRequiredBytes() {
@@ -8681,6 +8876,8 @@ public final class Lib {
       }
       /**
        * <code>string versionRequired = 2;</code>
+       * @param value The versionRequired to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionRequired(
           java.lang.String value) {
@@ -8694,6 +8891,7 @@ public final class Lib {
       }
       /**
        * <code>string versionRequired = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersionRequired() {
         
@@ -8703,6 +8901,8 @@ public final class Lib {
       }
       /**
        * <code>string versionRequired = 2;</code>
+       * @param value The bytes for versionRequired to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionRequiredBytes(
           com.google.protobuf.ByteString value) {
@@ -8719,6 +8919,7 @@ public final class Lib {
       private java.lang.Object versionInstalled_ = "";
       /**
        * <code>string versionInstalled = 3;</code>
+       * @return The versionInstalled.
        */
       public java.lang.String getVersionInstalled() {
         java.lang.Object ref = versionInstalled_;
@@ -8734,6 +8935,7 @@ public final class Lib {
       }
       /**
        * <code>string versionInstalled = 3;</code>
+       * @return The bytes for versionInstalled.
        */
       public com.google.protobuf.ByteString
           getVersionInstalledBytes() {
@@ -8750,6 +8952,8 @@ public final class Lib {
       }
       /**
        * <code>string versionInstalled = 3;</code>
+       * @param value The versionInstalled to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionInstalled(
           java.lang.String value) {
@@ -8763,6 +8967,7 @@ public final class Lib {
       }
       /**
        * <code>string versionInstalled = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersionInstalled() {
         
@@ -8772,6 +8977,8 @@ public final class Lib {
       }
       /**
        * <code>string versionInstalled = 3;</code>
+       * @param value The bytes for versionInstalled to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionInstalledBytes(
           com.google.protobuf.ByteString value) {
@@ -8843,10 +9050,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -8856,10 +9065,12 @@ public final class Lib {
 
     /**
      * <code>string query = 2;</code>
+     * @return The query.
      */
     java.lang.String getQuery();
     /**
      * <code>string query = 2;</code>
+     * @return The bytes for query.
      */
     com.google.protobuf.ByteString
         getQueryBytes();
@@ -8965,12 +9176,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -8986,6 +9199,7 @@ public final class Lib {
     private volatile java.lang.Object query_;
     /**
      * <code>string query = 2;</code>
+     * @return The query.
      */
     public java.lang.String getQuery() {
       java.lang.Object ref = query_;
@@ -9001,6 +9215,7 @@ public final class Lib {
     }
     /**
      * <code>string query = 2;</code>
+     * @return The bytes for query.
      */
     public com.google.protobuf.ByteString
         getQueryBytes() {
@@ -9353,12 +9568,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -9468,6 +9685,7 @@ public final class Lib {
       private java.lang.Object query_ = "";
       /**
        * <code>string query = 2;</code>
+       * @return The query.
        */
       public java.lang.String getQuery() {
         java.lang.Object ref = query_;
@@ -9483,6 +9701,7 @@ public final class Lib {
       }
       /**
        * <code>string query = 2;</code>
+       * @return The bytes for query.
        */
       public com.google.protobuf.ByteString
           getQueryBytes() {
@@ -9499,6 +9718,8 @@ public final class Lib {
       }
       /**
        * <code>string query = 2;</code>
+       * @param value The query to set.
+       * @return This builder for chaining.
        */
       public Builder setQuery(
           java.lang.String value) {
@@ -9512,6 +9733,7 @@ public final class Lib {
       }
       /**
        * <code>string query = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearQuery() {
         
@@ -9521,6 +9743,8 @@ public final class Lib {
       }
       /**
        * <code>string query = 2;</code>
+       * @param value The bytes for query to set.
+       * @return This builder for chaining.
        */
       public Builder setQueryBytes(
           com.google.protobuf.ByteString value) {
@@ -10380,10 +10604,12 @@ public final class Lib {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
@@ -10424,10 +10650,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+     * @return Whether the latest field is set.
      */
     boolean hasLatest();
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+     * @return The latest.
      */
     cc.arduino.cli.commands.Lib.LibraryRelease getLatest();
     /**
@@ -10562,6 +10790,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -10577,6 +10806,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -10672,12 +10902,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Lib.LibraryRelease latest_;
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+     * @return Whether the latest field is set.
      */
     public boolean hasLatest() {
       return latest_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+     * @return The latest.
      */
     public cc.arduino.cli.commands.Lib.LibraryRelease getLatest() {
       return latest_ == null ? cc.arduino.cli.commands.Lib.LibraryRelease.getDefaultInstance() : latest_;
@@ -11075,6 +11307,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -11090,6 +11323,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -11106,6 +11340,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -11119,6 +11355,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -11128,6 +11365,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -11269,12 +11508,14 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.LibraryRelease, cc.arduino.cli.commands.Lib.LibraryRelease.Builder, cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder> latestBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+       * @return Whether the latest field is set.
        */
       public boolean hasLatest() {
         return latestBuilder_ != null || latest_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
+       * @return The latest.
        */
       public cc.arduino.cli.commands.Lib.LibraryRelease getLatest() {
         if (latestBuilder_ == null) {
@@ -11439,118 +11680,146 @@ public final class Lib {
 
     /**
      * <code>string author = 1;</code>
+     * @return The author.
      */
     java.lang.String getAuthor();
     /**
      * <code>string author = 1;</code>
+     * @return The bytes for author.
      */
     com.google.protobuf.ByteString
         getAuthorBytes();
 
     /**
      * <code>string version = 2;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 2;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
 
     /**
      * <code>string maintainer = 3;</code>
+     * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
      * <code>string maintainer = 3;</code>
+     * @return The bytes for maintainer.
      */
     com.google.protobuf.ByteString
         getMaintainerBytes();
 
     /**
      * <code>string sentence = 4;</code>
+     * @return The sentence.
      */
     java.lang.String getSentence();
     /**
      * <code>string sentence = 4;</code>
+     * @return The bytes for sentence.
      */
     com.google.protobuf.ByteString
         getSentenceBytes();
 
     /**
      * <code>string paragraph = 5;</code>
+     * @return The paragraph.
      */
     java.lang.String getParagraph();
     /**
      * <code>string paragraph = 5;</code>
+     * @return The bytes for paragraph.
      */
     com.google.protobuf.ByteString
         getParagraphBytes();
 
     /**
      * <code>string website = 6;</code>
+     * @return The website.
      */
     java.lang.String getWebsite();
     /**
      * <code>string website = 6;</code>
+     * @return The bytes for website.
      */
     com.google.protobuf.ByteString
         getWebsiteBytes();
 
     /**
      * <code>string category = 7;</code>
+     * @return The category.
      */
     java.lang.String getCategory();
     /**
      * <code>string category = 7;</code>
+     * @return The bytes for category.
      */
     com.google.protobuf.ByteString
         getCategoryBytes();
 
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return A list containing the architectures.
      */
     java.util.List<java.lang.String>
         getArchitecturesList();
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return The count of architectures.
      */
     int getArchitecturesCount();
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the element to return.
+     * @return The architectures at the given index.
      */
     java.lang.String getArchitectures(int index);
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the architectures at the given index.
      */
     com.google.protobuf.ByteString
         getArchitecturesBytes(int index);
 
     /**
      * <code>repeated string types = 9;</code>
+     * @return A list containing the types.
      */
     java.util.List<java.lang.String>
         getTypesList();
     /**
      * <code>repeated string types = 9;</code>
+     * @return The count of types.
      */
     int getTypesCount();
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the element to return.
+     * @return The types at the given index.
      */
     java.lang.String getTypes(int index);
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the types at the given index.
      */
     com.google.protobuf.ByteString
         getTypesBytes(int index);
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+     * @return Whether the resources field is set.
      */
     boolean hasResources();
     /**
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+     * @return The resources.
      */
     cc.arduino.cli.commands.Lib.DownloadResource getResources();
     /**
@@ -11728,6 +11997,7 @@ public final class Lib {
     private volatile java.lang.Object author_;
     /**
      * <code>string author = 1;</code>
+     * @return The author.
      */
     public java.lang.String getAuthor() {
       java.lang.Object ref = author_;
@@ -11743,6 +12013,7 @@ public final class Lib {
     }
     /**
      * <code>string author = 1;</code>
+     * @return The bytes for author.
      */
     public com.google.protobuf.ByteString
         getAuthorBytes() {
@@ -11762,6 +12033,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 2;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -11777,6 +12049,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 2;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -11796,6 +12069,7 @@ public final class Lib {
     private volatile java.lang.Object maintainer_;
     /**
      * <code>string maintainer = 3;</code>
+     * @return The maintainer.
      */
     public java.lang.String getMaintainer() {
       java.lang.Object ref = maintainer_;
@@ -11811,6 +12085,7 @@ public final class Lib {
     }
     /**
      * <code>string maintainer = 3;</code>
+     * @return The bytes for maintainer.
      */
     public com.google.protobuf.ByteString
         getMaintainerBytes() {
@@ -11830,6 +12105,7 @@ public final class Lib {
     private volatile java.lang.Object sentence_;
     /**
      * <code>string sentence = 4;</code>
+     * @return The sentence.
      */
     public java.lang.String getSentence() {
       java.lang.Object ref = sentence_;
@@ -11845,6 +12121,7 @@ public final class Lib {
     }
     /**
      * <code>string sentence = 4;</code>
+     * @return The bytes for sentence.
      */
     public com.google.protobuf.ByteString
         getSentenceBytes() {
@@ -11864,6 +12141,7 @@ public final class Lib {
     private volatile java.lang.Object paragraph_;
     /**
      * <code>string paragraph = 5;</code>
+     * @return The paragraph.
      */
     public java.lang.String getParagraph() {
       java.lang.Object ref = paragraph_;
@@ -11879,6 +12157,7 @@ public final class Lib {
     }
     /**
      * <code>string paragraph = 5;</code>
+     * @return The bytes for paragraph.
      */
     public com.google.protobuf.ByteString
         getParagraphBytes() {
@@ -11898,6 +12177,7 @@ public final class Lib {
     private volatile java.lang.Object website_;
     /**
      * <code>string website = 6;</code>
+     * @return The website.
      */
     public java.lang.String getWebsite() {
       java.lang.Object ref = website_;
@@ -11913,6 +12193,7 @@ public final class Lib {
     }
     /**
      * <code>string website = 6;</code>
+     * @return The bytes for website.
      */
     public com.google.protobuf.ByteString
         getWebsiteBytes() {
@@ -11932,6 +12213,7 @@ public final class Lib {
     private volatile java.lang.Object category_;
     /**
      * <code>string category = 7;</code>
+     * @return The category.
      */
     public java.lang.String getCategory() {
       java.lang.Object ref = category_;
@@ -11947,6 +12229,7 @@ public final class Lib {
     }
     /**
      * <code>string category = 7;</code>
+     * @return The bytes for category.
      */
     public com.google.protobuf.ByteString
         getCategoryBytes() {
@@ -11966,6 +12249,7 @@ public final class Lib {
     private com.google.protobuf.LazyStringList architectures_;
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return A list containing the architectures.
      */
     public com.google.protobuf.ProtocolStringList
         getArchitecturesList() {
@@ -11973,18 +12257,23 @@ public final class Lib {
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return The count of architectures.
      */
     public int getArchitecturesCount() {
       return architectures_.size();
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the element to return.
+     * @return The architectures at the given index.
      */
     public java.lang.String getArchitectures(int index) {
       return architectures_.get(index);
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the architectures at the given index.
      */
     public com.google.protobuf.ByteString
         getArchitecturesBytes(int index) {
@@ -11995,6 +12284,7 @@ public final class Lib {
     private com.google.protobuf.LazyStringList types_;
     /**
      * <code>repeated string types = 9;</code>
+     * @return A list containing the types.
      */
     public com.google.protobuf.ProtocolStringList
         getTypesList() {
@@ -12002,18 +12292,23 @@ public final class Lib {
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @return The count of types.
      */
     public int getTypesCount() {
       return types_.size();
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the element to return.
+     * @return The types at the given index.
      */
     public java.lang.String getTypes(int index) {
       return types_.get(index);
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the types at the given index.
      */
     public com.google.protobuf.ByteString
         getTypesBytes(int index) {
@@ -12024,12 +12319,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Lib.DownloadResource resources_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+     * @return Whether the resources field is set.
      */
     public boolean hasResources() {
       return resources_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+     * @return The resources.
      */
     public cc.arduino.cli.commands.Lib.DownloadResource getResources() {
       return resources_ == null ? cc.arduino.cli.commands.Lib.DownloadResource.getDefaultInstance() : resources_;
@@ -12548,6 +12845,7 @@ public final class Lib {
       private java.lang.Object author_ = "";
       /**
        * <code>string author = 1;</code>
+       * @return The author.
        */
       public java.lang.String getAuthor() {
         java.lang.Object ref = author_;
@@ -12563,6 +12861,7 @@ public final class Lib {
       }
       /**
        * <code>string author = 1;</code>
+       * @return The bytes for author.
        */
       public com.google.protobuf.ByteString
           getAuthorBytes() {
@@ -12579,6 +12878,8 @@ public final class Lib {
       }
       /**
        * <code>string author = 1;</code>
+       * @param value The author to set.
+       * @return This builder for chaining.
        */
       public Builder setAuthor(
           java.lang.String value) {
@@ -12592,6 +12893,7 @@ public final class Lib {
       }
       /**
        * <code>string author = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAuthor() {
         
@@ -12601,6 +12903,8 @@ public final class Lib {
       }
       /**
        * <code>string author = 1;</code>
+       * @param value The bytes for author to set.
+       * @return This builder for chaining.
        */
       public Builder setAuthorBytes(
           com.google.protobuf.ByteString value) {
@@ -12617,6 +12921,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 2;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -12632,6 +12937,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 2;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -12648,6 +12954,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 2;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -12661,6 +12969,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -12670,6 +12979,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 2;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -12686,6 +12997,7 @@ public final class Lib {
       private java.lang.Object maintainer_ = "";
       /**
        * <code>string maintainer = 3;</code>
+       * @return The maintainer.
        */
       public java.lang.String getMaintainer() {
         java.lang.Object ref = maintainer_;
@@ -12701,6 +13013,7 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @return The bytes for maintainer.
        */
       public com.google.protobuf.ByteString
           getMaintainerBytes() {
@@ -12717,6 +13030,8 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @param value The maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainer(
           java.lang.String value) {
@@ -12730,6 +13045,7 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMaintainer() {
         
@@ -12739,6 +13055,8 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @param value The bytes for maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainerBytes(
           com.google.protobuf.ByteString value) {
@@ -12755,6 +13073,7 @@ public final class Lib {
       private java.lang.Object sentence_ = "";
       /**
        * <code>string sentence = 4;</code>
+       * @return The sentence.
        */
       public java.lang.String getSentence() {
         java.lang.Object ref = sentence_;
@@ -12770,6 +13089,7 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @return The bytes for sentence.
        */
       public com.google.protobuf.ByteString
           getSentenceBytes() {
@@ -12786,6 +13106,8 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @param value The sentence to set.
+       * @return This builder for chaining.
        */
       public Builder setSentence(
           java.lang.String value) {
@@ -12799,6 +13121,7 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSentence() {
         
@@ -12808,6 +13131,8 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @param value The bytes for sentence to set.
+       * @return This builder for chaining.
        */
       public Builder setSentenceBytes(
           com.google.protobuf.ByteString value) {
@@ -12824,6 +13149,7 @@ public final class Lib {
       private java.lang.Object paragraph_ = "";
       /**
        * <code>string paragraph = 5;</code>
+       * @return The paragraph.
        */
       public java.lang.String getParagraph() {
         java.lang.Object ref = paragraph_;
@@ -12839,6 +13165,7 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @return The bytes for paragraph.
        */
       public com.google.protobuf.ByteString
           getParagraphBytes() {
@@ -12855,6 +13182,8 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @param value The paragraph to set.
+       * @return This builder for chaining.
        */
       public Builder setParagraph(
           java.lang.String value) {
@@ -12868,6 +13197,7 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearParagraph() {
         
@@ -12877,6 +13207,8 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @param value The bytes for paragraph to set.
+       * @return This builder for chaining.
        */
       public Builder setParagraphBytes(
           com.google.protobuf.ByteString value) {
@@ -12893,6 +13225,7 @@ public final class Lib {
       private java.lang.Object website_ = "";
       /**
        * <code>string website = 6;</code>
+       * @return The website.
        */
       public java.lang.String getWebsite() {
         java.lang.Object ref = website_;
@@ -12908,6 +13241,7 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @return The bytes for website.
        */
       public com.google.protobuf.ByteString
           getWebsiteBytes() {
@@ -12924,6 +13258,8 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @param value The website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsite(
           java.lang.String value) {
@@ -12937,6 +13273,7 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWebsite() {
         
@@ -12946,6 +13283,8 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @param value The bytes for website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsiteBytes(
           com.google.protobuf.ByteString value) {
@@ -12962,6 +13301,7 @@ public final class Lib {
       private java.lang.Object category_ = "";
       /**
        * <code>string category = 7;</code>
+       * @return The category.
        */
       public java.lang.String getCategory() {
         java.lang.Object ref = category_;
@@ -12977,6 +13317,7 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @return The bytes for category.
        */
       public com.google.protobuf.ByteString
           getCategoryBytes() {
@@ -12993,6 +13334,8 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @param value The category to set.
+       * @return This builder for chaining.
        */
       public Builder setCategory(
           java.lang.String value) {
@@ -13006,6 +13349,7 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCategory() {
         
@@ -13015,6 +13359,8 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @param value The bytes for category to set.
+       * @return This builder for chaining.
        */
       public Builder setCategoryBytes(
           com.google.protobuf.ByteString value) {
@@ -13037,6 +13383,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return A list containing the architectures.
        */
       public com.google.protobuf.ProtocolStringList
           getArchitecturesList() {
@@ -13044,18 +13391,23 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return The count of architectures.
        */
       public int getArchitecturesCount() {
         return architectures_.size();
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index of the element to return.
+       * @return The architectures at the given index.
        */
       public java.lang.String getArchitectures(int index) {
         return architectures_.get(index);
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the architectures at the given index.
        */
       public com.google.protobuf.ByteString
           getArchitecturesBytes(int index) {
@@ -13063,6 +13415,9 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index to set the value at.
+       * @param value The architectures to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectures(
           int index, java.lang.String value) {
@@ -13076,6 +13431,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param value The architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addArchitectures(
           java.lang.String value) {
@@ -13089,6 +13446,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param values The architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addAllArchitectures(
           java.lang.Iterable<java.lang.String> values) {
@@ -13100,6 +13459,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitectures() {
         architectures_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -13109,6 +13469,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param value The bytes of the architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addArchitecturesBytes(
           com.google.protobuf.ByteString value) {
@@ -13131,6 +13493,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return A list containing the types.
        */
       public com.google.protobuf.ProtocolStringList
           getTypesList() {
@@ -13138,18 +13501,23 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return The count of types.
        */
       public int getTypesCount() {
         return types_.size();
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index of the element to return.
+       * @return The types at the given index.
        */
       public java.lang.String getTypes(int index) {
         return types_.get(index);
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the types at the given index.
        */
       public com.google.protobuf.ByteString
           getTypesBytes(int index) {
@@ -13157,6 +13525,9 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index to set the value at.
+       * @param value The types to set.
+       * @return This builder for chaining.
        */
       public Builder setTypes(
           int index, java.lang.String value) {
@@ -13170,6 +13541,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param value The types to add.
+       * @return This builder for chaining.
        */
       public Builder addTypes(
           java.lang.String value) {
@@ -13183,6 +13556,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param values The types to add.
+       * @return This builder for chaining.
        */
       public Builder addAllTypes(
           java.lang.Iterable<java.lang.String> values) {
@@ -13194,6 +13569,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTypes() {
         types_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -13203,6 +13579,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param value The bytes of the types to add.
+       * @return This builder for chaining.
        */
       public Builder addTypesBytes(
           com.google.protobuf.ByteString value) {
@@ -13221,12 +13599,14 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.DownloadResource, cc.arduino.cli.commands.Lib.DownloadResource.Builder, cc.arduino.cli.commands.Lib.DownloadResourceOrBuilder> resourcesBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+       * @return Whether the resources field is set.
        */
       public boolean hasResources() {
         return resourcesBuilder_ != null || resources_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
+       * @return The resources.
        */
       public cc.arduino.cli.commands.Lib.DownloadResource getResources() {
         if (resourcesBuilder_ == null) {
@@ -13391,45 +13771,54 @@ public final class Lib {
 
     /**
      * <code>string url = 1;</code>
+     * @return The url.
      */
     java.lang.String getUrl();
     /**
      * <code>string url = 1;</code>
+     * @return The bytes for url.
      */
     com.google.protobuf.ByteString
         getUrlBytes();
 
     /**
      * <code>string archivefilename = 2;</code>
+     * @return The archivefilename.
      */
     java.lang.String getArchivefilename();
     /**
      * <code>string archivefilename = 2;</code>
+     * @return The bytes for archivefilename.
      */
     com.google.protobuf.ByteString
         getArchivefilenameBytes();
 
     /**
      * <code>string checksum = 3;</code>
+     * @return The checksum.
      */
     java.lang.String getChecksum();
     /**
      * <code>string checksum = 3;</code>
+     * @return The bytes for checksum.
      */
     com.google.protobuf.ByteString
         getChecksumBytes();
 
     /**
      * <code>int64 size = 4;</code>
+     * @return The size.
      */
     long getSize();
 
     /**
      * <code>string cachepath = 5;</code>
+     * @return The cachepath.
      */
     java.lang.String getCachepath();
     /**
      * <code>string cachepath = 5;</code>
+     * @return The bytes for cachepath.
      */
     com.google.protobuf.ByteString
         getCachepathBytes();
@@ -13548,6 +13937,7 @@ public final class Lib {
     private volatile java.lang.Object url_;
     /**
      * <code>string url = 1;</code>
+     * @return The url.
      */
     public java.lang.String getUrl() {
       java.lang.Object ref = url_;
@@ -13563,6 +13953,7 @@ public final class Lib {
     }
     /**
      * <code>string url = 1;</code>
+     * @return The bytes for url.
      */
     public com.google.protobuf.ByteString
         getUrlBytes() {
@@ -13582,6 +13973,7 @@ public final class Lib {
     private volatile java.lang.Object archivefilename_;
     /**
      * <code>string archivefilename = 2;</code>
+     * @return The archivefilename.
      */
     public java.lang.String getArchivefilename() {
       java.lang.Object ref = archivefilename_;
@@ -13597,6 +13989,7 @@ public final class Lib {
     }
     /**
      * <code>string archivefilename = 2;</code>
+     * @return The bytes for archivefilename.
      */
     public com.google.protobuf.ByteString
         getArchivefilenameBytes() {
@@ -13616,6 +14009,7 @@ public final class Lib {
     private volatile java.lang.Object checksum_;
     /**
      * <code>string checksum = 3;</code>
+     * @return The checksum.
      */
     public java.lang.String getChecksum() {
       java.lang.Object ref = checksum_;
@@ -13631,6 +14025,7 @@ public final class Lib {
     }
     /**
      * <code>string checksum = 3;</code>
+     * @return The bytes for checksum.
      */
     public com.google.protobuf.ByteString
         getChecksumBytes() {
@@ -13650,6 +14045,7 @@ public final class Lib {
     private long size_;
     /**
      * <code>int64 size = 4;</code>
+     * @return The size.
      */
     public long getSize() {
       return size_;
@@ -13659,6 +14055,7 @@ public final class Lib {
     private volatile java.lang.Object cachepath_;
     /**
      * <code>string cachepath = 5;</code>
+     * @return The cachepath.
      */
     public java.lang.String getCachepath() {
       java.lang.Object ref = cachepath_;
@@ -13674,6 +14071,7 @@ public final class Lib {
     }
     /**
      * <code>string cachepath = 5;</code>
+     * @return The bytes for cachepath.
      */
     public com.google.protobuf.ByteString
         getCachepathBytes() {
@@ -14063,6 +14461,7 @@ public final class Lib {
       private java.lang.Object url_ = "";
       /**
        * <code>string url = 1;</code>
+       * @return The url.
        */
       public java.lang.String getUrl() {
         java.lang.Object ref = url_;
@@ -14078,6 +14477,7 @@ public final class Lib {
       }
       /**
        * <code>string url = 1;</code>
+       * @return The bytes for url.
        */
       public com.google.protobuf.ByteString
           getUrlBytes() {
@@ -14094,6 +14494,8 @@ public final class Lib {
       }
       /**
        * <code>string url = 1;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrl(
           java.lang.String value) {
@@ -14107,6 +14509,7 @@ public final class Lib {
       }
       /**
        * <code>string url = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUrl() {
         
@@ -14116,6 +14519,8 @@ public final class Lib {
       }
       /**
        * <code>string url = 1;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
        */
       public Builder setUrlBytes(
           com.google.protobuf.ByteString value) {
@@ -14132,6 +14537,7 @@ public final class Lib {
       private java.lang.Object archivefilename_ = "";
       /**
        * <code>string archivefilename = 2;</code>
+       * @return The archivefilename.
        */
       public java.lang.String getArchivefilename() {
         java.lang.Object ref = archivefilename_;
@@ -14147,6 +14553,7 @@ public final class Lib {
       }
       /**
        * <code>string archivefilename = 2;</code>
+       * @return The bytes for archivefilename.
        */
       public com.google.protobuf.ByteString
           getArchivefilenameBytes() {
@@ -14163,6 +14570,8 @@ public final class Lib {
       }
       /**
        * <code>string archivefilename = 2;</code>
+       * @param value The archivefilename to set.
+       * @return This builder for chaining.
        */
       public Builder setArchivefilename(
           java.lang.String value) {
@@ -14176,6 +14585,7 @@ public final class Lib {
       }
       /**
        * <code>string archivefilename = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchivefilename() {
         
@@ -14185,6 +14595,8 @@ public final class Lib {
       }
       /**
        * <code>string archivefilename = 2;</code>
+       * @param value The bytes for archivefilename to set.
+       * @return This builder for chaining.
        */
       public Builder setArchivefilenameBytes(
           com.google.protobuf.ByteString value) {
@@ -14201,6 +14613,7 @@ public final class Lib {
       private java.lang.Object checksum_ = "";
       /**
        * <code>string checksum = 3;</code>
+       * @return The checksum.
        */
       public java.lang.String getChecksum() {
         java.lang.Object ref = checksum_;
@@ -14216,6 +14629,7 @@ public final class Lib {
       }
       /**
        * <code>string checksum = 3;</code>
+       * @return The bytes for checksum.
        */
       public com.google.protobuf.ByteString
           getChecksumBytes() {
@@ -14232,6 +14646,8 @@ public final class Lib {
       }
       /**
        * <code>string checksum = 3;</code>
+       * @param value The checksum to set.
+       * @return This builder for chaining.
        */
       public Builder setChecksum(
           java.lang.String value) {
@@ -14245,6 +14661,7 @@ public final class Lib {
       }
       /**
        * <code>string checksum = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearChecksum() {
         
@@ -14254,6 +14671,8 @@ public final class Lib {
       }
       /**
        * <code>string checksum = 3;</code>
+       * @param value The bytes for checksum to set.
+       * @return This builder for chaining.
        */
       public Builder setChecksumBytes(
           com.google.protobuf.ByteString value) {
@@ -14270,12 +14689,15 @@ public final class Lib {
       private long size_ ;
       /**
        * <code>int64 size = 4;</code>
+       * @return The size.
        */
       public long getSize() {
         return size_;
       }
       /**
        * <code>int64 size = 4;</code>
+       * @param value The size to set.
+       * @return This builder for chaining.
        */
       public Builder setSize(long value) {
         
@@ -14285,6 +14707,7 @@ public final class Lib {
       }
       /**
        * <code>int64 size = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSize() {
         
@@ -14296,6 +14719,7 @@ public final class Lib {
       private java.lang.Object cachepath_ = "";
       /**
        * <code>string cachepath = 5;</code>
+       * @return The cachepath.
        */
       public java.lang.String getCachepath() {
         java.lang.Object ref = cachepath_;
@@ -14311,6 +14735,7 @@ public final class Lib {
       }
       /**
        * <code>string cachepath = 5;</code>
+       * @return The bytes for cachepath.
        */
       public com.google.protobuf.ByteString
           getCachepathBytes() {
@@ -14327,6 +14752,8 @@ public final class Lib {
       }
       /**
        * <code>string cachepath = 5;</code>
+       * @param value The cachepath to set.
+       * @return This builder for chaining.
        */
       public Builder setCachepath(
           java.lang.String value) {
@@ -14340,6 +14767,7 @@ public final class Lib {
       }
       /**
        * <code>string cachepath = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCachepath() {
         
@@ -14349,6 +14777,8 @@ public final class Lib {
       }
       /**
        * <code>string cachepath = 5;</code>
+       * @param value The bytes for cachepath to set.
+       * @return This builder for chaining.
        */
       public Builder setCachepathBytes(
           com.google.protobuf.ByteString value) {
@@ -14420,10 +14850,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -14433,11 +14865,13 @@ public final class Lib {
 
     /**
      * <code>bool all = 2;</code>
+     * @return The all.
      */
     boolean getAll();
 
     /**
      * <code>bool updatable = 3;</code>
+     * @return The updatable.
      */
     boolean getUpdatable();
   }
@@ -14545,12 +14979,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -14566,6 +15002,7 @@ public final class Lib {
     private boolean all_;
     /**
      * <code>bool all = 2;</code>
+     * @return The all.
      */
     public boolean getAll() {
       return all_;
@@ -14575,6 +15012,7 @@ public final class Lib {
     private boolean updatable_;
     /**
      * <code>bool updatable = 3;</code>
+     * @return The updatable.
      */
     public boolean getUpdatable() {
       return updatable_;
@@ -14936,12 +15374,14 @@ public final class Lib {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -15051,12 +15491,15 @@ public final class Lib {
       private boolean all_ ;
       /**
        * <code>bool all = 2;</code>
+       * @return The all.
        */
       public boolean getAll() {
         return all_;
       }
       /**
        * <code>bool all = 2;</code>
+       * @param value The all to set.
+       * @return This builder for chaining.
        */
       public Builder setAll(boolean value) {
         
@@ -15066,6 +15509,7 @@ public final class Lib {
       }
       /**
        * <code>bool all = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAll() {
         
@@ -15077,12 +15521,15 @@ public final class Lib {
       private boolean updatable_ ;
       /**
        * <code>bool updatable = 3;</code>
+       * @return The updatable.
        */
       public boolean getUpdatable() {
         return updatable_;
       }
       /**
        * <code>bool updatable = 3;</code>
+       * @param value The updatable to set.
+       * @return This builder for chaining.
        */
       public Builder setUpdatable(boolean value) {
         
@@ -15092,6 +15539,7 @@ public final class Lib {
       }
       /**
        * <code>bool updatable = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUpdatable() {
         
@@ -15946,10 +16394,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+     * @return Whether the library field is set.
      */
     boolean hasLibrary();
     /**
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+     * @return The library.
      */
     cc.arduino.cli.commands.Lib.Library getLibrary();
     /**
@@ -15959,10 +16409,12 @@ public final class Lib {
 
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+     * @return Whether the release field is set.
      */
     boolean hasRelease();
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+     * @return The release.
      */
     cc.arduino.cli.commands.Lib.LibraryRelease getRelease();
     /**
@@ -16077,12 +16529,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Lib.Library library_;
     /**
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+     * @return Whether the library field is set.
      */
     public boolean hasLibrary() {
       return library_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+     * @return The library.
      */
     public cc.arduino.cli.commands.Lib.Library getLibrary() {
       return library_ == null ? cc.arduino.cli.commands.Lib.Library.getDefaultInstance() : library_;
@@ -16098,12 +16552,14 @@ public final class Lib {
     private cc.arduino.cli.commands.Lib.LibraryRelease release_;
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+     * @return Whether the release field is set.
      */
     public boolean hasRelease() {
       return release_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+     * @return The release.
      */
     public cc.arduino.cli.commands.Lib.LibraryRelease getRelease() {
       return release_ == null ? cc.arduino.cli.commands.Lib.LibraryRelease.getDefaultInstance() : release_;
@@ -16465,12 +16921,14 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.Library, cc.arduino.cli.commands.Lib.Library.Builder, cc.arduino.cli.commands.Lib.LibraryOrBuilder> libraryBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+       * @return Whether the library field is set.
        */
       public boolean hasLibrary() {
         return libraryBuilder_ != null || library_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
+       * @return The library.
        */
       public cc.arduino.cli.commands.Lib.Library getLibrary() {
         if (libraryBuilder_ == null) {
@@ -16582,12 +17040,14 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.LibraryRelease, cc.arduino.cli.commands.Lib.LibraryRelease.Builder, cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder> releaseBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+       * @return Whether the release field is set.
        */
       public boolean hasRelease() {
         return releaseBuilder_ != null || release_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
+       * @return The release.
        */
       public cc.arduino.cli.commands.Lib.LibraryRelease getRelease() {
         if (releaseBuilder_ == null) {
@@ -16752,223 +17212,260 @@ public final class Lib {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string author = 2;</code>
+     * @return The author.
      */
     java.lang.String getAuthor();
     /**
      * <code>string author = 2;</code>
+     * @return The bytes for author.
      */
     com.google.protobuf.ByteString
         getAuthorBytes();
 
     /**
      * <code>string maintainer = 3;</code>
+     * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
      * <code>string maintainer = 3;</code>
+     * @return The bytes for maintainer.
      */
     com.google.protobuf.ByteString
         getMaintainerBytes();
 
     /**
      * <code>string sentence = 4;</code>
+     * @return The sentence.
      */
     java.lang.String getSentence();
     /**
      * <code>string sentence = 4;</code>
+     * @return The bytes for sentence.
      */
     com.google.protobuf.ByteString
         getSentenceBytes();
 
     /**
      * <code>string paragraph = 5;</code>
+     * @return The paragraph.
      */
     java.lang.String getParagraph();
     /**
      * <code>string paragraph = 5;</code>
+     * @return The bytes for paragraph.
      */
     com.google.protobuf.ByteString
         getParagraphBytes();
 
     /**
      * <code>string website = 6;</code>
+     * @return The website.
      */
     java.lang.String getWebsite();
     /**
      * <code>string website = 6;</code>
+     * @return The bytes for website.
      */
     com.google.protobuf.ByteString
         getWebsiteBytes();
 
     /**
      * <code>string category = 7;</code>
+     * @return The category.
      */
     java.lang.String getCategory();
     /**
      * <code>string category = 7;</code>
+     * @return The bytes for category.
      */
     com.google.protobuf.ByteString
         getCategoryBytes();
 
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return A list containing the architectures.
      */
     java.util.List<java.lang.String>
         getArchitecturesList();
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return The count of architectures.
      */
     int getArchitecturesCount();
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the element to return.
+     * @return The architectures at the given index.
      */
     java.lang.String getArchitectures(int index);
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the architectures at the given index.
      */
     com.google.protobuf.ByteString
         getArchitecturesBytes(int index);
 
     /**
      * <code>repeated string types = 9;</code>
+     * @return A list containing the types.
      */
     java.util.List<java.lang.String>
         getTypesList();
     /**
      * <code>repeated string types = 9;</code>
+     * @return The count of types.
      */
     int getTypesCount();
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the element to return.
+     * @return The types at the given index.
      */
     java.lang.String getTypes(int index);
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the types at the given index.
      */
     com.google.protobuf.ByteString
         getTypesBytes(int index);
 
     /**
      * <code>string install_dir = 10;</code>
+     * @return The installDir.
      */
     java.lang.String getInstallDir();
     /**
      * <code>string install_dir = 10;</code>
+     * @return The bytes for installDir.
      */
     com.google.protobuf.ByteString
         getInstallDirBytes();
 
     /**
      * <code>string source_dir = 11;</code>
+     * @return The sourceDir.
      */
     java.lang.String getSourceDir();
     /**
      * <code>string source_dir = 11;</code>
+     * @return The bytes for sourceDir.
      */
     com.google.protobuf.ByteString
         getSourceDirBytes();
 
     /**
      * <code>string utility_dir = 12;</code>
+     * @return The utilityDir.
      */
     java.lang.String getUtilityDir();
     /**
      * <code>string utility_dir = 12;</code>
+     * @return The bytes for utilityDir.
      */
     com.google.protobuf.ByteString
         getUtilityDirBytes();
 
     /**
-     * <code>string location = 13;</code>
-     */
-    java.lang.String getLocation();
-    /**
-     * <code>string location = 13;</code>
-     */
-    com.google.protobuf.ByteString
-        getLocationBytes();
-
-    /**
      * <code>string container_platform = 14;</code>
+     * @return The containerPlatform.
      */
     java.lang.String getContainerPlatform();
     /**
      * <code>string container_platform = 14;</code>
+     * @return The bytes for containerPlatform.
      */
     com.google.protobuf.ByteString
         getContainerPlatformBytes();
 
     /**
      * <code>string layout = 15;</code>
+     * @return The layout.
      */
     java.lang.String getLayout();
     /**
      * <code>string layout = 15;</code>
+     * @return The bytes for layout.
      */
     com.google.protobuf.ByteString
         getLayoutBytes();
 
     /**
      * <code>string real_name = 16;</code>
+     * @return The realName.
      */
     java.lang.String getRealName();
     /**
      * <code>string real_name = 16;</code>
+     * @return The bytes for realName.
      */
     com.google.protobuf.ByteString
         getRealNameBytes();
 
     /**
      * <code>bool dot_a_linkage = 17;</code>
+     * @return The dotALinkage.
      */
     boolean getDotALinkage();
 
     /**
      * <code>bool precompiled = 18;</code>
+     * @return The precompiled.
      */
     boolean getPrecompiled();
 
     /**
      * <code>string ld_flags = 19;</code>
+     * @return The ldFlags.
      */
     java.lang.String getLdFlags();
     /**
      * <code>string ld_flags = 19;</code>
+     * @return The bytes for ldFlags.
      */
     com.google.protobuf.ByteString
         getLdFlagsBytes();
 
     /**
      * <code>bool is_legacy = 20;</code>
+     * @return The isLegacy.
      */
     boolean getIsLegacy();
 
     /**
      * <code>string version = 21;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 21;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
 
     /**
      * <code>string license = 22;</code>
+     * @return The license.
      */
     java.lang.String getLicense();
     /**
      * <code>string license = 22;</code>
+     * @return The bytes for license.
      */
     com.google.protobuf.ByteString
         getLicenseBytes();
@@ -17006,6 +17503,17 @@ public final class Lib {
 
     java.lang.String getPropertiesOrThrow(
         java.lang.String key);
+
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+     * @return The enum numeric value on the wire for location.
+     */
+    int getLocationValue();
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+     * @return The location.
+     */
+    cc.arduino.cli.commands.Lib.LibraryLocation getLocation();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.Library}
@@ -17032,13 +17540,13 @@ public final class Lib {
       installDir_ = "";
       sourceDir_ = "";
       utilityDir_ = "";
-      location_ = "";
       containerPlatform_ = "";
       layout_ = "";
       realName_ = "";
       ldFlags_ = "";
       version_ = "";
       license_ = "";
+      location_ = 0;
     }
 
     @java.lang.Override
@@ -17150,12 +17658,6 @@ public final class Lib {
               utilityDir_ = s;
               break;
             }
-            case 106: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              location_ = s;
-              break;
-            }
             case 114: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -17220,6 +17722,12 @@ public final class Lib {
                   properties__.getKey(), properties__.getValue());
               break;
             }
+            case 192: {
+              int rawValue = input.readEnum();
+
+              location_ = rawValue;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -17274,6 +17782,7 @@ public final class Lib {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -17289,6 +17798,7 @@ public final class Lib {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -17308,6 +17818,7 @@ public final class Lib {
     private volatile java.lang.Object author_;
     /**
      * <code>string author = 2;</code>
+     * @return The author.
      */
     public java.lang.String getAuthor() {
       java.lang.Object ref = author_;
@@ -17323,6 +17834,7 @@ public final class Lib {
     }
     /**
      * <code>string author = 2;</code>
+     * @return The bytes for author.
      */
     public com.google.protobuf.ByteString
         getAuthorBytes() {
@@ -17342,6 +17854,7 @@ public final class Lib {
     private volatile java.lang.Object maintainer_;
     /**
      * <code>string maintainer = 3;</code>
+     * @return The maintainer.
      */
     public java.lang.String getMaintainer() {
       java.lang.Object ref = maintainer_;
@@ -17357,6 +17870,7 @@ public final class Lib {
     }
     /**
      * <code>string maintainer = 3;</code>
+     * @return The bytes for maintainer.
      */
     public com.google.protobuf.ByteString
         getMaintainerBytes() {
@@ -17376,6 +17890,7 @@ public final class Lib {
     private volatile java.lang.Object sentence_;
     /**
      * <code>string sentence = 4;</code>
+     * @return The sentence.
      */
     public java.lang.String getSentence() {
       java.lang.Object ref = sentence_;
@@ -17391,6 +17906,7 @@ public final class Lib {
     }
     /**
      * <code>string sentence = 4;</code>
+     * @return The bytes for sentence.
      */
     public com.google.protobuf.ByteString
         getSentenceBytes() {
@@ -17410,6 +17926,7 @@ public final class Lib {
     private volatile java.lang.Object paragraph_;
     /**
      * <code>string paragraph = 5;</code>
+     * @return The paragraph.
      */
     public java.lang.String getParagraph() {
       java.lang.Object ref = paragraph_;
@@ -17425,6 +17942,7 @@ public final class Lib {
     }
     /**
      * <code>string paragraph = 5;</code>
+     * @return The bytes for paragraph.
      */
     public com.google.protobuf.ByteString
         getParagraphBytes() {
@@ -17444,6 +17962,7 @@ public final class Lib {
     private volatile java.lang.Object website_;
     /**
      * <code>string website = 6;</code>
+     * @return The website.
      */
     public java.lang.String getWebsite() {
       java.lang.Object ref = website_;
@@ -17459,6 +17978,7 @@ public final class Lib {
     }
     /**
      * <code>string website = 6;</code>
+     * @return The bytes for website.
      */
     public com.google.protobuf.ByteString
         getWebsiteBytes() {
@@ -17478,6 +17998,7 @@ public final class Lib {
     private volatile java.lang.Object category_;
     /**
      * <code>string category = 7;</code>
+     * @return The category.
      */
     public java.lang.String getCategory() {
       java.lang.Object ref = category_;
@@ -17493,6 +18014,7 @@ public final class Lib {
     }
     /**
      * <code>string category = 7;</code>
+     * @return The bytes for category.
      */
     public com.google.protobuf.ByteString
         getCategoryBytes() {
@@ -17512,6 +18034,7 @@ public final class Lib {
     private com.google.protobuf.LazyStringList architectures_;
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return A list containing the architectures.
      */
     public com.google.protobuf.ProtocolStringList
         getArchitecturesList() {
@@ -17519,18 +18042,23 @@ public final class Lib {
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @return The count of architectures.
      */
     public int getArchitecturesCount() {
       return architectures_.size();
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the element to return.
+     * @return The architectures at the given index.
      */
     public java.lang.String getArchitectures(int index) {
       return architectures_.get(index);
     }
     /**
      * <code>repeated string architectures = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the architectures at the given index.
      */
     public com.google.protobuf.ByteString
         getArchitecturesBytes(int index) {
@@ -17541,6 +18069,7 @@ public final class Lib {
     private com.google.protobuf.LazyStringList types_;
     /**
      * <code>repeated string types = 9;</code>
+     * @return A list containing the types.
      */
     public com.google.protobuf.ProtocolStringList
         getTypesList() {
@@ -17548,18 +18077,23 @@ public final class Lib {
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @return The count of types.
      */
     public int getTypesCount() {
       return types_.size();
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the element to return.
+     * @return The types at the given index.
      */
     public java.lang.String getTypes(int index) {
       return types_.get(index);
     }
     /**
      * <code>repeated string types = 9;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the types at the given index.
      */
     public com.google.protobuf.ByteString
         getTypesBytes(int index) {
@@ -17570,6 +18104,7 @@ public final class Lib {
     private volatile java.lang.Object installDir_;
     /**
      * <code>string install_dir = 10;</code>
+     * @return The installDir.
      */
     public java.lang.String getInstallDir() {
       java.lang.Object ref = installDir_;
@@ -17585,6 +18120,7 @@ public final class Lib {
     }
     /**
      * <code>string install_dir = 10;</code>
+     * @return The bytes for installDir.
      */
     public com.google.protobuf.ByteString
         getInstallDirBytes() {
@@ -17604,6 +18140,7 @@ public final class Lib {
     private volatile java.lang.Object sourceDir_;
     /**
      * <code>string source_dir = 11;</code>
+     * @return The sourceDir.
      */
     public java.lang.String getSourceDir() {
       java.lang.Object ref = sourceDir_;
@@ -17619,6 +18156,7 @@ public final class Lib {
     }
     /**
      * <code>string source_dir = 11;</code>
+     * @return The bytes for sourceDir.
      */
     public com.google.protobuf.ByteString
         getSourceDirBytes() {
@@ -17638,6 +18176,7 @@ public final class Lib {
     private volatile java.lang.Object utilityDir_;
     /**
      * <code>string utility_dir = 12;</code>
+     * @return The utilityDir.
      */
     public java.lang.String getUtilityDir() {
       java.lang.Object ref = utilityDir_;
@@ -17653,6 +18192,7 @@ public final class Lib {
     }
     /**
      * <code>string utility_dir = 12;</code>
+     * @return The bytes for utilityDir.
      */
     public com.google.protobuf.ByteString
         getUtilityDirBytes() {
@@ -17668,44 +18208,11 @@ public final class Lib {
       }
     }
 
-    public static final int LOCATION_FIELD_NUMBER = 13;
-    private volatile java.lang.Object location_;
-    /**
-     * <code>string location = 13;</code>
-     */
-    public java.lang.String getLocation() {
-      java.lang.Object ref = location_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        location_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string location = 13;</code>
-     */
-    public com.google.protobuf.ByteString
-        getLocationBytes() {
-      java.lang.Object ref = location_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        location_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     public static final int CONTAINER_PLATFORM_FIELD_NUMBER = 14;
     private volatile java.lang.Object containerPlatform_;
     /**
      * <code>string container_platform = 14;</code>
+     * @return The containerPlatform.
      */
     public java.lang.String getContainerPlatform() {
       java.lang.Object ref = containerPlatform_;
@@ -17721,6 +18228,7 @@ public final class Lib {
     }
     /**
      * <code>string container_platform = 14;</code>
+     * @return The bytes for containerPlatform.
      */
     public com.google.protobuf.ByteString
         getContainerPlatformBytes() {
@@ -17740,6 +18248,7 @@ public final class Lib {
     private volatile java.lang.Object layout_;
     /**
      * <code>string layout = 15;</code>
+     * @return The layout.
      */
     public java.lang.String getLayout() {
       java.lang.Object ref = layout_;
@@ -17755,6 +18264,7 @@ public final class Lib {
     }
     /**
      * <code>string layout = 15;</code>
+     * @return The bytes for layout.
      */
     public com.google.protobuf.ByteString
         getLayoutBytes() {
@@ -17774,6 +18284,7 @@ public final class Lib {
     private volatile java.lang.Object realName_;
     /**
      * <code>string real_name = 16;</code>
+     * @return The realName.
      */
     public java.lang.String getRealName() {
       java.lang.Object ref = realName_;
@@ -17789,6 +18300,7 @@ public final class Lib {
     }
     /**
      * <code>string real_name = 16;</code>
+     * @return The bytes for realName.
      */
     public com.google.protobuf.ByteString
         getRealNameBytes() {
@@ -17808,6 +18320,7 @@ public final class Lib {
     private boolean dotALinkage_;
     /**
      * <code>bool dot_a_linkage = 17;</code>
+     * @return The dotALinkage.
      */
     public boolean getDotALinkage() {
       return dotALinkage_;
@@ -17817,6 +18330,7 @@ public final class Lib {
     private boolean precompiled_;
     /**
      * <code>bool precompiled = 18;</code>
+     * @return The precompiled.
      */
     public boolean getPrecompiled() {
       return precompiled_;
@@ -17826,6 +18340,7 @@ public final class Lib {
     private volatile java.lang.Object ldFlags_;
     /**
      * <code>string ld_flags = 19;</code>
+     * @return The ldFlags.
      */
     public java.lang.String getLdFlags() {
       java.lang.Object ref = ldFlags_;
@@ -17841,6 +18356,7 @@ public final class Lib {
     }
     /**
      * <code>string ld_flags = 19;</code>
+     * @return The bytes for ldFlags.
      */
     public com.google.protobuf.ByteString
         getLdFlagsBytes() {
@@ -17860,6 +18376,7 @@ public final class Lib {
     private boolean isLegacy_;
     /**
      * <code>bool is_legacy = 20;</code>
+     * @return The isLegacy.
      */
     public boolean getIsLegacy() {
       return isLegacy_;
@@ -17869,6 +18386,7 @@ public final class Lib {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 21;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -17884,6 +18402,7 @@ public final class Lib {
     }
     /**
      * <code>string version = 21;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -17903,6 +18422,7 @@ public final class Lib {
     private volatile java.lang.Object license_;
     /**
      * <code>string license = 22;</code>
+     * @return The license.
      */
     public java.lang.String getLicense() {
       java.lang.Object ref = license_;
@@ -17918,6 +18438,7 @@ public final class Lib {
     }
     /**
      * <code>string license = 22;</code>
+     * @return The bytes for license.
      */
     public com.google.protobuf.ByteString
         getLicenseBytes() {
@@ -18009,6 +18530,25 @@ public final class Lib {
       return map.get(key);
     }
 
+    public static final int LOCATION_FIELD_NUMBER = 24;
+    private int location_;
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+     * @return The enum numeric value on the wire for location.
+     */
+    public int getLocationValue() {
+      return location_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+     * @return The location.
+     */
+    public cc.arduino.cli.commands.Lib.LibraryLocation getLocation() {
+      @SuppressWarnings("deprecation")
+      cc.arduino.cli.commands.Lib.LibraryLocation result = cc.arduino.cli.commands.Lib.LibraryLocation.valueOf(location_);
+      return result == null ? cc.arduino.cli.commands.Lib.LibraryLocation.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -18059,9 +18599,6 @@ public final class Lib {
       if (!getUtilityDirBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 12, utilityDir_);
       }
-      if (!getLocationBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 13, location_);
-      }
       if (!getContainerPlatformBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 14, containerPlatform_);
       }
@@ -18095,6 +18632,9 @@ public final class Lib {
           internalGetProperties(),
           PropertiesDefaultEntryHolder.defaultEntry,
           23);
+      if (location_ != cc.arduino.cli.commands.Lib.LibraryLocation.ide_builtin.getNumber()) {
+        output.writeEnum(24, location_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -18150,9 +18690,6 @@ public final class Lib {
       if (!getUtilityDirBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, utilityDir_);
       }
-      if (!getLocationBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, location_);
-      }
       if (!getContainerPlatformBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, containerPlatform_);
       }
@@ -18193,6 +18730,10 @@ public final class Lib {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(23, properties__);
       }
+      if (location_ != cc.arduino.cli.commands.Lib.LibraryLocation.ide_builtin.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(24, location_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -18232,8 +18773,6 @@ public final class Lib {
           .equals(other.getSourceDir())) return false;
       if (!getUtilityDir()
           .equals(other.getUtilityDir())) return false;
-      if (!getLocation()
-          .equals(other.getLocation())) return false;
       if (!getContainerPlatform()
           .equals(other.getContainerPlatform())) return false;
       if (!getLayout()
@@ -18254,6 +18793,7 @@ public final class Lib {
           .equals(other.getLicense())) return false;
       if (!internalGetProperties().equals(
           other.internalGetProperties())) return false;
+      if (location_ != other.location_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -18293,8 +18833,6 @@ public final class Lib {
       hash = (53 * hash) + getSourceDir().hashCode();
       hash = (37 * hash) + UTILITY_DIR_FIELD_NUMBER;
       hash = (53 * hash) + getUtilityDir().hashCode();
-      hash = (37 * hash) + LOCATION_FIELD_NUMBER;
-      hash = (53 * hash) + getLocation().hashCode();
       hash = (37 * hash) + CONTAINER_PLATFORM_FIELD_NUMBER;
       hash = (53 * hash) + getContainerPlatform().hashCode();
       hash = (37 * hash) + LAYOUT_FIELD_NUMBER;
@@ -18320,6 +18858,8 @@ public final class Lib {
         hash = (37 * hash) + PROPERTIES_FIELD_NUMBER;
         hash = (53 * hash) + internalGetProperties().hashCode();
       }
+      hash = (37 * hash) + LOCATION_FIELD_NUMBER;
+      hash = (53 * hash) + location_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -18499,8 +19039,6 @@ public final class Lib {
 
         utilityDir_ = "";
 
-        location_ = "";
-
         containerPlatform_ = "";
 
         layout_ = "";
@@ -18520,6 +19058,8 @@ public final class Lib {
         license_ = "";
 
         internalGetMutableProperties().clear();
+        location_ = 0;
+
         return this;
       }
 
@@ -18567,7 +19107,6 @@ public final class Lib {
         result.installDir_ = installDir_;
         result.sourceDir_ = sourceDir_;
         result.utilityDir_ = utilityDir_;
-        result.location_ = location_;
         result.containerPlatform_ = containerPlatform_;
         result.layout_ = layout_;
         result.realName_ = realName_;
@@ -18579,6 +19118,7 @@ public final class Lib {
         result.license_ = license_;
         result.properties_ = internalGetProperties();
         result.properties_.makeImmutable();
+        result.location_ = location_;
         onBuilt();
         return result;
       }
@@ -18687,10 +19227,6 @@ public final class Lib {
           utilityDir_ = other.utilityDir_;
           onChanged();
         }
-        if (!other.getLocation().isEmpty()) {
-          location_ = other.location_;
-          onChanged();
-        }
         if (!other.getContainerPlatform().isEmpty()) {
           containerPlatform_ = other.containerPlatform_;
           onChanged();
@@ -18726,6 +19262,9 @@ public final class Lib {
         }
         internalGetMutableProperties().mergeFrom(
             other.internalGetProperties());
+        if (other.location_ != 0) {
+          setLocationValue(other.getLocationValue());
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -18759,6 +19298,7 @@ public final class Lib {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -18774,6 +19314,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -18790,6 +19331,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -18803,6 +19346,7 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -18812,6 +19356,8 @@ public final class Lib {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -18828,6 +19374,7 @@ public final class Lib {
       private java.lang.Object author_ = "";
       /**
        * <code>string author = 2;</code>
+       * @return The author.
        */
       public java.lang.String getAuthor() {
         java.lang.Object ref = author_;
@@ -18843,6 +19390,7 @@ public final class Lib {
       }
       /**
        * <code>string author = 2;</code>
+       * @return The bytes for author.
        */
       public com.google.protobuf.ByteString
           getAuthorBytes() {
@@ -18859,6 +19407,8 @@ public final class Lib {
       }
       /**
        * <code>string author = 2;</code>
+       * @param value The author to set.
+       * @return This builder for chaining.
        */
       public Builder setAuthor(
           java.lang.String value) {
@@ -18872,6 +19422,7 @@ public final class Lib {
       }
       /**
        * <code>string author = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAuthor() {
         
@@ -18881,6 +19432,8 @@ public final class Lib {
       }
       /**
        * <code>string author = 2;</code>
+       * @param value The bytes for author to set.
+       * @return This builder for chaining.
        */
       public Builder setAuthorBytes(
           com.google.protobuf.ByteString value) {
@@ -18897,6 +19450,7 @@ public final class Lib {
       private java.lang.Object maintainer_ = "";
       /**
        * <code>string maintainer = 3;</code>
+       * @return The maintainer.
        */
       public java.lang.String getMaintainer() {
         java.lang.Object ref = maintainer_;
@@ -18912,6 +19466,7 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @return The bytes for maintainer.
        */
       public com.google.protobuf.ByteString
           getMaintainerBytes() {
@@ -18928,6 +19483,8 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @param value The maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainer(
           java.lang.String value) {
@@ -18941,6 +19498,7 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMaintainer() {
         
@@ -18950,6 +19508,8 @@ public final class Lib {
       }
       /**
        * <code>string maintainer = 3;</code>
+       * @param value The bytes for maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainerBytes(
           com.google.protobuf.ByteString value) {
@@ -18966,6 +19526,7 @@ public final class Lib {
       private java.lang.Object sentence_ = "";
       /**
        * <code>string sentence = 4;</code>
+       * @return The sentence.
        */
       public java.lang.String getSentence() {
         java.lang.Object ref = sentence_;
@@ -18981,6 +19542,7 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @return The bytes for sentence.
        */
       public com.google.protobuf.ByteString
           getSentenceBytes() {
@@ -18997,6 +19559,8 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @param value The sentence to set.
+       * @return This builder for chaining.
        */
       public Builder setSentence(
           java.lang.String value) {
@@ -19010,6 +19574,7 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSentence() {
         
@@ -19019,6 +19584,8 @@ public final class Lib {
       }
       /**
        * <code>string sentence = 4;</code>
+       * @param value The bytes for sentence to set.
+       * @return This builder for chaining.
        */
       public Builder setSentenceBytes(
           com.google.protobuf.ByteString value) {
@@ -19035,6 +19602,7 @@ public final class Lib {
       private java.lang.Object paragraph_ = "";
       /**
        * <code>string paragraph = 5;</code>
+       * @return The paragraph.
        */
       public java.lang.String getParagraph() {
         java.lang.Object ref = paragraph_;
@@ -19050,6 +19618,7 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @return The bytes for paragraph.
        */
       public com.google.protobuf.ByteString
           getParagraphBytes() {
@@ -19066,6 +19635,8 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @param value The paragraph to set.
+       * @return This builder for chaining.
        */
       public Builder setParagraph(
           java.lang.String value) {
@@ -19079,6 +19650,7 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearParagraph() {
         
@@ -19088,6 +19660,8 @@ public final class Lib {
       }
       /**
        * <code>string paragraph = 5;</code>
+       * @param value The bytes for paragraph to set.
+       * @return This builder for chaining.
        */
       public Builder setParagraphBytes(
           com.google.protobuf.ByteString value) {
@@ -19104,6 +19678,7 @@ public final class Lib {
       private java.lang.Object website_ = "";
       /**
        * <code>string website = 6;</code>
+       * @return The website.
        */
       public java.lang.String getWebsite() {
         java.lang.Object ref = website_;
@@ -19119,6 +19694,7 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @return The bytes for website.
        */
       public com.google.protobuf.ByteString
           getWebsiteBytes() {
@@ -19135,6 +19711,8 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @param value The website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsite(
           java.lang.String value) {
@@ -19148,6 +19726,7 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWebsite() {
         
@@ -19157,6 +19736,8 @@ public final class Lib {
       }
       /**
        * <code>string website = 6;</code>
+       * @param value The bytes for website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsiteBytes(
           com.google.protobuf.ByteString value) {
@@ -19173,6 +19754,7 @@ public final class Lib {
       private java.lang.Object category_ = "";
       /**
        * <code>string category = 7;</code>
+       * @return The category.
        */
       public java.lang.String getCategory() {
         java.lang.Object ref = category_;
@@ -19188,6 +19770,7 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @return The bytes for category.
        */
       public com.google.protobuf.ByteString
           getCategoryBytes() {
@@ -19204,6 +19787,8 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @param value The category to set.
+       * @return This builder for chaining.
        */
       public Builder setCategory(
           java.lang.String value) {
@@ -19217,6 +19802,7 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearCategory() {
         
@@ -19226,6 +19812,8 @@ public final class Lib {
       }
       /**
        * <code>string category = 7;</code>
+       * @param value The bytes for category to set.
+       * @return This builder for chaining.
        */
       public Builder setCategoryBytes(
           com.google.protobuf.ByteString value) {
@@ -19248,6 +19836,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return A list containing the architectures.
        */
       public com.google.protobuf.ProtocolStringList
           getArchitecturesList() {
@@ -19255,18 +19844,23 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return The count of architectures.
        */
       public int getArchitecturesCount() {
         return architectures_.size();
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index of the element to return.
+       * @return The architectures at the given index.
        */
       public java.lang.String getArchitectures(int index) {
         return architectures_.get(index);
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the architectures at the given index.
        */
       public com.google.protobuf.ByteString
           getArchitecturesBytes(int index) {
@@ -19274,6 +19868,9 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param index The index to set the value at.
+       * @param value The architectures to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectures(
           int index, java.lang.String value) {
@@ -19287,6 +19884,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param value The architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addArchitectures(
           java.lang.String value) {
@@ -19300,6 +19899,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param values The architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addAllArchitectures(
           java.lang.Iterable<java.lang.String> values) {
@@ -19311,6 +19912,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitectures() {
         architectures_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -19320,6 +19922,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string architectures = 8;</code>
+       * @param value The bytes of the architectures to add.
+       * @return This builder for chaining.
        */
       public Builder addArchitecturesBytes(
           com.google.protobuf.ByteString value) {
@@ -19342,6 +19946,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return A list containing the types.
        */
       public com.google.protobuf.ProtocolStringList
           getTypesList() {
@@ -19349,18 +19954,23 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return The count of types.
        */
       public int getTypesCount() {
         return types_.size();
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index of the element to return.
+       * @return The types at the given index.
        */
       public java.lang.String getTypes(int index) {
         return types_.get(index);
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the types at the given index.
        */
       public com.google.protobuf.ByteString
           getTypesBytes(int index) {
@@ -19368,6 +19978,9 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param index The index to set the value at.
+       * @param value The types to set.
+       * @return This builder for chaining.
        */
       public Builder setTypes(
           int index, java.lang.String value) {
@@ -19381,6 +19994,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param value The types to add.
+       * @return This builder for chaining.
        */
       public Builder addTypes(
           java.lang.String value) {
@@ -19394,6 +20009,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param values The types to add.
+       * @return This builder for chaining.
        */
       public Builder addAllTypes(
           java.lang.Iterable<java.lang.String> values) {
@@ -19405,6 +20022,7 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearTypes() {
         types_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -19414,6 +20032,8 @@ public final class Lib {
       }
       /**
        * <code>repeated string types = 9;</code>
+       * @param value The bytes of the types to add.
+       * @return This builder for chaining.
        */
       public Builder addTypesBytes(
           com.google.protobuf.ByteString value) {
@@ -19430,6 +20050,7 @@ public final class Lib {
       private java.lang.Object installDir_ = "";
       /**
        * <code>string install_dir = 10;</code>
+       * @return The installDir.
        */
       public java.lang.String getInstallDir() {
         java.lang.Object ref = installDir_;
@@ -19445,6 +20066,7 @@ public final class Lib {
       }
       /**
        * <code>string install_dir = 10;</code>
+       * @return The bytes for installDir.
        */
       public com.google.protobuf.ByteString
           getInstallDirBytes() {
@@ -19461,6 +20083,8 @@ public final class Lib {
       }
       /**
        * <code>string install_dir = 10;</code>
+       * @param value The installDir to set.
+       * @return This builder for chaining.
        */
       public Builder setInstallDir(
           java.lang.String value) {
@@ -19474,6 +20098,7 @@ public final class Lib {
       }
       /**
        * <code>string install_dir = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearInstallDir() {
         
@@ -19483,6 +20108,8 @@ public final class Lib {
       }
       /**
        * <code>string install_dir = 10;</code>
+       * @param value The bytes for installDir to set.
+       * @return This builder for chaining.
        */
       public Builder setInstallDirBytes(
           com.google.protobuf.ByteString value) {
@@ -19499,6 +20126,7 @@ public final class Lib {
       private java.lang.Object sourceDir_ = "";
       /**
        * <code>string source_dir = 11;</code>
+       * @return The sourceDir.
        */
       public java.lang.String getSourceDir() {
         java.lang.Object ref = sourceDir_;
@@ -19514,6 +20142,7 @@ public final class Lib {
       }
       /**
        * <code>string source_dir = 11;</code>
+       * @return The bytes for sourceDir.
        */
       public com.google.protobuf.ByteString
           getSourceDirBytes() {
@@ -19530,6 +20159,8 @@ public final class Lib {
       }
       /**
        * <code>string source_dir = 11;</code>
+       * @param value The sourceDir to set.
+       * @return This builder for chaining.
        */
       public Builder setSourceDir(
           java.lang.String value) {
@@ -19543,6 +20174,7 @@ public final class Lib {
       }
       /**
        * <code>string source_dir = 11;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSourceDir() {
         
@@ -19552,6 +20184,8 @@ public final class Lib {
       }
       /**
        * <code>string source_dir = 11;</code>
+       * @param value The bytes for sourceDir to set.
+       * @return This builder for chaining.
        */
       public Builder setSourceDirBytes(
           com.google.protobuf.ByteString value) {
@@ -19568,6 +20202,7 @@ public final class Lib {
       private java.lang.Object utilityDir_ = "";
       /**
        * <code>string utility_dir = 12;</code>
+       * @return The utilityDir.
        */
       public java.lang.String getUtilityDir() {
         java.lang.Object ref = utilityDir_;
@@ -19583,6 +20218,7 @@ public final class Lib {
       }
       /**
        * <code>string utility_dir = 12;</code>
+       * @return The bytes for utilityDir.
        */
       public com.google.protobuf.ByteString
           getUtilityDirBytes() {
@@ -19599,6 +20235,8 @@ public final class Lib {
       }
       /**
        * <code>string utility_dir = 12;</code>
+       * @param value The utilityDir to set.
+       * @return This builder for chaining.
        */
       public Builder setUtilityDir(
           java.lang.String value) {
@@ -19612,6 +20250,7 @@ public final class Lib {
       }
       /**
        * <code>string utility_dir = 12;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUtilityDir() {
         
@@ -19621,6 +20260,8 @@ public final class Lib {
       }
       /**
        * <code>string utility_dir = 12;</code>
+       * @param value The bytes for utilityDir to set.
+       * @return This builder for chaining.
        */
       public Builder setUtilityDirBytes(
           com.google.protobuf.ByteString value) {
@@ -19634,78 +20275,10 @@ public final class Lib {
         return this;
       }
 
-      private java.lang.Object location_ = "";
-      /**
-       * <code>string location = 13;</code>
-       */
-      public java.lang.String getLocation() {
-        java.lang.Object ref = location_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          location_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string location = 13;</code>
-       */
-      public com.google.protobuf.ByteString
-          getLocationBytes() {
-        java.lang.Object ref = location_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          location_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string location = 13;</code>
-       */
-      public Builder setLocation(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        location_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string location = 13;</code>
-       */
-      public Builder clearLocation() {
-        
-        location_ = getDefaultInstance().getLocation();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string location = 13;</code>
-       */
-      public Builder setLocationBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        location_ = value;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object containerPlatform_ = "";
       /**
        * <code>string container_platform = 14;</code>
+       * @return The containerPlatform.
        */
       public java.lang.String getContainerPlatform() {
         java.lang.Object ref = containerPlatform_;
@@ -19721,6 +20294,7 @@ public final class Lib {
       }
       /**
        * <code>string container_platform = 14;</code>
+       * @return The bytes for containerPlatform.
        */
       public com.google.protobuf.ByteString
           getContainerPlatformBytes() {
@@ -19737,6 +20311,8 @@ public final class Lib {
       }
       /**
        * <code>string container_platform = 14;</code>
+       * @param value The containerPlatform to set.
+       * @return This builder for chaining.
        */
       public Builder setContainerPlatform(
           java.lang.String value) {
@@ -19750,6 +20326,7 @@ public final class Lib {
       }
       /**
        * <code>string container_platform = 14;</code>
+       * @return This builder for chaining.
        */
       public Builder clearContainerPlatform() {
         
@@ -19759,6 +20336,8 @@ public final class Lib {
       }
       /**
        * <code>string container_platform = 14;</code>
+       * @param value The bytes for containerPlatform to set.
+       * @return This builder for chaining.
        */
       public Builder setContainerPlatformBytes(
           com.google.protobuf.ByteString value) {
@@ -19775,6 +20354,7 @@ public final class Lib {
       private java.lang.Object layout_ = "";
       /**
        * <code>string layout = 15;</code>
+       * @return The layout.
        */
       public java.lang.String getLayout() {
         java.lang.Object ref = layout_;
@@ -19790,6 +20370,7 @@ public final class Lib {
       }
       /**
        * <code>string layout = 15;</code>
+       * @return The bytes for layout.
        */
       public com.google.protobuf.ByteString
           getLayoutBytes() {
@@ -19806,6 +20387,8 @@ public final class Lib {
       }
       /**
        * <code>string layout = 15;</code>
+       * @param value The layout to set.
+       * @return This builder for chaining.
        */
       public Builder setLayout(
           java.lang.String value) {
@@ -19819,6 +20402,7 @@ public final class Lib {
       }
       /**
        * <code>string layout = 15;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLayout() {
         
@@ -19828,6 +20412,8 @@ public final class Lib {
       }
       /**
        * <code>string layout = 15;</code>
+       * @param value The bytes for layout to set.
+       * @return This builder for chaining.
        */
       public Builder setLayoutBytes(
           com.google.protobuf.ByteString value) {
@@ -19844,6 +20430,7 @@ public final class Lib {
       private java.lang.Object realName_ = "";
       /**
        * <code>string real_name = 16;</code>
+       * @return The realName.
        */
       public java.lang.String getRealName() {
         java.lang.Object ref = realName_;
@@ -19859,6 +20446,7 @@ public final class Lib {
       }
       /**
        * <code>string real_name = 16;</code>
+       * @return The bytes for realName.
        */
       public com.google.protobuf.ByteString
           getRealNameBytes() {
@@ -19875,6 +20463,8 @@ public final class Lib {
       }
       /**
        * <code>string real_name = 16;</code>
+       * @param value The realName to set.
+       * @return This builder for chaining.
        */
       public Builder setRealName(
           java.lang.String value) {
@@ -19888,6 +20478,7 @@ public final class Lib {
       }
       /**
        * <code>string real_name = 16;</code>
+       * @return This builder for chaining.
        */
       public Builder clearRealName() {
         
@@ -19897,6 +20488,8 @@ public final class Lib {
       }
       /**
        * <code>string real_name = 16;</code>
+       * @param value The bytes for realName to set.
+       * @return This builder for chaining.
        */
       public Builder setRealNameBytes(
           com.google.protobuf.ByteString value) {
@@ -19913,12 +20506,15 @@ public final class Lib {
       private boolean dotALinkage_ ;
       /**
        * <code>bool dot_a_linkage = 17;</code>
+       * @return The dotALinkage.
        */
       public boolean getDotALinkage() {
         return dotALinkage_;
       }
       /**
        * <code>bool dot_a_linkage = 17;</code>
+       * @param value The dotALinkage to set.
+       * @return This builder for chaining.
        */
       public Builder setDotALinkage(boolean value) {
         
@@ -19928,6 +20524,7 @@ public final class Lib {
       }
       /**
        * <code>bool dot_a_linkage = 17;</code>
+       * @return This builder for chaining.
        */
       public Builder clearDotALinkage() {
         
@@ -19939,12 +20536,15 @@ public final class Lib {
       private boolean precompiled_ ;
       /**
        * <code>bool precompiled = 18;</code>
+       * @return The precompiled.
        */
       public boolean getPrecompiled() {
         return precompiled_;
       }
       /**
        * <code>bool precompiled = 18;</code>
+       * @param value The precompiled to set.
+       * @return This builder for chaining.
        */
       public Builder setPrecompiled(boolean value) {
         
@@ -19954,6 +20554,7 @@ public final class Lib {
       }
       /**
        * <code>bool precompiled = 18;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPrecompiled() {
         
@@ -19965,6 +20566,7 @@ public final class Lib {
       private java.lang.Object ldFlags_ = "";
       /**
        * <code>string ld_flags = 19;</code>
+       * @return The ldFlags.
        */
       public java.lang.String getLdFlags() {
         java.lang.Object ref = ldFlags_;
@@ -19980,6 +20582,7 @@ public final class Lib {
       }
       /**
        * <code>string ld_flags = 19;</code>
+       * @return The bytes for ldFlags.
        */
       public com.google.protobuf.ByteString
           getLdFlagsBytes() {
@@ -19996,6 +20599,8 @@ public final class Lib {
       }
       /**
        * <code>string ld_flags = 19;</code>
+       * @param value The ldFlags to set.
+       * @return This builder for chaining.
        */
       public Builder setLdFlags(
           java.lang.String value) {
@@ -20009,6 +20614,7 @@ public final class Lib {
       }
       /**
        * <code>string ld_flags = 19;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLdFlags() {
         
@@ -20018,6 +20624,8 @@ public final class Lib {
       }
       /**
        * <code>string ld_flags = 19;</code>
+       * @param value The bytes for ldFlags to set.
+       * @return This builder for chaining.
        */
       public Builder setLdFlagsBytes(
           com.google.protobuf.ByteString value) {
@@ -20034,12 +20642,15 @@ public final class Lib {
       private boolean isLegacy_ ;
       /**
        * <code>bool is_legacy = 20;</code>
+       * @return The isLegacy.
        */
       public boolean getIsLegacy() {
         return isLegacy_;
       }
       /**
        * <code>bool is_legacy = 20;</code>
+       * @param value The isLegacy to set.
+       * @return This builder for chaining.
        */
       public Builder setIsLegacy(boolean value) {
         
@@ -20049,6 +20660,7 @@ public final class Lib {
       }
       /**
        * <code>bool is_legacy = 20;</code>
+       * @return This builder for chaining.
        */
       public Builder clearIsLegacy() {
         
@@ -20060,6 +20672,7 @@ public final class Lib {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 21;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -20075,6 +20688,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 21;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -20091,6 +20705,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 21;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -20104,6 +20720,7 @@ public final class Lib {
       }
       /**
        * <code>string version = 21;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -20113,6 +20730,8 @@ public final class Lib {
       }
       /**
        * <code>string version = 21;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -20129,6 +20748,7 @@ public final class Lib {
       private java.lang.Object license_ = "";
       /**
        * <code>string license = 22;</code>
+       * @return The license.
        */
       public java.lang.String getLicense() {
         java.lang.Object ref = license_;
@@ -20144,6 +20764,7 @@ public final class Lib {
       }
       /**
        * <code>string license = 22;</code>
+       * @return The bytes for license.
        */
       public com.google.protobuf.ByteString
           getLicenseBytes() {
@@ -20160,6 +20781,8 @@ public final class Lib {
       }
       /**
        * <code>string license = 22;</code>
+       * @param value The license to set.
+       * @return This builder for chaining.
        */
       public Builder setLicense(
           java.lang.String value) {
@@ -20173,6 +20796,7 @@ public final class Lib {
       }
       /**
        * <code>string license = 22;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLicense() {
         
@@ -20182,6 +20806,8 @@ public final class Lib {
       }
       /**
        * <code>string license = 22;</code>
+       * @param value The bytes for license to set.
+       * @return This builder for chaining.
        */
       public Builder setLicenseBytes(
           com.google.protobuf.ByteString value) {
@@ -20315,6 +20941,58 @@ public final class Lib {
           java.util.Map<java.lang.String, java.lang.String> values) {
         internalGetMutableProperties().getMutableMap()
             .putAll(values);
+        return this;
+      }
+
+      private int location_ = 0;
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+       * @return The enum numeric value on the wire for location.
+       */
+      public int getLocationValue() {
+        return location_;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+       * @param value The enum numeric value on the wire for location to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLocationValue(int value) {
+        location_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+       * @return The location.
+       */
+      public cc.arduino.cli.commands.Lib.LibraryLocation getLocation() {
+        @SuppressWarnings("deprecation")
+        cc.arduino.cli.commands.Lib.LibraryLocation result = cc.arduino.cli.commands.Lib.LibraryLocation.valueOf(location_);
+        return result == null ? cc.arduino.cli.commands.Lib.LibraryLocation.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+       * @param value The location to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLocation(cc.arduino.cli.commands.Lib.LibraryLocation value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        location_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLocation() {
+        
+        location_ = 0;
+        onChanged();
         return this;
       }
       @java.lang.Override
@@ -20547,26 +21225,27 @@ public final class Lib {
       "talledLibrary\"\177\n\020InstalledLibrary\0221\n\007lib" +
       "rary\030\001 \001(\0132 .cc.arduino.cli.commands.Lib" +
       "rary\0228\n\007release\030\002 \001(\0132\'.cc.arduino.cli.c" +
-      "ommands.LibraryRelease\"\244\004\n\007Library\022\014\n\004na" +
+      "ommands.LibraryRelease\"\316\004\n\007Library\022\014\n\004na" +
       "me\030\001 \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n\nmaintainer\030\003" +
       " \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tparagraph\030\005 \001(" +
       "\t\022\017\n\007website\030\006 \001(\t\022\020\n\010category\030\007 \001(\t\022\025\n\r" +
       "architectures\030\010 \003(\t\022\r\n\005types\030\t \003(\t\022\023\n\013in" +
       "stall_dir\030\n \001(\t\022\022\n\nsource_dir\030\013 \001(\t\022\023\n\013u" +
-      "tility_dir\030\014 \001(\t\022\020\n\010location\030\r \001(\t\022\032\n\022co" +
-      "ntainer_platform\030\016 \001(\t\022\016\n\006layout\030\017 \001(\t\022\021" +
-      "\n\treal_name\030\020 \001(\t\022\025\n\rdot_a_linkage\030\021 \001(\010" +
-      "\022\023\n\013precompiled\030\022 \001(\010\022\020\n\010ld_flags\030\023 \001(\t\022" +
-      "\021\n\tis_legacy\030\024 \001(\010\022\017\n\007version\030\025 \001(\t\022\017\n\007l" +
-      "icense\030\026 \001(\t\022D\n\nproperties\030\027 \003(\01320.cc.ar" +
-      "duino.cli.commands.Library.PropertiesEnt" +
-      "ry\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
-      "lue\030\002 \001(\t:\0028\001*6\n\rLibraryLayout\022\017\n\013flat_l" +
-      "ayout\020\000\022\024\n\020recursive_layout\020\001*i\n\017Library" +
-      "Location\022\017\n\013ide_builtin\020\000\022\024\n\020platform_bu" +
-      "iltin\020\001\022\037\n\033referenced_platform_builtin\020\002" +
-      "\022\016\n\nsketchbook\020\003B-Z+github.com/arduino/a" +
-      "rduino-cli/rpc/commandsb\006proto3"
+      "tility_dir\030\014 \001(\t\022\032\n\022container_platform\030\016" +
+      " \001(\t\022\016\n\006layout\030\017 \001(\t\022\021\n\treal_name\030\020 \001(\t\022" +
+      "\025\n\rdot_a_linkage\030\021 \001(\010\022\023\n\013precompiled\030\022 " +
+      "\001(\010\022\020\n\010ld_flags\030\023 \001(\t\022\021\n\tis_legacy\030\024 \001(\010" +
+      "\022\017\n\007version\030\025 \001(\t\022\017\n\007license\030\026 \001(\t\022D\n\npr" +
+      "operties\030\027 \003(\01320.cc.arduino.cli.commands" +
+      ".Library.PropertiesEntry\022:\n\010location\030\030 \001" +
+      "(\0162(.cc.arduino.cli.commands.LibraryLoca" +
+      "tion\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005" +
+      "value\030\002 \001(\t:\0028\001*6\n\rLibraryLayout\022\017\n\013flat" +
+      "_layout\020\000\022\024\n\020recursive_layout\020\001*c\n\017Libra" +
+      "ryLocation\022\017\n\013ide_builtin\020\000\022\010\n\004user\020\001\022\024\n" +
+      "\020platform_builtin\020\002\022\037\n\033referenced_platfo" +
+      "rm_builtin\020\003B-Z+github.com/arduino/ardui" +
+      "no-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -20698,7 +21377,7 @@ public final class Lib {
     internal_static_cc_arduino_cli_commands_Library_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_Library_descriptor,
-        new java.lang.String[] { "Name", "Author", "Maintainer", "Sentence", "Paragraph", "Website", "Category", "Architectures", "Types", "InstallDir", "SourceDir", "UtilityDir", "Location", "ContainerPlatform", "Layout", "RealName", "DotALinkage", "Precompiled", "LdFlags", "IsLegacy", "Version", "License", "Properties", });
+        new java.lang.String[] { "Name", "Author", "Maintainer", "Sentence", "Paragraph", "Website", "Category", "Architectures", "Types", "InstallDir", "SourceDir", "UtilityDir", "ContainerPlatform", "Layout", "RealName", "DotALinkage", "Precompiled", "LdFlags", "IsLegacy", "Version", "License", "Properties", "Location", });
     internal_static_cc_arduino_cli_commands_Library_PropertiesEntry_descriptor =
       internal_static_cc_arduino_cli_commands_Library_descriptor.getNestedTypes().get(0);
     internal_static_cc_arduino_cli_commands_Library_PropertiesEntry_fieldAccessorTable = new

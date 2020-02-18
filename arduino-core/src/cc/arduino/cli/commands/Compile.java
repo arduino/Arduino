@@ -20,10 +20,12 @@ public final class Compile {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -37,6 +39,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
@@ -45,16 +48,19 @@ public final class Compile {
      * </pre>
      *
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     com.google.protobuf.ByteString
         getFqbnBytes();
 
     /**
      * <code>string sketchPath = 3;</code>
+     * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
      * <code>string sketchPath = 3;</code>
+     * @return The bytes for sketchPath.
      */
     com.google.protobuf.ByteString
         getSketchPathBytes();
@@ -65,6 +71,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool showProperties = 4;</code>
+     * @return The showProperties.
      */
     boolean getShowProperties();
 
@@ -74,6 +81,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool preprocess = 5;</code>
+     * @return The preprocess.
      */
     boolean getPreprocess();
 
@@ -83,6 +91,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildCachePath = 6;</code>
+     * @return The buildCachePath.
      */
     java.lang.String getBuildCachePath();
     /**
@@ -91,6 +100,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildCachePath = 6;</code>
+     * @return The bytes for buildCachePath.
      */
     com.google.protobuf.ByteString
         getBuildCachePathBytes();
@@ -101,6 +111,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildPath = 7;</code>
+     * @return The buildPath.
      */
     java.lang.String getBuildPath();
     /**
@@ -109,6 +120,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildPath = 7;</code>
+     * @return The bytes for buildPath.
      */
     com.google.protobuf.ByteString
         getBuildPathBytes();
@@ -119,6 +131,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @return A list containing the buildProperties.
      */
     java.util.List<java.lang.String>
         getBuildPropertiesList();
@@ -128,6 +141,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @return The count of buildProperties.
      */
     int getBuildPropertiesCount();
     /**
@@ -136,6 +150,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @param index The index of the element to return.
+     * @return The buildProperties at the given index.
      */
     java.lang.String getBuildProperties(int index);
     /**
@@ -144,6 +160,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the buildProperties at the given index.
      */
     com.google.protobuf.ByteString
         getBuildPropertiesBytes(int index);
@@ -154,6 +172,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string warnings = 9;</code>
+     * @return The warnings.
      */
     java.lang.String getWarnings();
     /**
@@ -162,6 +181,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string warnings = 9;</code>
+     * @return The bytes for warnings.
      */
     com.google.protobuf.ByteString
         getWarningsBytes();
@@ -172,6 +192,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool verbose = 10;</code>
+     * @return The verbose.
      */
     boolean getVerbose();
 
@@ -181,6 +202,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool quiet = 11;</code>
+     * @return The quiet.
      */
     boolean getQuiet();
 
@@ -190,6 +212,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string vidPid = 12;</code>
+     * @return The vidPid.
      */
     java.lang.String getVidPid();
     /**
@@ -198,6 +221,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string vidPid = 12;</code>
+     * @return The bytes for vidPid.
      */
     com.google.protobuf.ByteString
         getVidPidBytes();
@@ -208,6 +232,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string exportFile = 13;</code>
+     * @return The exportFile.
      */
     java.lang.String getExportFile();
     /**
@@ -216,6 +241,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string exportFile = 13;</code>
+     * @return The bytes for exportFile.
      */
     com.google.protobuf.ByteString
         getExportFileBytes();
@@ -226,6 +252,7 @@ public final class Compile {
      * </pre>
      *
      * <code>int32 jobs = 14;</code>
+     * @return The jobs.
      */
     int getJobs();
 
@@ -235,6 +262,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @return A list containing the libraries.
      */
     java.util.List<java.lang.String>
         getLibrariesList();
@@ -244,6 +272,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @return The count of libraries.
      */
     int getLibrariesCount();
     /**
@@ -252,6 +281,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @param index The index of the element to return.
+     * @return The libraries at the given index.
      */
     java.lang.String getLibraries(int index);
     /**
@@ -260,6 +291,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the libraries at the given index.
      */
     com.google.protobuf.ByteString
         getLibrariesBytes(int index);
@@ -459,12 +492,14 @@ public final class Compile {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -484,6 +519,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     public java.lang.String getFqbn() {
       java.lang.Object ref = fqbn_;
@@ -503,6 +539,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     public com.google.protobuf.ByteString
         getFqbnBytes() {
@@ -522,6 +559,7 @@ public final class Compile {
     private volatile java.lang.Object sketchPath_;
     /**
      * <code>string sketchPath = 3;</code>
+     * @return The sketchPath.
      */
     public java.lang.String getSketchPath() {
       java.lang.Object ref = sketchPath_;
@@ -537,6 +575,7 @@ public final class Compile {
     }
     /**
      * <code>string sketchPath = 3;</code>
+     * @return The bytes for sketchPath.
      */
     public com.google.protobuf.ByteString
         getSketchPathBytes() {
@@ -560,6 +599,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool showProperties = 4;</code>
+     * @return The showProperties.
      */
     public boolean getShowProperties() {
       return showProperties_;
@@ -573,6 +613,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool preprocess = 5;</code>
+     * @return The preprocess.
      */
     public boolean getPreprocess() {
       return preprocess_;
@@ -586,6 +627,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildCachePath = 6;</code>
+     * @return The buildCachePath.
      */
     public java.lang.String getBuildCachePath() {
       java.lang.Object ref = buildCachePath_;
@@ -605,6 +647,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildCachePath = 6;</code>
+     * @return The bytes for buildCachePath.
      */
     public com.google.protobuf.ByteString
         getBuildCachePathBytes() {
@@ -628,6 +671,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildPath = 7;</code>
+     * @return The buildPath.
      */
     public java.lang.String getBuildPath() {
       java.lang.Object ref = buildPath_;
@@ -647,6 +691,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string buildPath = 7;</code>
+     * @return The bytes for buildPath.
      */
     public com.google.protobuf.ByteString
         getBuildPathBytes() {
@@ -670,6 +715,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @return A list containing the buildProperties.
      */
     public com.google.protobuf.ProtocolStringList
         getBuildPropertiesList() {
@@ -681,6 +727,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @return The count of buildProperties.
      */
     public int getBuildPropertiesCount() {
       return buildProperties_.size();
@@ -691,6 +738,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @param index The index of the element to return.
+     * @return The buildProperties at the given index.
      */
     public java.lang.String getBuildProperties(int index) {
       return buildProperties_.get(index);
@@ -701,6 +750,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the buildProperties at the given index.
      */
     public com.google.protobuf.ByteString
         getBuildPropertiesBytes(int index) {
@@ -715,6 +766,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string warnings = 9;</code>
+     * @return The warnings.
      */
     public java.lang.String getWarnings() {
       java.lang.Object ref = warnings_;
@@ -734,6 +786,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string warnings = 9;</code>
+     * @return The bytes for warnings.
      */
     public com.google.protobuf.ByteString
         getWarningsBytes() {
@@ -757,6 +810,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool verbose = 10;</code>
+     * @return The verbose.
      */
     public boolean getVerbose() {
       return verbose_;
@@ -770,6 +824,7 @@ public final class Compile {
      * </pre>
      *
      * <code>bool quiet = 11;</code>
+     * @return The quiet.
      */
     public boolean getQuiet() {
       return quiet_;
@@ -783,6 +838,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string vidPid = 12;</code>
+     * @return The vidPid.
      */
     public java.lang.String getVidPid() {
       java.lang.Object ref = vidPid_;
@@ -802,6 +858,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string vidPid = 12;</code>
+     * @return The bytes for vidPid.
      */
     public com.google.protobuf.ByteString
         getVidPidBytes() {
@@ -825,6 +882,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string exportFile = 13;</code>
+     * @return The exportFile.
      */
     public java.lang.String getExportFile() {
       java.lang.Object ref = exportFile_;
@@ -844,6 +902,7 @@ public final class Compile {
      * </pre>
      *
      * <code>string exportFile = 13;</code>
+     * @return The bytes for exportFile.
      */
     public com.google.protobuf.ByteString
         getExportFileBytes() {
@@ -867,6 +926,7 @@ public final class Compile {
      * </pre>
      *
      * <code>int32 jobs = 14;</code>
+     * @return The jobs.
      */
     public int getJobs() {
       return jobs_;
@@ -880,6 +940,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @return A list containing the libraries.
      */
     public com.google.protobuf.ProtocolStringList
         getLibrariesList() {
@@ -891,6 +952,7 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @return The count of libraries.
      */
     public int getLibrariesCount() {
       return libraries_.size();
@@ -901,6 +963,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @param index The index of the element to return.
+     * @return The libraries at the given index.
      */
     public java.lang.String getLibraries(int index) {
       return libraries_.get(index);
@@ -911,6 +975,8 @@ public final class Compile {
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
+     * @param index The index of the value to return.
+     * @return The bytes of the libraries at the given index.
      */
     public com.google.protobuf.ByteString
         getLibrariesBytes(int index) {
@@ -1515,12 +1581,14 @@ public final class Compile {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -1634,6 +1702,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string fqbn = 2;</code>
+       * @return The fqbn.
        */
       public java.lang.String getFqbn() {
         java.lang.Object ref = fqbn_;
@@ -1653,6 +1722,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
        */
       public com.google.protobuf.ByteString
           getFqbnBytes() {
@@ -1673,6 +1743,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbn(
           java.lang.String value) {
@@ -1690,6 +1762,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFqbn() {
         
@@ -1703,6 +1776,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbnBytes(
           com.google.protobuf.ByteString value) {
@@ -1719,6 +1794,7 @@ public final class Compile {
       private java.lang.Object sketchPath_ = "";
       /**
        * <code>string sketchPath = 3;</code>
+       * @return The sketchPath.
        */
       public java.lang.String getSketchPath() {
         java.lang.Object ref = sketchPath_;
@@ -1734,6 +1810,7 @@ public final class Compile {
       }
       /**
        * <code>string sketchPath = 3;</code>
+       * @return The bytes for sketchPath.
        */
       public com.google.protobuf.ByteString
           getSketchPathBytes() {
@@ -1750,6 +1827,8 @@ public final class Compile {
       }
       /**
        * <code>string sketchPath = 3;</code>
+       * @param value The sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPath(
           java.lang.String value) {
@@ -1763,6 +1842,7 @@ public final class Compile {
       }
       /**
        * <code>string sketchPath = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSketchPath() {
         
@@ -1772,6 +1852,8 @@ public final class Compile {
       }
       /**
        * <code>string sketchPath = 3;</code>
+       * @param value The bytes for sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPathBytes(
           com.google.protobuf.ByteString value) {
@@ -1792,6 +1874,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool showProperties = 4;</code>
+       * @return The showProperties.
        */
       public boolean getShowProperties() {
         return showProperties_;
@@ -1802,6 +1885,8 @@ public final class Compile {
        * </pre>
        *
        * <code>bool showProperties = 4;</code>
+       * @param value The showProperties to set.
+       * @return This builder for chaining.
        */
       public Builder setShowProperties(boolean value) {
         
@@ -1815,6 +1900,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool showProperties = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearShowProperties() {
         
@@ -1830,6 +1916,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
+       * @return The preprocess.
        */
       public boolean getPreprocess() {
         return preprocess_;
@@ -1840,6 +1927,8 @@ public final class Compile {
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
+       * @param value The preprocess to set.
+       * @return This builder for chaining.
        */
       public Builder setPreprocess(boolean value) {
         
@@ -1853,6 +1942,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPreprocess() {
         
@@ -1868,6 +1958,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildCachePath = 6;</code>
+       * @return The buildCachePath.
        */
       public java.lang.String getBuildCachePath() {
         java.lang.Object ref = buildCachePath_;
@@ -1887,6 +1978,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildCachePath = 6;</code>
+       * @return The bytes for buildCachePath.
        */
       public com.google.protobuf.ByteString
           getBuildCachePathBytes() {
@@ -1907,6 +1999,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildCachePath = 6;</code>
+       * @param value The buildCachePath to set.
+       * @return This builder for chaining.
        */
       public Builder setBuildCachePath(
           java.lang.String value) {
@@ -1924,6 +2018,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildCachePath = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBuildCachePath() {
         
@@ -1937,6 +2032,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildCachePath = 6;</code>
+       * @param value The bytes for buildCachePath to set.
+       * @return This builder for chaining.
        */
       public Builder setBuildCachePathBytes(
           com.google.protobuf.ByteString value) {
@@ -1957,6 +2054,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildPath = 7;</code>
+       * @return The buildPath.
        */
       public java.lang.String getBuildPath() {
         java.lang.Object ref = buildPath_;
@@ -1976,6 +2074,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildPath = 7;</code>
+       * @return The bytes for buildPath.
        */
       public com.google.protobuf.ByteString
           getBuildPathBytes() {
@@ -1996,6 +2095,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildPath = 7;</code>
+       * @param value The buildPath to set.
+       * @return This builder for chaining.
        */
       public Builder setBuildPath(
           java.lang.String value) {
@@ -2013,6 +2114,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildPath = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBuildPath() {
         
@@ -2026,6 +2128,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string buildPath = 7;</code>
+       * @param value The bytes for buildPath to set.
+       * @return This builder for chaining.
        */
       public Builder setBuildPathBytes(
           com.google.protobuf.ByteString value) {
@@ -2052,6 +2156,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @return A list containing the buildProperties.
        */
       public com.google.protobuf.ProtocolStringList
           getBuildPropertiesList() {
@@ -2063,6 +2168,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @return The count of buildProperties.
        */
       public int getBuildPropertiesCount() {
         return buildProperties_.size();
@@ -2073,6 +2179,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param index The index of the element to return.
+       * @return The buildProperties at the given index.
        */
       public java.lang.String getBuildProperties(int index) {
         return buildProperties_.get(index);
@@ -2083,6 +2191,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the buildProperties at the given index.
        */
       public com.google.protobuf.ByteString
           getBuildPropertiesBytes(int index) {
@@ -2094,6 +2204,9 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param index The index to set the value at.
+       * @param value The buildProperties to set.
+       * @return This builder for chaining.
        */
       public Builder setBuildProperties(
           int index, java.lang.String value) {
@@ -2111,6 +2224,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param value The buildProperties to add.
+       * @return This builder for chaining.
        */
       public Builder addBuildProperties(
           java.lang.String value) {
@@ -2128,6 +2243,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param values The buildProperties to add.
+       * @return This builder for chaining.
        */
       public Builder addAllBuildProperties(
           java.lang.Iterable<java.lang.String> values) {
@@ -2143,6 +2260,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @return This builder for chaining.
        */
       public Builder clearBuildProperties() {
         buildProperties_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -2156,6 +2274,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
+       * @param value The bytes of the buildProperties to add.
+       * @return This builder for chaining.
        */
       public Builder addBuildPropertiesBytes(
           com.google.protobuf.ByteString value) {
@@ -2176,6 +2296,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string warnings = 9;</code>
+       * @return The warnings.
        */
       public java.lang.String getWarnings() {
         java.lang.Object ref = warnings_;
@@ -2195,6 +2316,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string warnings = 9;</code>
+       * @return The bytes for warnings.
        */
       public com.google.protobuf.ByteString
           getWarningsBytes() {
@@ -2215,6 +2337,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string warnings = 9;</code>
+       * @param value The warnings to set.
+       * @return This builder for chaining.
        */
       public Builder setWarnings(
           java.lang.String value) {
@@ -2232,6 +2356,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string warnings = 9;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWarnings() {
         
@@ -2245,6 +2370,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string warnings = 9;</code>
+       * @param value The bytes for warnings to set.
+       * @return This builder for chaining.
        */
       public Builder setWarningsBytes(
           com.google.protobuf.ByteString value) {
@@ -2265,6 +2392,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool verbose = 10;</code>
+       * @return The verbose.
        */
       public boolean getVerbose() {
         return verbose_;
@@ -2275,6 +2403,8 @@ public final class Compile {
        * </pre>
        *
        * <code>bool verbose = 10;</code>
+       * @param value The verbose to set.
+       * @return This builder for chaining.
        */
       public Builder setVerbose(boolean value) {
         
@@ -2288,6 +2418,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool verbose = 10;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVerbose() {
         
@@ -2303,6 +2434,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool quiet = 11;</code>
+       * @return The quiet.
        */
       public boolean getQuiet() {
         return quiet_;
@@ -2313,6 +2445,8 @@ public final class Compile {
        * </pre>
        *
        * <code>bool quiet = 11;</code>
+       * @param value The quiet to set.
+       * @return This builder for chaining.
        */
       public Builder setQuiet(boolean value) {
         
@@ -2326,6 +2460,7 @@ public final class Compile {
        * </pre>
        *
        * <code>bool quiet = 11;</code>
+       * @return This builder for chaining.
        */
       public Builder clearQuiet() {
         
@@ -2341,6 +2476,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string vidPid = 12;</code>
+       * @return The vidPid.
        */
       public java.lang.String getVidPid() {
         java.lang.Object ref = vidPid_;
@@ -2360,6 +2496,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string vidPid = 12;</code>
+       * @return The bytes for vidPid.
        */
       public com.google.protobuf.ByteString
           getVidPidBytes() {
@@ -2380,6 +2517,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string vidPid = 12;</code>
+       * @param value The vidPid to set.
+       * @return This builder for chaining.
        */
       public Builder setVidPid(
           java.lang.String value) {
@@ -2397,6 +2536,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string vidPid = 12;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVidPid() {
         
@@ -2410,6 +2550,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string vidPid = 12;</code>
+       * @param value The bytes for vidPid to set.
+       * @return This builder for chaining.
        */
       public Builder setVidPidBytes(
           com.google.protobuf.ByteString value) {
@@ -2430,6 +2572,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string exportFile = 13;</code>
+       * @return The exportFile.
        */
       public java.lang.String getExportFile() {
         java.lang.Object ref = exportFile_;
@@ -2449,6 +2592,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string exportFile = 13;</code>
+       * @return The bytes for exportFile.
        */
       public com.google.protobuf.ByteString
           getExportFileBytes() {
@@ -2469,6 +2613,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string exportFile = 13;</code>
+       * @param value The exportFile to set.
+       * @return This builder for chaining.
        */
       public Builder setExportFile(
           java.lang.String value) {
@@ -2486,6 +2632,7 @@ public final class Compile {
        * </pre>
        *
        * <code>string exportFile = 13;</code>
+       * @return This builder for chaining.
        */
       public Builder clearExportFile() {
         
@@ -2499,6 +2646,8 @@ public final class Compile {
        * </pre>
        *
        * <code>string exportFile = 13;</code>
+       * @param value The bytes for exportFile to set.
+       * @return This builder for chaining.
        */
       public Builder setExportFileBytes(
           com.google.protobuf.ByteString value) {
@@ -2519,6 +2668,7 @@ public final class Compile {
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
+       * @return The jobs.
        */
       public int getJobs() {
         return jobs_;
@@ -2529,6 +2679,8 @@ public final class Compile {
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
+       * @param value The jobs to set.
+       * @return This builder for chaining.
        */
       public Builder setJobs(int value) {
         
@@ -2542,6 +2694,7 @@ public final class Compile {
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
+       * @return This builder for chaining.
        */
       public Builder clearJobs() {
         
@@ -2563,6 +2716,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @return A list containing the libraries.
        */
       public com.google.protobuf.ProtocolStringList
           getLibrariesList() {
@@ -2574,6 +2728,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @return The count of libraries.
        */
       public int getLibrariesCount() {
         return libraries_.size();
@@ -2584,6 +2739,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param index The index of the element to return.
+       * @return The libraries at the given index.
        */
       public java.lang.String getLibraries(int index) {
         return libraries_.get(index);
@@ -2594,6 +2751,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param index The index of the value to return.
+       * @return The bytes of the libraries at the given index.
        */
       public com.google.protobuf.ByteString
           getLibrariesBytes(int index) {
@@ -2605,6 +2764,9 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param index The index to set the value at.
+       * @param value The libraries to set.
+       * @return This builder for chaining.
        */
       public Builder setLibraries(
           int index, java.lang.String value) {
@@ -2622,6 +2784,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param value The libraries to add.
+       * @return This builder for chaining.
        */
       public Builder addLibraries(
           java.lang.String value) {
@@ -2639,6 +2803,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param values The libraries to add.
+       * @return This builder for chaining.
        */
       public Builder addAllLibraries(
           java.lang.Iterable<java.lang.String> values) {
@@ -2654,6 +2820,7 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLibraries() {
         libraries_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -2667,6 +2834,8 @@ public final class Compile {
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
+       * @param value The bytes of the libraries to add.
+       * @return This builder for chaining.
        */
       public Builder addLibrariesBytes(
           com.google.protobuf.ByteString value) {
@@ -2738,11 +2907,13 @@ public final class Compile {
 
     /**
      * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
      */
     com.google.protobuf.ByteString getOutStream();
 
     /**
      * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
      */
     com.google.protobuf.ByteString getErrStream();
   }
@@ -2839,6 +3010,7 @@ public final class Compile {
     private com.google.protobuf.ByteString outStream_;
     /**
      * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
      */
     public com.google.protobuf.ByteString getOutStream() {
       return outStream_;
@@ -2848,6 +3020,7 @@ public final class Compile {
     private com.google.protobuf.ByteString errStream_;
     /**
      * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
      */
     public com.google.protobuf.ByteString getErrStream() {
       return errStream_;
@@ -3175,12 +3348,15 @@ public final class Compile {
       private com.google.protobuf.ByteString outStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes out_stream = 1;</code>
+       * @return The outStream.
        */
       public com.google.protobuf.ByteString getOutStream() {
         return outStream_;
       }
       /**
        * <code>bytes out_stream = 1;</code>
+       * @param value The outStream to set.
+       * @return This builder for chaining.
        */
       public Builder setOutStream(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3193,6 +3369,7 @@ public final class Compile {
       }
       /**
        * <code>bytes out_stream = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOutStream() {
         
@@ -3204,12 +3381,15 @@ public final class Compile {
       private com.google.protobuf.ByteString errStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes err_stream = 2;</code>
+       * @return The errStream.
        */
       public com.google.protobuf.ByteString getErrStream() {
         return errStream_;
       }
       /**
        * <code>bytes err_stream = 2;</code>
+       * @param value The errStream to set.
+       * @return This builder for chaining.
        */
       public Builder setErrStream(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3222,6 +3402,7 @@ public final class Compile {
       }
       /**
        * <code>bytes err_stream = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearErrStream() {
         

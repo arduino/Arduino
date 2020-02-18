@@ -20,10 +20,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -33,30 +35,36 @@ public final class Core {
 
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     com.google.protobuf.ByteString
         getPlatformPackageBytes();
 
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     com.google.protobuf.ByteString
         getArchitectureBytes();
 
     /**
      * <code>string version = 4;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 4;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -176,12 +184,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -197,6 +207,7 @@ public final class Core {
     private volatile java.lang.Object platformPackage_;
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     public java.lang.String getPlatformPackage() {
       java.lang.Object ref = platformPackage_;
@@ -212,6 +223,7 @@ public final class Core {
     }
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     public com.google.protobuf.ByteString
         getPlatformPackageBytes() {
@@ -231,6 +243,7 @@ public final class Core {
     private volatile java.lang.Object architecture_;
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     public java.lang.String getArchitecture() {
       java.lang.Object ref = architecture_;
@@ -246,6 +259,7 @@ public final class Core {
     }
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     public com.google.protobuf.ByteString
         getArchitectureBytes() {
@@ -265,6 +279,7 @@ public final class Core {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 4;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -280,6 +295,7 @@ public final class Core {
     }
     /**
      * <code>string version = 4;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -666,12 +682,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -781,6 +799,7 @@ public final class Core {
       private java.lang.Object platformPackage_ = "";
       /**
        * <code>string platform_package = 2;</code>
+       * @return The platformPackage.
        */
       public java.lang.String getPlatformPackage() {
         java.lang.Object ref = platformPackage_;
@@ -796,6 +815,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return The bytes for platformPackage.
        */
       public com.google.protobuf.ByteString
           getPlatformPackageBytes() {
@@ -812,6 +832,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackage(
           java.lang.String value) {
@@ -825,6 +847,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformPackage() {
         
@@ -834,6 +857,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The bytes for platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackageBytes(
           com.google.protobuf.ByteString value) {
@@ -850,6 +875,7 @@ public final class Core {
       private java.lang.Object architecture_ = "";
       /**
        * <code>string architecture = 3;</code>
+       * @return The architecture.
        */
       public java.lang.String getArchitecture() {
         java.lang.Object ref = architecture_;
@@ -865,6 +891,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return The bytes for architecture.
        */
       public com.google.protobuf.ByteString
           getArchitectureBytes() {
@@ -881,6 +908,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitecture(
           java.lang.String value) {
@@ -894,6 +923,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitecture() {
         
@@ -903,6 +933,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The bytes for architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectureBytes(
           com.google.protobuf.ByteString value) {
@@ -919,6 +951,7 @@ public final class Core {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 4;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -934,6 +967,7 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -950,6 +984,8 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -963,6 +999,7 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -972,6 +1009,8 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -1043,10 +1082,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -1056,10 +1097,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -1174,12 +1217,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -1195,12 +1240,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -1562,12 +1609,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -1679,12 +1728,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -1849,10 +1900,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -1862,30 +1915,36 @@ public final class Core {
 
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     com.google.protobuf.ByteString
         getPlatformPackageBytes();
 
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     com.google.protobuf.ByteString
         getArchitectureBytes();
 
     /**
      * <code>string version = 4;</code>
+     * @return The version.
      */
     java.lang.String getVersion();
     /**
      * <code>string version = 4;</code>
+     * @return The bytes for version.
      */
     com.google.protobuf.ByteString
         getVersionBytes();
@@ -2005,12 +2064,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -2026,6 +2087,7 @@ public final class Core {
     private volatile java.lang.Object platformPackage_;
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     public java.lang.String getPlatformPackage() {
       java.lang.Object ref = platformPackage_;
@@ -2041,6 +2103,7 @@ public final class Core {
     }
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     public com.google.protobuf.ByteString
         getPlatformPackageBytes() {
@@ -2060,6 +2123,7 @@ public final class Core {
     private volatile java.lang.Object architecture_;
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     public java.lang.String getArchitecture() {
       java.lang.Object ref = architecture_;
@@ -2075,6 +2139,7 @@ public final class Core {
     }
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     public com.google.protobuf.ByteString
         getArchitectureBytes() {
@@ -2094,6 +2159,7 @@ public final class Core {
     private volatile java.lang.Object version_;
     /**
      * <code>string version = 4;</code>
+     * @return The version.
      */
     public java.lang.String getVersion() {
       java.lang.Object ref = version_;
@@ -2109,6 +2175,7 @@ public final class Core {
     }
     /**
      * <code>string version = 4;</code>
+     * @return The bytes for version.
      */
     public com.google.protobuf.ByteString
         getVersionBytes() {
@@ -2495,12 +2562,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -2610,6 +2679,7 @@ public final class Core {
       private java.lang.Object platformPackage_ = "";
       /**
        * <code>string platform_package = 2;</code>
+       * @return The platformPackage.
        */
       public java.lang.String getPlatformPackage() {
         java.lang.Object ref = platformPackage_;
@@ -2625,6 +2695,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return The bytes for platformPackage.
        */
       public com.google.protobuf.ByteString
           getPlatformPackageBytes() {
@@ -2641,6 +2712,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackage(
           java.lang.String value) {
@@ -2654,6 +2727,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformPackage() {
         
@@ -2663,6 +2737,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The bytes for platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackageBytes(
           com.google.protobuf.ByteString value) {
@@ -2679,6 +2755,7 @@ public final class Core {
       private java.lang.Object architecture_ = "";
       /**
        * <code>string architecture = 3;</code>
+       * @return The architecture.
        */
       public java.lang.String getArchitecture() {
         java.lang.Object ref = architecture_;
@@ -2694,6 +2771,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return The bytes for architecture.
        */
       public com.google.protobuf.ByteString
           getArchitectureBytes() {
@@ -2710,6 +2788,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitecture(
           java.lang.String value) {
@@ -2723,6 +2803,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitecture() {
         
@@ -2732,6 +2813,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The bytes for architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectureBytes(
           com.google.protobuf.ByteString value) {
@@ -2748,6 +2831,7 @@ public final class Core {
       private java.lang.Object version_ = "";
       /**
        * <code>string version = 4;</code>
+       * @return The version.
        */
       public java.lang.String getVersion() {
         java.lang.Object ref = version_;
@@ -2763,6 +2847,7 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @return The bytes for version.
        */
       public com.google.protobuf.ByteString
           getVersionBytes() {
@@ -2779,6 +2864,8 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersion(
           java.lang.String value) {
@@ -2792,6 +2879,7 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -2801,6 +2889,8 @@ public final class Core {
       }
       /**
        * <code>string version = 4;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
        */
       public Builder setVersionBytes(
           com.google.protobuf.ByteString value) {
@@ -2872,10 +2962,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -2977,12 +3069,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -3314,12 +3408,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -3484,10 +3580,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -3497,20 +3595,24 @@ public final class Core {
 
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     com.google.protobuf.ByteString
         getPlatformPackageBytes();
 
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     com.google.protobuf.ByteString
         getArchitectureBytes();
@@ -3623,12 +3725,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -3644,6 +3748,7 @@ public final class Core {
     private volatile java.lang.Object platformPackage_;
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     public java.lang.String getPlatformPackage() {
       java.lang.Object ref = platformPackage_;
@@ -3659,6 +3764,7 @@ public final class Core {
     }
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     public com.google.protobuf.ByteString
         getPlatformPackageBytes() {
@@ -3678,6 +3784,7 @@ public final class Core {
     private volatile java.lang.Object architecture_;
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     public java.lang.String getArchitecture() {
       java.lang.Object ref = architecture_;
@@ -3693,6 +3800,7 @@ public final class Core {
     }
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     public com.google.protobuf.ByteString
         getArchitectureBytes() {
@@ -4062,12 +4170,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -4177,6 +4287,7 @@ public final class Core {
       private java.lang.Object platformPackage_ = "";
       /**
        * <code>string platform_package = 2;</code>
+       * @return The platformPackage.
        */
       public java.lang.String getPlatformPackage() {
         java.lang.Object ref = platformPackage_;
@@ -4192,6 +4303,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return The bytes for platformPackage.
        */
       public com.google.protobuf.ByteString
           getPlatformPackageBytes() {
@@ -4208,6 +4320,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackage(
           java.lang.String value) {
@@ -4221,6 +4335,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformPackage() {
         
@@ -4230,6 +4345,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The bytes for platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackageBytes(
           com.google.protobuf.ByteString value) {
@@ -4246,6 +4363,7 @@ public final class Core {
       private java.lang.Object architecture_ = "";
       /**
        * <code>string architecture = 3;</code>
+       * @return The architecture.
        */
       public java.lang.String getArchitecture() {
         java.lang.Object ref = architecture_;
@@ -4261,6 +4379,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return The bytes for architecture.
        */
       public com.google.protobuf.ByteString
           getArchitectureBytes() {
@@ -4277,6 +4396,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitecture(
           java.lang.String value) {
@@ -4290,6 +4411,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitecture() {
         
@@ -4299,6 +4421,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The bytes for architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectureBytes(
           com.google.protobuf.ByteString value) {
@@ -4370,10 +4494,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -4475,12 +4601,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -4812,12 +4940,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -4982,10 +5112,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -4995,20 +5127,24 @@ public final class Core {
 
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     com.google.protobuf.ByteString
         getPlatformPackageBytes();
 
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     com.google.protobuf.ByteString
         getArchitectureBytes();
@@ -5121,12 +5257,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -5142,6 +5280,7 @@ public final class Core {
     private volatile java.lang.Object platformPackage_;
     /**
      * <code>string platform_package = 2;</code>
+     * @return The platformPackage.
      */
     public java.lang.String getPlatformPackage() {
       java.lang.Object ref = platformPackage_;
@@ -5157,6 +5296,7 @@ public final class Core {
     }
     /**
      * <code>string platform_package = 2;</code>
+     * @return The bytes for platformPackage.
      */
     public com.google.protobuf.ByteString
         getPlatformPackageBytes() {
@@ -5176,6 +5316,7 @@ public final class Core {
     private volatile java.lang.Object architecture_;
     /**
      * <code>string architecture = 3;</code>
+     * @return The architecture.
      */
     public java.lang.String getArchitecture() {
       java.lang.Object ref = architecture_;
@@ -5191,6 +5332,7 @@ public final class Core {
     }
     /**
      * <code>string architecture = 3;</code>
+     * @return The bytes for architecture.
      */
     public com.google.protobuf.ByteString
         getArchitectureBytes() {
@@ -5560,12 +5702,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -5675,6 +5819,7 @@ public final class Core {
       private java.lang.Object platformPackage_ = "";
       /**
        * <code>string platform_package = 2;</code>
+       * @return The platformPackage.
        */
       public java.lang.String getPlatformPackage() {
         java.lang.Object ref = platformPackage_;
@@ -5690,6 +5835,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return The bytes for platformPackage.
        */
       public com.google.protobuf.ByteString
           getPlatformPackageBytes() {
@@ -5706,6 +5852,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackage(
           java.lang.String value) {
@@ -5719,6 +5867,7 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPlatformPackage() {
         
@@ -5728,6 +5877,8 @@ public final class Core {
       }
       /**
        * <code>string platform_package = 2;</code>
+       * @param value The bytes for platformPackage to set.
+       * @return This builder for chaining.
        */
       public Builder setPlatformPackageBytes(
           com.google.protobuf.ByteString value) {
@@ -5744,6 +5895,7 @@ public final class Core {
       private java.lang.Object architecture_ = "";
       /**
        * <code>string architecture = 3;</code>
+       * @return The architecture.
        */
       public java.lang.String getArchitecture() {
         java.lang.Object ref = architecture_;
@@ -5759,6 +5911,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return The bytes for architecture.
        */
       public com.google.protobuf.ByteString
           getArchitectureBytes() {
@@ -5775,6 +5928,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitecture(
           java.lang.String value) {
@@ -5788,6 +5943,7 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearArchitecture() {
         
@@ -5797,6 +5953,8 @@ public final class Core {
       }
       /**
        * <code>string architecture = 3;</code>
+       * @param value The bytes for architecture to set.
+       * @return This builder for chaining.
        */
       public Builder setArchitectureBytes(
           com.google.protobuf.ByteString value) {
@@ -5868,10 +6026,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
@@ -5881,10 +6041,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
@@ -5999,12 +6161,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return Whether the progress field is set.
      */
     public boolean hasProgress() {
       return progress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+     * @return The progress.
      */
     public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
@@ -6020,12 +6184,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return Whether the taskProgress field is set.
      */
     public boolean hasTaskProgress() {
       return taskProgress_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+     * @return The taskProgress.
      */
     public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
@@ -6387,12 +6553,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return Whether the progress field is set.
        */
       public boolean hasProgress() {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
+       * @return The progress.
        */
       public cc.arduino.cli.commands.Common.DownloadProgress getProgress() {
         if (progressBuilder_ == null) {
@@ -6504,12 +6672,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return Whether the taskProgress field is set.
        */
       public boolean hasTaskProgress() {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
+       * @return The taskProgress.
        */
       public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
         if (taskProgressBuilder_ == null) {
@@ -6674,10 +6844,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -6687,16 +6859,19 @@ public final class Core {
 
     /**
      * <code>string search_args = 2;</code>
+     * @return The searchArgs.
      */
     java.lang.String getSearchArgs();
     /**
      * <code>string search_args = 2;</code>
+     * @return The bytes for searchArgs.
      */
     com.google.protobuf.ByteString
         getSearchArgsBytes();
 
     /**
      * <code>bool all_versions = 3;</code>
+     * @return The allVersions.
      */
     boolean getAllVersions();
   }
@@ -6806,12 +6981,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -6827,6 +7004,7 @@ public final class Core {
     private volatile java.lang.Object searchArgs_;
     /**
      * <code>string search_args = 2;</code>
+     * @return The searchArgs.
      */
     public java.lang.String getSearchArgs() {
       java.lang.Object ref = searchArgs_;
@@ -6842,6 +7020,7 @@ public final class Core {
     }
     /**
      * <code>string search_args = 2;</code>
+     * @return The bytes for searchArgs.
      */
     public com.google.protobuf.ByteString
         getSearchArgsBytes() {
@@ -6861,6 +7040,7 @@ public final class Core {
     private boolean allVersions_;
     /**
      * <code>bool all_versions = 3;</code>
+     * @return The allVersions.
      */
     public boolean getAllVersions() {
       return allVersions_;
@@ -7221,12 +7401,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -7336,6 +7518,7 @@ public final class Core {
       private java.lang.Object searchArgs_ = "";
       /**
        * <code>string search_args = 2;</code>
+       * @return The searchArgs.
        */
       public java.lang.String getSearchArgs() {
         java.lang.Object ref = searchArgs_;
@@ -7351,6 +7534,7 @@ public final class Core {
       }
       /**
        * <code>string search_args = 2;</code>
+       * @return The bytes for searchArgs.
        */
       public com.google.protobuf.ByteString
           getSearchArgsBytes() {
@@ -7367,6 +7551,8 @@ public final class Core {
       }
       /**
        * <code>string search_args = 2;</code>
+       * @param value The searchArgs to set.
+       * @return This builder for chaining.
        */
       public Builder setSearchArgs(
           java.lang.String value) {
@@ -7380,6 +7566,7 @@ public final class Core {
       }
       /**
        * <code>string search_args = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSearchArgs() {
         
@@ -7389,6 +7576,8 @@ public final class Core {
       }
       /**
        * <code>string search_args = 2;</code>
+       * @param value The bytes for searchArgs to set.
+       * @return This builder for chaining.
        */
       public Builder setSearchArgsBytes(
           com.google.protobuf.ByteString value) {
@@ -7405,12 +7594,15 @@ public final class Core {
       private boolean allVersions_ ;
       /**
        * <code>bool all_versions = 3;</code>
+       * @return The allVersions.
        */
       public boolean getAllVersions() {
         return allVersions_;
       }
       /**
        * <code>bool all_versions = 3;</code>
+       * @param value The allVersions to set.
+       * @return This builder for chaining.
        */
       public Builder setAllVersions(boolean value) {
         
@@ -7420,6 +7612,7 @@ public final class Core {
       }
       /**
        * <code>bool all_versions = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearAllVersions() {
         
@@ -8274,10 +8467,12 @@ public final class Core {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -8287,6 +8482,7 @@ public final class Core {
 
     /**
      * <code>bool updatable_only = 2;</code>
+     * @return The updatableOnly.
      */
     boolean getUpdatableOnly();
   }
@@ -8389,12 +8585,14 @@ public final class Core {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -8410,6 +8608,7 @@ public final class Core {
     private boolean updatableOnly_;
     /**
      * <code>bool updatable_only = 2;</code>
+     * @return The updatableOnly.
      */
     public boolean getUpdatableOnly() {
       return updatableOnly_;
@@ -8753,12 +8952,14 @@ public final class Core {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -8868,12 +9069,15 @@ public final class Core {
       private boolean updatableOnly_ ;
       /**
        * <code>bool updatable_only = 2;</code>
+       * @return The updatableOnly.
        */
       public boolean getUpdatableOnly() {
         return updatableOnly_;
       }
       /**
        * <code>bool updatable_only = 2;</code>
+       * @param value The updatableOnly to set.
+       * @return This builder for chaining.
        */
       public Builder setUpdatableOnly(boolean value) {
         
@@ -8883,6 +9087,7 @@ public final class Core {
       }
       /**
        * <code>bool updatable_only = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearUpdatableOnly() {
         
@@ -9737,70 +9942,84 @@ public final class Core {
 
     /**
      * <code>string ID = 1;</code>
+     * @return The iD.
      */
     java.lang.String getID();
     /**
      * <code>string ID = 1;</code>
+     * @return The bytes for iD.
      */
     com.google.protobuf.ByteString
         getIDBytes();
 
     /**
      * <code>string Installed = 2;</code>
+     * @return The installed.
      */
     java.lang.String getInstalled();
     /**
      * <code>string Installed = 2;</code>
+     * @return The bytes for installed.
      */
     com.google.protobuf.ByteString
         getInstalledBytes();
 
     /**
      * <code>string Latest = 3;</code>
+     * @return The latest.
      */
     java.lang.String getLatest();
     /**
      * <code>string Latest = 3;</code>
+     * @return The bytes for latest.
      */
     com.google.protobuf.ByteString
         getLatestBytes();
 
     /**
      * <code>string Name = 4;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string Name = 4;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string Maintainer = 5;</code>
+     * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
      * <code>string Maintainer = 5;</code>
+     * @return The bytes for maintainer.
      */
     com.google.protobuf.ByteString
         getMaintainerBytes();
 
     /**
      * <code>string Website = 6;</code>
+     * @return The website.
      */
     java.lang.String getWebsite();
     /**
      * <code>string Website = 6;</code>
+     * @return The bytes for website.
      */
     com.google.protobuf.ByteString
         getWebsiteBytes();
 
     /**
      * <code>string Email = 7;</code>
+     * @return The email.
      */
     java.lang.String getEmail();
     /**
      * <code>string Email = 7;</code>
+     * @return The bytes for email.
      */
     com.google.protobuf.ByteString
         getEmailBytes();
@@ -9973,6 +10192,7 @@ public final class Core {
     private volatile java.lang.Object iD_;
     /**
      * <code>string ID = 1;</code>
+     * @return The iD.
      */
     public java.lang.String getID() {
       java.lang.Object ref = iD_;
@@ -9988,6 +10208,7 @@ public final class Core {
     }
     /**
      * <code>string ID = 1;</code>
+     * @return The bytes for iD.
      */
     public com.google.protobuf.ByteString
         getIDBytes() {
@@ -10007,6 +10228,7 @@ public final class Core {
     private volatile java.lang.Object installed_;
     /**
      * <code>string Installed = 2;</code>
+     * @return The installed.
      */
     public java.lang.String getInstalled() {
       java.lang.Object ref = installed_;
@@ -10022,6 +10244,7 @@ public final class Core {
     }
     /**
      * <code>string Installed = 2;</code>
+     * @return The bytes for installed.
      */
     public com.google.protobuf.ByteString
         getInstalledBytes() {
@@ -10041,6 +10264,7 @@ public final class Core {
     private volatile java.lang.Object latest_;
     /**
      * <code>string Latest = 3;</code>
+     * @return The latest.
      */
     public java.lang.String getLatest() {
       java.lang.Object ref = latest_;
@@ -10056,6 +10280,7 @@ public final class Core {
     }
     /**
      * <code>string Latest = 3;</code>
+     * @return The bytes for latest.
      */
     public com.google.protobuf.ByteString
         getLatestBytes() {
@@ -10075,6 +10300,7 @@ public final class Core {
     private volatile java.lang.Object name_;
     /**
      * <code>string Name = 4;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -10090,6 +10316,7 @@ public final class Core {
     }
     /**
      * <code>string Name = 4;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -10109,6 +10336,7 @@ public final class Core {
     private volatile java.lang.Object maintainer_;
     /**
      * <code>string Maintainer = 5;</code>
+     * @return The maintainer.
      */
     public java.lang.String getMaintainer() {
       java.lang.Object ref = maintainer_;
@@ -10124,6 +10352,7 @@ public final class Core {
     }
     /**
      * <code>string Maintainer = 5;</code>
+     * @return The bytes for maintainer.
      */
     public com.google.protobuf.ByteString
         getMaintainerBytes() {
@@ -10143,6 +10372,7 @@ public final class Core {
     private volatile java.lang.Object website_;
     /**
      * <code>string Website = 6;</code>
+     * @return The website.
      */
     public java.lang.String getWebsite() {
       java.lang.Object ref = website_;
@@ -10158,6 +10388,7 @@ public final class Core {
     }
     /**
      * <code>string Website = 6;</code>
+     * @return The bytes for website.
      */
     public com.google.protobuf.ByteString
         getWebsiteBytes() {
@@ -10177,6 +10408,7 @@ public final class Core {
     private volatile java.lang.Object email_;
     /**
      * <code>string Email = 7;</code>
+     * @return The email.
      */
     public java.lang.String getEmail() {
       java.lang.Object ref = email_;
@@ -10192,6 +10424,7 @@ public final class Core {
     }
     /**
      * <code>string Email = 7;</code>
+     * @return The bytes for email.
      */
     public com.google.protobuf.ByteString
         getEmailBytes() {
@@ -10706,6 +10939,7 @@ public final class Core {
       private java.lang.Object iD_ = "";
       /**
        * <code>string ID = 1;</code>
+       * @return The iD.
        */
       public java.lang.String getID() {
         java.lang.Object ref = iD_;
@@ -10721,6 +10955,7 @@ public final class Core {
       }
       /**
        * <code>string ID = 1;</code>
+       * @return The bytes for iD.
        */
       public com.google.protobuf.ByteString
           getIDBytes() {
@@ -10737,6 +10972,8 @@ public final class Core {
       }
       /**
        * <code>string ID = 1;</code>
+       * @param value The iD to set.
+       * @return This builder for chaining.
        */
       public Builder setID(
           java.lang.String value) {
@@ -10750,6 +10987,7 @@ public final class Core {
       }
       /**
        * <code>string ID = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearID() {
         
@@ -10759,6 +10997,8 @@ public final class Core {
       }
       /**
        * <code>string ID = 1;</code>
+       * @param value The bytes for iD to set.
+       * @return This builder for chaining.
        */
       public Builder setIDBytes(
           com.google.protobuf.ByteString value) {
@@ -10775,6 +11015,7 @@ public final class Core {
       private java.lang.Object installed_ = "";
       /**
        * <code>string Installed = 2;</code>
+       * @return The installed.
        */
       public java.lang.String getInstalled() {
         java.lang.Object ref = installed_;
@@ -10790,6 +11031,7 @@ public final class Core {
       }
       /**
        * <code>string Installed = 2;</code>
+       * @return The bytes for installed.
        */
       public com.google.protobuf.ByteString
           getInstalledBytes() {
@@ -10806,6 +11048,8 @@ public final class Core {
       }
       /**
        * <code>string Installed = 2;</code>
+       * @param value The installed to set.
+       * @return This builder for chaining.
        */
       public Builder setInstalled(
           java.lang.String value) {
@@ -10819,6 +11063,7 @@ public final class Core {
       }
       /**
        * <code>string Installed = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearInstalled() {
         
@@ -10828,6 +11073,8 @@ public final class Core {
       }
       /**
        * <code>string Installed = 2;</code>
+       * @param value The bytes for installed to set.
+       * @return This builder for chaining.
        */
       public Builder setInstalledBytes(
           com.google.protobuf.ByteString value) {
@@ -10844,6 +11091,7 @@ public final class Core {
       private java.lang.Object latest_ = "";
       /**
        * <code>string Latest = 3;</code>
+       * @return The latest.
        */
       public java.lang.String getLatest() {
         java.lang.Object ref = latest_;
@@ -10859,6 +11107,7 @@ public final class Core {
       }
       /**
        * <code>string Latest = 3;</code>
+       * @return The bytes for latest.
        */
       public com.google.protobuf.ByteString
           getLatestBytes() {
@@ -10875,6 +11124,8 @@ public final class Core {
       }
       /**
        * <code>string Latest = 3;</code>
+       * @param value The latest to set.
+       * @return This builder for chaining.
        */
       public Builder setLatest(
           java.lang.String value) {
@@ -10888,6 +11139,7 @@ public final class Core {
       }
       /**
        * <code>string Latest = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearLatest() {
         
@@ -10897,6 +11149,8 @@ public final class Core {
       }
       /**
        * <code>string Latest = 3;</code>
+       * @param value The bytes for latest to set.
+       * @return This builder for chaining.
        */
       public Builder setLatestBytes(
           com.google.protobuf.ByteString value) {
@@ -10913,6 +11167,7 @@ public final class Core {
       private java.lang.Object name_ = "";
       /**
        * <code>string Name = 4;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -10928,6 +11183,7 @@ public final class Core {
       }
       /**
        * <code>string Name = 4;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -10944,6 +11200,8 @@ public final class Core {
       }
       /**
        * <code>string Name = 4;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -10957,6 +11215,7 @@ public final class Core {
       }
       /**
        * <code>string Name = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -10966,6 +11225,8 @@ public final class Core {
       }
       /**
        * <code>string Name = 4;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -10982,6 +11243,7 @@ public final class Core {
       private java.lang.Object maintainer_ = "";
       /**
        * <code>string Maintainer = 5;</code>
+       * @return The maintainer.
        */
       public java.lang.String getMaintainer() {
         java.lang.Object ref = maintainer_;
@@ -10997,6 +11259,7 @@ public final class Core {
       }
       /**
        * <code>string Maintainer = 5;</code>
+       * @return The bytes for maintainer.
        */
       public com.google.protobuf.ByteString
           getMaintainerBytes() {
@@ -11013,6 +11276,8 @@ public final class Core {
       }
       /**
        * <code>string Maintainer = 5;</code>
+       * @param value The maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainer(
           java.lang.String value) {
@@ -11026,6 +11291,7 @@ public final class Core {
       }
       /**
        * <code>string Maintainer = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearMaintainer() {
         
@@ -11035,6 +11301,8 @@ public final class Core {
       }
       /**
        * <code>string Maintainer = 5;</code>
+       * @param value The bytes for maintainer to set.
+       * @return This builder for chaining.
        */
       public Builder setMaintainerBytes(
           com.google.protobuf.ByteString value) {
@@ -11051,6 +11319,7 @@ public final class Core {
       private java.lang.Object website_ = "";
       /**
        * <code>string Website = 6;</code>
+       * @return The website.
        */
       public java.lang.String getWebsite() {
         java.lang.Object ref = website_;
@@ -11066,6 +11335,7 @@ public final class Core {
       }
       /**
        * <code>string Website = 6;</code>
+       * @return The bytes for website.
        */
       public com.google.protobuf.ByteString
           getWebsiteBytes() {
@@ -11082,6 +11352,8 @@ public final class Core {
       }
       /**
        * <code>string Website = 6;</code>
+       * @param value The website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsite(
           java.lang.String value) {
@@ -11095,6 +11367,7 @@ public final class Core {
       }
       /**
        * <code>string Website = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearWebsite() {
         
@@ -11104,6 +11377,8 @@ public final class Core {
       }
       /**
        * <code>string Website = 6;</code>
+       * @param value The bytes for website to set.
+       * @return This builder for chaining.
        */
       public Builder setWebsiteBytes(
           com.google.protobuf.ByteString value) {
@@ -11120,6 +11395,7 @@ public final class Core {
       private java.lang.Object email_ = "";
       /**
        * <code>string Email = 7;</code>
+       * @return The email.
        */
       public java.lang.String getEmail() {
         java.lang.Object ref = email_;
@@ -11135,6 +11411,7 @@ public final class Core {
       }
       /**
        * <code>string Email = 7;</code>
+       * @return The bytes for email.
        */
       public com.google.protobuf.ByteString
           getEmailBytes() {
@@ -11151,6 +11428,8 @@ public final class Core {
       }
       /**
        * <code>string Email = 7;</code>
+       * @param value The email to set.
+       * @return This builder for chaining.
        */
       public Builder setEmail(
           java.lang.String value) {
@@ -11164,6 +11443,7 @@ public final class Core {
       }
       /**
        * <code>string Email = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearEmail() {
         
@@ -11173,6 +11453,8 @@ public final class Core {
       }
       /**
        * <code>string Email = 7;</code>
+       * @param value The bytes for email to set.
+       * @return This builder for chaining.
        */
       public Builder setEmailBytes(
           com.google.protobuf.ByteString value) {
@@ -11484,20 +11766,24 @@ public final class Core {
 
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     java.lang.String getName();
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     com.google.protobuf.ByteString
         getNameBytes();
 
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     com.google.protobuf.ByteString
         getFqbnBytes();
@@ -11597,6 +11883,7 @@ public final class Core {
     private volatile java.lang.Object name_;
     /**
      * <code>string name = 1;</code>
+     * @return The name.
      */
     public java.lang.String getName() {
       java.lang.Object ref = name_;
@@ -11612,6 +11899,7 @@ public final class Core {
     }
     /**
      * <code>string name = 1;</code>
+     * @return The bytes for name.
      */
     public com.google.protobuf.ByteString
         getNameBytes() {
@@ -11631,6 +11919,7 @@ public final class Core {
     private volatile java.lang.Object fqbn_;
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     public java.lang.String getFqbn() {
       java.lang.Object ref = fqbn_;
@@ -11646,6 +11935,7 @@ public final class Core {
     }
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     public com.google.protobuf.ByteString
         getFqbnBytes() {
@@ -11983,6 +12273,7 @@ public final class Core {
       private java.lang.Object name_ = "";
       /**
        * <code>string name = 1;</code>
+       * @return The name.
        */
       public java.lang.String getName() {
         java.lang.Object ref = name_;
@@ -11998,6 +12289,7 @@ public final class Core {
       }
       /**
        * <code>string name = 1;</code>
+       * @return The bytes for name.
        */
       public com.google.protobuf.ByteString
           getNameBytes() {
@@ -12014,6 +12306,8 @@ public final class Core {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
        */
       public Builder setName(
           java.lang.String value) {
@@ -12027,6 +12321,7 @@ public final class Core {
       }
       /**
        * <code>string name = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearName() {
         
@@ -12036,6 +12331,8 @@ public final class Core {
       }
       /**
        * <code>string name = 1;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
        */
       public Builder setNameBytes(
           com.google.protobuf.ByteString value) {
@@ -12052,6 +12349,7 @@ public final class Core {
       private java.lang.Object fqbn_ = "";
       /**
        * <code>string fqbn = 2;</code>
+       * @return The fqbn.
        */
       public java.lang.String getFqbn() {
         java.lang.Object ref = fqbn_;
@@ -12067,6 +12365,7 @@ public final class Core {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
        */
       public com.google.protobuf.ByteString
           getFqbnBytes() {
@@ -12083,6 +12382,8 @@ public final class Core {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbn(
           java.lang.String value) {
@@ -12096,6 +12397,7 @@ public final class Core {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFqbn() {
         
@@ -12105,6 +12407,8 @@ public final class Core {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbnBytes(
           com.google.protobuf.ByteString value) {

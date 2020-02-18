@@ -20,10 +20,12 @@ public final class Upload {
 
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
@@ -33,50 +35,60 @@ public final class Upload {
 
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     com.google.protobuf.ByteString
         getFqbnBytes();
 
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The bytes for sketchPath.
      */
     com.google.protobuf.ByteString
         getSketchPathBytes();
 
     /**
      * <code>string port = 4;</code>
+     * @return The port.
      */
     java.lang.String getPort();
     /**
      * <code>string port = 4;</code>
+     * @return The bytes for port.
      */
     com.google.protobuf.ByteString
         getPortBytes();
 
     /**
      * <code>bool verbose = 5;</code>
+     * @return The verbose.
      */
     boolean getVerbose();
 
     /**
      * <code>bool verify = 6;</code>
+     * @return The verify.
      */
     boolean getVerify();
 
     /**
      * <code>string import_file = 7;</code>
+     * @return The importFile.
      */
     java.lang.String getImportFile();
     /**
      * <code>string import_file = 7;</code>
+     * @return The bytes for importFile.
      */
     com.google.protobuf.ByteString
         getImportFileBytes();
@@ -213,12 +225,14 @@ public final class Upload {
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
      */
     public boolean hasInstance() {
       return instance_ != null;
     }
     /**
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
      */
     public cc.arduino.cli.commands.Common.Instance getInstance() {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
@@ -234,6 +248,7 @@ public final class Upload {
     private volatile java.lang.Object fqbn_;
     /**
      * <code>string fqbn = 2;</code>
+     * @return The fqbn.
      */
     public java.lang.String getFqbn() {
       java.lang.Object ref = fqbn_;
@@ -249,6 +264,7 @@ public final class Upload {
     }
     /**
      * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
      */
     public com.google.protobuf.ByteString
         getFqbnBytes() {
@@ -268,6 +284,7 @@ public final class Upload {
     private volatile java.lang.Object sketchPath_;
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The sketchPath.
      */
     public java.lang.String getSketchPath() {
       java.lang.Object ref = sketchPath_;
@@ -283,6 +300,7 @@ public final class Upload {
     }
     /**
      * <code>string sketch_path = 3;</code>
+     * @return The bytes for sketchPath.
      */
     public com.google.protobuf.ByteString
         getSketchPathBytes() {
@@ -302,6 +320,7 @@ public final class Upload {
     private volatile java.lang.Object port_;
     /**
      * <code>string port = 4;</code>
+     * @return The port.
      */
     public java.lang.String getPort() {
       java.lang.Object ref = port_;
@@ -317,6 +336,7 @@ public final class Upload {
     }
     /**
      * <code>string port = 4;</code>
+     * @return The bytes for port.
      */
     public com.google.protobuf.ByteString
         getPortBytes() {
@@ -336,6 +356,7 @@ public final class Upload {
     private boolean verbose_;
     /**
      * <code>bool verbose = 5;</code>
+     * @return The verbose.
      */
     public boolean getVerbose() {
       return verbose_;
@@ -345,6 +366,7 @@ public final class Upload {
     private boolean verify_;
     /**
      * <code>bool verify = 6;</code>
+     * @return The verify.
      */
     public boolean getVerify() {
       return verify_;
@@ -354,6 +376,7 @@ public final class Upload {
     private volatile java.lang.Object importFile_;
     /**
      * <code>string import_file = 7;</code>
+     * @return The importFile.
      */
     public java.lang.String getImportFile() {
       java.lang.Object ref = importFile_;
@@ -369,6 +392,7 @@ public final class Upload {
     }
     /**
      * <code>string import_file = 7;</code>
+     * @return The bytes for importFile.
      */
     public com.google.protobuf.ByteString
         getImportFileBytes() {
@@ -808,12 +832,14 @@ public final class Upload {
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
        */
       public boolean hasInstance() {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
        */
       public cc.arduino.cli.commands.Common.Instance getInstance() {
         if (instanceBuilder_ == null) {
@@ -923,6 +949,7 @@ public final class Upload {
       private java.lang.Object fqbn_ = "";
       /**
        * <code>string fqbn = 2;</code>
+       * @return The fqbn.
        */
       public java.lang.String getFqbn() {
         java.lang.Object ref = fqbn_;
@@ -938,6 +965,7 @@ public final class Upload {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
        */
       public com.google.protobuf.ByteString
           getFqbnBytes() {
@@ -954,6 +982,8 @@ public final class Upload {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbn(
           java.lang.String value) {
@@ -967,6 +997,7 @@ public final class Upload {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearFqbn() {
         
@@ -976,6 +1007,8 @@ public final class Upload {
       }
       /**
        * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
        */
       public Builder setFqbnBytes(
           com.google.protobuf.ByteString value) {
@@ -992,6 +1025,7 @@ public final class Upload {
       private java.lang.Object sketchPath_ = "";
       /**
        * <code>string sketch_path = 3;</code>
+       * @return The sketchPath.
        */
       public java.lang.String getSketchPath() {
         java.lang.Object ref = sketchPath_;
@@ -1007,6 +1041,7 @@ public final class Upload {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @return The bytes for sketchPath.
        */
       public com.google.protobuf.ByteString
           getSketchPathBytes() {
@@ -1023,6 +1058,8 @@ public final class Upload {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @param value The sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPath(
           java.lang.String value) {
@@ -1036,6 +1073,7 @@ public final class Upload {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @return This builder for chaining.
        */
       public Builder clearSketchPath() {
         
@@ -1045,6 +1083,8 @@ public final class Upload {
       }
       /**
        * <code>string sketch_path = 3;</code>
+       * @param value The bytes for sketchPath to set.
+       * @return This builder for chaining.
        */
       public Builder setSketchPathBytes(
           com.google.protobuf.ByteString value) {
@@ -1061,6 +1101,7 @@ public final class Upload {
       private java.lang.Object port_ = "";
       /**
        * <code>string port = 4;</code>
+       * @return The port.
        */
       public java.lang.String getPort() {
         java.lang.Object ref = port_;
@@ -1076,6 +1117,7 @@ public final class Upload {
       }
       /**
        * <code>string port = 4;</code>
+       * @return The bytes for port.
        */
       public com.google.protobuf.ByteString
           getPortBytes() {
@@ -1092,6 +1134,8 @@ public final class Upload {
       }
       /**
        * <code>string port = 4;</code>
+       * @param value The port to set.
+       * @return This builder for chaining.
        */
       public Builder setPort(
           java.lang.String value) {
@@ -1105,6 +1149,7 @@ public final class Upload {
       }
       /**
        * <code>string port = 4;</code>
+       * @return This builder for chaining.
        */
       public Builder clearPort() {
         
@@ -1114,6 +1159,8 @@ public final class Upload {
       }
       /**
        * <code>string port = 4;</code>
+       * @param value The bytes for port to set.
+       * @return This builder for chaining.
        */
       public Builder setPortBytes(
           com.google.protobuf.ByteString value) {
@@ -1130,12 +1177,15 @@ public final class Upload {
       private boolean verbose_ ;
       /**
        * <code>bool verbose = 5;</code>
+       * @return The verbose.
        */
       public boolean getVerbose() {
         return verbose_;
       }
       /**
        * <code>bool verbose = 5;</code>
+       * @param value The verbose to set.
+       * @return This builder for chaining.
        */
       public Builder setVerbose(boolean value) {
         
@@ -1145,6 +1195,7 @@ public final class Upload {
       }
       /**
        * <code>bool verbose = 5;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVerbose() {
         
@@ -1156,12 +1207,15 @@ public final class Upload {
       private boolean verify_ ;
       /**
        * <code>bool verify = 6;</code>
+       * @return The verify.
        */
       public boolean getVerify() {
         return verify_;
       }
       /**
        * <code>bool verify = 6;</code>
+       * @param value The verify to set.
+       * @return This builder for chaining.
        */
       public Builder setVerify(boolean value) {
         
@@ -1171,6 +1225,7 @@ public final class Upload {
       }
       /**
        * <code>bool verify = 6;</code>
+       * @return This builder for chaining.
        */
       public Builder clearVerify() {
         
@@ -1182,6 +1237,7 @@ public final class Upload {
       private java.lang.Object importFile_ = "";
       /**
        * <code>string import_file = 7;</code>
+       * @return The importFile.
        */
       public java.lang.String getImportFile() {
         java.lang.Object ref = importFile_;
@@ -1197,6 +1253,7 @@ public final class Upload {
       }
       /**
        * <code>string import_file = 7;</code>
+       * @return The bytes for importFile.
        */
       public com.google.protobuf.ByteString
           getImportFileBytes() {
@@ -1213,6 +1270,8 @@ public final class Upload {
       }
       /**
        * <code>string import_file = 7;</code>
+       * @param value The importFile to set.
+       * @return This builder for chaining.
        */
       public Builder setImportFile(
           java.lang.String value) {
@@ -1226,6 +1285,7 @@ public final class Upload {
       }
       /**
        * <code>string import_file = 7;</code>
+       * @return This builder for chaining.
        */
       public Builder clearImportFile() {
         
@@ -1235,6 +1295,8 @@ public final class Upload {
       }
       /**
        * <code>string import_file = 7;</code>
+       * @param value The bytes for importFile to set.
+       * @return This builder for chaining.
        */
       public Builder setImportFileBytes(
           com.google.protobuf.ByteString value) {
@@ -1306,11 +1368,13 @@ public final class Upload {
 
     /**
      * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
      */
     com.google.protobuf.ByteString getOutStream();
 
     /**
      * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
      */
     com.google.protobuf.ByteString getErrStream();
   }
@@ -1407,6 +1471,7 @@ public final class Upload {
     private com.google.protobuf.ByteString outStream_;
     /**
      * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
      */
     public com.google.protobuf.ByteString getOutStream() {
       return outStream_;
@@ -1416,6 +1481,7 @@ public final class Upload {
     private com.google.protobuf.ByteString errStream_;
     /**
      * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
      */
     public com.google.protobuf.ByteString getErrStream() {
       return errStream_;
@@ -1743,12 +1809,15 @@ public final class Upload {
       private com.google.protobuf.ByteString outStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes out_stream = 1;</code>
+       * @return The outStream.
        */
       public com.google.protobuf.ByteString getOutStream() {
         return outStream_;
       }
       /**
        * <code>bytes out_stream = 1;</code>
+       * @param value The outStream to set.
+       * @return This builder for chaining.
        */
       public Builder setOutStream(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1761,6 +1830,7 @@ public final class Upload {
       }
       /**
        * <code>bytes out_stream = 1;</code>
+       * @return This builder for chaining.
        */
       public Builder clearOutStream() {
         
@@ -1772,12 +1842,15 @@ public final class Upload {
       private com.google.protobuf.ByteString errStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes err_stream = 2;</code>
+       * @return The errStream.
        */
       public com.google.protobuf.ByteString getErrStream() {
         return errStream_;
       }
       /**
        * <code>bytes err_stream = 2;</code>
+       * @param value The errStream to set.
+       * @return This builder for chaining.
        */
       public Builder setErrStream(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1790,6 +1863,7 @@ public final class Upload {
       }
       /**
        * <code>bytes err_stream = 2;</code>
+       * @return This builder for chaining.
        */
       public Builder clearErrStream() {
         
