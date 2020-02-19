@@ -119,7 +119,9 @@
     <include name="arduino-core/arduino-core.jar" />
     <include name="app/pde.jar" />
     <include name="app/lib/*.jar" />
+    <include name="app/lib/grpc/*.jar" />
     <include name="arduino-core/lib/*.jar" />
+    <include name="arduino-core/lib/grpc/*.jar" />
   </fileset>
 
   <!-- Remove all default excludes for directory tasks (see https://ant.apache.org/manual/dirtasks.html#defaultexcludes) -->

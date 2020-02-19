@@ -5,6 +5,9 @@
     <fileset dir="lib">
       <include name="*.jar"/>
     </fileset>
+    <fileset dir="lib/grpc">
+      <include name="*.jar"/>
+    </fileset>
     <pathelement path="${env.JAVA_HOME}/lib/tools.jar"/>
     <pathelement path="../arduino-core/arduino-core.jar"/>
   </path>
