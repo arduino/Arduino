@@ -189,21 +189,41 @@ public class Serial implements SerialPortEventListener {
 
   public void processSerialEvent(byte[] buf) {
     int next = 0;
-    while(next < buf.length) {
-      while(next < buf.length && outToMessage.hasRemaining()) {
+    // This uses a CharsetDecoder to convert from bytes to UTF-8 in
+    // a streaming fashion (i.e. where characters might be split
+    // over multiple reads). This needs the data to be in a
+    // ByteBuffer (inFromSerial, which we also use to store leftover
+    // incomplete characters for the nexst run) and produces a
+    // CharBuffer (outToMessage), which we then convert to char[] to
+    // pass onwards.
+    // Note that these buffers switch from input to output mode
+    // using flip/compact/clear
+    while (next < buf.length || inFromSerial.position() > 0) {
+      do {
+        // This might be 0 when all data was already read from buf
+        // (but then there will be data in inFromSerial left to
+        // decode).
         int copyNow = Math.min(buf.length - next, inFromSerial.remaining());
         inFromSerial.put(buf, next, copyNow);
         next += copyNow;
+
         inFromSerial.flip();
         bytesToStrings.decode(inFromSerial, outToMessage, false);
         inFromSerial.compact();
-      }
+
+        // When there are multi-byte characters, outToMessage might
+        // still have room, so add more bytes if we have any.
+      } while (next < buf.length && outToMessage.hasRemaining());
+
+      // If no output was produced, the input only contained
+      // incomplete characters, so we're done processing
+      if (outToMessage.position() == 0)
+        break;
+
       outToMessage.flip();
-      if(outToMessage.hasRemaining()) {
-        char[] chars = new char[outToMessage.remaining()];
-        outToMessage.get(chars);
-        message(chars, chars.length);
-      }
+      char[] chars = new char[outToMessage.remaining()];
+      outToMessage.get(chars);
+      message(chars, chars.length);
       outToMessage.clear();
     }
   }
