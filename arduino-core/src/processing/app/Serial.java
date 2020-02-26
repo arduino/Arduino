@@ -191,8 +191,7 @@ public class Serial implements SerialPortEventListener {
     int next = 0;
     while(next < buf.length) {
       while(next < buf.length && outToMessage.hasRemaining()) {
-        int spaceInIn = inFromSerial.remaining();
-        int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
+        int copyNow = Math.min(buf.length - next, inFromSerial.remaining());
         inFromSerial.put(buf, next, copyNow);
         next += copyNow;
         inFromSerial.flip();
