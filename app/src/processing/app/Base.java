@@ -621,7 +621,12 @@ public class Base {
         .get("last.sketch" + index + ".location");
     if (locationStr == null)
       return defaultEditorLocation();
-    return PApplet.parseInt(PApplet.split(locationStr, ','));
+
+    int location[] = PApplet.parseInt(PApplet.split(locationStr, ','));
+    if (location[0] > screen.width || location[1] > screen.height)
+      return defaultEditorLocation();
+
+    return location;
   }
 
   protected void storeRecentSketches(SketchController sketch) {
