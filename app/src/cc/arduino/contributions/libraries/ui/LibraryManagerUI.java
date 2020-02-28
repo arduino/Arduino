@@ -48,8 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
@@ -62,7 +62,7 @@ import cc.arduino.utils.Progress;
 import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
-public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryReleases> {
+public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
   private final JComboBox typeChooser;
   private final LibraryInstaller installer;
@@ -85,7 +85,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   protected InstallerTableCell createCellEditor() {
     return new ContributedLibraryTableCellEditor() {
       @Override
-      protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
+      protected void onInstall(ContributedLibraryRelease selectedLibrary, Optional<ContributedLibraryRelease> mayInstalledLibrary) {
         if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
           onRemovePressed(mayInstalledLibrary.get());
         } else {
@@ -94,7 +94,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       }
 
       @Override
-      protected void onRemove(ContributedLibrary library) {
+      protected void onRemove(ContributedLibraryRelease library) {
         onRemovePressed(library);
       }
     };
@@ -120,7 +120,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   protected final ActionListener typeChooserActionListener = new ActionListener() {
     @Override
     public void actionPerformed(ActionEvent event) {
-      DropdownItem<ContributedLibraryReleases> selected = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
+      DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
       previousRowAtPoint = -1;
       if (selected != null && extraFilter != selected.getFilterPredicate()) {
         extraFilter = selected.getFilterPredicate();
@@ -217,8 +217,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib) {
-    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+  public void onInstallPressed(final ContributedLibraryRelease lib) {
+    List<ContributedLibraryRelease> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
     boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
     Result installDeps;
     if (!depsInstalled) {
@@ -257,7 +257,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onRemovePressed(final ContributedLibrary lib) {
+  public void onRemovePressed(final ContributedLibraryRelease lib) {
     boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib);
 
     if (!managedByIndex) {

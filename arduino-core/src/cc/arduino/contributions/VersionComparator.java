@@ -31,7 +31,7 @@ package cc.arduino.contributions;
 
 import com.github.zafarkhaja.semver.Version;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -70,15 +70,15 @@ public class VersionComparator implements Comparator<String> {
     return greaterThan(a, b) ? a : b;
   }
 
-  public static ContributedLibrary max(ContributedLibrary a, ContributedLibrary b) {
+  public static ContributedLibraryRelease max(ContributedLibraryRelease a, ContributedLibraryRelease b) {
     return greaterThan(a, b) ? a : b;
   }
 
-  public static boolean greaterThan(ContributedLibrary a, ContributedLibrary b) {
+  public static boolean greaterThan(ContributedLibraryRelease a, ContributedLibraryRelease b) {
     return greaterThan(a.getParsedVersion(), b.getParsedVersion());
   }
 
-  public static int compareTo(ContributedLibrary a, ContributedLibrary b) {
+  public static int compareTo(ContributedLibraryRelease a, ContributedLibraryRelease b) {
     return compareTo(a.getParsedVersion(), b.getParsedVersion());
   }
 }

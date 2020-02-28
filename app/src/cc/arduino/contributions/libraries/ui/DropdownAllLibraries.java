@@ -29,21 +29,21 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
 import static processing.app.I18n.tr;
 
-public class DropdownAllLibraries implements DropdownItem<ContributedLibraryReleases> {
+public class DropdownAllLibraries implements DropdownItem<ContributedLibrary> {
 
   public String toString() {
     return tr("All");
   }
 
   @Override
-  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
+  public Predicate<ContributedLibrary> getFilterPredicate() {
     return x -> true;
   }
 

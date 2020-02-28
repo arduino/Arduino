@@ -32,7 +32,7 @@ package cc.arduino.contributions.libraries;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnavailableContributedLibrary extends ContributedLibrary {
+public class UnavailableContributedLibrary extends ContributedLibraryRelease {
 
   private String name;
   private String version;

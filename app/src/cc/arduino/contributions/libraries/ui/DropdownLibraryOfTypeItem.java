@@ -29,7 +29,7 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.function.Predicate;
 
 import static processing.app.I18n.tr;
 
-public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibraryReleases> {
+public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrary> {
 
   private final String type;
 
@@ -50,10 +50,10 @@ public class DropdownLibraryOfTypeItem implements DropdownItem<ContributedLibrar
   }
 
   @Override
-  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
+  public Predicate<ContributedLibrary> getFilterPredicate() {
+    return new Predicate<ContributedLibrary>() {
       @Override
-      public boolean test(ContributedLibraryReleases lib) {
+      public boolean test(ContributedLibrary lib) {
         List<String> types = lib.getLatest().getTypes();
         return types != null && types.contains(type);
       }

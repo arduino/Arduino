@@ -15,8 +15,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
 import processing.app.PreferencesData;
@@ -119,15 +119,15 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     add(Box.createVerticalStrut(15));
 
-    ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
+    ContributedLibrary releases = (ContributedLibrary) value;
 
     // FIXME: happens on macosx, don't know why
     if (releases == null)
       return;
 
-    ContributedLibrary selected = releases.getSelected();
+    ContributedLibraryRelease selected = releases.getSelected();
     titledBorder.setTitle(selected.getName());
-    Optional<ContributedLibrary> mayInstalled = releases.getInstalled();
+    Optional<ContributedLibraryRelease> mayInstalled = releases.getInstalled();
 
     boolean installable, upgradable;
     if (!mayInstalled.isPresent()) {

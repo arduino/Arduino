@@ -33,11 +33,11 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import processing.app.BaseNoGui;
 
-public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
+public class UpdatableLibraryPredicate implements Predicate<ContributedLibraryRelease> {
 
   LibrariesIndexer librariesIndexer;
 
@@ -50,13 +50,13 @@ public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> 
   }
 
   @Override
-  public boolean test(ContributedLibrary lib) {
+  public boolean test(ContributedLibraryRelease lib) {
     if (!lib.isLibraryInstalled()) {
       return false;
     }
     String libraryName = lib.getName();
-    List<ContributedLibrary> libraries = librariesIndexer.getIndex().find(libraryName);
-    ContributedLibrary latest = libraries.stream().reduce(VersionComparator::max).get();
+    List<ContributedLibraryRelease> libraries = librariesIndexer.getIndex().find(libraryName);
+    ContributedLibraryRelease latest = libraries.stream().reduce(VersionComparator::max).get();
     return !latest.isLibraryInstalled();
   }
 }

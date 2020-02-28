@@ -29,14 +29,14 @@
 
 package cc.arduino.contributions.libraries.ui;
 
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ContributedLibraryReleasesComparator implements Comparator<ContributedLibraryReleases> {
+public class ContributedLibraryReleasesComparator implements Comparator<ContributedLibrary> {
 
   private final String firstType;
 
@@ -45,9 +45,9 @@ public class ContributedLibraryReleasesComparator implements Comparator<Contribu
   }
 
   @Override
-  public int compare(ContributedLibraryReleases o1, ContributedLibraryReleases o2) {
-    ContributedLibrary lib1 = o1.getLatest();
-    ContributedLibrary lib2 = o2.getLatest();
+  public int compare(ContributedLibrary o1, ContributedLibrary o2) {
+    ContributedLibraryRelease lib1 = o1.getLatest();
+    ContributedLibraryRelease lib2 = o2.getLatest();
 
     List<String> types1 = lib1.getTypes();
     List<String> types2 = lib2.getTypes();
@@ -66,7 +66,7 @@ public class ContributedLibraryReleasesComparator implements Comparator<Contribu
     return compareName(lib1, lib2);
   }
 
-  private int compareName(ContributedLibrary lib1, ContributedLibrary lib2) {
+  private int compareName(ContributedLibraryRelease lib1, ContributedLibraryRelease lib2) {
     return lib1.getName().compareToIgnoreCase(lib2.getName());
   }
 

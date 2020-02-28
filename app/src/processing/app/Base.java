@@ -27,7 +27,7 @@ import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
 import cc.arduino.contributions.*;
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryOfSameTypeComparator;
@@ -368,7 +368,7 @@ public class Base {
       for (String library : parser.getLibraryToInstall().split(",")) {
         String[] libraryToInstallParts = library.split(":");
 
-        ContributedLibrary selected = null;
+        ContributedLibraryRelease selected = null;
         if (libraryToInstallParts.length == 2) {
           Optional<Version> version = VersionHelper.valueOf(libraryToInstallParts[1]);
           if (!version.isPresent()) {
@@ -377,7 +377,7 @@ public class Base {
           }
           selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString());
         } else if (libraryToInstallParts.length == 1) {
-          List<ContributedLibrary> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
+          List<ContributedLibraryRelease> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
           Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
           if (!librariesByName.isEmpty()) {
             selected = librariesByName.get(librariesByName.size() - 1);
@@ -388,7 +388,7 @@ public class Base {
           System.exit(1);
         }
 
-        Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
+        Optional<ContributedLibraryRelease> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
           System.out.println(tr(I18n
               .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",

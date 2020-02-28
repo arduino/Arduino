@@ -29,15 +29,15 @@
 
 package cc.arduino.contributions.libraries.ui;
 
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.DropdownItem;
 
 import java.util.function.Predicate;
 
 import static processing.app.I18n.tr;
 
-public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLibraryReleases> {
+public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLibrary> {
 
   private final String category;
 
@@ -50,11 +50,11 @@ public class DropdownLibraryOfCategoryItem implements DropdownItem<ContributedLi
   }
 
   @Override
-  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
+  public Predicate<ContributedLibrary> getFilterPredicate() {
+    return new Predicate<ContributedLibrary>() {
       @Override
-      public boolean test(ContributedLibraryReleases rel) {
-        ContributedLibrary lib = rel.getLatest();
+      public boolean test(ContributedLibrary rel) {
+        ContributedLibraryRelease lib = rel.getLatest();
         return category.equals(lib.getCategory());
       }
     };

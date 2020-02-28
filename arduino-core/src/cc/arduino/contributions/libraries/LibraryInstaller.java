@@ -111,16 +111,16 @@ public class LibraryInstaller {
 
   }
 
-  public void install(ContributedLibrary lib, ProgressListener progressListener) throws Exception {
-    ArrayList<ContributedLibrary> libs = new ArrayList<>();
+  public void install(ContributedLibraryRelease lib, ProgressListener progressListener) throws Exception {
+    ArrayList<ContributedLibraryRelease> libs = new ArrayList<>();
     libs.add(lib);
     install(libs, progressListener);
   }
 
-  public synchronized void install(List<ContributedLibrary> libs, ProgressListener progressListener) throws Exception {
+  public synchronized void install(List<ContributedLibraryRelease> libs, ProgressListener progressListener) throws Exception {
     MultiStepProgress progress = new MultiStepProgress(3 * libs.size() + 1);
 
-    for (ContributedLibrary lib : libs) {
+    for (ContributedLibraryRelease lib : libs) {
       // Do install library (3 steps)
       performInstall(lib, progressListener, progress);
     }
@@ -129,7 +129,7 @@ public class LibraryInstaller {
     rescanLibraryIndex(progress, progressListener);
   }
 
-  private void performInstall(ContributedLibrary lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
+  private void performInstall(ContributedLibraryRelease lib, ProgressListener progressListener, MultiStepProgress progress) throws Exception {
     if (lib.isLibraryInstalled()) {
       System.out.println(I18n.format(tr("Library is already installed: {0}:{1}"), lib.getName(), lib.getParsedVersion()));
       return;
@@ -140,7 +140,7 @@ public class LibraryInstaller {
 
     // Check if we are replacing an already installed lib
     LibrariesIndex index = BaseNoGui.librariesIndexer.getIndex();
-    Optional<ContributedLibrary> replacedLib = index.find(lib.getName()).stream() //
+    Optional<ContributedLibraryRelease> replacedLib = index.find(lib.getName()).stream() //
         .filter(l -> l.getInstalledLibrary().isPresent()) //
         .filter(l -> l.getInstalledLibrary().get().getInstalledFolder().equals(destFolder)) //
         .findAny();
@@ -184,7 +184,7 @@ public class LibraryInstaller {
     progress.stepDone();
   }
 
-  public synchronized void remove(ContributedLibrary lib, ProgressListener progressListener) throws IOException {
+  public synchronized void remove(ContributedLibraryRelease lib, ProgressListener progressListener) throws IOException {
     if (lib.isIDEBuiltIn()) {
       return;
     }

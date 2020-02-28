@@ -33,20 +33,20 @@ import static processing.app.I18n.tr;
 
 import java.util.function.Predicate;
 
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
+import cc.arduino.contributions.libraries.ContributedLibrary;
 import cc.arduino.contributions.ui.DropdownItem;
 
-public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLibraryReleases> {
+public class DropdownInstalledLibraryItem implements DropdownItem<ContributedLibrary> {
 
   public String toString() {
     return tr("Installed");
   }
 
   @Override
-  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
+  public Predicate<ContributedLibrary> getFilterPredicate() {
+    return new Predicate<ContributedLibrary>() {
       @Override
-      public boolean test(ContributedLibraryReleases t) {
+      public boolean test(ContributedLibrary t) {
         return t.getInstalled().isPresent();
       }
     };
