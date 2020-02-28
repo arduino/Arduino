@@ -42,23 +42,23 @@ import cc.arduino.contributions.VersionComparator;
 
 public class LibrariesIndex {
 
-  private ArrayList<ContributedLibrary> list = new ArrayList<>();
+  private ArrayList<ContributedLibraryRelease> list = new ArrayList<>();
 
-  public List<ContributedLibrary> getLibraries() {
+  public List<ContributedLibraryRelease> getLibraries() {
     return list;
   }
 
-  public List<ContributedLibrary> find(final String name) {
+  public List<ContributedLibraryRelease> find(final String name) {
     return getLibraries().stream() //
         .filter(l -> name.equals(l.getName())) //
         .collect(Collectors.toList());
   }
 
-  public ContributedLibrary find(String name, String version) {
+  public ContributedLibraryRelease find(String name, String version) {
     if (name == null || version == null) {
       return null;
     }
-    for (ContributedLibrary lib : find(name)) {
+    for (ContributedLibraryRelease lib : find(name)) {
       if (version.equals(lib.getParsedVersion())) {
         return lib;
       }
@@ -69,7 +69,7 @@ public class LibrariesIndex {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    for (ContributedLibrary library : getLibraries()) {
+    for (ContributedLibraryRelease library : getLibraries()) {
       sb.append(library.toString());
     }
     return sb.toString();
@@ -77,7 +77,7 @@ public class LibrariesIndex {
 
   public List<String> getCategories() {
     List<String> categories = new LinkedList<>();
-    for (ContributedLibrary lib : getLibraries()) {
+    for (ContributedLibraryRelease lib : getLibraries()) {
       if (lib.getCategory() != null && !categories.contains(lib.getCategory())) {
         categories.add(lib.getCategory());
       }
@@ -89,7 +89,7 @@ public class LibrariesIndex {
 
   public List<String> getTypes() {
     Collection<String> typesAccumulator = new HashSet<>();
-    for (ContributedLibrary lib : getLibraries()) {
+    for (ContributedLibraryRelease lib : getLibraries()) {
       if (lib.getTypes() != null) {
         typesAccumulator.addAll(lib.getTypes());
       }
@@ -101,13 +101,13 @@ public class LibrariesIndex {
     return types;
   }
 
-  public Optional<ContributedLibrary> getInstalled(String name) {
-    ContributedLibraryReleases rel = new ContributedLibraryReleases(find(name));
+  public Optional<ContributedLibraryRelease> getInstalled(String name) {
+    ContributedLibrary rel = new ContributedLibrary(find(name));
     return rel.getInstalled();
   }
 
-  public List<ContributedLibrary> resolveDependeciesOf(ContributedLibrary library) {
-    List<ContributedLibrary> solution = new ArrayList<>();
+  public List<ContributedLibraryRelease> resolveDependeciesOf(ContributedLibraryRelease library) {
+    List<ContributedLibraryRelease> solution = new ArrayList<>();
     solution.add(library);
     if (resolveDependeciesOf(solution, library)) {
       return solution;
@@ -116,8 +116,8 @@ public class LibrariesIndex {
     }
   }
 
-  public boolean resolveDependeciesOf(List<ContributedLibrary> solution,
-                                      ContributedLibrary library) {
+  public boolean resolveDependeciesOf(List<ContributedLibraryRelease> solution,
+                                      ContributedLibraryRelease library) {
     List<ContributedLibraryDependency> requirements = library.getDependencies();
     if (requirements == null) {
       // No deps for this library, great!
@@ -133,7 +133,7 @@ public class LibrariesIndex {
         continue;
 
       // Generate possible matching dependencies
-      List<ContributedLibrary> possibleDeps = findMatchingDependencies(dep);
+      List<ContributedLibraryRelease> possibleDeps = findMatchingDependencies(dep);
 
       // If there are no dependencies available add as "missing" lib
       if (possibleDeps.isEmpty()) {
@@ -142,8 +142,8 @@ public class LibrariesIndex {
       }
 
       // Pick the installed version if available
-      ContributedLibrary selected;
-      Optional<ContributedLibrary> installed = possibleDeps.stream()
+      ContributedLibraryRelease selected;
+      Optional<ContributedLibraryRelease> installed = possibleDeps.stream()
           .filter(l -> l.getInstalledLibrary().isPresent()).findAny();
       if (installed.isPresent()) {
         selected = installed.get();
@@ -161,8 +161,8 @@ public class LibrariesIndex {
     return true;
   }
 
-  private List<ContributedLibrary> findMatchingDependencies(ContributedLibraryDependency dep) {
-    List<ContributedLibrary> available = find(dep.getName());
+  private List<ContributedLibraryRelease> findMatchingDependencies(ContributedLibraryDependency dep) {
+    List<ContributedLibraryRelease> available = find(dep.getName());
     if (dep.getVersion() == null || dep.getVersion().isEmpty())
       return available;
 

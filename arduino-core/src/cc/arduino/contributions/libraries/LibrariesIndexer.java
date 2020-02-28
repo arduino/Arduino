@@ -154,7 +154,7 @@ public class LibrariesIndexer {
       return;
     }
 
-    for (ContributedLibrary lib : index.getLibraries()) {
+    for (ContributedLibraryRelease lib : index.getLibraries()) {
       lib.unsetInstalledUserLibrary();
     }
 
@@ -234,7 +234,7 @@ public class LibrariesIndexer {
     if (loc != Location.CORE && loc != Location.REFERENCED_CORE) {
       // Check if we can find the same library in the index
       // and mark it as installed
-      ContributedLibrary foundLib = index.find(lib.getName(), lib.getVersion());
+      ContributedLibraryRelease foundLib = index.find(lib.getName(), lib.getVersion());
       if (foundLib != null) {
         foundLib.setInstalledUserLibrary(lib);
         lib.setTypes(foundLib.getTypes());

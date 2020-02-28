@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import processing.app.BaseNoGui;
 import processing.app.packages.UserLibraryFolder;
@@ -38,7 +38,7 @@ public class UpdatableLibraryTest {
     indexer.parseIndex();
     indexer.setLibrariesFoldersAndRescan(folders);
 
-    ContributedLibrary sdLib = indexer.getIndex().getInstalled("SD").get();
+    ContributedLibraryRelease sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
     assertEquals("SD installed version", "1.1.1", sdLib.getParsedVersion());
 
@@ -64,7 +64,7 @@ public class UpdatableLibraryTest {
     indexer.parseIndex();
     indexer.setLibrariesFoldersAndRescan(folders);
 
-    ContributedLibrary l = indexer.getIndex().getInstalled("Bridge").get();
+    ContributedLibraryRelease l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
     assertEquals("Bridge installed version", "1.6.3", l.getParsedVersion());
 
