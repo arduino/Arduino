@@ -18839,18 +18839,6 @@ public final class Lib {
         getContainerPlatformBytes();
 
     /**
-     * <code>string layout = 15;</code>
-     * @return The layout.
-     */
-    java.lang.String getLayout();
-    /**
-     * <code>string layout = 15;</code>
-     * @return The bytes for layout.
-     */
-    com.google.protobuf.ByteString
-        getLayoutBytes();
-
-    /**
      * <code>string real_name = 16;</code>
      * @return The realName.
      */
@@ -18960,6 +18948,17 @@ public final class Lib {
      * @return The location.
      */
     cc.arduino.cli.commands.Lib.LibraryLocation getLocation();
+
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+     * @return The enum numeric value on the wire for layout.
+     */
+    int getLayoutValue();
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+     * @return The layout.
+     */
+    cc.arduino.cli.commands.Lib.LibraryLayout getLayout();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.Library}
@@ -18987,12 +18986,12 @@ public final class Lib {
       sourceDir_ = "";
       utilityDir_ = "";
       containerPlatform_ = "";
-      layout_ = "";
       realName_ = "";
       ldFlags_ = "";
       version_ = "";
       license_ = "";
       location_ = 0;
+      layout_ = 0;
     }
 
     @java.lang.Override
@@ -19110,12 +19109,6 @@ public final class Lib {
               containerPlatform_ = s;
               break;
             }
-            case 122: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              layout_ = s;
-              break;
-            }
             case 130: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -19172,6 +19165,12 @@ public final class Lib {
               int rawValue = input.readEnum();
 
               location_ = rawValue;
+              break;
+            }
+            case 200: {
+              int rawValue = input.readEnum();
+
+              layout_ = rawValue;
               break;
             }
             default: {
@@ -19690,42 +19689,6 @@ public final class Lib {
       }
     }
 
-    public static final int LAYOUT_FIELD_NUMBER = 15;
-    private volatile java.lang.Object layout_;
-    /**
-     * <code>string layout = 15;</code>
-     * @return The layout.
-     */
-    public java.lang.String getLayout() {
-      java.lang.Object ref = layout_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        layout_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string layout = 15;</code>
-     * @return The bytes for layout.
-     */
-    public com.google.protobuf.ByteString
-        getLayoutBytes() {
-      java.lang.Object ref = layout_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        layout_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
     public static final int REAL_NAME_FIELD_NUMBER = 16;
     private volatile java.lang.Object realName_;
     /**
@@ -19995,6 +19958,25 @@ public final class Lib {
       return result == null ? cc.arduino.cli.commands.Lib.LibraryLocation.UNRECOGNIZED : result;
     }
 
+    public static final int LAYOUT_FIELD_NUMBER = 25;
+    private int layout_;
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+     * @return The enum numeric value on the wire for layout.
+     */
+    public int getLayoutValue() {
+      return layout_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+     * @return The layout.
+     */
+    public cc.arduino.cli.commands.Lib.LibraryLayout getLayout() {
+      @SuppressWarnings("deprecation")
+      cc.arduino.cli.commands.Lib.LibraryLayout result = cc.arduino.cli.commands.Lib.LibraryLayout.valueOf(layout_);
+      return result == null ? cc.arduino.cli.commands.Lib.LibraryLayout.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -20048,9 +20030,6 @@ public final class Lib {
       if (!getContainerPlatformBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 14, containerPlatform_);
       }
-      if (!getLayoutBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 15, layout_);
-      }
       if (!getRealNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 16, realName_);
       }
@@ -20080,6 +20059,9 @@ public final class Lib {
           23);
       if (location_ != cc.arduino.cli.commands.Lib.LibraryLocation.ide_builtin.getNumber()) {
         output.writeEnum(24, location_);
+      }
+      if (layout_ != cc.arduino.cli.commands.Lib.LibraryLayout.flat_layout.getNumber()) {
+        output.writeEnum(25, layout_);
       }
       unknownFields.writeTo(output);
     }
@@ -20139,9 +20121,6 @@ public final class Lib {
       if (!getContainerPlatformBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(14, containerPlatform_);
       }
-      if (!getLayoutBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, layout_);
-      }
       if (!getRealNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(16, realName_);
       }
@@ -20179,6 +20158,10 @@ public final class Lib {
       if (location_ != cc.arduino.cli.commands.Lib.LibraryLocation.ide_builtin.getNumber()) {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(24, location_);
+      }
+      if (layout_ != cc.arduino.cli.commands.Lib.LibraryLayout.flat_layout.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(25, layout_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -20221,8 +20204,6 @@ public final class Lib {
           .equals(other.getUtilityDir())) return false;
       if (!getContainerPlatform()
           .equals(other.getContainerPlatform())) return false;
-      if (!getLayout()
-          .equals(other.getLayout())) return false;
       if (!getRealName()
           .equals(other.getRealName())) return false;
       if (getDotALinkage()
@@ -20240,6 +20221,7 @@ public final class Lib {
       if (!internalGetProperties().equals(
           other.internalGetProperties())) return false;
       if (location_ != other.location_) return false;
+      if (layout_ != other.layout_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -20281,8 +20263,6 @@ public final class Lib {
       hash = (53 * hash) + getUtilityDir().hashCode();
       hash = (37 * hash) + CONTAINER_PLATFORM_FIELD_NUMBER;
       hash = (53 * hash) + getContainerPlatform().hashCode();
-      hash = (37 * hash) + LAYOUT_FIELD_NUMBER;
-      hash = (53 * hash) + getLayout().hashCode();
       hash = (37 * hash) + REAL_NAME_FIELD_NUMBER;
       hash = (53 * hash) + getRealName().hashCode();
       hash = (37 * hash) + DOT_A_LINKAGE_FIELD_NUMBER;
@@ -20306,6 +20286,8 @@ public final class Lib {
       }
       hash = (37 * hash) + LOCATION_FIELD_NUMBER;
       hash = (53 * hash) + location_;
+      hash = (37 * hash) + LAYOUT_FIELD_NUMBER;
+      hash = (53 * hash) + layout_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -20487,8 +20469,6 @@ public final class Lib {
 
         containerPlatform_ = "";
 
-        layout_ = "";
-
         realName_ = "";
 
         dotALinkage_ = false;
@@ -20505,6 +20485,8 @@ public final class Lib {
 
         internalGetMutableProperties().clear();
         location_ = 0;
+
+        layout_ = 0;
 
         return this;
       }
@@ -20554,7 +20536,6 @@ public final class Lib {
         result.sourceDir_ = sourceDir_;
         result.utilityDir_ = utilityDir_;
         result.containerPlatform_ = containerPlatform_;
-        result.layout_ = layout_;
         result.realName_ = realName_;
         result.dotALinkage_ = dotALinkage_;
         result.precompiled_ = precompiled_;
@@ -20565,6 +20546,7 @@ public final class Lib {
         result.properties_ = internalGetProperties();
         result.properties_.makeImmutable();
         result.location_ = location_;
+        result.layout_ = layout_;
         onBuilt();
         return result;
       }
@@ -20677,10 +20659,6 @@ public final class Lib {
           containerPlatform_ = other.containerPlatform_;
           onChanged();
         }
-        if (!other.getLayout().isEmpty()) {
-          layout_ = other.layout_;
-          onChanged();
-        }
         if (!other.getRealName().isEmpty()) {
           realName_ = other.realName_;
           onChanged();
@@ -20710,6 +20688,9 @@ public final class Lib {
             other.internalGetProperties());
         if (other.location_ != 0) {
           setLocationValue(other.getLocationValue());
+        }
+        if (other.layout_ != 0) {
+          setLayoutValue(other.getLayoutValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -21797,82 +21778,6 @@ public final class Lib {
         return this;
       }
 
-      private java.lang.Object layout_ = "";
-      /**
-       * <code>string layout = 15;</code>
-       * @return The layout.
-       */
-      public java.lang.String getLayout() {
-        java.lang.Object ref = layout_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          layout_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string layout = 15;</code>
-       * @return The bytes for layout.
-       */
-      public com.google.protobuf.ByteString
-          getLayoutBytes() {
-        java.lang.Object ref = layout_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          layout_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string layout = 15;</code>
-       * @param value The layout to set.
-       * @return This builder for chaining.
-       */
-      public Builder setLayout(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        layout_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string layout = 15;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearLayout() {
-        
-        layout_ = getDefaultInstance().getLayout();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string layout = 15;</code>
-       * @param value The bytes for layout to set.
-       * @return This builder for chaining.
-       */
-      public Builder setLayoutBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        layout_ = value;
-        onChanged();
-        return this;
-      }
-
       private java.lang.Object realName_ = "";
       /**
        * <code>string real_name = 16;</code>
@@ -22441,6 +22346,58 @@ public final class Lib {
         onChanged();
         return this;
       }
+
+      private int layout_ = 0;
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+       * @return The enum numeric value on the wire for layout.
+       */
+      public int getLayoutValue() {
+        return layout_;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+       * @param value The enum numeric value on the wire for layout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLayoutValue(int value) {
+        layout_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+       * @return The layout.
+       */
+      public cc.arduino.cli.commands.Lib.LibraryLayout getLayout() {
+        @SuppressWarnings("deprecation")
+        cc.arduino.cli.commands.Lib.LibraryLayout result = cc.arduino.cli.commands.Lib.LibraryLayout.valueOf(layout_);
+        return result == null ? cc.arduino.cli.commands.Lib.LibraryLayout.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+       * @param value The layout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setLayout(cc.arduino.cli.commands.Lib.LibraryLayout value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        layout_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearLayout() {
+        
+        layout_ = 0;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -22680,21 +22637,22 @@ public final class Lib {
       ".commands.InstalledLibrary\"\177\n\020InstalledL" +
       "ibrary\0221\n\007library\030\001 \001(\0132 .cc.arduino.cli" +
       ".commands.Library\0228\n\007release\030\002 \001(\0132\'.cc." +
-      "arduino.cli.commands.LibraryRelease\"\316\004\n\007" +
+      "arduino.cli.commands.LibraryRelease\"\366\004\n\007" +
       "Library\022\014\n\004name\030\001 \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n" +
       "\nmaintainer\030\003 \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tp" +
       "aragraph\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022\020\n\010categ" +
       "ory\030\007 \001(\t\022\025\n\rarchitectures\030\010 \003(\t\022\r\n\005type" +
       "s\030\t \003(\t\022\023\n\013install_dir\030\n \001(\t\022\022\n\nsource_d" +
       "ir\030\013 \001(\t\022\023\n\013utility_dir\030\014 \001(\t\022\032\n\022contain" +
-      "er_platform\030\016 \001(\t\022\016\n\006layout\030\017 \001(\t\022\021\n\trea" +
-      "l_name\030\020 \001(\t\022\025\n\rdot_a_linkage\030\021 \001(\010\022\023\n\013p" +
-      "recompiled\030\022 \001(\010\022\020\n\010ld_flags\030\023 \001(\t\022\021\n\tis" +
-      "_legacy\030\024 \001(\010\022\017\n\007version\030\025 \001(\t\022\017\n\007licens" +
-      "e\030\026 \001(\t\022D\n\nproperties\030\027 \003(\01320.cc.arduino" +
-      ".cli.commands.Library.PropertiesEntry\022:\n" +
-      "\010location\030\030 \001(\0162(.cc.arduino.cli.command" +
-      "s.LibraryLocation\0321\n\017PropertiesEntry\022\013\n\003" +
+      "er_platform\030\016 \001(\t\022\021\n\treal_name\030\020 \001(\t\022\025\n\r" +
+      "dot_a_linkage\030\021 \001(\010\022\023\n\013precompiled\030\022 \001(\010" +
+      "\022\020\n\010ld_flags\030\023 \001(\t\022\021\n\tis_legacy\030\024 \001(\010\022\017\n" +
+      "\007version\030\025 \001(\t\022\017\n\007license\030\026 \001(\t\022D\n\nprope" +
+      "rties\030\027 \003(\01320.cc.arduino.cli.commands.Li" +
+      "brary.PropertiesEntry\022:\n\010location\030\030 \001(\0162" +
+      "(.cc.arduino.cli.commands.LibraryLocatio" +
+      "n\0226\n\006layout\030\031 \001(\0162&.cc.arduino.cli.comma" +
+      "nds.LibraryLayout\0321\n\017PropertiesEntry\022\013\n\003" +
       "key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*6\n\rLibraryL" +
       "ayout\022\017\n\013flat_layout\020\000\022\024\n\020recursive_layo" +
       "ut\020\001*c\n\017LibraryLocation\022\017\n\013ide_builtin\020\000" +
@@ -22838,7 +22796,7 @@ public final class Lib {
     internal_static_cc_arduino_cli_commands_Library_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_Library_descriptor,
-        new java.lang.String[] { "Name", "Author", "Maintainer", "Sentence", "Paragraph", "Website", "Category", "Architectures", "Types", "InstallDir", "SourceDir", "UtilityDir", "ContainerPlatform", "Layout", "RealName", "DotALinkage", "Precompiled", "LdFlags", "IsLegacy", "Version", "License", "Properties", "Location", });
+        new java.lang.String[] { "Name", "Author", "Maintainer", "Sentence", "Paragraph", "Website", "Category", "Architectures", "Types", "InstallDir", "SourceDir", "UtilityDir", "ContainerPlatform", "RealName", "DotALinkage", "Precompiled", "LdFlags", "IsLegacy", "Version", "License", "Properties", "Location", "Layout", });
     internal_static_cc_arduino_cli_commands_Library_PropertiesEntry_descriptor =
       internal_static_cc_arduino_cli_commands_Library_descriptor.getNestedTypes().get(0);
     internal_static_cc_arduino_cli_commands_Library_PropertiesEntry_fieldAccessorTable = new
