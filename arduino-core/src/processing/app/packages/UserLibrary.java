@@ -32,6 +32,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import cc.arduino.cli.commands.Lib.LibraryLayout;
 import cc.arduino.cli.commands.Lib.LibraryLocation;
 
 public class UserLibrary {
@@ -58,7 +59,7 @@ public class UserLibrary {
                      String author, String maintainer, String sentence,
                      String paraghraph, String website, String category,
                      String license, Collection<String> architectures,
-                     String layout, Collection<String> declaredTypes,
+                     LibraryLayout layout, Collection<String> declaredTypes,
                      boolean onGoingDevelopment, Collection<String> includes,
                      LibraryLocation location) {
     this.installedFolder = installedFolder;
@@ -72,16 +73,7 @@ public class UserLibrary {
     this.category = category;
     this.license = license;
     this.architectures = architectures;
-    switch (layout) {
-    case "recursive":
-      this.layout = LibraryLayout.RECURSIVE;
-      break;
-    case "flat":
-      this.layout = LibraryLayout.FLAT;
-      break;
-    default:
-      throw new IllegalArgumentException("Invalid library layout: " + layout);
-    }
+    this.layout = layout;
     this.declaredTypes = declaredTypes;
     this.onGoingDevelopment = onGoingDevelopment;
     this.includes = includes;
@@ -152,25 +144,17 @@ public class UserLibrary {
     return includes;
   }
 
-  protected enum LibraryLayout {
-    FLAT, RECURSIVE
-  }
-
   protected LibraryLayout layout;
 
   public File getSrcFolder() {
     switch (layout) {
-      case FLAT:
+      case flat_layout:
         return installedFolder;
-      case RECURSIVE:
+      case recursive_layout:
         return new File(installedFolder, "src");
       default:
         return null; // Keep compiler happy :-(
     }
-  }
-
-  public boolean useRecursion() {
-    return (layout == LibraryLayout.RECURSIVE);
   }
 
   public LibraryLocation getLocation() {
