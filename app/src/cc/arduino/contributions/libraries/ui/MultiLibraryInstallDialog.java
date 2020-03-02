@@ -52,7 +52,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
-import cc.arduino.contributions.libraries.UnavailableContributedLibrary;
 import processing.app.Base;
 import processing.app.Theme;
 
@@ -119,8 +118,6 @@ public class MultiLibraryInstallDialog extends JDialog {
         if (l.getName().equals(lib.getName()))
           continue;
         if (l.getInstalledLibrary().isPresent())
-          continue;
-        if (l instanceof UnavailableContributedLibrary)
           continue;
         desc += format("- <b>{0}</b><br/>", l.getName());
       }

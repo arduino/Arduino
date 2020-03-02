@@ -29,6 +29,7 @@
 
 package cc.arduino.contributions.libraries;
 
+import cc.arduino.cli.commands.Lib;
 import cc.arduino.contributions.DownloadableContribution;
 import processing.app.I18n;
 import processing.app.packages.UserLibrary;
@@ -52,7 +53,7 @@ public class ContributedLibraryRelease extends DownloadableContribution {
   final private String sentence;
   final private List<String> architectures;
   final private List<String> types;
-  final private List<ContributedLibraryDependency> dependencies;
+  final private List<Lib.LibraryDependency> dependencies;
   final private List<String> providesIncludes;
 
   public ContributedLibraryRelease(ContributedLibrary library,
@@ -61,7 +62,7 @@ public class ContributedLibraryRelease extends DownloadableContribution {
                                    String license, String paragraph,
                                    String sentence, List<String> architectures,
                                    List<String> types,
-                                   List<ContributedLibraryDependency> dependencies,
+                                   List<Lib.LibraryDependency> dependencies,
                                    List<String> providesIncludes, //
                                    //
                                    String url, String version, String checksum,
@@ -130,7 +131,7 @@ public class ContributedLibraryRelease extends DownloadableContribution {
     return types;
   }
 
-  public List<ContributedLibraryDependency> getDependencies() {
+  public List<Lib.LibraryDependency> getDependencies() {
     return dependencies;
   }
 
@@ -252,7 +253,7 @@ public class ContributedLibraryRelease extends DownloadableContribution {
     res += "\n";
     res += "            requires :\n";
     if (getDependencies() != null)
-      for (ContributedLibraryDependency r : getDependencies()) {
+      for (Lib.LibraryDependency r : getDependencies()) {
         res += "                       " + r;
       }
     res += "\n";

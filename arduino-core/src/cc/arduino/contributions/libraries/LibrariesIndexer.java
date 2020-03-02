@@ -75,13 +75,13 @@ public class LibrariesIndexer {
               rel.getAuthor(), //
               rel.getWebsite(), //
               rel.getCategory(), //
-              "", // TODO: license
+              rel.getLicense(), //
               rel.getParagraph(), //
               rel.getSentence(), //
               rel.getArchitecturesList(), //
               rel.getTypesList(), //
-              null, // TODO: dependencies - List<ContributedLibraryDependency>
-              null, // TODO: providesIncludes - List<String>
+              rel.getDependenciesList(), //
+              rel.getProvidesIncludesList(), //
               //
               rel.getResources().getUrl(), //
               rel.getVersion(), //
