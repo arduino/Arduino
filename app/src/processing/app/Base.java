@@ -66,6 +66,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 import java.util.Timer;
 import java.util.*;
@@ -237,6 +238,10 @@ public class Base {
 
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
+      splash = new SplashScreenHelper(SplashScreen.getSplashScreen());
+      if (PreferencesData.has("update.splashImage"))
+        splash.setImageURL(new URL(PreferencesData.get("update.splashImage")));
+
       // Setup all notification widgets
       splash = new SplashScreenHelper(SplashScreen.getSplashScreen());
       BaseNoGui.notifier = new GUIUserNotifier(this);

@@ -33,6 +33,8 @@ package cc.arduino.view;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import processing.app.Theme;
@@ -78,6 +80,10 @@ public class SplashScreenHelper {
     drawText(text);
 
     ensureTextIsDiplayed();
+  }
+
+  public void setImageURL(URL imageURL) throws NullPointerException, IOException, IllegalStateException {
+    splash.setImageURL(imageURL);
   }
 
   private void ensureTextIsDiplayed() {

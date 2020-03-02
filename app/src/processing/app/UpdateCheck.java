@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Random;
 
 import static processing.app.I18n.tr;
@@ -87,7 +88,35 @@ public class UpdateCheck implements Runnable {
                         System.getProperty("os.version") + "\t" +
                         System.getProperty("os.arch"), "UTF-8");
       
-      int latest = readInt(downloadURL + "?" + info);
+      // read data from server
+      BufferedReader reader = null;
+      int latest = -1;
+      HashMap<String, String> serverInfo = new HashMap<String, String>();
+      try {
+        URL url = new URL(downloadURL + "?" + info);
+        reader = new BufferedReader(new InputStreamReader(url.openStream()));
+
+        // parse the latest version number
+        latest = Integer.parseInt(reader.readLine());
+
+        // parse the key=value pairs
+        while (true) {
+          String line = reader.readLine();
+          if (line == null)
+            break;
+          String[] parts = line.split("=", 2);
+          if (parts.length == 2)
+            serverInfo.put(parts[0], parts[1]);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      } finally {
+        IOUtils.closeQuietly(reader);
+      }
+
+      if (serverInfo.containsKey("splashImage"))
+        PreferencesData.set("update.splashImage",
+                            serverInfo.get("splashImage"));
 
       String lastString = PreferencesData.get("update.last");
       long now = System.currentTimeMillis();
