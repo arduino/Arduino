@@ -48,14 +48,16 @@ public class SerialMonitor extends AbstractTextMonitor {
       String rateString = wholeString.substring(0, wholeString.indexOf(' '));
       serialRate = Integer.parseInt(rateString);
       PreferencesData.set("serial.debug_rate", rateString);
-      try {
-        close();
-        Thread.sleep(100); // Wait for serial port to properly close
-        open();
-      } catch (InterruptedException e) {
-        // noop
-      } catch (Exception e) {
-        System.err.println(e);
+      if (serial != null) {
+        try {
+          close();
+          Thread.sleep(100); // Wait for serial port to properly close
+          open();
+        } catch (InterruptedException e) {
+          // noop
+        } catch (Exception e) {
+          System.err.println(e);
+        }
       }
     });
 

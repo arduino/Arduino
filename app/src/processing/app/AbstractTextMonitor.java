@@ -190,14 +190,9 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
       textArea.setBackground(new Color(238, 238, 238));
     }
     textArea.invalidate();
-    clearButton.setEnabled(enable);
     scrollPane.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
-    autoscrollBox.setEnabled(enable);
-    addTimeStampBox.setEnabled(enable);
-    lineEndings.setEnabled(enable);
-    serialRates.setEnabled(enable);
   }
 
   public void onSendCommand(ActionListener listener) {
