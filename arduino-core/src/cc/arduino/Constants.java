@@ -58,10 +58,8 @@ public class Constants {
   public static final String PREF_PROXY_PAC_URL = "proxy.pac.url";
   public static final String PREF_PROXY_MANUAL_HOSTNAME = "proxy.manual.hostname";
   public static final String PREF_PROXY_MANUAL_PORT = "proxy.manual.port";
-  public static final String PREF_PROXY_MANUAL_USERNAME = "proxy.manual.username";
-  public static final String PREF_PROXY_MANUAL_PASSWORD = "proxy.manual.password";
-  public static final String PREF_PROXY_AUTO_USERNAME = "proxy.manual.username";
-  public static final String PREF_PROXY_AUTO_PASSWORD = "proxy.manual.password";
+  public static final String PREF_PROXY_USERNAME = "proxy.manual.username";
+  public static final String PREF_PROXY_PASSWORD = "proxy.manual.password";
 
   public static final String PACKAGE_INDEX_URL;
   public static final String LIBRARY_INDEX_URL;
