@@ -202,7 +202,7 @@ public class LibrariesIndexer {
         String[] headers = BaseNoGui
             .headerListFromIncludePath(lib.getSrcFolder()); // TODO: Obtain from the CLI?
         if (headers.length == 0) {
-          throw new IOException(format(tr("no headers files (.h) found in {0}"),
+        	System.out.println(format(tr("no headers files (.h) found in {0}"),
                                        lib.getSrcFolder()));
         }
 
