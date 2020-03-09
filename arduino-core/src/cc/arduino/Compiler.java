@@ -29,6 +29,7 @@
 
 package cc.arduino;
 
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.i18n.I18NAwareMessageConsumer;
 import cc.arduino.packages.BoardPort;
 import org.apache.commons.exec.CommandLine;
@@ -143,6 +144,7 @@ public class Compiler implements MessageConsumer {
   private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
+  private ArduinoCoreInstance core;
 
   public Compiler(Sketch data) {
     this(data.getPrimaryFile().getFile(), data);
@@ -151,6 +153,7 @@ public class Compiler implements MessageConsumer {
   public Compiler(File pathToSketch, Sketch sketch) {
     this.pathToSketch = pathToSketch;
     this.sketch = sketch;
+    this.core = BaseNoGui.getArduinoCoreService();
     this.verbose = PreferencesData.getBoolean("build.verbose");
   }
 
@@ -211,18 +214,7 @@ public class Compiler implements MessageConsumer {
   }
 
   private PreferencesMap loadPreferences(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid) throws RunnerException, IOException {
-    ByteArrayOutputStream stdout = new ByteArrayOutputStream();
-    ByteArrayOutputStream stderr = new ByteArrayOutputStream();
-    MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(new PrintStream(stderr), Compiler.this), "\n");
-    try {
-      callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.DUMP_PREFS, stdout, err);
-    } catch (RunnerException e) {
-      System.err.println(new String(stderr.toByteArray()));
-      throw e;
-    }
-    PreferencesMap prefs = new PreferencesMap();
-    prefs.load(new ByteArrayInputStream(stdout.toByteArray()));
-    return prefs;
+    return new PreferencesMap();
   }
 
   private void addPathFlagIfPathExists(List<String> cmd, String flag, File folder) {
@@ -296,7 +288,9 @@ public class Compiler implements MessageConsumer {
 
     int result;
     try {
-      Process proc = ProcessUtils.exec(cmd.toArray(new String[0]));
+      core.compile(fqbn, pathToSketch.getAbsolutePath());
+
+      /*
       MessageSiphon in = new MessageSiphon(proc.getInputStream(), (msg) -> {
         try {
           outStream.write(msg.getBytes());
@@ -315,18 +309,12 @@ public class Compiler implements MessageConsumer {
       in.join();
       err.join();
       result = proc.waitFor();
+      */
     } catch (Exception e) {
       throw new RunnerException(e);
     }
 
-    if (exception != null)
-      throw exception;
-
-    if (result > 1) {
-      System.err.println(I18n.format(tr("{0} returned {1}"), cmd.get(0), result));
-    }
-
-    if (result != 0) {
+    if (exception != null) {
       RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
       re.hideStackTrace();
       throw re;
