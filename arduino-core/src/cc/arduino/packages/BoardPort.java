@@ -122,6 +122,10 @@ public class BoardPort {
     return this.address;
   }
 
+  public String toCompleteString() {
+    return this.address + "_" + this.getPrefs().get("vid") + "_" + this.getPrefs().get("pid");
+  }
+
   // Search for the board which matches identificationPrefs.
   // If found, boardName is set to the name from boards.txt
   // and the board is returned.  If not found, null is returned.

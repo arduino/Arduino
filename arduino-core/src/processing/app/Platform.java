@@ -202,8 +202,9 @@ public class Platform {
                 }
                 Map<String, Object> boardData = new HashMap<>();
                 boardData.put("board", board);
-                boardData.put("vid", vids.get(i));
-                boardData.put("pid", pids.get(i));
+                // remove 0x from VID / PID to keep them as reported by liblistserial
+                boardData.put("vid", vids.get(i).replaceAll("0x", ""));
+                boardData.put("pid", pids.get(i).replaceAll("0x", ""));
                 String extrafields = vid_pid_iSerial.substring(vidPid.length() + 1);
                 String[] parts = extrafields.split("_");
                 boardData.put("iserial", parts[0]);
