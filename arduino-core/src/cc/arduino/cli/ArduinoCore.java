@@ -133,18 +133,4 @@ public class ArduinoCore {
     }
     return new ArduinoCoreInstance(instance, coreBlocking);
   }
-
-  public static void main(String[] args) {
-    try {
-      ArduinoCore core = new ArduinoCore();
-      ArduinoCoreInstance instance = core
-          .init(new File("/mnt/ramdisk"), new File("/mnt/ramdisk/sketchbook"));
-      instance.boardDetails("arduino:samd:mkr1000");
-      instance.compile("arduino:samd:mkr1000",
-                       "/home/megabug/Arduino/alloc_check");
-    } catch (Throwable e) {
-      e.printStackTrace();
-    }
-    System.exit(0);
-  }
 }
