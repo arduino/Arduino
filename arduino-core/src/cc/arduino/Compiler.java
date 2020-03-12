@@ -29,37 +29,34 @@
 
 package cc.arduino;
 
-import cc.arduino.cli.ArduinoCoreInstance;
-import cc.arduino.i18n.I18NAwareMessageConsumer;
-import cc.arduino.packages.BoardPort;
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.PumpStreamHandler;
-import org.apache.commons.lang3.StringUtils;
-import processing.app.*;
-import processing.app.debug.*;
-import processing.app.helpers.PreferencesMap;
-import processing.app.helpers.PreferencesMapException;
-import processing.app.helpers.ProcessUtils;
-import processing.app.helpers.StringReplacer;
-import processing.app.legacy.PApplet;
-import processing.app.tools.DoubleQuotedArgumentsOnWindowsCommandLine;
+import static processing.app.I18n.tr;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static processing.app.I18n.tr;
+import org.apache.commons.lang3.StringUtils;
+
+import cc.arduino.cli.ArduinoCoreInstance;
+import cc.arduino.cli.commands.Compile.CompileReq;
+import cc.arduino.cli.commands.Compile.CompileResult;
+import cc.arduino.i18n.I18NAwareMessageConsumer;
+import cc.arduino.packages.BoardPort;
+import processing.app.BaseNoGui;
+import processing.app.I18n;
+import processing.app.PreferencesData;
+import processing.app.Sketch;
+import processing.app.SketchFile;
+import processing.app.debug.MessageConsumer;
+import processing.app.debug.RunnerException;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPlatform;
+import processing.app.helpers.PreferencesMapException;
+import processing.app.legacy.PApplet;
 
 public class Compiler implements MessageConsumer {
 
@@ -124,16 +121,9 @@ public class Compiler implements MessageConsumer {
     tr("Sketchbook path not defined");
     tr("The --upload option supports only one file at a time");
     tr("Verifying and uploading...");
-  }
-
-  enum BuilderAction {
-    COMPILE("-compile"), DUMP_PREFS("-dump-prefs");
-
-    final String value;
-
-    BuilderAction(String value) {
-      this.value = value;
-    }
+    tr("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author");
+    tr("{0} returned {1}");
+    tr("Error compiling.");
   }
 
   private static final Pattern ERROR_FORMAT = Pattern.compile("(.+\\.\\w+):(\\d+)(:\\d+)*:\\s*((fatal)?\\s*error:\\s*)(.*)\\s*", Pattern.MULTILINE | Pattern.DOTALL);
@@ -171,28 +161,72 @@ public class Compiler implements MessageConsumer {
     if (!mayBoard.isPresent()) {
       throw new RunnerException("Board is not selected");
     }
-
     TargetBoard board = mayBoard.get();
+
+    CompileReq.Builder req = CompileReq.newBuilder();
+
     TargetPlatform platform = board.getContainerPlatform();
-    TargetPackage aPackage = platform.getContainerPackage();
+    String vendor = platform.getContainerPackage().getId();
+    String fqbn = vendor+":"+ platform.getId()+":"+board.getId();
+    String options = boardOptions(board);
+    if (!options.isEmpty()) {
+      fqbn += ":" + options;
+    }
+    req.setFqbn(fqbn);
+
     String vidpid = VIDPID();
+    if (!vidpid.isEmpty()) {
+      req.setVidPid(vidpid);
+    }
 
-    PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
+    req.setBuildPath(buildPath);
 
-    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
-    MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
+    if (PreferencesData.getBoolean("compiler.cache_core") && buildCache != null) {
+      req.setBuildCachePath(buildCache.getAbsolutePath());
+    }
 
-    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);
+    PreferencesData.getMap()
+      .subTree("runtime.build_properties_custom")
+      .entrySet()
+      .stream()
+      .forEach(kv -> req.addBuildProperties(kv.getKey() + "=" + kv.getValue()));
 
-    out.flush();
-    err.flush();
+    req.addBuildProperties("build.warn_data_percentage="
+                           + PreferencesData.get("build.warn_data_percentage"));
 
-    if (exportHex) {
-      runActions("hooks.savehex.presavehex", prefs);
+    req.setWarnings(PreferencesData.get("compiler.warning_level"));
 
-      saveHex(prefs);
+    req.setSketchPath(pathToSketch.getAbsolutePath());
 
-      runActions("hooks.savehex.postsavehex", prefs);
+    req.setDryRun(!exportHex);
+
+    if (verbose) {
+      req.setVerbose(true);
+      System.out.println("Build options");
+      System.out.println("-------------");
+      System.out.println(req);
+    }
+
+    CompileResult result;
+    try {
+      MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
+      MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, this), "\n");
+
+      result = core.compile(req.build(), out, err);
+
+      out.flush();
+      err.flush();
+    } catch (Exception e) {
+      throw new RunnerException(e);
+    }
+
+    if (exception != null)
+      throw exception;
+
+    if (result == CompileResult.error) {
+      RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
+      re.hideStackTrace();
+      throw re;
     }
 
     return sketch.getPrimaryFile().getFileName();
@@ -211,264 +245,6 @@ public class Compiler implements MessageConsumer {
     }
 
     return vid.toUpperCase() + "_" + pid.toUpperCase();
-  }
-
-  private PreferencesMap loadPreferences(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid) throws RunnerException, IOException {
-    return new PreferencesMap();
-  }
-
-  private void addPathFlagIfPathExists(List<String> cmd, String flag, File folder) {
-    if (folder.exists()) {
-      cmd.add(flag);
-      cmd.add(folder.getAbsolutePath());
-    }
-  }
-
-  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
-    List<String> cmd = new ArrayList<>();
-    cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
-    cmd.add(action.value);
-    cmd.add("-logger=machine");
-
-    File installedPackagesFolder = new File(BaseNoGui.getSettingsFolder(), "packages");
-
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getHardwareFolder());
-    addPathFlagIfPathExists(cmd, "-hardware", installedPackagesFolder);
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getSketchbookHardwareFolder());
-
-    addPathFlagIfPathExists(cmd, "-tools", BaseNoGui.getContentFile("tools-builder"));
-    addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
-    addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
-
-    addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
-    addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder());
-
-    String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
-    cmd.add("-fqbn=" + fqbn);
-
-    if (!"".equals(vidpid)) {
-      cmd.add("-vid-pid=" + vidpid);
-    }
-
-    cmd.add("-ide-version=" + BaseNoGui.REVISION);
-    cmd.add("-build-path");
-    cmd.add(buildPath);
-    cmd.add("-warnings=" + PreferencesData.get("compiler.warning_level"));
-
-    if (PreferencesData.getBoolean("compiler.cache_core") == true && buildCache != null) {
-      cmd.add("-build-cache");
-      cmd.add(buildCache.getAbsolutePath());
-    }
-
-    PreferencesData.getMap()
-      .subTree("runtime.build_properties_custom")
-      .entrySet()
-      .stream()
-      .forEach(kv -> cmd.add("-prefs=" + kv.getKey() + "=" + kv.getValue()));
-
-    cmd.add("-prefs=build.warn_data_percentage=" + PreferencesData.get("build.warn_data_percentage"));
-
-    for (Map.Entry<String, String> entry : BaseNoGui.getBoardPreferences().entrySet()) {
-        if (entry.getKey().startsWith("runtime.tools")) {
-          cmd.add("-prefs=" + entry.getKey() + "=" + entry.getValue());
-        }
-    }
-
-    //commandLine.addArgument("-debug-level=10", false);
-
-    if (verbose) {
-      cmd.add("-verbose");
-    }
-
-    cmd.add(pathToSketch.getAbsolutePath());
-
-    if (verbose) {
-      System.out.println(StringUtils.join(cmd, ' '));
-    }
-
-    int result;
-    try {
-      core.compile(fqbn, pathToSketch.getAbsolutePath());
-
-      /*
-      MessageSiphon in = new MessageSiphon(proc.getInputStream(), (msg) -> {
-        try {
-          outStream.write(msg.getBytes());
-        } catch (Exception e) {
-          exception = new RunnerException(e);
-        }
-      });
-      MessageSiphon err = new MessageSiphon(proc.getErrorStream(), (msg) -> {
-        try {
-          errStream.write(msg.getBytes());
-        } catch (Exception e) {
-          exception = new RunnerException(e);
-        }
-      });
-
-      in.join();
-      err.join();
-      result = proc.waitFor();
-      */
-    } catch (Exception e) {
-      throw new RunnerException(e);
-    }
-
-    if (exception != null) {
-      RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
-      re.hideStackTrace();
-      throw re;
-    }
-  }
-
-  private void saveHex(PreferencesMap prefs) throws RunnerException {
-    List<String> compiledSketches = new ArrayList<>(prefs.subTree("recipe.output.tmp_file", 1).values());
-    List<String> copyOfCompiledSketches = new ArrayList<>(prefs.subTree("recipe.output.save_file", 1).values());
-
-    if (isExportCompiledSketchSupported(compiledSketches, copyOfCompiledSketches, prefs)) {
-      System.err.println(tr("Warning: This core does not support exporting sketches. Please consider upgrading it or contacting its author"));
-      return;
-    }
-
-    PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + BaseNoGui.REVISION);
-    PreferencesMap withBootloaderDict = new PreferencesMap(dict);
-    dict.put("build.project_name", dict.get("build.project_name") + ".with_bootloader");
-
-    if (!compiledSketches.isEmpty()) {
-      for (int i = 0; i < compiledSketches.size(); i++) {
-        saveHex(compiledSketches.get(i), copyOfCompiledSketches.get(i), dict);
-        saveHex(compiledSketches.get(i), copyOfCompiledSketches.get(i), withBootloaderDict);
-      }
-    } else {
-      try {
-        saveHex(prefs.getOrExcept("recipe.output.tmp_file"), prefs.getOrExcept("recipe.output.save_file"), dict);
-        saveHex(prefs.getOrExcept("recipe.output.tmp_file"), prefs.getOrExcept("recipe.output.save_file"), withBootloaderDict);
-      } catch (PreferencesMapException e) {
-        throw new RunnerException(e);
-      }
-    }
-  }
-
-  private void saveHex(String compiledSketch, String copyOfCompiledSketch, PreferencesMap prefs) throws RunnerException {
-    try {
-      compiledSketch = StringReplacer.replaceFromMapping(compiledSketch, prefs);
-      copyOfCompiledSketch = StringReplacer.replaceFromMapping(copyOfCompiledSketch, prefs);
-      copyOfCompiledSketch = copyOfCompiledSketch.replaceAll(":", "_");
-
-      Path compiledSketchPath;
-      Path compiledSketchPathInSubfolder = Paths.get(prefs.get("build.path"), "sketch", compiledSketch);
-      Path compiledSketchPathInBuildPath = Paths.get(prefs.get("build.path"), compiledSketch);
-      if (Files.exists(compiledSketchPathInSubfolder)) {
-        compiledSketchPath = compiledSketchPathInSubfolder;
-      } else if (Files.exists(compiledSketchPathInBuildPath)) {
-        compiledSketchPath = compiledSketchPathInBuildPath;
-      } else {
-        return;
-      }
-
-      Path copyOfCompiledSketchFilePath = Paths.get(this.sketch.getFolder().getAbsolutePath(), copyOfCompiledSketch);
-
-      Files.copy(compiledSketchPath, copyOfCompiledSketchFilePath, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      throw new RunnerException(e);
-    }
-  }
-
-  private boolean isExportCompiledSketchSupported(List<String> compiledSketches, List<String> copyOfCompiledSketches, PreferencesMap prefs) {
-    return (compiledSketches.isEmpty() || copyOfCompiledSketches.isEmpty() || copyOfCompiledSketches.size() < compiledSketches.size()) && (!prefs.containsKey("recipe.output.tmp_file") || !prefs.containsKey("recipe.output.save_file"));
-  }
-
-  private void runActions(String recipeClass, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
-    List<String> patterns = prefs.keySet().stream().filter(key -> key.startsWith("recipe." + recipeClass) && key.endsWith(".pattern")).collect(Collectors.toList());
-    Collections.sort(patterns);
-    for (String recipe : patterns) {
-      runRecipe(recipe, prefs);
-    }
-  }
-
-  private void runRecipe(String recipe, PreferencesMap prefs) throws RunnerException, PreferencesMapException {
-    PreferencesMap dict = new PreferencesMap(prefs);
-    dict.put("ide_version", "" + BaseNoGui.REVISION);
-    dict.put("sketch_path", sketch.getFolder().getAbsolutePath());
-
-    String[] cmdArray;
-    String cmd = prefs.getOrExcept(recipe);
-    try {
-      cmdArray = StringReplacer.formatAndSplit(cmd, dict);
-    } catch (Exception e) {
-      throw new RunnerException(e);
-    }
-    exec(cmdArray);
-  }
-
-  private void exec(String[] command) throws RunnerException {
-    // eliminate any empty array entries
-    List<String> stringList = new ArrayList<>();
-    for (String string : command) {
-      string = string.trim();
-      if (string.length() != 0)
-        stringList.add(string);
-    }
-    command = stringList.toArray(new String[stringList.size()]);
-    if (command.length == 0)
-      return;
-
-    if (verbose) {
-      for (String c : command)
-        System.out.print(c + " ");
-      System.out.println();
-    }
-
-    DefaultExecutor executor = new DefaultExecutor();
-    executor.setStreamHandler(new PumpStreamHandler() {
-
-      @Override
-      protected Thread createPump(InputStream is, OutputStream os, boolean closeWhenExhausted) {
-        final Thread result = new Thread(new MyStreamPumper(is, Compiler.this));
-        result.setName("MyStreamPumper Thread");
-        result.setDaemon(true);
-        return result;
-
-      }
-    });
-
-    CommandLine commandLine = new DoubleQuotedArgumentsOnWindowsCommandLine(command[0]);
-    for (int i = 1; i < command.length; i++) {
-      commandLine.addArgument(command[i], false);
-    }
-
-    int result;
-    executor.setExitValues(null);
-    try {
-      result = executor.execute(commandLine);
-    } catch (IOException e) {
-      RunnerException re = new RunnerException(e.getMessage());
-      re.hideStackTrace();
-      throw re;
-    }
-    executor.setExitValues(new int[0]);
-
-    // an error was queued up by message(), barf this back to compile(),
-    // which will barf it back to Editor. if you're having trouble
-    // discerning the imagery, consider how cows regurgitate their food
-    // to digest it, and the fact that they have five stomaches.
-    //
-    //System.out.println("throwing up " + exception);
-    if (exception != null)
-      throw exception;
-
-    if (result > 1) {
-      // a failure in the tool (e.g. unable to locate a sub-executable)
-      System.err
-        .println(I18n.format(tr("{0} returned {1}"), command[0], result));
-    }
-
-    if (result != 0) {
-      RunnerException re = new RunnerException(tr("Error compiling."));
-      re.hideStackTrace();
-      throw re;
-    }
   }
 
   private String boardOptions(TargetBoard board) {

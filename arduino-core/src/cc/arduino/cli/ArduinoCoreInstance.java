@@ -31,6 +31,8 @@ package cc.arduino.cli;
 
 import static processing.app.I18n.tr;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +51,7 @@ import cc.arduino.cli.commands.Common.Instance;
 import cc.arduino.cli.commands.Common.TaskProgress;
 import cc.arduino.cli.commands.Compile.CompileReq;
 import cc.arduino.cli.commands.Compile.CompileResp;
+import cc.arduino.cli.commands.Compile.CompileResult;
 import cc.arduino.cli.commands.Lib.InstalledLibrary;
 import cc.arduino.cli.commands.Lib.LibraryInstallReq;
 import cc.arduino.cli.commands.Lib.LibraryInstallResp;
@@ -88,21 +91,29 @@ public class ArduinoCoreInstance {
     }
   }
 
-  public void compile(String fqbn, String sketchPath) throws StatusException {
+  public CompileResult compile(CompileReq req, OutputStream out,
+                               OutputStream err) throws StatusException {
+    req = CompileReq.newBuilder(req) //
+        .setInstance(instance) //
+        .build();
     try {
-      CompileReq req = CompileReq.newBuilder() //
-          .setInstance(instance) //
-          .setFqbn(fqbn) //
-          .setSketchPath(sketchPath) //
-          .setVerbose(true) //
-          .build();
       Iterator<CompileResp> stream = stub.compile(req);
+      CompileResult result = CompileResult.error;
       while (stream.hasNext()) {
         CompileResp resp = stream.next();
-        ByteString out = resp.getOutStream();
-        if (out != null)
-          System.out.print(out.toStringUtf8());
+        try {
+          ByteString outdata = resp.getOutStream();
+          if (outdata != null)
+            out.write(outdata.toByteArray());
+          ByteString errdata = resp.getErrStream();
+          if (errdata != null)
+            err.write(errdata.toByteArray());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        result = resp.getResult();
       }
+      return result;
     } catch (StatusRuntimeException e) {
       throw e.getStatus().asException();
     }
