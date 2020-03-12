@@ -187,9 +187,7 @@ public class Compiler implements MessageConsumer {
 
     PreferencesData.getMap()
       .subTree("runtime.build_properties_custom")
-      .entrySet()
-      .stream()
-      .forEach(kv -> req.addBuildProperties(kv.getKey() + "=" + kv.getValue()));
+      .forEach((k, v) -> req.addBuildProperties(k + "=" + v));
 
     req.addBuildProperties("build.warn_data_percentage="
                            + PreferencesData.get("build.warn_data_percentage"));
