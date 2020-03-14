@@ -67,12 +67,18 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
   final JTextPane description;
+  final TitledBorder titledBorder;
   private final String moreInfoLbl = tr("More Info");
   private final String onlineHelpLbl = tr("Online Help");
 
   public ContributedPlatformTableCellJPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+    // Actual title set by update()
+    titledBorder = BorderFactory.createTitledBorder("");
+    titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+    setBorder(titledBorder);
 
     {
       installButton = new JButton(tr("Install"));
@@ -186,9 +192,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     }
 
     ContributedPlatform selected = releases.getSelected();
-    TitledBorder titledBorder = BorderFactory.createTitledBorder(selected.getName());
-    titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
-    setBorder(titledBorder);
+    titledBorder.setTitle(selected.getName());
     ContributedPlatform installed = releases.getInstalled();
 
     boolean removable, installable, upgradable;
@@ -311,5 +315,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     // The description is not opaque, so copy our foreground color to it.
     if (description != null)
       description.setForeground(c);
+    if (titledBorder != null)
+      titledBorder.setTitleColor(c);
   }
 }
