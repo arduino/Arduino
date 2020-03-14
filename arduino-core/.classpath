@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
-	<classpathentry kind="lib" path="lib/commons-compress-1.18.jar"/>
+	<classpathentry kind="lib" path="lib/commons-compress-1.20.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-annotations-2.10.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-core-2.10.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.10.3.jar"/>
