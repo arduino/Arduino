@@ -207,10 +207,10 @@ public class Compiler implements MessageConsumer {
 
     CompileResult result;
     try {
-      MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
+      MessageConsumerOutputStream out = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.out, System.err), "\n");
       MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, this), "\n");
 
-      result = core.compile(req.build(), out, err);
+      result = core.compile(req.build(), out, err, progListeners);
 
       out.flush();
       err.flush();
@@ -221,7 +221,7 @@ public class Compiler implements MessageConsumer {
     if (exception != null)
       throw exception;
 
-    if (result == CompileResult.error) {
+    if (result == CompileResult.compile_error) {
       RunnerException re = new RunnerException(I18n.format(tr("Error compiling for board {0}."), board.getName()));
       re.hideStackTrace();
       throw re;

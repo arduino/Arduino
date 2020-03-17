@@ -39,6 +39,7 @@ import java.util.List;
 
 import com.google.protobuf.ByteString;
 
+import cc.arduino.CompilerProgressListener;
 import cc.arduino.cli.commands.ArduinoCoreGrpc.ArduinoCoreBlockingStub;
 import cc.arduino.cli.commands.Board.BoardDetailsReq;
 import cc.arduino.cli.commands.Board.BoardDetailsResp;
@@ -91,14 +92,14 @@ public class ArduinoCoreInstance {
     }
   }
 
-  public CompileResult compile(CompileReq req, OutputStream out,
-                               OutputStream err) throws StatusException {
+  public CompileResult compile(CompileReq req, OutputStream out, OutputStream err,
+                               List<CompilerProgressListener> progressListeners) throws StatusException {
     req = CompileReq.newBuilder(req) //
         .setInstance(instance) //
         .build();
     try {
       Iterator<CompileResp> stream = stub.compile(req);
-      CompileResult result = CompileResult.error;
+      CompileResult result = CompileResult.compile_error;
       while (stream.hasNext()) {
         CompileResp resp = stream.next();
         try {
@@ -108,6 +109,13 @@ public class ArduinoCoreInstance {
           ByteString errdata = resp.getErrStream();
           if (errdata != null)
             err.write(errdata.toByteArray());
+          TaskProgress taskProgress = resp.getTaskProgress();
+          if (taskProgress != null) {
+            float progress = taskProgress.getPercentCompleted();
+            if (progress > 0) {
+              progressListeners.forEach(l -> l.progress((int) progress));
+            }
+          }
         } catch (IOException e) {
           e.printStackTrace();
         }
