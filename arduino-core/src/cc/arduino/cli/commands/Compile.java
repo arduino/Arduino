@@ -20,24 +20,24 @@ public final class Compile {
   public enum CompileResult
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>success = 0;</code>
+     * <code>compile_success = 0;</code>
      */
-    success(0),
+    compile_success(0),
     /**
-     * <code>error = 1;</code>
+     * <code>compile_error = 1;</code>
      */
-    error(1),
+    compile_error(1),
     UNRECOGNIZED(-1),
     ;
 
     /**
-     * <code>success = 0;</code>
+     * <code>compile_success = 0;</code>
      */
-    public static final int success_VALUE = 0;
+    public static final int compile_success_VALUE = 0;
     /**
-     * <code>error = 1;</code>
+     * <code>compile_error = 1;</code>
      */
-    public static final int error_VALUE = 1;
+    public static final int compile_error_VALUE = 1;
 
 
     public final int getNumber() {
@@ -64,8 +64,8 @@ public final class Compile {
      */
     public static CompileResult forNumber(int value) {
       switch (value) {
-        case 0: return success;
-        case 1: return error;
+        case 0: return compile_success;
+        case 1: return compile_error;
         default: return null;
       }
     }
@@ -3200,12 +3200,27 @@ public final class Compile {
     com.google.protobuf.ByteString getErrStream();
 
     /**
-     * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     * @return Whether the taskProgress field is set.
+     */
+    boolean hasTaskProgress();
+    /**
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     * @return The taskProgress.
+     */
+    cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
+    /**
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     */
+    cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
+
+    /**
+     * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
      * @return The enum numeric value on the wire for result.
      */
     int getResultValue();
     /**
-     * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+     * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
      * @return The result.
      */
     cc.arduino.cli.commands.Compile.CompileResult getResult();
@@ -3268,7 +3283,20 @@ public final class Compile {
               errStream_ = input.readBytes();
               break;
             }
-            case 24: {
+            case 26: {
+              cc.arduino.cli.commands.Common.TaskProgress.Builder subBuilder = null;
+              if (taskProgress_ != null) {
+                subBuilder = taskProgress_.toBuilder();
+              }
+              taskProgress_ = input.readMessage(cc.arduino.cli.commands.Common.TaskProgress.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(taskProgress_);
+                taskProgress_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 32: {
               int rawValue = input.readEnum();
 
               result_ = rawValue;
@@ -3326,17 +3354,40 @@ public final class Compile {
       return errStream_;
     }
 
-    public static final int RESULT_FIELD_NUMBER = 3;
+    public static final int TASK_PROGRESS_FIELD_NUMBER = 3;
+    private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
+    /**
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     * @return Whether the taskProgress field is set.
+     */
+    public boolean hasTaskProgress() {
+      return taskProgress_ != null;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     * @return The taskProgress.
+     */
+    public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
+      return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+     */
+    public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
+      return getTaskProgress();
+    }
+
+    public static final int RESULT_FIELD_NUMBER = 4;
     private int result_;
     /**
-     * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+     * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
      * @return The enum numeric value on the wire for result.
      */
     public int getResultValue() {
       return result_;
     }
     /**
-     * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+     * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
      * @return The result.
      */
     public cc.arduino.cli.commands.Compile.CompileResult getResult() {
@@ -3365,8 +3416,11 @@ public final class Compile {
       if (!errStream_.isEmpty()) {
         output.writeBytes(2, errStream_);
       }
-      if (result_ != cc.arduino.cli.commands.Compile.CompileResult.success.getNumber()) {
-        output.writeEnum(3, result_);
+      if (taskProgress_ != null) {
+        output.writeMessage(3, getTaskProgress());
+      }
+      if (result_ != cc.arduino.cli.commands.Compile.CompileResult.compile_success.getNumber()) {
+        output.writeEnum(4, result_);
       }
       unknownFields.writeTo(output);
     }
@@ -3385,9 +3439,13 @@ public final class Compile {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, errStream_);
       }
-      if (result_ != cc.arduino.cli.commands.Compile.CompileResult.success.getNumber()) {
+      if (taskProgress_ != null) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, result_);
+          .computeMessageSize(3, getTaskProgress());
+      }
+      if (result_ != cc.arduino.cli.commands.Compile.CompileResult.compile_success.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(4, result_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3408,6 +3466,11 @@ public final class Compile {
           .equals(other.getOutStream())) return false;
       if (!getErrStream()
           .equals(other.getErrStream())) return false;
+      if (hasTaskProgress() != other.hasTaskProgress()) return false;
+      if (hasTaskProgress()) {
+        if (!getTaskProgress()
+            .equals(other.getTaskProgress())) return false;
+      }
       if (result_ != other.result_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
@@ -3424,6 +3487,10 @@ public final class Compile {
       hash = (53 * hash) + getOutStream().hashCode();
       hash = (37 * hash) + ERR_STREAM_FIELD_NUMBER;
       hash = (53 * hash) + getErrStream().hashCode();
+      if (hasTaskProgress()) {
+        hash = (37 * hash) + TASK_PROGRESS_FIELD_NUMBER;
+        hash = (53 * hash) + getTaskProgress().hashCode();
+      }
       hash = (37 * hash) + RESULT_FIELD_NUMBER;
       hash = (53 * hash) + result_;
       hash = (29 * hash) + unknownFields.hashCode();
@@ -3563,6 +3630,12 @@ public final class Compile {
 
         errStream_ = com.google.protobuf.ByteString.EMPTY;
 
+        if (taskProgressBuilder_ == null) {
+          taskProgress_ = null;
+        } else {
+          taskProgress_ = null;
+          taskProgressBuilder_ = null;
+        }
         result_ = 0;
 
         return this;
@@ -3593,6 +3666,11 @@ public final class Compile {
         cc.arduino.cli.commands.Compile.CompileResp result = new cc.arduino.cli.commands.Compile.CompileResp(this);
         result.outStream_ = outStream_;
         result.errStream_ = errStream_;
+        if (taskProgressBuilder_ == null) {
+          result.taskProgress_ = taskProgress_;
+        } else {
+          result.taskProgress_ = taskProgressBuilder_.build();
+        }
         result.result_ = result_;
         onBuilt();
         return result;
@@ -3647,6 +3725,9 @@ public final class Compile {
         }
         if (other.getErrStream() != com.google.protobuf.ByteString.EMPTY) {
           setErrStream(other.getErrStream());
+        }
+        if (other.hasTaskProgress()) {
+          mergeTaskProgress(other.getTaskProgress());
         }
         if (other.result_ != 0) {
           setResultValue(other.getResultValue());
@@ -3746,16 +3827,135 @@ public final class Compile {
         return this;
       }
 
+      private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       * @return Whether the taskProgress field is set.
+       */
+      public boolean hasTaskProgress() {
+        return taskProgressBuilder_ != null || taskProgress_ != null;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       * @return The taskProgress.
+       */
+      public cc.arduino.cli.commands.Common.TaskProgress getTaskProgress() {
+        if (taskProgressBuilder_ == null) {
+          return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
+        } else {
+          return taskProgressBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
+        if (taskProgressBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          taskProgress_ = value;
+          onChanged();
+        } else {
+          taskProgressBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public Builder setTaskProgress(
+          cc.arduino.cli.commands.Common.TaskProgress.Builder builderForValue) {
+        if (taskProgressBuilder_ == null) {
+          taskProgress_ = builderForValue.build();
+          onChanged();
+        } else {
+          taskProgressBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
+        if (taskProgressBuilder_ == null) {
+          if (taskProgress_ != null) {
+            taskProgress_ =
+              cc.arduino.cli.commands.Common.TaskProgress.newBuilder(taskProgress_).mergeFrom(value).buildPartial();
+          } else {
+            taskProgress_ = value;
+          }
+          onChanged();
+        } else {
+          taskProgressBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public Builder clearTaskProgress() {
+        if (taskProgressBuilder_ == null) {
+          taskProgress_ = null;
+          onChanged();
+        } else {
+          taskProgress_ = null;
+          taskProgressBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
+        
+        onChanged();
+        return getTaskProgressFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
+        if (taskProgressBuilder_ != null) {
+          return taskProgressBuilder_.getMessageOrBuilder();
+        } else {
+          return taskProgress_ == null ?
+              cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 3;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> 
+          getTaskProgressFieldBuilder() {
+        if (taskProgressBuilder_ == null) {
+          taskProgressBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder>(
+                  getTaskProgress(),
+                  getParentForChildren(),
+                  isClean());
+          taskProgress_ = null;
+        }
+        return taskProgressBuilder_;
+      }
+
       private int result_ = 0;
       /**
-       * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+       * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
        * @return The enum numeric value on the wire for result.
        */
       public int getResultValue() {
         return result_;
       }
       /**
-       * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+       * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
        * @param value The enum numeric value on the wire for result to set.
        * @return This builder for chaining.
        */
@@ -3765,7 +3965,7 @@ public final class Compile {
         return this;
       }
       /**
-       * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+       * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
        * @return The result.
        */
       public cc.arduino.cli.commands.Compile.CompileResult getResult() {
@@ -3774,7 +3974,7 @@ public final class Compile {
         return result == null ? cc.arduino.cli.commands.Compile.CompileResult.UNRECOGNIZED : result;
       }
       /**
-       * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+       * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
        * @param value The result to set.
        * @return This builder for chaining.
        */
@@ -3788,7 +3988,7 @@ public final class Compile {
         return this;
       }
       /**
-       * <code>.cc.arduino.cli.commands.CompileResult result = 3;</code>
+       * <code>.cc.arduino.cli.commands.CompileResult result = 4;</code>
        * @return This builder for chaining.
        */
       public Builder clearResult() {
@@ -3880,12 +4080,14 @@ public final class Compile {
       "\010\022\r\n\005quiet\030\013 \001(\010\022\016\n\006vidPid\030\014 \001(\t\022\022\n\nexpo" +
       "rtFile\030\r \001(\t\022\014\n\004jobs\030\016 \001(\005\022\021\n\tlibraries\030" +
       "\017 \003(\t\022\030\n\020optimizeForDebug\030\020 \001(\010\022\016\n\006dryRu" +
-      "n\030\021 \001(\010\"m\n\013CompileResp\022\022\n\nout_stream\030\001 \001" +
-      "(\014\022\022\n\nerr_stream\030\002 \001(\014\0226\n\006result\030\003 \001(\0162&" +
-      ".cc.arduino.cli.commands.CompileResult*\'" +
-      "\n\rCompileResult\022\013\n\007success\020\000\022\t\n\005error\020\001B" +
-      "-Z+github.com/arduino/arduino-cli/rpc/co" +
-      "mmandsb\006proto3"
+      "n\030\021 \001(\010\"\253\001\n\013CompileResp\022\022\n\nout_stream\030\001 " +
+      "\001(\014\022\022\n\nerr_stream\030\002 \001(\014\022<\n\rtask_progress" +
+      "\030\003 \001(\0132%.cc.arduino.cli.commands.TaskPro" +
+      "gress\0226\n\006result\030\004 \001(\0162&.cc.arduino.cli.c" +
+      "ommands.CompileResult*7\n\rCompileResult\022\023" +
+      "\n\017compile_success\020\000\022\021\n\rcompile_error\020\001B-" +
+      "Z+github.com/arduino/arduino-cli/rpc/com" +
+      "mandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -3903,7 +4105,7 @@ public final class Compile {
     internal_static_cc_arduino_cli_commands_CompileResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_CompileResp_descriptor,
-        new java.lang.String[] { "OutStream", "ErrStream", "Result", });
+        new java.lang.String[] { "OutStream", "ErrStream", "TaskProgress", "Result", });
     cc.arduino.cli.commands.Common.getDescriptor();
   }
 
