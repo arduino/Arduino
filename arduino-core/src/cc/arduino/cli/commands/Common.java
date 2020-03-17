@@ -1454,6 +1454,12 @@ public final class Common {
      * @return The completed.
      */
     boolean getCompleted();
+
+    /**
+     * <code>float percent_completed = 4;</code>
+     * @return The percentCompleted.
+     */
+    float getPercentCompleted();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.TaskProgress}
@@ -1517,6 +1523,11 @@ public final class Common {
             case 24: {
 
               completed_ = input.readBool();
+              break;
+            }
+            case 37: {
+
+              percentCompleted_ = input.readFloat();
               break;
             }
             default: {
@@ -1633,6 +1644,16 @@ public final class Common {
       return completed_;
     }
 
+    public static final int PERCENT_COMPLETED_FIELD_NUMBER = 4;
+    private float percentCompleted_;
+    /**
+     * <code>float percent_completed = 4;</code>
+     * @return The percentCompleted.
+     */
+    public float getPercentCompleted() {
+      return percentCompleted_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -1656,6 +1677,9 @@ public final class Common {
       if (completed_ != false) {
         output.writeBool(3, completed_);
       }
+      if (percentCompleted_ != 0F) {
+        output.writeFloat(4, percentCompleted_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -1674,6 +1698,10 @@ public final class Common {
       if (completed_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, completed_);
+      }
+      if (percentCompleted_ != 0F) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeFloatSize(4, percentCompleted_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1696,6 +1724,9 @@ public final class Common {
           .equals(other.getMessage())) return false;
       if (getCompleted()
           != other.getCompleted()) return false;
+      if (java.lang.Float.floatToIntBits(getPercentCompleted())
+          != java.lang.Float.floatToIntBits(
+              other.getPercentCompleted())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1714,6 +1745,9 @@ public final class Common {
       hash = (37 * hash) + COMPLETED_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getCompleted());
+      hash = (37 * hash) + PERCENT_COMPLETED_FIELD_NUMBER;
+      hash = (53 * hash) + java.lang.Float.floatToIntBits(
+          getPercentCompleted());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1853,6 +1887,8 @@ public final class Common {
 
         completed_ = false;
 
+        percentCompleted_ = 0F;
+
         return this;
       }
 
@@ -1882,6 +1918,7 @@ public final class Common {
         result.name_ = name_;
         result.message_ = message_;
         result.completed_ = completed_;
+        result.percentCompleted_ = percentCompleted_;
         onBuilt();
         return result;
       }
@@ -1940,6 +1977,9 @@ public final class Common {
         }
         if (other.getCompleted() != false) {
           setCompleted(other.getCompleted());
+        }
+        if (other.getPercentCompleted() != 0F) {
+          setPercentCompleted(other.getPercentCompleted());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -2151,6 +2191,36 @@ public final class Common {
         onChanged();
         return this;
       }
+
+      private float percentCompleted_ ;
+      /**
+       * <code>float percent_completed = 4;</code>
+       * @return The percentCompleted.
+       */
+      public float getPercentCompleted() {
+        return percentCompleted_;
+      }
+      /**
+       * <code>float percent_completed = 4;</code>
+       * @param value The percentCompleted to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPercentCompleted(float value) {
+        
+        percentCompleted_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>float percent_completed = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPercentCompleted() {
+        
+        percentCompleted_ = 0F;
+        onChanged();
+        return this;
+      }
       @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -2232,10 +2302,11 @@ public final class Common {
       "commands\"\026\n\010Instance\022\n\n\002id\030\001 \001(\005\"h\n\020Down" +
       "loadProgress\022\013\n\003url\030\001 \001(\t\022\014\n\004file\030\002 \001(\t\022" +
       "\022\n\ntotal_size\030\003 \001(\003\022\022\n\ndownloaded\030\004 \001(\003\022" +
-      "\021\n\tcompleted\030\005 \001(\010\"@\n\014TaskProgress\022\014\n\004na" +
+      "\021\n\tcompleted\030\005 \001(\010\"[\n\014TaskProgress\022\014\n\004na" +
       "me\030\001 \001(\t\022\017\n\007message\030\002 \001(\t\022\021\n\tcompleted\030\003" +
-      " \001(\010B-Z+github.com/arduino/arduino-cli/r" +
-      "pc/commandsb\006proto3"
+      " \001(\010\022\031\n\021percent_completed\030\004 \001(\002B-Z+githu" +
+      "b.com/arduino/arduino-cli/rpc/commandsb\006" +
+      "proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -2258,7 +2329,7 @@ public final class Common {
     internal_static_cc_arduino_cli_commands_TaskProgress_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_TaskProgress_descriptor,
-        new java.lang.String[] { "Name", "Message", "Completed", });
+        new java.lang.String[] { "Name", "Message", "Completed", "PercentCompleted", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

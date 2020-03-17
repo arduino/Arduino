@@ -15,6 +15,110 @@ public final class Lib {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
+   * Protobuf enum {@code cc.arduino.cli.commands.LibrarySearchStatus}
+   */
+  public enum LibrarySearchStatus
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>failed = 0;</code>
+     */
+    failed(0),
+    /**
+     * <code>success = 1;</code>
+     */
+    success(1),
+    UNRECOGNIZED(-1),
+    ;
+
+    /**
+     * <code>failed = 0;</code>
+     */
+    public static final int failed_VALUE = 0;
+    /**
+     * <code>success = 1;</code>
+     */
+    public static final int success_VALUE = 1;
+
+
+    public final int getNumber() {
+      if (this == UNRECOGNIZED) {
+        throw new java.lang.IllegalArgumentException(
+            "Can't get the number of an unknown enum value.");
+      }
+      return value;
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
+    public static LibrarySearchStatus valueOf(int value) {
+      return forNumber(value);
+    }
+
+    /**
+     * @param value The numeric wire value of the corresponding enum entry.
+     * @return The enum associated with the given numeric wire value.
+     */
+    public static LibrarySearchStatus forNumber(int value) {
+      switch (value) {
+        case 0: return failed;
+        case 1: return success;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<LibrarySearchStatus>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        LibrarySearchStatus> internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<LibrarySearchStatus>() {
+            public LibrarySearchStatus findValueByNumber(int number) {
+              return LibrarySearchStatus.forNumber(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(ordinal());
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Lib.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final LibrarySearchStatus[] VALUES = values();
+
+    public static LibrarySearchStatus valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new java.lang.IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      if (desc.getIndex() == -1) {
+        return UNRECOGNIZED;
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int value;
+
+    private LibrarySearchStatus(int value) {
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:cc.arduino.cli.commands.LibrarySearchStatus)
+  }
+
+  /**
    * Protobuf enum {@code cc.arduino.cli.commands.LibraryLayout}
    */
   public enum LibraryLayout
@@ -92,7 +196,7 @@ public final class Lib {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return cc.arduino.cli.commands.Lib.getDescriptor().getEnumTypes().get(0);
+      return cc.arduino.cli.commands.Lib.getDescriptor().getEnumTypes().get(1);
     }
 
     private static final LibraryLayout[] VALUES = values();
@@ -222,7 +326,7 @@ public final class Lib {
     }
     public static final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptor() {
-      return cc.arduino.cli.commands.Lib.getDescriptor().getEnumTypes().get(1);
+      return cc.arduino.cli.commands.Lib.getDescriptor().getEnumTypes().get(2);
     }
 
     private static final LibraryLocation[] VALUES = values();
@@ -9837,6 +9941,17 @@ public final class Lib {
      */
     cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder getLibrariesOrBuilder(
         int index);
+
+    /**
+     * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+     * @return The enum numeric value on the wire for status.
+     */
+    int getStatusValue();
+    /**
+     * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+     * @return The status.
+     */
+    cc.arduino.cli.commands.Lib.LibrarySearchStatus getStatus();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.LibrarySearchResp}
@@ -9852,6 +9967,7 @@ public final class Lib {
     }
     private LibrarySearchResp() {
       libraries_ = java.util.Collections.emptyList();
+      status_ = 0;
     }
 
     @java.lang.Override
@@ -9892,6 +10008,12 @@ public final class Lib {
               }
               libraries_.add(
                   input.readMessage(cc.arduino.cli.commands.Lib.SearchedLibrary.parser(), extensionRegistry));
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+
+              status_ = rawValue;
               break;
             }
             default: {
@@ -9964,6 +10086,25 @@ public final class Lib {
       return libraries_.get(index);
     }
 
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private int status_;
+    /**
+     * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+     * @return The enum numeric value on the wire for status.
+     */
+    public int getStatusValue() {
+      return status_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+     * @return The status.
+     */
+    public cc.arduino.cli.commands.Lib.LibrarySearchStatus getStatus() {
+      @SuppressWarnings("deprecation")
+      cc.arduino.cli.commands.Lib.LibrarySearchStatus result = cc.arduino.cli.commands.Lib.LibrarySearchStatus.valueOf(status_);
+      return result == null ? cc.arduino.cli.commands.Lib.LibrarySearchStatus.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -9981,6 +10122,9 @@ public final class Lib {
       for (int i = 0; i < libraries_.size(); i++) {
         output.writeMessage(1, libraries_.get(i));
       }
+      if (status_ != cc.arduino.cli.commands.Lib.LibrarySearchStatus.failed.getNumber()) {
+        output.writeEnum(2, status_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -9993,6 +10137,10 @@ public final class Lib {
       for (int i = 0; i < libraries_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, libraries_.get(i));
+      }
+      if (status_ != cc.arduino.cli.commands.Lib.LibrarySearchStatus.failed.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, status_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -10011,6 +10159,7 @@ public final class Lib {
 
       if (!getLibrariesList()
           .equals(other.getLibrariesList())) return false;
+      if (status_ != other.status_) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -10026,6 +10175,8 @@ public final class Lib {
         hash = (37 * hash) + LIBRARIES_FIELD_NUMBER;
         hash = (53 * hash) + getLibrariesList().hashCode();
       }
+      hash = (37 * hash) + STATUS_FIELD_NUMBER;
+      hash = (53 * hash) + status_;
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -10166,6 +10317,8 @@ public final class Lib {
         } else {
           librariesBuilder_.clear();
         }
+        status_ = 0;
+
         return this;
       }
 
@@ -10202,6 +10355,7 @@ public final class Lib {
         } else {
           result.libraries_ = librariesBuilder_.build();
         }
+        result.status_ = status_;
         onBuilt();
         return result;
       }
@@ -10275,6 +10429,9 @@ public final class Lib {
               librariesBuilder_.addAllMessages(other.libraries_);
             }
           }
+        }
+        if (other.status_ != 0) {
+          setStatusValue(other.getStatusValue());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -10544,6 +10701,58 @@ public final class Lib {
           libraries_ = null;
         }
         return librariesBuilder_;
+      }
+
+      private int status_ = 0;
+      /**
+       * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+       * @return The enum numeric value on the wire for status.
+       */
+      public int getStatusValue() {
+        return status_;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+       * @param value The enum numeric value on the wire for status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatusValue(int value) {
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+       * @return The status.
+       */
+      public cc.arduino.cli.commands.Lib.LibrarySearchStatus getStatus() {
+        @SuppressWarnings("deprecation")
+        cc.arduino.cli.commands.Lib.LibrarySearchStatus result = cc.arduino.cli.commands.Lib.LibrarySearchStatus.valueOf(status_);
+        return result == null ? cc.arduino.cli.commands.Lib.LibrarySearchStatus.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+       * @param value The status to set.
+       * @return This builder for chaining.
+       */
+      public Builder setStatus(cc.arduino.cli.commands.Lib.LibrarySearchStatus value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        
+        status_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearStatus() {
+        
+        status_ = 0;
+        onChanged();
+        return this;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -22608,57 +22817,60 @@ public final class Lib {
       "ionRequired\030\002 \001(\t\022\030\n\020versionInstalled\030\003 " +
       "\001(\t\"V\n\020LibrarySearchReq\0223\n\010instance\030\001 \001(" +
       "\0132!.cc.arduino.cli.commands.Instance\022\r\n\005" +
-      "query\030\002 \001(\t\"P\n\021LibrarySearchResp\022;\n\tlibr" +
-      "aries\030\001 \003(\0132(.cc.arduino.cli.commands.Se" +
-      "archedLibrary\"\374\001\n\017SearchedLibrary\022\014\n\004nam" +
-      "e\030\001 \001(\t\022H\n\010releases\030\002 \003(\01326.cc.arduino.c" +
-      "li.commands.SearchedLibrary.ReleasesEntr" +
-      "y\0227\n\006latest\030\003 \001(\0132\'.cc.arduino.cli.comma" +
-      "nds.LibraryRelease\032X\n\rReleasesEntry\022\013\n\003k" +
-      "ey\030\001 \001(\t\0226\n\005value\030\002 \001(\0132\'.cc.arduino.cli" +
-      ".commands.LibraryRelease:\0028\001\"\337\002\n\016Library" +
-      "Release\022\016\n\006author\030\001 \001(\t\022\017\n\007version\030\002 \001(\t" +
-      "\022\022\n\nmaintainer\030\003 \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021" +
-      "\n\tparagraph\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022\020\n\010ca" +
-      "tegory\030\007 \001(\t\022\025\n\rarchitectures\030\010 \003(\t\022\r\n\005t" +
-      "ypes\030\t \003(\t\022<\n\tresources\030\n \001(\0132).cc.ardui" +
-      "no.cli.commands.DownloadResource\022\017\n\007lice" +
-      "nse\030\013 \001(\t\022\031\n\021provides_includes\030\014 \003(\t\022@\n\014" +
-      "dependencies\030\r \003(\0132*.cc.arduino.cli.comm" +
-      "ands.LibraryDependency\"=\n\021LibraryDepende" +
-      "ncy\022\014\n\004name\030\001 \001(\t\022\032\n\022version_constraint\030" +
-      "\002 \001(\t\"k\n\020DownloadResource\022\013\n\003url\030\001 \001(\t\022\027" +
-      "\n\017archivefilename\030\002 \001(\t\022\020\n\010checksum\030\003 \001(" +
-      "\t\022\014\n\004size\030\004 \001(\003\022\021\n\tcachepath\030\005 \001(\t\"e\n\016Li" +
-      "braryListReq\0223\n\010instance\030\001 \001(\0132!.cc.ardu" +
-      "ino.cli.commands.Instance\022\013\n\003all\030\002 \001(\010\022\021" +
-      "\n\tupdatable\030\003 \001(\010\"W\n\017LibraryListResp\022D\n\021" +
-      "installed_library\030\001 \003(\0132).cc.arduino.cli" +
-      ".commands.InstalledLibrary\"\177\n\020InstalledL" +
-      "ibrary\0221\n\007library\030\001 \001(\0132 .cc.arduino.cli" +
-      ".commands.Library\0228\n\007release\030\002 \001(\0132\'.cc." +
-      "arduino.cli.commands.LibraryRelease\"\366\004\n\007" +
-      "Library\022\014\n\004name\030\001 \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n" +
-      "\nmaintainer\030\003 \001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tp" +
-      "aragraph\030\005 \001(\t\022\017\n\007website\030\006 \001(\t\022\020\n\010categ" +
-      "ory\030\007 \001(\t\022\025\n\rarchitectures\030\010 \003(\t\022\r\n\005type" +
-      "s\030\t \003(\t\022\023\n\013install_dir\030\n \001(\t\022\022\n\nsource_d" +
-      "ir\030\013 \001(\t\022\023\n\013utility_dir\030\014 \001(\t\022\032\n\022contain" +
-      "er_platform\030\016 \001(\t\022\021\n\treal_name\030\020 \001(\t\022\025\n\r" +
-      "dot_a_linkage\030\021 \001(\010\022\023\n\013precompiled\030\022 \001(\010" +
-      "\022\020\n\010ld_flags\030\023 \001(\t\022\021\n\tis_legacy\030\024 \001(\010\022\017\n" +
-      "\007version\030\025 \001(\t\022\017\n\007license\030\026 \001(\t\022D\n\nprope" +
-      "rties\030\027 \003(\01320.cc.arduino.cli.commands.Li" +
-      "brary.PropertiesEntry\022:\n\010location\030\030 \001(\0162" +
-      "(.cc.arduino.cli.commands.LibraryLocatio" +
-      "n\0226\n\006layout\030\031 \001(\0162&.cc.arduino.cli.comma" +
-      "nds.LibraryLayout\0321\n\017PropertiesEntry\022\013\n\003" +
-      "key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001*6\n\rLibraryL" +
-      "ayout\022\017\n\013flat_layout\020\000\022\024\n\020recursive_layo" +
-      "ut\020\001*c\n\017LibraryLocation\022\017\n\013ide_builtin\020\000" +
-      "\022\010\n\004user\020\001\022\024\n\020platform_builtin\020\002\022\037\n\033refe" +
-      "renced_platform_builtin\020\003B-Z+github.com/" +
-      "arduino/arduino-cli/rpc/commandsb\006proto3"
+      "query\030\002 \001(\t\"\216\001\n\021LibrarySearchResp\022;\n\tlib" +
+      "raries\030\001 \003(\0132(.cc.arduino.cli.commands.S" +
+      "earchedLibrary\022<\n\006status\030\002 \001(\0162,.cc.ardu" +
+      "ino.cli.commands.LibrarySearchStatus\"\374\001\n" +
+      "\017SearchedLibrary\022\014\n\004name\030\001 \001(\t\022H\n\010releas" +
+      "es\030\002 \003(\01326.cc.arduino.cli.commands.Searc" +
+      "hedLibrary.ReleasesEntry\0227\n\006latest\030\003 \001(\013" +
+      "2\'.cc.arduino.cli.commands.LibraryReleas" +
+      "e\032X\n\rReleasesEntry\022\013\n\003key\030\001 \001(\t\0226\n\005value" +
+      "\030\002 \001(\0132\'.cc.arduino.cli.commands.Library" +
+      "Release:\0028\001\"\337\002\n\016LibraryRelease\022\016\n\006author" +
+      "\030\001 \001(\t\022\017\n\007version\030\002 \001(\t\022\022\n\nmaintainer\030\003 " +
+      "\001(\t\022\020\n\010sentence\030\004 \001(\t\022\021\n\tparagraph\030\005 \001(\t" +
+      "\022\017\n\007website\030\006 \001(\t\022\020\n\010category\030\007 \001(\t\022\025\n\ra" +
+      "rchitectures\030\010 \003(\t\022\r\n\005types\030\t \003(\t\022<\n\tres" +
+      "ources\030\n \001(\0132).cc.arduino.cli.commands.D" +
+      "ownloadResource\022\017\n\007license\030\013 \001(\t\022\031\n\021prov" +
+      "ides_includes\030\014 \003(\t\022@\n\014dependencies\030\r \003(" +
+      "\0132*.cc.arduino.cli.commands.LibraryDepen" +
+      "dency\"=\n\021LibraryDependency\022\014\n\004name\030\001 \001(\t" +
+      "\022\032\n\022version_constraint\030\002 \001(\t\"k\n\020Download" +
+      "Resource\022\013\n\003url\030\001 \001(\t\022\027\n\017archivefilename" +
+      "\030\002 \001(\t\022\020\n\010checksum\030\003 \001(\t\022\014\n\004size\030\004 \001(\003\022\021" +
+      "\n\tcachepath\030\005 \001(\t\"e\n\016LibraryListReq\0223\n\010i" +
+      "nstance\030\001 \001(\0132!.cc.arduino.cli.commands." +
+      "Instance\022\013\n\003all\030\002 \001(\010\022\021\n\tupdatable\030\003 \001(\010" +
+      "\"W\n\017LibraryListResp\022D\n\021installed_library" +
+      "\030\001 \003(\0132).cc.arduino.cli.commands.Install" +
+      "edLibrary\"\177\n\020InstalledLibrary\0221\n\007library" +
+      "\030\001 \001(\0132 .cc.arduino.cli.commands.Library" +
+      "\0228\n\007release\030\002 \001(\0132\'.cc.arduino.cli.comma" +
+      "nds.LibraryRelease\"\366\004\n\007Library\022\014\n\004name\030\001" +
+      " \001(\t\022\016\n\006author\030\002 \001(\t\022\022\n\nmaintainer\030\003 \001(\t" +
+      "\022\020\n\010sentence\030\004 \001(\t\022\021\n\tparagraph\030\005 \001(\t\022\017\n" +
+      "\007website\030\006 \001(\t\022\020\n\010category\030\007 \001(\t\022\025\n\rarch" +
+      "itectures\030\010 \003(\t\022\r\n\005types\030\t \003(\t\022\023\n\013instal" +
+      "l_dir\030\n \001(\t\022\022\n\nsource_dir\030\013 \001(\t\022\023\n\013utili" +
+      "ty_dir\030\014 \001(\t\022\032\n\022container_platform\030\016 \001(\t" +
+      "\022\021\n\treal_name\030\020 \001(\t\022\025\n\rdot_a_linkage\030\021 \001" +
+      "(\010\022\023\n\013precompiled\030\022 \001(\010\022\020\n\010ld_flags\030\023 \001(" +
+      "\t\022\021\n\tis_legacy\030\024 \001(\010\022\017\n\007version\030\025 \001(\t\022\017\n" +
+      "\007license\030\026 \001(\t\022D\n\nproperties\030\027 \003(\01320.cc." +
+      "arduino.cli.commands.Library.PropertiesE" +
+      "ntry\022:\n\010location\030\030 \001(\0162(.cc.arduino.cli." +
+      "commands.LibraryLocation\0226\n\006layout\030\031 \001(\016" +
+      "2&.cc.arduino.cli.commands.LibraryLayout" +
+      "\0321\n\017PropertiesEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\t:\0028\001*.\n\023LibrarySearchStatus\022\n\n\006fa" +
+      "iled\020\000\022\013\n\007success\020\001*6\n\rLibraryLayout\022\017\n\013" +
+      "flat_layout\020\000\022\024\n\020recursive_layout\020\001*c\n\017L" +
+      "ibraryLocation\022\017\n\013ide_builtin\020\000\022\010\n\004user\020" +
+      "\001\022\024\n\020platform_builtin\020\002\022\037\n\033referenced_pl" +
+      "atform_builtin\020\003B-Z+github.com/arduino/a" +
+      "rduino-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -22742,7 +22954,7 @@ public final class Lib {
     internal_static_cc_arduino_cli_commands_LibrarySearchResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_LibrarySearchResp_descriptor,
-        new java.lang.String[] { "Libraries", });
+        new java.lang.String[] { "Libraries", "Status", });
     internal_static_cc_arduino_cli_commands_SearchedLibrary_descriptor =
       getDescriptor().getMessageTypes().get(13);
     internal_static_cc_arduino_cli_commands_SearchedLibrary_fieldAccessorTable = new
