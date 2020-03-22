@@ -1540,6 +1540,7 @@ public class Base {
         onBoardOrPortChange();
         rebuildImportMenu(Editor.importMenu);
         rebuildExamplesMenu(Editor.examplesMenu);
+        rebuildProgrammerMenu();
       }
     };
     action.putValue("b", board);
@@ -1670,28 +1671,40 @@ public class Base {
 
   public void rebuildProgrammerMenu() {
     programmerMenus = new LinkedList<>();
-
     ButtonGroup group = new ButtonGroup();
-    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
-      for (TargetPlatform targetPlatform : targetPackage.platforms()) {
-        for (String programmer : targetPlatform.getProgrammers().keySet()) {
-          String id = targetPackage.getId() + ":" + programmer;
 
-          @SuppressWarnings("serial")
-          AbstractAction action = new AbstractAction(targetPlatform.getProgrammer(programmer).get("name")) {
-            public void actionPerformed(ActionEvent actionevent) {
-              PreferencesData.set("programmer", "" + getValue("id"));
-            }
-          };
-          action.putValue("id", id);
-          JMenuItem item = new JRadioButtonMenuItem(action);
-          if (PreferencesData.get("programmer").equals(id)) {
-            item.setSelected(true);
-          }
-          group.add(item);
-          programmerMenus.add(item);
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    TargetPlatform boardPlatform = board.getContainerPlatform();
+    TargetPlatform corePlatform = null;
+
+    String core = board.getPreferences().get("build.core");
+    if (core.contains(":")) {
+      String[] split = core.split(":", 2);
+      corePlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+    }
+
+    addProgrammersForPlatform(boardPlatform, programmerMenus, group);
+    if (corePlatform != null)
+      addProgrammersForPlatform(corePlatform, programmerMenus, group);
+  }
+
+  public void addProgrammersForPlatform(TargetPlatform platform, List<JMenuItem> menus, ButtonGroup group) {
+    for (String programmer : platform.getProgrammers().keySet()) {
+      String id = platform.getContainerPackage().getId() + ":" + programmer;
+
+      @SuppressWarnings("serial")
+      AbstractAction action = new AbstractAction(platform.getProgrammer(programmer).get("name")) {
+        public void actionPerformed(ActionEvent actionevent) {
+          PreferencesData.set("programmer", "" + getValue("id"));
         }
+      };
+      action.putValue("id", id);
+      JMenuItem item = new JRadioButtonMenuItem(action);
+      if (PreferencesData.get("programmer").equals(id)) {
+        item.setSelected(true);
       }
+      group.add(item);
+      menus.add(item);
     }
   }
 
