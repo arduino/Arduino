@@ -37,6 +37,13 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,6 +58,8 @@ import javax.swing.event.HyperlinkListener;
 
 import cc.arduino.Constants;
 import processing.app.PreferencesData;
+import processing.app.Base;
+import processing.app.Editor;
 import processing.app.Theme;
 
 import java.awt.event.KeyEvent;
@@ -66,18 +75,20 @@ public class NotificationPopup extends JDialog {
     void onOptionalButton1Callback();
     void onOptionalButton2Callback();
   }
+  private Editor editor;
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+  public NotificationPopup(Editor parent, HyperlinkListener hyperlinkListener,
                            String message) {
     this(parent, hyperlinkListener, message, true, null, null, null);
+    editor = parent;
   }
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+  public NotificationPopup(Editor parent, HyperlinkListener hyperlinkListener,
                            String message, boolean _autoClose) {
     this(parent, hyperlinkListener, message, _autoClose, null, null, null);
   }
 
-  public NotificationPopup(Frame parent, HyperlinkListener hyperlinkListener,
+  public NotificationPopup(Editor parent, HyperlinkListener hyperlinkListener,
                            String message, boolean _autoClose, OptionalButtonCallbacks listener, String button1Name, String button2Name) {
     super(parent, false);
 
@@ -88,6 +99,7 @@ public class NotificationPopup extends JDialog {
     else {
       autoClose = false;
     }
+    editor = parent;
     optionalButtonCallbacks = listener;
 
     setLayout(new FlowLayout());
@@ -106,7 +118,9 @@ public class NotificationPopup extends JDialog {
     text.setEditable(false);
     text.setText("<html><body style=\"font-family:sans-serif; font-size: "
                  + scale(14) + ";\">  " + message + "  </body></html>");
-    text.addHyperlinkListener(hyperlinkListener);
+    if (hyperlinkListener != null) {
+      text.addHyperlinkListener(hyperlinkListener);
+    }
     add(text);
 
     if (button1Name != null) {
@@ -270,5 +284,29 @@ public class NotificationPopup extends JDialog {
       requestFocus();
       setModal(true);
     }
+  }
+
+  public void beginWhenFocused() {
+    if (editor.isFocused()) {
+      begin();
+      return;
+    }
+    Base base = editor.getBase();
+
+    // If the IDE is not focused wait until it is focused again to
+    // display the notification, this avoids the annoying side effect
+    // to "steal" the focus from another application.
+    WindowFocusListener wfl = new WindowFocusListener() {
+      @Override
+      public void windowLostFocus(WindowEvent evt) {
+      }
+
+      @Override
+      public void windowGainedFocus(WindowEvent evt) {
+        begin();
+        base.getEditors().forEach(e -> e.removeWindowFocusListener(this));
+      }
+    };
+    base.getEditors().forEach(e -> e.addWindowFocusListener(wfl));
   }
 }

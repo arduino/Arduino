@@ -27,6 +27,9 @@ import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.SimpleAction;
 import processing.app.tools.MenuScroller;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
+
 import static processing.app.I18n.tr;
 
 import java.awt.*;
@@ -189,6 +192,25 @@ public class EditorHeader extends JComponent {
           }
         }
       });
+
+    this.addMouseWheelListener(new MouseAdapter() {
+      public void mouseWheelMoved(MouseWheelEvent e) {
+        if (e.getWheelRotation() > 0) {
+          int index = editor.getCurrentTabIndex() + 1;
+          if (index >= (editor.getTabs().size())) {
+            index = 0;
+          }
+          editor.selectTab(index);
+        } else {
+          int index = editor.getCurrentTabIndex() - 1;
+          if (index < 0) {
+            index = editor.getTabs().size() -1 ;
+          }
+          editor.selectTab(index);
+        }
+        repaint();
+      }
+    });
   }
 
 
@@ -201,16 +223,7 @@ public class EditorHeader extends JComponent {
     Dimension size = getSize();
     if ((size.width != sizeW) || (size.height != sizeH)) {
       // component has been resized
-
-      if ((size.width > imageW) || (size.height > imageH)) {
-        // nix the image and recreate, it's too small
-        offscreen = null;
-
-      } else {
-        // who cares, just resize
-        sizeW = size.width;
-        sizeH = size.height;
-      }
+      offscreen = null;
     }
 
     if (offscreen == null) {
@@ -233,6 +246,8 @@ public class EditorHeader extends JComponent {
     g.setColor(backgroundColor);
     g.fillRect(0, 0, imageW, imageH);
 
+    imageW = sizeW - 30 - menuButtons[0].getWidth(this);
+
     List<EditorTab> tabs = editor.getTabs();
 
     int codeCount = tabs.size();
@@ -243,6 +258,10 @@ public class EditorHeader extends JComponent {
 
     int x = scale(6); // offset from left edge of the component
     int i = 0;
+    int selected = 0;
+    int size_selected = 0;
+
+    // dry run, get the correct offset
     for (EditorTab tab : tabs) {
       SketchFile file = tab.getSketchFile();
       String filename = file.getPrettyName();
@@ -252,6 +271,78 @@ public class EditorHeader extends JComponent {
 
       int textWidth = (int)
         font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+
+      int pieceCount = 2 + (textWidth / PIECE_WIDTH);
+
+      int state = (i == editor.getCurrentTabIndex()) ? SELECTED : UNSELECTED;
+      int x_initial = x;
+      x += PIECE_WIDTH;
+
+      tabLeft[i] = x;
+      x += PIECE_WIDTH * pieceCount;
+      tabRight[i] = x;
+
+      x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+
+      if (state == SELECTED) {
+        selected = i;
+        size_selected = x - x_initial;
+      }
+
+      i++;
+    }
+
+    int non_selected_tab_size = 0;
+
+    if (x > imageW) {
+      // find scaling factor
+      non_selected_tab_size = (imageW - size_selected)/(codeCount -1);
+    }
+
+    if ((non_selected_tab_size > 0) && (size_selected > (3 * non_selected_tab_size))) {
+      // limit the maximum size of tab in case of crowded tabs
+      size_selected = 3 * non_selected_tab_size;
+    }
+
+    i = 0;
+    x = scale(6); // offset from left edge of the component
+
+    for (EditorTab tab : tabs) {
+      SketchFile file = tab.getSketchFile();
+      String filename = file.getPrettyName();
+
+      // if modified, add the li'l glyph next to the name
+      String text = "  " + filename + (file.isModified() ? " \u00A7" : "  ");
+
+      int textWidth = (int)
+          font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+
+      if (non_selected_tab_size > 0) {
+        // find a suitable title
+        while (textWidth + 3 * PIECE_WIDTH > ((i != selected) ? non_selected_tab_size: size_selected) && filename.length() > 2) {
+          filename = filename.substring(0, filename.length()-1);
+          text = "  " + filename + ".." + (file.isModified() ? " \u00A7" : "  ");
+          textWidth = (int)font.getStringBounds(text, g.getFontRenderContext()).getWidth();
+        }
+      }
+
+      int current_tab_size = non_selected_tab_size;
+      if (i == selected) {
+        current_tab_size = size_selected;
+      }
+
+      int padding = x + current_tab_size;
+
+      if (padding > imageW) {
+        if (i <= selected) {
+          // create another surface to overlay g
+          g.setColor(backgroundColor);
+          g.fillRect(0, 0, sizeW, imageH);
+          x = scale(6);
+        } else {
+          break;
+        }
+      }
 
       int pieceCount = 2 + (textWidth / PIECE_WIDTH);
       int pieceWidth = pieceCount * PIECE_WIDTH;
@@ -276,6 +367,7 @@ public class EditorHeader extends JComponent {
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
       x += PIECE_WIDTH - 1;  // overlap by 1 pixel
+
       i++;
     }
 

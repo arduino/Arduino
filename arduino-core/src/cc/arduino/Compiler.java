@@ -55,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static processing.app.I18n.tr;
 
@@ -125,7 +124,7 @@ public class Compiler implements MessageConsumer {
   }
 
   enum BuilderAction {
-    COMPILE("-compile"), DUMP_PREFS("-dump-prefs");
+    COMPILE("-compile"), DUMP_PREFS("-dump-prefs"), CODE_COMPLETE("-code-complete-at");
 
     final String value;
 
@@ -142,6 +141,10 @@ public class Compiler implements MessageConsumer {
   private File buildCache;
   private final boolean verbose;
   private RunnerException exception;
+
+  private File codeCompleteFile;
+  private int codeCompleteLine;
+  private int codeCompleteCol;
 
   public Compiler(Sketch data) {
     this(data.getPrimaryFile().getFile(), data);
@@ -168,16 +171,14 @@ public class Compiler implements MessageConsumer {
       throw new RunnerException("Board is not selected");
     }
 
-    TargetPlatform platform = board.getContainerPlatform();
-    TargetPackage aPackage = platform.getContainerPackage();
     String vidpid = VIDPID();
 
-    PreferencesMap prefs = loadPreferences(board, platform, aPackage, vidpid);
+    PreferencesMap prefs = loadPreferences(board, vidpid);
 
     MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(System.out, System.err), progListeners), "\n");
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
 
-    callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.COMPILE, out, err);
+    callArduinoBuilder(board, vidpid, BuilderAction.COMPILE, out, err);
 
     out.flush();
     err.flush();
@@ -191,6 +192,32 @@ public class Compiler implements MessageConsumer {
     }
 
     return sketch.getPrimaryFile().getFileName();
+  }
+
+  public String codeComplete(ArrayList<CompilerProgressListener> progListeners, File file, int line, int col) throws RunnerException, PreferencesMapException, IOException {
+    this.buildPath = sketch.getBuildPath().getAbsolutePath();
+    this.buildCache = BaseNoGui.getCachePath();
+
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    if (board == null) {
+      throw new RunnerException("Board is not selected");
+    }
+
+    String vidpid = VIDPID();
+
+    ByteArrayOutputStream completions = new ByteArrayOutputStream();
+    MessageConsumerOutputStream out = new MessageConsumerOutputStream(new ProgressAwareMessageConsumer(new I18NAwareMessageConsumer(new PrintStream(completions), System.err), progListeners), "\n");
+    MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(System.err, Compiler.this), "\n");
+
+    codeCompleteFile = file;
+    codeCompleteLine = line;
+    codeCompleteCol = col;
+    callArduinoBuilder(board, vidpid, BuilderAction.CODE_COMPLETE, out, err);
+
+    out.flush();
+    err.flush();
+
+    return completions.toString();
   }
 
   private String VIDPID() {
@@ -208,12 +235,12 @@ public class Compiler implements MessageConsumer {
     return vid.toUpperCase() + "_" + pid.toUpperCase();
   }
 
-  private PreferencesMap loadPreferences(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid) throws RunnerException, IOException {
+  private PreferencesMap loadPreferences(TargetBoard board, String vidpid) throws RunnerException, IOException {
     ByteArrayOutputStream stdout = new ByteArrayOutputStream();
     ByteArrayOutputStream stderr = new ByteArrayOutputStream();
     MessageConsumerOutputStream err = new MessageConsumerOutputStream(new I18NAwareMessageConsumer(new PrintStream(stderr), Compiler.this), "\n");
     try {
-      callArduinoBuilder(board, platform, aPackage, vidpid, BuilderAction.DUMP_PREFS, stdout, err);
+      callArduinoBuilder(board, vidpid, BuilderAction.DUMP_PREFS, stdout, err);
     } catch (RunnerException e) {
       System.err.println(new String(stderr.toByteArray()));
       throw e;
@@ -230,27 +257,22 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  private void callArduinoBuilder(TargetBoard board, TargetPlatform platform, TargetPackage aPackage, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
+  private void callArduinoBuilder(TargetBoard board, String vidpid, BuilderAction action, OutputStream outStream, OutputStream errStream) throws RunnerException {
     List<String> cmd = new ArrayList<>();
     cmd.add(BaseNoGui.getContentFile("arduino-builder").getAbsolutePath());
     cmd.add(action.value);
+    if (action == BuilderAction.CODE_COMPLETE) {
+      cmd.add(codeCompleteFile.getAbsolutePath() + ":" + codeCompleteLine + ":" + codeCompleteCol);
+    }
     cmd.add("-logger=machine");
 
-    File installedPackagesFolder = new File(BaseNoGui.getSettingsFolder(), "packages");
-
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getHardwareFolder());
-    addPathFlagIfPathExists(cmd, "-hardware", installedPackagesFolder);
-    addPathFlagIfPathExists(cmd, "-hardware", BaseNoGui.getSketchbookHardwareFolder());
-
-    addPathFlagIfPathExists(cmd, "-tools", BaseNoGui.getContentFile("tools-builder"));
-    addPathFlagIfPathExists(cmd, "-tools", Paths.get(BaseNoGui.getHardwarePath(), "tools", "avr").toFile());
-    addPathFlagIfPathExists(cmd, "-tools", installedPackagesFolder);
+    BaseNoGui.getAllHardwareFolders().forEach(x -> addPathFlagIfPathExists(cmd, "-hardware", x));
+    BaseNoGui.getAllToolsFolders().forEach(x -> addPathFlagIfPathExists(cmd, "-tools", x));
 
     addPathFlagIfPathExists(cmd, "-built-in-libraries", BaseNoGui.getContentFile("libraries"));
     addPathFlagIfPathExists(cmd, "-libraries", BaseNoGui.getSketchbookLibrariesFolder().folder);
 
-    String fqbn = Stream.of(aPackage.getId(), platform.getId(), board.getId(), boardOptions(board)).filter(s -> !s.isEmpty()).collect(Collectors.joining(":"));
-    cmd.add("-fqbn=" + fqbn);
+    cmd.add("-fqbn=" + getBoardFQBN(board));
 
     if (!"".equals(vidpid)) {
       cmd.add("-vid-pid=" + vidpid);
@@ -280,11 +302,11 @@ public class Compiler implements MessageConsumer {
         }
     }
 
-    //commandLine.addArgument("-debug-level=10", false);
-
-    if (verbose) {
+    if (verbose && action != BuilderAction.CODE_COMPLETE) {
       cmd.add("-verbose");
     }
+
+    cmd.add("-experimental");
 
     cmd.add(pathToSketch.getAbsolutePath());
 
@@ -481,7 +503,17 @@ public class Compiler implements MessageConsumer {
     }
   }
 
-  private String boardOptions(TargetBoard board) {
+  public static String getBoardFQBN(TargetBoard board) {
+    TargetPlatform plat = board.getContainerPlatform();
+    TargetPackage pack = plat.getContainerPackage();
+    String fqbn = pack.getId() + ":" + plat.getId() + ":" + board.getId();
+    String opts = boardOptions(board);
+    if (!opts.isEmpty())
+      fqbn += ":" + opts;
+    return fqbn;
+  }
+
+  private static String boardOptions(TargetBoard board) {
     return board.getMenuIds().stream()
       .filter(board::hasMenu)
       .filter(menuId -> {

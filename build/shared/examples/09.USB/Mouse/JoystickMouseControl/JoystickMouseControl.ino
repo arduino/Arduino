@@ -69,8 +69,8 @@ void loop() {
   lastSwitchState = switchState;
 
   // read and scale the two axes:
-  int xReading = readAxis(A0);
-  int yReading = readAxis(A1);
+  int xReading = readAxis(xAxis);
+  int yReading = readAxis(yAxis);
 
   // if the mouse control state is active, move the mouse:
   if (mouseIsActive) {
