@@ -148,29 +148,20 @@ public class SerialDiscovery implements Discovery, Runnable {
 
       Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
 
-      BoardPort boardPort = null;
-      int i = 0;
-
-      // create new board if in ports but not in boardPorts
-      for (BoardPort board : boardPorts) {
-        if (board.toCompleteString().equalsIgnoreCase(newPort)) {
-          boardPort = boardPorts.get(i);
-          boardPorts.get(i).setOnlineStatus(true);
-          break;
-        }
-        i++;
-      }
-
-      if (boardPort != null) {
+      // if port has been already discovered bring it back online
+      BoardPort oldBoardPort = boardPorts.stream() //
+          .filter(bp -> bp.toCompleteString().equalsIgnoreCase(newPort)) //
+          .findAny().orElse(null);
+      if (oldBoardPort != null) {
+        oldBoardPort.setOnlineStatus(true);
         continue;
       }
         
-      boardPort = new BoardPort();
+      BoardPort boardPort = new BoardPort();
       boardPorts.add(boardPort);
       boardPort.setAddress(port);
       boardPort.setProtocol("serial");
       boardPort.setOnlineStatus(true);
-
       boardPort.setLabel(port);
 
       if (boardData != null) {
