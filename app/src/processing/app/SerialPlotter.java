@@ -242,12 +242,14 @@ public class SerialPlotter extends AbstractMonitor {
       String rateString = wholeString.substring(0, wholeString.indexOf(' '));
       serialRate = Integer.parseInt(rateString);
       PreferencesData.set("serial.debug_rate", rateString);
-      try {
-        close();
-        Thread.sleep(100); // Wait for serial port to properly close
-        open();
-      } catch (Exception e) {
-        // ignore
+      if (serial != null) {
+        try {
+          close();
+          Thread.sleep(100); // Wait for serial port to properly close
+          open();
+        } catch (Exception e) {
+          // ignore
+        }
       }
     });
 
@@ -379,10 +381,8 @@ public class SerialPlotter extends AbstractMonitor {
   }
 
   protected void onEnableWindow(boolean enable) {
-    serialRates.setEnabled(enable);
     textField.setEnabled(enable);
     sendButton.setEnabled(enable);
-    lineEndings.setEnabled(enable);
   }
 
   private void onSerialRateChange(ActionListener listener) {
