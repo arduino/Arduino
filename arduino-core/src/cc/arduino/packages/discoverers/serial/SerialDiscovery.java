@@ -128,13 +128,23 @@ public class SerialDiscovery implements Discovery, Runnable {
     // add information for newly added ports
     for (String newPort : ports) {
 
-      String[] parts = newPort.split("_");
+      // if port has been already discovered bring it back online
+      BoardPort oldBoardPort = boardPorts.stream() //
+          .filter(bp -> bp.toCompleteString().equalsIgnoreCase(newPort)) //
+          .findAny().orElse(null);
+      if (oldBoardPort != null) {
+        oldBoardPort.setOnlineStatus(true);
+        continue;
+      }
 
+      // Otherwise build a BoardPort object out of it and add it to
+      // to the known boardPorts
+
+      String[] parts = newPort.split("_");
       if (parts.length < 3) {
         // something went horribly wrong
         continue;
       }
-
       if (parts.length > 3) {
         // port name with _ in it (like CP2102 on OSX)
         for (int i = 1; i < (parts.length-2); i++) {
@@ -146,17 +156,6 @@ public class SerialDiscovery implements Discovery, Runnable {
 
       String port = parts[0];
 
-      Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
-
-      // if port has been already discovered bring it back online
-      BoardPort oldBoardPort = boardPorts.stream() //
-          .filter(bp -> bp.toCompleteString().equalsIgnoreCase(newPort)) //
-          .findAny().orElse(null);
-      if (oldBoardPort != null) {
-        oldBoardPort.setOnlineStatus(true);
-        continue;
-      }
-        
       BoardPort boardPort = new BoardPort();
       boardPorts.add(boardPort);
       boardPort.setAddress(port);
@@ -164,6 +163,7 @@ public class SerialDiscovery implements Discovery, Runnable {
       boardPort.setOnlineStatus(true);
       boardPort.setLabel(port);
 
+      Map<String, Object> boardData = platform.resolveDeviceByVendorIdProductId(port, BaseNoGui.packages);
       if (boardData != null) {
         boardPort.getPrefs().put("vid", boardData.get("vid").toString());
         boardPort.getPrefs().put("pid", boardData.get("pid").toString());
@@ -176,17 +176,15 @@ public class SerialDiscovery implements Discovery, Runnable {
           String boardName = board.getName();
           boardPort.setBoardName(boardName);
         }
+      } else if (!parts[1].equals("0000")) {
+        boardPort.getPrefs().put("vid", parts[1]);
+        boardPort.getPrefs().put("pid", parts[2]);
+        // ask Cloud API to match the board with known VID/PID pair
+        boardCloudResolver.getBoardBy(parts[1], parts[2]);
       } else {
-        if (!parts[1].equals("0000")) {
-          boardPort.getPrefs().put("vid", parts[1]);
-          boardPort.getPrefs().put("pid", parts[2]);
-          // ask Cloud API to match the board with known VID/PID pair
-          boardCloudResolver.getBoardBy(parts[1], parts[2]);
-        } else {
-          boardPort.getPrefs().put("vid", "0000");
-          boardPort.getPrefs().put("pid", "0000");
-          boardPort.getPrefs().put("iserial", "");
-        }
+        boardPort.getPrefs().put("vid", "0000");
+        boardPort.getPrefs().put("pid", "0000");
+        boardPort.getPrefs().put("iserial", "");
       }
     }
     setSerialBoardPorts(boardPorts);
