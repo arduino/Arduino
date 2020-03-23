@@ -1,5 +1,10 @@
 ARDUINO 1.8.13 2020.??.??
 
+[ide]
+* Fixed save of proxy username/password settings in "manual proxy" section.
+* In "Tools / Programmers" menu only shows programmes related to the currently selected board. (thanks @matthijskooijman)
+* Fixed: sketch window out-of-display if the IDE is restarted after removing an external monitor.
+* Allow baudrate/config change when the Serial Monitor/Plotter is disabled. (thanks @matthijskooijman)
 
 ARDUINO 1.8.12 2020.02.13
 
