@@ -116,7 +116,7 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
-  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
+  protected Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
     //if (port != null) port.close();
     //this.parent = parent;
     //parent.attach(this);
@@ -130,6 +130,11 @@ public class Serial implements SerialPortEventListener {
     int stopbits = SerialPort.STOPBITS_1;
     if (istopbits == 1.5f) stopbits = SerialPort.STOPBITS_1_5;
     if (istopbits == 2) stopbits = SerialPort.STOPBITS_2;
+
+    // This is required for unit-testing
+    if (iname.equals("none")) {
+      return;
+    }
 
     try {
       port = new SerialPort(iname);
@@ -175,28 +180,32 @@ public class Serial implements SerialPortEventListener {
     if (serialEvent.isRXCHAR()) {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
-        int next = 0;
-        while(next < buf.length) {
-          while(next < buf.length && outToMessage.hasRemaining()) {
-            int spaceInIn = inFromSerial.remaining();
-            int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
-            inFromSerial.put(buf, next, copyNow);
-            next += copyNow;
-            inFromSerial.flip();
-            bytesToStrings.decode(inFromSerial, outToMessage, false);
-            inFromSerial.compact();
-          }
-          outToMessage.flip();
-          if(outToMessage.hasRemaining()) {
-            char[] chars = new char[outToMessage.remaining()];
-            outToMessage.get(chars);
-            message(chars, chars.length);
-          }
-          outToMessage.clear();
-        }
+        processSerialEvent(buf);
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
       }
+    }
+  }
+
+  public void processSerialEvent(byte[] buf) {
+    int next = 0;
+    while(next < buf.length) {
+      while(next < buf.length && outToMessage.hasRemaining()) {
+        int spaceInIn = inFromSerial.remaining();
+        int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
+        inFromSerial.put(buf, next, copyNow);
+        next += copyNow;
+        inFromSerial.flip();
+        bytesToStrings.decode(inFromSerial, outToMessage, false);
+        inFromSerial.compact();
+      }
+      outToMessage.flip();
+      if(outToMessage.hasRemaining()) {
+        char[] chars = new char[outToMessage.remaining()];
+        outToMessage.get(chars);
+        message(chars, chars.length);
+      }
+      outToMessage.clear();
     }
   }
 
