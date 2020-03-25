@@ -1493,7 +1493,7 @@ public class Base {
         if (platformLabel == null)
           platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
 
-        JMenu platformBoardsMenu = new JMenu(tr(platformLabel));
+        JMenu platformBoardsMenu = new JMenu(platformLabel);
         MenuScroller.setScrollerFor(platformBoardsMenu);
         platformMenus.add(platformBoardsMenu);
 
