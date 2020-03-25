@@ -1696,6 +1696,12 @@ public class Base {
     addProgrammersForPlatform(boardPlatform, programmerMenus, group);
     if (corePlatform != null)
       addProgrammersForPlatform(corePlatform, programmerMenus, group);
+
+    if (programmerMenus.isEmpty()) {
+      JMenuItem item = new JMenuItem(tr("No programmers available for this board"));
+      item.setEnabled(false);
+      programmerMenus.add(item);
+    }
   }
 
   public void addProgrammersForPlatform(TargetPlatform platform, List<JMenuItem> menus, ButtonGroup group) {
