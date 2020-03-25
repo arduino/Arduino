@@ -999,9 +999,9 @@ public class Base {
     // kill uploader (if still alive)
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
-    if (uploader != null && uploader.programmerPid != null && uploader.programmerPid.isAlive()) {
+    if (uploader != null && Uploader.programmerPid != null && Uploader.programmerPid.isAlive()) {
         // kill the stuck programmer
-        uploader.programmerPid.destroyForcibly();
+        Uploader.programmerPid.destroyForcibly();
     }
 
     if (handleQuitEach()) {
@@ -1444,8 +1444,9 @@ public class Base {
         String filterText = "";
         String dropdownItem = "";
         if (actionevent instanceof Event) {
-          filterText = ((Event) actionevent).getPayload().get("filterText").toString();
-          dropdownItem = ((Event) actionevent).getPayload().get("dropdownItem").toString();
+          Event e = ((Event) actionevent);
+          filterText = e.getPayload().get("filterText").toString();
+          dropdownItem = e.getPayload().get("dropdownItem").toString();
         }
         try {
           openBoardsManager(filterText, dropdownItem);
@@ -1481,7 +1482,7 @@ public class Base {
     ButtonGroup boardsButtonGroup = new ButtonGroup();
     Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
 
-    List<JMenu> platformMenus = new ArrayList<JMenu>();
+    List<JMenu> platformMenus = new ArrayList<>();
 
     // Cycle through all packages
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
@@ -1602,7 +1603,7 @@ public class Base {
           };
           List<TargetBoard> boards = (List<TargetBoard>) subAction.getValue("board");
           if (boards == null) {
-            boards = new ArrayList<TargetBoard>();
+            boards = new ArrayList<>();
           }
           boards.add(board);
           subAction.putValue("board", boards);
@@ -2003,6 +2004,7 @@ public class Base {
               Base.this.handleFontSizeChange(-1);
             }
             break;
+          default:
           }
         }
       }
