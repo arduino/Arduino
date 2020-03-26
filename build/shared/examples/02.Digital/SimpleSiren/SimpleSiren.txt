@@ -1,0 +1,1 @@
+A bare minimum framework simulating a siren functioning.
