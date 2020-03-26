@@ -60,28 +60,22 @@ public class UpdateCheck implements Runnable {
 
   public void run() {
     // Ensure updates-check are made only once per day
-    String lastString = PreferencesData.get("update.last");
+    Long when = PreferencesData.getLong("update.last");
     long now = System.currentTimeMillis();
-    if (lastString != null) {
-      final long ONE_DAY = 24 * 60 * 60 * 1000;
-      long when = Long.parseLong(lastString);
-      if ((now - when) < ONE_DAY) {
-        // don't annoy the shit outta people
-        return;
-      }
+    final long ONE_DAY = 24 * 60 * 60 * 1000;
+    if (when != null && (now - when) < ONE_DAY) {
+      // don't annoy the shit outta people
+      return;
     }
-    PreferencesData.set("update.last", String.valueOf(now));
+    PreferencesData.setLong("update.last", now);
 
     // Set update id
-    long id;
-    String idString = PreferencesData.get("update.id");
-    if (idString != null) {
-      id = Long.parseLong(idString);
-    } else {
+    Long id = PreferencesData.getLong("update.id");
+    if (id == null) {
       // generate a random id in case none exists yet
       Random r = new Random();
       id = r.nextLong();
-      PreferencesData.set("update.id", String.valueOf(id));
+      PreferencesData.setLong("update.id", id);
     }
 
     // Check for updates of the IDE

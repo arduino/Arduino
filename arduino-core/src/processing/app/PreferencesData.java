@@ -282,4 +282,16 @@ public class PreferencesData {
     }
     return getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL, false);
   }
+
+  public static void setLong(String k, long v) {
+    set(k, String.valueOf(v));
+  }
+
+  public static Long getLong(String k) {
+    try {
+      return Long.parseLong(get(k));
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
 }
