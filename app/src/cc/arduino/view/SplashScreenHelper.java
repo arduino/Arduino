@@ -61,12 +61,12 @@ public class SplashScreenHelper {
     if (splash != null) {
       Toolkit tk = Toolkit.getDefaultToolkit();
       desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
+      File image = UpdateCheck.getUpdatedSplashImageFile();
+      if (image != null) {
+        splashImage(image);
+      }
     } else {
       desktopHints = null;
-    }
-    File image = UpdateCheck.getUpdatedSplashImageFile();
-    if (image != null) {
-      splashImage(image);
     }
   }
 
