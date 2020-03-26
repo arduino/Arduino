@@ -51,7 +51,6 @@ import static processing.app.I18n.tr;
  */
 public class UpdateCheck implements Runnable {
   Base base;
-  String downloadURL = tr("https://www.arduino.cc/latest.txt");
 
   static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -87,7 +86,7 @@ public class UpdateCheck implements Runnable {
                         System.getProperty("os.version") + "\t" +
                         System.getProperty("os.arch"), "UTF-8");
       
-      int latest = readInt(downloadURL + "?" + info);
+      int latest = readInt("https://www.arduino.cc/latest.txt?" + info);
 
       String lastString = PreferencesData.get("update.last");
       long now = System.currentTimeMillis();
@@ -116,7 +115,7 @@ public class UpdateCheck implements Runnable {
                                                     options,
                                                     options[0]);
           if (result == JOptionPane.YES_OPTION) {
-            Base.openURL(tr("https://www.arduino.cc/en/Main/Software"));
+            Base.openURL("https://www.arduino.cc/en/Main/Software");
           }
         }
       }
