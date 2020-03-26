@@ -124,8 +124,44 @@ public class UpdateCheck implements Runnable {
       //e.printStackTrace();
       //System.err.println("Error while trying to check for an update.");
     }
+
+    try {
+      // Check for updates of the splash screen
+      List<String> lines = readFileFromURL("https://go.bug.st/latest_splash.txt");
+      if (lines.size() > 0) {
+        // if the splash image has been changed download the new file
+        String newSplashUrl = lines.get(0);
+        String oldSplashUrl = PreferencesData.get("splash.imageurl");
+        if (!newSplashUrl.equals(oldSplashUrl)) {
+          File tmpFile = BaseNoGui.getSettingsFile("splash.png.tmp");
+          downloadFileFromURL(newSplashUrl, tmpFile);
+          File destFile = BaseNoGui.getSettingsFile("splash.png");
+          Files.move(tmpFile.toPath(), destFile.toPath(),
+                     StandardCopyOption.REPLACE_EXISTING);
+          PreferencesData.set("splash.imageurl", newSplashUrl);
+        }
+
+        // extend expiration by 24h
+        PreferencesData.setLong("splash.expire", now + ONE_DAY);
+      }
+    } catch (Exception e) {
+      // e.printStackTrace();
+    }
   }
 
+  public static File getUpdatedSplashImageFile() {
+    if (PreferencesData.has("splash.expire")) {
+      Long expire = PreferencesData.getLong("splash.expire");
+      long now = System.currentTimeMillis();
+      if (expire != null && now < expire) {
+        File f = BaseNoGui.getSettingsFile("splash.png");
+        if (f.isFile()) {
+          return f;
+        }
+      }
+    }
+    return null;
+  }
 
   protected int readIntFromURL(String _url) throws Exception {
     List<String> lines = readFileFromURL(_url);

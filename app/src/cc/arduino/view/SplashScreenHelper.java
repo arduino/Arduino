@@ -31,11 +31,18 @@
 
 package cc.arduino.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.SplashScreen;
+import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 import processing.app.Theme;
+import processing.app.UpdateCheck;
 
 public class SplashScreenHelper {
 
@@ -56,6 +63,10 @@ public class SplashScreenHelper {
       desktopHints = (Map) tk.getDesktopProperty("awt.font.desktophints");
     } else {
       desktopHints = null;
+    }
+    File image = UpdateCheck.getUpdatedSplashImageFile();
+    if (image != null) {
+      splashImage(image);
     }
   }
 
@@ -118,6 +129,14 @@ public class SplashScreenHelper {
 
   private void printText(String str) {
     System.err.println(str);
+  }
+
+  public void splashImage(File f) {
+    try {
+      splash.setImageURL(f.toURI().toURL());
+    } catch (NullPointerException | IllegalStateException | IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }
