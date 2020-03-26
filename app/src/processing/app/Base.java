@@ -1886,8 +1886,16 @@ public class Base {
    */
   @SuppressWarnings("serial")
   public void handleAbout() {
-    final Image image = Theme.getLibImage("about", activeEditor,
-                                          Theme.scale(475), Theme.scale(300));
+    Image image;
+    File f = UpdateCheck.getUpdatedSplashImageFile();
+    if (f != null) {
+      Toolkit tk = Toolkit.getDefaultToolkit();
+      Image unscaled = tk.getImage(f.getAbsolutePath());
+      image = Theme.scale(unscaled, activeEditor);
+    } else {
+      image = Theme.getLibImage("about", activeEditor, //
+                                Theme.scale(475), Theme.scale(300));
+    }
     final Window window = new Window(activeEditor) {
       public void paint(Graphics graphics) {
         Graphics2D g = Theme.setupGraphics2D(graphics);
