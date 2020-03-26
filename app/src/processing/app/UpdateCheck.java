@@ -52,19 +52,27 @@ import static processing.app.I18n.tr;
 public class UpdateCheck implements Runnable {
   Base base;
 
-  static final long ONE_DAY = 24 * 60 * 60 * 1000;
-
-
   public UpdateCheck(Base base) {
     Thread thread = new Thread(this);
     this.base = base;
     thread.start();
   }
 
-
   public void run() {
-    //System.out.println("checking for updates...");
+    // Ensure updates-check are made only once per day
+    String lastString = PreferencesData.get("update.last");
+    long now = System.currentTimeMillis();
+    if (lastString != null) {
+      final long ONE_DAY = 24 * 60 * 60 * 1000;
+      long when = Long.parseLong(lastString);
+      if ((now - when) < ONE_DAY) {
+        // don't annoy the shit outta people
+        return;
+      }
+    }
+    PreferencesData.set("update.last", String.valueOf(now));
 
+    // Set update id
     long id;
     String idString = PreferencesData.get("update.id");
     if (idString != null) {
@@ -76,6 +84,7 @@ public class UpdateCheck implements Runnable {
       PreferencesData.set("update.id", String.valueOf(id));
     }
 
+    // Check for updates of the IDE
     try {
       String info;
       info = URLEncoder.encode(id + "\t" +
@@ -87,17 +96,6 @@ public class UpdateCheck implements Runnable {
                         System.getProperty("os.arch"), "UTF-8");
       
       int latest = readInt("https://www.arduino.cc/latest.txt?" + info);
-
-      String lastString = PreferencesData.get("update.last");
-      long now = System.currentTimeMillis();
-      if (lastString != null) {
-        long when = Long.parseLong(lastString);
-        if (now - when < ONE_DAY) {
-          // don't annoy the shit outta people
-          return;
-        }
-      }
-      PreferencesData.set("update.last", String.valueOf(now));
 
       String prompt =
         tr("A new version of Arduino is available,\n" +
