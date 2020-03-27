@@ -575,6 +575,32 @@ public class Theme {
       image = tk.getImage(imageFile.getUrl());
     }
 
+    image = rescaleImage(image, who, width, height);
+
+    return image;
+  }
+
+  public static Image rescaleImage(Image image, Component who, int width, int height) {
+    MediaTracker tracker = new MediaTracker(who);
+    try {
+      tracker.addImage(image, 0);
+      tracker.waitForAll();
+    } catch (InterruptedException e) {
+    }
+    if (image.getWidth(null) == width && image.getHeight(null) == height) {
+      return image;
+    }
+
+    Image rescaled = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    try {
+      tracker.addImage(rescaled, 1);
+      tracker.waitForAll();
+    } catch (InterruptedException e) {
+    }
+    return rescaled;
+  }
+
+  public static Image scale(Image image, Component who) {
     MediaTracker tracker = new MediaTracker(who);
     try {
       tracker.addImage(image, 0);
@@ -582,16 +608,9 @@ public class Theme {
     } catch (InterruptedException e) {
     }
 
-    if (image.getWidth(null) != width || image.getHeight(null) != height) {
-      image = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-      try {
-        tracker.addImage(image, 1);
-        tracker.waitForAll();
-      } catch (InterruptedException e) {
-      }
-    }
-
-    return image;
+    int w = image.getWidth(null);
+    int h = image.getHeight(null);
+    return rescaleImage(image, who, scale(w), scale(h));
   }
 
   /**
