@@ -27,6 +27,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.io.PrintStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static processing.app.Theme.scale;
 
@@ -37,6 +39,8 @@ public class EditorConsole extends JScrollPane {
 
   private static ConsoleOutputStream out;
   private static ConsoleOutputStream err;
+  private static int startOfLine = 0;
+  private static int insertPosition = 0;
 
   public static synchronized void setCurrentEditorConsole(EditorConsole console) {
     if (out == null) {
@@ -161,6 +165,8 @@ public class EditorConsole extends JScrollPane {
   public void clear() {
     try {
       document.remove(0, document.getLength());
+      startOfLine = 0;
+      insertPosition = 0;
     } catch (BadLocationException e) {
       // ignore the error otherwise this will cause an infinite loop
       // maybe not a good idea in the long run?
@@ -176,10 +182,48 @@ public class EditorConsole extends JScrollPane {
     return document.getLength() == 0;
   }
 
-  public void insertString(String line, SimpleAttributeSet attributes) throws BadLocationException {
-    line = line.replace("\r\n", "\n").replace("\r", "\n");
-    int offset = document.getLength();
-    document.insertString(offset, line, attributes);
+  public void insertString(String str, SimpleAttributeSet attributes) throws BadLocationException {
+    // Separate the string into content, newlines and lone carriage
+    // returns.
+    //
+    // Doing so allows lone CRs to return the insertPosition to the
+    // start of the line to allow overwriting the most recent line (e.g.
+    // for a progress bar). Any CR or NL that are immediately followed
+    // by another NL are bunched together for efficiency, since these
+    // can just be inserted into the document directly and still be
+    // correct.
+    //
+    // This regex is written so it will necessarily match any string
+    // completely if applied repeatedly. This is important because any
+    // part not matched would be silently dropped.
+    Matcher m = Pattern.compile("([^\r\n]*)([\r\n]*\n)?(\r+)?").matcher(str);
+    while (m.find()) {
+      String content = m.group(1);
+      String newlines = m.group(2);
+      String crs = m.group(3);
+
+      // Replace (or append if at end of the document) the content first
+      int replaceLength = Math.min(content.length(), document.getLength() - insertPosition);
+      document.replace(insertPosition, replaceLength, content, attributes);
+      insertPosition += content.length();
+
+      // Then insert any newlines, but always at the end of the document
+      // e.g. if insertPosition is halfway a line, do not delete
+      // anything, just add the newline(s) at the end).
+      if (newlines != null) {
+        document.insertString(document.getLength(), newlines, attributes);
+        insertPosition = document.getLength();
+        startOfLine = insertPosition;
+      }
+
+      // Then, for any CRs not followed by newlines, move insertPosition
+      // to the start of the line. Note that if a newline follows before
+      // any content in the next call to insertString, it will be added
+      // at the end of the document anyway, as expected.
+      if (crs != null) {
+        insertPosition = startOfLine;
+      }
+    }
   }
 
   public String getText() {
