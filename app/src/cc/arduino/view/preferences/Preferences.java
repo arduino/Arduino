@@ -218,6 +218,7 @@ public class Preferences extends javax.swing.JDialog {
     additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls"));
 
     extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Theme.getThemeImage("newwindow", this, Theme.scale(16), Theme.scale(14))));
+    extendedAdditionalUrlFieldWindow.setToolTipText(tr("Enter additional URLs, one for each row"));
     extendedAdditionalUrlFieldWindow.setMargin(new java.awt.Insets(1, 1, 1, 1));
     extendedAdditionalUrlFieldWindow.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
