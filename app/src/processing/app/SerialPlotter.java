@@ -406,7 +406,7 @@ public class SerialPlotter extends AbstractMonitor {
         continue;
       }
 	
-	  if(line.equals("<CLEAR>"){
+	  if(line.equals("<CLEAR>")){
 			graphs.clear();//clear the graphs points in the array
 			xCount = 0;//reset the count of data point
 	  }
