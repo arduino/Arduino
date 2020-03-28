@@ -507,7 +507,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private void buildMenuBar() {
+<<<<<<< HEAD
   fileMenu.setMnemonic(trm("File"));
+=======
+>>>>>>> 715b3eb641bd102dde3ffee8db27564e1e8f5bf3
     JMenuBar menubar = new JMenuBar();
     final JMenu fileMenu = buildFileMenu();
     fileMenu.addMenuListener(new StubMenuListener() {
@@ -567,6 +570,17 @@ public class Editor extends JFrame implements RunnerListener {
 
     menubar.add(buildHelpMenu());
     setJMenuBar(menubar);
+        fileMenu.setMnemonic(trm("File"));
+    public static int trm(String s) {
+          try {
+             if (i18n == null)
+               return s.charAt(0);
+             else
+               return i18n.getString(s).charAt(0);
+           } catch (MissingResourceException e) {
+               return s.charAt(0);
+          }
+  }
   }
 
 
