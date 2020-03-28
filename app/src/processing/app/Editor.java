@@ -677,18 +677,14 @@ public class Editor extends JFrame implements RunnerListener {
     // Lets redirect the shorcut for Linux to CTRL+ALT+U
     // Leaving the preexisting behaviour for Windows & Mac OS
     String OS = System.getProperty("os.name").toLowerCase();
-    if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0)
+    if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") >= 0)
     {
       item = newJMenuItemAlt(tr("Upload Using Programmer"), 'U');
-      item.addActionListener(event -> handleExport(true));
-      sketchMenu.add(item);
-    }
-    else
-    {
+    } else {
       item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
-      item.addActionListener(event -> handleExport(true));
-      sketchMenu.add(item);
     }
+    item.addActionListener(event -> handleExport(true));
+    sketchMenu.add(item);
 
     item = newJMenuItemAlt(tr("Export compiled Binary"), 'S');
     item.addActionListener(event -> {
