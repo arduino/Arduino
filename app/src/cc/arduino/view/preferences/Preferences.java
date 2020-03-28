@@ -212,12 +212,13 @@ public class Preferences extends javax.swing.JDialog {
     comboWarningsLabel.setLabelFor(comboWarnings);
 
     additionalBoardsManagerLabel.setText(tr("Additional Boards Manager URLs: "));
-    additionalBoardsManagerLabel.setToolTipText(tr("Enter a comma separated list of urls"));
+    additionalBoardsManagerLabel.setToolTipText(tr("Enter a comma separated list of urls or use a pop-up window on the right"));
     additionalBoardsManagerLabel.setLabelFor(additionalBoardsManagerField);
 
-    additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls"));
+    additionalBoardsManagerField.setToolTipText(tr("Enter a comma separated list of urls or use a pop-up window on the right"));
 
     extendedAdditionalUrlFieldWindow.setIcon(new ImageIcon(Theme.getThemeImage("newwindow", this, Theme.scale(16), Theme.scale(14))));
+    extendedAdditionalUrlFieldWindow.setToolTipText(tr("Opens a window to enter additional URLs, one for each row"));
     extendedAdditionalUrlFieldWindow.setMargin(new java.awt.Insets(1, 1, 1, 1));
     extendedAdditionalUrlFieldWindow.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {

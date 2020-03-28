@@ -346,7 +346,7 @@
                       <Connection code="tr(&quot;Additional Boards Manager URLs: &quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="tr(&quot;Enter a comma separated list of urls&quot;)" type="code"/>
+                      <Connection code="tr(&quot;Enter a comma separated list of urls or use a pop-up window on the right&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -357,7 +357,7 @@
                 <Component class="javax.swing.JTextField" name="additionalBoardsManagerField">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="tr(&quot;Enter a comma separated list of urls&quot;)" type="code"/>
+                      <Connection code="tr(&quot;Enter a comma separated list of urls or use a pop-up window on the right&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
