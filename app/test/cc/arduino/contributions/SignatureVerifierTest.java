@@ -29,13 +29,13 @@
 
 package cc.arduino.contributions;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 public class SignatureVerifierTest {
 
@@ -61,5 +61,25 @@ public class SignatureVerifierTest {
     fakeSignedFile.deleteOnExit();
     File sign = new File(SignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
     assertFalse(verifier.verify(fakeSignedFile, sign));
+  }
+
+  @Test
+  public void testClearTextSignatureVerification() throws Exception {
+    File signedFile = new File(SignatureVerifierTest.class.getResource("./text.txt.asc").getFile());
+    assertTrue(verifier.verifyCleartextSignature(signedFile));
+    File signedFile2 = new File(SignatureVerifierTest.class.getResource("./escaped-text.txt.asc").getFile());
+    assertTrue(verifier.verifyCleartextSignature(signedFile2));
+    File oneBlankLines = new File(SignatureVerifierTest.class.getResource("./one-blank-line.txt.asc").getFile());
+    assertTrue(verifier.verifyCleartextSignature(oneBlankLines));
+    File twoBlankLines = new File(SignatureVerifierTest.class.getResource("./two-blank-lines.txt.asc").getFile());
+    assertTrue(verifier.verifyCleartextSignature(twoBlankLines));
+    File noBlankLines = new File(SignatureVerifierTest.class.getResource("./no-blank-lines.txt.asc").getFile());
+    assertTrue(verifier.verifyCleartextSignature(noBlankLines));
+  }
+
+  @Test
+  public void testClearTextSignatureFailingVerification() throws Exception {
+    File signedFile = new File(SignatureVerifierTest.class.getResource("./wrong-text.txt.asc").getFile());
+    assertFalse(verifier.verifyCleartextSignature(signedFile));
   }
 }

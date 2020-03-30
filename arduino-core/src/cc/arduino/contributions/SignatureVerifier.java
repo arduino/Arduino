@@ -31,10 +31,12 @@ package cc.arduino.contributions;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.compress.utils.IOUtils;
+import org.bouncycastle.bcpg.ArmoredInputStream;
 import org.bouncycastle.openpgp.PGPException;
 import org.bouncycastle.openpgp.PGPObjectFactory;
 import org.bouncycastle.openpgp.PGPPublicKey;
@@ -42,6 +44,7 @@ import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
 import org.bouncycastle.openpgp.PGPSignature;
 import org.bouncycastle.openpgp.PGPSignatureList;
 import org.bouncycastle.openpgp.PGPUtil;
+import org.bouncycastle.openpgp.jcajce.JcaPGPObjectFactory;
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
 import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
 
@@ -127,4 +130,70 @@ public class SignatureVerifier {
     }
   }
 
+  public String[] extractTextFromCleartextSignature(File inFile) throws FileNotFoundException, IOException {
+    try (ArmoredInputStream in = new ArmoredInputStream(new FileInputStream(inFile))) {
+      return extractTextFromCleartextSignature(in);
+    }
+  }
+
+  public boolean verifyCleartextSignature(File inFile) {
+    try (ArmoredInputStream in = new ArmoredInputStream(new FileInputStream(inFile))) {
+      String[] clearTextLines = extractTextFromCleartextSignature(in);
+      int clearTextSize = clearTextLines.length;
+
+      JcaPGPObjectFactory pgpFact = new JcaPGPObjectFactory(in);
+      PGPSignatureList p3 = (PGPSignatureList) pgpFact.nextObject();
+      PGPSignature sig = p3.get(0);
+      PGPPublicKey publicKey = readPublicKey(sig.getKeyID());
+
+      sig.init(new BcPGPContentVerifierBuilderProvider(), publicKey);
+      for (int i = 0; i < clearTextSize; i++) {
+        sig.update(clearTextLines[i].getBytes());
+        if (i + 1 < clearTextSize) {
+          // https://tools.ietf.org/html/rfc4880#section-7
+          // Convert all line endings to '\r\n'
+          sig.update((byte) '\r');
+          sig.update((byte) '\n');
+        }
+      }
+      return sig.verify();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  private String[] extractTextFromCleartextSignature(ArmoredInputStream in) throws FileNotFoundException, IOException {
+    // https://tools.ietf.org/html/rfc4880#section-7
+    // ArmoredInputStream does unescape dash-escaped string in armored text and skips
+    // all headers. To calculate the signature we still need to:
+    // 1. handle different line endings \n or \n\r or \r\n
+    // 2. remove trailing whitespaces from each line (' ' and '\t')
+    // 3. remove the latest line ending
+
+    String clearText = "";
+    for (;;) {
+      int c = in.read();
+      // in.isClearText() refers to the PREVIOUS byte read
+      if (c == -1 || !in.isClearText()) {
+        break;
+      }
+      // 1. convert all line endings to '\r\n'
+      if (c == '\r') {
+        continue;
+      }
+      clearText += (char) c;
+    }
+
+    // 3. remove the latest line ending
+    if (clearText.endsWith("\n")) {
+      clearText = clearText.substring(0, clearText.length() - 1);
+    }
+    String[] lines = clearText.split("\n", -1);
+    for (int i = 0; i < lines.length; i++) {
+      // 2. remove trailing whitespaces from each line (' ' and '\t')
+      lines[i] = lines[i].replaceAll("[ \\t]+$", "");
+    }
+    return lines;
+  }
 }
