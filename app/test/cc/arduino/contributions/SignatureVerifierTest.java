@@ -37,21 +37,21 @@ import java.io.File;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class GPGDetachedSignatureVerifierTest {
+public class SignatureVerifierTest {
 
   private SignatureVerifier verifier;
 
   @Before
   public void setUp() throws Exception {
     verifier = new SignatureVerifier();
-    File keyRingFile = new File(GPGDetachedSignatureVerifierTest.class.getResource("./test.public.gpg.key").getFile());
+    File keyRingFile = new File(SignatureVerifierTest.class.getResource("./test.public.gpg.key").getFile());
     verifier.setKeyRingFile(keyRingFile);
   }
 
   @Test
   public void testSignatureSuccessfulVerification() throws Exception {
-    File signedFile = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json").getFile());
-    File sign = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
+    File signedFile = new File(SignatureVerifierTest.class.getResource("./package_index.json").getFile());
+    File sign = new File(SignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
     assertTrue(verifier.verify(signedFile, sign));
   }
 
@@ -59,7 +59,7 @@ public class GPGDetachedSignatureVerifierTest {
   public void testSignatureFailingVerification() throws Exception {
     File fakeSignedFile = File.createTempFile("fakeSigned", "txt");
     fakeSignedFile.deleteOnExit();
-    File sign = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
+    File sign = new File(SignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
     assertFalse(verifier.verify(fakeSignedFile, sign));
   }
 }
