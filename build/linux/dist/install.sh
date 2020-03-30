@@ -205,10 +205,7 @@ simple_uninstall_f() {
 # Update desktop file and mime databases (if possible)
 updatedbs_f() {
 
-  if [ if "${HOME}/root/.config/mimeapps.list"]
-    then
-      continue
-  else
+  if [ ! -f "${HOME}/root/.config/mimeapps.list" ]; then
     touch mimeapps.list
     chmod +x mimeapps.list
   fi
