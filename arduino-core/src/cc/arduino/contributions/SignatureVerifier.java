@@ -29,26 +29,34 @@
 
 package cc.arduino.contributions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.apache.commons.compress.utils.IOUtils;
-import org.bouncycastle.openpgp.*;
+import org.bouncycastle.openpgp.PGPException;
+import org.bouncycastle.openpgp.PGPObjectFactory;
+import org.bouncycastle.openpgp.PGPPublicKey;
+import org.bouncycastle.openpgp.PGPPublicKeyRingCollection;
+import org.bouncycastle.openpgp.PGPSignature;
+import org.bouncycastle.openpgp.PGPSignatureList;
+import org.bouncycastle.openpgp.PGPUtil;
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
 import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
 
 import processing.app.BaseNoGui;
 
-import java.io.*;
-import java.util.Iterator;
-
 public class SignatureVerifier {
 
-  private String keyId;
+  private File keyRingFile;
 
   public SignatureVerifier() {
-    this("7F294291");
+    keyRingFile = new File(BaseNoGui.getContentFile("lib"), "public.gpg.key");
   }
 
-  public SignatureVerifier(String keyId) {
-    this.keyId = keyId;
+  public void setKeyRingFile(File keyRingFile) {
+    this.keyRingFile = keyRingFile;
   }
 
   public boolean isSigned(File indexFile) {
@@ -58,7 +66,7 @@ public class SignatureVerifier {
     }
 
     try {
-      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+      return verify(indexFile, signature);
     } catch (Exception e) {
       BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
       return false;
@@ -67,76 +75,56 @@ public class SignatureVerifier {
 
   public boolean isSigned(File indexFile, File signature) {
     try {
-      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+      return verify(indexFile, signature);
     } catch (Exception e) {
       BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
       return false;
     }
   }
 
-  protected boolean verify(File signedFile, File signature, File publicKey) throws IOException {
-    FileInputStream signatureInputStream = null;
-    FileInputStream signedFileInputStream = null;
+  protected boolean verify(File signedFile, File signatureFile) throws IOException {
     try {
-      signatureInputStream = new FileInputStream(signature);
-      PGPObjectFactory pgpObjectFactory = new PGPObjectFactory(signatureInputStream, new BcKeyFingerprintCalculator());
-
-      Object nextObject;
-      try {
-        nextObject = pgpObjectFactory.nextObject();
-        if (!(nextObject instanceof PGPSignatureList)) {
+      // Read signature from signatureFile
+      PGPSignature signature;
+      try (FileInputStream in = new FileInputStream(signatureFile)) {
+        PGPObjectFactory objFactory = new PGPObjectFactory(in, new BcKeyFingerprintCalculator());
+        Object obj = objFactory.nextObject();
+        if (!(obj instanceof PGPSignatureList)) {
           return false;
         }
-      } catch (IOException e) {
+        PGPSignatureList signatureList = (PGPSignatureList) obj;
+        if (signatureList.size() != 1) {
+          return false;
+        }
+        signature = signatureList.get(0);
+      } catch (Exception e) {
         return false;
       }
-      PGPSignatureList pgpSignatureList = (PGPSignatureList) nextObject;
-      assert pgpSignatureList.size() == 1;
-      PGPSignature pgpSignature = pgpSignatureList.get(0);
 
-      PGPPublicKey pgpPublicKey = readPublicKey(publicKey, keyId);
+      // Extract public key from keyring
+      PGPPublicKey pgpPublicKey = readPublicKey(signature.getKeyID());
 
-      pgpSignature.init(new BcPGPContentVerifierBuilderProvider(), pgpPublicKey);
-      signedFileInputStream = new FileInputStream(signedFile);
-      pgpSignature.update(IOUtils.toByteArray(signedFileInputStream));
-
-      return pgpSignature.verify();
+      // Check signature
+      signature.init(new BcPGPContentVerifierBuilderProvider(), pgpPublicKey);
+      try (FileInputStream in = new FileInputStream(signedFile)) {
+        signature.update(IOUtils.toByteArray(in));
+        return signature.verify();
+      }
     } catch (PGPException e) {
       throw new IOException(e);
-    } finally {
-      IOUtils.closeQuietly(signatureInputStream);
-      IOUtils.closeQuietly(signedFileInputStream);
     }
   }
 
-  private PGPPublicKey readPublicKey(File file, String id) throws IOException, PGPException {
-    InputStream keyIn = null;
-    try {
-      keyIn = new BufferedInputStream(new FileInputStream(file));
-      return readPublicKey(keyIn, id);
-    } finally {
-      IOUtils.closeQuietly(keyIn);
-    }
-  }
+  private PGPPublicKey readPublicKey(long id) throws IOException, PGPException {
+    try (InputStream in = PGPUtil.getDecoderStream(new FileInputStream(keyRingFile))) {
+      PGPPublicKeyRingCollection pubRing = new PGPPublicKeyRingCollection(in, new BcKeyFingerprintCalculator());
 
-  private PGPPublicKey readPublicKey(InputStream input, String id) throws IOException, PGPException {
-    PGPPublicKeyRingCollection pgpPub = new PGPPublicKeyRingCollection(PGPUtil.getDecoderStream(input), new BcKeyFingerprintCalculator());
-
-    Iterator<PGPPublicKeyRing> keyRingIter = pgpPub.getKeyRings();
-    while (keyRingIter.hasNext()) {
-      PGPPublicKeyRing keyRing = keyRingIter.next();
-
-      Iterator<PGPPublicKey> keyIter = keyRing.getPublicKeys();
-      while (keyIter.hasNext()) {
-        PGPPublicKey key = keyIter.next();
-
-        if (Long.toHexString(key.getKeyID()).toUpperCase().endsWith(id)) {
-          return key;
-        }
+      PGPPublicKey publicKey = pubRing.getPublicKey(id);
+      if (publicKey == null) {
+        throw new IllegalArgumentException("Can't find public key in key ring.");
       }
+      return publicKey;
     }
-
-    throw new IllegalArgumentException("Can't find encryption key in key ring.");
   }
 
 }
