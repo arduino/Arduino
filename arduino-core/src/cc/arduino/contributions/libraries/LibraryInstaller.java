@@ -31,7 +31,7 @@ package cc.arduino.contributions.libraries;
 
 import cc.arduino.Constants;
 import cc.arduino.contributions.DownloadableContributionsDownloader;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
+import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.contributions.GZippedJsonDownloader;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.utils.ArchiveExtractor;
@@ -60,9 +60,9 @@ public class LibraryInstaller {
   private static Logger log = LogManager.getLogger(LibraryInstaller.class);
 
   private final Platform platform;
-  private final GPGDetachedSignatureVerifier signatureVerifier;
+  private final SignatureVerifier signatureVerifier;
 
-  public LibraryInstaller(Platform platform, GPGDetachedSignatureVerifier signatureVerifier) {
+  public LibraryInstaller(Platform platform, SignatureVerifier signatureVerifier) {
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
   }

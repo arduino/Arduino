@@ -34,22 +34,46 @@ import org.bouncycastle.openpgp.*;
 import org.bouncycastle.openpgp.operator.bc.BcKeyFingerprintCalculator;
 import org.bouncycastle.openpgp.operator.bc.BcPGPContentVerifierBuilderProvider;
 
+import processing.app.BaseNoGui;
+
 import java.io.*;
 import java.util.Iterator;
 
-public class GPGDetachedSignatureVerifier extends SignatureVerifier {
+public class SignatureVerifier {
 
   private String keyId;
 
-  public GPGDetachedSignatureVerifier() {
+  public SignatureVerifier() {
     this("7F294291");
   }
 
-  public GPGDetachedSignatureVerifier(String keyId) {
+  public SignatureVerifier(String keyId) {
     this.keyId = keyId;
   }
 
-  @Override
+  public boolean isSigned(File indexFile) {
+    File signature = new File(indexFile.getParent(), indexFile.getName() + ".sig");
+    if (!signature.exists()) {
+      return false;
+    }
+
+    try {
+      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+    } catch (Exception e) {
+      BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
+      return false;
+    }
+  }
+
+  public boolean isSigned(File indexFile, File signature) {
+    try {
+      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+    } catch (Exception e) {
+      BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
+      return false;
+    }
+  }
+
   protected boolean verify(File signedFile, File signature, File publicKey) throws IOException {
     FileInputStream signatureInputStream = null;
     FileInputStream signedFileInputStream = null;

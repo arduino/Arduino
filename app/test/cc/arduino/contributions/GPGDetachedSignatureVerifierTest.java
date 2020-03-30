@@ -39,11 +39,11 @@ import static org.junit.Assert.assertTrue;
 
 public class GPGDetachedSignatureVerifierTest {
 
-  private GPGDetachedSignatureVerifier GPGDetachedSignatureVerifier;
+  private SignatureVerifier verifier;
 
   @Before
   public void setUp() throws Exception {
-    GPGDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
+    verifier = new SignatureVerifier();
   }
 
   @Test
@@ -51,7 +51,7 @@ public class GPGDetachedSignatureVerifierTest {
     File signedFile = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json").getFile());
     File sign = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
     File publickKey = new File(GPGDetachedSignatureVerifierTest.class.getResource("./test.public.gpg.key").getFile());
-    assertTrue(GPGDetachedSignatureVerifier.verify(signedFile, sign, publickKey));
+    assertTrue(verifier.verify(signedFile, sign, publickKey));
   }
 
   @Test
@@ -60,6 +60,6 @@ public class GPGDetachedSignatureVerifierTest {
     fakeSignedFile.deleteOnExit();
     File sign = new File(GPGDetachedSignatureVerifierTest.class.getResource("./package_index.json.sig").getFile());
     File publickKey = new File(GPGDetachedSignatureVerifierTest.class.getResource("./test.public.gpg.key").getFile());
-    assertFalse(GPGDetachedSignatureVerifier.verify(fakeSignedFile, sign, publickKey));
+    assertFalse(verifier.verify(fakeSignedFile, sign, publickKey));
   }
 }

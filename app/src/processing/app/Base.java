@@ -296,7 +296,7 @@ public class Base {
     pdeKeywords = new PdeKeywords();
     pdeKeywords.reload();
 
-    final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
+    final SignatureVerifier gpgDetachedSignatureVerifier = new SignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
     libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
 

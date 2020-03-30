@@ -1,7 +1,7 @@
 package processing.app;
 
 import cc.arduino.Constants;
-import cc.arduino.contributions.GPGDetachedSignatureVerifier;
+import cc.arduino.contributions.SignatureVerifier;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -477,7 +477,7 @@ public class BaseNoGui {
 
   static public void initPackages() throws Exception {
     indexer = new ContributionsIndexer(getSettingsFolder(), getHardwareFolder(), getPlatform(),
-        new GPGDetachedSignatureVerifier());
+        new SignatureVerifier());
 
     try {
       indexer.parseIndex();
