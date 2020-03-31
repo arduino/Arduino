@@ -42,6 +42,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.compress.utils.IOUtils;
 
+import cc.arduino.contributions.SignatureVerifier;
+import cc.arduino.utils.FileHash;
 import processing.app.legacy.PApplet;
 
 
@@ -125,27 +127,48 @@ public class UpdateCheck implements Runnable {
       //System.err.println("Error while trying to check for an update.");
     }
 
+    File tmp = null;
     try {
+      tmp = File.createTempFile("arduino_splash_update", ".txt.asc");
       // Check for updates of the splash screen
-      List<String> lines = readFileFromURL("https://go.bug.st/latest_splash.txt");
-      if (lines.size() > 0) {
-        // if the splash image has been changed download the new file
-        String newSplashUrl = lines.get(0);
-        String oldSplashUrl = PreferencesData.get("splash.imageurl");
-        if (!newSplashUrl.equals(oldSplashUrl)) {
-          File tmpFile = BaseNoGui.getSettingsFile("splash.png.tmp");
-          downloadFileFromURL(newSplashUrl, tmpFile);
-          File destFile = BaseNoGui.getSettingsFile("splash.png");
-          Files.move(tmpFile.toPath(), destFile.toPath(),
-                     StandardCopyOption.REPLACE_EXISTING);
-          PreferencesData.set("splash.imageurl", newSplashUrl);
+      downloadFileFromURL("https://go.bug.st/latest_splash.txt.asc", tmp);
+      SignatureVerifier verifier = new SignatureVerifier();
+      if (!verifier.verifyCleartextSignature(tmp)) {
+        throw new Exception("Invalid signature");
+      }
+      String[] lines = verifier.extractTextFromCleartextSignature(tmp);
+      if (lines.length < 2) {
+        throw new Exception("Invalid splash image update");
+      }
+      String newSplashUrl = lines[0];
+      String checksum = lines[1];
+
+      // if the splash image has been changed download the new file
+      String oldSplashUrl = PreferencesData.get("splash.imageurl");
+      if (!newSplashUrl.equals(oldSplashUrl)) {
+        File tmpFile = BaseNoGui.getSettingsFile("splash.png.tmp");
+        downloadFileFromURL(newSplashUrl, tmpFile);
+
+        String algo = checksum.split(":")[0];
+        String crc = FileHash.hash(tmpFile, algo);
+        if (!crc.equalsIgnoreCase(checksum)) {
+          throw new Exception("Invalid splash image checksum");
         }
 
-        // extend expiration by 24h
-        PreferencesData.setLong("splash.expire", now + ONE_DAY);
+        File destFile = BaseNoGui.getSettingsFile("splash.png");
+        Files.move(tmpFile.toPath(), destFile.toPath(),
+                   StandardCopyOption.REPLACE_EXISTING);
+        PreferencesData.set("splash.imageurl", newSplashUrl);
       }
+
+      // extend expiration by 24h
+      PreferencesData.setLong("splash.expire", now + ONE_DAY);
     } catch (Exception e) {
       // e.printStackTrace();
+    } finally {
+      if (tmp != null) {
+        tmp.delete();
+      }
     }
   }
 
