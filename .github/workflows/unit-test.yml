@@ -5,8 +5,7 @@ on:
   pull_request:
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,8 +17,7 @@ jobs:
     - name: Build with Ant
       working-directory: ./build
       run: |
-        sed -i 's#<input .*/>##' build.xml
-        ant clean dist
+        ant clean build
     - name: Install X virtual framebuffer
       run: sudo apt-get install -y xvfb
     - name: Run tests
