@@ -365,9 +365,11 @@
     <delete dir="macosx/work" />
     <delete dir="macosx/working_dir" />
     <delete dir="macosx/working.dmg" />
-    <delete file="macosx/arduino-*.dmg" />
     <delete>
-      <fileset dir="macosx" includes="arduino-*macosx*.zip"/>
+      <fileset dir="macosx" includes="arduino-*.dmg" />
+    </delete>
+    <delete>
+      <fileset dir="macosx" includes="arduino-*macosx*.zip" />
     </delete>
   </target>
 
