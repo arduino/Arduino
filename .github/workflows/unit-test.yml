@@ -1,4 +1,4 @@
-name: Java CI
+name: Arduino IDE unit test run
 
 on:
   push:
