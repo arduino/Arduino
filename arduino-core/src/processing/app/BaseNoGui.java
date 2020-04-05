@@ -294,7 +294,6 @@ public class BaseNoGui {
     String preferencesPath = PreferencesData.get("settings.path");
     if (preferencesPath != null) {
       settingsFolder = absoluteFile(preferencesPath);
-
     } else {
       try {
         settingsFolder = getPlatform().getSettingsFolder();
@@ -305,7 +304,7 @@ public class BaseNoGui {
     }
 
     // create the folder if it doesn't exist already
-    if (!settingsFolder.exists()) {
+    if (settingsFolder != null && !settingsFolder.exists()) {
       if (!settingsFolder.mkdirs()) {
         showError(tr("Settings issues"),
                 tr("Arduino cannot run because it could not\n" +
