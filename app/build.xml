@@ -136,10 +136,8 @@
       </classpath>
 
       <!-- Write XML files (for report-generation) and TXT files (for manual review) for every test class -->
-      <formatter type="plain" />
+      <formatter type="plain" usefile="false" /> <!-- to screen -->
       <formatter type="xml"/>
-      <!-- Print full details to stdout when running a single test -->
-      <formatter type="plain" usefile="false" if="single-test-class"/>
       <!-- When running all tests, print details for failing tests and a summary for each test class (printsummary=yes above) -->
       <formatter type="brief" usefile="false" unless="single-test-class"/>
 
