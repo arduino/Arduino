@@ -1494,6 +1494,10 @@ public class Base {
         if (platformLabel == null)
           platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
 
+        // add an hint that this core lives in sketchbook
+        if (targetPlatform.isInSketchbook())
+          platformLabel += " (in sketchbook)";
+
         JMenu platformBoardsMenu = new JMenu(platformLabel);
         MenuScroller.setScrollerFor(platformBoardsMenu);
         platformMenus.add(platformBoardsMenu);
