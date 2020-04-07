@@ -1585,6 +1585,7 @@ public class Base {
       JMenuItem recentLabel = new JMenuItem(tr("Recently used boards"));
       recentLabel.setEnabled(false);
       boardMenu.add(recentLabel);
+      boardMenu.add(new JSeparator());
     }
 
     List<JMenu> platformMenus = new ArrayList<>();
@@ -1643,7 +1644,7 @@ public class Base {
     // If there is no current board yet (first startup, or selected
     // board no longer defined), select first available board.
     if (_menuItemsToClickAfterStartup.isEmpty()) {
-      _menuItemsToClickAfterStartup.add(selectFirstEnabledMenuItem(boardMenu))
+      _menuItemsToClickAfterStartup.add(firstBoardItem);
     }
 
     for (JMenuItem menuItemToClick : _menuItemsToClickAfterStartup) {
