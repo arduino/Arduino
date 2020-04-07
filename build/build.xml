@@ -1040,10 +1040,6 @@
     <fixcrlf file="windows/work/lib/formatter.conf" eol="dos"/>
 
     <copy todir="windows/work">
-      <fileset dir="windows/dist" includes="*.dll" />
-    </copy>
-
-    <copy todir="windows/work">
       <fileset dir="windows/dist" includes="drivers/**" />
     </copy>
 
@@ -1056,8 +1052,6 @@
       <param name="dest_folder" value="${staging_folder}" />
     </antcall>
     <copy file="windows/libastylej-2.05.1/AStylej.dll" todir="windows/work/lib" />
-    <copy file="windows/msvcp100.dll" todir="windows/work" />
-    <copy file="windows/msvcr100.dll" todir="windows/work" />
 
     <antcall target="unzip">
       <param name="archive_file" value="./liblistSerials-${LIBLISTSERIAL-VERSION}.zip" />
@@ -1160,6 +1154,15 @@
         </not>
       </condition>
     </fail>
+
+    <copy todir="windows/work">
+      <fileset dir="windows/dist" includes="*.dll" />
+    </copy>
+    <!-- Copy also inside java/bin so they can be found even if arduino.exe or
+         arduino_debug.exe is launched from another working directory -->
+    <copy todir="windows/work/java/bin">
+      <fileset dir="windows/dist" includes="*.dll" />
+    </copy>
 
     <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
       <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
