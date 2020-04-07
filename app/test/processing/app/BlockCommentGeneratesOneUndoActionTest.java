@@ -33,9 +33,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Frame;
 
-import org.fest.swing.edt.GuiActionRunner;
-import org.fest.swing.edt.GuiQuery;
-import org.fest.swing.fixture.JMenuItemFixture;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+import org.assertj.swing.fixture.JMenuItemFixture;
 import org.junit.Test;
 
 import processing.app.helpers.SketchTextAreaFixture;

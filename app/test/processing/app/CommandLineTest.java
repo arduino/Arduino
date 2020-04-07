@@ -29,7 +29,8 @@
 
 package processing.app;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.fest.assertions.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

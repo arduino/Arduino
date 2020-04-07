@@ -29,7 +29,15 @@
 
 package processing.app.helpers;
 
-import org.fest.swing.fixture.FrameFixture;
+import java.awt.Component;
+
+import javax.swing.JDialog;
+
+import org.assertj.swing.core.matcher.DialogMatcher;
+import org.assertj.swing.finder.WindowFinder;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.FrameFixture;
+
 import processing.app.Editor;
 import processing.app.syntax.SketchTextArea;
 
@@ -43,10 +51,20 @@ public class ArduinoFrameFixture extends FrameFixture {
   }
 
   public SketchTextAreaFixture textArea(String name) {
-    return new SketchTextAreaFixture(robot, (SketchTextArea) this.robot.finder().find(new SketchTextAreaComponentMatcher(name)));
+    Component comp = robot().finder()
+        .find(c -> c instanceof SketchTextArea && name.equals(c.getName()));
+    return new SketchTextAreaFixture(robot(), (SketchTextArea) comp);
   }
 
   public Editor getEditor() {
     return editor;
+  }
+
+  public DialogFixture findJDialog() {
+    return WindowFinder.findDialog(JDialog.class).using(robot());
+  }
+
+  public DialogFixture findJDialog(DialogMatcher matcher) {
+    return WindowFinder.findDialog(matcher).using(robot());
   }
 }

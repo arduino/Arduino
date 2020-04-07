@@ -30,53 +30,79 @@
 
 package processing.app.helpers;
 
-import org.fest.swing.core.Robot;
-import org.fest.swing.fixture.ComponentFixture;
+import org.assertj.swing.core.Robot;
+import org.assertj.swing.driver.JComponentDriver;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.edt.GuiQuery;
+
 import processing.app.syntax.SketchTextArea;
 
-public class SketchTextAreaFixture extends ComponentFixture {
-
-  private final SketchTextAreaComponentDriver driver;
-
-  public SketchTextAreaFixture(Robot robot, Class type) {
-    super(robot, type);
-    this.driver = new SketchTextAreaComponentDriver(robot);
-  }
-
-  public SketchTextAreaFixture(Robot robot, String name, Class type) {
-    super(robot, name, type);
-    this.driver = new SketchTextAreaComponentDriver(robot);
-  }
+public class SketchTextAreaFixture {
+  private final JComponentDriver driver;
+  private final Robot robot;
+  private final SketchTextArea target;
 
   public SketchTextAreaFixture(Robot robot, SketchTextArea target) {
-    super(robot, target);
-    this.driver = new SketchTextAreaComponentDriver(robot);
+    this.robot = robot;
+    this.target = target;
+    this.driver = new JComponentDriver(robot);
   }
 
-  public SketchTextAreaFixture enterText(String text) {
-    driver.enterText((SketchTextArea) target, text);
-    return this;
+  public void enterText(String text) {
+    driver.focusAndWaitForFocusGain(target);
+    robot.enterText(text);
   }
 
-  public SketchTextAreaFixture setText(String text) {
-    driver.setText((SketchTextArea) target, text);
-    return this;
+  public void setText(String text) {
+    driver.focusAndWaitForFocusGain(target);
+    GuiActionRunner.execute(new GuiQuery<SketchTextArea>() {
+      protected SketchTextArea executeInEDT() {
+        target.setText(text);
+        return target;
+      }
+    });
+    robot.waitForIdle();
   }
 
   public String getText() {
-    return driver.getText((SketchTextArea) target);
+    driver.focusAndWaitForFocusGain(target);
+    String text = GuiActionRunner.execute(new GuiQuery<String>() {
+      protected String executeInEDT() {
+        return target.getText();
+      }
+    });
+    robot.waitForIdle();
+    return text;
   }
 
-  public SketchTextAreaFixture selectAll() {
-    driver.selectAll((SketchTextArea) target);
-    return this;
+  public void selectAll() {
+    GuiActionRunner.execute(new GuiQuery<SketchTextArea>() {
+      protected SketchTextArea executeInEDT() {
+        target.selectAll();
+        return target;
+      }
+    });
   }
 
   public int getCaretPosition() {
-    return driver.getCaretPosition((SketchTextArea) target);
+    driver.focusAndWaitForFocusGain(target);
+    int caretPos = GuiActionRunner.execute(new GuiQuery<Integer>() {
+      protected Integer executeInEDT() {
+        return target.getCaretPosition();
+      }
+    });
+    robot.waitForIdle();
+    return caretPos;
   }
 
   public void setCaretPosition(int caretPosition) {
-    driver.setCaretPosition((SketchTextArea) target, caretPosition);
+    driver.focusAndWaitForFocusGain(target);
+    GuiActionRunner.execute(new GuiQuery<SketchTextArea>() {
+      protected SketchTextArea executeInEDT() {
+        target.setCaretPosition(caretPosition);
+        return target;
+      }
+    });
+    robot.waitForIdle();
   }
 }
