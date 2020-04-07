@@ -248,6 +248,6 @@ public class LegacyTargetPlatform implements TargetPlatform {
 
   @Override
   public boolean isInSketchbook() {
-	return getFolder().getAbsolutePath().startsWith(BaseNoGui.getDefaultSketchbookFolder().getAbsolutePath());
+	return getFolder().getAbsolutePath().startsWith(BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath());
   }
 }
