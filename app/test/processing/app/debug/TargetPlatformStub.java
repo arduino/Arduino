@@ -99,4 +99,10 @@ public class TargetPlatformStub implements TargetPlatform {
   public TargetPackage getContainerPackage() {
     return targetPackage;
   }
+
+  @Override
+  public boolean isInSketchbook() {
+    // TODO Auto-generated method stub
+    return false;
+  }
 }
