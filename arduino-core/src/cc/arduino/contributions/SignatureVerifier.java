@@ -50,6 +50,15 @@ public abstract class SignatureVerifier {
     }
   }
 
+  public boolean isSigned(File indexFile, File signature) {
+    try {
+      return verify(indexFile, signature, new File(BaseNoGui.getContentFile("lib"), "public.gpg.key"));
+    } catch (Exception e) {
+      BaseNoGui.showWarning(e.getMessage(), e.getMessage(), e);
+      return false;
+    }
+  }
+
   protected abstract boolean verify(File signedFile, File signature, File publicKey) throws IOException;
 
 }

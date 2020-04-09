@@ -80,6 +80,10 @@
 	   includeAntRuntime="false"
 	   debug="true"
 	   classpathref="class.path" />
+    <!-- If you want to add files in the jars -->
+    <copy todir="bin" overwrite="true" verbose="true">
+      <fileset dir="src" includes="log4j2.xml" />
+    </copy>
   </target>
 
   <target name="test" depends="compile" description="Runs the test">
@@ -105,7 +109,7 @@
       <fileset dir="test" includes="**/*.pac" />
     </copy>
 
-    <junit printsummary="yes" dir="${work.dir}" fork="true">
+    <junit printsummary="yes" dir="${work.dir}" fork="true" showoutput="yes" failureproperty="test.failed">
       <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
       <jvmarg value="-DWORK_DIR=."/>
       <jvmarg value="-ea"/>
@@ -127,6 +131,7 @@
       </batchtest>
     </junit>
 
+    <fail if="test.failed"/>
   </target>
 
   <target name="build" depends="compile" description="Build PDE">

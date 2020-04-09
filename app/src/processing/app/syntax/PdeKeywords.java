@@ -24,12 +24,12 @@
 
 package processing.app.syntax;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
 import org.apache.commons.compress.utils.IOUtils;
 import org.fife.ui.rsyntaxtextarea.TokenMap;
 import org.fife.ui.rsyntaxtextarea.TokenTypes;
 import processing.app.Base;
 import processing.app.BaseNoGui;
+import processing.app.packages.UserLibrary;
 import processing.app.debug.TargetPlatform;
 
 import java.io.BufferedReader;
@@ -89,7 +89,7 @@ public class PdeKeywords {
         File platformKeywords = new File(tp.getFolder(), "keywords.txt");
         if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
       }
-      for (ContributedLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {
+      for (UserLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {
         File keywords = new File(lib.getInstalledFolder(), "keywords.txt");
         if (keywords.exists()) {
           parseKeywordsTxt(keywords);

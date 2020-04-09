@@ -39,7 +39,7 @@ public class MonitorFactory {
     if ("network".equals(port.getProtocol())) {
       if ("yes".equals(port.getPrefs().get("ssh_upload"))) {
         // the board is SSH capable
-        return new NetworkMonitor(port); 
+        return new NetworkMonitor(port);
       } else {
         // SSH not supported, no monitor support
         return null;

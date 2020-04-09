@@ -52,7 +52,7 @@ import java.io.PrintStream;
  */
 public class ConsoleOutputStream extends ByteArrayOutputStream {
 
-  private final SimpleAttributeSet attributes;
+  private SimpleAttributeSet attributes;
   private final PrintStream printStream;
   private final Timer timer;
 
@@ -71,6 +71,10 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
       }
     });
     timer.setRepeats(false);
+  }
+
+  public void setAttibutes(SimpleAttributeSet attributes) {
+    this.attributes = attributes;
   }
 
   public void setCurrentEditorConsole(EditorConsole console) {

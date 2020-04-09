@@ -3,20 +3,12 @@ package cc.arduino.contributions.libraries.ui;
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
+import java.util.Optional;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
@@ -24,12 +16,15 @@ import javax.swing.text.html.StyleSheet;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 public class ContributedLibraryTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
   final JButton installButton;
   final Component installButtonPlaceholder;
   final JComboBox downgradeChooser;
@@ -38,12 +33,22 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  final JTextPane description;
+  final TitledBorder titledBorder;
+  private final String moreInfoLbl = tr("More info");
 
   public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
                                            boolean isSelected) {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+    // Actual title set below
+    titledBorder = BorderFactory.createTitledBorder("");
+    titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+    setBorder(titledBorder);
+
+    moreInfoButton = new JButton(moreInfoLbl);
+    moreInfoButton.setVisible(false);
     installButton = new JButton(tr("Install"));
     int width = installButton.getPreferredSize().width;
     installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
@@ -52,25 +57,37 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     downgradeChooser = new JComboBox();
     downgradeChooser.addItem("-");
-    downgradeChooser.setMaximumSize(downgradeChooser.getPreferredSize());
-    downgradeChooser.addItemListener(e -> {
+    downgradeChooser.setMaximumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.setMinimumSize(new Dimension((int)downgradeChooser.getPreferredSize().getWidth() + 50, (int)downgradeChooser.getPreferredSize().getHeight()));
+    downgradeChooser.addActionListener(e -> {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
-      boolean disableDowngrade = (e.getItem() == selectVersionItem);
+      boolean disableDowngrade = (downgradeChooser.getSelectedItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
     versionToInstallChooser.addItem("-");
     versionToInstallChooser
-        .setMaximumSize(versionToInstallChooser.getPreferredSize());
+        .setMaximumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
+    versionToInstallChooser
+        .setMinimumSize(new Dimension((int)versionToInstallChooser.getPreferredSize().getWidth() + 50, (int)versionToInstallChooser.getPreferredSize().getHeight()));
 
-    makeNewDescription();
+    description = makeNewDescription();
+    add(description);
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    if (PreferencesData.getBoolean("ide.accessible")) {
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -103,23 +120,23 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     add(Box.createVerticalStrut(15));
 
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
-    JTextPane description = makeNewDescription();
 
     // FIXME: happens on macosx, don't know why
     if (releases == null)
       return;
 
     ContributedLibrary selected = releases.getSelected();
-    ContributedLibrary installed = releases.getInstalled();
+    titledBorder.setTitle(selected.getName());
+    Optional<ContributedLibrary> mayInstalled = releases.getInstalled();
 
     boolean installable, upgradable;
-    if (installed == null) {
+    if (!mayInstalled.isPresent()) {
       installable = true;
       upgradable = false;
     } else {
       installable = false;
       upgradable = new DownloadableContributionVersionComparator()
-          .compare(selected, installed) > 0;
+          .compare(selected, mayInstalled.get()) > 0;
     }
     if (installable) {
       installButton.setText(tr("Install"));
@@ -133,7 +150,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     String name = selected.getName();
     String author = selected.getAuthor();
     // String maintainer = selectedLib.getMaintainer();
-    String website = selected.getWebsite();
+    final String website = selected.getWebsite();
     String sentence = selected.getSentence();
     String paragraph = selected.getParagraph();
     // String availableVer = selectedLib.getVersion();
@@ -144,8 +161,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     String desc = "<html><body>";
 
     // Library name...
-    desc += format("<b>{0}</b>", name);
-    if (installed != null && installed.isReadOnly()) {
+//    desc += format("<b>{0}</b>", name);
+    if (mayInstalled.isPresent() && mayInstalled.get().isIDEBuiltIn()) {
       desc += " Built-In ";
     }
 
@@ -156,8 +173,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
 
     // ...version.
-    if (installed != null) {
-      String installedVer = installed.getParsedVersion();
+    if (mayInstalled.isPresent()) {
+      String installedVer = mayInstalled.get().getParsedVersion();
       if (installedVer == null) {
         desc += " " + tr("Version unknown");
       } else {
@@ -166,7 +183,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     }
     desc += "</font>";
 
-    if (installed != null) {
+    if (mayInstalled.isPresent()) {
       desc += " <strong><font color=\"#00979D\">INSTALLED</font></strong>";
     }
 
@@ -180,12 +197,13 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       desc += "<br />";
     }
     if (author != null && !author.isEmpty()) {
-      desc += format("<a href=\"{0}\">More info</a>", website);
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, website);
     }
 
     desc += "</body></html>";
     description.setText(desc);
-    description.setBackground(Color.WHITE);
+    // copy description to accessibility context for screen readers to use
+    description.getAccessibleContext().setAccessibleDescription(desc);
 
     // for modelToView to work, the text area has to be sized. It doesn't
     // matter if it's visible or not.
@@ -195,20 +213,29 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     InstallerTableCell
         .setJTextPaneDimensionToFitContainedText(description,
                                                  parentTable.getBounds().width);
-
-    if (isSelected) {
-      setBackground(parentTable.getSelectionBackground());
-      setForeground(parentTable.getSelectionForeground());
-    } else {
-      setBackground(parentTable.getBackground());
-      setForeground(parentTable.getForeground());
-    }
   }
 
-  private JTextPane makeNewDescription() {
-    if (getComponentCount() > 0) {
-      remove(0);
+  // same function as in ContributedPlatformTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
+
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
     }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += format("<a href=\"{0}\">{1}</a><br/>", url, label);
+    }
+
+    return retString;
+  }
+
+  // TODO Make this a method of Theme
+  private JTextPane makeNewDescription() {
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
     Insets margin = description.getMargin();
@@ -234,7 +261,6 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
       }
     });
     // description.addKeyListener(new DelegatingKeyListener(parentTable));
-    add(description, 0);
     return description;
   }
 
@@ -242,5 +268,14 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     installButton.setEnabled(enabled);
     buttonsPanel.setVisible(enabled);
     inactiveButtonsPanel.setVisible(!enabled);
+  }
+
+  public void setForeground(Color c) {
+    super.setForeground(c);
+    // The description is not opaque, so copy our foreground color to it.
+    if (description != null)
+      description.setForeground(c);
+    if (titledBorder != null)
+      titledBorder.setTitleColor(c);
   }
 }

@@ -44,8 +44,9 @@ public class ContributedPlatformTableCellRenderer implements TableCellRenderer {
                                                  int column) {
     ContributedPlatformTableCellJPanel cell = new ContributedPlatformTableCellJPanel();
     cell.setButtonsVisible(false);
-    cell.update(table, value, isSelected, false);
+    cell.update(table, value, false);
 
+    cell.setForeground(Color.BLACK);
     if (row % 2 == 0) {
       cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {

@@ -36,17 +36,15 @@ import java.awt.Component;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.filters.BuiltInPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.OnlyUpstreamReleasePredicate;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.utils.ReverseComparator;
 
@@ -76,64 +74,58 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
       ContributedLibrary lib = (ContributedLibrary) chooser.getSelectedItem();
       onInstall(lib, editorValue.getInstalled());
     });
-    editorCell.versionToInstallChooser.addItemListener(e -> editorValue
-        .select((ContributedLibrary) editorCell.versionToInstallChooser
-            .getSelectedItem()));
+    editorCell.versionToInstallChooser.addActionListener(e -> {
+      editorValue.select((ContributedLibrary) editorCell.versionToInstallChooser.getSelectedItem());
+      if (editorCell.versionToInstallChooser.getSelectedIndex() != 0) {
+        InstallerTableCell.dropdownSelected(true);
+      }
+    });
 
     setEnabled(true);
 
-    final ContributedLibrary installed = editorValue.getInstalled();
+    final Optional<ContributedLibrary> mayInstalled = editorValue.getInstalled();
 
-    List<ContributedLibrary> releases = editorValue.getReleases().stream()
-        .filter(new OnlyUpstreamReleasePredicate())
-        .collect(Collectors.toList());
-    List<ContributedLibrary> uninstalledReleases = releases.stream()
-        .filter(new InstalledPredicate().negate()).collect(Collectors.toList());
-
-    List<ContributedLibrary> installedBuiltIn = releases.stream()
-        .filter(new InstalledPredicate()).filter(new BuiltInPredicate())
-        .collect(Collectors.toList());
-
-    if (installed != null && !installedBuiltIn.contains(installed)) {
-      uninstalledReleases.addAll(installedBuiltIn);
+    List<ContributedLibrary> releases = editorValue.getReleases();
+    List<ContributedLibrary> notInstalled = new LinkedList<>(releases);
+    if (mayInstalled.isPresent()) {
+      notInstalled.remove(editorValue.getInstalled().get());
     }
 
-    Collections.sort(uninstalledReleases, new ReverseComparator<>(
+    Collections.sort(notInstalled, new ReverseComparator<>(
         new DownloadableContributionVersionComparator()));
 
     editorCell.downgradeChooser.removeAllItems();
     editorCell.downgradeChooser.addItem(tr("Select version"));
 
-    final List<ContributedLibrary> uninstalledPreviousReleases = new LinkedList<>();
-    final List<ContributedLibrary> uninstalledNewerReleases = new LinkedList<>();
+    final List<ContributedLibrary> notInstalledPrevious = new LinkedList<>();
+    final List<ContributedLibrary> notInstalledNewer = new LinkedList<>();
 
-    final VersionComparator versionComparator = new VersionComparator();
-    uninstalledReleases.stream().forEach(input -> {
-      if (installed == null
-          || versionComparator.greaterThan(installed.getParsedVersion(),
-                                           input.getParsedVersion())) {
-        uninstalledPreviousReleases.add(input);
+    notInstalled.stream().forEach(input -> {
+      if (!mayInstalled.isPresent()
+          || VersionComparator.greaterThan(mayInstalled.get(), input)) {
+        notInstalledPrevious.add(input);
       } else {
-        uninstalledNewerReleases.add(input);
+        notInstalledNewer.add(input);
       }
     });
-    uninstalledNewerReleases.forEach(editorCell.downgradeChooser::addItem);
-    uninstalledPreviousReleases.forEach(editorCell.downgradeChooser::addItem);
+    notInstalledNewer.forEach(editorCell.downgradeChooser::addItem);
+    notInstalledPrevious.forEach(editorCell.downgradeChooser::addItem);
 
     editorCell.downgradeChooser
-        .setVisible(installed != null
-                    && (!uninstalledPreviousReleases.isEmpty()
-                        || uninstalledNewerReleases.size() > 1));
+        .setVisible(mayInstalled.isPresent()
+                    && (!notInstalledPrevious.isEmpty()
+                        || notInstalledNewer.size() > 1));
     editorCell.downgradeButton
-        .setVisible(installed != null
-                    && (!uninstalledPreviousReleases.isEmpty()
-                        || uninstalledNewerReleases.size() > 1));
+        .setVisible(mayInstalled.isPresent()
+                    && (!notInstalledPrevious.isEmpty()
+                        || notInstalledNewer.size() > 1));
 
     editorCell.versionToInstallChooser.removeAllItems();
-    uninstalledReleases.forEach(editorCell.versionToInstallChooser::addItem);
+    notInstalled.forEach(editorCell.versionToInstallChooser::addItem);
     editorCell.versionToInstallChooser
-        .setVisible(installed == null && uninstalledReleases.size() > 1);
+        .setVisible(!mayInstalled.isPresent() && notInstalled.size() > 1);
 
+    editorCell.setForeground(Color.BLACK);
     editorCell.setBackground(new Color(218, 227, 227)); // #dae3e3
     return editorCell;
   }
@@ -152,7 +144,7 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
   }
 
   protected void onInstall(ContributedLibrary selected,
-                           ContributedLibrary installed) {
+                           Optional<ContributedLibrary> mayInstalled) {
     // Empty
   }
 

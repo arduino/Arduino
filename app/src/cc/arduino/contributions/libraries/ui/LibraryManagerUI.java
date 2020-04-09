@@ -38,6 +38,8 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javax.swing.Box;
@@ -46,11 +48,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
-import cc.arduino.contributions.ui.DropdownAllItem;
+import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownItem;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import cc.arduino.contributions.ui.InstallerJDialog;
@@ -60,11 +62,11 @@ import cc.arduino.utils.Progress;
 import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
-public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
+public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryReleases> {
 
   private final JComboBox typeChooser;
   private final LibraryInstaller installer;
-  private Predicate<ContributedLibrary> typeFilter;
+  private Predicate<ContributedLibraryReleases> typeFilter;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -80,11 +82,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   protected InstallerTableCell createCellEditor() {
     return new ContributedLibraryTableCellEditor() {
       @Override
-      protected void onInstall(ContributedLibrary selectedLibrary, ContributedLibrary installedLibrary) {
-        if (selectedLibrary.isReadOnly()) {
-          onRemovePressed(installedLibrary);
+      protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
+        if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
+          onRemovePressed(mayInstalledLibrary.get());
         } else {
-          onInstallPressed(selectedLibrary, installedLibrary);
+          onInstallPressed(selectedLibrary);
         }
       }
 
@@ -116,37 +118,29 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-      DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
-      if (typeFilter == null || !typeFilter.equals(selected)) {
+      DropdownItem<ContributedLibraryReleases> selected = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
+      previousRowAtPoint = -1;
+      if (selected != null && typeFilter != selected.getFilterPredicate()) {
         typeFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        updateIndexFilter(filters, categoryFilter, typeFilter);
+        updateIndexFilter(filters, categoryFilter.and(typeFilter));
       }
     }
   };
 
-  @Override
-  public void updateIndexFilter(String[] filters, Predicate<ContributedLibrary>... additionalFilters) {
-    if (additionalFilters.length == 1) {
-      additionalFilters = new Predicate[]{additionalFilters[0], typeFilter};
-    }
-    super.updateIndexFilter(filters, additionalFilters);
-  }
-
   public void updateUI() {
-    DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser.getSelectedItem();
-    DropdownItem<DownloadableContribution> previouslySelectedType = (DropdownItem<DownloadableContribution>) typeChooser.getSelectedItem();
+    DropdownItem<ContributedLibraryReleases> previouslySelectedCategory = (DropdownItem<ContributedLibraryReleases>) categoryChooser.getSelectedItem();
+    DropdownItem<ContributedLibraryReleases> previouslySelectedType = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
 
-    categoryFilter = null;
-    categoryChooser.removeAllItems();
-
     // Load categories
-    categoryChooser.addItem(new DropdownAllItem());
+    categoryFilter = x -> true;
+    categoryChooser.removeAllItems();
+    categoryChooser.addItem(new DropdownAllLibraries());
     Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
       categoryChooser.addItem(new DropdownLibraryOfCategoryItem(category));
@@ -161,12 +155,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
       categoryChooser.setSelectedIndex(0);
     }
 
-    typeFilter = null;
+    typeFilter = x -> true;
     typeChooser.removeAllItems();
-    typeChooser.addItem(new DropdownAllItem());
+    typeChooser.addItem(new DropdownAllLibraries());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem());
     typeChooser.addItem(new DropdownInstalledLibraryItem());
-    java.util.List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
+    List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
     Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));
@@ -207,6 +201,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
       try {
         setProgressVisible(true, "");
         installer.updateIndex(this::setProgress);
+        ((LibrariesIndexTableModel) contribModel).update();
         onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
@@ -219,14 +214,36 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib, final ContributedLibrary replaced) {
+  public void onInstallPressed(final ContributedLibrary lib) {
+    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+    boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
+    Result installDeps;
+    if (!depsInstalled) {
+      MultiLibraryInstallDialog dialog;
+      dialog = new MultiLibraryInstallDialog(this, lib, deps);
+      dialog.setLocationRelativeTo(this);
+      dialog.setVisible(true);
+      installDeps = dialog.getInstallDepsResult();
+      if (installDeps == Result.CANCEL)
+        return;
+    } else {
+      installDeps = Result.NONE;
+    }
     clearErrorMessage();
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Installing..."));
-        installer.install(lib, replaced, this::setProgress);
-        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-        //getContribModel().updateLibrary(lib);
+        if (installDeps == Result.ALL) {
+          installer.install(deps, this::setProgress);
+        } else {
+          installer.install(lib, this::setProgress);
+        }
+        // TODO: Do a better job in refreshing only the needed element
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        ((LibrariesIndexTableModel) contribModel).update();
+        onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -253,8 +270,12 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
       try {
         setProgressVisible(true, tr("Removing..."));
         installer.remove(lib, this::setProgress);
-        onIndexesUpdated(); // TODO: Do a better job in refreshing only the needed element
-        //getContribModel().updateLibrary(lib);
+        // TODO: Do a better job in refreshing only the needed element
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        ((LibrariesIndexTableModel) contribModel).update();
+        onIndexesUpdated();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -269,5 +290,4 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   protected void onIndexesUpdated() throws Exception {
     // Empty
   }
-
 }

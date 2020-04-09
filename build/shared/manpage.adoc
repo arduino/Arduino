@@ -33,6 +33,8 @@ SYNOPSIS
 
 *arduino* [*--install-library* __library name__[:__version__][,__library name__[:__version__],__library name__[:__version__]]
 
+*arduino* [*--version*]
+
 DESCRIPTION
 -----------
 The 'arduino' integrated development environment allows editing,
@@ -82,6 +84,9 @@ ACTIONS
 *--install-library* __library name__[:__version__]::
 	Fetches available libraries list and install the specified one. If __version__ is omitted, the latest is installed. If a library with the same version is already installed, nothing is installed and program exits with exit code 1. If a library with a different version is already installed, it's replaced.
 	Multiple libraries can be specified, separated by a comma.
+
+*--version*::
+	Print the version information and exit.
 
 OPTIONS
 -------

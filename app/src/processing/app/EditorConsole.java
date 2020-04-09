@@ -58,7 +58,10 @@ public class EditorConsole extends JScrollPane {
   private final DefaultStyledDocument document;
   private final JTextPane consoleTextPane;
 
-  public EditorConsole() {
+  private SimpleAttributeSet stdOutStyle;
+  private SimpleAttributeSet stdErrStyle;
+
+  public EditorConsole(Base base) {
     document = new DefaultStyledDocument();
 
     consoleTextPane = new JTextPane(document);
@@ -74,7 +77,7 @@ public class EditorConsole extends JScrollPane {
     Font editorFont = PreferencesData.getFont("editor.font");
     Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
 
-    SimpleAttributeSet stdOutStyle = new SimpleAttributeSet();
+    stdOutStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdOutStyle, Theme.getColor("console.output.color"));
     StyleConstants.setBackground(stdOutStyle, backgroundColour);
     StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
@@ -84,7 +87,7 @@ public class EditorConsole extends JScrollPane {
 
     consoleTextPane.setParagraphAttributes(stdOutStyle, true);
 
-    SimpleAttributeSet stdErrStyle = new SimpleAttributeSet();
+    stdErrStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdErrStyle, Theme.getColor("console.error.color"));
     StyleConstants.setBackground(stdErrStyle, backgroundColour);
     StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
@@ -107,6 +110,55 @@ public class EditorConsole extends JScrollPane {
     setMinimumSize(new Dimension(100, (height * lines)));
 
     EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
+
+    // Add font size adjustment listeners.
+    base.addEditorFontResizeListeners(consoleTextPane);
+  }
+
+  public void applyPreferences() {
+
+    // Update the console text pane font from the preferences.
+    Font consoleFont = Theme.getFont("console.font");
+    Font editorFont = PreferencesData.getFont("editor.font");
+    Font actualFont = new Font(consoleFont.getName(), consoleFont.getStyle(), scale(editorFont.getSize()));
+
+    AttributeSet stdOutStyleOld = stdOutStyle.copyAttributes();
+    AttributeSet stdErrStyleOld = stdErrStyle.copyAttributes();
+    StyleConstants.setFontSize(stdOutStyle, actualFont.getSize());
+    StyleConstants.setFontSize(stdErrStyle, actualFont.getSize());
+
+    // Re-insert console text with the new preferences if there were changes.
+    // This assumes that the document has single-child paragraphs (default).
+    if (!stdOutStyle.isEqual(stdOutStyleOld) || !stdErrStyle.isEqual(stdOutStyleOld)) {
+      out.setAttibutes(stdOutStyle);
+      err.setAttibutes(stdErrStyle);
+
+      int start;
+      for (int end = document.getLength() - 1; end >= 0; end = start - 1) {
+        Element elem = document.getParagraphElement(end);
+        start = elem.getStartOffset();
+        AttributeSet attrs = elem.getElement(0).getAttributes();
+        AttributeSet newAttrs;
+        if (attrs.isEqual(stdErrStyleOld)) {
+          newAttrs = stdErrStyle;
+        } else if (attrs.isEqual(stdOutStyleOld)) {
+          newAttrs = stdOutStyle;
+        } else {
+          continue;
+        }
+        try {
+          String text = document.getText(start, end - start);
+          document.remove(start, end - start);
+          document.insertString(start, text, newAttrs);
+        } catch (BadLocationException e) {
+          // Should only happen when text is async removed (through clear()).
+          // Accept this case, but throw an error when text could mess up.
+          if (document.getLength() != 0) {
+            throw new Error(e);
+          }
+        }
+      }
+    }
   }
 
   public void clear() {

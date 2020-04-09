@@ -46,7 +46,7 @@ const int quietKnock = 10;
 const int loudKnock = 100;
 
 // variable to indicate if locked or not
-boolean locked = false;
+bool locked = false;
 // how many valid knocks you've received
 int numberOfKnocks = 0;
 
@@ -146,7 +146,7 @@ void loop() {
 }
 
 // this function checks to see if a detected knock is within max and min range
-boolean checkForKnock(int value) {
+bool checkForKnock(int value) {
   // if the value of the knock is greater than the minimum, and larger
   // than the maximum
   if (value > quietKnock && value < loudKnock) {

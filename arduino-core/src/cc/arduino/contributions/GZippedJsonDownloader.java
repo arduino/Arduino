@@ -29,13 +29,16 @@
 
 package cc.arduino.contributions;
 
+import cc.arduino.Constants;
 import cc.arduino.utils.Progress;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipUtils;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 
 public class GZippedJsonDownloader {
 
@@ -49,18 +52,22 @@ public class GZippedJsonDownloader {
     this.gzippedUrl = gzippedUrl;
   }
 
-  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
+  public void download(File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
+    File gzipTmpFile = null;
     try {
-      File gzipTmpFile = new File(tmpFile.getParentFile(), GzipUtils.getCompressedFilename(tmpFile.getName()));
+      String tmpFileName = FilenameUtils.getName(new URL(Constants.LIBRARY_INDEX_URL_GZ).getPath());
+      gzipTmpFile = File.createTempFile(tmpFileName, GzipUtils.getCompressedFilename(tmpFile.getName()));
       // remove eventual leftovers from previous downloads
-      if (gzipTmpFile.exists()) {
-        gzipTmpFile.delete();
-      }
-      new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener);
+      Files.deleteIfExists(gzipTmpFile.toPath());
+
+      new JsonDownloader(downloader, gzippedUrl).download(gzipTmpFile, progress, statusText, progressListener, allowCache);
       decompress(gzipTmpFile, tmpFile);
-      gzipTmpFile.delete();
     } catch (Exception e) {
-      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener);
+      new JsonDownloader(downloader, url).download(tmpFile, progress, statusText, progressListener, allowCache);
+    } finally {
+      if (gzipTmpFile != null) {
+        Files.deleteIfExists(gzipTmpFile.toPath());
+      }
     }
   }
 

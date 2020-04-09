@@ -28,10 +28,8 @@
  */
 package processing.app.packages;
 
-import cc.arduino.Constants;
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReference;
-import processing.app.helpers.PreferencesMap;
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,8 +38,17 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-public class UserLibrary extends ContributedLibrary {
+import com.github.zafarkhaja.semver.Version;
+
+import cc.arduino.Constants;
+import cc.arduino.contributions.VersionHelper;
+import cc.arduino.contributions.libraries.ContributedLibraryDependency;
+import processing.app.helpers.PreferencesMap;
+import processing.app.packages.UserLibraryFolder.Location;
+
+public class UserLibrary {
 
   private String name;
   private String version;
@@ -53,12 +60,17 @@ public class UserLibrary extends ContributedLibrary {
   private String category;
   private String license;
   private List<String> architectures;
-  private List<String> types;
+  private List<String> types = new ArrayList<>();
   private List<String> declaredTypes;
   private boolean onGoingDevelopment;
   private List<String> includes;
+  protected File installedFolder;
+  protected Location location;
 
-  public static UserLibrary create(File libFolder) throws IOException {
+  public static UserLibrary create(UserLibraryFolder libFolderDesc) throws IOException {
+    File libFolder = libFolderDesc.folder;
+    Location location = libFolderDesc.location;
+
     // Parse metadata
     File propertiesFile = new File(libFolder, "library.properties");
     PreferencesMap properties = new PreferencesMap();
@@ -133,17 +145,23 @@ public class UserLibrary extends ContributedLibrary {
     }
 
     List<String> includes = null;
-    if (properties.containsKey("includes")) {
+    if (properties.containsKey("includes") && !properties.get("includes").trim().isEmpty()) {
       includes = new ArrayList<>();
       for (String i : properties.get("includes").split(","))
         includes.add(i.trim());
     }
 
+    String declaredVersion = properties.get("version").trim();
+    Optional<Version> version = VersionHelper.valueOf(declaredVersion);
+    if (!version.isPresent()) {
+      System.out.println(
+          format(tr("Invalid version '{0}' for library in: {1}"), declaredVersion, libFolder.getAbsolutePath()));
+    }
+
     UserLibrary res = new UserLibrary();
-    res.setInstalledFolder(libFolder);
-    res.setInstalled(true);
+    res.installedFolder = libFolder;
     res.name = properties.get("name").trim();
-    res.version = properties.get("version").trim();
+    res.version = version.isPresent() ? version.get().toString() : declaredVersion;
     res.author = properties.get("author").trim();
     res.maintainer = properties.get("maintainer").trim();
     res.sentence = properties.get("sentence").trim();
@@ -156,45 +174,38 @@ public class UserLibrary extends ContributedLibrary {
     res.declaredTypes = typesList;
     res.onGoingDevelopment = Files.exists(Paths.get(libFolder.getAbsolutePath(), Constants.LIBRARY_DEVELOPMENT_FLAG_FILE));
     res.includes = includes;
+    res.location = location;
     return res;
   }
 
-  @Override
   public String getName() {
     return name;
   }
 
-  @Override
   public List<String> getArchitectures() {
     return architectures;
   }
 
-  @Override
   public String getAuthor() {
     return author;
   }
 
-  @Override
   public String getParagraph() {
     return paragraph;
   }
 
-  @Override
   public String getSentence() {
     return sentence;
   }
 
-  @Override
   public String getWebsite() {
     return website;
   }
 
-  @Override
   public String getCategory() {
     return category;
   }
 
-  @Override
   public List<String> getTypes() {
     return types;
   }
@@ -203,48 +214,23 @@ public class UserLibrary extends ContributedLibrary {
     this.types = types;
   }
 
-  @Override
   public String getLicense() {
     return license;
   }
 
-  @Override
   public void setCategory(String category) {
     this.category = category;
   }
 
-  @Override
   public String getVersion() {
     return version;
   }
 
-  @Override
   public String getMaintainer() {
     return maintainer;
   }
 
-  @Override
-  public String getChecksum() {
-    return null;
-  }
-
-  @Override
-  public long getSize() {
-    return 0;
-  }
-
-  @Override
-  public String getUrl() {
-    return null;
-  }
-
-  @Override
-  public String getArchiveFileName() {
-    return null;
-  }
-
-  @Override
-  public List<ContributedLibraryReference> getRequires() {
+  public List<ContributedLibraryDependency> getRequires() {
     return null;
   }
 
@@ -269,9 +255,9 @@ public class UserLibrary extends ContributedLibrary {
   public File getSrcFolder() {
     switch (layout) {
       case FLAT:
-        return getInstalledFolder();
+        return installedFolder;
       case RECURSIVE:
-        return new File(getInstalledFolder(), "src");
+        return new File(installedFolder, "src");
       default:
         return null; // Keep compiler happy :-(
     }
@@ -281,19 +267,21 @@ public class UserLibrary extends ContributedLibrary {
     return (layout == LibraryLayout.RECURSIVE);
   }
 
+  public Location getLocation() {
+    return location;
+  }
+
+  public boolean isIDEBuiltIn() {
+    return getLocation() == Location.IDE_BUILTIN;
+  }
+
   @Override
   public String toString() {
-    String res = "Library: " + name + "\n";
-    res += "         (version=" + version + ")\n";
-    res += "         (author=" + author + ")\n";
-    res += "         (maintainer=" + maintainer + ")\n";
-    res += "         (sentence=" + sentence + ")\n";
-    res += "         (paragraph=" + paragraph + ")\n";
-    res += "         (url=" + website + ")\n";
-    res += "         (architectures=" + architectures + ")\n";
-    if (includes != null)
-      res += "         (includes=" + includes + ")\n";
-    return res;
+    return name + ":" + version + " " + architectures + " " + location;
+  }
+
+  public File getInstalledFolder() {
+    return installedFolder;
   }
 
 }

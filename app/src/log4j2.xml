@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="Arduino" packages="cc.arduino">
+  <Appenders>
+
+    <!-- Console Appender -->
+    <Console name="Console" target="SYSTEM_ERR">
+      <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}{UTC} %p %c{1.}:%L [%t] %m%n"/>
+    </Console>
+
+    <!-- Rolling File Appender -->
+    <RollingFile name="RollingFile" fileName="${sys:log4j.dir}/logs/application.log"
+                 filePattern="${sys:log4j.dir}/logs/application-%d{MM-dd-yyyy}-%i.log.gz"
+                 ignoreExceptions="false">
+      <PatternLayout>
+        <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}{UTC} %p %c{1.}:%L [%t] %m%n</Pattern>
+      </PatternLayout>
+      <Policies>
+        <SizeBasedTriggeringPolicy size="50 MB"/>
+      </Policies>
+      <DefaultRolloverStrategy max="20"/>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Root level="debug">
+      <AppenderRef ref="Console" level="info" />
+      <AppenderRef ref="RollingFile"/>
+    </Root>
+  </Loggers>
+</Configuration>

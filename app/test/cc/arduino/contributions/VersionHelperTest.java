@@ -30,28 +30,38 @@
 package cc.arduino.contributions;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.Test;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class VersionHelperTest {
+
+  public void assertOptionalEquals(String expected, Optional<Version> value) {
+    assertTrue(value.isPresent());
+    assertEquals(expected, value.get().toString());
+  }
 
   @Test
   public void testVersions() throws Exception {
-    assertEquals("1.0.0", VersionHelper.valueOf("1.0.0").toString());
-    assertEquals("1.0.0", VersionHelper.valueOf("1.0").toString());
-    assertEquals("1.0.0", VersionHelper.valueOf("1").toString());
-    assertEquals("1.0.0-abc", VersionHelper.valueOf("1.0.0-abc").toString());
-    assertEquals("1.0.0-abc", VersionHelper.valueOf("1.0-abc").toString());
-    assertEquals("1.0.0-abc", VersionHelper.valueOf("1-abc").toString());
-    assertEquals("1.0.0+abc", VersionHelper.valueOf("1.0.0+abc").toString());
-    assertEquals("1.0.0+abc", VersionHelper.valueOf("1.0+abc").toString());
-    assertEquals("1.0.0+abc", VersionHelper.valueOf("1+abc").toString());
-    assertEquals("1.0.0-def+abc", VersionHelper.valueOf("1.0.0-def+abc").toString());
-    assertEquals("1.0.0-def+abc", VersionHelper.valueOf("1.0-def+abc").toString());
-    assertEquals("1.0.0-def+abc", VersionHelper.valueOf("1-def+abc").toString());
-    assertEquals("1.0.0+def-abc", VersionHelper.valueOf("1.0.0+def-abc").toString());
-    assertEquals("1.0.0+def-abc", VersionHelper.valueOf("1.0+def-abc").toString());
-    assertEquals("1.0.0+def-abc", VersionHelper.valueOf("1+def-abc").toString());
+    assertOptionalEquals("1.0.0", VersionHelper.valueOf("1.0.0"));
+    assertOptionalEquals("1.0.0", VersionHelper.valueOf("1.0"));
+    assertOptionalEquals("1.0.0", VersionHelper.valueOf("1"));
+    assertOptionalEquals("1.0.0-abc", VersionHelper.valueOf("1.0.0-abc"));
+    assertOptionalEquals("1.0.0-abc", VersionHelper.valueOf("1.0-abc"));
+    assertOptionalEquals("1.0.0-abc", VersionHelper.valueOf("1-abc"));
+    assertOptionalEquals("1.0.0+abc", VersionHelper.valueOf("1.0.0+abc"));
+    assertOptionalEquals("1.0.0+abc", VersionHelper.valueOf("1.0+abc"));
+    assertOptionalEquals("1.0.0+abc", VersionHelper.valueOf("1+abc"));
+    assertOptionalEquals("1.0.0-def+abc", VersionHelper.valueOf("1.0.0-def+abc"));
+    assertOptionalEquals("1.0.0-def+abc", VersionHelper.valueOf("1.0-def+abc"));
+    assertOptionalEquals("1.0.0-def+abc", VersionHelper.valueOf("1-def+abc"));
+    assertOptionalEquals("1.0.0+def-abc", VersionHelper.valueOf("1.0.0+def-abc"));
+    assertOptionalEquals("1.0.0+def-abc", VersionHelper.valueOf("1.0+def-abc"));
+    assertOptionalEquals("1.0.0+def-abc", VersionHelper.valueOf("1+def-abc"));
   }
 
 }

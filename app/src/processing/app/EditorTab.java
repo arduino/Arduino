@@ -30,9 +30,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
-
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 
 import javax.swing.Action;
@@ -50,6 +49,7 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 
+import org.apache.commons.lang3.StringUtils;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
@@ -67,7 +67,7 @@ import processing.app.tools.DiscourseFormat;
 /**
  * Single tab, editing a single file, in the main window.
  */
-public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWheelListener {
+public class EditorTab extends JPanel implements SketchFile.TextStorage {
   protected Editor editor;
   protected SketchTextArea textarea;
   protected RTextScrollPane scrollPane;
@@ -109,7 +109,7 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     file.setStorage(this);
     applyPreferences();
     add(scrollPane, BorderLayout.CENTER);
-	textarea.addMouseWheelListener(this);
+    editor.base.addEditorFontResizeMouseWheelListener(textarea);
   }
 
   private RSyntaxDocument createDocument(String contents) {
@@ -176,22 +176,19 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
 
       editor.lineStatus.set(lineStart, lineEnd);
     });
+    textArea.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent e) {
+        Element root = textArea.getDocument().getDefaultRootElement();
+        int lineStart = root.getElementIndex(textArea.getCaret().getMark());
+        int lineEnd = root.getElementIndex(textArea.getCaret().getDot());
+        editor.lineStatus.set(lineStart, lineEnd);
+      };
+      public void focusLost(FocusEvent e) {};
+    });
     ToolTipManager.sharedInstance().registerComponent(textArea);
 
     configurePopupMenu(textArea);
     return textArea;
-  }
-  
-  public void mouseWheelMoved(MouseWheelEvent e) {
-    if (e.isControlDown()) {
-      if (e.getWheelRotation() < 0) {
-        editor.base.handleFontSizeChange(1);
-      } else {
-        editor.base.handleFontSizeChange(-1);
-      }
-    } else {
-      e.getComponent().getParent().dispatchEvent(e);
-    }
   }
 
   private void configurePopupMenu(final SketchTextArea textarea){
@@ -319,6 +316,20 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     }
     // apply changes to the font size for the editor
     Font editorFont = scale(PreferencesData.getFont("editor.font"));
+    
+    // check whether a theme-defined editor font is available
+    Font themeFont = Theme.getFont("editor.font");
+    if (themeFont != null)
+    {
+      // Apply theme font if the editor font has *not* been changed by the user,
+      // This allows themes to specify an editor font which will only be applied
+      // if the user hasn't already changed their editor font via preferences.txt
+      String defaultFontName = StringUtils.defaultIfEmpty(PreferencesData.getDefault("editor.font"), "").split(",")[0];
+      if (defaultFontName.equals(editorFont.getName())) {
+        editorFont = new Font(themeFont.getName(), themeFont.getStyle(), editorFont.getSize());
+      }
+    }
+    
     textarea.setFont(editorFont);
     scrollPane.getGutter().setLineNumberFont(editorFont);
   }
@@ -431,6 +442,9 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage, MouseWh
     } finally {
       caret.setUpdatePolicy(policy);
     }
+    // A trick to force textarea to recalculate the bracket matching rectangle.
+    // In the worst case scenario, this should be ineffective.
+    textarea.setLineWrap(textarea.getLineWrap());
   }
 
   /**

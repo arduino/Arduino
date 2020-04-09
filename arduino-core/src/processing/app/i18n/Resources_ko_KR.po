@@ -16,9 +16,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # Jihoon Hyun <ryrhkqn@naver.com>, 2015
-# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2017
+# Jinbuhm Kim <jinbuhm.kim@gmail.com>, 2013,2015-2018
 # Ki-hyeok Park <khpark@ateamventures.com>, 2015
 # shibaboy <shibaboy@gmail.com>, 2014
 msgid ""
@@ -26,7 +30,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:43+0000\n"
+"PO-Revision-Date: 2018-11-27 05:46+0000\n"
 "Last-Translator: Jinbuhm Kim <jinbuhm.kim@gmail.com>\n"
 "Language-Team: Korean (Korea) (http://www.transifex.com/mbanzi/arduino-ide-15/language/ko_KR/)\n"
 "MIME-Version: 1.0\n"
@@ -213,6 +217,11 @@ msgstr "스케치를 보관:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "스케치 보관 취소"
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr "Archiving built core (caching) in: {0}"
 
 #: tools/Archiver.java:75
 msgid ""
@@ -521,7 +530,7 @@ msgstr "HTML로 복사"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr " 복사 오류 메시지"
+msgstr "오류 메시지 복사"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -620,6 +629,11 @@ msgstr "{0}의 이전 버젼을 삭제할 수 없습니다"
 msgid "Could not replace {0}"
 msgstr "{0}를 바꿀 수 없습니다"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr "설정 파일을 쓸 수 없습니다: {0}"
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "스케치를 보관 할 수 없습니다"
@@ -663,6 +677,10 @@ msgstr "데이터 처리"
 msgid "Data Storage"
 msgstr "데이터 저장"
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr "폰트 크기 줄이기"
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "들여쓰기 줄이기"
@@ -670,6 +688,10 @@ msgstr "들여쓰기 줄이기"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "디폴트"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr "디폴트 테마"
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -846,6 +868,11 @@ msgstr "아두이노 데이터 폴더를 가져올 때 에러 발생"
 msgid "Error inside Serial.{0}()"
 msgstr "시리얼 내부 에러.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr "테마 {0}를 로딩하는 중 에러: {1}"
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -864,6 +891,25 @@ msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
 msgstr "시리얼 포트''{0}' 열기 에러'. 다음의 문서를 참고하세요 http://playground.arduino.cc/Linux/All#Permission"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr "라이브러리 색인 구문 분석 오류 : {0}\n라이브러리 관리자를 열어 라이브러리 색인을 업데이트하십시오."
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr "라이브러리 색인 불러오기 에러: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
+msgstr "패키지 색인 폴더를 읽는 중 오류가 발생했습니다 : {0}\n(권한 문제입니까?)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -898,6 +944,10 @@ msgstr "부트로더 굽는중 에러발생"
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr "부트로더를 구울때 오류: 설정 값'{0}' 이 없음"
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr "부트로더 굽는중 에러발생: 시리얼 포트를 선택하세요."
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
@@ -934,10 +984,6 @@ msgstr "검증/업로드 오류"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "에스토니아어"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "에스토니아어(에스토니아)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -1142,9 +1188,9 @@ msgstr "호환되지 않음"
 msgid "Ignore Case"
 msgstr "대소문자 무시"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "잘못된 라이브러리 이름을 무시함"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr "잘못된 이름의 라이브러리를 무시함"
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1169,6 +1215,10 @@ msgstr "라이브러리 포함하기"
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
 msgstr "잘못된 IDE 설치 폴더"
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
+msgstr "폰트 크기 늘리기"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1203,10 +1253,10 @@ msgstr "설치됨"
 msgid "Installing boards..."
 msgstr "보드 설치..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "라이브러리 설치: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr "라이브러리 설치: {0}:{1}"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1231,6 +1281,17 @@ msgstr "잘못된 라이브러리가 {0}에서 발견: {1}"
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
 msgstr "잘못된 인용구 : 닫는 문자 [{0}] 가 없습니다."
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr "라이브러리의 {1}에 잘못된 버전 '{0}'이 있습니다."
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
+msgstr "잘못된 버전 {0}"
 
 #: Preferences.java:102
 msgid "Italian"
@@ -1264,10 +1325,10 @@ msgstr "라이브러리가 추가되었습니다. \"라이브러리 포함하기
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr "라이브러리는 'src' 와 'utility' 폴더에 동시에 사용될 수 없습니다. 확인 {0}"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
-msgstr "라이브러리가 이미 설치됐습니다: {0} 버전 {1}"
+msgid "Library is already installed: {0}:{1}"
+msgstr "라이브러리가 이미 설치됐습니다: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1684,10 +1745,10 @@ msgstr "참조"
 msgid "Remove"
 msgstr "제거"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
-msgstr "라이브러리 제거: {0}"
+msgid "Removing library: {0}:{1}"
+msgstr "라이브러리 제거: {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:203
@@ -1722,6 +1783,10 @@ msgstr "다음 내용으로 바꾸기:"
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
 msgstr "Retired"
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
+msgstr "다른 시리얼 포트로 업로드 하시겠습니까?"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1846,12 +1911,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "시리얼 포트 ''{0}''를 찾을 수 없습니다. 툴 > 시리얼 포트 메뉴에서 올바른 포트를선택했나요?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr "시리얼 포트가 선택되지 않았습니다."
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "시리얼 포트 {0} 를 찾을 수 없습니다.\n다른 시리얼 포트로 업로드를 다시 시도하시겠습니까?"
+msgid "Serial port {0} not found."
+msgstr "시리얼 포트 {0}를 찾을 수 없습니다."
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1873,6 +1941,10 @@ msgstr "설정 문제"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "스케치 폴더 보이기"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr "타임스탬프 표시"
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2045,6 +2117,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "\"{0}\" 파일은 스케치 폴더 \"{1}\" 에 있어야 합니다.\n이 폴더를 생성하고 파일을 이동하고 계속하시겠습니까?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "\"{0}\"라이브러리를 사용할 수 없습니다.\n라이브러리 폴더 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2090,12 +2170,12 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "스케치 폴더가 사라졌습니다\n같은 장소에 다시 저장을 시도합니다,\n하지만 코드를 제외한 나머지 부분은 잃어버립니다."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
-msgstr "스케치의 이름은 수정이 되어야 합니다. 스케치의 이름은 \nASCII 문자와 숫자로만 구성이 가능하며,(숫자로 시작할 수 없음)\n최대 64 문자열까지 가능합니다. "
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr "스케치 이름이 수정되야 합니다.\n스케치 이름은 문자 또는 숫자로 시작해야하며 다음에 문자,\n숫자, 대시, 점 및 밑줄이 옵니다. 최대 길이는 63자 입니다."
 
 #: Base.java:259
 msgid ""
@@ -2111,6 +2191,10 @@ msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
 msgstr "지정된 스케치북 폴더는 IDE의 사본을 포함합니다.\n다른 폴더를 선택하십시오."
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
+msgstr "테마:"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
 msgid ""
@@ -2604,6 +2688,12 @@ msgstr "잘못된 글꼴 크기 {0}를 무시"
 msgid "name is null"
 msgstr "name 이 null입니다."
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr "{0}에 헤더 파일 (.h)이 없습니다"
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu가 Null입니다"
@@ -2691,11 +2781,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr "{0}: 잘못된 보드 이름, \"package:arch:board\" 또는 \"package:arch:board:options\" 형태가 되야 합니다."
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr "{0}: \"{2}\" 보드의 옵션 \"{1}\" 의 옵션이 잘못 됨"
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2705,6 +2790,11 @@ msgstr "{0}: \"{1}' 보드의 옵션이 잘못 됨"
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
 msgstr "{0}: 잘못 된 옵션, \"이름=값\"의 형태여야 합니다."
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
+msgstr "{0}: \"{2}\" 보드의 옵션 \"{1}\" 이 잘못 됨"
 
 #: ../../../processing/app/Base.java:486
 #, java-format

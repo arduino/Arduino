@@ -75,7 +75,7 @@ public class CustomProxySelector {
   }
 
   private Proxy pacProxy(String pac, URI uri) throws IOException, ScriptException, NoSuchMethodException {
-    setAuthenticator(preferences.get(Constants.PREF_PROXY_AUTO_USERNAME), preferences.get(Constants.PREF_PROXY_AUTO_PASSWORD));
+    setAuthenticator(preferences.get(Constants.PREF_PROXY_USERNAME), preferences.get(Constants.PREF_PROXY_PASSWORD));
 
     URLConnection urlConnection = new URL(pac).openConnection();
     urlConnection.connect();
@@ -141,7 +141,7 @@ public class CustomProxySelector {
   }
 
   private Proxy manualProxy() {
-    setAuthenticator(preferences.get(Constants.PREF_PROXY_MANUAL_USERNAME), preferences.get(Constants.PREF_PROXY_MANUAL_PASSWORD));
+    setAuthenticator(preferences.get(Constants.PREF_PROXY_USERNAME), preferences.get(Constants.PREF_PROXY_PASSWORD));
     Proxy.Type type = Proxy.Type.valueOf(preferences.get(Constants.PREF_PROXY_MANUAL_TYPE));
     return new Proxy(type, new InetSocketAddress(preferences.get(Constants.PREF_PROXY_MANUAL_HOSTNAME), Integer.valueOf(preferences.get(Constants.PREF_PROXY_MANUAL_PORT))));
   }
