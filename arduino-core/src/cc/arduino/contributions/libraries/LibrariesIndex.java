@@ -40,9 +40,13 @@ import java.util.stream.Collectors;
 
 import cc.arduino.contributions.VersionComparator;
 
-public abstract class LibrariesIndex {
+public class LibrariesIndex {
 
-  public abstract List<ContributedLibrary> getLibraries();
+  private ArrayList<ContributedLibrary> list = new ArrayList<>();
+
+  public List<ContributedLibrary> getLibraries() {
+    return list;
+  }
 
   public List<ContributedLibrary> find(final String name) {
     return getLibraries().stream() //

@@ -1,5 +1,61 @@
-ARDUINO 1.8.11 ????
+ARDUINO 1.8.13 2020.??.??
 
+[ide]
+* Fixed save of proxy username/password settings in "manual proxy" section.
+* In "Tools / Programmers" menu only shows programmes related to the currently selected board. (thanks @matthijskooijman)
+* Fixed: sketch window out-of-display if the IDE is restarted after removing an external monitor.
+* Allow baudrate/config change when the Serial Monitor/Plotter is disabled. (thanks @matthijskooijman)
+
+ARDUINO 1.8.12 2020.02.13
+
+[ide]
+* Reverted the bundled Java JRE to the latest freely redistributable Oracle JRE for all
+  platforms except:
+    - macOS (due to notarization)
+    - aarch64 (due to missing graphical support)
+
+  Switching to AdoptJDK demonstrated to be more challenging than expected, bringing in
+  some corner case bugs that were not being caught by our testing procedures:
+    - https://github.com/arduino/Arduino/labels/OpenJDK
+
+  To guarantee the best user experience we decided to revert to the latest working JRE
+  until all the issues are resolved.
+
+* Improved visualization of compiler errors (@matthijskooijman)
+* Fixed: "Comparison method violates its original contract" error in library manager
+* Serial monitor is no more cleared during upload, so it can be copy/pasted (@PaulStoffregen)
+
+[arduino-builder]
+* FIX REGRESSION: library priority selection for bundled libraries (like SD or Ethernet) 
+* FIX REGRESSION: use AVR core installed via Board Manager (when present) instead of the one bundled in the IDE
+* Improved precompiled libraries handling
+* FIX: paths with spaces are now correctly printed in compiler output
+
+ARDUINO 1.8.11 2020.01.27
+
+[ide]
+* FIX: Serial plotter do not hang if empty lines are received
+* A lot of accessibility improvements in Libs and Board managers GUI for screen readers (thanks @joew46167)
+* Sligtly improved support for themes in Libs and Board managers (thanks @matthijskooijman)
+* Serial plotter: added serial input text field (thanks @cactorium)
+* MacOSX: support for notarization (thanks @PaulStoffregen for the support)
+* Fix wrong bracket match rectangle on auto format (thanks @magedrifaat)
+* Pluggable discoveries: runtime.platform.path and runtime.hardware.path are now available as variables (thanks @PaulStoffregen)
+
+[arduino-builder]
+* FIX: missed library-detection cache (forcing lib detection on each build)
+* FIX: Windows: the build folder may reside on a different partition
+* FIX: Segfault in arduino-builder with -dump-prefs if no sketch is specified
+* FIX: Allow loading of global user-define platform.txt
+* FIX: Fixed nil pointer exception on some rare case with multiple libs
+* FIX: Print "multiple libraries found for header.h" message only when it really happens
+* FIX: Fixed library priorities on some rare circumstances
+
+[hardware]
+* updated AVR core to 1.8.2
+
+[wifi-updater]
+* updated to 0.10.10
 
 ARDUINO 1.8.10 2019.09.13
 

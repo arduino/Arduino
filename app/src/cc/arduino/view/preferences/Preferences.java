@@ -840,10 +840,14 @@ public class Preferences extends javax.swing.JDialog {
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_TYPE, manualProxyTypeButtonGroup.getSelection().getActionCommand());
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_HOSTNAME, manualProxyHostName.getText());
     PreferencesData.set(Constants.PREF_PROXY_MANUAL_PORT, manualProxyPort.getText());
-    PreferencesData.set(Constants.PREF_PROXY_MANUAL_USERNAME, manualProxyUsername.getText());
-    PreferencesData.set(Constants.PREF_PROXY_MANUAL_PASSWORD, String.valueOf(manualProxyPassword.getPassword()));
-    PreferencesData.set(Constants.PREF_PROXY_AUTO_USERNAME, autoProxyUsername.getText());
-    PreferencesData.set(Constants.PREF_PROXY_AUTO_PASSWORD, String.valueOf(autoProxyPassword.getPassword()));
+    if (PreferencesData.get(Constants.PREF_PROXY_TYPE).equals(Constants.PROXY_TYPE_MANUAL)) {
+      PreferencesData.set(Constants.PREF_PROXY_USERNAME, manualProxyUsername.getText());
+      PreferencesData.set(Constants.PREF_PROXY_PASSWORD, String.valueOf(manualProxyPassword.getPassword()));
+    }
+    if (PreferencesData.get(Constants.PREF_PROXY_TYPE).equals(Constants.PROXY_TYPE_AUTO)) {
+      PreferencesData.set(Constants.PREF_PROXY_USERNAME, autoProxyUsername.getText());
+      PreferencesData.set(Constants.PREF_PROXY_PASSWORD, String.valueOf(autoProxyPassword.getPassword()));
+    }
   }
 
   private void showPreferencesData() {
@@ -924,16 +928,16 @@ public class Preferences extends javax.swing.JDialog {
       if (!PreferencesData.get(Constants.PREF_PROXY_PAC_URL, "").isEmpty()) {
         autoProxyUsePAC.setSelected(true);
         autoProxyPACURL.setText(PreferencesData.get(Constants.PREF_PROXY_PAC_URL));
-        autoProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_AUTO_USERNAME));
-        autoProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_AUTO_PASSWORD));
+        autoProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_USERNAME));
+        autoProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_PASSWORD));
       }
     } else {
       manualProxy.setSelected(true);
       manualProxyFieldsSetEnabled(true);
       manualProxyHostName.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_HOSTNAME));
       manualProxyPort.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_PORT));
-      manualProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_USERNAME));
-      manualProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_MANUAL_PASSWORD));
+      manualProxyUsername.setText(PreferencesData.get(Constants.PREF_PROXY_USERNAME));
+      manualProxyPassword.setText(PreferencesData.get(Constants.PREF_PROXY_PASSWORD));
     }
 
     String selectedManualProxyType = PreferencesData.get(Constants.PREF_PROXY_MANUAL_TYPE, Constants.PROXY_MANUAL_TYPE_HTTP);

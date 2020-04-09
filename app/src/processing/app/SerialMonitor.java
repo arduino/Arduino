@@ -23,7 +23,6 @@ import processing.app.legacy.PApplet;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -49,14 +48,16 @@ public class SerialMonitor extends AbstractTextMonitor {
       String rateString = wholeString.substring(0, wholeString.indexOf(' '));
       serialRate = Integer.parseInt(rateString);
       PreferencesData.set("serial.debug_rate", rateString);
-      try {
-        close();
-        Thread.sleep(100); // Wait for serial port to properly close
-        open();
-      } catch (InterruptedException e) {
-        // noop
-      } catch (Exception e) {
-        System.err.println(e);
+      if (serial != null) {
+        try {
+          close();
+          Thread.sleep(100); // Wait for serial port to properly close
+          open();
+        } catch (InterruptedException e) {
+          // noop
+        } catch (Exception e) {
+          System.err.println(e);
+        }
       }
     });
 
@@ -143,7 +144,6 @@ public class SerialMonitor extends AbstractTextMonitor {
       int[] location = getPlacement();
       String locationStr = PApplet.join(PApplet.str(location), ",");
       PreferencesData.set("last.serial.location", locationStr);
-      textArea.setText("");
       serial.dispose();
       serial = null;
     }

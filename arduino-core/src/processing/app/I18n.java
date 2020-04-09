@@ -106,10 +106,6 @@ public class I18n {
    * This method is an hack to extract words with gettext tool.
    */
   protected static void unusedStrings() {
-    // These phrases are defined in the "platform.txt".
-    tr("Arduino AVR Boards");
-    tr("Arduino ARM (32-bits) Boards");
-
     // This word is defined in the "boards.txt".
     tr("Processor");
   }

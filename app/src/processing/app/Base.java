@@ -141,7 +141,7 @@ public class Base {
     if (OSUtils.isMacOS()) {
       System.setProperty("apple.laf.useScreenMenuBar",
         String.valueOf(!System.getProperty("os.version").startsWith("10.13")
-          || com.apple.eawt.Application.getApplication().isAboutMenuItemPresent()));
+          || isMacOsAboutMenuItemPresent()));
 
       ThinkDifferent.init();
     }
@@ -152,6 +152,11 @@ public class Base {
       e.printStackTrace(System.err);
       System.exit(255);
     }
+  }
+
+  @SuppressWarnings("deprecation")
+  public static boolean isMacOsAboutMenuItemPresent() {
+    return com.apple.eawt.Application.getApplication().isAboutMenuItemPresent();
   }
 
   static public void initLogger() {
@@ -207,9 +212,6 @@ public class Base {
     BaseNoGui.getPlatform().init();
 
     BaseNoGui.initPortableFolder();
-    // This configure the logs root folder
-    System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
-    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     // Look for a possible "--preferences-file" parameter and load preferences
     BaseNoGui.initParameters(args);
@@ -217,6 +219,12 @@ public class Base {
     CommandlineParser parser = new CommandlineParser(args);
     parser.parseArgumentsPhase1();
     commandLine = !parser.isGuiMode();
+
+    // This configure the logs root folder
+    if (parser.isGuiMode()) {
+        System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
+    }
+    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
 
     BaseNoGui.checkInstallationFolder();
 
@@ -618,7 +626,12 @@ public class Base {
         .get("last.sketch" + index + ".location");
     if (locationStr == null)
       return defaultEditorLocation();
-    return PApplet.parseInt(PApplet.split(locationStr, ','));
+
+    int location[] = PApplet.parseInt(PApplet.split(locationStr, ','));
+    if (location[0] > screen.width || location[1] > screen.height)
+      return defaultEditorLocation();
+
+    return location;
   }
 
   protected void storeRecentSketches(SketchController sketch) {
@@ -986,9 +999,9 @@ public class Base {
     // kill uploader (if still alive)
     UploaderUtils uploaderInstance = new UploaderUtils();
     Uploader uploader = uploaderInstance.getUploaderByPreferences(false);
-    if (uploader != null && uploader.programmerPid != null && uploader.programmerPid.isAlive()) {
+    if (uploader != null && Uploader.programmerPid != null && Uploader.programmerPid.isAlive()) {
         // kill the stuck programmer
-        uploader.programmerPid.destroyForcibly();
+        Uploader.programmerPid.destroyForcibly();
     }
 
     if (handleQuitEach()) {
@@ -1431,8 +1444,9 @@ public class Base {
         String filterText = "";
         String dropdownItem = "";
         if (actionevent instanceof Event) {
-          filterText = ((Event) actionevent).getPayload().get("filterText").toString();
-          dropdownItem = ((Event) actionevent).getPayload().get("dropdownItem").toString();
+          Event e = ((Event) actionevent);
+          filterText = e.getPayload().get("filterText").toString();
+          dropdownItem = e.getPayload().get("dropdownItem").toString();
         }
         try {
           openBoardsManager(filterText, dropdownItem);
@@ -1468,24 +1482,21 @@ public class Base {
     ButtonGroup boardsButtonGroup = new ButtonGroup();
     Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
 
+    List<JMenu> platformMenus = new ArrayList<>();
+
     // Cycle through all packages
-    boolean first = true;
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
       // For every package cycle through all platform
       for (TargetPlatform targetPlatform : targetPackage.platforms()) {
 
-        // Add a separator from the previous platform
-        if (!first)
-          boardMenu.add(new JSeparator());
-        first = false;
-
         // Add a title for each platform
         String platformLabel = targetPlatform.getPreferences().get("name");
-        if (platformLabel != null && !targetPlatform.getBoards().isEmpty()) {
-          JMenuItem menuLabel = new JMenuItem(tr(platformLabel));
-          menuLabel.setEnabled(false);
-          boardMenu.add(menuLabel);
-        }
+        if (platformLabel == null)
+          platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
+
+        JMenu platformBoardsMenu = new JMenu(platformLabel);
+        MenuScroller.setScrollerFor(platformBoardsMenu);
+        platformMenus.add(platformBoardsMenu);
 
         // Cycle through all boards of this platform
         for (TargetBoard board : targetPlatform.getBoards().values()) {
@@ -1494,14 +1505,40 @@ public class Base {
           JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
                   buttonGroupsMap,
                   board, targetPlatform, targetPackage);
-          boardMenu.add(item);
+          platformBoardsMenu.add(item);
           boardsButtonGroup.add(item);
         }
       }
     }
 
+    platformMenus.sort((x,y) -> x.getText().compareToIgnoreCase(y.getText()));
+
+    JMenuItem firstBoardItem = null;
+    if (platformMenus.size() == 1) {
+      // When just one platform exists, add the board items directly,
+      // rather than using a submenu
+      for (Component boardItem : platformMenus.get(0).getMenuComponents()) {
+        boardMenu.add(boardItem);
+        if (firstBoardItem == null)
+          firstBoardItem = (JMenuItem)boardItem;
+      }
+    } else {
+      // For multiple platforms, use submenus
+      for (JMenu platformMenu : platformMenus) {
+        if (firstBoardItem == null && platformMenu.getItemCount() > 0)
+          firstBoardItem = platformMenu.getItem(0);
+        boardMenu.add(platformMenu);
+      }
+    }
+
+    if (firstBoardItem == null) {
+      throw new IllegalStateException("No available boards");
+    }
+
+    // If there is no current board yet (first startup, or selected
+    // board no longer defined), select first available board.
     if (menuItemsToClickAfterStartup.isEmpty()) {
-      menuItemsToClickAfterStartup.add(selectFirstEnabledMenuItem(boardMenu));
+      menuItemsToClickAfterStartup.add(firstBoardItem);
     }
 
     for (JMenuItem menuItemToClick : menuItemsToClickAfterStartup) {
@@ -1537,6 +1574,7 @@ public class Base {
         onBoardOrPortChange();
         rebuildImportMenu(Editor.importMenu);
         rebuildExamplesMenu(Editor.examplesMenu);
+        rebuildProgrammerMenu();
       }
     };
     action.putValue("b", board);
@@ -1565,7 +1603,7 @@ public class Base {
           };
           List<TargetBoard> boards = (List<TargetBoard>) subAction.getValue("board");
           if (boards == null) {
-            boards = new ArrayList<TargetBoard>();
+            boards = new ArrayList<>();
           }
           boards.add(board);
           subAction.putValue("board", boards);
@@ -1655,40 +1693,48 @@ public class Base {
     throw new IllegalStateException("Menu has no enabled items");
   }
 
-  private static JMenuItem selectFirstEnabledMenuItem(JMenu menu) {
-    for (int i = 1; i < menu.getItemCount(); i++) {
-      JMenuItem item = menu.getItem(i);
-      if (item != null && item.isEnabled()) {
-        return item;
-      }
-    }
-    throw new IllegalStateException("Menu has no enabled items");
-  }
-
   public void rebuildProgrammerMenu() {
     programmerMenus = new LinkedList<>();
-
     ButtonGroup group = new ButtonGroup();
-    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
-      for (TargetPlatform targetPlatform : targetPackage.platforms()) {
-        for (String programmer : targetPlatform.getProgrammers().keySet()) {
-          String id = targetPackage.getId() + ":" + programmer;
 
-          @SuppressWarnings("serial")
-          AbstractAction action = new AbstractAction(targetPlatform.getProgrammer(programmer).get("name")) {
-            public void actionPerformed(ActionEvent actionevent) {
-              PreferencesData.set("programmer", "" + getValue("id"));
-            }
-          };
-          action.putValue("id", id);
-          JMenuItem item = new JRadioButtonMenuItem(action);
-          if (PreferencesData.get("programmer").equals(id)) {
-            item.setSelected(true);
-          }
-          group.add(item);
-          programmerMenus.add(item);
+    TargetBoard board = BaseNoGui.getTargetBoard();
+    TargetPlatform boardPlatform = board.getContainerPlatform();
+    TargetPlatform corePlatform = null;
+
+    String core = board.getPreferences().get("build.core");
+    if (core.contains(":")) {
+      String[] split = core.split(":", 2);
+      corePlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+    }
+
+    addProgrammersForPlatform(boardPlatform, programmerMenus, group);
+    if (corePlatform != null)
+      addProgrammersForPlatform(corePlatform, programmerMenus, group);
+
+    if (programmerMenus.isEmpty()) {
+      JMenuItem item = new JMenuItem(tr("No programmers available for this board"));
+      item.setEnabled(false);
+      programmerMenus.add(item);
+    }
+  }
+
+  public void addProgrammersForPlatform(TargetPlatform platform, List<JMenuItem> menus, ButtonGroup group) {
+    for (String programmer : platform.getProgrammers().keySet()) {
+      String id = platform.getContainerPackage().getId() + ":" + programmer;
+
+      @SuppressWarnings("serial")
+      AbstractAction action = new AbstractAction(platform.getProgrammer(programmer).get("name")) {
+        public void actionPerformed(ActionEvent actionevent) {
+          PreferencesData.set("programmer", "" + getValue("id"));
         }
+      };
+      action.putValue("id", id);
+      JMenuItem item = new JRadioButtonMenuItem(action);
+      if (PreferencesData.get("programmer").equals(id)) {
+        item.setSelected(true);
       }
+      group.add(item);
+      menus.add(item);
     }
   }
 
@@ -1958,6 +2004,7 @@ public class Base {
               Base.this.handleFontSizeChange(-1);
             }
             break;
+          default:
           }
         }
       }

@@ -761,6 +761,20 @@ public class Editor extends JFrame implements RunnerListener {
     toolsMenu.add(item);
 
     toolsMenu.addMenuListener(new StubMenuListener() {
+      public JMenuItem getSelectedItemRecursive(JMenu menu) {
+        int count = menu.getItemCount();
+        for (int i=0; i < count; i++) {
+          JMenuItem item = menu.getItem(i);
+
+          if ((item instanceof JMenu))
+            item = getSelectedItemRecursive((JMenu)item);
+
+          if (item != null && item.isSelected())
+            return item;
+        }
+        return null;
+      }
+
       public void menuSelected(MenuEvent e) {
         //System.out.println("Tools menu selected.");
         populatePortMenu();
@@ -772,15 +786,9 @@ public class Editor extends JFrame implements RunnerListener {
             String basename = name;
             int index = name.indexOf(':');
             if (index > 0) basename = name.substring(0, index);
-            String sel = null;
-            int count = menu.getItemCount();
-            for (int i=0; i < count; i++) {
-              JMenuItem item = menu.getItem(i);
-              if (item != null && item.isSelected()) {
-                sel = item.getText();
-                if (sel != null) break;
-              }
-            }
+
+            JMenuItem item = getSelectedItemRecursive(menu);
+            String sel = item != null ? item.getText() : null;
             if (sel == null) {
               if (!name.equals(basename)) menu.setText(basename);
             } else {
@@ -1142,34 +1150,6 @@ public class Editor extends JFrame implements RunnerListener {
 
     item = new JMenuItem(tr("Reference"));
     item.addActionListener(event -> Base.showReference());
-    menu.add(item);
-
-    menu.addSeparator();
-
-    item = new JMenuItem(tr("Galileo Help"));
-    item.setEnabled(false);
-    menu.add(item);
-
-    item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "ArduinoIDE_guide_galileo"));
-    menu.add(item);
-
-    item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.showReference("reference/Galileo_help_files", "Guide_Troubleshooting_Galileo"));
-    menu.add(item);
-
-    menu.addSeparator();
-
-    item = new JMenuItem(tr("Edison Help"));
-    item.setEnabled(false);
-    menu.add(item);
-
-    item = new JMenuItem(tr("Getting Started"));
-    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "ArduinoIDE_guide_edison"));
-    menu.add(item);
-
-    item = new JMenuItem(tr("Troubleshooting"));
-    item.addActionListener(event -> Base.showReference("reference/Edison_help_files", "Guide_Troubleshooting_Edison"));
     menu.add(item);
 
     menu.addSeparator();
@@ -2119,6 +2099,11 @@ public class Editor extends JFrame implements RunnerListener {
   private void resumeOrCloseSerialMonitor() {
     // Return the serial monitor window to its initial state
     if (serialMonitor != null) {
+      try {
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+          // noop
+      }
       BoardPort boardPort = BaseNoGui.getDiscoveryManager().find(PreferencesData.get("serial.port"));
       long sleptFor = 0;
       while (boardPort == null && sleptFor < MAX_TIME_AWAITING_FOR_RESUMING_SERIAL_MONITOR) {

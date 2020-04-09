@@ -35,26 +35,49 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.File;
 import java.util.*;
 
-public abstract class ContributedPlatform extends DownloadableContribution {
+public class ContributedPlatform extends DownloadableContribution {
 
-  public abstract String getName();
+  private String url;
+  private String version;
+  private long size;
+  private String archiveFileName;
+  private String name;
+  private String category;
+  private String architecture;
+  private String checksum;
+  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
+  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
+  private ContributedHelp help;
+  private boolean installed;
+  private File installedFolder;
+  private boolean builtIn;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+  private ContributedPackage parentPackage;
 
-  public abstract String getCategory();
+  public String getUrl() { return url; }
 
-  public abstract void setCategory(String category);
+  public String getVersion() { return version; }
 
-  public abstract String getArchitecture();
+  public long getSize() { return size; }
+
+  public String getArchiveFileName() { return archiveFileName; }
+
+  public String getName() { return name; }
+
+  public String getCategory() { return category; }
+
+  public void setCategory(String category) { this.category = category; }
+
+  public String getArchitecture() { return architecture; }
 
   @Override
-  public abstract String getChecksum();
+  public String getChecksum() { return checksum; }
 
-  public abstract List<ContributedToolReference> getToolsDependencies();
+  public List<ContributedToolReference> getToolsDependencies() { return toolsDependencies; }
 
-  public abstract List<ContributedBoard> getBoards();
+  public List<ContributedBoard> getBoards() { return boards; }
 
-  public abstract ContributedHelp getHelp();
-
-  private boolean installed;
+  public ContributedHelp getHelp() { return help; }
 
   public boolean isInstalled() {
     return installed;
@@ -64,8 +87,6 @@ public abstract class ContributedPlatform extends DownloadableContribution {
     this.installed = installed;
   }
 
-  private File installedFolder;
-
   public File getInstalledFolder() {
     return installedFolder;
   }
@@ -73,8 +94,6 @@ public abstract class ContributedPlatform extends DownloadableContribution {
   public void setInstalledFolder(File installedFolder) {
     this.installedFolder = installedFolder;
   }
-
-  private boolean builtIn;
 
   public boolean isBuiltIn() {
     return builtIn;
@@ -89,10 +108,6 @@ public abstract class ContributedPlatform extends DownloadableContribution {
     int py = y.isBuiltIn() ? 1 : -1;
     return px - py;
   };
-
-  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
-
-  private ContributedPackage parentPackage;
 
   public List<ContributedTool> getResolvedTools() {
     return new LinkedList<>(resolvedToolReferences.values());

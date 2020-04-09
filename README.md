@@ -50,8 +50,8 @@ and David A. Mellis.
 Arduino uses
 [GNU avr-gcc toolchain](https://gcc.gnu.org/wiki/avr-gcc),
 [GCC ARM Embedded toolchain](https://launchpad.net/gcc-arm-embedded),
-[avr-libc](http://www.nongnu.org/avr-libc/),
-[avrdude](http://www.nongnu.org/avrdude/),
+[avr-libc](https://www.nongnu.org/avr-libc/),
+[avrdude](https://www.nongnu.org/avrdude/),
 [bossac](http://www.shumatech.com/web/products/bossa),
 [openOCD](http://openocd.org/)
 and code from [Processing](https://www.processing.org)

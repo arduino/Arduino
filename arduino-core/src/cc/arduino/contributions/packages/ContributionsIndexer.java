@@ -35,7 +35,6 @@ import cc.arduino.contributions.SignatureVerifier;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
 
 import processing.app.BaseNoGui;
@@ -73,7 +72,7 @@ public class ContributionsIndexer {
     this.builtInHardwareFolder = builtInHardwareFolder;
     this.platform = platform;
     this.signatureVerifier = signatureVerifier;
-    index = new EmptyContributionIndex();
+    index = new ContributionsIndex();
     packagesFolder = new File(preferencesFolder, "packages");
     stagingFolder = new File(preferencesFolder, "staging" + File.separator + "packages");
   }
@@ -208,7 +207,6 @@ public class ContributionsIndexer {
     try {
       inputStream = new FileInputStream(indexFile);
       ObjectMapper mapper = new ObjectMapper();
-      mapper.registerModule(new MrBeanModule());
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
       mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

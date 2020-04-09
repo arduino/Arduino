@@ -4,10 +4,11 @@ import cc.arduino.contributions.libraries.LibrariesIndex;
 import cc.arduino.utils.MultiStepProgress;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import processing.app.BaseNoGui;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
@@ -38,13 +39,13 @@ public class GzippedJsonDownloaderTest {
 
   @Test
   public void testJsonDownload() throws Exception {
+    BaseNoGui.initPlatform();
     new GZippedJsonDownloader(downloader, new URL("http://downloads.arduino.cc/libraries/library_index.json"),
       new URL("http://downloads.arduino.cc/libraries/library_index.json.gz"))
       .download(tempFile, new MultiStepProgress(1), "", new NoopProgressListener(), true);
 
     InputStream indexIn = new FileInputStream(tempFile);
     ObjectMapper mapper = new ObjectMapper();
-    mapper.registerModule(new MrBeanModule());
     mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
     mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

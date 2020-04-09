@@ -36,7 +36,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.mrbean.MrBeanModule;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.BaseNoGui;
 import processing.app.I18n;
@@ -76,7 +75,7 @@ public class LibrariesIndexer {
   }
 
   public void parseIndex() throws IOException {
-    index = new EmptyLibrariesIndex(); // Fallback
+    index = new LibrariesIndex(); // Fallback
 
     if (!indexFile.exists()) {
       return;
@@ -92,7 +91,6 @@ public class LibrariesIndexer {
     try {
       indexIn = new FileInputStream(file);
       ObjectMapper mapper = new ObjectMapper();
-      mapper.registerModule(new MrBeanModule());
       mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
       mapper.configure(DeserializationFeature.EAGER_DESERIALIZER_FETCH, true);
       mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

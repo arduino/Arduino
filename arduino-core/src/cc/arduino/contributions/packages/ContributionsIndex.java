@@ -38,9 +38,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ContributionsIndex {
+public class ContributionsIndex {
 
-  public abstract List<ContributedPackage> getPackages();
+  private ArrayList<ContributedPackage> packages = new ArrayList<ContributedPackage>();
+  public List<ContributedPackage> getPackages() { return packages; }
 
   public ContributedPackage findPackage(String packageName) {
     for (ContributedPackage pack : getPackages()) {

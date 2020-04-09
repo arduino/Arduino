@@ -33,17 +33,24 @@ import cc.arduino.contributions.DownloadableContribution;
 import processing.app.Platform;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ContributedTool {
+public class ContributedTool {
 
-  public abstract String getName();
-
-  public abstract String getVersion();
-
-  public abstract List<HostDependentDownloadableContribution> getSystems();
-
+  private String name;
+  private String version;
+  private ArrayList<HostDependentDownloadableContribution> systems = new ArrayList<HostDependentDownloadableContribution>();
   private boolean installed;
+  private File installedFolder;
+  private boolean builtIn;
+  private ContributedPackage contributedPackage;
+
+  public String getName() { return name; }
+
+  public String getVersion() { return version; }
+
+  public List<HostDependentDownloadableContribution> getSystems() { return systems; }
 
   public boolean isInstalled() {
     return installed;
@@ -53,8 +60,6 @@ public abstract class ContributedTool {
     this.installed = installed;
   }
 
-  private File installedFolder;
-
   public File getInstalledFolder() {
     return installedFolder;
   }
@@ -63,8 +68,6 @@ public abstract class ContributedTool {
     this.installedFolder = installedFolder;
   }
 
-  private boolean builtIn;
-
   public boolean isBuiltIn() {
     return builtIn;
   }
@@ -72,8 +75,6 @@ public abstract class ContributedTool {
   public void setBuiltIn(boolean builtIn) {
     this.builtIn = builtIn;
   }
-
-  private ContributedPackage contributedPackage;
 
   public ContributedPackage getPackage() {
     return contributedPackage;

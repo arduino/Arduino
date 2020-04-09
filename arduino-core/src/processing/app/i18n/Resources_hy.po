@@ -22,7 +22,7 @@
 # Translators:
 # Cristian Maglie <c.maglie@arduino.cc>, 2016
 # zepyur <jrvezh@yahoo.com>, 2012
-# Levon <deimusmeister@gmail.com>, 2015
+# Levon Poghosyan <deimusmeister@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"

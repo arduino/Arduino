@@ -41,9 +41,9 @@ import static processing.app.helpers.filefilters.OnlyDirs.ONLY_DIRS;
 public class BaseNoGui {
 
   /** Version string to be used for build */
-  public static final int REVISION = 10811;
+  public static final int REVISION = 10813;
   /** Extended version string displayed on GUI */
-  public static final String VERSION_NAME = "1.8.11";
+  public static final String VERSION_NAME = "1.8.13";
   public static final String VERSION_NAME_LONG;
 
   // Current directory to use for relative paths specified on the
@@ -509,7 +509,7 @@ public class BaseNoGui {
     }
   }
 
-  static protected void initPlatform() {
+  static public void initPlatform() {
     try {
       Class<?> platformClass = Class.forName("processing.app.Platform");
       if (OSUtils.isMacOS()) {

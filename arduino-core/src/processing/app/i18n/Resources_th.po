@@ -27,7 +27,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2019-08-12 09:59+0000\n"
+"PO-Revision-Date: 2019-12-06 18:42+0000\n"
 "Last-Translator: Sippawit Thammawiset <sippathamm@gmail.com>\n"
 "Language-Team: Thai (http://www.transifex.com/mbanzi/arduino-ide-15/language/th/)\n"
 "MIME-Version: 1.0\n"
@@ -116,7 +116,7 @@ msgstr "Arduino เวอร์ชันใหม่พร้อมใช้ง�
 #: ../../../../../app/src/cc/arduino/contributions/BuiltInCoreIsNewerCheck.java:96
 #, java-format
 msgid "A newer {0} package is available"
-msgstr ""
+msgstr "มีแพ็กเกจใหม่ {0} ที่พร้อมใช้งาน"
 
 #: ../../../../../app/src/processing/app/Base.java:2307
 msgid "A subfolder of your sketchbook is not a valid library"
@@ -263,11 +263,11 @@ msgstr "Arduino:"
 #: Sketch.java:588
 #, java-format
 msgid "Are you sure you want to delete \"{0}\"?"
-msgstr ""
+msgstr "ต้องการที่จะลบ \"{0}\" หรือไม่?"
 
 #: Sketch.java:587
 msgid "Are you sure you want to delete this sketch?"
-msgstr ""
+msgstr "ต้องการที่จะลบงานนี้หรือไม่?"
 
 #: ../../../processing/app/Base.java:356
 msgid "Argument required for --board"
@@ -317,7 +317,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:264
 msgid "Automatic"
-msgstr ""
+msgstr "อัตโนมัติ"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:474
 msgid "Automatic proxy configuration URL:"
@@ -357,7 +357,7 @@ msgstr "ข้อมูลบอร์ด"
 #: ../../../../../app/src/processing/app/Editor.java:2641
 #, java-format
 msgid "Board at {0} is not available"
-msgstr ""
+msgstr "บอร์ดที่ {0} ไม่พร้อมใช้งาน"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:62
 #, java-format
@@ -503,7 +503,7 @@ msgstr "คอมเมนท์/ยกเลิกคอมเมนท์"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:30
 msgid "Communication"
-msgstr ""
+msgstr "การสื่อสาร"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
@@ -668,11 +668,11 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
-msgstr ""
+msgstr "การประมวลผลข้อมูล"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:35
 msgid "Data Storage"
-msgstr ""
+msgstr "การจัดเก็บข้อมูล"
 
 #: ../../../../../app/src/processing/app/Editor.java:1386
 msgid "Decrease Font Size"
@@ -696,7 +696,7 @@ msgstr "ลบ"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:33
 msgid "Device Control"
-msgstr ""
+msgstr "การควบคุมอุปกรณ์"
 
 #: debug/Uploader.java:199
 msgid ""
@@ -710,7 +710,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:29
 msgid "Display"
-msgstr ""
+msgstr "การแสดงผล"
 
 #: ../../../processing/app/Preferences.java:438
 msgid "Display line numbers"
@@ -1041,7 +1041,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:95
 msgid "Filter your search..."
-msgstr ""
+msgstr "ค้นหา..."
 
 #: FindReplace.java:124 FindReplace.java:127
 msgid "Find"
@@ -1128,20 +1128,20 @@ msgstr "เริ่มต้น"
 msgid ""
 "Global variables use {0} bytes ({2}%%) of dynamic memory, leaving {3} bytes "
 "for local variables. Maximum is {1} bytes."
-msgstr ""
+msgstr "ตัวแปรทั้งหมดใช้ {0} ไบต์ ({2}%%) จากหน่วยความจำไดนามิก {3} ไบต์สำหรับตัวแปรท้องถิ่น สูงสุดคือ {1} ไบต์"
 
 #: ../../../processing/app/Sketch.java:1651
 #, java-format
 msgid "Global variables use {0} bytes of dynamic memory."
-msgstr ""
+msgstr "ตัวแปรทั้งหมดใช้ {0} ไบต์ จากหน่วยความจำไดนามิก"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr "ไปที่บรรทัด..."
+msgstr "ไปบรรทัดที่..."
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "ไปบรรทัดที่..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1236,7 +1236,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
 msgid "Install"
-msgstr ""
+msgstr "ติดตั้ง"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
@@ -1244,7 +1244,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
 msgid "Installed"
-msgstr ""
+msgstr "ที่ติดตั้งแล้ว"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
@@ -1400,7 +1400,7 @@ msgstr ""
 
 #: Sketch.java:282
 msgid "Name for new file:"
-msgstr ""
+msgstr "ตั้งชื่อไฟล์ใหม่:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
@@ -1538,7 +1538,7 @@ msgstr ""
 
 #: EditorToolbar.java:41
 msgid "Open"
-msgstr ""
+msgstr "เปิด"
 
 #: ../../../../../app/src/processing/app/Editor.java:625
 msgid "Open Recent"
@@ -1558,7 +1558,7 @@ msgstr "เปิด..."
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:37
 msgid "Other"
-msgstr ""
+msgstr "อื่น ๆ"
 
 #: Editor.java:563
 msgid "Page Setup"
@@ -1566,7 +1566,7 @@ msgstr "ตั้งค่าหน้ากระดาษ"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:25
 msgid "Partner"
-msgstr ""
+msgstr "พาร์ทเนอร์"
 
 #: ../../../processing/app/forms/PasswordAuthorizationDialog.java:44
 msgid "Password:"
@@ -1624,7 +1624,7 @@ msgstr ""
 
 #: ../../../processing/app/Editor.java:718
 msgid "Port"
-msgstr "พอร์ท"
+msgstr "พอร์ต"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:491
 msgid "Port number:"
@@ -1779,7 +1779,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
-msgstr ""
+msgstr "ปลดออก"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
@@ -1880,7 +1880,7 @@ msgstr "ส่ง"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:32
 msgid "Sensors"
-msgstr ""
+msgstr "เซนเซอร์"
 
 #: EditorToolbar.java:41 EditorToolbar.java:46 Editor.java:669
 msgid "Serial Monitor"
@@ -1949,7 +1949,7 @@ msgstr "แสดงข้อความเอาต์พุตขณะที
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:31
 msgid "Signal Input/Output"
-msgstr ""
+msgstr "สัญญาณอินพุต/เอาต์พุต"
 
 #: Editor.java:607
 msgid "Sketch"
@@ -1986,7 +1986,7 @@ msgstr ""
 msgid ""
 "Sketch uses {0} bytes ({2}%%) of program storage space. Maximum is {1} "
 "bytes."
-msgstr ""
+msgstr "ไฟล์งานใช้ {0} ไบต์ ({2}%%) จากพื้นที่ว่างโปรแกรม สูงสุดคือ {1} ไบต์"
 
 #: Editor.java:510
 msgid "Sketchbook"
@@ -2212,7 +2212,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:34
 msgid "Timing"
-msgstr ""
+msgstr "เวลา"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:94
 #, java-format
@@ -2225,7 +2225,7 @@ msgstr "เครื่องมือ"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:97
 msgid "Topic"
-msgstr ""
+msgstr "หัวข้อ"
 
 #: Editor.java:1070
 msgid "Troubleshooting"
@@ -2238,7 +2238,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/ui/InstallerJDialog.java:109
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:105
 msgid "Type"
-msgstr ""
+msgstr "ชนิด"
 
 #: ../../../processing/app/Editor.java:2507
 msgid "Type board password to access its console"
@@ -2290,7 +2290,7 @@ msgstr ""
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:38
 msgid "Uncategorized"
-msgstr ""
+msgstr "ไม่มีหมวดหมู่"
 
 #: Editor.java:1133 Editor.java:1355
 msgid "Undo"
@@ -2320,7 +2320,7 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownUpdatableLibrariesItem.java:27
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/DropdownUpdatableCoresItem.java:27
 msgid "Updatable"
-msgstr ""
+msgstr "ให้อัปเดท"
 
 #: UpdateCheck.java:111
 msgid "Update"
@@ -2375,7 +2375,7 @@ msgstr ""
 
 #: Sketch.java:1622
 msgid "Uploading..."
-msgstr ""
+msgstr "กำลังอัปโหลด..."
 
 #: Editor.java:1269
 msgid "Use Selection For Find"
@@ -2749,7 +2749,7 @@ msgstr ""
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
 msgid "{0} on {1}"
-msgstr ""
+msgstr "{0} บน {1}"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:78
 #, java-format

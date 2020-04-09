@@ -1,7 +1,7 @@
 /*
  * This file is part of Arduino.
  *
- * Copyright 2014 Arduino LLC (http://www.arduino.cc/)
+ * Copyright 2020 Arduino LLC (http://www.arduino.cc/)
  *
  * Arduino is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,16 +27,32 @@
  * the GNU General Public License.
  */
 
-package cc.arduino.contributions.packages;
+package processing.app;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
-class EmptyContributionIndex extends ContributionsIndex {
-  List<ContributedPackage> packs = new ArrayList<>();
+import org.junit.Test;
 
-  @Override
-  public List<ContributedPackage> getPackages() {
-    return packs;
+public class SerialTest {
+  class NullSerial extends Serial {
+    public NullSerial() throws SerialException {
+      super("none", 0, 'n', 0, 0, false, false);
+    }
+
+    @Override
+    protected void message(char[] chars, int length) {
+      output += new String(chars, 0, length);
+    }
+
+    String output = "";
+  }
+
+  @Test
+  public void testSerialUTF8Decoder() throws Exception {
+    NullSerial s = new NullSerial();
+    // https://github.com/arduino/Arduino/issues/9808
+    String testdata = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789°0123456789";
+    s.processSerialEvent(testdata.getBytes());
+    assertEquals(s.output, testdata);
   }
 }
