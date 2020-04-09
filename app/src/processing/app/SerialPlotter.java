@@ -190,8 +190,7 @@ public class SerialPlotter extends AbstractMonitor {
         
       g.setTransform(AffineTransform.getTranslateInstance(xOffset, 0));
       float xstep = (float) (bounds.width - xOffset - xPadding) / (float) buffer_capacity;
-      int legendLength = graphs.size() * 10 + (graphs.size() - 1) * 3;
-
+ 
       // draw legend
       int legendXOffset = 0;
       for(int i = 0; i < graphs.size(); ++i) {
@@ -298,13 +297,16 @@ public class SerialPlotter extends AbstractMonitor {
 
   private void setNewBufferCapacity(int capacity){
     if(buffer_capacity != capacity) {
-      if(capacity > BUFFER_CAPACITY_MAX) capacity = BUFFER_CAPACITY_MAX;
-      else if(capacity < BUFFER_CAPACITY_MIN) capacity = BUFFER_CAPACITY_MIN;
-      buffer_capacity = capacity;
+      
+      if(capacity > BUFFER_CAPACITY_MAX) buffer_capacity = BUFFER_CAPACITY_MAX;
+      else if(capacity < BUFFER_CAPACITY_MIN) buffer_capacity = BUFFER_CAPACITY_MIN;
+      else buffer_capacity = capacity;
+      
       for(int i = 0; i < graphs.size(); i++) {
-        graphs.get(i).buffer.newCapacity(capacity);
+        graphs.get(i).buffer.newCapacity(buffer_capacity);
       }
-      xCount=0;
+
+      xCount = 0;
     }
   }
 
@@ -377,7 +379,7 @@ public class SerialPlotter extends AbstractMonitor {
         }
         if(label != null) {
           if(validLabels >= graphs.size()) {
-            graphs.add(new Graph(validLabels));
+            graphs.add(new Graph(validLabels, BUFFER_CAPACITY_DEFAULT));
           }
           graphs.get(validLabels).label = label;
           validLabels++;
