@@ -398,7 +398,9 @@ public class SerialPlotter extends AbstractMonitor {
   }
 
   protected void onEnableWindow(boolean enable) {
+    textField.setEnabled(enable);
     serialRates.setEnabled(enable);
+    sendButton.setEnabled(enable);
     graphWidth.setEnabled(enable);
   }
 
