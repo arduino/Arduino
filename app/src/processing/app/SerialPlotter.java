@@ -261,9 +261,9 @@ public class SerialPlotter extends AbstractMonitor {
     messageBuffer = new StringBuffer();
     graphs = new ArrayList<>();
 
-    graphWidth.addChangeListener(cl -> {setNewBufferCapacity((int)graphWidth.getValue()); } );
+    graphWidth.addChangeListener(cl -> {commandNewSize((int)graphWidth.getValue()); } );
     
-    clearButton.addActionListener(ae -> {CommandClearGraph();});
+    clearButton.addActionListener(ae -> {commandClearGraph();});
   }
 
   protected void onCreateWindow(Container mainPane) {
@@ -429,10 +429,18 @@ public class SerialPlotter extends AbstractMonitor {
     }
   }
 
-  private void CommandClearGraph()
+  private void commandClearGraph()
   {
     graphs.clear();
     xCount=0;
+  }
+
+  private void commandNewSize(int newSize)
+  {
+    setNewBufferCapacity(newSize);
+    if((int)graphWidth.getValue() != newSize) {
+      graphWidth.setValue(newSize);
+    }
   }
 
   public void message(final String s) {
@@ -463,7 +471,7 @@ public class SerialPlotter extends AbstractMonitor {
         if(parts[i].startsWith("#") && parts[i].length() > 1) {
           String command = parts[i].substring(1, parts[i].length()).trim();
           if("CLEAR".equals(command)) {
-            CommandClearGraph();
+            commandClearGraph();
           }
           else if(command.startsWith("SIZE:")) {
             String[] subString = parts[i].split("[:]+");
@@ -475,9 +483,7 @@ public class SerialPlotter extends AbstractMonitor {
                 // Ignore
               }
             }
-            if((int)graphWidth.getValue() != newSize) {
-              graphWidth.setValue(newSize);
-            }
+            commandNewSize(newSize);
           }
         } else {
             try {
