@@ -263,7 +263,7 @@ public class SerialPlotter extends AbstractMonitor {
 
     graphWidth.addChangeListener(cl -> {setNewBufferCapacity((int)graphWidth.getValue()); } );
     
-    clearButton.addActionListener(ae -> {graphs.clear();});
+    clearButton.addActionListener(ae -> {CommandClearGraph();});
   }
 
   protected void onCreateWindow(Container mainPane) {
@@ -396,7 +396,7 @@ public class SerialPlotter extends AbstractMonitor {
     sendButton.addActionListener(listener);
   }
 
-  public void appyPreferences() {
+  public void applyPreferences() {
     // Apply line endings.
     if (PreferencesData.get("serial.line_ending") != null) {
       lineEndings.setSelectedIndex(PreferencesData.getInteger("serial.line_ending"));
@@ -429,6 +429,12 @@ public class SerialPlotter extends AbstractMonitor {
     }
   }
 
+  private void CommandClearGraph()
+  {
+    graphs.clear();
+    xCount=0;
+  }
+
   public void message(final String s) {
     messageBuffer.append(s);
     while (true) {
@@ -457,7 +463,7 @@ public class SerialPlotter extends AbstractMonitor {
         if(parts[i].startsWith("#") && parts[i].length() > 1) {
           String command = parts[i].substring(1, parts[i].length()).trim();
           if("CLEAR".equals(command)) {
-            graphs.clear();
+            CommandClearGraph();
           }
           else if(command.startsWith("SIZE:")) {
             String[] subString = parts[i].split("[:]+");
@@ -522,14 +528,14 @@ public class SerialPlotter extends AbstractMonitor {
         
         if(value != null) {
           if(validParts >= graphs.size()) {
-            graphs.add(new Graph(validParts));
+            graphs.add(new Graph(validParts, buffer_capacity));
           }
           graphs.get(validParts).buffer.add(value);
           validParts++;
         }
         if(label != null) {
           if(validLabels >= graphs.size()) {
-            graphs.add(new Graph(validLabels));
+            graphs.add(new Graph(validLabels, buffer_capacity));
           }
           graphs.get(validLabels).label = label;
           validLabels++;
@@ -538,9 +544,10 @@ public class SerialPlotter extends AbstractMonitor {
         else if(validLabels > validParts) validParts = validLabels;
       }
     }
-
+    }
     SwingUtilities.invokeLater(SerialPlotter.this::repaint);
   }
+
 
   public void open() throws Exception {
     super.open();
