@@ -1994,7 +1994,7 @@ msgstr "El programa es Sólo Lectura"
 msgid ""
 "Sketch too big; see http://www.arduino.cc/en/Guide/Troubleshooting#size for "
 "tips on reducing it."
-msgstr "Programa muy grando: visite http://www.arduino.cc/en/Guide/Troubleshooting#size para ver cómo reducirlo."
+msgstr "Programa muy grande: visite http://www.arduino.cc/en/Guide/Troubleshooting#size para ver cómo reducirlo."
 
 #: ../../../processing/app/Sketch.java:1639
 #, java-format
