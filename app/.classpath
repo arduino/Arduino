@@ -25,7 +25,7 @@
 	<classpathentry kind="lib" path="lib/batik-xml-1.8.jar"/>
 	<classpathentry kind="lib" path="lib/bcpg-jdk15on-152.jar"/>
 	<classpathentry kind="lib" path="lib/bcprov-jdk15on-152.jar"/>
-	<classpathentry kind="lib" path="lib/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.14.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-1.20.jar"/>
 	<classpathentry kind="lib" path="lib/commons-exec-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
@@ -52,6 +52,6 @@
 	<classpathentry kind="lib" path="test-lib/fest-util-1.1.2.jar"/>
 	<classpathentry kind="lib" path="test-lib/jcip-annotations-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jtouchbar-1.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.9.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
