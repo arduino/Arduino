@@ -280,11 +280,17 @@ public class SerialUploader extends Uploader {
   private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
 
     TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    if (targetPlatform == null) {
+      throw new RunnerException(tr("Gould not load platform for programmer. Ensure programmer selection is correct for the board."), false);
+    }
     String programmer = PreferencesData.get("programmer");
     if (programmer.contains(":")) {
       String[] split = programmer.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
       programmer = split[1];
+    }
+    if (programmer == null) {
+      throw new RunnerException(tr("Gould not load programmer. Ensure programmer selection is correct for the board."), false);
     }
 
     PreferencesMap prefs = PreferencesData.getMap();
