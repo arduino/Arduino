@@ -107,7 +107,7 @@ public class BaseNoGui {
   public static void initArduinoCoreService() {
     try {
       ArduinoCore core = new ArduinoCore();
-      arduinoCoreInstance = core.init(getSettingsFolder(), getSketchbookFolder());
+      arduinoCoreInstance = core.init();
     } catch (Exception e) {
       e.printStackTrace();
     }
