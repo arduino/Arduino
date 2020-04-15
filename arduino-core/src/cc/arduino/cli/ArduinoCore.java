@@ -90,29 +90,7 @@ public class ArduinoCore {
     // async = ArduinoCoreGrpc.newStub(channel);
   }
 
-  public void setDataDir(File dataDir) {
-    settingsBlocking
-        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
-            .setJsonData("{ \"data\": \"" + dataDir.getAbsolutePath() + "\" }") //
-            .build());
-    File downloadsDir = new File(dataDir, "staging");
-    settingsBlocking
-        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
-            .setJsonData("{ \"downloads\": \"" + downloadsDir.getAbsolutePath()
-                         + "\" }") //
-            .build());
-  }
-
-  public void setSketchbookDir(File dataDir) {
-    settingsBlocking
-        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
-            .setJsonData("{ \"user\": \"" + dataDir.getAbsolutePath() + "\" }") //
-            .build());
-  }
-
-  public ArduinoCoreInstance init(File dataDir, File sketchbookDir) {
-    setDataDir(dataDir);
-    setSketchbookDir(sketchbookDir);
+  public ArduinoCoreInstance init() {
     Iterator<InitResp> resp = coreBlocking.init(InitReq.getDefaultInstance());
     Instance instance = null;
     while (resp.hasNext()) {
@@ -131,6 +109,6 @@ public class ArduinoCore {
         instance = r.getInstance();
       }
     }
-    return new ArduinoCoreInstance(instance, coreBlocking);
+    return new ArduinoCoreInstance(instance, coreBlocking, settingsBlocking);
   }
 }

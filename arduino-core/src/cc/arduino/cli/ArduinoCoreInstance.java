@@ -31,6 +31,7 @@ package cc.arduino.cli;
 
 import static processing.app.I18n.tr;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -63,20 +64,60 @@ import cc.arduino.cli.commands.Lib.LibrarySearchResp;
 import cc.arduino.cli.commands.Lib.LibraryUninstallReq;
 import cc.arduino.cli.commands.Lib.LibraryUninstallResp;
 import cc.arduino.cli.commands.Lib.SearchedLibrary;
+import cc.arduino.cli.settings.SettingsOuterClass;
+import cc.arduino.cli.settings.SettingsGrpc.SettingsBlockingStub;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import io.grpc.StatusException;
 import io.grpc.StatusRuntimeException;
+import processing.app.BaseNoGui;
 
 public class ArduinoCoreInstance {
 
   private Instance instance;
   private ArduinoCoreBlockingStub stub;
+  private SettingsBlockingStub settings;
 
   public ArduinoCoreInstance(Instance instance,
-                             ArduinoCoreBlockingStub blocking) {
+                             ArduinoCoreBlockingStub core,
+                             SettingsBlockingStub settings) {
     this.instance = instance;
-    this.stub = blocking;
+    this.stub = core;
+    this.settings = settings;
+  }
+
+  public void updateSettingFromPreferences() throws StatusException {
+    setDataDir(BaseNoGui.getSettingsFolder());
+    setSketchbookDir(BaseNoGui.getSketchbookFolder());
+    rescan();
+  }
+
+  public void setDataDir(File dataDir) {
+    settings
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"data\": \"" + dataDir.getAbsolutePath() + "\" }") //
+            .build());
+    File downloadsDir = new File(dataDir, "staging");
+    settings
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"downloads\": \"" + downloadsDir.getAbsolutePath()
+                         + "\" }") //
+            .build());
+  }
+
+  public void setSketchbookDir(File dataDir) {
+    System.out.println("SKETCHBOOK: "+dataDir.getAbsolutePath());
+    settings
+        .setValue(SettingsOuterClass.Value.newBuilder().setKey("directories") //
+            .setJsonData("{ \"user\": \"" + dataDir.getAbsolutePath() + "\" }") //
+            .build());
+  }
+
+  public void setProxyUrl(String url) {
+    settings.setValue(SettingsOuterClass.Value.newBuilder() //
+        .setKey("network") //
+        .setJsonData("{ \"proxy\": \"" + url + "\" }") //
+        .build());
   }
 
   public void boardDetails(String fqbn) throws StatusException {
