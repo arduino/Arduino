@@ -29,7 +29,6 @@
 
 package cc.arduino.cli;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -40,9 +39,9 @@ import cc.arduino.cli.commands.Commands.InitResp;
 import cc.arduino.cli.commands.Common.Instance;
 import cc.arduino.cli.settings.SettingsGrpc;
 import cc.arduino.cli.settings.SettingsGrpc.SettingsBlockingStub;
-import cc.arduino.cli.settings.SettingsOuterClass;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusException;
 import processing.app.BaseNoGui;
 import processing.app.debug.MessageSiphon;
 import processing.app.helpers.ProcessUtils;
@@ -90,7 +89,7 @@ public class ArduinoCore {
     // async = ArduinoCoreGrpc.newStub(channel);
   }
 
-  public ArduinoCoreInstance init() {
+  public ArduinoCoreInstance init() throws StatusException {
     Iterator<InitResp> resp = coreBlocking.init(InitReq.getDefaultInstance());
     Instance instance = null;
     while (resp.hasNext()) {
@@ -109,6 +108,8 @@ public class ArduinoCore {
         instance = r.getInstance();
       }
     }
-    return new ArduinoCoreInstance(instance, coreBlocking, settingsBlocking);
+    ArduinoCoreInstance core = new ArduinoCoreInstance(instance, coreBlocking, settingsBlocking);
+    core.updateSettingFromPreferences();
+    return core;
   }
 }
