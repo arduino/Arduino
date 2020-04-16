@@ -36,8 +36,11 @@ import org.junit.Test;
 import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class CustomProxySelectorTest {
 
@@ -58,6 +61,8 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(Proxy.NO_PROXY, proxy);
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertFalse(proxyURI.isPresent());
   }
 
   @Test
@@ -67,6 +72,8 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(ProxySelector.getDefault().select(uri).get(0), proxy);
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertFalse(proxyURI.isPresent());
   }
 
   @Test
@@ -77,6 +84,9 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy.example.com", 8080)), proxy);
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("http://proxy.example.com:8080/", proxyURI.get().toString());
   }
 
   @Test
@@ -93,6 +103,10 @@ public class CustomProxySelectorTest {
     PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(null, 8080, uri.toURL().getProtocol(), "ciao", "");
     assertEquals(authentication.getUserName(), "auto");
     assertEquals(String.valueOf(authentication.getPassword()), "autopassword");
+
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("http://auto:autopassword@proxy.example.com:8080/", proxyURI.get().toString());
   }
 
   @Test
@@ -103,6 +117,10 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("proxy.example.com", 8080)), proxy);
+
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("socks://proxy.example.com:8080/", proxyURI.get().toString());
   }
 
   @Test
@@ -113,6 +131,8 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(Proxy.NO_PROXY, proxy);
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertFalse(proxyURI.isPresent());
   }
 
   @Test
@@ -123,6 +143,10 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("4.5.6.7", 8080)), proxy);
+
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("http://4.5.6.7:8080/", proxyURI.get().toString());
   }
 
   @Test
@@ -133,6 +157,8 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(new URL("http://www.intranet.domain.com/ciao").toURI());
 
     assertEquals(Proxy.NO_PROXY, proxy);
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(new URL("http://www.intranet.domain.com/ciao").toURI());
+    assertFalse(proxyURI.isPresent());
   }
 
   @Test
@@ -146,6 +172,10 @@ public class CustomProxySelectorTest {
     Proxy proxy = proxySelector.getProxyFor(uri);
 
     assertEquals(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8080)), proxy);
+
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("http://localhost:8080/", proxyURI.get().toString());
   }
 
   @Test
@@ -165,5 +195,9 @@ public class CustomProxySelectorTest {
     PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(null, 8080, uri.toURL().getProtocol(), "ciao", "");
     assertEquals(authentication.getUserName(), "username");
     assertEquals(String.valueOf(authentication.getPassword()), "pwd");
+
+    Optional<URI> proxyURI = proxySelector.getProxyURIFor(uri);
+    assertTrue(proxyURI.isPresent());
+    assertEquals("http://username:pwd@localhost:8080/", proxyURI.get().toString());
   }
 }

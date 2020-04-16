@@ -29,15 +29,32 @@
 
 package cc.arduino.net;
 
-import cc.arduino.Constants;
-import org.apache.commons.compress.utils.IOUtils;
-
-import javax.script.*;
 import java.io.IOException;
-import java.net.*;
+import java.net.Authenticator;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import javax.script.Invocable;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import org.apache.commons.compress.utils.IOUtils;
+
+import cc.arduino.Constants;
 
 public class CustomProxySelector {
 
@@ -46,6 +63,56 @@ public class CustomProxySelector {
   public CustomProxySelector(Map<String, String> preferences) {
     this.preferences = preferences;
     clearPreviousAuthenticator();
+  }
+
+  public Optional<URI> getProxyURIFor(URI uri) throws URISyntaxException {
+    String auth = "";
+    String user = preferences.getOrDefault(Constants.PREF_PROXY_USERNAME, "");
+    if (!user.isEmpty()) {
+      String pass = preferences.getOrDefault(Constants.PREF_PROXY_PASSWORD, "");
+      auth = user + ":" + pass + "@";
+    }
+    String host, port, proto;
+
+    switch (preferences.get(Constants.PREF_PROXY_TYPE)) {
+    default:
+      return Optional.empty();
+
+    case Constants.PROXY_TYPE_NONE:
+      return Optional.empty();
+
+    case Constants.PROXY_TYPE_MANUAL:
+      host = preferences.get(Constants.PREF_PROXY_MANUAL_HOSTNAME);
+      port = preferences.get(Constants.PREF_PROXY_MANUAL_PORT);
+      proto = preferences.get(Constants.PREF_PROXY_MANUAL_TYPE).toLowerCase();
+      break;
+
+    case Constants.PROXY_TYPE_AUTO:
+      String pac = preferences.getOrDefault(Constants.PREF_PROXY_PAC_URL, "");
+      if (pac.isEmpty()) {
+        return Optional.empty();
+      }
+
+      try {
+        String proxyConfigs = pacProxy(pac, uri);
+        System.out.println(proxyConfigs);
+        String proxyConfig = proxyConfigs.split(";")[0];
+        if (proxyConfig.startsWith("DIRECT")) {
+          return Optional.empty();
+        }
+        proto = proxyConfig.startsWith("PROXY ") ? "http" : "socks";
+        proxyConfig = proxyConfig.substring(6);
+        String[] hostPort = proxyConfig.split(":");
+        host = hostPort[0];
+        port = hostPort[1];
+      } catch (Exception e) {
+        e.printStackTrace();
+        return Optional.empty();
+      }
+      break;
+    }
+
+    return Optional.of(new URI(proto + "://" + auth + host + ":" + port + "/"));
   }
 
   public Proxy getProxyFor(URI uri) throws IOException, ScriptException, NoSuchMethodException {
@@ -64,7 +131,7 @@ public class CustomProxySelector {
         return ProxySelector.getDefault().select(uri).get(0);
       }
 
-      return pacProxy(pac, uri);
+      return makeProxyFrom(pacProxy(pac, uri));
     }
 
     if (Constants.PROXY_TYPE_MANUAL.equals(proxyType)) {
@@ -74,7 +141,7 @@ public class CustomProxySelector {
     throw new IllegalStateException("Unable to understand proxy settings");
   }
 
-  private Proxy pacProxy(String pac, URI uri) throws IOException, ScriptException, NoSuchMethodException {
+  private String pacProxy(String pac, URI uri) throws IOException, ScriptException, NoSuchMethodException {
     setAuthenticator(preferences.get(Constants.PREF_PROXY_USERNAME), preferences.get(Constants.PREF_PROXY_PASSWORD));
 
     URLConnection urlConnection = new URL(pac).openConnection();
@@ -105,8 +172,7 @@ public class CustomProxySelector {
       }
     });
     nashorn.eval(pacScript);
-    String proxyConfigs = callFindProxyForURL(uri, nashorn);
-    return makeProxyFrom(proxyConfigs);
+    return callFindProxyForURL(uri, nashorn);
   }
 
   private String callFindProxyForURL(URI uri, ScriptEngine nashorn) throws ScriptException, NoSuchMethodException {
