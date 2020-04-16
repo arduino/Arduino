@@ -34,9 +34,12 @@ import static processing.app.I18n.tr;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.protobuf.ByteString;
 
@@ -68,9 +71,11 @@ import cc.arduino.cli.settings.SettingsOuterClass;
 import cc.arduino.cli.settings.SettingsGrpc.SettingsBlockingStub;
 import cc.arduino.contributions.ProgressListener;
 import cc.arduino.contributions.libraries.ContributedLibraryRelease;
+import cc.arduino.net.CustomProxySelector;
 import io.grpc.StatusException;
 import io.grpc.StatusRuntimeException;
 import processing.app.BaseNoGui;
+import processing.app.PreferencesData;
 
 public class ArduinoCoreInstance {
 
@@ -89,6 +94,13 @@ public class ArduinoCoreInstance {
   public void updateSettingFromPreferences() throws StatusException {
     setDataDir(BaseNoGui.getSettingsFolder());
     setSketchbookDir(BaseNoGui.getSketchbookFolder());
+    try {
+      Optional<URI> proxy = new CustomProxySelector(PreferencesData.getMap())
+          .getProxyURIFor(new URL("https://arduino.cc").toURI());
+      setProxyUrl(proxy.isPresent() ? proxy.get().toString() : "");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     rescan();
   }
 
