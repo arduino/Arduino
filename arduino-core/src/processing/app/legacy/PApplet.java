@@ -17,27 +17,6 @@ public class PApplet {
   public String sketchPath; //folder;
 
   /**
-   * Full name of the Java version (i.e. 1.5.0_11).
-   * Prior to 0125, this was only the first three digits.
-   */
-  public static final String javaVersionName =
-    System.getProperty("java.version");
-
-  /**
-   * Version of Java that's in use, whether 1.1 or 1.3 or whatever,
-   * stored as a float.
-   * <P>
-   * Note that because this is stored as a float, the values may
-   * not be <EM>exactly</EM> 1.3 or 1.4. Instead, make sure you're
-   * comparing against 1.3f or 1.4f, which will have the same amount
-   * of error (i.e. 1.40000001). This could just be a double, but
-   * since Processing only uses floats, it's safer for this to be a float
-   * because there's no good way to specify a double with the preproc.
-   */
-  public static final float javaVersion =
-    new Float(javaVersionName.substring(0, 3)).floatValue();
-
-  /**
    * Current platform in use, one of the
    * PConstants WINDOWS, MACOSX, MACOS9, LINUX or OTHER.
    */
