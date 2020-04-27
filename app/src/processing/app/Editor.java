@@ -676,8 +676,7 @@ public class Editor extends JFrame implements RunnerListener {
 //  Since CTRL+SHIFT+U is not working on iBus keyboard input method
 //  Lets redirect the shorcut for Linux to CTRL+ALT+U
 //  Leaving the preexisting behaviour for Windows & Mac OS
-    String OS = System.getProperty("os.name").toLowerCase();
-    if (OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") >= 0){
+    if (OSUtils.isLinux()) {
       item = newJMenuItemAlt(tr("Upload Using Programmer"), 'U');
     } else {
       item = newJMenuItemShift(tr("Upload Using Programmer"), 'U');
