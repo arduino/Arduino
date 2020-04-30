@@ -57,6 +57,7 @@ public class EditorConsole extends JScrollPane {
 
   private final DefaultStyledDocument document;
   private final JTextPane consoleTextPane;
+  private int firstErrorOffset = -1;
 
   private SimpleAttributeSet stdOutStyle;
   private SimpleAttributeSet stdErrStyle;
@@ -168,21 +169,42 @@ public class EditorConsole extends JScrollPane {
       // ignore the error otherwise this will cause an infinite loop
       // maybe not a good idea in the long run?
     }
+    firstErrorOffset = -1;
   }
 
   public void scrollDown() {
-    getHorizontalScrollBar().setValue(0);
-    getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
+    if (firstErrorOffset >= 0) {
+      try {
+        // Scroll to the first error, making sure that the line above the error
+        // is the first one shown.
+        int offset = Utilities.getPositionAbove(consoleTextPane,
+                                                firstErrorOffset, 0);
+        if (offset < 0)
+          offset = firstErrorOffset;
+        Rectangle rect = consoleTextPane.modelToView(offset);
+        this.getViewport().setViewPosition(new Point(0, rect.y));
+      } catch (BadLocationException e) {
+        // Ignore
+      }
+    } else {
+      getHorizontalScrollBar().setValue(0);
+      getVerticalScrollBar().setValue(getVerticalScrollBar().getMaximum());
+    }
   }
 
   public boolean isEmpty() {
     return document.getLength() == 0;
   }
 
-  public void insertString(String line, SimpleAttributeSet attributes) throws BadLocationException {
+  public void insertString(ConsoleOutputStream from, String line,
+                           SimpleAttributeSet attributes)
+                               throws BadLocationException {
     line = line.replace("\r\n", "\n").replace("\r", "\n");
     int offset = document.getLength();
     document.insertString(offset, line, attributes);
+    if (from == err && firstErrorOffset < 0) {
+      firstErrorOffset = offset;
+    }
   }
 
   public String getText() {

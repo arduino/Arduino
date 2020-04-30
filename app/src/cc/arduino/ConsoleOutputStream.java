@@ -99,7 +99,7 @@ public class ConsoleOutputStream extends ByteArrayOutputStream {
     if (editorConsole != null) {
       SwingUtilities.invokeLater(() -> {
         try {
-          editorConsole.insertString(text, attributes);
+          editorConsole.insertString(this, text, attributes);
         } catch (BadLocationException ble) {
           //ignore
         }
