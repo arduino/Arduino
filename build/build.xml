@@ -183,7 +183,13 @@
   </target>
 
   <target name="subprojects-test">
-    <subant buildpath="../app" target="test"/>
+    <subant buildpath="../app" target="test">
+      <propertyset>
+        <!-- Forward these to subant. Use propertyset/propertyref instead of a direct property so we do not need to specify a value -->
+        <propertyref name="single-test-class"/>
+        <propertyref name="single-test-methods"/>
+      </propertyset>
+    </subant>
   </target>
 
   <!-- - - - - - - - - -->
