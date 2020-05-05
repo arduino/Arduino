@@ -109,7 +109,20 @@
       <fileset dir="test" includes="**/*.pac" />
     </copy>
 
-    <junit printsummary="yes" dir="${work.dir}" fork="true" showoutput="yes" failureproperty="test.failed">
+    <!-- XML and TXT reports will be written here -->
+    <property name="test.reportdir" value="test-bin/results"/>
+    <!-- Summary HTML report will be written here -->
+    <property name="test.htmldir" value="test-bin/results/html"/>
+
+    <!-- Remove the reportdir, so the HTML report only includes tests from this run -->
+    <delete dir="${test.reportdir}" />
+    <mkdir dir="${test.reportdir}"/>
+    <mkdir dir="${test.htmldir}"/>
+
+    <!-- Sanity check: when single-test-methods is set, but single-test-class is not, raise an error -->
+    <fail message="Need single-test-class if single-test-methods is set" if="single-test-methods" unless="single-test-class"/>
+
+    <junit printsummary="yes" dir="${work.dir}" fork="true" showoutput="no" failureproperty="test.failed">
       <jvmarg value="-Djava.library.path=${java.additional.library.path}"/>
       <jvmarg value="-DWORK_DIR=."/>
       <jvmarg value="-ea"/>
@@ -121,15 +134,40 @@
         <path refid="class.path.test"/>
       </classpath>
 
+      <!-- Write XML files (for report-generation) and TXT files (for manual review) for every test class -->
+      <formatter type="plain" />
       <formatter type="xml"/>
+      <!-- Print full details to stdout when running a single test -->
+      <formatter type="plain" usefile="false" if="single-test-class"/>
+      <!-- When running all tests, print details for failing tests and a summary for each test class (printsummary=yes above) -->
+      <formatter type="brief" usefile="false" unless="single-test-class"/>
 
-      <batchtest fork="yes" todir="test-bin">
+      <!-- When both single-test-class and single-test-methods are specified, pass both to unit -->
+      <test name="${single-test-class}" methods="${single-test-methods}" todir="${test.reportdir}" if="single-test-methods"/>
+      <!-- When just single-test-class is specified, omit methods to run the entire class -->
+      <test name="${single-test-class}" todir="${test.reportdir}" if="single-test-class" unless="single-test-methods"/>
+      <!-- When neither are specified, run *all* testcases -->
+      <batchtest fork="yes" todir="${test.reportdir}" unless="single-test-class">
         <fileset dir="test">
           <include name="**/*Test.java"/>
           <exclude name="**/Abstract*.java"/>
         </fileset>
       </batchtest>
     </junit>
+
+    <!-- Convert generated XML reports to browsable HTML -->
+    <junitreport todir="${test.reportdir}">
+      <fileset dir="${test.reportdir}">
+	<include name="TEST-*.xml" />
+      </fileset>
+      <report todir="${test.htmldir}" />
+    </junitreport>
+
+    <!-- Make these paths relative to user.dir, which is the current directory when invoking ant (so the resulting paths are relative to the environment of the user. -->
+    <property name="test.htmldir.display" location="${test.htmldir}" relative="true" basedir="${user.dir}"/>
+    <property name="test.reportdir.display" location="${test.reportdir}" relative="true" basedir="${user.dir}"/>
+    <echo message="Detailed test results can be found in ${test.reportdir.display}"/>
+    <echo message="A browsable HTML summary is generated in ${test.htmldir.display}/index.html"/>
 
     <fail if="test.failed"/>
   </target>
