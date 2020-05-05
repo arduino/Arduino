@@ -35,7 +35,7 @@ import java.io.File;
 
 import org.apache.commons.compress.utils.IOUtils;
 import org.fest.assertions.Assertions;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import processing.app.helpers.OSUtils;
@@ -43,11 +43,11 @@ import processing.app.helpers.PreferencesMap;
 
 public class CommandLineTest {
 
-  File buildPath;
-  File arduinoPath;
+  private static File buildPath;
+  private static File arduinoPath;
 
-  @Before
-  public void findBuildPaths() throws Exception {
+  @BeforeClass
+  public static void findBuildPaths() throws Exception {
     buildPath = new File(System.getProperty("user.dir"));
     while (!new File(buildPath, "build").isDirectory()) {
       buildPath = buildPath.getParentFile();
