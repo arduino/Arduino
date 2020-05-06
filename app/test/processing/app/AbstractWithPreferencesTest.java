@@ -67,6 +67,8 @@ public abstract class AbstractWithPreferencesTest {
     PreferencesData.set("settings.path", settingsDir.toString());
     // Do not read or write the default ~/Arduino sketchbook
     PreferencesData.set("sketchbook.path", sketchbookDir.toString());
+    // Do not perform any update checks
+    PreferencesData.set("update.check", sketchbookDir.toString());
     // Write the defaults, with these changes to file. This allows them
     // to be reloaded when creating a Base instance (see getBaseArgs()
     // below).
