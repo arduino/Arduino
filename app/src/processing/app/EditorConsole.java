@@ -38,19 +38,15 @@ public class EditorConsole extends JScrollPane {
   private static ConsoleOutputStream out;
   private static ConsoleOutputStream err;
 
-  private static synchronized void init(SimpleAttributeSet outStyle, PrintStream outStream, SimpleAttributeSet errStyle, PrintStream errStream) {
-    if (out != null) {
-      return;
+  public static synchronized void setCurrentEditorConsole(EditorConsole console) {
+    if (out == null) {
+      out = new ConsoleOutputStream(console.stdOutStyle, System.out);
+      System.setOut(new PrintStream(out, true));
+
+      err = new ConsoleOutputStream(console.stdErrStyle, System.err);
+      System.setErr(new PrintStream(err, true));
     }
 
-    out = new ConsoleOutputStream(outStyle, outStream);
-    System.setOut(new PrintStream(out, true));
-
-    err = new ConsoleOutputStream(errStyle, errStream);
-    System.setErr(new PrintStream(err, true));
-  }
-
-  public static void setCurrentEditorConsole(EditorConsole console) {
     out.setCurrentEditorConsole(console);
     err.setCurrentEditorConsole(console);
   }
@@ -109,8 +105,6 @@ public class EditorConsole extends JScrollPane {
     setPreferredSize(new Dimension(100, (height * lines)));
     setMinimumSize(new Dimension(100, (height * lines)));
 
-    EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
-
     // Add font size adjustment listeners.
     if (base != null)
       base.addEditorFontResizeListeners(consoleTextPane);
@@ -131,8 +125,10 @@ public class EditorConsole extends JScrollPane {
     // Re-insert console text with the new preferences if there were changes.
     // This assumes that the document has single-child paragraphs (default).
     if (!stdOutStyle.isEqual(stdOutStyleOld) || !stdErrStyle.isEqual(stdOutStyleOld)) {
-      out.setAttibutes(stdOutStyle);
-      err.setAttibutes(stdErrStyle);
+      if (out != null)
+        out.setAttibutes(stdOutStyle);
+      if (err != null)
+        err.setAttibutes(stdErrStyle);
 
       int start;
       for (int end = document.getLength() - 1; end >= 0; end = start - 1) {
