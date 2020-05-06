@@ -186,7 +186,7 @@ public class EditorConsole extends JScrollPane {
   }
 
   public String getText() {
-    return consoleTextPane.getText().trim();
+    return consoleTextPane.getText();
   }
 
 }
