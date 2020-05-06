@@ -45,7 +45,13 @@ import org.junit.Test;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 
-public class CommandLineTest {
+/**
+ * This extends AbstractWithPreferencesTest which initializes part of
+ * the internal Arduino structures. Most of that is not required, but it
+ * also conveniently sets up a settings directory and preferences file,
+ * which we can use here (through getBaseArgs()).
+ */
+public class CommandLineTest extends AbstractWithPreferencesTest {
 
   private static File buildPath;
   private static File arduinoPath;
@@ -81,6 +87,7 @@ public class CommandLineTest {
 
     List<String> args = new ArrayList<String>();
     args.add(arduinoPath.getAbsolutePath());
+    args.addAll(Arrays.asList(getBaseArgs()));
     args.addAll(Arrays.asList(extraArgs));
 
     System.out.println("Running: " + String.join(" ", args));

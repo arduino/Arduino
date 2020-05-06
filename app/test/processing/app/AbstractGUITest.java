@@ -60,7 +60,7 @@ public abstract class AbstractGUITest extends AbstractWithPreferencesTest {
     window = GuiActionRunner.execute(new GuiQuery<ArduinoFrameFixture>() {
       @Override
       protected ArduinoFrameFixture executeInEDT() throws Throwable {
-        return new ArduinoFrameFixture(new Base(new String[0]).editors.get(0));
+        return new ArduinoFrameFixture(createBase().editors.get(0));
       }
     });
   }
