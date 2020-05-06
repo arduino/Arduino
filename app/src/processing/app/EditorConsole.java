@@ -39,8 +39,11 @@ public class EditorConsole extends JScrollPane {
 
   private static ConsoleOutputStream out;
   private static ConsoleOutputStream err;
-  private static int startOfLine = 0;
-  private static int insertPosition = 0;
+  private int startOfLine = 0;
+  private int insertPosition = 0;
+
+  // Regex for linesplitting, see insertString for comments.
+  private static final Pattern newLinePattern = Pattern.compile("([^\r\n]*)([\r\n]*\n)?(\r+)?");
 
   public static synchronized void setCurrentEditorConsole(EditorConsole console) {
     if (out == null) {
@@ -186,17 +189,18 @@ public class EditorConsole extends JScrollPane {
     // Separate the string into content, newlines and lone carriage
     // returns.
     //
-    // Doing so allows lone CRs to return the insertPosition to the
+    // Doing so allows lone CRs to move the insertPosition back to the
     // start of the line to allow overwriting the most recent line (e.g.
     // for a progress bar). Any CR or NL that are immediately followed
     // by another NL are bunched together for efficiency, since these
     // can just be inserted into the document directly and still be
     // correct.
     //
-    // This regex is written so it will necessarily match any string
+    // The regex is written so it will necessarily match any string
     // completely if applied repeatedly. This is important because any
     // part not matched would be silently dropped.
-    Matcher m = Pattern.compile("([^\r\n]*)([\r\n]*\n)?(\r+)?").matcher(str);
+    Matcher m = newLinePattern.matcher(str);
+
     while (m.find()) {
       String content = m.group(1);
       String newlines = m.group(2);
