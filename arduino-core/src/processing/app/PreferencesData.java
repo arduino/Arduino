@@ -50,6 +50,9 @@ public class PreferencesData {
       //ignore
     }
 
+    // Start with a clean slate
+    prefs = new PreferencesMap();
+
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
     try {
