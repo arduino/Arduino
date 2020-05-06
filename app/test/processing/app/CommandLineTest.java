@@ -111,7 +111,7 @@ public class CommandLineTest {
     runArduino(true, true, null, new String[] {
         "--save-prefs",
         "--preferences-file", prefFile.getAbsolutePath(),
-        "--get-pref", // avoids starting the GUI
+        "--version", // avoids starting the GUI
     });
 
     runArduino(true, true, null, new String[] {
