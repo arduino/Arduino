@@ -83,6 +83,8 @@ public class CommandLineTest {
     args.add(arduinoPath.getAbsolutePath());
     args.addAll(Arrays.asList(extraArgs));
 
+    System.out.println("Running: " + String.join(" ", args));
+
     Process pr = rt.exec(args.toArray(new String[0]), null, wd);
     if (output) {
       IOUtils.copy(pr.getInputStream(), System.out);
