@@ -30,6 +30,7 @@
 package processing.app;
 
 import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.core.matcher.DialogMatcher;
 import org.fest.swing.finder.WindowFinder;
 import org.fest.swing.fixture.DialogFixture;
 import org.junit.Test;
@@ -39,6 +40,7 @@ import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 import static org.junit.Assert.assertEquals;
+import static processing.app.I18n.tr;
 
 public class HittingEscapeOnCloseConfirmationDialogTest extends AbstractGUITest {
 
@@ -49,7 +51,8 @@ public class HittingEscapeOnCloseConfirmationDialogTest extends AbstractGUITest 
 
     window.close();
 
-    DialogFixture dialog = WindowFinder.findDialog(JDialog.class).using(window.robot);
+    DialogMatcher matcher = DialogMatcher.withTitle(tr("Close")).andShowing();
+    DialogFixture dialog = WindowFinder.findDialog(matcher).using(window.robot);
     dialog.pressAndReleaseKey(KeyPressInfo.keyCode(KeyEvent.VK_ESCAPE));
 
     EditorConsole console = (EditorConsole) window.scrollPane("console").component();
