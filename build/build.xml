@@ -166,7 +166,7 @@
     </java>
   </target>
 
-  <target name="test" depends="subprojects-test"/>
+  <target name="test" depends="subprojects-build, subprojects-test"/>
 
   <!-- - - - - - - - - - - - - - - - - - -->
   <!-- Subprojects: Core, App, Libraries -->
