@@ -112,7 +112,8 @@ public class EditorConsole extends JScrollPane {
     EditorConsole.init(stdOutStyle, System.out, stdErrStyle, System.err);
 
     // Add font size adjustment listeners.
-    base.addEditorFontResizeListeners(consoleTextPane);
+    if (base != null)
+      base.addEditorFontResizeListeners(consoleTextPane);
   }
 
   public void applyPreferences() {
