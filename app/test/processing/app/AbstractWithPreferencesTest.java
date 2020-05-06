@@ -29,17 +29,27 @@
 
 package processing.app;
 
-import cc.arduino.files.DeleteFilesOnShutdown;
 import org.junit.Before;
+import org.junit.After;
+
 import processing.app.helpers.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Random;
+import java.util.List;
+import java.util.LinkedList;
 
 public abstract class AbstractWithPreferencesTest {
+  /**
+   * Files or directories that will be deleted after each test.
+   * Subclasses can add files here in @Test or @Before functions.
+   */
+  protected List<File> deleteAfter = new LinkedList<File>();
 
   @Before
   public void init() throws Exception {
-    Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
     BaseNoGui.initPlatform();
     BaseNoGui.getPlatform().init();
     PreferencesData.init(null);
@@ -48,7 +58,13 @@ public abstract class AbstractWithPreferencesTest {
     BaseNoGui.initPackages();
 
     Base.untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
-    DeleteFilesOnShutdown.add(Base.untitledFolder);
+    deleteAfter.add(Base.untitledFolder);
   }
 
+  @After
+  public void cleanup() throws IOException {
+    for (File f : deleteAfter)
+      FileUtils.recursiveDelete(f);
+    deleteAfter = new LinkedList<File>();
+  }
 }
