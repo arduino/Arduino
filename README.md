@@ -40,6 +40,32 @@ Detailed instructions for installation in popular operating systems can be found
 -  [macOS](https://www.arduino.cc/en/Guide/MacOSX)
 -  [Windows](https://www.arduino.cc/en/Guide/Windows)
 
+## Contents of this repository
+
+This repository contains just the code for the Arduino IDE itself.
+Originally, it also contained the AVR and SAM Arduino core and libraries
+(i.e.  the code that is compiled as part of a sketch and runs on the
+actual Arduino device), but those have been moved into their own
+repositories.  They are still automatically downloaded as part of the
+build process and included in built releases, though.
+
+The repositories for these extra parts can be found here:
+-   Non-core specific Libraries are listed under: <https://github.com/arduino-libraries/>
+    (and also a few other places, see `build/build.xml`).
+
+-   The AVR core can be found at: <https://github.com/arduino/ArduinoCore-avr>
+
+-   Other cores are not included by default but installed through the
+    board manager. Their repositories can also be found under
+    <https://github.com/arduino/>.
+
+## Building and testing
+
+Instructions for building the IDE and running unit tests can be found on
+the wiki:
+-   <https://github.com/arduino/Arduino/wiki/Building-Arduino>
+-   <https://github.com/arduino/Arduino/wiki/Testing-Arduino>
+
 ## Credits
 
 Arduino is an open source project, supported by many.
