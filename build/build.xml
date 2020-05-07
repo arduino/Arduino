@@ -237,10 +237,6 @@
 
   <!-- copy library folder -->
   <target name="assemble-libraries" unless="light_bundle">
-    <copy todir="${target.path}/libraries">
-      <fileset dir="../libraries"/>
-    </copy>
-
     <download-library name="Ethernet" version="2.0.0"/>
     <download-library name="GSM" version="1.0.6"/>
     <download-library name="Stepper" version="1.1.3"/>
