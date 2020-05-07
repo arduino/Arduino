@@ -188,6 +188,7 @@
         <!-- Forward these to subant. Use propertyset/propertyref instead of a direct property so we do not need to specify a value -->
         <propertyref name="single-test-class"/>
         <propertyref name="single-test-methods"/>
+        <propertyref name="running-from-github-actions"/>
       </propertyset>
     </subant>
   </target>
