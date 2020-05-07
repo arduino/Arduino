@@ -489,14 +489,9 @@ public class Base {
       }
 
       installKeyboardInputMap();
-      
+
       // Check if there were previously opened sketches to be restored
       restoreSketches();
-
-      // Create a new empty window (will be replaced with any files to be opened)
-      if (editors.isEmpty()) {
-        handleNew();
-      }
 
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
 
@@ -534,13 +529,19 @@ public class Base {
    *
    * @throws Exception
    */
-  protected boolean restoreSketches() throws Exception {
+  protected void restoreSketches() throws Exception {
     // Iterate through all sketches that were open last time p5 was running.
     // If !windowPositionValid, then ignore the coordinates found for each.
-
+    
     // Save the sketch path and window placement for each open sketch
     int count = PreferencesData.getInteger("last.sketch.count");
-    int opened = 0;
+    
+    if(count <= 0) {
+      handleNew();
+      return;
+    }
+    
+    ArrayList<String> options = new ArrayList<>();
     for (int i = count - 1; i >= 0; i--) {
       String path = PreferencesData.get("last.sketch" + i + ".path");
       if (path == null) {
@@ -554,13 +555,46 @@ public class Base {
           // path unchanged.
         }
       }
-      int[] location = retrieveSketchLocation("" + i);
-      // If file did not exist, null will be returned for the Editor
-      if (handleOpen(new File(path), location, nextEditorLocation(), false, false) != null) {
-        opened++;
-      }
+      
+      options.add(path);
     }
-    return (opened > 0);
+    
+    // Show dialog
+    ArrayList<JCheckBox> checkboxList = new ArrayList<JCheckBox>();
+    for (String opt : options) {
+      JCheckBox box = new JCheckBox(opt);
+      box.setActionCommand(opt);
+      box.setSelected(true);
+      checkboxList.add(box);
+    }
+    
+    int chosenOption = JOptionPane.showConfirmDialog(null, checkboxList.toArray(new Object[checkboxList.size()]), tr("Restore last opened Sketchs ?"), JOptionPane.YES_NO_OPTION);
+   
+    if (chosenOption == JOptionPane.YES_OPTION) {
+      
+      Runnable runnable = new Runnable() {
+        public void run() {
+          try {
+            for (int j = 0; j < checkboxList.size(); j++) {
+              JCheckBox checkbox = checkboxList.get(j);
+              if(checkbox.isSelected()) {
+                int[] location = retrieveSketchLocation("" + j);
+                // If file did not exist, null will be returned for the Editor
+                handleOpen(new File(checkbox.getActionCommand()), location, nextEditorLocation(), false, false);
+              }
+            }
+            
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      };
+      
+      new Thread(runnable).start();
+      
+    }else {
+      handleNew();
+    }
   }
 
   /**
