@@ -489,7 +489,7 @@ public class Base {
       }
 
       installKeyboardInputMap();
-
+      
       // Check if there were previously opened sketches to be restored
       restoreSketches();
 
@@ -1086,16 +1086,22 @@ public class Base {
 
   protected void rebuildSketchbookMenu(JMenu menu) {
     menu.removeAll();
-    addSketches(menu, BaseNoGui.getSketchbookFolder());
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        addSketches(menu, BaseNoGui.getSketchbookFolder());
 
-    JMenu librariesMenu = JMenuUtils.findSubMenuWithLabel(menu, "libraries");
-    if (librariesMenu != null) {
-      menu.remove(librariesMenu);
-    }
-    JMenu hardwareMenu = JMenuUtils.findSubMenuWithLabel(menu, "hardware");
-    if (hardwareMenu != null) {
-      menu.remove(hardwareMenu);
-    }
+        JMenu librariesMenu = JMenuUtils.findSubMenuWithLabel(menu, "libraries");
+        if (librariesMenu != null) {
+          menu.remove(librariesMenu);
+        }
+        JMenu hardwareMenu = JMenuUtils.findSubMenuWithLabel(menu, "hardware");
+        if (hardwareMenu != null) {
+          menu.remove(hardwareMenu);
+        }
+      }
+    });
   }
 
   private LibraryList getSortedLibraries() {
@@ -1175,168 +1181,175 @@ public class Base {
     }
 
     menu.removeAll();
-
-    // Add examples from distribution "example" folder
-    JMenuItem label = new JMenuItem(tr("Built-in Examples"));
-    label.setEnabled(false);
-    menu.add(label);
-    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
-    if (found) {
-      menu.addSeparator();
-    }
-
-    // Libraries can come from 4 locations: collect info about all four
-    String boardId = null;
-    String referencedPlatformName = null;
-    String myArch = null;
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
-    if (targetPlatform != null) {
-      myArch = targetPlatform.getId();
-      boardId = BaseNoGui.getTargetBoard().getName();
-      String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
-      if (core.contains(":")) {
-        String refcore = core.split(":")[0];
-        TargetPlatform referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
-        if (referencedPlatform != null) {
-          referencedPlatformName = referencedPlatform.getPreferences().get("name");
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      
+      @Override
+      public void run() {
+     // Add examples from distribution "example" folder
+        JMenuItem label = new JMenuItem(tr("Built-in Examples"));
+        label.setEnabled(false);
+        menu.add(label);
+        boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
+        if (found) {
+          menu.addSeparator();
         }
-      }
-    }
 
-    // Divide the libraries into 7 lists, corresponding to the 4 locations
-    // with the retired IDE libs further divided into their own list, and
-    // any incompatible sketchbook libs further divided into their own list.
-    // The 7th list of "other" libraries should always be empty, but serves
-    // as a safety feature to prevent any library from vanishing.
-    LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
-    LibraryList ideLibs = new LibraryList();
-    LibraryList retiredIdeLibs = new LibraryList();
-    LibraryList platformLibs = new LibraryList();
-    LibraryList referencedPlatformLibs = new LibraryList();
-    LibraryList sketchbookLibs = new LibraryList();
-    LibraryList sketchbookIncompatibleLibs = new LibraryList();
-    LibraryList otherLibs = new LibraryList();
-    for (UserLibrary lib : allLibraries) {
-      // Get the library's location - used for sorting into categories
-      Location location = lib.getLocation();
-      // Is this library compatible?
-      List<String> arch = lib.getArchitectures();
-      boolean compatible;
-      if (myArch == null || arch == null || arch.contains("*")) {
-        compatible = true;
-      } else {
-        compatible = arch.contains(myArch);
-      }
-      // IDE Libaries (including retired)
-      if (location == Location.IDE_BUILTIN) {
-        if (compatible) {
-          // only compatible IDE libs are shown
-          if (lib.getTypes().contains("Retired")) {
-            retiredIdeLibs.add(lib);
-          } else {
-            ideLibs.add(lib);
+        // Libraries can come from 4 locations: collect info about all four
+        String boardId = null;
+        String referencedPlatformName = null;
+        String myArch = null;
+        TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+        if (targetPlatform != null) {
+          myArch = targetPlatform.getId();
+          boardId = BaseNoGui.getTargetBoard().getName();
+          String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
+          if (core.contains(":")) {
+            String refcore = core.split(":")[0];
+            TargetPlatform referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
+            if (referencedPlatform != null) {
+              referencedPlatformName = referencedPlatform.getPreferences().get("name");
+            }
           }
         }
-      // Platform Libraries
-      } else if (location == Location.CORE) {
-        // all platform libs are assumed to be compatible
-        platformLibs.add(lib);
-      // Referenced Platform Libraries
-      } else if (location == Location.REFERENCED_CORE) {
-        // all referenced platform libs are assumed to be compatible
-        referencedPlatformLibs.add(lib);
-      // Sketchbook Libraries (including incompatible)
-      } else if (location == Location.SKETCHBOOK) {
-        if (compatible) {
-          // libraries promoted from sketchbook (behave as builtin)
-          if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
-              && lib.getArchitectures().contains("*")) {
-            ideLibs.add(lib);
+
+        // Divide the libraries into 7 lists, corresponding to the 4 locations
+        // with the retired IDE libs further divided into their own list, and
+        // any incompatible sketchbook libs further divided into their own list.
+        // The 7th list of "other" libraries should always be empty, but serves
+        // as a safety feature to prevent any library from vanishing.
+        LibraryList allLibraries = BaseNoGui.librariesIndexer.getInstalledLibraries();
+        LibraryList ideLibs = new LibraryList();
+        LibraryList retiredIdeLibs = new LibraryList();
+        LibraryList platformLibs = new LibraryList();
+        LibraryList referencedPlatformLibs = new LibraryList();
+        LibraryList sketchbookLibs = new LibraryList();
+        LibraryList sketchbookIncompatibleLibs = new LibraryList();
+        LibraryList otherLibs = new LibraryList();
+        for (UserLibrary lib : allLibraries) {
+          // Get the library's location - used for sorting into categories
+          Location location = lib.getLocation();
+          // Is this library compatible?
+          List<String> arch = lib.getArchitectures();
+          boolean compatible;
+          if (myArch == null || arch == null || arch.contains("*")) {
+            compatible = true;
           } else {
-            sketchbookLibs.add(lib);
+            compatible = arch.contains(myArch);
           }
-        } else {
-          sketchbookIncompatibleLibs.add(lib);
+          // IDE Libaries (including retired)
+          if (location == Location.IDE_BUILTIN) {
+            if (compatible) {
+              // only compatible IDE libs are shown
+              if (lib.getTypes().contains("Retired")) {
+                retiredIdeLibs.add(lib);
+              } else {
+                ideLibs.add(lib);
+              }
+            }
+          // Platform Libraries
+          } else if (location == Location.CORE) {
+            // all platform libs are assumed to be compatible
+            platformLibs.add(lib);
+          // Referenced Platform Libraries
+          } else if (location == Location.REFERENCED_CORE) {
+            // all referenced platform libs are assumed to be compatible
+            referencedPlatformLibs.add(lib);
+          // Sketchbook Libraries (including incompatible)
+          } else if (location == Location.SKETCHBOOK) {
+            if (compatible) {
+              // libraries promoted from sketchbook (behave as builtin)
+              if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
+                  && lib.getArchitectures().contains("*")) {
+                ideLibs.add(lib);
+              } else {
+                sketchbookLibs.add(lib);
+              }
+            } else {
+              sketchbookIncompatibleLibs.add(lib);
+            }
+          // Other libraries of unknown type (should never occur)
+          } else {
+            otherLibs.add(lib);
+          }
         }
-      // Other libraries of unknown type (should never occur)
-      } else {
-        otherLibs.add(lib);
-      }
-    }
 
-    // Add examples from libraries
-    if (!ideLibs.isEmpty()) {
-      ideLibs.sort();
-      label = new JMenuItem(tr("Examples for any board"));
-      label.setEnabled(false);
-      menu.add(label);
-    }
-    for (UserLibrary lib : ideLibs) {
-      addSketchesSubmenu(menu, lib);
-    }
+        // Add examples from libraries
+        if (!ideLibs.isEmpty()) {
+          ideLibs.sort();
+          label = new JMenuItem(tr("Examples for any board"));
+          label.setEnabled(false);
+          menu.add(label);
+        }
+        for (UserLibrary lib : ideLibs) {
+          addSketchesSubmenu(menu, lib);
+        }
 
-    if (!retiredIdeLibs.isEmpty()) {
-      retiredIdeLibs.sort();
-      JMenu retired = new JMenu(tr("RETIRED"));
-      menu.add(retired);
-      for (UserLibrary lib : retiredIdeLibs) {
-        addSketchesSubmenu(retired, lib);
-      }
-    }
+        if (!retiredIdeLibs.isEmpty()) {
+          retiredIdeLibs.sort();
+          JMenu retired = new JMenu(tr("RETIRED"));
+          menu.add(retired);
+          for (UserLibrary lib : retiredIdeLibs) {
+            addSketchesSubmenu(retired, lib);
+          }
+        }
 
-    if (!platformLibs.isEmpty()) {
-      menu.addSeparator();
-      platformLibs.sort();
-      label = new JMenuItem(format(tr("Examples for {0}"), boardId));
-      label.setEnabled(false);
-      menu.add(label);
-      for (UserLibrary lib : platformLibs) {
-        addSketchesSubmenu(menu, lib);
-      }
-    }
+        if (!platformLibs.isEmpty()) {
+          menu.addSeparator();
+          platformLibs.sort();
+          label = new JMenuItem(format(tr("Examples for {0}"), boardId));
+          label.setEnabled(false);
+          menu.add(label);
+          for (UserLibrary lib : platformLibs) {
+            addSketchesSubmenu(menu, lib);
+          }
+        }
 
-    if (!referencedPlatformLibs.isEmpty()) {
-      menu.addSeparator();
-      referencedPlatformLibs.sort();
-      label = new JMenuItem(format(tr("Examples for {0}"), referencedPlatformName));
-      label.setEnabled(false);
-      menu.add(label);
-      for (UserLibrary lib : referencedPlatformLibs) {
-        addSketchesSubmenu(menu, lib);
-      }
-    }
+        if (!referencedPlatformLibs.isEmpty()) {
+          menu.addSeparator();
+          referencedPlatformLibs.sort();
+          label = new JMenuItem(format(tr("Examples for {0}"), referencedPlatformName));
+          label.setEnabled(false);
+          menu.add(label);
+          for (UserLibrary lib : referencedPlatformLibs) {
+            addSketchesSubmenu(menu, lib);
+          }
+        }
 
-    if (!sketchbookLibs.isEmpty()) {
-      menu.addSeparator();
-      sketchbookLibs.sort();
-      label = new JMenuItem(tr("Examples from Custom Libraries"));
-      label.setEnabled(false);
-      menu.add(label);
-      for (UserLibrary lib : sketchbookLibs) {
-        addSketchesSubmenu(menu, lib);
-      }
-    }
+        if (!sketchbookLibs.isEmpty()) {
+          menu.addSeparator();
+          sketchbookLibs.sort();
+          label = new JMenuItem(tr("Examples from Custom Libraries"));
+          label.setEnabled(false);
+          menu.add(label);
+          for (UserLibrary lib : sketchbookLibs) {
+            addSketchesSubmenu(menu, lib);
+          }
+        }
 
-    if (!sketchbookIncompatibleLibs.isEmpty()) {
-      sketchbookIncompatibleLibs.sort();
-      JMenu incompatible = new JMenu(tr("INCOMPATIBLE"));
-      MenuScroller.setScrollerFor(incompatible);
-      menu.add(incompatible);
-      for (UserLibrary lib : sketchbookIncompatibleLibs) {
-        addSketchesSubmenu(incompatible, lib);
-      }
-    }
+        if (!sketchbookIncompatibleLibs.isEmpty()) {
+          sketchbookIncompatibleLibs.sort();
+          JMenu incompatible = new JMenu(tr("INCOMPATIBLE"));
+          MenuScroller.setScrollerFor(incompatible);
+          menu.add(incompatible);
+          for (UserLibrary lib : sketchbookIncompatibleLibs) {
+            addSketchesSubmenu(incompatible, lib);
+          }
+        }
 
-    if (!otherLibs.isEmpty()) {
-      menu.addSeparator();
-      otherLibs.sort();
-      label = new JMenuItem(tr("Examples from Other Libraries"));
-      label.setEnabled(false);
-      menu.add(label);
-      for (UserLibrary lib : otherLibs) {
-        addSketchesSubmenu(menu, lib);
+        if (!otherLibs.isEmpty()) {
+          menu.addSeparator();
+          otherLibs.sort();
+          label = new JMenuItem(tr("Examples from Other Libraries"));
+          label.setEnabled(false);
+          menu.add(label);
+          for (UserLibrary lib : otherLibs) {
+            addSketchesSubmenu(menu, lib);
+          }
+        }
       }
-    }
+    });
+    
   }
 
   private static String priorPlatformFolder;
@@ -2486,6 +2499,19 @@ public class Base {
   public Editor getActiveEditor() {
     return activeEditor;
   }
+  
+  public Editor getWaitActiveEditor() {
+    while (getActiveEditor() == null) {
+      try {
+        Thread.sleep(200);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+    return getActiveEditor();
+  }
+  
+
 
   public boolean hasActiveEditor() {
     return activeEditor != null;

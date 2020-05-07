@@ -85,9 +85,7 @@ public class BuiltInCoreIsNewerCheck implements Runnable {
       return;
     }
 
-    while (!base.hasActiveEditor()) {
-      Thread.sleep(100);
-    }
+    base.getWaitActiveEditor();
 
     if (VersionComparator.greaterThan(installedBuiltIn.getParsedVersion(), installedNotBuiltIn.getParsedVersion())) {
       SwingUtilities.invokeLater(() -> {

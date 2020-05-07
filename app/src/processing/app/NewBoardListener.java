@@ -55,13 +55,7 @@ public class NewBoardListener implements PropertyChangeListener, Runnable {
 
   @Override
   public void run() {
-    while (base.getActiveEditor() == null) {
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
+    base.getWaitActiveEditor();
     BaseNoGui.addPropertyChangeListener(this);
     checkForNewBoardAttached();
   }
