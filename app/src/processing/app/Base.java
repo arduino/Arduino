@@ -45,6 +45,8 @@ import cc.arduino.view.SplashScreenHelper;
 import com.github.zafarkhaja.semver.Version;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
@@ -160,6 +162,9 @@ public class Base {
   }
 
   static public void initLogger() {
+
+    LogManager.getLogger(Base.class); // init log4j
+    
     Handler consoleHandler = new ConsoleLogger();
     consoleHandler.setLevel(Level.ALL);
     consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
@@ -1107,14 +1112,20 @@ public class Base {
     });
     menu.add(item);
     menu.addSeparator();
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        // Add a list of all sketches and subfolders
+        boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder());
+        if (sketches) menu.addSeparator();
 
-    // Add a list of all sketches and subfolders
-    boolean sketches = addSketches(menu, BaseNoGui.getSketchbookFolder());
-    if (sketches) menu.addSeparator();
+        // Add each of the subfolders of examples directly to the menu
+        boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
+        if (found) menu.addSeparator();
+      }
+    });
 
-    // Add each of the subfolders of examples directly to the menu
-    boolean found = addSketches(menu, BaseNoGui.getExamplesFolder());
-    if (found) menu.addSeparator();
   }
 
 
@@ -1480,122 +1491,134 @@ public class Base {
 
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
+    
+    SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        // The first custom menu is the "Board" selection submenu
+        JMenu boardMenu = new JMenu(tr("Board"));
+        boardMenu.putClientProperty("removeOnWindowDeactivation", true);
+        MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
 
-    // The first custom menu is the "Board" selection submenu
-    JMenu boardMenu = new JMenu(tr("Board"));
-    boardMenu.putClientProperty("removeOnWindowDeactivation", true);
-    MenuScroller.setScrollerFor(boardMenu).setTopFixedCount(1);
+        boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
+          public void actionPerformed(ActionEvent actionevent) {
+            String filterText = "";
+            String dropdownItem = "";
+            if (actionevent instanceof Event) {
+              Event e = ((Event) actionevent);
+              filterText = e.getPayload().get("filterText").toString();
+              dropdownItem = e.getPayload().get("dropdownItem").toString();
+            }
+            try {
+              openBoardsManager(filterText, dropdownItem);
+            } catch (Exception e) {
+              //TODO show error
+              e.printStackTrace();
+            }
+          }
+        }));
+        boardsCustomMenus.add(boardMenu);
 
-    boardMenu.add(new JMenuItem(new AbstractAction(tr("Boards Manager...")) {
-      public void actionPerformed(ActionEvent actionevent) {
-        String filterText = "";
-        String dropdownItem = "";
-        if (actionevent instanceof Event) {
-          Event e = ((Event) actionevent);
-          filterText = e.getPayload().get("filterText").toString();
-          dropdownItem = e.getPayload().get("dropdownItem").toString();
+        // If there are no platforms installed we are done
+        if (BaseNoGui.packages.size() == 0)
+          return;
+
+        // Separate "Install boards..." command from installed boards
+        boardMenu.add(new JSeparator());
+
+        // Generate custom menus for all platforms
+        for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
+          for (TargetPlatform targetPlatform : targetPackage.platforms()) {
+            for (String customMenuTitle : targetPlatform.getCustomMenus().values()) {
+              JMenu customMenu = new JMenu(tr(customMenuTitle));
+              customMenu.putClientProperty("platform", getPlatformUniqueId(targetPlatform));
+              customMenu.putClientProperty("removeOnWindowDeactivation", true);
+              boardsCustomMenus.add(customMenu);
+            }
+          }
         }
-        try {
-          openBoardsManager(filterText, dropdownItem);
-        } catch (Exception e) {
-          //TODO show error
-          e.printStackTrace();
+
+        List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<>();
+
+        ButtonGroup boardsButtonGroup = new ButtonGroup();
+        Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
+
+        List<JMenu> platformMenus = new ArrayList<>();
+
+        // Cycle through all packages
+        for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
+          // For every package cycle through all platform
+          for (TargetPlatform targetPlatform : targetPackage.platforms()) {
+
+            // Add a title for each platform
+            String platformLabel = targetPlatform.getPreferences().get("name");
+            if (platformLabel == null)
+              platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
+
+            // add an hint that this core lives in sketchbook
+            if (targetPlatform.isInSketchbook())
+              platformLabel += " (in sketchbook)";
+
+            JMenu platformBoardsMenu = new JMenu(platformLabel);
+            MenuScroller.setScrollerFor(platformBoardsMenu);
+            platformMenus.add(platformBoardsMenu);
+
+            // Cycle through all boards of this platform
+            for (TargetBoard board : targetPlatform.getBoards().values()) {
+              if (board.getPreferences().get("hide") != null)
+                continue;
+              
+              try {
+                JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
+                                                                buttonGroupsMap,
+                                                                board, targetPlatform, targetPackage);
+                platformBoardsMenu.add(item);
+                boardsButtonGroup.add(item);
+                
+              } catch (Exception e) {
+                e.printStackTrace();
+              }
+            }
+          }
+        }
+
+        platformMenus.sort((x,y) -> x.getText().compareToIgnoreCase(y.getText()));
+
+        JMenuItem firstBoardItem = null;
+        if (platformMenus.size() == 1) {
+          // When just one platform exists, add the board items directly,
+          // rather than using a submenu
+          for (Component boardItem : platformMenus.get(0).getMenuComponents()) {
+            boardMenu.add(boardItem);
+            if (firstBoardItem == null)
+              firstBoardItem = (JMenuItem)boardItem;
+          }
+        } else {
+          // For multiple platforms, use submenus
+          for (JMenu platformMenu : platformMenus) {
+            if (firstBoardItem == null && platformMenu.getItemCount() > 0)
+              firstBoardItem = platformMenu.getItem(0);
+            boardMenu.add(platformMenu);
+          }
+        }
+
+        if (firstBoardItem == null) {
+          throw new IllegalStateException("No available boards");
+        }
+
+        // If there is no current board yet (first startup, or selected
+        // board no longer defined), select first available board.
+        if (menuItemsToClickAfterStartup.isEmpty()) {
+          menuItemsToClickAfterStartup.add(firstBoardItem);
+        }
+
+        for (JMenuItem menuItemToClick : menuItemsToClickAfterStartup) {
+          menuItemToClick.setSelected(true);
+          menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
         }
       }
-    }));
-    boardsCustomMenus.add(boardMenu);
-
-    // If there are no platforms installed we are done
-    if (BaseNoGui.packages.size() == 0)
-      return;
-
-    // Separate "Install boards..." command from installed boards
-    boardMenu.add(new JSeparator());
-
-    // Generate custom menus for all platforms
-    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
-      for (TargetPlatform targetPlatform : targetPackage.platforms()) {
-        for (String customMenuTitle : targetPlatform.getCustomMenus().values()) {
-          JMenu customMenu = new JMenu(tr(customMenuTitle));
-          customMenu.putClientProperty("platform", getPlatformUniqueId(targetPlatform));
-          customMenu.putClientProperty("removeOnWindowDeactivation", true);
-          boardsCustomMenus.add(customMenu);
-        }
-      }
-    }
-
-    List<JMenuItem> menuItemsToClickAfterStartup = new LinkedList<>();
-
-    ButtonGroup boardsButtonGroup = new ButtonGroup();
-    Map<String, ButtonGroup> buttonGroupsMap = new HashMap<>();
-
-    List<JMenu> platformMenus = new ArrayList<>();
-
-    // Cycle through all packages
-    for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
-      // For every package cycle through all platform
-      for (TargetPlatform targetPlatform : targetPackage.platforms()) {
-
-        // Add a title for each platform
-        String platformLabel = targetPlatform.getPreferences().get("name");
-        if (platformLabel == null)
-          platformLabel = targetPackage.getId() + "-" + targetPlatform.getId();
-
-        // add an hint that this core lives in sketchbook
-        if (targetPlatform.isInSketchbook())
-          platformLabel += " (in sketchbook)";
-
-        JMenu platformBoardsMenu = new JMenu(platformLabel);
-        MenuScroller.setScrollerFor(platformBoardsMenu);
-        platformMenus.add(platformBoardsMenu);
-
-        // Cycle through all boards of this platform
-        for (TargetBoard board : targetPlatform.getBoards().values()) {
-          if (board.getPreferences().get("hide") != null)
-            continue;
-          JMenuItem item = createBoardMenusAndCustomMenus(boardsCustomMenus, menuItemsToClickAfterStartup,
-                  buttonGroupsMap,
-                  board, targetPlatform, targetPackage);
-          platformBoardsMenu.add(item);
-          boardsButtonGroup.add(item);
-        }
-      }
-    }
-
-    platformMenus.sort((x,y) -> x.getText().compareToIgnoreCase(y.getText()));
-
-    JMenuItem firstBoardItem = null;
-    if (platformMenus.size() == 1) {
-      // When just one platform exists, add the board items directly,
-      // rather than using a submenu
-      for (Component boardItem : platformMenus.get(0).getMenuComponents()) {
-        boardMenu.add(boardItem);
-        if (firstBoardItem == null)
-          firstBoardItem = (JMenuItem)boardItem;
-      }
-    } else {
-      // For multiple platforms, use submenus
-      for (JMenu platformMenu : platformMenus) {
-        if (firstBoardItem == null && platformMenu.getItemCount() > 0)
-          firstBoardItem = platformMenu.getItem(0);
-        boardMenu.add(platformMenu);
-      }
-    }
-
-    if (firstBoardItem == null) {
-      throw new IllegalStateException("No available boards");
-    }
-
-    // If there is no current board yet (first startup, or selected
-    // board no longer defined), select first available board.
-    if (menuItemsToClickAfterStartup.isEmpty()) {
-      menuItemsToClickAfterStartup.add(firstBoardItem);
-    }
-
-    for (JMenuItem menuItemToClick : menuItemsToClickAfterStartup) {
-      menuItemToClick.setSelected(true);
-      menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
-    }
+    });
+    
   }
 
   private String getPlatformUniqueId(TargetPlatform platform) {
