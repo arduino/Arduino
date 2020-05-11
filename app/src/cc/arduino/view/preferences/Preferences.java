@@ -135,6 +135,7 @@ public class Preferences extends javax.swing.JDialog {
     checkUpdatesBox = new javax.swing.JCheckBox();
     saveVerifyUploadBox = new javax.swing.JCheckBox();
     accessibleIDEBox = new javax.swing.JCheckBox();
+    checkRestoreSketch = new javax.swing.JCheckBox();
     jLabel1 = new javax.swing.JLabel();
     jLabel2 = new javax.swing.JLabel();
     scaleSpinner = new javax.swing.JSpinner();
@@ -284,6 +285,9 @@ public class Preferences extends javax.swing.JDialog {
 
     accessibleIDEBox.setText(tr("Use accessibility features"));
     checkboxesContainer.add(accessibleIDEBox);
+    
+    checkRestoreSketch.setText(tr("Ask to restore sketches"));
+    checkboxesContainer.add(checkRestoreSketch);
 
     jLabel1.setText(tr("Interface scale:"));
 
@@ -718,6 +722,7 @@ public class Preferences extends javax.swing.JDialog {
   private javax.swing.JButton browseButton;
   private javax.swing.JCheckBox checkUpdatesBox;
   private javax.swing.JCheckBox accessibleIDEBox;
+  private javax.swing.JCheckBox checkRestoreSketch;
   private javax.swing.JPanel checkboxesContainer;
   private javax.swing.JComboBox comboLanguage;
   private javax.swing.JLabel comboLanguageLabel;
@@ -832,6 +837,10 @@ public class Preferences extends javax.swing.JDialog {
     PreferencesData.setBoolean("update.check", checkUpdatesBox.isSelected());
 
     PreferencesData.setBoolean("ide.accessible", accessibleIDEBox.isSelected());
+    
+    if(checkRestoreSketch.isSelected()) {
+      PreferencesData.set("last.sketch.restore", "ask");
+    }
 
     PreferencesData.set("boardsmanager.additional.urls", additionalBoardsManagerField.getText().replace("\r\n", "\n").replace("\r", "\n").replace("\n", ","));
 
@@ -912,6 +921,8 @@ public class Preferences extends javax.swing.JDialog {
     }
 
     accessibleIDEBox.setSelected(PreferencesData.getBoolean("ide.accessible"));
+    
+    checkRestoreSketch.setSelected(PreferencesData.get("last.sketch.restore", "ask").equals("ask"));
 
     saveVerifyUploadBox.setSelected(PreferencesData.getBoolean("editor.save_on_verify"));
 

@@ -168,6 +168,8 @@ public class Base {
 
   static public void initLogger() {
 
+    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
+    
     LogManager.getLogger(Base.class); // init log4j
     
     Handler consoleHandler = new ConsoleLogger();
@@ -215,8 +217,6 @@ public class Base {
 
     BaseNoGui.initLogger();
 
-    initLogger();
-
     BaseNoGui.initPlatform();
 
     BaseNoGui.getPlatform().init();
@@ -234,7 +234,8 @@ public class Base {
     if (parser.isGuiMode()) {
         System.out.println("Set log4j store directory " + BaseNoGui.getSettingsFolder().getAbsolutePath());
     }
-    System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
+    
+    initLogger();
 
     BaseNoGui.checkInstallationFolder();
 
@@ -273,7 +274,7 @@ public class Base {
       splash = new SplashScreenHelper(null);
     }
 
-    splash.splashText(tr("Loading configuration..."));
+    splash.splashText(tr("Loading configuration..."), 10);
 
     BaseNoGui.initVersion();
 
@@ -284,12 +285,12 @@ public class Base {
     untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
     DeleteFilesOnShutdown.add(untitledFolder);
 
-    splash.splashText(tr("Initializing packages..."));
+    splash.splashText(tr("Initializing packages..."), 20);
     BaseNoGui.initPackages();
 
     parser.getUploadPort().ifPresent(BaseNoGui::selectSerialPort);
 
-    splash.splashText(tr("Preparing boards..."));
+    splash.splashText(tr("Preparing boards..."), 30);
 
     if (!isCommandLine()) {
       rebuildBoardsMenu();
@@ -468,7 +469,7 @@ public class Base {
       // No errors exit gracefully
       System.exit(0);
     } else if (parser.isGuiMode()) {
-      splash.splashText(tr("Starting..."));
+      splash.splashText(tr("Starting..."), 80);
 
       for (String path : parser.getFilenames()) {
         // Correctly resolve relative paths
@@ -502,6 +503,8 @@ public class Base {
 
       // Check if there were previously opened sketches to be restored
       restoreSketches();
+      
+      splash.setProgress(90); // last 10% is not predictable, but ide should open fast from here
 
       new Thread(new BuiltInCoreIsNewerCheck(this)).start();
 
@@ -543,6 +546,14 @@ public class Base {
     // Iterate through all sketches that were open last time p5 was running.
     // If !windowPositionValid, then ignore the coordinates found for each.
     
+    String restoreOption = PreferencesData.get("last.sketch.restore", "ask");
+
+    // Always New
+    if(restoreOption.equals("blank")) {
+      handleNew();
+      return;
+    }
+    
     // Save the sketch path and window placement for each open sketch
     int count = PreferencesData.getInteger("last.sketch.count");
     
@@ -551,7 +562,7 @@ public class Base {
       return;
     }
     
-    ArrayList<String> options = new ArrayList<>();
+    ArrayList<File> options = new ArrayList<>();
     for (int i = count - 1; i >= 0; i--) {
       String path = PreferencesData.get("last.sketch" + i + ".path");
       if (path == null) {
@@ -566,20 +577,58 @@ public class Base {
         }
       }
       
-      options.add(path);
+      options.add(new File(path));
     }
     
     // Show dialog
-    ArrayList<JCheckBox> checkboxList = new ArrayList<JCheckBox>();
-    for (String opt : options) {
-      JCheckBox box = new JCheckBox(opt);
-      box.setActionCommand(opt);
+    
+    JPanel restore = new JPanel();
+    restore.setLayout(new BorderLayout());
+    JPanel checkBoxPanel = new JPanel();
+    checkBoxPanel.setBorder(BorderFactory.createTitledBorder(tr("Select to restore")));
+    List<JCheckBox> checkboxList = new LinkedList<>();
+    for (File opt : options) {
+      JCheckBox box = new JCheckBox(opt.getName());
+      box.setActionCommand(opt.getAbsolutePath());
       box.setSelected(true);
       checkboxList.add(box);
+      checkBoxPanel.add(box);
+    }
+    restore.add(checkBoxPanel);
+    JCheckBox alwaysAskCB = new JCheckBox(tr("Always ask"));
+    restore.add(alwaysAskCB, BorderLayout.SOUTH);
+    
+    int chosenOption;
+    
+    if(restoreOption.equals("ask")) {
+      alwaysAskCB.setSelected(true);
+      
+      // Allow set icon on JOptionPane
+      JFrame frame = new JFrame();
+      setIcon(frame);
+
+      chosenOption = JOptionPane.showConfirmDialog(frame, restore, tr("Restore Sketchs ?"), JOptionPane.YES_NO_OPTION);
+       
+    }else { // restoreOption = restore
+      chosenOption = JOptionPane.YES_OPTION;
     }
     
-    int chosenOption = JOptionPane.showConfirmDialog(null, checkboxList.toArray(new Object[checkboxList.size()]), tr("Restore last opened Sketchs ?"), JOptionPane.YES_NO_OPTION);
-   
+    // Save preferences
+    if(alwaysAskCB.isSelected()) {
+      PreferencesData.set("last.sketch.restore", "ask");
+    }else {
+      if(chosenOption == JOptionPane.YES_OPTION)
+        PreferencesData.set("last.sketch.restore", "restore");
+      else {
+        PreferencesData.set("last.sketch.restore", "blank");
+      }
+    }
+    
+    if(chosenOption == JOptionPane.CLOSED_OPTION) {
+      System.err.println("Exiting...");
+      System.exit(0);
+    }
+    
     if (chosenOption == JOptionPane.YES_OPTION) {
       
       Runnable runnable = new Runnable() {
@@ -1832,7 +1881,7 @@ public class Base {
 
     boolean ifound = false;
     for (File subfolder : files) {
-      if (!FileUtils.isSCCSOrHiddenFile(subfolder) && subfolder.isDirectory()
+      if (subfolder.isDirectory() && !FileUtils.isSCCSOrHiddenFile(subfolder) 
           && addSketchesSubmenu(menu, subfolder.getName(), subfolder)) {
         ifound = true;
       }
@@ -2196,7 +2245,7 @@ public class Base {
   /**
    * Give this Frame an icon.
    */
-  static public void setIcon(Frame frame) {
+  static public void setIcon(Window frame) {
     if (OSUtils.isMacOS()) {
       return;
     }
