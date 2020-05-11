@@ -33,6 +33,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,7 +71,7 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
       arduinoPath = new File(buildPath, "build/linux/work/arduino");
     }
     if (OSUtils.isWindows()) {
-      arduinoPath = new File(buildPath, "build/windows/work/arduino.exe");
+      arduinoPath = new File(buildPath, "build/windows/work/arduino_debug.exe");
     }
     if (OSUtils.isMacOS()) {
       arduinoPath = new File(buildPath,
@@ -82,10 +83,20 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     System.out.println("found arduino: " + arduinoPath);
   }
 
+  private void consume(InputStream s) {
+    new Thread(() -> {
+      try {
+        IOUtils.copy(s, System.out);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }).start();
+  }
+
   public Process runArduino(boolean output, boolean success, File wd, String[] extraArgs) throws IOException, InterruptedException {
     Runtime rt = Runtime.getRuntime();
 
-    List<String> args = new ArrayList<String>();
+    List<String> args = new ArrayList<>();
     args.add(arduinoPath.getAbsolutePath());
     args.addAll(Arrays.asList(getBaseArgs()));
     args.addAll(Arrays.asList(extraArgs));
@@ -94,8 +105,8 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
 
     Process pr = rt.exec(args.toArray(new String[0]), null, wd);
     if (output) {
-      IOUtils.copy(pr.getInputStream(), System.out);
-      IOUtils.copy(pr.getErrorStream(), System.out);
+      consume(pr.getInputStream());
+      consume(pr.getErrorStream());
     }
     pr.waitFor();
     if (success)
