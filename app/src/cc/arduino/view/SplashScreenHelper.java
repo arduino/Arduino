@@ -48,6 +48,8 @@ public class SplashScreenHelper {
   private final SplashScreen splash;
   private Rectangle2D.Double splashTextArea;
   private Graphics2D splashGraphics;
+  private int progress = 0;
+  private String text;
 
   public SplashScreenHelper(SplashScreen splash) {
     this.splash = splash;
@@ -58,8 +60,19 @@ public class SplashScreenHelper {
       desktopHints = null;
     }
   }
+  
+  public void setProgress(int progress) {
+    this.progress = progress;
+    splashText(text);
+  }
+  
+  public void splashText(String text, int progress) {
+    this.progress = progress;
+    splashText(text);
+  }
 
   public void splashText(String text) {
+    this.text = text;
     if (splash == null) {
       printText(text);
       return;
@@ -76,9 +89,12 @@ public class SplashScreenHelper {
     eraseLastStatusText();
 
     drawText(text);
+    
+    if(progress > 0) drawProgress();
 
     ensureTextIsDiplayed();
   }
+
 
   private void ensureTextIsDiplayed() {
     synchronized (SplashScreen.class) {
@@ -88,6 +104,14 @@ public class SplashScreenHelper {
     }
   }
 
+
+  private void drawProgress() {
+    splashGraphics.setPaint(new Color(0, 100, 104));
+    splashGraphics.setStroke(new BasicStroke(2));
+    int w = (int)(splashTextArea.getWidth()*(progress/100.0f));
+    splashGraphics.drawLine( (int) splashTextArea.getX(), (int) splashTextArea.getY(),  (int) splashTextArea.getX() + w, (int) splashTextArea.getY());
+  }
+  
   private void drawText(String str) {
     splashGraphics.setPaint(Color.BLACK);
     FontMetrics metrics = splashGraphics.getFontMetrics();
