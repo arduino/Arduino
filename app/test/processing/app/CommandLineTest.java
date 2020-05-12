@@ -32,9 +32,11 @@ package processing.app;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,17 +86,17 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     System.out.println("found arduino: " + arduinoPath);
   }
 
-  private void consume(InputStream s) {
+  private void consume(InputStream s, OutputStream out) {
     new Thread(() -> {
       try {
-        IOUtils.copy(s, System.out);
+        IOUtils.copy(s, out);
       } catch (IOException e) {
         e.printStackTrace();
       }
     }).start();
   }
 
-  public Process runArduino(boolean output, boolean success, File wd, String[] extraArgs) throws IOException, InterruptedException {
+  public Process runArduino(OutputStream output, boolean success, File wd, String[] extraArgs) throws IOException, InterruptedException {
     Runtime rt = Runtime.getRuntime();
 
     List<String> args = new ArrayList<>();
@@ -105,10 +107,8 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     System.out.println("Running: " + String.join(" ", args));
 
     Process pr = rt.exec(args.toArray(new String[0]), null, wd);
-    if (output) {
-      consume(pr.getInputStream());
-      consume(pr.getErrorStream());
-    }
+    consume(pr.getInputStream(), output);
+    consume(pr.getErrorStream(), System.err);
     pr.waitFor();
     if (success)
       assertEquals(0, pr.exitValue());
@@ -118,7 +118,7 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
   @Test
   public void testCommandLineBuildWithRelativePath() throws Exception {
     File wd = new File(buildPath, "build/shared/examples/01.Basics/Blink/");
-    runArduino(true, true, wd, new String[] {
+    runArduino(System.out, true, wd, new String[] {
         "--board", "arduino:avr:uno",
         "--verify", "Blink.ino",
     });
@@ -129,13 +129,13 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     File prefFile = File.createTempFile("test_pref", ".txt");
     prefFile.deleteOnExit();
 
-    runArduino(true, true, null, new String[] {
+    runArduino(System.out, true, null, new String[] {
         "--save-prefs",
         "--preferences-file", prefFile.getAbsolutePath(),
         "--version", // avoids starting the GUI
     });
 
-    runArduino(true, true, null, new String[] {
+    runArduino(System.out, true, null, new String[] {
         "--pref", "test_pref=xxx",
         "--preferences-file", prefFile.getAbsolutePath(),
     });
@@ -143,7 +143,7 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     PreferencesMap prefs = new PreferencesMap(prefFile);
     assertNull("preference should not be saved", prefs.get("test_pref"));
 
-    runArduino(true, true, null, new String[] {
+    runArduino(System.out, true, null, new String[] {
         "--pref", "test_pref=xxx",
         "--preferences-file", prefFile.getAbsolutePath(),
         "--save-prefs",
@@ -155,17 +155,18 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
 
   @Test
   public void testCommandLineVersion() throws Exception {
-    Process pr = runArduino(false, true, null, new String[] {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    runArduino(out, true, null, new String[] {
       "--version",
     });
 
-    Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
-        .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
+    Assertions.assertThat(out.toString())
+        .matches("(?m)Arduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
   }
 
   @Test
   public void testCommandLineMultipleAction() throws Exception {
-    Process pr = runArduino(true, false, null, new String[] {
+    Process pr = runArduino(System.out, false, null, new String[] {
       "--version",
       "--verify",
     });
