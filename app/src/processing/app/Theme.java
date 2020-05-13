@@ -47,6 +47,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,6 +68,9 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import processing.app.Theme.ZippedTheme;
+import processing.app.helpers.FileUtils;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -723,5 +728,32 @@ public class Theme {
     } catch (MalformedURLException | URISyntaxException ex) {
       return null;
     }
+  }
+  
+  /**
+   * Intalll theme in skecthboot 
+   * @param zipTheme
+   */
+  static public void install(File zipTheme) throws IOException{
+    
+    // Validate...
+    ZippedTheme theme = ZippedTheme.load(NAMESPACE_USER, zipTheme);
+    
+    if(theme == null) {
+      throw new IOException(format(tr("Error loading theme: {0}"), zipTheme.getAbsolutePath()));
+    }
+    
+    // Create themes folder.
+    File themesFolder = new File(PreferencesData.get("sketchbook.path"), "theme");
+    if (!themesFolder.exists()) {
+      themesFolder.mkdir();
+    }
+    
+    // Copy
+    File dest = new File(themesFolder, zipTheme.getName());
+    Files.copy(zipTheme.toPath(), dest.toPath(),StandardCopyOption.REPLACE_EXISTING);
+    
+    System.out.println("COPY done: " + dest.getAbsolutePath());
+    
   }
 }

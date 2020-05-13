@@ -40,16 +40,22 @@ import processing.app.PreferencesData;
 import processing.app.Theme;
 import processing.app.Theme.ZippedTheme;
 import processing.app.helpers.FileUtils;
+import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
 import processing.app.legacy.PApplet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class Preferences extends javax.swing.JDialog {
@@ -869,6 +875,22 @@ public class Preferences extends javax.swing.JDialog {
         comboTheme.setSelectedItem(theme);
       }
     }
+    
+    // Allow install new themes.
+    String installItem = "-- " + tr( "Install from Zip" + " --");
+    comboTheme.addItem(installItem);
+    
+    comboTheme.addActionListener(new ActionListener() {
+      
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        Object item = comboTheme.getSelectedItem();
+        if (item != null && item.toString().startsWith(installItem)) {
+          SwingUtilities.invokeLater(() -> comboTheme.getUI().setPopupVisible(comboTheme, false));
+          handleInstallTheme();
+        }
+      }
+    });
 
     Font editorFont = PreferencesData.getFont("editor.font");
     fontSizeField.setText(String.valueOf(editorFont.getSize()));
@@ -974,5 +996,36 @@ public class Preferences extends javax.swing.JDialog {
   private void disableAllProxyFields() {
     autoProxyFieldsSetEnabled(false);
     manualProxyFieldsSetEnabled(false);
+  }
+  
+  
+  public void handleInstallTheme() {
+    
+    JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+    fileChooser.setDialogTitle(tr("Select a zip file containing the theme you'd like to add"));
+    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+    fileChooser.setFileFilter(new FileNameExtensionFilter(tr("ZIP files"), "zip"));
+
+    Dimension preferredSize = fileChooser.getPreferredSize();
+    fileChooser.setPreferredSize(new Dimension(preferredSize.width + 200, preferredSize.height + 200));
+
+    int returnVal = fileChooser.showOpenDialog(this);
+
+    if (returnVal != JFileChooser.APPROVE_OPTION) {
+      return;
+    }
+
+    File sourceFile = fileChooser.getSelectedFile();
+    
+    if (!sourceFile.isDirectory()) {
+      try {
+        
+        Theme.install(sourceFile);
+        
+      } catch (IOException e) {
+        base.getActiveEditor().statusError(e);
+        return;
+      }
+    }
   }
 }
