@@ -40,6 +40,7 @@ import cc.arduino.files.DeleteFilesOnShutdown;
 import cc.arduino.packages.DiscoveryManager;
 import cc.arduino.packages.Uploader;
 import cc.arduino.view.Event;
+import cc.arduino.view.JMenuLazy;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
 import com.github.zafarkhaja.semver.Version;
@@ -71,6 +72,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.*;
 import java.util.logging.Handler;
@@ -90,6 +92,8 @@ import static processing.app.I18n.tr;
  * files and images, etc) that comes from that.
  */
 public class Base {
+  
+  private Logger logger;
 
   private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
@@ -130,7 +134,7 @@ public class Base {
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
   
   // Executor to load / reload menus in backgroud.
-  private Executor menuExecutor = Executors.newCachedThreadPool();
+  private ExecutorService menuExecutor = Executors.newCachedThreadPool();
 
   static public void main(String args[]) throws Exception {
     if (!OSUtils.isWindows()) {
@@ -1176,12 +1180,17 @@ public class Base {
 
   }
 
-
-  protected void rebuildSketchbookMenu(JMenu menu) {
+  protected void rebuildSketchbookMenu(JMenuLazy menu) {
+    
+    // Avoid call twice from "Editor.buildMenuBar"
+    if(menu.isLoading()) return;
+    
+    menu.setLoading(true); // mark as not enabled 
+    
     menu.removeAll();
-
+    
     // Execute in backgroud thread, no need UI thread becouse no rendering needed
-    menuExecutor.execute(() -> {
+    menuExecutor.submit(() -> {
       
         addSketches(menu, BaseNoGui.getSketchbookFolder());
     
@@ -1193,6 +1202,8 @@ public class Base {
         if (hardwareMenu != null) {
           menu.remove(hardwareMenu);
         }
+        
+        SwingUtilities.invokeLater(() -> menu.setLoading(false));
     });
     
   }
@@ -1268,15 +1279,28 @@ public class Base {
     }
   }
 
-  public void rebuildExamplesMenu(JMenu menu) {
+  public void rebuildExamplesMenu(JMenuLazy menu) {
     if (menu == null) {
       return;
     }
-
+    
+    new Throwable().printStackTrace();
+    
+    boolean showDialog = PreferencesData.getBoolean("menu.examples.dialog", true);
+    if(showDialog) {
+      return;
+    }
+    
+    // Avoid call twice from "Editor.buildMenuBar"
+    if(menu.isLoading()) return;
+    
+    menu.setLoading(true);
+    
     menu.removeAll();
     
     // Execute in backgroud thread, no need UI thread becouse no rendering needed
     menuExecutor.execute(() -> {
+      
      // Add examples from distribution "example" folder
         JMenuItem label = new JMenuItem(tr("Built-in Examples"));
         label.setEnabled(false);
@@ -1438,8 +1462,12 @@ public class Base {
             addSketchesSubmenu(menu, lib);
           }
         }
+        
+        SwingUtilities.invokeLater(() -> {
+            menu.setLoading(false);
+        });
     });
-    
+        
   }
 
   private static String priorPlatformFolder;
@@ -1537,7 +1565,7 @@ public class Base {
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
     
-    // Execute in backgroud thread, no need UI thread becouse no rendering needed
+    // Execute in backgroud thread, no need UI thread because no rendering needed
     menuExecutor.execute(() -> {
         // The first custom menu is the "Board" selection submenu
         JMenu boardMenu = new JMenu(tr("Board"));
@@ -1660,6 +1688,7 @@ public class Base {
           menuItemToClick.setSelected(true);
           menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
         }
+        
     });
     
   }

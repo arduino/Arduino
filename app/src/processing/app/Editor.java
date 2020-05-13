@@ -93,6 +93,7 @@ import cc.arduino.packages.MonitorFactory;
 import cc.arduino.packages.Uploader;
 import cc.arduino.packages.uploaders.SerialUploader;
 import cc.arduino.view.GoToLineNumber;
+import cc.arduino.view.JMenuLazy;
 import cc.arduino.view.StubMenuListener;
 import cc.arduino.view.findreplace.FindReplace;
 import jssc.SerialPortException;
@@ -189,8 +190,8 @@ public class Editor extends JFrame implements RunnerListener {
   // these menus are shared so that they needn't be rebuilt for all windows
   // each time a sketch is created, renamed, or moved.
   static JMenu toolbarMenu;
-  static JMenu sketchbookMenu;
-  static JMenu examplesMenu;
+  static JMenuLazy sketchbookMenu;
+  static JMenuLazy examplesMenu;
   static JMenu importMenu;
 
   private static JMenu portMenu;
@@ -600,14 +601,14 @@ public class Editor extends JFrame implements RunnerListener {
     fileMenu.add(recentSketchesMenu);
 
     if (sketchbookMenu == null) {
-      sketchbookMenu = new JMenu(tr("Sketchbook"));
+      sketchbookMenu = new JMenuLazy(tr("Sketchbook"));
       MenuScroller.setScrollerFor(sketchbookMenu);
       base.rebuildSketchbookMenu(sketchbookMenu);
     }
     fileMenu.add(sketchbookMenu);
 
     if (examplesMenu == null) {
-      examplesMenu = new JMenu(tr("Examples"));
+      examplesMenu = new JMenuLazy(tr("Examples"));
       MenuScroller.setScrollerFor(examplesMenu);
       base.rebuildExamplesMenu(examplesMenu);
     }
