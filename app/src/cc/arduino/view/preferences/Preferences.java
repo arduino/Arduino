@@ -1020,7 +1020,12 @@ public class Preferences extends javax.swing.JDialog {
     if (!sourceFile.isDirectory()) {
       try {
         
-        Theme.install(sourceFile);
+        ZippedTheme theme = Theme.install(sourceFile);
+        
+        if(theme != null) {
+          comboTheme.addItem(theme);
+          comboTheme.setSelectedItem(theme);
+        }
         
       } catch (IOException e) {
         base.getActiveEditor().statusError(e);

@@ -734,7 +734,7 @@ public class Theme {
    * Intalll theme in skecthboot 
    * @param zipTheme
    */
-  static public void install(File zipTheme) throws IOException{
+  static public ZippedTheme install(File zipTheme) throws IOException{
     
     // Validate...
     ZippedTheme theme = ZippedTheme.load(NAMESPACE_USER, zipTheme);
@@ -753,7 +753,6 @@ public class Theme {
     File dest = new File(themesFolder, zipTheme.getName());
     Files.copy(zipTheme.toPath(), dest.toPath(),StandardCopyOption.REPLACE_EXISTING);
     
-    System.out.println("COPY done: " + dest.getAbsolutePath());
-    
+    return theme;
   }
 }
