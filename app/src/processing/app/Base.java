@@ -250,13 +250,6 @@ public class Base {
       Theme.init();
       System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
 
-      // Set the look and feel before opening the window
-      try {
-        BaseNoGui.getPlatform().setLookAndFeel();
-      } catch (Exception e) {
-        // ignore
-      }
-
       // Use native popups so they don't look so crappy on osx
       JPopupMenu.setDefaultLightWeightPopupEnabled(false);
     } else {
