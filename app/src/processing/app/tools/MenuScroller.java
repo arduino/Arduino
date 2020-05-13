@@ -289,7 +289,7 @@ public class MenuScroller {
 
     upItem = new MenuScrollItem(MenuIcon.UP, -1);
     downItem = new MenuScrollItem(MenuIcon.DOWN, +1);
-    setScrollCount(scrollCount);
+    this.scrollCount = scrollCount;
     setInterval(interval);
     setTopFixedCount(topFixedCount);
     setBottomFixedCount(bottomFixedCount);
