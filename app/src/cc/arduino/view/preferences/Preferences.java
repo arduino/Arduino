@@ -798,7 +798,10 @@ public class Preferences extends javax.swing.JDialog {
     if (comboTheme.getSelectedIndex() == 0) {
       PreferencesData.set("theme.file", "");
     } else {
-      PreferencesData.set("theme.file", ((ZippedTheme) comboTheme.getSelectedItem()).getKey());
+      Object selectedItem = comboTheme.getSelectedItem();
+      if(selectedItem instanceof ZippedTheme) {
+        PreferencesData.set("theme.file", ((ZippedTheme) selectedItem).getKey());
+      }
     }
 
     String newSizeText = fontSizeField.getText();
