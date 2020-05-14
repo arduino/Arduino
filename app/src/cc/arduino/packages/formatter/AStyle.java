@@ -76,16 +76,18 @@ public class AStyle implements Tool {
 
   @Override
   public void run() {
-    
+
     String originalText = editor.getCurrentTab().getSelectedText();
     boolean selection = true;
-    
+
     // If no selection use all file
-    if(originalText == null || originalText.isEmpty()) {
+    if (originalText == null || originalText.isEmpty()) {
+
       originalText = editor.getCurrentTab().getText();
       selection = false;
+
     }
-    
+
     String formattedText = aStyleInterface.AStyleMain(originalText, formatterConfiguration);
 
     if (formattedText.equals(originalText)) {
@@ -93,7 +95,7 @@ public class AStyle implements Tool {
       return;
     }
 
-    if(selection)
+    if (selection)
       editor.getCurrentTab().setSelectedText(formattedText);
     else
       editor.getCurrentTab().setText(formattedText);
