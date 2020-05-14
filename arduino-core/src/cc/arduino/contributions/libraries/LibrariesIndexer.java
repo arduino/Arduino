@@ -142,7 +142,7 @@ public class LibrariesIndexer {
     priorityComparator = new UserLibraryPriorityComparator(arch);
   }
 
-  public void rescanLibraries() {
+  public synchronized void rescanLibraries() {
     // Clear all installed flags
     installedLibraries.clear();
 

@@ -129,6 +129,7 @@ public class Base {
   // actually used are determined by the preferences, which are shared)
   private List<JMenu> boardsCustomMenus;
   private List<JMenuItem> programmerMenus;
+  private boolean boardsCustomMenusLoading;
 
   private PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
@@ -1284,13 +1285,6 @@ public class Base {
       return;
     }
     
-    new Throwable().printStackTrace();
-    
-    boolean showDialog = PreferencesData.getBoolean("menu.examples.dialog", true);
-    if(showDialog) {
-      return;
-    }
-    
     // Avoid call twice from "Editor.buildMenuBar"
     if(menu.isLoading()) return;
     
@@ -1564,6 +1558,7 @@ public class Base {
 
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
+    boardsCustomMenusLoading = true;
     
     // Execute in backgroud thread, no need UI thread because no rendering needed
     menuExecutor.execute(() -> {
@@ -1689,6 +1684,8 @@ public class Base {
           menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
         }
         
+        boardsCustomMenusLoading = false;
+        
     });
     
   }
@@ -1717,7 +1714,10 @@ public class Base {
         BaseNoGui.selectBoard((TargetBoard) getValue("b"));
         filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
 
-        onBoardOrPortChange();
+        // Avoid concurrency error while loading menus in backgroud thread.
+        // No call onBoardOrPortChange, because this is called in Base Contructor
+        if(!boardsCustomMenusLoading) onBoardOrPortChange();
+        
         rebuildImportMenu(Editor.importMenu);
         rebuildExamplesMenu(Editor.examplesMenu);
         rebuildProgrammerMenu();
