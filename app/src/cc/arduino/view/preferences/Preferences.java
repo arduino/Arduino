@@ -48,14 +48,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class Preferences extends javax.swing.JDialog {

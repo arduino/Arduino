@@ -69,8 +69,6 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import processing.app.Theme.ZippedTheme;
-import processing.app.helpers.FileUtils;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
