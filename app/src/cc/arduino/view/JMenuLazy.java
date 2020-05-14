@@ -34,10 +34,6 @@ public class JMenuLazy extends JMenu {
   public void setLoading(boolean loading) {
     this.loading = loading;
     this.setEnabled(!loading);
-    
-    File dir = new File(BaseNoGui.getContentFile("lib"), "icons/16x16");
-    Icon leafIcon = new ImageIcon(new File(dir, "script.png").getAbsolutePath());
-    this.setIcon(leafIcon);
   }
   
   public boolean isLoading() {
