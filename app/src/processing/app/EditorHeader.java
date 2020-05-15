@@ -271,6 +271,11 @@ public class EditorHeader extends JComponent {
 
       g.setColor(textColor[state]);
       int baseline = (sizeH + fontAscent) / 2;
+      
+      // FIX for OpenJDK 8 and 11 on Linux (GNOME/KDE) (https://github.com/arduino/Arduino/issues/10209)
+      if (OSUtils.isLinux()) {
+        baseline = baseline - 2;
+      }
       //g.drawString(sketch.code[i].name, textLeft, baseline);
       g.drawString(text, textLeft, baseline);
 
