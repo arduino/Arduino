@@ -36,8 +36,7 @@ public class UpdatableLibraryTest {
     LibrariesIndexer indexer = new LibrariesIndexer(index_SD_only);
     BaseNoGui.librariesIndexer = indexer;
     indexer.parseIndex();
-    indexer.setLibrariesFolders(folders);
-    indexer.rescanLibraries();
+    indexer.setLibrariesFoldersAndRescan(folders);
 
     ContributedLibrary sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
@@ -46,7 +45,7 @@ public class UpdatableLibraryTest {
     assertTrue(ContributionsSelfCheck.checkForUpdatableLibraries());
 
     folders.add(new UserLibraryFolder(SD121, Location.SKETCHBOOK));
-    indexer.setLibrariesFolders(folders);
+    indexer.setLibrariesFoldersAndRescan(folders);
 
     sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
@@ -63,8 +62,7 @@ public class UpdatableLibraryTest {
     LibrariesIndexer indexer = new LibrariesIndexer(index_Bridge_only);
     BaseNoGui.librariesIndexer = indexer;
     indexer.parseIndex();
-    indexer.setLibrariesFolders(folders);
-    indexer.rescanLibraries();
+    indexer.setLibrariesFoldersAndRescan(folders);
 
     ContributedLibrary l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
@@ -73,7 +71,7 @@ public class UpdatableLibraryTest {
     assertTrue(ContributionsSelfCheck.checkForUpdatableLibraries());
 
     folders.add(new UserLibraryFolder(Bridge170, Location.SKETCHBOOK));
-    indexer.setLibrariesFolders(folders);
+    indexer.setLibrariesFoldersAndRescan(folders);
 
     l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
