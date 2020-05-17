@@ -60,6 +60,7 @@
   <jre>
     <path>java</path>
     <runtimeBits>32</runtimeBits>
+    <bundledJreAsFallback>true</bundledJreAsFallback>
     <opt>-splash:"%EXEDIR%/lib/splash.png"</opt>
     <opt>-Dsun.java2d.d3d=false</opt>
     <opt>-Djna.nosys=true</opt>

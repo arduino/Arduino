@@ -15,12 +15,18 @@ export CLASSPATH
 LD_LIBRARY_PATH=$APPDIR/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 export LD_LIBRARY_PATH
 
-export PATH="${APPDIR}/java/bin:${PATH}"
-
 export JAVA_TOOL_OPTIONS=`echo $JAVA_TOOL_OPTIONS | sed 's|-javaagent:/usr/share/java/jayatanaag.jar||g'`
 
 JAVA=java
-if [ -x "$APPDIR/java/bin/java" ]; then
+
+#check systemwide java version, prefer Oracle jre
+if [ -x "$(command -v java)" ]; then
+	SYSTEM_OPENJDK=`java -version 2>&1 | grep openjdk`
+fi
+
+if [[ -x "$APPDIR/java/bin/java" && x$SYSTEM_OPENJDK != "x" ]]; then
+  echo "Using bundled Java JRE"
+  export PATH="${APPDIR}/java/bin:${PATH}"
   JAVA=$APPDIR/java/bin/java
 fi
 
