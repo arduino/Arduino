@@ -47,6 +47,7 @@ public class UpdatableLibraryTest {
 
     folders.add(new UserLibraryFolder(SD121, Location.SKETCHBOOK));
     indexer.setLibrariesFolders(folders);
+    indexer.rescanLibraries();
 
     sdLib = indexer.getIndex().getInstalled("SD").get();
     assertTrue("SD lib is installed", sdLib.isLibraryInstalled());
@@ -74,6 +75,7 @@ public class UpdatableLibraryTest {
 
     folders.add(new UserLibraryFolder(Bridge170, Location.SKETCHBOOK));
     indexer.setLibrariesFolders(folders);
+    indexer.rescanLibraries();
 
     l = indexer.getIndex().getInstalled("Bridge").get();
     assertTrue("Bridge lib is installed", l.isLibraryInstalled());
