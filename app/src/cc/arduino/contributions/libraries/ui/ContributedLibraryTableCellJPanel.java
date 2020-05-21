@@ -24,22 +24,25 @@ import processing.app.Theme;
 
 public class ContributedLibraryTableCellJPanel extends JPanel {
 
-  final JButton moreInfoButton;
-  final JButton installButton;
-  final Component installButtonPlaceholder;
-  final JComboBox downgradeChooser;
-  final JComboBox versionToInstallChooser;
-  final JButton downgradeButton;
-  final JPanel buttonsPanel;
-  final JPanel inactiveButtonsPanel;
-  final JLabel statusLabel;
-  final JTextPane description;
-  final TitledBorder titledBorder;
+  protected JButton moreInfoButton;
+  protected JButton installButton;
+  protected Component installButtonPlaceholder;
+  protected JComboBox downgradeChooser;
+  protected JComboBox versionToInstallChooser;
+  protected JButton downgradeButton;
+  protected JPanel buttonsPanel;
+  protected JPanel inactiveButtonsPanel;
+  protected JLabel statusLabel;
+  protected JTextPane description;
+  protected TitledBorder titledBorder;
   private final String moreInfoLbl = tr("More info");
-
-  public ContributedLibraryTableCellJPanel(JTable parentTable, Object value,
-                                           boolean isSelected) {
-    super();
+  
+  public ContributedLibraryTableCellJPanel() {
+    super() ;
+    initComponents();
+  }
+  
+  public void initComponents() {
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     // Actual title set below
@@ -119,6 +122,10 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     add(Box.createVerticalStrut(15));
 
+  }
+  
+public void update(JTable parentTable, Object value, boolean isSelected) {
+    
     ContributedLibraryReleases releases = (ContributedLibraryReleases) value;
 
     // FIXME: happens on macosx, don't know why
