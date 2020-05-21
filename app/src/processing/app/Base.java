@@ -43,15 +43,26 @@ import cc.arduino.view.Event;
 import cc.arduino.view.JMenuLazy;
 import cc.arduino.view.JMenuUtils;
 import cc.arduino.view.SplashScreenHelper;
+
 import com.github.zafarkhaja.semver.Version;
+import com.ricardojlrufino.eventbus.EventBus;
+import com.ricardojlrufino.eventbus.EventBusListener;
+import com.ricardojlrufino.eventbus.EventDispatcher;
+import com.ricardojlrufino.eventbus.EventHandler;
+import com.ricardojlrufino.eventbus.EventMessage;
+import com.ricardojlrufino.eventbus.dispatcher.DebounceEventDispatcher;
+import com.ricardojlrufino.eventbus.dispatcher.SingleThreadEventDispatcher;
+
 import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import processing.app.debug.TargetBoard;
 import processing.app.debug.TargetPackage;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.*;
+import processing.app.helpers.filefilters.ExamplesFilter;
 import processing.app.helpers.filefilters.OnlyDirs;
 import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
@@ -71,13 +82,11 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.List;
 import java.util.Timer;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.*;
 import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,12 +102,12 @@ import static processing.app.I18n.tr;
  */
 public class Base {
   
-  private Logger logger;
-
   private static final int RECENT_SKETCHES_MAX_SIZE = 10;
 
   private static boolean commandLine;
   public static volatile Base INSTANCE;
+  
+  public static Logger log;
 
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
@@ -129,7 +138,6 @@ public class Base {
   // actually used are determined by the preferences, which are shared)
   private List<JMenu> boardsCustomMenus;
   private List<JMenuItem> programmerMenus;
-  private boolean boardsCustomMenusLoading;
 
   private PdeKeywords pdeKeywords;
   private final List<JMenuItem> recentSketchesMenuItems = new LinkedList<>();
@@ -175,13 +183,14 @@ public class Base {
 
     System.setProperty("log4j.dir", BaseNoGui.getSettingsFolder().getAbsolutePath());
     
-    LogManager.getLogger(Base.class); // init log4j
+    log = LogManager.getLogger(Base.class); // init log4j
     
+    // JAVA UTIL LOGS ....
     Handler consoleHandler = new ConsoleLogger();
     consoleHandler.setLevel(Level.ALL);
     consoleHandler.setFormatter(new LogFormatter("%1$tl:%1$tM:%1$tS [%4$7s] %2$s: %5$s%n"));
 
-    Logger globalLogger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    java.util.logging.Logger globalLogger = java.util.logging.Logger.getLogger(java.util.logging.Logger.GLOBAL_LOGGER_NAME);
     globalLogger.setLevel(consoleHandler.getLevel());
 
     // Remove default
@@ -189,7 +198,7 @@ public class Base {
     for(Handler handler : handlers) {
         globalLogger.removeHandler(handler);
     }
-    Logger root = Logger.getLogger("");
+    java.util.logging.Logger root = java.util.logging.Logger.getLogger("");
     handlers = root.getHandlers();
     for(Handler handler : handlers) {
       root.removeHandler(handler);
@@ -197,10 +206,103 @@ public class Base {
 
     globalLogger.addHandler(consoleHandler);
 
-    Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
-    Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
-    Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
+    java.util.logging.Logger.getLogger("cc.arduino.packages.autocomplete").setParent(globalLogger);
+    java.util.logging.Logger.getLogger("br.com.criativasoft.cpluslibparser").setParent(globalLogger);
+    java.util.logging.Logger.getLogger(Base.class.getPackage().getName()).setParent(globalLogger);
 
+  }
+  
+  /**
+   * Configuration of internal events launched by the application.
+   * Only certain types of events will need a specific dispatcher, such as those that need a debounce.
+   * The other types of events do not need a dispatcher, they will use the standard dispatcher {@link SingleThreadEventDispatcher}
+   */
+  public void initEvents() {
+    
+    // Avoids call same method multiple time...
+    EventBus.configDispatcher(UIEvents.MenuBoardSettingsChanged.class, new DebounceEventDispatcher(1000));
+    EventBus.configDispatcher(UIEvents.TriggerFixBoardOrPortChange.class, new DebounceEventDispatcher(200));
+    
+    EventBus.addBusListener(new EventBusListener() {
+      
+      @Override
+      public <E extends EventMessage> void onError(Exception e, E event, EventHandler<E> handler) {
+       
+         BaseNoGui.showWarning("Event Handler Exception", e.getMessage(), e);
+       
+      }
+
+      /**
+       *  Called before the event is "scheduled" to run. It is the responsibility of the dispatcher to accept or not the event.
+       * This method is executed on the same thread as the method that triggered the event, thus allowing tracking.
+       * NOTE: It may be that events here are not actually executed, as they can be ignored by the dispatcher
+       */
+      @Override
+      public <E extends EventMessage> void beforeDispatch(E event, EventHandler<E> handler, EventDispatcher eventDispatcher) {
+        
+//        // Here you can enable to see which methods are launching the events.
+//        if (event instanceof UIEvents.TriggerFixBoardOrPortChange) {
+//            EventBusUtils.printStack(event, handler);
+//        }
+      }
+
+      @Override
+      public <E extends EventMessage> void eventIgnored(E event, EventDispatcher eventDispatcher,String reason) {
+        
+        log.debug("[IGNORED] Event: " + event + ", Reason: '"+reason );
+        
+        if (UIEvents.BoardOrPortChange.class == event.getClass()) {
+           // EventBusUtils.printStack();
+        }
+        
+      }
+      
+    });
+    
+    initEventsHandlers();
+  }
+  
+  public void initEventsHandlers() {
+    
+    // ==== MenuBoardSettingsChanged ====
+    // Custom menus from Board clicked.
+    // This method is also called at the first startup of the menu
+    EventBus.register(UIEvents.MenuBoardSettingsChanged.class, event -> {
+      
+      onBoardOrPortChange();
+      
+    });
+    
+    // There are several places in the IDE that call onBoardOrPortChange indiscriminately, causing poor performance. 
+    // This wind will serve to debounce the method.
+    EventBus.register(UIEvents.TriggerFixBoardOrPortChange.class, event -> {
+      
+      _onBoardOrPortChange();
+      
+    });
+    
+    
+    // Rebuild Menus.
+    EventBus.register(UIEvents.LibraryIndexUpdated.class, event -> {
+      
+      Base.this.rebuildImportMenu(Editor.importMenu);
+      Base.this.rebuildExamplesMenu(Editor.examplesMenu);
+      
+    });
+    
+    // Update PdeKeywords
+    EventBus.register(UIEvents.LibraryIndexUpdated.class, event -> {
+      
+      boolean reload = getPdeKeywords().reloadIfNeed();
+      
+      if (reload) {
+        for (Editor editor : editors) {
+          editor.updateKeywords(getPdeKeywords());
+        }
+      }
+      
+    });
+    
   }
 
   static protected boolean isCommandLine() {
@@ -265,6 +367,9 @@ public class Base {
       // Setup the theme coloring fun
       Theme.init();
       System.setProperty("swing.aatext", PreferencesData.get("editor.antialias", "true"));
+      
+      // Setup event system
+      initEvents();
 
       // Set the look and feel before opening the window
       try {
@@ -308,9 +413,6 @@ public class Base {
 
     // Setup board-dependent variables.
     onBoardOrPortChange();
-
-    pdeKeywords = new PdeKeywords();
-    pdeKeywords.reload();
 
     final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
@@ -554,7 +656,7 @@ public class Base {
     String restoreOption = PreferencesData.get("last.sketch.restore", "ask");
 
     // Always New
-    if(restoreOption.equals("blank")) {
+    if (restoreOption.equals("blank")) {
       handleNew();
       return;
     }
@@ -562,7 +664,7 @@ public class Base {
     // Save the sketch path and window placement for each open sketch
     int count = PreferencesData.getInteger("last.sketch.count");
     
-    if(count <= 0) {
+    if (count <= 0) {
       handleNew();
       return;
     }
@@ -605,7 +707,7 @@ public class Base {
     
     int chosenOption;
     
-    if(restoreOption.equals("ask")) {
+    if (restoreOption.equals("ask")) {
       alwaysAskCB.setSelected(true);
       
       // Allow set icon on JOptionPane
@@ -619,17 +721,17 @@ public class Base {
     }
     
     // Save preferences
-    if(alwaysAskCB.isSelected()) {
+    if (alwaysAskCB.isSelected()) {
       PreferencesData.set("last.sketch.restore", "ask");
     }else {
-      if(chosenOption == JOptionPane.YES_OPTION)
+      if (chosenOption == JOptionPane.YES_OPTION)
         PreferencesData.set("last.sketch.restore", "restore");
       else {
         PreferencesData.set("last.sketch.restore", "blank");
       }
     }
     
-    if(chosenOption == JOptionPane.CLOSED_OPTION) {
+    if (chosenOption == JOptionPane.CLOSED_OPTION) {
       System.err.println("Exiting...");
       System.exit(0);
     }
@@ -641,7 +743,7 @@ public class Base {
           try {
             for (int j = 0; j < checkboxList.size(); j++) {
               JCheckBox checkbox = checkboxList.get(j);
-              if(checkbox.isSelected()) {
+              if (checkbox.isSelected()) {
                 int[] location = retrieveSketchLocation("" + j);
                 // If file did not exist, null will be returned for the Editor
                 handleOpen(new File(checkbox.getActionCommand()), location, nextEditorLocation(), false, false);
@@ -859,7 +961,7 @@ public class Base {
 
       int multiples = index / 26;
 
-      if(multiples > 0){
+      if (multiples > 0){
         newbieName = ((char) ('a' + (multiples-1))) + "" + ((char) ('a' + (index % 26))) + "";
       }else{
         newbieName = ((char) ('a' + index)) + "";
@@ -1184,7 +1286,7 @@ public class Base {
   protected void rebuildSketchbookMenu(JMenuLazy menu) {
     
     // Avoid call twice from "Editor.buildMenuBar"
-    if(menu.isLoading()) return;
+    if (menu.isLoading()) return;
     
     menu.setLoading(true); // mark as not enabled 
     
@@ -1233,10 +1335,7 @@ public class Base {
     addLibraryMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Base.this.handleAddLibrary();
-        BaseNoGui.librariesIndexer.rescanLibraries();
-        Base.this.onBoardOrPortChange();
-        Base.this.rebuildImportMenu(Editor.importMenu);
-        Base.this.rebuildExamplesMenu(Editor.examplesMenu);
+        Base.this.rescanLibraries();
       }
     });
     importMenu.add(addLibraryMenuItem);
@@ -1280,13 +1379,29 @@ public class Base {
     }
   }
 
+  /**
+   * Rescan libraries in backgroud.
+   * Fire: {@link LibraryIndexUpdated}
+   */
+  protected void rescanLibraries() {
+    
+    menuExecutor.execute(new Runnable() {
+      @Override
+      public void run() {
+        BaseNoGui.librariesIndexer.rescanLibraries();
+        EventBus.notify(new UIEvents.LibraryIndexUpdated());
+      }
+    });
+    
+  }
+
   public void rebuildExamplesMenu(JMenuLazy menu) {
     if (menu == null) {
       return;
     }
     
     // Avoid call twice from "Editor.buildMenuBar"
-    if(menu.isLoading()) return;
+    if (menu.isLoading()) return;
     
     menu.setLoading(true);
     
@@ -1465,30 +1580,40 @@ public class Base {
   }
 
   private static String priorPlatformFolder;
-  private static boolean newLibraryImported;
-
+  
+  /**
+   * Trigger: {@link UIEvents.LibraryIndexUpdated} and {@link UIEvents.BoardOrPortChange}
+   */
   public void onBoardOrPortChange() {
-    BaseNoGui.onBoardOrPortChange();
+    EventBus.notify(new UIEvents.TriggerFixBoardOrPortChange());
+  }
 
+  // this will be called from: UIEvents.TriggerFixBoardOrPortChange
+  private void _onBoardOrPortChange() {
+    
     // reload keywords when package/platform changes
     TargetPlatform tp = BaseNoGui.getTargetPlatform();
+    
+    log.debug("BoardOrPortChange : board = {}" , tp.getId());
+    
     if (tp != null) {
       String platformFolder = tp.getFolder().getAbsolutePath();
-      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder) || newLibraryImported) {
-        pdeKeywords = new PdeKeywords();
-        pdeKeywords.reload();
+      if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder)) {
         priorPlatformFolder = platformFolder;
-        newLibraryImported = false;
-        for (Editor editor : editors) {
-          editor.updateKeywords(pdeKeywords);
-        }
+        getPdeKeywords().setNeedReload(true);
       }
     }
-
-    // Update editors status bar
-    for (Editor editor : editors) {
-      editor.onBoardOrPortChange();
-    }
+    
+    // TODO: Here it would be better to load it in the background. 
+    // For some listeners are only interested in changing the board, not in libraries.
+    BaseNoGui.onBoardOrPortChange();
+    
+    // Notify interested parties such as: rebuildExamplesMenu | PdeKeywords.reload()
+    EventBus.notify(new UIEvents.LibraryIndexUpdated());
+    
+    // NOTE Before events: 'for' in editors[i].onBoardOrPortChange();
+    EventBus.notify(new UIEvents.BoardOrPortChange());
+    
   }
 
   public void openLibraryManager(final String filterText, String dropdownItem) {
@@ -1518,10 +1643,8 @@ public class Base {
     // Manager dialog is modal, waits here until closed
 
     //handleAddLibrary();
-    newLibraryImported = true;
+    getPdeKeywords().setNeedReload(true);
     onBoardOrPortChange();
-    rebuildImportMenu(Editor.importMenu);
-    rebuildExamplesMenu(Editor.examplesMenu);
   }
 
   public void openBoardsManager(final String filterText, String dropdownItem) throws Exception {
@@ -1558,8 +1681,7 @@ public class Base {
 
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
-    boardsCustomMenusLoading = true;
-    
+
     // Execute in backgroud thread, no need UI thread because no rendering needed
     menuExecutor.execute(() -> {
         // The first custom menu is the "Board" selection submenu
@@ -1684,8 +1806,6 @@ public class Base {
           menuItemToClick.getAction().actionPerformed(new ActionEvent(this, -1, ""));
         }
         
-        boardsCustomMenusLoading = false;
-        
     });
     
   }
@@ -1711,15 +1831,12 @@ public class Base {
     @SuppressWarnings("serial")
     Action action = new AbstractAction(board.getName()) {
       public void actionPerformed(ActionEvent actionevent) {
+       
         BaseNoGui.selectBoard((TargetBoard) getValue("b"));
+        
         filterVisibilityOfSubsequentBoardMenus(boardsCustomMenus, (TargetBoard) getValue("b"), 1);
 
-        // Avoid concurrency error while loading menus in backgroud thread.
-        // No call onBoardOrPortChange, because this is called in Base Contructor
-        if(!boardsCustomMenusLoading) onBoardOrPortChange();
-        
-        rebuildImportMenu(Editor.importMenu);
-        rebuildExamplesMenu(Editor.examplesMenu);
+        onBoardOrPortChange();
         rebuildProgrammerMenu();
       }
     };
@@ -1743,8 +1860,11 @@ public class Base {
           @SuppressWarnings("serial")
           Action subAction = new AbstractAction(tr(boardCustomMenu.get(customMenuOption))) {
             public void actionPerformed(ActionEvent e) {
+              
               PreferencesData.set("custom_" + menuId, ((List<TargetBoard>) getValue("board")).get(0).getId() + "_" + getValue("custom_menu_option"));
-              onBoardOrPortChange();
+              
+              EventBus.notify(new UIEvents.MenuBoardSettingsChanged(((List<TargetBoard>) getValue("board")).get(0), (String) getValue("custom_menu_option")));
+              
             }
           };
           List<TargetBoard> boards = (List<TargetBoard>) subAction.getValue("board");
@@ -1773,7 +1893,7 @@ public class Base {
 
     return item;
   }
-
+  
   private void filterVisibilityOfSubsequentBoardMenus(List<JMenu> boardsCustomMenus, TargetBoard board,
                                                       int fromIndex) {
     for (int i = fromIndex; i < boardsCustomMenus.size(); i++) {
@@ -1919,7 +2039,22 @@ public class Base {
   }
 
   private boolean addSketchesSubmenu(JMenu menu, UserLibrary lib) {
-    return addSketchesSubmenu(menu, lib.getName(), lib.getInstalledFolder());
+    
+    JMenu submenu = new JMenu(lib.getName());
+    
+    // Compatibility mode: not all community libraries are following the specification, look for common names found.
+    File[] list = lib.getInstalledFolder().listFiles(new ExamplesFilter());
+    
+    // By spec only exist 1 Examples folder, on top level.
+    if (list.length > 0) {
+      if (addSketches(submenu, list[0])) {
+        menu.add(submenu);
+        MenuScroller.setScrollerFor(submenu);
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   private boolean addSketchesSubmenu(JMenu menu, String name, File folder) {
@@ -1984,34 +2119,6 @@ public class Base {
       MenuScroller.setScrollerFor(submenu);
     }
     return found;
-  }
-
-  protected void addLibraries(JMenu menu, LibraryList libs) throws IOException {
-
-    LibraryList list = new LibraryList(libs);
-    list.sort();
-
-    for (UserLibrary lib : list) {
-      @SuppressWarnings("serial")
-      AbstractAction action = new AbstractAction(lib.getName()) {
-        public void actionPerformed(ActionEvent event) {
-          UserLibrary l = (UserLibrary) getValue("library");
-          try {
-            activeEditor.getSketchController().importLibrary(l);
-          } catch (IOException e) {
-            showWarning(tr("Error"), format("Unable to list header files in {0}", l.getSrcFolder()), e);
-          }
-        }
-      };
-      action.putValue("library", lib);
-
-      // Add new element at the bottom
-      JMenuItem item = new JMenuItem(action);
-      item.putClientProperty("library", lib);
-      menu.add(item);
-
-      // XXX: DAM: should recurse here so that library folders can be nested
-    }
   }
 
   /**
@@ -2319,7 +2426,7 @@ public class Base {
     if (!referenceFile.exists())
       referenceFile = new File(referenceFolder, filename + ".html");
 
-    if(referenceFile.exists()){
+    if (referenceFile.exists()){
       openURL(referenceFile.getAbsolutePath());
     }else{
       showWarning(tr("Problem Opening URL"), format(tr("Could not open the URL\n{0}"), referenceFile), null);
@@ -2616,7 +2723,7 @@ public class Base {
       // FIXME error when importing. ignoring :(
     } finally {
       // delete zip created temp folder, if exists
-      newLibraryImported = true;
+      getPdeKeywords().setNeedReload(true);
       FileUtils.recursiveDelete(tmpFolder);
     }
   }
@@ -2651,6 +2758,7 @@ public class Base {
   }
 
   public PdeKeywords getPdeKeywords() {
+    if (pdeKeywords == null) pdeKeywords = new PdeKeywords() ; // make method safe, while load in backgroud..
     return pdeKeywords;
   }
 

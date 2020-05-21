@@ -80,12 +80,11 @@ import javax.swing.TransferHandler;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
 
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 
 import com.jcraft.jsch.JSchException;
+import com.ricardojlrufino.eventbus.EventBus;
 
 import cc.arduino.CompilerProgressListener;
 import cc.arduino.packages.BoardPort;
@@ -105,6 +104,7 @@ import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
+import processing.app.helpers.UIEvents;
 import processing.app.legacy.PApplet;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextArea;
@@ -382,6 +382,25 @@ public class Editor extends JFrame implements RunnerListener {
 
     // default the console output to the last opened editor
     EditorConsole.setCurrentEditorConsole(console);
+    
+    // Init EventBus handlers
+    registerEventBus();
+  }
+
+
+  private void registerEventBus() {
+    
+    EventBus.register(this, UIEvents.BoardOrPortChange.class, event -> {
+      onBoardOrPortChange();
+    });
+
+  }
+  
+  @Override
+  public void dispose() {
+    super.dispose();
+    EventBus.unregisterHandlers(this);
+    EventBus.notify(new UIEvents.EditorClosed());
   }
 
 
@@ -610,7 +629,6 @@ public class Editor extends JFrame implements RunnerListener {
     if (examplesMenu == null) {
       examplesMenu = new JMenuLazy(tr("Examples"));
       MenuScroller.setScrollerFor(examplesMenu);
-      base.rebuildExamplesMenu(examplesMenu);
     }
     fileMenu.add(examplesMenu);
 
@@ -1004,7 +1022,7 @@ public class Editor extends JFrame implements RunnerListener {
 
 
   private void selectSerialPort(String name) {
-    if(portMenu == null) {
+    if (portMenu == null) {
       System.out.println(tr("serialMenu is null"));
       return;
     }
@@ -2167,8 +2185,8 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   public void handleSerial() {
-    if(serialPlotter != null) {
-      if(serialPlotter.isClosed()) {
+    if (serialPlotter != null) {
+      if (serialPlotter.isClosed()) {
         serialPlotter = null;
       } else {
         statusError(tr("Serial monitor not available while plotter is open"));
@@ -2277,8 +2295,8 @@ public class Editor extends JFrame implements RunnerListener {
   }
 
   public void handlePlotter() {
-    if(serialMonitor != null) {
-      if(serialMonitor.isClosed()) {
+    if (serialMonitor != null) {
+      if (serialMonitor.isClosed()) {
         serialMonitor = null;
       } else {
         statusError(tr("Plotter not available while serial monitor is open"));

@@ -674,7 +674,7 @@ public class BaseNoGui {
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    librariesIndexer.setLibrariesFolders(librariesFolders, false);
+    librariesIndexer.setLibrariesFolders(librariesFolders);
     if (getTargetPlatform() != null) {
       librariesIndexer.setArchitecturePriority(getTargetPlatform().getId());
     }

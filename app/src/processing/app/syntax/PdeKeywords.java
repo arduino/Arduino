@@ -107,7 +107,7 @@ public class PdeKeywords {
   
   public boolean reloadIfNeed() {
     
-    if(needReload) {
+    if (needReload) {
       reload();
       return true;
     }else {
@@ -193,7 +193,7 @@ public class PdeKeywords {
   }
 
   private void parseHTMLReferenceFileName(String piece, String keyword) {
-    if(piece != null && keyword != null && !piece.isEmpty()) {
+    if (piece != null && keyword != null && !piece.isEmpty()) {
       String htmlFilename = piece.trim();
       if (htmlFilename.length() > 0) {
         keywordToReference.put(keyword, htmlFilename);
