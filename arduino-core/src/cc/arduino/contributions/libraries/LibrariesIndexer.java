@@ -113,14 +113,14 @@ public class LibrariesIndexer {
     }
   }
 
-  public void setLibrariesFolders(List<UserLibraryFolder> folders) {
-      setLibrariesFolders(folders, false);
+  public void setLibrariesFolders( List<UserLibraryFolder> folders ) {
+      this.librariesFolders = folders;
   }
   
-  public void setLibrariesFolders(List<UserLibraryFolder> folders, boolean rescan) {
-      librariesFolders = folders;
-      if(rescan) rescanLibraries();
-    }
+  public void setLibrariesFoldersAndRescan( List<UserLibraryFolder> folders ) {
+      setLibrariesFolders(folders);
+      rescanLibraries();
+  }
 
   public List<UserLibraryFolder> getLibrariesFolders() {
     return librariesFolders;
