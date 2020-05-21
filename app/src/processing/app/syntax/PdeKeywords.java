@@ -45,6 +45,8 @@ public class PdeKeywords {
 
   private static final Map<String, Integer> KNOWN_TOKEN_TYPES = new HashMap<>();
   private static final Pattern ALPHA = Pattern.compile("\\w");
+  
+  private boolean needReload = true;
 
   static {
     KNOWN_TOKEN_TYPES.put("RESERVED_WORD", TokenTypes.RESERVED_WORD);
@@ -99,6 +101,23 @@ public class PdeKeywords {
       Base.showError("Problem loading keywords", "Could not load keywords.txt,\nplease re-install Arduino.", e);
       System.exit(1);
     }
+    
+    needReload = false;
+  }
+  
+  public boolean reloadIfNeed() {
+    
+    if(needReload) {
+      reload();
+      return true;
+    }else {
+      return false;
+    }
+    
+  }
+  
+  public void setNeedReload(boolean needReload) {
+    this.needReload = needReload;
   }
 
   private void parseKeywordsTxt(File input) throws Exception {
@@ -129,6 +148,7 @@ public class PdeKeywords {
         if (pieces.length >= 3) {
           parseHTMLReferenceFileName(pieces[2], keyword);
         }
+        
         if (pieces.length >= 4) {
           parseRSyntaxTextAreaTokenType(pieces[3], keyword);
         }
@@ -173,9 +193,11 @@ public class PdeKeywords {
   }
 
   private void parseHTMLReferenceFileName(String piece, String keyword) {
-    String htmlFilename = piece.trim();
-    if (htmlFilename.length() > 0) {
-      keywordToReference.put(keyword, htmlFilename);
+    if(piece != null && keyword != null && !piece.isEmpty()) {
+      String htmlFilename = piece.trim();
+      if (htmlFilename.length() > 0) {
+        keywordToReference.put(keyword, htmlFilename);
+      }
     }
   }
 
