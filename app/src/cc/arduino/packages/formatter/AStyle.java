@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.swing.text.BadLocationException;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.Token;
 
 public class AStyle implements Tool {
 
@@ -110,7 +111,11 @@ public class AStyle implements Tool {
         // Calculate offsets from begin and end of each line.
         int fristLineOffset = textArea.getLineStartOffset(lineStart);
         int lastLineOffset = textArea.getLineEndOffset(lineEnd);
-
+        
+        // Avoid multi-line comments
+        fristLineOffset = navigateOffComments(textArea, fristLineOffset); // try caech (invalid selection)
+        lastLineOffset = navigateOffComments(textArea, lastLineOffset); // try caech (invalid selection)
+    
         // inserts change the length, use this to calculate new positios.
         int offLength = FORMAT_OFF.length();
         int onLength = FORMAT_ON.length();
@@ -142,6 +147,33 @@ public class AStyle implements Tool {
     // mark as finished
     editor.statusNotice(tr("Auto Format finished."));
   }
+  
+  private int navigateOffComments(SketchTextArea textArea, int offset) throws BadLocationException {
+
+    Token token = textArea.modelToToken(offset);
+
+    // if line is a multiline comment, go back !!
+    if (token != null && token.getType() == Token.COMMENT_MULTILINE) {
+
+      int lineStart = textArea.getLineOfOffset(offset);
+      token = textArea.getTokenListForLine(lineStart);
+
+      while (token.getType() == Token.COMMENT_MULTILINE) {
+        if (lineStart == 0)
+          break;
+        token = token.getNextToken();
+        if (token == null)
+          token = textArea.getTokenListForLine(--lineStart);
+      }
+
+      return token.getOffset();
+
+    } else {
+      return offset;
+    }
+    
+  }
+  
 
   @Override
   public String getMenuTitle() {

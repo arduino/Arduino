@@ -71,6 +71,11 @@ public class SketchTextAreaFixture extends ComponentFixture {
     driver.selectAll((SketchTextArea) target);
     return this;
   }
+  
+  public SketchTextAreaFixture select(int selectionStart, int selectionEnd) {
+    driver.select((SketchTextArea) target, selectionStart, selectionEnd);
+    return this;
+  }
 
   public int getCaretPosition() {
     return driver.getCaretPosition((SketchTextArea) target);
