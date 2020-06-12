@@ -12,15 +12,15 @@
         {
           "name": "Arduino AVR Boards",
           "architecture": "avr",
-          "version": "1.8.2",
+          "version": "1.8.3",
           "category": "Arduino",
           "help": {
             "online": "http://www.arduino.cc/en/Reference/HomePage"
           },
-          "url": "http://downloads.arduino.cc/cores/avr-1.8.2.tar.bz2",
-          "archiveFileName": "avr-1.8.2.tar.bz2",
-          "checksum": "SHA-256:6213d41c6e91a75ac931527da5b10f2dbe0140c8cc1dd41b06cd4e78b943f41b",
-          "size": "4918242",
+          "url": "http://downloads.arduino.cc/cores/avr-1.8.3.tar.bz2",
+          "archiveFileName": "avr-1.8.3.tar.bz2",
+          "checksum": "SHA-256:de8a9b982477762d3d3e52fc2b682cdd8ff194dc3f1d46f4debdea6a01b33c14",
+          "size": "4941548",
           "boards": [
             {"name": "Arduino Yún"},
             {"name": "Arduino Uno"},
@@ -53,7 +53,7 @@
             {
               "packager": "arduino",
               "name": "avr-gcc",
-              "version": "7.3.0-atmel3.6.1-arduino5"
+              "version": "7.3.0-atmel3.6.1-arduino7"
             },
             {
               "packager": "arduino",
@@ -71,49 +71,49 @@
       "tools": [
         {
           "name": "avr-gcc",
-          "version": "7.3.0-atmel3.6.1-arduino5",
+          "version": "7.3.0-atmel3.6.1-arduino7",
           "systems": [
             {
-              "size": "34462042",
-              "checksum": "SHA-256:f4acd5531c6b82c715e2edfa0aadb13fb718b4095b3ea1aa1f7fbde680069639",
+              "size": "34683056",
+              "checksum": "SHA-256:3903553d035da59e33cff9941b857c3cb379cb0638105dfdf69c97f0acc8e7b5",
               "host": "arm-linux-gnueabihf",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-arm-linux-gnueabihf.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-arm-linux-gnueabihf.tar.bz2"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-arm-linux-gnueabihf.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-arm-linux-gnueabihf.tar.bz2"
             },
             {
-              "size": "39381972",
-              "checksum": "SHA-256:dd9c70190be370a44fb47dab1514de6d8852b861dfa527964b65c740d8d50c10",
+              "size": "38045723",
+              "checksum": "SHA-256:03d322b9df6da17289e9e7c6233c34a8535d9c645c19efc772ba19e56914f339",
               "host": "aarch64-linux-gnu",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-aarch64-pc-linux-gnu.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-aarch64-pc-linux-gnu.tar.bz2"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-aarch64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-aarch64-pc-linux-gnu.tar.bz2"
             },
             {
-              "size": "38492678",
-              "checksum": "SHA-256:f48706317f04452544ab90e75bd1bb193f8af2cb1002f53aa702f27202c1b38f",
+              "size": "36684546",
+              "checksum": "SHA-256:f6ed2346953fcf88df223469088633eb86de997fa27ece117fd1ef170d69c1f8",
               "host": "x86_64-apple-darwin14",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-apple-darwin14.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-apple-darwin14.tar.bz2"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-x86_64-apple-darwin14.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-x86_64-apple-darwin14.tar.bz2"
             },
             {
-              "size": "53727984",
-              "checksum": "SHA-256:6d4a5d089a36e5b5252befc73da204555b49e376ce7577ee19ca7f028b295830",
+              "size": "52519412",
+              "checksum": "SHA-256:a54f64755fff4cb792a1495e5defdd789902a2a3503982e81b898299cf39800e",
               "host": "i686-mingw32",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-w64-mingw32.zip",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-w64-mingw32.zip"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-i686-w64-mingw32.zip",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-i686-w64-mingw32.zip"
             },
             {
-              "size": "38710087",
-              "checksum": "SHA-256:2ff12739d7ed09688d6b3c2c126e8df69b5bda1a07ab558799f0e576571e0e1d",
+              "size": "37176991",
+              "checksum": "SHA-256:954bbffb33545bcdcd473af993da2980bf32e8461ff55a18e0eebc7b2ef69a4c",
               "host": "i686-linux-gnu",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-pc-linux-gnu.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-i686-pc-linux-gnu.tar.bz2"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-i686-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-i686-pc-linux-gnu.tar.bz2"
             },
             {
-              "size": "39114120",
-              "checksum": "SHA-256:3effed8ffa1978b6e4a46f1aa2acc629e440b4d77244f71f9b79a916025206fb",
+              "size": "37630618",
+              "checksum": "SHA-256:bd8c37f6952a2130ac9ee32c53f6a660feb79bee8353c8e289eb60fdcefed91e",
               "host": "x86_64-linux-gnu",
-              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-pc-linux-gnu.tar.bz2",
-              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"
+              "archiveFileName": "avr-gcc-7.3.0-atmel3.6.1-arduino7-x86_64-pc-linux-gnu.tar.bz2",
+              "url": "http://downloads.arduino.cc/tools/avr-gcc-7.3.0-atmel3.6.1-arduino7-x86_64-pc-linux-gnu.tar.bz2"
             }
           ]
         },
