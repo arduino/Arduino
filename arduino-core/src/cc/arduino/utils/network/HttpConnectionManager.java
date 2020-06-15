@@ -128,6 +128,11 @@ public class HttpConnectionManager {
       .toUpperCase().replace("-", "").substring(0, 16);
     HttpURLConnection connection = (HttpURLConnection) requestURL
       .openConnection(proxy);
+
+    // see https://github.com/arduino/Arduino/issues/10264
+    // Workaround for https://bugs.openjdk.java.net/browse/JDK-8163921
+    connection.setRequestProperty("Accept", "*/*");
+
     connection.setRequestProperty("User-agent", userAgent);
     connection.setRequestProperty("X-Request-ID", requestId);
     if (id != null) {
