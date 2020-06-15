@@ -32,7 +32,7 @@
 # Jack R. <dny1020@aol.com>, 2013
 # Miguel Ángel Barrio Vázquez <descartex1@gmail.com>, 2013
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
-# Nestor Contreras <axel14zen@gmail.com>, 2017
+# d7ce63bf85c9f8c124fab05c2821bbcf, 2017
 # Pedro Luis <plizze@gmail.com>, 2018
 # Pedro Luis <plizze@gmail.com>, 2015-2016
 # Salvador Parra Camacho <sparrac@gmail.com>, 2014

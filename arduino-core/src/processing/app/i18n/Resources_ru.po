@@ -22,7 +22,7 @@
 # Translators:
 # Aleksandr Jadov <a.jadov@tata.lt>, 2013
 # AlexL <loginov.alex.valer@gmail.com>, 2015-2018
-# angry_snake <inactive+angry_snake@transifex.com>, 2014
+# 28532b02ca9d20d69a31703daeea0bda_3873b52 <a8117a72c21fe4a094910f3a12007a5f_154053>, 2014
 # Егор Макаренко, 2015
 # Егор Макаренко, 2015
 # Alexandr Kropochev <Kropochev.a@gmail.com>, 2012

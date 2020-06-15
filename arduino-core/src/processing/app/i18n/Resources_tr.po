@@ -42,8 +42,8 @@
 # washaq <onlynewuser@gmail.com>, 2014
 # sercan <e.srcnblky@gmail.com>, 2015
 # Ülgen Sarıkavak <ulgensrkvk@gmail.com>, 2012,2016,2019
-# Ülgen Sarıkavak <inactive+ulgensrkvk@transifex.com>, 2013-2014
-# Ülgen Sarıkavak <inactive+ulgensrkvk@transifex.com>, 2014
+# 909266411654fe02d72c48514a465be9_33c5f74 <15d35ca13d17f7bfcab80c3d16f5fb15_38993>, 2013-2014
+# 909266411654fe02d72c48514a465be9_33c5f74 <15d35ca13d17f7bfcab80c3d16f5fb15_38993>, 2014
 # selengalp <yasinkaya.121@gmail.com>, 2014
 # YUSUF CAKIR, 2014
 # Zubeyir OZTURK <zubeyrozturk@gmail.com>, 2015

@@ -27,7 +27,7 @@
 # devMaeb <devmaeb@gmail.com>, 2014
 # Jan Verheijen <jmm.verheijen@kpnmail.nl>, 2014
 # johan vdp <johan_vdp@hotmail.com>, 2017
-# jkf <inactive+jkf@transifex.com>, 2012
+# 8f962edc6407b2438550bf5bbf17c02a_66902c3 <d52527715256a33811f9a6e3a4a01fe2_39019>, 2012
 # Robin van der Vliet <info@robinvandervliet.nl>, 2015
 # Wesley Deblaere <wesley.deblaere.100@gmail.com>, 2016
 msgid ""

@@ -24,13 +24,13 @@
 # Diego Prado Gesto <>, 2012
 # Marce Villarino <mvillarino@gmail.com>, 2013
 # Marce Villarino <mvillarino@kde-espana.es>, 2013
-# Suso Martínez <chu_vigo@hotmail.com>, 2018
+# Suso Martínez <chu_vigo@hotmail.com>, 2018,2020
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-12-16 16:59+0000\n"
+"PO-Revision-Date: 2020-05-12 18:30+0000\n"
 "Last-Translator: Suso Martínez <chu_vigo@hotmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/mbanzi/arduino-ide-15/language/gl/)\n"
 "MIME-Version: 1.0\n"
@@ -86,7 +86,7 @@ msgstr ""
 msgid ""
 "--verbose, --verbose-upload and --verbose-build can only be used together "
 "with --verify or --upload"
-msgstr ""
+msgstr "--verbose, --verbose-upload and --verbose-build só poden ser usados xuntos con --verify ou --upload"
 
 #: Sketch.java:746
 msgid ".pde -> .ino"
@@ -135,7 +135,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
-msgstr ""
+msgstr "Engade biblioteca .ZIP..."
 
 #: Editor.java:650
 msgid "Add File..."
@@ -176,7 +176,7 @@ msgstr "Ocorreu un erro mentres se intentaba amaña-la codificación do\narquivo
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "Ocorreu un erro durante a actualización do índice das librerías"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -510,7 +510,7 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:266
 msgid "Compiler warnings: "
-msgstr ""
+msgstr "Avisos do compilador:"
 
 #: Sketch.java:1608 Editor.java:1890
 msgid "Compiling sketch..."
@@ -530,7 +530,7 @@ msgstr "Copiar como HTML"
 
 #: ../../../processing/app/EditorStatus.java:455
 msgid "Copy error messages"
-msgstr ""
+msgstr "Copiar as mensaxes de erro"
 
 #: Editor.java:1165 Editor.java:2715
 msgid "Copy for Forum"
@@ -548,7 +548,7 @@ msgstr "Non se puido copiar a unha ubicación axeitada."
 #: ../../../../../arduino-core/src/processing/app/Sketch.java:342
 #, java-format
 msgid "Could not create directory \"{0}\""
-msgstr ""
+msgstr "Non foi posible crear a carpeta \"{0}\""
 
 #: Editor.java:2179
 msgid "Could not create the sketch folder."
@@ -571,7 +571,7 @@ msgstr "Non se pode borrar o ficheiro existente ''{0}''."
 #: ../../../processing/app/debug/TargetPlatform.java:74
 #, java-format
 msgid "Could not find boards.txt in {0}. Is it pre-1.5?"
-msgstr ""
+msgstr "Non se atopou boards.txt en {0}. É anterior á versión 1.5?"
 
 #: ../../../cc/arduino/packages/uploaders/SerialUploader.java:282
 #, java-format
@@ -663,11 +663,11 @@ msgstr "Cortar"
 
 #: ../../../../../app/src/processing/app/Preferences.java:119
 msgid "Czech (Czech Republic)"
-msgstr ""
+msgstr "Checo (República Checa)"
 
 #: ../../../../../app/src/processing/app/Preferences.java:120
 msgid "Danish (Denmark)"
-msgstr ""
+msgstr "Danés (Dinamarca)"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:36
 msgid "Data Processing"
@@ -679,7 +679,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1386
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "Diminuír o tamaño da fonte"
 
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
@@ -724,7 +724,7 @@ msgstr ""
 msgid ""
 "Do you want to remove {0}?\n"
 "If you do so you won't be able to use {0} any more."
-msgstr ""
+msgstr "Queres eliminar {0}?\nSe o fas non poderás volver a usar {0}."
 
 #: Editor.java:2064
 msgid "Don't Save"
@@ -741,7 +741,7 @@ msgstr "Rematado o grabado do cargador de inicio."
 #: ../../../processing/app/BaseNoGui.java:507
 #: ../../../processing/app/BaseNoGui.java:552
 msgid "Done compiling"
-msgstr ""
+msgstr "Rematou a compilación"
 
 #: Editor.java:1911 Editor.java:1928
 msgid "Done compiling."
@@ -753,7 +753,7 @@ msgstr "Impresión rematada."
 
 #: ../../../processing/app/BaseNoGui.java:514
 msgid "Done uploading"
-msgstr ""
+msgstr "Rematou a subida"
 
 #: Editor.java:2395 Editor.java:2431
 msgid "Done uploading."
@@ -762,7 +762,7 @@ msgstr "Carga rematada."
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:105
 #, java-format
 msgid "Downloaded {0}kb of {1}kb."
-msgstr ""
+msgstr "Descargado {0}kb de {1}kb."
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:107
 msgid "Downloading boards definitions."
@@ -857,7 +857,7 @@ msgstr "Erro compilando"
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "Erro descargando {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -890,7 +890,7 @@ msgstr "Erro abrindo o porto serie ''{0}''."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
-msgstr ""
+msgstr "Erro abrindo o porto serie \"{0}\". Proba a consultar a documentación en http://playground.arduino.cc/Linux/All#Permission"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
 #, java-format
@@ -1104,7 +1104,7 @@ msgstr "Galego"
 
 #: ../../../../../app/src/processing/app/Preferences.java:176
 msgid "Galician (Spain)"
-msgstr ""
+msgstr "Galego (Galicia)"
 
 #: ../../../../../app/src/processing/app/Editor.java:1288
 msgid "Galileo Help"
@@ -1140,11 +1140,11 @@ msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:66
 msgid "Go to line"
-msgstr ""
+msgstr "Ir á liña"
 
 #: ../../../../../app/src/processing/app/Editor.java:1460
 msgid "Go to line..."
-msgstr ""
+msgstr "Ir á liña..."
 
 #: Preferences.java:98
 msgid "Greek"
@@ -1218,7 +1218,7 @@ msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1378
 msgid "Increase Font Size"
-msgstr ""
+msgstr "Aumentar o tamaño da fonte"
 
 #: Editor.java:1216 Editor.java:2757
 msgid "Increase Indent"
@@ -1239,15 +1239,15 @@ msgstr ""
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:91
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributedPlatformTableCell.java:303
 msgid "Install"
-msgstr ""
+msgstr "Instalar"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:170
 msgid "Installation completed!"
-msgstr ""
+msgstr "Instalación completada!"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/DropdownInstalledLibraryItem.java:50
 msgid "Installed"
-msgstr ""
+msgstr "Instalado"
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:154
 msgid "Installing boards..."
@@ -2602,7 +2602,7 @@ msgid ""
 "older version of Arduino, you may need to use Tools -> Fix Encoding & Reload"
 " to update the sketch to use UTF-8 encoding. If not, you may need to delete "
 "the bad characters to get rid of this warning."
-msgstr ""
+msgstr "\"{0}\" contén caracteres non recoñecidos. Se este código foi creado cunha versión antigo de Arduino, pode que teñas que usar Ferramentas -> Arranxar a codificación e recargar para actualizar o sketch usando a codificación UTF-8. Se non, tal vez teñas que borrar os caracteres inválidos para evitar este aviso."
 
 #: debug/Compiler.java:409
 msgid ""
@@ -2665,7 +2665,7 @@ msgstr "compilación "
 
 #: ../../../processing/app/NetworkMonitor.java:111
 msgid "connected!"
-msgstr ""
+msgstr "conectado!"
 
 #: ../../../../../app/src/processing/app/Editor.java:1352
 msgid "http://www.arduino.cc/"
@@ -2747,7 +2747,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:76
 #, java-format
 msgid "{0} must be a folder"
-msgstr ""
+msgstr "{0} ten que ser unha carpeta"
 
 #: ../../../../../app/src/processing/app/EditorLineStatus.java:109
 #, java-format
@@ -2784,7 +2784,7 @@ msgstr ""
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
-msgstr ""
+msgstr "{0}: Opción inválida para a placa \"{1}\""
 
 #: ../../../processing/app/Base.java:502
 #, java-format

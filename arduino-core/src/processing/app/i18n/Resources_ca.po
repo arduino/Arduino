@@ -22,9 +22,9 @@
 # Translators:
 # dplanella <david.planella@softcatala.cat>, 2017
 # Enric Verdaguer <verdaga@hotmail.com>, 2016
-# Francesc Famadas <kiski97@gmail.com>, 2015
+# Francesc Famadas, 2015
 # jmontane, 2018
-# Marc GB <inactive+marc.giralt.butjosa@transifex.com>, 2016
+# 17275f6663c0806cb14df3aaa64f5dcc_36b1070 <63b2d9bf279ebdb5b732343823eaa154_408083>, 2016
 # Marc Palacín <marc.palacin.marfil@gmail.com>, 2016
 # Moritz Werner Casero <moritzwernercasero@gmail.com>, 2015
 # Sergi  Pérez Labernia <rndrnd@gmail.com>, 2014

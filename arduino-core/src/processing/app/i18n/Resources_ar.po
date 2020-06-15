@@ -20,6 +20,7 @@
 # Translators:
 # Translators:
 # Translators:
+# Ahmed Moussa <ahmeedmousa90@gmail.com>, 2020
 # alsadi <alsadi@gmail.com>, 2012
 # amas89 <amas89@gmail.com>, 2012
 # belal affouri <belal@eshtre.com>, 2015
@@ -34,8 +35,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2019-04-17 08:31+0000\n"
-"Last-Translator: Mohamed Bloui <mohd.bloui@gmail.com>\n"
+"PO-Revision-Date: 2020-04-14 15:31+0000\n"
+"Last-Translator: Ahmed Moussa <ahmeedmousa90@gmail.com>\n"
 "Language-Team: Arabic (http://www.transifex.com/mbanzi/arduino-ide-15/language/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -135,7 +136,7 @@ msgstr "عن الاردوينو"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:41
 msgid "Acoli"
-msgstr ""
+msgstr "اشولي"
 
 #: ../../../../../app/src/processing/app/Base.java:1177
 msgid "Add .ZIP Library..."
@@ -913,7 +914,7 @@ msgstr "خطأ قراءة فهرس المكتبات: {0}"
 msgid ""
 "Error reading package indexes folder: {0}\n"
 "(maybe a permission problem?)"
-msgstr ""
+msgstr "حدث خطأ في قراءة /معالجة حزمة المجلد المدخل : {0}\n(ربما المشكلة في التصاريح المطلوبة؟)"
 
 #: Preferences.java:277
 msgid "Error reading preferences"
@@ -1289,7 +1290,7 @@ msgstr "إقتباس غير صحيح: لم يعثر على [{0}] رمز إغلا
 #: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
 #, java-format
 msgid "Invalid version '{0}' for library in: {1}"
-msgstr ""
+msgstr "الصيغة '{0}' غير صالحة , من اجل مكتبة : {1}"
 
 #: ../../../../../app/src/processing/app/Base.java:316
 #: ../../../../../app/src/processing/app/Base.java:362
@@ -1307,7 +1308,7 @@ msgstr "Japanese"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:81
 msgid "Kazakh"
-msgstr ""
+msgstr "كازاخستان"
 
 #: Preferences.java:104
 msgid "Korean"
@@ -1332,7 +1333,7 @@ msgstr "المكتبة لا تستطيع استخدام كلا المجلدين 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
 msgid "Library is already installed: {0}:{1}"
-msgstr ""
+msgstr "تم تثبيت المكتبة : {0}:{1}"
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
 msgid "Line number:"
@@ -1349,7 +1350,7 @@ msgstr "جاري تحميل الإعدادات..."
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "جار البحث عن اجراءات مثل  {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1411,7 +1412,7 @@ msgstr "اسم لملف جديد:"
 
 #: ../../../../../app//src/processing/app/Editor.java:2809
 msgid "Native serial port, can't obtain info"
-msgstr ""
+msgstr "يتعذر الحصول علي معلومات , من المنفذ التسلسلي الاصلي"
 
 #: ../../../processing/app/Preferences.java:149
 msgid "Nepali"
@@ -1623,7 +1624,7 @@ msgstr "الرجاء تحديد مبرمجة من قائمة أدوات->الم�
 
 #: ../../../../../app/src/processing/app/Editor.java:2613
 msgid "Plotter not available while serial monitor is open"
-msgstr ""
+msgstr "الرسم التخطيطي غير متاح مادام المراقب التسلسلي مفتوح."
 
 #: Preferences.java:110
 msgid "Polish"
@@ -1790,7 +1791,7 @@ msgstr "غير مستخدم"
 
 #: ../../../../../app/src/processing/app/Editor.java:1973
 msgid "Retry the upload with another serial port?"
-msgstr ""
+msgstr " لم يتم العثورعلي المنفذ التسلسلي، لم لا تحاول الرفع باستخدام منفذ تسلسلي آخر ؟"
 
 #: Preferences.java:113
 msgid "Romanian"
@@ -1895,18 +1896,18 @@ msgstr "مراقب المنفذ التسلسلي \"سيريال بورت\""
 
 #: ../../../../../app/src/processing/app/Editor.java:804
 msgid "Serial Plotter"
-msgstr ""
+msgstr "مخطط تسلسلي"
 
 #: ../../../../../app/src/processing/app/Editor.java:2325
 #, java-format
 msgid ""
 "Serial monitor is not supported on network ports such as {0} for the {1} in "
 "this release"
-msgstr ""
+msgstr "جهاز العرض التسلسلي غير مدعوم على منافذ الشبكة مثل {0} لـ {1} في هذا الإصدار"
 
 #: ../../../../../app/src/processing/app/Editor.java:2516
 msgid "Serial monitor not available while plotter is open"
-msgstr ""
+msgstr "الرسم التخطيطي غير متاح مادام المراقب التسلسلي مفتوح."
 
 #: Serial.java:194
 #, java-format
@@ -1932,7 +1933,7 @@ msgstr "المنافذ التسلسلية"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:84
 #, java-format
 msgid "Setting build path to {0}"
-msgstr ""
+msgstr "جار الاعداد الي المسار {0}"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:450
 msgid "Settings"
@@ -2076,7 +2077,7 @@ msgstr "Tamil"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:102
 msgid "Telugu"
-msgstr ""
+msgstr "لفة التيلجو"
 
 #: ../../../../../app/src/cc/arduino/i18n/Languages.java:100
 msgid "Thai"
@@ -2127,7 +2128,7 @@ msgid ""
 "The library \"{0}\" cannot be used.\n"
 "Library folder names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "المكتبة \"{0}\" لا يمكن استخدامها.\nاسم المكتبة يجب يبدأ بحرف ، او رقم متبوع بأحرف\nاو ارقاما ، او علامة الشرطة - ، او الشرطه السفلية _ . يجب ألا يزيد الطول عن 63 حرفا."
 
 #: Base.java:1054 Base.java:2674
 #, java-format
@@ -2179,7 +2180,7 @@ msgid ""
 "The sketch name had to be modified.\n"
 "Sketch names must start with a letter or number, followed by letters,\n"
 "numbers, dashes, dots and underscores. Maximum length is 63 characters."
-msgstr ""
+msgstr "لقد تم تعديل أسم الشفرة البرمجية.\nأسم الشفرة البرمجية يجب ان يبدأ بحرف او رقم متبوع بحرف.\nاو ارقاما ، او علامة الشرطة - ، او الشرطه السفلية _ . يجب ألا يزيد الطول عن 63 حرفا."
 
 #: Base.java:259
 msgid ""
@@ -2288,7 +2289,7 @@ msgstr "غير قادر على فتح مراقب المنفذ التساسلي"
 
 #: ../../../../../app/src/processing/app/Editor.java:2709
 msgid "Unable to open serial plotter"
-msgstr ""
+msgstr "غير قادر على فتح مراقب المنفذ التساسلي"
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:94
 #: ../../../../../app/src/cc/arduino/contributions/packages/ui/ContributionManagerUI.java:89
@@ -2306,7 +2307,7 @@ msgstr "تراجع"
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:85
 #, java-format
 msgid "Unhandled type {0} in context key {1}"
-msgstr ""
+msgstr "النوع  {0} غير مدعوم من خلال السياق رقم {1}"
 
 #: ../../../../../app//src/processing/app/Editor.java:2818
 msgid "Unknown board"
@@ -2509,7 +2510,7 @@ msgstr "تحذير: مساهمات غير موثوقة، جاري تجاوز ت�
 msgid ""
 "Warning: platform.txt from core '{0}' contains deprecated {1}, automatically"
 " converted to {2}. Consider upgrading this core."
-msgstr ""
+msgstr "تحذير: platform.txt من الاساس '{0}' يفتقد خاصية '{1}', استخدام قيمة افتراضية '{2}'. بأخذ بالاعتبار ترقية هذا الاساس."
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:91
 msgid ""

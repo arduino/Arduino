@@ -20,14 +20,15 @@
 # Translators:
 # Translators:
 # Translators:
+# Dohan Reyneke <dohanpersonal@gmail.com>, 2020
 # Edrean Ernst <edrean@allesbeste.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2020-03-15 13:42+0000\n"
+"Last-Translator: Dohan Reyneke <dohanpersonal@gmail.com>\n"
 "Language-Team: Afrikaans (http://www.transifex.com/mbanzi/arduino-ide-15/language/af/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,12 +38,12 @@ msgstr ""
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
-msgstr ""
+msgstr "(vereis herbegin van Arduino)"
 
 #: ../../../processing/app/debug/Compiler.java:529
 #, java-format
 msgid " Not used: {0}"
-msgstr ""
+msgstr "Nie gebruik nie: {0}"
 
 #: ../../../processing/app/debug/Compiler.java:525
 #, java-format
@@ -53,12 +54,12 @@ msgstr ""
 msgid ""
 "'Keyboard' not found. Does your sketch include the line '#include "
 "<Keyboard.h>'?"
-msgstr ""
+msgstr "'Sleutelbord' nie gevind nie. Bevat u skets die lyn '#include <Keyboard.h>'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:553
 msgid ""
 "'Mouse' not found. Does your sketch include the line '#include <Mouse.h>'?"
-msgstr ""
+msgstr "'Muis' nie gevind nie. Bevat u skets die lyn '#include <Mouse.h'?"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:61
 msgid ""
@@ -208,7 +209,7 @@ msgstr ""
 
 #: tools/Archiver.java:109
 msgid "Archive sketch as:"
-msgstr ""
+msgstr "Argief skets as:"
 
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."

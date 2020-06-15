@@ -20,7 +20,9 @@
 # Translators:
 # Translators:
 # Translators:
+# Ardeshir Hakimi, 2020
 # arminjavan <armin_javan@yahoo.com>, 2014
+# axzw tere <joeaj6+9gce4p6vg7ddg@sharklasers.com>, 2020
 # Ebrahim Byagowi <ebrahim@byagowi.com>, 2012
 # Mohammad Hamidi <hamidi72@gmail.com>, 2017
 msgid ""
@@ -28,8 +30,8 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2018-11-23 15:06+0000\n"
-"Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
+"PO-Revision-Date: 2020-02-04 08:56+0000\n"
+"Last-Translator: Ardeshir Hakimi\n"
 "Language-Team: Persian (http://www.transifex.com/mbanzi/arduino-ide-15/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,11 +72,11 @@ msgstr "پوشه \"arch\" دیگر پشتیبانی نمی شود. برای اط
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(ویرایش فقط به هنگامی که آردئینو درحال اجرا نیست)"
+msgstr "(ویرایش فقط به هنگام عدم اجرای آردوینو)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(باقی‌مانده از نرم‌افزار قبلی)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -174,7 +176,7 @@ msgstr "خطایی به عنوان اصلاح کدگذاری پرونده رخ�
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "بروز مشکل در به‌روز رسانی نمایه‌ی کتابخانه‌ها"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -243,7 +245,7 @@ msgstr "برد آردئینو ای وی آر (avr)"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "نرم‌افزار آردوینو فقط می‌تواند اسکچ‌های خود و یا سایر فایل‌ها با پسوند ino. و pde. را باز کند."
 
 #: Base.java:1682
 msgid ""
@@ -810,7 +812,7 @@ msgstr "زبان ویرایشگر:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "مخفی‌سازی دستورها"
 
 #: Preferences.java:92
 msgid "English"
@@ -855,7 +857,7 @@ msgstr "خطای کامپایل"
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "خطا در دانلودِ {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -900,7 +902,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
 #, java-format
 msgid "Error reading libraries index: {0}"
-msgstr ""
+msgstr "خطا در خواندن نمایه‌ کتابخانه‌ها: {0}"
 
 #: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
 #, java-format
@@ -962,7 +964,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "خطای حین بارگذاری"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -973,11 +975,11 @@ msgstr "خطا حین بارگذاری: پارامتر پیکربندی '{0}' ا
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "خطای حین تایید"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "خطای حین تایید/بارگذاری"
 
 #: Preferences.java:93
 msgid "Estonian"
@@ -989,7 +991,7 @@ msgstr "نمونه‌ها"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "مثال‌هایی برای تمام بوردها"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
@@ -1343,7 +1345,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "جستجوی دستور العمل‌هایی مانند {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1522,7 +1524,7 @@ msgstr "نروژی"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr ""
+msgstr "حافظه، کافی نیست؛ مشاهده نکاتی درباره کاهش مصرف فضا در لینک زیر:\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465

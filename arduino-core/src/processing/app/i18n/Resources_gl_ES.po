@@ -22,7 +22,7 @@
 # Translators:
 # Alejandro Dafonte <alejandrodafonte@outlook.com>, 2018-2019
 # Nemigo Galiza <lescamposines@gmail.com>, 2017
-# Onyrosgaming, 2016
+# 8f584766963ace0a9c30ccdf3426b35e_685a338, 2016
 # Xurxo Guerra Perez <xguerrap@gmail.com>, 2015,2017-2018
 msgid ""
 msgstr ""

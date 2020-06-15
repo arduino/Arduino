@@ -26,9 +26,9 @@
 # Daniel Sjöberg <sjbrg@protonmail.com>, 2013
 # enhacker, 2017
 # GregerA <greger.andersson@electrokit.se>, 2014
-# GudenTorson, 2015
+# 9681eeebf1b63dfd86a394f2a10d26a6_ae7409d, 2015
 # Jonas Bengtsson <jonas.b@gmail.com>, 2013
-# Jonatan Nyberg, 2016
+# Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>, 2016
 # Patrik Hermansson <patrik@paheco.nu>, 2015
 msgid ""
 msgstr ""
