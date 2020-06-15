@@ -1,10 +1,31 @@
-ARDUINO 1.8.13 2020.??.??
+ARDUINO 1.8.13 2020.06.16
 
 [ide]
+* Fixed crash on MacOSX >=10.15 with multiple monitor setups.
+* The boards in the boards list in the "Tools" menu are now grouped by platform. This should make the selection
+  easier when there are lots of boards loaded in the IDE. (thanks @matthijskooijman)
 * Fixed save of proxy username/password settings in "manual proxy" section.
-* In "Tools / Programmers" menu only shows programmes related to the currently selected board. (thanks @matthijskooijman)
+* In "Tools / Programmers" menu only shows programmers related to the currently selected board. (thanks @matthijskooijman)
 * Fixed: sketch window out-of-display if the IDE is restarted after removing an external monitor.
 * Allow baudrate/config change when the Serial Monitor/Plotter is disabled. (thanks @matthijskooijman)
+* Updated jmdns to 3.5.5. Should improve network board detection.
+* Optimized libraries scanning during startup. (thanks @ricardojlrufino)
+* Better vertical centering of file names in tabs. (thanks @ricardojlrufino)
+* Better console rendering of progress bar during upload. (thanks @matthijskooijman)
+
+[arduino-builder]
+* FIX REGRESSION: Fixed precompiled libraries containing "wrapper" code that has to be compiled together
+                  with the precompiled part.
+* Removed automatic '--relax' for compiles on Atmega2560 MCU
+* Fixed skethbook+bootloader hex merger when the bootloader is in .bin format.
+* Fixed relative path errors when traversing different partitions (in particular on macosx for larger sketches)
+* Added #define variable during lib discovery phase
+* Improved progress report from compile
+
+[core]
+* Updated AVR core to 1.8.3:
+  - Wire class now supports timeout
+  - Upgraded avr-gcc to 7.3.0-atmel3.6.1-arduino7
 
 ARDUINO 1.8.12 2020.02.13
 
