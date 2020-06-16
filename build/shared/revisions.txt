@@ -12,6 +12,7 @@ ARDUINO 1.8.13 2020.06.16
 * Optimized libraries scanning during startup. (thanks @ricardojlrufino)
 * Better vertical centering of file names in tabs. (thanks @ricardojlrufino)
 * Better console rendering of progress bar during upload. (thanks @matthijskooijman)
+* Fixed invalid http "Accept" header.
 
 [arduino-builder]
 * FIX REGRESSION: Fixed precompiled libraries containing "wrapper" code that has to be compiled together
