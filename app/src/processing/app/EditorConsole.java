@@ -231,7 +231,13 @@ public class EditorConsole extends JScrollPane {
   }
 
   public String getText() {
-    return consoleTextPane.getText();
+    try {
+      return document.getText(0, document.getLength());
+    } catch (BadLocationException e) {
+      // Should never happen...
+      e.printStackTrace();
+      return "";
+    }
   }
 
 }
