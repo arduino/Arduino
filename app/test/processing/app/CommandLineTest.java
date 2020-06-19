@@ -86,14 +86,16 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     System.out.println("found arduino: " + arduinoPath);
   }
 
-  private void consume(InputStream s, OutputStream out) {
-    new Thread(() -> {
+  private Thread consume(InputStream s, OutputStream out) {
+    Thread t = new Thread(() -> {
       try {
         IOUtils.copy(s, out);
       } catch (IOException e) {
         e.printStackTrace();
       }
-    }).start();
+    });
+    t.start();
+    return t;
   }
 
   public Process runArduino(OutputStream output, boolean success, File wd, String[] extraArgs) throws IOException, InterruptedException {
@@ -107,9 +109,11 @@ public class CommandLineTest extends AbstractWithPreferencesTest {
     System.out.println("Running: " + String.join(" ", args));
 
     Process pr = rt.exec(args.toArray(new String[0]), null, wd);
-    consume(pr.getInputStream(), output);
-    consume(pr.getErrorStream(), System.err);
+    Thread outThread = consume(pr.getInputStream(), output);
+    Thread errThread = consume(pr.getErrorStream(), System.err);
     pr.waitFor();
+    outThread.join(5000);
+    errThread.join(5000);
     if (success)
       assertEquals(0, pr.exitValue());
     return pr;
