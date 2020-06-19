@@ -54,6 +54,7 @@ public class Serial implements SerialPortEventListener {
 
   private PipedOutputStream decoderInRaw;
   private InputStreamReader decoderOutputUTF8;
+  private final int DECODER_BUFF_SIZE = 16384;
 
   public Serial() throws SerialException {
     this(PreferencesData.get("serial.port"),
@@ -186,10 +187,10 @@ public class Serial implements SerialPortEventListener {
   public void processSerialEvent(byte[] buf) {
     int next = 0;
     int max = buf.length;
-    char chars[] = new char[512];
+    char chars[] = new char[DECODER_BUFF_SIZE];
     try {
       while (next < max) {
-        int w = Integer.min(max - next, 128);
+        int w = Integer.min(max - next, chars.length);
         decoderInRaw.write(buf, next, w);
         next += w;
         int n = decoderOutputUTF8.read(chars);
@@ -269,7 +270,8 @@ public class Serial implements SerialPortEventListener {
   public synchronized void resetDecoding(Charset charset) {
     try {
       decoderInRaw = new PipedOutputStream();
-      decoderOutputUTF8 = new InputStreamReader(new PipedInputStream(decoderInRaw), charset);
+      // add 16 extra bytes to make room for incomplete UTF-8 chars
+      decoderOutputUTF8 = new InputStreamReader(new PipedInputStream(decoderInRaw, DECODER_BUFF_SIZE + 16), charset);
     } catch (IOException e) {
       // Should never happen...
       e.printStackTrace();
