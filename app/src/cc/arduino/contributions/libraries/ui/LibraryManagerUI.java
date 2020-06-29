@@ -35,6 +35,7 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -130,48 +131,46 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     }
   };
 
-  public void updateUI() {
-    DropdownItem<ContributedLibraryReleases> previouslySelectedCategory = (DropdownItem<ContributedLibraryReleases>) categoryChooser.getSelectedItem();
-    DropdownItem<ContributedLibraryReleases> previouslySelectedType = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
+  private Collection<String> oldCategories = new ArrayList<>();
+  private Collection<String> oldTypes = new ArrayList<>();
 
-    categoryChooser.removeActionListener(categoryChooserActionListener);
-    typeChooser.removeActionListener(typeChooserActionListener);
+  public void updateUI() {
+    // Check if categories or types have changed
+    Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
+    List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
+    Collections.sort(types, new LibraryTypeComparator());
+
+    if (categories.equals(oldCategories) && types.equals(oldTypes)) {
+      return;
+    }
+    oldCategories = categories;
+    oldTypes = types;
 
     // Load categories
     categoryFilter = x -> true;
+    categoryChooser.removeActionListener(categoryChooserActionListener);
     categoryChooser.removeAllItems();
     categoryChooser.addItem(new DropdownAllLibraries());
-    Collection<String> categories = BaseNoGui.librariesIndexer.getIndex().getCategories();
     for (String category : categories) {
       categoryChooser.addItem(new DropdownLibraryOfCategoryItem(category));
     }
-
     categoryChooser.setEnabled(categoryChooser.getItemCount() > 1);
-
     categoryChooser.addActionListener(categoryChooserActionListener);
-    if (previouslySelectedCategory != null) {
-      categoryChooser.setSelectedItem(previouslySelectedCategory);
-    } else {
-      categoryChooser.setSelectedIndex(0);
-    }
+    categoryChooser.setSelectedIndex(0);
 
+    // Load types
     typeFilter = x -> true;
+    typeChooser.removeActionListener(typeChooserActionListener);
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllLibraries());
     typeChooser.addItem(new DropdownUpdatableLibrariesItem());
     typeChooser.addItem(new DropdownInstalledLibraryItem());
-    List<String> types = new LinkedList<>(BaseNoGui.librariesIndexer.getIndex().getTypes());
-    Collections.sort(types, new LibraryTypeComparator());
     for (String type : types) {
       typeChooser.addItem(new DropdownLibraryOfTypeItem(type));
     }
     typeChooser.setEnabled(typeChooser.getItemCount() > 1);
     typeChooser.addActionListener(typeChooserActionListener);
-    if (previouslySelectedType != null) {
-      typeChooser.setSelectedItem(previouslySelectedType);
-    } else {
-      typeChooser.setSelectedIndex(0);
-    }
+    typeChooser.setSelectedIndex(0);
 
     filterField.setEnabled(contribModel.getRowCount() > 0);
   }
