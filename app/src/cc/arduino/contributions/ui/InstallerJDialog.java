@@ -81,6 +81,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
   protected final FilterJTextField filterField;
   protected final JPanel filtersContainer;
   // Currently selected category and filters
+  protected Predicate<T> extraFilter = x -> true;
   protected Predicate<T> categoryFilter;
   protected String[] filters;
   protected final String noConnectionErrorMessage;
@@ -337,7 +338,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        updateIndexFilter(filters, categoryFilter);
+        updateIndexFilter(filters, categoryFilter.and(extraFilter));
       }
     }
   };

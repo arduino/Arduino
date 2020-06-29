@@ -41,7 +41,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 import javax.swing.Box;
 import javax.swing.JComboBox;
@@ -67,7 +66,6 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
 
   private final JComboBox typeChooser;
   private final LibraryInstaller installer;
-  private Predicate<ContributedLibraryReleases> typeFilter;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -116,17 +114,16 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   }
 
   protected final ActionListener typeChooserActionListener = new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<ContributedLibraryReleases> selected = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
       previousRowAtPoint = -1;
-      if (selected != null && typeFilter != selected.getFilterPredicate()) {
-        typeFilter = selected.getFilterPredicate();
+      if (selected != null && extraFilter != selected.getFilterPredicate()) {
+        extraFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        updateIndexFilter(filters, categoryFilter.and(typeFilter));
+        updateIndexFilter(filters, categoryFilter.and(extraFilter));
       }
     }
   };
@@ -159,7 +156,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     categoryChooser.setSelectedIndex(0);
 
     // Load types
-    typeFilter = x -> true;
+    extraFilter = x -> true;
     typeChooser.removeActionListener(typeChooserActionListener);
     typeChooser.removeAllItems();
     typeChooser.addItem(new DropdownAllLibraries());
