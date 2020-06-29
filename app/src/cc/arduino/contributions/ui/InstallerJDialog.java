@@ -71,7 +71,6 @@ import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
 import processing.app.Base;
-import processing.app.Theme;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -329,7 +328,6 @@ public abstract class InstallerJDialog<T> extends JDialog {
   }
 
   protected final ActionListener categoryChooserActionListener = new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
