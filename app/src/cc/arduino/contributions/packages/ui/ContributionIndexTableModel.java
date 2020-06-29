@@ -47,9 +47,17 @@ public class ContributionIndexTableModel
   private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
   private final String[] columnNames = { "Description" };
   private final Class<?>[] columnTypes = { ContributedPlatform.class };
+  private Predicate<ContributedPlatform> filter;
+  private String[] filters;
 
   public void updateIndexFilter(String[] filters,
                                 Predicate<ContributedPlatform> filter) {
+    this.filter = filter;
+    this.filters = filters;
+    updateContributions();
+  }
+
+  private void updateContributions() {
     contributions.clear();
     for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
@@ -146,6 +154,7 @@ public class ContributionIndexTableModel
   }
 
   public void update() {
+    updateContributions();
     fireTableDataChanged();
   }
 
