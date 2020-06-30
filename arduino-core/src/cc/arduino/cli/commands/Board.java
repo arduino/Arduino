@@ -19,26 +19,48 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * The fully qualified board name of the board you want information about
+     * (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
+     * <pre>
+     * The fully qualified board name of the board you want information about
+     * (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -145,6 +167,10 @@ public final class Board {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -152,6 +178,10 @@ public final class Board {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -159,6 +189,10 @@ public final class Board {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -168,6 +202,11 @@ public final class Board {
     public static final int FQBN_FIELD_NUMBER = 2;
     private volatile java.lang.Object fqbn_;
     /**
+     * <pre>
+     * The fully qualified board name of the board you want information about
+     * (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
@@ -184,6 +223,11 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * The fully qualified board name of the board you want information about
+     * (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -537,6 +581,10 @@ public final class Board {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -544,6 +592,10 @@ public final class Board {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -555,6 +607,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -571,6 +627,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -585,6 +645,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -603,6 +667,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -617,6 +685,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -625,6 +697,10 @@ public final class Board {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -636,6 +712,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -654,6 +734,11 @@ public final class Board {
 
       private java.lang.Object fqbn_ = "";
       /**
+       * <pre>
+       * The fully qualified board name of the board you want information about
+       * (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The fqbn.
        */
@@ -670,6 +755,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The fully qualified board name of the board you want information about
+       * (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The bytes for fqbn.
        */
@@ -687,6 +777,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The fully qualified board name of the board you want information about
+       * (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The fqbn to set.
        * @return This builder for chaining.
@@ -702,6 +797,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The fully qualified board name of the board you want information about
+       * (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return This builder for chaining.
        */
@@ -712,6 +812,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The fully qualified board name of the board you want information about
+       * (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The bytes for fqbn to set.
        * @return This builder for chaining.
@@ -785,11 +890,39 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The fully qualified board name of the board.
+     * </pre>
+     *
+     * <code>string fqbn = 1;</code>
+     * @return The fqbn.
+     */
+    java.lang.String getFqbn();
+    /**
+     * <pre>
+     * The fully qualified board name of the board.
+     * </pre>
+     *
+     * <code>string fqbn = 1;</code>
+     * @return The bytes for fqbn.
+     */
+    com.google.protobuf.ByteString
+        getFqbnBytes();
+
+    /**
+     * <pre>
+     * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -797,51 +930,281 @@ public final class Board {
         getNameBytes();
 
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * Installed version of the board's platform.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The version.
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * Installed version of the board's platform.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The bytes for version.
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * The board ID component of the FQBN (e.g., `uno`).
+     * </pre>
+     *
+     * <code>string propertiesId = 4;</code>
+     * @return The propertiesId.
+     */
+    java.lang.String getPropertiesId();
+    /**
+     * <pre>
+     * The board ID component of the FQBN (e.g., `uno`).
+     * </pre>
+     *
+     * <code>string propertiesId = 4;</code>
+     * @return The bytes for propertiesId.
+     */
+    com.google.protobuf.ByteString
+        getPropertiesIdBytes();
+
+    /**
+     * <pre>
+     * Board alias that can be used as a more user friendly alternative to the
+     * FQBN.
+     * </pre>
+     *
+     * <code>string alias = 5;</code>
+     * @return The alias.
+     */
+    java.lang.String getAlias();
+    /**
+     * <pre>
+     * Board alias that can be used as a more user friendly alternative to the
+     * FQBN.
+     * </pre>
+     *
+     * <code>string alias = 5;</code>
+     * @return The bytes for alias.
+     */
+    com.google.protobuf.ByteString
+        getAliasBytes();
+
+    /**
+     * <pre>
+     * Whether this is an official or 3rd party board.
+     * </pre>
+     *
+     * <code>bool official = 6;</code>
+     * @return The official.
+     */
+    boolean getOfficial();
+
+    /**
+     * <pre>
+     * URL of the board's pinout documentation.
+     * </pre>
+     *
+     * <code>string pinout = 7;</code>
+     * @return The pinout.
+     */
+    java.lang.String getPinout();
+    /**
+     * <pre>
+     * URL of the board's pinout documentation.
+     * </pre>
+     *
+     * <code>string pinout = 7;</code>
+     * @return The bytes for pinout.
+     */
+    com.google.protobuf.ByteString
+        getPinoutBytes();
+
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     * @return Whether the package field is set.
+     */
+    boolean hasPackage();
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     * @return The package.
+     */
+    cc.arduino.cli.commands.Board.Package getPackage();
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     */
+    cc.arduino.cli.commands.Board.PackageOrBuilder getPackageOrBuilder();
+
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     * @return Whether the platform field is set.
+     */
+    boolean hasPlatform();
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     * @return The platform.
+     */
+    cc.arduino.cli.commands.Board.BoardPlatform getPlatform();
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     */
+    cc.arduino.cli.commands.Board.BoardPlatformOrBuilder getPlatformOrBuilder();
+
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies> 
+        getToolsDependenciesList();
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    cc.arduino.cli.commands.Board.ToolsDependencies getToolsDependencies(int index);
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    int getToolsDependenciesCount();
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    java.util.List<? extends cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder> 
+        getToolsDependenciesOrBuilderList();
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder getToolsDependenciesOrBuilder(
+        int index);
+
+    /**
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     java.util.List<cc.arduino.cli.commands.Board.ConfigOption> 
         getConfigOptionsList();
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     cc.arduino.cli.commands.Board.ConfigOption getConfigOptions(int index);
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     int getConfigOptionsCount();
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Board.ConfigOptionOrBuilder> 
         getConfigOptionsOrBuilderList();
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     cc.arduino.cli.commands.Board.ConfigOptionOrBuilder getConfigOptionsOrBuilder(
         int index);
 
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    java.util.List<cc.arduino.cli.commands.Board.RequiredTool> 
-        getRequiredToolsList();
+    java.util.List<cc.arduino.cli.commands.Board.IdentificationPref> 
+        getIdentificationPrefList();
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    cc.arduino.cli.commands.Board.RequiredTool getRequiredTools(int index);
+    cc.arduino.cli.commands.Board.IdentificationPref getIdentificationPref(int index);
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    int getRequiredToolsCount();
+    int getIdentificationPrefCount();
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    java.util.List<? extends cc.arduino.cli.commands.Board.RequiredToolOrBuilder> 
-        getRequiredToolsOrBuilderList();
+    java.util.List<? extends cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder> 
+        getIdentificationPrefOrBuilderList();
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    cc.arduino.cli.commands.Board.RequiredToolOrBuilder getRequiredToolsOrBuilder(
+    cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder getIdentificationPrefOrBuilder(
         int index);
   }
   /**
@@ -857,9 +1220,15 @@ public final class Board {
       super(builder);
     }
     private BoardDetailsResp() {
+      fqbn_ = "";
       name_ = "";
+      version_ = "";
+      propertiesId_ = "";
+      alias_ = "";
+      pinout_ = "";
+      toolsDependencies_ = java.util.Collections.emptyList();
       configOptions_ = java.util.Collections.emptyList();
-      requiredTools_ = java.util.Collections.emptyList();
+      identificationPref_ = java.util.Collections.emptyList();
     }
 
     @java.lang.Override
@@ -893,6 +1262,12 @@ public final class Board {
             case 0:
               done = true;
               break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              fqbn_ = s;
+              break;
+            }
             case 18: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -900,21 +1275,85 @@ public final class Board {
               break;
             }
             case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              version_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              propertiesId_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              alias_ = s;
+              break;
+            }
+            case 48: {
+
+              official_ = input.readBool();
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pinout_ = s;
+              break;
+            }
+            case 66: {
+              cc.arduino.cli.commands.Board.Package.Builder subBuilder = null;
+              if (package_ != null) {
+                subBuilder = package_.toBuilder();
+              }
+              package_ = input.readMessage(cc.arduino.cli.commands.Board.Package.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(package_);
+                package_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 74: {
+              cc.arduino.cli.commands.Board.BoardPlatform.Builder subBuilder = null;
+              if (platform_ != null) {
+                subBuilder = platform_.toBuilder();
+              }
+              platform_ = input.readMessage(cc.arduino.cli.commands.Board.BoardPlatform.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(platform_);
+                platform_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 82: {
               if (!((mutable_bitField0_ & 0x00000001) != 0)) {
-                configOptions_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.ConfigOption>();
+                toolsDependencies_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.ToolsDependencies>();
                 mutable_bitField0_ |= 0x00000001;
+              }
+              toolsDependencies_.add(
+                  input.readMessage(cc.arduino.cli.commands.Board.ToolsDependencies.parser(), extensionRegistry));
+              break;
+            }
+            case 90: {
+              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+                configOptions_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.ConfigOption>();
+                mutable_bitField0_ |= 0x00000002;
               }
               configOptions_.add(
                   input.readMessage(cc.arduino.cli.commands.Board.ConfigOption.parser(), extensionRegistry));
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000002) != 0)) {
-                requiredTools_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.RequiredTool>();
-                mutable_bitField0_ |= 0x00000002;
+            case 98: {
+              if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+                identificationPref_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.IdentificationPref>();
+                mutable_bitField0_ |= 0x00000004;
               }
-              requiredTools_.add(
-                  input.readMessage(cc.arduino.cli.commands.Board.RequiredTool.parser(), extensionRegistry));
+              identificationPref_.add(
+                  input.readMessage(cc.arduino.cli.commands.Board.IdentificationPref.parser(), extensionRegistry));
               break;
             }
             default: {
@@ -933,10 +1372,13 @@ public final class Board {
             e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) != 0)) {
-          configOptions_ = java.util.Collections.unmodifiableList(configOptions_);
+          toolsDependencies_ = java.util.Collections.unmodifiableList(toolsDependencies_);
         }
         if (((mutable_bitField0_ & 0x00000002) != 0)) {
-          requiredTools_ = java.util.Collections.unmodifiableList(requiredTools_);
+          configOptions_ = java.util.Collections.unmodifiableList(configOptions_);
+        }
+        if (((mutable_bitField0_ & 0x00000004) != 0)) {
+          identificationPref_ = java.util.Collections.unmodifiableList(identificationPref_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -955,9 +1397,57 @@ public final class Board {
               cc.arduino.cli.commands.Board.BoardDetailsResp.class, cc.arduino.cli.commands.Board.BoardDetailsResp.Builder.class);
     }
 
+    public static final int FQBN_FIELD_NUMBER = 1;
+    private volatile java.lang.Object fqbn_;
+    /**
+     * <pre>
+     * The fully qualified board name of the board.
+     * </pre>
+     *
+     * <code>string fqbn = 1;</code>
+     * @return The fqbn.
+     */
+    public java.lang.String getFqbn() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        fqbn_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The fully qualified board name of the board.
+     * </pre>
+     *
+     * <code>string fqbn = 1;</code>
+     * @return The bytes for fqbn.
+     */
+    public com.google.protobuf.ByteString
+        getFqbnBytes() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fqbn_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
@@ -974,6 +1464,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -991,74 +1485,431 @@ public final class Board {
       }
     }
 
-    public static final int CONFIG_OPTIONS_FIELD_NUMBER = 3;
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object version_;
+    /**
+     * <pre>
+     * Installed version of the board's platform.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The version.
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        version_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Installed version of the board's platform.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The bytes for version.
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PROPERTIESID_FIELD_NUMBER = 4;
+    private volatile java.lang.Object propertiesId_;
+    /**
+     * <pre>
+     * The board ID component of the FQBN (e.g., `uno`).
+     * </pre>
+     *
+     * <code>string propertiesId = 4;</code>
+     * @return The propertiesId.
+     */
+    public java.lang.String getPropertiesId() {
+      java.lang.Object ref = propertiesId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        propertiesId_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The board ID component of the FQBN (e.g., `uno`).
+     * </pre>
+     *
+     * <code>string propertiesId = 4;</code>
+     * @return The bytes for propertiesId.
+     */
+    public com.google.protobuf.ByteString
+        getPropertiesIdBytes() {
+      java.lang.Object ref = propertiesId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        propertiesId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ALIAS_FIELD_NUMBER = 5;
+    private volatile java.lang.Object alias_;
+    /**
+     * <pre>
+     * Board alias that can be used as a more user friendly alternative to the
+     * FQBN.
+     * </pre>
+     *
+     * <code>string alias = 5;</code>
+     * @return The alias.
+     */
+    public java.lang.String getAlias() {
+      java.lang.Object ref = alias_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        alias_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Board alias that can be used as a more user friendly alternative to the
+     * FQBN.
+     * </pre>
+     *
+     * <code>string alias = 5;</code>
+     * @return The bytes for alias.
+     */
+    public com.google.protobuf.ByteString
+        getAliasBytes() {
+      java.lang.Object ref = alias_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        alias_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int OFFICIAL_FIELD_NUMBER = 6;
+    private boolean official_;
+    /**
+     * <pre>
+     * Whether this is an official or 3rd party board.
+     * </pre>
+     *
+     * <code>bool official = 6;</code>
+     * @return The official.
+     */
+    public boolean getOfficial() {
+      return official_;
+    }
+
+    public static final int PINOUT_FIELD_NUMBER = 7;
+    private volatile java.lang.Object pinout_;
+    /**
+     * <pre>
+     * URL of the board's pinout documentation.
+     * </pre>
+     *
+     * <code>string pinout = 7;</code>
+     * @return The pinout.
+     */
+    public java.lang.String getPinout() {
+      java.lang.Object ref = pinout_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pinout_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * URL of the board's pinout documentation.
+     * </pre>
+     *
+     * <code>string pinout = 7;</code>
+     * @return The bytes for pinout.
+     */
+    public com.google.protobuf.ByteString
+        getPinoutBytes() {
+      java.lang.Object ref = pinout_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pinout_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PACKAGE_FIELD_NUMBER = 8;
+    private cc.arduino.cli.commands.Board.Package package_;
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     * @return Whether the package field is set.
+     */
+    public boolean hasPackage() {
+      return package_ != null;
+    }
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     * @return The package.
+     */
+    public cc.arduino.cli.commands.Board.Package getPackage() {
+      return package_ == null ? cc.arduino.cli.commands.Board.Package.getDefaultInstance() : package_;
+    }
+    /**
+     * <pre>
+     * Data about the package that contains the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+     */
+    public cc.arduino.cli.commands.Board.PackageOrBuilder getPackageOrBuilder() {
+      return getPackage();
+    }
+
+    public static final int PLATFORM_FIELD_NUMBER = 9;
+    private cc.arduino.cli.commands.Board.BoardPlatform platform_;
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     * @return Whether the platform field is set.
+     */
+    public boolean hasPlatform() {
+      return platform_ != null;
+    }
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     * @return The platform.
+     */
+    public cc.arduino.cli.commands.Board.BoardPlatform getPlatform() {
+      return platform_ == null ? cc.arduino.cli.commands.Board.BoardPlatform.getDefaultInstance() : platform_;
+    }
+    /**
+     * <pre>
+     * Data about the board's platform.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+     */
+    public cc.arduino.cli.commands.Board.BoardPlatformOrBuilder getPlatformOrBuilder() {
+      return getPlatform();
+    }
+
+    public static final int TOOLSDEPENDENCIES_FIELD_NUMBER = 10;
+    private java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies> toolsDependencies_;
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    public java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies> getToolsDependenciesList() {
+      return toolsDependencies_;
+    }
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    public java.util.List<? extends cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder> 
+        getToolsDependenciesOrBuilderList() {
+      return toolsDependencies_;
+    }
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    public int getToolsDependenciesCount() {
+      return toolsDependencies_.size();
+    }
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    public cc.arduino.cli.commands.Board.ToolsDependencies getToolsDependencies(int index) {
+      return toolsDependencies_.get(index);
+    }
+    /**
+     * <pre>
+     * Tool dependencies of the board.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+     */
+    public cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder getToolsDependenciesOrBuilder(
+        int index) {
+      return toolsDependencies_.get(index);
+    }
+
+    public static final int CONFIG_OPTIONS_FIELD_NUMBER = 11;
     private java.util.List<cc.arduino.cli.commands.Board.ConfigOption> configOptions_;
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Board.ConfigOption> getConfigOptionsList() {
       return configOptions_;
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Board.ConfigOptionOrBuilder> 
         getConfigOptionsOrBuilderList() {
       return configOptions_;
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     public int getConfigOptionsCount() {
       return configOptions_.size();
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     public cc.arduino.cli.commands.Board.ConfigOption getConfigOptions(int index) {
       return configOptions_.get(index);
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+     * <pre>
+     * The board's custom configuration options.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
      */
     public cc.arduino.cli.commands.Board.ConfigOptionOrBuilder getConfigOptionsOrBuilder(
         int index) {
       return configOptions_.get(index);
     }
 
-    public static final int REQUIRED_TOOLS_FIELD_NUMBER = 4;
-    private java.util.List<cc.arduino.cli.commands.Board.RequiredTool> requiredTools_;
+    public static final int IDENTIFICATION_PREF_FIELD_NUMBER = 12;
+    private java.util.List<cc.arduino.cli.commands.Board.IdentificationPref> identificationPref_;
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    public java.util.List<cc.arduino.cli.commands.Board.RequiredTool> getRequiredToolsList() {
-      return requiredTools_;
+    public java.util.List<cc.arduino.cli.commands.Board.IdentificationPref> getIdentificationPrefList() {
+      return identificationPref_;
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    public java.util.List<? extends cc.arduino.cli.commands.Board.RequiredToolOrBuilder> 
-        getRequiredToolsOrBuilderList() {
-      return requiredTools_;
+    public java.util.List<? extends cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder> 
+        getIdentificationPrefOrBuilderList() {
+      return identificationPref_;
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    public int getRequiredToolsCount() {
-      return requiredTools_.size();
+    public int getIdentificationPrefCount() {
+      return identificationPref_.size();
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    public cc.arduino.cli.commands.Board.RequiredTool getRequiredTools(int index) {
-      return requiredTools_.get(index);
+    public cc.arduino.cli.commands.Board.IdentificationPref getIdentificationPref(int index) {
+      return identificationPref_.get(index);
     }
     /**
-     * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+     * <pre>
+     * Identifying information for the board (e.g., USB VID/PID).
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
      */
-    public cc.arduino.cli.commands.Board.RequiredToolOrBuilder getRequiredToolsOrBuilder(
+    public cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder getIdentificationPrefOrBuilder(
         int index) {
-      return requiredTools_.get(index);
+      return identificationPref_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1075,14 +1926,41 @@ public final class Board {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
+      if (!getFqbnBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, fqbn_);
+      }
       if (!getNameBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
       }
-      for (int i = 0; i < configOptions_.size(); i++) {
-        output.writeMessage(3, configOptions_.get(i));
+      if (!getVersionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, version_);
       }
-      for (int i = 0; i < requiredTools_.size(); i++) {
-        output.writeMessage(4, requiredTools_.get(i));
+      if (!getPropertiesIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, propertiesId_);
+      }
+      if (!getAliasBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, alias_);
+      }
+      if (official_ != false) {
+        output.writeBool(6, official_);
+      }
+      if (!getPinoutBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, pinout_);
+      }
+      if (package_ != null) {
+        output.writeMessage(8, getPackage());
+      }
+      if (platform_ != null) {
+        output.writeMessage(9, getPlatform());
+      }
+      for (int i = 0; i < toolsDependencies_.size(); i++) {
+        output.writeMessage(10, toolsDependencies_.get(i));
+      }
+      for (int i = 0; i < configOptions_.size(); i++) {
+        output.writeMessage(11, configOptions_.get(i));
+      }
+      for (int i = 0; i < identificationPref_.size(); i++) {
+        output.writeMessage(12, identificationPref_.get(i));
       }
       unknownFields.writeTo(output);
     }
@@ -1093,16 +1971,47 @@ public final class Board {
       if (size != -1) return size;
 
       size = 0;
+      if (!getFqbnBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, fqbn_);
+      }
       if (!getNameBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
       }
+      if (!getVersionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, version_);
+      }
+      if (!getPropertiesIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, propertiesId_);
+      }
+      if (!getAliasBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, alias_);
+      }
+      if (official_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(6, official_);
+      }
+      if (!getPinoutBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, pinout_);
+      }
+      if (package_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(8, getPackage());
+      }
+      if (platform_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(9, getPlatform());
+      }
+      for (int i = 0; i < toolsDependencies_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(10, toolsDependencies_.get(i));
+      }
       for (int i = 0; i < configOptions_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, configOptions_.get(i));
+          .computeMessageSize(11, configOptions_.get(i));
       }
-      for (int i = 0; i < requiredTools_.size(); i++) {
+      for (int i = 0; i < identificationPref_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, requiredTools_.get(i));
+          .computeMessageSize(12, identificationPref_.get(i));
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1119,12 +2028,36 @@ public final class Board {
       }
       cc.arduino.cli.commands.Board.BoardDetailsResp other = (cc.arduino.cli.commands.Board.BoardDetailsResp) obj;
 
+      if (!getFqbn()
+          .equals(other.getFqbn())) return false;
       if (!getName()
           .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!getPropertiesId()
+          .equals(other.getPropertiesId())) return false;
+      if (!getAlias()
+          .equals(other.getAlias())) return false;
+      if (getOfficial()
+          != other.getOfficial()) return false;
+      if (!getPinout()
+          .equals(other.getPinout())) return false;
+      if (hasPackage() != other.hasPackage()) return false;
+      if (hasPackage()) {
+        if (!getPackage()
+            .equals(other.getPackage())) return false;
+      }
+      if (hasPlatform() != other.hasPlatform()) return false;
+      if (hasPlatform()) {
+        if (!getPlatform()
+            .equals(other.getPlatform())) return false;
+      }
+      if (!getToolsDependenciesList()
+          .equals(other.getToolsDependenciesList())) return false;
       if (!getConfigOptionsList()
           .equals(other.getConfigOptionsList())) return false;
-      if (!getRequiredToolsList()
-          .equals(other.getRequiredToolsList())) return false;
+      if (!getIdentificationPrefList()
+          .equals(other.getIdentificationPrefList())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1136,15 +2069,40 @@ public final class Board {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + FQBN_FIELD_NUMBER;
+      hash = (53 * hash) + getFqbn().hashCode();
       hash = (37 * hash) + NAME_FIELD_NUMBER;
       hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion().hashCode();
+      hash = (37 * hash) + PROPERTIESID_FIELD_NUMBER;
+      hash = (53 * hash) + getPropertiesId().hashCode();
+      hash = (37 * hash) + ALIAS_FIELD_NUMBER;
+      hash = (53 * hash) + getAlias().hashCode();
+      hash = (37 * hash) + OFFICIAL_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getOfficial());
+      hash = (37 * hash) + PINOUT_FIELD_NUMBER;
+      hash = (53 * hash) + getPinout().hashCode();
+      if (hasPackage()) {
+        hash = (37 * hash) + PACKAGE_FIELD_NUMBER;
+        hash = (53 * hash) + getPackage().hashCode();
+      }
+      if (hasPlatform()) {
+        hash = (37 * hash) + PLATFORM_FIELD_NUMBER;
+        hash = (53 * hash) + getPlatform().hashCode();
+      }
+      if (getToolsDependenciesCount() > 0) {
+        hash = (37 * hash) + TOOLSDEPENDENCIES_FIELD_NUMBER;
+        hash = (53 * hash) + getToolsDependenciesList().hashCode();
+      }
       if (getConfigOptionsCount() > 0) {
         hash = (37 * hash) + CONFIG_OPTIONS_FIELD_NUMBER;
         hash = (53 * hash) + getConfigOptionsList().hashCode();
       }
-      if (getRequiredToolsCount() > 0) {
-        hash = (37 * hash) + REQUIRED_TOOLS_FIELD_NUMBER;
-        hash = (53 * hash) + getRequiredToolsList().hashCode();
+      if (getIdentificationPrefCount() > 0) {
+        hash = (37 * hash) + IDENTIFICATION_PREF_FIELD_NUMBER;
+        hash = (53 * hash) + getIdentificationPrefList().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -1274,26 +2232,57 @@ public final class Board {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessageV3
                 .alwaysUseFieldBuilders) {
+          getToolsDependenciesFieldBuilder();
           getConfigOptionsFieldBuilder();
-          getRequiredToolsFieldBuilder();
+          getIdentificationPrefFieldBuilder();
         }
       }
       @java.lang.Override
       public Builder clear() {
         super.clear();
+        fqbn_ = "";
+
         name_ = "";
 
+        version_ = "";
+
+        propertiesId_ = "";
+
+        alias_ = "";
+
+        official_ = false;
+
+        pinout_ = "";
+
+        if (packageBuilder_ == null) {
+          package_ = null;
+        } else {
+          package_ = null;
+          packageBuilder_ = null;
+        }
+        if (platformBuilder_ == null) {
+          platform_ = null;
+        } else {
+          platform_ = null;
+          platformBuilder_ = null;
+        }
+        if (toolsDependenciesBuilder_ == null) {
+          toolsDependencies_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          toolsDependenciesBuilder_.clear();
+        }
         if (configOptionsBuilder_ == null) {
           configOptions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
         } else {
           configOptionsBuilder_.clear();
         }
-        if (requiredToolsBuilder_ == null) {
-          requiredTools_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+        if (identificationPrefBuilder_ == null) {
+          identificationPref_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
         } else {
-          requiredToolsBuilder_.clear();
+          identificationPrefBuilder_.clear();
         }
         return this;
       }
@@ -1322,24 +2311,49 @@ public final class Board {
       public cc.arduino.cli.commands.Board.BoardDetailsResp buildPartial() {
         cc.arduino.cli.commands.Board.BoardDetailsResp result = new cc.arduino.cli.commands.Board.BoardDetailsResp(this);
         int from_bitField0_ = bitField0_;
+        result.fqbn_ = fqbn_;
         result.name_ = name_;
-        if (configOptionsBuilder_ == null) {
+        result.version_ = version_;
+        result.propertiesId_ = propertiesId_;
+        result.alias_ = alias_;
+        result.official_ = official_;
+        result.pinout_ = pinout_;
+        if (packageBuilder_ == null) {
+          result.package_ = package_;
+        } else {
+          result.package_ = packageBuilder_.build();
+        }
+        if (platformBuilder_ == null) {
+          result.platform_ = platform_;
+        } else {
+          result.platform_ = platformBuilder_.build();
+        }
+        if (toolsDependenciesBuilder_ == null) {
           if (((bitField0_ & 0x00000001) != 0)) {
-            configOptions_ = java.util.Collections.unmodifiableList(configOptions_);
+            toolsDependencies_ = java.util.Collections.unmodifiableList(toolsDependencies_);
             bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.toolsDependencies_ = toolsDependencies_;
+        } else {
+          result.toolsDependencies_ = toolsDependenciesBuilder_.build();
+        }
+        if (configOptionsBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) != 0)) {
+            configOptions_ = java.util.Collections.unmodifiableList(configOptions_);
+            bitField0_ = (bitField0_ & ~0x00000002);
           }
           result.configOptions_ = configOptions_;
         } else {
           result.configOptions_ = configOptionsBuilder_.build();
         }
-        if (requiredToolsBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) != 0)) {
-            requiredTools_ = java.util.Collections.unmodifiableList(requiredTools_);
-            bitField0_ = (bitField0_ & ~0x00000002);
+        if (identificationPrefBuilder_ == null) {
+          if (((bitField0_ & 0x00000004) != 0)) {
+            identificationPref_ = java.util.Collections.unmodifiableList(identificationPref_);
+            bitField0_ = (bitField0_ & ~0x00000004);
           }
-          result.requiredTools_ = requiredTools_;
+          result.identificationPref_ = identificationPref_;
         } else {
-          result.requiredTools_ = requiredToolsBuilder_.build();
+          result.identificationPref_ = identificationPrefBuilder_.build();
         }
         onBuilt();
         return result;
@@ -1389,15 +2403,70 @@ public final class Board {
 
       public Builder mergeFrom(cc.arduino.cli.commands.Board.BoardDetailsResp other) {
         if (other == cc.arduino.cli.commands.Board.BoardDetailsResp.getDefaultInstance()) return this;
+        if (!other.getFqbn().isEmpty()) {
+          fqbn_ = other.fqbn_;
+          onChanged();
+        }
         if (!other.getName().isEmpty()) {
           name_ = other.name_;
           onChanged();
+        }
+        if (!other.getVersion().isEmpty()) {
+          version_ = other.version_;
+          onChanged();
+        }
+        if (!other.getPropertiesId().isEmpty()) {
+          propertiesId_ = other.propertiesId_;
+          onChanged();
+        }
+        if (!other.getAlias().isEmpty()) {
+          alias_ = other.alias_;
+          onChanged();
+        }
+        if (other.getOfficial() != false) {
+          setOfficial(other.getOfficial());
+        }
+        if (!other.getPinout().isEmpty()) {
+          pinout_ = other.pinout_;
+          onChanged();
+        }
+        if (other.hasPackage()) {
+          mergePackage(other.getPackage());
+        }
+        if (other.hasPlatform()) {
+          mergePlatform(other.getPlatform());
+        }
+        if (toolsDependenciesBuilder_ == null) {
+          if (!other.toolsDependencies_.isEmpty()) {
+            if (toolsDependencies_.isEmpty()) {
+              toolsDependencies_ = other.toolsDependencies_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureToolsDependenciesIsMutable();
+              toolsDependencies_.addAll(other.toolsDependencies_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.toolsDependencies_.isEmpty()) {
+            if (toolsDependenciesBuilder_.isEmpty()) {
+              toolsDependenciesBuilder_.dispose();
+              toolsDependenciesBuilder_ = null;
+              toolsDependencies_ = other.toolsDependencies_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              toolsDependenciesBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getToolsDependenciesFieldBuilder() : null;
+            } else {
+              toolsDependenciesBuilder_.addAllMessages(other.toolsDependencies_);
+            }
+          }
         }
         if (configOptionsBuilder_ == null) {
           if (!other.configOptions_.isEmpty()) {
             if (configOptions_.isEmpty()) {
               configOptions_ = other.configOptions_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000002);
             } else {
               ensureConfigOptionsIsMutable();
               configOptions_.addAll(other.configOptions_);
@@ -1410,7 +2479,7 @@ public final class Board {
               configOptionsBuilder_.dispose();
               configOptionsBuilder_ = null;
               configOptions_ = other.configOptions_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000002);
               configOptionsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getConfigOptionsFieldBuilder() : null;
@@ -1419,29 +2488,29 @@ public final class Board {
             }
           }
         }
-        if (requiredToolsBuilder_ == null) {
-          if (!other.requiredTools_.isEmpty()) {
-            if (requiredTools_.isEmpty()) {
-              requiredTools_ = other.requiredTools_;
-              bitField0_ = (bitField0_ & ~0x00000002);
+        if (identificationPrefBuilder_ == null) {
+          if (!other.identificationPref_.isEmpty()) {
+            if (identificationPref_.isEmpty()) {
+              identificationPref_ = other.identificationPref_;
+              bitField0_ = (bitField0_ & ~0x00000004);
             } else {
-              ensureRequiredToolsIsMutable();
-              requiredTools_.addAll(other.requiredTools_);
+              ensureIdentificationPrefIsMutable();
+              identificationPref_.addAll(other.identificationPref_);
             }
             onChanged();
           }
         } else {
-          if (!other.requiredTools_.isEmpty()) {
-            if (requiredToolsBuilder_.isEmpty()) {
-              requiredToolsBuilder_.dispose();
-              requiredToolsBuilder_ = null;
-              requiredTools_ = other.requiredTools_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-              requiredToolsBuilder_ = 
+          if (!other.identificationPref_.isEmpty()) {
+            if (identificationPrefBuilder_.isEmpty()) {
+              identificationPrefBuilder_.dispose();
+              identificationPrefBuilder_ = null;
+              identificationPref_ = other.identificationPref_;
+              bitField0_ = (bitField0_ & ~0x00000004);
+              identificationPrefBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
-                   getRequiredToolsFieldBuilder() : null;
+                   getIdentificationPrefFieldBuilder() : null;
             } else {
-              requiredToolsBuilder_.addAllMessages(other.requiredTools_);
+              identificationPrefBuilder_.addAllMessages(other.identificationPref_);
             }
           }
         }
@@ -1475,8 +2544,108 @@ public final class Board {
       }
       private int bitField0_;
 
+      private java.lang.Object fqbn_ = "";
+      /**
+       * <pre>
+       * The fully qualified board name of the board.
+       * </pre>
+       *
+       * <code>string fqbn = 1;</code>
+       * @return The fqbn.
+       */
+      public java.lang.String getFqbn() {
+        java.lang.Object ref = fqbn_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          fqbn_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The fully qualified board name of the board.
+       * </pre>
+       *
+       * <code>string fqbn = 1;</code>
+       * @return The bytes for fqbn.
+       */
+      public com.google.protobuf.ByteString
+          getFqbnBytes() {
+        java.lang.Object ref = fqbn_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fqbn_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The fully qualified board name of the board.
+       * </pre>
+       *
+       * <code>string fqbn = 1;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbn(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The fully qualified board name of the board.
+       * </pre>
+       *
+       * <code>string fqbn = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFqbn() {
+        
+        fqbn_ = getDefaultInstance().getFqbn();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The fully qualified board name of the board.
+       * </pre>
+       *
+       * <code>string fqbn = 1;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbnBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The name.
        */
@@ -1493,6 +2662,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The bytes for name.
        */
@@ -1510,6 +2683,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -1525,6 +2702,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return This builder for chaining.
        */
@@ -1535,6 +2716,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans (e.g., Arduino/Genuino Uno).
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -1551,12 +2736,1065 @@ public final class Board {
         return this;
       }
 
+      private java.lang.Object version_ = "";
+      /**
+       * <pre>
+       * Installed version of the board's platform.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return The version.
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          version_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Installed version of the board's platform.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return The bytes for version.
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Installed version of the board's platform.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Installed version of the board's platform.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVersion() {
+        
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Installed version of the board's platform.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object propertiesId_ = "";
+      /**
+       * <pre>
+       * The board ID component of the FQBN (e.g., `uno`).
+       * </pre>
+       *
+       * <code>string propertiesId = 4;</code>
+       * @return The propertiesId.
+       */
+      public java.lang.String getPropertiesId() {
+        java.lang.Object ref = propertiesId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          propertiesId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The board ID component of the FQBN (e.g., `uno`).
+       * </pre>
+       *
+       * <code>string propertiesId = 4;</code>
+       * @return The bytes for propertiesId.
+       */
+      public com.google.protobuf.ByteString
+          getPropertiesIdBytes() {
+        java.lang.Object ref = propertiesId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          propertiesId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The board ID component of the FQBN (e.g., `uno`).
+       * </pre>
+       *
+       * <code>string propertiesId = 4;</code>
+       * @param value The propertiesId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPropertiesId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        propertiesId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The board ID component of the FQBN (e.g., `uno`).
+       * </pre>
+       *
+       * <code>string propertiesId = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPropertiesId() {
+        
+        propertiesId_ = getDefaultInstance().getPropertiesId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The board ID component of the FQBN (e.g., `uno`).
+       * </pre>
+       *
+       * <code>string propertiesId = 4;</code>
+       * @param value The bytes for propertiesId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPropertiesIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        propertiesId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object alias_ = "";
+      /**
+       * <pre>
+       * Board alias that can be used as a more user friendly alternative to the
+       * FQBN.
+       * </pre>
+       *
+       * <code>string alias = 5;</code>
+       * @return The alias.
+       */
+      public java.lang.String getAlias() {
+        java.lang.Object ref = alias_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          alias_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Board alias that can be used as a more user friendly alternative to the
+       * FQBN.
+       * </pre>
+       *
+       * <code>string alias = 5;</code>
+       * @return The bytes for alias.
+       */
+      public com.google.protobuf.ByteString
+          getAliasBytes() {
+        java.lang.Object ref = alias_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          alias_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Board alias that can be used as a more user friendly alternative to the
+       * FQBN.
+       * </pre>
+       *
+       * <code>string alias = 5;</code>
+       * @param value The alias to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAlias(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        alias_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Board alias that can be used as a more user friendly alternative to the
+       * FQBN.
+       * </pre>
+       *
+       * <code>string alias = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAlias() {
+        
+        alias_ = getDefaultInstance().getAlias();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Board alias that can be used as a more user friendly alternative to the
+       * FQBN.
+       * </pre>
+       *
+       * <code>string alias = 5;</code>
+       * @param value The bytes for alias to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAliasBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        alias_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean official_ ;
+      /**
+       * <pre>
+       * Whether this is an official or 3rd party board.
+       * </pre>
+       *
+       * <code>bool official = 6;</code>
+       * @return The official.
+       */
+      public boolean getOfficial() {
+        return official_;
+      }
+      /**
+       * <pre>
+       * Whether this is an official or 3rd party board.
+       * </pre>
+       *
+       * <code>bool official = 6;</code>
+       * @param value The official to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOfficial(boolean value) {
+        
+        official_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Whether this is an official or 3rd party board.
+       * </pre>
+       *
+       * <code>bool official = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOfficial() {
+        
+        official_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pinout_ = "";
+      /**
+       * <pre>
+       * URL of the board's pinout documentation.
+       * </pre>
+       *
+       * <code>string pinout = 7;</code>
+       * @return The pinout.
+       */
+      public java.lang.String getPinout() {
+        java.lang.Object ref = pinout_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pinout_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * URL of the board's pinout documentation.
+       * </pre>
+       *
+       * <code>string pinout = 7;</code>
+       * @return The bytes for pinout.
+       */
+      public com.google.protobuf.ByteString
+          getPinoutBytes() {
+        java.lang.Object ref = pinout_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pinout_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * URL of the board's pinout documentation.
+       * </pre>
+       *
+       * <code>string pinout = 7;</code>
+       * @param value The pinout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPinout(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pinout_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * URL of the board's pinout documentation.
+       * </pre>
+       *
+       * <code>string pinout = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPinout() {
+        
+        pinout_ = getDefaultInstance().getPinout();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * URL of the board's pinout documentation.
+       * </pre>
+       *
+       * <code>string pinout = 7;</code>
+       * @param value The bytes for pinout to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPinoutBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pinout_ = value;
+        onChanged();
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Board.Package package_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Package, cc.arduino.cli.commands.Board.Package.Builder, cc.arduino.cli.commands.Board.PackageOrBuilder> packageBuilder_;
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       * @return Whether the package field is set.
+       */
+      public boolean hasPackage() {
+        return packageBuilder_ != null || package_ != null;
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       * @return The package.
+       */
+      public cc.arduino.cli.commands.Board.Package getPackage() {
+        if (packageBuilder_ == null) {
+          return package_ == null ? cc.arduino.cli.commands.Board.Package.getDefaultInstance() : package_;
+        } else {
+          return packageBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public Builder setPackage(cc.arduino.cli.commands.Board.Package value) {
+        if (packageBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          package_ = value;
+          onChanged();
+        } else {
+          packageBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public Builder setPackage(
+          cc.arduino.cli.commands.Board.Package.Builder builderForValue) {
+        if (packageBuilder_ == null) {
+          package_ = builderForValue.build();
+          onChanged();
+        } else {
+          packageBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public Builder mergePackage(cc.arduino.cli.commands.Board.Package value) {
+        if (packageBuilder_ == null) {
+          if (package_ != null) {
+            package_ =
+              cc.arduino.cli.commands.Board.Package.newBuilder(package_).mergeFrom(value).buildPartial();
+          } else {
+            package_ = value;
+          }
+          onChanged();
+        } else {
+          packageBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public Builder clearPackage() {
+        if (packageBuilder_ == null) {
+          package_ = null;
+          onChanged();
+        } else {
+          package_ = null;
+          packageBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public cc.arduino.cli.commands.Board.Package.Builder getPackageBuilder() {
+        
+        onChanged();
+        return getPackageFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      public cc.arduino.cli.commands.Board.PackageOrBuilder getPackageOrBuilder() {
+        if (packageBuilder_ != null) {
+          return packageBuilder_.getMessageOrBuilder();
+        } else {
+          return package_ == null ?
+              cc.arduino.cli.commands.Board.Package.getDefaultInstance() : package_;
+        }
+      }
+      /**
+       * <pre>
+       * Data about the package that contains the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Package package = 8;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Package, cc.arduino.cli.commands.Board.Package.Builder, cc.arduino.cli.commands.Board.PackageOrBuilder> 
+          getPackageFieldBuilder() {
+        if (packageBuilder_ == null) {
+          packageBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Board.Package, cc.arduino.cli.commands.Board.Package.Builder, cc.arduino.cli.commands.Board.PackageOrBuilder>(
+                  getPackage(),
+                  getParentForChildren(),
+                  isClean());
+          package_ = null;
+        }
+        return packageBuilder_;
+      }
+
+      private cc.arduino.cli.commands.Board.BoardPlatform platform_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.BoardPlatform, cc.arduino.cli.commands.Board.BoardPlatform.Builder, cc.arduino.cli.commands.Board.BoardPlatformOrBuilder> platformBuilder_;
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       * @return Whether the platform field is set.
+       */
+      public boolean hasPlatform() {
+        return platformBuilder_ != null || platform_ != null;
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       * @return The platform.
+       */
+      public cc.arduino.cli.commands.Board.BoardPlatform getPlatform() {
+        if (platformBuilder_ == null) {
+          return platform_ == null ? cc.arduino.cli.commands.Board.BoardPlatform.getDefaultInstance() : platform_;
+        } else {
+          return platformBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public Builder setPlatform(cc.arduino.cli.commands.Board.BoardPlatform value) {
+        if (platformBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          platform_ = value;
+          onChanged();
+        } else {
+          platformBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public Builder setPlatform(
+          cc.arduino.cli.commands.Board.BoardPlatform.Builder builderForValue) {
+        if (platformBuilder_ == null) {
+          platform_ = builderForValue.build();
+          onChanged();
+        } else {
+          platformBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public Builder mergePlatform(cc.arduino.cli.commands.Board.BoardPlatform value) {
+        if (platformBuilder_ == null) {
+          if (platform_ != null) {
+            platform_ =
+              cc.arduino.cli.commands.Board.BoardPlatform.newBuilder(platform_).mergeFrom(value).buildPartial();
+          } else {
+            platform_ = value;
+          }
+          onChanged();
+        } else {
+          platformBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public Builder clearPlatform() {
+        if (platformBuilder_ == null) {
+          platform_ = null;
+          onChanged();
+        } else {
+          platform_ = null;
+          platformBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public cc.arduino.cli.commands.Board.BoardPlatform.Builder getPlatformBuilder() {
+        
+        onChanged();
+        return getPlatformFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      public cc.arduino.cli.commands.Board.BoardPlatformOrBuilder getPlatformOrBuilder() {
+        if (platformBuilder_ != null) {
+          return platformBuilder_.getMessageOrBuilder();
+        } else {
+          return platform_ == null ?
+              cc.arduino.cli.commands.Board.BoardPlatform.getDefaultInstance() : platform_;
+        }
+      }
+      /**
+       * <pre>
+       * Data about the board's platform.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.BoardPlatform platform = 9;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.BoardPlatform, cc.arduino.cli.commands.Board.BoardPlatform.Builder, cc.arduino.cli.commands.Board.BoardPlatformOrBuilder> 
+          getPlatformFieldBuilder() {
+        if (platformBuilder_ == null) {
+          platformBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Board.BoardPlatform, cc.arduino.cli.commands.Board.BoardPlatform.Builder, cc.arduino.cli.commands.Board.BoardPlatformOrBuilder>(
+                  getPlatform(),
+                  getParentForChildren(),
+                  isClean());
+          platform_ = null;
+        }
+        return platformBuilder_;
+      }
+
+      private java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies> toolsDependencies_ =
+        java.util.Collections.emptyList();
+      private void ensureToolsDependenciesIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          toolsDependencies_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.ToolsDependencies>(toolsDependencies_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Board.ToolsDependencies, cc.arduino.cli.commands.Board.ToolsDependencies.Builder, cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder> toolsDependenciesBuilder_;
+
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies> getToolsDependenciesList() {
+        if (toolsDependenciesBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(toolsDependencies_);
+        } else {
+          return toolsDependenciesBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public int getToolsDependenciesCount() {
+        if (toolsDependenciesBuilder_ == null) {
+          return toolsDependencies_.size();
+        } else {
+          return toolsDependenciesBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public cc.arduino.cli.commands.Board.ToolsDependencies getToolsDependencies(int index) {
+        if (toolsDependenciesBuilder_ == null) {
+          return toolsDependencies_.get(index);
+        } else {
+          return toolsDependenciesBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder setToolsDependencies(
+          int index, cc.arduino.cli.commands.Board.ToolsDependencies value) {
+        if (toolsDependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.set(index, value);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder setToolsDependencies(
+          int index, cc.arduino.cli.commands.Board.ToolsDependencies.Builder builderForValue) {
+        if (toolsDependenciesBuilder_ == null) {
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder addToolsDependencies(cc.arduino.cli.commands.Board.ToolsDependencies value) {
+        if (toolsDependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.add(value);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder addToolsDependencies(
+          int index, cc.arduino.cli.commands.Board.ToolsDependencies value) {
+        if (toolsDependenciesBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.add(index, value);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder addToolsDependencies(
+          cc.arduino.cli.commands.Board.ToolsDependencies.Builder builderForValue) {
+        if (toolsDependenciesBuilder_ == null) {
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.add(builderForValue.build());
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder addToolsDependencies(
+          int index, cc.arduino.cli.commands.Board.ToolsDependencies.Builder builderForValue) {
+        if (toolsDependenciesBuilder_ == null) {
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder addAllToolsDependencies(
+          java.lang.Iterable<? extends cc.arduino.cli.commands.Board.ToolsDependencies> values) {
+        if (toolsDependenciesBuilder_ == null) {
+          ensureToolsDependenciesIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, toolsDependencies_);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder clearToolsDependencies() {
+        if (toolsDependenciesBuilder_ == null) {
+          toolsDependencies_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public Builder removeToolsDependencies(int index) {
+        if (toolsDependenciesBuilder_ == null) {
+          ensureToolsDependenciesIsMutable();
+          toolsDependencies_.remove(index);
+          onChanged();
+        } else {
+          toolsDependenciesBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public cc.arduino.cli.commands.Board.ToolsDependencies.Builder getToolsDependenciesBuilder(
+          int index) {
+        return getToolsDependenciesFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder getToolsDependenciesOrBuilder(
+          int index) {
+        if (toolsDependenciesBuilder_ == null) {
+          return toolsDependencies_.get(index);  } else {
+          return toolsDependenciesBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public java.util.List<? extends cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder> 
+           getToolsDependenciesOrBuilderList() {
+        if (toolsDependenciesBuilder_ != null) {
+          return toolsDependenciesBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(toolsDependencies_);
+        }
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public cc.arduino.cli.commands.Board.ToolsDependencies.Builder addToolsDependenciesBuilder() {
+        return getToolsDependenciesFieldBuilder().addBuilder(
+            cc.arduino.cli.commands.Board.ToolsDependencies.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public cc.arduino.cli.commands.Board.ToolsDependencies.Builder addToolsDependenciesBuilder(
+          int index) {
+        return getToolsDependenciesFieldBuilder().addBuilder(
+            index, cc.arduino.cli.commands.Board.ToolsDependencies.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Tool dependencies of the board.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ToolsDependencies toolsDependencies = 10;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Board.ToolsDependencies.Builder> 
+           getToolsDependenciesBuilderList() {
+        return getToolsDependenciesFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Board.ToolsDependencies, cc.arduino.cli.commands.Board.ToolsDependencies.Builder, cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder> 
+          getToolsDependenciesFieldBuilder() {
+        if (toolsDependenciesBuilder_ == null) {
+          toolsDependenciesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cc.arduino.cli.commands.Board.ToolsDependencies, cc.arduino.cli.commands.Board.ToolsDependencies.Builder, cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder>(
+                  toolsDependencies_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          toolsDependencies_ = null;
+        }
+        return toolsDependenciesBuilder_;
+      }
+
       private java.util.List<cc.arduino.cli.commands.Board.ConfigOption> configOptions_ =
         java.util.Collections.emptyList();
       private void ensureConfigOptionsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!((bitField0_ & 0x00000002) != 0)) {
           configOptions_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.ConfigOption>(configOptions_);
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
          }
       }
 
@@ -1564,7 +3802,11 @@ public final class Board {
           cc.arduino.cli.commands.Board.ConfigOption, cc.arduino.cli.commands.Board.ConfigOption.Builder, cc.arduino.cli.commands.Board.ConfigOptionOrBuilder> configOptionsBuilder_;
 
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.ConfigOption> getConfigOptionsList() {
         if (configOptionsBuilder_ == null) {
@@ -1574,7 +3816,11 @@ public final class Board {
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public int getConfigOptionsCount() {
         if (configOptionsBuilder_ == null) {
@@ -1584,7 +3830,11 @@ public final class Board {
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigOption getConfigOptions(int index) {
         if (configOptionsBuilder_ == null) {
@@ -1594,7 +3844,11 @@ public final class Board {
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder setConfigOptions(
           int index, cc.arduino.cli.commands.Board.ConfigOption value) {
@@ -1611,7 +3865,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder setConfigOptions(
           int index, cc.arduino.cli.commands.Board.ConfigOption.Builder builderForValue) {
@@ -1625,7 +3883,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder addConfigOptions(cc.arduino.cli.commands.Board.ConfigOption value) {
         if (configOptionsBuilder_ == null) {
@@ -1641,7 +3903,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder addConfigOptions(
           int index, cc.arduino.cli.commands.Board.ConfigOption value) {
@@ -1658,7 +3924,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder addConfigOptions(
           cc.arduino.cli.commands.Board.ConfigOption.Builder builderForValue) {
@@ -1672,7 +3942,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder addConfigOptions(
           int index, cc.arduino.cli.commands.Board.ConfigOption.Builder builderForValue) {
@@ -1686,7 +3960,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder addAllConfigOptions(
           java.lang.Iterable<? extends cc.arduino.cli.commands.Board.ConfigOption> values) {
@@ -1701,12 +3979,16 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder clearConfigOptions() {
         if (configOptionsBuilder_ == null) {
           configOptions_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000002);
           onChanged();
         } else {
           configOptionsBuilder_.clear();
@@ -1714,7 +3996,11 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public Builder removeConfigOptions(int index) {
         if (configOptionsBuilder_ == null) {
@@ -1727,14 +4013,22 @@ public final class Board {
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigOption.Builder getConfigOptionsBuilder(
           int index) {
         return getConfigOptionsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigOptionOrBuilder getConfigOptionsOrBuilder(
           int index) {
@@ -1744,7 +4038,11 @@ public final class Board {
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Board.ConfigOptionOrBuilder> 
            getConfigOptionsOrBuilderList() {
@@ -1755,14 +4053,22 @@ public final class Board {
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigOption.Builder addConfigOptionsBuilder() {
         return getConfigOptionsFieldBuilder().addBuilder(
             cc.arduino.cli.commands.Board.ConfigOption.getDefaultInstance());
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigOption.Builder addConfigOptionsBuilder(
           int index) {
@@ -1770,7 +4076,11 @@ public final class Board {
             index, cc.arduino.cli.commands.Board.ConfigOption.getDefaultInstance());
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 3;</code>
+       * <pre>
+       * The board's custom configuration options.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.ConfigOption config_options = 11;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.ConfigOption.Builder> 
            getConfigOptionsBuilderList() {
@@ -1783,7 +4093,7 @@ public final class Board {
           configOptionsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               cc.arduino.cli.commands.Board.ConfigOption, cc.arduino.cli.commands.Board.ConfigOption.Builder, cc.arduino.cli.commands.Board.ConfigOptionOrBuilder>(
                   configOptions_,
-                  ((bitField0_ & 0x00000001) != 0),
+                  ((bitField0_ & 0x00000002) != 0),
                   getParentForChildren(),
                   isClean());
           configOptions_ = null;
@@ -1791,244 +4101,316 @@ public final class Board {
         return configOptionsBuilder_;
       }
 
-      private java.util.List<cc.arduino.cli.commands.Board.RequiredTool> requiredTools_ =
+      private java.util.List<cc.arduino.cli.commands.Board.IdentificationPref> identificationPref_ =
         java.util.Collections.emptyList();
-      private void ensureRequiredToolsIsMutable() {
-        if (!((bitField0_ & 0x00000002) != 0)) {
-          requiredTools_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.RequiredTool>(requiredTools_);
-          bitField0_ |= 0x00000002;
+      private void ensureIdentificationPrefIsMutable() {
+        if (!((bitField0_ & 0x00000004) != 0)) {
+          identificationPref_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.IdentificationPref>(identificationPref_);
+          bitField0_ |= 0x00000004;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cc.arduino.cli.commands.Board.RequiredTool, cc.arduino.cli.commands.Board.RequiredTool.Builder, cc.arduino.cli.commands.Board.RequiredToolOrBuilder> requiredToolsBuilder_;
+          cc.arduino.cli.commands.Board.IdentificationPref, cc.arduino.cli.commands.Board.IdentificationPref.Builder, cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder> identificationPrefBuilder_;
 
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public java.util.List<cc.arduino.cli.commands.Board.RequiredTool> getRequiredToolsList() {
-        if (requiredToolsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(requiredTools_);
+      public java.util.List<cc.arduino.cli.commands.Board.IdentificationPref> getIdentificationPrefList() {
+        if (identificationPrefBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(identificationPref_);
         } else {
-          return requiredToolsBuilder_.getMessageList();
+          return identificationPrefBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public int getRequiredToolsCount() {
-        if (requiredToolsBuilder_ == null) {
-          return requiredTools_.size();
+      public int getIdentificationPrefCount() {
+        if (identificationPrefBuilder_ == null) {
+          return identificationPref_.size();
         } else {
-          return requiredToolsBuilder_.getCount();
+          return identificationPrefBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public cc.arduino.cli.commands.Board.RequiredTool getRequiredTools(int index) {
-        if (requiredToolsBuilder_ == null) {
-          return requiredTools_.get(index);
+      public cc.arduino.cli.commands.Board.IdentificationPref getIdentificationPref(int index) {
+        if (identificationPrefBuilder_ == null) {
+          return identificationPref_.get(index);
         } else {
-          return requiredToolsBuilder_.getMessage(index);
+          return identificationPrefBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder setRequiredTools(
-          int index, cc.arduino.cli.commands.Board.RequiredTool value) {
-        if (requiredToolsBuilder_ == null) {
+      public Builder setIdentificationPref(
+          int index, cc.arduino.cli.commands.Board.IdentificationPref value) {
+        if (identificationPrefBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRequiredToolsIsMutable();
-          requiredTools_.set(index, value);
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.set(index, value);
           onChanged();
         } else {
-          requiredToolsBuilder_.setMessage(index, value);
+          identificationPrefBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder setRequiredTools(
-          int index, cc.arduino.cli.commands.Board.RequiredTool.Builder builderForValue) {
-        if (requiredToolsBuilder_ == null) {
-          ensureRequiredToolsIsMutable();
-          requiredTools_.set(index, builderForValue.build());
+      public Builder setIdentificationPref(
+          int index, cc.arduino.cli.commands.Board.IdentificationPref.Builder builderForValue) {
+        if (identificationPrefBuilder_ == null) {
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.set(index, builderForValue.build());
           onChanged();
         } else {
-          requiredToolsBuilder_.setMessage(index, builderForValue.build());
+          identificationPrefBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder addRequiredTools(cc.arduino.cli.commands.Board.RequiredTool value) {
-        if (requiredToolsBuilder_ == null) {
+      public Builder addIdentificationPref(cc.arduino.cli.commands.Board.IdentificationPref value) {
+        if (identificationPrefBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRequiredToolsIsMutable();
-          requiredTools_.add(value);
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.add(value);
           onChanged();
         } else {
-          requiredToolsBuilder_.addMessage(value);
+          identificationPrefBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder addRequiredTools(
-          int index, cc.arduino.cli.commands.Board.RequiredTool value) {
-        if (requiredToolsBuilder_ == null) {
+      public Builder addIdentificationPref(
+          int index, cc.arduino.cli.commands.Board.IdentificationPref value) {
+        if (identificationPrefBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureRequiredToolsIsMutable();
-          requiredTools_.add(index, value);
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.add(index, value);
           onChanged();
         } else {
-          requiredToolsBuilder_.addMessage(index, value);
+          identificationPrefBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder addRequiredTools(
-          cc.arduino.cli.commands.Board.RequiredTool.Builder builderForValue) {
-        if (requiredToolsBuilder_ == null) {
-          ensureRequiredToolsIsMutable();
-          requiredTools_.add(builderForValue.build());
+      public Builder addIdentificationPref(
+          cc.arduino.cli.commands.Board.IdentificationPref.Builder builderForValue) {
+        if (identificationPrefBuilder_ == null) {
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.add(builderForValue.build());
           onChanged();
         } else {
-          requiredToolsBuilder_.addMessage(builderForValue.build());
+          identificationPrefBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder addRequiredTools(
-          int index, cc.arduino.cli.commands.Board.RequiredTool.Builder builderForValue) {
-        if (requiredToolsBuilder_ == null) {
-          ensureRequiredToolsIsMutable();
-          requiredTools_.add(index, builderForValue.build());
+      public Builder addIdentificationPref(
+          int index, cc.arduino.cli.commands.Board.IdentificationPref.Builder builderForValue) {
+        if (identificationPrefBuilder_ == null) {
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.add(index, builderForValue.build());
           onChanged();
         } else {
-          requiredToolsBuilder_.addMessage(index, builderForValue.build());
+          identificationPrefBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder addAllRequiredTools(
-          java.lang.Iterable<? extends cc.arduino.cli.commands.Board.RequiredTool> values) {
-        if (requiredToolsBuilder_ == null) {
-          ensureRequiredToolsIsMutable();
+      public Builder addAllIdentificationPref(
+          java.lang.Iterable<? extends cc.arduino.cli.commands.Board.IdentificationPref> values) {
+        if (identificationPrefBuilder_ == null) {
+          ensureIdentificationPrefIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
-              values, requiredTools_);
+              values, identificationPref_);
           onChanged();
         } else {
-          requiredToolsBuilder_.addAllMessages(values);
+          identificationPrefBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder clearRequiredTools() {
-        if (requiredToolsBuilder_ == null) {
-          requiredTools_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+      public Builder clearIdentificationPref() {
+        if (identificationPrefBuilder_ == null) {
+          identificationPref_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
-          requiredToolsBuilder_.clear();
+          identificationPrefBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public Builder removeRequiredTools(int index) {
-        if (requiredToolsBuilder_ == null) {
-          ensureRequiredToolsIsMutable();
-          requiredTools_.remove(index);
+      public Builder removeIdentificationPref(int index) {
+        if (identificationPrefBuilder_ == null) {
+          ensureIdentificationPrefIsMutable();
+          identificationPref_.remove(index);
           onChanged();
         } else {
-          requiredToolsBuilder_.remove(index);
+          identificationPrefBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public cc.arduino.cli.commands.Board.RequiredTool.Builder getRequiredToolsBuilder(
+      public cc.arduino.cli.commands.Board.IdentificationPref.Builder getIdentificationPrefBuilder(
           int index) {
-        return getRequiredToolsFieldBuilder().getBuilder(index);
+        return getIdentificationPrefFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public cc.arduino.cli.commands.Board.RequiredToolOrBuilder getRequiredToolsOrBuilder(
+      public cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder getIdentificationPrefOrBuilder(
           int index) {
-        if (requiredToolsBuilder_ == null) {
-          return requiredTools_.get(index);  } else {
-          return requiredToolsBuilder_.getMessageOrBuilder(index);
+        if (identificationPrefBuilder_ == null) {
+          return identificationPref_.get(index);  } else {
+          return identificationPrefBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public java.util.List<? extends cc.arduino.cli.commands.Board.RequiredToolOrBuilder> 
-           getRequiredToolsOrBuilderList() {
-        if (requiredToolsBuilder_ != null) {
-          return requiredToolsBuilder_.getMessageOrBuilderList();
+      public java.util.List<? extends cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder> 
+           getIdentificationPrefOrBuilderList() {
+        if (identificationPrefBuilder_ != null) {
+          return identificationPrefBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(requiredTools_);
+          return java.util.Collections.unmodifiableList(identificationPref_);
         }
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public cc.arduino.cli.commands.Board.RequiredTool.Builder addRequiredToolsBuilder() {
-        return getRequiredToolsFieldBuilder().addBuilder(
-            cc.arduino.cli.commands.Board.RequiredTool.getDefaultInstance());
+      public cc.arduino.cli.commands.Board.IdentificationPref.Builder addIdentificationPrefBuilder() {
+        return getIdentificationPrefFieldBuilder().addBuilder(
+            cc.arduino.cli.commands.Board.IdentificationPref.getDefaultInstance());
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public cc.arduino.cli.commands.Board.RequiredTool.Builder addRequiredToolsBuilder(
+      public cc.arduino.cli.commands.Board.IdentificationPref.Builder addIdentificationPrefBuilder(
           int index) {
-        return getRequiredToolsFieldBuilder().addBuilder(
-            index, cc.arduino.cli.commands.Board.RequiredTool.getDefaultInstance());
+        return getIdentificationPrefFieldBuilder().addBuilder(
+            index, cc.arduino.cli.commands.Board.IdentificationPref.getDefaultInstance());
       }
       /**
-       * <code>repeated .cc.arduino.cli.commands.RequiredTool required_tools = 4;</code>
+       * <pre>
+       * Identifying information for the board (e.g., USB VID/PID).
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.IdentificationPref identification_pref = 12;</code>
        */
-      public java.util.List<cc.arduino.cli.commands.Board.RequiredTool.Builder> 
-           getRequiredToolsBuilderList() {
-        return getRequiredToolsFieldBuilder().getBuilderList();
+      public java.util.List<cc.arduino.cli.commands.Board.IdentificationPref.Builder> 
+           getIdentificationPrefBuilderList() {
+        return getIdentificationPrefFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          cc.arduino.cli.commands.Board.RequiredTool, cc.arduino.cli.commands.Board.RequiredTool.Builder, cc.arduino.cli.commands.Board.RequiredToolOrBuilder> 
-          getRequiredToolsFieldBuilder() {
-        if (requiredToolsBuilder_ == null) {
-          requiredToolsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              cc.arduino.cli.commands.Board.RequiredTool, cc.arduino.cli.commands.Board.RequiredTool.Builder, cc.arduino.cli.commands.Board.RequiredToolOrBuilder>(
-                  requiredTools_,
-                  ((bitField0_ & 0x00000002) != 0),
+          cc.arduino.cli.commands.Board.IdentificationPref, cc.arduino.cli.commands.Board.IdentificationPref.Builder, cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder> 
+          getIdentificationPrefFieldBuilder() {
+        if (identificationPrefBuilder_ == null) {
+          identificationPrefBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cc.arduino.cli.commands.Board.IdentificationPref, cc.arduino.cli.commands.Board.IdentificationPref.Builder, cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder>(
+                  identificationPref_,
+                  ((bitField0_ & 0x00000004) != 0),
                   getParentForChildren(),
                   isClean());
-          requiredTools_ = null;
+          identificationPref_ = null;
         }
-        return requiredToolsBuilder_;
+        return identificationPrefBuilder_;
       }
       @java.lang.Override
       public final Builder setUnknownFields(
@@ -2083,16 +4465,8003 @@ public final class Board {
 
   }
 
+  public interface IdentificationPrefOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.IdentificationPref)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     * @return Whether the usbID field is set.
+     */
+    boolean hasUsbID();
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     * @return The usbID.
+     */
+    cc.arduino.cli.commands.Board.USBID getUsbID();
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     */
+    cc.arduino.cli.commands.Board.USBIDOrBuilder getUsbIDOrBuilder();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.IdentificationPref}
+   */
+  public  static final class IdentificationPref extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.IdentificationPref)
+      IdentificationPrefOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IdentificationPref.newBuilder() to construct.
+    private IdentificationPref(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IdentificationPref() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IdentificationPref();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IdentificationPref(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              cc.arduino.cli.commands.Board.USBID.Builder subBuilder = null;
+              if (usbID_ != null) {
+                subBuilder = usbID_.toBuilder();
+              }
+              usbID_ = input.readMessage(cc.arduino.cli.commands.Board.USBID.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(usbID_);
+                usbID_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_IdentificationPref_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.IdentificationPref.class, cc.arduino.cli.commands.Board.IdentificationPref.Builder.class);
+    }
+
+    public static final int USBID_FIELD_NUMBER = 1;
+    private cc.arduino.cli.commands.Board.USBID usbID_;
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     * @return Whether the usbID field is set.
+     */
+    public boolean hasUsbID() {
+      return usbID_ != null;
+    }
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     * @return The usbID.
+     */
+    public cc.arduino.cli.commands.Board.USBID getUsbID() {
+      return usbID_ == null ? cc.arduino.cli.commands.Board.USBID.getDefaultInstance() : usbID_;
+    }
+    /**
+     * <pre>
+     * Identifying information for USB-connected boards.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+     */
+    public cc.arduino.cli.commands.Board.USBIDOrBuilder getUsbIDOrBuilder() {
+      return getUsbID();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (usbID_ != null) {
+        output.writeMessage(1, getUsbID());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (usbID_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getUsbID());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.IdentificationPref)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.IdentificationPref other = (cc.arduino.cli.commands.Board.IdentificationPref) obj;
+
+      if (hasUsbID() != other.hasUsbID()) return false;
+      if (hasUsbID()) {
+        if (!getUsbID()
+            .equals(other.getUsbID())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasUsbID()) {
+        hash = (37 * hash) + USBID_FIELD_NUMBER;
+        hash = (53 * hash) + getUsbID().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.IdentificationPref parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.IdentificationPref prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.IdentificationPref}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.IdentificationPref)
+        cc.arduino.cli.commands.Board.IdentificationPrefOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_IdentificationPref_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.IdentificationPref.class, cc.arduino.cli.commands.Board.IdentificationPref.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.IdentificationPref.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (usbIDBuilder_ == null) {
+          usbID_ = null;
+        } else {
+          usbID_ = null;
+          usbIDBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.IdentificationPref getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.IdentificationPref.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.IdentificationPref build() {
+        cc.arduino.cli.commands.Board.IdentificationPref result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.IdentificationPref buildPartial() {
+        cc.arduino.cli.commands.Board.IdentificationPref result = new cc.arduino.cli.commands.Board.IdentificationPref(this);
+        if (usbIDBuilder_ == null) {
+          result.usbID_ = usbID_;
+        } else {
+          result.usbID_ = usbIDBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.IdentificationPref) {
+          return mergeFrom((cc.arduino.cli.commands.Board.IdentificationPref)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.IdentificationPref other) {
+        if (other == cc.arduino.cli.commands.Board.IdentificationPref.getDefaultInstance()) return this;
+        if (other.hasUsbID()) {
+          mergeUsbID(other.getUsbID());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.IdentificationPref parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.IdentificationPref) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Board.USBID usbID_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.USBID, cc.arduino.cli.commands.Board.USBID.Builder, cc.arduino.cli.commands.Board.USBIDOrBuilder> usbIDBuilder_;
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       * @return Whether the usbID field is set.
+       */
+      public boolean hasUsbID() {
+        return usbIDBuilder_ != null || usbID_ != null;
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       * @return The usbID.
+       */
+      public cc.arduino.cli.commands.Board.USBID getUsbID() {
+        if (usbIDBuilder_ == null) {
+          return usbID_ == null ? cc.arduino.cli.commands.Board.USBID.getDefaultInstance() : usbID_;
+        } else {
+          return usbIDBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public Builder setUsbID(cc.arduino.cli.commands.Board.USBID value) {
+        if (usbIDBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          usbID_ = value;
+          onChanged();
+        } else {
+          usbIDBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public Builder setUsbID(
+          cc.arduino.cli.commands.Board.USBID.Builder builderForValue) {
+        if (usbIDBuilder_ == null) {
+          usbID_ = builderForValue.build();
+          onChanged();
+        } else {
+          usbIDBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public Builder mergeUsbID(cc.arduino.cli.commands.Board.USBID value) {
+        if (usbIDBuilder_ == null) {
+          if (usbID_ != null) {
+            usbID_ =
+              cc.arduino.cli.commands.Board.USBID.newBuilder(usbID_).mergeFrom(value).buildPartial();
+          } else {
+            usbID_ = value;
+          }
+          onChanged();
+        } else {
+          usbIDBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public Builder clearUsbID() {
+        if (usbIDBuilder_ == null) {
+          usbID_ = null;
+          onChanged();
+        } else {
+          usbID_ = null;
+          usbIDBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public cc.arduino.cli.commands.Board.USBID.Builder getUsbIDBuilder() {
+        
+        onChanged();
+        return getUsbIDFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      public cc.arduino.cli.commands.Board.USBIDOrBuilder getUsbIDOrBuilder() {
+        if (usbIDBuilder_ != null) {
+          return usbIDBuilder_.getMessageOrBuilder();
+        } else {
+          return usbID_ == null ?
+              cc.arduino.cli.commands.Board.USBID.getDefaultInstance() : usbID_;
+        }
+      }
+      /**
+       * <pre>
+       * Identifying information for USB-connected boards.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.USBID usbID = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.USBID, cc.arduino.cli.commands.Board.USBID.Builder, cc.arduino.cli.commands.Board.USBIDOrBuilder> 
+          getUsbIDFieldBuilder() {
+        if (usbIDBuilder_ == null) {
+          usbIDBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Board.USBID, cc.arduino.cli.commands.Board.USBID.Builder, cc.arduino.cli.commands.Board.USBIDOrBuilder>(
+                  getUsbID(),
+                  getParentForChildren(),
+                  isClean());
+          usbID_ = null;
+        }
+        return usbIDBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.IdentificationPref)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.IdentificationPref)
+    private static final cc.arduino.cli.commands.Board.IdentificationPref DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.IdentificationPref();
+    }
+
+    public static cc.arduino.cli.commands.Board.IdentificationPref getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<IdentificationPref>
+        PARSER = new com.google.protobuf.AbstractParser<IdentificationPref>() {
+      @java.lang.Override
+      public IdentificationPref parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IdentificationPref(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IdentificationPref> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IdentificationPref> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.IdentificationPref getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface USBIDOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.USBID)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * USB vendor ID.
+     * </pre>
+     *
+     * <code>string VID = 1;</code>
+     * @return The vID.
+     */
+    java.lang.String getVID();
+    /**
+     * <pre>
+     * USB vendor ID.
+     * </pre>
+     *
+     * <code>string VID = 1;</code>
+     * @return The bytes for vID.
+     */
+    com.google.protobuf.ByteString
+        getVIDBytes();
+
+    /**
+     * <pre>
+     * USB product ID.
+     * </pre>
+     *
+     * <code>string PID = 2;</code>
+     * @return The pID.
+     */
+    java.lang.String getPID();
+    /**
+     * <pre>
+     * USB product ID.
+     * </pre>
+     *
+     * <code>string PID = 2;</code>
+     * @return The bytes for pID.
+     */
+    com.google.protobuf.ByteString
+        getPIDBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.USBID}
+   */
+  public  static final class USBID extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.USBID)
+      USBIDOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use USBID.newBuilder() to construct.
+    private USBID(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private USBID() {
+      vID_ = "";
+      pID_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new USBID();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private USBID(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              vID_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pID_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_USBID_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_USBID_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.USBID.class, cc.arduino.cli.commands.Board.USBID.Builder.class);
+    }
+
+    public static final int VID_FIELD_NUMBER = 1;
+    private volatile java.lang.Object vID_;
+    /**
+     * <pre>
+     * USB vendor ID.
+     * </pre>
+     *
+     * <code>string VID = 1;</code>
+     * @return The vID.
+     */
+    public java.lang.String getVID() {
+      java.lang.Object ref = vID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        vID_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * USB vendor ID.
+     * </pre>
+     *
+     * <code>string VID = 1;</code>
+     * @return The bytes for vID.
+     */
+    public com.google.protobuf.ByteString
+        getVIDBytes() {
+      java.lang.Object ref = vID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        vID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object pID_;
+    /**
+     * <pre>
+     * USB product ID.
+     * </pre>
+     *
+     * <code>string PID = 2;</code>
+     * @return The pID.
+     */
+    public java.lang.String getPID() {
+      java.lang.Object ref = pID_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        pID_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * USB product ID.
+     * </pre>
+     *
+     * <code>string PID = 2;</code>
+     * @return The bytes for pID.
+     */
+    public com.google.protobuf.ByteString
+        getPIDBytes() {
+      java.lang.Object ref = pID_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        pID_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getVIDBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, vID_);
+      }
+      if (!getPIDBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, pID_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getVIDBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, vID_);
+      }
+      if (!getPIDBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, pID_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.USBID)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.USBID other = (cc.arduino.cli.commands.Board.USBID) obj;
+
+      if (!getVID()
+          .equals(other.getVID())) return false;
+      if (!getPID()
+          .equals(other.getPID())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + VID_FIELD_NUMBER;
+      hash = (53 * hash) + getVID().hashCode();
+      hash = (37 * hash) + PID_FIELD_NUMBER;
+      hash = (53 * hash) + getPID().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.USBID parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.USBID prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.USBID}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.USBID)
+        cc.arduino.cli.commands.Board.USBIDOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_USBID_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_USBID_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.USBID.class, cc.arduino.cli.commands.Board.USBID.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.USBID.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        vID_ = "";
+
+        pID_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_USBID_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.USBID getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.USBID.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.USBID build() {
+        cc.arduino.cli.commands.Board.USBID result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.USBID buildPartial() {
+        cc.arduino.cli.commands.Board.USBID result = new cc.arduino.cli.commands.Board.USBID(this);
+        result.vID_ = vID_;
+        result.pID_ = pID_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.USBID) {
+          return mergeFrom((cc.arduino.cli.commands.Board.USBID)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.USBID other) {
+        if (other == cc.arduino.cli.commands.Board.USBID.getDefaultInstance()) return this;
+        if (!other.getVID().isEmpty()) {
+          vID_ = other.vID_;
+          onChanged();
+        }
+        if (!other.getPID().isEmpty()) {
+          pID_ = other.pID_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.USBID parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.USBID) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object vID_ = "";
+      /**
+       * <pre>
+       * USB vendor ID.
+       * </pre>
+       *
+       * <code>string VID = 1;</code>
+       * @return The vID.
+       */
+      public java.lang.String getVID() {
+        java.lang.Object ref = vID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          vID_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * USB vendor ID.
+       * </pre>
+       *
+       * <code>string VID = 1;</code>
+       * @return The bytes for vID.
+       */
+      public com.google.protobuf.ByteString
+          getVIDBytes() {
+        java.lang.Object ref = vID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          vID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * USB vendor ID.
+       * </pre>
+       *
+       * <code>string VID = 1;</code>
+       * @param value The vID to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        vID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * USB vendor ID.
+       * </pre>
+       *
+       * <code>string VID = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVID() {
+        
+        vID_ = getDefaultInstance().getVID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * USB vendor ID.
+       * </pre>
+       *
+       * <code>string VID = 1;</code>
+       * @param value The bytes for vID to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        vID_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object pID_ = "";
+      /**
+       * <pre>
+       * USB product ID.
+       * </pre>
+       *
+       * <code>string PID = 2;</code>
+       * @return The pID.
+       */
+      public java.lang.String getPID() {
+        java.lang.Object ref = pID_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          pID_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * USB product ID.
+       * </pre>
+       *
+       * <code>string PID = 2;</code>
+       * @return The bytes for pID.
+       */
+      public com.google.protobuf.ByteString
+          getPIDBytes() {
+        java.lang.Object ref = pID_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          pID_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * USB product ID.
+       * </pre>
+       *
+       * <code>string PID = 2;</code>
+       * @param value The pID to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPID(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        pID_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * USB product ID.
+       * </pre>
+       *
+       * <code>string PID = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPID() {
+        
+        pID_ = getDefaultInstance().getPID();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * USB product ID.
+       * </pre>
+       *
+       * <code>string PID = 2;</code>
+       * @param value The bytes for pID to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPIDBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        pID_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.USBID)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.USBID)
+    private static final cc.arduino.cli.commands.Board.USBID DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.USBID();
+    }
+
+    public static cc.arduino.cli.commands.Board.USBID getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<USBID>
+        PARSER = new com.google.protobuf.AbstractParser<USBID>() {
+      @java.lang.Override
+      public USBID parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new USBID(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<USBID> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<USBID> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.USBID getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PackageOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.Package)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Maintainer of the package.
+     * </pre>
+     *
+     * <code>string maintainer = 1;</code>
+     * @return The maintainer.
+     */
+    java.lang.String getMaintainer();
+    /**
+     * <pre>
+     * Maintainer of the package.
+     * </pre>
+     *
+     * <code>string maintainer = 1;</code>
+     * @return The bytes for maintainer.
+     */
+    com.google.protobuf.ByteString
+        getMaintainerBytes();
+
+    /**
+     * <pre>
+     * The URL of the platforms index file
+     * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+     * </pre>
+     *
+     * <code>string url = 2;</code>
+     * @return The url.
+     */
+    java.lang.String getUrl();
+    /**
+     * <pre>
+     * The URL of the platforms index file
+     * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+     * </pre>
+     *
+     * <code>string url = 2;</code>
+     * @return The bytes for url.
+     */
+    com.google.protobuf.ByteString
+        getUrlBytes();
+
+    /**
+     * <pre>
+     * A URL provided by the package author, intended to point to their website.
+     * </pre>
+     *
+     * <code>string websiteURL = 3;</code>
+     * @return The websiteURL.
+     */
+    java.lang.String getWebsiteURL();
+    /**
+     * <pre>
+     * A URL provided by the package author, intended to point to their website.
+     * </pre>
+     *
+     * <code>string websiteURL = 3;</code>
+     * @return The bytes for websiteURL.
+     */
+    com.google.protobuf.ByteString
+        getWebsiteURLBytes();
+
+    /**
+     * <pre>
+     * Email address of the package maintainer.
+     * </pre>
+     *
+     * <code>string email = 4;</code>
+     * @return The email.
+     */
+    java.lang.String getEmail();
+    /**
+     * <pre>
+     * Email address of the package maintainer.
+     * </pre>
+     *
+     * <code>string email = 4;</code>
+     * @return The bytes for email.
+     */
+    com.google.protobuf.ByteString
+        getEmailBytes();
+
+    /**
+     * <pre>
+     * Package vendor name.
+     * </pre>
+     *
+     * <code>string name = 5;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * Package vendor name.
+     * </pre>
+     *
+     * <code>string name = 5;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     * @return Whether the help field is set.
+     */
+    boolean hasHelp();
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     * @return The help.
+     */
+    cc.arduino.cli.commands.Board.Help getHelp();
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     */
+    cc.arduino.cli.commands.Board.HelpOrBuilder getHelpOrBuilder();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.Package}
+   */
+  public  static final class Package extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.Package)
+      PackageOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Package.newBuilder() to construct.
+    private Package(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Package() {
+      maintainer_ = "";
+      url_ = "";
+      websiteURL_ = "";
+      email_ = "";
+      name_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Package();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Package(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              maintainer_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              url_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              websiteURL_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              email_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 50: {
+              cc.arduino.cli.commands.Board.Help.Builder subBuilder = null;
+              if (help_ != null) {
+                subBuilder = help_.toBuilder();
+              }
+              help_ = input.readMessage(cc.arduino.cli.commands.Board.Help.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(help_);
+                help_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Package_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Package_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.Package.class, cc.arduino.cli.commands.Board.Package.Builder.class);
+    }
+
+    public static final int MAINTAINER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object maintainer_;
+    /**
+     * <pre>
+     * Maintainer of the package.
+     * </pre>
+     *
+     * <code>string maintainer = 1;</code>
+     * @return The maintainer.
+     */
+    public java.lang.String getMaintainer() {
+      java.lang.Object ref = maintainer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        maintainer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Maintainer of the package.
+     * </pre>
+     *
+     * <code>string maintainer = 1;</code>
+     * @return The bytes for maintainer.
+     */
+    public com.google.protobuf.ByteString
+        getMaintainerBytes() {
+      java.lang.Object ref = maintainer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        maintainer_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int URL_FIELD_NUMBER = 2;
+    private volatile java.lang.Object url_;
+    /**
+     * <pre>
+     * The URL of the platforms index file
+     * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+     * </pre>
+     *
+     * <code>string url = 2;</code>
+     * @return The url.
+     */
+    public java.lang.String getUrl() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        url_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The URL of the platforms index file
+     * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+     * </pre>
+     *
+     * <code>string url = 2;</code>
+     * @return The bytes for url.
+     */
+    public com.google.protobuf.ByteString
+        getUrlBytes() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        url_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int WEBSITEURL_FIELD_NUMBER = 3;
+    private volatile java.lang.Object websiteURL_;
+    /**
+     * <pre>
+     * A URL provided by the package author, intended to point to their website.
+     * </pre>
+     *
+     * <code>string websiteURL = 3;</code>
+     * @return The websiteURL.
+     */
+    public java.lang.String getWebsiteURL() {
+      java.lang.Object ref = websiteURL_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        websiteURL_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * A URL provided by the package author, intended to point to their website.
+     * </pre>
+     *
+     * <code>string websiteURL = 3;</code>
+     * @return The bytes for websiteURL.
+     */
+    public com.google.protobuf.ByteString
+        getWebsiteURLBytes() {
+      java.lang.Object ref = websiteURL_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        websiteURL_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int EMAIL_FIELD_NUMBER = 4;
+    private volatile java.lang.Object email_;
+    /**
+     * <pre>
+     * Email address of the package maintainer.
+     * </pre>
+     *
+     * <code>string email = 4;</code>
+     * @return The email.
+     */
+    public java.lang.String getEmail() {
+      java.lang.Object ref = email_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        email_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Email address of the package maintainer.
+     * </pre>
+     *
+     * <code>string email = 4;</code>
+     * @return The bytes for email.
+     */
+    public com.google.protobuf.ByteString
+        getEmailBytes() {
+      java.lang.Object ref = email_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        email_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 5;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * Package vendor name.
+     * </pre>
+     *
+     * <code>string name = 5;</code>
+     * @return The name.
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Package vendor name.
+     * </pre>
+     *
+     * <code>string name = 5;</code>
+     * @return The bytes for name.
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HELP_FIELD_NUMBER = 6;
+    private cc.arduino.cli.commands.Board.Help help_;
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     * @return Whether the help field is set.
+     */
+    public boolean hasHelp() {
+      return help_ != null;
+    }
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     * @return The help.
+     */
+    public cc.arduino.cli.commands.Board.Help getHelp() {
+      return help_ == null ? cc.arduino.cli.commands.Board.Help.getDefaultInstance() : help_;
+    }
+    /**
+     * <pre>
+     * Resources for getting help about using the package.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+     */
+    public cc.arduino.cli.commands.Board.HelpOrBuilder getHelpOrBuilder() {
+      return getHelp();
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getMaintainerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, maintainer_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, url_);
+      }
+      if (!getWebsiteURLBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, websiteURL_);
+      }
+      if (!getEmailBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, email_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, name_);
+      }
+      if (help_ != null) {
+        output.writeMessage(6, getHelp());
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getMaintainerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, maintainer_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, url_);
+      }
+      if (!getWebsiteURLBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, websiteURL_);
+      }
+      if (!getEmailBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, email_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, name_);
+      }
+      if (help_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(6, getHelp());
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.Package)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.Package other = (cc.arduino.cli.commands.Board.Package) obj;
+
+      if (!getMaintainer()
+          .equals(other.getMaintainer())) return false;
+      if (!getUrl()
+          .equals(other.getUrl())) return false;
+      if (!getWebsiteURL()
+          .equals(other.getWebsiteURL())) return false;
+      if (!getEmail()
+          .equals(other.getEmail())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (hasHelp() != other.hasHelp()) return false;
+      if (hasHelp()) {
+        if (!getHelp()
+            .equals(other.getHelp())) return false;
+      }
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + MAINTAINER_FIELD_NUMBER;
+      hash = (53 * hash) + getMaintainer().hashCode();
+      hash = (37 * hash) + URL_FIELD_NUMBER;
+      hash = (53 * hash) + getUrl().hashCode();
+      hash = (37 * hash) + WEBSITEURL_FIELD_NUMBER;
+      hash = (53 * hash) + getWebsiteURL().hashCode();
+      hash = (37 * hash) + EMAIL_FIELD_NUMBER;
+      hash = (53 * hash) + getEmail().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      if (hasHelp()) {
+        hash = (37 * hash) + HELP_FIELD_NUMBER;
+        hash = (53 * hash) + getHelp().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Package parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.Package prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.Package}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.Package)
+        cc.arduino.cli.commands.Board.PackageOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Package_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Package_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.Package.class, cc.arduino.cli.commands.Board.Package.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.Package.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        maintainer_ = "";
+
+        url_ = "";
+
+        websiteURL_ = "";
+
+        email_ = "";
+
+        name_ = "";
+
+        if (helpBuilder_ == null) {
+          help_ = null;
+        } else {
+          help_ = null;
+          helpBuilder_ = null;
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Package_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Package getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.Package.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Package build() {
+        cc.arduino.cli.commands.Board.Package result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Package buildPartial() {
+        cc.arduino.cli.commands.Board.Package result = new cc.arduino.cli.commands.Board.Package(this);
+        result.maintainer_ = maintainer_;
+        result.url_ = url_;
+        result.websiteURL_ = websiteURL_;
+        result.email_ = email_;
+        result.name_ = name_;
+        if (helpBuilder_ == null) {
+          result.help_ = help_;
+        } else {
+          result.help_ = helpBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.Package) {
+          return mergeFrom((cc.arduino.cli.commands.Board.Package)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.Package other) {
+        if (other == cc.arduino.cli.commands.Board.Package.getDefaultInstance()) return this;
+        if (!other.getMaintainer().isEmpty()) {
+          maintainer_ = other.maintainer_;
+          onChanged();
+        }
+        if (!other.getUrl().isEmpty()) {
+          url_ = other.url_;
+          onChanged();
+        }
+        if (!other.getWebsiteURL().isEmpty()) {
+          websiteURL_ = other.websiteURL_;
+          onChanged();
+        }
+        if (!other.getEmail().isEmpty()) {
+          email_ = other.email_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (other.hasHelp()) {
+          mergeHelp(other.getHelp());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.Package parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.Package) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object maintainer_ = "";
+      /**
+       * <pre>
+       * Maintainer of the package.
+       * </pre>
+       *
+       * <code>string maintainer = 1;</code>
+       * @return The maintainer.
+       */
+      public java.lang.String getMaintainer() {
+        java.lang.Object ref = maintainer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          maintainer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Maintainer of the package.
+       * </pre>
+       *
+       * <code>string maintainer = 1;</code>
+       * @return The bytes for maintainer.
+       */
+      public com.google.protobuf.ByteString
+          getMaintainerBytes() {
+        java.lang.Object ref = maintainer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          maintainer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Maintainer of the package.
+       * </pre>
+       *
+       * <code>string maintainer = 1;</code>
+       * @param value The maintainer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMaintainer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        maintainer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Maintainer of the package.
+       * </pre>
+       *
+       * <code>string maintainer = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearMaintainer() {
+        
+        maintainer_ = getDefaultInstance().getMaintainer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Maintainer of the package.
+       * </pre>
+       *
+       * <code>string maintainer = 1;</code>
+       * @param value The bytes for maintainer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setMaintainerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        maintainer_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object url_ = "";
+      /**
+       * <pre>
+       * The URL of the platforms index file
+       * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+       * </pre>
+       *
+       * <code>string url = 2;</code>
+       * @return The url.
+       */
+      public java.lang.String getUrl() {
+        java.lang.Object ref = url_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          url_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The URL of the platforms index file
+       * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+       * </pre>
+       *
+       * <code>string url = 2;</code>
+       * @return The bytes for url.
+       */
+      public com.google.protobuf.ByteString
+          getUrlBytes() {
+        java.lang.Object ref = url_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          url_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The URL of the platforms index file
+       * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+       * </pre>
+       *
+       * <code>string url = 2;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        url_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The URL of the platforms index file
+       * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+       * </pre>
+       *
+       * <code>string url = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUrl() {
+        
+        url_ = getDefaultInstance().getUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The URL of the platforms index file
+       * (e.g., https://downloads.arduino.cc/packages/package_index.json).
+       * </pre>
+       *
+       * <code>string url = 2;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        url_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object websiteURL_ = "";
+      /**
+       * <pre>
+       * A URL provided by the package author, intended to point to their website.
+       * </pre>
+       *
+       * <code>string websiteURL = 3;</code>
+       * @return The websiteURL.
+       */
+      public java.lang.String getWebsiteURL() {
+        java.lang.Object ref = websiteURL_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          websiteURL_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * A URL provided by the package author, intended to point to their website.
+       * </pre>
+       *
+       * <code>string websiteURL = 3;</code>
+       * @return The bytes for websiteURL.
+       */
+      public com.google.protobuf.ByteString
+          getWebsiteURLBytes() {
+        java.lang.Object ref = websiteURL_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          websiteURL_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * A URL provided by the package author, intended to point to their website.
+       * </pre>
+       *
+       * <code>string websiteURL = 3;</code>
+       * @param value The websiteURL to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWebsiteURL(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        websiteURL_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * A URL provided by the package author, intended to point to their website.
+       * </pre>
+       *
+       * <code>string websiteURL = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearWebsiteURL() {
+        
+        websiteURL_ = getDefaultInstance().getWebsiteURL();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * A URL provided by the package author, intended to point to their website.
+       * </pre>
+       *
+       * <code>string websiteURL = 3;</code>
+       * @param value The bytes for websiteURL to set.
+       * @return This builder for chaining.
+       */
+      public Builder setWebsiteURLBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        websiteURL_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object email_ = "";
+      /**
+       * <pre>
+       * Email address of the package maintainer.
+       * </pre>
+       *
+       * <code>string email = 4;</code>
+       * @return The email.
+       */
+      public java.lang.String getEmail() {
+        java.lang.Object ref = email_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          email_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Email address of the package maintainer.
+       * </pre>
+       *
+       * <code>string email = 4;</code>
+       * @return The bytes for email.
+       */
+      public com.google.protobuf.ByteString
+          getEmailBytes() {
+        java.lang.Object ref = email_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          email_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Email address of the package maintainer.
+       * </pre>
+       *
+       * <code>string email = 4;</code>
+       * @param value The email to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEmail(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        email_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Email address of the package maintainer.
+       * </pre>
+       *
+       * <code>string email = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearEmail() {
+        
+        email_ = getDefaultInstance().getEmail();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Email address of the package maintainer.
+       * </pre>
+       *
+       * <code>string email = 4;</code>
+       * @param value The bytes for email to set.
+       * @return This builder for chaining.
+       */
+      public Builder setEmailBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        email_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * Package vendor name.
+       * </pre>
+       *
+       * <code>string name = 5;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Package vendor name.
+       * </pre>
+       *
+       * <code>string name = 5;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Package vendor name.
+       * </pre>
+       *
+       * <code>string name = 5;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Package vendor name.
+       * </pre>
+       *
+       * <code>string name = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Package vendor name.
+       * </pre>
+       *
+       * <code>string name = 5;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Board.Help help_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Help, cc.arduino.cli.commands.Board.Help.Builder, cc.arduino.cli.commands.Board.HelpOrBuilder> helpBuilder_;
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       * @return Whether the help field is set.
+       */
+      public boolean hasHelp() {
+        return helpBuilder_ != null || help_ != null;
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       * @return The help.
+       */
+      public cc.arduino.cli.commands.Board.Help getHelp() {
+        if (helpBuilder_ == null) {
+          return help_ == null ? cc.arduino.cli.commands.Board.Help.getDefaultInstance() : help_;
+        } else {
+          return helpBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public Builder setHelp(cc.arduino.cli.commands.Board.Help value) {
+        if (helpBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          help_ = value;
+          onChanged();
+        } else {
+          helpBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public Builder setHelp(
+          cc.arduino.cli.commands.Board.Help.Builder builderForValue) {
+        if (helpBuilder_ == null) {
+          help_ = builderForValue.build();
+          onChanged();
+        } else {
+          helpBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public Builder mergeHelp(cc.arduino.cli.commands.Board.Help value) {
+        if (helpBuilder_ == null) {
+          if (help_ != null) {
+            help_ =
+              cc.arduino.cli.commands.Board.Help.newBuilder(help_).mergeFrom(value).buildPartial();
+          } else {
+            help_ = value;
+          }
+          onChanged();
+        } else {
+          helpBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public Builder clearHelp() {
+        if (helpBuilder_ == null) {
+          help_ = null;
+          onChanged();
+        } else {
+          help_ = null;
+          helpBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public cc.arduino.cli.commands.Board.Help.Builder getHelpBuilder() {
+        
+        onChanged();
+        return getHelpFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      public cc.arduino.cli.commands.Board.HelpOrBuilder getHelpOrBuilder() {
+        if (helpBuilder_ != null) {
+          return helpBuilder_.getMessageOrBuilder();
+        } else {
+          return help_ == null ?
+              cc.arduino.cli.commands.Board.Help.getDefaultInstance() : help_;
+        }
+      }
+      /**
+       * <pre>
+       * Resources for getting help about using the package.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Help help = 6;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Help, cc.arduino.cli.commands.Board.Help.Builder, cc.arduino.cli.commands.Board.HelpOrBuilder> 
+          getHelpFieldBuilder() {
+        if (helpBuilder_ == null) {
+          helpBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Board.Help, cc.arduino.cli.commands.Board.Help.Builder, cc.arduino.cli.commands.Board.HelpOrBuilder>(
+                  getHelp(),
+                  getParentForChildren(),
+                  isClean());
+          help_ = null;
+        }
+        return helpBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.Package)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.Package)
+    private static final cc.arduino.cli.commands.Board.Package DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.Package();
+    }
+
+    public static cc.arduino.cli.commands.Board.Package getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Package>
+        PARSER = new com.google.protobuf.AbstractParser<Package>() {
+      @java.lang.Override
+      public Package parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Package(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Package> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Package> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.Package getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface HelpOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.Help)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * URL for getting online help.
+     * </pre>
+     *
+     * <code>string online = 1;</code>
+     * @return The online.
+     */
+    java.lang.String getOnline();
+    /**
+     * <pre>
+     * URL for getting online help.
+     * </pre>
+     *
+     * <code>string online = 1;</code>
+     * @return The bytes for online.
+     */
+    com.google.protobuf.ByteString
+        getOnlineBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.Help}
+   */
+  public  static final class Help extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.Help)
+      HelpOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Help.newBuilder() to construct.
+    private Help(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Help() {
+      online_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Help();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Help(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              online_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Help_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Help_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.Help.class, cc.arduino.cli.commands.Board.Help.Builder.class);
+    }
+
+    public static final int ONLINE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object online_;
+    /**
+     * <pre>
+     * URL for getting online help.
+     * </pre>
+     *
+     * <code>string online = 1;</code>
+     * @return The online.
+     */
+    public java.lang.String getOnline() {
+      java.lang.Object ref = online_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        online_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * URL for getting online help.
+     * </pre>
+     *
+     * <code>string online = 1;</code>
+     * @return The bytes for online.
+     */
+    public com.google.protobuf.ByteString
+        getOnlineBytes() {
+      java.lang.Object ref = online_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        online_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getOnlineBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, online_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getOnlineBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, online_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.Help)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.Help other = (cc.arduino.cli.commands.Board.Help) obj;
+
+      if (!getOnline()
+          .equals(other.getOnline())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ONLINE_FIELD_NUMBER;
+      hash = (53 * hash) + getOnline().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Help parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.Help prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.Help}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.Help)
+        cc.arduino.cli.commands.Board.HelpOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Help_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Help_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.Help.class, cc.arduino.cli.commands.Board.Help.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.Help.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        online_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Help_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Help getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.Help.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Help build() {
+        cc.arduino.cli.commands.Board.Help result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Help buildPartial() {
+        cc.arduino.cli.commands.Board.Help result = new cc.arduino.cli.commands.Board.Help(this);
+        result.online_ = online_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.Help) {
+          return mergeFrom((cc.arduino.cli.commands.Board.Help)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.Help other) {
+        if (other == cc.arduino.cli.commands.Board.Help.getDefaultInstance()) return this;
+        if (!other.getOnline().isEmpty()) {
+          online_ = other.online_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.Help parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.Help) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object online_ = "";
+      /**
+       * <pre>
+       * URL for getting online help.
+       * </pre>
+       *
+       * <code>string online = 1;</code>
+       * @return The online.
+       */
+      public java.lang.String getOnline() {
+        java.lang.Object ref = online_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          online_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * URL for getting online help.
+       * </pre>
+       *
+       * <code>string online = 1;</code>
+       * @return The bytes for online.
+       */
+      public com.google.protobuf.ByteString
+          getOnlineBytes() {
+        java.lang.Object ref = online_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          online_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * URL for getting online help.
+       * </pre>
+       *
+       * <code>string online = 1;</code>
+       * @param value The online to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOnline(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        online_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * URL for getting online help.
+       * </pre>
+       *
+       * <code>string online = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOnline() {
+        
+        online_ = getDefaultInstance().getOnline();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * URL for getting online help.
+       * </pre>
+       *
+       * <code>string online = 1;</code>
+       * @param value The bytes for online to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOnlineBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        online_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.Help)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.Help)
+    private static final cc.arduino.cli.commands.Board.Help DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.Help();
+    }
+
+    public static cc.arduino.cli.commands.Board.Help getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Help>
+        PARSER = new com.google.protobuf.AbstractParser<Help>() {
+      @java.lang.Override
+      public Help parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Help(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Help> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Help> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.Help getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface BoardPlatformOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.BoardPlatform)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Architecture of the platform (e.g., `avr`).
+     * </pre>
+     *
+     * <code>string architecture = 1;</code>
+     * @return The architecture.
+     */
+    java.lang.String getArchitecture();
+    /**
+     * <pre>
+     * Architecture of the platform (e.g., `avr`).
+     * </pre>
+     *
+     * <code>string architecture = 1;</code>
+     * @return The bytes for architecture.
+     */
+    com.google.protobuf.ByteString
+        getArchitectureBytes();
+
+    /**
+     * <pre>
+     * Category of the platform. Set to `Contributed` for 3rd party platforms.
+     * </pre>
+     *
+     * <code>string category = 2;</code>
+     * @return The category.
+     */
+    java.lang.String getCategory();
+    /**
+     * <pre>
+     * Category of the platform. Set to `Contributed` for 3rd party platforms.
+     * </pre>
+     *
+     * <code>string category = 2;</code>
+     * @return The bytes for category.
+     */
+    com.google.protobuf.ByteString
+        getCategoryBytes();
+
+    /**
+     * <pre>
+     * Download URL of the platform archive file.
+     * </pre>
+     *
+     * <code>string url = 3;</code>
+     * @return The url.
+     */
+    java.lang.String getUrl();
+    /**
+     * <pre>
+     * Download URL of the platform archive file.
+     * </pre>
+     *
+     * <code>string url = 3;</code>
+     * @return The bytes for url.
+     */
+    com.google.protobuf.ByteString
+        getUrlBytes();
+
+    /**
+     * <pre>
+     * File name of the platform archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 4;</code>
+     * @return The archiveFileName.
+     */
+    java.lang.String getArchiveFileName();
+    /**
+     * <pre>
+     * File name of the platform archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 4;</code>
+     * @return The bytes for archiveFileName.
+     */
+    com.google.protobuf.ByteString
+        getArchiveFileNameBytes();
+
+    /**
+     * <pre>
+     * Checksum of the platform archive.
+     * </pre>
+     *
+     * <code>string checksum = 5;</code>
+     * @return The checksum.
+     */
+    java.lang.String getChecksum();
+    /**
+     * <pre>
+     * Checksum of the platform archive.
+     * </pre>
+     *
+     * <code>string checksum = 5;</code>
+     * @return The bytes for checksum.
+     */
+    com.google.protobuf.ByteString
+        getChecksumBytes();
+
+    /**
+     * <pre>
+     * File size of the platform archive.
+     * </pre>
+     *
+     * <code>int64 size = 6;</code>
+     * @return The size.
+     */
+    long getSize();
+
+    /**
+     * <pre>
+     * Name used to identify the platform to humans.
+     * </pre>
+     *
+     * <code>string name = 7;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * Name used to identify the platform to humans.
+     * </pre>
+     *
+     * <code>string name = 7;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.BoardPlatform}
+   */
+  public  static final class BoardPlatform extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.BoardPlatform)
+      BoardPlatformOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BoardPlatform.newBuilder() to construct.
+    private BoardPlatform(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BoardPlatform() {
+      architecture_ = "";
+      category_ = "";
+      url_ = "";
+      archiveFileName_ = "";
+      checksum_ = "";
+      name_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BoardPlatform();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BoardPlatform(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              architecture_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              category_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              url_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              archiveFileName_ = s;
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              checksum_ = s;
+              break;
+            }
+            case 48: {
+
+              size_ = input.readInt64();
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_BoardPlatform_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.BoardPlatform.class, cc.arduino.cli.commands.Board.BoardPlatform.Builder.class);
+    }
+
+    public static final int ARCHITECTURE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object architecture_;
+    /**
+     * <pre>
+     * Architecture of the platform (e.g., `avr`).
+     * </pre>
+     *
+     * <code>string architecture = 1;</code>
+     * @return The architecture.
+     */
+    public java.lang.String getArchitecture() {
+      java.lang.Object ref = architecture_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        architecture_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Architecture of the platform (e.g., `avr`).
+     * </pre>
+     *
+     * <code>string architecture = 1;</code>
+     * @return The bytes for architecture.
+     */
+    public com.google.protobuf.ByteString
+        getArchitectureBytes() {
+      java.lang.Object ref = architecture_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        architecture_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CATEGORY_FIELD_NUMBER = 2;
+    private volatile java.lang.Object category_;
+    /**
+     * <pre>
+     * Category of the platform. Set to `Contributed` for 3rd party platforms.
+     * </pre>
+     *
+     * <code>string category = 2;</code>
+     * @return The category.
+     */
+    public java.lang.String getCategory() {
+      java.lang.Object ref = category_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        category_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Category of the platform. Set to `Contributed` for 3rd party platforms.
+     * </pre>
+     *
+     * <code>string category = 2;</code>
+     * @return The bytes for category.
+     */
+    public com.google.protobuf.ByteString
+        getCategoryBytes() {
+      java.lang.Object ref = category_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        category_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int URL_FIELD_NUMBER = 3;
+    private volatile java.lang.Object url_;
+    /**
+     * <pre>
+     * Download URL of the platform archive file.
+     * </pre>
+     *
+     * <code>string url = 3;</code>
+     * @return The url.
+     */
+    public java.lang.String getUrl() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        url_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Download URL of the platform archive file.
+     * </pre>
+     *
+     * <code>string url = 3;</code>
+     * @return The bytes for url.
+     */
+    public com.google.protobuf.ByteString
+        getUrlBytes() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        url_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ARCHIVEFILENAME_FIELD_NUMBER = 4;
+    private volatile java.lang.Object archiveFileName_;
+    /**
+     * <pre>
+     * File name of the platform archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 4;</code>
+     * @return The archiveFileName.
+     */
+    public java.lang.String getArchiveFileName() {
+      java.lang.Object ref = archiveFileName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        archiveFileName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * File name of the platform archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 4;</code>
+     * @return The bytes for archiveFileName.
+     */
+    public com.google.protobuf.ByteString
+        getArchiveFileNameBytes() {
+      java.lang.Object ref = archiveFileName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        archiveFileName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int CHECKSUM_FIELD_NUMBER = 5;
+    private volatile java.lang.Object checksum_;
+    /**
+     * <pre>
+     * Checksum of the platform archive.
+     * </pre>
+     *
+     * <code>string checksum = 5;</code>
+     * @return The checksum.
+     */
+    public java.lang.String getChecksum() {
+      java.lang.Object ref = checksum_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        checksum_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Checksum of the platform archive.
+     * </pre>
+     *
+     * <code>string checksum = 5;</code>
+     * @return The bytes for checksum.
+     */
+    public com.google.protobuf.ByteString
+        getChecksumBytes() {
+      java.lang.Object ref = checksum_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        checksum_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIZE_FIELD_NUMBER = 6;
+    private long size_;
+    /**
+     * <pre>
+     * File size of the platform archive.
+     * </pre>
+     *
+     * <code>int64 size = 6;</code>
+     * @return The size.
+     */
+    public long getSize() {
+      return size_;
+    }
+
+    public static final int NAME_FIELD_NUMBER = 7;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * Name used to identify the platform to humans.
+     * </pre>
+     *
+     * <code>string name = 7;</code>
+     * @return The name.
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Name used to identify the platform to humans.
+     * </pre>
+     *
+     * <code>string name = 7;</code>
+     * @return The bytes for name.
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getArchitectureBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, architecture_);
+      }
+      if (!getCategoryBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, category_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, url_);
+      }
+      if (!getArchiveFileNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, archiveFileName_);
+      }
+      if (!getChecksumBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, checksum_);
+      }
+      if (size_ != 0L) {
+        output.writeInt64(6, size_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, name_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getArchitectureBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, architecture_);
+      }
+      if (!getCategoryBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, category_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, url_);
+      }
+      if (!getArchiveFileNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, archiveFileName_);
+      }
+      if (!getChecksumBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, checksum_);
+      }
+      if (size_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(6, size_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, name_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.BoardPlatform)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.BoardPlatform other = (cc.arduino.cli.commands.Board.BoardPlatform) obj;
+
+      if (!getArchitecture()
+          .equals(other.getArchitecture())) return false;
+      if (!getCategory()
+          .equals(other.getCategory())) return false;
+      if (!getUrl()
+          .equals(other.getUrl())) return false;
+      if (!getArchiveFileName()
+          .equals(other.getArchiveFileName())) return false;
+      if (!getChecksum()
+          .equals(other.getChecksum())) return false;
+      if (getSize()
+          != other.getSize()) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ARCHITECTURE_FIELD_NUMBER;
+      hash = (53 * hash) + getArchitecture().hashCode();
+      hash = (37 * hash) + CATEGORY_FIELD_NUMBER;
+      hash = (53 * hash) + getCategory().hashCode();
+      hash = (37 * hash) + URL_FIELD_NUMBER;
+      hash = (53 * hash) + getUrl().hashCode();
+      hash = (37 * hash) + ARCHIVEFILENAME_FIELD_NUMBER;
+      hash = (53 * hash) + getArchiveFileName().hashCode();
+      hash = (37 * hash) + CHECKSUM_FIELD_NUMBER;
+      hash = (53 * hash) + getChecksum().hashCode();
+      hash = (37 * hash) + SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getSize());
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.BoardPlatform parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.BoardPlatform prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.BoardPlatform}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.BoardPlatform)
+        cc.arduino.cli.commands.Board.BoardPlatformOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_BoardPlatform_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.BoardPlatform.class, cc.arduino.cli.commands.Board.BoardPlatform.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.BoardPlatform.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        architecture_ = "";
+
+        category_ = "";
+
+        url_ = "";
+
+        archiveFileName_ = "";
+
+        checksum_ = "";
+
+        size_ = 0L;
+
+        name_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.BoardPlatform getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.BoardPlatform.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.BoardPlatform build() {
+        cc.arduino.cli.commands.Board.BoardPlatform result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.BoardPlatform buildPartial() {
+        cc.arduino.cli.commands.Board.BoardPlatform result = new cc.arduino.cli.commands.Board.BoardPlatform(this);
+        result.architecture_ = architecture_;
+        result.category_ = category_;
+        result.url_ = url_;
+        result.archiveFileName_ = archiveFileName_;
+        result.checksum_ = checksum_;
+        result.size_ = size_;
+        result.name_ = name_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.BoardPlatform) {
+          return mergeFrom((cc.arduino.cli.commands.Board.BoardPlatform)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.BoardPlatform other) {
+        if (other == cc.arduino.cli.commands.Board.BoardPlatform.getDefaultInstance()) return this;
+        if (!other.getArchitecture().isEmpty()) {
+          architecture_ = other.architecture_;
+          onChanged();
+        }
+        if (!other.getCategory().isEmpty()) {
+          category_ = other.category_;
+          onChanged();
+        }
+        if (!other.getUrl().isEmpty()) {
+          url_ = other.url_;
+          onChanged();
+        }
+        if (!other.getArchiveFileName().isEmpty()) {
+          archiveFileName_ = other.archiveFileName_;
+          onChanged();
+        }
+        if (!other.getChecksum().isEmpty()) {
+          checksum_ = other.checksum_;
+          onChanged();
+        }
+        if (other.getSize() != 0L) {
+          setSize(other.getSize());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.BoardPlatform parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.BoardPlatform) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object architecture_ = "";
+      /**
+       * <pre>
+       * Architecture of the platform (e.g., `avr`).
+       * </pre>
+       *
+       * <code>string architecture = 1;</code>
+       * @return The architecture.
+       */
+      public java.lang.String getArchitecture() {
+        java.lang.Object ref = architecture_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          architecture_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Architecture of the platform (e.g., `avr`).
+       * </pre>
+       *
+       * <code>string architecture = 1;</code>
+       * @return The bytes for architecture.
+       */
+      public com.google.protobuf.ByteString
+          getArchitectureBytes() {
+        java.lang.Object ref = architecture_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          architecture_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Architecture of the platform (e.g., `avr`).
+       * </pre>
+       *
+       * <code>string architecture = 1;</code>
+       * @param value The architecture to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchitecture(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        architecture_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Architecture of the platform (e.g., `avr`).
+       * </pre>
+       *
+       * <code>string architecture = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearArchitecture() {
+        
+        architecture_ = getDefaultInstance().getArchitecture();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Architecture of the platform (e.g., `avr`).
+       * </pre>
+       *
+       * <code>string architecture = 1;</code>
+       * @param value The bytes for architecture to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchitectureBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        architecture_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object category_ = "";
+      /**
+       * <pre>
+       * Category of the platform. Set to `Contributed` for 3rd party platforms.
+       * </pre>
+       *
+       * <code>string category = 2;</code>
+       * @return The category.
+       */
+      public java.lang.String getCategory() {
+        java.lang.Object ref = category_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          category_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Category of the platform. Set to `Contributed` for 3rd party platforms.
+       * </pre>
+       *
+       * <code>string category = 2;</code>
+       * @return The bytes for category.
+       */
+      public com.google.protobuf.ByteString
+          getCategoryBytes() {
+        java.lang.Object ref = category_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          category_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Category of the platform. Set to `Contributed` for 3rd party platforms.
+       * </pre>
+       *
+       * <code>string category = 2;</code>
+       * @param value The category to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCategory(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        category_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Category of the platform. Set to `Contributed` for 3rd party platforms.
+       * </pre>
+       *
+       * <code>string category = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearCategory() {
+        
+        category_ = getDefaultInstance().getCategory();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Category of the platform. Set to `Contributed` for 3rd party platforms.
+       * </pre>
+       *
+       * <code>string category = 2;</code>
+       * @param value The bytes for category to set.
+       * @return This builder for chaining.
+       */
+      public Builder setCategoryBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        category_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object url_ = "";
+      /**
+       * <pre>
+       * Download URL of the platform archive file.
+       * </pre>
+       *
+       * <code>string url = 3;</code>
+       * @return The url.
+       */
+      public java.lang.String getUrl() {
+        java.lang.Object ref = url_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          url_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Download URL of the platform archive file.
+       * </pre>
+       *
+       * <code>string url = 3;</code>
+       * @return The bytes for url.
+       */
+      public com.google.protobuf.ByteString
+          getUrlBytes() {
+        java.lang.Object ref = url_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          url_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Download URL of the platform archive file.
+       * </pre>
+       *
+       * <code>string url = 3;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        url_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Download URL of the platform archive file.
+       * </pre>
+       *
+       * <code>string url = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUrl() {
+        
+        url_ = getDefaultInstance().getUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Download URL of the platform archive file.
+       * </pre>
+       *
+       * <code>string url = 3;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        url_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object archiveFileName_ = "";
+      /**
+       * <pre>
+       * File name of the platform archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 4;</code>
+       * @return The archiveFileName.
+       */
+      public java.lang.String getArchiveFileName() {
+        java.lang.Object ref = archiveFileName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          archiveFileName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * File name of the platform archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 4;</code>
+       * @return The bytes for archiveFileName.
+       */
+      public com.google.protobuf.ByteString
+          getArchiveFileNameBytes() {
+        java.lang.Object ref = archiveFileName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          archiveFileName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * File name of the platform archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 4;</code>
+       * @param value The archiveFileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchiveFileName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        archiveFileName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File name of the platform archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearArchiveFileName() {
+        
+        archiveFileName_ = getDefaultInstance().getArchiveFileName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File name of the platform archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 4;</code>
+       * @param value The bytes for archiveFileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchiveFileNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        archiveFileName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object checksum_ = "";
+      /**
+       * <pre>
+       * Checksum of the platform archive.
+       * </pre>
+       *
+       * <code>string checksum = 5;</code>
+       * @return The checksum.
+       */
+      public java.lang.String getChecksum() {
+        java.lang.Object ref = checksum_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          checksum_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Checksum of the platform archive.
+       * </pre>
+       *
+       * <code>string checksum = 5;</code>
+       * @return The bytes for checksum.
+       */
+      public com.google.protobuf.ByteString
+          getChecksumBytes() {
+        java.lang.Object ref = checksum_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          checksum_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Checksum of the platform archive.
+       * </pre>
+       *
+       * <code>string checksum = 5;</code>
+       * @param value The checksum to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChecksum(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        checksum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Checksum of the platform archive.
+       * </pre>
+       *
+       * <code>string checksum = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearChecksum() {
+        
+        checksum_ = getDefaultInstance().getChecksum();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Checksum of the platform archive.
+       * </pre>
+       *
+       * <code>string checksum = 5;</code>
+       * @param value The bytes for checksum to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChecksumBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        checksum_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long size_ ;
+      /**
+       * <pre>
+       * File size of the platform archive.
+       * </pre>
+       *
+       * <code>int64 size = 6;</code>
+       * @return The size.
+       */
+      public long getSize() {
+        return size_;
+      }
+      /**
+       * <pre>
+       * File size of the platform archive.
+       * </pre>
+       *
+       * <code>int64 size = 6;</code>
+       * @param value The size to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSize(long value) {
+        
+        size_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File size of the platform archive.
+       * </pre>
+       *
+       * <code>int64 size = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSize() {
+        
+        size_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * Name used to identify the platform to humans.
+       * </pre>
+       *
+       * <code>string name = 7;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Name used to identify the platform to humans.
+       * </pre>
+       *
+       * <code>string name = 7;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Name used to identify the platform to humans.
+       * </pre>
+       *
+       * <code>string name = 7;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Name used to identify the platform to humans.
+       * </pre>
+       *
+       * <code>string name = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Name used to identify the platform to humans.
+       * </pre>
+       *
+       * <code>string name = 7;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.BoardPlatform)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.BoardPlatform)
+    private static final cc.arduino.cli.commands.Board.BoardPlatform DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.BoardPlatform();
+    }
+
+    public static cc.arduino.cli.commands.Board.BoardPlatform getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BoardPlatform>
+        PARSER = new com.google.protobuf.AbstractParser<BoardPlatform>() {
+      @java.lang.Override
+      public BoardPlatform parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BoardPlatform(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BoardPlatform> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BoardPlatform> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.BoardPlatform getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ToolsDependenciesOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.ToolsDependencies)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Vendor name of the package containing the tool definition.
+     * </pre>
+     *
+     * <code>string packager = 1;</code>
+     * @return The packager.
+     */
+    java.lang.String getPackager();
+    /**
+     * <pre>
+     * Vendor name of the package containing the tool definition.
+     * </pre>
+     *
+     * <code>string packager = 1;</code>
+     * @return The bytes for packager.
+     */
+    com.google.protobuf.ByteString
+        getPackagerBytes();
+
+    /**
+     * <pre>
+     * Tool name.
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <pre>
+     * Tool name.
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <pre>
+     * Tool version.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The version.
+     */
+    java.lang.String getVersion();
+    /**
+     * <pre>
+     * Tool version.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The bytes for version.
+     */
+    com.google.protobuf.ByteString
+        getVersionBytes();
+
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    java.util.List<cc.arduino.cli.commands.Board.Systems> 
+        getSystemsList();
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    cc.arduino.cli.commands.Board.Systems getSystems(int index);
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    int getSystemsCount();
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    java.util.List<? extends cc.arduino.cli.commands.Board.SystemsOrBuilder> 
+        getSystemsOrBuilderList();
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    cc.arduino.cli.commands.Board.SystemsOrBuilder getSystemsOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.ToolsDependencies}
+   */
+  public  static final class ToolsDependencies extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.ToolsDependencies)
+      ToolsDependenciesOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ToolsDependencies.newBuilder() to construct.
+    private ToolsDependencies(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ToolsDependencies() {
+      packager_ = "";
+      name_ = "";
+      version_ = "";
+      systems_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ToolsDependencies();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ToolsDependencies(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              packager_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              version_ = s;
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                systems_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.Systems>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              systems_.add(
+                  input.readMessage(cc.arduino.cli.commands.Board.Systems.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          systems_ = java.util.Collections.unmodifiableList(systems_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_ToolsDependencies_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.ToolsDependencies.class, cc.arduino.cli.commands.Board.ToolsDependencies.Builder.class);
+    }
+
+    public static final int PACKAGER_FIELD_NUMBER = 1;
+    private volatile java.lang.Object packager_;
+    /**
+     * <pre>
+     * Vendor name of the package containing the tool definition.
+     * </pre>
+     *
+     * <code>string packager = 1;</code>
+     * @return The packager.
+     */
+    public java.lang.String getPackager() {
+      java.lang.Object ref = packager_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        packager_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Vendor name of the package containing the tool definition.
+     * </pre>
+     *
+     * <code>string packager = 1;</code>
+     * @return The bytes for packager.
+     */
+    public com.google.protobuf.ByteString
+        getPackagerBytes() {
+      java.lang.Object ref = packager_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        packager_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 2;
+    private volatile java.lang.Object name_;
+    /**
+     * <pre>
+     * Tool name.
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The name.
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Tool name.
+     * </pre>
+     *
+     * <code>string name = 2;</code>
+     * @return The bytes for name.
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private volatile java.lang.Object version_;
+    /**
+     * <pre>
+     * Tool version.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The version.
+     */
+    public java.lang.String getVersion() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        version_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Tool version.
+     * </pre>
+     *
+     * <code>string version = 3;</code>
+     * @return The bytes for version.
+     */
+    public com.google.protobuf.ByteString
+        getVersionBytes() {
+      java.lang.Object ref = version_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        version_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SYSTEMS_FIELD_NUMBER = 4;
+    private java.util.List<cc.arduino.cli.commands.Board.Systems> systems_;
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    public java.util.List<cc.arduino.cli.commands.Board.Systems> getSystemsList() {
+      return systems_;
+    }
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    public java.util.List<? extends cc.arduino.cli.commands.Board.SystemsOrBuilder> 
+        getSystemsOrBuilderList() {
+      return systems_;
+    }
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    public int getSystemsCount() {
+      return systems_.size();
+    }
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    public cc.arduino.cli.commands.Board.Systems getSystems(int index) {
+      return systems_.get(index);
+    }
+    /**
+     * <pre>
+     * Data for the operating system-specific builds of the tool.
+     * </pre>
+     *
+     * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+     */
+    public cc.arduino.cli.commands.Board.SystemsOrBuilder getSystemsOrBuilder(
+        int index) {
+      return systems_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPackagerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, packager_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, version_);
+      }
+      for (int i = 0; i < systems_.size(); i++) {
+        output.writeMessage(4, systems_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPackagerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, packager_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+      }
+      if (!getVersionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, version_);
+      }
+      for (int i = 0; i < systems_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, systems_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.ToolsDependencies)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.ToolsDependencies other = (cc.arduino.cli.commands.Board.ToolsDependencies) obj;
+
+      if (!getPackager()
+          .equals(other.getPackager())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!getVersion()
+          .equals(other.getVersion())) return false;
+      if (!getSystemsList()
+          .equals(other.getSystemsList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PACKAGER_FIELD_NUMBER;
+      hash = (53 * hash) + getPackager().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + VERSION_FIELD_NUMBER;
+      hash = (53 * hash) + getVersion().hashCode();
+      if (getSystemsCount() > 0) {
+        hash = (37 * hash) + SYSTEMS_FIELD_NUMBER;
+        hash = (53 * hash) + getSystemsList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.ToolsDependencies parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.ToolsDependencies prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.ToolsDependencies}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.ToolsDependencies)
+        cc.arduino.cli.commands.Board.ToolsDependenciesOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_ToolsDependencies_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.ToolsDependencies.class, cc.arduino.cli.commands.Board.ToolsDependencies.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.ToolsDependencies.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getSystemsFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        packager_ = "";
+
+        name_ = "";
+
+        version_ = "";
+
+        if (systemsBuilder_ == null) {
+          systems_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          systemsBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.ToolsDependencies getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.ToolsDependencies.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.ToolsDependencies build() {
+        cc.arduino.cli.commands.Board.ToolsDependencies result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.ToolsDependencies buildPartial() {
+        cc.arduino.cli.commands.Board.ToolsDependencies result = new cc.arduino.cli.commands.Board.ToolsDependencies(this);
+        int from_bitField0_ = bitField0_;
+        result.packager_ = packager_;
+        result.name_ = name_;
+        result.version_ = version_;
+        if (systemsBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            systems_ = java.util.Collections.unmodifiableList(systems_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.systems_ = systems_;
+        } else {
+          result.systems_ = systemsBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.ToolsDependencies) {
+          return mergeFrom((cc.arduino.cli.commands.Board.ToolsDependencies)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.ToolsDependencies other) {
+        if (other == cc.arduino.cli.commands.Board.ToolsDependencies.getDefaultInstance()) return this;
+        if (!other.getPackager().isEmpty()) {
+          packager_ = other.packager_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getVersion().isEmpty()) {
+          version_ = other.version_;
+          onChanged();
+        }
+        if (systemsBuilder_ == null) {
+          if (!other.systems_.isEmpty()) {
+            if (systems_.isEmpty()) {
+              systems_ = other.systems_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureSystemsIsMutable();
+              systems_.addAll(other.systems_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.systems_.isEmpty()) {
+            if (systemsBuilder_.isEmpty()) {
+              systemsBuilder_.dispose();
+              systemsBuilder_ = null;
+              systems_ = other.systems_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              systemsBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getSystemsFieldBuilder() : null;
+            } else {
+              systemsBuilder_.addAllMessages(other.systems_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.ToolsDependencies parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.ToolsDependencies) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object packager_ = "";
+      /**
+       * <pre>
+       * Vendor name of the package containing the tool definition.
+       * </pre>
+       *
+       * <code>string packager = 1;</code>
+       * @return The packager.
+       */
+      public java.lang.String getPackager() {
+        java.lang.Object ref = packager_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          packager_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Vendor name of the package containing the tool definition.
+       * </pre>
+       *
+       * <code>string packager = 1;</code>
+       * @return The bytes for packager.
+       */
+      public com.google.protobuf.ByteString
+          getPackagerBytes() {
+        java.lang.Object ref = packager_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          packager_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Vendor name of the package containing the tool definition.
+       * </pre>
+       *
+       * <code>string packager = 1;</code>
+       * @param value The packager to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPackager(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        packager_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Vendor name of the package containing the tool definition.
+       * </pre>
+       *
+       * <code>string packager = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPackager() {
+        
+        packager_ = getDefaultInstance().getPackager();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Vendor name of the package containing the tool definition.
+       * </pre>
+       *
+       * <code>string packager = 1;</code>
+       * @param value The bytes for packager to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPackagerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        packager_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <pre>
+       * Tool name.
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Tool name.
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Tool name.
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool name.
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool name.
+       * </pre>
+       *
+       * <code>string name = 2;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object version_ = "";
+      /**
+       * <pre>
+       * Tool version.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return The version.
+       */
+      public java.lang.String getVersion() {
+        java.lang.Object ref = version_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          version_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Tool version.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return The bytes for version.
+       */
+      public com.google.protobuf.ByteString
+          getVersionBytes() {
+        java.lang.Object ref = version_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          version_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Tool version.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @param value The version to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVersion(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool version.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVersion() {
+        
+        version_ = getDefaultInstance().getVersion();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Tool version.
+       * </pre>
+       *
+       * <code>string version = 3;</code>
+       * @param value The bytes for version to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVersionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        version_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.util.List<cc.arduino.cli.commands.Board.Systems> systems_ =
+        java.util.Collections.emptyList();
+      private void ensureSystemsIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          systems_ = new java.util.ArrayList<cc.arduino.cli.commands.Board.Systems>(systems_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Systems, cc.arduino.cli.commands.Board.Systems.Builder, cc.arduino.cli.commands.Board.SystemsOrBuilder> systemsBuilder_;
+
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Board.Systems> getSystemsList() {
+        if (systemsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(systems_);
+        } else {
+          return systemsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public int getSystemsCount() {
+        if (systemsBuilder_ == null) {
+          return systems_.size();
+        } else {
+          return systemsBuilder_.getCount();
+        }
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public cc.arduino.cli.commands.Board.Systems getSystems(int index) {
+        if (systemsBuilder_ == null) {
+          return systems_.get(index);
+        } else {
+          return systemsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder setSystems(
+          int index, cc.arduino.cli.commands.Board.Systems value) {
+        if (systemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemsIsMutable();
+          systems_.set(index, value);
+          onChanged();
+        } else {
+          systemsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder setSystems(
+          int index, cc.arduino.cli.commands.Board.Systems.Builder builderForValue) {
+        if (systemsBuilder_ == null) {
+          ensureSystemsIsMutable();
+          systems_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          systemsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder addSystems(cc.arduino.cli.commands.Board.Systems value) {
+        if (systemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemsIsMutable();
+          systems_.add(value);
+          onChanged();
+        } else {
+          systemsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder addSystems(
+          int index, cc.arduino.cli.commands.Board.Systems value) {
+        if (systemsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureSystemsIsMutable();
+          systems_.add(index, value);
+          onChanged();
+        } else {
+          systemsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder addSystems(
+          cc.arduino.cli.commands.Board.Systems.Builder builderForValue) {
+        if (systemsBuilder_ == null) {
+          ensureSystemsIsMutable();
+          systems_.add(builderForValue.build());
+          onChanged();
+        } else {
+          systemsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder addSystems(
+          int index, cc.arduino.cli.commands.Board.Systems.Builder builderForValue) {
+        if (systemsBuilder_ == null) {
+          ensureSystemsIsMutable();
+          systems_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          systemsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder addAllSystems(
+          java.lang.Iterable<? extends cc.arduino.cli.commands.Board.Systems> values) {
+        if (systemsBuilder_ == null) {
+          ensureSystemsIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, systems_);
+          onChanged();
+        } else {
+          systemsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder clearSystems() {
+        if (systemsBuilder_ == null) {
+          systems_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          systemsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public Builder removeSystems(int index) {
+        if (systemsBuilder_ == null) {
+          ensureSystemsIsMutable();
+          systems_.remove(index);
+          onChanged();
+        } else {
+          systemsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public cc.arduino.cli.commands.Board.Systems.Builder getSystemsBuilder(
+          int index) {
+        return getSystemsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public cc.arduino.cli.commands.Board.SystemsOrBuilder getSystemsOrBuilder(
+          int index) {
+        if (systemsBuilder_ == null) {
+          return systems_.get(index);  } else {
+          return systemsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public java.util.List<? extends cc.arduino.cli.commands.Board.SystemsOrBuilder> 
+           getSystemsOrBuilderList() {
+        if (systemsBuilder_ != null) {
+          return systemsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(systems_);
+        }
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public cc.arduino.cli.commands.Board.Systems.Builder addSystemsBuilder() {
+        return getSystemsFieldBuilder().addBuilder(
+            cc.arduino.cli.commands.Board.Systems.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public cc.arduino.cli.commands.Board.Systems.Builder addSystemsBuilder(
+          int index) {
+        return getSystemsFieldBuilder().addBuilder(
+            index, cc.arduino.cli.commands.Board.Systems.getDefaultInstance());
+      }
+      /**
+       * <pre>
+       * Data for the operating system-specific builds of the tool.
+       * </pre>
+       *
+       * <code>repeated .cc.arduino.cli.commands.Systems systems = 4;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Board.Systems.Builder> 
+           getSystemsBuilderList() {
+        return getSystemsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Board.Systems, cc.arduino.cli.commands.Board.Systems.Builder, cc.arduino.cli.commands.Board.SystemsOrBuilder> 
+          getSystemsFieldBuilder() {
+        if (systemsBuilder_ == null) {
+          systemsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cc.arduino.cli.commands.Board.Systems, cc.arduino.cli.commands.Board.Systems.Builder, cc.arduino.cli.commands.Board.SystemsOrBuilder>(
+                  systems_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          systems_ = null;
+        }
+        return systemsBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.ToolsDependencies)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.ToolsDependencies)
+    private static final cc.arduino.cli.commands.Board.ToolsDependencies DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.ToolsDependencies();
+    }
+
+    public static cc.arduino.cli.commands.Board.ToolsDependencies getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ToolsDependencies>
+        PARSER = new com.google.protobuf.AbstractParser<ToolsDependencies>() {
+      @java.lang.Override
+      public ToolsDependencies parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ToolsDependencies(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ToolsDependencies> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ToolsDependencies> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.ToolsDependencies getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface SystemsOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.Systems)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Checksum of the tool archive.
+     * </pre>
+     *
+     * <code>string checksum = 1;</code>
+     * @return The checksum.
+     */
+    java.lang.String getChecksum();
+    /**
+     * <pre>
+     * Checksum of the tool archive.
+     * </pre>
+     *
+     * <code>string checksum = 1;</code>
+     * @return The bytes for checksum.
+     */
+    com.google.protobuf.ByteString
+        getChecksumBytes();
+
+    /**
+     * <pre>
+     * Operating system identifier.
+     * </pre>
+     *
+     * <code>string host = 2;</code>
+     * @return The host.
+     */
+    java.lang.String getHost();
+    /**
+     * <pre>
+     * Operating system identifier.
+     * </pre>
+     *
+     * <code>string host = 2;</code>
+     * @return The bytes for host.
+     */
+    com.google.protobuf.ByteString
+        getHostBytes();
+
+    /**
+     * <pre>
+     * File name of the tool archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 3;</code>
+     * @return The archiveFileName.
+     */
+    java.lang.String getArchiveFileName();
+    /**
+     * <pre>
+     * File name of the tool archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 3;</code>
+     * @return The bytes for archiveFileName.
+     */
+    com.google.protobuf.ByteString
+        getArchiveFileNameBytes();
+
+    /**
+     * <pre>
+     * Download URL of the tool archive.
+     * </pre>
+     *
+     * <code>string url = 4;</code>
+     * @return The url.
+     */
+    java.lang.String getUrl();
+    /**
+     * <pre>
+     * Download URL of the tool archive.
+     * </pre>
+     *
+     * <code>string url = 4;</code>
+     * @return The bytes for url.
+     */
+    com.google.protobuf.ByteString
+        getUrlBytes();
+
+    /**
+     * <pre>
+     * File size of the tool archive.
+     * </pre>
+     *
+     * <code>int64 size = 5;</code>
+     * @return The size.
+     */
+    long getSize();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.Systems}
+   */
+  public  static final class Systems extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.Systems)
+      SystemsOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Systems.newBuilder() to construct.
+    private Systems(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Systems() {
+      checksum_ = "";
+      host_ = "";
+      archiveFileName_ = "";
+      url_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Systems();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Systems(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              checksum_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              host_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              archiveFileName_ = s;
+              break;
+            }
+            case 34: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              url_ = s;
+              break;
+            }
+            case 40: {
+
+              size_ = input.readInt64();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Systems_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Systems_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Board.Systems.class, cc.arduino.cli.commands.Board.Systems.Builder.class);
+    }
+
+    public static final int CHECKSUM_FIELD_NUMBER = 1;
+    private volatile java.lang.Object checksum_;
+    /**
+     * <pre>
+     * Checksum of the tool archive.
+     * </pre>
+     *
+     * <code>string checksum = 1;</code>
+     * @return The checksum.
+     */
+    public java.lang.String getChecksum() {
+      java.lang.Object ref = checksum_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        checksum_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Checksum of the tool archive.
+     * </pre>
+     *
+     * <code>string checksum = 1;</code>
+     * @return The bytes for checksum.
+     */
+    public com.google.protobuf.ByteString
+        getChecksumBytes() {
+      java.lang.Object ref = checksum_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        checksum_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int HOST_FIELD_NUMBER = 2;
+    private volatile java.lang.Object host_;
+    /**
+     * <pre>
+     * Operating system identifier.
+     * </pre>
+     *
+     * <code>string host = 2;</code>
+     * @return The host.
+     */
+    public java.lang.String getHost() {
+      java.lang.Object ref = host_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        host_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Operating system identifier.
+     * </pre>
+     *
+     * <code>string host = 2;</code>
+     * @return The bytes for host.
+     */
+    public com.google.protobuf.ByteString
+        getHostBytes() {
+      java.lang.Object ref = host_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        host_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ARCHIVEFILENAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object archiveFileName_;
+    /**
+     * <pre>
+     * File name of the tool archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 3;</code>
+     * @return The archiveFileName.
+     */
+    public java.lang.String getArchiveFileName() {
+      java.lang.Object ref = archiveFileName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        archiveFileName_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * File name of the tool archive.
+     * </pre>
+     *
+     * <code>string archiveFileName = 3;</code>
+     * @return The bytes for archiveFileName.
+     */
+    public com.google.protobuf.ByteString
+        getArchiveFileNameBytes() {
+      java.lang.Object ref = archiveFileName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        archiveFileName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int URL_FIELD_NUMBER = 4;
+    private volatile java.lang.Object url_;
+    /**
+     * <pre>
+     * Download URL of the tool archive.
+     * </pre>
+     *
+     * <code>string url = 4;</code>
+     * @return The url.
+     */
+    public java.lang.String getUrl() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        url_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Download URL of the tool archive.
+     * </pre>
+     *
+     * <code>string url = 4;</code>
+     * @return The bytes for url.
+     */
+    public com.google.protobuf.ByteString
+        getUrlBytes() {
+      java.lang.Object ref = url_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        url_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SIZE_FIELD_NUMBER = 5;
+    private long size_;
+    /**
+     * <pre>
+     * File size of the tool archive.
+     * </pre>
+     *
+     * <code>int64 size = 5;</code>
+     * @return The size.
+     */
+    public long getSize() {
+      return size_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getChecksumBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, checksum_);
+      }
+      if (!getHostBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, host_);
+      }
+      if (!getArchiveFileNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, archiveFileName_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, url_);
+      }
+      if (size_ != 0L) {
+        output.writeInt64(5, size_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getChecksumBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, checksum_);
+      }
+      if (!getHostBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, host_);
+      }
+      if (!getArchiveFileNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, archiveFileName_);
+      }
+      if (!getUrlBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, url_);
+      }
+      if (size_ != 0L) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, size_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Board.Systems)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Board.Systems other = (cc.arduino.cli.commands.Board.Systems) obj;
+
+      if (!getChecksum()
+          .equals(other.getChecksum())) return false;
+      if (!getHost()
+          .equals(other.getHost())) return false;
+      if (!getArchiveFileName()
+          .equals(other.getArchiveFileName())) return false;
+      if (!getUrl()
+          .equals(other.getUrl())) return false;
+      if (getSize()
+          != other.getSize()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + CHECKSUM_FIELD_NUMBER;
+      hash = (53 * hash) + getChecksum().hashCode();
+      hash = (37 * hash) + HOST_FIELD_NUMBER;
+      hash = (53 * hash) + getHost().hashCode();
+      hash = (37 * hash) + ARCHIVEFILENAME_FIELD_NUMBER;
+      hash = (53 * hash) + getArchiveFileName().hashCode();
+      hash = (37 * hash) + URL_FIELD_NUMBER;
+      hash = (53 * hash) + getUrl().hashCode();
+      hash = (37 * hash) + SIZE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getSize());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Board.Systems parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Board.Systems prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.Systems}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.Systems)
+        cc.arduino.cli.commands.Board.SystemsOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Systems_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Systems_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Board.Systems.class, cc.arduino.cli.commands.Board.Systems.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Board.Systems.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        checksum_ = "";
+
+        host_ = "";
+
+        archiveFileName_ = "";
+
+        url_ = "";
+
+        size_ = 0L;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_Systems_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Systems getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Board.Systems.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Systems build() {
+        cc.arduino.cli.commands.Board.Systems result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Board.Systems buildPartial() {
+        cc.arduino.cli.commands.Board.Systems result = new cc.arduino.cli.commands.Board.Systems(this);
+        result.checksum_ = checksum_;
+        result.host_ = host_;
+        result.archiveFileName_ = archiveFileName_;
+        result.url_ = url_;
+        result.size_ = size_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Board.Systems) {
+          return mergeFrom((cc.arduino.cli.commands.Board.Systems)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Board.Systems other) {
+        if (other == cc.arduino.cli.commands.Board.Systems.getDefaultInstance()) return this;
+        if (!other.getChecksum().isEmpty()) {
+          checksum_ = other.checksum_;
+          onChanged();
+        }
+        if (!other.getHost().isEmpty()) {
+          host_ = other.host_;
+          onChanged();
+        }
+        if (!other.getArchiveFileName().isEmpty()) {
+          archiveFileName_ = other.archiveFileName_;
+          onChanged();
+        }
+        if (!other.getUrl().isEmpty()) {
+          url_ = other.url_;
+          onChanged();
+        }
+        if (other.getSize() != 0L) {
+          setSize(other.getSize());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Board.Systems parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Board.Systems) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object checksum_ = "";
+      /**
+       * <pre>
+       * Checksum of the tool archive.
+       * </pre>
+       *
+       * <code>string checksum = 1;</code>
+       * @return The checksum.
+       */
+      public java.lang.String getChecksum() {
+        java.lang.Object ref = checksum_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          checksum_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Checksum of the tool archive.
+       * </pre>
+       *
+       * <code>string checksum = 1;</code>
+       * @return The bytes for checksum.
+       */
+      public com.google.protobuf.ByteString
+          getChecksumBytes() {
+        java.lang.Object ref = checksum_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          checksum_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Checksum of the tool archive.
+       * </pre>
+       *
+       * <code>string checksum = 1;</code>
+       * @param value The checksum to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChecksum(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        checksum_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Checksum of the tool archive.
+       * </pre>
+       *
+       * <code>string checksum = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearChecksum() {
+        
+        checksum_ = getDefaultInstance().getChecksum();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Checksum of the tool archive.
+       * </pre>
+       *
+       * <code>string checksum = 1;</code>
+       * @param value The bytes for checksum to set.
+       * @return This builder for chaining.
+       */
+      public Builder setChecksumBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        checksum_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object host_ = "";
+      /**
+       * <pre>
+       * Operating system identifier.
+       * </pre>
+       *
+       * <code>string host = 2;</code>
+       * @return The host.
+       */
+      public java.lang.String getHost() {
+        java.lang.Object ref = host_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          host_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Operating system identifier.
+       * </pre>
+       *
+       * <code>string host = 2;</code>
+       * @return The bytes for host.
+       */
+      public com.google.protobuf.ByteString
+          getHostBytes() {
+        java.lang.Object ref = host_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          host_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Operating system identifier.
+       * </pre>
+       *
+       * <code>string host = 2;</code>
+       * @param value The host to set.
+       * @return This builder for chaining.
+       */
+      public Builder setHost(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        host_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Operating system identifier.
+       * </pre>
+       *
+       * <code>string host = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearHost() {
+        
+        host_ = getDefaultInstance().getHost();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Operating system identifier.
+       * </pre>
+       *
+       * <code>string host = 2;</code>
+       * @param value The bytes for host to set.
+       * @return This builder for chaining.
+       */
+      public Builder setHostBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        host_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object archiveFileName_ = "";
+      /**
+       * <pre>
+       * File name of the tool archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 3;</code>
+       * @return The archiveFileName.
+       */
+      public java.lang.String getArchiveFileName() {
+        java.lang.Object ref = archiveFileName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          archiveFileName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * File name of the tool archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 3;</code>
+       * @return The bytes for archiveFileName.
+       */
+      public com.google.protobuf.ByteString
+          getArchiveFileNameBytes() {
+        java.lang.Object ref = archiveFileName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          archiveFileName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * File name of the tool archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 3;</code>
+       * @param value The archiveFileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchiveFileName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        archiveFileName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File name of the tool archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearArchiveFileName() {
+        
+        archiveFileName_ = getDefaultInstance().getArchiveFileName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File name of the tool archive.
+       * </pre>
+       *
+       * <code>string archiveFileName = 3;</code>
+       * @param value The bytes for archiveFileName to set.
+       * @return This builder for chaining.
+       */
+      public Builder setArchiveFileNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        archiveFileName_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object url_ = "";
+      /**
+       * <pre>
+       * Download URL of the tool archive.
+       * </pre>
+       *
+       * <code>string url = 4;</code>
+       * @return The url.
+       */
+      public java.lang.String getUrl() {
+        java.lang.Object ref = url_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          url_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Download URL of the tool archive.
+       * </pre>
+       *
+       * <code>string url = 4;</code>
+       * @return The bytes for url.
+       */
+      public com.google.protobuf.ByteString
+          getUrlBytes() {
+        java.lang.Object ref = url_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          url_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Download URL of the tool archive.
+       * </pre>
+       *
+       * <code>string url = 4;</code>
+       * @param value The url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrl(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        url_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Download URL of the tool archive.
+       * </pre>
+       *
+       * <code>string url = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearUrl() {
+        
+        url_ = getDefaultInstance().getUrl();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Download URL of the tool archive.
+       * </pre>
+       *
+       * <code>string url = 4;</code>
+       * @param value The bytes for url to set.
+       * @return This builder for chaining.
+       */
+      public Builder setUrlBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        url_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long size_ ;
+      /**
+       * <pre>
+       * File size of the tool archive.
+       * </pre>
+       *
+       * <code>int64 size = 5;</code>
+       * @return The size.
+       */
+      public long getSize() {
+        return size_;
+      }
+      /**
+       * <pre>
+       * File size of the tool archive.
+       * </pre>
+       *
+       * <code>int64 size = 5;</code>
+       * @param value The size to set.
+       * @return This builder for chaining.
+       */
+      public Builder setSize(long value) {
+        
+        size_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * File size of the tool archive.
+       * </pre>
+       *
+       * <code>int64 size = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearSize() {
+        
+        size_ = 0L;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.Systems)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.Systems)
+    private static final cc.arduino.cli.commands.Board.Systems DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.Systems();
+    }
+
+    public static cc.arduino.cli.commands.Board.Systems getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Systems>
+        PARSER = new com.google.protobuf.AbstractParser<Systems>() {
+      @java.lang.Override
+      public Systems parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Systems(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Systems> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Systems> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Board.Systems getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface ConfigOptionOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.ConfigOption)
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * ID of the configuration option. For identifying the option to machines.
+     * </pre>
+     *
      * <code>string option = 1;</code>
      * @return The option.
      */
     java.lang.String getOption();
     /**
+     * <pre>
+     * ID of the configuration option. For identifying the option to machines.
+     * </pre>
+     *
      * <code>string option = 1;</code>
      * @return The bytes for option.
      */
@@ -2100,11 +12469,19 @@ public final class Board {
         getOptionBytes();
 
     /**
+     * <pre>
+     * Name of the configuration option for identifying the option to humans.
+     * </pre>
+     *
      * <code>string option_label = 2;</code>
      * @return The optionLabel.
      */
     java.lang.String getOptionLabel();
     /**
+     * <pre>
+     * Name of the configuration option for identifying the option to humans.
+     * </pre>
+     *
      * <code>string option_label = 2;</code>
      * @return The bytes for optionLabel.
      */
@@ -2112,24 +12489,44 @@ public final class Board {
         getOptionLabelBytes();
 
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     java.util.List<cc.arduino.cli.commands.Board.ConfigValue> 
         getValuesList();
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     cc.arduino.cli.commands.Board.ConfigValue getValues(int index);
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     int getValuesCount();
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Board.ConfigValueOrBuilder> 
         getValuesOrBuilderList();
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     cc.arduino.cli.commands.Board.ConfigValueOrBuilder getValuesOrBuilder(
@@ -2243,6 +12640,10 @@ public final class Board {
     public static final int OPTION_FIELD_NUMBER = 1;
     private volatile java.lang.Object option_;
     /**
+     * <pre>
+     * ID of the configuration option. For identifying the option to machines.
+     * </pre>
+     *
      * <code>string option = 1;</code>
      * @return The option.
      */
@@ -2259,6 +12660,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * ID of the configuration option. For identifying the option to machines.
+     * </pre>
+     *
      * <code>string option = 1;</code>
      * @return The bytes for option.
      */
@@ -2279,6 +12684,10 @@ public final class Board {
     public static final int OPTION_LABEL_FIELD_NUMBER = 2;
     private volatile java.lang.Object optionLabel_;
     /**
+     * <pre>
+     * Name of the configuration option for identifying the option to humans.
+     * </pre>
+     *
      * <code>string option_label = 2;</code>
      * @return The optionLabel.
      */
@@ -2295,6 +12704,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Name of the configuration option for identifying the option to humans.
+     * </pre>
+     *
      * <code>string option_label = 2;</code>
      * @return The bytes for optionLabel.
      */
@@ -2315,12 +12728,20 @@ public final class Board {
     public static final int VALUES_FIELD_NUMBER = 3;
     private java.util.List<cc.arduino.cli.commands.Board.ConfigValue> values_;
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Board.ConfigValue> getValuesList() {
       return values_;
     }
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Board.ConfigValueOrBuilder> 
@@ -2328,18 +12749,30 @@ public final class Board {
       return values_;
     }
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     public int getValuesCount() {
       return values_.size();
     }
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     public cc.arduino.cli.commands.Board.ConfigValue getValues(int index) {
       return values_.get(index);
     }
     /**
+     * <pre>
+     * Possible values of the configuration option.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
      */
     public cc.arduino.cli.commands.Board.ConfigValueOrBuilder getValuesOrBuilder(
@@ -2725,6 +13158,10 @@ public final class Board {
 
       private java.lang.Object option_ = "";
       /**
+       * <pre>
+       * ID of the configuration option. For identifying the option to machines.
+       * </pre>
+       *
        * <code>string option = 1;</code>
        * @return The option.
        */
@@ -2741,6 +13178,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * ID of the configuration option. For identifying the option to machines.
+       * </pre>
+       *
        * <code>string option = 1;</code>
        * @return The bytes for option.
        */
@@ -2758,6 +13199,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * ID of the configuration option. For identifying the option to machines.
+       * </pre>
+       *
        * <code>string option = 1;</code>
        * @param value The option to set.
        * @return This builder for chaining.
@@ -2773,6 +13218,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * ID of the configuration option. For identifying the option to machines.
+       * </pre>
+       *
        * <code>string option = 1;</code>
        * @return This builder for chaining.
        */
@@ -2783,6 +13232,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * ID of the configuration option. For identifying the option to machines.
+       * </pre>
+       *
        * <code>string option = 1;</code>
        * @param value The bytes for option to set.
        * @return This builder for chaining.
@@ -2801,6 +13254,10 @@ public final class Board {
 
       private java.lang.Object optionLabel_ = "";
       /**
+       * <pre>
+       * Name of the configuration option for identifying the option to humans.
+       * </pre>
+       *
        * <code>string option_label = 2;</code>
        * @return The optionLabel.
        */
@@ -2817,6 +13274,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Name of the configuration option for identifying the option to humans.
+       * </pre>
+       *
        * <code>string option_label = 2;</code>
        * @return The bytes for optionLabel.
        */
@@ -2834,6 +13295,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Name of the configuration option for identifying the option to humans.
+       * </pre>
+       *
        * <code>string option_label = 2;</code>
        * @param value The optionLabel to set.
        * @return This builder for chaining.
@@ -2849,6 +13314,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Name of the configuration option for identifying the option to humans.
+       * </pre>
+       *
        * <code>string option_label = 2;</code>
        * @return This builder for chaining.
        */
@@ -2859,6 +13328,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Name of the configuration option for identifying the option to humans.
+       * </pre>
+       *
        * <code>string option_label = 2;</code>
        * @param value The bytes for optionLabel to set.
        * @return This builder for chaining.
@@ -2888,6 +13361,10 @@ public final class Board {
           cc.arduino.cli.commands.Board.ConfigValue, cc.arduino.cli.commands.Board.ConfigValue.Builder, cc.arduino.cli.commands.Board.ConfigValueOrBuilder> valuesBuilder_;
 
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.ConfigValue> getValuesList() {
@@ -2898,6 +13375,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public int getValuesCount() {
@@ -2908,6 +13389,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigValue getValues(int index) {
@@ -2918,6 +13403,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder setValues(
@@ -2935,6 +13424,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder setValues(
@@ -2949,6 +13442,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder addValues(cc.arduino.cli.commands.Board.ConfigValue value) {
@@ -2965,6 +13462,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder addValues(
@@ -2982,6 +13483,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder addValues(
@@ -2996,6 +13501,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder addValues(
@@ -3010,6 +13519,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder addAllValues(
@@ -3025,6 +13538,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder clearValues() {
@@ -3038,6 +13555,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public Builder removeValues(int index) {
@@ -3051,6 +13572,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigValue.Builder getValuesBuilder(
@@ -3058,6 +13583,10 @@ public final class Board {
         return getValuesFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigValueOrBuilder getValuesOrBuilder(
@@ -3068,6 +13597,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Board.ConfigValueOrBuilder> 
@@ -3079,6 +13612,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigValue.Builder addValuesBuilder() {
@@ -3086,6 +13623,10 @@ public final class Board {
             cc.arduino.cli.commands.Board.ConfigValue.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public cc.arduino.cli.commands.Board.ConfigValue.Builder addValuesBuilder(
@@ -3094,6 +13635,10 @@ public final class Board {
             index, cc.arduino.cli.commands.Board.ConfigValue.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Possible values of the configuration option.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.ConfigValue values = 3;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.ConfigValue.Builder> 
@@ -3172,11 +13717,19 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The configuration option value.
+     * </pre>
+     *
      * <code>string value = 1;</code>
      * @return The value.
      */
     java.lang.String getValue();
     /**
+     * <pre>
+     * The configuration option value.
+     * </pre>
+     *
      * <code>string value = 1;</code>
      * @return The bytes for value.
      */
@@ -3184,11 +13737,19 @@ public final class Board {
         getValueBytes();
 
     /**
+     * <pre>
+     * Label to identify the configuration option to humans.
+     * </pre>
+     *
      * <code>string value_label = 2;</code>
      * @return The valueLabel.
      */
     java.lang.String getValueLabel();
     /**
+     * <pre>
+     * Label to identify the configuration option to humans.
+     * </pre>
+     *
      * <code>string value_label = 2;</code>
      * @return The bytes for valueLabel.
      */
@@ -3196,6 +13757,10 @@ public final class Board {
         getValueLabelBytes();
 
     /**
+     * <pre>
+     * Whether the configuration option is selected.
+     * </pre>
+     *
      * <code>bool selected = 3;</code>
      * @return The selected.
      */
@@ -3300,6 +13865,10 @@ public final class Board {
     public static final int VALUE_FIELD_NUMBER = 1;
     private volatile java.lang.Object value_;
     /**
+     * <pre>
+     * The configuration option value.
+     * </pre>
+     *
      * <code>string value = 1;</code>
      * @return The value.
      */
@@ -3316,6 +13885,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * The configuration option value.
+     * </pre>
+     *
      * <code>string value = 1;</code>
      * @return The bytes for value.
      */
@@ -3336,6 +13909,10 @@ public final class Board {
     public static final int VALUE_LABEL_FIELD_NUMBER = 2;
     private volatile java.lang.Object valueLabel_;
     /**
+     * <pre>
+     * Label to identify the configuration option to humans.
+     * </pre>
+     *
      * <code>string value_label = 2;</code>
      * @return The valueLabel.
      */
@@ -3352,6 +13929,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Label to identify the configuration option to humans.
+     * </pre>
+     *
      * <code>string value_label = 2;</code>
      * @return The bytes for valueLabel.
      */
@@ -3372,6 +13953,10 @@ public final class Board {
     public static final int SELECTED_FIELD_NUMBER = 3;
     private boolean selected_;
     /**
+     * <pre>
+     * Whether the configuration option is selected.
+     * </pre>
+     *
      * <code>bool selected = 3;</code>
      * @return The selected.
      */
@@ -3718,6 +14303,10 @@ public final class Board {
 
       private java.lang.Object value_ = "";
       /**
+       * <pre>
+       * The configuration option value.
+       * </pre>
+       *
        * <code>string value = 1;</code>
        * @return The value.
        */
@@ -3734,6 +14323,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The configuration option value.
+       * </pre>
+       *
        * <code>string value = 1;</code>
        * @return The bytes for value.
        */
@@ -3751,6 +14344,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The configuration option value.
+       * </pre>
+       *
        * <code>string value = 1;</code>
        * @param value The value to set.
        * @return This builder for chaining.
@@ -3766,6 +14363,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The configuration option value.
+       * </pre>
+       *
        * <code>string value = 1;</code>
        * @return This builder for chaining.
        */
@@ -3776,6 +14377,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The configuration option value.
+       * </pre>
+       *
        * <code>string value = 1;</code>
        * @param value The bytes for value to set.
        * @return This builder for chaining.
@@ -3794,6 +14399,10 @@ public final class Board {
 
       private java.lang.Object valueLabel_ = "";
       /**
+       * <pre>
+       * Label to identify the configuration option to humans.
+       * </pre>
+       *
        * <code>string value_label = 2;</code>
        * @return The valueLabel.
        */
@@ -3810,6 +14419,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Label to identify the configuration option to humans.
+       * </pre>
+       *
        * <code>string value_label = 2;</code>
        * @return The bytes for valueLabel.
        */
@@ -3827,6 +14440,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Label to identify the configuration option to humans.
+       * </pre>
+       *
        * <code>string value_label = 2;</code>
        * @param value The valueLabel to set.
        * @return This builder for chaining.
@@ -3842,6 +14459,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Label to identify the configuration option to humans.
+       * </pre>
+       *
        * <code>string value_label = 2;</code>
        * @return This builder for chaining.
        */
@@ -3852,6 +14473,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Label to identify the configuration option to humans.
+       * </pre>
+       *
        * <code>string value_label = 2;</code>
        * @param value The bytes for valueLabel to set.
        * @return This builder for chaining.
@@ -3870,6 +14495,10 @@ public final class Board {
 
       private boolean selected_ ;
       /**
+       * <pre>
+       * Whether the configuration option is selected.
+       * </pre>
+       *
        * <code>bool selected = 3;</code>
        * @return The selected.
        */
@@ -3877,6 +14506,10 @@ public final class Board {
         return selected_;
       }
       /**
+       * <pre>
+       * Whether the configuration option is selected.
+       * </pre>
+       *
        * <code>bool selected = 3;</code>
        * @param value The selected to set.
        * @return This builder for chaining.
@@ -3888,6 +14521,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Whether the configuration option is selected.
+       * </pre>
+       *
        * <code>bool selected = 3;</code>
        * @return This builder for chaining.
        */
@@ -3950,893 +14587,51 @@ public final class Board {
 
   }
 
-  public interface RequiredToolOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.RequiredTool)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string name = 1;</code>
-     * @return The name.
-     */
-    java.lang.String getName();
-    /**
-     * <code>string name = 1;</code>
-     * @return The bytes for name.
-     */
-    com.google.protobuf.ByteString
-        getNameBytes();
-
-    /**
-     * <code>string version = 2;</code>
-     * @return The version.
-     */
-    java.lang.String getVersion();
-    /**
-     * <code>string version = 2;</code>
-     * @return The bytes for version.
-     */
-    com.google.protobuf.ByteString
-        getVersionBytes();
-
-    /**
-     * <code>string packager = 3;</code>
-     * @return The packager.
-     */
-    java.lang.String getPackager();
-    /**
-     * <code>string packager = 3;</code>
-     * @return The bytes for packager.
-     */
-    com.google.protobuf.ByteString
-        getPackagerBytes();
-  }
-  /**
-   * Protobuf type {@code cc.arduino.cli.commands.RequiredTool}
-   */
-  public  static final class RequiredTool extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.RequiredTool)
-      RequiredToolOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use RequiredTool.newBuilder() to construct.
-    private RequiredTool(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private RequiredTool() {
-      name_ = "";
-      version_ = "";
-      packager_ = "";
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new RequiredTool();
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private RequiredTool(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              name_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              version_ = s;
-              break;
-            }
-            case 26: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              packager_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_RequiredTool_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_RequiredTool_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              cc.arduino.cli.commands.Board.RequiredTool.class, cc.arduino.cli.commands.Board.RequiredTool.Builder.class);
-    }
-
-    public static final int NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object name_;
-    /**
-     * <code>string name = 1;</code>
-     * @return The name.
-     */
-    public java.lang.String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        name_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string name = 1;</code>
-     * @return The bytes for name.
-     */
-    public com.google.protobuf.ByteString
-        getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int VERSION_FIELD_NUMBER = 2;
-    private volatile java.lang.Object version_;
-    /**
-     * <code>string version = 2;</code>
-     * @return The version.
-     */
-    public java.lang.String getVersion() {
-      java.lang.Object ref = version_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        version_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string version = 2;</code>
-     * @return The bytes for version.
-     */
-    public com.google.protobuf.ByteString
-        getVersionBytes() {
-      java.lang.Object ref = version_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        version_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PACKAGER_FIELD_NUMBER = 3;
-    private volatile java.lang.Object packager_;
-    /**
-     * <code>string packager = 3;</code>
-     * @return The packager.
-     */
-    public java.lang.String getPackager() {
-      java.lang.Object ref = packager_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        packager_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string packager = 3;</code>
-     * @return The bytes for packager.
-     */
-    public com.google.protobuf.ByteString
-        getPackagerBytes() {
-      java.lang.Object ref = packager_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        packager_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getNameBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-      }
-      if (!getVersionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, version_);
-      }
-      if (!getPackagerBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, packager_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getNameBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-      }
-      if (!getVersionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, version_);
-      }
-      if (!getPackagerBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, packager_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof cc.arduino.cli.commands.Board.RequiredTool)) {
-        return super.equals(obj);
-      }
-      cc.arduino.cli.commands.Board.RequiredTool other = (cc.arduino.cli.commands.Board.RequiredTool) obj;
-
-      if (!getName()
-          .equals(other.getName())) return false;
-      if (!getVersion()
-          .equals(other.getVersion())) return false;
-      if (!getPackager()
-          .equals(other.getPackager())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + NAME_FIELD_NUMBER;
-      hash = (53 * hash) + getName().hashCode();
-      hash = (37 * hash) + VERSION_FIELD_NUMBER;
-      hash = (53 * hash) + getVersion().hashCode();
-      hash = (37 * hash) + PACKAGER_FIELD_NUMBER;
-      hash = (53 * hash) + getPackager().hashCode();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static cc.arduino.cli.commands.Board.RequiredTool parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(cc.arduino.cli.commands.Board.RequiredTool prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code cc.arduino.cli.commands.RequiredTool}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.RequiredTool)
-        cc.arduino.cli.commands.Board.RequiredToolOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_RequiredTool_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_RequiredTool_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                cc.arduino.cli.commands.Board.RequiredTool.class, cc.arduino.cli.commands.Board.RequiredTool.Builder.class);
-      }
-
-      // Construct using cc.arduino.cli.commands.Board.RequiredTool.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        name_ = "";
-
-        version_ = "";
-
-        packager_ = "";
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return cc.arduino.cli.commands.Board.internal_static_cc_arduino_cli_commands_RequiredTool_descriptor;
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Board.RequiredTool getDefaultInstanceForType() {
-        return cc.arduino.cli.commands.Board.RequiredTool.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Board.RequiredTool build() {
-        cc.arduino.cli.commands.Board.RequiredTool result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public cc.arduino.cli.commands.Board.RequiredTool buildPartial() {
-        cc.arduino.cli.commands.Board.RequiredTool result = new cc.arduino.cli.commands.Board.RequiredTool(this);
-        result.name_ = name_;
-        result.version_ = version_;
-        result.packager_ = packager_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof cc.arduino.cli.commands.Board.RequiredTool) {
-          return mergeFrom((cc.arduino.cli.commands.Board.RequiredTool)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(cc.arduino.cli.commands.Board.RequiredTool other) {
-        if (other == cc.arduino.cli.commands.Board.RequiredTool.getDefaultInstance()) return this;
-        if (!other.getName().isEmpty()) {
-          name_ = other.name_;
-          onChanged();
-        }
-        if (!other.getVersion().isEmpty()) {
-          version_ = other.version_;
-          onChanged();
-        }
-        if (!other.getPackager().isEmpty()) {
-          packager_ = other.packager_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        cc.arduino.cli.commands.Board.RequiredTool parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (cc.arduino.cli.commands.Board.RequiredTool) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object name_ = "";
-      /**
-       * <code>string name = 1;</code>
-       * @return The name.
-       */
-      public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       * @return The bytes for name.
-       */
-      public com.google.protobuf.ByteString
-          getNameBytes() {
-        java.lang.Object ref = name_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          name_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       * @param value The name to set.
-       * @return This builder for chaining.
-       */
-      public Builder setName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearName() {
-        
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       * @param value The bytes for name to set.
-       * @return This builder for chaining.
-       */
-      public Builder setNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        name_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object version_ = "";
-      /**
-       * <code>string version = 2;</code>
-       * @return The version.
-       */
-      public java.lang.String getVersion() {
-        java.lang.Object ref = version_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          version_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string version = 2;</code>
-       * @return The bytes for version.
-       */
-      public com.google.protobuf.ByteString
-          getVersionBytes() {
-        java.lang.Object ref = version_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          version_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string version = 2;</code>
-       * @param value The version to set.
-       * @return This builder for chaining.
-       */
-      public Builder setVersion(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        version_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string version = 2;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearVersion() {
-        
-        version_ = getDefaultInstance().getVersion();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string version = 2;</code>
-       * @param value The bytes for version to set.
-       * @return This builder for chaining.
-       */
-      public Builder setVersionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        version_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object packager_ = "";
-      /**
-       * <code>string packager = 3;</code>
-       * @return The packager.
-       */
-      public java.lang.String getPackager() {
-        java.lang.Object ref = packager_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          packager_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string packager = 3;</code>
-       * @return The bytes for packager.
-       */
-      public com.google.protobuf.ByteString
-          getPackagerBytes() {
-        java.lang.Object ref = packager_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          packager_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string packager = 3;</code>
-       * @param value The packager to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPackager(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        packager_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string packager = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearPackager() {
-        
-        packager_ = getDefaultInstance().getPackager();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string packager = 3;</code>
-       * @param value The bytes for packager to set.
-       * @return This builder for chaining.
-       */
-      public Builder setPackagerBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        packager_ = value;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.RequiredTool)
-    }
-
-    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.RequiredTool)
-    private static final cc.arduino.cli.commands.Board.RequiredTool DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Board.RequiredTool();
-    }
-
-    public static cc.arduino.cli.commands.Board.RequiredTool getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<RequiredTool>
-        PARSER = new com.google.protobuf.AbstractParser<RequiredTool>() {
-      @java.lang.Override
-      public RequiredTool parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RequiredTool(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<RequiredTool> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<RequiredTool> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public cc.arduino.cli.commands.Board.RequiredTool getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface BoardAttachReqOrBuilder extends
       // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.BoardAttachReq)
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * The board's URI (e.g., /dev/ttyACM0).
+     * </pre>
+     *
      * <code>string board_uri = 2;</code>
      * @return The boardUri.
      */
     java.lang.String getBoardUri();
     /**
+     * <pre>
+     * The board's URI (e.g., /dev/ttyACM0).
+     * </pre>
+     *
      * <code>string board_uri = 2;</code>
      * @return The bytes for boardUri.
      */
@@ -4844,11 +14639,21 @@ public final class Board {
         getBoardUriBytes();
 
     /**
+     * <pre>
+     * Path of the sketch to attach the board to. The board attachment
+     * metadata will be saved to `{sketch_path}/sketch.json`.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
+     * <pre>
+     * Path of the sketch to attach the board to. The board attachment
+     * metadata will be saved to `{sketch_path}/sketch.json`.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -4856,11 +14661,21 @@ public final class Board {
         getSketchPathBytes();
 
     /**
+     * <pre>
+     * Duration in seconds to search the given URI for a connected board before
+     * timing out. The default value is 5 seconds.
+     * </pre>
+     *
      * <code>string search_timeout = 4;</code>
      * @return The searchTimeout.
      */
     java.lang.String getSearchTimeout();
     /**
+     * <pre>
+     * Duration in seconds to search the given URI for a connected board before
+     * timing out. The default value is 5 seconds.
+     * </pre>
+     *
      * <code>string search_timeout = 4;</code>
      * @return The bytes for searchTimeout.
      */
@@ -4981,6 +14796,10 @@ public final class Board {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -4988,6 +14807,10 @@ public final class Board {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -4995,6 +14818,10 @@ public final class Board {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5004,6 +14831,10 @@ public final class Board {
     public static final int BOARD_URI_FIELD_NUMBER = 2;
     private volatile java.lang.Object boardUri_;
     /**
+     * <pre>
+     * The board's URI (e.g., /dev/ttyACM0).
+     * </pre>
+     *
      * <code>string board_uri = 2;</code>
      * @return The boardUri.
      */
@@ -5020,6 +14851,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * The board's URI (e.g., /dev/ttyACM0).
+     * </pre>
+     *
      * <code>string board_uri = 2;</code>
      * @return The bytes for boardUri.
      */
@@ -5040,6 +14875,11 @@ public final class Board {
     public static final int SKETCH_PATH_FIELD_NUMBER = 3;
     private volatile java.lang.Object sketchPath_;
     /**
+     * <pre>
+     * Path of the sketch to attach the board to. The board attachment
+     * metadata will be saved to `{sketch_path}/sketch.json`.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The sketchPath.
      */
@@ -5056,6 +14896,11 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Path of the sketch to attach the board to. The board attachment
+     * metadata will be saved to `{sketch_path}/sketch.json`.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -5076,6 +14921,11 @@ public final class Board {
     public static final int SEARCH_TIMEOUT_FIELD_NUMBER = 4;
     private volatile java.lang.Object searchTimeout_;
     /**
+     * <pre>
+     * Duration in seconds to search the given URI for a connected board before
+     * timing out. The default value is 5 seconds.
+     * </pre>
+     *
      * <code>string search_timeout = 4;</code>
      * @return The searchTimeout.
      */
@@ -5092,6 +14942,11 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Duration in seconds to search the given URI for a connected board before
+     * timing out. The default value is 5 seconds.
+     * </pre>
+     *
      * <code>string search_timeout = 4;</code>
      * @return The bytes for searchTimeout.
      */
@@ -5479,6 +15334,10 @@ public final class Board {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -5486,6 +15345,10 @@ public final class Board {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -5497,6 +15360,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5513,6 +15380,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -5527,6 +15398,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5545,6 +15420,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -5559,6 +15438,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -5567,6 +15450,10 @@ public final class Board {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5578,6 +15465,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5596,6 +15487,10 @@ public final class Board {
 
       private java.lang.Object boardUri_ = "";
       /**
+       * <pre>
+       * The board's URI (e.g., /dev/ttyACM0).
+       * </pre>
+       *
        * <code>string board_uri = 2;</code>
        * @return The boardUri.
        */
@@ -5612,6 +15507,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The board's URI (e.g., /dev/ttyACM0).
+       * </pre>
+       *
        * <code>string board_uri = 2;</code>
        * @return The bytes for boardUri.
        */
@@ -5629,6 +15528,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The board's URI (e.g., /dev/ttyACM0).
+       * </pre>
+       *
        * <code>string board_uri = 2;</code>
        * @param value The boardUri to set.
        * @return This builder for chaining.
@@ -5644,6 +15547,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The board's URI (e.g., /dev/ttyACM0).
+       * </pre>
+       *
        * <code>string board_uri = 2;</code>
        * @return This builder for chaining.
        */
@@ -5654,6 +15561,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The board's URI (e.g., /dev/ttyACM0).
+       * </pre>
+       *
        * <code>string board_uri = 2;</code>
        * @param value The bytes for boardUri to set.
        * @return This builder for chaining.
@@ -5672,6 +15583,11 @@ public final class Board {
 
       private java.lang.Object sketchPath_ = "";
       /**
+       * <pre>
+       * Path of the sketch to attach the board to. The board attachment
+       * metadata will be saved to `{sketch_path}/sketch.json`.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return The sketchPath.
        */
@@ -5688,6 +15604,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Path of the sketch to attach the board to. The board attachment
+       * metadata will be saved to `{sketch_path}/sketch.json`.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return The bytes for sketchPath.
        */
@@ -5705,6 +15626,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Path of the sketch to attach the board to. The board attachment
+       * metadata will be saved to `{sketch_path}/sketch.json`.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @param value The sketchPath to set.
        * @return This builder for chaining.
@@ -5720,6 +15646,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Path of the sketch to attach the board to. The board attachment
+       * metadata will be saved to `{sketch_path}/sketch.json`.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return This builder for chaining.
        */
@@ -5730,6 +15661,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Path of the sketch to attach the board to. The board attachment
+       * metadata will be saved to `{sketch_path}/sketch.json`.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @param value The bytes for sketchPath to set.
        * @return This builder for chaining.
@@ -5748,6 +15684,11 @@ public final class Board {
 
       private java.lang.Object searchTimeout_ = "";
       /**
+       * <pre>
+       * Duration in seconds to search the given URI for a connected board before
+       * timing out. The default value is 5 seconds.
+       * </pre>
+       *
        * <code>string search_timeout = 4;</code>
        * @return The searchTimeout.
        */
@@ -5764,6 +15705,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Duration in seconds to search the given URI for a connected board before
+       * timing out. The default value is 5 seconds.
+       * </pre>
+       *
        * <code>string search_timeout = 4;</code>
        * @return The bytes for searchTimeout.
        */
@@ -5781,6 +15727,11 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Duration in seconds to search the given URI for a connected board before
+       * timing out. The default value is 5 seconds.
+       * </pre>
+       *
        * <code>string search_timeout = 4;</code>
        * @param value The searchTimeout to set.
        * @return This builder for chaining.
@@ -5796,6 +15747,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Duration in seconds to search the given URI for a connected board before
+       * timing out. The default value is 5 seconds.
+       * </pre>
+       *
        * <code>string search_timeout = 4;</code>
        * @return This builder for chaining.
        */
@@ -5806,6 +15762,11 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Duration in seconds to search the given URI for a connected board before
+       * timing out. The default value is 5 seconds.
+       * </pre>
+       *
        * <code>string search_timeout = 4;</code>
        * @param value The bytes for searchTimeout to set.
        * @return This builder for chaining.
@@ -5879,16 +15840,28 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -5986,6 +15959,10 @@ public final class Board {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -5993,6 +15970,10 @@ public final class Board {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
@@ -6000,6 +15981,10 @@ public final class Board {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the board attachment.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6325,6 +16310,10 @@ public final class Board {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -6332,6 +16321,10 @@ public final class Board {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return The taskProgress.
        */
@@ -6343,6 +16336,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6359,6 +16356,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(
@@ -6373,6 +16374,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6391,6 +16396,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder clearTaskProgress() {
@@ -6405,6 +16414,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -6413,6 +16426,10 @@ public final class Board {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6424,6 +16441,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the board attachment.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6497,16 +16518,28 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -6604,6 +16637,10 @@ public final class Board {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -6611,6 +16648,10 @@ public final class Board {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -6618,6 +16659,10 @@ public final class Board {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -6943,6 +16988,10 @@ public final class Board {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -6950,6 +16999,10 @@ public final class Board {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -6961,6 +17014,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -6977,6 +17034,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -6991,6 +17052,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -7009,6 +17074,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -7023,6 +17092,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -7031,6 +17104,10 @@ public final class Board {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -7042,6 +17119,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -7115,24 +17196,44 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Board.DetectedPort> 
         getPortsList();
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     cc.arduino.cli.commands.Board.DetectedPort getPorts(int index);
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     int getPortsCount();
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Board.DetectedPortOrBuilder> 
         getPortsOrBuilderList();
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     cc.arduino.cli.commands.Board.DetectedPortOrBuilder getPortsOrBuilder(
@@ -7232,12 +17333,20 @@ public final class Board {
     public static final int PORTS_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Board.DetectedPort> ports_;
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Board.DetectedPort> getPortsList() {
       return ports_;
     }
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Board.DetectedPortOrBuilder> 
@@ -7245,18 +17354,30 @@ public final class Board {
       return ports_;
     }
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     public int getPortsCount() {
       return ports_.size();
     }
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     public cc.arduino.cli.commands.Board.DetectedPort getPorts(int index) {
       return ports_.get(index);
     }
     /**
+     * <pre>
+     * List of ports and the boards detected on those ports.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
      */
     public cc.arduino.cli.commands.Board.DetectedPortOrBuilder getPortsOrBuilder(
@@ -7619,6 +17740,10 @@ public final class Board {
           cc.arduino.cli.commands.Board.DetectedPort, cc.arduino.cli.commands.Board.DetectedPort.Builder, cc.arduino.cli.commands.Board.DetectedPortOrBuilder> portsBuilder_;
 
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.DetectedPort> getPortsList() {
@@ -7629,6 +17754,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public int getPortsCount() {
@@ -7639,6 +17768,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public cc.arduino.cli.commands.Board.DetectedPort getPorts(int index) {
@@ -7649,6 +17782,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder setPorts(
@@ -7666,6 +17803,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder setPorts(
@@ -7680,6 +17821,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder addPorts(cc.arduino.cli.commands.Board.DetectedPort value) {
@@ -7696,6 +17841,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder addPorts(
@@ -7713,6 +17862,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder addPorts(
@@ -7727,6 +17880,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder addPorts(
@@ -7741,6 +17898,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder addAllPorts(
@@ -7756,6 +17917,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder clearPorts() {
@@ -7769,6 +17934,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public Builder removePorts(int index) {
@@ -7782,6 +17951,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public cc.arduino.cli.commands.Board.DetectedPort.Builder getPortsBuilder(
@@ -7789,6 +17962,10 @@ public final class Board {
         return getPortsFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public cc.arduino.cli.commands.Board.DetectedPortOrBuilder getPortsOrBuilder(
@@ -7799,6 +17976,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Board.DetectedPortOrBuilder> 
@@ -7810,6 +17991,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public cc.arduino.cli.commands.Board.DetectedPort.Builder addPortsBuilder() {
@@ -7817,6 +18002,10 @@ public final class Board {
             cc.arduino.cli.commands.Board.DetectedPort.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public cc.arduino.cli.commands.Board.DetectedPort.Builder addPortsBuilder(
@@ -7825,6 +18014,10 @@ public final class Board {
             index, cc.arduino.cli.commands.Board.DetectedPort.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of ports and the boards detected on those ports.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.DetectedPort ports = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.DetectedPort.Builder> 
@@ -7903,11 +18096,19 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Address of the port (e.g., `serial:///dev/ttyACM0`).
+     * </pre>
+     *
      * <code>string address = 1;</code>
      * @return The address.
      */
     java.lang.String getAddress();
     /**
+     * <pre>
+     * Address of the port (e.g., `serial:///dev/ttyACM0`).
+     * </pre>
+     *
      * <code>string address = 1;</code>
      * @return The bytes for address.
      */
@@ -7915,11 +18116,19 @@ public final class Board {
         getAddressBytes();
 
     /**
+     * <pre>
+     * Protocol of the port (e.g., `serial`).
+     * </pre>
+     *
      * <code>string protocol = 2;</code>
      * @return The protocol.
      */
     java.lang.String getProtocol();
     /**
+     * <pre>
+     * Protocol of the port (e.g., `serial`).
+     * </pre>
+     *
      * <code>string protocol = 2;</code>
      * @return The bytes for protocol.
      */
@@ -7927,11 +18136,19 @@ public final class Board {
         getProtocolBytes();
 
     /**
+     * <pre>
+     * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+     * </pre>
+     *
      * <code>string protocol_label = 3;</code>
      * @return The protocolLabel.
      */
     java.lang.String getProtocolLabel();
     /**
+     * <pre>
+     * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+     * </pre>
+     *
      * <code>string protocol_label = 3;</code>
      * @return The bytes for protocolLabel.
      */
@@ -7939,24 +18156,44 @@ public final class Board {
         getProtocolLabelBytes();
 
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     java.util.List<cc.arduino.cli.commands.Board.BoardListItem> 
         getBoardsList();
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     cc.arduino.cli.commands.Board.BoardListItem getBoards(int index);
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     int getBoardsCount();
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
         getBoardsOrBuilderList();
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -8077,6 +18314,10 @@ public final class Board {
     public static final int ADDRESS_FIELD_NUMBER = 1;
     private volatile java.lang.Object address_;
     /**
+     * <pre>
+     * Address of the port (e.g., `serial:///dev/ttyACM0`).
+     * </pre>
+     *
      * <code>string address = 1;</code>
      * @return The address.
      */
@@ -8093,6 +18334,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Address of the port (e.g., `serial:///dev/ttyACM0`).
+     * </pre>
+     *
      * <code>string address = 1;</code>
      * @return The bytes for address.
      */
@@ -8113,6 +18358,10 @@ public final class Board {
     public static final int PROTOCOL_FIELD_NUMBER = 2;
     private volatile java.lang.Object protocol_;
     /**
+     * <pre>
+     * Protocol of the port (e.g., `serial`).
+     * </pre>
+     *
      * <code>string protocol = 2;</code>
      * @return The protocol.
      */
@@ -8129,6 +18378,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * Protocol of the port (e.g., `serial`).
+     * </pre>
+     *
      * <code>string protocol = 2;</code>
      * @return The bytes for protocol.
      */
@@ -8149,6 +18402,10 @@ public final class Board {
     public static final int PROTOCOL_LABEL_FIELD_NUMBER = 3;
     private volatile java.lang.Object protocolLabel_;
     /**
+     * <pre>
+     * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+     * </pre>
+     *
      * <code>string protocol_label = 3;</code>
      * @return The protocolLabel.
      */
@@ -8165,6 +18422,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+     * </pre>
+     *
      * <code>string protocol_label = 3;</code>
      * @return The bytes for protocolLabel.
      */
@@ -8185,12 +18446,20 @@ public final class Board {
     public static final int BOARDS_FIELD_NUMBER = 4;
     private java.util.List<cc.arduino.cli.commands.Board.BoardListItem> boards_;
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Board.BoardListItem> getBoardsList() {
       return boards_;
     }
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
@@ -8198,18 +18467,30 @@ public final class Board {
       return boards_;
     }
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     public int getBoardsCount() {
       return boards_.size();
     }
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     public cc.arduino.cli.commands.Board.BoardListItem getBoards(int index) {
       return boards_.get(index);
     }
     /**
+     * <pre>
+     * The boards attached to the port.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
      */
     public cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -8612,6 +18893,10 @@ public final class Board {
 
       private java.lang.Object address_ = "";
       /**
+       * <pre>
+       * Address of the port (e.g., `serial:///dev/ttyACM0`).
+       * </pre>
+       *
        * <code>string address = 1;</code>
        * @return The address.
        */
@@ -8628,6 +18913,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Address of the port (e.g., `serial:///dev/ttyACM0`).
+       * </pre>
+       *
        * <code>string address = 1;</code>
        * @return The bytes for address.
        */
@@ -8645,6 +18934,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Address of the port (e.g., `serial:///dev/ttyACM0`).
+       * </pre>
+       *
        * <code>string address = 1;</code>
        * @param value The address to set.
        * @return This builder for chaining.
@@ -8660,6 +18953,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Address of the port (e.g., `serial:///dev/ttyACM0`).
+       * </pre>
+       *
        * <code>string address = 1;</code>
        * @return This builder for chaining.
        */
@@ -8670,6 +18967,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Address of the port (e.g., `serial:///dev/ttyACM0`).
+       * </pre>
+       *
        * <code>string address = 1;</code>
        * @param value The bytes for address to set.
        * @return This builder for chaining.
@@ -8688,6 +18989,10 @@ public final class Board {
 
       private java.lang.Object protocol_ = "";
       /**
+       * <pre>
+       * Protocol of the port (e.g., `serial`).
+       * </pre>
+       *
        * <code>string protocol = 2;</code>
        * @return The protocol.
        */
@@ -8704,6 +19009,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Protocol of the port (e.g., `serial`).
+       * </pre>
+       *
        * <code>string protocol = 2;</code>
        * @return The bytes for protocol.
        */
@@ -8721,6 +19030,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Protocol of the port (e.g., `serial`).
+       * </pre>
+       *
        * <code>string protocol = 2;</code>
        * @param value The protocol to set.
        * @return This builder for chaining.
@@ -8736,6 +19049,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Protocol of the port (e.g., `serial`).
+       * </pre>
+       *
        * <code>string protocol = 2;</code>
        * @return This builder for chaining.
        */
@@ -8746,6 +19063,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Protocol of the port (e.g., `serial`).
+       * </pre>
+       *
        * <code>string protocol = 2;</code>
        * @param value The bytes for protocol to set.
        * @return This builder for chaining.
@@ -8764,6 +19085,10 @@ public final class Board {
 
       private java.lang.Object protocolLabel_ = "";
       /**
+       * <pre>
+       * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+       * </pre>
+       *
        * <code>string protocol_label = 3;</code>
        * @return The protocolLabel.
        */
@@ -8780,6 +19105,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+       * </pre>
+       *
        * <code>string protocol_label = 3;</code>
        * @return The bytes for protocolLabel.
        */
@@ -8797,6 +19126,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+       * </pre>
+       *
        * <code>string protocol_label = 3;</code>
        * @param value The protocolLabel to set.
        * @return This builder for chaining.
@@ -8812,6 +19145,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+       * </pre>
+       *
        * <code>string protocol_label = 3;</code>
        * @return This builder for chaining.
        */
@@ -8822,6 +19159,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * A human friendly description of the protocol (e.g., "Serial Port (USB)").
+       * </pre>
+       *
        * <code>string protocol_label = 3;</code>
        * @param value The bytes for protocolLabel to set.
        * @return This builder for chaining.
@@ -8851,6 +19192,10 @@ public final class Board {
           cc.arduino.cli.commands.Board.BoardListItem, cc.arduino.cli.commands.Board.BoardListItem.Builder, cc.arduino.cli.commands.Board.BoardListItemOrBuilder> boardsBuilder_;
 
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.BoardListItem> getBoardsList() {
@@ -8861,6 +19206,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public int getBoardsCount() {
@@ -8871,6 +19220,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem getBoards(int index) {
@@ -8881,6 +19234,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder setBoards(
@@ -8898,6 +19255,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder setBoards(
@@ -8912,6 +19273,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder addBoards(cc.arduino.cli.commands.Board.BoardListItem value) {
@@ -8928,6 +19293,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder addBoards(
@@ -8945,6 +19314,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder addBoards(
@@ -8959,6 +19332,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder addBoards(
@@ -8973,6 +19350,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder addAllBoards(
@@ -8988,6 +19369,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder clearBoards() {
@@ -9001,6 +19386,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public Builder removeBoards(int index) {
@@ -9014,6 +19403,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder getBoardsBuilder(
@@ -9021,6 +19414,10 @@ public final class Board {
         return getBoardsFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -9031,6 +19428,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
@@ -9042,6 +19443,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder addBoardsBuilder() {
@@ -9049,6 +19454,10 @@ public final class Board {
             cc.arduino.cli.commands.Board.BoardListItem.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder addBoardsBuilder(
@@ -9057,6 +19466,10 @@ public final class Board {
             index, cc.arduino.cli.commands.Board.BoardListItem.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The boards attached to the port.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 4;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.BoardListItem.Builder> 
@@ -9135,38 +19548,66 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @return A list containing the searchArgs.
      */
     java.util.List<java.lang.String>
         getSearchArgsList();
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @return The count of searchArgs.
      */
     int getSearchArgsCount();
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @param index The index of the element to return.
      * @return The searchArgs at the given index.
      */
     java.lang.String getSearchArgs(int index);
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @param index The index of the value to return.
      * @return The bytes of the searchArgs at the given index.
@@ -9281,6 +19722,10 @@ public final class Board {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -9288,6 +19733,10 @@ public final class Board {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -9295,6 +19744,10 @@ public final class Board {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -9304,6 +19757,10 @@ public final class Board {
     public static final int SEARCH_ARGS_FIELD_NUMBER = 2;
     private com.google.protobuf.LazyStringList searchArgs_;
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @return A list containing the searchArgs.
      */
@@ -9312,6 +19769,10 @@ public final class Board {
       return searchArgs_;
     }
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @return The count of searchArgs.
      */
@@ -9319,6 +19780,10 @@ public final class Board {
       return searchArgs_.size();
     }
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @param index The index of the element to return.
      * @return The searchArgs at the given index.
@@ -9327,6 +19792,10 @@ public final class Board {
       return searchArgs_.get(index);
     }
     /**
+     * <pre>
+     * The search query to filter the board list by.
+     * </pre>
+     *
      * <code>repeated string search_args = 2;</code>
      * @param index The index of the value to return.
      * @return The bytes of the searchArgs at the given index.
@@ -9691,6 +20160,10 @@ public final class Board {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -9698,6 +20171,10 @@ public final class Board {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -9709,6 +20186,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -9725,6 +20206,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -9739,6 +20224,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -9757,6 +20246,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -9771,6 +20264,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -9779,6 +20276,10 @@ public final class Board {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -9790,6 +20291,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -9814,6 +20319,10 @@ public final class Board {
          }
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @return A list containing the searchArgs.
        */
@@ -9822,6 +20331,10 @@ public final class Board {
         return searchArgs_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @return The count of searchArgs.
        */
@@ -9829,6 +20342,10 @@ public final class Board {
         return searchArgs_.size();
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param index The index of the element to return.
        * @return The searchArgs at the given index.
@@ -9837,6 +20354,10 @@ public final class Board {
         return searchArgs_.get(index);
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param index The index of the value to return.
        * @return The bytes of the searchArgs at the given index.
@@ -9846,6 +20367,10 @@ public final class Board {
         return searchArgs_.getByteString(index);
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param index The index to set the value at.
        * @param value The searchArgs to set.
@@ -9862,6 +20387,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param value The searchArgs to add.
        * @return This builder for chaining.
@@ -9877,6 +20406,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param values The searchArgs to add.
        * @return This builder for chaining.
@@ -9890,6 +20423,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @return This builder for chaining.
        */
@@ -9900,6 +20437,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The search query to filter the board list by.
+       * </pre>
+       *
        * <code>repeated string search_args = 2;</code>
        * @param value The bytes of the searchArgs to add.
        * @return This builder for chaining.
@@ -9973,24 +20514,44 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Board.BoardListItem> 
         getBoardsList();
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     cc.arduino.cli.commands.Board.BoardListItem getBoards(int index);
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     int getBoardsCount();
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
         getBoardsOrBuilderList();
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -10090,12 +20651,20 @@ public final class Board {
     public static final int BOARDS_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Board.BoardListItem> boards_;
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Board.BoardListItem> getBoardsList() {
       return boards_;
     }
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
@@ -10103,18 +20672,30 @@ public final class Board {
       return boards_;
     }
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     public int getBoardsCount() {
       return boards_.size();
     }
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     public cc.arduino.cli.commands.Board.BoardListItem getBoards(int index) {
       return boards_.get(index);
     }
     /**
+     * <pre>
+     * List of installed boards.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
      */
     public cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -10477,6 +21058,10 @@ public final class Board {
           cc.arduino.cli.commands.Board.BoardListItem, cc.arduino.cli.commands.Board.BoardListItem.Builder, cc.arduino.cli.commands.Board.BoardListItemOrBuilder> boardsBuilder_;
 
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.BoardListItem> getBoardsList() {
@@ -10487,6 +21072,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public int getBoardsCount() {
@@ -10497,6 +21086,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem getBoards(int index) {
@@ -10507,6 +21100,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder setBoards(
@@ -10524,6 +21121,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder setBoards(
@@ -10538,6 +21139,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder addBoards(cc.arduino.cli.commands.Board.BoardListItem value) {
@@ -10554,6 +21159,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder addBoards(
@@ -10571,6 +21180,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder addBoards(
@@ -10585,6 +21198,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder addBoards(
@@ -10599,6 +21216,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder addAllBoards(
@@ -10614,6 +21235,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder clearBoards() {
@@ -10627,6 +21252,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public Builder removeBoards(int index) {
@@ -10640,6 +21269,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder getBoardsBuilder(
@@ -10647,6 +21280,10 @@ public final class Board {
         return getBoardsFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItemOrBuilder getBoardsOrBuilder(
@@ -10657,6 +21294,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Board.BoardListItemOrBuilder> 
@@ -10668,6 +21309,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder addBoardsBuilder() {
@@ -10675,6 +21320,10 @@ public final class Board {
             cc.arduino.cli.commands.Board.BoardListItem.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public cc.arduino.cli.commands.Board.BoardListItem.Builder addBoardsBuilder(
@@ -10683,6 +21332,10 @@ public final class Board {
             index, cc.arduino.cli.commands.Board.BoardListItem.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of installed boards.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.BoardListItem boards = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Board.BoardListItem.Builder> 
@@ -10761,11 +21414,19 @@ public final class Board {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The name for use when identifying the board to a human.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * The name for use when identifying the board to a human.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -10773,11 +21434,19 @@ public final class Board {
         getNameBytes();
 
     /**
+     * <pre>
+     * The fully qualified board name. Used to identify the board to a machine.
+     * </pre>
+     *
      * <code>string FQBN = 2;</code>
      * @return The fQBN.
      */
     java.lang.String getFQBN();
     /**
+     * <pre>
+     * The fully qualified board name. Used to identify the board to a machine.
+     * </pre>
+     *
      * <code>string FQBN = 2;</code>
      * @return The bytes for fQBN.
      */
@@ -10878,6 +21547,10 @@ public final class Board {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * The name for use when identifying the board to a human.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -10894,6 +21567,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * The name for use when identifying the board to a human.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -10914,6 +21591,10 @@ public final class Board {
     public static final int FQBN_FIELD_NUMBER = 2;
     private volatile java.lang.Object fQBN_;
     /**
+     * <pre>
+     * The fully qualified board name. Used to identify the board to a machine.
+     * </pre>
+     *
      * <code>string FQBN = 2;</code>
      * @return The fQBN.
      */
@@ -10930,6 +21611,10 @@ public final class Board {
       }
     }
     /**
+     * <pre>
+     * The fully qualified board name. Used to identify the board to a machine.
+     * </pre>
+     *
      * <code>string FQBN = 2;</code>
      * @return The bytes for fQBN.
      */
@@ -11268,6 +21953,10 @@ public final class Board {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * The name for use when identifying the board to a human.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -11284,6 +21973,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The name for use when identifying the board to a human.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -11301,6 +21994,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The name for use when identifying the board to a human.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -11316,6 +22013,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The name for use when identifying the board to a human.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -11326,6 +22027,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The name for use when identifying the board to a human.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -11344,6 +22049,10 @@ public final class Board {
 
       private java.lang.Object fQBN_ = "";
       /**
+       * <pre>
+       * The fully qualified board name. Used to identify the board to a machine.
+       * </pre>
+       *
        * <code>string FQBN = 2;</code>
        * @return The fQBN.
        */
@@ -11360,6 +22069,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The fully qualified board name. Used to identify the board to a machine.
+       * </pre>
+       *
        * <code>string FQBN = 2;</code>
        * @return The bytes for fQBN.
        */
@@ -11377,6 +22090,10 @@ public final class Board {
         }
       }
       /**
+       * <pre>
+       * The fully qualified board name. Used to identify the board to a machine.
+       * </pre>
+       *
        * <code>string FQBN = 2;</code>
        * @param value The fQBN to set.
        * @return This builder for chaining.
@@ -11392,6 +22109,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The fully qualified board name. Used to identify the board to a machine.
+       * </pre>
+       *
        * <code>string FQBN = 2;</code>
        * @return This builder for chaining.
        */
@@ -11402,6 +22123,10 @@ public final class Board {
         return this;
       }
       /**
+       * <pre>
+       * The fully qualified board name. Used to identify the board to a machine.
+       * </pre>
+       *
        * <code>string FQBN = 2;</code>
        * @param value The bytes for fQBN to set.
        * @return This builder for chaining.
@@ -11481,6 +22206,41 @@ public final class Board {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cc_arduino_cli_commands_BoardDetailsResp_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_IdentificationPref_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_USBID_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_USBID_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_Package_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_Package_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_Help_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_Help_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_BoardPlatform_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_ToolsDependencies_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_Systems_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_Systems_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cc_arduino_cli_commands_ConfigOption_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -11490,11 +22250,6 @@ public final class Board {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cc_arduino_cli_commands_ConfigValue_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_cc_arduino_cli_commands_RequiredTool_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_cc_arduino_cli_commands_RequiredTool_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cc_arduino_cli_commands_BoardAttachReq_descriptor;
   private static final 
@@ -11547,36 +22302,58 @@ public final class Board {
       "\n\024commands/board.proto\022\027cc.arduino.cli.c" +
       "ommands\032\025commands/common.proto\"T\n\017BoardD" +
       "etailsReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino" +
-      ".cli.commands.Instance\022\014\n\004fqbn\030\002 \001(\t\"\236\001\n" +
-      "\020BoardDetailsResp\022\014\n\004name\030\002 \001(\t\022=\n\016confi" +
-      "g_options\030\003 \003(\0132%.cc.arduino.cli.command" +
-      "s.ConfigOption\022=\n\016required_tools\030\004 \003(\0132%" +
-      ".cc.arduino.cli.commands.RequiredTool\"j\n" +
-      "\014ConfigOption\022\016\n\006option\030\001 \001(\t\022\024\n\014option_" +
-      "label\030\002 \001(\t\0224\n\006values\030\003 \003(\0132$.cc.arduino" +
-      ".cli.commands.ConfigValue\"C\n\013ConfigValue" +
-      "\022\r\n\005value\030\001 \001(\t\022\023\n\013value_label\030\002 \001(\t\022\020\n\010" +
-      "selected\030\003 \001(\010\"?\n\014RequiredTool\022\014\n\004name\030\001" +
-      " \001(\t\022\017\n\007version\030\002 \001(\t\022\020\n\010packager\030\003 \001(\t\"" +
-      "\205\001\n\016BoardAttachReq\0223\n\010instance\030\001 \001(\0132!.c" +
-      "c.arduino.cli.commands.Instance\022\021\n\tboard" +
-      "_uri\030\002 \001(\t\022\023\n\013sketch_path\030\003 \001(\t\022\026\n\016searc" +
-      "h_timeout\030\004 \001(\t\"O\n\017BoardAttachResp\022<\n\rta" +
-      "sk_progress\030\001 \001(\0132%.cc.arduino.cli.comma" +
-      "nds.TaskProgress\"C\n\014BoardListReq\0223\n\010inst" +
-      "ance\030\001 \001(\0132!.cc.arduino.cli.commands.Ins" +
-      "tance\"E\n\rBoardListResp\0224\n\005ports\030\001 \003(\0132%." +
-      "cc.arduino.cli.commands.DetectedPort\"\201\001\n" +
-      "\014DetectedPort\022\017\n\007address\030\001 \001(\t\022\020\n\010protoc" +
-      "ol\030\002 \001(\t\022\026\n\016protocol_label\030\003 \001(\t\0226\n\006boar" +
-      "ds\030\004 \003(\0132&.cc.arduino.cli.commands.Board" +
-      "ListItem\"[\n\017BoardListAllReq\0223\n\010instance\030" +
-      "\001 \001(\0132!.cc.arduino.cli.commands.Instance" +
-      "\022\023\n\013search_args\030\002 \003(\t\"J\n\020BoardListAllRes" +
-      "p\0226\n\006boards\030\001 \003(\0132&.cc.arduino.cli.comma" +
-      "nds.BoardListItem\"+\n\rBoardListItem\022\014\n\004na" +
-      "me\030\001 \001(\t\022\014\n\004FQBN\030\002 \001(\tB-Z+github.com/ard" +
-      "uino/arduino-cli/rpc/commandsb\006proto3"
+      ".cli.commands.Instance\022\014\n\004fqbn\030\002 \001(\t\"\303\003\n" +
+      "\020BoardDetailsResp\022\014\n\004fqbn\030\001 \001(\t\022\014\n\004name\030" +
+      "\002 \001(\t\022\017\n\007version\030\003 \001(\t\022\024\n\014propertiesId\030\004" +
+      " \001(\t\022\r\n\005alias\030\005 \001(\t\022\020\n\010official\030\006 \001(\010\022\016\n" +
+      "\006pinout\030\007 \001(\t\0221\n\007package\030\010 \001(\0132 .cc.ardu" +
+      "ino.cli.commands.Package\0228\n\010platform\030\t \001" +
+      "(\0132&.cc.arduino.cli.commands.BoardPlatfo" +
+      "rm\022E\n\021toolsDependencies\030\n \003(\0132*.cc.ardui" +
+      "no.cli.commands.ToolsDependencies\022=\n\016con" +
+      "fig_options\030\013 \003(\0132%.cc.arduino.cli.comma" +
+      "nds.ConfigOption\022H\n\023identification_pref\030" +
+      "\014 \003(\0132+.cc.arduino.cli.commands.Identifi" +
+      "cationPref\"C\n\022IdentificationPref\022-\n\005usbI" +
+      "D\030\001 \001(\0132\036.cc.arduino.cli.commands.USBID\"" +
+      "!\n\005USBID\022\013\n\003VID\030\001 \001(\t\022\013\n\003PID\030\002 \001(\t\"\210\001\n\007P" +
+      "ackage\022\022\n\nmaintainer\030\001 \001(\t\022\013\n\003url\030\002 \001(\t\022" +
+      "\022\n\nwebsiteURL\030\003 \001(\t\022\r\n\005email\030\004 \001(\t\022\014\n\004na" +
+      "me\030\005 \001(\t\022+\n\004help\030\006 \001(\0132\035.cc.arduino.cli." +
+      "commands.Help\"\026\n\004Help\022\016\n\006online\030\001 \001(\t\"\213\001" +
+      "\n\rBoardPlatform\022\024\n\014architecture\030\001 \001(\t\022\020\n" +
+      "\010category\030\002 \001(\t\022\013\n\003url\030\003 \001(\t\022\027\n\017archiveF" +
+      "ileName\030\004 \001(\t\022\020\n\010checksum\030\005 \001(\t\022\014\n\004size\030" +
+      "\006 \001(\003\022\014\n\004name\030\007 \001(\t\"w\n\021ToolsDependencies" +
+      "\022\020\n\010packager\030\001 \001(\t\022\014\n\004name\030\002 \001(\t\022\017\n\007vers" +
+      "ion\030\003 \001(\t\0221\n\007systems\030\004 \003(\0132 .cc.arduino." +
+      "cli.commands.Systems\"]\n\007Systems\022\020\n\010check" +
+      "sum\030\001 \001(\t\022\014\n\004host\030\002 \001(\t\022\027\n\017archiveFileNa" +
+      "me\030\003 \001(\t\022\013\n\003url\030\004 \001(\t\022\014\n\004size\030\005 \001(\003\"j\n\014C" +
+      "onfigOption\022\016\n\006option\030\001 \001(\t\022\024\n\014option_la" +
+      "bel\030\002 \001(\t\0224\n\006values\030\003 \003(\0132$.cc.arduino.c" +
+      "li.commands.ConfigValue\"C\n\013ConfigValue\022\r" +
+      "\n\005value\030\001 \001(\t\022\023\n\013value_label\030\002 \001(\t\022\020\n\010se" +
+      "lected\030\003 \001(\010\"\205\001\n\016BoardAttachReq\0223\n\010insta" +
+      "nce\030\001 \001(\0132!.cc.arduino.cli.commands.Inst" +
+      "ance\022\021\n\tboard_uri\030\002 \001(\t\022\023\n\013sketch_path\030\003" +
+      " \001(\t\022\026\n\016search_timeout\030\004 \001(\t\"O\n\017BoardAtt" +
+      "achResp\022<\n\rtask_progress\030\001 \001(\0132%.cc.ardu" +
+      "ino.cli.commands.TaskProgress\"C\n\014BoardLi" +
+      "stReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli" +
+      ".commands.Instance\"E\n\rBoardListResp\0224\n\005p" +
+      "orts\030\001 \003(\0132%.cc.arduino.cli.commands.Det" +
+      "ectedPort\"\201\001\n\014DetectedPort\022\017\n\007address\030\001 " +
+      "\001(\t\022\020\n\010protocol\030\002 \001(\t\022\026\n\016protocol_label\030" +
+      "\003 \001(\t\0226\n\006boards\030\004 \003(\0132&.cc.arduino.cli.c" +
+      "ommands.BoardListItem\"[\n\017BoardListAllReq" +
+      "\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli.comm" +
+      "ands.Instance\022\023\n\013search_args\030\002 \003(\t\"J\n\020Bo" +
+      "ardListAllResp\0226\n\006boards\030\001 \003(\0132&.cc.ardu" +
+      "ino.cli.commands.BoardListItem\"+\n\rBoardL" +
+      "istItem\022\014\n\004name\030\001 \001(\t\022\014\n\004FQBN\030\002 \001(\tB-Z+g" +
+      "ithub.com/arduino/arduino-cli/rpc/comman" +
+      "dsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -11594,69 +22371,105 @@ public final class Board {
     internal_static_cc_arduino_cli_commands_BoardDetailsResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardDetailsResp_descriptor,
-        new java.lang.String[] { "Name", "ConfigOptions", "RequiredTools", });
-    internal_static_cc_arduino_cli_commands_ConfigOption_descriptor =
+        new java.lang.String[] { "Fqbn", "Name", "Version", "PropertiesId", "Alias", "Official", "Pinout", "Package", "Platform", "ToolsDependencies", "ConfigOptions", "IdentificationPref", });
+    internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor =
       getDescriptor().getMessageTypes().get(2);
+    internal_static_cc_arduino_cli_commands_IdentificationPref_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_IdentificationPref_descriptor,
+        new java.lang.String[] { "UsbID", });
+    internal_static_cc_arduino_cli_commands_USBID_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_cc_arduino_cli_commands_USBID_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_USBID_descriptor,
+        new java.lang.String[] { "VID", "PID", });
+    internal_static_cc_arduino_cli_commands_Package_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_cc_arduino_cli_commands_Package_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_Package_descriptor,
+        new java.lang.String[] { "Maintainer", "Url", "WebsiteURL", "Email", "Name", "Help", });
+    internal_static_cc_arduino_cli_commands_Help_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_cc_arduino_cli_commands_Help_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_Help_descriptor,
+        new java.lang.String[] { "Online", });
+    internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_cc_arduino_cli_commands_BoardPlatform_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_BoardPlatform_descriptor,
+        new java.lang.String[] { "Architecture", "Category", "Url", "ArchiveFileName", "Checksum", "Size", "Name", });
+    internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor =
+      getDescriptor().getMessageTypes().get(7);
+    internal_static_cc_arduino_cli_commands_ToolsDependencies_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_ToolsDependencies_descriptor,
+        new java.lang.String[] { "Packager", "Name", "Version", "Systems", });
+    internal_static_cc_arduino_cli_commands_Systems_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_cc_arduino_cli_commands_Systems_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_Systems_descriptor,
+        new java.lang.String[] { "Checksum", "Host", "ArchiveFileName", "Url", "Size", });
+    internal_static_cc_arduino_cli_commands_ConfigOption_descriptor =
+      getDescriptor().getMessageTypes().get(9);
     internal_static_cc_arduino_cli_commands_ConfigOption_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_ConfigOption_descriptor,
         new java.lang.String[] { "Option", "OptionLabel", "Values", });
     internal_static_cc_arduino_cli_commands_ConfigValue_descriptor =
-      getDescriptor().getMessageTypes().get(3);
+      getDescriptor().getMessageTypes().get(10);
     internal_static_cc_arduino_cli_commands_ConfigValue_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_ConfigValue_descriptor,
         new java.lang.String[] { "Value", "ValueLabel", "Selected", });
-    internal_static_cc_arduino_cli_commands_RequiredTool_descriptor =
-      getDescriptor().getMessageTypes().get(4);
-    internal_static_cc_arduino_cli_commands_RequiredTool_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_cc_arduino_cli_commands_RequiredTool_descriptor,
-        new java.lang.String[] { "Name", "Version", "Packager", });
     internal_static_cc_arduino_cli_commands_BoardAttachReq_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(11);
     internal_static_cc_arduino_cli_commands_BoardAttachReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardAttachReq_descriptor,
         new java.lang.String[] { "Instance", "BoardUri", "SketchPath", "SearchTimeout", });
     internal_static_cc_arduino_cli_commands_BoardAttachResp_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(12);
     internal_static_cc_arduino_cli_commands_BoardAttachResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardAttachResp_descriptor,
         new java.lang.String[] { "TaskProgress", });
     internal_static_cc_arduino_cli_commands_BoardListReq_descriptor =
-      getDescriptor().getMessageTypes().get(7);
+      getDescriptor().getMessageTypes().get(13);
     internal_static_cc_arduino_cli_commands_BoardListReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardListReq_descriptor,
         new java.lang.String[] { "Instance", });
     internal_static_cc_arduino_cli_commands_BoardListResp_descriptor =
-      getDescriptor().getMessageTypes().get(8);
+      getDescriptor().getMessageTypes().get(14);
     internal_static_cc_arduino_cli_commands_BoardListResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardListResp_descriptor,
         new java.lang.String[] { "Ports", });
     internal_static_cc_arduino_cli_commands_DetectedPort_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(15);
     internal_static_cc_arduino_cli_commands_DetectedPort_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_DetectedPort_descriptor,
         new java.lang.String[] { "Address", "Protocol", "ProtocolLabel", "Boards", });
     internal_static_cc_arduino_cli_commands_BoardListAllReq_descriptor =
-      getDescriptor().getMessageTypes().get(10);
+      getDescriptor().getMessageTypes().get(16);
     internal_static_cc_arduino_cli_commands_BoardListAllReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardListAllReq_descriptor,
         new java.lang.String[] { "Instance", "SearchArgs", });
     internal_static_cc_arduino_cli_commands_BoardListAllResp_descriptor =
-      getDescriptor().getMessageTypes().get(11);
+      getDescriptor().getMessageTypes().get(17);
     internal_static_cc_arduino_cli_commands_BoardListAllResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardListAllResp_descriptor,
         new java.lang.String[] { "Boards", });
     internal_static_cc_arduino_cli_commands_BoardListItem_descriptor =
-      getDescriptor().getMessageTypes().get(12);
+      getDescriptor().getMessageTypes().get(18);
     internal_static_cc_arduino_cli_commands_BoardListItem_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_BoardListItem_descriptor,

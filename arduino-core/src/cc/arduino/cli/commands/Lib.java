@@ -20,10 +20,18 @@ public final class Lib {
   public enum LibrarySearchStatus
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     * <pre>
+     * No search results were found.
+     * </pre>
+     *
      * <code>failed = 0;</code>
      */
     failed(0),
     /**
+     * <pre>
+     * Search results were found.
+     * </pre>
+     *
      * <code>success = 1;</code>
      */
     success(1),
@@ -31,10 +39,18 @@ public final class Lib {
     ;
 
     /**
+     * <pre>
+     * No search results were found.
+     * </pre>
+     *
      * <code>failed = 0;</code>
      */
     public static final int failed_VALUE = 0;
     /**
+     * <pre>
+     * Search results were found.
+     * </pre>
+     *
      * <code>success = 1;</code>
      */
     public static final int success_VALUE = 1;
@@ -124,10 +140,18 @@ public final class Lib {
   public enum LibraryLayout
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     * <pre>
+     * Library is in the 1.0 Arduino library format.
+     * </pre>
+     *
      * <code>flat_layout = 0;</code>
      */
     flat_layout(0),
     /**
+     * <pre>
+     * Library is in the 1.5 Arduino library format.
+     * </pre>
+     *
      * <code>recursive_layout = 1;</code>
      */
     recursive_layout(1),
@@ -135,10 +159,18 @@ public final class Lib {
     ;
 
     /**
+     * <pre>
+     * Library is in the 1.0 Arduino library format.
+     * </pre>
+     *
      * <code>flat_layout = 0;</code>
      */
     public static final int flat_layout_VALUE = 0;
     /**
+     * <pre>
+     * Library is in the 1.5 Arduino library format.
+     * </pre>
+     *
      * <code>recursive_layout = 1;</code>
      */
     public static final int recursive_layout_VALUE = 1;
@@ -228,22 +260,36 @@ public final class Lib {
   public enum LibraryLocation
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
+     * <pre>
+     * In the `libraries` subdirectory of the Arduino IDE installation.
+     * </pre>
+     *
      * <code>ide_builtin = 0;</code>
      */
     ide_builtin(0),
     /**
      * <pre>
-     * (sketchbook)
+     * In the `libraries` subdirectory of the user directory (sketchbook).
      * </pre>
      *
      * <code>user = 1;</code>
      */
     user(1),
     /**
+     * <pre>
+     * In the `libraries` subdirectory of a platform.
+     * </pre>
+     *
      * <code>platform_builtin = 2;</code>
      */
     platform_builtin(2),
     /**
+     * <pre>
+     * When `LibraryLocation` is used in a context where a board is specified, 
+     * this indicates the library is in the `libraries` subdirectory of a
+     * platform referenced by the board's platform.
+     * </pre>
+     *
      * <code>referenced_platform_builtin = 3;</code>
      */
     referenced_platform_builtin(3),
@@ -251,22 +297,36 @@ public final class Lib {
     ;
 
     /**
+     * <pre>
+     * In the `libraries` subdirectory of the Arduino IDE installation.
+     * </pre>
+     *
      * <code>ide_builtin = 0;</code>
      */
     public static final int ide_builtin_VALUE = 0;
     /**
      * <pre>
-     * (sketchbook)
+     * In the `libraries` subdirectory of the user directory (sketchbook).
      * </pre>
      *
      * <code>user = 1;</code>
      */
     public static final int user_VALUE = 1;
     /**
+     * <pre>
+     * In the `libraries` subdirectory of a platform.
+     * </pre>
+     *
      * <code>platform_builtin = 2;</code>
      */
     public static final int platform_builtin_VALUE = 2;
     /**
+     * <pre>
+     * When `LibraryLocation` is used in a context where a board is specified, 
+     * this indicates the library is in the `libraries` subdirectory of a
+     * platform referenced by the board's platform.
+     * </pre>
+     *
      * <code>referenced_platform_builtin = 3;</code>
      */
     public static final int referenced_platform_builtin_VALUE = 3;
@@ -357,26 +417,46 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -384,11 +464,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The version of the library to download.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * The version of the library to download.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -502,6 +590,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -509,6 +601,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -516,6 +612,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -525,6 +625,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
@@ -541,6 +645,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -561,6 +669,10 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 3;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * The version of the library to download.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
@@ -577,6 +689,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The version of the library to download.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -947,6 +1063,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -954,6 +1074,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -965,6 +1089,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -981,6 +1109,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -995,6 +1127,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -1013,6 +1149,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -1027,6 +1167,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -1035,6 +1179,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -1046,6 +1194,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1064,6 +1216,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The name.
        */
@@ -1080,6 +1236,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The bytes for name.
        */
@@ -1097,6 +1257,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -1112,6 +1276,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return This builder for chaining.
        */
@@ -1122,6 +1290,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -1140,6 +1312,10 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * The version of the library to download.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The version.
        */
@@ -1156,6 +1332,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to download.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The bytes for version.
        */
@@ -1173,6 +1353,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to download.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -1188,6 +1372,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to download.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return This builder for chaining.
        */
@@ -1198,6 +1386,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to download.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -1271,16 +1463,28 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
@@ -1378,6 +1582,10 @@ public final class Lib {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -1385,6 +1593,10 @@ public final class Lib {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -1392,6 +1604,10 @@ public final class Lib {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -1717,6 +1933,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -1724,6 +1944,10 @@ public final class Lib {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -1735,6 +1959,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1751,6 +1979,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -1765,6 +1997,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1783,6 +2019,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -1797,6 +2037,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -1805,6 +2049,10 @@ public final class Lib {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -1816,6 +2064,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1889,26 +2141,46 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -1916,11 +2188,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The version of the library to install.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * The version of the library to install.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -2034,6 +2314,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -2041,6 +2325,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -2048,6 +2336,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2057,6 +2349,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
@@ -2073,6 +2369,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -2093,6 +2393,10 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 3;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * The version of the library to install.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
@@ -2109,6 +2413,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The version of the library to install.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -2479,6 +2787,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -2486,6 +2798,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -2497,6 +2813,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2513,6 +2833,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -2527,6 +2851,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2545,6 +2873,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -2559,6 +2891,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -2567,6 +2903,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2578,6 +2918,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -2596,6 +2940,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The name.
        */
@@ -2612,6 +2960,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The bytes for name.
        */
@@ -2629,6 +2981,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -2644,6 +3000,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return This builder for chaining.
        */
@@ -2654,6 +3014,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -2672,6 +3036,10 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * The version of the library to install.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The version.
        */
@@ -2688,6 +3056,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to install.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The bytes for version.
        */
@@ -2705,6 +3077,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to install.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -2720,6 +3096,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to install.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return This builder for chaining.
        */
@@ -2730,6 +3110,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to install.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -2803,31 +3187,55 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
 
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -2938,6 +3346,10 @@ public final class Lib {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -2945,6 +3357,10 @@ public final class Lib {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -2952,6 +3368,10 @@ public final class Lib {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the library download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -2961,6 +3381,10 @@ public final class Lib {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 2;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -2968,6 +3392,10 @@ public final class Lib {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
@@ -2975,6 +3403,10 @@ public final class Lib {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -3330,6 +3762,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -3337,6 +3773,10 @@ public final class Lib {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -3348,6 +3788,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -3364,6 +3808,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -3378,6 +3826,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -3396,6 +3848,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -3410,6 +3866,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -3418,6 +3878,10 @@ public final class Lib {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -3429,6 +3893,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the library download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -3449,6 +3917,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -3456,6 +3928,10 @@ public final class Lib {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return The taskProgress.
        */
@@ -3467,6 +3943,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -3483,6 +3963,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(
@@ -3497,6 +3981,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -3515,6 +4003,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder clearTaskProgress() {
@@ -3529,6 +4021,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -3537,6 +4033,10 @@ public final class Lib {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -3548,6 +4048,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -3621,26 +4125,46 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -3648,11 +4172,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The version of the library to uninstall.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * The version of the library to uninstall.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -3766,6 +4298,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -3773,6 +4309,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -3780,6 +4320,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -3789,6 +4333,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
@@ -3805,6 +4353,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -3825,6 +4377,10 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 3;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * The version of the library to uninstall.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
@@ -3841,6 +4397,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The version of the library to uninstall.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -4211,6 +4771,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -4218,6 +4782,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -4229,6 +4797,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4245,6 +4817,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -4259,6 +4835,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4277,6 +4857,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -4291,6 +4875,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -4299,6 +4887,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -4310,6 +4902,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -4328,6 +4924,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The name.
        */
@@ -4344,6 +4944,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The bytes for name.
        */
@@ -4361,6 +4965,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -4376,6 +4984,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return This builder for chaining.
        */
@@ -4386,6 +4998,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -4404,6 +5020,10 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * The version of the library to uninstall.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The version.
        */
@@ -4420,6 +5040,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to uninstall.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The bytes for version.
        */
@@ -4437,6 +5061,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to uninstall.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -4452,6 +5080,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to uninstall.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return This builder for chaining.
        */
@@ -4462,6 +5094,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to uninstall.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -4535,16 +5171,28 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -4642,6 +5290,10 @@ public final class Lib {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -4649,6 +5301,10 @@ public final class Lib {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
@@ -4656,6 +5312,10 @@ public final class Lib {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the uninstallation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -4981,6 +5641,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -4988,6 +5652,10 @@ public final class Lib {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return The taskProgress.
        */
@@ -4999,6 +5667,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -5015,6 +5687,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(
@@ -5029,6 +5705,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -5047,6 +5727,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder clearTaskProgress() {
@@ -5061,6 +5745,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -5069,6 +5757,10 @@ public final class Lib {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -5080,6 +5772,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstallation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5153,16 +5849,28 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -5260,6 +5968,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -5267,6 +5979,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -5274,6 +5990,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5599,6 +6319,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -5606,6 +6330,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -5617,6 +6345,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5633,6 +6365,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -5647,6 +6383,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5665,6 +6405,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -5679,6 +6423,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -5687,6 +6435,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5698,6 +6450,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5771,31 +6527,55 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
 
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -5906,6 +6686,10 @@ public final class Lib {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -5913,6 +6697,10 @@ public final class Lib {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -5920,6 +6708,10 @@ public final class Lib {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the downloads of files needed for the upgrades.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -5929,6 +6721,10 @@ public final class Lib {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 2;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -5936,6 +6732,10 @@ public final class Lib {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
@@ -5943,6 +6743,10 @@ public final class Lib {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6298,6 +7102,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -6305,6 +7113,10 @@ public final class Lib {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -6316,6 +7128,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6332,6 +7148,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -6346,6 +7166,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6364,6 +7188,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -6378,6 +7206,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -6386,6 +7218,10 @@ public final class Lib {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -6397,6 +7233,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of files needed for the upgrades.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6417,6 +7257,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -6424,6 +7268,10 @@ public final class Lib {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return The taskProgress.
        */
@@ -6435,6 +7283,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6451,6 +7303,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(
@@ -6465,6 +7321,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6483,6 +7343,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder clearTaskProgress() {
@@ -6497,6 +7361,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -6505,6 +7373,10 @@ public final class Lib {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6516,6 +7388,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6589,26 +7465,46 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -6616,11 +7512,21 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The version of the library to check dependencies of. If no version is
+     * specified, dependencies of the newest version will be listed.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * The version of the library to check dependencies of. If no version is
+     * specified, dependencies of the newest version will be listed.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -6734,6 +7640,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -6741,6 +7651,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -6748,6 +7662,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -6757,6 +7675,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The name.
      */
@@ -6773,6 +7695,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Name of the library.
+     * </pre>
+     *
      * <code>string name = 2;</code>
      * @return The bytes for name.
      */
@@ -6793,6 +7719,11 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 3;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * The version of the library to check dependencies of. If no version is
+     * specified, dependencies of the newest version will be listed.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The version.
      */
@@ -6809,6 +7740,11 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The version of the library to check dependencies of. If no version is
+     * specified, dependencies of the newest version will be listed.
+     * </pre>
+     *
      * <code>string version = 3;</code>
      * @return The bytes for version.
      */
@@ -7179,6 +8115,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -7186,6 +8126,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -7197,6 +8141,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -7213,6 +8161,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -7227,6 +8179,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -7245,6 +8201,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -7259,6 +8219,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -7267,6 +8231,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -7278,6 +8246,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -7296,6 +8268,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The name.
        */
@@ -7312,6 +8288,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return The bytes for name.
        */
@@ -7329,6 +8309,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -7344,6 +8328,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @return This builder for chaining.
        */
@@ -7354,6 +8342,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Name of the library.
+       * </pre>
+       *
        * <code>string name = 2;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -7372,6 +8364,11 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * The version of the library to check dependencies of. If no version is
+       * specified, dependencies of the newest version will be listed.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The version.
        */
@@ -7388,6 +8385,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to check dependencies of. If no version is
+       * specified, dependencies of the newest version will be listed.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return The bytes for version.
        */
@@ -7405,6 +8407,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The version of the library to check dependencies of. If no version is
+       * specified, dependencies of the newest version will be listed.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -7420,6 +8427,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to check dependencies of. If no version is
+       * specified, dependencies of the newest version will be listed.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @return This builder for chaining.
        */
@@ -7430,6 +8442,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The version of the library to check dependencies of. If no version is
+       * specified, dependencies of the newest version will be listed.
+       * </pre>
+       *
        * <code>string version = 3;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -7503,24 +8520,44 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> 
         getDependenciesList();
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index);
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     int getDependenciesCount();
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
         getDependenciesOrBuilderList();
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
@@ -7620,12 +8657,20 @@ public final class Lib {
     public static final int DEPENDENCIES_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> dependencies_;
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> getDependenciesList() {
       return dependencies_;
     }
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
@@ -7633,18 +8678,30 @@ public final class Lib {
       return dependencies_;
     }
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     public int getDependenciesCount() {
       return dependencies_.size();
     }
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index) {
       return dependencies_.get(index);
     }
     /**
+     * <pre>
+     * Dependencies of the library.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
@@ -8007,6 +9064,10 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.LibraryDependencyStatus, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder, cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> dependenciesBuilder_;
 
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus> getDependenciesList() {
@@ -8017,6 +9078,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public int getDependenciesCount() {
@@ -8027,6 +9092,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyStatus getDependencies(int index) {
@@ -8037,6 +9106,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder setDependencies(
@@ -8054,6 +9127,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder setDependencies(
@@ -8068,6 +9145,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder addDependencies(cc.arduino.cli.commands.Lib.LibraryDependencyStatus value) {
@@ -8084,6 +9165,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder addDependencies(
@@ -8101,6 +9186,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder addDependencies(
@@ -8115,6 +9204,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder addDependencies(
@@ -8129,6 +9222,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder addAllDependencies(
@@ -8144,6 +9241,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder clearDependencies() {
@@ -8157,6 +9258,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public Builder removeDependencies(int index) {
@@ -8170,6 +9275,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder getDependenciesBuilder(
@@ -8177,6 +9286,10 @@ public final class Lib {
         return getDependenciesFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder getDependenciesOrBuilder(
@@ -8187,6 +9300,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyStatusOrBuilder> 
@@ -8198,6 +9315,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder addDependenciesBuilder() {
@@ -8205,6 +9326,10 @@ public final class Lib {
             cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder addDependenciesBuilder(
@@ -8213,6 +9338,10 @@ public final class Lib {
             index, cc.arduino.cli.commands.Lib.LibraryDependencyStatus.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Dependencies of the library.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependencyStatus dependencies = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependencyStatus.Builder> 
@@ -8291,11 +9420,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The name of the library dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * The name of the library dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -8303,11 +9440,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The required version of the library dependency.
+     * </pre>
+     *
      * <code>string versionRequired = 2;</code>
      * @return The versionRequired.
      */
     java.lang.String getVersionRequired();
     /**
+     * <pre>
+     * The required version of the library dependency.
+     * </pre>
+     *
      * <code>string versionRequired = 2;</code>
      * @return The bytes for versionRequired.
      */
@@ -8315,11 +9460,19 @@ public final class Lib {
         getVersionRequiredBytes();
 
     /**
+     * <pre>
+     * Version of the library dependency currently installed.
+     * </pre>
+     *
      * <code>string versionInstalled = 3;</code>
      * @return The versionInstalled.
      */
     java.lang.String getVersionInstalled();
     /**
+     * <pre>
+     * Version of the library dependency currently installed.
+     * </pre>
+     *
      * <code>string versionInstalled = 3;</code>
      * @return The bytes for versionInstalled.
      */
@@ -8427,6 +9580,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * The name of the library dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -8443,6 +9600,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The name of the library dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -8463,6 +9624,10 @@ public final class Lib {
     public static final int VERSIONREQUIRED_FIELD_NUMBER = 2;
     private volatile java.lang.Object versionRequired_;
     /**
+     * <pre>
+     * The required version of the library dependency.
+     * </pre>
+     *
      * <code>string versionRequired = 2;</code>
      * @return The versionRequired.
      */
@@ -8479,6 +9644,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The required version of the library dependency.
+     * </pre>
+     *
      * <code>string versionRequired = 2;</code>
      * @return The bytes for versionRequired.
      */
@@ -8499,6 +9668,10 @@ public final class Lib {
     public static final int VERSIONINSTALLED_FIELD_NUMBER = 3;
     private volatile java.lang.Object versionInstalled_;
     /**
+     * <pre>
+     * Version of the library dependency currently installed.
+     * </pre>
+     *
      * <code>string versionInstalled = 3;</code>
      * @return The versionInstalled.
      */
@@ -8515,6 +9688,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Version of the library dependency currently installed.
+     * </pre>
+     *
      * <code>string versionInstalled = 3;</code>
      * @return The bytes for versionInstalled.
      */
@@ -8870,6 +10047,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * The name of the library dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -8886,6 +10067,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The name of the library dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -8903,6 +10088,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The name of the library dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -8918,6 +10107,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The name of the library dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -8928,6 +10121,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The name of the library dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -8946,6 +10143,10 @@ public final class Lib {
 
       private java.lang.Object versionRequired_ = "";
       /**
+       * <pre>
+       * The required version of the library dependency.
+       * </pre>
+       *
        * <code>string versionRequired = 2;</code>
        * @return The versionRequired.
        */
@@ -8962,6 +10163,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The required version of the library dependency.
+       * </pre>
+       *
        * <code>string versionRequired = 2;</code>
        * @return The bytes for versionRequired.
        */
@@ -8979,6 +10184,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The required version of the library dependency.
+       * </pre>
+       *
        * <code>string versionRequired = 2;</code>
        * @param value The versionRequired to set.
        * @return This builder for chaining.
@@ -8994,6 +10203,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The required version of the library dependency.
+       * </pre>
+       *
        * <code>string versionRequired = 2;</code>
        * @return This builder for chaining.
        */
@@ -9004,6 +10217,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The required version of the library dependency.
+       * </pre>
+       *
        * <code>string versionRequired = 2;</code>
        * @param value The bytes for versionRequired to set.
        * @return This builder for chaining.
@@ -9022,6 +10239,10 @@ public final class Lib {
 
       private java.lang.Object versionInstalled_ = "";
       /**
+       * <pre>
+       * Version of the library dependency currently installed.
+       * </pre>
+       *
        * <code>string versionInstalled = 3;</code>
        * @return The versionInstalled.
        */
@@ -9038,6 +10259,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Version of the library dependency currently installed.
+       * </pre>
+       *
        * <code>string versionInstalled = 3;</code>
        * @return The bytes for versionInstalled.
        */
@@ -9055,6 +10280,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Version of the library dependency currently installed.
+       * </pre>
+       *
        * <code>string versionInstalled = 3;</code>
        * @param value The versionInstalled to set.
        * @return This builder for chaining.
@@ -9070,6 +10299,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Version of the library dependency currently installed.
+       * </pre>
+       *
        * <code>string versionInstalled = 3;</code>
        * @return This builder for chaining.
        */
@@ -9080,6 +10313,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Version of the library dependency currently installed.
+       * </pre>
+       *
        * <code>string versionInstalled = 3;</code>
        * @param value The bytes for versionInstalled to set.
        * @return This builder for chaining.
@@ -9153,26 +10390,46 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * The search query.
+     * </pre>
+     *
      * <code>string query = 2;</code>
      * @return The query.
      */
     java.lang.String getQuery();
     /**
+     * <pre>
+     * The search query.
+     * </pre>
+     *
      * <code>string query = 2;</code>
      * @return The bytes for query.
      */
@@ -9279,6 +10536,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -9286,6 +10547,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -9293,6 +10558,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -9302,6 +10571,10 @@ public final class Lib {
     public static final int QUERY_FIELD_NUMBER = 2;
     private volatile java.lang.Object query_;
     /**
+     * <pre>
+     * The search query.
+     * </pre>
+     *
      * <code>string query = 2;</code>
      * @return The query.
      */
@@ -9318,6 +10591,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The search query.
+     * </pre>
+     *
      * <code>string query = 2;</code>
      * @return The bytes for query.
      */
@@ -9671,6 +10948,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -9678,6 +10959,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -9689,6 +10974,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -9705,6 +10994,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -9719,6 +11012,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -9737,6 +11034,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -9751,6 +11052,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -9759,6 +11064,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -9770,6 +11079,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -9788,6 +11101,10 @@ public final class Lib {
 
       private java.lang.Object query_ = "";
       /**
+       * <pre>
+       * The search query.
+       * </pre>
+       *
        * <code>string query = 2;</code>
        * @return The query.
        */
@@ -9804,6 +11121,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The search query.
+       * </pre>
+       *
        * <code>string query = 2;</code>
        * @return The bytes for query.
        */
@@ -9821,6 +11142,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The search query.
+       * </pre>
+       *
        * <code>string query = 2;</code>
        * @param value The query to set.
        * @return This builder for chaining.
@@ -9836,6 +11161,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The search query.
+       * </pre>
+       *
        * <code>string query = 2;</code>
        * @return This builder for chaining.
        */
@@ -9846,6 +11175,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The search query.
+       * </pre>
+       *
        * <code>string query = 2;</code>
        * @param value The bytes for query to set.
        * @return This builder for chaining.
@@ -9919,35 +11252,63 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Lib.SearchedLibrary> 
         getLibrariesList();
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     cc.arduino.cli.commands.Lib.SearchedLibrary getLibraries(int index);
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     int getLibrariesCount();
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder> 
         getLibrariesOrBuilderList();
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder getLibrariesOrBuilder(
         int index);
 
     /**
+     * <pre>
+     * Whether the search yielded results.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
      * @return The enum numeric value on the wire for status.
      */
     int getStatusValue();
     /**
+     * <pre>
+     * Whether the search yielded results.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
      * @return The status.
      */
@@ -10054,12 +11415,20 @@ public final class Lib {
     public static final int LIBRARIES_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Lib.SearchedLibrary> libraries_;
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Lib.SearchedLibrary> getLibrariesList() {
       return libraries_;
     }
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder> 
@@ -10067,18 +11436,30 @@ public final class Lib {
       return libraries_;
     }
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     public int getLibrariesCount() {
       return libraries_.size();
     }
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.SearchedLibrary getLibraries(int index) {
       return libraries_.get(index);
     }
     /**
+     * <pre>
+     * The results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder getLibrariesOrBuilder(
@@ -10089,6 +11470,10 @@ public final class Lib {
     public static final int STATUS_FIELD_NUMBER = 2;
     private int status_;
     /**
+     * <pre>
+     * Whether the search yielded results.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
      * @return The enum numeric value on the wire for status.
      */
@@ -10096,6 +11481,10 @@ public final class Lib {
       return status_;
     }
     /**
+     * <pre>
+     * Whether the search yielded results.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
      * @return The status.
      */
@@ -10476,6 +11865,10 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.SearchedLibrary, cc.arduino.cli.commands.Lib.SearchedLibrary.Builder, cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder> librariesBuilder_;
 
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.SearchedLibrary> getLibrariesList() {
@@ -10486,6 +11879,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public int getLibrariesCount() {
@@ -10496,6 +11893,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.SearchedLibrary getLibraries(int index) {
@@ -10506,6 +11907,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder setLibraries(
@@ -10523,6 +11928,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder setLibraries(
@@ -10537,6 +11946,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder addLibraries(cc.arduino.cli.commands.Lib.SearchedLibrary value) {
@@ -10553,6 +11966,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder addLibraries(
@@ -10570,6 +11987,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder addLibraries(
@@ -10584,6 +12005,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder addLibraries(
@@ -10598,6 +12023,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder addAllLibraries(
@@ -10613,6 +12042,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder clearLibraries() {
@@ -10626,6 +12059,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public Builder removeLibraries(int index) {
@@ -10639,6 +12076,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.SearchedLibrary.Builder getLibrariesBuilder(
@@ -10646,6 +12087,10 @@ public final class Lib {
         return getLibrariesFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder getLibrariesOrBuilder(
@@ -10656,6 +12101,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Lib.SearchedLibraryOrBuilder> 
@@ -10667,6 +12116,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.SearchedLibrary.Builder addLibrariesBuilder() {
@@ -10674,6 +12127,10 @@ public final class Lib {
             cc.arduino.cli.commands.Lib.SearchedLibrary.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.SearchedLibrary.Builder addLibrariesBuilder(
@@ -10682,6 +12139,10 @@ public final class Lib {
             index, cc.arduino.cli.commands.Lib.SearchedLibrary.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.SearchedLibrary libraries = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.SearchedLibrary.Builder> 
@@ -10705,6 +12166,10 @@ public final class Lib {
 
       private int status_ = 0;
       /**
+       * <pre>
+       * Whether the search yielded results.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
        * @return The enum numeric value on the wire for status.
        */
@@ -10712,6 +12177,10 @@ public final class Lib {
         return status_;
       }
       /**
+       * <pre>
+       * Whether the search yielded results.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
        * @param value The enum numeric value on the wire for status to set.
        * @return This builder for chaining.
@@ -10722,6 +12191,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Whether the search yielded results.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
        * @return The status.
        */
@@ -10731,6 +12204,10 @@ public final class Lib {
         return result == null ? cc.arduino.cli.commands.Lib.LibrarySearchStatus.UNRECOGNIZED : result;
       }
       /**
+       * <pre>
+       * Whether the search yielded results.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
        * @param value The status to set.
        * @return This builder for chaining.
@@ -10745,6 +12222,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Whether the search yielded results.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibrarySearchStatus status = 2;</code>
        * @return This builder for chaining.
        */
@@ -10812,11 +12293,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Library name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Library name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -10824,10 +12313,20 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
     int getReleasesCount();
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
     boolean containsReleases(
@@ -10839,11 +12338,21 @@ public final class Lib {
     java.util.Map<java.lang.String, cc.arduino.cli.commands.Lib.LibraryRelease>
     getReleases();
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
     java.util.Map<java.lang.String, cc.arduino.cli.commands.Lib.LibraryRelease>
     getReleasesMap();
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -10851,6 +12360,11 @@ public final class Lib {
         java.lang.String key,
         cc.arduino.cli.commands.Lib.LibraryRelease defaultValue);
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -10858,16 +12372,28 @@ public final class Lib {
         java.lang.String key);
 
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      * @return Whether the latest field is set.
      */
     boolean hasLatest();
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      * @return The latest.
      */
     cc.arduino.cli.commands.Lib.LibraryRelease getLatest();
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getLatestOrBuilder();
@@ -10998,6 +12524,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Library name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -11014,6 +12544,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Library name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -11058,6 +12592,11 @@ public final class Lib {
       return internalGetReleases().getMap().size();
     }
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -11074,6 +12613,11 @@ public final class Lib {
       return getReleasesMap();
     }
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -11081,6 +12625,11 @@ public final class Lib {
       return internalGetReleases().getMap();
     }
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -11093,6 +12642,11 @@ public final class Lib {
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
+     * <pre>
+     * The index data for the available versions of the library. The key of the
+     * map is the library version.
+     * </pre>
+     *
      * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
      */
 
@@ -11110,6 +12664,10 @@ public final class Lib {
     public static final int LATEST_FIELD_NUMBER = 3;
     private cc.arduino.cli.commands.Lib.LibraryRelease latest_;
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      * @return Whether the latest field is set.
      */
@@ -11117,6 +12675,10 @@ public final class Lib {
       return latest_ != null;
     }
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      * @return The latest.
      */
@@ -11124,6 +12686,10 @@ public final class Lib {
       return latest_ == null ? cc.arduino.cli.commands.Lib.LibraryRelease.getDefaultInstance() : latest_;
     }
     /**
+     * <pre>
+     * The index data for the latest version of the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getLatestOrBuilder() {
@@ -11515,6 +13081,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Library name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -11531,6 +13101,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Library name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -11548,6 +13122,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Library name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -11563,6 +13141,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Library name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -11573,6 +13155,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Library name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -11616,6 +13202,11 @@ public final class Lib {
         return internalGetReleases().getMap().size();
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11632,6 +13223,11 @@ public final class Lib {
         return getReleasesMap();
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11639,6 +13235,11 @@ public final class Lib {
         return internalGetReleases().getMap();
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11651,6 +13252,11 @@ public final class Lib {
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11671,6 +13277,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11690,6 +13301,11 @@ public final class Lib {
         return internalGetMutableReleases().getMutableMap();
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
       public Builder putReleases(
@@ -11702,6 +13318,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the available versions of the library. The key of the
+       * map is the library version.
+       * </pre>
+       *
        * <code>map&lt;string, .cc.arduino.cli.commands.LibraryRelease&gt; releases = 2;</code>
        */
 
@@ -11716,6 +13337,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Lib.LibraryRelease, cc.arduino.cli.commands.Lib.LibraryRelease.Builder, cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder> latestBuilder_;
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        * @return Whether the latest field is set.
        */
@@ -11723,6 +13348,10 @@ public final class Lib {
         return latestBuilder_ != null || latest_ != null;
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        * @return The latest.
        */
@@ -11734,6 +13363,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public Builder setLatest(cc.arduino.cli.commands.Lib.LibraryRelease value) {
@@ -11750,6 +13383,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public Builder setLatest(
@@ -11764,6 +13401,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public Builder mergeLatest(cc.arduino.cli.commands.Lib.LibraryRelease value) {
@@ -11782,6 +13423,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public Builder clearLatest() {
@@ -11796,6 +13441,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryRelease.Builder getLatestBuilder() {
@@ -11804,6 +13453,10 @@ public final class Lib {
         return getLatestFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getLatestOrBuilder() {
@@ -11815,6 +13468,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The index data for the latest version of the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease latest = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -11888,11 +13545,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 1;</code>
      * @return The author.
      */
     java.lang.String getAuthor();
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 1;</code>
      * @return The bytes for author.
      */
@@ -11900,11 +13565,19 @@ public final class Lib {
         getAuthorBytes();
 
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 2;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 2;</code>
      * @return The bytes for version.
      */
@@ -11912,11 +13585,19 @@ public final class Lib {
         getVersionBytes();
 
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The bytes for maintainer.
      */
@@ -11924,11 +13605,19 @@ public final class Lib {
         getMaintainerBytes();
 
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The sentence.
      */
     java.lang.String getSentence();
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The bytes for sentence.
      */
@@ -11936,11 +13625,19 @@ public final class Lib {
         getSentenceBytes();
 
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The paragraph.
      */
     java.lang.String getParagraph();
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The bytes for paragraph.
      */
@@ -11948,11 +13645,19 @@ public final class Lib {
         getParagraphBytes();
 
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The website.
      */
     java.lang.String getWebsite();
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The bytes for website.
      */
@@ -11960,11 +13665,19 @@ public final class Lib {
         getWebsiteBytes();
 
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The category.
      */
     java.lang.String getCategory();
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The bytes for category.
      */
@@ -11972,23 +13685,39 @@ public final class Lib {
         getCategoryBytes();
 
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return A list containing the architectures.
      */
     java.util.List<java.lang.String>
         getArchitecturesList();
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return The count of architectures.
      */
     int getArchitecturesCount();
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the element to return.
      * @return The architectures at the given index.
      */
     java.lang.String getArchitectures(int index);
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the architectures at the given index.
@@ -11997,23 +13726,47 @@ public final class Lib {
         getArchitecturesBytes(int index);
 
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return A list containing the types.
      */
     java.util.List<java.lang.String>
         getTypesList();
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return The count of types.
      */
     int getTypesCount();
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the element to return.
      * @return The types at the given index.
      */
     java.lang.String getTypes(int index);
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the types at the given index.
@@ -12022,26 +13775,46 @@ public final class Lib {
         getTypesBytes(int index);
 
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      * @return Whether the resources field is set.
      */
     boolean hasResources();
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      * @return The resources.
      */
     cc.arduino.cli.commands.Lib.DownloadResource getResources();
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      */
     cc.arduino.cli.commands.Lib.DownloadResourceOrBuilder getResourcesOrBuilder();
 
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 11;</code>
      * @return The license.
      */
     java.lang.String getLicense();
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 11;</code>
      * @return The bytes for license.
      */
@@ -12049,23 +13822,39 @@ public final class Lib {
         getLicenseBytes();
 
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @return A list containing the providesIncludes.
      */
     java.util.List<java.lang.String>
         getProvidesIncludesList();
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @return The count of providesIncludes.
      */
     int getProvidesIncludesCount();
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @param index The index of the element to return.
      * @return The providesIncludes at the given index.
      */
     java.lang.String getProvidesIncludes(int index);
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @param index The index of the value to return.
      * @return The bytes of the providesIncludes at the given index.
@@ -12074,24 +13863,49 @@ public final class Lib {
         getProvidesIncludesBytes(int index);
 
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     java.util.List<cc.arduino.cli.commands.Lib.LibraryDependency> 
         getDependenciesList();
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryDependency getDependencies(int index);
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     int getDependenciesCount();
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder> 
         getDependenciesOrBuilderList();
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder getDependenciesOrBuilder(
@@ -12299,6 +14113,10 @@ public final class Lib {
     public static final int AUTHOR_FIELD_NUMBER = 1;
     private volatile java.lang.Object author_;
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 1;</code>
      * @return The author.
      */
@@ -12315,6 +14133,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 1;</code>
      * @return The bytes for author.
      */
@@ -12335,6 +14157,10 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 2;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 2;</code>
      * @return The version.
      */
@@ -12351,6 +14177,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 2;</code>
      * @return The bytes for version.
      */
@@ -12371,6 +14201,10 @@ public final class Lib {
     public static final int MAINTAINER_FIELD_NUMBER = 3;
     private volatile java.lang.Object maintainer_;
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The maintainer.
      */
@@ -12387,6 +14221,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The bytes for maintainer.
      */
@@ -12407,6 +14245,10 @@ public final class Lib {
     public static final int SENTENCE_FIELD_NUMBER = 4;
     private volatile java.lang.Object sentence_;
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The sentence.
      */
@@ -12423,6 +14265,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The bytes for sentence.
      */
@@ -12443,6 +14289,10 @@ public final class Lib {
     public static final int PARAGRAPH_FIELD_NUMBER = 5;
     private volatile java.lang.Object paragraph_;
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The paragraph.
      */
@@ -12459,6 +14309,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The bytes for paragraph.
      */
@@ -12479,6 +14333,10 @@ public final class Lib {
     public static final int WEBSITE_FIELD_NUMBER = 6;
     private volatile java.lang.Object website_;
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The website.
      */
@@ -12495,6 +14353,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The bytes for website.
      */
@@ -12515,6 +14377,10 @@ public final class Lib {
     public static final int CATEGORY_FIELD_NUMBER = 7;
     private volatile java.lang.Object category_;
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The category.
      */
@@ -12531,6 +14397,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The bytes for category.
      */
@@ -12551,6 +14421,10 @@ public final class Lib {
     public static final int ARCHITECTURES_FIELD_NUMBER = 8;
     private com.google.protobuf.LazyStringList architectures_;
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return A list containing the architectures.
      */
@@ -12559,6 +14433,10 @@ public final class Lib {
       return architectures_;
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return The count of architectures.
      */
@@ -12566,6 +14444,10 @@ public final class Lib {
       return architectures_.size();
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the element to return.
      * @return The architectures at the given index.
@@ -12574,6 +14456,10 @@ public final class Lib {
       return architectures_.get(index);
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the architectures at the given index.
@@ -12586,6 +14472,12 @@ public final class Lib {
     public static final int TYPES_FIELD_NUMBER = 9;
     private com.google.protobuf.LazyStringList types_;
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return A list containing the types.
      */
@@ -12594,6 +14486,12 @@ public final class Lib {
       return types_;
     }
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return The count of types.
      */
@@ -12601,6 +14499,12 @@ public final class Lib {
       return types_.size();
     }
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the element to return.
      * @return The types at the given index.
@@ -12609,6 +14513,12 @@ public final class Lib {
       return types_.get(index);
     }
     /**
+     * <pre>
+     * The type categories of the library, as defined in the libraries index.
+     * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+     * `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the types at the given index.
@@ -12621,6 +14531,10 @@ public final class Lib {
     public static final int RESOURCES_FIELD_NUMBER = 10;
     private cc.arduino.cli.commands.Lib.DownloadResource resources_;
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      * @return Whether the resources field is set.
      */
@@ -12628,6 +14542,10 @@ public final class Lib {
       return resources_ != null;
     }
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      * @return The resources.
      */
@@ -12635,6 +14553,10 @@ public final class Lib {
       return resources_ == null ? cc.arduino.cli.commands.Lib.DownloadResource.getDefaultInstance() : resources_;
     }
     /**
+     * <pre>
+     * Information about the library archive file.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
      */
     public cc.arduino.cli.commands.Lib.DownloadResourceOrBuilder getResourcesOrBuilder() {
@@ -12644,6 +14566,10 @@ public final class Lib {
     public static final int LICENSE_FIELD_NUMBER = 11;
     private volatile java.lang.Object license_;
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 11;</code>
      * @return The license.
      */
@@ -12660,6 +14586,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 11;</code>
      * @return The bytes for license.
      */
@@ -12680,6 +14610,10 @@ public final class Lib {
     public static final int PROVIDES_INCLUDES_FIELD_NUMBER = 12;
     private com.google.protobuf.LazyStringList providesIncludes_;
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @return A list containing the providesIncludes.
      */
@@ -12688,6 +14622,10 @@ public final class Lib {
       return providesIncludes_;
     }
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @return The count of providesIncludes.
      */
@@ -12695,6 +14633,10 @@ public final class Lib {
       return providesIncludes_.size();
     }
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @param index The index of the element to return.
      * @return The providesIncludes at the given index.
@@ -12703,6 +14645,10 @@ public final class Lib {
       return providesIncludes_.get(index);
     }
     /**
+     * <pre>
+     * Value of the `includes` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string provides_includes = 12;</code>
      * @param index The index of the value to return.
      * @return The bytes of the providesIncludes at the given index.
@@ -12715,12 +14661,22 @@ public final class Lib {
     public static final int DEPENDENCIES_FIELD_NUMBER = 13;
     private java.util.List<cc.arduino.cli.commands.Lib.LibraryDependency> dependencies_;
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependency> getDependenciesList() {
       return dependencies_;
     }
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder> 
@@ -12728,18 +14684,33 @@ public final class Lib {
       return dependencies_;
     }
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     public int getDependenciesCount() {
       return dependencies_.size();
     }
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryDependency getDependencies(int index) {
       return dependencies_.get(index);
     }
     /**
+     * <pre>
+     * The names of the library's dependencies, as defined by the 'depends'
+     * field of library.properties.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder getDependenciesOrBuilder(
@@ -13359,6 +15330,10 @@ public final class Lib {
 
       private java.lang.Object author_ = "";
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 1;</code>
        * @return The author.
        */
@@ -13375,6 +15350,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 1;</code>
        * @return The bytes for author.
        */
@@ -13392,6 +15371,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 1;</code>
        * @param value The author to set.
        * @return This builder for chaining.
@@ -13407,6 +15390,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 1;</code>
        * @return This builder for chaining.
        */
@@ -13417,6 +15404,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 1;</code>
        * @param value The bytes for author to set.
        * @return This builder for chaining.
@@ -13435,6 +15426,10 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 2;</code>
        * @return The version.
        */
@@ -13451,6 +15446,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 2;</code>
        * @return The bytes for version.
        */
@@ -13468,6 +15467,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 2;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -13483,6 +15486,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 2;</code>
        * @return This builder for chaining.
        */
@@ -13493,6 +15500,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 2;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -13511,6 +15522,10 @@ public final class Lib {
 
       private java.lang.Object maintainer_ = "";
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return The maintainer.
        */
@@ -13527,6 +15542,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return The bytes for maintainer.
        */
@@ -13544,6 +15563,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @param value The maintainer to set.
        * @return This builder for chaining.
@@ -13559,6 +15582,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return This builder for chaining.
        */
@@ -13569,6 +15596,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @param value The bytes for maintainer to set.
        * @return This builder for chaining.
@@ -13587,6 +15618,10 @@ public final class Lib {
 
       private java.lang.Object sentence_ = "";
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return The sentence.
        */
@@ -13603,6 +15638,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return The bytes for sentence.
        */
@@ -13620,6 +15659,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @param value The sentence to set.
        * @return This builder for chaining.
@@ -13635,6 +15678,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return This builder for chaining.
        */
@@ -13645,6 +15692,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @param value The bytes for sentence to set.
        * @return This builder for chaining.
@@ -13663,6 +15714,10 @@ public final class Lib {
 
       private java.lang.Object paragraph_ = "";
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return The paragraph.
        */
@@ -13679,6 +15734,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return The bytes for paragraph.
        */
@@ -13696,6 +15755,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @param value The paragraph to set.
        * @return This builder for chaining.
@@ -13711,6 +15774,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return This builder for chaining.
        */
@@ -13721,6 +15788,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @param value The bytes for paragraph to set.
        * @return This builder for chaining.
@@ -13739,6 +15810,10 @@ public final class Lib {
 
       private java.lang.Object website_ = "";
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return The website.
        */
@@ -13755,6 +15830,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return The bytes for website.
        */
@@ -13772,6 +15851,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @param value The website to set.
        * @return This builder for chaining.
@@ -13787,6 +15870,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return This builder for chaining.
        */
@@ -13797,6 +15884,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @param value The bytes for website to set.
        * @return This builder for chaining.
@@ -13815,6 +15906,10 @@ public final class Lib {
 
       private java.lang.Object category_ = "";
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return The category.
        */
@@ -13831,6 +15926,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return The bytes for category.
        */
@@ -13848,6 +15947,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @param value The category to set.
        * @return This builder for chaining.
@@ -13863,6 +15966,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return This builder for chaining.
        */
@@ -13873,6 +15980,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @param value The bytes for category to set.
        * @return This builder for chaining.
@@ -13897,6 +16008,10 @@ public final class Lib {
          }
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return A list containing the architectures.
        */
@@ -13905,6 +16020,10 @@ public final class Lib {
         return architectures_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return The count of architectures.
        */
@@ -13912,6 +16031,10 @@ public final class Lib {
         return architectures_.size();
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index of the element to return.
        * @return The architectures at the given index.
@@ -13920,6 +16043,10 @@ public final class Lib {
         return architectures_.get(index);
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index of the value to return.
        * @return The bytes of the architectures at the given index.
@@ -13929,6 +16056,10 @@ public final class Lib {
         return architectures_.getByteString(index);
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index to set the value at.
        * @param value The architectures to set.
@@ -13945,6 +16076,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param value The architectures to add.
        * @return This builder for chaining.
@@ -13960,6 +16095,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param values The architectures to add.
        * @return This builder for chaining.
@@ -13973,6 +16112,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return This builder for chaining.
        */
@@ -13983,6 +16126,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param value The bytes of the architectures to add.
        * @return This builder for chaining.
@@ -14007,6 +16154,12 @@ public final class Lib {
          }
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return A list containing the types.
        */
@@ -14015,6 +16168,12 @@ public final class Lib {
         return types_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return The count of types.
        */
@@ -14022,6 +16181,12 @@ public final class Lib {
         return types_.size();
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index of the element to return.
        * @return The types at the given index.
@@ -14030,6 +16195,12 @@ public final class Lib {
         return types_.get(index);
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index of the value to return.
        * @return The bytes of the types at the given index.
@@ -14039,6 +16210,12 @@ public final class Lib {
         return types_.getByteString(index);
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index to set the value at.
        * @param value The types to set.
@@ -14055,6 +16232,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param value The types to add.
        * @return This builder for chaining.
@@ -14070,6 +16253,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param values The types to add.
        * @return This builder for chaining.
@@ -14083,6 +16272,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return This builder for chaining.
        */
@@ -14093,6 +16288,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library, as defined in the libraries index.
+       * Possible values: `Arduino`, `Partner`, `Recommended`, `Contributed`,
+       * `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param value The bytes of the types to add.
        * @return This builder for chaining.
@@ -14113,6 +16314,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Lib.DownloadResource, cc.arduino.cli.commands.Lib.DownloadResource.Builder, cc.arduino.cli.commands.Lib.DownloadResourceOrBuilder> resourcesBuilder_;
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        * @return Whether the resources field is set.
        */
@@ -14120,6 +16325,10 @@ public final class Lib {
         return resourcesBuilder_ != null || resources_ != null;
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        * @return The resources.
        */
@@ -14131,6 +16340,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public Builder setResources(cc.arduino.cli.commands.Lib.DownloadResource value) {
@@ -14147,6 +16360,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public Builder setResources(
@@ -14161,6 +16378,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public Builder mergeResources(cc.arduino.cli.commands.Lib.DownloadResource value) {
@@ -14179,6 +16400,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public Builder clearResources() {
@@ -14193,6 +16418,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public cc.arduino.cli.commands.Lib.DownloadResource.Builder getResourcesBuilder() {
@@ -14201,6 +16430,10 @@ public final class Lib {
         return getResourcesFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       public cc.arduino.cli.commands.Lib.DownloadResourceOrBuilder getResourcesOrBuilder() {
@@ -14212,6 +16445,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Information about the library archive file.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadResource resources = 10;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -14230,6 +16467,10 @@ public final class Lib {
 
       private java.lang.Object license_ = "";
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 11;</code>
        * @return The license.
        */
@@ -14246,6 +16487,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 11;</code>
        * @return The bytes for license.
        */
@@ -14263,6 +16508,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 11;</code>
        * @param value The license to set.
        * @return This builder for chaining.
@@ -14278,6 +16527,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 11;</code>
        * @return This builder for chaining.
        */
@@ -14288,6 +16541,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 11;</code>
        * @param value The bytes for license to set.
        * @return This builder for chaining.
@@ -14312,6 +16569,10 @@ public final class Lib {
          }
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @return A list containing the providesIncludes.
        */
@@ -14320,6 +16581,10 @@ public final class Lib {
         return providesIncludes_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @return The count of providesIncludes.
        */
@@ -14327,6 +16592,10 @@ public final class Lib {
         return providesIncludes_.size();
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param index The index of the element to return.
        * @return The providesIncludes at the given index.
@@ -14335,6 +16604,10 @@ public final class Lib {
         return providesIncludes_.get(index);
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param index The index of the value to return.
        * @return The bytes of the providesIncludes at the given index.
@@ -14344,6 +16617,10 @@ public final class Lib {
         return providesIncludes_.getByteString(index);
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param index The index to set the value at.
        * @param value The providesIncludes to set.
@@ -14360,6 +16637,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param value The providesIncludes to add.
        * @return This builder for chaining.
@@ -14375,6 +16656,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param values The providesIncludes to add.
        * @return This builder for chaining.
@@ -14388,6 +16673,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @return This builder for chaining.
        */
@@ -14398,6 +16687,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `includes` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string provides_includes = 12;</code>
        * @param value The bytes of the providesIncludes to add.
        * @return This builder for chaining.
@@ -14427,6 +16720,11 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.LibraryDependency, cc.arduino.cli.commands.Lib.LibraryDependency.Builder, cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder> dependenciesBuilder_;
 
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependency> getDependenciesList() {
@@ -14437,6 +16735,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public int getDependenciesCount() {
@@ -14447,6 +16750,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependency getDependencies(int index) {
@@ -14457,6 +16765,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder setDependencies(
@@ -14474,6 +16787,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder setDependencies(
@@ -14488,6 +16806,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder addDependencies(cc.arduino.cli.commands.Lib.LibraryDependency value) {
@@ -14504,6 +16827,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder addDependencies(
@@ -14521,6 +16849,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder addDependencies(
@@ -14535,6 +16868,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder addDependencies(
@@ -14549,6 +16887,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder addAllDependencies(
@@ -14564,6 +16907,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder clearDependencies() {
@@ -14577,6 +16925,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public Builder removeDependencies(int index) {
@@ -14590,6 +16943,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependency.Builder getDependenciesBuilder(
@@ -14597,6 +16955,11 @@ public final class Lib {
         return getDependenciesFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder getDependenciesOrBuilder(
@@ -14607,6 +16970,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Lib.LibraryDependencyOrBuilder> 
@@ -14618,6 +16986,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependency.Builder addDependenciesBuilder() {
@@ -14625,6 +16998,11 @@ public final class Lib {
             cc.arduino.cli.commands.Lib.LibraryDependency.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryDependency.Builder addDependenciesBuilder(
@@ -14633,6 +17011,11 @@ public final class Lib {
             index, cc.arduino.cli.commands.Lib.LibraryDependency.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The names of the library's dependencies, as defined by the 'depends'
+       * field of library.properties.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.LibraryDependency dependencies = 13;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.LibraryDependency.Builder> 
@@ -14711,11 +17094,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Library name of the dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Library name of the dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -14723,11 +17114,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * Version constraint of the dependency.
+     * </pre>
+     *
      * <code>string version_constraint = 2;</code>
      * @return The versionConstraint.
      */
     java.lang.String getVersionConstraint();
     /**
+     * <pre>
+     * Version constraint of the dependency.
+     * </pre>
+     *
      * <code>string version_constraint = 2;</code>
      * @return The bytes for versionConstraint.
      */
@@ -14828,6 +17227,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Library name of the dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -14844,6 +17247,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Library name of the dependency.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -14864,6 +17271,10 @@ public final class Lib {
     public static final int VERSION_CONSTRAINT_FIELD_NUMBER = 2;
     private volatile java.lang.Object versionConstraint_;
     /**
+     * <pre>
+     * Version constraint of the dependency.
+     * </pre>
+     *
      * <code>string version_constraint = 2;</code>
      * @return The versionConstraint.
      */
@@ -14880,6 +17291,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Version constraint of the dependency.
+     * </pre>
+     *
      * <code>string version_constraint = 2;</code>
      * @return The bytes for versionConstraint.
      */
@@ -15218,6 +17633,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Library name of the dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -15234,6 +17653,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Library name of the dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -15251,6 +17674,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Library name of the dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -15266,6 +17693,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Library name of the dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -15276,6 +17707,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Library name of the dependency.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -15294,6 +17729,10 @@ public final class Lib {
 
       private java.lang.Object versionConstraint_ = "";
       /**
+       * <pre>
+       * Version constraint of the dependency.
+       * </pre>
+       *
        * <code>string version_constraint = 2;</code>
        * @return The versionConstraint.
        */
@@ -15310,6 +17749,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Version constraint of the dependency.
+       * </pre>
+       *
        * <code>string version_constraint = 2;</code>
        * @return The bytes for versionConstraint.
        */
@@ -15327,6 +17770,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Version constraint of the dependency.
+       * </pre>
+       *
        * <code>string version_constraint = 2;</code>
        * @param value The versionConstraint to set.
        * @return This builder for chaining.
@@ -15342,6 +17789,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Version constraint of the dependency.
+       * </pre>
+       *
        * <code>string version_constraint = 2;</code>
        * @return This builder for chaining.
        */
@@ -15352,6 +17803,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Version constraint of the dependency.
+       * </pre>
+       *
        * <code>string version_constraint = 2;</code>
        * @param value The bytes for versionConstraint to set.
        * @return This builder for chaining.
@@ -15425,11 +17880,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Download URL of the library archive.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The url.
      */
     java.lang.String getUrl();
     /**
+     * <pre>
+     * Download URL of the library archive.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The bytes for url.
      */
@@ -15437,11 +17900,19 @@ public final class Lib {
         getUrlBytes();
 
     /**
+     * <pre>
+     * Filename of the library archive.
+     * </pre>
+     *
      * <code>string archivefilename = 2;</code>
      * @return The archivefilename.
      */
     java.lang.String getArchivefilename();
     /**
+     * <pre>
+     * Filename of the library archive.
+     * </pre>
+     *
      * <code>string archivefilename = 2;</code>
      * @return The bytes for archivefilename.
      */
@@ -15449,11 +17920,19 @@ public final class Lib {
         getArchivefilenameBytes();
 
     /**
+     * <pre>
+     * Checksum of the library archive.
+     * </pre>
+     *
      * <code>string checksum = 3;</code>
      * @return The checksum.
      */
     java.lang.String getChecksum();
     /**
+     * <pre>
+     * Checksum of the library archive.
+     * </pre>
+     *
      * <code>string checksum = 3;</code>
      * @return The bytes for checksum.
      */
@@ -15461,17 +17940,31 @@ public final class Lib {
         getChecksumBytes();
 
     /**
+     * <pre>
+     * File size of the library archive.
+     * </pre>
+     *
      * <code>int64 size = 4;</code>
      * @return The size.
      */
     long getSize();
 
     /**
+     * <pre>
+     * The directory under the staging subdirectory of the data directory the
+     * library archive file will be downloaded to.
+     * </pre>
+     *
      * <code>string cachepath = 5;</code>
      * @return The cachepath.
      */
     java.lang.String getCachepath();
     /**
+     * <pre>
+     * The directory under the staging subdirectory of the data directory the
+     * library archive file will be downloaded to.
+     * </pre>
+     *
      * <code>string cachepath = 5;</code>
      * @return The bytes for cachepath.
      */
@@ -15591,6 +18084,10 @@ public final class Lib {
     public static final int URL_FIELD_NUMBER = 1;
     private volatile java.lang.Object url_;
     /**
+     * <pre>
+     * Download URL of the library archive.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The url.
      */
@@ -15607,6 +18104,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Download URL of the library archive.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The bytes for url.
      */
@@ -15627,6 +18128,10 @@ public final class Lib {
     public static final int ARCHIVEFILENAME_FIELD_NUMBER = 2;
     private volatile java.lang.Object archivefilename_;
     /**
+     * <pre>
+     * Filename of the library archive.
+     * </pre>
+     *
      * <code>string archivefilename = 2;</code>
      * @return The archivefilename.
      */
@@ -15643,6 +18148,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Filename of the library archive.
+     * </pre>
+     *
      * <code>string archivefilename = 2;</code>
      * @return The bytes for archivefilename.
      */
@@ -15663,6 +18172,10 @@ public final class Lib {
     public static final int CHECKSUM_FIELD_NUMBER = 3;
     private volatile java.lang.Object checksum_;
     /**
+     * <pre>
+     * Checksum of the library archive.
+     * </pre>
+     *
      * <code>string checksum = 3;</code>
      * @return The checksum.
      */
@@ -15679,6 +18192,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Checksum of the library archive.
+     * </pre>
+     *
      * <code>string checksum = 3;</code>
      * @return The bytes for checksum.
      */
@@ -15699,6 +18216,10 @@ public final class Lib {
     public static final int SIZE_FIELD_NUMBER = 4;
     private long size_;
     /**
+     * <pre>
+     * File size of the library archive.
+     * </pre>
+     *
      * <code>int64 size = 4;</code>
      * @return The size.
      */
@@ -15709,6 +18230,11 @@ public final class Lib {
     public static final int CACHEPATH_FIELD_NUMBER = 5;
     private volatile java.lang.Object cachepath_;
     /**
+     * <pre>
+     * The directory under the staging subdirectory of the data directory the
+     * library archive file will be downloaded to.
+     * </pre>
+     *
      * <code>string cachepath = 5;</code>
      * @return The cachepath.
      */
@@ -15725,6 +18251,11 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The directory under the staging subdirectory of the data directory the
+     * library archive file will be downloaded to.
+     * </pre>
+     *
      * <code>string cachepath = 5;</code>
      * @return The bytes for cachepath.
      */
@@ -16115,6 +18646,10 @@ public final class Lib {
 
       private java.lang.Object url_ = "";
       /**
+       * <pre>
+       * Download URL of the library archive.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return The url.
        */
@@ -16131,6 +18666,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Download URL of the library archive.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return The bytes for url.
        */
@@ -16148,6 +18687,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Download URL of the library archive.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @param value The url to set.
        * @return This builder for chaining.
@@ -16163,6 +18706,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Download URL of the library archive.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return This builder for chaining.
        */
@@ -16173,6 +18720,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Download URL of the library archive.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @param value The bytes for url to set.
        * @return This builder for chaining.
@@ -16191,6 +18742,10 @@ public final class Lib {
 
       private java.lang.Object archivefilename_ = "";
       /**
+       * <pre>
+       * Filename of the library archive.
+       * </pre>
+       *
        * <code>string archivefilename = 2;</code>
        * @return The archivefilename.
        */
@@ -16207,6 +18762,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Filename of the library archive.
+       * </pre>
+       *
        * <code>string archivefilename = 2;</code>
        * @return The bytes for archivefilename.
        */
@@ -16224,6 +18783,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Filename of the library archive.
+       * </pre>
+       *
        * <code>string archivefilename = 2;</code>
        * @param value The archivefilename to set.
        * @return This builder for chaining.
@@ -16239,6 +18802,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Filename of the library archive.
+       * </pre>
+       *
        * <code>string archivefilename = 2;</code>
        * @return This builder for chaining.
        */
@@ -16249,6 +18816,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Filename of the library archive.
+       * </pre>
+       *
        * <code>string archivefilename = 2;</code>
        * @param value The bytes for archivefilename to set.
        * @return This builder for chaining.
@@ -16267,6 +18838,10 @@ public final class Lib {
 
       private java.lang.Object checksum_ = "";
       /**
+       * <pre>
+       * Checksum of the library archive.
+       * </pre>
+       *
        * <code>string checksum = 3;</code>
        * @return The checksum.
        */
@@ -16283,6 +18858,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Checksum of the library archive.
+       * </pre>
+       *
        * <code>string checksum = 3;</code>
        * @return The bytes for checksum.
        */
@@ -16300,6 +18879,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Checksum of the library archive.
+       * </pre>
+       *
        * <code>string checksum = 3;</code>
        * @param value The checksum to set.
        * @return This builder for chaining.
@@ -16315,6 +18898,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Checksum of the library archive.
+       * </pre>
+       *
        * <code>string checksum = 3;</code>
        * @return This builder for chaining.
        */
@@ -16325,6 +18912,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Checksum of the library archive.
+       * </pre>
+       *
        * <code>string checksum = 3;</code>
        * @param value The bytes for checksum to set.
        * @return This builder for chaining.
@@ -16343,6 +18934,10 @@ public final class Lib {
 
       private long size_ ;
       /**
+       * <pre>
+       * File size of the library archive.
+       * </pre>
+       *
        * <code>int64 size = 4;</code>
        * @return The size.
        */
@@ -16350,6 +18945,10 @@ public final class Lib {
         return size_;
       }
       /**
+       * <pre>
+       * File size of the library archive.
+       * </pre>
+       *
        * <code>int64 size = 4;</code>
        * @param value The size to set.
        * @return This builder for chaining.
@@ -16361,6 +18960,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * File size of the library archive.
+       * </pre>
+       *
        * <code>int64 size = 4;</code>
        * @return This builder for chaining.
        */
@@ -16373,6 +18976,11 @@ public final class Lib {
 
       private java.lang.Object cachepath_ = "";
       /**
+       * <pre>
+       * The directory under the staging subdirectory of the data directory the
+       * library archive file will be downloaded to.
+       * </pre>
+       *
        * <code>string cachepath = 5;</code>
        * @return The cachepath.
        */
@@ -16389,6 +18997,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The directory under the staging subdirectory of the data directory the
+       * library archive file will be downloaded to.
+       * </pre>
+       *
        * <code>string cachepath = 5;</code>
        * @return The bytes for cachepath.
        */
@@ -16406,6 +19019,11 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The directory under the staging subdirectory of the data directory the
+       * library archive file will be downloaded to.
+       * </pre>
+       *
        * <code>string cachepath = 5;</code>
        * @param value The cachepath to set.
        * @return This builder for chaining.
@@ -16421,6 +19039,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The directory under the staging subdirectory of the data directory the
+       * library archive file will be downloaded to.
+       * </pre>
+       *
        * <code>string cachepath = 5;</code>
        * @return This builder for chaining.
        */
@@ -16431,6 +19054,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The directory under the staging subdirectory of the data directory the
+       * library archive file will be downloaded to.
+       * </pre>
+       *
        * <code>string cachepath = 5;</code>
        * @param value The bytes for cachepath to set.
        * @return This builder for chaining.
@@ -16504,27 +19132,49 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Whether to include built-in libraries (from platforms and the Arduino
+     * IDE) in the listing.
+     * </pre>
+     *
      * <code>bool all = 2;</code>
      * @return The all.
      */
     boolean getAll();
 
     /**
+     * <pre>
+     * Whether to list only libraries for which there is a newer version than
+     * the installed version available in the libraries index.
+     * </pre>
+     *
      * <code>bool updatable = 3;</code>
      * @return The updatable.
      */
@@ -16633,6 +19283,10 @@ public final class Lib {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -16640,6 +19294,10 @@ public final class Lib {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -16647,6 +19305,10 @@ public final class Lib {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -16656,6 +19318,11 @@ public final class Lib {
     public static final int ALL_FIELD_NUMBER = 2;
     private boolean all_;
     /**
+     * <pre>
+     * Whether to include built-in libraries (from platforms and the Arduino
+     * IDE) in the listing.
+     * </pre>
+     *
      * <code>bool all = 2;</code>
      * @return The all.
      */
@@ -16666,6 +19333,11 @@ public final class Lib {
     public static final int UPDATABLE_FIELD_NUMBER = 3;
     private boolean updatable_;
     /**
+     * <pre>
+     * Whether to list only libraries for which there is a newer version than
+     * the installed version available in the libraries index.
+     * </pre>
+     *
      * <code>bool updatable = 3;</code>
      * @return The updatable.
      */
@@ -17028,6 +19700,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -17035,6 +19711,10 @@ public final class Lib {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -17046,6 +19726,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -17062,6 +19746,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -17076,6 +19764,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -17094,6 +19786,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -17108,6 +19804,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -17116,6 +19816,10 @@ public final class Lib {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -17127,6 +19831,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -17145,6 +19853,11 @@ public final class Lib {
 
       private boolean all_ ;
       /**
+       * <pre>
+       * Whether to include built-in libraries (from platforms and the Arduino
+       * IDE) in the listing.
+       * </pre>
+       *
        * <code>bool all = 2;</code>
        * @return The all.
        */
@@ -17152,6 +19865,11 @@ public final class Lib {
         return all_;
       }
       /**
+       * <pre>
+       * Whether to include built-in libraries (from platforms and the Arduino
+       * IDE) in the listing.
+       * </pre>
+       *
        * <code>bool all = 2;</code>
        * @param value The all to set.
        * @return This builder for chaining.
@@ -17163,6 +19881,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Whether to include built-in libraries (from platforms and the Arduino
+       * IDE) in the listing.
+       * </pre>
+       *
        * <code>bool all = 2;</code>
        * @return This builder for chaining.
        */
@@ -17175,6 +19898,11 @@ public final class Lib {
 
       private boolean updatable_ ;
       /**
+       * <pre>
+       * Whether to list only libraries for which there is a newer version than
+       * the installed version available in the libraries index.
+       * </pre>
+       *
        * <code>bool updatable = 3;</code>
        * @return The updatable.
        */
@@ -17182,6 +19910,11 @@ public final class Lib {
         return updatable_;
       }
       /**
+       * <pre>
+       * Whether to list only libraries for which there is a newer version than
+       * the installed version available in the libraries index.
+       * </pre>
+       *
        * <code>bool updatable = 3;</code>
        * @param value The updatable to set.
        * @return This builder for chaining.
@@ -17193,6 +19926,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Whether to list only libraries for which there is a newer version than
+       * the installed version available in the libraries index.
+       * </pre>
+       *
        * <code>bool updatable = 3;</code>
        * @return This builder for chaining.
        */
@@ -17260,24 +19998,44 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Lib.InstalledLibrary> 
         getInstalledLibraryList();
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     cc.arduino.cli.commands.Lib.InstalledLibrary getInstalledLibrary(int index);
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     int getInstalledLibraryCount();
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder> 
         getInstalledLibraryOrBuilderList();
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder getInstalledLibraryOrBuilder(
@@ -17377,12 +20135,20 @@ public final class Lib {
     public static final int INSTALLED_LIBRARY_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Lib.InstalledLibrary> installedLibrary_;
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Lib.InstalledLibrary> getInstalledLibraryList() {
       return installedLibrary_;
     }
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder> 
@@ -17390,18 +20156,30 @@ public final class Lib {
       return installedLibrary_;
     }
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     public int getInstalledLibraryCount() {
       return installedLibrary_.size();
     }
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.InstalledLibrary getInstalledLibrary(int index) {
       return installedLibrary_.get(index);
     }
     /**
+     * <pre>
+     * List of installed libraries.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder getInstalledLibraryOrBuilder(
@@ -17764,6 +20542,10 @@ public final class Lib {
           cc.arduino.cli.commands.Lib.InstalledLibrary, cc.arduino.cli.commands.Lib.InstalledLibrary.Builder, cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder> installedLibraryBuilder_;
 
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.InstalledLibrary> getInstalledLibraryList() {
@@ -17774,6 +20556,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public int getInstalledLibraryCount() {
@@ -17784,6 +20570,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.InstalledLibrary getInstalledLibrary(int index) {
@@ -17794,6 +20584,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder setInstalledLibrary(
@@ -17811,6 +20605,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder setInstalledLibrary(
@@ -17825,6 +20623,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder addInstalledLibrary(cc.arduino.cli.commands.Lib.InstalledLibrary value) {
@@ -17841,6 +20643,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder addInstalledLibrary(
@@ -17858,6 +20664,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder addInstalledLibrary(
@@ -17872,6 +20682,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder addInstalledLibrary(
@@ -17886,6 +20700,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder addAllInstalledLibrary(
@@ -17901,6 +20719,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder clearInstalledLibrary() {
@@ -17914,6 +20736,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public Builder removeInstalledLibrary(int index) {
@@ -17927,6 +20753,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.InstalledLibrary.Builder getInstalledLibraryBuilder(
@@ -17934,6 +20764,10 @@ public final class Lib {
         return getInstalledLibraryFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder getInstalledLibraryOrBuilder(
@@ -17944,6 +20778,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Lib.InstalledLibraryOrBuilder> 
@@ -17955,6 +20793,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.InstalledLibrary.Builder addInstalledLibraryBuilder() {
@@ -17962,6 +20804,10 @@ public final class Lib {
             cc.arduino.cli.commands.Lib.InstalledLibrary.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.InstalledLibrary.Builder addInstalledLibraryBuilder(
@@ -17970,6 +20816,10 @@ public final class Lib {
             index, cc.arduino.cli.commands.Lib.InstalledLibrary.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of installed libraries.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.InstalledLibrary installed_library = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Lib.InstalledLibrary.Builder> 
@@ -18048,31 +20898,61 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      * @return Whether the library field is set.
      */
     boolean hasLibrary();
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      * @return The library.
      */
     cc.arduino.cli.commands.Lib.Library getLibrary();
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryOrBuilder getLibraryOrBuilder();
 
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      * @return Whether the release field is set.
      */
     boolean hasRelease();
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      * @return The release.
      */
     cc.arduino.cli.commands.Lib.LibraryRelease getRelease();
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      */
     cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getReleaseOrBuilder();
@@ -18183,6 +21063,10 @@ public final class Lib {
     public static final int LIBRARY_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Lib.Library library_;
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      * @return Whether the library field is set.
      */
@@ -18190,6 +21074,10 @@ public final class Lib {
       return library_ != null;
     }
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      * @return The library.
      */
@@ -18197,6 +21085,10 @@ public final class Lib {
       return library_ == null ? cc.arduino.cli.commands.Lib.Library.getDefaultInstance() : library_;
     }
     /**
+     * <pre>
+     * Information about the library.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Library library = 1;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryOrBuilder getLibraryOrBuilder() {
@@ -18206,6 +21098,12 @@ public final class Lib {
     public static final int RELEASE_FIELD_NUMBER = 2;
     private cc.arduino.cli.commands.Lib.LibraryRelease release_;
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      * @return Whether the release field is set.
      */
@@ -18213,6 +21111,12 @@ public final class Lib {
       return release_ != null;
     }
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      * @return The release.
      */
@@ -18220,6 +21124,12 @@ public final class Lib {
       return release_ == null ? cc.arduino.cli.commands.Lib.LibraryRelease.getDefaultInstance() : release_;
     }
     /**
+     * <pre>
+     * When the `updatable` field of the `LibraryList` request is set to `true`,
+     * this will contain information on the latest version of the library in the
+     * libraries index.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
      */
     public cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getReleaseOrBuilder() {
@@ -18575,6 +21485,10 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Lib.Library, cc.arduino.cli.commands.Lib.Library.Builder, cc.arduino.cli.commands.Lib.LibraryOrBuilder> libraryBuilder_;
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        * @return Whether the library field is set.
        */
@@ -18582,6 +21496,10 @@ public final class Lib {
         return libraryBuilder_ != null || library_ != null;
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        * @return The library.
        */
@@ -18593,6 +21511,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public Builder setLibrary(cc.arduino.cli.commands.Lib.Library value) {
@@ -18609,6 +21531,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public Builder setLibrary(
@@ -18623,6 +21549,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public Builder mergeLibrary(cc.arduino.cli.commands.Lib.Library value) {
@@ -18641,6 +21571,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public Builder clearLibrary() {
@@ -18655,6 +21589,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.Library.Builder getLibraryBuilder() {
@@ -18663,6 +21601,10 @@ public final class Lib {
         return getLibraryFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryOrBuilder getLibraryOrBuilder() {
@@ -18674,6 +21616,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Information about the library.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Library library = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -18694,6 +21640,12 @@ public final class Lib {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Lib.LibraryRelease, cc.arduino.cli.commands.Lib.LibraryRelease.Builder, cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder> releaseBuilder_;
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        * @return Whether the release field is set.
        */
@@ -18701,6 +21653,12 @@ public final class Lib {
         return releaseBuilder_ != null || release_ != null;
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        * @return The release.
        */
@@ -18712,6 +21670,12 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public Builder setRelease(cc.arduino.cli.commands.Lib.LibraryRelease value) {
@@ -18728,6 +21692,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public Builder setRelease(
@@ -18742,6 +21712,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public Builder mergeRelease(cc.arduino.cli.commands.Lib.LibraryRelease value) {
@@ -18760,6 +21736,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public Builder clearRelease() {
@@ -18774,6 +21756,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryRelease.Builder getReleaseBuilder() {
@@ -18782,6 +21770,12 @@ public final class Lib {
         return getReleaseFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       public cc.arduino.cli.commands.Lib.LibraryReleaseOrBuilder getReleaseOrBuilder() {
@@ -18793,6 +21787,12 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * When the `updatable` field of the `LibraryList` request is set to `true`,
+       * this will contain information on the latest version of the library in the
+       * libraries index.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryRelease release = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -18866,11 +21866,19 @@ public final class Lib {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The library's directory name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * The library's directory name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -18878,11 +21886,19 @@ public final class Lib {
         getNameBytes();
 
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 2;</code>
      * @return The author.
      */
     java.lang.String getAuthor();
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 2;</code>
      * @return The bytes for author.
      */
@@ -18890,11 +21906,19 @@ public final class Lib {
         getAuthorBytes();
 
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The bytes for maintainer.
      */
@@ -18902,11 +21926,19 @@ public final class Lib {
         getMaintainerBytes();
 
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The sentence.
      */
     java.lang.String getSentence();
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The bytes for sentence.
      */
@@ -18914,11 +21946,19 @@ public final class Lib {
         getSentenceBytes();
 
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The paragraph.
      */
     java.lang.String getParagraph();
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The bytes for paragraph.
      */
@@ -18926,11 +21966,19 @@ public final class Lib {
         getParagraphBytes();
 
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The website.
      */
     java.lang.String getWebsite();
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The bytes for website.
      */
@@ -18938,11 +21986,19 @@ public final class Lib {
         getWebsiteBytes();
 
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The category.
      */
     java.lang.String getCategory();
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The bytes for category.
      */
@@ -18950,23 +22006,39 @@ public final class Lib {
         getCategoryBytes();
 
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return A list containing the architectures.
      */
     java.util.List<java.lang.String>
         getArchitecturesList();
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return The count of architectures.
      */
     int getArchitecturesCount();
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the element to return.
      * @return The architectures at the given index.
      */
     java.lang.String getArchitectures(int index);
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the architectures at the given index.
@@ -18975,23 +22047,43 @@ public final class Lib {
         getArchitecturesBytes(int index);
 
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return A list containing the types.
      */
     java.util.List<java.lang.String>
         getTypesList();
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return The count of types.
      */
     int getTypesCount();
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the element to return.
      * @return The types at the given index.
      */
     java.lang.String getTypes(int index);
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the types at the given index.
@@ -19000,11 +22092,19 @@ public final class Lib {
         getTypesBytes(int index);
 
     /**
+     * <pre>
+     * The path of the library directory.
+     * </pre>
+     *
      * <code>string install_dir = 10;</code>
      * @return The installDir.
      */
     java.lang.String getInstallDir();
     /**
+     * <pre>
+     * The path of the library directory.
+     * </pre>
+     *
      * <code>string install_dir = 10;</code>
      * @return The bytes for installDir.
      */
@@ -19012,11 +22112,19 @@ public final class Lib {
         getInstallDirBytes();
 
     /**
+     * <pre>
+     * The location of the library's source files.
+     * </pre>
+     *
      * <code>string source_dir = 11;</code>
      * @return The sourceDir.
      */
     java.lang.String getSourceDir();
     /**
+     * <pre>
+     * The location of the library's source files.
+     * </pre>
+     *
      * <code>string source_dir = 11;</code>
      * @return The bytes for sourceDir.
      */
@@ -19024,11 +22132,19 @@ public final class Lib {
         getSourceDirBytes();
 
     /**
+     * <pre>
+     * The location of the library's `utility` directory.
+     * </pre>
+     *
      * <code>string utility_dir = 12;</code>
      * @return The utilityDir.
      */
     java.lang.String getUtilityDir();
     /**
+     * <pre>
+     * The location of the library's `utility` directory.
+     * </pre>
+     *
      * <code>string utility_dir = 12;</code>
      * @return The bytes for utilityDir.
      */
@@ -19036,11 +22152,23 @@ public final class Lib {
         getUtilityDirBytes();
 
     /**
+     * <pre>
+     * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+     * identifying string for the platform containing the library
+     * (e.g., `arduino:avr&#64;1.8.2`).
+     * </pre>
+     *
      * <code>string container_platform = 14;</code>
      * @return The containerPlatform.
      */
     java.lang.String getContainerPlatform();
     /**
+     * <pre>
+     * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+     * identifying string for the platform containing the library
+     * (e.g., `arduino:avr&#64;1.8.2`).
+     * </pre>
+     *
      * <code>string container_platform = 14;</code>
      * @return The bytes for containerPlatform.
      */
@@ -19048,11 +22176,19 @@ public final class Lib {
         getContainerPlatformBytes();
 
     /**
+     * <pre>
+     * Value of the `name` field in library.properties.
+     * </pre>
+     *
      * <code>string real_name = 16;</code>
      * @return The realName.
      */
     java.lang.String getRealName();
     /**
+     * <pre>
+     * Value of the `name` field in library.properties.
+     * </pre>
+     *
      * <code>string real_name = 16;</code>
      * @return The bytes for realName.
      */
@@ -19060,23 +22196,39 @@ public final class Lib {
         getRealNameBytes();
 
     /**
+     * <pre>
+     * Value of the `dot_a_linkage` field in library.properties.
+     * </pre>
+     *
      * <code>bool dot_a_linkage = 17;</code>
      * @return The dotALinkage.
      */
     boolean getDotALinkage();
 
     /**
+     * <pre>
+     * Value of the `precompiled` field in library.properties.
+     * </pre>
+     *
      * <code>bool precompiled = 18;</code>
      * @return The precompiled.
      */
     boolean getPrecompiled();
 
     /**
+     * <pre>
+     * Value of the `ldflags` field in library.properties.
+     * </pre>
+     *
      * <code>string ld_flags = 19;</code>
      * @return The ldFlags.
      */
     java.lang.String getLdFlags();
     /**
+     * <pre>
+     * Value of the `ldflags` field in library.properties.
+     * </pre>
+     *
      * <code>string ld_flags = 19;</code>
      * @return The bytes for ldFlags.
      */
@@ -19084,17 +22236,29 @@ public final class Lib {
         getLdFlagsBytes();
 
     /**
+     * <pre>
+     * A library.properties file is not present in the library's root directory.
+     * </pre>
+     *
      * <code>bool is_legacy = 20;</code>
      * @return The isLegacy.
      */
     boolean getIsLegacy();
 
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 21;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 21;</code>
      * @return The bytes for version.
      */
@@ -19102,11 +22266,19 @@ public final class Lib {
         getVersionBytes();
 
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 22;</code>
      * @return The license.
      */
     java.lang.String getLicense();
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 22;</code>
      * @return The bytes for license.
      */
@@ -19114,10 +22286,20 @@ public final class Lib {
         getLicenseBytes();
 
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
     int getPropertiesCount();
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
     boolean containsProperties(
@@ -19129,11 +22311,21 @@ public final class Lib {
     java.util.Map<java.lang.String, java.lang.String>
     getProperties();
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
     java.util.Map<java.lang.String, java.lang.String>
     getPropertiesMap();
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -19141,6 +22333,11 @@ public final class Lib {
         java.lang.String key,
         java.lang.String defaultValue);
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -19148,22 +22345,38 @@ public final class Lib {
         java.lang.String key);
 
     /**
+     * <pre>
+     * The location type of the library installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
      * @return The enum numeric value on the wire for location.
      */
     int getLocationValue();
     /**
+     * <pre>
+     * The location type of the library installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
      * @return The location.
      */
     cc.arduino.cli.commands.Lib.LibraryLocation getLocation();
 
     /**
+     * <pre>
+     * The library format type.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
      * @return The enum numeric value on the wire for layout.
      */
     int getLayoutValue();
     /**
+     * <pre>
+     * The library format type.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
      * @return The layout.
      */
@@ -19435,6 +22648,10 @@ public final class Lib {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * The library's directory name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -19451,6 +22668,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The library's directory name.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -19471,6 +22692,10 @@ public final class Lib {
     public static final int AUTHOR_FIELD_NUMBER = 2;
     private volatile java.lang.Object author_;
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 2;</code>
      * @return The author.
      */
@@ -19487,6 +22712,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `author` field in library.properties.
+     * </pre>
+     *
      * <code>string author = 2;</code>
      * @return The bytes for author.
      */
@@ -19507,6 +22736,10 @@ public final class Lib {
     public static final int MAINTAINER_FIELD_NUMBER = 3;
     private volatile java.lang.Object maintainer_;
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The maintainer.
      */
@@ -19523,6 +22756,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `maintainer` field in library.properties.
+     * </pre>
+     *
      * <code>string maintainer = 3;</code>
      * @return The bytes for maintainer.
      */
@@ -19543,6 +22780,10 @@ public final class Lib {
     public static final int SENTENCE_FIELD_NUMBER = 4;
     private volatile java.lang.Object sentence_;
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The sentence.
      */
@@ -19559,6 +22800,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `sentence` field in library.properties.
+     * </pre>
+     *
      * <code>string sentence = 4;</code>
      * @return The bytes for sentence.
      */
@@ -19579,6 +22824,10 @@ public final class Lib {
     public static final int PARAGRAPH_FIELD_NUMBER = 5;
     private volatile java.lang.Object paragraph_;
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The paragraph.
      */
@@ -19595,6 +22844,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `paragraph` field in library.properties.
+     * </pre>
+     *
      * <code>string paragraph = 5;</code>
      * @return The bytes for paragraph.
      */
@@ -19615,6 +22868,10 @@ public final class Lib {
     public static final int WEBSITE_FIELD_NUMBER = 6;
     private volatile java.lang.Object website_;
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The website.
      */
@@ -19631,6 +22888,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `url` field in library.properties.
+     * </pre>
+     *
      * <code>string website = 6;</code>
      * @return The bytes for website.
      */
@@ -19651,6 +22912,10 @@ public final class Lib {
     public static final int CATEGORY_FIELD_NUMBER = 7;
     private volatile java.lang.Object category_;
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The category.
      */
@@ -19667,6 +22932,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `category` field in library.properties.
+     * </pre>
+     *
      * <code>string category = 7;</code>
      * @return The bytes for category.
      */
@@ -19687,6 +22956,10 @@ public final class Lib {
     public static final int ARCHITECTURES_FIELD_NUMBER = 8;
     private com.google.protobuf.LazyStringList architectures_;
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return A list containing the architectures.
      */
@@ -19695,6 +22968,10 @@ public final class Lib {
       return architectures_;
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @return The count of architectures.
      */
@@ -19702,6 +22979,10 @@ public final class Lib {
       return architectures_.size();
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the element to return.
      * @return The architectures at the given index.
@@ -19710,6 +22991,10 @@ public final class Lib {
       return architectures_.get(index);
     }
     /**
+     * <pre>
+     * Value of the `architectures` field in library.properties.
+     * </pre>
+     *
      * <code>repeated string architectures = 8;</code>
      * @param index The index of the value to return.
      * @return The bytes of the architectures at the given index.
@@ -19722,6 +23007,11 @@ public final class Lib {
     public static final int TYPES_FIELD_NUMBER = 9;
     private com.google.protobuf.LazyStringList types_;
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return A list containing the types.
      */
@@ -19730,6 +23020,11 @@ public final class Lib {
       return types_;
     }
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @return The count of types.
      */
@@ -19737,6 +23032,11 @@ public final class Lib {
       return types_.size();
     }
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the element to return.
      * @return The types at the given index.
@@ -19745,6 +23045,11 @@ public final class Lib {
       return types_.get(index);
     }
     /**
+     * <pre>
+     * The type categories of the library. Possible values: `Arduino`,
+     * `Partner`, `Recommended`, `Contributed`, `Retired`.
+     * </pre>
+     *
      * <code>repeated string types = 9;</code>
      * @param index The index of the value to return.
      * @return The bytes of the types at the given index.
@@ -19757,6 +23062,10 @@ public final class Lib {
     public static final int INSTALL_DIR_FIELD_NUMBER = 10;
     private volatile java.lang.Object installDir_;
     /**
+     * <pre>
+     * The path of the library directory.
+     * </pre>
+     *
      * <code>string install_dir = 10;</code>
      * @return The installDir.
      */
@@ -19773,6 +23082,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The path of the library directory.
+     * </pre>
+     *
      * <code>string install_dir = 10;</code>
      * @return The bytes for installDir.
      */
@@ -19793,6 +23106,10 @@ public final class Lib {
     public static final int SOURCE_DIR_FIELD_NUMBER = 11;
     private volatile java.lang.Object sourceDir_;
     /**
+     * <pre>
+     * The location of the library's source files.
+     * </pre>
+     *
      * <code>string source_dir = 11;</code>
      * @return The sourceDir.
      */
@@ -19809,6 +23126,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The location of the library's source files.
+     * </pre>
+     *
      * <code>string source_dir = 11;</code>
      * @return The bytes for sourceDir.
      */
@@ -19829,6 +23150,10 @@ public final class Lib {
     public static final int UTILITY_DIR_FIELD_NUMBER = 12;
     private volatile java.lang.Object utilityDir_;
     /**
+     * <pre>
+     * The location of the library's `utility` directory.
+     * </pre>
+     *
      * <code>string utility_dir = 12;</code>
      * @return The utilityDir.
      */
@@ -19845,6 +23170,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * The location of the library's `utility` directory.
+     * </pre>
+     *
      * <code>string utility_dir = 12;</code>
      * @return The bytes for utilityDir.
      */
@@ -19865,6 +23194,12 @@ public final class Lib {
     public static final int CONTAINER_PLATFORM_FIELD_NUMBER = 14;
     private volatile java.lang.Object containerPlatform_;
     /**
+     * <pre>
+     * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+     * identifying string for the platform containing the library
+     * (e.g., `arduino:avr&#64;1.8.2`).
+     * </pre>
+     *
      * <code>string container_platform = 14;</code>
      * @return The containerPlatform.
      */
@@ -19881,6 +23216,12 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+     * identifying string for the platform containing the library
+     * (e.g., `arduino:avr&#64;1.8.2`).
+     * </pre>
+     *
      * <code>string container_platform = 14;</code>
      * @return The bytes for containerPlatform.
      */
@@ -19901,6 +23242,10 @@ public final class Lib {
     public static final int REAL_NAME_FIELD_NUMBER = 16;
     private volatile java.lang.Object realName_;
     /**
+     * <pre>
+     * Value of the `name` field in library.properties.
+     * </pre>
+     *
      * <code>string real_name = 16;</code>
      * @return The realName.
      */
@@ -19917,6 +23262,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `name` field in library.properties.
+     * </pre>
+     *
      * <code>string real_name = 16;</code>
      * @return The bytes for realName.
      */
@@ -19937,6 +23286,10 @@ public final class Lib {
     public static final int DOT_A_LINKAGE_FIELD_NUMBER = 17;
     private boolean dotALinkage_;
     /**
+     * <pre>
+     * Value of the `dot_a_linkage` field in library.properties.
+     * </pre>
+     *
      * <code>bool dot_a_linkage = 17;</code>
      * @return The dotALinkage.
      */
@@ -19947,6 +23300,10 @@ public final class Lib {
     public static final int PRECOMPILED_FIELD_NUMBER = 18;
     private boolean precompiled_;
     /**
+     * <pre>
+     * Value of the `precompiled` field in library.properties.
+     * </pre>
+     *
      * <code>bool precompiled = 18;</code>
      * @return The precompiled.
      */
@@ -19957,6 +23314,10 @@ public final class Lib {
     public static final int LD_FLAGS_FIELD_NUMBER = 19;
     private volatile java.lang.Object ldFlags_;
     /**
+     * <pre>
+     * Value of the `ldflags` field in library.properties.
+     * </pre>
+     *
      * <code>string ld_flags = 19;</code>
      * @return The ldFlags.
      */
@@ -19973,6 +23334,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `ldflags` field in library.properties.
+     * </pre>
+     *
      * <code>string ld_flags = 19;</code>
      * @return The bytes for ldFlags.
      */
@@ -19993,6 +23358,10 @@ public final class Lib {
     public static final int IS_LEGACY_FIELD_NUMBER = 20;
     private boolean isLegacy_;
     /**
+     * <pre>
+     * A library.properties file is not present in the library's root directory.
+     * </pre>
+     *
      * <code>bool is_legacy = 20;</code>
      * @return The isLegacy.
      */
@@ -20003,6 +23372,10 @@ public final class Lib {
     public static final int VERSION_FIELD_NUMBER = 21;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 21;</code>
      * @return The version.
      */
@@ -20019,6 +23392,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `version` field in library.properties.
+     * </pre>
+     *
      * <code>string version = 21;</code>
      * @return The bytes for version.
      */
@@ -20039,6 +23416,10 @@ public final class Lib {
     public static final int LICENSE_FIELD_NUMBER = 22;
     private volatile java.lang.Object license_;
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 22;</code>
      * @return The license.
      */
@@ -20055,6 +23436,10 @@ public final class Lib {
       }
     }
     /**
+     * <pre>
+     * Value of the `license` field in library.properties.
+     * </pre>
+     *
      * <code>string license = 22;</code>
      * @return The bytes for license.
      */
@@ -20099,6 +23484,11 @@ public final class Lib {
       return internalGetProperties().getMap().size();
     }
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -20115,6 +23505,11 @@ public final class Lib {
       return getPropertiesMap();
     }
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -20122,6 +23517,11 @@ public final class Lib {
       return internalGetProperties().getMap();
     }
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -20134,6 +23534,11 @@ public final class Lib {
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
+     * <pre>
+     * The data from the library's library.properties file, including unused
+     * fields.
+     * </pre>
+     *
      * <code>map&lt;string, string&gt; properties = 23;</code>
      */
 
@@ -20151,6 +23556,10 @@ public final class Lib {
     public static final int LOCATION_FIELD_NUMBER = 24;
     private int location_;
     /**
+     * <pre>
+     * The location type of the library installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
      * @return The enum numeric value on the wire for location.
      */
@@ -20158,6 +23567,10 @@ public final class Lib {
       return location_;
     }
     /**
+     * <pre>
+     * The location type of the library installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
      * @return The location.
      */
@@ -20170,6 +23583,10 @@ public final class Lib {
     public static final int LAYOUT_FIELD_NUMBER = 25;
     private int layout_;
     /**
+     * <pre>
+     * The library format type.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
      * @return The enum numeric value on the wire for layout.
      */
@@ -20177,6 +23594,10 @@ public final class Lib {
       return layout_;
     }
     /**
+     * <pre>
+     * The library format type.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
      * @return The layout.
      */
@@ -20933,6 +24354,10 @@ public final class Lib {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * The library's directory name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -20949,6 +24374,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The library's directory name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -20966,6 +24395,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The library's directory name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -20981,6 +24414,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The library's directory name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -20991,6 +24428,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The library's directory name.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -21009,6 +24450,10 @@ public final class Lib {
 
       private java.lang.Object author_ = "";
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 2;</code>
        * @return The author.
        */
@@ -21025,6 +24470,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 2;</code>
        * @return The bytes for author.
        */
@@ -21042,6 +24491,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 2;</code>
        * @param value The author to set.
        * @return This builder for chaining.
@@ -21057,6 +24510,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 2;</code>
        * @return This builder for chaining.
        */
@@ -21067,6 +24524,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `author` field in library.properties.
+       * </pre>
+       *
        * <code>string author = 2;</code>
        * @param value The bytes for author to set.
        * @return This builder for chaining.
@@ -21085,6 +24546,10 @@ public final class Lib {
 
       private java.lang.Object maintainer_ = "";
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return The maintainer.
        */
@@ -21101,6 +24566,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return The bytes for maintainer.
        */
@@ -21118,6 +24587,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @param value The maintainer to set.
        * @return This builder for chaining.
@@ -21133,6 +24606,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @return This builder for chaining.
        */
@@ -21143,6 +24620,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `maintainer` field in library.properties.
+       * </pre>
+       *
        * <code>string maintainer = 3;</code>
        * @param value The bytes for maintainer to set.
        * @return This builder for chaining.
@@ -21161,6 +24642,10 @@ public final class Lib {
 
       private java.lang.Object sentence_ = "";
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return The sentence.
        */
@@ -21177,6 +24662,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return The bytes for sentence.
        */
@@ -21194,6 +24683,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @param value The sentence to set.
        * @return This builder for chaining.
@@ -21209,6 +24702,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @return This builder for chaining.
        */
@@ -21219,6 +24716,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `sentence` field in library.properties.
+       * </pre>
+       *
        * <code>string sentence = 4;</code>
        * @param value The bytes for sentence to set.
        * @return This builder for chaining.
@@ -21237,6 +24738,10 @@ public final class Lib {
 
       private java.lang.Object paragraph_ = "";
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return The paragraph.
        */
@@ -21253,6 +24758,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return The bytes for paragraph.
        */
@@ -21270,6 +24779,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @param value The paragraph to set.
        * @return This builder for chaining.
@@ -21285,6 +24798,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @return This builder for chaining.
        */
@@ -21295,6 +24812,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `paragraph` field in library.properties.
+       * </pre>
+       *
        * <code>string paragraph = 5;</code>
        * @param value The bytes for paragraph to set.
        * @return This builder for chaining.
@@ -21313,6 +24834,10 @@ public final class Lib {
 
       private java.lang.Object website_ = "";
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return The website.
        */
@@ -21329,6 +24854,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return The bytes for website.
        */
@@ -21346,6 +24875,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @param value The website to set.
        * @return This builder for chaining.
@@ -21361,6 +24894,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @return This builder for chaining.
        */
@@ -21371,6 +24908,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `url` field in library.properties.
+       * </pre>
+       *
        * <code>string website = 6;</code>
        * @param value The bytes for website to set.
        * @return This builder for chaining.
@@ -21389,6 +24930,10 @@ public final class Lib {
 
       private java.lang.Object category_ = "";
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return The category.
        */
@@ -21405,6 +24950,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return The bytes for category.
        */
@@ -21422,6 +24971,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @param value The category to set.
        * @return This builder for chaining.
@@ -21437,6 +24990,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @return This builder for chaining.
        */
@@ -21447,6 +25004,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `category` field in library.properties.
+       * </pre>
+       *
        * <code>string category = 7;</code>
        * @param value The bytes for category to set.
        * @return This builder for chaining.
@@ -21471,6 +25032,10 @@ public final class Lib {
          }
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return A list containing the architectures.
        */
@@ -21479,6 +25044,10 @@ public final class Lib {
         return architectures_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return The count of architectures.
        */
@@ -21486,6 +25055,10 @@ public final class Lib {
         return architectures_.size();
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index of the element to return.
        * @return The architectures at the given index.
@@ -21494,6 +25067,10 @@ public final class Lib {
         return architectures_.get(index);
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index of the value to return.
        * @return The bytes of the architectures at the given index.
@@ -21503,6 +25080,10 @@ public final class Lib {
         return architectures_.getByteString(index);
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param index The index to set the value at.
        * @param value The architectures to set.
@@ -21519,6 +25100,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param value The architectures to add.
        * @return This builder for chaining.
@@ -21534,6 +25119,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param values The architectures to add.
        * @return This builder for chaining.
@@ -21547,6 +25136,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @return This builder for chaining.
        */
@@ -21557,6 +25150,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `architectures` field in library.properties.
+       * </pre>
+       *
        * <code>repeated string architectures = 8;</code>
        * @param value The bytes of the architectures to add.
        * @return This builder for chaining.
@@ -21581,6 +25178,11 @@ public final class Lib {
          }
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return A list containing the types.
        */
@@ -21589,6 +25191,11 @@ public final class Lib {
         return types_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return The count of types.
        */
@@ -21596,6 +25203,11 @@ public final class Lib {
         return types_.size();
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index of the element to return.
        * @return The types at the given index.
@@ -21604,6 +25216,11 @@ public final class Lib {
         return types_.get(index);
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index of the value to return.
        * @return The bytes of the types at the given index.
@@ -21613,6 +25230,11 @@ public final class Lib {
         return types_.getByteString(index);
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param index The index to set the value at.
        * @param value The types to set.
@@ -21629,6 +25251,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param value The types to add.
        * @return This builder for chaining.
@@ -21644,6 +25271,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param values The types to add.
        * @return This builder for chaining.
@@ -21657,6 +25289,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @return This builder for chaining.
        */
@@ -21667,6 +25304,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The type categories of the library. Possible values: `Arduino`,
+       * `Partner`, `Recommended`, `Contributed`, `Retired`.
+       * </pre>
+       *
        * <code>repeated string types = 9;</code>
        * @param value The bytes of the types to add.
        * @return This builder for chaining.
@@ -21685,6 +25327,10 @@ public final class Lib {
 
       private java.lang.Object installDir_ = "";
       /**
+       * <pre>
+       * The path of the library directory.
+       * </pre>
+       *
        * <code>string install_dir = 10;</code>
        * @return The installDir.
        */
@@ -21701,6 +25347,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The path of the library directory.
+       * </pre>
+       *
        * <code>string install_dir = 10;</code>
        * @return The bytes for installDir.
        */
@@ -21718,6 +25368,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The path of the library directory.
+       * </pre>
+       *
        * <code>string install_dir = 10;</code>
        * @param value The installDir to set.
        * @return This builder for chaining.
@@ -21733,6 +25387,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The path of the library directory.
+       * </pre>
+       *
        * <code>string install_dir = 10;</code>
        * @return This builder for chaining.
        */
@@ -21743,6 +25401,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The path of the library directory.
+       * </pre>
+       *
        * <code>string install_dir = 10;</code>
        * @param value The bytes for installDir to set.
        * @return This builder for chaining.
@@ -21761,6 +25423,10 @@ public final class Lib {
 
       private java.lang.Object sourceDir_ = "";
       /**
+       * <pre>
+       * The location of the library's source files.
+       * </pre>
+       *
        * <code>string source_dir = 11;</code>
        * @return The sourceDir.
        */
@@ -21777,6 +25443,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The location of the library's source files.
+       * </pre>
+       *
        * <code>string source_dir = 11;</code>
        * @return The bytes for sourceDir.
        */
@@ -21794,6 +25464,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The location of the library's source files.
+       * </pre>
+       *
        * <code>string source_dir = 11;</code>
        * @param value The sourceDir to set.
        * @return This builder for chaining.
@@ -21809,6 +25483,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location of the library's source files.
+       * </pre>
+       *
        * <code>string source_dir = 11;</code>
        * @return This builder for chaining.
        */
@@ -21819,6 +25497,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location of the library's source files.
+       * </pre>
+       *
        * <code>string source_dir = 11;</code>
        * @param value The bytes for sourceDir to set.
        * @return This builder for chaining.
@@ -21837,6 +25519,10 @@ public final class Lib {
 
       private java.lang.Object utilityDir_ = "";
       /**
+       * <pre>
+       * The location of the library's `utility` directory.
+       * </pre>
+       *
        * <code>string utility_dir = 12;</code>
        * @return The utilityDir.
        */
@@ -21853,6 +25539,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The location of the library's `utility` directory.
+       * </pre>
+       *
        * <code>string utility_dir = 12;</code>
        * @return The bytes for utilityDir.
        */
@@ -21870,6 +25560,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * The location of the library's `utility` directory.
+       * </pre>
+       *
        * <code>string utility_dir = 12;</code>
        * @param value The utilityDir to set.
        * @return This builder for chaining.
@@ -21885,6 +25579,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location of the library's `utility` directory.
+       * </pre>
+       *
        * <code>string utility_dir = 12;</code>
        * @return This builder for chaining.
        */
@@ -21895,6 +25593,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location of the library's `utility` directory.
+       * </pre>
+       *
        * <code>string utility_dir = 12;</code>
        * @param value The bytes for utilityDir to set.
        * @return This builder for chaining.
@@ -21913,6 +25615,12 @@ public final class Lib {
 
       private java.lang.Object containerPlatform_ = "";
       /**
+       * <pre>
+       * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+       * identifying string for the platform containing the library
+       * (e.g., `arduino:avr&#64;1.8.2`).
+       * </pre>
+       *
        * <code>string container_platform = 14;</code>
        * @return The containerPlatform.
        */
@@ -21929,6 +25637,12 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+       * identifying string for the platform containing the library
+       * (e.g., `arduino:avr&#64;1.8.2`).
+       * </pre>
+       *
        * <code>string container_platform = 14;</code>
        * @return The bytes for containerPlatform.
        */
@@ -21946,6 +25660,12 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+       * identifying string for the platform containing the library
+       * (e.g., `arduino:avr&#64;1.8.2`).
+       * </pre>
+       *
        * <code>string container_platform = 14;</code>
        * @param value The containerPlatform to set.
        * @return This builder for chaining.
@@ -21961,6 +25681,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+       * identifying string for the platform containing the library
+       * (e.g., `arduino:avr&#64;1.8.2`).
+       * </pre>
+       *
        * <code>string container_platform = 14;</code>
        * @return This builder for chaining.
        */
@@ -21971,6 +25697,12 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * If `location` is `platform_builtin` or `referenced_platform_builtin`, the
+       * identifying string for the platform containing the library
+       * (e.g., `arduino:avr&#64;1.8.2`).
+       * </pre>
+       *
        * <code>string container_platform = 14;</code>
        * @param value The bytes for containerPlatform to set.
        * @return This builder for chaining.
@@ -21989,6 +25721,10 @@ public final class Lib {
 
       private java.lang.Object realName_ = "";
       /**
+       * <pre>
+       * Value of the `name` field in library.properties.
+       * </pre>
+       *
        * <code>string real_name = 16;</code>
        * @return The realName.
        */
@@ -22005,6 +25741,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `name` field in library.properties.
+       * </pre>
+       *
        * <code>string real_name = 16;</code>
        * @return The bytes for realName.
        */
@@ -22022,6 +25762,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `name` field in library.properties.
+       * </pre>
+       *
        * <code>string real_name = 16;</code>
        * @param value The realName to set.
        * @return This builder for chaining.
@@ -22037,6 +25781,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `name` field in library.properties.
+       * </pre>
+       *
        * <code>string real_name = 16;</code>
        * @return This builder for chaining.
        */
@@ -22047,6 +25795,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `name` field in library.properties.
+       * </pre>
+       *
        * <code>string real_name = 16;</code>
        * @param value The bytes for realName to set.
        * @return This builder for chaining.
@@ -22065,6 +25817,10 @@ public final class Lib {
 
       private boolean dotALinkage_ ;
       /**
+       * <pre>
+       * Value of the `dot_a_linkage` field in library.properties.
+       * </pre>
+       *
        * <code>bool dot_a_linkage = 17;</code>
        * @return The dotALinkage.
        */
@@ -22072,6 +25828,10 @@ public final class Lib {
         return dotALinkage_;
       }
       /**
+       * <pre>
+       * Value of the `dot_a_linkage` field in library.properties.
+       * </pre>
+       *
        * <code>bool dot_a_linkage = 17;</code>
        * @param value The dotALinkage to set.
        * @return This builder for chaining.
@@ -22083,6 +25843,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `dot_a_linkage` field in library.properties.
+       * </pre>
+       *
        * <code>bool dot_a_linkage = 17;</code>
        * @return This builder for chaining.
        */
@@ -22095,6 +25859,10 @@ public final class Lib {
 
       private boolean precompiled_ ;
       /**
+       * <pre>
+       * Value of the `precompiled` field in library.properties.
+       * </pre>
+       *
        * <code>bool precompiled = 18;</code>
        * @return The precompiled.
        */
@@ -22102,6 +25870,10 @@ public final class Lib {
         return precompiled_;
       }
       /**
+       * <pre>
+       * Value of the `precompiled` field in library.properties.
+       * </pre>
+       *
        * <code>bool precompiled = 18;</code>
        * @param value The precompiled to set.
        * @return This builder for chaining.
@@ -22113,6 +25885,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `precompiled` field in library.properties.
+       * </pre>
+       *
        * <code>bool precompiled = 18;</code>
        * @return This builder for chaining.
        */
@@ -22125,6 +25901,10 @@ public final class Lib {
 
       private java.lang.Object ldFlags_ = "";
       /**
+       * <pre>
+       * Value of the `ldflags` field in library.properties.
+       * </pre>
+       *
        * <code>string ld_flags = 19;</code>
        * @return The ldFlags.
        */
@@ -22141,6 +25921,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `ldflags` field in library.properties.
+       * </pre>
+       *
        * <code>string ld_flags = 19;</code>
        * @return The bytes for ldFlags.
        */
@@ -22158,6 +25942,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `ldflags` field in library.properties.
+       * </pre>
+       *
        * <code>string ld_flags = 19;</code>
        * @param value The ldFlags to set.
        * @return This builder for chaining.
@@ -22173,6 +25961,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `ldflags` field in library.properties.
+       * </pre>
+       *
        * <code>string ld_flags = 19;</code>
        * @return This builder for chaining.
        */
@@ -22183,6 +25975,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `ldflags` field in library.properties.
+       * </pre>
+       *
        * <code>string ld_flags = 19;</code>
        * @param value The bytes for ldFlags to set.
        * @return This builder for chaining.
@@ -22201,6 +25997,10 @@ public final class Lib {
 
       private boolean isLegacy_ ;
       /**
+       * <pre>
+       * A library.properties file is not present in the library's root directory.
+       * </pre>
+       *
        * <code>bool is_legacy = 20;</code>
        * @return The isLegacy.
        */
@@ -22208,6 +26008,10 @@ public final class Lib {
         return isLegacy_;
       }
       /**
+       * <pre>
+       * A library.properties file is not present in the library's root directory.
+       * </pre>
+       *
        * <code>bool is_legacy = 20;</code>
        * @param value The isLegacy to set.
        * @return This builder for chaining.
@@ -22219,6 +26023,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * A library.properties file is not present in the library's root directory.
+       * </pre>
+       *
        * <code>bool is_legacy = 20;</code>
        * @return This builder for chaining.
        */
@@ -22231,6 +26039,10 @@ public final class Lib {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 21;</code>
        * @return The version.
        */
@@ -22247,6 +26059,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 21;</code>
        * @return The bytes for version.
        */
@@ -22264,6 +26080,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 21;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -22279,6 +26099,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 21;</code>
        * @return This builder for chaining.
        */
@@ -22289,6 +26113,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `version` field in library.properties.
+       * </pre>
+       *
        * <code>string version = 21;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -22307,6 +26135,10 @@ public final class Lib {
 
       private java.lang.Object license_ = "";
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 22;</code>
        * @return The license.
        */
@@ -22323,6 +26155,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 22;</code>
        * @return The bytes for license.
        */
@@ -22340,6 +26176,10 @@ public final class Lib {
         }
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 22;</code>
        * @param value The license to set.
        * @return This builder for chaining.
@@ -22355,6 +26195,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 22;</code>
        * @return This builder for chaining.
        */
@@ -22365,6 +26209,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * Value of the `license` field in library.properties.
+       * </pre>
+       *
        * <code>string license = 22;</code>
        * @param value The bytes for license to set.
        * @return This builder for chaining.
@@ -22408,6 +26256,11 @@ public final class Lib {
         return internalGetProperties().getMap().size();
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22424,6 +26277,11 @@ public final class Lib {
         return getPropertiesMap();
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22431,6 +26289,11 @@ public final class Lib {
         return internalGetProperties().getMap();
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22443,6 +26306,11 @@ public final class Lib {
         return map.containsKey(key) ? map.get(key) : defaultValue;
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22463,6 +26331,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22482,6 +26355,11 @@ public final class Lib {
         return internalGetMutableProperties().getMutableMap();
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
       public Builder putProperties(
@@ -22494,6 +26372,11 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The data from the library's library.properties file, including unused
+       * fields.
+       * </pre>
+       *
        * <code>map&lt;string, string&gt; properties = 23;</code>
        */
 
@@ -22506,6 +26389,10 @@ public final class Lib {
 
       private int location_ = 0;
       /**
+       * <pre>
+       * The location type of the library installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
        * @return The enum numeric value on the wire for location.
        */
@@ -22513,6 +26400,10 @@ public final class Lib {
         return location_;
       }
       /**
+       * <pre>
+       * The location type of the library installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
        * @param value The enum numeric value on the wire for location to set.
        * @return This builder for chaining.
@@ -22523,6 +26414,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location type of the library installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
        * @return The location.
        */
@@ -22532,6 +26427,10 @@ public final class Lib {
         return result == null ? cc.arduino.cli.commands.Lib.LibraryLocation.UNRECOGNIZED : result;
       }
       /**
+       * <pre>
+       * The location type of the library installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
        * @param value The location to set.
        * @return This builder for chaining.
@@ -22546,6 +26445,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The location type of the library installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLocation location = 24;</code>
        * @return This builder for chaining.
        */
@@ -22558,6 +26461,10 @@ public final class Lib {
 
       private int layout_ = 0;
       /**
+       * <pre>
+       * The library format type.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
        * @return The enum numeric value on the wire for layout.
        */
@@ -22565,6 +26472,10 @@ public final class Lib {
         return layout_;
       }
       /**
+       * <pre>
+       * The library format type.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
        * @param value The enum numeric value on the wire for layout to set.
        * @return This builder for chaining.
@@ -22575,6 +26486,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The library format type.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
        * @return The layout.
        */
@@ -22584,6 +26499,10 @@ public final class Lib {
         return result == null ? cc.arduino.cli.commands.Lib.LibraryLayout.UNRECOGNIZED : result;
       }
       /**
+       * <pre>
+       * The library format type.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
        * @param value The layout to set.
        * @return This builder for chaining.
@@ -22598,6 +26517,10 @@ public final class Lib {
         return this;
       }
       /**
+       * <pre>
+       * The library format type.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.LibraryLayout layout = 25;</code>
        * @return This builder for chaining.
        */

@@ -123,23 +123,35 @@ public final class Compile {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
      * <pre>
-     * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+     * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
      * </pre>
      *
      * <code>string fqbn = 2;</code>
@@ -148,7 +160,7 @@ public final class Compile {
     java.lang.String getFqbn();
     /**
      * <pre>
-     * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+     * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
      * </pre>
      *
      * <code>string fqbn = 2;</code>
@@ -158,11 +170,19 @@ public final class Compile {
         getFqbnBytes();
 
     /**
+     * <pre>
+     * The path where the sketch is stored.
+     * </pre>
+     *
      * <code>string sketchPath = 3;</code>
      * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
+     * <pre>
+     * The path where the sketch is stored.
+     * </pre>
+     *
      * <code>string sketchPath = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -181,7 +201,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * Print preprocessed code to stdout.
+     * Print preprocessed code to stdout instead of compiling.
      * </pre>
      *
      * <code>bool preprocess = 5;</code>
@@ -211,7 +231,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * Path where to save compiled files.
+     * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
      * </pre>
      *
      * <code>string buildPath = 7;</code>
@@ -220,7 +240,7 @@ public final class Compile {
     java.lang.String getBuildPath();
     /**
      * <pre>
-     * Path where to save compiled files.
+     * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
      * </pre>
      *
      * <code>string buildPath = 7;</code>
@@ -231,7 +251,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -241,7 +261,7 @@ public final class Compile {
         getBuildPropertiesList();
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -250,7 +270,7 @@ public final class Compile {
     int getBuildPropertiesCount();
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -260,7 +280,7 @@ public final class Compile {
     java.lang.String getBuildProperties(int index);
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -272,7 +292,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * Used to tell gcc which warning level to use.
+     * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
      * </pre>
      *
      * <code>string warnings = 9;</code>
@@ -281,7 +301,7 @@ public final class Compile {
     java.lang.String getWarnings();
     /**
      * <pre>
-     * Used to tell gcc which warning level to use.
+     * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
      * </pre>
      *
      * <code>string warnings = 9;</code>
@@ -332,27 +352,27 @@ public final class Compile {
 
     /**
      * <pre>
-     * The compiled binary is written to this file
+     * DEPRECATED: use exportDir instead
      * </pre>
      *
-     * <code>string exportFile = 13;</code>
+     * <code>string exportFile = 13 [deprecated = true];</code>
      * @return The exportFile.
      */
-    java.lang.String getExportFile();
+    @java.lang.Deprecated java.lang.String getExportFile();
     /**
      * <pre>
-     * The compiled binary is written to this file
+     * DEPRECATED: use exportDir instead
      * </pre>
      *
-     * <code>string exportFile = 13;</code>
+     * <code>string exportFile = 13 [deprecated = true];</code>
      * @return The bytes for exportFile.
      */
-    com.google.protobuf.ByteString
+    @java.lang.Deprecated com.google.protobuf.ByteString
         getExportFileBytes();
 
     /**
      * <pre>
-     * The max number of concurrent compiler instances to run (as make -jx)
+     * The max number of concurrent compiler instances to run (as `make -jx`). If jobs is set to 0, it will use the number of available CPUs as the maximum.
      * </pre>
      *
      * <code>int32 jobs = 14;</code>
@@ -362,7 +382,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -372,7 +392,7 @@ public final class Compile {
         getLibrariesList();
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -381,7 +401,7 @@ public final class Compile {
     int getLibrariesCount();
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -391,7 +411,7 @@ public final class Compile {
     java.lang.String getLibraries(int index);
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -403,7 +423,7 @@ public final class Compile {
 
     /**
      * <pre>
-     * Optimize compile output for debug, not for release
+     * Optimize compile output for debug, not for release.
      * </pre>
      *
      * <code>bool optimizeForDebug = 16;</code>
@@ -413,13 +433,53 @@ public final class Compile {
 
     /**
      * <pre>
-     * When set to true the compiled binary will not be copied to the export directory
+     * When set to `true` the compiled binary will not be copied to the export directory.
      * </pre>
      *
      * <code>bool dryRun = 17;</code>
      * @return The dryRun.
      */
     boolean getDryRun();
+
+    /**
+     * <pre>
+     * Optional: save the build artifacts in this directory, the directory must exist.
+     * </pre>
+     *
+     * <code>string export_dir = 18;</code>
+     * @return The exportDir.
+     */
+    java.lang.String getExportDir();
+    /**
+     * <pre>
+     * Optional: save the build artifacts in this directory, the directory must exist.
+     * </pre>
+     *
+     * <code>string export_dir = 18;</code>
+     * @return The bytes for exportDir.
+     */
+    com.google.protobuf.ByteString
+        getExportDirBytes();
+
+    /**
+     * <pre>
+     * External programmer for upload
+     * </pre>
+     *
+     * <code>string programmer = 19;</code>
+     * @return The programmer.
+     */
+    java.lang.String getProgrammer();
+    /**
+     * <pre>
+     * External programmer for upload
+     * </pre>
+     *
+     * <code>string programmer = 19;</code>
+     * @return The bytes for programmer.
+     */
+    com.google.protobuf.ByteString
+        getProgrammerBytes();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.CompileReq}
@@ -443,6 +503,8 @@ public final class Compile {
       vidPid_ = "";
       exportFile_ = "";
       libraries_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      exportDir_ = "";
+      programmer_ = "";
     }
 
     @java.lang.Override
@@ -584,6 +646,18 @@ public final class Compile {
               dryRun_ = input.readBool();
               break;
             }
+            case 146: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              exportDir_ = s;
+              break;
+            }
+            case 154: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              programmer_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -625,6 +699,10 @@ public final class Compile {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -632,6 +710,10 @@ public final class Compile {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -639,6 +721,10 @@ public final class Compile {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -649,7 +735,7 @@ public final class Compile {
     private volatile java.lang.Object fqbn_;
     /**
      * <pre>
-     * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+     * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
      * </pre>
      *
      * <code>string fqbn = 2;</code>
@@ -669,7 +755,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+     * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
      * </pre>
      *
      * <code>string fqbn = 2;</code>
@@ -692,6 +778,10 @@ public final class Compile {
     public static final int SKETCHPATH_FIELD_NUMBER = 3;
     private volatile java.lang.Object sketchPath_;
     /**
+     * <pre>
+     * The path where the sketch is stored.
+     * </pre>
+     *
      * <code>string sketchPath = 3;</code>
      * @return The sketchPath.
      */
@@ -708,6 +798,10 @@ public final class Compile {
       }
     }
     /**
+     * <pre>
+     * The path where the sketch is stored.
+     * </pre>
+     *
      * <code>string sketchPath = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -743,7 +837,7 @@ public final class Compile {
     private boolean preprocess_;
     /**
      * <pre>
-     * Print preprocessed code to stdout.
+     * Print preprocessed code to stdout instead of compiling.
      * </pre>
      *
      * <code>bool preprocess = 5;</code>
@@ -801,7 +895,7 @@ public final class Compile {
     private volatile java.lang.Object buildPath_;
     /**
      * <pre>
-     * Path where to save compiled files.
+     * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
      * </pre>
      *
      * <code>string buildPath = 7;</code>
@@ -821,7 +915,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * Path where to save compiled files.
+     * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
      * </pre>
      *
      * <code>string buildPath = 7;</code>
@@ -845,7 +939,7 @@ public final class Compile {
     private com.google.protobuf.LazyStringList buildProperties_;
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -857,7 +951,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -868,7 +962,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -880,7 +974,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+     * List of custom build properties separated by commas.
      * </pre>
      *
      * <code>repeated string buildProperties = 8;</code>
@@ -896,7 +990,7 @@ public final class Compile {
     private volatile java.lang.Object warnings_;
     /**
      * <pre>
-     * Used to tell gcc which warning level to use.
+     * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
      * </pre>
      *
      * <code>string warnings = 9;</code>
@@ -916,7 +1010,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * Used to tell gcc which warning level to use.
+     * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
      * </pre>
      *
      * <code>string warnings = 9;</code>
@@ -1012,13 +1106,13 @@ public final class Compile {
     private volatile java.lang.Object exportFile_;
     /**
      * <pre>
-     * The compiled binary is written to this file
+     * DEPRECATED: use exportDir instead
      * </pre>
      *
-     * <code>string exportFile = 13;</code>
+     * <code>string exportFile = 13 [deprecated = true];</code>
      * @return The exportFile.
      */
-    public java.lang.String getExportFile() {
+    @java.lang.Deprecated public java.lang.String getExportFile() {
       java.lang.Object ref = exportFile_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
@@ -1032,13 +1126,13 @@ public final class Compile {
     }
     /**
      * <pre>
-     * The compiled binary is written to this file
+     * DEPRECATED: use exportDir instead
      * </pre>
      *
-     * <code>string exportFile = 13;</code>
+     * <code>string exportFile = 13 [deprecated = true];</code>
      * @return The bytes for exportFile.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getExportFileBytes() {
       java.lang.Object ref = exportFile_;
       if (ref instanceof java.lang.String) {
@@ -1056,7 +1150,7 @@ public final class Compile {
     private int jobs_;
     /**
      * <pre>
-     * The max number of concurrent compiler instances to run (as make -jx)
+     * The max number of concurrent compiler instances to run (as `make -jx`). If jobs is set to 0, it will use the number of available CPUs as the maximum.
      * </pre>
      *
      * <code>int32 jobs = 14;</code>
@@ -1070,7 +1164,7 @@ public final class Compile {
     private com.google.protobuf.LazyStringList libraries_;
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -1082,7 +1176,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -1093,7 +1187,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -1105,7 +1199,7 @@ public final class Compile {
     }
     /**
      * <pre>
-     * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+     * List of custom libraries paths separated by commas.
      * </pre>
      *
      * <code>repeated string libraries = 15;</code>
@@ -1121,7 +1215,7 @@ public final class Compile {
     private boolean optimizeForDebug_;
     /**
      * <pre>
-     * Optimize compile output for debug, not for release
+     * Optimize compile output for debug, not for release.
      * </pre>
      *
      * <code>bool optimizeForDebug = 16;</code>
@@ -1135,7 +1229,7 @@ public final class Compile {
     private boolean dryRun_;
     /**
      * <pre>
-     * When set to true the compiled binary will not be copied to the export directory
+     * When set to `true` the compiled binary will not be copied to the export directory.
      * </pre>
      *
      * <code>bool dryRun = 17;</code>
@@ -1143,6 +1237,94 @@ public final class Compile {
      */
     public boolean getDryRun() {
       return dryRun_;
+    }
+
+    public static final int EXPORT_DIR_FIELD_NUMBER = 18;
+    private volatile java.lang.Object exportDir_;
+    /**
+     * <pre>
+     * Optional: save the build artifacts in this directory, the directory must exist.
+     * </pre>
+     *
+     * <code>string export_dir = 18;</code>
+     * @return The exportDir.
+     */
+    public java.lang.String getExportDir() {
+      java.lang.Object ref = exportDir_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        exportDir_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Optional: save the build artifacts in this directory, the directory must exist.
+     * </pre>
+     *
+     * <code>string export_dir = 18;</code>
+     * @return The bytes for exportDir.
+     */
+    public com.google.protobuf.ByteString
+        getExportDirBytes() {
+      java.lang.Object ref = exportDir_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        exportDir_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PROGRAMMER_FIELD_NUMBER = 19;
+    private volatile java.lang.Object programmer_;
+    /**
+     * <pre>
+     * External programmer for upload
+     * </pre>
+     *
+     * <code>string programmer = 19;</code>
+     * @return The programmer.
+     */
+    public java.lang.String getProgrammer() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        programmer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * External programmer for upload
+     * </pre>
+     *
+     * <code>string programmer = 19;</code>
+     * @return The bytes for programmer.
+     */
+    public com.google.protobuf.ByteString
+        getProgrammerBytes() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        programmer_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1209,6 +1391,12 @@ public final class Compile {
       }
       if (dryRun_ != false) {
         output.writeBool(17, dryRun_);
+      }
+      if (!getExportDirBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 18, exportDir_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 19, programmer_);
       }
       unknownFields.writeTo(output);
     }
@@ -1288,6 +1476,12 @@ public final class Compile {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(17, dryRun_);
       }
+      if (!getExportDirBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(18, exportDir_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(19, programmer_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -1340,6 +1534,10 @@ public final class Compile {
           != other.getOptimizeForDebug()) return false;
       if (getDryRun()
           != other.getDryRun()) return false;
+      if (!getExportDir()
+          .equals(other.getExportDir())) return false;
+      if (!getProgrammer()
+          .equals(other.getProgrammer())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1397,6 +1595,10 @@ public final class Compile {
       hash = (37 * hash) + DRYRUN_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getDryRun());
+      hash = (37 * hash) + EXPORT_DIR_FIELD_NUMBER;
+      hash = (53 * hash) + getExportDir().hashCode();
+      hash = (37 * hash) + PROGRAMMER_FIELD_NUMBER;
+      hash = (53 * hash) + getProgrammer().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1568,6 +1770,10 @@ public final class Compile {
 
         dryRun_ = false;
 
+        exportDir_ = "";
+
+        programmer_ = "";
+
         return this;
       }
 
@@ -1624,6 +1830,8 @@ public final class Compile {
         result.libraries_ = libraries_;
         result.optimizeForDebug_ = optimizeForDebug_;
         result.dryRun_ = dryRun_;
+        result.exportDir_ = exportDir_;
+        result.programmer_ = programmer_;
         onBuilt();
         return result;
       }
@@ -1744,6 +1952,14 @@ public final class Compile {
         if (other.getDryRun() != false) {
           setDryRun(other.getDryRun());
         }
+        if (!other.getExportDir().isEmpty()) {
+          exportDir_ = other.exportDir_;
+          onChanged();
+        }
+        if (!other.getProgrammer().isEmpty()) {
+          programmer_ = other.programmer_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -1778,6 +1994,10 @@ public final class Compile {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -1785,6 +2005,10 @@ public final class Compile {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -1796,6 +2020,10 @@ public final class Compile {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -1812,6 +2040,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -1826,6 +2058,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -1844,6 +2080,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -1858,6 +2098,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -1866,6 +2110,10 @@ public final class Compile {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -1877,6 +2125,10 @@ public final class Compile {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1896,7 +2148,7 @@ public final class Compile {
       private java.lang.Object fqbn_ = "";
       /**
        * <pre>
-       * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+       * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
        * </pre>
        *
        * <code>string fqbn = 2;</code>
@@ -1916,7 +2168,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+       * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
        * </pre>
        *
        * <code>string fqbn = 2;</code>
@@ -1937,7 +2189,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+       * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
        * </pre>
        *
        * <code>string fqbn = 2;</code>
@@ -1956,7 +2208,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+       * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
        * </pre>
        *
        * <code>string fqbn = 2;</code>
@@ -1970,7 +2222,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Fully Qualified Board Name, e.g.: arduino:avr:uno.
+       * Fully Qualified Board Name, e.g.: `arduino:avr:uno`. If this field is not defined, the FQBN of the board attached to the sketch via the `BoardAttach` method is used.
        * </pre>
        *
        * <code>string fqbn = 2;</code>
@@ -1991,6 +2243,10 @@ public final class Compile {
 
       private java.lang.Object sketchPath_ = "";
       /**
+       * <pre>
+       * The path where the sketch is stored.
+       * </pre>
+       *
        * <code>string sketchPath = 3;</code>
        * @return The sketchPath.
        */
@@ -2007,6 +2263,10 @@ public final class Compile {
         }
       }
       /**
+       * <pre>
+       * The path where the sketch is stored.
+       * </pre>
+       *
        * <code>string sketchPath = 3;</code>
        * @return The bytes for sketchPath.
        */
@@ -2024,6 +2284,10 @@ public final class Compile {
         }
       }
       /**
+       * <pre>
+       * The path where the sketch is stored.
+       * </pre>
+       *
        * <code>string sketchPath = 3;</code>
        * @param value The sketchPath to set.
        * @return This builder for chaining.
@@ -2039,6 +2303,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * The path where the sketch is stored.
+       * </pre>
+       *
        * <code>string sketchPath = 3;</code>
        * @return This builder for chaining.
        */
@@ -2049,6 +2317,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * The path where the sketch is stored.
+       * </pre>
+       *
        * <code>string sketchPath = 3;</code>
        * @param value The bytes for sketchPath to set.
        * @return This builder for chaining.
@@ -2110,7 +2382,7 @@ public final class Compile {
       private boolean preprocess_ ;
       /**
        * <pre>
-       * Print preprocessed code to stdout.
+       * Print preprocessed code to stdout instead of compiling.
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
@@ -2121,7 +2393,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Print preprocessed code to stdout.
+       * Print preprocessed code to stdout instead of compiling.
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
@@ -2136,7 +2408,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Print preprocessed code to stdout.
+       * Print preprocessed code to stdout instead of compiling.
        * </pre>
        *
        * <code>bool preprocess = 5;</code>
@@ -2248,7 +2520,7 @@ public final class Compile {
       private java.lang.Object buildPath_ = "";
       /**
        * <pre>
-       * Path where to save compiled files.
+       * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
        * </pre>
        *
        * <code>string buildPath = 7;</code>
@@ -2268,7 +2540,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Path where to save compiled files.
+       * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
        * </pre>
        *
        * <code>string buildPath = 7;</code>
@@ -2289,7 +2561,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Path where to save compiled files.
+       * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
        * </pre>
        *
        * <code>string buildPath = 7;</code>
@@ -2308,7 +2580,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Path where to save compiled files.
+       * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
        * </pre>
        *
        * <code>string buildPath = 7;</code>
@@ -2322,7 +2594,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Path where to save compiled files.
+       * Path to use to store the files used for the compilation. If omitted, a directory will be created in the operating system's default temporary path.
        * </pre>
        *
        * <code>string buildPath = 7;</code>
@@ -2350,7 +2622,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2362,7 +2634,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2373,7 +2645,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2385,7 +2657,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2398,7 +2670,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2418,7 +2690,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2437,7 +2709,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2454,7 +2726,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2468,7 +2740,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom build properties separated by commas. Or can be used multiple times for multiple properties.
+       * List of custom build properties separated by commas.
        * </pre>
        *
        * <code>repeated string buildProperties = 8;</code>
@@ -2490,7 +2762,7 @@ public final class Compile {
       private java.lang.Object warnings_ = "";
       /**
        * <pre>
-       * Used to tell gcc which warning level to use.
+       * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
        * </pre>
        *
        * <code>string warnings = 9;</code>
@@ -2510,7 +2782,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Used to tell gcc which warning level to use.
+       * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
        * </pre>
        *
        * <code>string warnings = 9;</code>
@@ -2531,7 +2803,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Used to tell gcc which warning level to use.
+       * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
        * </pre>
        *
        * <code>string warnings = 9;</code>
@@ -2550,7 +2822,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Used to tell gcc which warning level to use.
+       * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
        * </pre>
        *
        * <code>string warnings = 9;</code>
@@ -2564,7 +2836,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Used to tell gcc which warning level to use.
+       * Used to tell gcc which warning level to use. The level names are: "none", "default", "more" and "all".
        * </pre>
        *
        * <code>string warnings = 9;</code>
@@ -2766,13 +3038,13 @@ public final class Compile {
       private java.lang.Object exportFile_ = "";
       /**
        * <pre>
-       * The compiled binary is written to this file
+       * DEPRECATED: use exportDir instead
        * </pre>
        *
-       * <code>string exportFile = 13;</code>
+       * <code>string exportFile = 13 [deprecated = true];</code>
        * @return The exportFile.
        */
-      public java.lang.String getExportFile() {
+      @java.lang.Deprecated public java.lang.String getExportFile() {
         java.lang.Object ref = exportFile_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
@@ -2786,13 +3058,13 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The compiled binary is written to this file
+       * DEPRECATED: use exportDir instead
        * </pre>
        *
-       * <code>string exportFile = 13;</code>
+       * <code>string exportFile = 13 [deprecated = true];</code>
        * @return The bytes for exportFile.
        */
-      public com.google.protobuf.ByteString
+      @java.lang.Deprecated public com.google.protobuf.ByteString
           getExportFileBytes() {
         java.lang.Object ref = exportFile_;
         if (ref instanceof String) {
@@ -2807,14 +3079,14 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The compiled binary is written to this file
+       * DEPRECATED: use exportDir instead
        * </pre>
        *
-       * <code>string exportFile = 13;</code>
+       * <code>string exportFile = 13 [deprecated = true];</code>
        * @param value The exportFile to set.
        * @return This builder for chaining.
        */
-      public Builder setExportFile(
+      @java.lang.Deprecated public Builder setExportFile(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
@@ -2826,13 +3098,13 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The compiled binary is written to this file
+       * DEPRECATED: use exportDir instead
        * </pre>
        *
-       * <code>string exportFile = 13;</code>
+       * <code>string exportFile = 13 [deprecated = true];</code>
        * @return This builder for chaining.
        */
-      public Builder clearExportFile() {
+      @java.lang.Deprecated public Builder clearExportFile() {
         
         exportFile_ = getDefaultInstance().getExportFile();
         onChanged();
@@ -2840,14 +3112,14 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The compiled binary is written to this file
+       * DEPRECATED: use exportDir instead
        * </pre>
        *
-       * <code>string exportFile = 13;</code>
+       * <code>string exportFile = 13 [deprecated = true];</code>
        * @param value The bytes for exportFile to set.
        * @return This builder for chaining.
        */
-      public Builder setExportFileBytes(
+      @java.lang.Deprecated public Builder setExportFileBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
@@ -2862,7 +3134,7 @@ public final class Compile {
       private int jobs_ ;
       /**
        * <pre>
-       * The max number of concurrent compiler instances to run (as make -jx)
+       * The max number of concurrent compiler instances to run (as `make -jx`). If jobs is set to 0, it will use the number of available CPUs as the maximum.
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
@@ -2873,7 +3145,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The max number of concurrent compiler instances to run (as make -jx)
+       * The max number of concurrent compiler instances to run (as `make -jx`). If jobs is set to 0, it will use the number of available CPUs as the maximum.
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
@@ -2888,7 +3160,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * The max number of concurrent compiler instances to run (as make -jx)
+       * The max number of concurrent compiler instances to run (as `make -jx`). If jobs is set to 0, it will use the number of available CPUs as the maximum.
        * </pre>
        *
        * <code>int32 jobs = 14;</code>
@@ -2910,7 +3182,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2922,7 +3194,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2933,7 +3205,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2945,7 +3217,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2958,7 +3230,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2978,7 +3250,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -2997,7 +3269,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -3014,7 +3286,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -3028,7 +3300,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * List of custom libraries paths separated by commas. Or can be used multiple times for multiple libraries paths.
+       * List of custom libraries paths separated by commas.
        * </pre>
        *
        * <code>repeated string libraries = 15;</code>
@@ -3050,7 +3322,7 @@ public final class Compile {
       private boolean optimizeForDebug_ ;
       /**
        * <pre>
-       * Optimize compile output for debug, not for release
+       * Optimize compile output for debug, not for release.
        * </pre>
        *
        * <code>bool optimizeForDebug = 16;</code>
@@ -3061,7 +3333,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Optimize compile output for debug, not for release
+       * Optimize compile output for debug, not for release.
        * </pre>
        *
        * <code>bool optimizeForDebug = 16;</code>
@@ -3076,7 +3348,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * Optimize compile output for debug, not for release
+       * Optimize compile output for debug, not for release.
        * </pre>
        *
        * <code>bool optimizeForDebug = 16;</code>
@@ -3092,7 +3364,7 @@ public final class Compile {
       private boolean dryRun_ ;
       /**
        * <pre>
-       * When set to true the compiled binary will not be copied to the export directory
+       * When set to `true` the compiled binary will not be copied to the export directory.
        * </pre>
        *
        * <code>bool dryRun = 17;</code>
@@ -3103,7 +3375,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * When set to true the compiled binary will not be copied to the export directory
+       * When set to `true` the compiled binary will not be copied to the export directory.
        * </pre>
        *
        * <code>bool dryRun = 17;</code>
@@ -3118,7 +3390,7 @@ public final class Compile {
       }
       /**
        * <pre>
-       * When set to true the compiled binary will not be copied to the export directory
+       * When set to `true` the compiled binary will not be copied to the export directory.
        * </pre>
        *
        * <code>bool dryRun = 17;</code>
@@ -3127,6 +3399,198 @@ public final class Compile {
       public Builder clearDryRun() {
         
         dryRun_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object exportDir_ = "";
+      /**
+       * <pre>
+       * Optional: save the build artifacts in this directory, the directory must exist.
+       * </pre>
+       *
+       * <code>string export_dir = 18;</code>
+       * @return The exportDir.
+       */
+      public java.lang.String getExportDir() {
+        java.lang.Object ref = exportDir_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          exportDir_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional: save the build artifacts in this directory, the directory must exist.
+       * </pre>
+       *
+       * <code>string export_dir = 18;</code>
+       * @return The bytes for exportDir.
+       */
+      public com.google.protobuf.ByteString
+          getExportDirBytes() {
+        java.lang.Object ref = exportDir_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          exportDir_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Optional: save the build artifacts in this directory, the directory must exist.
+       * </pre>
+       *
+       * <code>string export_dir = 18;</code>
+       * @param value The exportDir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExportDir(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        exportDir_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional: save the build artifacts in this directory, the directory must exist.
+       * </pre>
+       *
+       * <code>string export_dir = 18;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearExportDir() {
+        
+        exportDir_ = getDefaultInstance().getExportDir();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Optional: save the build artifacts in this directory, the directory must exist.
+       * </pre>
+       *
+       * <code>string export_dir = 18;</code>
+       * @param value The bytes for exportDir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setExportDirBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        exportDir_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object programmer_ = "";
+      /**
+       * <pre>
+       * External programmer for upload
+       * </pre>
+       *
+       * <code>string programmer = 19;</code>
+       * @return The programmer.
+       */
+      public java.lang.String getProgrammer() {
+        java.lang.Object ref = programmer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          programmer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * External programmer for upload
+       * </pre>
+       *
+       * <code>string programmer = 19;</code>
+       * @return The bytes for programmer.
+       */
+      public com.google.protobuf.ByteString
+          getProgrammerBytes() {
+        java.lang.Object ref = programmer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          programmer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * External programmer for upload
+       * </pre>
+       *
+       * <code>string programmer = 19;</code>
+       * @param value The programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        programmer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * External programmer for upload
+       * </pre>
+       *
+       * <code>string programmer = 19;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearProgrammer() {
+        
+        programmer_ = getDefaultInstance().getProgrammer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * External programmer for upload
+       * </pre>
+       *
+       * <code>string programmer = 19;</code>
+       * @param value The bytes for programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        programmer_ = value;
         onChanged();
         return this;
       }
@@ -3188,12 +3652,20 @@ public final class Compile {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The output of the compilation process.
+     * </pre>
+     *
      * <code>bytes out_stream = 1;</code>
      * @return The outStream.
      */
     com.google.protobuf.ByteString getOutStream();
 
     /**
+     * <pre>
+     * The error output of the compilation process.
+     * </pre>
+     *
      * <code>bytes err_stream = 2;</code>
      * @return The errStream.
      */
@@ -3337,6 +3809,10 @@ public final class Compile {
     public static final int OUT_STREAM_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString outStream_;
     /**
+     * <pre>
+     * The output of the compilation process.
+     * </pre>
+     *
      * <code>bytes out_stream = 1;</code>
      * @return The outStream.
      */
@@ -3347,6 +3823,10 @@ public final class Compile {
     public static final int ERR_STREAM_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString errStream_;
     /**
+     * <pre>
+     * The error output of the compilation process.
+     * </pre>
+     *
      * <code>bytes err_stream = 2;</code>
      * @return The errStream.
      */
@@ -3763,6 +4243,10 @@ public final class Compile {
 
       private com.google.protobuf.ByteString outStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * The output of the compilation process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @return The outStream.
        */
@@ -3770,6 +4254,10 @@ public final class Compile {
         return outStream_;
       }
       /**
+       * <pre>
+       * The output of the compilation process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @param value The outStream to set.
        * @return This builder for chaining.
@@ -3784,6 +4272,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * The output of the compilation process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @return This builder for chaining.
        */
@@ -3796,6 +4288,10 @@ public final class Compile {
 
       private com.google.protobuf.ByteString errStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * The error output of the compilation process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @return The errStream.
        */
@@ -3803,6 +4299,10 @@ public final class Compile {
         return errStream_;
       }
       /**
+       * <pre>
+       * The error output of the compilation process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @param value The errStream to set.
        * @return This builder for chaining.
@@ -3817,6 +4317,10 @@ public final class Compile {
         return this;
       }
       /**
+       * <pre>
+       * The error output of the compilation process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @return This builder for chaining.
        */
@@ -4070,24 +4574,25 @@ public final class Compile {
   static {
     java.lang.String[] descriptorData = {
       "\n\026commands/compile.proto\022\027cc.arduino.cli" +
-      ".commands\032\025commands/common.proto\"\364\002\n\nCom" +
+      ".commands\032\025commands/common.proto\"\240\003\n\nCom" +
       "pileReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.c" +
       "li.commands.Instance\022\014\n\004fqbn\030\002 \001(\t\022\022\n\nsk" +
       "etchPath\030\003 \001(\t\022\026\n\016showProperties\030\004 \001(\010\022\022" +
       "\n\npreprocess\030\005 \001(\010\022\026\n\016buildCachePath\030\006 \001" +
       "(\t\022\021\n\tbuildPath\030\007 \001(\t\022\027\n\017buildProperties" +
       "\030\010 \003(\t\022\020\n\010warnings\030\t \001(\t\022\017\n\007verbose\030\n \001(" +
-      "\010\022\r\n\005quiet\030\013 \001(\010\022\016\n\006vidPid\030\014 \001(\t\022\022\n\nexpo" +
-      "rtFile\030\r \001(\t\022\014\n\004jobs\030\016 \001(\005\022\021\n\tlibraries\030" +
-      "\017 \003(\t\022\030\n\020optimizeForDebug\030\020 \001(\010\022\016\n\006dryRu" +
-      "n\030\021 \001(\010\"\253\001\n\013CompileResp\022\022\n\nout_stream\030\001 " +
-      "\001(\014\022\022\n\nerr_stream\030\002 \001(\014\022<\n\rtask_progress" +
-      "\030\003 \001(\0132%.cc.arduino.cli.commands.TaskPro" +
-      "gress\0226\n\006result\030\004 \001(\0162&.cc.arduino.cli.c" +
-      "ommands.CompileResult*7\n\rCompileResult\022\023" +
-      "\n\017compile_success\020\000\022\021\n\rcompile_error\020\001B-" +
-      "Z+github.com/arduino/arduino-cli/rpc/com" +
-      "mandsb\006proto3"
+      "\010\022\r\n\005quiet\030\013 \001(\010\022\016\n\006vidPid\030\014 \001(\t\022\026\n\nexpo" +
+      "rtFile\030\r \001(\tB\002\030\001\022\014\n\004jobs\030\016 \001(\005\022\021\n\tlibrar" +
+      "ies\030\017 \003(\t\022\030\n\020optimizeForDebug\030\020 \001(\010\022\016\n\006d" +
+      "ryRun\030\021 \001(\010\022\022\n\nexport_dir\030\022 \001(\t\022\022\n\nprogr" +
+      "ammer\030\023 \001(\t\"\253\001\n\013CompileResp\022\022\n\nout_strea" +
+      "m\030\001 \001(\014\022\022\n\nerr_stream\030\002 \001(\014\022<\n\rtask_prog" +
+      "ress\030\003 \001(\0132%.cc.arduino.cli.commands.Tas" +
+      "kProgress\0226\n\006result\030\004 \001(\0162&.cc.arduino.c" +
+      "li.commands.CompileResult*7\n\rCompileResu" +
+      "lt\022\023\n\017compile_success\020\000\022\021\n\rcompile_error" +
+      "\020\001B-Z+github.com/arduino/arduino-cli/rpc" +
+      "/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4099,7 +4604,7 @@ public final class Compile {
     internal_static_cc_arduino_cli_commands_CompileReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_CompileReq_descriptor,
-        new java.lang.String[] { "Instance", "Fqbn", "SketchPath", "ShowProperties", "Preprocess", "BuildCachePath", "BuildPath", "BuildProperties", "Warnings", "Verbose", "Quiet", "VidPid", "ExportFile", "Jobs", "Libraries", "OptimizeForDebug", "DryRun", });
+        new java.lang.String[] { "Instance", "Fqbn", "SketchPath", "ShowProperties", "Preprocess", "BuildCachePath", "BuildPath", "BuildProperties", "Warnings", "Verbose", "Quiet", "VidPid", "ExportFile", "Jobs", "Libraries", "OptimizeForDebug", "DryRun", "ExportDir", "Programmer", });
     internal_static_cc_arduino_cli_commands_CompileResp_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_cc_arduino_cli_commands_CompileResp_fieldAccessorTable = new

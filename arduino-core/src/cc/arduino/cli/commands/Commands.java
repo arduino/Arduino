@@ -19,6 +19,11 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Start a Arduino Core Service instance that will provide only Library
+     * Manager functionality.
+     * </pre>
+     *
      * <code>bool library_manager_only = 2;</code>
      * @return The libraryManagerOnly.
      */
@@ -109,6 +114,11 @@ public final class Commands {
     public static final int LIBRARY_MANAGER_ONLY_FIELD_NUMBER = 2;
     private boolean libraryManagerOnly_;
     /**
+     * <pre>
+     * Start a Arduino Core Service instance that will provide only Library
+     * Manager functionality.
+     * </pre>
+     *
      * <code>bool library_manager_only = 2;</code>
      * @return The libraryManagerOnly.
      */
@@ -421,6 +431,11 @@ public final class Commands {
 
       private boolean libraryManagerOnly_ ;
       /**
+       * <pre>
+       * Start a Arduino Core Service instance that will provide only Library
+       * Manager functionality.
+       * </pre>
+       *
        * <code>bool library_manager_only = 2;</code>
        * @return The libraryManagerOnly.
        */
@@ -428,6 +443,11 @@ public final class Commands {
         return libraryManagerOnly_;
       }
       /**
+       * <pre>
+       * Start a Arduino Core Service instance that will provide only Library
+       * Manager functionality.
+       * </pre>
+       *
        * <code>bool library_manager_only = 2;</code>
        * @param value The libraryManagerOnly to set.
        * @return This builder for chaining.
@@ -439,6 +459,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Start a Arduino Core Service instance that will provide only Library
+       * Manager functionality.
+       * </pre>
+       *
        * <code>bool library_manager_only = 2;</code>
        * @return This builder for chaining.
        */
@@ -506,38 +531,70 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @return A list containing the platformsIndexErrors.
      */
     java.util.List<java.lang.String>
         getPlatformsIndexErrorsList();
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @return The count of platformsIndexErrors.
      */
     int getPlatformsIndexErrorsCount();
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @param index The index of the element to return.
      * @return The platformsIndexErrors at the given index.
      */
     java.lang.String getPlatformsIndexErrors(int index);
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @param index The index of the value to return.
      * @return The bytes of the platformsIndexErrors at the given index.
@@ -546,11 +603,21 @@ public final class Commands {
         getPlatformsIndexErrorsBytes(int index);
 
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 3;</code>
      * @return The librariesIndexError.
      */
     java.lang.String getLibrariesIndexError();
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 3;</code>
      * @return The bytes for librariesIndexError.
      */
@@ -558,31 +625,55 @@ public final class Commands {
         getLibrariesIndexErrorBytes();
 
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder();
 
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -727,6 +818,10 @@ public final class Commands {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -734,6 +829,10 @@ public final class Commands {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -741,6 +840,10 @@ public final class Commands {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * An Arduino Core Service instance.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -750,6 +853,11 @@ public final class Commands {
     public static final int PLATFORMS_INDEX_ERRORS_FIELD_NUMBER = 2;
     private com.google.protobuf.LazyStringList platformsIndexErrors_;
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @return A list containing the platformsIndexErrors.
      */
@@ -758,6 +866,11 @@ public final class Commands {
       return platformsIndexErrors_;
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @return The count of platformsIndexErrors.
      */
@@ -765,6 +878,11 @@ public final class Commands {
       return platformsIndexErrors_.size();
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @param index The index of the element to return.
      * @return The platformsIndexErrors at the given index.
@@ -773,6 +891,11 @@ public final class Commands {
       return platformsIndexErrors_.get(index);
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index files.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 2;</code>
      * @param index The index of the value to return.
      * @return The bytes of the platformsIndexErrors at the given index.
@@ -785,6 +908,11 @@ public final class Commands {
     public static final int LIBRARIES_INDEX_ERROR_FIELD_NUMBER = 3;
     private volatile java.lang.Object librariesIndexError_;
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 3;</code>
      * @return The librariesIndexError.
      */
@@ -801,6 +929,11 @@ public final class Commands {
       }
     }
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 3;</code>
      * @return The bytes for librariesIndexError.
      */
@@ -821,6 +954,10 @@ public final class Commands {
     public static final int DOWNLOAD_PROGRESS_FIELD_NUMBER = 4;
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      * @return Whether the downloadProgress field is set.
      */
@@ -828,6 +965,10 @@ public final class Commands {
       return downloadProgress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      * @return The downloadProgress.
      */
@@ -835,6 +976,10 @@ public final class Commands {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
     }
     /**
+     * <pre>
+     * Progress of the downloads of platforms and libraries index files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -844,6 +989,10 @@ public final class Commands {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 5;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -851,6 +1000,10 @@ public final class Commands {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      * @return The taskProgress.
      */
@@ -858,6 +1011,10 @@ public final class Commands {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Describes the current stage of the initialization.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -1296,6 +1453,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -1303,6 +1464,10 @@ public final class Commands {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -1314,6 +1479,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -1330,6 +1499,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -1344,6 +1517,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -1362,6 +1539,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -1376,6 +1557,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -1384,6 +1569,10 @@ public final class Commands {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -1395,6 +1584,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * An Arduino Core Service instance.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1419,6 +1612,11 @@ public final class Commands {
          }
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @return A list containing the platformsIndexErrors.
        */
@@ -1427,6 +1625,11 @@ public final class Commands {
         return platformsIndexErrors_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @return The count of platformsIndexErrors.
        */
@@ -1434,6 +1637,11 @@ public final class Commands {
         return platformsIndexErrors_.size();
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param index The index of the element to return.
        * @return The platformsIndexErrors at the given index.
@@ -1442,6 +1650,11 @@ public final class Commands {
         return platformsIndexErrors_.get(index);
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param index The index of the value to return.
        * @return The bytes of the platformsIndexErrors at the given index.
@@ -1451,6 +1664,11 @@ public final class Commands {
         return platformsIndexErrors_.getByteString(index);
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param index The index to set the value at.
        * @param value The platformsIndexErrors to set.
@@ -1467,6 +1685,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param value The platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -1482,6 +1705,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param values The platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -1495,6 +1723,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @return This builder for chaining.
        */
@@ -1505,6 +1738,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index files.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 2;</code>
        * @param value The bytes of the platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -1523,6 +1761,11 @@ public final class Commands {
 
       private java.lang.Object librariesIndexError_ = "";
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 3;</code>
        * @return The librariesIndexError.
        */
@@ -1539,6 +1782,11 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 3;</code>
        * @return The bytes for librariesIndexError.
        */
@@ -1556,6 +1804,11 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 3;</code>
        * @param value The librariesIndexError to set.
        * @return This builder for chaining.
@@ -1571,6 +1824,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 3;</code>
        * @return This builder for chaining.
        */
@@ -1581,6 +1839,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 3;</code>
        * @param value The bytes for librariesIndexError to set.
        * @return This builder for chaining.
@@ -1601,6 +1864,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        * @return Whether the downloadProgress field is set.
        */
@@ -1608,6 +1875,10 @@ public final class Commands {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        * @return The downloadProgress.
        */
@@ -1619,6 +1890,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public Builder setDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1635,6 +1910,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public Builder setDownloadProgress(
@@ -1649,6 +1928,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public Builder mergeDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1667,6 +1950,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public Builder clearDownloadProgress() {
@@ -1681,6 +1968,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getDownloadProgressBuilder() {
@@ -1689,6 +1980,10 @@ public final class Commands {
         return getDownloadProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -1700,6 +1995,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of platforms and libraries index files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 4;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1720,6 +2019,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -1727,6 +2030,10 @@ public final class Commands {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        * @return The taskProgress.
        */
@@ -1738,6 +2045,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -1754,6 +2065,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public Builder setTaskProgress(
@@ -1768,6 +2083,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -1786,6 +2105,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public Builder clearTaskProgress() {
@@ -1800,6 +2123,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -1808,6 +2135,10 @@ public final class Commands {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -1819,6 +2150,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Describes the current stage of the initialization.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 5;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1892,16 +2227,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -1999,6 +2346,10 @@ public final class Commands {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -2006,6 +2357,10 @@ public final class Commands {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -2013,6 +2368,10 @@ public final class Commands {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * The Arduino Core Service instance to destroy.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2338,6 +2697,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -2345,6 +2708,10 @@ public final class Commands {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -2356,6 +2723,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2372,6 +2743,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -2386,6 +2761,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2404,6 +2783,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -2418,6 +2801,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -2426,6 +2813,10 @@ public final class Commands {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2437,6 +2828,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * The Arduino Core Service instance to destroy.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -2928,16 +3323,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -3035,6 +3442,10 @@ public final class Commands {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -3042,6 +3453,10 @@ public final class Commands {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -3049,6 +3464,10 @@ public final class Commands {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -3374,6 +3793,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -3381,6 +3804,10 @@ public final class Commands {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -3392,6 +3819,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -3408,6 +3839,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -3422,6 +3857,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -3440,6 +3879,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -3454,6 +3897,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -3462,6 +3909,10 @@ public final class Commands {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -3473,6 +3924,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -3546,23 +4001,43 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @return A list containing the platformsIndexErrors.
      */
     java.util.List<java.lang.String>
         getPlatformsIndexErrorsList();
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @return The count of platformsIndexErrors.
      */
     int getPlatformsIndexErrorsCount();
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @param index The index of the element to return.
      * @return The platformsIndexErrors at the given index.
      */
     java.lang.String getPlatformsIndexErrors(int index);
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @param index The index of the value to return.
      * @return The bytes of the platformsIndexErrors at the given index.
@@ -3571,11 +4046,21 @@ public final class Commands {
         getPlatformsIndexErrorsBytes(int index);
 
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 2;</code>
      * @return The librariesIndexError.
      */
     java.lang.String getLibrariesIndexError();
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 2;</code>
      * @return The bytes for librariesIndexError.
      */
@@ -3683,6 +4168,11 @@ public final class Commands {
     public static final int PLATFORMS_INDEX_ERRORS_FIELD_NUMBER = 1;
     private com.google.protobuf.LazyStringList platformsIndexErrors_;
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @return A list containing the platformsIndexErrors.
      */
@@ -3691,6 +4181,11 @@ public final class Commands {
       return platformsIndexErrors_;
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @return The count of platformsIndexErrors.
      */
@@ -3698,6 +4193,11 @@ public final class Commands {
       return platformsIndexErrors_.size();
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @param index The index of the element to return.
      * @return The platformsIndexErrors at the given index.
@@ -3706,6 +4206,11 @@ public final class Commands {
       return platformsIndexErrors_.get(index);
     }
     /**
+     * <pre>
+     * Error messages related to any problems encountered while parsing the
+     * platforms index file.
+     * </pre>
+     *
      * <code>repeated string platforms_index_errors = 1;</code>
      * @param index The index of the value to return.
      * @return The bytes of the platformsIndexErrors at the given index.
@@ -3718,6 +4223,11 @@ public final class Commands {
     public static final int LIBRARIES_INDEX_ERROR_FIELD_NUMBER = 2;
     private volatile java.lang.Object librariesIndexError_;
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 2;</code>
      * @return The librariesIndexError.
      */
@@ -3734,6 +4244,11 @@ public final class Commands {
       }
     }
     /**
+     * <pre>
+     * Error message if a problem was encountered while parsing the libraries
+     * index file.
+     * </pre>
+     *
      * <code>string libraries_index_error = 2;</code>
      * @return The bytes for librariesIndexError.
      */
@@ -4097,6 +4612,11 @@ public final class Commands {
          }
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @return A list containing the platformsIndexErrors.
        */
@@ -4105,6 +4625,11 @@ public final class Commands {
         return platformsIndexErrors_.getUnmodifiableView();
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @return The count of platformsIndexErrors.
        */
@@ -4112,6 +4637,11 @@ public final class Commands {
         return platformsIndexErrors_.size();
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param index The index of the element to return.
        * @return The platformsIndexErrors at the given index.
@@ -4120,6 +4650,11 @@ public final class Commands {
         return platformsIndexErrors_.get(index);
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param index The index of the value to return.
        * @return The bytes of the platformsIndexErrors at the given index.
@@ -4129,6 +4664,11 @@ public final class Commands {
         return platformsIndexErrors_.getByteString(index);
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param index The index to set the value at.
        * @param value The platformsIndexErrors to set.
@@ -4145,6 +4685,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param value The platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -4160,6 +4705,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param values The platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -4173,6 +4723,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @return This builder for chaining.
        */
@@ -4183,6 +4738,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error messages related to any problems encountered while parsing the
+       * platforms index file.
+       * </pre>
+       *
        * <code>repeated string platforms_index_errors = 1;</code>
        * @param value The bytes of the platformsIndexErrors to add.
        * @return This builder for chaining.
@@ -4201,6 +4761,11 @@ public final class Commands {
 
       private java.lang.Object librariesIndexError_ = "";
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 2;</code>
        * @return The librariesIndexError.
        */
@@ -4217,6 +4782,11 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 2;</code>
        * @return The bytes for librariesIndexError.
        */
@@ -4234,6 +4804,11 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 2;</code>
        * @param value The librariesIndexError to set.
        * @return This builder for chaining.
@@ -4249,6 +4824,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 2;</code>
        * @return This builder for chaining.
        */
@@ -4259,6 +4839,11 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Error message if a problem was encountered while parsing the libraries
+       * index file.
+       * </pre>
+       *
        * <code>string libraries_index_error = 2;</code>
        * @param value The bytes for librariesIndexError to set.
        * @return This builder for chaining.
@@ -4332,16 +4917,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -4439,6 +5036,10 @@ public final class Commands {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -4446,6 +5047,10 @@ public final class Commands {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -4453,6 +5058,10 @@ public final class Commands {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -4778,6 +5387,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -4785,6 +5398,10 @@ public final class Commands {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -4796,6 +5413,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4812,6 +5433,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -4826,6 +5451,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4844,6 +5473,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -4858,6 +5491,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -4866,6 +5503,10 @@ public final class Commands {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -4877,6 +5518,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -4950,16 +5595,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder();
@@ -5057,6 +5714,10 @@ public final class Commands {
     public static final int DOWNLOAD_PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return Whether the downloadProgress field is set.
      */
@@ -5064,6 +5725,10 @@ public final class Commands {
       return downloadProgress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return The downloadProgress.
      */
@@ -5071,6 +5736,10 @@ public final class Commands {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
     }
     /**
+     * <pre>
+     * Progress of the platforms index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -5396,6 +6065,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        * @return Whether the downloadProgress field is set.
        */
@@ -5403,6 +6076,10 @@ public final class Commands {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        * @return The downloadProgress.
        */
@@ -5414,6 +6091,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder setDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -5430,6 +6111,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder setDownloadProgress(
@@ -5444,6 +6129,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder mergeDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -5462,6 +6151,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder clearDownloadProgress() {
@@ -5476,6 +6169,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getDownloadProgressBuilder() {
@@ -5484,6 +6181,10 @@ public final class Commands {
         return getDownloadProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -5495,6 +6196,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the platforms index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5568,16 +6273,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -5675,6 +6392,10 @@ public final class Commands {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -5682,6 +6403,10 @@ public final class Commands {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -5689,6 +6414,10 @@ public final class Commands {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the Init response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -6014,6 +6743,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -6021,6 +6754,10 @@ public final class Commands {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -6032,6 +6769,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -6048,6 +6789,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -6062,6 +6807,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -6080,6 +6829,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -6094,6 +6847,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -6102,6 +6859,10 @@ public final class Commands {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -6113,6 +6874,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the Init response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6186,16 +6951,28 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return Whether the downloadProgress field is set.
      */
     boolean hasDownloadProgress();
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return The downloadProgress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getDownloadProgress();
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder();
@@ -6293,6 +7070,10 @@ public final class Commands {
     public static final int DOWNLOAD_PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress downloadProgress_;
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return Whether the downloadProgress field is set.
      */
@@ -6300,6 +7081,10 @@ public final class Commands {
       return downloadProgress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      * @return The downloadProgress.
      */
@@ -6307,6 +7092,10 @@ public final class Commands {
       return downloadProgress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : downloadProgress_;
     }
     /**
+     * <pre>
+     * Progress of the libraries index download.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -6632,6 +7421,10 @@ public final class Commands {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> downloadProgressBuilder_;
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        * @return Whether the downloadProgress field is set.
        */
@@ -6639,6 +7432,10 @@ public final class Commands {
         return downloadProgressBuilder_ != null || downloadProgress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        * @return The downloadProgress.
        */
@@ -6650,6 +7447,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder setDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6666,6 +7467,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder setDownloadProgress(
@@ -6680,6 +7485,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder mergeDownloadProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6698,6 +7507,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public Builder clearDownloadProgress() {
@@ -6712,6 +7525,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getDownloadProgressBuilder() {
@@ -6720,6 +7537,10 @@ public final class Commands {
         return getDownloadProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getDownloadProgressOrBuilder() {
@@ -6731,6 +7552,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * Progress of the libraries index download.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress download_progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -7222,11 +8047,19 @@ public final class Commands {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The version of Arduino CLI in use.
+     * </pre>
+     *
      * <code>string version = 1;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * The version of Arduino CLI in use.
+     * </pre>
+     *
      * <code>string version = 1;</code>
      * @return The bytes for version.
      */
@@ -7320,6 +8153,10 @@ public final class Commands {
     public static final int VERSION_FIELD_NUMBER = 1;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * The version of Arduino CLI in use.
+     * </pre>
+     *
      * <code>string version = 1;</code>
      * @return The version.
      */
@@ -7336,6 +8173,10 @@ public final class Commands {
       }
     }
     /**
+     * <pre>
+     * The version of Arduino CLI in use.
+     * </pre>
+     *
      * <code>string version = 1;</code>
      * @return The bytes for version.
      */
@@ -7657,6 +8498,10 @@ public final class Commands {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * The version of Arduino CLI in use.
+       * </pre>
+       *
        * <code>string version = 1;</code>
        * @return The version.
        */
@@ -7673,6 +8518,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * The version of Arduino CLI in use.
+       * </pre>
+       *
        * <code>string version = 1;</code>
        * @return The bytes for version.
        */
@@ -7690,6 +8539,10 @@ public final class Commands {
         }
       }
       /**
+       * <pre>
+       * The version of Arduino CLI in use.
+       * </pre>
+       *
        * <code>string version = 1;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -7705,6 +8558,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The version of Arduino CLI in use.
+       * </pre>
+       *
        * <code>string version = 1;</code>
        * @return This builder for chaining.
        */
@@ -7715,6 +8572,10 @@ public final class Commands {
         return this;
       }
       /**
+       * <pre>
+       * The version of Arduino CLI in use.
+       * </pre>
+       *
        * <code>string version = 1;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -7879,7 +8740,7 @@ public final class Commands {
       "LibrariesIndexResp\022D\n\021download_progress\030" +
       "\001 \001(\0132).cc.arduino.cli.commands.Download" +
       "Progress\"\014\n\nVersionReq\"\036\n\013VersionResp\022\017\n" +
-      "\007version\030\001 \001(\t2\272\024\n\013ArduinoCore\022O\n\004Init\022 " +
+      "\007version\030\001 \001(\t2\314\026\n\013ArduinoCore\022O\n\004Init\022 " +
       ".cc.arduino.cli.commands.InitReq\032!.cc.ar" +
       "duino.cli.commands.InitResp\"\0000\001\022V\n\007Destr" +
       "oy\022#.cc.arduino.cli.commands.DestroyReq\032" +
@@ -7919,34 +8780,41 @@ public final class Commands {
       "formUpgradeReq\032,.cc.arduino.cli.commands" +
       ".PlatformUpgradeResp0\001\022S\n\006Upload\022\".cc.ar" +
       "duino.cli.commands.UploadReq\032#.cc.arduin" +
-      "o.cli.commands.UploadResp0\001\022i\n\016PlatformS" +
-      "earch\022*.cc.arduino.cli.commands.Platform" +
-      "SearchReq\032+.cc.arduino.cli.commands.Plat" +
-      "formSearchResp\022c\n\014PlatformList\022(.cc.ardu" +
-      "ino.cli.commands.PlatformListReq\032).cc.ar" +
-      "duino.cli.commands.PlatformListResp\022n\n\017L" +
-      "ibraryDownload\022+.cc.arduino.cli.commands" +
-      ".LibraryDownloadReq\032,.cc.arduino.cli.com" +
-      "mands.LibraryDownloadResp0\001\022k\n\016LibraryIn" +
-      "stall\022*.cc.arduino.cli.commands.LibraryI" +
-      "nstallReq\032+.cc.arduino.cli.commands.Libr" +
-      "aryInstallResp0\001\022q\n\020LibraryUninstall\022,.c" +
+      "o.cli.commands.UploadResp0\001\022\242\001\n!ListProg" +
+      "rammersAvailableForUpload\022=.cc.arduino.c" +
+      "li.commands.ListProgrammersAvailableForU" +
+      "ploadReq\032>.cc.arduino.cli.commands.ListP" +
+      "rogrammersAvailableForUploadResp\022k\n\016Burn" +
+      "Bootloader\022*.cc.arduino.cli.commands.Bur" +
+      "nBootloaderReq\032+.cc.arduino.cli.commands" +
+      ".BurnBootloaderResp0\001\022i\n\016PlatformSearch\022" +
+      "*.cc.arduino.cli.commands.PlatformSearch" +
+      "Req\032+.cc.arduino.cli.commands.PlatformSe" +
+      "archResp\022c\n\014PlatformList\022(.cc.arduino.cl" +
+      "i.commands.PlatformListReq\032).cc.arduino." +
+      "cli.commands.PlatformListResp\022n\n\017Library" +
+      "Download\022+.cc.arduino.cli.commands.Libra" +
+      "ryDownloadReq\032,.cc.arduino.cli.commands." +
+      "LibraryDownloadResp0\001\022k\n\016LibraryInstall\022" +
+      "*.cc.arduino.cli.commands.LibraryInstall" +
+      "Req\032+.cc.arduino.cli.commands.LibraryIns" +
+      "tallResp0\001\022q\n\020LibraryUninstall\022,.cc.ardu" +
+      "ino.cli.commands.LibraryUninstallReq\032-.c" +
       "c.arduino.cli.commands.LibraryUninstallR" +
-      "eq\032-.cc.arduino.cli.commands.LibraryUnin" +
-      "stallResp0\001\022t\n\021LibraryUpgradeAll\022-.cc.ar" +
-      "duino.cli.commands.LibraryUpgradeAllReq\032" +
-      "..cc.arduino.cli.commands.LibraryUpgrade" +
-      "AllResp0\001\022\215\001\n\032LibraryResolveDependencies" +
-      "\0226.cc.arduino.cli.commands.LibraryResolv" +
-      "eDependenciesReq\0327.cc.arduino.cli.comman" +
-      "ds.LibraryResolveDependenciesResp\022f\n\rLib" +
-      "rarySearch\022).cc.arduino.cli.commands.Lib" +
-      "rarySearchReq\032*.cc.arduino.cli.commands." +
-      "LibrarySearchResp\022`\n\013LibraryList\022\'.cc.ar" +
-      "duino.cli.commands.LibraryListReq\032(.cc.a" +
-      "rduino.cli.commands.LibraryListRespB-Z+g" +
-      "ithub.com/arduino/arduino-cli/rpc/comman" +
-      "dsb\006proto3"
+      "esp0\001\022t\n\021LibraryUpgradeAll\022-.cc.arduino." +
+      "cli.commands.LibraryUpgradeAllReq\032..cc.a" +
+      "rduino.cli.commands.LibraryUpgradeAllRes" +
+      "p0\001\022\215\001\n\032LibraryResolveDependencies\0226.cc." +
+      "arduino.cli.commands.LibraryResolveDepen" +
+      "denciesReq\0327.cc.arduino.cli.commands.Lib" +
+      "raryResolveDependenciesResp\022f\n\rLibrarySe" +
+      "arch\022).cc.arduino.cli.commands.LibrarySe" +
+      "archReq\032*.cc.arduino.cli.commands.Librar" +
+      "ySearchResp\022`\n\013LibraryList\022\'.cc.arduino." +
+      "cli.commands.LibraryListReq\032(.cc.arduino" +
+      ".cli.commands.LibraryListRespB-Z+github." +
+      "com/arduino/arduino-cli/rpc/commandsb\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

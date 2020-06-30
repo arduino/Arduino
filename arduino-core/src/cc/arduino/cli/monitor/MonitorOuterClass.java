@@ -943,11 +943,19 @@ public final class MonitorOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The target name.
+     * </pre>
+     *
      * <code>string target = 1;</code>
      * @return The target.
      */
     java.lang.String getTarget();
     /**
+     * <pre>
+     * The target name.
+     * </pre>
+     *
      * <code>string target = 1;</code>
      * @return The bytes for target.
      */
@@ -966,16 +974,31 @@ public final class MonitorOuterClass {
     cc.arduino.cli.monitor.MonitorOuterClass.MonitorConfig.TargetType getType();
 
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      * @return Whether the additionalConfig field is set.
      */
     boolean hasAdditionalConfig();
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      * @return The additionalConfig.
      */
     com.google.protobuf.Struct getAdditionalConfig();
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      */
     com.google.protobuf.StructOrBuilder getAdditionalConfigOrBuilder();
@@ -1187,6 +1210,10 @@ public final class MonitorOuterClass {
     public static final int TARGET_FIELD_NUMBER = 1;
     private volatile java.lang.Object target_;
     /**
+     * <pre>
+     * The target name.
+     * </pre>
+     *
      * <code>string target = 1;</code>
      * @return The target.
      */
@@ -1203,6 +1230,10 @@ public final class MonitorOuterClass {
       }
     }
     /**
+     * <pre>
+     * The target name.
+     * </pre>
+     *
      * <code>string target = 1;</code>
      * @return The bytes for target.
      */
@@ -1242,6 +1273,11 @@ public final class MonitorOuterClass {
     public static final int ADDITIONALCONFIG_FIELD_NUMBER = 3;
     private com.google.protobuf.Struct additionalConfig_;
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      * @return Whether the additionalConfig field is set.
      */
@@ -1249,6 +1285,11 @@ public final class MonitorOuterClass {
       return additionalConfig_ != null;
     }
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      * @return The additionalConfig.
      */
@@ -1256,6 +1297,11 @@ public final class MonitorOuterClass {
       return additionalConfig_ == null ? com.google.protobuf.Struct.getDefaultInstance() : additionalConfig_;
     }
     /**
+     * <pre>
+     * Additional parameters that might be needed to configure the target or the
+     * monitor itself.
+     * </pre>
+     *
      * <code>.google.protobuf.Struct additionalConfig = 3;</code>
      */
     public com.google.protobuf.StructOrBuilder getAdditionalConfigOrBuilder() {
@@ -1617,6 +1663,10 @@ public final class MonitorOuterClass {
 
       private java.lang.Object target_ = "";
       /**
+       * <pre>
+       * The target name.
+       * </pre>
+       *
        * <code>string target = 1;</code>
        * @return The target.
        */
@@ -1633,6 +1683,10 @@ public final class MonitorOuterClass {
         }
       }
       /**
+       * <pre>
+       * The target name.
+       * </pre>
+       *
        * <code>string target = 1;</code>
        * @return The bytes for target.
        */
@@ -1650,6 +1704,10 @@ public final class MonitorOuterClass {
         }
       }
       /**
+       * <pre>
+       * The target name.
+       * </pre>
+       *
        * <code>string target = 1;</code>
        * @param value The target to set.
        * @return This builder for chaining.
@@ -1665,6 +1723,10 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The target name.
+       * </pre>
+       *
        * <code>string target = 1;</code>
        * @return This builder for chaining.
        */
@@ -1675,6 +1737,10 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The target name.
+       * </pre>
+       *
        * <code>string target = 1;</code>
        * @param value The bytes for target to set.
        * @return This builder for chaining.
@@ -1747,6 +1813,11 @@ public final class MonitorOuterClass {
       private com.google.protobuf.SingleFieldBuilderV3<
           com.google.protobuf.Struct, com.google.protobuf.Struct.Builder, com.google.protobuf.StructOrBuilder> additionalConfigBuilder_;
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        * @return Whether the additionalConfig field is set.
        */
@@ -1754,6 +1825,11 @@ public final class MonitorOuterClass {
         return additionalConfigBuilder_ != null || additionalConfig_ != null;
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        * @return The additionalConfig.
        */
@@ -1765,6 +1841,11 @@ public final class MonitorOuterClass {
         }
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public Builder setAdditionalConfig(com.google.protobuf.Struct value) {
@@ -1781,6 +1862,11 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public Builder setAdditionalConfig(
@@ -1795,6 +1881,11 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public Builder mergeAdditionalConfig(com.google.protobuf.Struct value) {
@@ -1813,6 +1904,11 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public Builder clearAdditionalConfig() {
@@ -1827,6 +1923,11 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public com.google.protobuf.Struct.Builder getAdditionalConfigBuilder() {
@@ -1835,6 +1936,11 @@ public final class MonitorOuterClass {
         return getAdditionalConfigFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       public com.google.protobuf.StructOrBuilder getAdditionalConfigOrBuilder() {
@@ -1846,6 +1952,11 @@ public final class MonitorOuterClass {
         }
       }
       /**
+       * <pre>
+       * Additional parameters that might be needed to configure the target or the
+       * monitor itself.
+       * </pre>
+       *
        * <code>.google.protobuf.Struct additionalConfig = 3;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1919,6 +2030,10 @@ public final class MonitorOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The data received from the target.
+     * </pre>
+     *
      * <code>bytes data = 1;</code>
      * @return The data.
      */
@@ -2013,6 +2128,10 @@ public final class MonitorOuterClass {
     public static final int DATA_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString data_;
     /**
+     * <pre>
+     * The data received from the target.
+     * </pre>
+     *
      * <code>bytes data = 1;</code>
      * @return The data.
      */
@@ -2327,6 +2446,10 @@ public final class MonitorOuterClass {
 
       private com.google.protobuf.ByteString data_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * The data received from the target.
+       * </pre>
+       *
        * <code>bytes data = 1;</code>
        * @return The data.
        */
@@ -2334,6 +2457,10 @@ public final class MonitorOuterClass {
         return data_;
       }
       /**
+       * <pre>
+       * The data received from the target.
+       * </pre>
+       *
        * <code>bytes data = 1;</code>
        * @param value The data to set.
        * @return This builder for chaining.
@@ -2348,6 +2475,10 @@ public final class MonitorOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The data received from the target.
+       * </pre>
+       *
        * <code>bytes data = 1;</code>
        * @return This builder for chaining.
        */

@@ -107,7 +107,7 @@
   <property name="portable" value="false" />
 
   <property name="ARDUINO-BUILDER-VERSION" value="1.5.4" />
-  <property name="ARDUINO-CLI-VERSION" value="0.8.0" />
+  <property name="ARDUINO-CLI-VERSION" value="0.11.0" />
   <property name="LIBLISTSERIAL-VERSION" value="1.4.2-2" />
   <property name="AVRGCC-VERSION" value="7.3.0-atmel3.6.1-arduino7" />
   <property name="AVRDUDE-VERSION" value="6.3.0-arduino17" />

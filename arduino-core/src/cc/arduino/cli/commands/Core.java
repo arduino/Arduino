@@ -19,26 +19,46 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -46,11 +66,19 @@ public final class Core {
         getPlatformPackageBytes();
 
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -58,11 +86,19 @@ public final class Core {
         getArchitectureBytes();
 
     /**
+     * <pre>
+     * Platform version to install.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * Platform version to install.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -183,6 +219,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -190,6 +230,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -197,6 +241,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -206,6 +254,10 @@ public final class Core {
     public static final int PLATFORM_PACKAGE_FIELD_NUMBER = 2;
     private volatile java.lang.Object platformPackage_;
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
@@ -222,6 +274,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -242,6 +298,10 @@ public final class Core {
     public static final int ARCHITECTURE_FIELD_NUMBER = 3;
     private volatile java.lang.Object architecture_;
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
@@ -258,6 +318,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -278,6 +342,10 @@ public final class Core {
     public static final int VERSION_FIELD_NUMBER = 4;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * Platform version to install.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
@@ -294,6 +362,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Platform version to install.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -681,6 +753,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -688,6 +764,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -699,6 +779,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -715,6 +799,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -729,6 +817,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -747,6 +839,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -761,6 +857,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -769,6 +869,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -780,6 +884,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -798,6 +906,10 @@ public final class Core {
 
       private java.lang.Object platformPackage_ = "";
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The platformPackage.
        */
@@ -814,6 +926,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The bytes for platformPackage.
        */
@@ -831,6 +947,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The platformPackage to set.
        * @return This builder for chaining.
@@ -846,6 +966,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return This builder for chaining.
        */
@@ -856,6 +980,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The bytes for platformPackage to set.
        * @return This builder for chaining.
@@ -874,6 +1002,10 @@ public final class Core {
 
       private java.lang.Object architecture_ = "";
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The architecture.
        */
@@ -890,6 +1022,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The bytes for architecture.
        */
@@ -907,6 +1043,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The architecture to set.
        * @return This builder for chaining.
@@ -922,6 +1062,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return This builder for chaining.
        */
@@ -932,6 +1076,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The bytes for architecture to set.
        * @return This builder for chaining.
@@ -950,6 +1098,10 @@ public final class Core {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * Platform version to install.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The version.
        */
@@ -966,6 +1118,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform version to install.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The bytes for version.
        */
@@ -983,6 +1139,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform version to install.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -998,6 +1158,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform version to install.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return This builder for chaining.
        */
@@ -1008,6 +1172,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform version to install.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -1081,31 +1249,55 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
 
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -1216,6 +1408,10 @@ public final class Core {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -1223,6 +1419,10 @@ public final class Core {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -1230,6 +1430,10 @@ public final class Core {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -1239,6 +1443,10 @@ public final class Core {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 2;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -1246,6 +1454,10 @@ public final class Core {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
@@ -1253,6 +1465,10 @@ public final class Core {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the installation.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -1608,6 +1824,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -1615,6 +1835,10 @@ public final class Core {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -1626,6 +1850,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1642,6 +1870,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -1656,6 +1888,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -1674,6 +1910,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -1688,6 +1928,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -1696,6 +1940,10 @@ public final class Core {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -1707,6 +1955,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1727,6 +1979,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -1734,6 +1990,10 @@ public final class Core {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return The taskProgress.
        */
@@ -1745,6 +2005,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -1761,6 +2025,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(
@@ -1775,6 +2043,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -1793,6 +2065,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder clearTaskProgress() {
@@ -1807,6 +2083,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -1815,6 +2095,10 @@ public final class Core {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -1826,6 +2110,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the installation.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -1899,16 +2187,28 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
@@ -1926,11 +2226,19 @@ public final class Core {
         getPlatformPackageBytes();
 
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -1938,11 +2246,19 @@ public final class Core {
         getArchitectureBytes();
 
     /**
+     * <pre>
+     * Platform version to download.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
     java.lang.String getVersion();
     /**
+     * <pre>
+     * Platform version to download.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -2063,6 +2379,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -2070,6 +2390,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -2077,6 +2401,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2122,6 +2450,10 @@ public final class Core {
     public static final int ARCHITECTURE_FIELD_NUMBER = 3;
     private volatile java.lang.Object architecture_;
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
@@ -2138,6 +2470,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -2158,6 +2494,10 @@ public final class Core {
     public static final int VERSION_FIELD_NUMBER = 4;
     private volatile java.lang.Object version_;
     /**
+     * <pre>
+     * Platform version to download.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The version.
      */
@@ -2174,6 +2514,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Platform version to download.
+     * </pre>
+     *
      * <code>string version = 4;</code>
      * @return The bytes for version.
      */
@@ -2561,6 +2905,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -2568,6 +2916,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -2579,6 +2931,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2595,6 +2951,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -2609,6 +2969,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -2627,6 +2991,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -2641,6 +3009,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -2649,6 +3021,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -2660,6 +3036,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -2754,6 +3134,10 @@ public final class Core {
 
       private java.lang.Object architecture_ = "";
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The architecture.
        */
@@ -2770,6 +3154,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The bytes for architecture.
        */
@@ -2787,6 +3175,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The architecture to set.
        * @return This builder for chaining.
@@ -2802,6 +3194,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return This builder for chaining.
        */
@@ -2812,6 +3208,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The bytes for architecture to set.
        * @return This builder for chaining.
@@ -2830,6 +3230,10 @@ public final class Core {
 
       private java.lang.Object version_ = "";
       /**
+       * <pre>
+       * Platform version to download.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The version.
        */
@@ -2846,6 +3250,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform version to download.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return The bytes for version.
        */
@@ -2863,6 +3271,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform version to download.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The version to set.
        * @return This builder for chaining.
@@ -2878,6 +3290,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform version to download.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @return This builder for chaining.
        */
@@ -2888,6 +3304,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform version to download.
+       * </pre>
+       *
        * <code>string version = 4;</code>
        * @param value The bytes for version to set.
        * @return This builder for chaining.
@@ -2961,16 +3381,28 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
@@ -3068,6 +3500,10 @@ public final class Core {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -3075,6 +3511,10 @@ public final class Core {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -3082,6 +3522,10 @@ public final class Core {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the downloads of platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -3407,6 +3851,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -3414,6 +3862,10 @@ public final class Core {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -3425,6 +3877,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -3441,6 +3897,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -3455,6 +3915,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -3473,6 +3937,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -3487,6 +3955,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -3495,6 +3967,10 @@ public final class Core {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -3506,6 +3982,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -3579,26 +4059,46 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -3606,11 +4106,19 @@ public final class Core {
         getPlatformPackageBytes();
 
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -3724,6 +4232,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -3731,6 +4243,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -3738,6 +4254,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -3747,6 +4267,10 @@ public final class Core {
     public static final int PLATFORM_PACKAGE_FIELD_NUMBER = 2;
     private volatile java.lang.Object platformPackage_;
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
@@ -3763,6 +4287,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -3783,6 +4311,10 @@ public final class Core {
     public static final int ARCHITECTURE_FIELD_NUMBER = 3;
     private volatile java.lang.Object architecture_;
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
@@ -3799,6 +4331,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -4169,6 +4705,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -4176,6 +4716,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -4187,6 +4731,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4203,6 +4751,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -4217,6 +4769,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -4235,6 +4791,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -4249,6 +4809,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -4257,6 +4821,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -4268,6 +4836,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -4286,6 +4858,10 @@ public final class Core {
 
       private java.lang.Object platformPackage_ = "";
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The platformPackage.
        */
@@ -4302,6 +4878,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The bytes for platformPackage.
        */
@@ -4319,6 +4899,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The platformPackage to set.
        * @return This builder for chaining.
@@ -4334,6 +4918,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return This builder for chaining.
        */
@@ -4344,6 +4932,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The bytes for platformPackage to set.
        * @return This builder for chaining.
@@ -4362,6 +4954,10 @@ public final class Core {
 
       private java.lang.Object architecture_ = "";
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The architecture.
        */
@@ -4378,6 +4974,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The bytes for architecture.
        */
@@ -4395,6 +4995,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The architecture to set.
        * @return This builder for chaining.
@@ -4410,6 +5014,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return This builder for chaining.
        */
@@ -4420,6 +5028,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The bytes for architecture to set.
        * @return This builder for chaining.
@@ -4493,16 +5105,28 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -4600,6 +5224,10 @@ public final class Core {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -4607,6 +5235,10 @@ public final class Core {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      * @return The taskProgress.
      */
@@ -4614,6 +5246,10 @@ public final class Core {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the uninstall.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -4939,6 +5575,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -4946,6 +5586,10 @@ public final class Core {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        * @return The taskProgress.
        */
@@ -4957,6 +5601,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -4973,6 +5621,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder setTaskProgress(
@@ -4987,6 +5639,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -5005,6 +5661,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public Builder clearTaskProgress() {
@@ -5019,6 +5679,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -5027,6 +5691,10 @@ public final class Core {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -5038,6 +5706,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the uninstall.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5111,26 +5783,46 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
     java.lang.String getPlatformPackage();
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -5138,11 +5830,19 @@ public final class Core {
         getPlatformPackageBytes();
 
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
     java.lang.String getArchitecture();
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -5256,6 +5956,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -5263,6 +5967,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -5270,6 +5978,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5279,6 +5991,10 @@ public final class Core {
     public static final int PLATFORM_PACKAGE_FIELD_NUMBER = 2;
     private volatile java.lang.Object platformPackage_;
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The platformPackage.
      */
@@ -5295,6 +6011,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Vendor name of the platform (e.g., `arduino`).
+     * </pre>
+     *
      * <code>string platform_package = 2;</code>
      * @return The bytes for platformPackage.
      */
@@ -5315,6 +6035,10 @@ public final class Core {
     public static final int ARCHITECTURE_FIELD_NUMBER = 3;
     private volatile java.lang.Object architecture_;
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The architecture.
      */
@@ -5331,6 +6055,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Architecture name of the platform (e.g., `avr`).
+     * </pre>
+     *
      * <code>string architecture = 3;</code>
      * @return The bytes for architecture.
      */
@@ -5701,6 +6429,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -5708,6 +6440,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -5719,6 +6455,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5735,6 +6475,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -5749,6 +6493,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -5767,6 +6515,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -5781,6 +6533,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -5789,6 +6545,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -5800,6 +6560,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -5818,6 +6582,10 @@ public final class Core {
 
       private java.lang.Object platformPackage_ = "";
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The platformPackage.
        */
@@ -5834,6 +6602,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return The bytes for platformPackage.
        */
@@ -5851,6 +6623,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The platformPackage to set.
        * @return This builder for chaining.
@@ -5866,6 +6642,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @return This builder for chaining.
        */
@@ -5876,6 +6656,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Vendor name of the platform (e.g., `arduino`).
+       * </pre>
+       *
        * <code>string platform_package = 2;</code>
        * @param value The bytes for platformPackage to set.
        * @return This builder for chaining.
@@ -5894,6 +6678,10 @@ public final class Core {
 
       private java.lang.Object architecture_ = "";
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The architecture.
        */
@@ -5910,6 +6698,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return The bytes for architecture.
        */
@@ -5927,6 +6719,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The architecture to set.
        * @return This builder for chaining.
@@ -5942,6 +6738,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @return This builder for chaining.
        */
@@ -5952,6 +6752,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Architecture name of the platform (e.g., `avr`).
+       * </pre>
+       *
        * <code>string architecture = 3;</code>
        * @param value The bytes for architecture to set.
        * @return This builder for chaining.
@@ -6025,31 +6829,55 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
     boolean hasProgress();
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
     cc.arduino.cli.commands.Common.DownloadProgress getProgress();
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder();
 
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
     boolean hasTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
     cc.arduino.cli.commands.Common.TaskProgress getTaskProgress();
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder();
@@ -6160,6 +6988,10 @@ public final class Core {
     public static final int PROGRESS_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.DownloadProgress progress_;
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return Whether the progress field is set.
      */
@@ -6167,6 +6999,10 @@ public final class Core {
       return progress_ != null;
     }
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      * @return The progress.
      */
@@ -6174,6 +7010,10 @@ public final class Core {
       return progress_ == null ? cc.arduino.cli.commands.Common.DownloadProgress.getDefaultInstance() : progress_;
     }
     /**
+     * <pre>
+     * Progress of the downloads of the platform and tool files.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
      */
     public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -6183,6 +7023,10 @@ public final class Core {
     public static final int TASK_PROGRESS_FIELD_NUMBER = 2;
     private cc.arduino.cli.commands.Common.TaskProgress taskProgress_;
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return Whether the taskProgress field is set.
      */
@@ -6190,6 +7034,10 @@ public final class Core {
       return taskProgress_ != null;
     }
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      * @return The taskProgress.
      */
@@ -6197,6 +7045,10 @@ public final class Core {
       return taskProgress_ == null ? cc.arduino.cli.commands.Common.TaskProgress.getDefaultInstance() : taskProgress_;
     }
     /**
+     * <pre>
+     * Description of the current stage of the upgrade.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
      */
     public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6552,6 +7404,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.DownloadProgress, cc.arduino.cli.commands.Common.DownloadProgress.Builder, cc.arduino.cli.commands.Common.DownloadProgressOrBuilder> progressBuilder_;
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return Whether the progress field is set.
        */
@@ -6559,6 +7415,10 @@ public final class Core {
         return progressBuilder_ != null || progress_ != null;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        * @return The progress.
        */
@@ -6570,6 +7430,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6586,6 +7450,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder setProgress(
@@ -6600,6 +7468,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder mergeProgress(cc.arduino.cli.commands.Common.DownloadProgress value) {
@@ -6618,6 +7490,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public Builder clearProgress() {
@@ -6632,6 +7508,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgress.Builder getProgressBuilder() {
@@ -6640,6 +7520,10 @@ public final class Core {
         return getProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       public cc.arduino.cli.commands.Common.DownloadProgressOrBuilder getProgressOrBuilder() {
@@ -6651,6 +7535,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Progress of the downloads of the platform and tool files.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.DownloadProgress progress = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6671,6 +7559,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.TaskProgress, cc.arduino.cli.commands.Common.TaskProgress.Builder, cc.arduino.cli.commands.Common.TaskProgressOrBuilder> taskProgressBuilder_;
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return Whether the taskProgress field is set.
        */
@@ -6678,6 +7570,10 @@ public final class Core {
         return taskProgressBuilder_ != null || taskProgress_ != null;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        * @return The taskProgress.
        */
@@ -6689,6 +7585,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6705,6 +7605,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder setTaskProgress(
@@ -6719,6 +7623,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder mergeTaskProgress(cc.arduino.cli.commands.Common.TaskProgress value) {
@@ -6737,6 +7645,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public Builder clearTaskProgress() {
@@ -6751,6 +7663,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgress.Builder getTaskProgressBuilder() {
@@ -6759,6 +7675,10 @@ public final class Core {
         return getTaskProgressFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       public cc.arduino.cli.commands.Common.TaskProgressOrBuilder getTaskProgressOrBuilder() {
@@ -6770,6 +7690,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Description of the current stage of the upgrade.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.TaskProgress task_progress = 2;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -6843,26 +7767,46 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Keywords for the search.
+     * </pre>
+     *
      * <code>string search_args = 2;</code>
      * @return The searchArgs.
      */
     java.lang.String getSearchArgs();
     /**
+     * <pre>
+     * Keywords for the search.
+     * </pre>
+     *
      * <code>string search_args = 2;</code>
      * @return The bytes for searchArgs.
      */
@@ -6870,6 +7814,11 @@ public final class Core {
         getSearchArgsBytes();
 
     /**
+     * <pre>
+     * Whether to show all available versions. `false` causes only the newest
+     * versions of the cores to be listed in the search results.
+     * </pre>
+     *
      * <code>bool all_versions = 3;</code>
      * @return The allVersions.
      */
@@ -6980,6 +7929,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -6987,6 +7940,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -6994,6 +7951,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -7003,6 +7964,10 @@ public final class Core {
     public static final int SEARCH_ARGS_FIELD_NUMBER = 2;
     private volatile java.lang.Object searchArgs_;
     /**
+     * <pre>
+     * Keywords for the search.
+     * </pre>
+     *
      * <code>string search_args = 2;</code>
      * @return The searchArgs.
      */
@@ -7019,6 +7984,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Keywords for the search.
+     * </pre>
+     *
      * <code>string search_args = 2;</code>
      * @return The bytes for searchArgs.
      */
@@ -7039,6 +8008,11 @@ public final class Core {
     public static final int ALL_VERSIONS_FIELD_NUMBER = 3;
     private boolean allVersions_;
     /**
+     * <pre>
+     * Whether to show all available versions. `false` causes only the newest
+     * versions of the cores to be listed in the search results.
+     * </pre>
+     *
      * <code>bool all_versions = 3;</code>
      * @return The allVersions.
      */
@@ -7400,6 +8374,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -7407,6 +8385,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -7418,6 +8400,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -7434,6 +8420,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -7448,6 +8438,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -7466,6 +8460,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -7480,6 +8478,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -7488,6 +8490,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -7499,6 +8505,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -7517,6 +8527,10 @@ public final class Core {
 
       private java.lang.Object searchArgs_ = "";
       /**
+       * <pre>
+       * Keywords for the search.
+       * </pre>
+       *
        * <code>string search_args = 2;</code>
        * @return The searchArgs.
        */
@@ -7533,6 +8547,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Keywords for the search.
+       * </pre>
+       *
        * <code>string search_args = 2;</code>
        * @return The bytes for searchArgs.
        */
@@ -7550,6 +8568,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Keywords for the search.
+       * </pre>
+       *
        * <code>string search_args = 2;</code>
        * @param value The searchArgs to set.
        * @return This builder for chaining.
@@ -7565,6 +8587,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Keywords for the search.
+       * </pre>
+       *
        * <code>string search_args = 2;</code>
        * @return This builder for chaining.
        */
@@ -7575,6 +8601,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Keywords for the search.
+       * </pre>
+       *
        * <code>string search_args = 2;</code>
        * @param value The bytes for searchArgs to set.
        * @return This builder for chaining.
@@ -7593,6 +8623,11 @@ public final class Core {
 
       private boolean allVersions_ ;
       /**
+       * <pre>
+       * Whether to show all available versions. `false` causes only the newest
+       * versions of the cores to be listed in the search results.
+       * </pre>
+       *
        * <code>bool all_versions = 3;</code>
        * @return The allVersions.
        */
@@ -7600,6 +8635,11 @@ public final class Core {
         return allVersions_;
       }
       /**
+       * <pre>
+       * Whether to show all available versions. `false` causes only the newest
+       * versions of the cores to be listed in the search results.
+       * </pre>
+       *
        * <code>bool all_versions = 3;</code>
        * @param value The allVersions to set.
        * @return This builder for chaining.
@@ -7611,6 +8651,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Whether to show all available versions. `false` causes only the newest
+       * versions of the cores to be listed in the search results.
+       * </pre>
+       *
        * <code>bool all_versions = 3;</code>
        * @return This builder for chaining.
        */
@@ -7678,24 +8723,44 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Core.Platform> 
         getSearchOutputList();
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     cc.arduino.cli.commands.Core.Platform getSearchOutput(int index);
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     int getSearchOutputCount();
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
         getSearchOutputOrBuilderList();
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     cc.arduino.cli.commands.Core.PlatformOrBuilder getSearchOutputOrBuilder(
@@ -7795,12 +8860,20 @@ public final class Core {
     public static final int SEARCH_OUTPUT_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Core.Platform> searchOutput_;
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Core.Platform> getSearchOutputList() {
       return searchOutput_;
     }
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
@@ -7808,18 +8881,30 @@ public final class Core {
       return searchOutput_;
     }
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     public int getSearchOutputCount() {
       return searchOutput_.size();
     }
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     public cc.arduino.cli.commands.Core.Platform getSearchOutput(int index) {
       return searchOutput_.get(index);
     }
     /**
+     * <pre>
+     * Results of the search.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
      */
     public cc.arduino.cli.commands.Core.PlatformOrBuilder getSearchOutputOrBuilder(
@@ -8182,6 +9267,10 @@ public final class Core {
           cc.arduino.cli.commands.Core.Platform, cc.arduino.cli.commands.Core.Platform.Builder, cc.arduino.cli.commands.Core.PlatformOrBuilder> searchOutputBuilder_;
 
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Platform> getSearchOutputList() {
@@ -8192,6 +9281,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public int getSearchOutputCount() {
@@ -8202,6 +9295,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform getSearchOutput(int index) {
@@ -8212,6 +9309,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder setSearchOutput(
@@ -8229,6 +9330,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder setSearchOutput(
@@ -8243,6 +9348,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder addSearchOutput(cc.arduino.cli.commands.Core.Platform value) {
@@ -8259,6 +9368,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder addSearchOutput(
@@ -8276,6 +9389,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder addSearchOutput(
@@ -8290,6 +9407,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder addSearchOutput(
@@ -8304,6 +9425,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder addAllSearchOutput(
@@ -8319,6 +9444,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder clearSearchOutput() {
@@ -8332,6 +9461,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public Builder removeSearchOutput(int index) {
@@ -8345,6 +9478,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder getSearchOutputBuilder(
@@ -8352,6 +9489,10 @@ public final class Core {
         return getSearchOutputFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public cc.arduino.cli.commands.Core.PlatformOrBuilder getSearchOutputOrBuilder(
@@ -8362,6 +9503,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
@@ -8373,6 +9518,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder addSearchOutputBuilder() {
@@ -8380,6 +9529,10 @@ public final class Core {
             cc.arduino.cli.commands.Core.Platform.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder addSearchOutputBuilder(
@@ -8388,6 +9541,10 @@ public final class Core {
             index, cc.arduino.cli.commands.Core.Platform.getDefaultInstance());
       }
       /**
+       * <pre>
+       * Results of the search.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform search_output = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Platform.Builder> 
@@ -8466,21 +9623,38 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Set to true to only list platforms which have a newer version available
+     * than the one currently installed.
+     * </pre>
+     *
      * <code>bool updatable_only = 2;</code>
      * @return The updatableOnly.
      */
@@ -8584,6 +9758,10 @@ public final class Core {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -8591,6 +9769,10 @@ public final class Core {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -8598,6 +9780,10 @@ public final class Core {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -8607,6 +9793,11 @@ public final class Core {
     public static final int UPDATABLE_ONLY_FIELD_NUMBER = 2;
     private boolean updatableOnly_;
     /**
+     * <pre>
+     * Set to true to only list platforms which have a newer version available
+     * than the one currently installed.
+     * </pre>
+     *
      * <code>bool updatable_only = 2;</code>
      * @return The updatableOnly.
      */
@@ -8951,6 +10142,10 @@ public final class Core {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -8958,6 +10153,10 @@ public final class Core {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -8969,6 +10168,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -8985,6 +10188,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -8999,6 +10206,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -9017,6 +10228,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -9031,6 +10246,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -9039,6 +10258,10 @@ public final class Core {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -9050,6 +10273,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -9068,6 +10295,11 @@ public final class Core {
 
       private boolean updatableOnly_ ;
       /**
+       * <pre>
+       * Set to true to only list platforms which have a newer version available
+       * than the one currently installed.
+       * </pre>
+       *
        * <code>bool updatable_only = 2;</code>
        * @return The updatableOnly.
        */
@@ -9075,6 +10307,11 @@ public final class Core {
         return updatableOnly_;
       }
       /**
+       * <pre>
+       * Set to true to only list platforms which have a newer version available
+       * than the one currently installed.
+       * </pre>
+       *
        * <code>bool updatable_only = 2;</code>
        * @param value The updatableOnly to set.
        * @return This builder for chaining.
@@ -9086,6 +10323,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Set to true to only list platforms which have a newer version available
+       * than the one currently installed.
+       * </pre>
+       *
        * <code>bool updatable_only = 2;</code>
        * @return This builder for chaining.
        */
@@ -9153,24 +10395,44 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     java.util.List<cc.arduino.cli.commands.Core.Platform> 
         getInstalledPlatformList();
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     cc.arduino.cli.commands.Core.Platform getInstalledPlatform(int index);
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     int getInstalledPlatformCount();
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
         getInstalledPlatformOrBuilderList();
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     cc.arduino.cli.commands.Core.PlatformOrBuilder getInstalledPlatformOrBuilder(
@@ -9270,12 +10532,20 @@ public final class Core {
     public static final int INSTALLED_PLATFORM_FIELD_NUMBER = 1;
     private java.util.List<cc.arduino.cli.commands.Core.Platform> installedPlatform_;
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Core.Platform> getInstalledPlatformList() {
       return installedPlatform_;
     }
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
@@ -9283,18 +10553,30 @@ public final class Core {
       return installedPlatform_;
     }
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     public int getInstalledPlatformCount() {
       return installedPlatform_.size();
     }
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     public cc.arduino.cli.commands.Core.Platform getInstalledPlatform(int index) {
       return installedPlatform_.get(index);
     }
     /**
+     * <pre>
+     * The installed platforms.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
      */
     public cc.arduino.cli.commands.Core.PlatformOrBuilder getInstalledPlatformOrBuilder(
@@ -9657,6 +10939,10 @@ public final class Core {
           cc.arduino.cli.commands.Core.Platform, cc.arduino.cli.commands.Core.Platform.Builder, cc.arduino.cli.commands.Core.PlatformOrBuilder> installedPlatformBuilder_;
 
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Platform> getInstalledPlatformList() {
@@ -9667,6 +10953,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public int getInstalledPlatformCount() {
@@ -9677,6 +10967,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform getInstalledPlatform(int index) {
@@ -9687,6 +10981,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder setInstalledPlatform(
@@ -9704,6 +11002,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder setInstalledPlatform(
@@ -9718,6 +11020,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder addInstalledPlatform(cc.arduino.cli.commands.Core.Platform value) {
@@ -9734,6 +11040,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder addInstalledPlatform(
@@ -9751,6 +11061,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder addInstalledPlatform(
@@ -9765,6 +11079,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder addInstalledPlatform(
@@ -9779,6 +11097,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder addAllInstalledPlatform(
@@ -9794,6 +11116,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder clearInstalledPlatform() {
@@ -9807,6 +11133,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public Builder removeInstalledPlatform(int index) {
@@ -9820,6 +11150,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder getInstalledPlatformBuilder(
@@ -9827,6 +11161,10 @@ public final class Core {
         return getInstalledPlatformFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public cc.arduino.cli.commands.Core.PlatformOrBuilder getInstalledPlatformOrBuilder(
@@ -9837,6 +11175,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Core.PlatformOrBuilder> 
@@ -9848,6 +11190,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder addInstalledPlatformBuilder() {
@@ -9855,6 +11201,10 @@ public final class Core {
             cc.arduino.cli.commands.Core.Platform.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public cc.arduino.cli.commands.Core.Platform.Builder addInstalledPlatformBuilder(
@@ -9863,6 +11213,10 @@ public final class Core {
             index, cc.arduino.cli.commands.Core.Platform.getDefaultInstance());
       }
       /**
+       * <pre>
+       * The installed platforms.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Platform installed_platform = 1;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Platform.Builder> 
@@ -9941,11 +11295,19 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Platform ID (e.g., `arduino:avr`).
+     * </pre>
+     *
      * <code>string ID = 1;</code>
      * @return The iD.
      */
     java.lang.String getID();
     /**
+     * <pre>
+     * Platform ID (e.g., `arduino:avr`).
+     * </pre>
+     *
      * <code>string ID = 1;</code>
      * @return The bytes for iD.
      */
@@ -9953,11 +11315,19 @@ public final class Core {
         getIDBytes();
 
     /**
+     * <pre>
+     * Version of the platform.
+     * </pre>
+     *
      * <code>string Installed = 2;</code>
      * @return The installed.
      */
     java.lang.String getInstalled();
     /**
+     * <pre>
+     * Version of the platform.
+     * </pre>
+     *
      * <code>string Installed = 2;</code>
      * @return The bytes for installed.
      */
@@ -9965,11 +11335,19 @@ public final class Core {
         getInstalledBytes();
 
     /**
+     * <pre>
+     * Newest available version of the platform.
+     * </pre>
+     *
      * <code>string Latest = 3;</code>
      * @return The latest.
      */
     java.lang.String getLatest();
     /**
+     * <pre>
+     * Newest available version of the platform.
+     * </pre>
+     *
      * <code>string Latest = 3;</code>
      * @return The bytes for latest.
      */
@@ -9977,11 +11355,19 @@ public final class Core {
         getLatestBytes();
 
     /**
+     * <pre>
+     * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+     * </pre>
+     *
      * <code>string Name = 4;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+     * </pre>
+     *
      * <code>string Name = 4;</code>
      * @return The bytes for name.
      */
@@ -9989,11 +11375,19 @@ public final class Core {
         getNameBytes();
 
     /**
+     * <pre>
+     * Maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Maintainer = 5;</code>
      * @return The maintainer.
      */
     java.lang.String getMaintainer();
     /**
+     * <pre>
+     * Maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Maintainer = 5;</code>
      * @return The bytes for maintainer.
      */
@@ -10001,11 +11395,21 @@ public final class Core {
         getMaintainerBytes();
 
     /**
+     * <pre>
+     * A URL provided by the author of the platform's package, intended to point
+     * to their website.
+     * </pre>
+     *
      * <code>string Website = 6;</code>
      * @return The website.
      */
     java.lang.String getWebsite();
     /**
+     * <pre>
+     * A URL provided by the author of the platform's package, intended to point
+     * to their website.
+     * </pre>
+     *
      * <code>string Website = 6;</code>
      * @return The bytes for website.
      */
@@ -10013,11 +11417,19 @@ public final class Core {
         getWebsiteBytes();
 
     /**
+     * <pre>
+     * Email of the maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Email = 7;</code>
      * @return The email.
      */
     java.lang.String getEmail();
     /**
+     * <pre>
+     * Email of the maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Email = 7;</code>
      * @return The bytes for email.
      */
@@ -10025,24 +11437,59 @@ public final class Core {
         getEmailBytes();
 
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     java.util.List<cc.arduino.cli.commands.Core.Board> 
         getBoardsList();
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     cc.arduino.cli.commands.Core.Board getBoards(int index);
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     int getBoardsCount();
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     java.util.List<? extends cc.arduino.cli.commands.Core.BoardOrBuilder> 
         getBoardsOrBuilderList();
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     cc.arduino.cli.commands.Core.BoardOrBuilder getBoardsOrBuilder(
@@ -10191,6 +11638,10 @@ public final class Core {
     public static final int ID_FIELD_NUMBER = 1;
     private volatile java.lang.Object iD_;
     /**
+     * <pre>
+     * Platform ID (e.g., `arduino:avr`).
+     * </pre>
+     *
      * <code>string ID = 1;</code>
      * @return The iD.
      */
@@ -10207,6 +11658,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Platform ID (e.g., `arduino:avr`).
+     * </pre>
+     *
      * <code>string ID = 1;</code>
      * @return The bytes for iD.
      */
@@ -10227,6 +11682,10 @@ public final class Core {
     public static final int INSTALLED_FIELD_NUMBER = 2;
     private volatile java.lang.Object installed_;
     /**
+     * <pre>
+     * Version of the platform.
+     * </pre>
+     *
      * <code>string Installed = 2;</code>
      * @return The installed.
      */
@@ -10243,6 +11702,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Version of the platform.
+     * </pre>
+     *
      * <code>string Installed = 2;</code>
      * @return The bytes for installed.
      */
@@ -10263,6 +11726,10 @@ public final class Core {
     public static final int LATEST_FIELD_NUMBER = 3;
     private volatile java.lang.Object latest_;
     /**
+     * <pre>
+     * Newest available version of the platform.
+     * </pre>
+     *
      * <code>string Latest = 3;</code>
      * @return The latest.
      */
@@ -10279,6 +11746,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Newest available version of the platform.
+     * </pre>
+     *
      * <code>string Latest = 3;</code>
      * @return The bytes for latest.
      */
@@ -10299,6 +11770,10 @@ public final class Core {
     public static final int NAME_FIELD_NUMBER = 4;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+     * </pre>
+     *
      * <code>string Name = 4;</code>
      * @return The name.
      */
@@ -10315,6 +11790,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+     * </pre>
+     *
      * <code>string Name = 4;</code>
      * @return The bytes for name.
      */
@@ -10335,6 +11814,10 @@ public final class Core {
     public static final int MAINTAINER_FIELD_NUMBER = 5;
     private volatile java.lang.Object maintainer_;
     /**
+     * <pre>
+     * Maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Maintainer = 5;</code>
      * @return The maintainer.
      */
@@ -10351,6 +11834,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Maintainer = 5;</code>
      * @return The bytes for maintainer.
      */
@@ -10371,6 +11858,11 @@ public final class Core {
     public static final int WEBSITE_FIELD_NUMBER = 6;
     private volatile java.lang.Object website_;
     /**
+     * <pre>
+     * A URL provided by the author of the platform's package, intended to point
+     * to their website.
+     * </pre>
+     *
      * <code>string Website = 6;</code>
      * @return The website.
      */
@@ -10387,6 +11879,11 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * A URL provided by the author of the platform's package, intended to point
+     * to their website.
+     * </pre>
+     *
      * <code>string Website = 6;</code>
      * @return The bytes for website.
      */
@@ -10407,6 +11904,10 @@ public final class Core {
     public static final int EMAIL_FIELD_NUMBER = 7;
     private volatile java.lang.Object email_;
     /**
+     * <pre>
+     * Email of the maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Email = 7;</code>
      * @return The email.
      */
@@ -10423,6 +11924,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Email of the maintainer of the platform's package.
+     * </pre>
+     *
      * <code>string Email = 7;</code>
      * @return The bytes for email.
      */
@@ -10443,12 +11948,26 @@ public final class Core {
     public static final int BOARDS_FIELD_NUMBER = 8;
     private java.util.List<cc.arduino.cli.commands.Core.Board> boards_;
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     public java.util.List<cc.arduino.cli.commands.Core.Board> getBoardsList() {
       return boards_;
     }
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     public java.util.List<? extends cc.arduino.cli.commands.Core.BoardOrBuilder> 
@@ -10456,18 +11975,39 @@ public final class Core {
       return boards_;
     }
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     public int getBoardsCount() {
       return boards_.size();
     }
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     public cc.arduino.cli.commands.Core.Board getBoards(int index) {
       return boards_.get(index);
     }
     /**
+     * <pre>
+     * List of boards provided by the platform. If the platform is installed,
+     * this is the boards listed in the platform's boards.txt. If the platform is
+     * not installed, this is an arbitrary list of board names provided by the
+     * platform author for display and may not match boards.txt.
+     * </pre>
+     *
      * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
      */
     public cc.arduino.cli.commands.Core.BoardOrBuilder getBoardsOrBuilder(
@@ -10938,6 +12478,10 @@ public final class Core {
 
       private java.lang.Object iD_ = "";
       /**
+       * <pre>
+       * Platform ID (e.g., `arduino:avr`).
+       * </pre>
+       *
        * <code>string ID = 1;</code>
        * @return The iD.
        */
@@ -10954,6 +12498,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform ID (e.g., `arduino:avr`).
+       * </pre>
+       *
        * <code>string ID = 1;</code>
        * @return The bytes for iD.
        */
@@ -10971,6 +12519,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Platform ID (e.g., `arduino:avr`).
+       * </pre>
+       *
        * <code>string ID = 1;</code>
        * @param value The iD to set.
        * @return This builder for chaining.
@@ -10986,6 +12538,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform ID (e.g., `arduino:avr`).
+       * </pre>
+       *
        * <code>string ID = 1;</code>
        * @return This builder for chaining.
        */
@@ -10996,6 +12552,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Platform ID (e.g., `arduino:avr`).
+       * </pre>
+       *
        * <code>string ID = 1;</code>
        * @param value The bytes for iD to set.
        * @return This builder for chaining.
@@ -11014,6 +12574,10 @@ public final class Core {
 
       private java.lang.Object installed_ = "";
       /**
+       * <pre>
+       * Version of the platform.
+       * </pre>
+       *
        * <code>string Installed = 2;</code>
        * @return The installed.
        */
@@ -11030,6 +12594,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Version of the platform.
+       * </pre>
+       *
        * <code>string Installed = 2;</code>
        * @return The bytes for installed.
        */
@@ -11047,6 +12615,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Version of the platform.
+       * </pre>
+       *
        * <code>string Installed = 2;</code>
        * @param value The installed to set.
        * @return This builder for chaining.
@@ -11062,6 +12634,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Version of the platform.
+       * </pre>
+       *
        * <code>string Installed = 2;</code>
        * @return This builder for chaining.
        */
@@ -11072,6 +12648,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Version of the platform.
+       * </pre>
+       *
        * <code>string Installed = 2;</code>
        * @param value The bytes for installed to set.
        * @return This builder for chaining.
@@ -11090,6 +12670,10 @@ public final class Core {
 
       private java.lang.Object latest_ = "";
       /**
+       * <pre>
+       * Newest available version of the platform.
+       * </pre>
+       *
        * <code>string Latest = 3;</code>
        * @return The latest.
        */
@@ -11106,6 +12690,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Newest available version of the platform.
+       * </pre>
+       *
        * <code>string Latest = 3;</code>
        * @return The bytes for latest.
        */
@@ -11123,6 +12711,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Newest available version of the platform.
+       * </pre>
+       *
        * <code>string Latest = 3;</code>
        * @param value The latest to set.
        * @return This builder for chaining.
@@ -11138,6 +12730,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Newest available version of the platform.
+       * </pre>
+       *
        * <code>string Latest = 3;</code>
        * @return This builder for chaining.
        */
@@ -11148,6 +12744,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Newest available version of the platform.
+       * </pre>
+       *
        * <code>string Latest = 3;</code>
        * @param value The bytes for latest to set.
        * @return This builder for chaining.
@@ -11166,6 +12766,10 @@ public final class Core {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+       * </pre>
+       *
        * <code>string Name = 4;</code>
        * @return The name.
        */
@@ -11182,6 +12786,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+       * </pre>
+       *
        * <code>string Name = 4;</code>
        * @return The bytes for name.
        */
@@ -11199,6 +12807,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+       * </pre>
+       *
        * <code>string Name = 4;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -11214,6 +12826,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+       * </pre>
+       *
        * <code>string Name = 4;</code>
        * @return This builder for chaining.
        */
@@ -11224,6 +12840,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the platform to humans (e.g., "Arduino AVR Boards").
+       * </pre>
+       *
        * <code>string Name = 4;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -11242,6 +12862,10 @@ public final class Core {
 
       private java.lang.Object maintainer_ = "";
       /**
+       * <pre>
+       * Maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Maintainer = 5;</code>
        * @return The maintainer.
        */
@@ -11258,6 +12882,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Maintainer = 5;</code>
        * @return The bytes for maintainer.
        */
@@ -11275,6 +12903,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Maintainer = 5;</code>
        * @param value The maintainer to set.
        * @return This builder for chaining.
@@ -11290,6 +12922,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Maintainer = 5;</code>
        * @return This builder for chaining.
        */
@@ -11300,6 +12936,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Maintainer = 5;</code>
        * @param value The bytes for maintainer to set.
        * @return This builder for chaining.
@@ -11318,6 +12958,11 @@ public final class Core {
 
       private java.lang.Object website_ = "";
       /**
+       * <pre>
+       * A URL provided by the author of the platform's package, intended to point
+       * to their website.
+       * </pre>
+       *
        * <code>string Website = 6;</code>
        * @return The website.
        */
@@ -11334,6 +12979,11 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * A URL provided by the author of the platform's package, intended to point
+       * to their website.
+       * </pre>
+       *
        * <code>string Website = 6;</code>
        * @return The bytes for website.
        */
@@ -11351,6 +13001,11 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * A URL provided by the author of the platform's package, intended to point
+       * to their website.
+       * </pre>
+       *
        * <code>string Website = 6;</code>
        * @param value The website to set.
        * @return This builder for chaining.
@@ -11366,6 +13021,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * A URL provided by the author of the platform's package, intended to point
+       * to their website.
+       * </pre>
+       *
        * <code>string Website = 6;</code>
        * @return This builder for chaining.
        */
@@ -11376,6 +13036,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * A URL provided by the author of the platform's package, intended to point
+       * to their website.
+       * </pre>
+       *
        * <code>string Website = 6;</code>
        * @param value The bytes for website to set.
        * @return This builder for chaining.
@@ -11394,6 +13059,10 @@ public final class Core {
 
       private java.lang.Object email_ = "";
       /**
+       * <pre>
+       * Email of the maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Email = 7;</code>
        * @return The email.
        */
@@ -11410,6 +13079,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Email of the maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Email = 7;</code>
        * @return The bytes for email.
        */
@@ -11427,6 +13100,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Email of the maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Email = 7;</code>
        * @param value The email to set.
        * @return This builder for chaining.
@@ -11442,6 +13119,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Email of the maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Email = 7;</code>
        * @return This builder for chaining.
        */
@@ -11452,6 +13133,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Email of the maintainer of the platform's package.
+       * </pre>
+       *
        * <code>string Email = 7;</code>
        * @param value The bytes for email to set.
        * @return This builder for chaining.
@@ -11481,6 +13166,13 @@ public final class Core {
           cc.arduino.cli.commands.Core.Board, cc.arduino.cli.commands.Core.Board.Builder, cc.arduino.cli.commands.Core.BoardOrBuilder> boardsBuilder_;
 
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Board> getBoardsList() {
@@ -11491,6 +13183,13 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public int getBoardsCount() {
@@ -11501,6 +13200,13 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public cc.arduino.cli.commands.Core.Board getBoards(int index) {
@@ -11511,6 +13217,13 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder setBoards(
@@ -11528,6 +13241,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder setBoards(
@@ -11542,6 +13262,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder addBoards(cc.arduino.cli.commands.Core.Board value) {
@@ -11558,6 +13285,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder addBoards(
@@ -11575,6 +13309,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder addBoards(
@@ -11589,6 +13330,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder addBoards(
@@ -11603,6 +13351,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder addAllBoards(
@@ -11618,6 +13373,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder clearBoards() {
@@ -11631,6 +13393,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public Builder removeBoards(int index) {
@@ -11644,6 +13413,13 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public cc.arduino.cli.commands.Core.Board.Builder getBoardsBuilder(
@@ -11651,6 +13427,13 @@ public final class Core {
         return getBoardsFieldBuilder().getBuilder(index);
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public cc.arduino.cli.commands.Core.BoardOrBuilder getBoardsOrBuilder(
@@ -11661,6 +13444,13 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public java.util.List<? extends cc.arduino.cli.commands.Core.BoardOrBuilder> 
@@ -11672,6 +13462,13 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public cc.arduino.cli.commands.Core.Board.Builder addBoardsBuilder() {
@@ -11679,6 +13476,13 @@ public final class Core {
             cc.arduino.cli.commands.Core.Board.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public cc.arduino.cli.commands.Core.Board.Builder addBoardsBuilder(
@@ -11687,6 +13491,13 @@ public final class Core {
             index, cc.arduino.cli.commands.Core.Board.getDefaultInstance());
       }
       /**
+       * <pre>
+       * List of boards provided by the platform. If the platform is installed,
+       * this is the boards listed in the platform's boards.txt. If the platform is
+       * not installed, this is an arbitrary list of board names provided by the
+       * platform author for display and may not match boards.txt.
+       * </pre>
+       *
        * <code>repeated .cc.arduino.cli.commands.Board Boards = 8;</code>
        */
       public java.util.List<cc.arduino.cli.commands.Core.Board.Builder> 
@@ -11765,11 +13576,19 @@ public final class Core {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Name used to identify the board to humans.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Name used to identify the board to humans.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -11777,11 +13596,21 @@ public final class Core {
         getNameBytes();
 
     /**
+     * <pre>
+     * Fully qualified board name used to identify the board to machines. The FQBN
+     * is only available for installed boards.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
+     * <pre>
+     * Fully qualified board name used to identify the board to machines. The FQBN
+     * is only available for installed boards.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -11882,6 +13711,10 @@ public final class Core {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Name used to identify the board to humans.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -11898,6 +13731,10 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Name used to identify the board to humans.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -11918,6 +13755,11 @@ public final class Core {
     public static final int FQBN_FIELD_NUMBER = 2;
     private volatile java.lang.Object fqbn_;
     /**
+     * <pre>
+     * Fully qualified board name used to identify the board to machines. The FQBN
+     * is only available for installed boards.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
@@ -11934,6 +13776,11 @@ public final class Core {
       }
     }
     /**
+     * <pre>
+     * Fully qualified board name used to identify the board to machines. The FQBN
+     * is only available for installed boards.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -12272,6 +14119,10 @@ public final class Core {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Name used to identify the board to humans.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -12288,6 +14139,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -12305,6 +14160,10 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -12320,6 +14179,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -12330,6 +14193,10 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Name used to identify the board to humans.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -12348,6 +14215,11 @@ public final class Core {
 
       private java.lang.Object fqbn_ = "";
       /**
+       * <pre>
+       * Fully qualified board name used to identify the board to machines. The FQBN
+       * is only available for installed boards.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The fqbn.
        */
@@ -12364,6 +14236,11 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Fully qualified board name used to identify the board to machines. The FQBN
+       * is only available for installed boards.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The bytes for fqbn.
        */
@@ -12381,6 +14258,11 @@ public final class Core {
         }
       }
       /**
+       * <pre>
+       * Fully qualified board name used to identify the board to machines. The FQBN
+       * is only available for installed boards.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The fqbn to set.
        * @return This builder for chaining.
@@ -12396,6 +14278,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Fully qualified board name used to identify the board to machines. The FQBN
+       * is only available for installed boards.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return This builder for chaining.
        */
@@ -12406,6 +14293,11 @@ public final class Core {
         return this;
       }
       /**
+       * <pre>
+       * Fully qualified board name used to identify the board to machines. The FQBN
+       * is only available for installed boards.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The bytes for fqbn to set.
        * @return This builder for chaining.

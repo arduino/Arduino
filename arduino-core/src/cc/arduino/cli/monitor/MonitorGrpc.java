@@ -93,6 +93,10 @@ public final class MonitorGrpc {
   public static abstract class MonitorImplBase implements io.grpc.BindableService {
 
     /**
+     * <pre>
+     * Open a bidirectional monitor stream. This can be used to implement
+     * something similar to the Arduino IDE's Serial Monitor.
+     * </pre>
      */
     public io.grpc.stub.StreamObserver<cc.arduino.cli.monitor.MonitorOuterClass.StreamingOpenReq> streamingOpen(
         io.grpc.stub.StreamObserver<cc.arduino.cli.monitor.MonitorOuterClass.StreamingOpenResp> responseObserver) {
@@ -134,6 +138,10 @@ public final class MonitorGrpc {
     }
 
     /**
+     * <pre>
+     * Open a bidirectional monitor stream. This can be used to implement
+     * something similar to the Arduino IDE's Serial Monitor.
+     * </pre>
      */
     public io.grpc.stub.StreamObserver<cc.arduino.cli.monitor.MonitorOuterClass.StreamingOpenReq> streamingOpen(
         io.grpc.stub.StreamObserver<cc.arduino.cli.monitor.MonitorOuterClass.StreamingOpenResp> responseObserver) {

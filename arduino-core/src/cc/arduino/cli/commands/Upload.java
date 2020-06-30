@@ -19,26 +19,50 @@ public final class Upload {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
     boolean hasInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
     cc.arduino.cli.commands.Common.Instance getInstance();
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
 
     /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * If this field is not defined, the FQBN of the board attached to the sketch
+     * via the `BoardAttach` method is used.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
     java.lang.String getFqbn();
     /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * If this field is not defined, the FQBN of the board attached to the sketch
+     * via the `BoardAttach` method is used.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -46,11 +70,23 @@ public final class Upload {
         getFqbnBytes();
 
     /**
+     * <pre>
+     * Path where the sketch to be uploaded is stored. Unless the `import_file`
+     * field is defined, the compiled binary is assumed to be at the location and
+     * filename under this path where it is saved by the `Compile` method.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The sketchPath.
      */
     java.lang.String getSketchPath();
     /**
+     * <pre>
+     * Path where the sketch to be uploaded is stored. Unless the `import_file`
+     * field is defined, the compiled binary is assumed to be at the location and
+     * filename under this path where it is saved by the `Compile` method.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -58,11 +94,19 @@ public final class Upload {
         getSketchPathBytes();
 
     /**
+     * <pre>
+     * The port of the board.
+     * </pre>
+     *
      * <code>string port = 4;</code>
      * @return The port.
      */
     java.lang.String getPort();
     /**
+     * <pre>
+     * The port of the board.
+     * </pre>
+     *
      * <code>string port = 4;</code>
      * @return The bytes for port.
      */
@@ -70,28 +114,79 @@ public final class Upload {
         getPortBytes();
 
     /**
+     * <pre>
+     * Whether to turn on verbose output during the upload.
+     * </pre>
+     *
      * <code>bool verbose = 5;</code>
      * @return The verbose.
      */
     boolean getVerbose();
 
     /**
+     * <pre>
+     * After upload, verify that the contents of the memory on the board match the
+     * uploaded binary.
+     * </pre>
+     *
      * <code>bool verify = 6;</code>
      * @return The verify.
      */
     boolean getVerify();
 
     /**
-     * <code>string import_file = 7;</code>
+     * <pre>
+     * DEPRECATED: Use import_dir instead
+     * </pre>
+     *
+     * <code>string import_file = 7 [deprecated = true];</code>
      * @return The importFile.
      */
-    java.lang.String getImportFile();
+    @java.lang.Deprecated java.lang.String getImportFile();
     /**
-     * <code>string import_file = 7;</code>
+     * <pre>
+     * DEPRECATED: Use import_dir instead
+     * </pre>
+     *
+     * <code>string import_file = 7 [deprecated = true];</code>
      * @return The bytes for importFile.
      */
-    com.google.protobuf.ByteString
+    @java.lang.Deprecated com.google.protobuf.ByteString
         getImportFileBytes();
+
+    /**
+     * <pre>
+     * Custom path to a directory containing compiled files. When `import_dir` is
+     * not specified, the standard build directory under `sketch_path` is used.
+     * </pre>
+     *
+     * <code>string import_dir = 8;</code>
+     * @return The importDir.
+     */
+    java.lang.String getImportDir();
+    /**
+     * <pre>
+     * Custom path to a directory containing compiled files. When `import_dir` is
+     * not specified, the standard build directory under `sketch_path` is used.
+     * </pre>
+     *
+     * <code>string import_dir = 8;</code>
+     * @return The bytes for importDir.
+     */
+    com.google.protobuf.ByteString
+        getImportDirBytes();
+
+    /**
+     * <code>string programmer = 9;</code>
+     * @return The programmer.
+     */
+    java.lang.String getProgrammer();
+    /**
+     * <code>string programmer = 9;</code>
+     * @return The bytes for programmer.
+     */
+    com.google.protobuf.ByteString
+        getProgrammerBytes();
   }
   /**
    * Protobuf type {@code cc.arduino.cli.commands.UploadReq}
@@ -110,6 +205,8 @@ public final class Upload {
       sketchPath_ = "";
       port_ = "";
       importFile_ = "";
+      importDir_ = "";
+      programmer_ = "";
     }
 
     @java.lang.Override
@@ -189,6 +286,18 @@ public final class Upload {
               importFile_ = s;
               break;
             }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              importDir_ = s;
+              break;
+            }
+            case 74: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              programmer_ = s;
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -224,6 +333,10 @@ public final class Upload {
     public static final int INSTANCE_FIELD_NUMBER = 1;
     private cc.arduino.cli.commands.Common.Instance instance_;
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return Whether the instance field is set.
      */
@@ -231,6 +344,10 @@ public final class Upload {
       return instance_ != null;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      * @return The instance.
      */
@@ -238,6 +355,10 @@ public final class Upload {
       return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
     }
     /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
      * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
      */
     public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -247,6 +368,12 @@ public final class Upload {
     public static final int FQBN_FIELD_NUMBER = 2;
     private volatile java.lang.Object fqbn_;
     /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * If this field is not defined, the FQBN of the board attached to the sketch
+     * via the `BoardAttach` method is used.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The fqbn.
      */
@@ -263,6 +390,12 @@ public final class Upload {
       }
     }
     /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * If this field is not defined, the FQBN of the board attached to the sketch
+     * via the `BoardAttach` method is used.
+     * </pre>
+     *
      * <code>string fqbn = 2;</code>
      * @return The bytes for fqbn.
      */
@@ -283,6 +416,12 @@ public final class Upload {
     public static final int SKETCH_PATH_FIELD_NUMBER = 3;
     private volatile java.lang.Object sketchPath_;
     /**
+     * <pre>
+     * Path where the sketch to be uploaded is stored. Unless the `import_file`
+     * field is defined, the compiled binary is assumed to be at the location and
+     * filename under this path where it is saved by the `Compile` method.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The sketchPath.
      */
@@ -299,6 +438,12 @@ public final class Upload {
       }
     }
     /**
+     * <pre>
+     * Path where the sketch to be uploaded is stored. Unless the `import_file`
+     * field is defined, the compiled binary is assumed to be at the location and
+     * filename under this path where it is saved by the `Compile` method.
+     * </pre>
+     *
      * <code>string sketch_path = 3;</code>
      * @return The bytes for sketchPath.
      */
@@ -319,6 +464,10 @@ public final class Upload {
     public static final int PORT_FIELD_NUMBER = 4;
     private volatile java.lang.Object port_;
     /**
+     * <pre>
+     * The port of the board.
+     * </pre>
+     *
      * <code>string port = 4;</code>
      * @return The port.
      */
@@ -335,6 +484,10 @@ public final class Upload {
       }
     }
     /**
+     * <pre>
+     * The port of the board.
+     * </pre>
+     *
      * <code>string port = 4;</code>
      * @return The bytes for port.
      */
@@ -355,6 +508,10 @@ public final class Upload {
     public static final int VERBOSE_FIELD_NUMBER = 5;
     private boolean verbose_;
     /**
+     * <pre>
+     * Whether to turn on verbose output during the upload.
+     * </pre>
+     *
      * <code>bool verbose = 5;</code>
      * @return The verbose.
      */
@@ -365,6 +522,11 @@ public final class Upload {
     public static final int VERIFY_FIELD_NUMBER = 6;
     private boolean verify_;
     /**
+     * <pre>
+     * After upload, verify that the contents of the memory on the board match the
+     * uploaded binary.
+     * </pre>
+     *
      * <code>bool verify = 6;</code>
      * @return The verify.
      */
@@ -375,10 +537,14 @@ public final class Upload {
     public static final int IMPORT_FILE_FIELD_NUMBER = 7;
     private volatile java.lang.Object importFile_;
     /**
-     * <code>string import_file = 7;</code>
+     * <pre>
+     * DEPRECATED: Use import_dir instead
+     * </pre>
+     *
+     * <code>string import_file = 7 [deprecated = true];</code>
      * @return The importFile.
      */
-    public java.lang.String getImportFile() {
+    @java.lang.Deprecated public java.lang.String getImportFile() {
       java.lang.Object ref = importFile_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
@@ -391,10 +557,14 @@ public final class Upload {
       }
     }
     /**
-     * <code>string import_file = 7;</code>
+     * <pre>
+     * DEPRECATED: Use import_dir instead
+     * </pre>
+     *
+     * <code>string import_file = 7 [deprecated = true];</code>
      * @return The bytes for importFile.
      */
-    public com.google.protobuf.ByteString
+    @java.lang.Deprecated public com.google.protobuf.ByteString
         getImportFileBytes() {
       java.lang.Object ref = importFile_;
       if (ref instanceof java.lang.String) {
@@ -402,6 +572,88 @@ public final class Upload {
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
         importFile_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int IMPORT_DIR_FIELD_NUMBER = 8;
+    private volatile java.lang.Object importDir_;
+    /**
+     * <pre>
+     * Custom path to a directory containing compiled files. When `import_dir` is
+     * not specified, the standard build directory under `sketch_path` is used.
+     * </pre>
+     *
+     * <code>string import_dir = 8;</code>
+     * @return The importDir.
+     */
+    public java.lang.String getImportDir() {
+      java.lang.Object ref = importDir_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        importDir_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Custom path to a directory containing compiled files. When `import_dir` is
+     * not specified, the standard build directory under `sketch_path` is used.
+     * </pre>
+     *
+     * <code>string import_dir = 8;</code>
+     * @return The bytes for importDir.
+     */
+    public com.google.protobuf.ByteString
+        getImportDirBytes() {
+      java.lang.Object ref = importDir_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        importDir_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PROGRAMMER_FIELD_NUMBER = 9;
+    private volatile java.lang.Object programmer_;
+    /**
+     * <code>string programmer = 9;</code>
+     * @return The programmer.
+     */
+    public java.lang.String getProgrammer() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        programmer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string programmer = 9;</code>
+     * @return The bytes for programmer.
+     */
+    public com.google.protobuf.ByteString
+        getProgrammerBytes() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        programmer_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -443,6 +695,12 @@ public final class Upload {
       if (!getImportFileBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 7, importFile_);
       }
+      if (!getImportDirBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, importDir_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 9, programmer_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -476,6 +734,12 @@ public final class Upload {
       if (!getImportFileBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, importFile_);
       }
+      if (!getImportDirBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, importDir_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, programmer_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -508,6 +772,10 @@ public final class Upload {
           != other.getVerify()) return false;
       if (!getImportFile()
           .equals(other.getImportFile())) return false;
+      if (!getImportDir()
+          .equals(other.getImportDir())) return false;
+      if (!getProgrammer()
+          .equals(other.getProgrammer())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -537,6 +805,10 @@ public final class Upload {
           getVerify());
       hash = (37 * hash) + IMPORT_FILE_FIELD_NUMBER;
       hash = (53 * hash) + getImportFile().hashCode();
+      hash = (37 * hash) + IMPORT_DIR_FIELD_NUMBER;
+      hash = (53 * hash) + getImportDir().hashCode();
+      hash = (37 * hash) + PROGRAMMER_FIELD_NUMBER;
+      hash = (53 * hash) + getProgrammer().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -688,6 +960,10 @@ public final class Upload {
 
         importFile_ = "";
 
+        importDir_ = "";
+
+        programmer_ = "";
+
         return this;
       }
 
@@ -725,6 +1001,8 @@ public final class Upload {
         result.verbose_ = verbose_;
         result.verify_ = verify_;
         result.importFile_ = importFile_;
+        result.importDir_ = importDir_;
+        result.programmer_ = programmer_;
         onBuilt();
         return result;
       }
@@ -798,6 +1076,14 @@ public final class Upload {
           importFile_ = other.importFile_;
           onChanged();
         }
+        if (!other.getImportDir().isEmpty()) {
+          importDir_ = other.importDir_;
+          onChanged();
+        }
+        if (!other.getProgrammer().isEmpty()) {
+          programmer_ = other.programmer_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
@@ -831,6 +1117,10 @@ public final class Upload {
       private com.google.protobuf.SingleFieldBuilderV3<
           cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return Whether the instance field is set.
        */
@@ -838,6 +1128,10 @@ public final class Upload {
         return instanceBuilder_ != null || instance_ != null;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        * @return The instance.
        */
@@ -849,6 +1143,10 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -865,6 +1163,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder setInstance(
@@ -879,6 +1181,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
@@ -897,6 +1203,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public Builder clearInstance() {
@@ -911,6 +1221,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
@@ -919,6 +1233,10 @@ public final class Upload {
         return getInstanceFieldBuilder().getBuilder();
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
@@ -930,6 +1248,10 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
        * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilderV3<
@@ -948,6 +1270,12 @@ public final class Upload {
 
       private java.lang.Object fqbn_ = "";
       /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * If this field is not defined, the FQBN of the board attached to the sketch
+       * via the `BoardAttach` method is used.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The fqbn.
        */
@@ -964,6 +1292,12 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * If this field is not defined, the FQBN of the board attached to the sketch
+       * via the `BoardAttach` method is used.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return The bytes for fqbn.
        */
@@ -981,6 +1315,12 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * If this field is not defined, the FQBN of the board attached to the sketch
+       * via the `BoardAttach` method is used.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The fqbn to set.
        * @return This builder for chaining.
@@ -996,6 +1336,12 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * If this field is not defined, the FQBN of the board attached to the sketch
+       * via the `BoardAttach` method is used.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @return This builder for chaining.
        */
@@ -1006,6 +1352,12 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * If this field is not defined, the FQBN of the board attached to the sketch
+       * via the `BoardAttach` method is used.
+       * </pre>
+       *
        * <code>string fqbn = 2;</code>
        * @param value The bytes for fqbn to set.
        * @return This builder for chaining.
@@ -1024,6 +1376,12 @@ public final class Upload {
 
       private java.lang.Object sketchPath_ = "";
       /**
+       * <pre>
+       * Path where the sketch to be uploaded is stored. Unless the `import_file`
+       * field is defined, the compiled binary is assumed to be at the location and
+       * filename under this path where it is saved by the `Compile` method.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return The sketchPath.
        */
@@ -1040,6 +1398,12 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Path where the sketch to be uploaded is stored. Unless the `import_file`
+       * field is defined, the compiled binary is assumed to be at the location and
+       * filename under this path where it is saved by the `Compile` method.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return The bytes for sketchPath.
        */
@@ -1057,6 +1421,12 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * Path where the sketch to be uploaded is stored. Unless the `import_file`
+       * field is defined, the compiled binary is assumed to be at the location and
+       * filename under this path where it is saved by the `Compile` method.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @param value The sketchPath to set.
        * @return This builder for chaining.
@@ -1072,6 +1442,12 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Path where the sketch to be uploaded is stored. Unless the `import_file`
+       * field is defined, the compiled binary is assumed to be at the location and
+       * filename under this path where it is saved by the `Compile` method.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @return This builder for chaining.
        */
@@ -1082,6 +1458,12 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Path where the sketch to be uploaded is stored. Unless the `import_file`
+       * field is defined, the compiled binary is assumed to be at the location and
+       * filename under this path where it is saved by the `Compile` method.
+       * </pre>
+       *
        * <code>string sketch_path = 3;</code>
        * @param value The bytes for sketchPath to set.
        * @return This builder for chaining.
@@ -1100,6 +1482,10 @@ public final class Upload {
 
       private java.lang.Object port_ = "";
       /**
+       * <pre>
+       * The port of the board.
+       * </pre>
+       *
        * <code>string port = 4;</code>
        * @return The port.
        */
@@ -1116,6 +1502,10 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * The port of the board.
+       * </pre>
+       *
        * <code>string port = 4;</code>
        * @return The bytes for port.
        */
@@ -1133,6 +1523,10 @@ public final class Upload {
         }
       }
       /**
+       * <pre>
+       * The port of the board.
+       * </pre>
+       *
        * <code>string port = 4;</code>
        * @param value The port to set.
        * @return This builder for chaining.
@@ -1148,6 +1542,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * The port of the board.
+       * </pre>
+       *
        * <code>string port = 4;</code>
        * @return This builder for chaining.
        */
@@ -1158,6 +1556,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * The port of the board.
+       * </pre>
+       *
        * <code>string port = 4;</code>
        * @param value The bytes for port to set.
        * @return This builder for chaining.
@@ -1176,6 +1578,10 @@ public final class Upload {
 
       private boolean verbose_ ;
       /**
+       * <pre>
+       * Whether to turn on verbose output during the upload.
+       * </pre>
+       *
        * <code>bool verbose = 5;</code>
        * @return The verbose.
        */
@@ -1183,6 +1589,10 @@ public final class Upload {
         return verbose_;
       }
       /**
+       * <pre>
+       * Whether to turn on verbose output during the upload.
+       * </pre>
+       *
        * <code>bool verbose = 5;</code>
        * @param value The verbose to set.
        * @return This builder for chaining.
@@ -1194,6 +1604,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * Whether to turn on verbose output during the upload.
+       * </pre>
+       *
        * <code>bool verbose = 5;</code>
        * @return This builder for chaining.
        */
@@ -1206,6 +1620,11 @@ public final class Upload {
 
       private boolean verify_ ;
       /**
+       * <pre>
+       * After upload, verify that the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
        * <code>bool verify = 6;</code>
        * @return The verify.
        */
@@ -1213,6 +1632,11 @@ public final class Upload {
         return verify_;
       }
       /**
+       * <pre>
+       * After upload, verify that the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
        * <code>bool verify = 6;</code>
        * @param value The verify to set.
        * @return This builder for chaining.
@@ -1224,6 +1648,11 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * After upload, verify that the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
        * <code>bool verify = 6;</code>
        * @return This builder for chaining.
        */
@@ -1236,10 +1665,14 @@ public final class Upload {
 
       private java.lang.Object importFile_ = "";
       /**
-       * <code>string import_file = 7;</code>
+       * <pre>
+       * DEPRECATED: Use import_dir instead
+       * </pre>
+       *
+       * <code>string import_file = 7 [deprecated = true];</code>
        * @return The importFile.
        */
-      public java.lang.String getImportFile() {
+      @java.lang.Deprecated public java.lang.String getImportFile() {
         java.lang.Object ref = importFile_;
         if (!(ref instanceof java.lang.String)) {
           com.google.protobuf.ByteString bs =
@@ -1252,10 +1685,14 @@ public final class Upload {
         }
       }
       /**
-       * <code>string import_file = 7;</code>
+       * <pre>
+       * DEPRECATED: Use import_dir instead
+       * </pre>
+       *
+       * <code>string import_file = 7 [deprecated = true];</code>
        * @return The bytes for importFile.
        */
-      public com.google.protobuf.ByteString
+      @java.lang.Deprecated public com.google.protobuf.ByteString
           getImportFileBytes() {
         java.lang.Object ref = importFile_;
         if (ref instanceof String) {
@@ -1269,11 +1706,15 @@ public final class Upload {
         }
       }
       /**
-       * <code>string import_file = 7;</code>
+       * <pre>
+       * DEPRECATED: Use import_dir instead
+       * </pre>
+       *
+       * <code>string import_file = 7 [deprecated = true];</code>
        * @param value The importFile to set.
        * @return This builder for chaining.
        */
-      public Builder setImportFile(
+      @java.lang.Deprecated public Builder setImportFile(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
@@ -1284,21 +1725,29 @@ public final class Upload {
         return this;
       }
       /**
-       * <code>string import_file = 7;</code>
+       * <pre>
+       * DEPRECATED: Use import_dir instead
+       * </pre>
+       *
+       * <code>string import_file = 7 [deprecated = true];</code>
        * @return This builder for chaining.
        */
-      public Builder clearImportFile() {
+      @java.lang.Deprecated public Builder clearImportFile() {
         
         importFile_ = getDefaultInstance().getImportFile();
         onChanged();
         return this;
       }
       /**
-       * <code>string import_file = 7;</code>
+       * <pre>
+       * DEPRECATED: Use import_dir instead
+       * </pre>
+       *
+       * <code>string import_file = 7 [deprecated = true];</code>
        * @param value The bytes for importFile to set.
        * @return This builder for chaining.
        */
-      public Builder setImportFileBytes(
+      @java.lang.Deprecated public Builder setImportFileBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
@@ -1306,6 +1755,183 @@ public final class Upload {
   checkByteStringIsUtf8(value);
         
         importFile_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object importDir_ = "";
+      /**
+       * <pre>
+       * Custom path to a directory containing compiled files. When `import_dir` is
+       * not specified, the standard build directory under `sketch_path` is used.
+       * </pre>
+       *
+       * <code>string import_dir = 8;</code>
+       * @return The importDir.
+       */
+      public java.lang.String getImportDir() {
+        java.lang.Object ref = importDir_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          importDir_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Custom path to a directory containing compiled files. When `import_dir` is
+       * not specified, the standard build directory under `sketch_path` is used.
+       * </pre>
+       *
+       * <code>string import_dir = 8;</code>
+       * @return The bytes for importDir.
+       */
+      public com.google.protobuf.ByteString
+          getImportDirBytes() {
+        java.lang.Object ref = importDir_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          importDir_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Custom path to a directory containing compiled files. When `import_dir` is
+       * not specified, the standard build directory under `sketch_path` is used.
+       * </pre>
+       *
+       * <code>string import_dir = 8;</code>
+       * @param value The importDir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImportDir(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        importDir_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Custom path to a directory containing compiled files. When `import_dir` is
+       * not specified, the standard build directory under `sketch_path` is used.
+       * </pre>
+       *
+       * <code>string import_dir = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearImportDir() {
+        
+        importDir_ = getDefaultInstance().getImportDir();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Custom path to a directory containing compiled files. When `import_dir` is
+       * not specified, the standard build directory under `sketch_path` is used.
+       * </pre>
+       *
+       * <code>string import_dir = 8;</code>
+       * @param value The bytes for importDir to set.
+       * @return This builder for chaining.
+       */
+      public Builder setImportDirBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        importDir_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object programmer_ = "";
+      /**
+       * <code>string programmer = 9;</code>
+       * @return The programmer.
+       */
+      public java.lang.String getProgrammer() {
+        java.lang.Object ref = programmer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          programmer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string programmer = 9;</code>
+       * @return The bytes for programmer.
+       */
+      public com.google.protobuf.ByteString
+          getProgrammerBytes() {
+        java.lang.Object ref = programmer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          programmer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string programmer = 9;</code>
+       * @param value The programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        programmer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string programmer = 9;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearProgrammer() {
+        
+        programmer_ = getDefaultInstance().getProgrammer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string programmer = 9;</code>
+       * @param value The bytes for programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        programmer_ = value;
         onChanged();
         return this;
       }
@@ -1367,12 +1993,20 @@ public final class Upload {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The output of the upload process.
+     * </pre>
+     *
      * <code>bytes out_stream = 1;</code>
      * @return The outStream.
      */
     com.google.protobuf.ByteString getOutStream();
 
     /**
+     * <pre>
+     * The error output of the upload process.
+     * </pre>
+     *
      * <code>bytes err_stream = 2;</code>
      * @return The errStream.
      */
@@ -1470,6 +2104,10 @@ public final class Upload {
     public static final int OUT_STREAM_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString outStream_;
     /**
+     * <pre>
+     * The output of the upload process.
+     * </pre>
+     *
      * <code>bytes out_stream = 1;</code>
      * @return The outStream.
      */
@@ -1480,6 +2118,10 @@ public final class Upload {
     public static final int ERR_STREAM_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString errStream_;
     /**
+     * <pre>
+     * The error output of the upload process.
+     * </pre>
+     *
      * <code>bytes err_stream = 2;</code>
      * @return The errStream.
      */
@@ -1808,6 +2450,10 @@ public final class Upload {
 
       private com.google.protobuf.ByteString outStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * The output of the upload process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @return The outStream.
        */
@@ -1815,6 +2461,10 @@ public final class Upload {
         return outStream_;
       }
       /**
+       * <pre>
+       * The output of the upload process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @param value The outStream to set.
        * @return This builder for chaining.
@@ -1829,6 +2479,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * The output of the upload process.
+       * </pre>
+       *
        * <code>bytes out_stream = 1;</code>
        * @return This builder for chaining.
        */
@@ -1841,6 +2495,10 @@ public final class Upload {
 
       private com.google.protobuf.ByteString errStream_ = com.google.protobuf.ByteString.EMPTY;
       /**
+       * <pre>
+       * The error output of the upload process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @return The errStream.
        */
@@ -1848,6 +2506,10 @@ public final class Upload {
         return errStream_;
       }
       /**
+       * <pre>
+       * The error output of the upload process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @param value The errStream to set.
        * @return This builder for chaining.
@@ -1862,6 +2524,10 @@ public final class Upload {
         return this;
       }
       /**
+       * <pre>
+       * The error output of the upload process.
+       * </pre>
+       *
        * <code>bytes err_stream = 2;</code>
        * @return This builder for chaining.
        */
@@ -1924,6 +2590,4437 @@ public final class Upload {
 
   }
 
+  public interface BurnBootloaderReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.BurnBootloaderReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
+     */
+    boolean hasInstance();
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
+     */
+    cc.arduino.cli.commands.Common.Instance getInstance();
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
+
+    /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
+     * <code>string fqbn = 2;</code>
+     * @return The fqbn.
+     */
+    java.lang.String getFqbn();
+    /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
+     * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
+     */
+    com.google.protobuf.ByteString
+        getFqbnBytes();
+
+    /**
+     * <pre>
+     * The port of the programmer used to program the bootloader.
+     * </pre>
+     *
+     * <code>string port = 3;</code>
+     * @return The port.
+     */
+    java.lang.String getPort();
+    /**
+     * <pre>
+     * The port of the programmer used to program the bootloader.
+     * </pre>
+     *
+     * <code>string port = 3;</code>
+     * @return The bytes for port.
+     */
+    com.google.protobuf.ByteString
+        getPortBytes();
+
+    /**
+     * <pre>
+     * Whether to turn on verbose output during the programming.
+     * </pre>
+     *
+     * <code>bool verbose = 4;</code>
+     * @return The verbose.
+     */
+    boolean getVerbose();
+
+    /**
+     * <pre>
+     * After programming, verify the contents of the memory on the board match the
+     * uploaded binary.
+     * </pre>
+     *
+     * <code>bool verify = 5;</code>
+     * @return The verify.
+     */
+    boolean getVerify();
+
+    /**
+     * <pre>
+     * The programmer to use for burning bootloader.
+     * </pre>
+     *
+     * <code>string programmer = 6;</code>
+     * @return The programmer.
+     */
+    java.lang.String getProgrammer();
+    /**
+     * <pre>
+     * The programmer to use for burning bootloader.
+     * </pre>
+     *
+     * <code>string programmer = 6;</code>
+     * @return The bytes for programmer.
+     */
+    com.google.protobuf.ByteString
+        getProgrammerBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.BurnBootloaderReq}
+   */
+  public  static final class BurnBootloaderReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.BurnBootloaderReq)
+      BurnBootloaderReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BurnBootloaderReq.newBuilder() to construct.
+    private BurnBootloaderReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BurnBootloaderReq() {
+      fqbn_ = "";
+      port_ = "";
+      programmer_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BurnBootloaderReq();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BurnBootloaderReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              cc.arduino.cli.commands.Common.Instance.Builder subBuilder = null;
+              if (instance_ != null) {
+                subBuilder = instance_.toBuilder();
+              }
+              instance_ = input.readMessage(cc.arduino.cli.commands.Common.Instance.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(instance_);
+                instance_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              fqbn_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              port_ = s;
+              break;
+            }
+            case 32: {
+
+              verbose_ = input.readBool();
+              break;
+            }
+            case 40: {
+
+              verify_ = input.readBool();
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              programmer_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Upload.BurnBootloaderReq.class, cc.arduino.cli.commands.Upload.BurnBootloaderReq.Builder.class);
+    }
+
+    public static final int INSTANCE_FIELD_NUMBER = 1;
+    private cc.arduino.cli.commands.Common.Instance instance_;
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
+     */
+    public boolean hasInstance() {
+      return instance_ != null;
+    }
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
+     */
+    public cc.arduino.cli.commands.Common.Instance getInstance() {
+      return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+    }
+    /**
+     * <pre>
+     * Arduino Core Service instance from the `Init` response.
+     * </pre>
+     *
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+      return getInstance();
+    }
+
+    public static final int FQBN_FIELD_NUMBER = 2;
+    private volatile java.lang.Object fqbn_;
+    /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
+     * <code>string fqbn = 2;</code>
+     * @return The fqbn.
+     */
+    public java.lang.String getFqbn() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        fqbn_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+     * </pre>
+     *
+     * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
+     */
+    public com.google.protobuf.ByteString
+        getFqbnBytes() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fqbn_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORT_FIELD_NUMBER = 3;
+    private volatile java.lang.Object port_;
+    /**
+     * <pre>
+     * The port of the programmer used to program the bootloader.
+     * </pre>
+     *
+     * <code>string port = 3;</code>
+     * @return The port.
+     */
+    public java.lang.String getPort() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        port_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The port of the programmer used to program the bootloader.
+     * </pre>
+     *
+     * <code>string port = 3;</code>
+     * @return The bytes for port.
+     */
+    public com.google.protobuf.ByteString
+        getPortBytes() {
+      java.lang.Object ref = port_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        port_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int VERBOSE_FIELD_NUMBER = 4;
+    private boolean verbose_;
+    /**
+     * <pre>
+     * Whether to turn on verbose output during the programming.
+     * </pre>
+     *
+     * <code>bool verbose = 4;</code>
+     * @return The verbose.
+     */
+    public boolean getVerbose() {
+      return verbose_;
+    }
+
+    public static final int VERIFY_FIELD_NUMBER = 5;
+    private boolean verify_;
+    /**
+     * <pre>
+     * After programming, verify the contents of the memory on the board match the
+     * uploaded binary.
+     * </pre>
+     *
+     * <code>bool verify = 5;</code>
+     * @return The verify.
+     */
+    public boolean getVerify() {
+      return verify_;
+    }
+
+    public static final int PROGRAMMER_FIELD_NUMBER = 6;
+    private volatile java.lang.Object programmer_;
+    /**
+     * <pre>
+     * The programmer to use for burning bootloader.
+     * </pre>
+     *
+     * <code>string programmer = 6;</code>
+     * @return The programmer.
+     */
+    public java.lang.String getProgrammer() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        programmer_ = s;
+        return s;
+      }
+    }
+    /**
+     * <pre>
+     * The programmer to use for burning bootloader.
+     * </pre>
+     *
+     * <code>string programmer = 6;</code>
+     * @return The bytes for programmer.
+     */
+    public com.google.protobuf.ByteString
+        getProgrammerBytes() {
+      java.lang.Object ref = programmer_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        programmer_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (instance_ != null) {
+        output.writeMessage(1, getInstance());
+      }
+      if (!getFqbnBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, fqbn_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, port_);
+      }
+      if (verbose_ != false) {
+        output.writeBool(4, verbose_);
+      }
+      if (verify_ != false) {
+        output.writeBool(5, verify_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, programmer_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (instance_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getInstance());
+      }
+      if (!getFqbnBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, fqbn_);
+      }
+      if (!getPortBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, port_);
+      }
+      if (verbose_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, verbose_);
+      }
+      if (verify_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, verify_);
+      }
+      if (!getProgrammerBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, programmer_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Upload.BurnBootloaderReq)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Upload.BurnBootloaderReq other = (cc.arduino.cli.commands.Upload.BurnBootloaderReq) obj;
+
+      if (hasInstance() != other.hasInstance()) return false;
+      if (hasInstance()) {
+        if (!getInstance()
+            .equals(other.getInstance())) return false;
+      }
+      if (!getFqbn()
+          .equals(other.getFqbn())) return false;
+      if (!getPort()
+          .equals(other.getPort())) return false;
+      if (getVerbose()
+          != other.getVerbose()) return false;
+      if (getVerify()
+          != other.getVerify()) return false;
+      if (!getProgrammer()
+          .equals(other.getProgrammer())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasInstance()) {
+        hash = (37 * hash) + INSTANCE_FIELD_NUMBER;
+        hash = (53 * hash) + getInstance().hashCode();
+      }
+      hash = (37 * hash) + FQBN_FIELD_NUMBER;
+      hash = (53 * hash) + getFqbn().hashCode();
+      hash = (37 * hash) + PORT_FIELD_NUMBER;
+      hash = (53 * hash) + getPort().hashCode();
+      hash = (37 * hash) + VERBOSE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getVerbose());
+      hash = (37 * hash) + VERIFY_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getVerify());
+      hash = (37 * hash) + PROGRAMMER_FIELD_NUMBER;
+      hash = (53 * hash) + getProgrammer().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Upload.BurnBootloaderReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.BurnBootloaderReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.BurnBootloaderReq)
+        cc.arduino.cli.commands.Upload.BurnBootloaderReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Upload.BurnBootloaderReq.class, cc.arduino.cli.commands.Upload.BurnBootloaderReq.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Upload.BurnBootloaderReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+        fqbn_ = "";
+
+        port_ = "";
+
+        verbose_ = false;
+
+        verify_ = false;
+
+        programmer_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderReq getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Upload.BurnBootloaderReq.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderReq build() {
+        cc.arduino.cli.commands.Upload.BurnBootloaderReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderReq buildPartial() {
+        cc.arduino.cli.commands.Upload.BurnBootloaderReq result = new cc.arduino.cli.commands.Upload.BurnBootloaderReq(this);
+        if (instanceBuilder_ == null) {
+          result.instance_ = instance_;
+        } else {
+          result.instance_ = instanceBuilder_.build();
+        }
+        result.fqbn_ = fqbn_;
+        result.port_ = port_;
+        result.verbose_ = verbose_;
+        result.verify_ = verify_;
+        result.programmer_ = programmer_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Upload.BurnBootloaderReq) {
+          return mergeFrom((cc.arduino.cli.commands.Upload.BurnBootloaderReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Upload.BurnBootloaderReq other) {
+        if (other == cc.arduino.cli.commands.Upload.BurnBootloaderReq.getDefaultInstance()) return this;
+        if (other.hasInstance()) {
+          mergeInstance(other.getInstance());
+        }
+        if (!other.getFqbn().isEmpty()) {
+          fqbn_ = other.fqbn_;
+          onChanged();
+        }
+        if (!other.getPort().isEmpty()) {
+          port_ = other.port_;
+          onChanged();
+        }
+        if (other.getVerbose() != false) {
+          setVerbose(other.getVerbose());
+        }
+        if (other.getVerify() != false) {
+          setVerify(other.getVerify());
+        }
+        if (!other.getProgrammer().isEmpty()) {
+          programmer_ = other.programmer_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Upload.BurnBootloaderReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Upload.BurnBootloaderReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Common.Instance instance_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
+       */
+      public boolean hasInstance() {
+        return instanceBuilder_ != null || instance_ != null;
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
+       */
+      public cc.arduino.cli.commands.Common.Instance getInstance() {
+        if (instanceBuilder_ == null) {
+          return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        } else {
+          return instanceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          instance_ = value;
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(
+          cc.arduino.cli.commands.Common.Instance.Builder builderForValue) {
+        if (instanceBuilder_ == null) {
+          instance_ = builderForValue.build();
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (instance_ != null) {
+            instance_ =
+              cc.arduino.cli.commands.Common.Instance.newBuilder(instance_).mergeFrom(value).buildPartial();
+          } else {
+            instance_ = value;
+          }
+          onChanged();
+        } else {
+          instanceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder clearInstance() {
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+          onChanged();
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
+        
+        onChanged();
+        return getInstanceFieldBuilder().getBuilder();
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+        if (instanceBuilder_ != null) {
+          return instanceBuilder_.getMessageOrBuilder();
+        } else {
+          return instance_ == null ?
+              cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        }
+      }
+      /**
+       * <pre>
+       * Arduino Core Service instance from the `Init` response.
+       * </pre>
+       *
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> 
+          getInstanceFieldBuilder() {
+        if (instanceBuilder_ == null) {
+          instanceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder>(
+                  getInstance(),
+                  getParentForChildren(),
+                  isClean());
+          instance_ = null;
+        }
+        return instanceBuilder_;
+      }
+
+      private java.lang.Object fqbn_ = "";
+      /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
+       * <code>string fqbn = 2;</code>
+       * @return The fqbn.
+       */
+      public java.lang.String getFqbn() {
+        java.lang.Object ref = fqbn_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          fqbn_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
+       * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
+       */
+      public com.google.protobuf.ByteString
+          getFqbnBytes() {
+        java.lang.Object ref = fqbn_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fqbn_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
+       * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbn(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
+       * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFqbn() {
+        
+        fqbn_ = getDefaultInstance().getFqbn();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Fully qualified board name of the target board (e.g., `arduino:avr:uno`).
+       * </pre>
+       *
+       * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbnBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object port_ = "";
+      /**
+       * <pre>
+       * The port of the programmer used to program the bootloader.
+       * </pre>
+       *
+       * <code>string port = 3;</code>
+       * @return The port.
+       */
+      public java.lang.String getPort() {
+        java.lang.Object ref = port_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          port_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The port of the programmer used to program the bootloader.
+       * </pre>
+       *
+       * <code>string port = 3;</code>
+       * @return The bytes for port.
+       */
+      public com.google.protobuf.ByteString
+          getPortBytes() {
+        java.lang.Object ref = port_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          port_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The port of the programmer used to program the bootloader.
+       * </pre>
+       *
+       * <code>string port = 3;</code>
+       * @param value The port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPort(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        port_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The port of the programmer used to program the bootloader.
+       * </pre>
+       *
+       * <code>string port = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPort() {
+        
+        port_ = getDefaultInstance().getPort();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The port of the programmer used to program the bootloader.
+       * </pre>
+       *
+       * <code>string port = 3;</code>
+       * @param value The bytes for port to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        port_ = value;
+        onChanged();
+        return this;
+      }
+
+      private boolean verbose_ ;
+      /**
+       * <pre>
+       * Whether to turn on verbose output during the programming.
+       * </pre>
+       *
+       * <code>bool verbose = 4;</code>
+       * @return The verbose.
+       */
+      public boolean getVerbose() {
+        return verbose_;
+      }
+      /**
+       * <pre>
+       * Whether to turn on verbose output during the programming.
+       * </pre>
+       *
+       * <code>bool verbose = 4;</code>
+       * @param value The verbose to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVerbose(boolean value) {
+        
+        verbose_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * Whether to turn on verbose output during the programming.
+       * </pre>
+       *
+       * <code>bool verbose = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVerbose() {
+        
+        verbose_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean verify_ ;
+      /**
+       * <pre>
+       * After programming, verify the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
+       * <code>bool verify = 5;</code>
+       * @return The verify.
+       */
+      public boolean getVerify() {
+        return verify_;
+      }
+      /**
+       * <pre>
+       * After programming, verify the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
+       * <code>bool verify = 5;</code>
+       * @param value The verify to set.
+       * @return This builder for chaining.
+       */
+      public Builder setVerify(boolean value) {
+        
+        verify_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * After programming, verify the contents of the memory on the board match the
+       * uploaded binary.
+       * </pre>
+       *
+       * <code>bool verify = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearVerify() {
+        
+        verify_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object programmer_ = "";
+      /**
+       * <pre>
+       * The programmer to use for burning bootloader.
+       * </pre>
+       *
+       * <code>string programmer = 6;</code>
+       * @return The programmer.
+       */
+      public java.lang.String getProgrammer() {
+        java.lang.Object ref = programmer_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          programmer_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The programmer to use for burning bootloader.
+       * </pre>
+       *
+       * <code>string programmer = 6;</code>
+       * @return The bytes for programmer.
+       */
+      public com.google.protobuf.ByteString
+          getProgrammerBytes() {
+        java.lang.Object ref = programmer_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          programmer_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <pre>
+       * The programmer to use for burning bootloader.
+       * </pre>
+       *
+       * <code>string programmer = 6;</code>
+       * @param value The programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammer(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        programmer_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The programmer to use for burning bootloader.
+       * </pre>
+       *
+       * <code>string programmer = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearProgrammer() {
+        
+        programmer_ = getDefaultInstance().getProgrammer();
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The programmer to use for burning bootloader.
+       * </pre>
+       *
+       * <code>string programmer = 6;</code>
+       * @param value The bytes for programmer to set.
+       * @return This builder for chaining.
+       */
+      public Builder setProgrammerBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        programmer_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.BurnBootloaderReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.BurnBootloaderReq)
+    private static final cc.arduino.cli.commands.Upload.BurnBootloaderReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Upload.BurnBootloaderReq();
+    }
+
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BurnBootloaderReq>
+        PARSER = new com.google.protobuf.AbstractParser<BurnBootloaderReq>() {
+      @java.lang.Override
+      public BurnBootloaderReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BurnBootloaderReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BurnBootloaderReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BurnBootloaderReq> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Upload.BurnBootloaderReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface BurnBootloaderRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.BurnBootloaderResp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <pre>
+     * The output of the burn bootloader process.
+     * </pre>
+     *
+     * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
+     */
+    com.google.protobuf.ByteString getOutStream();
+
+    /**
+     * <pre>
+     * The error output of the burn bootloader process.
+     * </pre>
+     *
+     * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
+     */
+    com.google.protobuf.ByteString getErrStream();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.BurnBootloaderResp}
+   */
+  public  static final class BurnBootloaderResp extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.BurnBootloaderResp)
+      BurnBootloaderRespOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use BurnBootloaderResp.newBuilder() to construct.
+    private BurnBootloaderResp(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private BurnBootloaderResp() {
+      outStream_ = com.google.protobuf.ByteString.EMPTY;
+      errStream_ = com.google.protobuf.ByteString.EMPTY;
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new BurnBootloaderResp();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private BurnBootloaderResp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+
+              outStream_ = input.readBytes();
+              break;
+            }
+            case 18: {
+
+              errStream_ = input.readBytes();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderResp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Upload.BurnBootloaderResp.class, cc.arduino.cli.commands.Upload.BurnBootloaderResp.Builder.class);
+    }
+
+    public static final int OUT_STREAM_FIELD_NUMBER = 1;
+    private com.google.protobuf.ByteString outStream_;
+    /**
+     * <pre>
+     * The output of the burn bootloader process.
+     * </pre>
+     *
+     * <code>bytes out_stream = 1;</code>
+     * @return The outStream.
+     */
+    public com.google.protobuf.ByteString getOutStream() {
+      return outStream_;
+    }
+
+    public static final int ERR_STREAM_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString errStream_;
+    /**
+     * <pre>
+     * The error output of the burn bootloader process.
+     * </pre>
+     *
+     * <code>bytes err_stream = 2;</code>
+     * @return The errStream.
+     */
+    public com.google.protobuf.ByteString getErrStream() {
+      return errStream_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!outStream_.isEmpty()) {
+        output.writeBytes(1, outStream_);
+      }
+      if (!errStream_.isEmpty()) {
+        output.writeBytes(2, errStream_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!outStream_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, outStream_);
+      }
+      if (!errStream_.isEmpty()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, errStream_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Upload.BurnBootloaderResp)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Upload.BurnBootloaderResp other = (cc.arduino.cli.commands.Upload.BurnBootloaderResp) obj;
+
+      if (!getOutStream()
+          .equals(other.getOutStream())) return false;
+      if (!getErrStream()
+          .equals(other.getErrStream())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + OUT_STREAM_FIELD_NUMBER;
+      hash = (53 * hash) + getOutStream().hashCode();
+      hash = (37 * hash) + ERR_STREAM_FIELD_NUMBER;
+      hash = (53 * hash) + getErrStream().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Upload.BurnBootloaderResp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.BurnBootloaderResp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.BurnBootloaderResp)
+        cc.arduino.cli.commands.Upload.BurnBootloaderRespOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderResp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Upload.BurnBootloaderResp.class, cc.arduino.cli.commands.Upload.BurnBootloaderResp.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Upload.BurnBootloaderResp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        outStream_ = com.google.protobuf.ByteString.EMPTY;
+
+        errStream_ = com.google.protobuf.ByteString.EMPTY;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderResp getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Upload.BurnBootloaderResp.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderResp build() {
+        cc.arduino.cli.commands.Upload.BurnBootloaderResp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.BurnBootloaderResp buildPartial() {
+        cc.arduino.cli.commands.Upload.BurnBootloaderResp result = new cc.arduino.cli.commands.Upload.BurnBootloaderResp(this);
+        result.outStream_ = outStream_;
+        result.errStream_ = errStream_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Upload.BurnBootloaderResp) {
+          return mergeFrom((cc.arduino.cli.commands.Upload.BurnBootloaderResp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Upload.BurnBootloaderResp other) {
+        if (other == cc.arduino.cli.commands.Upload.BurnBootloaderResp.getDefaultInstance()) return this;
+        if (other.getOutStream() != com.google.protobuf.ByteString.EMPTY) {
+          setOutStream(other.getOutStream());
+        }
+        if (other.getErrStream() != com.google.protobuf.ByteString.EMPTY) {
+          setErrStream(other.getErrStream());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Upload.BurnBootloaderResp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Upload.BurnBootloaderResp) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private com.google.protobuf.ByteString outStream_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * The output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes out_stream = 1;</code>
+       * @return The outStream.
+       */
+      public com.google.protobuf.ByteString getOutStream() {
+        return outStream_;
+      }
+      /**
+       * <pre>
+       * The output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes out_stream = 1;</code>
+       * @param value The outStream to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOutStream(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        outStream_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes out_stream = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOutStream() {
+        
+        outStream_ = getDefaultInstance().getOutStream();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString errStream_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <pre>
+       * The error output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes err_stream = 2;</code>
+       * @return The errStream.
+       */
+      public com.google.protobuf.ByteString getErrStream() {
+        return errStream_;
+      }
+      /**
+       * <pre>
+       * The error output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes err_stream = 2;</code>
+       * @param value The errStream to set.
+       * @return This builder for chaining.
+       */
+      public Builder setErrStream(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        errStream_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       * The error output of the burn bootloader process.
+       * </pre>
+       *
+       * <code>bytes err_stream = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearErrStream() {
+        
+        errStream_ = getDefaultInstance().getErrStream();
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.BurnBootloaderResp)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.BurnBootloaderResp)
+    private static final cc.arduino.cli.commands.Upload.BurnBootloaderResp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Upload.BurnBootloaderResp();
+    }
+
+    public static cc.arduino.cli.commands.Upload.BurnBootloaderResp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<BurnBootloaderResp>
+        PARSER = new com.google.protobuf.AbstractParser<BurnBootloaderResp>() {
+      @java.lang.Override
+      public BurnBootloaderResp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new BurnBootloaderResp(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<BurnBootloaderResp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<BurnBootloaderResp> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Upload.BurnBootloaderResp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ListProgrammersAvailableForUploadReqOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
+     */
+    boolean hasInstance();
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
+     */
+    cc.arduino.cli.commands.Common.Instance getInstance();
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder();
+
+    /**
+     * <code>string fqbn = 2;</code>
+     * @return The fqbn.
+     */
+    java.lang.String getFqbn();
+    /**
+     * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
+     */
+    com.google.protobuf.ByteString
+        getFqbnBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq}
+   */
+  public  static final class ListProgrammersAvailableForUploadReq extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq)
+      ListProgrammersAvailableForUploadReqOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ListProgrammersAvailableForUploadReq.newBuilder() to construct.
+    private ListProgrammersAvailableForUploadReq(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ListProgrammersAvailableForUploadReq() {
+      fqbn_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ListProgrammersAvailableForUploadReq();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ListProgrammersAvailableForUploadReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              cc.arduino.cli.commands.Common.Instance.Builder subBuilder = null;
+              if (instance_ != null) {
+                subBuilder = instance_.toBuilder();
+              }
+              instance_ = input.readMessage(cc.arduino.cli.commands.Common.Instance.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(instance_);
+                instance_ = subBuilder.buildPartial();
+              }
+
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              fqbn_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.class, cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.Builder.class);
+    }
+
+    public static final int INSTANCE_FIELD_NUMBER = 1;
+    private cc.arduino.cli.commands.Common.Instance instance_;
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return Whether the instance field is set.
+     */
+    public boolean hasInstance() {
+      return instance_ != null;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     * @return The instance.
+     */
+    public cc.arduino.cli.commands.Common.Instance getInstance() {
+      return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+    }
+    /**
+     * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+     */
+    public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+      return getInstance();
+    }
+
+    public static final int FQBN_FIELD_NUMBER = 2;
+    private volatile java.lang.Object fqbn_;
+    /**
+     * <code>string fqbn = 2;</code>
+     * @return The fqbn.
+     */
+    public java.lang.String getFqbn() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        fqbn_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string fqbn = 2;</code>
+     * @return The bytes for fqbn.
+     */
+    public com.google.protobuf.ByteString
+        getFqbnBytes() {
+      java.lang.Object ref = fqbn_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        fqbn_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (instance_ != null) {
+        output.writeMessage(1, getInstance());
+      }
+      if (!getFqbnBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, fqbn_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (instance_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, getInstance());
+      }
+      if (!getFqbnBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, fqbn_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq other = (cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq) obj;
+
+      if (hasInstance() != other.hasInstance()) return false;
+      if (hasInstance()) {
+        if (!getInstance()
+            .equals(other.getInstance())) return false;
+      }
+      if (!getFqbn()
+          .equals(other.getFqbn())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (hasInstance()) {
+        hash = (37 * hash) + INSTANCE_FIELD_NUMBER;
+        hash = (53 * hash) + getInstance().hashCode();
+      }
+      hash = (37 * hash) + FQBN_FIELD_NUMBER;
+      hash = (53 * hash) + getFqbn().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq)
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.class, cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+        fqbn_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq build() {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq buildPartial() {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq result = new cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq(this);
+        if (instanceBuilder_ == null) {
+          result.instance_ = instance_;
+        } else {
+          result.instance_ = instanceBuilder_.build();
+        }
+        result.fqbn_ = fqbn_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq) {
+          return mergeFrom((cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq other) {
+        if (other == cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq.getDefaultInstance()) return this;
+        if (other.hasInstance()) {
+          mergeInstance(other.getInstance());
+        }
+        if (!other.getFqbn().isEmpty()) {
+          fqbn_ = other.fqbn_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private cc.arduino.cli.commands.Common.Instance instance_;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> instanceBuilder_;
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return Whether the instance field is set.
+       */
+      public boolean hasInstance() {
+        return instanceBuilder_ != null || instance_ != null;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       * @return The instance.
+       */
+      public cc.arduino.cli.commands.Common.Instance getInstance() {
+        if (instanceBuilder_ == null) {
+          return instance_ == null ? cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        } else {
+          return instanceBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          instance_ = value;
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder setInstance(
+          cc.arduino.cli.commands.Common.Instance.Builder builderForValue) {
+        if (instanceBuilder_ == null) {
+          instance_ = builderForValue.build();
+          onChanged();
+        } else {
+          instanceBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder mergeInstance(cc.arduino.cli.commands.Common.Instance value) {
+        if (instanceBuilder_ == null) {
+          if (instance_ != null) {
+            instance_ =
+              cc.arduino.cli.commands.Common.Instance.newBuilder(instance_).mergeFrom(value).buildPartial();
+          } else {
+            instance_ = value;
+          }
+          onChanged();
+        } else {
+          instanceBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public Builder clearInstance() {
+        if (instanceBuilder_ == null) {
+          instance_ = null;
+          onChanged();
+        } else {
+          instance_ = null;
+          instanceBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.Instance.Builder getInstanceBuilder() {
+        
+        onChanged();
+        return getInstanceFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      public cc.arduino.cli.commands.Common.InstanceOrBuilder getInstanceOrBuilder() {
+        if (instanceBuilder_ != null) {
+          return instanceBuilder_.getMessageOrBuilder();
+        } else {
+          return instance_ == null ?
+              cc.arduino.cli.commands.Common.Instance.getDefaultInstance() : instance_;
+        }
+      }
+      /**
+       * <code>.cc.arduino.cli.commands.Instance instance = 1;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder> 
+          getInstanceFieldBuilder() {
+        if (instanceBuilder_ == null) {
+          instanceBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              cc.arduino.cli.commands.Common.Instance, cc.arduino.cli.commands.Common.Instance.Builder, cc.arduino.cli.commands.Common.InstanceOrBuilder>(
+                  getInstance(),
+                  getParentForChildren(),
+                  isClean());
+          instance_ = null;
+        }
+        return instanceBuilder_;
+      }
+
+      private java.lang.Object fqbn_ = "";
+      /**
+       * <code>string fqbn = 2;</code>
+       * @return The fqbn.
+       */
+      public java.lang.String getFqbn() {
+        java.lang.Object ref = fqbn_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          fqbn_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string fqbn = 2;</code>
+       * @return The bytes for fqbn.
+       */
+      public com.google.protobuf.ByteString
+          getFqbnBytes() {
+        java.lang.Object ref = fqbn_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          fqbn_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string fqbn = 2;</code>
+       * @param value The fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbn(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string fqbn = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearFqbn() {
+        
+        fqbn_ = getDefaultInstance().getFqbn();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string fqbn = 2;</code>
+       * @param value The bytes for fqbn to set.
+       * @return This builder for chaining.
+       */
+      public Builder setFqbnBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        fqbn_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.ListProgrammersAvailableForUploadReq)
+    private static final cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq();
+    }
+
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ListProgrammersAvailableForUploadReq>
+        PARSER = new com.google.protobuf.AbstractParser<ListProgrammersAvailableForUploadReq>() {
+      @java.lang.Override
+      public ListProgrammersAvailableForUploadReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ListProgrammersAvailableForUploadReq(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ListProgrammersAvailableForUploadReq> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ListProgrammersAvailableForUploadReq> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadReq getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ListProgrammersAvailableForUploadRespOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    java.util.List<cc.arduino.cli.commands.Upload.Programmer> 
+        getProgrammersList();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    cc.arduino.cli.commands.Upload.Programmer getProgrammers(int index);
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    int getProgrammersCount();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    java.util.List<? extends cc.arduino.cli.commands.Upload.ProgrammerOrBuilder> 
+        getProgrammersOrBuilderList();
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    cc.arduino.cli.commands.Upload.ProgrammerOrBuilder getProgrammersOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp}
+   */
+  public  static final class ListProgrammersAvailableForUploadResp extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp)
+      ListProgrammersAvailableForUploadRespOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use ListProgrammersAvailableForUploadResp.newBuilder() to construct.
+    private ListProgrammersAvailableForUploadResp(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private ListProgrammersAvailableForUploadResp() {
+      programmers_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new ListProgrammersAvailableForUploadResp();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ListProgrammersAvailableForUploadResp(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                programmers_ = new java.util.ArrayList<cc.arduino.cli.commands.Upload.Programmer>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              programmers_.add(
+                  input.readMessage(cc.arduino.cli.commands.Upload.Programmer.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          programmers_ = java.util.Collections.unmodifiableList(programmers_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.class, cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.Builder.class);
+    }
+
+    public static final int PROGRAMMERS_FIELD_NUMBER = 1;
+    private java.util.List<cc.arduino.cli.commands.Upload.Programmer> programmers_;
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    public java.util.List<cc.arduino.cli.commands.Upload.Programmer> getProgrammersList() {
+      return programmers_;
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    public java.util.List<? extends cc.arduino.cli.commands.Upload.ProgrammerOrBuilder> 
+        getProgrammersOrBuilderList() {
+      return programmers_;
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    public int getProgrammersCount() {
+      return programmers_.size();
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    public cc.arduino.cli.commands.Upload.Programmer getProgrammers(int index) {
+      return programmers_.get(index);
+    }
+    /**
+     * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+     */
+    public cc.arduino.cli.commands.Upload.ProgrammerOrBuilder getProgrammersOrBuilder(
+        int index) {
+      return programmers_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < programmers_.size(); i++) {
+        output.writeMessage(1, programmers_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < programmers_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, programmers_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp other = (cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp) obj;
+
+      if (!getProgrammersList()
+          .equals(other.getProgrammersList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getProgrammersCount() > 0) {
+        hash = (37 * hash) + PROGRAMMERS_FIELD_NUMBER;
+        hash = (53 * hash) + getProgrammersList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp)
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadRespOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.class, cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getProgrammersFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (programmersBuilder_ == null) {
+          programmers_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          programmersBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp build() {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp buildPartial() {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp result = new cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp(this);
+        int from_bitField0_ = bitField0_;
+        if (programmersBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            programmers_ = java.util.Collections.unmodifiableList(programmers_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.programmers_ = programmers_;
+        } else {
+          result.programmers_ = programmersBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp) {
+          return mergeFrom((cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp other) {
+        if (other == cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp.getDefaultInstance()) return this;
+        if (programmersBuilder_ == null) {
+          if (!other.programmers_.isEmpty()) {
+            if (programmers_.isEmpty()) {
+              programmers_ = other.programmers_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureProgrammersIsMutable();
+              programmers_.addAll(other.programmers_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.programmers_.isEmpty()) {
+            if (programmersBuilder_.isEmpty()) {
+              programmersBuilder_.dispose();
+              programmersBuilder_ = null;
+              programmers_ = other.programmers_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              programmersBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getProgrammersFieldBuilder() : null;
+            } else {
+              programmersBuilder_.addAllMessages(other.programmers_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<cc.arduino.cli.commands.Upload.Programmer> programmers_ =
+        java.util.Collections.emptyList();
+      private void ensureProgrammersIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          programmers_ = new java.util.ArrayList<cc.arduino.cli.commands.Upload.Programmer>(programmers_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Upload.Programmer, cc.arduino.cli.commands.Upload.Programmer.Builder, cc.arduino.cli.commands.Upload.ProgrammerOrBuilder> programmersBuilder_;
+
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Upload.Programmer> getProgrammersList() {
+        if (programmersBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(programmers_);
+        } else {
+          return programmersBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public int getProgrammersCount() {
+        if (programmersBuilder_ == null) {
+          return programmers_.size();
+        } else {
+          return programmersBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public cc.arduino.cli.commands.Upload.Programmer getProgrammers(int index) {
+        if (programmersBuilder_ == null) {
+          return programmers_.get(index);
+        } else {
+          return programmersBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder setProgrammers(
+          int index, cc.arduino.cli.commands.Upload.Programmer value) {
+        if (programmersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProgrammersIsMutable();
+          programmers_.set(index, value);
+          onChanged();
+        } else {
+          programmersBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder setProgrammers(
+          int index, cc.arduino.cli.commands.Upload.Programmer.Builder builderForValue) {
+        if (programmersBuilder_ == null) {
+          ensureProgrammersIsMutable();
+          programmers_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          programmersBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder addProgrammers(cc.arduino.cli.commands.Upload.Programmer value) {
+        if (programmersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProgrammersIsMutable();
+          programmers_.add(value);
+          onChanged();
+        } else {
+          programmersBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder addProgrammers(
+          int index, cc.arduino.cli.commands.Upload.Programmer value) {
+        if (programmersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureProgrammersIsMutable();
+          programmers_.add(index, value);
+          onChanged();
+        } else {
+          programmersBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder addProgrammers(
+          cc.arduino.cli.commands.Upload.Programmer.Builder builderForValue) {
+        if (programmersBuilder_ == null) {
+          ensureProgrammersIsMutable();
+          programmers_.add(builderForValue.build());
+          onChanged();
+        } else {
+          programmersBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder addProgrammers(
+          int index, cc.arduino.cli.commands.Upload.Programmer.Builder builderForValue) {
+        if (programmersBuilder_ == null) {
+          ensureProgrammersIsMutable();
+          programmers_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          programmersBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder addAllProgrammers(
+          java.lang.Iterable<? extends cc.arduino.cli.commands.Upload.Programmer> values) {
+        if (programmersBuilder_ == null) {
+          ensureProgrammersIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, programmers_);
+          onChanged();
+        } else {
+          programmersBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder clearProgrammers() {
+        if (programmersBuilder_ == null) {
+          programmers_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          programmersBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public Builder removeProgrammers(int index) {
+        if (programmersBuilder_ == null) {
+          ensureProgrammersIsMutable();
+          programmers_.remove(index);
+          onChanged();
+        } else {
+          programmersBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public cc.arduino.cli.commands.Upload.Programmer.Builder getProgrammersBuilder(
+          int index) {
+        return getProgrammersFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public cc.arduino.cli.commands.Upload.ProgrammerOrBuilder getProgrammersOrBuilder(
+          int index) {
+        if (programmersBuilder_ == null) {
+          return programmers_.get(index);  } else {
+          return programmersBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public java.util.List<? extends cc.arduino.cli.commands.Upload.ProgrammerOrBuilder> 
+           getProgrammersOrBuilderList() {
+        if (programmersBuilder_ != null) {
+          return programmersBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(programmers_);
+        }
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public cc.arduino.cli.commands.Upload.Programmer.Builder addProgrammersBuilder() {
+        return getProgrammersFieldBuilder().addBuilder(
+            cc.arduino.cli.commands.Upload.Programmer.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public cc.arduino.cli.commands.Upload.Programmer.Builder addProgrammersBuilder(
+          int index) {
+        return getProgrammersFieldBuilder().addBuilder(
+            index, cc.arduino.cli.commands.Upload.Programmer.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .cc.arduino.cli.commands.Programmer programmers = 1;</code>
+       */
+      public java.util.List<cc.arduino.cli.commands.Upload.Programmer.Builder> 
+           getProgrammersBuilderList() {
+        return getProgrammersFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          cc.arduino.cli.commands.Upload.Programmer, cc.arduino.cli.commands.Upload.Programmer.Builder, cc.arduino.cli.commands.Upload.ProgrammerOrBuilder> 
+          getProgrammersFieldBuilder() {
+        if (programmersBuilder_ == null) {
+          programmersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              cc.arduino.cli.commands.Upload.Programmer, cc.arduino.cli.commands.Upload.Programmer.Builder, cc.arduino.cli.commands.Upload.ProgrammerOrBuilder>(
+                  programmers_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          programmers_ = null;
+        }
+        return programmersBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.ListProgrammersAvailableForUploadResp)
+    private static final cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp();
+    }
+
+    public static cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<ListProgrammersAvailableForUploadResp>
+        PARSER = new com.google.protobuf.AbstractParser<ListProgrammersAvailableForUploadResp>() {
+      @java.lang.Override
+      public ListProgrammersAvailableForUploadResp parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ListProgrammersAvailableForUploadResp(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ListProgrammersAvailableForUploadResp> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ListProgrammersAvailableForUploadResp> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Upload.ListProgrammersAvailableForUploadResp getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface ProgrammerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:cc.arduino.cli.commands.Programmer)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string platform = 1;</code>
+     * @return The platform.
+     */
+    java.lang.String getPlatform();
+    /**
+     * <code>string platform = 1;</code>
+     * @return The bytes for platform.
+     */
+    com.google.protobuf.ByteString
+        getPlatformBytes();
+
+    /**
+     * <code>string id = 2;</code>
+     * @return The id.
+     */
+    java.lang.String getId();
+    /**
+     * <code>string id = 2;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
+
+    /**
+     * <code>string name = 3;</code>
+     * @return The name.
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 3;</code>
+     * @return The bytes for name.
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+  }
+  /**
+   * Protobuf type {@code cc.arduino.cli.commands.Programmer}
+   */
+  public  static final class Programmer extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:cc.arduino.cli.commands.Programmer)
+      ProgrammerOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use Programmer.newBuilder() to construct.
+    private Programmer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private Programmer() {
+      platform_ = "";
+      id_ = "";
+      name_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new Programmer();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Programmer(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              platform_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              id_ = s;
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_Programmer_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_Programmer_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              cc.arduino.cli.commands.Upload.Programmer.class, cc.arduino.cli.commands.Upload.Programmer.Builder.class);
+    }
+
+    public static final int PLATFORM_FIELD_NUMBER = 1;
+    private volatile java.lang.Object platform_;
+    /**
+     * <code>string platform = 1;</code>
+     * @return The platform.
+     */
+    public java.lang.String getPlatform() {
+      java.lang.Object ref = platform_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        platform_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string platform = 1;</code>
+     * @return The bytes for platform.
+     */
+    public com.google.protobuf.ByteString
+        getPlatformBytes() {
+      java.lang.Object ref = platform_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        platform_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ID_FIELD_NUMBER = 2;
+    private volatile java.lang.Object id_;
+    /**
+     * <code>string id = 2;</code>
+     * @return The id.
+     */
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 2;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int NAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 3;</code>
+     * @return The name.
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 3;</code>
+     * @return The bytes for name.
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getPlatformBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, platform_);
+      }
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, id_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, name_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getPlatformBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, platform_);
+      }
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, id_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, name_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof cc.arduino.cli.commands.Upload.Programmer)) {
+        return super.equals(obj);
+      }
+      cc.arduino.cli.commands.Upload.Programmer other = (cc.arduino.cli.commands.Upload.Programmer) obj;
+
+      if (!getPlatform()
+          .equals(other.getPlatform())) return false;
+      if (!getId()
+          .equals(other.getId())) return false;
+      if (!getName()
+          .equals(other.getName())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PLATFORM_FIELD_NUMBER;
+      hash = (53 * hash) + getPlatform().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId().hashCode();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static cc.arduino.cli.commands.Upload.Programmer parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(cc.arduino.cli.commands.Upload.Programmer prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code cc.arduino.cli.commands.Programmer}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:cc.arduino.cli.commands.Programmer)
+        cc.arduino.cli.commands.Upload.ProgrammerOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_Programmer_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_Programmer_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                cc.arduino.cli.commands.Upload.Programmer.class, cc.arduino.cli.commands.Upload.Programmer.Builder.class);
+      }
+
+      // Construct using cc.arduino.cli.commands.Upload.Programmer.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        platform_ = "";
+
+        id_ = "";
+
+        name_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return cc.arduino.cli.commands.Upload.internal_static_cc_arduino_cli_commands_Programmer_descriptor;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.Programmer getDefaultInstanceForType() {
+        return cc.arduino.cli.commands.Upload.Programmer.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.Programmer build() {
+        cc.arduino.cli.commands.Upload.Programmer result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public cc.arduino.cli.commands.Upload.Programmer buildPartial() {
+        cc.arduino.cli.commands.Upload.Programmer result = new cc.arduino.cli.commands.Upload.Programmer(this);
+        result.platform_ = platform_;
+        result.id_ = id_;
+        result.name_ = name_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof cc.arduino.cli.commands.Upload.Programmer) {
+          return mergeFrom((cc.arduino.cli.commands.Upload.Programmer)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(cc.arduino.cli.commands.Upload.Programmer other) {
+        if (other == cc.arduino.cli.commands.Upload.Programmer.getDefaultInstance()) return this;
+        if (!other.getPlatform().isEmpty()) {
+          platform_ = other.platform_;
+          onChanged();
+        }
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        cc.arduino.cli.commands.Upload.Programmer parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (cc.arduino.cli.commands.Upload.Programmer) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object platform_ = "";
+      /**
+       * <code>string platform = 1;</code>
+       * @return The platform.
+       */
+      public java.lang.String getPlatform() {
+        java.lang.Object ref = platform_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          platform_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string platform = 1;</code>
+       * @return The bytes for platform.
+       */
+      public com.google.protobuf.ByteString
+          getPlatformBytes() {
+        java.lang.Object ref = platform_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          platform_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string platform = 1;</code>
+       * @param value The platform to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlatform(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        platform_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string platform = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPlatform() {
+        
+        platform_ = getDefaultInstance().getPlatform();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string platform = 1;</code>
+       * @param value The bytes for platform to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPlatformBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        platform_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object id_ = "";
+      /**
+       * <code>string id = 2;</code>
+       * @return The id.
+       */
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string id = 2;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 2;</code>
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 2;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 3;</code>
+       * @return The name.
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 3;</code>
+       * @return The bytes for name.
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 3;</code>
+       * @param value The name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 3;</code>
+       * @param value The bytes for name to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:cc.arduino.cli.commands.Programmer)
+    }
+
+    // @@protoc_insertion_point(class_scope:cc.arduino.cli.commands.Programmer)
+    private static final cc.arduino.cli.commands.Upload.Programmer DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new cc.arduino.cli.commands.Upload.Programmer();
+    }
+
+    public static cc.arduino.cli.commands.Upload.Programmer getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<Programmer>
+        PARSER = new com.google.protobuf.AbstractParser<Programmer>() {
+      @java.lang.Override
+      public Programmer parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Programmer(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Programmer> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Programmer> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public cc.arduino.cli.commands.Upload.Programmer getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_cc_arduino_cli_commands_UploadReq_descriptor;
   private static final 
@@ -1934,6 +7031,31 @@ public final class Upload {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_cc_arduino_cli_commands_UploadResp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_BurnBootloaderReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_BurnBootloaderResp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_cc_arduino_cli_commands_Programmer_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_cc_arduino_cli_commands_Programmer_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1944,14 +7066,27 @@ public final class Upload {
   static {
     java.lang.String[] descriptorData = {
       "\n\025commands/upload.proto\022\027cc.arduino.cli." +
-      "commands\032\025commands/common.proto\"\247\001\n\tUplo" +
+      "commands\032\025commands/common.proto\"\323\001\n\tUplo" +
       "adReq\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli" +
       ".commands.Instance\022\014\n\004fqbn\030\002 \001(\t\022\023\n\013sket" +
       "ch_path\030\003 \001(\t\022\014\n\004port\030\004 \001(\t\022\017\n\007verbose\030\005" +
-      " \001(\010\022\016\n\006verify\030\006 \001(\010\022\023\n\013import_file\030\007 \001(" +
-      "\t\"4\n\nUploadResp\022\022\n\nout_stream\030\001 \001(\014\022\022\n\ne" +
-      "rr_stream\030\002 \001(\014B-Z+github.com/arduino/ar" +
-      "duino-cli/rpc/commandsb\006proto3"
+      " \001(\010\022\016\n\006verify\030\006 \001(\010\022\027\n\013import_file\030\007 \001(" +
+      "\tB\002\030\001\022\022\n\nimport_dir\030\010 \001(\t\022\022\n\nprogrammer\030" +
+      "\t \001(\t\"4\n\nUploadResp\022\022\n\nout_stream\030\001 \001(\014\022" +
+      "\022\n\nerr_stream\030\002 \001(\014\"\231\001\n\021BurnBootloaderRe" +
+      "q\0223\n\010instance\030\001 \001(\0132!.cc.arduino.cli.com" +
+      "mands.Instance\022\014\n\004fqbn\030\002 \001(\t\022\014\n\004port\030\003 \001" +
+      "(\t\022\017\n\007verbose\030\004 \001(\010\022\016\n\006verify\030\005 \001(\010\022\022\n\np" +
+      "rogrammer\030\006 \001(\t\"<\n\022BurnBootloaderResp\022\022\n" +
+      "\nout_stream\030\001 \001(\014\022\022\n\nerr_stream\030\002 \001(\014\"i\n" +
+      "$ListProgrammersAvailableForUploadReq\0223\n" +
+      "\010instance\030\001 \001(\0132!.cc.arduino.cli.command" +
+      "s.Instance\022\014\n\004fqbn\030\002 \001(\t\"a\n%ListProgramm" +
+      "ersAvailableForUploadResp\0228\n\013programmers" +
+      "\030\001 \003(\0132#.cc.arduino.cli.commands.Program" +
+      "mer\"8\n\nProgrammer\022\020\n\010platform\030\001 \001(\t\022\n\n\002i" +
+      "d\030\002 \001(\t\022\014\n\004name\030\003 \001(\tB-Z+github.com/ardu" +
+      "ino/arduino-cli/rpc/commandsb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1963,13 +7098,43 @@ public final class Upload {
     internal_static_cc_arduino_cli_commands_UploadReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UploadReq_descriptor,
-        new java.lang.String[] { "Instance", "Fqbn", "SketchPath", "Port", "Verbose", "Verify", "ImportFile", });
+        new java.lang.String[] { "Instance", "Fqbn", "SketchPath", "Port", "Verbose", "Verify", "ImportFile", "ImportDir", "Programmer", });
     internal_static_cc_arduino_cli_commands_UploadResp_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_cc_arduino_cli_commands_UploadResp_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_cc_arduino_cli_commands_UploadResp_descriptor,
         new java.lang.String[] { "OutStream", "ErrStream", });
+    internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_cc_arduino_cli_commands_BurnBootloaderReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_BurnBootloaderReq_descriptor,
+        new java.lang.String[] { "Instance", "Fqbn", "Port", "Verbose", "Verify", "Programmer", });
+    internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_cc_arduino_cli_commands_BurnBootloaderResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_BurnBootloaderResp_descriptor,
+        new java.lang.String[] { "OutStream", "ErrStream", });
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor =
+      getDescriptor().getMessageTypes().get(4);
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadReq_descriptor,
+        new java.lang.String[] { "Instance", "Fqbn", });
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_ListProgrammersAvailableForUploadResp_descriptor,
+        new java.lang.String[] { "Programmers", });
+    internal_static_cc_arduino_cli_commands_Programmer_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_cc_arduino_cli_commands_Programmer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_cc_arduino_cli_commands_Programmer_descriptor,
+        new java.lang.String[] { "Platform", "Id", "Name", });
     cc.arduino.cli.commands.Common.getDescriptor();
   }
 
