@@ -32,6 +32,7 @@ package cc.arduino.view.preferences;
 import cc.arduino.Constants;
 import cc.arduino.i18n.Language;
 import cc.arduino.i18n.Languages;
+import io.grpc.StatusException;
 import processing.app.Base;
 import processing.app.BaseNoGui;
 import processing.app.Editor;
@@ -653,6 +654,11 @@ public class Preferences extends javax.swing.JDialog {
     }
 
     savePreferencesData();
+    try {
+      BaseNoGui.getArduinoCoreService().updateSettingFromPreferences();
+    } catch (StatusException e) {
+      e.printStackTrace();
+    }
     base.getEditors().forEach(processing.app.Editor::applyPreferences);
     cancelButtonActionPerformed(evt);
   }//GEN-LAST:event_okButtonActionPerformed

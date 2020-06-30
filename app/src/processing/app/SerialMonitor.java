@@ -72,6 +72,7 @@ public class SerialMonitor extends AbstractTextMonitor {
 
     // Add key listener to UP, DOWN, ESC keys for command history traversal.
     textField.addKeyListener(new KeyAdapter() {
+      @SuppressWarnings("incomplete-switch")
       @Override
       public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {

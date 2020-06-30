@@ -319,7 +319,7 @@ public class SerialPlotter extends AbstractMonitor {
     noLineEndingAlert.setMinimumSize(minimumSize);
 
 
-    lineEndings = new JComboBox<String>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
+    lineEndings = new JComboBox<>(new String[]{tr("No line ending"), tr("Newline"), tr("Carriage return"), tr("Both NL & CR")});
     lineEndings.addActionListener((ActionEvent event) -> {
       PreferencesData.setInteger("serial.line_ending", lineEndings.getSelectedIndex());
       noLineEndingAlert.setForeground(pane.getBackground());

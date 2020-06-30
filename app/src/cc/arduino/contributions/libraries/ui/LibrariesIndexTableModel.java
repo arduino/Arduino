@@ -29,32 +29,33 @@
 
 package cc.arduino.contributions.libraries.ui;
 
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel
-    extends FilteredAbstractTableModel<ContributedLibraryReleases> {
+    extends FilteredAbstractTableModel<ContributedLibrary> {
 
-  private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
+  private final List<ContributedLibrary> contributions = new ArrayList<>();
 
   private final String[] columnNames = { "Description" };
 
   private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
-  Predicate<ContributedLibraryReleases> selectedCategoryFilter = null;
+  Predicate<ContributedLibrary> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
   public void updateIndexFilter(String filters[],
-                                Predicate<ContributedLibraryReleases> additionalFilter) {
+                                Predicate<ContributedLibrary> additionalFilter) {
     selectedCategoryFilter = additionalFilter;
     selectedFilters = filters;
     update();
@@ -117,7 +118,7 @@ public class LibrariesIndexTableModel
     if (row >= contributions.size()) {
       return null;
     }
-    ContributedLibraryReleases contribution = contributions.get(row);
+    ContributedLibrary contribution = contributions.get(row);
     return contribution;// .getSelected();
   }
 
@@ -126,12 +127,12 @@ public class LibrariesIndexTableModel
     return true;
   }
 
-  public ContributedLibraryReleases getReleases(int row) {
+  public ContributedLibrary getReleases(int row) {
     return contributions.get(row);
   }
 
-  public ContributedLibrary getSelectedRelease(int row) {
-    return contributions.get(row).getSelected();
+  public ContributedLibraryRelease getSelectedRelease(int row) {
+    return contributions.get(row).getSelected().get();
   }
 
   public void update() {
@@ -139,12 +140,12 @@ public class LibrariesIndexTableModel
     fireTableDataChanged();
   }
 
-  private boolean filterCondition(ContributedLibraryReleases lib) {
+  private boolean filterCondition(ContributedLibrary lib) {
     if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
       return false;
     }
 
-    ContributedLibrary latest = lib.getLatest();
+    ContributedLibraryRelease latest = lib.getLatest().get();
     String compoundTargetSearchText = latest.getName() + " "
                                       + latest.getParagraph() + " "
                                       + latest.getSentence();
@@ -158,55 +159,12 @@ public class LibrariesIndexTableModel
     return true;
   }
 
-  public void updateLibrary(ContributedLibrary lib) {
-    // Find the row interested in the change
-    int row = -1;
-    for (ContributedLibraryReleases releases : contributions) {
-      if (releases.shouldContain(lib))
-        row = contributions.indexOf(releases);
-    }
-
-    updateContributions();
-
-    // If the library is found in the list send update event
-    // or insert event on the specific row...
-    for (ContributedLibraryReleases releases : contributions) {
-      if (releases.shouldContain(lib)) {
-        if (row == -1) {
-          row = contributions.indexOf(releases);
-          fireTableRowsInserted(row, row);
-        } else {
-          fireTableRowsUpdated(row, row);
-        }
-        return;
-      }
-    }
-    // ...otherwise send a row deleted event
-    fireTableRowsDeleted(row, row);
-  }
-
-  private List<ContributedLibraryReleases> rebuildContributionsFromIndex() {
-    List<ContributedLibraryReleases> res = new ArrayList<>();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries(). //
-        forEach(lib -> {
-          for (ContributedLibraryReleases contribution : res) {
-            if (!contribution.shouldContain(lib))
-              continue;
-            contribution.add(lib);
-            return;
-          }
-
-          res.add(new ContributedLibraryReleases(lib));
-        });
-    return res;
-  }
-
   private void updateContributions() {
-    List<ContributedLibraryReleases> all = rebuildContributionsFromIndex();
+    Collection<ContributedLibrary> all = BaseNoGui.librariesIndexer.getIndex().getLibraries();
     contributions.clear();
     all.stream().filter(this::filterCondition).forEach(contributions::add);
     Collections.sort(contributions,
-                     new ContributedLibraryReleasesComparator("Arduino"));
+                     new ContributedLibraryComparatorWithTypePriority("Arduino"));
   }
 
 }

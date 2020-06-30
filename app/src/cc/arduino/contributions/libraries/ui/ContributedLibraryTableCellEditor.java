@@ -33,6 +33,8 @@ import static processing.app.I18n.tr;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,38 +46,38 @@ import javax.swing.JTable;
 import cc.arduino.contributions.DownloadableContributionVersionComparator;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import cc.arduino.utils.ReverseComparator;
 
 @SuppressWarnings("serial")
 public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
-  private ContributedLibraryReleases editorValue;
+  private ContributedLibrary editorLibrary;
   private ContributedLibraryTableCellJPanel editorCell;
 
   @Override
   public Object getCellEditorValue() {
-    return editorValue;
+    return editorLibrary;
   }
 
   @Override
   public Component getTableCellEditorComponent(JTable table, Object value,
                                                boolean isSelected, int row,
                                                int column) {
-    editorValue = (ContributedLibraryReleases) value;
+    editorLibrary = (ContributedLibrary) value;
 
     editorCell = new ContributedLibraryTableCellJPanel(table, value, true);
     editorCell.installButton
-        .addActionListener(e -> onInstall(editorValue.getSelected(),
-                                          editorValue.getInstalled()));
+        .addActionListener(e -> onInstall(editorLibrary.getSelected().get(),
+                                          editorLibrary.getInstalled()));
     editorCell.downgradeButton.addActionListener(e -> {
       JComboBox chooser = editorCell.downgradeChooser;
-      ContributedLibrary lib = (ContributedLibrary) chooser.getSelectedItem();
-      onInstall(lib, editorValue.getInstalled());
+      ContributedLibraryRelease lib = (ContributedLibraryRelease) chooser.getSelectedItem();
+      onInstall(lib, editorLibrary.getInstalled());
     });
     editorCell.versionToInstallChooser.addActionListener(e -> {
-      editorValue.select((ContributedLibrary) editorCell.versionToInstallChooser.getSelectedItem());
+      editorLibrary.select((ContributedLibraryRelease) editorCell.versionToInstallChooser.getSelectedItem());
       if (editorCell.versionToInstallChooser.getSelectedIndex() != 0) {
         InstallerTableCell.dropdownSelected(true);
       }
@@ -83,12 +85,12 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
 
     setEnabled(true);
 
-    final Optional<ContributedLibrary> mayInstalled = editorValue.getInstalled();
+    final Optional<ContributedLibraryRelease> mayInstalled = editorLibrary.getInstalled();
 
-    List<ContributedLibrary> releases = editorValue.getReleases();
-    List<ContributedLibrary> notInstalled = new LinkedList<>(releases);
+    Collection<ContributedLibraryRelease> releases = editorLibrary.getReleases();
+    List<ContributedLibraryRelease> notInstalled = new ArrayList<>(releases);
     if (mayInstalled.isPresent()) {
-      notInstalled.remove(editorValue.getInstalled().get());
+      notInstalled.remove(mayInstalled.get());
     }
 
     Collections.sort(notInstalled, new ReverseComparator<>(
@@ -97,8 +99,8 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     editorCell.downgradeChooser.removeAllItems();
     editorCell.downgradeChooser.addItem(tr("Select version"));
 
-    final List<ContributedLibrary> notInstalledPrevious = new LinkedList<>();
-    final List<ContributedLibrary> notInstalledNewer = new LinkedList<>();
+    final List<ContributedLibraryRelease> notInstalledPrevious = new LinkedList<>();
+    final List<ContributedLibraryRelease> notInstalledNewer = new LinkedList<>();
 
     notInstalled.stream().forEach(input -> {
       if (!mayInstalled.isPresent()
@@ -139,12 +141,12 @@ public class ContributedLibraryTableCellEditor extends InstallerTableCell {
     editorCell.statusLabel.setText(status);
   }
 
-  protected void onRemove(ContributedLibrary selected) {
+  protected void onRemove(ContributedLibraryRelease selected) {
     // Empty
   }
 
-  protected void onInstall(ContributedLibrary selected,
-                           Optional<ContributedLibrary> mayInstalled) {
+  protected void onInstall(ContributedLibraryRelease selected,
+                           Optional<ContributedLibraryRelease> mayInstalled) {
     // Empty
   }
 

@@ -48,9 +48,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
-import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryTypeComparator;
 import cc.arduino.contributions.libraries.ui.MultiLibraryInstallDialog.Result;
 import cc.arduino.contributions.ui.DropdownItem;
@@ -62,11 +62,11 @@ import cc.arduino.utils.Progress;
 import processing.app.BaseNoGui;
 
 @SuppressWarnings("serial")
-public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryReleases> {
+public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
 
+  private final ArduinoCoreInstance core;
   private final JComboBox typeChooser;
-  private final LibraryInstaller installer;
-  private Predicate<ContributedLibraryReleases> typeFilter;
+  private Predicate<ContributedLibrary> typeFilter;
 
   @Override
   protected FilteredAbstractTableModel createContribModel() {
@@ -82,7 +82,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   protected InstallerTableCell createCellEditor() {
     return new ContributedLibraryTableCellEditor() {
       @Override
-      protected void onInstall(ContributedLibrary selectedLibrary, Optional<ContributedLibrary> mayInstalledLibrary) {
+      protected void onInstall(ContributedLibraryRelease selectedLibrary, Optional<ContributedLibraryRelease> mayInstalledLibrary) {
         if (mayInstalledLibrary.isPresent() && selectedLibrary.isIDEBuiltIn()) {
           onRemovePressed(mayInstalledLibrary.get());
         } else {
@@ -91,15 +91,15 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       }
 
       @Override
-      protected void onRemove(ContributedLibrary library) {
+      protected void onRemove(ContributedLibraryRelease library) {
         onRemovePressed(library);
       }
     };
   }
 
-  public LibraryManagerUI(Frame parent, LibraryInstaller installer) {
+  public LibraryManagerUI(Frame parent, ArduinoCoreInstance core) {
     super(parent, tr("Library Manager"), Dialog.ModalityType.APPLICATION_MODAL, tr("Unable to reach Arduino.cc due to possible network issues."));
-    this.installer = installer;
+    this.core = core;
 
     filtersContainer.add(new JLabel(tr("Topic")), 1);
     filtersContainer.remove(2);
@@ -118,7 +118,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
 
     @Override
     public void actionPerformed(ActionEvent event) {
-      DropdownItem<ContributedLibraryReleases> selected = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
+      DropdownItem<ContributedLibrary> selected = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
       previousRowAtPoint = -1;
       if (selected != null && typeFilter != selected.getFilterPredicate()) {
         typeFilter = selected.getFilterPredicate();
@@ -131,8 +131,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
   };
 
   public void updateUI() {
-    DropdownItem<ContributedLibraryReleases> previouslySelectedCategory = (DropdownItem<ContributedLibraryReleases>) categoryChooser.getSelectedItem();
-    DropdownItem<ContributedLibraryReleases> previouslySelectedType = (DropdownItem<ContributedLibraryReleases>) typeChooser.getSelectedItem();
+    DropdownItem<ContributedLibrary> previouslySelectedCategory = (DropdownItem<ContributedLibrary>) categoryChooser.getSelectedItem();
+    DropdownItem<ContributedLibrary> previouslySelectedType = (DropdownItem<ContributedLibrary>) typeChooser.getSelectedItem();
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
     typeChooser.removeActionListener(typeChooserActionListener);
@@ -200,7 +200,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        installer.updateIndex(this::setProgress);
+        core.updateLibrariesIndex(this::setProgress);
         ((LibrariesIndexTableModel) contribModel).update();
         onIndexesUpdated();
       } catch (Exception e) {
@@ -214,8 +214,8 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onInstallPressed(final ContributedLibrary lib) {
-    List<ContributedLibrary> deps = BaseNoGui.librariesIndexer.getIndex().resolveDependeciesOf(lib);
+  public void onInstallPressed(final ContributedLibraryRelease lib) {
+    List<ContributedLibraryRelease> deps = core.libraryResolveDependecies(lib);
     boolean depsInstalled = deps.stream().allMatch(l -> l.getInstalledLibrary().isPresent() || l.getName().equals(lib.getName()));
     Result installDeps;
     if (!depsInstalled) {
@@ -234,9 +234,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, tr("Installing..."));
         if (installDeps == Result.ALL) {
-          installer.install(deps, this::setProgress);
+          deps.forEach(dep -> {
+            core.libraryInstall(dep, this::setProgress);
+          });
         } else {
-          installer.install(lib, this::setProgress);
+          core.libraryInstall(lib, this::setProgress);
         }
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
@@ -255,7 +257,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread.start();
   }
 
-  public void onRemovePressed(final ContributedLibrary lib) {
+  public void onRemovePressed(final ContributedLibraryRelease lib) {
     boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib);
 
     if (!managedByIndex) {
@@ -269,7 +271,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, tr("Removing..."));
-        installer.remove(lib, this::setProgress);
+        core.libraryRemove(lib, this::setProgress);
         // TODO: Do a better job in refreshing only the needed element
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();

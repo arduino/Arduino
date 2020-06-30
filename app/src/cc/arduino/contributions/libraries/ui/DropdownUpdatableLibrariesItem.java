@@ -29,29 +29,19 @@
 
 package cc.arduino.contributions.libraries.ui;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.ContributedLibraryReleases;
-import cc.arduino.contributions.ui.DropdownItem;
-
-import java.util.Optional;
-import java.util.function.Predicate;
-
 import static processing.app.I18n.tr;
 
-public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedLibraryReleases> {
+import java.util.function.Predicate;
+
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
+import cc.arduino.contributions.ui.DropdownItem;
+
+public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedLibrary> {
 
   @Override
-  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
-    return new Predicate<ContributedLibraryReleases>() {
-      @Override
-      public boolean test(ContributedLibraryReleases lib) {
-        Optional<ContributedLibrary> mayInstalled = lib.getInstalled();
-        if (!mayInstalled.isPresent()) {
-          return false;
-        }
-        return !lib.getLatest().equals(mayInstalled.get());
-      }
-    };
+  public Predicate<ContributedLibrary> getFilterPredicate() {
+    return new UpdatableLibraryPredicate();
   }
 
   @Override

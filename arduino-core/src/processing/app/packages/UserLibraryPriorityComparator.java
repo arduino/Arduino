@@ -32,16 +32,16 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import processing.app.packages.UserLibraryFolder.Location;
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 
 public class UserLibraryPriorityComparator implements Comparator<UserLibrary> {
 
-  private final static Map<Location, Integer> priorities = new HashMap<>();
+  private final static Map<LibraryLocation, Integer> priorities = new HashMap<>();
   static {
-    priorities.put(Location.SKETCHBOOK, 4);
-    priorities.put(Location.CORE, 3);
-    priorities.put(Location.REFERENCED_CORE, 2);
-    priorities.put(Location.IDE_BUILTIN, 1);
+    priorities.put(LibraryLocation.user, 4);
+    priorities.put(LibraryLocation.platform_builtin, 3);
+    priorities.put(LibraryLocation.referenced_platform_builtin, 2);
+    priorities.put(LibraryLocation.ide_builtin, 1);
   }
 
   private String arch;

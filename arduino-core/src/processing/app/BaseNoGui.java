@@ -1,6 +1,8 @@
 package processing.app;
 
 import cc.arduino.Constants;
+import cc.arduino.cli.ArduinoCore;
+import cc.arduino.cli.ArduinoCoreInstance;
 import cc.arduino.contributions.GPGDetachedSignatureVerifier;
 import cc.arduino.contributions.VersionComparator;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
@@ -19,8 +21,6 @@ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
 import processing.app.legacy.PApplet;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder;
-import processing.app.packages.UserLibraryFolder.Location;
 import cc.arduino.files.DeleteFilesOnShutdown;
 import processing.app.helpers.FileUtils;
 
@@ -86,9 +86,6 @@ public class BaseNoGui {
   // maps #included files to their library folder
   public static Map<String, LibraryList> importToLibraryTable;
 
-  // XXX: Remove this field
-  static private List<UserLibraryFolder> librariesFolders;
-
   static UserNotifier notifier = new BasicUserNotifier();
 
   static public Map<String, TargetPackage> packages;
@@ -104,6 +101,21 @@ public class BaseNoGui {
   private static String boardManagerLink = "";
 
   private static File buildCache;
+
+  private static ArduinoCoreInstance arduinoCoreInstance;
+
+  public static void initArduinoCoreService() {
+    try {
+      ArduinoCore core = new ArduinoCore();
+      arduinoCoreInstance = core.init();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static ArduinoCoreInstance getArduinoCoreService() {
+    return arduinoCoreInstance;
+  }
 
   // Returns a File object for the given pathname. If the pathname
   // is not absolute, it is interpreted relative to the current
@@ -246,10 +258,6 @@ public class BaseNoGui {
     return getHardwareFolder().getAbsolutePath();
   }
 
-  static public List<UserLibraryFolder> getLibrariesFolders() {
-    return librariesFolders;
-  }
-
   static public Platform getPlatform() {
     return platform;
   }
@@ -327,7 +335,7 @@ public class BaseNoGui {
     return new File(getSketchbookFolder(), "hardware");
   }
 
-  static public UserLibraryFolder getSketchbookLibrariesFolder() {
+  static public File getSketchbookLibrariesFolder() {
     File libdir = new File(getSketchbookFolder(), "libraries");
     if (!libdir.exists()) {
       FileWriter freadme = null;
@@ -341,7 +349,7 @@ public class BaseNoGui {
         IOUtils.closeQuietly(freadme);
       }
     }
-    return new UserLibraryFolder(libdir, Location.SKETCHBOOK);
+    return libdir;
   }
 
   static public String getSketchbookPath() {
@@ -496,13 +504,8 @@ public class BaseNoGui {
     loadHardware(getSketchbookHardwareFolder());
     createToolPreferences(indexer.getInstalledTools(), true);
 
-    librariesIndexer = new LibrariesIndexer(getSettingsFolder());
-    try {
-      librariesIndexer.parseIndex();
-    } catch (JsonProcessingException e) {
-      File librariesIndexFile = librariesIndexer.getIndexFile();
-      librariesIndexFile.delete();
-    }
+    librariesIndexer = new LibrariesIndexer(BaseNoGui.getArduinoCoreService());
+    librariesIndexer.regenerateIndex();
 
     if (discoveryManager == null) {
       discoveryManager = new DiscoveryManager(packages);
@@ -644,37 +647,10 @@ public class BaseNoGui {
   static public void onBoardOrPortChange() {
     examplesFolder = getContentFile("examples");
     toolsFolder = getContentFile("tools");
-    librariesFolders = new ArrayList<>();
-
-    // Add IDE libraries folder
-    librariesFolders.add(new UserLibraryFolder(getContentFile("libraries"), Location.IDE_BUILTIN));
-
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform != null) {
-      String core = getBoardPreferences().get("build.core", "arduino");
-      if (core.contains(":")) {
-        String referencedCore = core.split(":")[0];
-        TargetPlatform referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.getId());
-        if (referencedPlatform != null) {
-          File referencedPlatformFolder = referencedPlatform.getFolder();
-          // Add libraries folder for the referenced platform
-          File folder = new File(referencedPlatformFolder, "libraries");
-          librariesFolders.add(new UserLibraryFolder(folder, Location.REFERENCED_CORE));
-        }
-      }
-      File platformFolder = targetPlatform.getFolder();
-      // Add libraries folder for the selected platform
-      File folder = new File(platformFolder, "libraries");
-      librariesFolders.add(new UserLibraryFolder(folder, Location.CORE));
-    }
-
-    // Add libraries folder for the sketchbook
-    librariesFolders.add(getSketchbookLibrariesFolder());
 
     // Scan for libraries in each library folder.
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
-    librariesIndexer.setLibrariesFolders(librariesFolders);
     if (getTargetPlatform() != null) {
       librariesIndexer.setArchitecturePriority(getTargetPlatform().getId());
     }

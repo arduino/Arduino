@@ -51,8 +51,7 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.UnavailableContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import processing.app.Base;
 import processing.app.Theme;
 
@@ -64,8 +63,8 @@ public class MultiLibraryInstallDialog extends JDialog {
 
   private Result result = Result.CANCEL;
 
-  public MultiLibraryInstallDialog(Window parent, ContributedLibrary lib,
-                                   List<ContributedLibrary> dependencies) {
+  public MultiLibraryInstallDialog(Window parent, ContributedLibraryRelease lib,
+                                   List<ContributedLibraryRelease> dependencies) {
     super(parent, format(tr("Dependencies for library {0}:{1}"), lib.getName(),
                          lib.getParsedVersion()),
         ModalityType.APPLICATION_MODAL);
@@ -115,12 +114,10 @@ public class MultiLibraryInstallDialog extends JDialog {
       String desc = format(tr("The library {0} needs some other library<br />dependencies currently not installed:"),
                            libName);
       desc += "<br/><br/>";
-      for (ContributedLibrary l : dependencies) {
+      for (ContributedLibraryRelease l : dependencies) {
         if (l.getName().equals(lib.getName()))
           continue;
         if (l.getInstalledLibrary().isPresent())
-          continue;
-        if (l instanceof UnavailableContributedLibrary)
           continue;
         desc += format("- <b>{0}</b><br/>", l.getName());
       }

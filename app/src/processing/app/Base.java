@@ -26,10 +26,11 @@ import cc.arduino.Compiler;
 import cc.arduino.Constants;
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
 import cc.arduino.UploaderUtils;
+import cc.arduino.cli.commands.Lib.LibraryLocation;
 import cc.arduino.contributions.*;
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryRelease;
 import cc.arduino.contributions.libraries.LibrariesIndexer;
-import cc.arduino.contributions.libraries.LibraryInstaller;
 import cc.arduino.contributions.libraries.LibraryOfSameTypeComparator;
 import cc.arduino.contributions.libraries.ui.LibraryManagerUI;
 import cc.arduino.contributions.packages.ContributedPlatform;
@@ -56,7 +57,6 @@ import processing.app.legacy.PApplet;
 import processing.app.macosx.ThinkDifferent;
 import processing.app.packages.LibraryList;
 import processing.app.packages.UserLibrary;
-import processing.app.packages.UserLibraryFolder.Location;
 import processing.app.syntax.PdeKeywords;
 import processing.app.syntax.SketchTextAreaDefaultInputMap;
 import processing.app.tools.MenuScroller;
@@ -94,7 +94,6 @@ public class Base {
 
   public static Map<String, Object> FIND_DIALOG_STATE = new HashMap<>();
   private final ContributionInstaller contributionInstaller;
-  private final LibraryInstaller libraryInstaller;
   private ContributionsSelfCheck contributionsSelfCheck;
 
   // set to true after the first time the menu is built.
@@ -240,6 +239,8 @@ public class Base {
       }
     }
 
+    BaseNoGui.initArduinoCoreService();
+
     SplashScreenHelper splash;
     if (parser.isGuiMode()) {
       // Setup all notification widgets
@@ -298,7 +299,6 @@ public class Base {
 
     final GPGDetachedSignatureVerifier gpgDetachedSignatureVerifier = new GPGDetachedSignatureVerifier();
     contributionInstaller = new ContributionInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
-    libraryInstaller = new LibraryInstaller(BaseNoGui.getPlatform(), gpgDetachedSignatureVerifier);
 
     parser.parseArgumentsPhase2();
 
@@ -358,29 +358,27 @@ public class Base {
       BaseNoGui.onBoardOrPortChange();
 
       ProgressListener progressListener = new ConsoleProgressListener();
-      libraryInstaller.updateIndex(progressListener);
+      BaseNoGui.getArduinoCoreService().updateLibrariesIndex(progressListener);
 
-      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getSettingsFolder());
-      indexer.parseIndex();
-      indexer.setLibrariesFolders(BaseNoGui.getLibrariesFolders());
+      LibrariesIndexer indexer = new LibrariesIndexer(BaseNoGui.getArduinoCoreService());
+      indexer.regenerateIndex();
       indexer.rescanLibraries();
 
-      for (String library : parser.getLibraryToInstall().split(",")) {
-        String[] libraryToInstallParts = library.split(":");
+      for (String libraryArg : parser.getLibraryToInstall().split(",")) {
+        String[] libraryToInstallParts = libraryArg.split(":");
 
-        ContributedLibrary selected = null;
+        ContributedLibraryRelease selected = null;
         if (libraryToInstallParts.length == 2) {
           Optional<Version> version = VersionHelper.valueOf(libraryToInstallParts[1]);
           if (!version.isPresent()) {
             System.out.println(format(tr("Invalid version {0}"), libraryToInstallParts[1]));
             System.exit(1);
           }
-          selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString());
+          selected = indexer.getIndex().find(libraryToInstallParts[0], version.get().toString()).orElse(null);
         } else if (libraryToInstallParts.length == 1) {
-          List<ContributedLibrary> librariesByName = indexer.getIndex().find(libraryToInstallParts[0]);
-          Collections.sort(librariesByName, new DownloadableContributionVersionComparator());
-          if (!librariesByName.isEmpty()) {
-            selected = librariesByName.get(librariesByName.size() - 1);
+          ContributedLibrary library = indexer.getIndex().find(libraryToInstallParts[0]).orElse(null);
+          if (library != null) {
+            selected = library.getLatest().orElse(null);
           }
         }
         if (selected == null) {
@@ -388,14 +386,14 @@ public class Base {
           System.exit(1);
         }
 
-        Optional<ContributedLibrary> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
+        Optional<ContributedLibraryRelease> mayInstalled = indexer.getIndex().getInstalled(libraryToInstallParts[0]);
         if (mayInstalled.isPresent() && selected.isIDEBuiltIn()) {
           System.out.println(tr(I18n
               .format("Library {0} is available as built-in in the IDE.\nRemoving the other version {1} installed in the sketchbook...",
-                      library, mayInstalled.get().getParsedVersion())));
-          libraryInstaller.remove(mayInstalled.get(), progressListener);
+                      libraryArg, mayInstalled.get().getParsedVersion())));
+          BaseNoGui.getArduinoCoreService().libraryRemove(mayInstalled.get(), progressListener);
         } else {
-          libraryInstaller.install(selected, progressListener);
+          BaseNoGui.getArduinoCoreService().libraryInstall(selected, progressListener);
         }
       }
 
@@ -507,7 +505,7 @@ public class Base {
       if (PreferencesData.getBoolean("update.check")) {
         new UpdateCheck(this);
 
-        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), contributionInstaller, libraryInstaller);
+        contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), contributionInstaller, BaseNoGui.getArduinoCoreService());
         new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
       }
 
@@ -1138,7 +1136,7 @@ public class Base {
       LibraryList libs = getSortedLibraries();
       String lastLibType = null;
       for (UserLibrary lib : libs) {
-        String libType = lib.getTypes().get(0);
+        String libType = lib.getTypes().iterator().next();
         if (!libType.equals(lastLibType)) {
           if (lastLibType != null) {
             importMenu.addSeparator();
@@ -1218,9 +1216,9 @@ public class Base {
     LibraryList otherLibs = new LibraryList();
     for (UserLibrary lib : allLibraries) {
       // Get the library's location - used for sorting into categories
-      Location location = lib.getLocation();
+      LibraryLocation location = lib.getLocation();
       // Is this library compatible?
-      List<String> arch = lib.getArchitectures();
+      Collection<String> arch = lib.getArchitectures();
       boolean compatible;
       if (myArch == null || arch == null || arch.contains("*")) {
         compatible = true;
@@ -1228,7 +1226,7 @@ public class Base {
         compatible = arch.contains(myArch);
       }
       // IDE Libaries (including retired)
-      if (location == Location.IDE_BUILTIN) {
+      if (location.equals(LibraryLocation.ide_builtin)) {
         if (compatible) {
           // only compatible IDE libs are shown
           if (lib.getTypes().contains("Retired")) {
@@ -1238,15 +1236,15 @@ public class Base {
           }
         }
       // Platform Libraries
-      } else if (location == Location.CORE) {
+      } else if (location.equals(LibraryLocation.platform_builtin)) {
         // all platform libs are assumed to be compatible
         platformLibs.add(lib);
       // Referenced Platform Libraries
-      } else if (location == Location.REFERENCED_CORE) {
+      } else if (location.equals(LibraryLocation.referenced_platform_builtin)) {
         // all referenced platform libs are assumed to be compatible
         referencedPlatformLibs.add(lib);
       // Sketchbook Libraries (including incompatible)
-      } else if (location == Location.SKETCHBOOK) {
+      } else if (location.equals(LibraryLocation.user)) {
         if (compatible) {
           // libraries promoted from sketchbook (behave as builtin)
           if (!lib.getTypes().isEmpty() && lib.getTypes().contains("Arduino")
@@ -1371,7 +1369,7 @@ public class Base {
       contributionsSelfCheck.cancel();
     }
     @SuppressWarnings("serial")
-    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, libraryInstaller) {
+    LibraryManagerUI managerUI = new LibraryManagerUI(activeEditor, BaseNoGui.getArduinoCoreService()) {
       @Override
       protected void onIndexesUpdated() throws Exception {
         BaseNoGui.initPackages();
@@ -1993,6 +1991,7 @@ public class Base {
    */
   public void addEditorFontResizeKeyListener(Component comp) {
     comp.addKeyListener(new KeyAdapter() {
+      @SuppressWarnings("incomplete-switch")
       @Override
       public void keyPressed(KeyEvent e) {
         if (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK
@@ -2458,7 +2457,7 @@ public class Base {
       }
 
       // copy folder
-      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder().folder, sourceFile.getName());
+      File destinationFolder = new File(BaseNoGui.getSketchbookLibrariesFolder(), sourceFile.getName());
       if (!destinationFolder.mkdir()) {
         activeEditor.statusError(format(tr("A library named {0} already exists"), sourceFile.getName()));
         return;

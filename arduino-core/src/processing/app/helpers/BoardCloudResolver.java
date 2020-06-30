@@ -107,30 +107,37 @@ public class BoardCloudResolver {
       return name;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String tmp) {
       name = tmp;
     }
 
+    @SuppressWarnings("unused")
     public String getFqbn() {
       return fqbn;
     }
 
+    @SuppressWarnings("unused")
     public void setFqbn(String fqbn) {
       this.fqbn = fqbn;
     }
 
+    @SuppressWarnings("unused")
     public String getArchitecture() {
       return architecture;
     }
 
+    @SuppressWarnings("unused")
     public void setArchitecture(String tmp) {
       architecture = tmp;
     }
 
+    @SuppressWarnings("unused")
     public String getId() {
       return id;
     }
 
+    @SuppressWarnings("unused")
     public void setId(String tmp) {
       id = tmp;
     }

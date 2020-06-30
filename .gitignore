@@ -13,6 +13,7 @@ hardware/arduino/bootloaders/caterina_LUFA/Caterina.lss
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.elf
 hardware/arduino/bootloaders/caterina_LUFA/Caterina.eep
 hardware/arduino/bootloaders/caterina_LUFA/.dep/
+build/arduino-cli*.tar.gz
 build/*.zip
 build/*.tar.bz2
 build/windows/work/
