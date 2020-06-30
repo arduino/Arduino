@@ -19,11 +19,19 @@ public final class SettingsOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The settings, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 1;</code>
      * @return The jsonData.
      */
     java.lang.String getJsonData();
     /**
+     * <pre>
+     * The settings, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 1;</code>
      * @return The bytes for jsonData.
      */
@@ -117,6 +125,10 @@ public final class SettingsOuterClass {
     public static final int JSONDATA_FIELD_NUMBER = 1;
     private volatile java.lang.Object jsonData_;
     /**
+     * <pre>
+     * The settings, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 1;</code>
      * @return The jsonData.
      */
@@ -133,6 +145,10 @@ public final class SettingsOuterClass {
       }
     }
     /**
+     * <pre>
+     * The settings, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 1;</code>
      * @return The bytes for jsonData.
      */
@@ -454,6 +470,10 @@ public final class SettingsOuterClass {
 
       private java.lang.Object jsonData_ = "";
       /**
+       * <pre>
+       * The settings, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 1;</code>
        * @return The jsonData.
        */
@@ -470,6 +490,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The settings, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 1;</code>
        * @return The bytes for jsonData.
        */
@@ -487,6 +511,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The settings, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 1;</code>
        * @param value The jsonData to set.
        * @return This builder for chaining.
@@ -502,6 +530,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The settings, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 1;</code>
        * @return This builder for chaining.
        */
@@ -512,6 +544,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The settings, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 1;</code>
        * @param value The bytes for jsonData to set.
        * @return This builder for chaining.
@@ -585,11 +621,19 @@ public final class SettingsOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The key.
      */
     java.lang.String getKey();
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
@@ -597,11 +641,19 @@ public final class SettingsOuterClass {
         getKeyBytes();
 
     /**
+     * <pre>
+     * The setting, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 2;</code>
      * @return The jsonData.
      */
     java.lang.String getJsonData();
     /**
+     * <pre>
+     * The setting, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 2;</code>
      * @return The bytes for jsonData.
      */
@@ -702,6 +754,10 @@ public final class SettingsOuterClass {
     public static final int KEY_FIELD_NUMBER = 1;
     private volatile java.lang.Object key_;
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The key.
      */
@@ -718,6 +774,10 @@ public final class SettingsOuterClass {
       }
     }
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
@@ -738,6 +798,10 @@ public final class SettingsOuterClass {
     public static final int JSONDATA_FIELD_NUMBER = 2;
     private volatile java.lang.Object jsonData_;
     /**
+     * <pre>
+     * The setting, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 2;</code>
      * @return The jsonData.
      */
@@ -754,6 +818,10 @@ public final class SettingsOuterClass {
       }
     }
     /**
+     * <pre>
+     * The setting, in JSON format.
+     * </pre>
+     *
      * <code>string jsonData = 2;</code>
      * @return The bytes for jsonData.
      */
@@ -1092,6 +1160,10 @@ public final class SettingsOuterClass {
 
       private java.lang.Object key_ = "";
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return The key.
        */
@@ -1108,6 +1180,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return The bytes for key.
        */
@@ -1125,6 +1201,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @param value The key to set.
        * @return This builder for chaining.
@@ -1140,6 +1220,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return This builder for chaining.
        */
@@ -1150,6 +1234,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @param value The bytes for key to set.
        * @return This builder for chaining.
@@ -1168,6 +1256,10 @@ public final class SettingsOuterClass {
 
       private java.lang.Object jsonData_ = "";
       /**
+       * <pre>
+       * The setting, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 2;</code>
        * @return The jsonData.
        */
@@ -1184,6 +1276,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The setting, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 2;</code>
        * @return The bytes for jsonData.
        */
@@ -1201,6 +1297,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The setting, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 2;</code>
        * @param value The jsonData to set.
        * @return This builder for chaining.
@@ -1216,6 +1316,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The setting, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 2;</code>
        * @return This builder for chaining.
        */
@@ -1226,6 +1330,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The setting, in JSON format.
+       * </pre>
+       *
        * <code>string jsonData = 2;</code>
        * @param value The bytes for jsonData to set.
        * @return This builder for chaining.
@@ -1717,11 +1825,19 @@ public final class SettingsOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The key.
      */
     java.lang.String getKey();
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
@@ -1815,6 +1931,10 @@ public final class SettingsOuterClass {
     public static final int KEY_FIELD_NUMBER = 1;
     private volatile java.lang.Object key_;
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The key.
      */
@@ -1831,6 +1951,10 @@ public final class SettingsOuterClass {
       }
     }
     /**
+     * <pre>
+     * The key of the setting.
+     * </pre>
+     *
      * <code>string key = 1;</code>
      * @return The bytes for key.
      */
@@ -2152,6 +2276,10 @@ public final class SettingsOuterClass {
 
       private java.lang.Object key_ = "";
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return The key.
        */
@@ -2168,6 +2296,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return The bytes for key.
        */
@@ -2185,6 +2317,10 @@ public final class SettingsOuterClass {
         }
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @param value The key to set.
        * @return This builder for chaining.
@@ -2200,6 +2336,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @return This builder for chaining.
        */
@@ -2210,6 +2350,10 @@ public final class SettingsOuterClass {
         return this;
       }
       /**
+       * <pre>
+       * The key of the setting.
+       * </pre>
+       *
        * <code>string key = 1;</code>
        * @param value The bytes for key to set.
        * @return This builder for chaining.

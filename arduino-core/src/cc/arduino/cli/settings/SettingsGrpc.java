@@ -16,6 +16,10 @@ import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
+ * <pre>
+ * The Settings service provides an interface to Arduino CLI's configuration
+ * options
+ * </pre>
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.20.0)",
@@ -179,10 +183,17 @@ public final class SettingsGrpc {
   }
 
   /**
+   * <pre>
+   * The Settings service provides an interface to Arduino CLI's configuration
+   * options
+   * </pre>
    */
   public static abstract class SettingsImplBase implements io.grpc.BindableService {
 
     /**
+     * <pre>
+     * List all the settings.
+     * </pre>
      */
     public void getAll(cc.arduino.cli.settings.SettingsOuterClass.GetAllRequest request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.RawData> responseObserver) {
@@ -190,6 +201,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set multiple settings values at once.
+     * </pre>
      */
     public void merge(cc.arduino.cli.settings.SettingsOuterClass.RawData request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.MergeResponse> responseObserver) {
@@ -197,6 +211,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Get the value of a specific setting.
+     * </pre>
      */
     public void getValue(cc.arduino.cli.settings.SettingsOuterClass.GetValueRequest request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.Value> responseObserver) {
@@ -204,6 +221,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set the value of a specific setting.
+     * </pre>
      */
     public void setValue(cc.arduino.cli.settings.SettingsOuterClass.Value request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.SetValueResponse> responseObserver) {
@@ -245,6 +265,10 @@ public final class SettingsGrpc {
   }
 
   /**
+   * <pre>
+   * The Settings service provides an interface to Arduino CLI's configuration
+   * options
+   * </pre>
    */
   public static final class SettingsStub extends io.grpc.stub.AbstractStub<SettingsStub> {
     private SettingsStub(io.grpc.Channel channel) {
@@ -263,6 +287,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * List all the settings.
+     * </pre>
      */
     public void getAll(cc.arduino.cli.settings.SettingsOuterClass.GetAllRequest request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.RawData> responseObserver) {
@@ -271,6 +298,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set multiple settings values at once.
+     * </pre>
      */
     public void merge(cc.arduino.cli.settings.SettingsOuterClass.RawData request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.MergeResponse> responseObserver) {
@@ -279,6 +309,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Get the value of a specific setting.
+     * </pre>
      */
     public void getValue(cc.arduino.cli.settings.SettingsOuterClass.GetValueRequest request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.Value> responseObserver) {
@@ -287,6 +320,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set the value of a specific setting.
+     * </pre>
      */
     public void setValue(cc.arduino.cli.settings.SettingsOuterClass.Value request,
         io.grpc.stub.StreamObserver<cc.arduino.cli.settings.SettingsOuterClass.SetValueResponse> responseObserver) {
@@ -296,6 +332,10 @@ public final class SettingsGrpc {
   }
 
   /**
+   * <pre>
+   * The Settings service provides an interface to Arduino CLI's configuration
+   * options
+   * </pre>
    */
   public static final class SettingsBlockingStub extends io.grpc.stub.AbstractStub<SettingsBlockingStub> {
     private SettingsBlockingStub(io.grpc.Channel channel) {
@@ -314,6 +354,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * List all the settings.
+     * </pre>
      */
     public cc.arduino.cli.settings.SettingsOuterClass.RawData getAll(cc.arduino.cli.settings.SettingsOuterClass.GetAllRequest request) {
       return blockingUnaryCall(
@@ -321,6 +364,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set multiple settings values at once.
+     * </pre>
      */
     public cc.arduino.cli.settings.SettingsOuterClass.MergeResponse merge(cc.arduino.cli.settings.SettingsOuterClass.RawData request) {
       return blockingUnaryCall(
@@ -328,6 +374,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Get the value of a specific setting.
+     * </pre>
      */
     public cc.arduino.cli.settings.SettingsOuterClass.Value getValue(cc.arduino.cli.settings.SettingsOuterClass.GetValueRequest request) {
       return blockingUnaryCall(
@@ -335,6 +384,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set the value of a specific setting.
+     * </pre>
      */
     public cc.arduino.cli.settings.SettingsOuterClass.SetValueResponse setValue(cc.arduino.cli.settings.SettingsOuterClass.Value request) {
       return blockingUnaryCall(
@@ -343,6 +395,10 @@ public final class SettingsGrpc {
   }
 
   /**
+   * <pre>
+   * The Settings service provides an interface to Arduino CLI's configuration
+   * options
+   * </pre>
    */
   public static final class SettingsFutureStub extends io.grpc.stub.AbstractStub<SettingsFutureStub> {
     private SettingsFutureStub(io.grpc.Channel channel) {
@@ -361,6 +417,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * List all the settings.
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.settings.SettingsOuterClass.RawData> getAll(
         cc.arduino.cli.settings.SettingsOuterClass.GetAllRequest request) {
@@ -369,6 +428,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set multiple settings values at once.
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.settings.SettingsOuterClass.MergeResponse> merge(
         cc.arduino.cli.settings.SettingsOuterClass.RawData request) {
@@ -377,6 +439,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Get the value of a specific setting.
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.settings.SettingsOuterClass.Value> getValue(
         cc.arduino.cli.settings.SettingsOuterClass.GetValueRequest request) {
@@ -385,6 +450,9 @@ public final class SettingsGrpc {
     }
 
     /**
+     * <pre>
+     * Set the value of a specific setting.
+     * </pre>
      */
     public com.google.common.util.concurrent.ListenableFuture<cc.arduino.cli.settings.SettingsOuterClass.SetValueResponse> setValue(
         cc.arduino.cli.settings.SettingsOuterClass.Value request) {

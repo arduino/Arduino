@@ -19,6 +19,10 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * The ID of the instance.
+     * </pre>
+     *
      * <code>int32 id = 1;</code>
      * @return The id.
      */
@@ -109,6 +113,10 @@ public final class Common {
     public static final int ID_FIELD_NUMBER = 1;
     private int id_;
     /**
+     * <pre>
+     * The ID of the instance.
+     * </pre>
+     *
      * <code>int32 id = 1;</code>
      * @return The id.
      */
@@ -420,6 +428,10 @@ public final class Common {
 
       private int id_ ;
       /**
+       * <pre>
+       * The ID of the instance.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        * @return The id.
        */
@@ -427,6 +439,10 @@ public final class Common {
         return id_;
       }
       /**
+       * <pre>
+       * The ID of the instance.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        * @param value The id to set.
        * @return This builder for chaining.
@@ -438,6 +454,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * The ID of the instance.
+       * </pre>
+       *
        * <code>int32 id = 1;</code>
        * @return This builder for chaining.
        */
@@ -505,11 +525,19 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * URL of the download.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The url.
      */
     java.lang.String getUrl();
     /**
+     * <pre>
+     * URL of the download.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The bytes for url.
      */
@@ -517,11 +545,19 @@ public final class Common {
         getUrlBytes();
 
     /**
+     * <pre>
+     * The file being downloaded.
+     * </pre>
+     *
      * <code>string file = 2;</code>
      * @return The file.
      */
     java.lang.String getFile();
     /**
+     * <pre>
+     * The file being downloaded.
+     * </pre>
+     *
      * <code>string file = 2;</code>
      * @return The bytes for file.
      */
@@ -529,18 +565,30 @@ public final class Common {
         getFileBytes();
 
     /**
+     * <pre>
+     * Total size of the file being downloaded.
+     * </pre>
+     *
      * <code>int64 total_size = 3;</code>
      * @return The totalSize.
      */
     long getTotalSize();
 
     /**
+     * <pre>
+     * Size of the downloaded portion of the file.
+     * </pre>
+     *
      * <code>int64 downloaded = 4;</code>
      * @return The downloaded.
      */
     long getDownloaded();
 
     /**
+     * <pre>
+     * Whether the download is complete.
+     * </pre>
+     *
      * <code>bool completed = 5;</code>
      * @return The completed.
      */
@@ -655,6 +703,10 @@ public final class Common {
     public static final int URL_FIELD_NUMBER = 1;
     private volatile java.lang.Object url_;
     /**
+     * <pre>
+     * URL of the download.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The url.
      */
@@ -671,6 +723,10 @@ public final class Common {
       }
     }
     /**
+     * <pre>
+     * URL of the download.
+     * </pre>
+     *
      * <code>string url = 1;</code>
      * @return The bytes for url.
      */
@@ -691,6 +747,10 @@ public final class Common {
     public static final int FILE_FIELD_NUMBER = 2;
     private volatile java.lang.Object file_;
     /**
+     * <pre>
+     * The file being downloaded.
+     * </pre>
+     *
      * <code>string file = 2;</code>
      * @return The file.
      */
@@ -707,6 +767,10 @@ public final class Common {
       }
     }
     /**
+     * <pre>
+     * The file being downloaded.
+     * </pre>
+     *
      * <code>string file = 2;</code>
      * @return The bytes for file.
      */
@@ -727,6 +791,10 @@ public final class Common {
     public static final int TOTAL_SIZE_FIELD_NUMBER = 3;
     private long totalSize_;
     /**
+     * <pre>
+     * Total size of the file being downloaded.
+     * </pre>
+     *
      * <code>int64 total_size = 3;</code>
      * @return The totalSize.
      */
@@ -737,6 +805,10 @@ public final class Common {
     public static final int DOWNLOADED_FIELD_NUMBER = 4;
     private long downloaded_;
     /**
+     * <pre>
+     * Size of the downloaded portion of the file.
+     * </pre>
+     *
      * <code>int64 downloaded = 4;</code>
      * @return The downloaded.
      */
@@ -747,6 +819,10 @@ public final class Common {
     public static final int COMPLETED_FIELD_NUMBER = 5;
     private boolean completed_;
     /**
+     * <pre>
+     * Whether the download is complete.
+     * </pre>
+     *
      * <code>bool completed = 5;</code>
      * @return The completed.
      */
@@ -1129,6 +1205,10 @@ public final class Common {
 
       private java.lang.Object url_ = "";
       /**
+       * <pre>
+       * URL of the download.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return The url.
        */
@@ -1145,6 +1225,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * URL of the download.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return The bytes for url.
        */
@@ -1162,6 +1246,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * URL of the download.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @param value The url to set.
        * @return This builder for chaining.
@@ -1177,6 +1265,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * URL of the download.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @return This builder for chaining.
        */
@@ -1187,6 +1279,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * URL of the download.
+       * </pre>
+       *
        * <code>string url = 1;</code>
        * @param value The bytes for url to set.
        * @return This builder for chaining.
@@ -1205,6 +1301,10 @@ public final class Common {
 
       private java.lang.Object file_ = "";
       /**
+       * <pre>
+       * The file being downloaded.
+       * </pre>
+       *
        * <code>string file = 2;</code>
        * @return The file.
        */
@@ -1221,6 +1321,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * The file being downloaded.
+       * </pre>
+       *
        * <code>string file = 2;</code>
        * @return The bytes for file.
        */
@@ -1238,6 +1342,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * The file being downloaded.
+       * </pre>
+       *
        * <code>string file = 2;</code>
        * @param value The file to set.
        * @return This builder for chaining.
@@ -1253,6 +1361,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * The file being downloaded.
+       * </pre>
+       *
        * <code>string file = 2;</code>
        * @return This builder for chaining.
        */
@@ -1263,6 +1375,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * The file being downloaded.
+       * </pre>
+       *
        * <code>string file = 2;</code>
        * @param value The bytes for file to set.
        * @return This builder for chaining.
@@ -1281,6 +1397,10 @@ public final class Common {
 
       private long totalSize_ ;
       /**
+       * <pre>
+       * Total size of the file being downloaded.
+       * </pre>
+       *
        * <code>int64 total_size = 3;</code>
        * @return The totalSize.
        */
@@ -1288,6 +1408,10 @@ public final class Common {
         return totalSize_;
       }
       /**
+       * <pre>
+       * Total size of the file being downloaded.
+       * </pre>
+       *
        * <code>int64 total_size = 3;</code>
        * @param value The totalSize to set.
        * @return This builder for chaining.
@@ -1299,6 +1423,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Total size of the file being downloaded.
+       * </pre>
+       *
        * <code>int64 total_size = 3;</code>
        * @return This builder for chaining.
        */
@@ -1311,6 +1439,10 @@ public final class Common {
 
       private long downloaded_ ;
       /**
+       * <pre>
+       * Size of the downloaded portion of the file.
+       * </pre>
+       *
        * <code>int64 downloaded = 4;</code>
        * @return The downloaded.
        */
@@ -1318,6 +1450,10 @@ public final class Common {
         return downloaded_;
       }
       /**
+       * <pre>
+       * Size of the downloaded portion of the file.
+       * </pre>
+       *
        * <code>int64 downloaded = 4;</code>
        * @param value The downloaded to set.
        * @return This builder for chaining.
@@ -1329,6 +1465,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Size of the downloaded portion of the file.
+       * </pre>
+       *
        * <code>int64 downloaded = 4;</code>
        * @return This builder for chaining.
        */
@@ -1341,6 +1481,10 @@ public final class Common {
 
       private boolean completed_ ;
       /**
+       * <pre>
+       * Whether the download is complete.
+       * </pre>
+       *
        * <code>bool completed = 5;</code>
        * @return The completed.
        */
@@ -1348,6 +1492,10 @@ public final class Common {
         return completed_;
       }
       /**
+       * <pre>
+       * Whether the download is complete.
+       * </pre>
+       *
        * <code>bool completed = 5;</code>
        * @param value The completed to set.
        * @return This builder for chaining.
@@ -1359,6 +1507,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Whether the download is complete.
+       * </pre>
+       *
        * <code>bool completed = 5;</code>
        * @return This builder for chaining.
        */
@@ -1426,11 +1578,19 @@ public final class Common {
       com.google.protobuf.MessageOrBuilder {
 
     /**
+     * <pre>
+     * Description of the task.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
     java.lang.String getName();
     /**
+     * <pre>
+     * Description of the task.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -1438,11 +1598,19 @@ public final class Common {
         getNameBytes();
 
     /**
+     * <pre>
+     * Additional information about the task.
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The message.
      */
     java.lang.String getMessage();
     /**
+     * <pre>
+     * Additional information about the task.
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
@@ -1450,12 +1618,20 @@ public final class Common {
         getMessageBytes();
 
     /**
+     * <pre>
+     * Whether the task is complete.
+     * </pre>
+     *
      * <code>bool completed = 3;</code>
      * @return The completed.
      */
     boolean getCompleted();
 
     /**
+     * <pre>
+     * Amount in percent of the task completion (if available)
+     * </pre>
+     *
      * <code>float percent_completed = 4;</code>
      * @return The percentCompleted.
      */
@@ -1565,6 +1741,10 @@ public final class Common {
     public static final int NAME_FIELD_NUMBER = 1;
     private volatile java.lang.Object name_;
     /**
+     * <pre>
+     * Description of the task.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The name.
      */
@@ -1581,6 +1761,10 @@ public final class Common {
       }
     }
     /**
+     * <pre>
+     * Description of the task.
+     * </pre>
+     *
      * <code>string name = 1;</code>
      * @return The bytes for name.
      */
@@ -1601,6 +1785,10 @@ public final class Common {
     public static final int MESSAGE_FIELD_NUMBER = 2;
     private volatile java.lang.Object message_;
     /**
+     * <pre>
+     * Additional information about the task.
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The message.
      */
@@ -1617,6 +1805,10 @@ public final class Common {
       }
     }
     /**
+     * <pre>
+     * Additional information about the task.
+     * </pre>
+     *
      * <code>string message = 2;</code>
      * @return The bytes for message.
      */
@@ -1637,6 +1829,10 @@ public final class Common {
     public static final int COMPLETED_FIELD_NUMBER = 3;
     private boolean completed_;
     /**
+     * <pre>
+     * Whether the task is complete.
+     * </pre>
+     *
      * <code>bool completed = 3;</code>
      * @return The completed.
      */
@@ -1647,6 +1843,10 @@ public final class Common {
     public static final int PERCENT_COMPLETED_FIELD_NUMBER = 4;
     private float percentCompleted_;
     /**
+     * <pre>
+     * Amount in percent of the task completion (if available)
+     * </pre>
+     *
      * <code>float percent_completed = 4;</code>
      * @return The percentCompleted.
      */
@@ -2012,6 +2212,10 @@ public final class Common {
 
       private java.lang.Object name_ = "";
       /**
+       * <pre>
+       * Description of the task.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The name.
        */
@@ -2028,6 +2232,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * Description of the task.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return The bytes for name.
        */
@@ -2045,6 +2253,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * Description of the task.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The name to set.
        * @return This builder for chaining.
@@ -2060,6 +2272,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Description of the task.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @return This builder for chaining.
        */
@@ -2070,6 +2286,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Description of the task.
+       * </pre>
+       *
        * <code>string name = 1;</code>
        * @param value The bytes for name to set.
        * @return This builder for chaining.
@@ -2088,6 +2308,10 @@ public final class Common {
 
       private java.lang.Object message_ = "";
       /**
+       * <pre>
+       * Additional information about the task.
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return The message.
        */
@@ -2104,6 +2328,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * Additional information about the task.
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return The bytes for message.
        */
@@ -2121,6 +2349,10 @@ public final class Common {
         }
       }
       /**
+       * <pre>
+       * Additional information about the task.
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @param value The message to set.
        * @return This builder for chaining.
@@ -2136,6 +2368,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Additional information about the task.
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @return This builder for chaining.
        */
@@ -2146,6 +2382,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Additional information about the task.
+       * </pre>
+       *
        * <code>string message = 2;</code>
        * @param value The bytes for message to set.
        * @return This builder for chaining.
@@ -2164,6 +2404,10 @@ public final class Common {
 
       private boolean completed_ ;
       /**
+       * <pre>
+       * Whether the task is complete.
+       * </pre>
+       *
        * <code>bool completed = 3;</code>
        * @return The completed.
        */
@@ -2171,6 +2415,10 @@ public final class Common {
         return completed_;
       }
       /**
+       * <pre>
+       * Whether the task is complete.
+       * </pre>
+       *
        * <code>bool completed = 3;</code>
        * @param value The completed to set.
        * @return This builder for chaining.
@@ -2182,6 +2430,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Whether the task is complete.
+       * </pre>
+       *
        * <code>bool completed = 3;</code>
        * @return This builder for chaining.
        */
@@ -2194,6 +2446,10 @@ public final class Common {
 
       private float percentCompleted_ ;
       /**
+       * <pre>
+       * Amount in percent of the task completion (if available)
+       * </pre>
+       *
        * <code>float percent_completed = 4;</code>
        * @return The percentCompleted.
        */
@@ -2201,6 +2457,10 @@ public final class Common {
         return percentCompleted_;
       }
       /**
+       * <pre>
+       * Amount in percent of the task completion (if available)
+       * </pre>
+       *
        * <code>float percent_completed = 4;</code>
        * @param value The percentCompleted to set.
        * @return This builder for chaining.
@@ -2212,6 +2472,10 @@ public final class Common {
         return this;
       }
       /**
+       * <pre>
+       * Amount in percent of the task completion (if available)
+       * </pre>
+       *
        * <code>float percent_completed = 4;</code>
        * @return This builder for chaining.
        */
