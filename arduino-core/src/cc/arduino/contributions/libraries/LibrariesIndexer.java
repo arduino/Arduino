@@ -167,7 +167,7 @@ public class LibrariesIndexer {
 
       // Skip platform-related libraries that are not part of the currently
       // selected platform/board.
-      if (l.getLocation().equals("platform")) {
+      if (l.getLocation().equals(LibraryLocation.platform_builtin)) {
         File libDir = new File(l.getInstallDir());
         boolean isCoreLib = (coreLibsDir != null)
                             && FileUtils.isSubDirectory(coreLibsDir, libDir);
