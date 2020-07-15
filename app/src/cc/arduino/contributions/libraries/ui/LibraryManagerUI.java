@@ -200,7 +200,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
     installerThread = new Thread(() -> {
       try {
         setProgressVisible(true, "");
-        BaseNoGui.getArduinoCoreService().updateLibrariesIndex(this::setProgress);
+        core.updateLibrariesIndex(this::setProgress);
         onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
