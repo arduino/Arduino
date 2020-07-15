@@ -260,7 +260,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibrary> {
   }
 
   public void onRemovePressed(final ContributedLibraryRelease lib) {
-    boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib);
+    boolean managedByIndex = BaseNoGui.librariesIndexer.getIndex().getLibraries().contains(lib.getLibrary());
 
     if (!managedByIndex) {
       int chosenOption = JOptionPane.showConfirmDialog(this, tr("This library is not listed on Library Manager. You won't be able to reinstall it from here.\nAre you sure you want to delete it?"), tr("Please confirm library deletion"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
