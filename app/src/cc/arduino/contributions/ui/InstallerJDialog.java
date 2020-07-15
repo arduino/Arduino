@@ -71,7 +71,6 @@ import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
 import processing.app.Base;
-import processing.app.Theme;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -82,6 +81,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
   protected final FilterJTextField filterField;
   protected final JPanel filtersContainer;
   // Currently selected category and filters
+  protected Predicate<T> extraFilter = x -> true;
   protected Predicate<T> categoryFilter;
   protected String[] filters;
   protected final String noConnectionErrorMessage;
@@ -329,7 +329,6 @@ public abstract class InstallerJDialog<T> extends JDialog {
   }
 
   protected final ActionListener categoryChooserActionListener = new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
@@ -339,7 +338,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        updateIndexFilter(filters, categoryFilter);
+        updateIndexFilter(filters, categoryFilter.and(extraFilter));
       }
     }
   };
