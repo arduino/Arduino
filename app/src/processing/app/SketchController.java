@@ -671,7 +671,11 @@ public class SketchController {
   }
 
   private File saveSketchInTempFolder() throws IOException {
-    File tempFolder = FileUtils.createTempFolder("arduino_modified_sketch_");
+    File temp = FileUtils.createTempFolder("arduino_modified_sketch_");
+    File tempFolder = new File(temp, getSketch().getName());
+    if (!tempFolder.mkdir()) {
+      throw new IOException("Can't create directory to store temp sketch.");
+    }
     FileUtils.copy(sketch.getFolder(), tempFolder);
 
     for (SketchFile file : Stream.of(sketch.getFiles()).filter(SketchFile::isModified).collect(Collectors.toList())) {
