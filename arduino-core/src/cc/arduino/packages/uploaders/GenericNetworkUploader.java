@@ -37,6 +37,10 @@ import processing.app.helpers.StringReplacer;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
+
+import static processing.app.I18n.format;
+import static processing.app.I18n.tr;
 
 public class GenericNetworkUploader extends Uploader {
 
@@ -58,19 +62,26 @@ public class GenericNetworkUploader extends Uploader {
 
   @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     PreferencesMap prefs = PreferencesData.getMap();
     PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
     if (boardPreferences != null) {
       prefs.putAll(boardPreferences);
     }
+
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
     String tool = prefs.getOrExcept("upload.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (!targetPlatform.isPresent()) {
+        throw new Exception(format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
+      }
       tool = split[1];
     }
-    prefs.putAll(targetPlatform.getTool(tool));
+    if (!targetPlatform.isPresent()) {
+      throw new Exception(format(tr("Could not find tool {0}"), tool));
+    }
+    prefs.putAll(targetPlatform.get().getTool(tool));
     
     String password = "";
     if(requiresAuthorization()){

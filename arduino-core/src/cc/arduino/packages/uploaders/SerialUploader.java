@@ -47,7 +47,9 @@ import processing.app.helpers.StringReplacer;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class SerialUploader extends Uploader {
@@ -65,19 +67,26 @@ public class SerialUploader extends Uploader {
   @Override
   public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
     // FIXME: Preferences should be reorganized
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     PreferencesMap prefs = PreferencesData.getMap();
     PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
     if (boardPreferences != null) {
       prefs.putAll(boardPreferences);
     }
+
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
     String tool = prefs.getOrExcept("upload.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (!targetPlatform.isPresent()) {
+        throw new Exception(format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
+      }
       tool = split[1];
     }
-    prefs.putAll(targetPlatform.getTool(tool));
+    if (!targetPlatform.isPresent()) {
+      throw new Exception(format(tr("Could not find tool {0}"), tool));
+    }
+    prefs.putAll(targetPlatform.get().getTool(tool));
 
     if (programmerPid != null && programmerPid.isAlive()) {
       // kill the previous programmer
@@ -279,12 +288,18 @@ public class SerialUploader extends Uploader {
 
   private boolean uploadUsingProgrammer(String buildPath, String className) throws Exception {
 
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
     String programmer = PreferencesData.get("programmer");
     if (programmer.contains(":")) {
       String[] split = programmer.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (!targetPlatform.isPresent()) {
+        throw new Exception(format(tr("Could not find tool {0} from package {1}"), programmer, split[0]));
+      }
       programmer = split[1];
+    }
+    if (!targetPlatform.isPresent()) {
+      throw new Exception(format(tr("Could not find tool {0}"), programmer));
     }
 
     PreferencesMap prefs = PreferencesData.getMap();
@@ -292,11 +307,11 @@ public class SerialUploader extends Uploader {
     if (boardPreferences != null) {
       prefs.putAll(boardPreferences);
     }
-    PreferencesMap programmerPrefs = targetPlatform.getProgrammer(programmer);
+    PreferencesMap programmerPrefs = targetPlatform.get().getProgrammer(programmer);
     if (programmerPrefs == null)
       throw new RunnerException(
           tr("Please select a programmer from Tools->Programmer menu"));
-    prefs.putAll(targetPlatform.getTool(programmerPrefs.getOrExcept("program.tool")));
+    prefs.putAll(targetPlatform.get().getTool(programmerPrefs.getOrExcept("program.tool")));
     prefs.putAll(programmerPrefs);
 
     prefs.put("build.path", buildPath);
@@ -317,22 +332,26 @@ public class SerialUploader extends Uploader {
 
   @Override
   public boolean burnBootloader() throws Exception {
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
+    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform()
+        .orElseThrow(() -> new RunnerException(tr("Please select a programmer from Tools->Programmer menu")));
 
     // Find preferences for the selected programmer
-    PreferencesMap programmerPrefs;
+    PreferencesMap programmerPrefs = null;
     String programmer = PreferencesData.get("programmer");
     if (programmer.contains(":")) {
       String[] split = programmer.split(":", 2);
-      TargetPlatform platform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      Optional<TargetPlatform> platform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (!platform.isPresent()) {
+        throw new Exception(format(tr("Could not find tool {0} from package {1}"), programmer, split[0]));
+      }
       programmer = split[1];
-      programmerPrefs = platform.getProgrammer(programmer);
+      programmerPrefs = platform.get().getProgrammer(programmer);
     } else {
       programmerPrefs = targetPlatform.getProgrammer(programmer);
     }
-    if (programmerPrefs == null)
-      throw new RunnerException(
-          tr("Please select a programmer from Tools->Programmer menu"));
+    if (programmerPrefs == null) {
+      throw new RunnerException(tr("Please select a programmer from Tools->Programmer menu"));
+    }
 
     // Build configuration for the current programmer
     PreferencesMap prefs = PreferencesData.getMap();
@@ -347,15 +366,19 @@ public class SerialUploader extends Uploader {
     String tool = prefs.getOrExcept("bootloader.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
-      TargetPlatform platform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
       tool = split[1];
-      toolPrefs.putAll(platform.getTool(tool));
-      if (toolPrefs.size() == 0)
+      Optional<TargetPlatform> platform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (platform.isPresent()) {
+        toolPrefs.putAll(platform.get().getTool(tool));
+      }
+      if (toolPrefs.size() == 0) {
         throw new RunnerException(I18n.format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
+      }
     }
     toolPrefs.putAll(targetPlatform.getTool(tool));
-    if (toolPrefs.size() == 0)
+    if (toolPrefs.size() == 0) {
       throw new RunnerException(I18n.format(tr("Could not find tool {0}"), tool));
+    }
 
     // Merge tool with global configuration
     prefs.putAll(toolPrefs);

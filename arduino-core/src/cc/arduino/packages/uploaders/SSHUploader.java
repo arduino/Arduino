@@ -42,7 +42,6 @@ import processing.app.PreferencesData;
 import processing.app.debug.RunnerException;
 import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
-import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
 
 import java.io.File;
@@ -51,10 +50,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class SSHUploader extends Uploader {
@@ -79,31 +80,38 @@ public class SSHUploader extends Uploader {
   }
 
   @Override
-  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws RunnerException, PreferencesMapException {
+  public boolean uploadUsingPreferences(File sourcePath, String buildPath, String className, boolean usingProgrammer, List<String> warningsAccumulator) throws Exception {
     if (usingProgrammer) {
       throw new RunnerException(tr("Network upload using programmer not supported"));
     }
 
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
     PreferencesMap prefs = PreferencesData.getMap();
     PreferencesMap boardPreferences = BaseNoGui.getBoardPreferences();
     if (boardPreferences != null) {
       prefs.putAll(boardPreferences);
     }
+
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
     String tool = prefs.getOrExcept("upload.tool");
     if (tool.contains(":")) {
       String[] split = tool.split(":", 2);
       targetPlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (!targetPlatform.isPresent()) {
+        throw new Exception(format(tr("Could not find tool {0} from package {1}"), tool, split[0]));
+      }
       tool = split[1];
     }
-    prefs.putAll(targetPlatform.getTool(tool));
+    if (!targetPlatform.isPresent()) {
+      throw new Exception(format(tr("Could not find tool {0}"), tool));
+    }
+    prefs.putAll(targetPlatform.get().getTool(tool));
 
-    boolean coreMissesRemoteUploadTool = targetPlatform.getTool(tool + "_remote").isEmpty();
+    boolean coreMissesRemoteUploadTool = targetPlatform.get().getTool(tool + "_remote").isEmpty();
 
     if (coreMissesRemoteUploadTool) {
       prefs.put("upload.pattern", "/usr/bin/run-avrdude /tmp/sketch.hex");
     } else {
-      prefs.putAll(targetPlatform.getTool(tool + "_remote"));
+      prefs.putAll(targetPlatform.get().getTool(tool + "_remote"));
     }
 
     prefs.put("build.path", buildPath);

@@ -285,9 +285,7 @@ public class Base {
       rebuildBoardsMenu();
       rebuildProgrammerMenu();
     } else {
-      TargetBoard lastSelectedBoard = BaseNoGui.getTargetBoard();
-      if (lastSelectedBoard != null)
-        BaseNoGui.selectBoard(lastSelectedBoard);
+      BaseNoGui.getTargetBoard().ifPresent(board -> BaseNoGui.selectBoard(board));
     }
 
     // Setup board-dependent variables.
@@ -1132,9 +1130,7 @@ public class Base {
     importMenu.addSeparator();
 
     // Split between user supplied libraries and IDE libraries
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
-
-    if (targetPlatform != null) {
+    if (BaseNoGui.getTargetPlatform().isPresent()) {
       LibraryList libs = getSortedLibraries();
       String lastLibType = null;
       for (UserLibrary lib : libs) {
@@ -1189,17 +1185,20 @@ public class Base {
     String boardId = null;
     String referencedPlatformName = null;
     String myArch = null;
-    TargetPlatform targetPlatform = BaseNoGui.getTargetPlatform();
-    if (targetPlatform != null) {
-      myArch = targetPlatform.getId();
-      boardId = BaseNoGui.getTargetBoard().getName();
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
+    if (targetPlatform.isPresent()) {
+      myArch = targetPlatform.get().getId();
+      Optional<TargetBoard> board = BaseNoGui.getTargetBoard();
+      if (board.isPresent()) {
+        boardId = board.get().getName();
+      }
       String core = BaseNoGui.getBoardPreferences().get("build.core", "arduino");
       if (core.contains(":")) {
         String refcore = core.split(":")[0];
-        TargetPlatform referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
-        if (referencedPlatform != null) {
-          referencedPlatformName = referencedPlatform.getPreferences().get("name");
-        }
+        Optional<TargetPlatform> referencedPlatform = BaseNoGui.getTargetPlatform(refcore, myArch);
+        if (referencedPlatform.isPresent()) {
+          referencedPlatformName = referencedPlatform.get().getPreferences().get("name");
+        };
       }
     }
 
@@ -1346,9 +1345,9 @@ public class Base {
     BaseNoGui.onBoardOrPortChange();
 
     // reload keywords when package/platform changes
-    TargetPlatform tp = BaseNoGui.getTargetPlatform();
-    if (tp != null) {
-      String platformFolder = tp.getFolder().getAbsolutePath();
+    Optional<TargetPlatform> tp = BaseNoGui.getTargetPlatform();
+    if (tp.isPresent()) {
+      String platformFolder = tp.get().getFolder().getAbsolutePath();
       if (priorPlatformFolder == null || !priorPlatformFolder.equals(platformFolder) || newLibraryImported) {
         pdeKeywords = new PdeKeywords();
         pdeKeywords.reload();
@@ -1701,9 +1700,11 @@ public class Base {
     programmerMenus = new LinkedList<>();
     ButtonGroup group = new ButtonGroup();
 
-    TargetBoard board = BaseNoGui.getTargetBoard();
+    Optional<TargetBoard> mayBoard = BaseNoGui.getTargetBoard();
+    if (!mayBoard.isPresent()) return;
+    TargetBoard board = mayBoard.get();
     TargetPlatform boardPlatform = board.getContainerPlatform();
-    TargetPlatform corePlatform = null;
+    Optional<TargetPlatform> corePlatform = Optional.empty();
 
     String core = board.getPreferences().get("build.core");
     if (core != null && core.contains(":")) {
@@ -1712,8 +1713,9 @@ public class Base {
     }
 
     addProgrammersForPlatform(boardPlatform, programmerMenus, group);
-    if (corePlatform != null)
-      addProgrammersForPlatform(corePlatform, programmerMenus, group);
+    if (corePlatform.isPresent()) {
+      addProgrammersForPlatform(corePlatform.get(), programmerMenus, group);
+    }
 
     if (programmerMenus.isEmpty()) {
       JMenuItem item = new JMenuItem(tr("No programmers available for this board"));

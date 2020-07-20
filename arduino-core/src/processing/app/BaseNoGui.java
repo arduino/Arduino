@@ -132,9 +132,10 @@ public class BaseNoGui {
   }
 
   static public PreferencesMap getBoardPreferences() {
-    TargetBoard board = getTargetBoard();
-    if (board == null)
+    Optional<TargetBoard> mayBoard = getTargetBoard();
+    if (!mayBoard.isPresent())
       return null;
+    TargetBoard board = mayBoard.get();
     String boardId = board.getId();
 
     PreferencesMap prefs = new PreferencesMap(board.getPreferences());
@@ -161,19 +162,24 @@ public class BaseNoGui {
     List<ContributedTool> requiredTools = new ArrayList<>();
 
     // Add all tools dependencies specified in package index
-    ContributedPlatform p = indexer.getContributedPlaform(getTargetPlatform());
-    if (p != null)
-      requiredTools.addAll(p.getResolvedTools());
+    Optional<TargetPlatform> targetPlatform = getTargetPlatform();
+    if (targetPlatform.isPresent()) {
+      ContributedPlatform p = indexer.getContributedPlaform(targetPlatform.get());
+      if (p != null) {
+        requiredTools.addAll(p.getResolvedTools());
+      }
+    }
 
     // Add all tools dependencies from the (possibily) referenced core
     String core = prefs.get("build.core");
     if (core != null && core.contains(":")) {
       String split[] = core.split(":");
-      TargetPlatform referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
-      if (referenced != null) {
-        ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced);
-        if (referencedPlatform != null)
+      Optional<TargetPlatform> referenced = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      if (referenced.isPresent()) {
+        ContributedPlatform referencedPlatform = indexer.getContributedPlaform(referenced.get());
+        if (referencedPlatform != null) {
           requiredTools.addAll(referencedPlatform.getResolvedTools());
+        }
       } else {
         String msg = tr("The current selected board needs the core '{0}' that is not installed.");
         System.out.println(I18n.format(msg, core));
@@ -204,7 +210,7 @@ public class BaseNoGui {
     return new File(installationFolder, name);
   }
 
-  static public TargetPlatform getCurrentTargetPlatformFromPackage(String pack) {
+  static public Optional<TargetPlatform> getCurrentTargetPlatformFromPackage(String pack) {
     return getTargetPlatform(pack, PreferencesData.get("target_platform"));
   }
 
@@ -371,12 +377,13 @@ public class BaseNoGui {
     return sketchbookPath;
   }
 
-  public static TargetBoard getTargetBoard() {
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform == null)
-      return null;
+  public static Optional<TargetBoard> getTargetBoard() {
+    Optional<TargetPlatform> targetPlatform = getTargetPlatform();
+    if (!targetPlatform.isPresent()) {
+      return Optional.empty();
+    }
     String boardId = PreferencesData.get("board");
-    return targetPlatform.getBoard(boardId);
+    return Optional.ofNullable(targetPlatform.get().getBoard(boardId));
   }
 
   /**
@@ -385,8 +392,8 @@ public class BaseNoGui {
    * @param packageName
    * @return
    */
-  static public TargetPackage getTargetPackage(String packageName) {
-    return packages.get(packageName);
+  static public Optional<TargetPackage> getTargetPackage(String packageName) {
+    return Optional.ofNullable(packages.get(packageName));
   }
 
   /**
@@ -394,7 +401,7 @@ public class BaseNoGui {
    *
    * @return
    */
-  static public TargetPlatform getTargetPlatform() {
+  static public Optional<TargetPlatform> getTargetPlatform() {
     String packageName = PreferencesData.get("target_package");
     String platformName = PreferencesData.get("target_platform");
     return getTargetPlatform(packageName, platformName);
@@ -407,12 +414,12 @@ public class BaseNoGui {
    * @param platformName
    * @return
    */
-  static public TargetPlatform getTargetPlatform(String packageName,
-                                                 String platformName) {
-    TargetPackage p = packages.get(packageName);
-    if (p == null)
-      return null;
-    return p.get(platformName);
+  static public Optional<TargetPlatform> getTargetPlatform(String packageName, String platformName) {
+    Optional<TargetPackage> p = getTargetPackage(packageName);
+    if (!p.isPresent()) {
+      return Optional.empty();
+    }
+    return Optional.ofNullable(p.get().get(platformName));
   }
 
   static public File getToolsFolder() {
@@ -649,20 +656,20 @@ public class BaseNoGui {
     // Add IDE libraries folder
     librariesFolders.add(new UserLibraryFolder(getContentFile("libraries"), Location.IDE_BUILTIN));
 
-    TargetPlatform targetPlatform = getTargetPlatform();
-    if (targetPlatform != null) {
+    Optional<TargetPlatform> targetPlatform = getTargetPlatform();
+    if (targetPlatform.isPresent()) {
       String core = getBoardPreferences().get("build.core", "arduino");
       if (core.contains(":")) {
         String referencedCore = core.split(":")[0];
-        TargetPlatform referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.getId());
-        if (referencedPlatform != null) {
-          File referencedPlatformFolder = referencedPlatform.getFolder();
+        Optional<TargetPlatform> referencedPlatform = getTargetPlatform(referencedCore, targetPlatform.get().getId());
+        if (referencedPlatform.isPresent()) {
+          File referencedPlatformFolder = referencedPlatform.get().getFolder();
           // Add libraries folder for the referenced platform
           File folder = new File(referencedPlatformFolder, "libraries");
           librariesFolders.add(new UserLibraryFolder(folder, Location.REFERENCED_CORE));
         }
       }
-      File platformFolder = targetPlatform.getFolder();
+      File platformFolder = targetPlatform.get().getFolder();
       // Add libraries folder for the selected platform
       File folder = new File(platformFolder, "libraries");
       librariesFolders.add(new UserLibraryFolder(folder, Location.CORE));
@@ -675,8 +682,8 @@ public class BaseNoGui {
     // Libraries located in the latest folders on the list can override
     // other libraries with the same name.
     librariesIndexer.setLibrariesFolders(librariesFolders);
-    if (getTargetPlatform() != null) {
-      librariesIndexer.setArchitecturePriority(getTargetPlatform().getId());
+    if (targetPlatform.isPresent()) {
+      librariesIndexer.setArchitecturePriority(targetPlatform.get().getId());
     }
     librariesIndexer.rescanLibraries();
 

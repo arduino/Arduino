@@ -232,13 +232,13 @@ public class CommandlineParser {
       BaseNoGui.showError(null, I18n.format(tr("{0}: Invalid board name, it should be of the form \"package:arch:board\" or \"package:arch:board:options\""), selectBoard), 3);
     }
 
-    TargetPackage targetPackage = BaseNoGui.getTargetPackage(split[0]);
-    if (targetPackage == null) {
+    Optional<TargetPackage> targetPackage = BaseNoGui.getTargetPackage(split[0]);
+    if (!targetPackage.isPresent()) {
       BaseNoGui.showError(null, I18n.format(tr("{0}: Unknown package"), split[0]), 3);
       return;
     }
 
-    TargetPlatform targetPlatform = targetPackage.get(split[1]);
+    TargetPlatform targetPlatform = targetPackage.get().get(split[1]);
     if (targetPlatform == null) {
       BaseNoGui.showError(null, I18n.format(tr("{0}: Unknown architecture"), split[1]), 3);
       return;

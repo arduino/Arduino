@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -163,11 +164,12 @@ public class Compiler implements MessageConsumer {
     this.buildPath = sketch.getBuildPath().getAbsolutePath();
     this.buildCache = BaseNoGui.getCachePath();
 
-    TargetBoard board = BaseNoGui.getTargetBoard();
-    if (board == null) {
+    Optional<TargetBoard> mayBoard = BaseNoGui.getTargetBoard();
+    if (!mayBoard.isPresent()) {
       throw new RunnerException("Board is not selected");
     }
 
+    TargetBoard board = mayBoard.get();
     TargetPlatform platform = board.getContainerPlatform();
     TargetPackage aPackage = platform.getContainerPackage();
     String vidpid = VIDPID();

@@ -38,6 +38,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 
@@ -84,9 +85,9 @@ public class PdeKeywords {
   public void reload() {
     try {
       parseKeywordsTxt(new File(BaseNoGui.getContentFile("lib"), "keywords.txt"));
-      TargetPlatform tp = BaseNoGui.getTargetPlatform();
-      if (tp != null) {
-        File platformKeywords = new File(tp.getFolder(), "keywords.txt");
+      Optional<TargetPlatform> tp = BaseNoGui.getTargetPlatform();
+      if (tp.isPresent()) {
+        File platformKeywords = new File(tp.get().getFolder(), "keywords.txt");
         if (platformKeywords.exists()) parseKeywordsTxt(platformKeywords);
       }
       for (UserLibrary lib : BaseNoGui.librariesIndexer.getInstalledLibraries()) {

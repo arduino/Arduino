@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -2587,9 +2588,9 @@ public class Editor extends JFrame implements RunnerListener {
   // . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
   protected void onBoardOrPortChange() {
-    TargetBoard board = BaseNoGui.getTargetBoard();
-    if (board != null)
-      lineStatus.setBoardName(board.getName());
+    Optional<TargetBoard> board = BaseNoGui.getTargetBoard();
+    if (board.isPresent())
+      lineStatus.setBoardName(board.get().getName());
     else
       lineStatus.setBoardName("-");
     lineStatus.setPort(PreferencesData.get("serial.port"));

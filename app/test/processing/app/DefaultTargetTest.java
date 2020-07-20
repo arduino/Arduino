@@ -35,7 +35,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPlatform;
+
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Optional;
 
 public class DefaultTargetTest extends AbstractWithPreferencesTest {
 
@@ -60,9 +65,11 @@ public class DefaultTargetTest extends AbstractWithPreferencesTest {
     createBase();
 
     // skip test if no target platforms are available
-    Assume.assumeNotNull(BaseNoGui.getTargetPlatform());
+    Optional<TargetPlatform> targetPlatform = BaseNoGui.getTargetPlatform();
+    Assume.assumeTrue(targetPlatform.isPresent());
     
-    TargetBoard targetBoard = BaseNoGui.getTargetBoard();
-    assertNotEquals("unreal_board", targetBoard.getId());
+    Optional<TargetBoard> targetBoard = BaseNoGui.getTargetBoard();
+    assertTrue(targetBoard.isPresent());
+    assertNotEquals("unreal_board", targetBoard.get().getId());
   }
 }
