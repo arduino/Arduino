@@ -42,47 +42,40 @@ import cc.arduino.packages.uploaders.GenericNetworkUploader;
 import cc.arduino.packages.uploaders.SSHUploader;
 import cc.arduino.packages.uploaders.SerialUploader;
 import processing.app.AbstractWithPreferencesTest;
-import processing.app.helpers.PreferencesMap;
 
 public class UploaderFactoryTest extends AbstractWithPreferencesTest {
 
   @Test
   public void shouldCreateAnInstanceOfSSHUploader() throws Exception {
-    TargetBoard board = new LegacyTargetBoard("yun", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-
     BoardPort boardPort = new BoardPort();
     boardPort.setBoardName("yun");
     boardPort.setAddress("192.168.0.1");
     boardPort.setProtocol("network");
     boardPort.getPrefs().put("ssh_upload", "yes");
-    Uploader uploader = new UploaderFactory().newUploader(board, boardPort, false);
+    Uploader uploader = new UploaderFactory().newUploader(boardPort, false);
 
     assertTrue(uploader instanceof SSHUploader);
   }
 
   @Test
   public void shouldCreateAnInstanceOfGenericNetworkUploader() throws Exception {
-    TargetBoard board = new LegacyTargetBoard("yun", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-
     BoardPort boardPort = new BoardPort();
     boardPort.setBoardName("yun");
     boardPort.setAddress("192.168.0.1");
     boardPort.setProtocol("network");
     boardPort.getPrefs().put("ssh_upload", "no");
-    Uploader uploader = new UploaderFactory().newUploader(board, boardPort, false);
+    Uploader uploader = new UploaderFactory().newUploader(boardPort, false);
 
     assertTrue(uploader instanceof GenericNetworkUploader);
   }
 
   @Test
   public void shouldCreateAnInstanceOfBasicUploaderWhenPortIsSerial() throws Exception {
-    TargetBoard board = new LegacyTargetBoard("uno", new PreferencesMap(new HashMap<String, String>()), new TargetPlatformStub("id", new TargetPackageStub("id")));
-
     BoardPort boardPort = new BoardPort();
     boardPort.setBoardName("Arduino Leonardo");
     boardPort.setAddress("/dev/ttyACM0");
     boardPort.setProtocol("serial");
-    Uploader uploader = new UploaderFactory().newUploader(board, boardPort, false);
+    Uploader uploader = new UploaderFactory().newUploader(boardPort, false);
 
     assertTrue(uploader instanceof SerialUploader);
   }

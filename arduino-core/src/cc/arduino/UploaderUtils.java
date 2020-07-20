@@ -35,7 +35,6 @@ import cc.arduino.packages.UploaderFactory;
 import processing.app.BaseNoGui;
 import processing.app.PreferencesData;
 import processing.app.Sketch;
-import processing.app.debug.TargetBoard;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -51,8 +50,7 @@ public class UploaderUtils {
       boardPort = BaseNoGui.getDiscoveryManager().find(port);
     }
 
-    TargetBoard board = BaseNoGui.getTargetBoard();
-    return new UploaderFactory().newUploader(board, boardPort, noUploadPort);
+    return new UploaderFactory().newUploader(boardPort, noUploadPort);
   }
 
   public boolean upload(Sketch data, Uploader uploader, String suggestedClassName, boolean usingProgrammer, boolean noUploadPort, List<String> warningsAccumulator) throws Exception {
