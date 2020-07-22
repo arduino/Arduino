@@ -1706,7 +1706,7 @@ public class Base {
     TargetPlatform corePlatform = null;
 
     String core = board.getPreferences().get("build.core");
-    if (core.contains(":")) {
+    if (core != null && core.contains(":")) {
       String[] split = core.split(":", 2);
       corePlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
     }
