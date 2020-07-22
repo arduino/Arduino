@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.ui.*;
@@ -41,6 +40,7 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,30 +92,28 @@ public class ContributionManagerUI extends InstallerJDialog {
     this.installer = installer;
   }
 
+  private Collection<String> oldCategories = new ArrayList<>();
+
   public void updateUI() {
-    DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser
-        .getSelectedItem();
+    // Check if categories have changed
+    Collection<String> categories = BaseNoGui.indexer.getCategories();
+    if (categories.equals(oldCategories)) {
+      return;
+    }
+    oldCategories = categories;
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
-
-    filterField.setEnabled(getContribModel().getRowCount() > 0);
-
-    categoryChooser.addActionListener(categoryChooserActionListener);
-
     // Enable categories combo only if there are two or more choices
+    filterField.setEnabled(getContribModel().getRowCount() > 0);
     categoryFilter = x -> true;
     categoryChooser.removeAllItems();
     categoryChooser.addItem(new DropdownAllCoresItem());
     categoryChooser.addItem(new DropdownUpdatableCoresItem());
-    Collection<String> categories = BaseNoGui.indexer.getCategories();
     for (String s : categories) {
       categoryChooser.addItem(new DropdownCoreOfCategoryItem(s));
     }
-    if (previouslySelectedCategory != null) {
-      categoryChooser.setSelectedItem(previouslySelectedCategory);
-    } else {
-      categoryChooser.setSelectedIndex(0);
-    }
+    categoryChooser.addActionListener(categoryChooserActionListener);
+    categoryChooser.setSelectedIndex(0);
   }
 
   public void setProgress(Progress progress) {
