@@ -144,6 +144,10 @@ public class ContributionManagerUI extends InstallerJDialog {
             .updateIndex(this::setProgress);
         installer.deleteUnknownFiles(downloadedPackageIndexFiles);
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -169,6 +173,10 @@ public class ContributionManagerUI extends InstallerJDialog {
         }
         errors.addAll(installer.install(platformToInstall, this::setProgress));
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -207,6 +215,10 @@ public class ContributionManagerUI extends InstallerJDialog {
         setProgressVisible(true, tr("Removing..."));
         installer.remove(platform);
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
