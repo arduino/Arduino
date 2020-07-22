@@ -72,6 +72,10 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     return new LibrariesIndexTableModel();
   }
 
+  private LibrariesIndexTableModel getContribModel() {
+    return (LibrariesIndexTableModel) contribModel;
+  }
+
   @Override
   protected TableCellRenderer createCellRenderer() {
     return new ContributedLibraryTableCellRenderer();
@@ -201,7 +205,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        ((LibrariesIndexTableModel) contribModel).update();
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -241,7 +245,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        ((LibrariesIndexTableModel) contribModel).update();
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -272,7 +276,7 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        ((LibrariesIndexTableModel) contribModel).update();
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
