@@ -72,6 +72,10 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
     return new LibrariesIndexTableModel();
   }
 
+  private LibrariesIndexTableModel getContribModel() {
+    return (LibrariesIndexTableModel) contribModel;
+  }
+
   @Override
   protected TableCellRenderer createCellRenderer() {
     return new ContributedLibraryTableCellRenderer();
@@ -197,8 +201,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, "");
         installer.updateIndex(this::setProgress);
-        ((LibrariesIndexTableModel) contribModel).update();
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -234,12 +241,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
         } else {
           installer.install(lib, this::setProgress);
         }
-        // TODO: Do a better job in refreshing only the needed element
+        onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        ((LibrariesIndexTableModel) contribModel).update();
-        onIndexesUpdated();
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -266,12 +272,11 @@ public class LibraryManagerUI extends InstallerJDialog<ContributedLibraryRelease
       try {
         setProgressVisible(true, tr("Removing..."));
         installer.remove(lib, this::setProgress);
-        // TODO: Do a better job in refreshing only the needed element
+        onIndexesUpdated();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        ((LibrariesIndexTableModel) contribModel).update();
-        onIndexesUpdated();
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
