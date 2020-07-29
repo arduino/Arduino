@@ -85,3 +85,5 @@ and [Wiring](http://wiring.org.co).
 
 Icon and about image designed by [ToDo](https://www.todo.to.it/)
 
+Kashif Iqbal Khan
+
