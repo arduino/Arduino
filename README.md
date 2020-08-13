@@ -15,6 +15,8 @@ IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en
 
 -  [The forums](https://forum.arduino.cc/)
 
+-  [Online Simulator](https://www.tinkercad.com/learn/circuits)
+
 -  Follow us on [Twitter](https://twitter.com/arduino)
 -  And like us at [Facebook](https://www.facebook.com/official.arduino)
 
