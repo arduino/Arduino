@@ -16,6 +16,8 @@
   by Arturo Guadalupi
   modified 8 Sep 2016
   by Colby Newman
+  modified 15 Aug 2020
+  by Jeff Beeghly
 
   This example code is in the public domain.
 
@@ -30,8 +32,9 @@ void setup() {
 
 // the loop function runs over and over again forever
 void loop() {
+  const int duration = 1000;         // delay duration, in milliseconds
   digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-  delay(1000);                       // wait for a second
+  delay(duration);                   // wait for a second
   digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-  delay(1000);                       // wait for a second
+  delay(duration);                   // wait for a second
 }
