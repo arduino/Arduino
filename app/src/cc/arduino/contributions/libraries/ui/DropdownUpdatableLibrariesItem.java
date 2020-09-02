@@ -30,28 +30,33 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
-import cc.arduino.contributions.libraries.filters.UpdatableLibraryPredicate;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.ui.DropdownItem;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static processing.app.I18n.tr;
 
-public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedLibrary> {
+public class DropdownUpdatableLibrariesItem implements DropdownItem<ContributedLibraryReleases> {
 
   @Override
-  public Predicate<ContributedLibrary> getFilterPredicate() {
-    return new UpdatableLibraryPredicate();
+  public Predicate<ContributedLibraryReleases> getFilterPredicate() {
+    return new Predicate<ContributedLibraryReleases>() {
+      @Override
+      public boolean test(ContributedLibraryReleases lib) {
+        Optional<ContributedLibrary> mayInstalled = lib.getInstalled();
+        if (!mayInstalled.isPresent()) {
+          return false;
+        }
+        return !lib.getLatest().equals(mayInstalled.get());
+      }
+    };
   }
 
   @Override
   public String toString() {
     return tr("Updatable");
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof DropdownUpdatableLibrariesItem;
   }
 
 }

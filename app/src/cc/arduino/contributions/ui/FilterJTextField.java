@@ -41,6 +41,7 @@ public class FilterJTextField extends JTextField {
   private final String filterHint;
 
   private boolean showingHint;
+  private Timer timer;
 
   public FilterJTextField(String hint) {
     super(hint);
@@ -48,6 +49,10 @@ public class FilterJTextField extends JTextField {
 
     showingHint = true;
     updateStyle();
+    timer = new Timer(1000, e -> {
+      applyFilter();
+      timer.stop();
+    });
 
     addFocusListener(new FocusListener() {
       public void focusLost(FocusEvent focusEvent) {
@@ -68,33 +73,40 @@ public class FilterJTextField extends JTextField {
 
     getDocument().addDocumentListener(new DocumentListener() {
       public void removeUpdate(DocumentEvent e) {
-        applyFilter();
+        spawnTimer();
       }
 
       public void insertUpdate(DocumentEvent e) {
-        applyFilter();
+        spawnTimer();
       }
 
       public void changedUpdate(DocumentEvent e) {
-        applyFilter();
+
       }
+    });
+
+    addActionListener(e -> {
+      if (timer.isRunning()) {
+        timer.stop();
+      }
+      applyFilter();
     });
   }
 
-  private String lastFilter = "";
+  private void spawnTimer() {
+    if (timer.isRunning()) {
+      timer.stop();
+    }
+    timer.start();
+  }
 
-  private void applyFilter() {
+  public void applyFilter() {
     String filter = showingHint ? "" : getText();
     filter = filter.toLowerCase();
 
     // Replace anything but 0-9, a-z, or : with a space
     filter = filter.replaceAll("[^\\x30-\\x39^\\x61-\\x7a^\\x3a]", " ");
 
-    // Fire event only if the filter is changed
-    if (filter.equals(lastFilter))
-      return;
-
-    lastFilter = filter;
     onFilter(filter.split(" "));
   }
 
@@ -111,5 +123,24 @@ public class FilterJTextField extends JTextField {
       setForeground(UIManager.getColor("TextField.foreground"));
       setFont(getFont().deriveFont(Font.PLAIN));
     }
+  }
+
+  @Override
+  public void paste() {
+
+    // Same precondition check as JTextComponent#paste().
+    if (!isEditable() || !isEnabled()) {
+      return;
+    }
+
+    // Disable hint to prevent the focus handler from clearing the pasted text.
+    if (showingHint) {
+      showingHint = false;
+      setText("");
+      updateStyle();
+    }
+
+    // Perform the paste.
+    super.paste();
   }
 }

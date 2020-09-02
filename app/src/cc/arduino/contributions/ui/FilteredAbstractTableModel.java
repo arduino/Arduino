@@ -37,11 +37,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public abstract class FilteredAbstractTableModel<T> extends AbstractTableModel {
 
-  abstract public void updateIndexFilter(String[] filters, Stream<Predicate<T>> additionalFilters);
+  abstract public void updateIndexFilter(String[] filters, Predicate<T> additionalFilter);
 
   public static <T extends DownloadableContribution> T getLatestOf(List<T> contribs) {
     contribs = new LinkedList<>(contribs);

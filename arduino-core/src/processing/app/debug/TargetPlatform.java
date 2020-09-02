@@ -94,4 +94,10 @@ public interface TargetPlatform {
    */
   public TargetPackage getContainerPackage();
 
+  /**
+   * Returns true if the platform is installed in a subfolder of the sketchbook
+   *
+   * @return
+   */
+  public boolean isInSketchbook();
 }

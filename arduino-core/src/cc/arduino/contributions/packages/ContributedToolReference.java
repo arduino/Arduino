@@ -31,13 +31,17 @@ package cc.arduino.contributions.packages;
 
 import java.util.Collection;
 
-public abstract class ContributedToolReference {
+public class ContributedToolReference {
 
-  public abstract String getName();
+  private String name;
+  private String version;
+  private String packager;
 
-  public abstract String getVersion();
+  public String getName() { return name; }
 
-  public abstract String getPackager();
+  public String getVersion() { return version; }
+
+  public String getPackager() { return packager; }
 
   public ContributedTool resolve(Collection<ContributedPackage> packages) {
     for (ContributedPackage pack : packages) {

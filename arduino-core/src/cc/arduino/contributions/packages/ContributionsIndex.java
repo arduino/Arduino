@@ -29,9 +29,7 @@
 
 package cc.arduino.contributions.packages;
 
-import cc.arduino.contributions.DownloadableContributionBuiltInAtTheBottomComparator;
 import cc.arduino.contributions.filters.DownloadableContributionWithVersionPredicate;
-import cc.arduino.contributions.filters.InstalledPredicate;
 import cc.arduino.contributions.packages.filters.PlatformArchitecturePredicate;
 
 import java.util.ArrayList;
@@ -40,9 +38,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ContributionsIndex {
+public class ContributionsIndex {
 
-  public abstract List<ContributedPackage> getPackages();
+  private ArrayList<ContributedPackage> packages = new ArrayList<ContributedPackage>();
+  public List<ContributedPackage> getPackages() { return packages; }
 
   public ContributedPackage findPackage(String packageName) {
     for (ContributedPackage pack : getPackages()) {
@@ -84,7 +83,9 @@ public abstract class ContributionsIndex {
   }
 
   public List<ContributedPlatform> getInstalledPlatforms() {
-    return getPlatforms().stream().filter(new InstalledPredicate()).collect(Collectors.toList());
+    return getPlatforms().stream() //
+        .filter(p -> p.isInstalled()) //
+        .collect(Collectors.toList());
   }
 
   public ContributedPlatform getInstalledPlatform(String packageName, String platformArch) {
@@ -92,8 +93,10 @@ public abstract class ContributionsIndex {
     if (platforms == null) {
       return null;
     }
-    List<ContributedPlatform> installedPlatforms = platforms.stream().filter(new InstalledPredicate()).collect(Collectors.toList());
-    Collections.sort(installedPlatforms, new DownloadableContributionBuiltInAtTheBottomComparator());
+    List<ContributedPlatform> installedPlatforms = platforms.stream() //
+        .filter(p -> p.isInstalled()) //
+        .collect(Collectors.toList());
+    Collections.sort(installedPlatforms, ContributedPlatform.BUILTIN_AS_LAST);
 
     if (installedPlatforms.isEmpty()) {
       return null;

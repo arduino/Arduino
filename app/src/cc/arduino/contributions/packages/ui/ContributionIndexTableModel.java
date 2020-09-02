@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
 public class ContributionIndexTableModel
@@ -48,12 +47,18 @@ public class ContributionIndexTableModel
   private final List<ContributedPlatformReleases> contributions = new ArrayList<>();
   private final String[] columnNames = { "Description" };
   private final Class<?>[] columnTypes = { ContributedPlatform.class };
+  private Predicate<ContributedPlatform> filter;
+  private String[] filters;
 
   public void updateIndexFilter(String[] filters,
-                                Stream<Predicate<ContributedPlatform>> additionalFilters) {
+                                Predicate<ContributedPlatform> filter) {
+    this.filter = filter;
+    this.filters = filters;
+    updateContributions();
+  }
+
+  private void updateContributions() {
     contributions.clear();
-    Predicate<ContributedPlatform> filter = additionalFilters
-        .reduce(Predicate::and).get();
     for (ContributedPackage pack : BaseNoGui.indexer.getPackages()) {
       for (ContributedPlatform platform : pack.getPlatforms()) {
         String compoundTargetSearchText = platform.getName() + "\n"
@@ -149,6 +154,7 @@ public class ContributionIndexTableModel
   }
 
   public void update() {
+    updateContributions();
     fireTableDataChanged();
   }
 

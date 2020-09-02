@@ -30,6 +30,7 @@
 package cc.arduino.contributions.libraries.ui;
 
 import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.ContributedLibraryReleases;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.FilteredAbstractTableModel;
 import processing.app.BaseNoGui;
@@ -38,11 +39,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 @SuppressWarnings("serial")
 public class LibrariesIndexTableModel
-    extends FilteredAbstractTableModel<ContributedLibrary> {
+    extends FilteredAbstractTableModel<ContributedLibraryReleases> {
 
   private final List<ContributedLibraryReleases> contributions = new ArrayList<>();
 
@@ -50,12 +50,12 @@ public class LibrariesIndexTableModel
 
   private final Class<?>[] columnTypes = { ContributedPlatform.class };
 
-  Predicate<ContributedLibrary> selectedCategoryFilter = null;
+  Predicate<ContributedLibraryReleases> selectedCategoryFilter = null;
   String selectedFilters[] = null;
 
   public void updateIndexFilter(String filters[],
-                                Stream<Predicate<ContributedLibrary>> additionalFilters) {
-    selectedCategoryFilter = additionalFilters.reduce(Predicate::and).get();
+                                Predicate<ContributedLibraryReleases> additionalFilter) {
+    selectedCategoryFilter = additionalFilter;
     selectedFilters = filters;
     update();
   }
@@ -85,17 +85,6 @@ public class LibrariesIndexTableModel
     }
 
     return true;
-  }
-
-  private void addContribution(ContributedLibrary lib) {
-    for (ContributedLibraryReleases contribution : contributions) {
-      if (!contribution.shouldContain(lib))
-        continue;
-      contribution.add(lib);
-      return;
-    }
-
-    contributions.add(new ContributedLibraryReleases(lib));
   }
 
   @Override
@@ -150,17 +139,23 @@ public class LibrariesIndexTableModel
     fireTableDataChanged();
   }
 
-  private void applyFilterToLibrary(ContributedLibrary lib) {
+  private boolean filterCondition(ContributedLibraryReleases lib) {
     if (selectedCategoryFilter != null && !selectedCategoryFilter.test(lib)) {
-      return;
+      return false;
     }
 
-    String compoundTargetSearchText = lib.getName() + "\n" + lib.getParagraph()
-                                      + "\n" + lib.getSentence();
-    if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
-      return;
+    ContributedLibrary latest = lib.getLatest();
+    String compoundTargetSearchText = latest.getName() + " "
+                                      + latest.getParagraph() + " "
+                                      + latest.getSentence();
+    if (latest.getProvidesIncludes() != null) {
+      compoundTargetSearchText += " " + latest.getProvidesIncludes();
     }
-    addContribution(lib);
+    if (!stringContainsAll(compoundTargetSearchText, selectedFilters)) {
+      return false;
+    }
+
+    return true;
   }
 
   public void updateLibrary(ContributedLibrary lib) {
@@ -190,12 +185,26 @@ public class LibrariesIndexTableModel
     fireTableRowsDeleted(row, row);
   }
 
+  private List<ContributedLibraryReleases> rebuildContributionsFromIndex() {
+    List<ContributedLibraryReleases> res = new ArrayList<>();
+    BaseNoGui.librariesIndexer.getIndex().getLibraries(). //
+        forEach(lib -> {
+          for (ContributedLibraryReleases contribution : res) {
+            if (!contribution.shouldContain(lib))
+              continue;
+            contribution.add(lib);
+            return;
+          }
+
+          res.add(new ContributedLibraryReleases(lib));
+        });
+    return res;
+  }
+
   private void updateContributions() {
+    List<ContributedLibraryReleases> all = rebuildContributionsFromIndex();
     contributions.clear();
-    BaseNoGui.librariesIndexer.getIndex().getLibraries()
-        .forEach(this::applyFilterToLibrary);
-    BaseNoGui.librariesIndexer.getInstalledLibraries()
-        .forEach(this::applyFilterToLibrary);
+    all.stream().filter(this::filterCondition).forEach(contributions::add);
     Collections.sort(contributions,
                      new ContributedLibraryReleasesComparator("Arduino"));
   }

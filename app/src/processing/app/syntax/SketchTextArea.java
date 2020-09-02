@@ -30,32 +30,42 @@
 
 package processing.app.syntax;
 
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.KeyStroke;
-import org.apache.commons.compress.utils.IOUtils;
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rtextarea.RTextArea;
-import org.fife.ui.rtextarea.RTextAreaUI;
-import processing.app.Base;
-import processing.app.BaseNoGui;
-import processing.app.PreferencesData;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Map;
+import java.util.logging.Logger;
 
+import javax.swing.KeyStroke;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Segment;
-import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Map;
-import java.util.logging.Logger;
+
+import org.apache.commons.compress.utils.IOUtils;
+import org.fife.ui.rsyntaxtextarea.LinkGenerator;
+import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Style;
+import org.fife.ui.rsyntaxtextarea.Theme;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenImpl;
+import org.fife.ui.rsyntaxtextarea.TokenTypes;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaUI;
+
+import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.helpers.OSUtils;
 
 /**
@@ -91,9 +101,9 @@ public class SketchTextArea extends RSyntaxTextArea {
   }
 
   private void setTheme(String name) throws IOException {
-    FileInputStream defaultXmlInputStream = null;
+    InputStream defaultXmlInputStream = null;
     try {
-      defaultXmlInputStream = new FileInputStream(new File(BaseNoGui.getContentFile("lib"), "theme/syntax/" + name + ".xml"));
+      defaultXmlInputStream = processing.app.Theme.getThemeResource("theme/syntax/" + name + ".xml").getInputStream();
       Theme theme = Theme.load(defaultXmlInputStream);
       theme.apply(this);
     } finally {

@@ -16,6 +16,10 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
 # Kristofers <kristozz@gmail.com>, 2015,2017
 # Kristofers <kristozz@gmail.com>, 2012
 msgid ""
@@ -23,7 +27,7 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-23 18:38+0000\n"
+"PO-Revision-Date: 2018-11-23 15:06+0000\n"
 "Last-Translator: Cristian Maglie <c.maglie@arduino.cc>\n"
 "Language-Team: Latvian (Latvia) (http://www.transifex.com/mbanzi/arduino-ide-15/language/lv_LV/)\n"
 "MIME-Version: 1.0\n"
@@ -210,6 +214,11 @@ msgstr "Arhivēt skici kā:"
 #: tools/Archiver.java:139
 msgid "Archive sketch canceled."
 msgstr "Skices arhivēšana atcelta."
+
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
 
 #: tools/Archiver.java:75
 msgid ""
@@ -617,6 +626,11 @@ msgstr "Neizdevās aizvākt {0} veco versiju"
 msgid "Could not replace {0}"
 msgstr "Neizdevās aizvietot {0}"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "Neizdevās arhivēt skici"
@@ -660,6 +674,10 @@ msgstr ""
 msgid "Data Storage"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "Samazināt atkāpi"
@@ -667,6 +685,10 @@ msgstr "Samazināt atkāpi"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "Noklusējuma"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -843,6 +865,11 @@ msgstr "Radās kļūda, iegūstot Arduino datu mapi."
 msgid "Error inside Serial.{0}()"
 msgstr "Kļūda iekš Serial.{0}()"
 
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
+
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
 #: ../../../processing/app/debug/TargetPlatform.java:117
@@ -860,6 +887,25 @@ msgstr "Kļūda, atverot seriālo portu \"{0}\"."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
 msgstr ""
 
 #: Preferences.java:277
@@ -894,6 +940,10 @@ msgstr "Neizdevāš iededzināt sāknēšanas ielādētāju."
 
 #: ../../../processing/app/Editor.java:2555
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
 msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:1940
@@ -931,10 +981,6 @@ msgstr "Kļūda pārbaudot/augšupielādējot"
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "Estonian"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr ""
 
 #: Editor.java:516
 msgid "Examples"
@@ -1139,9 +1185,9 @@ msgstr "NESADERĪGS"
 msgid "Ignore Case"
 msgstr "Ignorēt reģistrjūtību"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "Ignorē nekorektu bibliotēkas nosaukumu"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1165,6 +1211,10 @@ msgstr "Iekļaut bibliotēku"
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
 msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
@@ -1200,10 +1250,10 @@ msgstr "Instalēts"
 msgid "Installing boards..."
 msgstr "Instalē plates..."
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
-msgstr "Instalē bibliotēku: {0}"
+msgid "Installing library: {0}:{1}"
+msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
 #, java-format
@@ -1227,6 +1277,17 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
 msgstr ""
 
 #: Preferences.java:102
@@ -1261,9 +1322,9 @@ msgstr ""
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
+msgid "Library is already installed: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
@@ -1681,9 +1742,9 @@ msgstr "Atsauce"
 msgid "Remove"
 msgstr "Aizvākt"
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
+msgid "Removing library: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
@@ -1718,6 +1779,10 @@ msgstr "Aizvietot ar:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
 msgstr ""
 
 #: Preferences.java:113
@@ -1843,12 +1908,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "Seriālais ports \"{0}\" netika atrasts. Vai jūs izvēlējāties pareizo no Rīki > Seriālais ports izvēlnes?"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "Seriālais ports {0} netika atrasts.\nAtkārtot augšupielādi uz citu seriālo portu?"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1870,6 +1938,10 @@ msgstr "Iestatījumu problēmas"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "Parādīt skiču mapi"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2042,6 +2114,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "Failam \"{0}\" jābūt iekš\nskiču mapes ar nosaukumu \"{1}\".\nIzveidot šo mapi, pārvietot failu un turpināt?"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2087,11 +2167,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "Skices mape ir pazudusi.\nTiks mēģināts saglabāt tajā pašā vietā,\nbet viss, izņemot kodu, zudīs."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
 msgstr ""
 
 #: Base.java:259
@@ -2107,6 +2187,10 @@ msgstr "Skiču burtnīcas mape vairs neeksistē.\nArduino pārslēgsies uz noklu
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
@@ -2601,6 +2685,12 @@ msgstr "ignorē nederīgu fontu izmēru {0}"
 msgid "name is null"
 msgstr "vārds ir tukšs"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu ir tukšs"
@@ -2688,11 +2778,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr ""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2701,6 +2786,11 @@ msgstr ""
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
 msgstr ""
 
 #: ../../../processing/app/Base.java:486

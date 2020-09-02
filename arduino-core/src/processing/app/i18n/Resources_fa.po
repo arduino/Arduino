@@ -16,7 +16,13 @@
 # Translators:
 # Translators:
 # Translators:
+# Translators:
+# Translators:
+# Translators:
+# Translators:
+# Ardeshir Hakimi, 2020
 # arminjavan <armin_javan@yahoo.com>, 2014
+# axzw tere <joeaj6+9gce4p6vg7ddg@sharklasers.com>, 2020
 # Ebrahim Byagowi <ebrahim@byagowi.com>, 2012
 # Mohammad Hamidi <hamidi72@gmail.com>, 2017
 msgid ""
@@ -24,14 +30,14 @@ msgstr ""
 "Project-Id-Version: Arduino IDE 1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-29 10:24-0400\n"
-"PO-Revision-Date: 2017-09-19 19:46+0000\n"
-"Last-Translator: Mohammad Hamidi <hamidi72@gmail.com>\n"
+"PO-Revision-Date: 2020-02-04 08:56+0000\n"
+"Last-Translator: Ardeshir Hakimi\n"
 "Language-Team: Persian (http://www.transifex.com/mbanzi/arduino-ide-15/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: Preferences.java:358 Preferences.java:374
 msgid "  (requires restart of Arduino)"
@@ -66,11 +72,11 @@ msgstr "پوشه \"arch\" دیگر پشتیبانی نمی شود. برای اط
 
 #: Preferences.java:478
 msgid "(edit only when Arduino is not running)"
-msgstr "(ویرایش فقط به هنگامی که آردئینو درحال اجرا نیست)"
+msgstr "(ویرایش فقط به هنگام عدم اجرای آردوینو)"
 
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
 msgid "(legacy)"
-msgstr ""
+msgstr "(باقی‌مانده از نرم‌افزار قبلی)"
 
 #: ../../../processing/app/helpers/CommandlineParser.java:149
 msgid "--curdir no longer supported"
@@ -170,7 +176,7 @@ msgstr "خطایی به عنوان اصلاح کدگذاری پرونده رخ�
 
 #: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:99
 msgid "An error occurred while updating libraries index!"
-msgstr ""
+msgstr "بروز مشکل در به‌روز رسانی نمایه‌ی کتابخانه‌ها"
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "An error occurred while uploading the sketch"
@@ -212,6 +218,11 @@ msgstr "بایگانی‌کردن طرح به عنوان:"
 msgid "Archive sketch canceled."
 msgstr "بایگانی‌کردن طرح فسخ‌گردید."
 
+#: ../../../../../arduino-core/src/cc/arduino/Compiler.java:67
+#, java-format
+msgid "Archiving built core (caching) in: {0}"
+msgstr ""
+
 #: tools/Archiver.java:75
 msgid ""
 "Archiving the sketch has been canceled because\n"
@@ -234,7 +245,7 @@ msgstr "برد آردئینو ای وی آر (avr)"
 msgid ""
 "Arduino can only open its own sketches\n"
 "and other files ending in .ino or .pde"
-msgstr ""
+msgstr "نرم‌افزار آردوینو فقط می‌تواند اسکچ‌های خود و یا سایر فایل‌ها با پسوند ino. و pde. را باز کند."
 
 #: Base.java:1682
 msgid ""
@@ -618,6 +629,11 @@ msgstr "نمی‌توان نسخهٔ قدیمی {0} را حذف نمود"
 msgid "Could not replace {0}"
 msgstr "نمی‌توان {0} را جایگزین نمود"
 
+#: ../../../../../arduino-core/src/processing/app/PreferencesData.java:141
+#, java-format
+msgid "Could not write preferences file: {0}"
+msgstr ""
+
 #: tools/Archiver.java:74
 msgid "Couldn't archive sketch"
 msgstr "نمی‌توان طرح را بایگانی نمود"
@@ -661,6 +677,10 @@ msgstr "پردازش داده"
 msgid "Data Storage"
 msgstr "محل ذخیره سازی داده ها"
 
+#: ../../../../../app/src/processing/app/Editor.java:1386
+msgid "Decrease Font Size"
+msgstr ""
+
 #: Editor.java:1224 Editor.java:2765
 msgid "Decrease Indent"
 msgstr "کاهش تورفتگی"
@@ -668,6 +688,10 @@ msgstr "کاهش تورفتگی"
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:185
 msgid "Default"
 msgstr "پیشفرض"
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:870
+msgid "Default theme"
+msgstr ""
 
 #: EditorHeader.java:314 Sketch.java:591
 msgid "Delete"
@@ -788,7 +812,7 @@ msgstr "زبان ویرایشگر:"
 
 #: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:322
 msgid "Enable Code Folding"
-msgstr ""
+msgstr "مخفی‌سازی دستورها"
 
 #: Preferences.java:92
 msgid "English"
@@ -833,7 +857,7 @@ msgstr "خطای کامپایل"
 #: ../../../cc/arduino/contributions/DownloadableContributionsDownloader.java:113
 #, java-format
 msgid "Error downloading {0}"
-msgstr ""
+msgstr "خطا در دانلودِ {0}"
 
 #: Base.java:1674
 msgid "Error getting the Arduino data folder."
@@ -843,6 +867,11 @@ msgstr "خطای گرفتن پوشه اطلاعات آردئینو"
 #, java-format
 msgid "Error inside Serial.{0}()"
 msgstr "خطای درونی. {0}()"
+
+#: ../../../../../app/src/processing/app/Theme.java:302
+#, java-format
+msgid "Error loading theme {0}: {1}"
+msgstr ""
 
 #: ../../../processing/app/debug/TargetPlatform.java:95
 #: ../../../processing/app/debug/TargetPlatform.java:106
@@ -861,6 +890,25 @@ msgstr "خطا به هنگام بازنمودن ''{0}''."
 msgid ""
 "Error opening serial port ''{0}''. Try consulting the documentation at "
 "http://playground.arduino.cc/Linux/All#Permission"
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:109
+#, java-format
+msgid ""
+"Error parsing libraries index: {0}\n"
+"Try to open the Library Manager to update the libraries index."
+msgstr ""
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:112
+#, java-format
+msgid "Error reading libraries index: {0}"
+msgstr "خطا در خواندن نمایه‌ کتابخانه‌ها: {0}"
+
+#: ../../../../../arduino-core/src/cc/arduino/contributions/packages/ContributionsIndexer.java:113
+#, java-format
+msgid ""
+"Error reading package indexes folder: {0}\n"
+"(maybe a permission problem?)"
 msgstr ""
 
 #: Preferences.java:277
@@ -897,6 +945,10 @@ msgstr "خطای به هنگام سوزاندن بوت‌لودر."
 msgid "Error while burning bootloader: missing '{0}' configuration parameter"
 msgstr ""
 
+#: ../../../../../app/src/processing/app/Editor.java:2355
+msgid "Error while burning bootloader: please select a serial port."
+msgstr ""
+
 #: ../../../../../app/src/processing/app/Editor.java:1940
 msgid "Error while compiling: missing '{0}' configuration parameter"
 msgstr ""
@@ -912,7 +964,7 @@ msgstr ""
 
 #: ../../../processing/app/BaseNoGui.java:528
 msgid "Error while uploading"
-msgstr ""
+msgstr "خطای حین بارگذاری"
 
 #: ../../../processing/app/Editor.java:2409
 #: ../../../processing/app/Editor.java:2449
@@ -923,19 +975,15 @@ msgstr "خطا حین بارگذاری: پارامتر پیکربندی '{0}' ا
 #: ../../../processing/app/BaseNoGui.java:551
 #: ../../../processing/app/BaseNoGui.java:554
 msgid "Error while verifying"
-msgstr ""
+msgstr "خطای حین تایید"
 
 #: ../../../processing/app/BaseNoGui.java:521
 msgid "Error while verifying/uploading"
-msgstr ""
+msgstr "خطای حین تایید/بارگذاری"
 
 #: Preferences.java:93
 msgid "Estonian"
 msgstr "استونیایی"
-
-#: ../../../processing/app/Preferences.java:146
-msgid "Estonian (Estonia)"
-msgstr "استونیایی (استونی)"
 
 #: Editor.java:516
 msgid "Examples"
@@ -943,7 +991,7 @@ msgstr "نمونه‌ها"
 
 #: ../../../../../app/src/processing/app/Base.java:1185
 msgid "Examples for any board"
-msgstr ""
+msgstr "مثال‌هایی برای تمام بوردها"
 
 #: ../../../../../app/src/processing/app/Base.java:1205
 #: ../../../../../app/src/processing/app/Base.java:1216
@@ -1140,9 +1188,9 @@ msgstr ""
 msgid "Ignore Case"
 msgstr "نادیده‌گرفتن بزرگی/کوچکی"
 
-#: Base.java:1058
-msgid "Ignoring bad library name"
-msgstr "در نظر نگرفتن نام نامناسب کتابخانه"
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:184
+msgid "Ignoring library with bad name"
+msgstr ""
 
 #: Base.java:1436
 msgid "Ignoring sketch with bad name"
@@ -1166,6 +1214,10 @@ msgstr ""
 #: ../../../processing/app/BaseNoGui.java:768
 #: ../../../processing/app/BaseNoGui.java:771
 msgid "Incorrect IDE installation folder"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1378
+msgid "Increase Font Size"
 msgstr ""
 
 #: Editor.java:1216 Editor.java:2757
@@ -1201,9 +1253,9 @@ msgstr ""
 msgid "Installing boards..."
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:126
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:109
 #, java-format
-msgid "Installing library: {0}"
+msgid "Installing library: {0}:{1}"
 msgstr ""
 
 #: ../../../cc/arduino/contributions/packages/ContributionInstaller.java:134
@@ -1228,6 +1280,17 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:66
 #, java-format
 msgid "Invalid quoting: no closing [{0}] char found."
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/packages/UserLibrary.java:158
+#, java-format
+msgid "Invalid version '{0}' for library in: {1}"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Base.java:316
+#: ../../../../../app/src/processing/app/Base.java:362
+#, java-format
+msgid "Invalid version {0}"
 msgstr ""
 
 #: Preferences.java:102
@@ -1262,9 +1325,9 @@ msgstr ""
 msgid "Library can't use both 'src' and 'utility' folders. Double check {0}"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:107
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:88
 #, java-format
-msgid "Library is already installed: {0} version {1}"
+msgid "Library is already installed: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/view/GoToLineNumber.java:70
@@ -1282,7 +1345,7 @@ msgstr ""
 #: ../../../../../arduino-core/src/cc/arduino/Compiler.java:73
 #, java-format
 msgid "Looking for recipes like {0}*{1}"
-msgstr ""
+msgstr "جستجوی دستور العمل‌هایی مانند {0}*{1}"
 
 #: ../../../processing/app/Sketch.java:1684
 msgid "Low memory available, stability problems may occur."
@@ -1461,7 +1524,7 @@ msgstr "نروژی"
 msgid ""
 "Not enough memory; see http://www.arduino.cc/en/Guide/Troubleshooting#size "
 "for tips on reducing your footprint."
-msgstr ""
+msgstr "حافظه، کافی نیست؛ مشاهده نکاتی درباره کاهش مصرف فضا در لینک زیر:\nhttp://www.arduino.cc/en/Guide/Troubleshooting#size"
 
 #: Preferences.java:80 Sketch.java:585 Sketch.java:737 Sketch.java:1042
 #: Editor.java:2145 Editor.java:2465
@@ -1682,9 +1745,9 @@ msgstr "مرجع"
 msgid "Remove"
 msgstr ""
 
-#: ../../../cc/arduino/contributions/libraries/LibraryInstaller.java:157
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibraryInstaller.java:142
 #, java-format
-msgid "Removing library: {0}"
+msgid "Removing library: {0}:{1}"
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:266
@@ -1719,6 +1782,10 @@ msgstr "جایگزین کردن:"
 
 #: ../../../../../arduino-core/src/processing/app/I18n.java:28
 msgid "Retired"
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1973
+msgid "Retry the upload with another serial port?"
 msgstr ""
 
 #: Preferences.java:113
@@ -1844,12 +1911,15 @@ msgid ""
 " Serial Port menu?"
 msgstr "درگاه سریال ''{0}'' یافت نشد. آیا شما درست آن را از منوی ابزارها > درگاه سریال انتخاب نموده‌اید؟"
 
-#: Editor.java:2343
+#: ../../../../../app/src/processing/app/Editor.java:1969
+#: ../../../../../app/src/processing/app/Editor.java:2040
+msgid "Serial port not selected."
+msgstr ""
+
+#: ../../../../../app/src/processing/app/Editor.java:1971
 #, java-format
-msgid ""
-"Serial port {0} not found.\n"
-"Retry the upload with another serial port?"
-msgstr "درگاه سریال {0} یافت نشد.\nانجام مجدد باگذاری با درگاه سریالی دیگر؟"
+msgid "Serial port {0} not found."
+msgstr ""
 
 #: ../../../../../app/src/processing/app/Editor.java:65
 msgid "Serial ports"
@@ -1871,6 +1941,10 @@ msgstr "مشکلات تنظیمات"
 #: Editor.java:641
 msgid "Show Sketch Folder"
 msgstr "نمایش پوشهٔ طرح"
+
+#: ../../../../../app/src/processing/app/AbstractTextMonitor.java:101
+msgid "Show timestamp"
+msgstr ""
 
 #: Preferences.java:387
 msgid "Show verbose output during: "
@@ -2043,6 +2117,14 @@ msgid ""
 "Create this folder, move the file, and continue?"
 msgstr "پرونده \"{0}\" می‌بایست داخل یک\nپوشهٔ طرح به نام \"{1}\" ذخیره گردند.\nساختن این پوشه، انتقال پرونده و ادامه؟"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:180
+#, java-format
+msgid ""
+"The library \"{0}\" cannot be used.\n"
+"Library folder names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
+msgstr ""
+
 #: Base.java:1054 Base.java:2674
 #, java-format
 msgid ""
@@ -2088,11 +2170,11 @@ msgid ""
 "but anything besides the code will be lost."
 msgstr "پوشهٔ طرح ناپدید شده‌است.\n تلاش خواهید که آن را در محل مشابه ذخیره نمود\nولی به‌علاوهٔ آن کد مفقود خواهد شد."
 
-#: ../../../processing/app/Sketch.java:2028
+#: ../../../../../app/src/processing/app/SketchController.java:849
 msgid ""
-"The sketch name had to be modified. Sketch names can only consist\n"
-"of ASCII characters and numbers (but cannot start with a number).\n"
-"They should also be less than 64 characters long."
+"The sketch name had to be modified.\n"
+"Sketch names must start with a letter or number, followed by letters,\n"
+"numbers, dashes, dots and underscores. Maximum length is 63 characters."
 msgstr ""
 
 #: Base.java:259
@@ -2108,6 +2190,10 @@ msgstr "پوشهٔ کتاب طرح دیگر موجود نیست.\nآردئنو �
 msgid ""
 "The specified sketchbook folder contains your copy of the IDE.\n"
 "Please choose a different folder for your sketchbook."
+msgstr ""
+
+#: ../../../../../app/src/cc/arduino/view/preferences/Preferences.java:311
+msgid "Theme: "
 msgstr ""
 
 #: ../../../../../app/src/cc/arduino/contributions/libraries/ui/LibraryManagerUI.java:257
@@ -2602,6 +2688,12 @@ msgstr "درنظر نگرفتن اندازهٔ قلم نامناسب {0}"
 msgid "name is null"
 msgstr "name تهی است"
 
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:217
+#: ../../../../../arduino-core/src/cc/arduino/contributions/libraries/LibrariesIndexer.java:227
+#, java-format
+msgid "no headers files (.h) found in {0}"
+msgstr ""
+
 #: Editor.java:932
 msgid "serialMenu is null"
 msgstr "serialMenu تهی است"
@@ -2689,11 +2781,6 @@ msgid ""
 "\"package:arch:board:options\""
 msgstr ""
 
-#: ../../../processing/app/Base.java:509
-#, java-format
-msgid "{0}: Invalid option for \"{1}\" option for board \"{2}\""
-msgstr ""
-
 #: ../../../processing/app/Base.java:507
 #, java-format
 msgid "{0}: Invalid option for board \"{1}\""
@@ -2702,6 +2789,11 @@ msgstr ""
 #: ../../../processing/app/Base.java:502
 #, java-format
 msgid "{0}: Invalid option, should be of the form \"name=value\""
+msgstr ""
+
+#: ../../../../../arduino-core/src/processing/app/helpers/CommandlineParser.java:268
+#, java-format
+msgid "{0}: Invalid value for option \"{1}\" for board \"{2}\""
 msgstr ""
 
 #: ../../../processing/app/Base.java:486

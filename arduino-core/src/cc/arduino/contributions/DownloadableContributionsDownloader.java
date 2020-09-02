@@ -30,20 +30,25 @@
 package cc.arduino.contributions;
 
 import cc.arduino.utils.FileHash;
+import cc.arduino.utils.MultiStepProgress;
 import cc.arduino.utils.Progress;
 import cc.arduino.utils.network.FileDownloader;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import processing.app.BaseNoGui;
+import processing.app.PreferencesData;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.Collection;
 
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 public class DownloadableContributionsDownloader {
+  private static Logger log = LogManager.getLogger(DownloadableContributionsDownloader.class);
 
   private final File stagingFolder;
 
@@ -51,9 +56,18 @@ public class DownloadableContributionsDownloader {
     stagingFolder = _stagingFolder;
   }
 
-  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener) throws Exception {
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
+    return download(contribution, progress, statusText, progressListener, false, allowCache);
+  }
+
+  public File download(DownloadableContribution contribution, Progress progress, final String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
     URL url = new URL(contribution.getUrl());
-    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), contribution.getArchiveFileName());
+    // Filter out paths from file name
+    String filename = new File(contribution.getArchiveFileName()).getName();
+    Path outputFile = Paths.get(stagingFolder.getAbsolutePath(), filename).normalize();
+    if (outputFile.toFile().isDirectory()) {
+      throw new Exception(format("Can't download {0}: invalid filename or exinsting directory", contribution.getArchiveFileName()));
+    }
 
     // Ensure the existence of staging folder
     Files.createDirectories(stagingFolder.toPath());
@@ -66,7 +80,7 @@ public class DownloadableContributionsDownloader {
     while (true) {
       // Need to download or resume downloading?
       if (!Files.isRegularFile(outputFile, LinkOption.NOFOLLOW_LINKS) || (Files.size(outputFile) < contribution.getSize())) {
-        download(url, outputFile.toFile(), progress, statusText, progressListener);
+        download(url, outputFile.toFile(), progress, statusText, progressListener, noResume, allowCache);
         downloaded = true;
       }
 
@@ -112,8 +126,12 @@ public class DownloadableContributionsDownloader {
     return algo != null && !algo.isEmpty();
   }
 
-  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener) throws Exception {
-    FileDownloader downloader = new FileDownloader(url, tmpFile);
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean allowCache) throws Exception {
+    download(url, tmpFile, progress, statusText, progressListener, false, allowCache);
+  }
+
+  public void download(URL url, File tmpFile, Progress progress, String statusText, ProgressListener progressListener, boolean noResume, boolean allowCache) throws Exception {
+    final FileDownloader downloader = new FileDownloader(url, tmpFile, allowCache);
     downloader.addObserver((o, arg) -> {
       FileDownloader me = (FileDownloader) o;
       String msg = "";
@@ -126,10 +144,101 @@ public class DownloadableContributionsDownloader {
       progress.setProgress(me.getProgress());
       progressListener.onProgress(progress);
     });
-    downloader.download();
+    downloader.download(noResume);
     if (!downloader.isCompleted()) {
       throw new Exception(format(tr("Error downloading {0}"), url), downloader.getError());
     }
+  }
+
+  public void downloadIndexAndSignature(MultiStepProgress progress, URL packageIndexUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier) throws Exception {
+
+    // Extract the file name from the url
+    final String indexFileName = FilenameUtils.getName(packageIndexUrl.getPath());
+    final File packageIndex = BaseNoGui.indexer.getIndexFile(indexFileName);
+
+    final String statusText = tr("Downloading platforms index...");
+
+    // Create temp files
+    final File packageIndexTemp = File.createTempFile(indexFileName, ".tmp");
+    try {
+      // Download package index
+      download(packageIndexUrl, packageIndexTemp, progress, statusText, progressListener, true, true);
+      final URL signatureUrl = new URL(packageIndexUrl.toString() + ".sig");
+
+      if (verifyDomain(packageIndexUrl)) {
+        if (checkSignature(progress, signatureUrl, progressListener, signatureVerifier, statusText, packageIndexTemp)) {
+          Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } else {
+          log.info("The cached files have been removed. {} {}", packageIndexUrl, signatureUrl);
+          FileDownloader.invalidateFiles(packageIndexUrl, signatureUrl);
+        }
+      } else {
+        // Move the package index to the destination when the signature is not necessary
+        Files.move(packageIndexTemp.toPath(), packageIndex.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        log.info("The domain is not selected to verify the signature. will be copied into this path {}, packageIndex url: {}", packageIndex, packageIndexUrl);
+      }
+    } catch (Exception e) {
+      log.error("Cannot download the package index from {} the package will be discard", packageIndexUrl, e);
+      throw e;
+    } finally {
+      // Delete useless temp file
+      Files.deleteIfExists(packageIndexTemp.toPath());
+    }
+  }
+
+  public boolean verifyDomain(URL url) {
+    final Collection<String> domain = PreferencesData.
+      getCollection("http.signature_verify_domains");
+    if (domain.size() == 0) {
+      // Default domain
+      domain.add("downloads.arduino.cc");
+    }
+    if (domain.contains(url.getHost())) {
+      return true;
+    } else {
+      log.info("The domain is not selected to verify the signature. domain list: {}, url: {}", domain, url);
+      return false;
+    }
+  }
+
+  public boolean checkSignature(MultiStepProgress progress, URL signatureUrl, ProgressListener progressListener, SignatureVerifier signatureVerifier, String statusText, File fileToVerify) throws Exception {
+
+
+    // Signature file name
+    final String signatureFileName = FilenameUtils.getName(signatureUrl.getPath());
+    final File packageIndexSignature = BaseNoGui.indexer.getIndexFile(signatureFileName);
+    final File packageIndexSignatureTemp = File.createTempFile(signatureFileName, ".tmp");
+
+
+    try {
+      // Download signature
+      download(signatureUrl, packageIndexSignatureTemp, progress, statusText, progressListener, true);
+
+      if (PreferencesData.areInsecurePackagesAllowed()) {
+        Files.move(packageIndexSignatureTemp.toPath(), packageIndexSignature.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        log.info("Allowing insecure packages because allow_insecure_packages is set to true in preferences.txt" +
+          " but the signature was download");
+        return true;
+      }
+
+      // Verify the signature before move the files
+      final boolean signatureVerified = signatureVerifier.isSigned(fileToVerify, packageIndexSignatureTemp);
+      if (signatureVerified) {
+        log.info("Signature verified. url={}, signature url={}, file to verify={}, signature file={}", signatureUrl, signatureUrl, fileToVerify, packageIndexSignatureTemp);
+        // Move if the signature is ok
+        Files.move(packageIndexSignatureTemp.toPath(), packageIndexSignature.toPath(), StandardCopyOption.REPLACE_EXISTING);
+      } else {
+        log.error("{} file signature verification failed. File ignored.", signatureUrl);
+        System.err.println(format(tr("{0} file signature verification failed. File ignored."), signatureUrl.toString()));
+      }
+      return signatureVerified;
+    } catch (Exception e) {
+      log.error("Cannot download the signature from {} the package will be discard", signatureUrl, e);
+      throw e;
+    } finally {
+      Files.deleteIfExists(packageIndexSignatureTemp.toPath());
+    }
+
   }
 
 }

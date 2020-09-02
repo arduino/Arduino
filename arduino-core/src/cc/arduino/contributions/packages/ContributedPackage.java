@@ -29,25 +29,33 @@
 
 package cc.arduino.contributions.packages;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ContributedPackage {
+public class ContributedPackage {
 
-  public abstract String getName();
-
-  public abstract String getMaintainer();
-
-  public abstract String getWebsiteURL();
-
-  public abstract String getEmail();
-
-  public abstract List<ContributedPlatform> getPlatforms();
-
-  public abstract List<ContributedTool> getTools();
-
-  public abstract ContributedHelp getHelp();
-
+  private String name;
+  private String maintainer;
+  private String websiteURL;
+  private String email;
+  private ArrayList<ContributedPlatform> platforms = new ArrayList<ContributedPlatform>();
+  private ArrayList<ContributedTool> tools = new ArrayList<ContributedTool>();
+  private ContributedHelp help;
   private boolean trusted;
+
+  public String getName() { return name; }
+
+  public String getMaintainer() { return maintainer; }
+
+  public String getWebsiteURL() { return websiteURL; }
+
+  public String getEmail() { return email; }
+
+  public List<ContributedPlatform> getPlatforms() { return platforms; }
+
+  public List<ContributedTool> getTools() { return tools; }
+
+  public ContributedHelp getHelp() { return help; }
 
   public ContributedPlatform findPlatform(String architecture, String version) {
     if (architecture == null || version == null) {

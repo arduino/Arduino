@@ -43,9 +43,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -53,6 +56,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -63,10 +67,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.DefaultEditorKit;
 
 import cc.arduino.contributions.ui.listeners.AbstractKeyListener;
 import processing.app.Base;
-import processing.app.Theme;
 
 public abstract class InstallerJDialog<T> extends JDialog {
 
@@ -77,6 +81,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
   protected final FilterJTextField filterField;
   protected final JPanel filtersContainer;
   // Currently selected category and filters
+  protected Predicate<T> extraFilter = x -> true;
   protected Predicate<T> categoryFilter;
   protected String[] filters;
   protected final String noConnectionErrorMessage;
@@ -87,6 +92,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
   protected final FilteredAbstractTableModel<T> contribModel;
   private final JButton closeButton;
   private final JButton dismissErrorMessageButton;
+
+  protected int previousRowAtPoint = -1;
 
   abstract protected FilteredAbstractTableModel<T> createContribModel();
 
@@ -118,17 +125,40 @@ public abstract class InstallerJDialog<T> extends JDialog {
       filterField = new FilterJTextField(tr("Filter your search...")) {
         @Override
         protected void onFilter(String[] _filters) {
+          previousRowAtPoint = -1;
           filters = _filters;
           if (contribTable.getCellEditor() != null) {
             contribTable.getCellEditor().stopCellEditing();
           }
           updateIndexFilter(filters, categoryFilter);
-          if (contribModel.getRowCount() == 1) {
-            // TODO: understand why it doesn't work
-            //contribTable.addRowSelectionInterval(0, 0);
-          }
         }
       };
+      filterField.getAccessibleContext().setAccessibleDescription(tr("Search Filter"));
+
+      // Add cut/copy/paste contextual menu to the search filter input field.
+      JPopupMenu menu = new JPopupMenu();
+
+      Action cut = new DefaultEditorKit.CutAction();
+      cut.putValue(Action.NAME, tr("Cut"));
+      menu.add(cut);
+
+      Action copy = new DefaultEditorKit.CopyAction();
+      copy.putValue(Action.NAME, tr("Copy"));
+      menu.add(copy);
+
+      Action paste = new DefaultEditorKit.PasteAction();
+      paste.putValue(Action.NAME, tr("Paste"));
+      menu.add(paste);
+
+      filterField.setComponentPopupMenu(menu);
+      
+      // Focus the filter field when the window opens.
+      addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowOpened(WindowEvent e) {
+          filterField.requestFocus();
+        }
+      });
 
       filtersContainer = new JPanel();
       filtersContainer.setLayout(new BoxLayout(filtersContainer, BoxLayout.X_AXIS));
@@ -150,7 +180,6 @@ public abstract class InstallerJDialog<T> extends JDialog {
     contribTable.setDragEnabled(false);
     contribTable.setIntercellSpacing(new Dimension(0, 1));
     contribTable.setShowVerticalLines(false);
-    contribTable.setSelectionBackground(Theme.getColor("status.notice.bgcolor"));
     contribTable.addKeyListener(new AbstractKeyListener() {
 
       @Override
@@ -165,6 +194,25 @@ public abstract class InstallerJDialog<T> extends JDialog {
 
         contribTable.editCellAt(contribTable.getSelectedRow(), contribTable.getSelectedColumn());
       }
+    });
+
+    contribTable.addMouseMotionListener(new MouseMotionListener() {
+
+        public void mouseDragged(MouseEvent e) {}
+
+        public void mouseMoved(MouseEvent e) {
+            // avoid firing edits events until the mouse changes cell or the user is back on the cell after selecting a dropdown
+            int rowAtPoint = contribTable.rowAtPoint(e.getPoint());
+            if (!InstallerTableCell.isDropdownSelected() && rowAtPoint != previousRowAtPoint) {
+              contribTable.editCellAt(rowAtPoint, 0);
+              previousRowAtPoint = rowAtPoint;
+              InstallerTableCell.dropdownSelected(false);
+            }
+            if (InstallerTableCell.isDropdownSelected() && rowAtPoint == previousRowAtPoint) {
+              // back to the original cell, can drop dropdown selector lock
+              InstallerTableCell.dropdownSelected(false);
+            }
+        }
     });
 
     {
@@ -241,9 +289,8 @@ public abstract class InstallerJDialog<T> extends JDialog {
     SwingUtilities.invokeLater(InstallerJDialog.this::onUpdatePressed);
   }
 
-  public void updateIndexFilter(String[] filters, Predicate<T>... additionalFilters) {
-    Stream<Predicate<T>> notNullAdditionalFilters = Stream.of(additionalFilters).filter(filter -> filter != null);
-    contribModel.updateIndexFilter(filters, notNullAdditionalFilters);
+  public void updateIndexFilter(String[] filters, Predicate<T> additionalFilter) {
+    contribModel.updateIndexFilter(filters, additionalFilter);
   }
 
   public void setErrorMessage(String message) {
@@ -282,16 +329,16 @@ public abstract class InstallerJDialog<T> extends JDialog {
   }
 
   protected final ActionListener categoryChooserActionListener = new ActionListener() {
-
     @Override
     public void actionPerformed(ActionEvent event) {
       DropdownItem<T> selected = (DropdownItem<T>) categoryChooser.getSelectedItem();
-      if (categoryFilter == null || !categoryFilter.equals(selected)) {
+      previousRowAtPoint = -1;
+      if (selected != null && categoryFilter != selected.getFilterPredicate()) {
         categoryFilter = selected.getFilterPredicate();
         if (contribTable.getCellEditor() != null) {
           contribTable.getCellEditor().stopCellEditing();
         }
-        updateIndexFilter(filters, categoryFilter);
+        updateIndexFilter(filters, categoryFilter.and(extraFilter));
       }
     }
   };
@@ -301,6 +348,7 @@ public abstract class InstallerJDialog<T> extends JDialog {
       listener.focusGained(new FocusEvent(filterField, FocusEvent.FOCUS_GAINED));
     }
     filterField.setText(filterText);
+    filterField.applyFilter();
   }
 
   public void selectDropdownItemByClassName(String dropdownItem) {

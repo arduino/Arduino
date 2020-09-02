@@ -32,6 +32,7 @@ import processing.app.Editor;
 import processing.app.tools.Tool;
 
 
+
 /**
  * Example Tools menu entry.
  */
@@ -69,8 +70,9 @@ public class Mangler implements Tool {
 
 
   protected void mangleSelection() {
-    if (editor.isSelectionActive()) {
-      String selection = editor.getSelectedText();
+    //Check if there is selected text
+    if (editor.getCurrentTab().getSelectedText() != null) {
+      String selection = editor.getCurrentTab().getSelectedText();
       char[] stuff = selection.toCharArray();
       // Randomly swap a bunch of characters in the text
       for (int i = 0; i < stuff.length / 10; i++) {
@@ -82,13 +84,12 @@ public class Mangler implements Tool {
         stuff[a] = selection.charAt(b);
         stuff[b] = selection.charAt(a);
       }
-      editor.startCompoundEdit();
-      editor.setSelectedText(new String(stuff));
-      editor.stopCompoundEdit();
+      editor.getCurrentTab().setSelectedText(new String(stuff));
       editor.statusNotice("Now that feels better, doesn't it?");
 
     } else {
-      editor.statusError("No selection, no dice.");
+      //When there is no selected text
+     editor.statusError("No selection, no dice.");
     }
   }
 }
