@@ -510,7 +510,10 @@ public class Base {
         contributionsSelfCheck = new ContributionsSelfCheck(this, new UpdatableBoardsLibsFakeURLsHandler(this), contributionInstaller, libraryInstaller);
         new Timer(false).schedule(contributionsSelfCheck, Constants.BOARDS_LIBS_UPDATABLE_CHECK_START_PERIOD);
       }
-
+      // Load the build settings
+      for(Editor editor: editors){
+        editor.findTab(editor.sketch.getPrimaryFile()).loadBuildSettings(this);
+      }
     } else if (parser.isNoOpMode()) {
       // Do nothing (intended for only changing preferences)
       System.exit(0);
@@ -715,9 +718,7 @@ public class Base {
     }
   }
 
-
   // .................................................................
-
 
   boolean breakTime = false;
   String[] months = {

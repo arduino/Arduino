@@ -110,6 +110,34 @@ import processing.app.syntax.SketchTextArea;
 import processing.app.tools.MenuScroller;
 import processing.app.tools.Tool;
 
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.BadLocationException;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.*;
+import java.awt.print.PageFormat;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.ArrayList;
+
+import static processing.app.I18n.tr;
+import static processing.app.Theme.scale;
+
 /**
  * Main editor panel for the Processing Development Environment.
  */
@@ -747,6 +775,10 @@ public class Editor extends JFrame implements RunnerListener {
     MenuScroller.setScrollerFor(portMenu);
     item = new JMenuItem(tr("Get Board Info"));
     item.addActionListener(e -> handleBoardInfo());
+    toolsMenu.add(item);
+
+    item = new JMenuItem(tr("Add build settings to .INO file"));
+    item.addActionListener(e -> handleAddBuildSettings());
     toolsMenu.add(item);
     toolsMenu.addSeparator();
 
@@ -2367,6 +2399,21 @@ public class Editor extends JFrame implements RunnerListener {
 
     } while (serialPlotter != null && serialPlotter.requiresAuthorization() && !success);
 
+  }
+
+  public void handleAddBuildSettings(){
+    final LinkedHashMap<String, String> settingsMap = base.getBoardsCustomMenus().stream().filter(JMenu::isVisible).map((e)->{
+      String setting = e.getText().substring(0, e.getText().indexOf(":"));
+      String value = e.getText().replace(setting + ":", "").replace("\"", "").trim();
+      return new String[]{setting, value};
+    }).collect(LinkedHashMap::new, (map, menu) -> map.put(menu[0], menu[1]), LinkedHashMap::putAll);
+	handleSave(true);
+    Optional<EditorTab> optionalEditorTab = tabs.stream().filter(tab -> tab.getSketch().getSketch().equals(sketch)).findFirst();
+    if(optionalEditorTab.isPresent()){
+      optionalEditorTab.get().setText(sketch.setBuildSettings(sketch, settingsMap));
+      handleSave(true);
+      System.out.println("Build settings header should be added");
+    }
   }
 
   private void handleBurnBootloader() {
