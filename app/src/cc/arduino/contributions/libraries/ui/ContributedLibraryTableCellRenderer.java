@@ -46,6 +46,7 @@ public class ContributedLibraryTableCellRenderer implements TableCellRenderer {
         value, isSelected);
     cell.setButtonsVisible(false);
 
+    cell.setForeground(Color.BLACK);
     if (row % 2 == 0) {
       cell.setBackground(new Color(236, 241, 241)); // #ecf1f1
     } else {

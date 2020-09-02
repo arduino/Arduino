@@ -29,7 +29,6 @@
 
 package cc.arduino.contributions.packages.ui;
 
-import cc.arduino.contributions.DownloadableContribution;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.packages.ContributionInstaller;
 import cc.arduino.contributions.ui.*;
@@ -41,6 +40,7 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class ContributionManagerUI extends InstallerJDialog {
       @Override
       protected void onInstall(ContributedPlatform selected,
                                ContributedPlatform installed) {
-        if (selected.isReadOnly()) {
+        if (selected.isBuiltIn()) {
           onRemovePressed(installed, false);
         } else {
           onInstallPressed(selected, installed);
@@ -92,31 +92,28 @@ public class ContributionManagerUI extends InstallerJDialog {
     this.installer = installer;
   }
 
+  private Collection<String> oldCategories = new ArrayList<>();
+
   public void updateUI() {
-    DropdownItem<DownloadableContribution> previouslySelectedCategory = (DropdownItem<DownloadableContribution>) categoryChooser
-        .getSelectedItem();
+    // Check if categories have changed
+    Collection<String> categories = BaseNoGui.indexer.getCategories();
+    if (categories.equals(oldCategories)) {
+      return;
+    }
+    oldCategories = categories;
 
     categoryChooser.removeActionListener(categoryChooserActionListener);
-
-    categoryFilter = null;
-    categoryChooser.removeAllItems();
-
-    filterField.setEnabled(getContribModel().getRowCount() > 0);
-
-    categoryChooser.addActionListener(categoryChooserActionListener);
-
     // Enable categories combo only if there are two or more choices
+    filterField.setEnabled(getContribModel().getRowCount() > 0);
+    categoryFilter = x -> true;
+    categoryChooser.removeAllItems();
     categoryChooser.addItem(new DropdownAllCoresItem());
     categoryChooser.addItem(new DropdownUpdatableCoresItem());
-    Collection<String> categories = BaseNoGui.indexer.getCategories();
     for (String s : categories) {
       categoryChooser.addItem(new DropdownCoreOfCategoryItem(s));
     }
-    if (previouslySelectedCategory != null) {
-      categoryChooser.setSelectedItem(previouslySelectedCategory);
-    } else {
-      categoryChooser.setSelectedIndex(0);
-    }
+    categoryChooser.addActionListener(categoryChooserActionListener);
+    categoryChooser.setSelectedIndex(0);
   }
 
   public void setProgress(Progress progress) {
@@ -147,6 +144,10 @@ public class ContributionManagerUI extends InstallerJDialog {
             .updateIndex(this::setProgress);
         installer.deleteUnknownFiles(downloadedPackageIndexFiles);
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -167,11 +168,15 @@ public class ContributionManagerUI extends InstallerJDialog {
       List<String> errors = new LinkedList<>();
       try {
         setProgressVisible(true, tr("Installing..."));
-        if (platformToRemove != null && !platformToRemove.isReadOnly()) {
+        if (platformToRemove != null && !platformToRemove.isBuiltIn()) {
           errors.addAll(installer.remove(platformToRemove));
         }
         errors.addAll(installer.install(platformToInstall, this::setProgress));
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {
@@ -210,6 +215,10 @@ public class ContributionManagerUI extends InstallerJDialog {
         setProgressVisible(true, tr("Removing..."));
         installer.remove(platform);
         onIndexesUpdated();
+        if (contribTable.getCellEditor() != null) {
+          contribTable.getCellEditor().stopCellEditing();
+        }
+        getContribModel().update();
       } catch (Exception e) {
         throw new RuntimeException(e);
       } finally {

@@ -29,7 +29,7 @@ xdg_install_f() {
   TMP_DIR=`mktemp --directory`
 
   # Create *.desktop file using the existing template file
-  sed -e "s,<BINARY_LOCATION>,${SCRIPT_PATH}/arduino,g" \
+  sed -e "s,<BINARY_LOCATION>,\"${SCRIPT_PATH}/arduino\",g" \
       -e "s,<ICON_NAME>,${RESOURCE_NAME},g" "${SCRIPT_PATH}/lib/desktop.template" > "${TMP_DIR}/${RESOURCE_NAME}.desktop"
 
   # Install the icon files using name and resolutions
@@ -66,9 +66,22 @@ xdg_install_f() {
   # Make Arduino IDE the default application for *.ino
   xdg-mime default ${RESOURCE_NAME}.desktop text/x-arduino
 
+  if [ x${SUDO_USER} != x ]; then
+   chown ${SUDO_USER} "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+  fi
+
+  # Add symlink for arduino so it's in users path
+  echo "" # Ensure password request message is on new line
+  if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
+      echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
+
   # Clean up
   rm "${TMP_DIR}/${RESOURCE_NAME}.desktop"
   rmdir "$TMP_DIR"
+
+  # Launching arduino-linux-setup.sh script
+  #./arduino-linux-setup.sh $(whoami)
 
 }
 
@@ -93,6 +106,15 @@ simple_install_f() {
    cp "${TMP_DIR}/${RESOURCE_NAME}.desktop" "${XDG_DESKTOP_DIR}/"
    # Altering file permissions to avoid "Untrusted Application Launcher" error on Ubuntu
    chmod u+x "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+   if [ x${SUDO_USER} != x ]; then
+    chown ${SUDO_USER} "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+   fi
+  fi
+
+  # Add symlink for arduino so it's in users path
+  echo "" # Ensure password request message is on new line
+  if ! ln -s ${SCRIPT_PATH}/arduino /usr/local/bin/arduino; then
+      echo "Adding symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
 
   # Clean up temp dir
@@ -135,6 +157,12 @@ xdg_uninstall_f() {
   # Remove Arduino MIME type
   xdg-mime uninstall "${SCRIPT_PATH}/lib/${RESOURCE_NAME}.xml"
 
+  # Remove symlink for arduino
+  echo "" # Ensure password request message is on new line
+  if [ -f /usr/local/bin/arduino ]; then
+      rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
+  fi
+
 }
 
 # Uninstall by simply removing desktop files (fallback), incl. old one
@@ -164,6 +192,12 @@ simple_uninstall_f() {
 
   if [ -f "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop" ]; then
     rm "${XDG_DESKTOP_DIR}/${RESOURCE_NAME}.desktop"
+  fi
+
+  # Remove symlink for arduino
+  echo "" # Ensure password request message is on new line
+  if [ -f /usr/local/bin/arduino ]; then
+      rm /usr/local/bin/arduino || echo "Removing symlink failed. Hope that's OK. If not then rerun as root with sudo."
   fi
 
 }

@@ -32,30 +32,82 @@ package cc.arduino.contributions.packages;
 import cc.arduino.contributions.DownloadableContribution;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.File;
 import java.util.*;
 
-public abstract class ContributedPlatform extends DownloadableContribution {
+public class ContributedPlatform extends DownloadableContribution {
 
-  public abstract String getName();
+  private String url;
+  private String version;
+  private long size;
+  private String archiveFileName;
+  private String name;
+  private String category;
+  private String architecture;
+  private String checksum;
+  private ArrayList<ContributedToolReference> toolsDependencies = new ArrayList<ContributedToolReference>();
+  private ArrayList<ContributedBoard> boards = new ArrayList<ContributedBoard>();
+  private ContributedHelp help;
+  private boolean installed;
+  private File installedFolder;
+  private boolean builtIn;
+  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+  private ContributedPackage parentPackage;
 
-  public abstract String getCategory();
+  public String getUrl() { return url; }
 
-  public abstract void setCategory(String category);
+  public String getVersion() { return version; }
 
-  public abstract String getArchitecture();
+  public long getSize() { return size; }
+
+  public String getArchiveFileName() { return archiveFileName; }
+
+  public String getName() { return name; }
+
+  public String getCategory() { return category; }
+
+  public void setCategory(String category) { this.category = category; }
+
+  public String getArchitecture() { return architecture; }
 
   @Override
-  public abstract String getChecksum();
+  public String getChecksum() { return checksum; }
 
-  public abstract List<ContributedToolReference> getToolsDependencies();
+  public List<ContributedToolReference> getToolsDependencies() { return toolsDependencies; }
 
-  public abstract List<ContributedBoard> getBoards();
+  public List<ContributedBoard> getBoards() { return boards; }
 
-  public abstract ContributedHelp getHelp();
+  public ContributedHelp getHelp() { return help; }
 
-  private Map<ContributedToolReference, ContributedTool> resolvedToolReferences;
+  public boolean isInstalled() {
+    return installed;
+  }
 
-  private ContributedPackage parentPackage;
+  public void setInstalled(boolean installed) {
+    this.installed = installed;
+  }
+
+  public File getInstalledFolder() {
+    return installedFolder;
+  }
+
+  public void setInstalledFolder(File installedFolder) {
+    this.installedFolder = installedFolder;
+  }
+
+  public boolean isBuiltIn() {
+    return builtIn;
+  }
+
+  public void setBuiltIn(boolean builtIn) {
+    this.builtIn = builtIn;
+  }
+
+  public static final Comparator<ContributedPlatform> BUILTIN_AS_LAST = (x, y) -> {
+    int px = x.isBuiltIn() ? 1 : -1;
+    int py = y.isBuiltIn() ? 1 : -1;
+    return px - py;
+  };
 
   public List<ContributedTool> getResolvedTools() {
     return new LinkedList<>(resolvedToolReferences.values());

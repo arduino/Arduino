@@ -25,7 +25,10 @@ package processing.app.linux;
 import processing.app.PreferencesData;
 import processing.app.legacy.PConstants;
 
+import java.awt.Font;
 import java.io.File;
+
+import javax.swing.UIManager;
 
 
 /**
@@ -34,10 +37,11 @@ import java.io.File;
  */
 public class Platform extends processing.app.Platform {
 
-  // TODO Need to be smarter here since KDE people ain't gonna like that GTK.
-  //      It may even throw a weird exception at 'em for their trouble.
   @Override
   public void setLookAndFeel() throws Exception {
+    // Override desktop check
+    System.setProperty("sun.desktop", "gnome");
+    super.setLookAndFeel();
     GTKLookAndFeelFixer.installGtkPopupBugWorkaround();
   }
 
@@ -116,5 +120,20 @@ public class Platform extends processing.app.Platform {
   @Override
   public String getName() {
     return PConstants.platformNames[PConstants.LINUX];
+  }
+
+  private int detectedDpi = -1;
+
+  @Override
+  public int getSystemDPI() {
+    if (detectedDpi != -1)
+      return detectedDpi;
+
+    // we observed that JMenu fonts in java follows the
+    // System DPI settings, so we compare it to the standard
+    // font size (12) to obtain a rough estimate of DPI.
+    Font menuFont = UIManager.getFont("Menu.font");
+    detectedDpi = menuFont.getSize() * 96 / 12;
+    return detectedDpi;
   }
 }

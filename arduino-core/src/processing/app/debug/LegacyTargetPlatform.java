@@ -245,4 +245,9 @@ public class LegacyTargetPlatform implements TargetPlatform {
       res += "  " + boardId + " = " + boards.get(boardId) + "\n";
     return res + "}";
   }
+
+  @Override
+  public boolean isInSketchbook() {
+	return getFolder().getAbsolutePath().startsWith(BaseNoGui.getSketchbookHardwareFolder().getAbsolutePath());
+  }
 }

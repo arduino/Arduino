@@ -29,8 +29,9 @@
 
 package cc.arduino.contributions.packages;
 
-public interface ContributedBoard {
+public class ContributedBoard {
 
-  String getName();
+  private String name;
+  public String getName() { return name; }
 
 }

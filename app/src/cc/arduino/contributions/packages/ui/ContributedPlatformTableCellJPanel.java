@@ -32,20 +32,11 @@ package cc.arduino.contributions.packages.ui;
 import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
@@ -57,11 +48,14 @@ import cc.arduino.contributions.packages.ContributedHelp;
 import cc.arduino.contributions.packages.ContributedPlatform;
 import cc.arduino.contributions.ui.InstallerTableCell;
 import processing.app.Base;
+import processing.app.PreferencesData;
 import processing.app.Theme;
 
 @SuppressWarnings("serial")
 public class ContributedPlatformTableCellJPanel extends JPanel {
 
+  final JButton moreInfoButton;
+  final JButton onlineHelpButton;
   final JButton installButton;
   final JButton removeButton;
   final Component removeButtonPlaceholder;
@@ -72,13 +66,26 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
   final JPanel buttonsPanel;
   final JPanel inactiveButtonsPanel;
   final JLabel statusLabel;
+  final JTextPane description;
+  final TitledBorder titledBorder;
+  private final String moreInfoLbl = tr("More Info");
+  private final String onlineHelpLbl = tr("Online Help");
 
   public ContributedPlatformTableCellJPanel() {
     super();
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+    // Actual title set by update()
+    titledBorder = BorderFactory.createTitledBorder("");
+    titledBorder.setTitleFont(getFont().deriveFont(Font.BOLD));
+    setBorder(titledBorder);
+
     {
       installButton = new JButton(tr("Install"));
+      moreInfoButton = new JButton(moreInfoLbl);
+      moreInfoButton.setVisible(false);
+      onlineHelpButton = new JButton(onlineHelpLbl);
+      onlineHelpButton.setVisible(false);
       int width = installButton.getPreferredSize().width;
       installButtonPlaceholder = Box.createRigidArea(new Dimension(width, 1));
     }
@@ -98,6 +105,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       Object selectVersionItem = downgradeChooser.getItemAt(0);
       boolean disableDowngrade = (e.getItem() == selectVersionItem);
       downgradeButton.setEnabled(!disableDowngrade);
+      if (!disableDowngrade) {
+        InstallerTableCell.dropdownSelected(true);
+      }
     });
 
     versionToInstallChooser = new JComboBox();
@@ -105,13 +115,21 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     versionToInstallChooser
         .setMaximumSize(versionToInstallChooser.getPreferredSize());
 
-    makeNewDescription();
+    description = makeNewDescription();
+    add(description);
 
     buttonsPanel = new JPanel();
     buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
     buttonsPanel.setOpaque(false);
 
     buttonsPanel.add(Box.createHorizontalStrut(7));
+    if (PreferencesData.getBoolean("ide.accessible")) { // only add the buttons if needed
+      buttonsPanel.add(onlineHelpButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(moreInfoButton);
+      buttonsPanel.add(Box.createHorizontalStrut(5));
+      buttonsPanel.add(Box.createHorizontalStrut(15));
+    }
     buttonsPanel.add(downgradeChooser);
     buttonsPanel.add(Box.createHorizontalStrut(5));
     buttonsPanel.add(downgradeButton);
@@ -146,11 +164,27 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     add(Box.createVerticalStrut(15));
   }
 
-  void update(JTable parentTable, Object value, boolean isSelected,
-              boolean hasBuiltInRelease) {
-    ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
+  // same function as in ContributedLibraryTableCellJPanel - is there a utils file this can move to?
+  private String setButtonOrLink(JButton button, String desc, String label, String url) {
+    boolean accessibleIDE = PreferencesData.getBoolean("ide.accessible");
+    String retString = desc;
 
-    JTextPane description = makeNewDescription();
+    if (accessibleIDE) {
+      button.setVisible(true);
+      button.addActionListener(e -> {
+        Base.openURL(url);
+      });
+    }
+    else {
+      // if not accessible IDE, keep link the same EXCEPT that now the link text is translated!
+      retString += " " + format("<a href=\"{0}\">{1}</a><br/>", url, label);
+    }
+
+    return retString;
+  }
+
+  void update(JTable parentTable, Object value, boolean hasBuiltInRelease) {
+    ContributedPlatformReleases releases = (ContributedPlatformReleases) value;
 
     // FIXME: happens on macosx, don't know why
     if (releases == null) {
@@ -158,6 +192,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     }
 
     ContributedPlatform selected = releases.getSelected();
+    titledBorder.setTitle(selected.getName());
     ContributedPlatform installed = releases.getInstalled();
 
     boolean removable, installable, upgradable;
@@ -167,7 +202,7 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
       upgradable = false;
     } else {
       installable = false;
-      removable = !installed.isReadOnly() && !hasBuiltInRelease;
+      removable = !installed.isBuiltIn() && !hasBuiltInRelease;
       upgradable = new DownloadableContributionVersionComparator()
           .compare(selected, installed) > 0;
     }
@@ -183,8 +218,8 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     removeButtonPlaceholder.setVisible(!removable);
 
     String desc = "<html><body>";
-    desc += "<b>" + selected.getName() + "</b>";
-    if (installed != null && installed.isReadOnly()) {
+//    desc += "<b>" + selected.getName() + "</b>";
+    if (installed != null && installed.isBuiltIn()) {
       desc += " Built-In ";
     }
 
@@ -213,21 +248,23 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     } else if (selected.getParentPackage().getHelp() != null) {
       help = selected.getParentPackage().getHelp();
     }
+
     if (help != null) {
       String url = help.getOnline();
       if (url != null && !url.isEmpty()) {
-        desc += " " + format("<a href=\"{0}\">Online help</a><br/>", url);
+        desc = setButtonOrLink(onlineHelpButton, desc, onlineHelpLbl, url);
       }
     }
 
     String url = selected.getParentPackage().getWebsiteURL();
     if (url != null && !url.isEmpty()) {
-      desc += " " + format("<a href=\"{0}\">More info</a>", url);
+      desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, url);
     }
 
     desc += "</body></html>";
     description.setText(desc);
-    description.setBackground(Color.WHITE);
+    // copy description to accessibility context for screen readers to use
+    description.getAccessibleContext().setAccessibleDescription(desc);
 
     // for modelToView to work, the text area has to be sized. It doesn't
     // matter if it's visible or not.
@@ -237,20 +274,9 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     int width = parentTable.getBounds().width;
     InstallerTableCell.setJTextPaneDimensionToFitContainedText(description,
                                                                width);
-
-    if (isSelected) {
-      setBackground(parentTable.getSelectionBackground());
-      setForeground(parentTable.getSelectionForeground());
-    } else {
-      setBackground(parentTable.getBackground());
-      setForeground(parentTable.getForeground());
-    }
   }
 
   private JTextPane makeNewDescription() {
-    if (getComponentCount() > 0) {
-      remove(0);
-    }
     JTextPane description = new JTextPane();
     description.setInheritsPopupMenu(true);
     Insets margin = description.getMargin();
@@ -274,7 +300,6 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
         Base.openURL(e.getDescription());
       }
     });
-    add(description, 0);
     return description;
   }
 
@@ -285,4 +310,12 @@ public class ContributedPlatformTableCellJPanel extends JPanel {
     inactiveButtonsPanel.setVisible(!enabled);
   }
 
+  public void setForeground(Color c) {
+    super.setForeground(c);
+    // The description is not opaque, so copy our foreground color to it.
+    if (description != null)
+      description.setForeground(c);
+    if (titledBorder != null)
+      titledBorder.setTitleColor(c);
+  }
 }

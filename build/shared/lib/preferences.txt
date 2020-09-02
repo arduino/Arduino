@@ -24,6 +24,8 @@
 # You'll have problems running Processing if you incorrectly 
 # modify lines in this file.
 
+# This file DOES NOT CONTAIN settings for autoformatter (A-Style).
+# Look for the file "formatter.conf" and follow instructions at top.
 
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -267,16 +269,21 @@ programmer = arduino:avrispmkii
 upload.using = bootloader
 upload.verify = true
 
-serial.port=COM1
+# default port is not defined to prevent running AVRDUDE before Port selected (issue #7943)
+#serial.port=
 serial.databits=8
 serial.stopbits=1
 serial.parity=N
 serial.debug_rate=9600
+serial.line_ending=1
 
 # I18 Preferences
 
 # default chosen language (none for none)
 editor.languages.current = 
+
+# Disable saving of preferences.txt file (settings will not survive Arduino IDE reboot)
+preferences.readonly=false
 
 # Debugging/Development Preferences
 # ---------------------------------

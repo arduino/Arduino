@@ -38,12 +38,6 @@ import java.util.function.Predicate;
 
 public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform> {
 
-  private final VersionComparator versionComparator;
-
-  public UpdatablePlatformPredicate() {
-    this.versionComparator = new VersionComparator();
-  }
-
   @Override
   public boolean test(ContributedPlatform contributedPlatform) {
     String packageName = contributedPlatform.getParentPackage().getName();
@@ -56,7 +50,7 @@ public class UpdatablePlatformPredicate implements Predicate<ContributedPlatform
 
     List<ContributedPlatform> platforms = BaseNoGui.indexer.getIndex().findPlatforms(packageName, architecture);
     return platforms.stream()
-      .filter(platform -> versionComparator.greaterThan(platform.getParsedVersion(), installed.getParsedVersion()))
+      .filter(platform -> VersionComparator.greaterThan(platform.getParsedVersion(), installed.getParsedVersion()))
       .count() > 0;
   }
 }

@@ -24,19 +24,57 @@ package processing.app.helpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class StringReplacer {
 
-  public static String[] formatAndSplit(String src, Map<String, String> dict,
-                                        boolean recursive) throws Exception {
+  public static void checkIfRequiredKeyIsMissingOrExcept(String key, String src, PreferencesMap inDict) throws PreferencesMapException {
+    // If the key is not missing -> everything is OK
+    String checkedValue = inDict.get(key);
+    if (checkedValue != null && !checkedValue.isEmpty())
+      return;
+
+    PreferencesMap dict = new PreferencesMap(inDict);
+
+    // Find a random tag that is not contained in the dictionary and the src pattern
+    String tag;
+    while (true) {
+      tag = UUID.randomUUID().toString();
+      if (src.contains(tag))
+        continue;
+      if (dict.values().contains(tag))
+        continue;
+      if (dict.keySet().contains(tag))
+        continue;
+      break;
+    }
+
+    // Inject tag inside the dictionary
+    dict.put(key, tag);
+
+    // Recursive replace with a max depth of 10 levels.
+    String res;
+    for (int i = 0; i < 10; i++) {
+      // Do a replace with dictionary
+      res = StringReplacer.replaceFromMapping(src, dict);
+      if (res.equals(src))
+        break;
+      src = res;
+    }
+
+    // If the resulting string contains the tag, then the key is required
+    if (src.contains(tag)) {
+      throw new PreferencesMapException(key);
+    }
+  }
+
+  public static String[] formatAndSplit(String src, Map<String, String> dict) throws Exception {
     String res;
 
     // Recursive replace with a max depth of 10 levels.
     for (int i = 0; i < 10; i++) {
       // Do a replace with dictionary
       res = StringReplacer.replaceFromMapping(src, dict);
-      if (!recursive)
-        break;
       if (res.equals(src))
         break;
       src = res;

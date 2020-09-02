@@ -32,21 +32,32 @@ package processing.app;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.junit.Before;
+import org.fest.assertions.Assertions;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import processing.app.helpers.OSUtils;
 import processing.app.helpers.PreferencesMap;
 
-public class CommandLineTest {
+/**
+ * This extends AbstractWithPreferencesTest which initializes part of
+ * the internal Arduino structures. Most of that is not required, but it
+ * also conveniently sets up a settings directory and preferences file,
+ * which we can use here (through getBaseArgs()).
+ */
+public class CommandLineTest extends AbstractWithPreferencesTest {
 
-  File buildPath;
-  File arduinoPath;
+  private static File buildPath;
+  private static File arduinoPath;
 
-  @Before
-  public void findBuildPaths() throws Exception {
+  @BeforeClass
+  public static void findBuildPaths() throws Exception {
     buildPath = new File(System.getProperty("user.dir"));
     while (!new File(buildPath, "build").isDirectory()) {
       buildPath = buildPath.getParentFile();
@@ -71,60 +82,84 @@ public class CommandLineTest {
     System.out.println("found arduino: " + arduinoPath);
   }
 
+  public Process runArduino(boolean output, boolean success, File wd, String[] extraArgs) throws IOException, InterruptedException {
+    Runtime rt = Runtime.getRuntime();
+
+    List<String> args = new ArrayList<String>();
+    args.add(arduinoPath.getAbsolutePath());
+    args.addAll(Arrays.asList(getBaseArgs()));
+    args.addAll(Arrays.asList(extraArgs));
+
+    System.out.println("Running: " + String.join(" ", args));
+
+    Process pr = rt.exec(args.toArray(new String[0]), null, wd);
+    if (output) {
+      IOUtils.copy(pr.getInputStream(), System.out);
+      IOUtils.copy(pr.getErrorStream(), System.out);
+    }
+    pr.waitFor();
+    if (success)
+      assertEquals(0, pr.exitValue());
+    return pr;
+  }
+
   @Test
   public void testCommandLineBuildWithRelativePath() throws Exception {
-    Runtime rt = Runtime.getRuntime();
     File wd = new File(buildPath, "build/shared/examples/01.Basics/Blink/");
-    Process pr = rt
-        .exec(arduinoPath + " --board arduino:avr:uno --verify Blink.ino", null,
-              wd);
-    IOUtils.copy(pr.getInputStream(), System.out);
-    pr.waitFor();
-    assertEquals(0, pr.exitValue());
+    runArduino(true, true, wd, new String[] {
+        "--board", "arduino:avr:uno",
+        "--verify", "Blink.ino",
+    });
   }
 
   @Test
   public void testCommandLinePreferencesSave() throws Exception {
-    Runtime rt = Runtime.getRuntime();
     File prefFile = File.createTempFile("test_pref", ".txt");
     prefFile.deleteOnExit();
 
-    Process pr = rt.exec(new String[] {
-        arduinoPath.getAbsolutePath(),
+    runArduino(true, true, null, new String[] {
         "--save-prefs",
         "--preferences-file", prefFile.getAbsolutePath(),
-        "--get-pref", // avoids starting the GUI
+        "--version", // avoids starting the GUI
     });
-    IOUtils.copy(pr.getInputStream(), System.out);
-    IOUtils.copy(pr.getErrorStream(), System.out);
-    pr.waitFor();
-    assertEquals(0, pr.exitValue());
 
-    pr = rt.exec(new String[] {
-        arduinoPath.getAbsolutePath(),
+    runArduino(true, true, null, new String[] {
         "--pref", "test_pref=xxx",
         "--preferences-file", prefFile.getAbsolutePath(),
     });
-    IOUtils.copy(pr.getInputStream(), System.out);
-    IOUtils.copy(pr.getErrorStream(), System.out);
-    pr.waitFor();
-    assertEquals(0, pr.exitValue());
 
     PreferencesMap prefs = new PreferencesMap(prefFile);
     assertNull("preference should not be saved", prefs.get("test_pref"));
 
-    pr = rt.exec(new String[] {
-        arduinoPath.getAbsolutePath(),
+    runArduino(true, true, null, new String[] {
         "--pref", "test_pref=xxx",
         "--preferences-file", prefFile.getAbsolutePath(),
         "--save-prefs",
     });
-    IOUtils.copy(pr.getInputStream(), System.out);
-    IOUtils.copy(pr.getErrorStream(), System.out);
-    pr.waitFor();
-    assertEquals(0, pr.exitValue());
 
     prefs = new PreferencesMap(prefFile);
     assertEquals("preference should be saved", "xxx", prefs.get("test_pref"));
-}
+  }
+
+  @Test
+  public void testCommandLineVersion() throws Exception {
+    Process pr = runArduino(false, true, null, new String[] {
+      "--version",
+    });
+
+    Assertions.assertThat(new String(IOUtils.toByteArray(pr.getInputStream())))
+        .matches("Arduino: \\d+\\.\\d+\\.\\d+.*\r?\n");
+  }
+
+  @Test
+  public void testCommandLineMultipleAction() throws Exception {
+    Process pr = runArduino(true, false, null, new String[] {
+      "--version",
+      "--verify",
+    });
+
+    Assertions.assertThat(pr.exitValue())
+        .as("Multiple Action will be rejected")
+        .isEqualTo(3);
+  }
 }

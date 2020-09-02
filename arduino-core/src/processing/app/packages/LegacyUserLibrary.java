@@ -28,7 +28,6 @@
  */
 package processing.app.packages;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,15 +35,15 @@ public class LegacyUserLibrary extends UserLibrary {
 
   private String name;
 
-  public static LegacyUserLibrary create(File libFolder) {
+  public static LegacyUserLibrary create(UserLibraryFolder folderDesc) {
     // construct an old style library
     LegacyUserLibrary res = new LegacyUserLibrary();
-    res.setInstalledFolder(libFolder);
-    res.setInstalled(true);
+    res.installedFolder = folderDesc.folder;
     res.layout = LibraryLayout.FLAT;
-    res.name = libFolder.getName();
+    res.name = folderDesc.folder.getName();
     res.setTypes(Arrays.asList("Contributed"));
     res.setCategory("Uncategorized");
+    res.location = folderDesc.location;
     return res;
   }
 

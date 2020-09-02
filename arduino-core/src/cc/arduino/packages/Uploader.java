@@ -37,35 +37,35 @@ import processing.app.PreferencesData;
 import processing.app.debug.MessageConsumer;
 import processing.app.debug.MessageSiphon;
 import processing.app.helpers.ProcessUtils;
-import processing.app.helpers.StringUtils;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.StringUtils;
 
 import static processing.app.I18n.tr;
 
 public abstract class Uploader implements MessageConsumer {
 
-  private static final List<String> STRINGS_TO_SUPPRESS;
-  private static final List<String> AVRDUDE_PROBLEMS;
+  private static final String[] STRINGS_TO_SUPPRESS;
+  private static final String[] AVRDUDE_PROBLEMS;
 
   static {
-    STRINGS_TO_SUPPRESS = Arrays.asList("Connecting to programmer:",
+    STRINGS_TO_SUPPRESS = new String[] {"Connecting to programmer:",
             "Found programmer: Id = \"CATERIN\"; type = S",
             "Software Version = 1.0; No Hardware Version given.",
             "Programmer supports auto addr increment.",
             "Programmer supports buffered memory access with buffersize=128 bytes.",
-            "Programmer supports the following devices:", "Device code: 0x44");
+            "Programmer supports the following devices:", "Device code: 0x44"};
 
-    AVRDUDE_PROBLEMS = Arrays.asList("Programmer is not responding",
+    AVRDUDE_PROBLEMS = new String[] {"Programmer is not responding",
             "programmer is not responding",
             "protocol error", "avrdude: ser_open(): can't open device",
             "avrdude: ser_drain(): read error",
             "avrdude: ser_send(): write error",
-            "avrdude: error: buffered memory access not supported.");
+            "avrdude: error: buffered memory access not supported."};
   }
 
   protected final boolean verbose;
@@ -106,7 +106,7 @@ public abstract class Uploader implements MessageConsumer {
   }
 
   // static field for last executed programmer process ID
-  static protected Process programmerPid;
+  static public Process programmerPid;
 
   protected boolean executeUploadCommand(Collection<String> command) throws Exception {
     return executeUploadCommand(command.toArray(new String[command.size()]));
@@ -155,7 +155,7 @@ public abstract class Uploader implements MessageConsumer {
   @Override
   public void message(String s) {
     // selectively suppress a bunch of avrdude output for AVR109/Caterina that should already be quelled but isn't
-    if (!verbose && StringUtils.stringContainsOneOf(s, STRINGS_TO_SUPPRESS)) {
+    if (!verbose && StringUtils.containsAny(s, STRINGS_TO_SUPPRESS)) {
       s = "";
     }
 
@@ -175,7 +175,7 @@ public abstract class Uploader implements MessageConsumer {
       error = tr("Device is not responding, check the right serial port is selected or RESET the board right before exporting");
       return;
     }
-    if (StringUtils.stringContainsOneOf(s, AVRDUDE_PROBLEMS)) {
+    if (StringUtils.containsAny(s, AVRDUDE_PROBLEMS)) {
       error = tr("Problem uploading to board.  See http://www.arduino.cc/en/Guide/Troubleshooting#upload for suggestions.");
       return;
     }

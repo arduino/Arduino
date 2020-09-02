@@ -15,6 +15,9 @@ mv linux/arduino-*-linux64.tar.xz ../
 ant -Djava.net.preferIPv4Stack=true -Dplatform=linuxarm $@ clean dist
 mv linux/arduino-*-linuxarm.tar.xz ../
 
+ant -Djava.net.preferIPv4Stack=true -Dplatform=linuxaarch64 $@ clean dist
+mv linux/arduino-*-linuxaarch64.tar.xz ../
+
 ant -Djava.net.preferIPv4Stack=true -Dplatform=windows $@ clean dist
 mv windows/arduino-*-windows.zip ../
 

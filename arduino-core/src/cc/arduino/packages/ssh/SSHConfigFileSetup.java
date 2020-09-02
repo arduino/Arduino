@@ -46,7 +46,6 @@ public class SSHConfigFileSetup implements SSHClientSetupChainRing {
   @Override
   public Session setup(BoardPort port, JSch jSch) throws JSchException, IOException {
     String ipAddress = port.getAddress();
-    String hostname = port.getBoardName().contains(".local") ? port.getBoardName() : port.getBoardName() + ".local";
 
     File sshFolder = new File(System.getProperty("user.home"), ".ssh");
     File sshConfig = new File(sshFolder, "config");
@@ -62,7 +61,7 @@ public class SSHConfigFileSetup implements SSHClientSetupChainRing {
 
     jSch.setConfigRepository(new OpenSSHConfigWrapper(configRepository, ipAddress));
 
-    return jSch.getSession(hostname);
+    return jSch.getSession(ipAddress);
   }
 
   public static class OpenSSHConfigWrapper implements ConfigRepository {

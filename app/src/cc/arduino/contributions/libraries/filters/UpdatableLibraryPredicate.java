@@ -29,32 +29,34 @@
 
 package cc.arduino.contributions.libraries.filters;
 
-import cc.arduino.contributions.VersionComparator;
-import cc.arduino.contributions.libraries.ContributedLibrary;
-import processing.app.BaseNoGui;
-import processing.app.packages.UserLibrary;
-
 import java.util.List;
 import java.util.function.Predicate;
 
+import cc.arduino.contributions.VersionComparator;
+import cc.arduino.contributions.libraries.ContributedLibrary;
+import cc.arduino.contributions.libraries.LibrariesIndexer;
+import processing.app.BaseNoGui;
+
 public class UpdatableLibraryPredicate implements Predicate<ContributedLibrary> {
 
-  private final VersionComparator versionComparator;
+  LibrariesIndexer librariesIndexer;
 
   public UpdatableLibraryPredicate() {
-    this.versionComparator = new VersionComparator();
+    librariesIndexer = BaseNoGui.librariesIndexer;
+  }
+
+  public UpdatableLibraryPredicate(LibrariesIndexer indexer) {
+    librariesIndexer = indexer;
   }
 
   @Override
-  public boolean test(ContributedLibrary contributedLibrary) {
-    String libraryName = contributedLibrary.getName();
-    UserLibrary installed = BaseNoGui.librariesIndexer.getInstalledLibraries().getByName(libraryName);
-    if (installed == null) {
+  public boolean test(ContributedLibrary lib) {
+    if (!lib.isLibraryInstalled()) {
       return false;
     }
-    List<ContributedLibrary> libraries = BaseNoGui.librariesIndexer.getIndex().find(libraryName);
-    return libraries.stream()
-      .filter(library -> versionComparator.greaterThan(library.getParsedVersion(), installed.getParsedVersion()))
-      .count() > 0;
+    String libraryName = lib.getName();
+    List<ContributedLibrary> libraries = librariesIndexer.getIndex().find(libraryName);
+    ContributedLibrary latest = libraries.stream().reduce(VersionComparator::max).get();
+    return !latest.isLibraryInstalled();
   }
 }

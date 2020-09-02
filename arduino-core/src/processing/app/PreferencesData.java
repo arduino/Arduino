@@ -1,5 +1,7 @@
 package processing.app;
 
+import cc.arduino.Constants;
+import cc.arduino.i18n.Languages;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.helpers.PreferencesHelper;
 import processing.app.helpers.PreferencesMap;
@@ -16,6 +18,7 @@ import java.util.Iterator;
 import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
+import static processing.app.I18n.format;
 import static processing.app.I18n.tr;
 
 
@@ -46,6 +49,9 @@ public class PreferencesData {
     } catch (Exception e) {
       //ignore
     }
+
+    // Start with a clean slate
+    prefs = new PreferencesMap();
 
     // start by loading the defaults, in case something
     // important was deleted from the user prefs
@@ -78,8 +84,13 @@ public class PreferencesData {
     }
 
     // load the I18n module for internationalization
+    String lang = get("editor.languages.current");
+    if (lang == null || !Languages.have(lang)) {
+      lang = "";
+      set("editor.languages.current", "");
+    }
     try {
-      I18n.init(get("editor.languages.current"));
+      I18n.init(lang);
     } catch (MissingResourceException e) {
       I18n.init("en");
       set("editor.languages.current", "en");
@@ -107,6 +118,9 @@ public class PreferencesData {
     if (!doSave)
       return;
 
+    if (getBoolean("preferences.readonly"))
+      return;
+
     // on startup, don't worry about it
     // this is trying to update the prefs for who is open
     // before Preferences.init() has been called.
@@ -126,6 +140,9 @@ public class PreferencesData {
       }
 
       writer.flush();
+    } catch (Throwable e) {
+      System.err.println(format(tr("Could not write preferences file: {0}"), e.getMessage()));
+      return;
     } finally {
       IOUtils.closeQuietly(writer);
     }
@@ -251,11 +268,21 @@ public class PreferencesData {
   }
 
   public static Collection<String> getCollection(String key) {
-    return Arrays.asList(get(key, "").split(","));
+    return Arrays.stream(get(key, "").split(","))
+      // Remove empty strings from the collection
+      .filter((v) -> !v.trim().isEmpty())
+      .collect(Collectors.toList());
   }
 
   public static void setCollection(String key, Collection<String> values) {
     String value = values.stream().collect(Collectors.joining(","));
     set(key, value);
+  }
+
+  public static boolean areInsecurePackagesAllowed() {
+    if (getBoolean(Constants.ALLOW_INSECURE_PACKAGES, false)) {
+      return true;
+    }
+    return getBoolean(Constants.PREF_CONTRIBUTIONS_TRUST_ALL, false);
   }
 }

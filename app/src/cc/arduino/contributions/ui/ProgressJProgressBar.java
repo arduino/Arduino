@@ -38,8 +38,13 @@ public class ProgressJProgressBar extends JProgressBar {
 
   public void setValue(Progress p) {
     setValue((int) p.getProgress());
-    if (p.getStatus() != null)
+    if (p.getStatus() != null) {
       setString(p.getStatus());
+      // copy status to accessibility context for screen readers to use
+      getAccessibleContext().setAccessibleDescription(p.getStatus());
+      // make status focusable so screen readers can get to it
+      setFocusable(true);
+    }
   }
 
 }

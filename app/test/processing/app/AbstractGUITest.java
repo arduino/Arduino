@@ -41,30 +41,26 @@ import processing.app.helpers.FileUtils;
 import javax.swing.*;
 import java.util.Random;
 
-public abstract class AbstractGUITest {
+public abstract class AbstractGUITest extends AbstractWithPreferencesTest {
 
   protected ArduinoFrameFixture window;
 
   @Before
   public void startUpTheIDE() throws Exception {
+    // This relies on AbstractWithPreferencesTest to set up the
+    // non-gui-specific stuff.
+
     System.setProperty("mrj.version", "whynot"); //makes sense only on osx. See https://github.com/alexruiz/fest-swing-1.x/issues/2#issuecomment-86532042
-    Runtime.getRuntime().addShutdownHook(new Thread(DeleteFilesOnShutdown.INSTANCE));
 
     FailOnThreadViolationRepaintManager.install();
 
-    BaseNoGui.initPlatform();
-    BaseNoGui.getPlatform().init();
-    PreferencesData.init(null);
     JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-    Theme.init();
     BaseNoGui.getPlatform().setLookAndFeel();
-    Base.untitledFolder = FileUtils.createTempFolder("untitled" + new Random().nextInt(Integer.MAX_VALUE), ".tmp");
-    DeleteFilesOnShutdown.add(Base.untitledFolder);
 
     window = GuiActionRunner.execute(new GuiQuery<ArduinoFrameFixture>() {
       @Override
       protected ArduinoFrameFixture executeInEDT() throws Throwable {
-        return new ArduinoFrameFixture(new Base(new String[0]).editors.get(0));
+        return new ArduinoFrameFixture(createBase().editors.get(0));
       }
     });
   }

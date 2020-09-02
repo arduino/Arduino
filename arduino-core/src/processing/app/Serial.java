@@ -116,7 +116,7 @@ public class Serial implements SerialPortEventListener {
     }
   }
 
-  private Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
+  protected Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean setRTS, boolean setDTR) throws SerialException {
     //if (port != null) port.close();
     //this.parent = parent;
     //parent.attach(this);
@@ -130,6 +130,11 @@ public class Serial implements SerialPortEventListener {
     int stopbits = SerialPort.STOPBITS_1;
     if (istopbits == 1.5f) stopbits = SerialPort.STOPBITS_1_5;
     if (istopbits == 2) stopbits = SerialPort.STOPBITS_2;
+
+    // This is required for unit-testing
+    if (iname.equals("none")) {
+      return;
+    }
 
     try {
       port = new SerialPort(iname);
@@ -175,28 +180,51 @@ public class Serial implements SerialPortEventListener {
     if (serialEvent.isRXCHAR()) {
       try {
         byte[] buf = port.readBytes(serialEvent.getEventValue());
-        int next = 0;
-        while(next < buf.length) {
-          while(next < buf.length && outToMessage.hasRemaining()) {
-            int spaceInIn = inFromSerial.remaining();
-            int copyNow = buf.length - next < spaceInIn ? buf.length - next : spaceInIn;
-            inFromSerial.put(buf, next, copyNow);
-            next += copyNow;
-            inFromSerial.flip();
-            bytesToStrings.decode(inFromSerial, outToMessage, false);
-            inFromSerial.compact();
-          }
-          outToMessage.flip();
-          if(outToMessage.hasRemaining()) {
-            char[] chars = new char[outToMessage.remaining()];
-            outToMessage.get(chars);
-            message(chars, chars.length);
-          }
-          outToMessage.clear();
-        }
+        processSerialEvent(buf);
       } catch (SerialPortException e) {
         errorMessage("serialEvent", e);
       }
+    }
+  }
+
+  public void processSerialEvent(byte[] buf) {
+    int next = 0;
+    // This uses a CharsetDecoder to convert from bytes to UTF-8 in
+    // a streaming fashion (i.e. where characters might be split
+    // over multiple reads). This needs the data to be in a
+    // ByteBuffer (inFromSerial, which we also use to store leftover
+    // incomplete characters for the nexst run) and produces a
+    // CharBuffer (outToMessage), which we then convert to char[] to
+    // pass onwards.
+    // Note that these buffers switch from input to output mode
+    // using flip/compact/clear
+    while (next < buf.length || inFromSerial.position() > 0) {
+      do {
+        // This might be 0 when all data was already read from buf
+        // (but then there will be data in inFromSerial left to
+        // decode).
+        int copyNow = Math.min(buf.length - next, inFromSerial.remaining());
+        inFromSerial.put(buf, next, copyNow);
+        next += copyNow;
+
+        inFromSerial.flip();
+        bytesToStrings.decode(inFromSerial, outToMessage, false);
+        inFromSerial.compact();
+
+        // When there are multi-byte characters, outToMessage might
+        // still have room, so add more bytes if we have any.
+      } while (next < buf.length && outToMessage.hasRemaining());
+
+      // If no output was produced, the input only contained
+      // incomplete characters, so we're done processing
+      if (outToMessage.position() == 0)
+        break;
+
+      outToMessage.flip();
+      char[] chars = new char[outToMessage.remaining()];
+      outToMessage.get(chars);
+      message(chars, chars.length);
+      outToMessage.clear();
     }
   }
 

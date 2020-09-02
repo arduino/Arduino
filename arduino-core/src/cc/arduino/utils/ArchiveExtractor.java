@@ -36,6 +36,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 import processing.app.I18n;
 import processing.app.Platform;
@@ -98,6 +99,8 @@ public class ArchiveExtractor {
         in = new ZipArchiveInputStream(new FileInputStream(archiveFile));
       } else if (archiveFile.getName().endsWith("tar.gz")) {
         in = new TarArchiveInputStream(new GzipCompressorInputStream(new FileInputStream(archiveFile)));
+      } else if (archiveFile.getName().endsWith("tar.xz")) {
+        in = new TarArchiveInputStream(new XZCompressorInputStream(new FileInputStream(archiveFile)));
       } else if (archiveFile.getName().endsWith("tar")) {
         in = new TarArchiveInputStream(new FileInputStream(archiveFile));
       } else {

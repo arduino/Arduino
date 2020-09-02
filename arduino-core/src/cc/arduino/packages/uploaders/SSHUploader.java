@@ -44,18 +44,23 @@ import processing.app.debug.TargetPlatform;
 import processing.app.helpers.PreferencesMap;
 import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.StringReplacer;
-import processing.app.helpers.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import static processing.app.I18n.tr;
 
 public class SSHUploader extends Uploader {
 
-  private static final List<String> FILES_NOT_TO_COPY = Arrays.asList(".DS_Store", ".Trash", "Thumbs.db", "__MACOSX");
+  private static final Set<String> FILES_NOT_TO_COPY =
+      Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(".DS_Store", ".Trash", "Thumbs.db", "__MACOSX")));
 
   private final BoardPort port;
 
@@ -165,7 +170,7 @@ public class SSHUploader extends Uploader {
     }
 
     String pattern = prefs.getOrExcept("upload.pattern");
-    String command = StringUtils.join(StringReplacer.formatAndSplit(pattern, prefs, true), " ");
+    String command = StringUtils.join(StringReplacer.formatAndSplit(pattern, prefs), " ");
     if (verbose) {
       System.out.println(command);
     }
@@ -223,7 +228,7 @@ public class SSHUploader extends Uploader {
     }
 
     for (File file : files) {
-      if (!StringUtils.stringContainsOneOf(file.getName(), FILES_NOT_TO_COPY)) {
+      if (!FILES_NOT_TO_COPY.contains(file.getName())) {
         if (file.isDirectory() && file.canExecute()) {
           scp.startFolder(file.getName());
           recursiveSCP(file, scp);

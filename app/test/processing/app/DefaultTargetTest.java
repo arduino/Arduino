@@ -57,7 +57,7 @@ public class DefaultTargetTest extends AbstractWithPreferencesTest {
     PreferencesData.set("board", "unreal_board");
 
     // should not raise an exception
-    new Base(new String[0]);
+    createBase();
 
     // skip test if no target platforms are available
     Assume.assumeNotNull(BaseNoGui.getTargetPlatform());

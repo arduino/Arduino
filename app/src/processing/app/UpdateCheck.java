@@ -51,7 +51,7 @@ import static processing.app.I18n.tr;
  */
 public class UpdateCheck implements Runnable {
   Base base;
-  String downloadURL = tr("http://www.arduino.cc/latest.txt");
+  String downloadURL = tr("https://www.arduino.cc/latest.txt");
 
   static final long ONE_DAY = 24 * 60 * 60 * 1000;
 
@@ -66,14 +66,14 @@ public class UpdateCheck implements Runnable {
   public void run() {
     //System.out.println("checking for updates...");
 
-    // generate a random id in case none exists yet
-    Random r = new Random();
-    long id = r.nextLong();
-
+    long id;
     String idString = PreferencesData.get("update.id");
     if (idString != null) {
       id = Long.parseLong(idString);
     } else {
+      // generate a random id in case none exists yet
+      Random r = new Random();
+      id = r.nextLong();
       PreferencesData.set("update.id", String.valueOf(id));
     }
 
@@ -116,7 +116,7 @@ public class UpdateCheck implements Runnable {
                                                     options,
                                                     options[0]);
           if (result == JOptionPane.YES_OPTION) {
-            Base.openURL(tr("http://www.arduino.cc/en/Main/Software"));
+            Base.openURL(tr("https://www.arduino.cc/en/Main/Software"));
           }
         }
       }

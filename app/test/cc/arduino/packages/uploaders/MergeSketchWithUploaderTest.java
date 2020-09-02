@@ -35,18 +35,29 @@ import org.junit.Test;
 import processing.app.helpers.FileUtils;
 
 import java.io.File;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class MergeSketchWithUploaderTest {
 
   private File sketch;
+  private File bootloader;
 
   @Before
   public void setup() throws Exception {
-    File originalSketch = new File(MergeSketchWithUploaderTest.class.getResource("/sketch.hex").getFile());
+    File originalSketch = getResourceFile("/sketch.hex");
     sketch = new File(System.getProperty("java.io.tmpdir"), "sketch.hex");
     FileUtils.copyFile(originalSketch, sketch);
+    removeCariageReturns(sketch);
+    
+    File originalBootloader = getResourceFile("/optiboot_atmega328.hex");
+    bootloader = new File(System.getProperty("java.io.tmpdir"), "optiboot_atmega328.hex");
+    FileUtils.copyFile(originalBootloader, bootloader);
+    removeCariageReturns(bootloader);
   }
 
   @After
@@ -57,11 +68,24 @@ public class MergeSketchWithUploaderTest {
   @Test
   public void shouldMergeWithOptiboot() throws Exception {
     assertEquals(11720, sketch.length());
+    assertEquals(1432, bootloader.length());
 
-    File bootloader = new File(MergeSketchWithUploaderTest.class.getResource("/optiboot_atmega328.hex").getFile());
+    File bootloader = getResourceFile("/optiboot_atmega328.hex");
     new MergeSketchWithBooloader().merge(sketch, bootloader);
     assertEquals(13140, sketch.length());
   }
 
+  private static File getResourceFile(String resourcePath) throws Exception {
+    return new File(URLDecoder.decode(
+        MergeSketchWithUploaderTest.class.getResource(resourcePath).getFile(), "UTF-8"));
+  }
 
+  private static void removeCariageReturns(File file) throws Exception {
+    List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+    StringBuilder contentBuilder = new StringBuilder();
+    for(String line : lines) {
+      contentBuilder.append(line).append('\n');
+    }
+    Files.write(file.toPath(), contentBuilder.toString().getBytes(StandardCharsets.UTF_8));
+  }
 }

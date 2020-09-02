@@ -83,8 +83,8 @@ public class CustomProxySelectorTest {
   public void testProxyPACHTTPWithLogin() throws Exception {
     preferences.put(Constants.PREF_PROXY_TYPE, Constants.PROXY_TYPE_AUTO);
     preferences.put(Constants.PREF_PROXY_PAC_URL, CustomProxySelectorTest.class.getResource("proxy_http.pac").toExternalForm());
-    preferences.put(Constants.PREF_PROXY_AUTO_USERNAME, "auto");
-    preferences.put(Constants.PREF_PROXY_AUTO_PASSWORD, "autopassword");
+    preferences.put(Constants.PREF_PROXY_USERNAME, "auto");
+    preferences.put(Constants.PREF_PROXY_PASSWORD, "autopassword");
     CustomProxySelector proxySelector = new CustomProxySelector(preferences);
     Proxy proxy = proxySelector.getProxyFor(uri);
 
@@ -154,8 +154,8 @@ public class CustomProxySelectorTest {
     preferences.put(Constants.PREF_PROXY_MANUAL_TYPE, Constants.PROXY_MANUAL_TYPE_HTTP);
     preferences.put(Constants.PREF_PROXY_MANUAL_HOSTNAME, "localhost");
     preferences.put(Constants.PREF_PROXY_MANUAL_PORT, "8080");
-    preferences.put(Constants.PREF_PROXY_MANUAL_USERNAME, "username");
-    preferences.put(Constants.PREF_PROXY_MANUAL_PASSWORD, "pwd");
+    preferences.put(Constants.PREF_PROXY_USERNAME, "username");
+    preferences.put(Constants.PREF_PROXY_PASSWORD, "pwd");
 
     CustomProxySelector proxySelector = new CustomProxySelector(preferences);
     Proxy proxy = proxySelector.getProxyFor(uri);

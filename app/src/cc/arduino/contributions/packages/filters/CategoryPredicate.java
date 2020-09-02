@@ -46,9 +46,4 @@ public class CategoryPredicate implements Predicate<ContributedPlatform> {
     return input.getCategory() != null && category.equals(input.getCategory());
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    return obj instanceof CategoryPredicate && ((CategoryPredicate) obj).category.equals(category);
-  }
-
 }

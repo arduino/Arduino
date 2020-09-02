@@ -31,42 +31,54 @@ package cc.arduino.contributions;
 
 import com.github.zafarkhaja.semver.Version;
 
+import cc.arduino.contributions.libraries.ContributedLibrary;
+
 import java.util.Comparator;
+import java.util.Optional;
 
 public class VersionComparator implements Comparator<String> {
 
+  public static int compareTo(String a, String b) {
+    Optional<Version> versionA = VersionHelper.valueOf(a);
+    Optional<Version> versionB = VersionHelper.valueOf(b);
+    if (versionA.isPresent() && versionB.isPresent()) {
+      return versionA.get().compareTo(versionB.get());
+    }
+    if (versionA.isPresent()) {
+      return 1;
+    }
+    if (versionB.isPresent()) {
+      return -1;
+    }
+    return 0;
+  }
+
   @Override
   public int compare(String a, String b) {
-    // null is always less than any other value
-    if (a == null && b == null)
-      return 0;
-    if (a == null)
-      return -1;
-    if (b == null)
-      return 1;
-
-    Version versionA = VersionHelper.valueOf(a);
-    Version versionB = VersionHelper.valueOf(b);
-
-    return versionA.compareTo(versionB);
+    return compareTo(a, b);
   }
 
-  public boolean greaterThan(String a, String b) {
-    // null is always less than any other value
-    if (a == null && b == null) {
-      return false;
-    }
-    if (a == null) {
-      return false;
-    }
-    if (b == null) {
-      return true;
-    }
-
-    Version versionA = VersionHelper.valueOf(a);
-    Version versionB = VersionHelper.valueOf(b);
-
-    return versionA.greaterThan(versionB);
+  public static boolean greaterThan(String a, String b) {
+    return compareTo(a, b) > 0;
   }
 
+  public static boolean greaterThanOrEqual(String a, String b) {
+    return compareTo(a, b) >= 0;
+  }
+
+  public static String max(String a, String b) {
+    return greaterThan(a, b) ? a : b;
+  }
+
+  public static ContributedLibrary max(ContributedLibrary a, ContributedLibrary b) {
+    return greaterThan(a, b) ? a : b;
+  }
+
+  public static boolean greaterThan(ContributedLibrary a, ContributedLibrary b) {
+    return greaterThan(a.getParsedVersion(), b.getParsedVersion());
+  }
+
+  public static int compareTo(ContributedLibrary a, ContributedLibrary b) {
+    return compareTo(a.getParsedVersion(), b.getParsedVersion());
+  }
 }

@@ -73,6 +73,7 @@ public class EditorHeader extends JComponent {
 
   static final int PIECE_WIDTH = scale(4);
   static final int PIECE_HEIGHT = scale(33);
+  static final int TAB_HEIGHT = scale(27);
 
   // value for the size bars, buttons, etc
   // TODO: Should be a Theme value?
@@ -270,8 +271,8 @@ public class EditorHeader extends JComponent {
       int textLeft = contentLeft + (pieceWidth - textWidth) / 2;
 
       g.setColor(textColor[state]);
-      int baseline = (sizeH + fontAscent) / 2;
-      //g.drawString(sketch.code[i].name, textLeft, baseline);
+      int tabMarginTop = sizeH - TAB_HEIGHT;
+      int baseline = tabMarginTop + ((TAB_HEIGHT + fontAscent) / 2) ; 
       g.drawString(text, textLeft, baseline);
 
       g.drawImage(pieces[state][RIGHT], x, 0, null);
