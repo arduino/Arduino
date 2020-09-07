@@ -48,6 +48,7 @@ build/linux/*.tar.bz2
 build/linux/*.zip
 build/linux/libastylej*
 build/linux/liblistSerials*
+build/shared/arduino-examples*
 build/shared/reference*.zip
 build/shared/Edison*.zip
 build/shared/Galileo*.zip

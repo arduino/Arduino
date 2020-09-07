@@ -22,6 +22,7 @@ Thanks for your interest in contributing to this free open source project! Ardui
 | [Language Reference](https://www.arduino.cc/reference) | [Reference repositories](https://github.com/arduino?q=reference-) |
 | Arduino Forum | [arduino/forum-issues](https://github.com/arduino/forum-issues/issues) |
 | Arduino libraries | [arduino-libraries](https://github.com/arduino-libraries) |
+| Built-in examples | [arduino/arduino-examples](https://github.com/arduino/arduino-examples/issues) |
 | arduino-builder | [arduino/arduino-builder](https://github.com/arduino/arduino-builder/issues) |
 | [Arduino Web Editor](https://create.arduino.cc/editor) | [**Create > Editor** section of the Arduino Forum](http://forum.arduino.cc/index.php?board=101.0) |
 | Arduino AVR Boards (Uno, Mega, Leonardo, etc.) | [arduino/ArduinoCore-avr](https://github.com/arduino/ArduinoCore-avr/issues) |
@@ -60,7 +61,6 @@ Pull requests are an easy and effective way to submit a proposal for a change to
 - Search [existing pull requests](https://github.com/arduino/Arduino/pulls?q=) to see if one has already been submitted for this change. Search the [issues](https://github.com/arduino/Arduino/issues?q=is%3Aissue) to see if there has been a discussion on this topic and whether your pull request can close any issues.
 - Code formatting should be consistent with the style used in the existing code.
 - Don't leave commented out code. A record of this code is already preserved in the commit history.
-- Note that the Arduino core libraries support many boards and processors. When fixing or adding functionality for one of them, it's easy to break something on the others. Please test your changes on as many processors as possible. Even if you don't have a particular board, try compiling your patch for it to make sure that you haven't introduced any errors.
 - All commits must be atomic. This means that the commit completely accomplishes a single task. Each commit should result in fully functional code. Multiple tasks should not be combined in a single commit, but a single task should not be split over multiple commits (e.g. one commit per file modified is not a good practice). For more information see http://www.freshconsulting.com/atomic-commits.
 - Each pull request should address a single bug fix or enhancement. This may consist of multiple commits. If you have multiple, unrelated fixes or enhancements to contribute, submit them as separate pull requests.
 - Commit messages:

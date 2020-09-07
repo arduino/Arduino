@@ -1,1 +1,0 @@
-How to control an 8x8 matrix of LEDs. 

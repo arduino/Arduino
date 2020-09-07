@@ -1,1 +1,0 @@
-Reads an analog input and prints the voltage to the Serial Monitor.
