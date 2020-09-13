@@ -22,6 +22,8 @@ public class Sketch {
   public static final List<String> OTHER_ALLOWED_EXTENSIONS = Arrays.asList("c", "cpp", "h", "hh", "hpp", "s");
   public static final List<String> EXTENSIONS = Stream.concat(SKETCH_EXTENSIONS.stream(), OTHER_ALLOWED_EXTENSIONS.stream()).collect(Collectors.toList());
 
+  private final File initialFile;
+
   /**
    * folder that contains this sketch
    */
@@ -50,6 +52,7 @@ public class Sketch {
    *          Any file inside the sketch directory.
    */
   Sketch(File file) throws IOException {
+    initialFile = file;
     folder = file.getParentFile();
     files = listSketchFiles(true);
   }
@@ -141,6 +144,13 @@ public class Sketch {
 
   public int getCodeCount() {
     return files.size();
+  }
+
+  /**
+   * Returns the initial File used to initialize this Sketch
+   */
+  public File getInitialFile() {
+    return initialFile;
   }
 
   public SketchFile[] getFiles() {

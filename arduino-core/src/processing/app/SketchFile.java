@@ -95,7 +95,8 @@ public class SketchFile {
     this.sketch = sketch;
     this.file = file;
     FileUtils.SplitFile split = FileUtils.splitFilename(file);
-    this.primary = split.basename.equals(sketch.getFolder().getName())
+    this.primary = (file.equals(sketch.getInitialFile())
+        || split.basename.equals(sketch.getFolder().getName()))
         && Sketch.SKETCH_EXTENSIONS.contains(split.extension);
   }
 
