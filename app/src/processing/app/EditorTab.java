@@ -33,13 +33,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
+import java.lang.annotation.Target;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Optional;
 
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -57,6 +56,8 @@ import org.fife.ui.rtextarea.Gutter;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import cc.arduino.UpdatableBoardsLibsFakeURLsHandler;
+import processing.app.debug.TargetBoard;
+import processing.app.debug.TargetPackage;
 import processing.app.helpers.DocumentTextChangeListener;
 import processing.app.syntax.ArduinoTokenMakerFactory;
 import processing.app.syntax.PdeKeywords;
@@ -445,6 +446,42 @@ public class EditorTab extends JPanel implements SketchFile.TextStorage {
     // A trick to force textarea to recalculate the bracket matching rectangle.
     // In the worst case scenario, this should be ineffective.
     textarea.setLineWrap(textarea.getLineWrap());
+  }
+
+
+  /**
+   * This method loads the build settings from the main .INO file and sets the Arduino IDE accordingly
+   */
+  public void loadBuildSettings(Base base){
+
+    LinkedHashMap<String, String> buildSettings = getSketch().getSketch().getBuildSettingsFromProgram(getText());
+
+    Optional<TargetBoard> optionalTargetBoard = BaseNoGui.getTargetPlatform().getBoards().values().stream().filter(board -> board.getPreferences().get("name","").equals("Node32s")).findFirst();
+
+    TargetBoard targetBoard;
+    if(optionalTargetBoard.isPresent()){
+      targetBoard = optionalTargetBoard.get();
+    }else{
+      return;
+    }
+
+    for(String readableName : buildSettings.values()){
+      base.getBoardsCustomMenus().forEach(menuItem -> {
+        Optional<JRadioButtonMenuItem> optionalBoardMenuItem = Arrays.stream(menuItem.getMenuComponents()).filter(subItem->{
+          return subItem instanceof JRadioButtonMenuItem && ((JRadioButtonMenuItem)subItem).getText().equals(readableName) && (((JRadioButtonMenuItem) subItem).getAction().getValue("board") == null || (((JRadioButtonMenuItem) subItem).getAction().getValue("board").equals(targetBoard)));
+          }
+        ).map(subItem-> {
+          return subItem instanceof JRadioButtonMenuItem ? (JRadioButtonMenuItem)subItem : new JRadioButtonMenuItem();
+        }).findFirst();
+        if(optionalBoardMenuItem.isPresent()){
+          optionalBoardMenuItem.get().setSelected(true);
+          optionalBoardMenuItem.get().getAction().actionPerformed(new ActionEvent(this, -1, ""));
+        }else{
+          // TODO Ask the user which value should replace the current value
+
+        }
+      });
+    }
   }
 
   /**

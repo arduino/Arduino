@@ -139,6 +139,111 @@ public class Sketch {
     }
   }
 
+  private final String buildToolsHeader = "\n/** Arduino IDE Board Tool details\n";
+  private final String buildToolsHeaderEnd = "*/";
+
+  /**
+   * Checks the code for a valid build tool header
+   * @param program The code to scan for the build tools
+   * @return True if the build tool header was found ONE time. Returns false if found MORE than one time, or not found at all.
+   */
+  private boolean containsBuildSettings(String program){
+    return program.contains(buildToolsHeader) && (program.indexOf(buildToolsHeader) == program.lastIndexOf(buildToolsHeader));
+  }
+
+  /**
+   * This function returns the index of the Nth occurrence of the substring in the specified string (http://programming.guide/java/nth-occurrence-in-string.html)
+   * @param str The string to find the Nth occurrence in
+   * @param substr The string to find
+   * @param n The occurrence number you'd like to find
+   * @return
+   */
+  private static int ordinalIndexOf(String str, String substr, int n) {
+    int pos = str.indexOf(substr);
+    while (--n > 0 && pos != -1)
+      pos = str.indexOf(substr, pos + 1);
+    return pos;
+  }
+
+  private String removeBuildSettingsHeader(Sketch sketch){
+    if(sketch.getPrimaryFile().getProgram().contains(buildToolsHeader)) {
+      int headerStartIndex = sketch.getPrimaryFile().getProgram().indexOf(buildToolsHeader);
+      int headerStopIndex = sketch.getPrimaryFile().getProgram().indexOf(buildToolsHeaderEnd);
+      if (headerStartIndex > headerStopIndex) {
+        System.err.println("The build tool header is not the first comment block in your file! Please fix this.");
+        for (int i = 0; i < sketch.getPrimaryFile().getProgram().length(); i++) {
+          if (headerStartIndex < ordinalIndexOf(sketch.getPrimaryFile().getProgram(), buildToolsHeaderEnd, i)) {
+            headerStopIndex = ordinalIndexOf(sketch.getPrimaryFile().getProgram(), buildToolsHeaderEnd, i);
+            break;
+          }
+        }
+      }
+      String header = sketch.getPrimaryFile().getProgram().substring(headerStartIndex, headerStopIndex + buildToolsHeaderEnd.length());
+      return sketch.getPrimaryFile().getProgram().replace(header, "");
+    }
+    return sketch.getPrimaryFile().getProgram();
+  }
+
+  /**
+   * This checks the program code for a valid build tool settings header and returns the LinkedHashMap with the setting name and the value.
+   * The build tools header should not be changed or manipulated by the pre-processor as the pre-processors output may depend on the build tools.
+   * @param program The program code
+   * @return The {@code LinkedHashMap} with the settings and their values of the <b>first</b> header that was found in the program code
+   */
+  public LinkedHashMap<String, String> getBuildSettingsFromProgram(String program){
+    LinkedHashMap<String, String> buildSettings = new LinkedHashMap<>();
+    if(containsBuildSettings(program)){
+        int headerStartIndex = program.indexOf(buildToolsHeader);
+        int headerStopIndex = program.indexOf(buildToolsHeaderEnd);
+        if(headerStartIndex > headerStopIndex){
+          System.err.println("The build tool header is not the first comment block in your file! Please fix this.");
+          for(int i = 0; i < program.length(); i++){
+            if(headerStartIndex < ordinalIndexOf(program, buildToolsHeaderEnd, i)){
+              headerStopIndex = ordinalIndexOf(program, buildToolsHeaderEnd, i);
+              break;
+            }
+          }
+        }
+        String header = program.substring(headerStartIndex + buildToolsHeader.length(), headerStopIndex);
+
+        String[] headerLines = header.split("\n");
+
+        for(int line = 0; line < headerLines.length; line++){
+          String[] setting = headerLines[line].replace("*","").trim().split(": ");
+          if(headerLines[line].indexOf(": ") != (headerLines[line].length() -1)){
+            // The value of the setting is not empty
+            buildSettings.put(setting[0].trim(), setting[1].trim());
+          }else{
+            buildSettings.put(setting[0], "");
+          }
+        }
+    }else{
+      if(!program.contains(buildToolsHeader)){
+        // There are multiple headers, remove them
+        // TODO Create a dialog asking the user to add a build header to the file
+      }
+    }
+
+    return buildSettings;
+  }
+
+  private boolean isBuildSettingsEqual(LinkedHashMap<String,String> first, LinkedHashMap<String, String> second){
+    return first.keySet().containsAll(second.keySet()) && first.values().containsAll(second.values());
+  }
+
+  public String setBuildSettings(Sketch sketch, LinkedHashMap<String, String> buildSettings){
+    if(sketch != this){
+      return "";
+    }
+
+    String customBoardSettingsHeader = buildSettings.entrySet().stream().map(entry-> String.format(" * %s: %s\n", entry.getKey(), entry.getValue())).collect(Collectors.joining("", buildToolsHeader, "*/"));
+    if(!isBuildSettingsEqual(getBuildSettingsFromProgram(sketch.getPrimaryFile().getProgram()),buildSettings)){
+      String headerLessProgram = removeBuildSettingsHeader(sketch);
+      return customBoardSettingsHeader + ((headerLessProgram.charAt(0) == '\n') ? "" : "\n") + headerLessProgram;
+    }
+    return "";
+  }
+
   public int getCodeCount() {
     return files.size();
   }
