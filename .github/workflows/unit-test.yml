@@ -1,0 +1,58 @@
+name: Arduino IDE unit test run
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Ant
+      working-directory: ./build
+      run: ant clean build
+    - name: Install X virtual framebuffer
+      run: sudo apt-get install -y xvfb
+    - name: Run tests
+      working-directory: ./build
+      run: xvfb-run --auto-servernum --server-args "-screen 0 1024x768x24" ant test -Drunning-from-github-action=1
+    - name: Publish results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: html-results-linux
+        path: app/test-bin/results/html/
+    - name: Cleanup xvfb
+      uses: bcomnes/cleanup-xvfb@v1
+
+  test-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Download JDK 1.8 for Windows/x86
+      run: curl -O "https://cdn.azul.com/zulu/bin/zulu8.46.0.19-ca-jdk8.0.252-win_i686.zip"
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@master
+      with:
+        version: 1.8
+        architecture: x86
+        jdkFile: ./zulu8.46.0.19-ca-jdk8.0.252-win_i686.zip
+    - name: Build with Ant
+      working-directory: ./build
+      run: |
+        java -version
+        ant clean build
+    - name: Run tests
+      working-directory: ./build
+      run: ant test -Drunning-from-github-action=1
+    - name: Publish results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: html-results-win
+        path: app/test-bin/results/html/

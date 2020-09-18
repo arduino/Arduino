@@ -29,11 +29,12 @@
 
 package processing.app;
 
-import org.fest.swing.fixture.JMenuItemFixture;
-import org.junit.Test;
-import processing.app.helpers.SketchTextAreaFixture;
-
 import static org.junit.Assert.assertEquals;
+
+import org.assertj.swing.fixture.JMenuItemFixture;
+import org.junit.Test;
+
+import processing.app.helpers.SketchTextAreaFixture;
 
 public class AutoformatSavesCaretPositionTest extends AbstractGUITest {
 

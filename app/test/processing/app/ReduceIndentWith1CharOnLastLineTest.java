@@ -31,7 +31,7 @@ package processing.app;
 
 import static org.junit.Assert.assertEquals;
 
-import org.fest.swing.fixture.JMenuItemFixture;
+import org.assertj.swing.fixture.JMenuItemFixture;
 import org.junit.Test;
 
 import processing.app.helpers.SketchTextAreaFixture;
@@ -50,8 +50,7 @@ public class ReduceIndentWith1CharOnLastLineTest extends AbstractGUITest {
     menuDecreaseIndent.requireEnabled();
     menuDecreaseIndent.click();
 
-    EditorConsole console = (EditorConsole) window.scrollPane("console").component();
-
+    EditorConsole console = window.getEditor().console;
     assertEquals("", console.getText());
   }
 }

@@ -29,13 +29,14 @@
 
 package processing.app;
 
+import static org.junit.Assert.assertFalse;
+
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 
 import processing.app.debug.TargetBoard;
-import static org.junit.Assert.assertNotEquals;
 
 public class DefaultTargetTest extends AbstractWithPreferencesTest {
 
@@ -63,6 +64,6 @@ public class DefaultTargetTest extends AbstractWithPreferencesTest {
     Assume.assumeNotNull(BaseNoGui.getTargetPlatform());
     
     TargetBoard targetBoard = BaseNoGui.getTargetBoard();
-    assertNotEquals("unreal_board", targetBoard.getId());
+    assertFalse("unreal_board".equals(targetBoard.getId()));
   }
 }
