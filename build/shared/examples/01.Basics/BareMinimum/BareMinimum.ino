@@ -1,3 +1,7 @@
+/** Arduino IDE Board Tool details
+ * Board: Arduino/Genuino Uno
+*/
+
 void setup() {
   // put your setup code here, to run once:
 
