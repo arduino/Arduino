@@ -46,6 +46,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   protected JButton clearButton;
   protected JCheckBox autoscrollBox;
   protected JCheckBox addTimeStampBox;
+  protected JCheckBox actionBackspaceBox;
   protected JComboBox<String> lineEndings;
   protected JComboBox<String> serialRates;
 
@@ -129,6 +130,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     autoscrollBox = new JCheckBox(tr("Autoscroll"), true);
     addTimeStampBox = new JCheckBox(tr("Show timestamp"), false);
+    actionBackspaceBox  = new JCheckBox(tr("Action backspace"), false);
 
     noLineEndingAlert = new JLabel(I18n.format(tr("You've pressed {0} but nothing was sent. Should you select a line ending?"), tr("Send")));
     noLineEndingAlert.setToolTipText(noLineEndingAlert.getText());
@@ -144,6 +146,8 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
     });
     addTimeStampBox.addActionListener((ActionEvent event) ->
         PreferencesData.setBoolean("serial.show_timestamp", addTimeStampBox.isSelected()));
+    actionBackspaceBox.addActionListener((ActionEvent event) ->
+        PreferencesData.setBoolean("serial.action_backspace", actionBackspaceBox.isSelected()));
 
     lineEndings.setMaximumSize(lineEndings.getMinimumSize());
 
@@ -156,6 +160,7 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
 
     pane.add(autoscrollBox);
     pane.add(addTimeStampBox);
+    pane.add(actionBackspaceBox);
     pane.add(Box.createHorizontalGlue());
     pane.add(noLineEndingAlert);
     pane.add(Box.createRigidArea(new Dimension(8, 0)));
@@ -217,10 +222,36 @@ public abstract class AbstractTextMonitor extends AbstractMonitor {
   private boolean isStartingLine = true;
 
   protected void updateTextArea(String msg) {
-    if (addTimeStampBox.isSelected()) {
-      textArea.append(addTimestamps(msg));
+    StringBuilder sb = new StringBuilder(msg.length());
+    if (actionBackspaceBox.isSelected()) {
+      // if we have any BackSpace characters, remove previous character if possible
+      StringTokenizer tokenizer = new StringTokenizer(msg, "\b", true);
+      while (tokenizer.hasMoreTokens()) {
+        String token = tokenizer.nextToken();
+        if (token.length() == 1 && token.charAt(0) == 0x08) { // clumsy but following fails to trigger // if (token == "\b") { // TODO why does this not work?
+          int textAreaLength = textArea.getDocument().getLength();
+          // if nothing left to remove in this message, then trim last character off textArea, if possible
+          if (sb.length() == 0 && textAreaLength != 0) {
+            textArea.replaceRange("",  textAreaLength - 1, textAreaLength);
+          } else {
+            // shorten what has been copied from msg
+            sb.setLength(sb.length() - 1);
+          }
+          // BackSpace has now been actioned if possible. Let's just drop it
+          continue;
+        }
+        // not a BackSpace? Then add it to the buffer
+        sb.append(token);
+      }
+    // we have now finished processing any BackSpaces. Let's carry on
     } else {
-      textArea.append(msg);
+      sb.append(msg);
+    }
+
+    if (addTimeStampBox.isSelected()) {
+      textArea.append(addTimestamps(sb.toString()));
+    } else {
+      textArea.append(sb.toString());
     }
     if (autoscrollBox.isSelected()) {
       textArea.setCaretPosition(textArea.getDocument().getLength());
