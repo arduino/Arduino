@@ -12,7 +12,7 @@ IDE can be downloaded for free at [https://arduino.cc](https://www.arduino.cc/en
 ## More info at
 
 -  [Our website](https://www.arduino.cc/)
-
+-  [Data Sheet](https://www.arduino.cc/en/uploads/Tutorial/595datasheet.pdf)
 -  [The forums](https://forum.arduino.cc/)
 
 -  Follow us on [Twitter](https://twitter.com/arduino)
