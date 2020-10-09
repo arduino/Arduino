@@ -242,7 +242,8 @@
     <antcall target="unzip">
       <param name="archive_file" value="${BUILT-IN-EXAMPLES-REPOSITORY-NAME}-${BUILT-IN-EXAMPLES-VERSION}.zip" />
       <param name="archive_url" value="https://github.com/${BUILT-IN-EXAMPLES-REPOSITORY-OWNER}/${BUILT-IN-EXAMPLES-REPOSITORY-NAME}/archive/${BUILT-IN-EXAMPLES-VERSION}.zip" />
-      <param name="final_folder" value="${BUILT-IN-EXAMPLES-FINAL-PATH}" />
+      <!-- Because the presence of this folder determines whether the extraction happens, this must point to a version-dependent path, otherwise updates will fail -->
+      <param name="final_folder" value="${BUILT-IN-EXAMPLES-STAGING-PATH}/${BUILT-IN-EXAMPLES-REPOSITORY-NAME}-${BUILT-IN-EXAMPLES-VERSION}/examples" />
       <param name="dest_folder" value="${BUILT-IN-EXAMPLES-STAGING-PATH}" />
     </antcall>
 
