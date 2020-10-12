@@ -148,8 +148,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
     installButtonPlaceholder.setVisible(!(installable || upgradable));
 
     String name = selected.getName();
-    String author = selected.getAuthor();
-    // String maintainer = selectedLib.getMaintainer();
+    // String author = selected.getAuthor();
+    String maintainer = selected.getMaintainer();
     final String website = selected.getWebsite();
     String sentence = selected.getSentence();
     String paragraph = selected.getParagraph();
@@ -168,8 +168,8 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
 
     // ...author...
     desc += format("<font color=\"{0}\">", midcolor);
-    if (author != null && !author.isEmpty()) {
-      desc += format(" by <b>{0}</b>", author);
+    if (maintainer != null && !maintainer.isEmpty()) {
+      desc += format(" by <b>{0}</b>", maintainer);
     }
 
     // ...version.
@@ -196,7 +196,7 @@ public class ContributedLibraryTableCellJPanel extends JPanel {
         desc += format("{0}", paragraph);
       desc += "<br />";
     }
-    if (author != null && !author.isEmpty()) {
+    if (maintainer != null && !maintainer.isEmpty()) {
       desc = setButtonOrLink(moreInfoButton, desc, moreInfoLbl, website);
     }
 
