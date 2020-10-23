@@ -124,8 +124,8 @@ public class Base {
 
   // these variables help rebuild the "recently used boards"
   // menu on board selection
-  private HashMap<String, JMenuItem> recentBoardItems;
-  private List<JMenuItem> recentBoardsToClear = new LinkedList<>();;
+  private HashMap<String, JRadioButtonMenuItem> recentBoardItems;
+  private List<JRadioButtonMenuItem> recentBoardsToClear = new LinkedList<>();;
   private JMenu boardMenu;
   private int recentBoardsJMenuIndex;
 
@@ -1376,16 +1376,29 @@ public class Base {
       }
     }
     newRecentBoardIds.add(0, currentBoard);
-    if (newRecentBoardIds.size() == 6) {
-      newRecentBoardIds.remove(5);
+
+    int numBoards = 0;
+
+    if (PreferencesData.has("recent.num_boards")) {
+      numBoards = PreferencesData.getInteger("recent.num_boards");
+    }
+
+    while (newRecentBoardIds.size() > numBoards) {
+      newRecentBoardIds.remove(newRecentBoardIds.size() - 1);
     }
     PreferencesData.setCollection("recent.boards", newRecentBoardIds);
-    try {
-      rebuildRecentBoardsList();
-    } catch (Exception e) {
-      //TODO show error
-      e.printStackTrace();
-    }    
+
+    // If recent.num_boards is 0, interpret this as the feature
+    // being turned off. There's no need to rebuild the menu
+    // because it will be hidden
+    if (numBoards > 0) {
+      try {
+        rebuildRecentBoardsList();
+      } catch (Exception e) {
+        //TODO show error
+        e.printStackTrace();
+      }    
+    }
 
     // Update editors status bar
     for (Editor editor : editors) {
@@ -1460,7 +1473,7 @@ public class Base {
 
   public void rebuildBoardsMenu() throws Exception {
     boardsCustomMenus = new LinkedList<>();
-    recentBoardItems = new HashMap<String, JMenuItem>();
+    recentBoardItems = new HashMap<String, JRadioButtonMenuItem>();
 
     // The first custom menu is the "Board" selection submenu
     boardMenu = new JMenu(tr("Board"));
@@ -1487,7 +1500,12 @@ public class Base {
     boardsCustomMenus.add(boardMenu);
 
     // Insert recently used boards menu and remember index for insertion later
-    if (PreferencesData.has("recent.boards")) {
+    // Check if the field exists, in case preferences got lost
+    if (!PreferencesData.has("recent.num_boards")){
+        // (default to 5)
+          PreferencesData.setInteger("recent.num_boards", 5);
+    }
+    if (PreferencesData.getInteger("recent.num_boards") > 0) {
       // Insert menu label
       boardMenu.add(new JSeparator());
       JMenuItem label = new JMenuItem(tr("Recently Used Boards"));
@@ -1502,6 +1520,9 @@ public class Base {
 
     // Separate "Install boards..." command from installed boards
     boardMenu.add(new JSeparator());
+    JMenuItem label = new JMenuItem(tr("All Installed Boards"));
+    label.setEnabled(false);
+    boardMenu.add(label);    
 
     // Generate custom menus for all platforms
     for (TargetPackage targetPackage : BaseNoGui.packages.values()) {
@@ -1596,16 +1617,18 @@ public class Base {
   // clear the previous menu items from the "recently used boards"
   // menu and repopulate with updated items
   private void rebuildRecentBoardsList() throws Exception {
-    Collection<String> recentBoardIds = new LinkedList<>();
-    recentBoardIds = PreferencesData.getCollection("recent.boards");
+    Collection<String> recentBoardIds = PreferencesData.getCollection("recent.boards");
+    String currentBoard = PreferencesData.get("board");
     int idxAdv = 0;
-    for (JMenuItem itemToClear : recentBoardsToClear) {
+    for (JRadioButtonMenuItem itemToClear : recentBoardsToClear) {
       boardMenu.remove(itemToClear);
     }
     recentBoardsToClear.clear();
     for (String boardId : recentBoardIds) {
-      boardMenu.add(recentBoardItems.get(boardId), recentBoardsJMenuIndex+idxAdv);
-      recentBoardsToClear.add(recentBoardItems.get(boardId));
+      JRadioButtonMenuItem addItem = recentBoardItems.get(boardId);
+      boardMenu.add(addItem, recentBoardsJMenuIndex+idxAdv);
+      recentBoardsToClear.add(addItem);
+      addItem.setSelected(boardId.equals(currentBoard));
       idxAdv++;
     }
   }
@@ -1649,11 +1672,13 @@ public class Base {
       }
     }; 
 
-    // create a menu item for the "recent boards" menu
-    JMenuItem itemClone = new JMenuItem(actionClone);
-
-    // populate list of menuitem copies
-    recentBoardItems.put(boardId, itemClone);
+    // No need to hog memory if recent boards feature is turned off
+    if (PreferencesData.getInteger("recent.num_boards") > 0) {
+      // create a menu item for the "recent boards" menu
+      JRadioButtonMenuItem itemClone = new JRadioButtonMenuItem(actionClone);
+      // populate list of menuitem copies
+      recentBoardItems.put(boardId, itemClone);
+    }
 
     if (selBoard.equals(boardId) && selPackage.equals(packageName)
             && selPlatform.equals(platformName)) {
