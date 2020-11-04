@@ -1702,18 +1702,20 @@ public class Base {
     ButtonGroup group = new ButtonGroup();
 
     TargetBoard board = BaseNoGui.getTargetBoard();
-    TargetPlatform boardPlatform = board.getContainerPlatform();
-    TargetPlatform corePlatform = null;
+    if (board != null) {
+      TargetPlatform boardPlatform = board.getContainerPlatform();
+      TargetPlatform corePlatform = null;
 
-    String core = board.getPreferences().get("build.core");
-    if (core != null && core.contains(":")) {
-      String[] split = core.split(":", 2);
-      corePlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      String core = board.getPreferences().get("build.core");
+      if (core != null && core.contains(":")) {
+        String[] split = core.split(":", 2);
+        corePlatform = BaseNoGui.getCurrentTargetPlatformFromPackage(split[0]);
+      }
+
+      addProgrammersForPlatform(boardPlatform, programmerMenus, group);
+      if (corePlatform != null)
+        addProgrammersForPlatform(corePlatform, programmerMenus, group);
     }
-
-    addProgrammersForPlatform(boardPlatform, programmerMenus, group);
-    if (corePlatform != null)
-      addProgrammersForPlatform(corePlatform, programmerMenus, group);
 
     if (programmerMenus.isEmpty()) {
       JMenuItem item = new JMenuItem(tr("No programmers available for this board"));
