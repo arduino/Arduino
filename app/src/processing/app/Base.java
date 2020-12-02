@@ -854,7 +854,6 @@ public class Base {
     handleOpen(inputFile);
   }
 
-
   /**
    * Open a sketch in a new window.
    *

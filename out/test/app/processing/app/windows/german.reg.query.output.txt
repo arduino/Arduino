@@ -1,0 +1,4 @@
+
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+    AppData    REG_SZ    C:\Users\Ren‚\AppData\Roaming
+

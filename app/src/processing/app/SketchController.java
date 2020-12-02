@@ -508,6 +508,7 @@ public class SketchController {
       sketch.prepareDataFolder();
       destFile = new File(sketch.getDataFolder(), filename);
       isData = true;
+      JOptionPane.showMessageDialog(null,"This file is not supported by the Arduino editor","Invalid extension",1);
     }
 
     if (!sourceFile.equals(destFile)) {

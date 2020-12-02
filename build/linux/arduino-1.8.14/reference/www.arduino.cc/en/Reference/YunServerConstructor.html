@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<!--html5-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<!-- Mirrored from www.arduino.cc/en/Reference/YunServerConstructor by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 26 Oct 2015 14:08:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  	<meta charset="utf-8" />
+
+	<title>Arduino - YunServerConstructor </title>
+	<link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+	<link rel="stylesheet" href="../../fonts/fonts.css" type="text/css" />
+	<link rel="stylesheet" href="../../css/arduino-icons.css">
+	<link rel="stylesheet" href="../../css/animation.css"><!--[if IE 7]>
+	<link rel="stylesheet" href="//arduino.cc/css/arduino-icons-ie7.css"><![endif]-->
+	<!--[if gte IE 9]><!-->
+	<link rel='stylesheet' href='../../css/foundation2.css' type='text/css' />
+	<!--<![endif]-->
+	<!--[if IE 8]>
+		<link rel='stylesheet' href='//arduino.cc/css/foundation_ie8.css' type='text/css' />
+	<![endif]-->
+	<link rel='stylesheet' href='../../css/arduino_code_highlight.css' type='text/css' />
+	<link rel="stylesheet" type="text/css" media="screen" href="../../css/typeplate.css">
+	<link rel='stylesheet' href='../pub/skins/arduinoWide_SSO/css/arduinoWide_SSO.css' type='text/css' />
+
+	<link rel='stylesheet' href='../../css/common.css' type='text/css' />
+	<link rel="stylesheet" href="../../css/download_page.css" />
+	<link href="https://plus.google.com/114839908922424087554" rel="publisher" />
+
+	<!-- embedded JS and CSS from PmWiki plugins -->	
+	<!--HeaderText--><style type='text/css'><!--
+  ul, ol, pre, dl, p { margin-top:0px; margin-bottom:0px; }
+  code { white-space: nowrap; }
+  .vspace { margin-top:1.33em; }
+  .indent { margin-left:40px; }
+  .outdent { margin-left:40px; text-indent:-40px; }
+  a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
+  a.createlink { text-decoration:none; position:relative; top:-0.5em;
+    font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
+  
+span.anchor {
+	float: left;
+	font-size: 10px;
+	margin-left: -10px;
+	width: 10px;
+    position:relative; top:-0.1em;
+	text-align: center;
+}
+span.anchor a { text-decoration: none; }
+span.anchor a:hover { text-decoration: underline; }
+ol.toc { text-indent:-20px; list-style: none; }
+ol.toc ol.toc { text-indent:-40px; }
+div.tocfloat { font-size: smaller; margin-bottom: 10px;
+    border-top: 1px dotted #555555; border-bottom: 1px dotted #555555;
+    padding-top: 5px; padding-bottom: 5px; 
+    width: 38%; float: right; margin-left: 10px; clear: right;
+    margin-right:-13px; padding-right: 13px; padding-left: 13px;
+    background-color: #eeeeee; }
+div.toc { font-size: smaller; 
+    padding: 5px; border: 1px dotted #cccccc;
+    background: #f7f7f7;
+    margin-bottom: 10px; }
+div.toc p { background-color: #f9f6d6;
+    margin-top:-5px;   padding-top: 5px;
+    margin-left:-5px;  padding-left: 5px;
+    margin-right:-5px; padding-right: 5px;
+    padding-bottom: 3px;
+    border-bottom:  1px dotted #cccccc; }.editconflict { color:green; 
+  font-style:italic; margin-top:1.33em; margin-bottom:1.33em; }
+
+  table.markup { border: 2px dotted #ccf; width:90%; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  td.markup1 { border-bottom: 1px solid #ccf; }
+  div.faq { margin-left:2em; }
+  div.faq p.question { margin: 1em 0 0.75em -2em; font-weight:bold; }
+  div.faq hr { margin-left: -2em; }
+   
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }
+a.varlink { text-decoration:none; }
+
+--></style><script type="text/javascript">
+function toggle(obj) {
+    var elstyle = document.getElementById(obj).style;
+    var text    = document.getElementById(obj + "tog");
+    if (elstyle.display == 'none') {
+        elstyle.display = 'block';
+        text.innerHTML = "hide";
+    } else {
+        elstyle.display = 'none';
+        text.innerHTML = "show";
+    }
+}
+</script><script src="http://www.arduino.cc/en/pub/galleria/galleria-1.2.6.min.js"></script><script type="text/javascript">Galleria.loadTheme("http://www.arduino.cc/en/pub/galleria/themes/classic/galleria.classic.min.js");</script>  <meta name='robots' content='index,follow' />
+
+
+	<script src="http://arduino.cc/js/vendor/custom.modernizr.js"></script>
+
+	<!-- do not remove none of those lines, comments embedding in pages will break! -->
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" type="text/javascript"></script>
+	<script src="http://arduino.cc/en/pub/js/newsletter_subscribe_popup.js" type="text/javascript"></script>
+	<script src="https://checkout.stripe.com/checkout.js" type="text/javascript"></script>
+	<script src="https://www.arduino.cc/en/pub/js/software_download.js" type="text/javascript"></script><!-- keep https! -->
+	<link rel='stylesheet' href='../../../code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.min.css' type='text/css' />
+</head>
+<body>
+
+	<div id="menuWings" class="fixed"></div>
+	<div id="page">
+		
+		
+<script>
+	var userAgent = (navigator.userAgent || navigator.vendor || window.opera).toLowerCase();
+	if(userAgent.indexOf('mac')>0){
+		$("head").append('<style type="text/css">@-moz-document url-prefix() {h1 a, h2 a, h3 a, h4 a, h5 a, h1 a:hover, h2 a:hover, th a, th a:hover, h3 a:hover, h4 a:hover, h5 a:hover, #wikitext h2 a:hover, #wikitext h3 a:hover, #wikitext h4 a:hover {padding-bottom: 0.5em!important;} #pageheader .search input{font-family: "TyponineSans Regular 18";} #pagefooter .monospace{margin-top: -4px;} #navWrapper ul.left &gt; li{margin-top: -2px; padding-bottom: 2px;}#navWrapper ul.right &gt; li{margin-top: -5px; padding-bottom: 5px;}#navWrapper ul.right &gt; li ul{margin-top: 4px;} .slider-container .fixed-caption p{padding:8px 0 14px 0}}</style>');
+	}
+</script>
+
+<!--[if IE]>
+<link rel='stylesheet' href='https://id.arduino.cc//css/ie-monospace.css' type='text/css' />
+<![endif]-->
+
+<div id="menuWings" class="fixed"></div>
+
+<!--[if IE 8]>
+<div class="alert-box panel ie8alert">
+  <p><strong>Arduino.cc offers limited compatibility for Internet Explorer 8. Get a modern browser as Chrome, Firefox or Safari.</strong></p>
+  <a href="" class="close">&times;</a>
+</div>
+<![endif]-->
+
+<div id="pageheader">
+	<div class="row" class="contain-to-grid">
+		<div class="small-6 large-8 eight columns">
+			<div class="title"><a href="http://www.arduino.cc/">Arduino</a></div>
+		</div>
+		<div class="small-6 large-4 four columns search">
+			<div class="row collapse">
+				<form method="GET" action="http://www.google.com/search">
+	<div class="small-12 twelve columns">
+		<i class="icon-search-2"></i>
+		<input type="hidden" name="ie" value="UTF-8">
+		<input type="hidden" name="oe" value="UTF-8">
+		<input type="text" name="q" size="25" maxlength="255" value="" placeholder="Search the Arduino Website">
+		<input type="submit" name="btnG" VALUE="search">
+		<input type="hidden" name="domains" value="http://www.arduino.cc">
+		<input type="hidden" name="sitesearch" value="http://www.arduino.cc">
+	</div>
+</form>			</div>
+		</div>
+	</div>
+
+	<!--[if gte IE 9]><!-->
+	<div id="navWrapper"  class="sticky">
+	<!--<![endif]-->
+	<!--[if IE 8]>
+		<div id="navWrapper">
+	<![endif]-->
+		<nav class="top-bar"  data-options="is_hover:true" >
+			<ul class="title-area">
+				<li class="name"></li>
+			</ul>
+
+			<section class="top-bar-section">
+				<ul class="left">
+					<li id="navLogo">
+						<a href="http://www.arduino.cc/">
+							<img src="../../img/logo_46.png" alt="userpicture" />
+						</a>
+					</li>
+					<li id="navHome"><a href="http://www.arduino.cc/">Home</a></li>
+					<li><a href="http://store.arduino.cc/">Buy</a></li>
+					<li><a href="http://www.arduino.cc/en/Main/Software">Download</a></li>
+					<li class="has-dropdown"><a href="#">Products</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Main/Products">Arduino <span class="menudescription">(USA only)</span></a></li>
+							<li><a href="http://www.arduino.cc/en/Main/GenuinoProducts">Genuino <span class="menudescription">(outside USA)</span></a></li>
+							<li><a href="http://www.arduino.cc/en/ArduinoAtHeart/Products">AtHeart</a></li>
+							<li><a href="http://www.arduino.cc/en/ArduinoCertified/Products">Certified</a></li>
+						</ul>
+					</li>
+					<li class="has-dropdown active"><a href="#">Learning</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Guide/HomePage">Getting started</a></li>
+							<li><a href="http://www.arduino.cc/en/Tutorial/HomePage">Tutorials</a></li>
+							<li><a href="HomePage.html">Reference</a></li>
+							<li><a href="http://www.arduino.cc/en/Main/CTCprogram">CTC Program</a></li>
+							<li><a href="http://playground.arduino.cc/">Playground</a></li>
+						</ul>
+					</li>
+					<li><a href="http://forum.arduino.cc/">Forum</a></li>
+					<li class="has-dropdown"><a href="#">Support</a>
+						<ul class="dropdown">
+							<li><a href="http://www.arduino.cc/en/Main/FAQ">FAQ</a></li>
+							<li><a href="http://www.arduino.cc/en/ContactUs">Contact Us</a></li>
+						</ul>
+					</li>
+					<li><a href="http://blog.arduino.cc/">Blog</a></li>
+				</ul>
+
+								<ul class="right">
+					<li><a href="https://id.arduino.cc/auth/login/?returnurl=http%3A%2F%2Fwww.arduino.cc%2Fen%2FReference%2FYunServerConstructor" class="cart">LOG IN</a></li>
+					<li><a href="https://id.arduino.cc/auth/signup" class="cart">SIGN UP</a></li>
+				</ul>
+							</section>
+		</nav>
+	</div>
+</div>
+
+
+
+		<br class="clear"/>
+
+		<div id="pagetext">
+				<!--PageText-->
+<div id='wikitext'>
+<p><strong>Reference</strong> &nbsp;  <a class='wikilink' href='HomePage.html'>Language</a> | <a class='wikilink' href='Libraries.html'>Libraries</a> | <a class='wikilink' href='Comparison.html'>Comparison</a> | <a class='wikilink' href='Changes.html'>Changes</a>
+</p>
+<p class='vspace'></p><p><a class='wikilink' href='YunBridgeLibrary.html'>YunBridgeLibrary</a> : <em><span class='wikiword'>YunServer</span></em> class
+</p>
+<p class='vspace'></p><h2><span class='wikiword'>YunServer</span> Constructor</h2>
+<h4>Description</h4>
+<p><span class='wikiword'>YunServer</span> is the base class for all server server based calls on the Yun. It is not called directly, but invoked whenever you use a function that relies on it.
+</p>
+<p class='vspace'></p><h4>Syntax</h4>
+<p><span class='wikiword'>YunServer</span> server
+</p>
+<p class='vspace'></p><h4>Parameters</h4>
+<p><em>server</em> : the named instance of <span class='wikiword'>YunServer</span>
+</p>
+<p class='vspace'></p><h4>Functions</h4>
+<ul><li><a class='wikilink' href='YunServerBegin.html'>begin()</a>
+</li><li><a class='wikilink' href='YunServerListenOnLocalhost.html'>listenOnLocalhost()</a>
+</li><li><a class='wikilink' href='YunServerNoListenOnLocoalhost.html'>noListenOnLocoalhost()</a>
+</li><li><a class='wikilink' href='YunServerWrite.html'>write()</a>
+</li></ul><p><br /><a class='wikilink' href='HomePage.html'>Reference Home</a>
+</p>
+<p class='vspace'></p><p><em>Corrections, suggestions, and new documentation should be posted to the <a class='urllink' href='http://arduino.cc/forum/index.php/board,23.0.html' rel='nofollow'>Forum</a>.</em>
+</p>
+<p class='vspace'></p><p>The text of the Arduino reference is licensed under a
+<a class='urllink' href='http://creativecommons.org/licenses/by-sa/3.0/' rel='nofollow'>Creative Commons Attribution-ShareAlike 3.0 License</a>.  Code samples in the reference are released into the public domain.
+</p>
+</div>
+
+				
+				<!-- AddThis Button Style BEGIN -->
+<style>
+  .addthis_toolbox {
+    margin: 2em 0 1em;
+  }
+  .addthis_toolbox img {
+    float: left;
+    height: 25px;
+    margin-right: 10px;
+    width: auto;
+  }
+  .addthis_toolbox .social-container {
+    float: left;
+    height: 27px; 
+    width: auto; 
+  }
+  .addthis_toolbox .social-container .social-content {
+    float: left;
+    margin-top: 2px;
+    max-width: 0;
+    overflow: hidden;
+    -moz-transition: max-width .3s ease-out;
+    -webkit-transition: max-width .3s ease-out;
+    -o-transition: max-width .3s ease-out;
+    transition: max-width .3s ease-out;
+  }
+  .addthis_toolbox .social-container:hover .social-content {
+    max-width: 100px;
+    -moz-transition: max-width .2s ease-in;
+    -webkit-transition: max-width .2s ease-in;
+    -o-transition: max-width .2s ease-in;
+    transition: max-width .2s ease-in;
+  }
+  .addthis_toolbox .social-container .social-content a {
+    float: left;
+    margin-right: 5px;
+  }
+
+  .addthis_toolbox h3 {
+    font-size: 24px;
+    text-align: left;
+  }
+</style>
+<!-- AddThis Button Style END -->
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style">
+  <h3>Share</h3>
+  <!-- FACEBOOK -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/facebook.png" />
+    <div class="social-content">
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    </div>
+  </div>
+  <!-- TWITTER -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/twitter.png">
+    <div class="social-content">
+      <a class="addthis_button_tweet"></a>
+    </div>
+  </div>
+  <!-- PINTEREST -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/pinterest.png">
+    <div class="social-content">
+      <a class="addthis_button_pinterest_pinit" pi:pinit:url="//www.addthis.com/features/pinterest" pi:pinit:media="//www.addthis.com/cms-content/images/features/pinterest-lg.png"></a>
+    </div>
+  </div>
+  <!-- G+ -->
+  <div class="social-container">
+    <img src="../pub/skins/arduinoWide_SSO/img/gplus.png">
+    <div class="social-content">
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    </div>
+  </div>
+
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-50573fab238b0d34"></script>
+</div>
+<!-- AddThis Button END -->
+
+		</div> <!-- eof pagetext -->
+	
+	</div> <!-- eof page -->
+		
+	<!--PageFooterFmt-->
+	<div id="pagefooter">
+		<div id="newsletterModal" class="reveal-modal small">
+  <form action="http://www.arduino.cc/subscribe.php" method="post" name="sendy-subscribe-form" id="sendy-subscribe-form" class="form-popup">
+    <div class="modalHeader">
+      <h3 style="line-height: 1.8rem;" class="modal-header-alt">This link has expired. <br>Please re-subscribe to our Newsletters.</h3>
+      <h3 class="modal-header-main">Subscribe to our Newsletters</h3>
+    </div>
+    <div class="modalBody" id="newsletterModalBody">
+        <div id="newsletterEmailField" class="row" style="padding-left: 0">
+          <div class="large-2 columns">
+            <label for="email" class="newsletter-form-label inline">Email</label>
+          </div>
+          <div class="large-10 columns" style="padding-left: 0">
+            <input placeholder="Enter your email address" type="email" name="email" class="subscribe-form-input" />
+            <p id="emailMissing" class="newsletterPopupError">Please enter a valid email to subscribe</p>
+          </div>
+        </div>
+        <div style="margin-left:20px">
+          <div style="margin-bottom:0.3em">
+            <input style="display:none" type="checkbox" checked name="list[]" value="arduino_newsletter_id" id="worldwide" class="newsletter-form-checkbox" />
+            <label for="worldwide"></label>
+            <div style="display:inline-block" class="newsletter-form-label">Arduino Newsletter</div>
+          </div>
+          <div>
+            <input style="display:none" type="checkbox" checked name="list[]" value="arduino_store_newsletter_id" id="store" class="newsletter-form-checkbox" />
+            <label for="store"></label>
+            <div style="display:inline-block" class="newsletter-form-label">Arduino Store Newsletter</div>
+          </div>
+        </div>
+        <div>
+          <p class="newsletterPopupError2" id="newsletterSubscribeStatus"></p>
+        </div>
+    </div>
+    <div class="row modalFooter">
+      <div class="form-buttons-row">
+        
+          <button type="button" value="Cancel" class="popup-form-button white cancel-modal close-reveal-modal">Cancel</button>
+          <button type="submit" name="Subscribe" id="subscribe-submit-btn" class="popup-form-button">Next</button>
+        
+      </div>
+    </div>
+  </form>
+
+  <!-- step 2, confirm popup -->
+  <div class="confirm-popup" style="margin-bottom:1em">
+    <div class="modalHeader">
+      <h3>Confirm your email address</h3>
+    </div>
+    <div class="modalBody" id="newsletterModalBody" style="padding-right:1em;margin-bottom:0">
+        <p style="margin-bottom:1em;font-size:15px">
+          We need to confirm your email address.<br>
+          To complete the subscription, please click the link in the
+          email we just sent you.
+        </p>
+        <p style="margin-bottom:1em;font-size:15px">
+          Thank you for subscribing!
+        </p>
+        <p style="margin-bottom:1em;font-size:15px">
+          Arduino<br>
+          via Egeo 16<br>
+          Torino, 10131<br>
+          Italy<br>
+        </p>
+    </div>
+    <div class="row modalFooter">
+      <div class="form-buttons-row">
+        
+          <button name="Ok" class="popup-form-button" id="close-confirm-popup">Ok</button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<div id="pagefooter" class="pagefooter">
+  <div class="row">
+    <div class="large-8 eight columns">
+      <div class="large-4 four columns newsletter-box">
+        <!-- Begin Sendy Signup Form -->
+        <h6>Newsletter</h6>
+        <div>
+          <input type="email" name="email" class="email" id="sendy-EMAIL" placeholder="Enter your email to sign up">
+          <i class="icon-right-small"></i>
+          <input value="Subscribe" name="subscribe" id="sendy-subscribe" class="newsletter-button">
+        </div>
+        <!--End sendy_embed_signup-->
+      </div>
+      <div class="clearfix"></div>
+      <ul class="inline-list">
+        <li class="monospace">&copy;2015 Arduino</li>
+        <li><a href="http://www.arduino.cc/en/Main/CopyrightNotice">Copyright Notice</a></li>
+        <li><a href='http://www.arduino.cc/en/Main/ContactUs'>Contact us</a></li>
+        <li><a href='http://www.arduino.cc/en/Main/AboutUs'>About us</a></li>
+        <li><a href='http://www.arduino.cc/Careers'>Careers</a></li>
+      </ul>
+    </div>
+    <div class="large-4 four columns">
+      <ul id="arduinoSocialLinks" class="arduino-social-links">
+        <li>
+          <a href="https://twitter.com/arduino">
+            <img src="../../img/twitter.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/official.arduino">
+            <img src="../../img/facebook.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://plus.google.com/+Arduino">
+            <img src="../../img/gplus.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://www.flickr.com/photos/arduino_cc">
+            <img src="../../img/flickr.png" />
+          </a>
+        </li>
+        <li>
+          <a href="https://youtube.com/arduinoteam">
+            <img src="../../img/youtube.png" />
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+	</div>
+	<!--/PageFooterFmt-->
+	
+	<!--[if gte IE 9]><!-->
+	<script src="http://arduino.cc/js/foundation.min.js"></script>
+	<script src="http://arduino.cc/js/foundation.topbar.custom.js"></script>
+	<script>
+	  $(document).foundation();
+	</script>
+	<!--<![endif]-->
+	<!--[if IE 8]>
+	<script src="//arduino.cc/js/foundation_ie8.min.js"></script>
+	<script src="//arduino.cc/js/ie8/jquery.foundation.orbit.js"></script>
+	<script src="//arduino.cc/js/ie8/jquery.foundation.alerts.js"></script>
+	<script src="//arduino.cc/js/app.js"></script>
+	
+	<script>
+	$(window).load(function(){
+	  $("#featured").orbit();
+	});
+	</script>
+	<![endif]-->
+	
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-22581631-3']);
+	  _gaq.push(['_setDomainName', 'arduino.cc']);
+	  _gaq.push(['_trackPageview']);
+	
+	    (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+	<script>
+	  $(window).load(function(){
+	    $('a').each (function () {
+	      href = $(this).attr ('href');
+	      if (href !== undefined && href.substring (0, 4) == 'http' && href.indexOf ('https://www.arduino.cc/en/Reference/arduino.cc') == -1)
+	        $(this).attr ('target', '_blank');
+	    });
+
+	    // js for language dropdown
+	    $('.language-dropdown .current').on('click', function(e){
+          e.stopPropagation();
+          $('.language-dropdown ul').toggle();
+        });
+
+        $('.language-dropdown .selector').on('click', function(e){
+          e.stopPropagation();
+          $('.language-dropdown ul').toggle();
+        });
+
+        $(document).on('click', function(){
+          $('.language-dropdown ul:visible').hide();  
+        });
+
+        $('.language-dropdown li a').on('click', function(e){
+        	$('.language-dropdown .current').text($(this).text());
+        });
+
+        //js for product pages navbar
+        var menu = $(".product-page-nav");
+	    var menuItems = menu.find("a");
+	    var timeoutId = null;
+	    var limitTop = 600;
+
+	    var menuOffset = $('.product-page-nav li').first().offset();
+	    if(menuOffset) {
+	    	limitTop = menuOffset.top;
+	    }
+	    var limitBottom = $('.addthis_toolbox').offset().top;
+
+	    var activateSection = function($sectionToActivate) {
+	      var label=$sectionToActivate.attr('label');
+
+	      $(".product-page-nav").find('li').removeClass('active');
+	      $sectionToActivate.addClass('active');
+	    };
+
+	    menuItems.click(function(e){
+
+	     e.preventDefault();
+	      var href = $(this).attr("href"),
+	          offsetTop = href === "#" ? 0 : $(href).offset().top,
+	          adjust = 0;
+	      if($(this).parent('li').hasClass('active') === false) {
+
+	          adjust = 80;
+
+	          $('html, body').animate({
+	                scrollTop: offsetTop - adjust
+	            }, 1500, 'easeOutExpo');
+
+	      }
+	    });
+
+	    $(window).scroll(function () {
+
+	      var windscroll = $(window).scrollTop();
+
+	      if(windscroll < limitTop) {
+	        $('.menu').removeClass('sticky');
+	        $('.menu').removeClass('fixed');
+	      }  else {
+	        $('.menu').addClass('sticky');
+	      }
+
+	      var menuEdgeBottomOffset = $('.menu.columns').offset();
+	      var menuEdgeBottom = 0;
+	      if(menuEdgeBottomOffset) {
+	      	menuEdgeBottom = menuEdgeBottomOffset.top + $('.menu.columns').height();
+	      }
+	      if(menuEdgeBottom > limitBottom) {
+	        $('.menu').fadeOut();
+	      } else {
+	        $('.menu').fadeIn();
+	      }
+	      menuItems.each(function(i) {
+	        var href = $(this).attr("href");
+	        if ($(href).offset().top <= windscroll + 150) {
+	          if(timeoutId) {
+	            clearTimeout(timeoutId);
+	          }
+	          timeoutId = setTimeout(activateSection, 60, $(".product-page-nav").find('li').eq(i));
+	        }
+	      });
+
+	    });
+
+	  });
+	</script>
+</body>
+
+<!-- Mirrored from www.arduino.cc/en/Reference/YunServerConstructor by HTTrack Website Copier/3.x [XR&CO'2010], Mon, 26 Oct 2015 14:08:13 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+</html>

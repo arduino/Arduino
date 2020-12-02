@@ -55,22 +55,7 @@ import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.text.BadLocationException;
@@ -327,21 +312,19 @@ public class Editor extends JFrame implements RunnerListener {
 
 
 
-    project = new EditorProject("/home/sami/Arduino", base, this);
+    project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
     middle.add(project);
     codePanel = new JPanel(new BorderLayout());
     editor_upper.add(codePanel);
     middle.add(editor_upper);
 
     JSplitPane splitProject = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, project, editor_upper);
-    splitProject.setBackground(new Color(23, 161, 165));
     splitProject.setContinuousLayout(true);
     splitProject.setResizeWeight(0.25);
-    splitProject.setBackground(Color.BLACK);
     middle.add(splitProject);
     upper.add(middle);
     splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
-    SwingUtilities.invokeLater(project);
+
 
     // repaint child panes while resizing
     splitPane.setContinuousLayout(true);
@@ -1673,7 +1656,7 @@ public class Editor extends JFrame implements RunnerListener {
         }
       }
     }
-    textArea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
+    textArea.addLineHighlight(line, new Color(0, 0, 255, 0.2f));
     textArea.setCaretPosition(textArea.getLineStartOffset(line));
   }
 
