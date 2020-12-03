@@ -62,7 +62,7 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
    * Titles for each button when the shift key is pressed.
    */
   private static final String[] titleShift = {
-    tr("Verify"), tr("Upload Using Programmer"), tr("New"), tr("Open"), tr("Save As..."), tr("Serial Monitor")
+    tr("Verify"), tr("Upload Using Programmer"), tr("New"), tr("Open"), tr("Save As..."), tr("Serial Plotter")
   };
 
   private static final int BUTTON_COUNT = title.length;
@@ -500,7 +500,11 @@ public class EditorToolbar extends JComponent implements MouseInputListener, Key
         break;
 
       case SERIAL:
-        editor.handleSerial();
+        if (isShiftDown) {
+          editor.handlePlotter();
+        } else {
+          editor.handleSerial();
+        }
         break;
 
       default:
