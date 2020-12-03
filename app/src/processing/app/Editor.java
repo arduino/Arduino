@@ -185,6 +185,7 @@ public class Editor extends JFrame implements RunnerListener {
   EditorProject project;
 
   private JSplitPane splitPane;
+  private JSplitPane splitProject;
 
   // currently opened program
   SketchController sketchController;
@@ -312,16 +313,10 @@ public class Editor extends JFrame implements RunnerListener {
 
 
 
-    project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
-    middle.add(project);
     codePanel = new JPanel(new BorderLayout());
     editor_upper.add(codePanel);
     middle.add(editor_upper);
 
-    JSplitPane splitProject = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, project, editor_upper);
-    splitProject.setContinuousLayout(true);
-    splitProject.setResizeWeight(0.25);
-    middle.add(splitProject);
     upper.add(middle);
     splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, upper, consolePanel);
 
@@ -376,6 +371,11 @@ public class Editor extends JFrame implements RunnerListener {
 
     // default the console output to the last opened editor
     EditorConsole.setCurrentEditorConsole(console);
+
+    // Add Project View if True in the saved preferences
+
+    if(PreferencesData.getBoolean("project.view"))
+      handleAddProjectView();
   }
 
 
@@ -720,6 +720,15 @@ public class Editor extends JFrame implements RunnerListener {
 
     item = newJMenuItemShift(tr("Serial Plotter"), 'L');
     item.addActionListener(e -> handlePlotter());
+    toolsMenu.add(item);
+
+    item = newJMenuItemShift(tr("Project View"), 'J');
+    item.addActionListener(e -> {
+      if (!PreferencesData.getBoolean("project.view")) {
+        handleAddProjectView();
+      }else{
+        handleRemoveProjectView();}
+    });
     toolsMenu.add(item);
 
     addTools(toolsMenu, BaseNoGui.getToolsFolder());
@@ -2593,6 +2602,47 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void addCompilerProgressListener(CompilerProgressListener listener){
     this.status.addCompilerProgressListener(listener);
+  }
+
+  public void handleAddProjectView(){
+
+    // Reset the panels and add the project view
+    middle.remove(editor_upper);
+    project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
+    middle.add(project);
+    middle.add(editor_upper);
+
+    // Split the code and project View
+    splitProject = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, project, editor_upper);
+    splitProject.setContinuousLayout(true);
+    splitProject.setResizeWeight(0.25);
+    middle.add(splitProject);
+
+    // Pack the frame
+    pack();
+
+    // Print the status
+    statusNotice(tr("Added Project View"));
+
+    // Update preferences
+    PreferencesData.setBoolean("project.view", true);
+  }
+
+  public void handleRemoveProjectView(){
+    // Reset the panels and add only the code view
+    middle.remove(project);
+    middle.remove(editor_upper);
+    middle.remove(splitProject);
+    middle.add(editor_upper);
+
+    // Pack the frame
+    pack();
+
+    // Print the status
+    statusNotice(tr("Removed Project View"));
+
+    // Update preferences
+    PreferencesData.setBoolean("project.view", false);
   }
 
 }

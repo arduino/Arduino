@@ -15,7 +15,7 @@ import static java.awt.Color.RED;
 import static processing.app.I18n.tr;
 
 
-public class EditorProject extends Panel implements ActionListener, MouseListener{
+public class EditorProject extends JPanel {
 
   private JExplorerPanel fileExplorerPanel;
 
@@ -25,25 +25,21 @@ public class EditorProject extends Panel implements ActionListener, MouseListene
 
   private Editor editor;
 
-  private JPanel settingsbox;
-
   private String path;
-
-  private JButton settings;
-
-  private JButton toggle;
 
   private JFileChooser chooser;
 
-  private Label buttons_popup;
+  private ProjectToolbar projectToolbar;
 
-  public EditorProject(String path, Base base, Editor editor) throws IOException {
+
+  public EditorProject(String path, Base base, Editor editor){
     this.setLayout(new BorderLayout());
     fileRoot = new File(path);
     this.base = base;
     this.editor = editor;
     fileExplorerPanel = new JExplorerPanel(fileRoot, editor);
-    buttons_popup = new Label("Toggle Project View");
+    projectToolbar = new ProjectToolbar(editor, this);
+    /*buttons_popup = new Label("Toggle Project View");
     buttons_popup.setForeground(new Color(23, 161, 165));
     buttons_popup.setBackground(new Color(23, 161, 165));
     settingsbox = new JPanel();
@@ -73,7 +69,8 @@ public class EditorProject extends Panel implements ActionListener, MouseListene
     settingsbox.add(buttons_popup);
     //settingsbox.add(Box.createHorizontalGlue());
     //settingsbox.add(buttons_panel);
-    this.add(settingsbox, BorderLayout.NORTH);
+    this.add(settingsbox, BorderLayout.NORTH);*/
+    this.add(projectToolbar, BorderLayout.NORTH);
     this.add(fileExplorerPanel);
 
   }
@@ -85,66 +82,25 @@ public class EditorProject extends Panel implements ActionListener, MouseListene
 
     // Resetting the sketchbook path
     PreferencesData.set("sketchbook.path", path);
-    editor.statusNotice(tr("Workspace moved to :")+path);
+
+
+    editor.statusNotice(tr("Navigated to :")+path);
   }
 
 
-  @Override
-  public void actionPerformed(ActionEvent e) {
-    if(e.getSource() == settings){
-      chooser = new JFileChooser();
-      chooser.setCurrentDirectory(fileRoot);
-      chooser.setDialogTitle("Choose project directory : ");
-      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+  public void handleNavigate(){
+    chooser = new JFileChooser();
+    chooser.setCurrentDirectory(fileRoot);
+    chooser.setDialogTitle("Choose project directory : ");
+    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-      if (chooser.showOpenDialog(fileExplorerPanel) == JFileChooser.APPROVE_OPTION) {
-        System.out.println("You moved your workspace to : " + chooser.getSelectedFile());
-        this.path = chooser.getSelectedFile().getAbsolutePath();
-        resetProject();
-      }
-      else {
-        System.out.println("No Selection ");
-      }
+    if (chooser.showOpenDialog(fileExplorerPanel) == JFileChooser.APPROVE_OPTION) {
+      this.path = chooser.getSelectedFile().getAbsolutePath();
+      resetProject();
     }
-
-    if(e.getSource() == toggle){
-      //TODO
-    }
-    }
-
-
-  @Override
-  public void mouseClicked(MouseEvent e) {
-
   }
 
-  @Override
-  public void mousePressed(MouseEvent e) {
 
-  }
-
-  @Override
-  public void mouseReleased(MouseEvent e) {
-
-  }
-
-  @Override
-  public void mouseEntered(MouseEvent e) {
-      if(e.getSource() == settings){
-          buttons_popup.setForeground(Color.WHITE);
-          buttons_popup.setText("Change Workspace");
-      }
-
-      if(e.getSource() == toggle){
-        buttons_popup.setForeground(Color.WHITE);
-        buttons_popup.setText("Toggle Project View");
-      }
-  }
-
-  @Override
-  public void mouseExited(MouseEvent e) {
-    buttons_popup.setText("");
-  }
 }
 
 

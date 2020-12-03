@@ -71,7 +71,12 @@ public class FileTreeCellRenderer extends DefaultTreeCellRenderer {
             label.setIcon(fileSystemView.getSystemIcon(file));
           }
           label.setToolTipText(file.getPath());
-          label.setText(fileSystemView.getSystemDisplayName(file));
+          if(node.isRoot()){
+            label.setText(fileSystemView.getSystemDisplayName(file)+ " ["+file.getAbsolutePath()+"]");
+          }else{
+            label.setText(fileSystemView.getSystemDisplayName(file));
+          }
+
         }else {
           label.setText(file.getName());
           label.setForeground(deletedColor);

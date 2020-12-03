@@ -110,7 +110,7 @@ public class JExplorerPanel extends JPanel {
     // };
     
     tree = new JTree(treeModel);
-    tree.setRootVisible(false);
+    tree.setRootVisible(true);
     tree.setEditable(false);
     tree.getSelectionModel().setSelectionMode(TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
 //    tree.setDragEnabled(false);
