@@ -41,6 +41,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 
 import static processing.app.I18n.tr;
@@ -431,6 +432,11 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
       case SKETCH:
         // TODO
         // Check save state (if not save) then open sketch folder
+        if(editor.untitled){
+          editor.handleSaveAs();
+        }
+        // Get the diretory of the sketch
+        editorProject.resetProject(editor.sketch.getFolder());
         break;
 
       case TOGGLE:

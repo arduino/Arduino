@@ -22,14 +22,12 @@
 
 package processing.app.macosx;
 
+import com.apple.eawt.*;
+import com.apple.eawt.AppEvent.AppReOpenedEvent;
 
-import java.awt.Desktop;
-
-import com.apple.eawt.AppEvent;
 import processing.app.Base;
 import processing.app.Editor;
 
-import java.awt.desktop.*;
 import java.io.File;
 import java.util.List;
 
@@ -48,11 +46,11 @@ public class ThinkDifferent {
   private static final int MAX_WAIT_FOR_BASE = 30000;
 
   static public void init() {
-    Desktop application = Desktop.getDesktop();
+    Application application = Application.getApplication();
 
-    application.addAppEventListener(new AppReopenedListener() {
+    application.addAppEventListener(new AppReOpenedListener() {
       @Override
-      public void appReopened(AppReopenedEvent aroe) {
+      public void appReOpened(AppReOpenedEvent aroe) {
         try {
           if (Base.INSTANCE.getEditors().size() == 0) {
             Base.INSTANCE.handleNew();
@@ -62,11 +60,10 @@ public class ThinkDifferent {
           e.printStackTrace();
         }
       }
-
     });
     application.setAboutHandler(new AboutHandler() {
       @Override
-      public void handleAbout(AboutEvent aboutEvent) {
+      public void handleAbout(AppEvent.AboutEvent aboutEvent) {
         new Thread(() -> {
           if (waitForBase()) {
             Base.INSTANCE.handleAbout();
@@ -76,7 +73,7 @@ public class ThinkDifferent {
     });
     application.setPreferencesHandler(new PreferencesHandler() {
       @Override
-      public void handlePreferences(PreferencesEvent preferencesEvent) {
+      public void handlePreferences(AppEvent.PreferencesEvent preferencesEvent) {
         new Thread(() -> {
           if (waitForBase()) {
             Base.INSTANCE.handlePrefs();
@@ -86,7 +83,7 @@ public class ThinkDifferent {
     });
     application.setOpenFileHandler(new OpenFilesHandler() {
       @Override
-      public void openFiles(OpenFilesEvent openFilesEvent) {
+      public void openFiles(final AppEvent.OpenFilesEvent openFilesEvent) {
         new Thread(() -> {
           if (waitForBase()) {
             for (File file : openFilesEvent.getFiles()) {
@@ -107,7 +104,7 @@ public class ThinkDifferent {
     });
     application.setQuitHandler(new QuitHandler() {
       @Override
-      public void handleQuitRequestWith(QuitEvent quitEvent, QuitResponse quitResponse) {
+      public void handleQuitRequestWith(AppEvent.QuitEvent quitEvent, QuitResponse quitResponse) {
         new Thread(() -> {
           if (waitForBase()) {
             if (Base.INSTANCE.handleQuit()) {
@@ -117,7 +114,8 @@ public class ThinkDifferent {
             }
           }
         }).start();
-      }});
+      }
+    });
   }
 
   private static boolean waitForBase() {

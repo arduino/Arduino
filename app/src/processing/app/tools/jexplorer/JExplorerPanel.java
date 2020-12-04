@@ -75,17 +75,15 @@ public class JExplorerPanel extends JPanel {
 
   private Translate translate;
 
-  private Editor editor;
   
   // Alow Ctrl+Z last file operation.
   private LimitedQueue<FileOperation> undoQueue = new LimitedQueue<FileOperation>(5);
 
   private FileTransferable currentFileTransferable;
   
-  public JExplorerPanel(File rootDir, Editor editor) {
+  public JExplorerPanel(File rootDir) {
     super();
     this.rootDir = rootDir;
-    this.editor = editor;
     initComponents();
     initMenus();
     initKeyboard();
@@ -465,9 +463,7 @@ public class JExplorerPanel extends JPanel {
   }
   
   
-  protected void handleOpenFile(File file) {
-    editor.getSketchController().addFile(file);
-  }
+  protected void handleOpenFile(File file) {}
 
   protected void handleRename() {
 

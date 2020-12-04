@@ -1,23 +1,16 @@
 package processing.app;
 
-import processing.app.tools.jexplorer.JExplorerPanel;
-
+import processing.app.tools.NavigateDialog;
+import processing.app.tools.ProjectExplorer;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
-
-import static java.awt.Color.RED;
 import static processing.app.I18n.tr;
 
 
 public class EditorProject extends JPanel {
 
-  private JExplorerPanel fileExplorerPanel;
+  private ProjectExplorer fileExplorerPanel;
 
   private File fileRoot;
 
@@ -37,7 +30,7 @@ public class EditorProject extends JPanel {
     fileRoot = new File(path);
     this.base = base;
     this.editor = editor;
-    fileExplorerPanel = new JExplorerPanel(fileRoot, editor);
+    fileExplorerPanel = new ProjectExplorer(fileRoot, editor);
     projectToolbar = new ProjectToolbar(editor, this);
     /*buttons_popup = new Label("Toggle Project View");
     buttons_popup.setForeground(new Color(23, 161, 165));
@@ -75,13 +68,14 @@ public class EditorProject extends JPanel {
 
   }
 
-  public void resetProject(){
+  public void resetProject(File file){
     // Resetting the project View and root directory
-    fileRoot = new File(path);
+    fileRoot = file;
+    path = file.getPath();
     fileExplorerPanel.replaceWorkingDirectory(fileRoot);
 
     // Resetting the sketchbook path
-    PreferencesData.set("sketchbook.path", path);
+    //PreferencesData.set("sketchbook.path", path);
 
 
     editor.statusNotice(tr("Navigated to :")+path);
@@ -89,15 +83,44 @@ public class EditorProject extends JPanel {
 
 
   public void handleNavigate(){
-    chooser = new JFileChooser();
+    /*chooser = new JFileChooser();
     chooser.setCurrentDirectory(fileRoot);
     chooser.setDialogTitle("Choose project directory : ");
     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-    if (chooser.showOpenDialog(fileExplorerPanel) == JFileChooser.APPROVE_OPTION) {
-      this.path = chooser.getSelectedFile().getAbsolutePath();
-      resetProject();
+    chooser.setAcceptAllFileFilterUsed(false);
+    if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+      resetProject(chooser.getSelectedFile());
     }
+    /*JDialog jDialog = new JDialog();
+    JTextField pathfield = new JTextField();
+    jDialog.setPreferredSize(new Dimension(400,400));
+    jDialog.setTitle("Choose the directory to navigate to :");
+    JPanel panel = new JPanel(new BorderLayout());
+    panel.add(pathfield, BorderLayout.NORTH);
+    JExplorerPanel navigator =  new JExplorerPanel(new File("/home/sami"), editor);
+    panel.add(navigator, BorderLayout.CENTER);
+    JPanel buttonPanel = new JPanel();
+    JButton open = new JButton("Open");
+    buttonPanel.add(open);
+    open.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+      }
+    });
+    JButton cancel = new JButton("Cancel");
+    buttonPanel.add(cancel);
+    open.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        jDialog.dispose();
+      }
+    });
+    panel.add(buttonPanel, BorderLayout.SOUTH);
+    jDialog.add(panel);
+    jDialog.pack();
+    jDialog.setLocationRelativeTo(null);
+    jDialog.setVisible(true);*/
+    NavigateDialog navigateDialog = new NavigateDialog(new File("/home/sami/"), fileRoot);
   }
 
 

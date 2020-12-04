@@ -2606,9 +2606,17 @@ public class Editor extends JFrame implements RunnerListener {
 
   public void handleAddProjectView(){
 
+
+    // Check if the recent sketch is saved, if not fall back on the sketchbook path
+    if(untitled){
+      project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
+    }else{
+      project = new EditorProject(sketch.getFolder().getAbsolutePath(), base, this);
+    }
+
     // Reset the panels and add the project view
     middle.remove(editor_upper);
-    project = new EditorProject(PreferencesData.get("sketchbook.path"), base, this);
+
     middle.add(project);
     middle.add(editor_upper);
 
