@@ -1,1 +1,0 @@
-Demonstrates the use of SerialEvent(). 

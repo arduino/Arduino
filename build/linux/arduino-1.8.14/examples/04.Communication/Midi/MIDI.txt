@@ -1,1 +1,0 @@
-Send MIDI note messages serially. 

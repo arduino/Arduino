@@ -1,1 +1,0 @@
-Demonstrates Arduino's advanced serial output functions.

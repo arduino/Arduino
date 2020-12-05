@@ -1,1 +1,0 @@
-Sends a text string when a button is pressed. 
