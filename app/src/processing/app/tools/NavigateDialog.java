@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 
-public class NavigateDialog extends JExplorerPanel implements ActionListener {
+public class NavigateDialog extends JExplorerPanel implements ActionListener, MouseListener {
 
   private JTextField pathfield;
   private JDialog dialog;
@@ -20,40 +20,15 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener {
 
   public NavigateDialog(File rootFile, File projectDir){
     super(rootFile);
-    this.getTree().addMouseListener(new MouseListener() {
-      @Override
-      public void mouseClicked(MouseEvent e) {
-      }
-
-      @Override
-      public void mousePressed(MouseEvent e) {
-
-      }
-
-      @Override
-      public void mouseReleased(MouseEvent e) {
-
-      }
-
-      @Override
-      public void mouseEntered(MouseEvent e) {
-
-      }
-
-      @Override
-      public void mouseExited(MouseEvent e) {
-
-      }
-    });
+    this.getTree().addMouseListener(this);
     pathfield = new JTextField();
 
     dialog = new JDialog();
-    dialog.setBackground(Color.BLACK);
     pathfield = new JTextField();
     dialog.setPreferredSize(new Dimension(400,400));
     dialog.setTitle("Choose the directory to navigate to :");
     JPanel panel = new JPanel(new BorderLayout());
-    panel.setOpaque(false);
+    panel.setBackground(Color.BLACK);
     panel.add(pathfield, BorderLayout.NORTH);
     panel.add(this, BorderLayout.CENTER);
     JPanel buttonPanel = new JPanel();
@@ -84,4 +59,31 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener {
   }
 
 
+  @Override
+  public void mouseClicked(MouseEvent e) {
+     if(e.getSource() == this.getTree()){
+       // Update the pathfield
+       pathfield.setText(this.getSelectedFile().getAbsolutePath());
+     }
+  }
+
+  @Override
+  public void mousePressed(MouseEvent e) {
+
+  }
+
+  @Override
+  public void mouseReleased(MouseEvent e) {
+
+  }
+
+  @Override
+  public void mouseEntered(MouseEvent e) {
+
+  }
+
+  @Override
+  public void mouseExited(MouseEvent e) {
+
+  }
 }

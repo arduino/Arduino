@@ -41,8 +41,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import processing.app.Editor;
-import processing.app.Sketch;
+
 import processing.app.tools.jexplorer.FileTreeModel.FileTreeNode;
 import processing.app.tools.jexplorer.utils.Translate;
 import processing.app.tools.jexplorer.utils.LimitedQueue;
@@ -50,7 +49,7 @@ import processing.app.tools.jexplorer.dnd.FileTransferHandler.*;
 import processing.app.tools.jexplorer.dnd.FileTransferHandler;
 import processing.app.tools.jexplorer.dnd.FileTreeDragSource;
 import processing.app.tools.jexplorer.FileOperation.*;
-import processing.app.tools.jexplorer.FileOperation;
+
 
 /**
  * A file explorer supporting file operations (copy, delete, remove) and others and with drag & drop support <br/>
@@ -667,7 +666,7 @@ public class JExplorerPanel extends JPanel {
     return (FileTreeNode) node;
   }
   
-  private File getSelectedFile() {
+  protected File getSelectedFile() {
     return getSelectedFile(tree.getSelectionPath());
   }
   
