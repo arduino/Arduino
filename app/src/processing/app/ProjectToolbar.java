@@ -59,19 +59,19 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     tr("Navigate"), tr("Sketch Folder"), tr("Toggle View")
   };
 
-  private static final int BUTTON_COUNT = 6;
+  private static final int BUTTON_COUNT = title.length;
   /**
    * Width of each toolbar button.
    */
-  private static final int BUTTON_WIDTH = scale(27);
+  private static final int BUTTON_WIDTH = scale(30);
   /**
    * Height of each toolbar button.
    */
-  private static final int BUTTON_HEIGHT = scale(32);
+  private static final int BUTTON_HEIGHT = scale(26);
   /**
    * The amount of space between groups of buttons on the toolbar.
    */
-  private static final int BUTTON_GAP = scale(5);
+  private static final int BUTTON_GAP = scale(6);
   /**
    * Size of the button image being chopped up.
    */
@@ -84,6 +84,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
 
   private static final int INACTIVE = 0;
   private static final int ROLLOVER = 1;
+  private static final int ACTIVE = 2;
 
   private final Editor editor;
 
@@ -129,7 +130,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
 
     currentRollover = -1;
 
-    bgcolor = Theme.getColor("header.bgcolor");
+    bgcolor = Theme.getColor("buttons.bgcolor");
     statusFont = Theme.getFont("buttons.status.font");
     statusColor = Theme.getColor("buttons.status.color");
 
@@ -179,13 +180,12 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
 
       TouchBarItem touchBarItem = new TouchBarItem(title[i], touchBarButtons[i], true);
       touchBarItem.setCustomizationLabel(title[i]);
-
       touchBar.addItem(touchBarItem);
     }
   }
 
   private void loadButtons() {
-    Image allButtons = Theme.getThemeImage("projectbuttons", this,
+    Image allButtons = Theme.getThemeImage("ProjectButtons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT,
       BUTTON_IMAGE_SIZE * 3);
     buttonImages = new Image[BUTTON_COUNT][3];
@@ -205,7 +205,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
   private void loadTouchBarImages() {
-    Image allButtonsRetina = Theme.getThemeImage("projectbuttons", this,
+    Image allButtonsRetina = Theme.getThemeImage("ProjectButtons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT * 2,
       BUTTON_IMAGE_SIZE * 3 * 2);
     touchBarImages = new com.thizzer.jtouchbar.common.Image[BUTTON_COUNT][3];
@@ -284,17 +284,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     g.setColor(statusColor);
     g.setFont(statusFont);
 
-    /*
-    // if i ever find the guy who wrote the java2d api, i will hurt him.
-     *
-     * whereas I love the Java2D API. --jdf. lol.
-     *
-    Graphics2D g2 = (Graphics2D) g;
-    FontRenderContext frc = g2.getFontRenderContext();
-    float statusW = (float) statusFont.getStringBounds(status, frc).getWidth();
-    float statusX = (getSize().width - statusW) / 2;
-    g2.drawString(status, statusX, statusY);
-    */
+
     if (currentRollover != -1) {
       int statusY = (BUTTON_HEIGHT + g.getFontMetrics().getAscent()) / 2;
       String status = title[currentRollover];
@@ -384,6 +374,11 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
       touchBarButtons[slot].setImage(touchBarImages[slot][newState]);
     }
   }
+  private void deactivate() {
+    if (buttonImages != null) {
+      setState(NAVIGATE, INACTIVE, true);
+    }
+  }
 
 
   public void mouseEntered(MouseEvent e) {
@@ -448,6 +443,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     }
   }
 
+
   public Dimension getPreferredSize() {
     return getMinimumSize();
   }
@@ -463,7 +459,6 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
 }
-
 
 
 

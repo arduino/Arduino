@@ -1,25 +1,25 @@
 package processing.app.tools;
 
 import processing.app.Editor;
+import processing.app.EditorProject;
 import processing.app.tools.jexplorer.JExplorerPanel;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.io.File;
 
-public class NavigateDialog extends JExplorerPanel implements ActionListener, MouseListener {
+public class NavigateDialog extends JExplorerPanel implements ActionListener, MouseListener, KeyListener {
 
   private JTextField pathfield;
   private JDialog dialog;
   private JButton open, cancel;
+  private EditorProject editorProject;
 
-  public NavigateDialog(File rootFile, File projectDir){
+  public NavigateDialog(File rootFile, File projectDir, EditorProject editorProject){
     super(rootFile);
+    this.editorProject = editorProject;
     this.getTree().addMouseListener(this);
     pathfield = new JTextField();
 
@@ -27,8 +27,9 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener, Mo
     pathfield = new JTextField();
     dialog.setPreferredSize(new Dimension(400,400));
     dialog.setTitle("Choose the directory to navigate to :");
+    dialog.setFocusable(true);
+    dialog.addKeyListener(this);
     JPanel panel = new JPanel(new BorderLayout());
-    panel.setBackground(Color.BLACK);
     panel.add(pathfield, BorderLayout.NORTH);
     panel.add(this, BorderLayout.CENTER);
     JPanel buttonPanel = new JPanel();
@@ -50,7 +51,7 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener, Mo
   public void actionPerformed(ActionEvent e) {
 
     if(e.getSource() == open){
-
+      handleOpen();
     }
     if(e.getSource() == cancel){
       dialog.setVisible(false);
@@ -85,5 +86,42 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener, Mo
   @Override
   public void mouseExited(MouseEvent e) {
 
+  }
+
+
+  @Override
+  public void keyTyped(KeyEvent e) {
+      if(e.getKeyCode() == KeyEvent.VK_ENTER){
+        handleOpen();
+      }
+  }
+
+  @Override
+  public void keyPressed(KeyEvent e) {
+
+  }
+
+  @Override
+  public void keyReleased(KeyEvent e) {
+
+  }
+
+  public void handleOpen(){
+    String newdir = pathfield.getText();
+    if(!newdir.equals("")){
+      // Check if the path given is true file
+      File prjdir = new File(newdir);
+      if(prjdir.exists()){
+        // Check if its a directory, if it's a file go to its parent dir
+        if(prjdir.isDirectory()){
+          editorProject.resetProject(prjdir);
+        }else if(prjdir.isFile()){
+          editorProject.resetProject(prjdir.getParentFile());
+        }
+        // Quit the dialog
+        dialog.setVisible(false);
+        dialog.dispose();
+      }
+    }
   }
 }

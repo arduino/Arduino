@@ -120,7 +120,7 @@ public class EditorProject extends JPanel {
     jDialog.pack();
     jDialog.setLocationRelativeTo(null);
     jDialog.setVisible(true);*/
-    NavigateDialog navigateDialog = new NavigateDialog(new File("/home/sami/"), fileRoot);
+    NavigateDialog navigateDialog = new NavigateDialog(new File(System.getProperty("user.home")), fileRoot, this);
   }
 
 

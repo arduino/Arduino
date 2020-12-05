@@ -1,0 +1,150 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 198 99" width="198" height="99">
+	<defs>
+		<image width="122" height="122" id="img1" href="data:image/png;base64,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"/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #ffffff } 
+		.shp1 { fill: #006468 } 
+		.shp2 { fill: #4db7bb } 
+		.shp3 { fill: #ffcc00 } 
+		.shp4 { fill: none;stroke: #655100;stroke-width: 2.305 } 
+		.shp5 { fill: #655100 } 
+		.shp6 { fill: none;stroke: #655100;stroke-width: 1.954 } 
+		.shp7 { fill: none;stroke: #006468;stroke-width: 1.954 } 
+	</style>
+	<g id="g191 copy">
+		<path id="rect195" class="shp0" d="M72 38.97L93 38.97L93 59.97L72 59.97L72 38.97Z" />
+		<use id="Background copy" href="#img1" transform="matrix(0.107,0,0,0.107,76,43)"/>
+	</g>
+	<g id="g233 copy">
+		<path id="path235" class="shp1" d="" />
+		<path id="rect237" class="shp2" d="M72 71.98L93 71.98L93 92.98L72 92.98L72 71.98Z" />
+		<use id="Background copy 2" href="#img1" transform="matrix(0.107,0,0,0.107,76,76)"/>
+	</g>
+	<g id="g5">
+		<path id="circle7" class="shp3" d="M16.5 28.61C9.86 28.61 4.5 23.24 4.5 16.61C4.5 9.97 9.86 4.61 16.5 4.61C23.14 4.61 28.5 9.97 28.5 16.61C28.5 23.24 23.14 28.61 16.5 28.61Z" />
+		<path id="polyline9" class="shp4" d="M21.33 12.74L15.67 20.57L11.65 16.66" />
+	</g>
+	<g id="g23">
+		<path id="circle25" class="shp3" d="M49.5 28.61C42.86 28.61 37.5 23.24 37.5 16.61C37.5 9.97 42.86 4.61 49.5 4.61C56.14 4.61 61.5 9.97 61.5 16.61C61.5 23.24 56.14 28.61 49.5 28.61Z" />
+		<path id="polygon27" class="shp5" d="M45.15 15.31L49.05 15.31L49.05 11.53L54.44 16.88L49.07 22.25L49.07 18.56L45.15 18.54L45.15 15.31Z" />
+	</g>
+	<g id="g29">
+		<path id="circle31" class="shp0" d="M49.5 61.47C42.86 61.47 37.5 56.1 37.5 49.47C37.5 42.83 42.86 37.47 49.5 37.47C56.14 37.47 61.5 42.83 61.5 49.47C61.5 56.1 56.14 61.47 49.5 61.47Z" />
+		<path id="polygon33" class="shp1" d="M45.15 48.17L49.05 48.17L49.05 44.39L54.44 49.73L49.07 55.1L49.07 51.42L45.15 51.39L45.15 48.17Z" />
+	</g>
+	<g id="g35">
+		<path id="circle37" class="shp2" d="M49.5 94.48C42.86 94.48 37.5 89.11 37.5 82.48C37.5 75.84 42.86 70.48 49.5 70.48C56.14 70.48 61.5 75.84 61.5 82.48C61.5 89.11 56.14 94.48 49.5 94.48Z" />
+		<path id="polygon39" class="shp1" d="M45.15 81.18L49.05 81.18L49.05 77.4L54.44 82.74L49.07 88.11L49.07 84.43L45.15 84.41L45.15 81.18Z" />
+	</g>
+	<g id="g41">
+		<path id="rect43" class="shp3" d="M105 6.11L126 6.11L126 27.11L105 27.11L105 6.11Z" />
+		<path id="polygon45" class="shp5" d="M113.9 19.08L113.9 15.12L110.04 15.12L115.49 9.62L120.96 15.09L117.21 15.09L117.18 19.08L113.9 19.08Z" />
+		<path id="rect47" class="shp5" d="M109.97 22.19L110.97 22.19L110.97 23.19L109.97 23.19L109.97 22.19Z" />
+		<path id="rect49" class="shp5" d="M111.97 22.19L112.97 22.19L112.97 23.19L111.97 23.19L111.97 22.19Z" />
+		<path id="rect51" class="shp5" d="M113.97 22.19L114.97 22.19L114.97 23.19L113.97 23.19L113.97 22.19Z" />
+		<path id="rect53" class="shp5" d="M115.98 22.19L116.98 22.19L116.98 23.19L115.98 23.19L115.98 22.19Z" />
+		<path id="rect55" class="shp5" d="M117.98 22.19L118.98 22.19L118.98 23.19L117.98 23.19L117.98 22.19Z" />
+		<path id="rect57" class="shp5" d="M119.99 22.19L120.99 22.19L120.99 23.19L119.99 23.19L119.99 22.19Z" />
+	</g>
+	<g id="g59">
+		<path id="rect61" class="shp3" d="M138 6.11L159 6.11L159 27.11L138 27.11L138 6.11Z" />
+		<path id="polygon63" class="shp5" d="M150.1 9.62L150.1 13.59L153.96 13.59L148.51 19.08L143.04 13.61L146.79 13.61L146.82 9.62L150.1 9.62Z" />
+		<path id="rect65" class="shp5" d="M142.97 22.19L143.97 22.19L143.97 23.19L142.97 23.19L142.97 22.19Z" />
+		<path id="rect67" class="shp5" d="M144.97 22.19L145.97 22.19L145.97 23.19L144.97 23.19L144.97 22.19Z" />
+		<path id="rect69" class="shp5" d="M146.97 22.19L147.97 22.19L147.97 23.19L146.97 23.19L146.97 22.19Z" />
+		<path id="rect71" class="shp5" d="M148.98 22.19L149.98 22.19L149.98 23.19L148.98 23.19L148.98 22.19Z" />
+		<path id="rect73" class="shp5" d="M150.98 22.19L151.98 22.19L151.98 23.19L150.98 23.19L150.98 22.19Z" />
+		<path id="rect75" class="shp5" d="M152.99 22.19L153.99 22.19L153.99 23.19L152.99 23.19L152.99 22.19Z" />
+	</g>
+	<g id="g77">
+		<path id="rect79" class="shp0" d="M105 38.97L126 38.97L126 59.97L105 59.97L105 38.97Z" />
+		<path id="polygon81" class="shp1" d="M113.9 51.94L113.9 47.97L110.04 47.97L115.49 42.48L120.96 47.95L117.21 47.95L117.18 51.94L113.9 51.94Z" />
+		<path id="rect83" class="shp1" d="M109.97 55.05L110.97 55.05L110.97 56.05L109.97 56.05L109.97 55.05Z" />
+		<path id="rect85" class="shp1" d="M111.97 55.05L112.97 55.05L112.97 56.05L111.97 56.05L111.97 55.05Z" />
+		<path id="rect87" class="shp1" d="M113.97 55.05L114.97 55.05L114.97 56.05L113.97 56.05L113.97 55.05Z" />
+		<path id="rect89" class="shp1" d="M115.98 55.05L116.98 55.05L116.98 56.05L115.98 56.05L115.98 55.05Z" />
+		<path id="rect91" class="shp1" d="M117.98 55.05L118.98 55.05L118.98 56.05L117.98 56.05L117.98 55.05Z" />
+		<path id="rect93" class="shp1" d="M119.99 55.05L120.99 55.05L120.99 56.05L119.99 56.05L119.99 55.05Z" />
+	</g>
+	<g id="g95">
+		<path id="rect97" class="shp0" d="M138 38.97L159 38.97L159 59.97L138 59.97L138 38.97Z" />
+		<path id="polygon99" class="shp1" d="M150.1 42.48L150.1 46.44L153.96 46.44L148.51 51.94L143.04 46.47L146.79 46.47L146.82 42.48L150.1 42.48Z" />
+		<path id="rect101" class="shp1" d="M142.97 55.05L143.97 55.05L143.97 56.05L142.97 56.05L142.97 55.05Z" />
+		<path id="rect103" class="shp1" d="M144.97 55.05L145.97 55.05L145.97 56.05L144.97 56.05L144.97 55.05Z" />
+		<path id="rect105" class="shp1" d="M146.97 55.05L147.97 55.05L147.97 56.05L146.97 56.05L146.97 55.05Z" />
+		<path id="rect107" class="shp1" d="M148.98 55.05L149.98 55.05L149.98 56.05L148.98 56.05L148.98 55.05Z" />
+		<path id="rect109" class="shp1" d="M150.98 55.05L151.98 55.05L151.98 56.05L150.98 56.05L150.98 55.05Z" />
+		<path id="rect111" class="shp1" d="M152.99 55.05L153.99 55.05L153.99 56.05L152.99 56.05L152.99 55.05Z" />
+	</g>
+	<g id="g113">
+		<path id="rect115" class="shp2" d="M105 71.98L126 71.98L126 92.98L105 92.98L105 71.98Z" />
+		<path id="polygon117" class="shp1" d="M113.9 84.95L113.9 80.98L110.04 80.98L115.49 75.49L120.96 80.96L117.21 80.96L117.18 84.95L113.9 84.95Z" />
+		<path id="rect119" class="shp1" d="M109.97 88.06L110.97 88.06L110.97 89.06L109.97 89.06L109.97 88.06Z" />
+		<path id="rect121" class="shp1" d="M111.97 88.06L112.97 88.06L112.97 89.06L111.97 89.06L111.97 88.06Z" />
+		<path id="rect123" class="shp1" d="M113.97 88.06L114.97 88.06L114.97 89.06L113.97 89.06L113.97 88.06Z" />
+		<path id="rect125" class="shp1" d="M115.98 88.06L116.98 88.06L116.98 89.06L115.98 89.06L115.98 88.06Z" />
+		<path id="rect127" class="shp1" d="M117.98 88.06L118.98 88.06L118.98 89.06L117.98 89.06L117.98 88.06Z" />
+		<path id="rect129" class="shp1" d="M119.99 88.06L120.99 88.06L120.99 89.06L119.99 89.06L119.99 88.06Z" />
+	</g>
+	<g id="g131">
+		<path id="rect133" class="shp2" d="M138 71.98L159 71.98L159 92.98L138 92.98L138 71.98Z" />
+		<path id="polygon135" class="shp1" d="M150.1 75.49L150.1 79.45L153.96 79.45L148.51 84.95L143.04 79.48L146.79 79.48L146.82 75.49L150.1 75.49Z" />
+		<path id="rect137" class="shp1" d="M142.97 88.06L143.97 88.06L143.97 89.06L142.97 89.06L142.97 88.06Z" />
+		<path id="rect139" class="shp1" d="M144.97 88.06L145.97 88.06L145.97 89.06L144.97 89.06L144.97 88.06Z" />
+		<path id="rect141" class="shp1" d="M146.97 88.06L147.97 88.06L147.97 89.06L146.97 89.06L146.97 88.06Z" />
+		<path id="rect143" class="shp1" d="M148.98 88.06L149.98 88.06L149.98 89.06L148.98 89.06L148.98 88.06Z" />
+		<path id="rect145" class="shp1" d="M150.98 88.06L151.98 88.06L151.98 89.06L150.98 89.06L150.98 88.06Z" />
+		<path id="rect147" class="shp1" d="M152.99 88.06L153.99 88.06L153.99 89.06L152.99 89.06L152.99 88.06Z" />
+	</g>
+	<g id="g149">
+		<path id="path151" class="shp5" d="" />
+		<path id="rect153" class="shp3" d="M72 6.11L93 6.11L93 27.11L72 27.11L72 6.11Z" />
+		<path id="polygon155" class="shp5" d="M83.04 10.09L84.04 10.09L88.02 14.08L88.02 15.06L87.04 15.06L83.04 15.06L83.04 10.09Z" />
+		<path id="polygon157" class="shp5" d="M78 11.09L78 22.1L87.04 22.1L87.04 14.87L88.02 14.87L88.02 23.13L77 23.13L77 10.09L83.16 10.09L83.17 11.09L78 11.09Z" />
+		<path id="rect159" class="shp5" d="M79 12.11L79.99 12.11L79.99 13.11L79 13.11L79 12.11Z" />
+		<path id="rect161" class="shp5" d="M80.99 12.11L81.99 12.11L81.99 13.11L80.99 13.11L80.99 12.11Z" />
+		<path id="rect163" class="shp5" d="M79 14.1L79.99 14.1L79.99 15.1L79 15.1L79 14.1Z" />
+		<path id="rect165" class="shp5" d="M80.99 14.1L81.99 14.1L81.99 15.1L80.99 15.1L80.99 14.1Z" />
+		<path id="rect167" class="shp5" d="M79 16.12L79.99 16.12L79.99 17.11L79 17.11L79 16.12Z" />
+		<path id="rect169" class="shp5" d="M80.99 16.12L81.99 16.12L81.99 17.11L80.99 17.11L80.99 16.12Z" />
+		<path id="rect171" class="shp5" d="M83 16.12L84 16.12L84 17.11L83 17.11L83 16.12Z" />
+		<path id="rect173" class="shp5" d="M85 16.12L85.99 16.12L85.99 17.11L85 17.11L85 16.12Z" />
+		<path id="rect175" class="shp5" d="M79 18.12L79.99 18.12L79.99 19.11L79 19.11L79 18.12Z" />
+		<path id="rect177" class="shp5" d="M80.99 18.12L81.99 18.12L81.99 19.11L80.99 19.11L80.99 18.12Z" />
+		<path id="rect179" class="shp5" d="M79 20.13L79.99 20.13L79.99 21.13L79 21.13L79 20.13Z" />
+		<path id="rect181" class="shp5" d="M80.99 20.13L81.99 20.13L81.99 21.13L80.99 21.13L80.99 20.13Z" />
+		<path id="rect183" class="shp5" d="M83 18.12L84 18.12L84 19.11L83 19.11L83 18.12Z" />
+		<path id="rect185" class="shp5" d="M85 18.12L85.99 18.12L85.99 19.11L85 19.11L85 18.12Z" />
+		<path id="rect187" class="shp5" d="M83 20.13L84 20.13L84 21.13L83 21.13L83 20.13Z" />
+		<path id="rect189" class="shp5" d="M85 20.13L85.99 20.13L85.99 21.13L85 21.13L85 20.13Z" />
+	</g>
+	<g id="g275">
+		<path id="rect277" class="shp3" d="M171 6.11L192 6.11L192 27.11L171 27.11L171 6.11Z" />
+		<path id="rect279" class="shp5" d="M186.99 16.1L187.99 16.1L187.99 17.1L186.99 17.1L186.99 16.1Z" />
+		<path id="rect281" class="shp5" d="M189 16.1L190 16.1L190 17.1L189 17.1L189 16.1Z" />
+		<path id="rect283" class="shp5" d="M174 16.1L175 16.1L175 17.1L174 17.1L174 16.1Z" />
+		<path id="circle285" class="shp6" d="M180.97 20.19C178.71 20.19 176.88 18.36 176.88 16.1C176.88 13.84 178.71 12.01 180.97 12.01C183.24 12.01 185.06 13.84 185.06 16.1C185.06 18.36 183.24 20.19 180.97 20.19Z" />
+		<path id="rect287" class="shp5" d="M177.07 18.15L178.93 20.09L175.73 23.14L173.88 21.21L177.07 18.15Z" />
+		<path id="rect289" class="shp5" d="M179.96 15.1L181.99 15.1L181.99 17.1L179.96 17.1L179.96 15.1Z" />
+	</g>
+	<g id="g291">
+		<path id="rect293" class="shp0" d="M171 38.97L192 38.97L192 59.97L171 59.97L171 38.97Z" />
+		<path id="rect295" class="shp1" d="M186.99 48.96L187.99 48.96L187.99 49.96L186.99 49.96L186.99 48.96Z" />
+		<path id="rect297" class="shp1" d="M189 48.96L190 48.96L190 49.96L189 49.96L189 48.96Z" />
+		<path id="rect299" class="shp1" d="M174 48.96L175 48.96L175 49.96L174 49.96L174 48.96Z" />
+		<path id="circle301" class="shp7" d="M180.97 53.05C178.71 53.05 176.88 51.22 176.88 48.96C176.88 46.7 178.71 44.87 180.97 44.87C183.24 44.87 185.06 46.7 185.06 48.96C185.06 51.22 183.24 53.05 180.97 53.05Z" />
+		<path id="rect303" class="shp1" d="M177.07 51L178.93 52.94L175.73 56L173.88 54.06L177.07 51Z" />
+		<path id="rect305" class="shp1" d="M179.96 47.96L181.99 47.96L181.99 49.96L179.96 49.96L179.96 47.96Z" />
+	</g>
+	<g id="g307">
+		<path id="rect309" class="shp2" d="M171 71.98L192 71.98L192 92.98L171 92.98L171 71.98Z" />
+		<path id="rect311" class="shp1" d="M186.99 81.97L187.99 81.97L187.99 82.97L186.99 82.97L186.99 81.97Z" />
+		<path id="rect313" class="shp1" d="M189 81.97L190 81.97L190 82.97L189 82.97L189 81.97Z" />
+		<path id="rect315" class="shp1" d="M174 81.97L175 81.97L175 82.97L174 82.97L174 81.97Z" />
+		<path id="circle317" class="shp7" d="M180.97 86.06C178.71 86.06 176.88 84.23 176.88 81.97C176.88 79.71 178.71 77.88 180.97 77.88C183.24 77.88 185.06 79.71 185.06 81.97C185.06 84.23 183.24 86.06 180.97 86.06Z" />
+		<path id="rect319" class="shp1" d="M177.07 84.02L178.92 85.95L175.73 89.01L173.88 87.07L177.07 84.02Z" />
+		<path id="rect321" class="shp1" d="M179.96 80.97L181.99 80.97L181.99 82.97L179.96 82.97L179.96 80.97Z" />
+	</g>
+</svg>

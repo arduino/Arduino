@@ -1665,7 +1665,7 @@ public class Editor extends JFrame implements RunnerListener {
         }
       }
     }
-    textArea.addLineHighlight(line, new Color(0, 0, 255, 0.2f));
+    textArea.addLineHighlight(line, new Color(1, 0, 0, 0.2f));
     textArea.setCaretPosition(textArea.getLineStartOffset(line));
   }
 
@@ -2623,7 +2623,7 @@ public class Editor extends JFrame implements RunnerListener {
     // Split the code and project View
     splitProject = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, project, editor_upper);
     splitProject.setContinuousLayout(true);
-    splitProject.setResizeWeight(0.25);
+    splitProject.setResizeWeight(0.10f);
     middle.add(splitProject);
 
     // Pack the frame
