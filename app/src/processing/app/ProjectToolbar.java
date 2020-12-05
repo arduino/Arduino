@@ -422,6 +422,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     switch (sel) {
       case NAVIGATE:
         editorProject.handleNavigate();
+        deactivate();
         break;
 
       case SKETCH:
