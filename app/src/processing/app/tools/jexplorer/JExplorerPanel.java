@@ -42,6 +42,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 
+import processing.app.I18n;
 import processing.app.tools.jexplorer.FileTreeModel.FileTreeNode;
 import processing.app.tools.jexplorer.utils.Translate;
 import processing.app.tools.jexplorer.utils.LimitedQueue;
@@ -343,7 +344,7 @@ public class JExplorerPanel extends JPanel {
    * Handle translation
    */
   protected String tr(String name) {
-    return name;
+    return I18n.tr(name);
   }
   
   protected void log(String message) {

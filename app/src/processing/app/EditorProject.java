@@ -24,6 +24,8 @@ public class EditorProject extends JPanel {
 
   private ProjectToolbar projectToolbar;
 
+  boolean navigating;
+
 
   public EditorProject(String path, Base base, Editor editor){
     this.setLayout(new BorderLayout());
@@ -120,7 +122,12 @@ public class EditorProject extends JPanel {
     jDialog.pack();
     jDialog.setLocationRelativeTo(null);
     jDialog.setVisible(true);*/
-    NavigateDialog navigateDialog = new NavigateDialog(new File(System.getProperty("user.home")), fileRoot, this);
+    if(!navigating) {
+      NavigateDialog navigateDialog = new NavigateDialog(new File(System.getProperty("user.home")), fileRoot, this);
+      navigating = true;
+    }else{
+
+    }
   }
 
 

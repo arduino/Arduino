@@ -63,8 +63,10 @@ public class NavigateDialog extends JExplorerPanel implements ActionListener, Mo
   @Override
   public void mouseClicked(MouseEvent e) {
      if(e.getSource() == this.getTree()){
-       // Update the pathfield
-       pathfield.setText(this.getSelectedFile().getAbsolutePath());
+       if(this.getSelectedFile() != null) {
+         // Update the pathfield
+         pathfield.setText(this.getSelectedFile().getAbsolutePath());
+       }
      }
   }
 
