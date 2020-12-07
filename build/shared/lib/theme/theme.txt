@@ -36,6 +36,12 @@ buttons.bgcolor = #006468
 buttons.status.font = SansSerif,plain,12
 buttons.status.color = #ffffff
 
+
+# GUI - PROJECTBUTTONS
+PROJECTBUTTONS.bgcolor = #17A1A5
+PROJECTBUTTONS.status.font = SansSerif,plain,12
+PROJECTBUTTONS.status.color = #ffffff
+
 # GUI - PLOTTING
 plotting.bgcolor = #ffffff
 plotting.color = #ffffff

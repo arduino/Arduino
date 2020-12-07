@@ -1,1 +1,0 @@
-Use an analog output (PWM pin) to fade an LED. 

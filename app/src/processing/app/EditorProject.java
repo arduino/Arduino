@@ -42,10 +42,8 @@ public class EditorProject extends JPanel {
     settingsbox.setOpaque(true);
     settingsbox.setBackground(new Color(23, 161, 165));
     this.path = path;
-
     Icon img = new ImageIcon(new ImageIcon("folder1.jpg").getImage().getScaledInstance(35, 30, Image.SCALE_DEFAULT));
     settings = new JButton(img);
-    
 
     settings.setPreferredSize(new Dimension(25, 5));
     settings.addActionListener(this);
@@ -132,6 +130,3 @@ public class EditorProject extends JPanel {
 
 
 }
-
-
-

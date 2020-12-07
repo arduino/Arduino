@@ -1,21 +1,18 @@
+
 /* -*- mode: java; c-basic-offset: 2; indent-tabs-mode: nil -*- */
 
 /*
   Part of the Processing project - http://processing.org
-
   Copyright (c) 2004-09 Ben Fry and Casey Reas
   Copyright (c) 2001-04 Massachusetts Institute of Technology
-
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
   You should have received a copy of the GNU General Public License
   along with this program; if not, write to the Free Software Foundation,
   Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -63,11 +60,11 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   /**
    * Width of each toolbar button.
    */
-  private static final int BUTTON_WIDTH = scale(30);
+  private static final int BUTTON_WIDTH = scale(33);
   /**
    * Height of each toolbar button.
    */
-  private static final int BUTTON_HEIGHT = scale(26);
+  private static final int BUTTON_HEIGHT = scale(30);
   /**
    * The amount of space between groups of buttons on the toolbar.
    */
@@ -130,9 +127,9 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
 
     currentRollover = -1;
 
-    bgcolor = Theme.getColor("buttons.bgcolor");
-    statusFont = Theme.getFont("buttons.status.font");
-    statusColor = Theme.getColor("buttons.status.color");
+    bgcolor = Theme.getColor("PROJECTBUTTONS.bgcolor");
+    statusFont = Theme.getFont("PROJECTBUTTONS.status.font");
+    statusColor = Theme.getColor("PROJECTBUTTONS.status.color");
 
     if (OSUtils.isMacOS() && VersionComparator.greaterThanOrEqual(OSUtils.version(), "10.12")) {
       editor.addWindowListener(new WindowAdapter() {
@@ -162,9 +159,8 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     for (int i = 0; i < BUTTON_COUNT; i++) {
       final int selection = i;
 
-      if (i == TOGGLE) {
-        touchBar.addItem(new TouchBarItem(TouchBarItem.NSTouchBarItemIdentifierFlexibleSpace));
-      }
+      touchBar.addItem(new TouchBarItem(TouchBarItem.NSTouchBarItemIdentifierFlexibleSpace));
+
 
       touchBarButtons[i] = new TouchBarButton();
       touchBarButtons[i].setImage(touchBarImages[i][ROLLOVER]);
@@ -185,7 +181,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
   private void loadButtons() {
-    Image allButtons = Theme.getThemeImage("ProjectButtons", this,
+    Image allButtons = Theme.getThemeImage("projectButtons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT,
       BUTTON_IMAGE_SIZE * 3);
     buttonImages = new Image[BUTTON_COUNT][3];
@@ -205,7 +201,7 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
   private void loadTouchBarImages() {
-    Image allButtonsRetina = Theme.getThemeImage("ProjectButtons", this,
+    Image allButtonsRetina = Theme.getThemeImage("projectButtons", this,
       BUTTON_IMAGE_SIZE * BUTTON_COUNT * 2,
       BUTTON_IMAGE_SIZE * 3 * 2);
     touchBarImages = new com.thizzer.jtouchbar.common.Image[BUTTON_COUNT][3];
@@ -288,13 +284,13 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
     if (currentRollover != -1) {
       int statusY = (BUTTON_HEIGHT + g.getFontMetrics().getAscent()) / 2;
       String status = title[currentRollover];
-      if (currentRollover != TOGGLE)
-        g.drawString(status, (buttonCount) * BUTTON_WIDTH + 3 * BUTTON_GAP, statusY);
-      else {
-        int statusX = x1[TOGGLE] - BUTTON_GAP;
-        statusX -= g.getFontMetrics().stringWidth(status);
-        g.drawString(status, statusX, statusY);
-      }
+
+
+
+      int statusX = x1[TOGGLE] +3;
+      statusX -= g.getFontMetrics().stringWidth(status);
+      g.drawString(status, statusX, statusY);
+
     }
 
     screen.drawImage(offscreen, 0, 0, null);
@@ -460,11 +456,3 @@ public class ProjectToolbar extends JComponent implements MouseInputListener {
   }
 
 }
-
-
-
-
-
-
-
-

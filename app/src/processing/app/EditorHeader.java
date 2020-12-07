@@ -23,8 +23,10 @@
 
 package processing.app;
 
+import processing.app.debug.RunnerException;
 import processing.app.helpers.Keys;
 import processing.app.helpers.OSUtils;
+import processing.app.helpers.PreferencesMapException;
 import processing.app.helpers.SimpleAction;
 import processing.app.tools.MenuScroller;
 import static processing.app.I18n.tr;
@@ -34,6 +36,8 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import static processing.app.Theme.scale;
 
@@ -55,10 +59,13 @@ public class EditorHeader extends JComponent {
   int fontAscent;
 
   JMenu menu;
+  JMenu menu_sketch;
   JPopupMenu popup;
+  JPopupMenu popup_sketch;
 
   int menuLeft;
   int menuRight;
+  int oldIndex;
 
   //
 
@@ -107,6 +114,55 @@ public class EditorHeader extends JComponent {
 
     public final Action nextTab = new SimpleAction(tr("Next Tab"),
         Keys.ctrlAlt(KeyEvent.VK_RIGHT), () -> editor.selectNextTab());
+
+    public final Action saveTab = new SimpleAction(tr("Save"),
+      () -> {
+        try {
+          editor.getCurrentTab().getSketchFile().save();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
+    public final Action closeTab = new SimpleAction(tr("Close"),
+      () -> {
+        try {
+          editor.getSketchController().getSketch().removeFile(editor.getCurrentTab().getSketchFile());
+          editor.getCurrentTab().setVisible(false);
+          editor.removeTab(editor.getCurrentTab().getSketchFile());
+          if (editor.getTabs().size() != 0)
+            editor.selectTab(editor.getCurrentTabIndex() == 0 ? 0 : editor.getCurrentTabIndex() - 1);
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        repaint();
+      });
+
+    public final Action closeAllTabs = new SimpleAction(tr("CloseAll"),
+      () -> {
+        try {
+          for ( SketchFile s : editor.getSketchController().getSketch().getFiles() ) {
+            editor.getSketchController().getSketch().removeFile(s);
+            editor.getTabs().get(editor.findTabIndex(s)).setVisible(false);
+            editor.removeTab(s);
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        repaint();
+      });
+
+    public final Action compileTab = new SimpleAction(tr("Compile"),
+      () -> {
+        try {
+          editor.getCurrentTab().getSketch().build(true,true);
+        } catch (RunnerException e) {
+          e.printStackTrace();
+        } catch (PreferencesMapException e) {
+          e.printStackTrace();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
 
     Actions() {
       // Explicitly bind keybindings for the actions with accelerators above
@@ -171,6 +227,7 @@ public class EditorHeader extends JComponent {
         Theme.getColor("header.text.unselected.color");
     }
 
+
     addMouseListener(new MouseAdapter() {
         public void mousePressed(MouseEvent e) {
           int x = e.getX();
@@ -185,6 +242,10 @@ public class EditorHeader extends JComponent {
               if ((x > tabLeft[i]) && (x < tabRight[i])) {
                 editor.selectTab(i);
                 repaint();
+                if (SwingUtilities.isRightMouseButton(e))
+                {
+                  popup_sketch.show(EditorHeader.this, x, y);
+                }
               }
             }
           }
@@ -302,7 +363,7 @@ public class EditorHeader extends JComponent {
 
 
   public void rebuildMenu() {
-    if (menu != null) {
+    if (menu != null ) {
       menu.removeAll();
 
     } else {
@@ -311,7 +372,22 @@ public class EditorHeader extends JComponent {
       popup = menu.getPopupMenu();
       popup.setLightWeightPopupEnabled(true);
     }
+    if (menu_sketch != null ) {
+      menu_sketch.removeAll();
+
+    } else {
+      menu_sketch = new JMenu();
+      MenuScroller.setScrollerFor(menu_sketch);
+      popup_sketch = menu_sketch.getPopupMenu();
+      popup_sketch.setLightWeightPopupEnabled(true);
+    }
     JMenuItem item;
+
+    menu_sketch.add(new JMenuItem(actions.saveTab));
+    menu_sketch.add(new JMenuItem(actions.renameTab));
+    menu_sketch.add(new JMenuItem(actions.closeTab));
+    menu_sketch.add(new JMenuItem(actions.closeAllTabs));
+    menu_sketch.add(new JMenuItem(actions.compileTab));
 
     menu.add(new JMenuItem(actions.newTab));
     menu.add(new JMenuItem(actions.renameTab));
